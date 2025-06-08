@@ -26,7 +26,7 @@ const RawMaterialList = (props: Props) => {
 
           <ListGroup>
             <ListGroup.Item variant={'secondary'}>
-              <strong>Raw Materials:</strong>
+              <strong>Raw Materials</strong>
             </ListGroup.Item>
 
             {sortedMaterials.map(([ing, count]) => {
