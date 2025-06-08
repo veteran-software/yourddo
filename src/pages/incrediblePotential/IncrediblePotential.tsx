@@ -12,6 +12,7 @@ import type { CraftingIngredient } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import BaseItemDropdown from './components/BaseItemDropdown.tsx'
 import ItemUpgradeDropdown from './components/ItemUpgradeDropdown.tsx'
+import RawMaterialList from './components/RawMaterialList.tsx'
 
 const IncrediblePotential = () => {
   const [selectedItem, setSelectedItem] = useState<Ring | undefined>()
@@ -160,33 +161,7 @@ const IncrediblePotential = () => {
                           )}
                         />
 
-                        {Object.entries(rawMaterials).length > 0 && (
-                          <>
-                            <hr />
-
-                            <ListGroup>
-                              <ListGroup.Item variant={'secondary'}>
-                                <strong>Raw Materials</strong>
-                              </ListGroup.Item>
-
-                              {Object.entries(rawMaterials)
-                                .sort(([a], [b]) => a.localeCompare(b))
-                                .map(([ing, count]) => {
-                                  return (
-                                    <FarmedIngredientDisplay
-                                      ingredient={Object.values(
-                                        ingredients
-                                      ).find(
-                                        (ingredient: Ingredient) =>
-                                          ingredient.name === ing
-                                      )}
-                                      quantity={count}
-                                    />
-                                  )
-                                })}
-                            </ListGroup>
-                          </>
-                        )}
+                        <RawMaterialList rawMaterials={rawMaterials} />
 
                         {Object.entries(craftedIngredients).length > 0 && (
                           <>

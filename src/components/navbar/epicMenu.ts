@@ -1,14 +1,14 @@
 import type { NavDropdownType, NavMenuDropdown } from './types.ts'
 
 export const menuItems: NavDropdownType[] = [
-  { label: 'Epic Crafting', image: '', active: true },
-  { label: 'Sentient Weapons', image: '', active: true },
-  { label: 'Minor Artifact', image: '', active: true },
-  { label: 'Mikrom Sum', image: '', active: true },
-  { label: 'Thunder-Forged', image: '', active: true },
-  { label: 'Legendary Green Steel', image: '', active: true },
-  { label: 'Zhentarum Attuned', image: '', active: true },
-  { label: 'Schism Shard', image: '', active: true }
+  { label: 'Epic Crafting', image: '', active: false },
+  { label: 'Sentient Weapons', image: '', active: false },
+  { label: 'Minor Artifact', image: '', active: false },
+  { label: 'Mikrom Sum', image: '', active: false },
+  { label: 'Thunder-Forged', image: '', active: false },
+  { label: 'Legendary Green Steel', image: '', active: false },
+  { label: 'Zhentarum Attuned', image: '', active: false },
+  { label: 'Schism Shard', image: '', active: false }
 ]
 
 export const epicMenu: NavMenuDropdown = {

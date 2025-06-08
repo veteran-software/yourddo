@@ -23,7 +23,7 @@ const BaseItemDropdownItem = (props: Props) => {
         />
         <Stack direction='vertical' gap={0}>
           <DropdownItemTitle title={item.name} />
-          <small>
+          <small className='d-none d-lg-block'>
             {item.enchantments
               .map((enhancement: Enhancement) => enhancement.name)
               .join(', ')}
