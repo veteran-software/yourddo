@@ -16,7 +16,7 @@ const Home = () => {
       <p>
         He's recreating all the previous tools one by one, and will be adding
         newer crafting systems as well as many of the older ones that previously
-        we not in the old YourDDO.
+        were not in the old YourDDO.
       </p>
       <p>
         The first crafting systems that he will be adding are the Shroud focused

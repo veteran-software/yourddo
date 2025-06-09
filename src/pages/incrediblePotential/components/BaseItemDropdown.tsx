@@ -1,40 +1,49 @@
-import { Dropdown } from 'react-bootstrap'
-import type { Ring } from '../../../types/core.ts'
+import { Image, Stack } from 'react-bootstrap'
+import ringImage from '../../../assets/icons/ringOfIncrediblePotential.png'
+import FilterableDropdown from '../../../components/filters/FilterableDropdown.tsx'
+import type { Enhancement, Ring } from '../../../types/core.ts'
 import { baseItems } from '../data/baseItems.ts'
-import BaseItemDropdownItem from './BaseItemDropdownItem.tsx'
+import DropdownItemTitle from './DropdownItemTitle.tsx'
 
 const BaseItemDropdown = (props: Props) => {
   const { buttonLabel, onSelectItem } = props
 
+  // Function to extract enhancement names from a ring item
+  const getItemFilters = (item: Ring): string[] => {
+    // Only use the first two enhancements for filtering
+    return item.enchantments.slice(0, 2).map((enhancement) => enhancement.name)
+  }
+
+  const renderItem = (item: Ring) => (
+    <Stack direction='horizontal' gap={3}>
+      <Image
+        src={ringImage}
+        alt={item.name}
+        title={item.name}
+        className='d-none d-md-block'
+      />
+      <Stack direction='vertical' gap={0}>
+        <DropdownItemTitle title={item.name} />
+        <small className='d-none d-lg-block'>
+          {item.enchantments
+            .map((enhancement: Enhancement) => enhancement.name)
+            .join(', ')}
+        </small>
+      </Stack>
+    </Stack>
+  )
+
   return (
-    <Dropdown>
-      <Dropdown.Toggle
-        variant='outline-info'
-        className='w-100'
-        aria-label='Select an item'
-      >
-        {buttonLabel}
-      </Dropdown.Toggle>
-      <Dropdown.Menu
-        style={{ maxHeight: '500px', overflowY: 'auto' }}
-        aria-labelledby='dropdownMenu'
-      >
-        {baseItems.length > 0 ? (
-          baseItems.map((item: Ring, idx: number) => (
-            <BaseItemDropdownItem
-              key={item.name}
-              item={item}
-              idx={idx}
-              onSelectItem={onSelectItem}
-            />
-          ))
-        ) : (
-          <Dropdown.Item className='text-muted'>
-            No items available
-          </Dropdown.Item>
-        )}
-      </Dropdown.Menu>
-    </Dropdown>
+    <FilterableDropdown
+      items={baseItems}
+      getItemFilters={getItemFilters}
+      renderItem={renderItem}
+      onSelectItem={onSelectItem}
+      buttonLabel={buttonLabel}
+      variant='outline-info'
+      maxHeight='500px'
+      maxFilterColumns={3}
+    />
   )
 }
 
