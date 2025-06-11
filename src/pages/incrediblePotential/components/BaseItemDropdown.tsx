@@ -1,6 +1,10 @@
-import { Image, Stack } from 'react-bootstrap'
+import { useEffect, useMemo } from 'react'
+import { Dropdown, Image, Stack } from 'react-bootstrap'
+import { shallowEqual } from 'react-redux'
 import ringImage from '../../../assets/icons/ringOfIncrediblePotential.png'
-import FilterableDropdown from '../../../components/filters/FilterableDropdown.tsx'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
+import { setFilteredRingList } from '../../../redux/slices/incrediblePotentialSlice.ts'
+import type { AppDispatch } from '../../../redux/store.ts'
 import type { Enhancement, Ring } from '../../../types/core.ts'
 import { baseItems } from '../data/baseItems.ts'
 import DropdownItemTitle from './DropdownItemTitle.tsx'
@@ -8,11 +12,39 @@ import DropdownItemTitle from './DropdownItemTitle.tsx'
 const BaseItemDropdown = (props: Props) => {
   const { buttonLabel, onSelectItem } = props
 
-  // Function to extract enhancement names from a ring item
-  const getItemFilters = (item: Ring): string[] => {
-    // Only use the first two enhancements for filtering
-    return item.enchantments.slice(0, 2).map((enhancement) => enhancement.name)
-  }
+  const dispatch: AppDispatch = useAppDispatch()
+
+  const { filteredRingList, filterMode, selectedRingFilters } = useAppSelector(
+    (state) => state.incrediblePotential,
+    shallowEqual
+  )
+
+  const baseItemList: Ring[] = useMemo((): Ring[] => baseItems, [])
+
+  // Updates the base item list when ring filters change
+  useEffect(() => {
+    if (selectedRingFilters.length === 0) {
+      dispatch(setFilteredRingList(baseItemList))
+    } else {
+      dispatch(
+        setFilteredRingList(
+          baseItemList.filter((item: Ring) => {
+            const itemEnhancements: string[] = item.enchantments
+              .slice(0, 2)
+              .map((enhancement: Enhancement) => enhancement.name)
+
+            return filterMode === 'OR'
+              ? selectedRingFilters.some((filter: string) => {
+                  return itemEnhancements.includes(filter)
+                })
+              : selectedRingFilters.every((filter: string) => {
+                  return itemEnhancements.includes(filter)
+                })
+          })
+        )
+      )
+    }
+  }, [baseItemList, dispatch, filterMode, selectedRingFilters])
 
   const renderItem = (item: Ring) => (
     <Stack direction='horizontal' gap={3}>
@@ -34,16 +66,23 @@ const BaseItemDropdown = (props: Props) => {
   )
 
   return (
-    <FilterableDropdown
-      items={baseItems}
-      getItemFilters={getItemFilters}
-      renderItem={renderItem}
-      onSelectItem={onSelectItem}
-      buttonLabel={buttonLabel}
-      variant='outline-info'
-      maxHeight='500px'
-      maxFilterColumns={3}
-    />
+    <Dropdown className='d-flex flex-grow-1'>
+      <Dropdown.Toggle variant='outline-info w-100'>
+        {buttonLabel}
+      </Dropdown.Toggle>
+      <Dropdown.Menu style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+        {filteredRingList.map((item: Ring, idx: number) => (
+          <Dropdown.Item
+            key={idx}
+            onClick={() => {
+              onSelectItem(item)
+            }}
+          >
+            {renderItem(item)}
+          </Dropdown.Item>
+        ))}
+      </Dropdown.Menu>
+    </Dropdown>
   )
 }
 

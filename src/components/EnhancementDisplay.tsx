@@ -6,7 +6,7 @@ const EnhancementDisplay = (props: Props) => {
   const { enhancement } = props
 
   if (!enhancement) {
-    return <>Enhancement Not Found</>
+    return <></>
   }
 
   return (
