@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Card, Col, Container, ListGroup, Stack } from 'react-bootstrap'
+import { Card, Col, Container, ListGroup, Row, Stack } from 'react-bootstrap'
+import { shallowEqual } from 'react-redux'
 import CraftedIngredientDisplay from '../../components/CraftedIngredientDisplay.tsx'
 import EnhancementDisplay from '../../components/EnhancementDisplay.tsx'
 import FarmedIngredientDisplay from '../../components/FarmedIngredientDisplay.tsx'
@@ -7,20 +8,42 @@ import InstructionsPopover from '../../components/InstructionsPopover.tsx'
 import { altarOfSubjugation } from '../../data/altarOfSubjugation.ts'
 import { enhancements } from '../../data/enhancements.ts'
 import { ingredients } from '../../data/ingredients.ts'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks.ts'
+import {
+  addCraftedIngredient,
+  addRawMaterial,
+  clearCraftedIngredients,
+  clearRawMaterials,
+  setSelectedRing,
+  setSelectedRingFilters,
+  setSelectedUpgrade,
+  setSelectedUpgradeFilters
+} from '../../redux/slices/incrediblePotentialSlice.ts'
+import type { AppDispatch } from '../../redux/store.ts'
 import type { Enhancement, Ring } from '../../types/core.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import BaseItemDropdown from './components/BaseItemDropdown.tsx'
+import FilterOffCanvas from './components/FilterOffCanvas.tsx'
 import ItemUpgradeDropdown from './components/ItemUpgradeDropdown.tsx'
 import RawMaterialList from './components/RawMaterialList.tsx'
 
 const IncrediblePotential = () => {
-  const [selectedItem, setSelectedItem] = useState<Ring | undefined>()
-  const [selectedRecipe, setSelectedRecipe] = useState<CraftingIngredient>()
-  const [craftedIngredients, setCraftedIngredients] = useState<
-    Record<string, number>
-  >({})
-  const [rawMaterials, setRawMaterials] = useState<Record<string, number>>({})
+  const dispatch: AppDispatch = useAppDispatch()
+
+  const {
+    craftedIngredients,
+    filteredRingList,
+    filterMode,
+    rawMaterials,
+    ringFilters,
+    selectedRing,
+    selectedUpgrade,
+    selectedRingFilters,
+    selectedUpgradeFilters,
+    filteredUpgradeList,
+    upgradeFilters
+  } = useAppSelector((state) => state.incrediblePotential, shallowEqual)
 
   const [itemButtonLabel, setItemButtonLabel] = useState(
     'Select a Base Item...'
@@ -44,20 +67,12 @@ const IncrediblePotential = () => {
 
                 if (ingredient) {
                   // Crafted Ingredient
-                  setCraftedIngredients((prev) => ({
-                    ...prev,
-                    [ingredient.name]:
-                      (prev[ingredient.name] ?? 0) + ingredient.quantity
-                  }))
+                  dispatch(addCraftedIngredient(ingredient))
 
                   recipeBuilder(ingredient)
                 } else {
                   // Raw material you find in the wild
-                  setRawMaterials((prev) => ({
-                    ...prev,
-                    [requirement.name]:
-                      (prev[requirement.name] ?? 0) + requirement.quantity
-                  }))
+                  dispatch(addRawMaterial(requirement))
                 }
               }
             }
@@ -65,164 +80,234 @@ const IncrediblePotential = () => {
         }
       }
     },
-    []
+    [dispatch]
   )
 
   useEffect(() => {
-    recipeBuilder(selectedRecipe)
-  }, [recipeBuilder, selectedRecipe])
+    if (selectedUpgrade) {
+      setRecipeButtonLabel(
+        `Incredible Potential : ${selectedUpgrade.effectsAdded?.[0].name ?? ''}`
+      )
+
+      dispatch(clearRawMaterials())
+      dispatch(clearCraftedIngredients())
+
+      recipeBuilder(selectedUpgrade)
+    }
+  }, [dispatch, recipeBuilder, selectedUpgrade])
 
   return (
     <Container>
       <Card>
-        <Card.Header>
-          <BaseItemDropdown
-            onSelectItem={(item: Ring) => {
-              setSelectedItem(item)
-              setItemButtonLabel(item.name)
-            }}
-            buttonLabel={itemButtonLabel}
-          />
-        </Card.Header>
+        <Card.Body>
+          <Row md={1} lg={2}>
+            <Col>
+              <Stack direction='horizontal' gap={2}>
+                <BaseItemDropdown
+                  onSelectItem={(item: Ring) => {
+                    dispatch(setSelectedRing(item))
+                    setItemButtonLabel(item.name)
+                  }}
+                  buttonLabel={itemButtonLabel}
+                />
+                <FilterOffCanvas
+                  filterMode={filterMode}
+                  filterOptions={ringFilters}
+                  items={filteredRingList}
+                  getItemFilters={(item: Ring): string[] => {
+                    return item.enchantments
+                      .slice(0, 2)
+                      .map((enhancement) => enhancement.name)
+                  }}
+                  selectedFilters={selectedRingFilters}
+                  setSelectedFilters={(filters: string[]) => {
+                    dispatch(setSelectedRingFilters(filters))
+                  }}
+                />
+              </Stack>
 
-        {selectedItem && (
-          <Card.Body>
-            <Col xs={12} md={10} lg={8} xl={6} className='mx-auto'>
-              <Card>
-                <Card.Header className='text-center'>
-                  <Card.Title>
-                    <h2>{selectedItem.name}</h2>
-                  </Card.Title>
-                  <Card.Subtitle>Ring</Card.Subtitle>
-                </Card.Header>
+              {selectedRing && (
+                <>
+                  <hr />
+                  <Stack direction='horizontal' gap={2}>
+                    <ItemUpgradeDropdown
+                      buttonLabel={recipeButtonLabel}
+                      clickHandler={(recipe: CraftingIngredient) => {
+                        dispatch(setSelectedUpgrade(recipe))
+                        setRecipeButtonLabel(
+                          `Incredible Potential : ${
+                            recipe.effectsAdded?.[0].name ?? 'No effects added'
+                          }`
+                        )
 
-                <Card.Body className='d-flex small'>
-                  <Stack direction='vertical' gap={1}>
-                    <Stack
-                      direction='horizontal'
-                      className='justify-content-end w-100'
-                    >
-                      Equips to: {selectedItem.slot.join(', ')}
-                    </Stack>
+                        recipeBuilder(recipe)
 
-                    <Container>
-                      Ingredient Type: {selectedItem.ingredientType}
-                    </Container>
-
-                    <Container>
-                      Minimum Level: {selectedItem.minimumLevel}
-                    </Container>
-
-                    {selectedItem.binding && (
-                      <Container>
-                        {selectedItem.binding.type === 'Bound' && (
-                          <>
-                            Bound to {selectedItem.binding.location} (from{' '}
-                            {selectedItem.binding.when})
-                          </>
-                        )}
-                      </Container>
-                    )}
-
-                    {selectedItem.exclusive && <Container>Exclusive</Container>}
-
-                    {selectedItem.enchantments.map(
-                      (enhancement: Enhancement) => {
-                        if (enhancement.name === 'Incredible Potential') {
-                          return (
-                            <ItemUpgradeDropdown
-                              buttonLabel={recipeButtonLabel}
-                              clickHandler={(recipe: CraftingIngredient) => {
-                                setSelectedRecipe(recipe)
-                                setRecipeButtonLabel(
-                                  `Incredible Potential : ${
-                                    recipe.effectsAdded?.[0].name ??
-                                    'No effects added'
-                                  }`
-                                )
-                                setRawMaterials({})
-                                setCraftedIngredients({})
-                              }}
-                            />
-                          )
-                        }
-
-                        return <EnhancementDisplay enhancement={enhancement} />
-                      }
-                    )}
-
-                    {selectedRecipe && (
-                      <>
-                        <EnhancementDisplay
-                          enhancement={enhancements.find(
-                            (enh: Enhancement) =>
-                              enh.name.toLowerCase() ===
-                              selectedRecipe.effectsAdded?.[0].name.toLowerCase()
-                          )}
-                        />
-
-                        <RawMaterialList rawMaterials={rawMaterials} />
-
-                        {Object.entries(craftedIngredients).length > 0 && (
-                          <>
-                            <hr />
-
-                            <ListGroup>
-                              <ListGroup.Item
-                                variant={'secondary'}
-                                className='d-flex flex-row justify-content-between'
-                              >
-                                <strong>Crafted Materials</strong>
-                                <InstructionsPopover
-                                  instructionsText={`Craft the Focus, Gem, and Essence. Combine them in the Altar of Subjugation to create the imbued Shard of Great Power. Finally, apply the imbued Shard onto your ${selectedItem.name}`}
-                                />
-                              </ListGroup.Item>
-                              {Object.entries(craftedIngredients)
-                                .sort(([a], [b]) => a.localeCompare(b))
-                                .map(([ing, count]) => {
-                                  const crafted = Object.values(
-                                    altarOfSubjugation
-                                  ).find(
-                                    (ingredient: CraftingIngredient) =>
-                                      ingredient.name === ing
-                                  )
-
-                                  if (crafted) {
-                                    return (
-                                      <CraftedIngredientDisplay
-                                        ingredient={crafted}
-                                        quantity={count}
-                                      />
-                                    )
-                                  }
-
-                                  const farmed = Object.values(
-                                    ingredients
-                                  ).find(
-                                    (ingredient: Ingredient) =>
-                                      ingredient.name === ing
-                                  )
-
-                                  if (farmed) {
-                                    return (
-                                      <FarmedIngredientDisplay
-                                        ingredient={farmed}
-                                        quantity={count}
-                                      />
-                                    )
-                                  }
-                                })}
-                            </ListGroup>
-                          </>
-                        )}
-                      </>
-                    )}
+                        dispatch(clearRawMaterials())
+                        dispatch(clearCraftedIngredients())
+                      }}
+                    />
+                    <FilterOffCanvas
+                      filterMode={filterMode}
+                      filterOptions={upgradeFilters}
+                      items={filteredUpgradeList}
+                      getItemFilters={(item: CraftingIngredient): string[] => {
+                        return (
+                          item.enhancements?.map(
+                            (enhancement) => enhancement.name
+                          ) ?? []
+                        )
+                      }}
+                      selectedFilters={selectedUpgradeFilters}
+                      setSelectedFilters={(filters: string[]) => {
+                        dispatch(setSelectedUpgradeFilters(filters))
+                      }}
+                    />
                   </Stack>
-                </Card.Body>
-              </Card>
+                </>
+              )}
+              {selectedRing && (
+                <>
+                  <hr />
+
+                  <Card>
+                    <Card.Header className='text-center'>
+                      <Card.Title>
+                        <h2>{selectedRing.name}</h2>
+                      </Card.Title>
+                      <Card.Subtitle>Ring</Card.Subtitle>
+                    </Card.Header>
+
+                    <Card.Body className='d-flex small'>
+                      <Stack direction='vertical' gap={1}>
+                        <Stack
+                          direction='horizontal'
+                          className='justify-content-end w-100'
+                        >
+                          Equips to: {selectedRing.slot.join(', ')}
+                        </Stack>
+
+                        <Container>
+                          Ingredient Type: {selectedRing.ingredientType}
+                        </Container>
+
+                        <Container>
+                          Minimum Level: {selectedRing.minimumLevel}
+                        </Container>
+
+                        {selectedRing.binding && (
+                          <Container>
+                            {selectedRing.binding.type === 'Bound' && (
+                              <>
+                                Bound to {selectedRing.binding.location} (from{' '}
+                                {selectedRing.binding.when})
+                              </>
+                            )}
+                          </Container>
+                        )}
+
+                        {selectedRing.exclusive && (
+                          <Container>Exclusive</Container>
+                        )}
+
+                        {selectedRing.enchantments.map(
+                          (enhancement: Enhancement, idx: number) => {
+                            if (enhancement.name === 'Incredible Potential') {
+                              if (selectedUpgrade) {
+                                return (
+                                  <EnhancementDisplay
+                                    key={`${enhancement.name}-${String(idx)}`}
+                                    enhancement={
+                                      selectedUpgrade.enhancements?.[0]
+                                    }
+                                  />
+                                )
+                              }
+                            }
+
+                            return (
+                              <EnhancementDisplay
+                                key={`${enhancement.name}-${String(idx)}`}
+                                enhancement={enhancement}
+                              />
+                            )
+                          }
+                        )}
+
+                        {selectedUpgrade && (
+                          <EnhancementDisplay
+                            enhancement={enhancements.find(
+                              (enh: Enhancement) =>
+                                enh.name.toLowerCase() ===
+                                selectedUpgrade.effectsAdded?.[0].name.toLowerCase()
+                            )}
+                          />
+                        )}
+                      </Stack>
+                    </Card.Body>
+                  </Card>
+                </>
+              )}
             </Col>
-          </Card.Body>
-        )}
+            <Col>
+              {selectedRing && selectedUpgrade && (
+                <>
+                  <RawMaterialList rawMaterials={rawMaterials} />
+
+                  {Object.entries(craftedIngredients).length > 0 && (
+                    <>
+                      <hr />
+
+                      <ListGroup>
+                        <ListGroup.Item
+                          variant={'secondary'}
+                          className='d-flex flex-row justify-content-between'
+                        >
+                          <strong>Crafted Materials</strong>
+                          <InstructionsPopover
+                            instructionsText={`Craft the Focus, Gem, and Essence. Combine them in the Altar of Subjugation to create the imbued Shard of Great Power. Finally, apply the imbued Shard onto your ${selectedRing.name}`}
+                          />
+                        </ListGroup.Item>
+                        {Object.entries(craftedIngredients)
+                          .sort(([a], [b]) => a.localeCompare(b))
+                          .map(([ing, count]) => {
+                            const crafted = Object.values(
+                              altarOfSubjugation
+                            ).find(
+                              (ingredient: CraftingIngredient) =>
+                                ingredient.name === ing
+                            )
+
+                            if (crafted) {
+                              return (
+                                <CraftedIngredientDisplay
+                                  ingredient={crafted}
+                                  quantity={count}
+                                />
+                              )
+                            }
+
+                            const farmed = Object.values(ingredients).find(
+                              (ingredient: Ingredient) =>
+                                ingredient.name === ing
+                            )
+
+                            if (farmed) {
+                              return (
+                                <FarmedIngredientDisplay
+                                  ingredient={farmed}
+                                  quantity={count}
+                                />
+                              )
+                            }
+                          })}
+                      </ListGroup>
+                    </>
+                  )}
+                </>
+              )}
+            </Col>
+          </Row>
+        </Card.Body>
       </Card>
     </Container>
   )

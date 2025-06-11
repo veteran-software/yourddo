@@ -1,14 +1,15 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import {
   Badge,
   ButtonGroup,
   Col,
   Form,
-  OverlayTrigger,
   Row,
-  ToggleButton,
-  Tooltip
+  ToggleButton
 } from 'react-bootstrap'
+import { useAppDispatch } from '../../redux/hooks.ts'
+import { setFilterMode } from '../../redux/slices/incrediblePotentialSlice.ts'
+import type { AppDispatch } from '../../redux/store.ts'
 
 // Styles for the filter components
 const customStyles = {
@@ -26,35 +27,34 @@ const customStyles = {
  */
 const FilterSection = <T,>(props: Props<T>) => {
   const {
+    filterMode,
     filterOptions,
     items,
     getItemFilters,
-    onFilteredItemsChange,
-    maxFilterColumns = 3
+    maxFilterColumns = 3,
+    selectedFilters,
+    setSelectedFilters
   } = props
-
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([])
-  const [filterMode, setFilterMode] = useState<'OR' | 'AND'>('OR')
+  const dispatch: AppDispatch = useAppDispatch()
 
   // Calculate the count of items for each filter
   const filterCounts: Record<string, number> = useMemo(() => {
     const counts: Record<string, number> = {}
 
     filterOptions.forEach((filter: string) => {
-      counts[filter] = items.filter((item: T) =>
-        getItemFilters(item).includes(filter)
-      ).length
+      counts[filter] = items.filter((item: T) => {
+        return getItemFilters(item).includes(filter)
+      }).length
     })
 
     return counts
   }, [filterOptions, items, getItemFilters])
 
-  // Function to toggle a filter selection
   const toggleFilter = (filter: string) => {
-    setSelectedFilters((prev: string[]) =>
-      prev.includes(filter)
-        ? prev.filter((f: string) => f !== filter)
-        : [...prev, filter]
+    setSelectedFilters(
+      selectedFilters.includes(filter)
+        ? selectedFilters.filter((f: string) => f !== filter)
+        : [...selectedFilters, filter]
     )
   }
 
@@ -101,11 +101,6 @@ const FilterSection = <T,>(props: Props<T>) => {
     })
   }, [items, selectedFilters, filterMode, getItemFilters])
 
-  // Use effect to notify parent of filtered items changes
-  useEffect(() => {
-    onFilteredItemsChange(filteredItems)
-  }, [filteredItems, onFilteredItemsChange])
-
   return (
     <div className='filter-section p-2 user-select-none'>
       <div className='d-flex justify-content-between mb-2'>
@@ -126,7 +121,7 @@ const FilterSection = <T,>(props: Props<T>) => {
             value='OR'
             checked={filterMode === 'OR'}
             onChange={() => {
-              setFilterMode('OR')
+              dispatch(setFilterMode('OR'))
               // Reset filters when changing modes to avoid confusion
               if (filterMode !== 'OR') {
                 setSelectedFilters([])
@@ -144,7 +139,7 @@ const FilterSection = <T,>(props: Props<T>) => {
             value='AND'
             checked={filterMode === 'AND'}
             onChange={() => {
-              setFilterMode('AND')
+              dispatch(setFilterMode('AND'))
               // Reset filters when changing modes to avoid confusion
               if (filterMode !== 'AND') {
                 setSelectedFilters([])
@@ -182,35 +177,26 @@ const FilterSection = <T,>(props: Props<T>) => {
             {filterMode === 'AND' &&
             incompatibleFilters.includes(filter) &&
             !selectedFilters.includes(filter) ? (
-              <OverlayTrigger
-                placement='auto'
-                overlay={
-                  <Tooltip>
-                    No items have both this option and your current selection
-                  </Tooltip>
-                }
-              >
-                <div style={customStyles.disabledFilter}>
-                  <Form.Check
-                    type='switch'
-                    id={`filter-${filter.replace(/\s+/g, '-').toLowerCase()}`}
-                    checked={selectedFilters.includes(filter)}
-                    onChange={() => {
-                      toggleFilter(filter)
-                    }}
-                    disabled={true}
-                    className='text-truncate'
-                    label={
-                      <span className='d-flex justify-content-between align-items-center w-100'>
-                        <span className='text-truncate'>{filter}</span>
-                        <Badge bg='secondary' pill className='ms-1'>
-                          {filterCounts[filter]}
-                        </Badge>
-                      </span>
-                    }
-                  />
-                </div>
-              </OverlayTrigger>
+              <div style={customStyles.disabledFilter}>
+                <Form.Check
+                  type='switch'
+                  id={`filter-${filter.replace(/\s+/g, '-').toLowerCase()}`}
+                  checked={selectedFilters.includes(filter)}
+                  onChange={() => {
+                    toggleFilter(filter)
+                  }}
+                  disabled={true}
+                  className='text-truncate'
+                  label={
+                    <span className='d-flex justify-content-between align-items-center w-100'>
+                      <span className='text-truncate'>{filter}</span>
+                      <Badge bg='secondary' pill className='ms-1'>
+                        {filterCounts[filter]}
+                      </Badge>
+                    </span>
+                  }
+                />
+              </div>
             ) : (
               <Form.Check
                 type='switch'
@@ -271,25 +257,13 @@ const FilterSection = <T,>(props: Props<T>) => {
 }
 
 interface Props<T> {
+  filterMode: 'AND' | 'OR'
   filterOptions: string[]
-  items: T[]
-
-  /**
-   * Function to extract filter values from an item
-   * For example, (item) => item.tags or (item) => item.enchantments.map(e => e.name)
-   */
   getItemFilters: (item: T) => string[]
-
-  /**
-   * Callback when filtered items change
-   */
-  onFilteredItemsChange: (filteredItems: T[]) => void
-
-  /**
-   * Maximum number of columns to display in the filter grid
-   * @default 3
-   */
+  items: T[]
   maxFilterColumns?: number
+  selectedFilters: string[]
+  setSelectedFilters: (selectedFilters: string[]) => void
 }
 
 export default FilterSection

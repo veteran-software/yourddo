@@ -18,30 +18,24 @@ const RawMaterialList = (props: Props) => {
 
   if (Object.entries(rawMaterials).length === 0) return <></>
 
-  return (
-    <>
-      {Object.entries(rawMaterials).length > 0 && (
-        <>
-          <hr />
+  return Object.entries(rawMaterials).length > 0 ? (
+    <ListGroup>
+      <ListGroup.Item variant={'secondary'}>
+        <strong>Raw Materials</strong>
+      </ListGroup.Item>
 
-          <ListGroup>
-            <ListGroup.Item variant={'secondary'}>
-              <strong>Raw Materials</strong>
-            </ListGroup.Item>
-
-            {sortedMaterials.map(([ing, count]) => {
-              return (
-                <FarmedIngredientDisplay
-                  key={ing}
-                  ingredient={ingredientsMap[ing]}
-                  quantity={count}
-                />
-              )
-            })}
-          </ListGroup>
-        </>
-      )}
-    </>
+      {sortedMaterials.map(([ing, count]) => {
+        return (
+          <FarmedIngredientDisplay
+            key={ing}
+            ingredient={ingredientsMap[ing]}
+            quantity={count}
+          />
+        )
+      })}
+    </ListGroup>
+  ) : (
+    <></>
   )
 }
 
