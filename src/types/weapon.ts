@@ -54,4 +54,6 @@ export interface Weapon {
   cost: Cost
   weight: number
   enhancements: string[]
+  description: string
+  material: string
 }

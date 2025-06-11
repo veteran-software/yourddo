@@ -16,4 +16,5 @@ export interface CraftingIngredient {
   effectsRemoved?: Enhancement[]
   spell?: Spell
   binding?: Binding
+  enhancements?: Enhancement[]
 }
