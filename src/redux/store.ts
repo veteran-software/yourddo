@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit/react'
 
 import appReducer from './slices/appSlice'
+import incrediblePotentialReducer from './slices/incrediblePotentialSlice'
 
 const store = configureStore({
   reducer: {
-    app: appReducer
+    app: appReducer,
+    incrediblePotential: incrediblePotentialReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
 })

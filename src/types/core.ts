@@ -205,6 +205,7 @@ export type AlignmentDamage = 'Evil' | 'Good' | 'Law' | 'Chaotic'
 export type OtherDamage =
   | 'Force'
   | 'Light'
+  | 'Magic'
   | 'Negative'
   | 'Poison'
   | 'Positive'

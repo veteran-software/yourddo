@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   css: {
+    devSourcemap: false,
     preprocessorOptions: {
       scss: {
         api: 'modern-compiler',

@@ -29,7 +29,7 @@ const FarmedIngredientDisplay = (props: Props) => {
       <Stack direction='horizontal' gap={3}>
         <Image src={imageSrc} alt={ingredient.name} title={ingredient.name} />
 
-        <Stack direction='vertical' gap={1}>
+        <Stack direction='vertical' gap={0}>
           <strong>{ingredient.name}</strong>
           <small>
             <strong>
