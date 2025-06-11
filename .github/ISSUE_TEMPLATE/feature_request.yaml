@@ -1,0 +1,27 @@
+name: "Feature Request"
+description: Suggest an idea or enhancement for YourDDO
+title: "[FEATURE] <brief description>"
+labels: [ enhancement ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We love ideas! Help us understand your feature request.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What’s the feature?
+      description: Describe the idea clearly.
+      placeholder: "I’d like to be able to export crafting plans as a shareable link..."
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Why is this useful?
+      description: Explain the problem this feature would solve or how it would help users.
+  - type: textarea
+    id: details
+    attributes:
+      label: Additional Notes or Mockups
+      description: Sketches, diagrams, or extra notes go here.

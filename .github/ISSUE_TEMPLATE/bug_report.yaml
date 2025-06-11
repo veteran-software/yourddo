@@ -1,0 +1,51 @@
+name: "Bug Report"
+description: Report a reproducible bug or unexpected behavior
+title: "[BUG] <brief description>"
+labels: [ bug ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please complete the following so we can fix it.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Tell us what you were doing and what went wrong.
+      placeholder: "Example: When I clicked on 'Save Build', nothing happened..."
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Include step-by-step instructions, if possible.
+      placeholder: |
+        1. Go to 'Crafting Planner'
+        2. Fill in item data
+        3. Click 'Save'
+        4. Nothing happens
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and Version
+      placeholder: "e.g., Chrome 124.0.6367.91"
+  - type: input
+    id: device
+    attributes:
+      label: Device and OS
+      placeholder: "e.g., Windows 11, Desktop"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console Errors or Logs (if any)
+      render: shell
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Severity
+      options:
+        - Low (cosmetic or non-blocking)
+        - Medium (some user impact)
+        - High (major feature is broken)
+        - Critical (crashes or prevents usage)
