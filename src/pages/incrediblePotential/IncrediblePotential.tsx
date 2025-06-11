@@ -16,7 +16,6 @@ import {
   clearRawMaterials,
   setSelectedRing,
   setSelectedRingFilters,
-  setSelectedUpgrade,
   setSelectedUpgradeFilters
 } from '../../redux/slices/incrediblePotentialSlice.ts'
 import type { AppDispatch } from '../../redux/store.ts'
@@ -130,22 +129,7 @@ const IncrediblePotential = () => {
                 <>
                   <hr />
                   <Stack direction='horizontal' gap={2}>
-                    <ItemUpgradeDropdown
-                      buttonLabel={recipeButtonLabel}
-                      clickHandler={(recipe: CraftingIngredient) => {
-                        dispatch(setSelectedUpgrade(recipe))
-                        setRecipeButtonLabel(
-                          `Incredible Potential : ${
-                            recipe.effectsAdded?.[0].name ?? 'No effects added'
-                          }`
-                        )
-
-                        recipeBuilder(recipe)
-
-                        dispatch(clearRawMaterials())
-                        dispatch(clearCraftedIngredients())
-                      }}
-                    />
+                    <ItemUpgradeDropdown buttonLabel={recipeButtonLabel} />
                     <FilterOffCanvas
                       filterMode={filterMode}
                       filterOptions={upgradeFilters}
