@@ -45,7 +45,7 @@ const NavbarTop = () => {
         <Navbar.Collapse id='responsive-navbar-nav'>
           <Nav className='me-auto w-100 justify-content-end'>
             {activeMenus.map((menu: NavMenuDropdown) => (
-              <MenuDropdown menu={menu} />
+              <MenuDropdown key={menu.title} menu={menu} />
             ))}
           </Nav>
         </Navbar.Collapse>

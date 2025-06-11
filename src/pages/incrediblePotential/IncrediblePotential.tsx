@@ -253,17 +253,17 @@ const IncrediblePotential = () => {
                         </ListGroup.Item>
                         {Object.entries(craftedIngredients)
                           .sort(([a], [b]) => a.localeCompare(b))
-                          .map(([ing, count]) => {
-                            const crafted = Object.values(
-                              altarOfSubjugation
-                            ).find(
-                              (ingredient: CraftingIngredient) =>
-                                ingredient.name === ing
-                            )
+                          .map(([ing, count], idx: number) => {
+                            const crafted: CraftingIngredient | undefined =
+                              Object.values(altarOfSubjugation).find(
+                                (ingredient: CraftingIngredient) =>
+                                  ingredient.name === ing
+                              )
 
                             if (crafted) {
                               return (
                                 <CraftedIngredientDisplay
+                                  key={`${ing}-${String(count)}-${String(idx)}`}
                                   ingredient={crafted}
                                   quantity={count}
                                 />
@@ -278,6 +278,7 @@ const IncrediblePotential = () => {
                             if (farmed) {
                               return (
                                 <FarmedIngredientDisplay
+                                  key={`${ing}-${String(count)}-${String(idx)}`}
                                   ingredient={farmed}
                                   quantity={count}
                                 />
