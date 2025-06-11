@@ -118,7 +118,7 @@ const ItemUpgradeDropdown = (props: Props) => {
         {filteredUpgradeList.map((recipe: CraftingIngredient, idx: number) => (
           <Dropdown.Item
             className='border-top'
-            key={idx}
+            key={`${recipe.name}-${String(idx)}`}
             onClick={() => {
               dispatch(setSelectedUpgrade(recipe))
             }}
@@ -133,7 +133,6 @@ const ItemUpgradeDropdown = (props: Props) => {
 
 interface Props {
   buttonLabel: string
-  clickHandler: (recipe: CraftingIngredient) => void
 }
 
 export default ItemUpgradeDropdown

@@ -73,7 +73,7 @@ const BaseItemDropdown = (props: Props) => {
       <Dropdown.Menu style={{ maxHeight: '50vh', overflowY: 'auto' }}>
         {filteredRingList.map((item: Ring, idx: number) => (
           <Dropdown.Item
-            key={idx}
+            key={`${item.name}-${String(idx)}`}
             onClick={() => {
               onSelectItem(item)
             }}

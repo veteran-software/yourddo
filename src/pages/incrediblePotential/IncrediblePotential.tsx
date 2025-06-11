@@ -210,11 +210,12 @@ const IncrediblePotential = () => {
                         )}
 
                         {selectedRing.enchantments.map(
-                          (enhancement: Enhancement) => {
+                          (enhancement: Enhancement, idx: number) => {
                             if (enhancement.name === 'Incredible Potential') {
                               if (selectedUpgrade) {
                                 return (
                                   <EnhancementDisplay
+                                    key={`${enhancement.name}-${String(idx)}`}
                                     enhancement={
                                       selectedUpgrade.enhancements?.[0]
                                     }
@@ -224,7 +225,10 @@ const IncrediblePotential = () => {
                             }
 
                             return (
-                              <EnhancementDisplay enhancement={enhancement} />
+                              <EnhancementDisplay
+                                key={`${enhancement.name}-${String(idx)}`}
+                                enhancement={enhancement}
+                              />
                             )
                           }
                         )}
