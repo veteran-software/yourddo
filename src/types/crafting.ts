@@ -17,4 +17,5 @@ export interface CraftingIngredient {
   spell?: Spell
   binding?: Binding
   enhancements?: Enhancement[]
+  notes?: string
 }
