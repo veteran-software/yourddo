@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Button, Offcanvas } from 'react-bootstrap'
 import { FaFilter } from 'react-icons/fa6'
 import FilterSection from '../../../components/filters/FilterSection.tsx'
+import { filtersText } from '../../../utils/strings.ts'
 
 const FilterOffCanvas = <T,>(props: Props<T>) => {
   const {
@@ -19,7 +20,6 @@ const FilterOffCanvas = <T,>(props: Props<T>) => {
     <>
       <Button
         className='d-flex align-items-center rounded-5 p-2'
-        title='What is this?'
         variant='info'
         onClick={() => {
           setShow(true)
@@ -36,7 +36,7 @@ const FilterOffCanvas = <T,>(props: Props<T>) => {
         }}
       >
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Filters</Offcanvas.Title>
+          <Offcanvas.Title>{filtersText}</Offcanvas.Title>
         </Offcanvas.Header>
 
         <Offcanvas.Body>

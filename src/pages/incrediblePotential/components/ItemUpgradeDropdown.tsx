@@ -6,12 +6,19 @@ import { enhancements } from '../../../data/enhancements.ts'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
 import {
   setFilteredUpgradeList,
-  setSelectedUpgrade
+  setSelectedUpgrade,
+  setSelectedUpgradeFilters
 } from '../../../redux/slices/incrediblePotentialSlice.ts'
 import type { AppDispatch } from '../../../redux/store.ts'
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
+import {
+  filterMultipleResults,
+  noEffectsAvailable,
+  unknownEffect
+} from '../../../utils/strings.ts'
 import DropdownItemTitle from './DropdownItemTitle.tsx'
+import FilterOffCanvas from './FilterOffCanvas.tsx'
 
 const enhancementMap: Record<string, Enhancement> = Object.fromEntries(
   enhancements.map((enhancement: Enhancement) => [
@@ -25,8 +32,12 @@ const ItemUpgradeDropdown = (props: Props) => {
 
   const dispatch: AppDispatch = useAppDispatch()
 
-  const { filterMode, filteredUpgradeList, selectedUpgradeFilters } =
-    useAppSelector((state) => state.incrediblePotential, shallowEqual)
+  const {
+    filterMode,
+    filteredUpgradeList,
+    selectedUpgradeFilters,
+    upgradeFilters
+  } = useAppSelector((state) => state.incrediblePotential, shallowEqual)
 
   const baseUpgradeList = useMemo(
     (): CraftingIngredient[] =>
@@ -76,15 +87,14 @@ const ItemUpgradeDropdown = (props: Props) => {
   const joinEffects = (effects: Enhancement[] | undefined) => {
     return (
       effects?.map((req: Enhancement) => effectDetail(req)).join(', ') ??
-      'No effects available'
+      noEffectsAvailable
     )
   }
 
-  // Render each recipe in the dropdown
   const renderRecipe = (recipe: CraftingIngredient) => (
     <Stack direction='vertical' gap={1} className='text-wrap small'>
       <DropdownItemTitle
-        title={recipe.effectsAdded?.[0]?.name ?? 'Unknown Effect'}
+        title={recipe.effectsAdded?.[0]?.name ?? unknownEffect}
         subtitle={recipe.name}
       />
       <small className='d-none d-lg-block'>
@@ -94,40 +104,61 @@ const ItemUpgradeDropdown = (props: Props) => {
   )
 
   return (
-    <Dropdown className='d-flex flex-grow-1'>
-      <Dropdown.Toggle variant='outline-warning w-100'>
-        {buttonLabel}
-      </Dropdown.Toggle>
-      <Dropdown.Menu
-        style={{ maxHeight: '50vh', overflowY: 'auto' }}
-        className='py-0'
-      >
-        {filteredUpgradeList.length > 1 &&
-          selectedUpgradeFilters.length > 0 && (
-            <Dropdown.Item
-              className='border-top bg-light'
-              key={`informational-dropdown-item`}
-            >
-              <div className='text-wrap text-black text-center'>
-                There is more than one recipe available for this upgrade. The
-                only difference is the element used to make the Focus.
-              </div>
-            </Dropdown.Item>
-          )}
-
-        {filteredUpgradeList.map((recipe: CraftingIngredient, idx: number) => (
-          <Dropdown.Item
-            className='border-top'
-            key={`${recipe.name}-${String(idx)}`}
-            onClick={() => {
-              dispatch(setSelectedUpgrade(recipe))
-            }}
+    <>
+      <hr />
+      <Stack direction='horizontal' gap={2}>
+        <Dropdown className='d-flex flex-grow-1'>
+          <Dropdown.Toggle variant='outline-warning w-100'>
+            {buttonLabel}
+          </Dropdown.Toggle>
+          <Dropdown.Menu
+            style={{ maxHeight: '50vh', overflowY: 'auto' }}
+            className='py-0'
           >
-            {renderRecipe(recipe)}
-          </Dropdown.Item>
-        ))}
-      </Dropdown.Menu>
-    </Dropdown>
+            {filteredUpgradeList.length > 1 &&
+              selectedUpgradeFilters.length > 0 && (
+                <Dropdown.Item
+                  className='border-top bg-light'
+                  key={`informational-dropdown-item`}
+                >
+                  <div className='text-wrap text-black text-center'>
+                    {filterMultipleResults}
+                  </div>
+                </Dropdown.Item>
+              )}
+
+            {filteredUpgradeList.map(
+              (recipe: CraftingIngredient, idx: number) => (
+                <Dropdown.Item
+                  className='border-top'
+                  key={`${recipe.name}-${String(idx)}`}
+                  onClick={() => {
+                    dispatch(setSelectedUpgrade(recipe))
+                  }}
+                >
+                  {renderRecipe(recipe)}
+                </Dropdown.Item>
+              )
+            )}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <FilterOffCanvas
+          filterMode={filterMode}
+          filterOptions={upgradeFilters}
+          items={filteredUpgradeList}
+          getItemFilters={(item: CraftingIngredient): string[] => {
+            return (
+              item.enhancements?.map((enhancement) => enhancement.name) ?? []
+            )
+          }}
+          selectedFilters={selectedUpgradeFilters}
+          setSelectedFilters={(filters: string[]) => {
+            dispatch(setSelectedUpgradeFilters(filters))
+          }}
+        />
+      </Stack>
+    </>
   )
 }
 

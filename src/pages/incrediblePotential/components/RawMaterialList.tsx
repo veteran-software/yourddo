@@ -3,6 +3,7 @@ import { ListGroup } from 'react-bootstrap'
 import FarmedIngredientDisplay from '../../../components/FarmedIngredientDisplay.tsx'
 import { ingredients } from '../../../data/ingredients.ts'
 import type { Ingredient } from '../../../types/ingredients.ts'
+import { rawMaterialsText } from '../../../utils/strings.ts'
 
 const RawMaterialList = (props: Props) => {
   const { rawMaterials } = props
@@ -21,7 +22,7 @@ const RawMaterialList = (props: Props) => {
   return Object.entries(rawMaterials).length > 0 ? (
     <ListGroup>
       <ListGroup.Item variant={'secondary'}>
-        <strong>Raw Materials</strong>
+        <strong>{rawMaterialsText}</strong>
       </ListGroup.Item>
 
       {sortedMaterials.map(([ing, count]) => {
