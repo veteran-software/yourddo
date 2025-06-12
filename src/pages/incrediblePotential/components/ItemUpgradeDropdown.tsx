@@ -97,6 +97,13 @@ const ItemUpgradeDropdown = (props: Props) => {
         title={recipe.effectsAdded?.[0]?.name ?? unknownEffect}
         subtitle={recipe.name}
       />
+      {recipe.effectsAdded?.some((effect) => effect.notes) && (
+        <small>
+          <strong>
+            {recipe.effectsAdded.map((effect) => effect.notes).join(', ')}
+          </strong>
+        </small>
+      )}
       <small className='d-none d-lg-block'>
         {joinEffects(recipe.effectsAdded)}
       </small>
