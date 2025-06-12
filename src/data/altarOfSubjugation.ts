@@ -3071,6 +3071,9 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         description:
           'An empty vessel capable of storing energy. Empty cells can be charged by combining them with suitably powerful magic weapons.'
       }
-    ]
+    ],
+    notes:
+      'To charge a Depleted Shavarath Medium Energy Cell, combine it on the Altar of Subjugation with a +6 to +15 weapon.\n' +
+      "Note: The +X you're looking for is in the top-right corner of the item examine window—not in the weapon’s name."
   }
 ] as const

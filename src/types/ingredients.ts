@@ -11,4 +11,5 @@ export interface Ingredient {
   image?: string
   bagMaxStack?: number
   inventoryMaxStack?: number
+  notes?: string
 }
