@@ -340,6 +340,7 @@ export interface Enhancement {
   }
   name: string
   type?: 'Prefix' | 'Suffix' | '--Crafting'
+  notes?: string
 }
 
 export interface BasePriceModifier {
@@ -360,6 +361,7 @@ export interface Ring {
   hardness: number
   durability: number
   enchantments: Enhancement[]
+  notes?: string
 }
 
 export interface Spell {

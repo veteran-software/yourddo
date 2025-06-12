@@ -1,7 +1,8 @@
-import { Container } from 'react-bootstrap'
+import { Container, Stack } from 'react-bootstrap'
+import NoteTooltip from '../../../components/NoteTooltip.tsx'
 
 const DropdownItemTitle = (props: Props) => {
-  const { subtitle, title } = props
+  const { notes, subtitle, title } = props
 
   if (!title) {
     return <h5>Unknown Item</h5>
@@ -9,7 +10,13 @@ const DropdownItemTitle = (props: Props) => {
 
   return (
     <h6 className='d-flex flex-row justify-content-between'>
-      <strong>{title}</strong>
+      <Stack direction='horizontal' gap={2} className='align-items-center'>
+        {notes && (
+          <NoteTooltip id={`${title}-${subtitle ?? ''}`} text={notes} />
+        )}
+        <strong>{title}</strong>
+      </Stack>
+
       {subtitle && (
         <Container
           className='m-0 p-0 w-auto d-none d-md-block'
@@ -25,6 +32,7 @@ const DropdownItemTitle = (props: Props) => {
 interface Props {
   subtitle?: string
   title: string | undefined
+  notes?: string
 }
 
 export default DropdownItemTitle

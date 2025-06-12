@@ -2,6 +2,7 @@ import camelcase from 'camelcase'
 import { useEffect, useState } from 'react'
 import { Container, Image, ListGroup, Stack } from 'react-bootstrap'
 import type { Ingredient } from '../types/ingredients.ts'
+import NoteTooltip from './NoteTooltip.tsx'
 
 const FarmedIngredientDisplay = (props: Props) => {
   const { ingredient, quantity } = props
@@ -29,8 +30,13 @@ const FarmedIngredientDisplay = (props: Props) => {
       <Stack direction='horizontal' gap={3}>
         <Image src={imageSrc} alt={ingredient.name} title={ingredient.name} />
 
-        <Stack direction='vertical' gap={0}>
-          <strong>{ingredient.name}</strong>
+        <Stack direction='vertical' gap={0} className='text-wrap'>
+          <Stack direction='horizontal' gap={2}>
+            <strong>{ingredient.name}</strong>
+            {ingredient.notes && (
+              <NoteTooltip id={ingredient.name} text={ingredient.notes} />
+            )}
+          </Stack>
           <small>
             <strong>
               Farming Location{ingredient.foundIn.length > 1 ? 's' : ''}

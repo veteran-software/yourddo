@@ -2434,7 +2434,13 @@ export const altarOfSubjugation: CraftingIngredient[] = [
       { name: 'Material Fire Dominion Shard of Great Power', quantity: 1 },
       { name: 'Shavarath Trophy of War', quantity: 9 }
     ],
-    effectsAdded: [{ name: 'Flaming Burst', description: '' }],
+    effectsAdded: [
+      {
+        name: 'Flaming Burst',
+        description: '',
+        notes: 'Unarmed & Handwraps only'
+      }
+    ],
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
@@ -2448,7 +2454,13 @@ export const altarOfSubjugation: CraftingIngredient[] = [
       { name: 'Material Water Dominion Shard of Great Power', quantity: 1 },
       { name: 'Shavarath Trophy of War', quantity: 9 }
     ],
-    effectsAdded: [{ name: 'Icy Burst', description: '' }],
+    effectsAdded: [
+      {
+        name: 'Icy Burst',
+        description: '',
+        notes: 'Unarmed & Handwraps only'
+      }
+    ],
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
@@ -2462,7 +2474,13 @@ export const altarOfSubjugation: CraftingIngredient[] = [
       { name: 'Material Air Dominion Shard of Great Power', quantity: 1 },
       { name: 'Shavarath Trophy of War', quantity: 9 }
     ],
-    effectsAdded: [{ name: 'Shocking Burst', description: '' }],
+    effectsAdded: [
+      {
+        name: 'Shocking Burst',
+        description: '',
+        notes: 'Unarmed & Handwraps only'
+      }
+    ],
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
@@ -2476,7 +2494,13 @@ export const altarOfSubjugation: CraftingIngredient[] = [
       { name: 'Material Earth Dominion Shard of Great Power', quantity: 1 },
       { name: 'Shavarath Trophy of War', quantity: 9 }
     ],
-    effectsAdded: [{ name: 'Acid Burst', description: '' }],
+    effectsAdded: [
+      {
+        name: 'Acid Burst',
+        description: '',
+        notes: 'Unarmed & Handwraps only'
+      }
+    ],
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
@@ -2493,7 +2517,13 @@ export const altarOfSubjugation: CraftingIngredient[] = [
       },
       { name: 'Shavarath Trophy of War', quantity: 9 }
     ],
-    effectsAdded: [{ name: 'Holy Burst', description: '' }],
+    effectsAdded: [
+      {
+        name: 'Holy Burst',
+        description: '',
+        notes: 'Unarmed & Handwraps only'
+      }
+    ],
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
@@ -2510,7 +2540,13 @@ export const altarOfSubjugation: CraftingIngredient[] = [
       },
       { name: 'Shavarath Trophy of War', quantity: 9 }
     ],
-    effectsAdded: [{ name: 'Unholy Burst', description: '' }],
+    effectsAdded: [
+      {
+        name: 'Unholy Burst',
+        description: '',
+        notes: 'Unarmed & Handwraps only'
+      }
+    ],
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
@@ -3015,5 +3051,29 @@ export const altarOfSubjugation: CraftingIngredient[] = [
       { name: 'Heightened Awareness 2', description: '', bonus: 'Insight' }
     ],
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+  },
+  {
+    name: 'Shavarath Medium Energy Cell',
+    ingredientType: 'This item may be usable in an eldritch device.',
+    description:
+      'A vessel with a charge of energy inside. This cell is resonating like the Altar of Subjugation.',
+    quantity: 1,
+    craftedIn: 'Altar of Subjugation',
+    requirements: [
+      {
+        name: 'Enchanted Weapon',
+        description: 'Weapon with +6 through +15 enchantment level.',
+        quantity: 1
+      },
+      {
+        name: 'Depleted Shavarath Medium Energy Cell',
+        quantity: 1,
+        description:
+          'An empty vessel capable of storing energy. Empty cells can be charged by combining them with suitably powerful magic weapons.'
+      }
+    ],
+    notes:
+      'To charge a Depleted Shavarath Medium Energy Cell, combine it on the Altar of Subjugation with a +6 to +15 weapon.\n' +
+      "Note: The +X you're looking for is in the top-right corner of the item examine window—not in the weapon’s name."
   }
 ] as const
