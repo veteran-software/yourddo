@@ -116,7 +116,7 @@ const FilterSection = <T,>(props: Props<T>) => {
           <ToggleButton
             id='filter-mode-or'
             type='radio'
-            variant={filterMode === 'OR' ? 'primary' : 'outline-primary'}
+            variant={filterMode === 'OR' ? 'light' : 'outline-light'}
             name='filter-mode'
             value='OR'
             checked={filterMode === 'OR'}
@@ -134,7 +134,7 @@ const FilterSection = <T,>(props: Props<T>) => {
           <ToggleButton
             id='filter-mode-and'
             type='radio'
-            variant={filterMode === 'AND' ? 'primary' : 'outline-primary'}
+            variant={filterMode === 'AND' ? 'light' : 'outline-light'}
             name='filter-mode'
             value='AND'
             checked={filterMode === 'AND'}

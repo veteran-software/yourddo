@@ -1,0 +1,66 @@
+import type { ActionCreatorWithPayload } from '@reduxjs/toolkit'
+import type { ReactNode } from 'react'
+import { Dropdown } from 'react-bootstrap'
+import { useAppDispatch } from '../../../redux/hooks.ts'
+import type { AppDispatch } from '../../../redux/store.ts'
+import type { Enhancement } from '../../../types/core.ts'
+import type { CraftingIngredient } from '../../../types/crafting.ts'
+import { containsText } from '../../../utils/objectUtils.ts'
+
+const IngredientDropdownSection = (props: Props) => {
+  const { clickHandler, fecundity, header, ingredientList } = props
+
+  const dispatch: AppDispatch = useAppDispatch()
+
+  return (
+    <>
+      <Dropdown.Header className='border-bottom bg-light-subtle text-white'>
+        <h6 className='m-0 text-center'>{header}</h6>
+      </Dropdown.Header>
+      {ingredientList.length > 0 &&
+        ingredientList.map((item: CraftingIngredient) => {
+          if (fecundity) {
+            return (
+              <Dropdown.Item
+                key={item.name}
+                onClick={() => {
+                  dispatch(clickHandler(item))
+                }}
+              >
+                <small>{item.name}</small>
+              </Dropdown.Item>
+            )
+          }
+
+          return (
+            <Dropdown.Item
+              key={item.name}
+              onClick={() => {
+                dispatch(clickHandler(item))
+              }}
+            >
+              <small>
+                {item.effectsAdded
+                  ?.filter(
+                    (effect: Enhancement) => !containsText(header, effect.name)
+                  )
+                  .map((effect: Enhancement) => effect.name)
+                  .sort((a, b) => a.localeCompare(b))
+                  .join(', ')}
+              </small>
+            </Dropdown.Item>
+          )
+        })}
+    </>
+  )
+}
+
+interface Props {
+  clickHandler: ActionCreatorWithPayload<CraftingIngredient>
+  fecundity?: boolean
+  header: ReactNode
+  headerText?: string
+  ingredientList: CraftingIngredient[]
+}
+
+export default IngredientDropdownSection
