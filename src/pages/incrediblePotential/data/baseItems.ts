@@ -8,8 +8,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -51,8 +51,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -94,8 +94,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -137,8 +137,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -180,8 +180,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -223,8 +223,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -266,8 +266,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -309,8 +309,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -352,8 +352,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -395,8 +395,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -438,8 +438,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -481,8 +481,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -524,8 +524,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -568,8 +568,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -611,8 +611,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -654,8 +654,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -697,8 +697,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -740,8 +740,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -783,8 +783,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -826,8 +826,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -869,8 +869,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -912,8 +912,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -955,8 +955,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -998,8 +998,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -1041,8 +1041,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -1084,8 +1084,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -1127,8 +1127,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -1170,8 +1170,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -1213,8 +1213,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -1256,8 +1256,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -1299,8 +1299,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {
@@ -1342,8 +1342,8 @@ export const baseItems: Ring[] = [
     minimumLevel: 18,
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     exclusive: true,
     cost: {

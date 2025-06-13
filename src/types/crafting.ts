@@ -14,8 +14,18 @@ export interface CraftingIngredient {
   requirements?: (CraftingIngredient | IngredientName)[]
   effectsAdded?: Enhancement[]
   effectsRemoved?: Enhancement[]
+  accessoryEffectsAdded?: Enhancement[]
+  accessoryEffectsRemoved?: Enhancement[]
+  weaponEffectsAdded?: Enhancement[]
+  weaponEffectsRemoved?: Enhancement[]
   spell?: Spell
   binding?: Binding
   enhancements?: Enhancement[]
   notes?: string
+  augmentType?: 'Green Steel Epic Active'
+  minimumLevel?: number
+  minLevelIncrease?: {
+    noMinimumLevel?: number
+    minimumLevel?: number
+  }
 }

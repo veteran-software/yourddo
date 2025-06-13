@@ -149,8 +149,8 @@ export const ingredients: Ingredient[] = [
       'This magical metal is warm to the touch and can be shaped into whatever weapon you desire.',
     binding: {
       type: 'Bound',
-      location: 'Account',
-      when: 'Acquisition'
+      to: 'Account',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 100
@@ -173,8 +173,8 @@ export const ingredients: Ingredient[] = [
       'Fragments of a shattered barrier. Used at the Ritual Table to unseal power.',
     binding: {
       type: 'Bound',
-      location: 'Account',
-      when: 'Acquisition'
+      to: 'Account',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 100
@@ -225,8 +225,8 @@ export const ingredients: Ingredient[] = [
       'This dust radiates corruption and evil. What might it have been before it became dust?',
     binding: {
       type: 'Bound',
-      location: 'Account',
-      when: 'Acquisition'
+      to: 'Account',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 100
@@ -238,8 +238,8 @@ export const ingredients: Ingredient[] = [
     description: 'This pearl is an opalescent dark color.',
     binding: {
       type: 'Bound',
-      location: 'Account',
-      when: 'Acquisition'
+      to: 'Account',
+      from: 'Acquisition'
     },
     foundIn: [
       'The Isle of Dread (Legendary)',
@@ -291,8 +291,8 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Meridia'],
     binding: {
       type: 'Bound',
-      when: 'Acquisition',
-      location: 'Character'
+      from: 'Acquisition',
+      to: 'Character'
     },
     baseValue: {
       gold: 5
@@ -322,8 +322,8 @@ export const ingredients: Ingredient[] = [
     foundIn: ['The Eldritch Chamber (Meridia)'],
     binding: {
       type: 'Bound',
-      when: 'Acquisition',
-      location: 'Character'
+      from: 'Acquisition',
+      to: 'Character'
     },
     baseValue: {
       platinum: 990
@@ -353,8 +353,8 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Meridia'],
     binding: {
       type: 'Bound',
-      when: 'Acquisition',
-      location: 'Character'
+      from: 'Acquisition',
+      to: 'Character'
     },
     baseValue: {
       gold: 5
@@ -486,8 +486,8 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Meridia'],
     binding: {
       type: 'Bound',
-      when: 'Acquisition',
-      location: 'Character'
+      from: 'Acquisition',
+      to: 'Character'
     },
     baseValue: {
       gold: 5
@@ -500,8 +500,8 @@ export const ingredients: Ingredient[] = [
       "This ring's power has not been fully unleashed. When this ring is combined with 9 Shavarath War Trophies and an Imbued Shard of Great Power in an Alter of Subjugation, its full potential will be revealed.",
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 10020
@@ -514,8 +514,8 @@ export const ingredients: Ingredient[] = [
       'This dense shard of crystal radiates power. Crystals like this can absorb and combine the power from various sources like foci and essences. Once imbued, this shard may be able to be combined with a weapon or accessory, thereby transferring the power into that item.',
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     weight: 0.1,
     foundIn: ['The Shroud', 'Tower of Despair']
@@ -527,8 +527,8 @@ export const ingredients: Ingredient[] = [
       'A polished red triangular stone with the quality of marble. This item is humming like the Altar of Fecundity.',
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 20
@@ -542,8 +542,8 @@ export const ingredients: Ingredient[] = [
       'A polished green triangular stone with the quality of marble. This item is humming like the Altar of Fecundity.',
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 20
@@ -557,8 +557,8 @@ export const ingredients: Ingredient[] = [
       'A polished purple triangular stone with the quality of marble. This item is humming like the Altar of Fecundity.',
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 20
@@ -572,8 +572,8 @@ export const ingredients: Ingredient[] = [
       'A polished yellow triangular stone with the quality of marble. This item is humming like the Altar of Fecundity.',
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 20
@@ -587,8 +587,8 @@ export const ingredients: Ingredient[] = [
       'A polished blue triangular stone with the quality of marble. This item is humming like the Altar of Fecundity.',
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 20
@@ -601,8 +601,8 @@ export const ingredients: Ingredient[] = [
       'This item is found when a powerful denizen of Shavarath is defeated.',
     binding: {
       type: 'Bound',
-      location: 'Account',
-      when: 'Acquisition'
+      to: 'Account',
+      from: 'Acquisition'
     },
     weight: 0.1,
     foundIn: ['Tower of Despair']
@@ -615,8 +615,8 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Meridia'],
     binding: {
       type: 'Bound',
-      when: 'Acquisition',
-      location: 'Character'
+      from: 'Acquisition',
+      to: 'Character'
     },
     baseValue: {
       platinum: 990
@@ -631,8 +631,8 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Meridia'],
     binding: {
       type: 'Bound',
-      when: 'Acquisition',
-      location: 'Character'
+      from: 'Acquisition',
+      to: 'Character'
     },
     baseValue: {
       gold: 5

@@ -7,8 +7,8 @@ export const weapons: Weapon[] = [
     minimumLevel: 12,
     bind: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Equip'
+      to: 'Character',
+      from: 'Equip'
     },
     damage: {
       dice: 'd4',
