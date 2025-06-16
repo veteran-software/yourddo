@@ -1,7 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
+import { baseElemental, type ElementalList } from '../helpers/elementalData.ts'
+import { useIngredientsMap } from './useIngredientMap.ts'
 
 export const useDevastationBasic = () => {
   const { devastationBasicItems } = useAppSelector(
@@ -14,59 +16,14 @@ export const useDevastationBasic = () => {
     [devastationBasicItems]
   )
 
-  const [ingredientsMap, setIngredientsMap] = useState<
-    Record<string, CraftingIngredient[]>
-  >({})
+  const elemental: ElementalList[] = useMemo(() => baseElemental, [])
 
-  const elemental: ElementalList[] = useMemo(() => {
-    return [
-      {
-        name: 'Air',
-        elements: ['Air', 'Air']
-      },
-      {
-        name: 'Earth',
-        elements: ['Earth', 'Earth']
-      },
-      {
-        name: 'Fire',
-        elements: ['Fire', 'Fire']
-      },
-      {
-        name: 'Water',
-        elements: ['Water', 'Water']
-      },
-      {
-        name: 'Negative Energy',
-        elements: ['Negative', 'Negative']
-      },
-      {
-        name: 'Positive Energy',
-        elements: ['Positive', 'Positive']
-      }
-    ] as ElementalList[]
-  }, [])
+  const filterCallback = (item: CraftingIngredient, elements: string[]) => {
+    const reqs = item.requirements as CraftingIngredient[]
+    return reqs[1]?.name.includes(elements[0])
+  }
 
-  useEffect(() => {
-    const updatedMap: Record<string, CraftingIngredient[]> = {}
-    elemental.forEach((ele) => {
-      updatedMap[ele.name] = items.filter((item: CraftingIngredient) => {
-        const reqs: CraftingIngredient[] =
-          item.requirements as CraftingIngredient[]
-
-        return reqs[1].name.includes(ele.name)
-      })
-    })
-
-    setIngredientsMap(updatedMap)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items])
+  const { ingredientsMap } = useIngredientsMap(items, elemental, filterCallback)
 
   return { ingredientsMap }
-}
-
-export interface ElementalList {
-  name: string
-  elements: string[]
-  ingredients: CraftingIngredient[]
 }
