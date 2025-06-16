@@ -55,7 +55,6 @@ interface Props {
   clickHandler: ActionCreatorWithPayload<CraftingIngredient>
   fecundity?: boolean
   header: ReactNode
-  headerText?: string
   ingredientList: CraftingIngredient[]
 }
 

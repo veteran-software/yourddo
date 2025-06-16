@@ -54,7 +54,6 @@ const SubjugationBasicDropdown = () => {
     return (
       <IngredientDropdownSection
         clickHandler={selectSubjugationItem}
-        headerText={name}
         header={
           <Stack
             direction='horizontal'

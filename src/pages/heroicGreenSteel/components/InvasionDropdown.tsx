@@ -51,8 +51,8 @@ const InvasionDropdown = () => {
           >
             {affinities.map((affinity) => (
               <IngredientDropdownSection
+                key={`${affinity.name}-${affinity.elements.join('-')}`}
                 clickHandler={selectInvasionItem}
-                headerText={affinity.name}
                 header={
                   <Stack
                     direction='horizontal'

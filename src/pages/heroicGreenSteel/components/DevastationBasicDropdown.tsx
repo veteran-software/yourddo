@@ -45,7 +45,6 @@ const DevastationBasicDropdown: FC = () => {
     return (
       <IngredientDropdownSection
         clickHandler={selectDevastationItem}
-        headerText={name}
         header={
           <Stack
             direction='horizontal'

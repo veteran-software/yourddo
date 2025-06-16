@@ -44,7 +44,6 @@ const DevastationFocusedDropdown = () => {
     return (
       <IngredientDropdownSection
         clickHandler={selectDevastationFocused}
-        headerText={name}
         header={
           <Stack
             direction='horizontal'
