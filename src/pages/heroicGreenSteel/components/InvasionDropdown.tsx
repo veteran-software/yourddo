@@ -1,106 +1,86 @@
-import { useEffect, useState } from 'react'
-import { Dropdown, Stack } from 'react-bootstrap'
+import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
-import { useAppSelector } from '../../../redux/hooks.ts'
-import { selectInvasionItem } from '../../../redux/slices/hgsSlice.ts'
-import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { filterForSublist } from '../../../utils/objectUtils.ts'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
+import {
+  resetInvasionItem,
+  selectInvasionItem
+} from '../../../redux/slices/hgsSlice.ts'
+import type { AppDispatch } from '../../../redux/store.ts'
+import useInvasion from '../hooks/useInvasion.ts'
 import IngredientDropdownSection from './IngredientDropdownSection.tsx'
 import IngredientDropdownToggle from './IngredientDropdownToggle.tsx'
 
 const InvasionDropdown = () => {
-  const { invasionItems, selectedInvasionItem } = useAppSelector(
+  const dispatch: AppDispatch = useAppDispatch()
+
+  const { selectedInvasionItem } = useAppSelector(
     (state) => state.greenSteel,
     shallowEqual
   )
 
-  const [airItems, setAirItems] = useState<CraftingIngredient[]>([])
-  const [earthItems, setEarthItems] = useState<CraftingIngredient[]>([])
-  const [fireItems, setFireItems] = useState<CraftingIngredient[]>([])
-  const [waterItems, setWaterItems] = useState<CraftingIngredient[]>([])
-  const [negativeItems, setNegativeItems] = useState<CraftingIngredient[]>([])
-  const [positiveItems, setPositiveItems] = useState<CraftingIngredient[]>([])
+  const { affinities } = useInvasion()
 
-  useEffect(() => {
-    setAirItems(filterForSublist(invasionItems, 'Air Affinity', 'effectsAdded'))
-    setEarthItems(
-      filterForSublist(invasionItems, 'Earth Affinity', 'effectsAdded')
-    )
-    setFireItems(
-      filterForSublist(invasionItems, 'Fire Affinity', 'effectsAdded')
-    )
-    setWaterItems(
-      filterForSublist(invasionItems, 'Water Affinity', 'effectsAdded')
-    )
-    setPositiveItems(
-      filterForSublist(
-        invasionItems,
-        'Positive Energy Affinity',
-        'effectsAdded'
-      )
-    )
-    setNegativeItems(
-      filterForSublist(
-        invasionItems,
-        'Negative Energy Affinity',
-        'effectsAdded'
-      )
-    )
-  }, [invasionItems])
+  const label = (
+    <>
+      <Col sm={1}>T1:</Col>
+      <Col sm={11} className='d-flex justify-content-start'>
+        <strong>
+          <small>
+            {selectedInvasionItem?.effectsAdded
+              ? selectedInvasionItem.effectsAdded
+                  .map((effect) => effect.name)
+                  .join(', ')
+              : 'Select an Upgrade...'}
+          </small>
+        </strong>
+      </Col>
+    </>
+  )
 
   return (
     <>
       <hr />
-
+      <small>Eldritch Altar of Invasion</small>
       <Stack direction='horizontal' gap={2}>
         <Dropdown className='d-flex flex-grow-1'>
-          <IngredientDropdownToggle
-            placeholderText={'Select an Upgrade...'}
-            selectedIngredient={selectedInvasionItem}
-            craftingLocation='Altar of Invasion'
-          />
+          <IngredientDropdownToggle label={label} />
 
           <Dropdown.Menu
-            className='py-0'
+            className='py-0 w-100'
             style={{ maxHeight: '50vh', overflowY: 'auto' }}
           >
-            <IngredientDropdownSection
-              clickHandler={selectInvasionItem}
-              header={'Air Affinity'}
-              ingredientList={airItems}
-            />
-
-            <IngredientDropdownSection
-              clickHandler={selectInvasionItem}
-              header={'Earth Affinity'}
-              ingredientList={earthItems}
-            />
-
-            <IngredientDropdownSection
-              clickHandler={selectInvasionItem}
-              header={'Fire Affinity'}
-              ingredientList={fireItems}
-            />
-
-            <IngredientDropdownSection
-              clickHandler={selectInvasionItem}
-              header={'Water Affinity'}
-              ingredientList={waterItems}
-            />
-
-            <IngredientDropdownSection
-              clickHandler={selectInvasionItem}
-              header={'Positive Energy Affinity'}
-              ingredientList={positiveItems}
-            />
-
-            <IngredientDropdownSection
-              clickHandler={selectInvasionItem}
-              header={'Negative Energy Affinity'}
-              ingredientList={negativeItems}
-            />
+            {affinities.map((affinity) => (
+              <IngredientDropdownSection
+                clickHandler={selectInvasionItem}
+                headerText={affinity.name}
+                header={
+                  <Stack
+                    direction='horizontal'
+                    gap={2}
+                    className='align-items-center justify-content-center'
+                  >
+                    {affinity.name}
+                    <Stack direction='horizontal' gap={2}>
+                      ({affinity.elements[0]})
+                    </Stack>
+                  </Stack>
+                }
+                ingredientList={affinity.ingredients}
+              />
+            ))}
           </Dropdown.Menu>
         </Dropdown>
+
+        {selectedInvasionItem && (
+          <Button
+            variant='outline-info'
+            onClick={() => {
+              dispatch(resetInvasionItem())
+            }}
+          >
+            Reset
+          </Button>
+        )}
       </Stack>
     </>
   )

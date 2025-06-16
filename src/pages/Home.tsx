@@ -10,7 +10,7 @@ const Home = () => {
 
       <p>
         Ague has been getting back into DDO over the past several months. Since
-        his knowledge of web development has increased expoentially, he's
+        his knowledge of web development has increased exponentially, he's
         decided to re-create YourDDO using modern web technologies.
       </p>
       <p>

@@ -43,8 +43,15 @@ const IncrediblePotential = () => {
   }, [dispatch, recipeBuilder, selectedUpgrade])
 
   return (
-    <Container>
+    <Container fluid className='px-0'>
       <Card>
+        <Card.Header className='text-center'>
+          <h4 className='mb-0'>Incredible Potential Crafting</h4>
+          <Card.Subtitle>
+            <small>Tower of Despair Rings</small>
+          </Card.Subtitle>
+        </Card.Header>
+
         <Card.Body>
           <Row md={1} lg={2}>
             <Col>

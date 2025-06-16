@@ -1,40 +1,27 @@
+import * as React from 'react'
 import { Dropdown } from 'react-bootstrap'
-import type { CraftingIngredient } from '../../../types/crafting.ts'
 
 const IngredientDropdownToggle = (props: Props) => {
-  const { craftingLocation, fecundity, placeholderText, selectedIngredient } =
-    props
-
-  if (fecundity) {
-    return (
-      <Dropdown.Toggle variant='outline-info w-100'>
-        <small>
-          {craftingLocation}:{' '}
-          {selectedIngredient ? selectedIngredient.name : placeholderText}
-        </small>
-      </Dropdown.Toggle>
-    )
-  }
+  const { disabled = false, label } = props
 
   return (
-    <Dropdown.Toggle variant='outline-info w-100'>
-      <small>
-        {craftingLocation}:{' '}
-        {selectedIngredient
-          ? (selectedIngredient.effectsAdded
-              ?.map((effect) => effect.name)
-              .join(', ') ?? placeholderText)
-          : placeholderText}
-      </small>
+    <Dropdown.Toggle
+      disabled={disabled}
+      className='w-100 d-flex flex-row align-items-center justify-content-center border-light'
+      title={
+        disabled
+          ? 'You can only select a Basic upgrade or a Focused upgrade'
+          : undefined
+      }
+    >
+      {label}
     </Dropdown.Toggle>
   )
 }
 
 interface Props {
-  craftingLocation: string
-  fecundity?: boolean
-  placeholderText: string
-  selectedIngredient: CraftingIngredient | undefined
+  disabled?: boolean
+  label: React.JSX.Element | string
 }
 
 export default IngredientDropdownToggle

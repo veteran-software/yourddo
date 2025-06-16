@@ -5,7 +5,6 @@ import { useAppDispatch } from '../../../redux/hooks.ts'
 import type { AppDispatch } from '../../../redux/store.ts'
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { containsText } from '../../../utils/objectUtils.ts'
 
 const IngredientDropdownSection = (props: Props) => {
   const { clickHandler, fecundity, header, ingredientList } = props
@@ -18,7 +17,7 @@ const IngredientDropdownSection = (props: Props) => {
         <h6 className='m-0 text-center'>{header}</h6>
       </Dropdown.Header>
       {ingredientList.length > 0 &&
-        ingredientList.map((item: CraftingIngredient) => {
+        ingredientList.map((item: CraftingIngredient, idx: number) => {
           if (fecundity) {
             return (
               <Dropdown.Item
@@ -34,17 +33,14 @@ const IngredientDropdownSection = (props: Props) => {
 
           return (
             <Dropdown.Item
-              key={item.name}
+              key={`${item.name}-${String(idx)}`}
               onClick={() => {
                 dispatch(clickHandler(item))
               }}
             >
               <small>
                 {item.effectsAdded
-                  ?.filter(
-                    (effect: Enhancement) => !containsText(header, effect.name)
-                  )
-                  .map((effect: Enhancement) => effect.name)
+                  ?.map((effect: Enhancement) => effect.name)
                   .sort((a, b) => a.localeCompare(b))
                   .join(', ')}
               </small>

@@ -4,7 +4,7 @@ import { useAppSelector } from '../../../redux/hooks.ts'
 import type { CraftingIngredient } from '../../../types/crafting'
 import { filterForSublist } from '../../../utils/objectUtils.ts'
 
-const useAspects = () => {
+const useSubjugation = () => {
   const { subjugationItems } = useAppSelector(
     (state) => state.greenSteel,
     shallowEqual
@@ -37,7 +37,7 @@ const useAspects = () => {
   const [stalemateItems, setStalemateItems] = useState<CraftingIngredient[]>([])
   const [temperedItems, setTemperedItems] = useState<CraftingIngredient[]>([])
 
-  const aspects = useMemo(
+  const aspects: AspectList[] = useMemo(
     () =>
       [
         {
@@ -253,7 +253,32 @@ const useAspects = () => {
     )
   }, [subjugationItems])
 
-  return { aspects }
+  return {
+    aspects,
+    items: {
+      airItems,
+      earthItems,
+      fireItems,
+      waterItems,
+      negativeItems,
+      positiveItems,
+      ashItems,
+      dustItems,
+      iceItems,
+      lightningItems,
+      magmaItems,
+      mineralItems,
+      oozeItems,
+      radianceItems,
+      saltItems,
+      smokeItems,
+      steamItems,
+      vacuumItems,
+      bolasItems,
+      stalemateItems,
+      temperedItems
+    }
+  }
 }
 
 interface AspectList {
@@ -262,4 +287,4 @@ interface AspectList {
   ingredients: CraftingIngredient[]
 }
 
-export default useAspects
+export default useSubjugation

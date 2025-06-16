@@ -333,7 +333,7 @@ export interface Enhancement {
   basePriceModifier?: BasePriceModifier
   bonus?: Bonus
   damage?: DamageType[]
-  description: string
+  description?: string
   minLevelIncrease?: {
     noMinimumLevel?: number
     minimumLevel?: number

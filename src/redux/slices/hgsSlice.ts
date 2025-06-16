@@ -1,65 +1,58 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-
-import fecundity from '../../data/altarOfFecundity.json'
+import { altarOfDevastation } from '../../data/altarOfDevastation.ts'
 import { altarOfInvasion } from '../../data/altarOfInvasion.ts'
 import { altarOfSubjugation } from '../../data/altarOfSubjugation.ts'
-import type { Enhancement, Spell } from '../../types/core.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
-
-const initialState: GreenSteelState = {
-  devastationDualShard: undefined,
-  devastationFilterMode: 'OR',
-  devastationItemFilters: [],
-  devastationItems: [],
-  fecundityItems: (fecundity as CraftingIngredient[]).filter(
-    (item: CraftingIngredient) => {
-      return item.name.startsWith('Green Steel')
-    }
-  ),
-  invasionFilterMode: 'OR',
-  invasionItemFilters: [],
-  invasionItems: [],
-  selectedDevastationItem: undefined,
-  selectedFecundityItem: undefined,
-  selectedInvasionItem: undefined,
-  selectedSubjugationItem: undefined,
-  subjugationFilterMode: 'OR',
-  subjugationItemFilters: [],
-  subjugationItems: [],
-  subjugationSpell: undefined
-}
+import { createInitialState } from '../factories/stateFactory.ts'
+import { filterItemsBySuffix } from '../helpers/filterHelpers.ts'
+import { resetPlanner } from '../helpers/resetHelpers.ts'
 
 const { actions, reducer } = createSlice({
-  initialState,
+  initialState: createInitialState(),
   name: 'greenSteel',
   reducers: {
-    setSubjugationSpell: (state, action: PayloadAction<Spell>) => {
-      state.subjugationSpell = action.payload
+    setSubjugationSpell: (state, action: PayloadAction<CraftingIngredient>) => {
+      state.selectedSubjugationSpell = action.payload
     },
     selectFecundityItem: (state, action: PayloadAction<CraftingIngredient>) => {
+      if (
+        state.selectedFecundityItem &&
+        state.selectedFecundityItem.ingredientType !==
+          action.payload.ingredientType
+      ) {
+        resetPlanner(state)
+      }
+
       state.selectedFecundityItem = action.payload
 
       const baseItemType: 'Weapon' | 'Accessory' =
         action.payload.ingredientType?.endsWith('Weapon')
           ? 'Weapon'
           : 'Accessory'
-      state.invasionItems = altarOfInvasion
-        .map((item: CraftingIngredient) =>
-          item.name.endsWith(`${baseItemType} Upgrade`) ? item : undefined
-        )
-        .filter((item: CraftingIngredient | undefined) => item !== undefined)
+      state.invasionItems = filterItemsBySuffix(
+        [...altarOfInvasion],
+        `${baseItemType} Upgrade`
+      )
 
-      state.subjugationItems = altarOfSubjugation
-        .map((item: CraftingIngredient) =>
-          item.name.endsWith(`${baseItemType} Upgrade`) ? item : undefined
-        )
-        .filter((item: CraftingIngredient | undefined) => item !== undefined)
+      state.subjugationItems = filterItemsBySuffix(
+        [...altarOfSubjugation],
+        `${baseItemType} Upgrade`
+      )
+
+      // T3 Focused Effects
+      state.devastationFocusedEffects = altarOfDevastation.filter(
+        (ingredient: CraftingIngredient) =>
+          !ingredient.name.includes('Basic') &&
+          ingredient.name.includes(`${baseItemType} Upgrade`)
+      )
+
+      state.devastationBasicItems = altarOfDevastation.filter(
+        (ingredient: CraftingIngredient) =>
+          ingredient.name.includes(`Basic ${baseItemType} Upgrade`)
+      )
     },
     resetFecundityItem: (state) => {
-      state.selectedFecundityItem = undefined
-      state.selectedInvasionItem = undefined
-      state.selectedSubjugationItem = undefined
-      state.selectedDevastationItem = undefined
+      resetPlanner(state)
     },
     selectInvasionItem: (state, action: PayloadAction<CraftingIngredient>) => {
       state.selectedInvasionItem = action.payload
@@ -75,21 +68,51 @@ const { actions, reducer } = createSlice({
     },
     resetSubjugationItem: (state) => {
       state.selectedSubjugationItem = undefined
+    },
+    selectSubjugationSpell: (
+      state,
+      action: PayloadAction<CraftingIngredient>
+    ) => {
+      state.selectedSubjugationSpell = action.payload
+    },
+    resetSubjugationSpell: (state) => {
+      state.selectedSubjugationSpell = undefined
+    },
+    selectDevastationItem: (
+      state,
+      action: PayloadAction<CraftingIngredient>
+    ) => {
+      state.selectedDevastationBasic = action.payload
+    },
+    resetDevastationBasic: (state) => {
+      state.selectedDevastationBasic = undefined
+    },
+    selectDevastationFocused: (
+      state,
+      action: PayloadAction<CraftingIngredient>
+    ) => {
+      state.selectedDevastationFocused = action.payload
+    },
+    resetDevastationFocused: (state) => {
+      state.selectedDevastationFocused = undefined
     }
   }
 })
 
-interface GreenSteelState {
+export interface GreenSteelState {
   // Default lists
   fecundityItems: CraftingIngredient[]
   invasionItems: CraftingIngredient[]
   subjugationItems: CraftingIngredient[]
-  devastationItems: CraftingIngredient[]
+  devastationBasicItems: CraftingIngredient[]
+  devastationFocusedEffects: CraftingIngredient[]
 
   selectedFecundityItem: CraftingIngredient | undefined
   selectedInvasionItem: CraftingIngredient | undefined
   selectedSubjugationItem: CraftingIngredient | undefined
-  selectedDevastationItem: CraftingIngredient | undefined
+  selectedSubjugationSpell: CraftingIngredient | undefined
+  selectedDevastationBasic: CraftingIngredient | undefined
+  selectedDevastationFocused: CraftingIngredient | undefined
 
   invasionItemFilters: string[]
   subjugationItemFilters: string[]
@@ -98,9 +121,6 @@ interface GreenSteelState {
   invasionFilterMode: 'OR' | 'AND'
   subjugationFilterMode: 'OR' | 'AND'
   devastationFilterMode: 'OR' | 'AND'
-
-  subjugationSpell: Spell | undefined
-  devastationDualShard: Enhancement | undefined
 }
 
 export const {
@@ -110,7 +130,13 @@ export const {
   selectInvasionItem,
   resetInvasionItem,
   selectSubjugationItem,
-  resetSubjugationItem
+  resetSubjugationItem,
+  selectDevastationItem,
+  resetDevastationBasic,
+  selectDevastationFocused,
+  resetDevastationFocused,
+  selectSubjugationSpell,
+  resetSubjugationSpell
 } = actions
 
 export default reducer
