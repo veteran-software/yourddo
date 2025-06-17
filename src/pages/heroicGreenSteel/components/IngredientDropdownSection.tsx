@@ -16,30 +16,31 @@ const IngredientDropdownSection = (props: Props) => {
       <Dropdown.Header className='border-bottom bg-light-subtle text-white'>
         <h6 className='m-0 text-center'>{header}</h6>
       </Dropdown.Header>
+
       {ingredientList.length > 0 &&
-        ingredientList.map((item: CraftingIngredient, idx: number) => {
+        ingredientList.map((ingredient: CraftingIngredient, idx: number) => {
           if (fecundity) {
             return (
               <Dropdown.Item
-                key={item.name}
+                key={ingredient.name}
                 onClick={() => {
-                  dispatch(clickHandler(item))
+                  dispatch(clickHandler(ingredient))
                 }}
               >
-                <small>{item.name}</small>
+                <small>{ingredient.name}</small>
               </Dropdown.Item>
             )
           }
 
           return (
             <Dropdown.Item
-              key={`${item.name}-${String(idx)}`}
+              key={`${ingredient.name}-${String(idx)}`}
               onClick={() => {
-                dispatch(clickHandler(item))
+                dispatch(clickHandler(ingredient))
               }}
             >
               <small>
-                {item.effectsAdded
+                {ingredient.effectsAdded
                   ?.map((effect: Enhancement) => effect.name)
                   .sort((a, b) => a.localeCompare(b))
                   .join(', ')}

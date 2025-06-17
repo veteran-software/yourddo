@@ -7,25 +7,23 @@ import {
 } from '../../../redux/slices/hgsSlice.ts'
 import type { AppDispatch } from '../../../redux/store.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { filterSublistByElement } from '../../../utils/objectUtils.ts'
-import useSubjugation from '../hooks/useSubjugation.ts'
+import {
+  type ElementalList,
+  subjugationElementalList
+} from '../helpers/elementalData.ts'
+import useSubjugationBasic from '../hooks/useSubjugation.ts'
 import IngredientDropdownSection from './IngredientDropdownSection.tsx'
 import IngredientDropdownToggle from './IngredientDropdownToggle.tsx'
-
-interface AspectList {
-  name: string
-  elements: string[]
-  ingredients: CraftingIngredient[]
-}
 
 const SubjugationBasicDropdown = () => {
   const dispatch: AppDispatch = useAppDispatch()
 
-  const { aspects } = useSubjugation()
   const { selectedSubjugationItem } = useAppSelector(
     (state) => state.greenSteel,
     shallowEqual
   )
+
+  const { ingredientsMap } = useSubjugationBasic()
 
   const label = (
     <>
@@ -45,12 +43,7 @@ const SubjugationBasicDropdown = () => {
     </>
   )
 
-  const renderSection = (
-    name: string,
-    element1: string,
-    element2: string,
-    ingredients: CraftingIngredient[]
-  ) => {
+  const renderSection = (name: string, ingredients: CraftingIngredient[]) => {
     return (
       <IngredientDropdownSection
         clickHandler={selectSubjugationItem}
@@ -61,15 +54,17 @@ const SubjugationBasicDropdown = () => {
             className='align-items-center justify-content-center'
           >
             {name}
-            <Stack direction='horizontal' gap={2}>
-              ({element1} | {element2})
-            </Stack>
           </Stack>
         }
         ingredientList={ingredients}
       />
     )
   }
+
+  /**
+   * I LEFT OFF WORKING ON GETTING THE SUBJUGATION DROPDOWN LIST LOOKING CORRECT
+   * STILL HAVE TO CLEAN UP THE CODE AFTERWARD
+   */
 
   return (
     <>
@@ -85,35 +80,36 @@ const SubjugationBasicDropdown = () => {
             className='py-0'
             style={{ maxHeight: '50vh', overflowY: 'auto' }}
           >
-            {aspects.map((aspect: AspectList) => {
-              const first: string = aspect.elements[0]
-              const second: string = aspect.elements[1]
-
-              if (first === second) {
-                return renderSection(
-                  aspect.name,
-                  first,
-                  second,
-                  aspect.ingredients
+            {Object.entries(ingredientsMap).map(([name, ingredients]) => {
+              if (ingredients.length > 6) {
+                const foci: ElementalList[] = subjugationElementalList.filter(
+                  (element) => element.name.includes(name)
                 )
+                if (foci.length > 1) {
+                  return (
+                    <>
+                      {renderSection(
+                        `${name} (T1: ${foci[1]?.elements[0]})`,
+                        ingredients.filter((ing: CraftingIngredient) =>
+                          (ing.requirements as CraftingIngredient[])
+                            .at(0)
+                            ?.name.includes(foci[0]?.elements[0])
+                        )
+                      )}
+                      {renderSection(
+                        `${name} (T1: ${foci[0]?.elements[0]})`,
+                        ingredients.filter((ing: CraftingIngredient) =>
+                          (ing.requirements as CraftingIngredient[])
+                            .at(0)
+                            ?.name.includes(foci[1]?.elements[0])
+                        )
+                      )}
+                    </>
+                  )
+                }
               }
 
-              return (
-                <>
-                  {renderSection(
-                    aspect.name,
-                    first,
-                    second,
-                    filterSublistByElement(aspect.ingredients, first)
-                  )}
-                  {renderSection(
-                    aspect.name,
-                    second,
-                    first,
-                    filterSublistByElement(aspect.ingredients, second)
-                  )}
-                </>
-              )
+              return renderSection(name, ingredients)
             })}
           </Dropdown.Menu>
         </Dropdown>

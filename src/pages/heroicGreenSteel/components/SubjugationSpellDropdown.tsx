@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import { altarOfSubjugation } from '../../../data/altarOfSubjugation.ts'
@@ -26,9 +26,15 @@ const SubjugationSpellDropdown = () => {
   )
   const [label, setLabel] = useState<string>()
 
-  useEffect(() => {
+  const populateSpellList = useCallback((spells: CraftingIngredient[]) => {
+    if (spells.length === 0) {
+      setSpells({} as Record<string, CraftingIngredient>)
+      setLabel('No spells available for the selected upgrade')
+      return
+    }
+
     let spellsLocal: Record<string, CraftingIngredient> = {}
-    altarOfSubjugation.forEach((item: CraftingIngredient) => {
+    spells.forEach((item: CraftingIngredient) => {
       if (item.spell) {
         spellsLocal = {
           ...spellsLocal,
@@ -38,8 +44,11 @@ const SubjugationSpellDropdown = () => {
 
       setSpells({ ...spellsLocal })
     })
-  }, [subjugationItems])
+  }, [])
 
+  useEffect(() => {
+    populateSpellList(subjugationItems)
+  }, [populateSpellList, subjugationItems])
   useEffect(() => {
     if (selectedSubjugationSpell?.spell) {
       setLabel(
@@ -60,6 +69,7 @@ const SubjugationSpellDropdown = () => {
       )
 
       if (focus) {
+        // console.log('we have a focus!', focus)
         const spellList: CraftingIngredient[] = altarOfSubjugation
           .filter((spellItem: CraftingIngredient) =>
             spellItem.effectsAdded?.some((effect: Enhancement) => {
@@ -70,20 +80,31 @@ const SubjugationSpellDropdown = () => {
             (spellItem: CraftingIngredient) => spellItem.spell !== undefined
           )
 
+        // console.log(spellList)
+
+        if (spellList.length) {
+          populateSpellList(spellList)
+        } else {
+          populateSpellList([])
+        }
+
         dispatch(selectSubjugationSpell(spellList[0]))
       }
+    } else {
+      populateSpellList(subjugationItems)
     }
-  }, [dispatch, selectedDevastationFocused])
-
-  // useEffect(() => {
-  //   if (selectedSubjugationSpell) {
-  //     dispatch(setSub)
-  // }, [])
+  }, [
+    dispatch,
+    populateSpellList,
+    selectedDevastationFocused,
+    subjugationItems
+  ])
 
   return (
     <Stack direction='horizontal' gap={2} className='mt-2'>
       <Dropdown className='d-flex flex-grow-1'>
         <IngredientDropdownToggle
+          disabled={Object.keys(spells).length === 0}
           label={
             <>
               <Col sm={1} title='Tier 2: Bonus Spell'>

@@ -10,6 +10,7 @@ import {
 import { useAppDispatch } from '../../redux/hooks.ts'
 import { setFilterMode } from '../../redux/slices/incrediblePotentialSlice.ts'
 import type { AppDispatch } from '../../redux/store.ts'
+import { removeWhitespace } from '../../utils/objectUtils.ts'
 
 // Styles for the filter components
 const customStyles = {
@@ -180,7 +181,7 @@ const FilterSection = <T,>(props: Props<T>) => {
               <div style={customStyles.disabledFilter}>
                 <Form.Check
                   type='switch'
-                  id={`filter-${filter.replace(/\s+/g, '-').toLowerCase()}`}
+                  id={`filter-${removeWhitespace(filter, '-').toLowerCase()}`}
                   checked={selectedFilters.includes(filter)}
                   onChange={() => {
                     toggleFilter(filter)
@@ -200,7 +201,7 @@ const FilterSection = <T,>(props: Props<T>) => {
             ) : (
               <Form.Check
                 type='switch'
-                id={`filter-${filter.replace(/\s+/g, '-').toLowerCase()}`}
+                id={`filter-${removeWhitespace(filter, '-').toLowerCase()}`}
                 checked={selectedFilters.includes(filter)}
                 onChange={() => {
                   toggleFilter(filter)

@@ -175,7 +175,6 @@
     },
     "ingredientType": "This item may be usable in an eldritch device."
   },
-
   {
     "name": "Material Earth Dominion Shard of Power",
     "requirements": [
@@ -190,15 +189,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Earth Dominion",
         "description": "This shard has been imbued with the energy of Material Earth Dominion."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Earth",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Material Earth Opposition Shard of Power",
@@ -214,15 +218,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Earth Opposition",
         "description": "This shard has been imbued with the energy of Material Earth Opposition."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Earth",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Material Earth Escalation Shard of Power",
@@ -238,15 +247,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Earth Escalation",
         "description": "This shard has been imbued with the energy of Material Earth Escalation."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Earth",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Ethereal Earth Dominion Shard of Power",
@@ -262,15 +276,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Earth Dominion",
         "description": "This shard has been imbued with the energy of Ethereal Earth Dominion."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Earth",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Ethereal Earth Opposition Shard of Power",
@@ -286,15 +305,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Earth Opposition",
         "description": "This shard has been imbued with the energy of Ethereal Earth Opposition."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Earth",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Ethereal Earth Escalation Shard of Power",
@@ -310,15 +334,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Earth Escalation",
         "description": "This shard has been imbued with the energy of Ethereal Earth Escalation."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Earth",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Material Air Dominion Shard of Power",
@@ -334,15 +363,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Air Dominion",
         "description": "This shard has been imbued with the energy of Material Air Dominion."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Air",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Material Air Opposition Shard of Power",
@@ -358,15 +392,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Air Opposition",
         "description": "This shard has been imbued with the energy of Material Air Opposition."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Air",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Material Air Escalation Shard of Power",
@@ -382,15 +421,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Air Escalation",
         "description": "This shard has been imbued with the energy of Material Air Escalation."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Air",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Ethereal Air Dominion Shard of Power",
@@ -406,15 +450,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Air Dominion",
         "description": "This shard has been imbued with the energy of Ethereal Air Dominion."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Air",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Ethereal Air Opposition Shard of Power",
@@ -430,15 +479,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Air Opposition",
         "description": "This shard has been imbued with the energy of Ethereal Air Opposition."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Air",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Ethereal Air Escalation Shard of Power",
@@ -454,15 +508,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Air Escalation",
         "description": "This shard has been imbued with the energy of Ethereal Air Escalation."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Air",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Material Fire Dominion Shard of Power",
@@ -478,15 +537,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Fire Dominion",
         "description": "This shard has been imbued with the energy of Material Fire Dominion."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Fire",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Material Fire Opposition Shard of Power",
@@ -502,15 +566,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Fire Opposition",
         "description": "This shard has been imbued with the energy of Material Fire Opposition."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Fire",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Material Fire Escalation Shard of Power",
@@ -526,15 +595,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Fire Escalation",
         "description": "This shard has been imbued with the energy of Material Fire Escalation."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Fire",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Ethereal Fire Dominion Shard of Power",
@@ -550,15 +624,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Fire Dominion",
         "description": "This shard has been imbued with the energy of Ethereal Fire Dominion."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Fire",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Ethereal Fire Opposition Shard of Power",
@@ -574,15 +653,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Fire Opposition",
         "description": "This shard has been imbued with the energy of Ethereal Fire Opposition."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Fire",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Ethereal Fire Escalation Shard of Power",
@@ -598,15 +682,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Fire Escalation",
         "description": "This shard has been imbued with the energy of Ethereal Fire Escalation."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Fire",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Material Water Dominion Shard of Power",
@@ -622,15 +711,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Water Dominion",
         "description": "This shard has been imbued with the energy of Material Water Dominion."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Water",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Material Water Opposition Shard of Power",
@@ -646,15 +740,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Water Opposition",
         "description": "This shard has been imbued with the energy of Material Water Opposition."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Water",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Material Water Escalation Shard of Power",
@@ -670,15 +769,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Water Escalation",
         "description": "This shard has been imbued with the energy of Material Water Escalation."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Water",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Ethereal Water Dominion Shard of Power",
@@ -694,15 +798,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Water Dominion",
         "description": "This shard has been imbued with the energy of Ethereal Water Dominion."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Water",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Ethereal Water Opposition Shard of Power",
@@ -718,15 +827,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Water Opposition",
         "description": "This shard has been imbued with the energy of Ethereal Water Opposition."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Water",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Ethereal Water Escalation Shard of Power",
@@ -742,15 +856,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Water Escalation",
         "description": "This shard has been imbued with the energy of Ethereal Water Escalation."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Water",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Material Positive Energy Dominion Shard of Power",
@@ -766,15 +885,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Positive Energy Dominion",
         "description": "This shard has been imbued with the energy of Material Positive Energy Dominion."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Positive",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Material Positive Energy Opposition Shard of Power",
@@ -790,15 +914,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Positive Energy Opposition",
         "description": "This shard has been imbued with the energy of Material Positive Energy Opposition."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Positive",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Material Positive Energy Escalation Shard of Power",
@@ -814,15 +943,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Positive Energy Escalation",
         "description": "This shard has been imbued with the energy of Material Positive Energy Escalation."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Positive",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Ethereal Positive Energy Dominion Shard of Power",
@@ -838,15 +972,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Positive Energy Dominion",
         "description": "This shard has been imbued with the energy of Ethereal Positive Energy Dominion."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Positive",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Ethereal Positive Energy Opposition Shard of Power",
@@ -862,15 +1001,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Positive Energy Opposition",
         "description": "This shard has been imbued with the energy of Ethereal Positive Energy Opposition."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Positive",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Ethereal Positive Energy Escalation Shard of Power",
@@ -886,15 +1030,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Positive Energy Escalation",
         "description": "This shard has been imbued with the energy of Ethereal Positive Energy Escalation."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Positive",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Material Negative Energy Dominion Shard of Power",
@@ -910,15 +1059,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Negative Energy Dominion",
         "description": "This shard has been imbued with the energy of Material Negative Energy Dominion."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Negative",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Material Negative Energy Opposition Shard of Power",
@@ -934,15 +1088,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Negative Energy Opposition",
         "description": "This shard has been imbued with the energy of Material Negative Energy Opposition."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Negative",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Material Negative Energy Escalation Shard of Power",
@@ -958,15 +1117,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Material Negative Energy Escalation",
         "description": "This shard has been imbued with the energy of Material Negative Energy Escalation."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Negative",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Ethereal Negative Energy Dominion Shard of Power",
@@ -982,15 +1146,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Negative Energy Dominion",
         "description": "This shard has been imbued with the energy of Ethereal Negative Energy Dominion."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Negative",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Ethereal Negative Energy Opposition Shard of Power",
@@ -1006,15 +1175,20 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Negative Energy Opposition",
         "description": "This shard has been imbued with the energy of Ethereal Negative Energy Opposition."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Negative",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Ethereal Negative Energy Escalation Shard of Power",
@@ -1030,25 +1204,29 @@
     "title": "Item",
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
         "name": "Ethereal Negative Energy Escalation",
         "description": "This shard has been imbued with the energy of Ethereal Negative Energy Escalation."
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Negative",
+      "gem": "Escalation"
+    }
   },
-
   {
     "name": "Material Earth Dominion Weapon Upgrade",
     "title": "Acid Item",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1074,7 +1252,12 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Earth",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Material Earth Opposition Weapon Upgrade",
@@ -1082,8 +1265,8 @@
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1109,7 +1292,12 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Earth",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Material Earth Escalation Weapon Upgrade",
@@ -1117,8 +1305,8 @@
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1144,7 +1332,12 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Earth",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Ethereal Earth Dominion Weapon Upgrade",
@@ -1152,8 +1345,8 @@
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1179,7 +1372,12 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Earth",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Ethereal Earth Opposition Weapon Upgrade",
@@ -1187,8 +1385,8 @@
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1214,15 +1412,20 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Earth",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Ethereal Earth Escalation Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1248,15 +1451,20 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Earth",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Material Air Dominion Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1282,15 +1490,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 1
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Air",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Material Air Opposition Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1316,15 +1533,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 1
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Air",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Material Air Escalation Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1350,15 +1576,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 11
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Air",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Ethereal Air Dominion Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1384,15 +1619,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 13
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Air",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Ethereal Air Opposition Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1418,15 +1662,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 1
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Air",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Ethereal Air Escalation Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1452,15 +1705,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 11
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Air",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Material Fire Dominion Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1486,15 +1748,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 1
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Fire",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Material Fire Opposition Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1520,15 +1791,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 1
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Fire",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Material Fire Escalation Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1554,15 +1834,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 11
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Fire",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Ethereal Fire Dominion Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1588,15 +1877,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 13
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Fire",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Ethereal Fire Opposition Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1622,15 +1920,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 1
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Fire",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Ethereal Fire Escalation Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1656,15 +1963,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 11
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Fire",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Material Water Dominion Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1690,15 +2006,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 1
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Water",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Material Water Opposition Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1724,15 +2049,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 1
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Water",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Material Water Escalation Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1758,15 +2092,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 11
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Water",
+      "gem": "Escalation"
+    }
   },
   {
     "name": "Ethereal Water Dominion Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1792,15 +2135,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 13
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Water",
+      "gem": "Dominion"
+    }
   },
   {
     "name": "Ethereal Water Opposition Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1826,15 +2178,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 1
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Water",
+      "gem": "Opposition"
+    }
   },
   {
     "name": "Ethereal Water Escalation Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1860,15 +2221,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 11
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Water",
+      "gem": "Escalation"
+    }
   },
   {
-    "name": "Material Positive Energy Dominion Weapon Upgrade",
+    "name": "Material Positive Dominion Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1894,27 +2264,37 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 3
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Positive",
+      "gem": "Dominion"
+    }
   },
   {
-    "name": "Material Positive Energy Opposition Weapon Upgrade",
+    "name": "Material Positive Opposition Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
-        "name": "Healing Amplification: +20 Exceptional Bonus",
-        "description": "This effect amplifies all incoming Positive Energy healing by 10% (includes spells, potions, and other effects)."
+        "name": "Healing Amplification: +20",
+        "description": "This effect amplifies all incoming Positive Energy healing by 10% (includes spells, potions, and other effects).",
+        "bonus": "Exceptional"
       },
       {
         "name": "Positive Energy Affinity",
         "description": "This item has an affinity with Positive Energy."
       }
     ],
-    "description": "Healing Amplification: +20 Exceptional Bonus, Positive Energy Affinity",
+    "description": "Healing Amplification: +20, Positive Energy Affinity",
     "requirements": [
       {
         "name": "Green Steen Weapon",
@@ -1928,15 +2308,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 11
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Positive",
+      "gem": "Opposition"
+    }
   },
   {
-    "name": "Material Positive Energy Escalation Weapon Upgrade",
+    "name": "Material Positive Escalation Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1962,15 +2351,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 11
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Positive",
+      "gem": "Escalation"
+    }
   },
   {
-    "name": "Ethereal Positive Energy Dominion Weapon Upgrade",
+    "name": "Ethereal Positive Dominion Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -1996,15 +2394,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 13
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Positive",
+      "gem": "Dominion"
+    }
   },
   {
-    "name": "Ethereal Positive Energy Opposition Weapon Upgrade",
+    "name": "Ethereal Positive Opposition Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -2030,15 +2437,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 1
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Positive",
+      "gem": "Opposition"
+    }
   },
   {
-    "name": "Ethereal Positive Energy Escalation Weapon Upgrade",
+    "name": "Ethereal Positive Escalation Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -2064,15 +2480,25 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 11
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Positive",
+      "gem": "Escalation"
+    }
   },
   {
-    "name": "Material Negative Energy Dominion Weapon Upgrade",
+    "name": "Material Negative Dominion Weapon Upgrade",
+    "title": "Unholy Item",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -2098,15 +2524,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 3
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Negative",
+      "gem": "Dominion"
+    }
   },
   {
-    "name": "Material Negative Energy Opposition Weapon Upgrade",
+    "name": "Material Negative Opposition Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -2132,15 +2567,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 11
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Negative",
+      "gem": "Opposition"
+    }
   },
   {
-    "name": "Material Negative Energy Escalation Weapon Upgrade",
+    "name": "Material Negative Escalation Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -2166,15 +2610,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 11
+    },
+    "traits": {
+      "essence": "Material",
+      "focus": "Negative",
+      "gem": "Escalation"
+    }
   },
   {
-    "name": "Ethereal Negative Energy Dominion Weapon Upgrade",
+    "name": "Ethereal Negative Dominion Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -2200,15 +2653,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 13
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Negative",
+      "gem": "Dominion"
+    }
   },
   {
-    "name": "Ethereal Negative Energy Opposition Weapon Upgrade",
+    "name": "Ethereal Negative Opposition Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -2234,15 +2696,24 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 1
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Negative",
+      "gem": "Opposition"
+    }
   },
   {
-    "name": "Ethereal Negative Energy Escalation Weapon Upgrade",
+    "name": "Ethereal Negative Escalation Weapon Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
     },
     "effectsAdded": [
       {
@@ -2268,133 +2739,15 @@
         "name": "Shavarath Low Energy Cell",
         "quantity": 1
       }
-    ]
-  },
-
-  {
-    "name": "Ethereal Air Opposition Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Air Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Air Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Air Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Air Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Air Opposition Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Air Dominion Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Air Dominion Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Earth Opposition Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Earth Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Earth Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Earth Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Earth Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Earth Opposition Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+    ],
+    "minLevelIncrease": {
+      "minimumLevel": 1,
+      "noMinimumLevel": 11
+    },
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Negative",
+      "gem": "Escalation"
     }
   },
   {
@@ -2402,8 +2755,120 @@
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Minor Acid Guard",
+        "description": "This item has a 50% chance to sting those that attack the wearer, causing 1 to 4 acid damage on a successful melee attack."
+      },
+      {
+        "name": "Earth Affinity",
+        "description": "This item has an affinity with Earth."
+      }
+    ],
+    "description": "Minor Acid Guard, Earth Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Earth Dominion Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Earth",
+      "gem": "Dominion"
+    }
+  },
+  {
+    "name": "Material Earth Opposition Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Greater Acid Resistance",
+        "description": "This property absorbs the first 30 points of Acid damage per attack that the wearer would normally take."
+      },
+      {
+        "name": "Earth Affinity",
+        "description": "This item has an affinity with Earth."
+      }
+    ],
+    "description": "Greater Acid Resistance, Earth Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Earth Opposition Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Earth",
+      "gem": "Opposition"
+    }
+  },
+  {
+    "name": "Material Earth Escalation Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Elemental Energy",
+        "description": "Harnessing a small amount of the power and potential of the raw elements, this items gives you a +10 bonus to your maximum hit points. This stacks with all bonuses except Elemental Energy."
+      },
+      {
+        "name": "Constitution Skills - Exceptional Bonus +2",
+        "description": "Passive: +2 Exceptional Bonus to Concentration."
+      },
+      {
+        "name": "Earth Affinity",
+        "description": "This item has an affinity with Earth."
+      }
+    ],
+    "description": "Elemental Energy, Constitution Skills - Exceptional Bonus +2, Earth Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Earth Escalation Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Earth",
+      "gem": "Escalation"
     }
   },
   {
@@ -2411,62 +2876,362 @@
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Acid Lore III",
+        "description": "Passive: Your Acid spells gain a 13% Equipment Bonus to their chance to Critical hit."
+      },
+      {
+        "name": "Earth Affinity",
+        "description": "This item has an affinity with Earth."
+      }
+    ],
+    "description": "Acid Lore III, Earth Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Earth Dominion Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Earth",
+      "gem": "Dominion"
     }
   },
   {
-    "name": "Ethereal Fire Opposition Accessory Upgrade",
+    "name": "Ethereal Earth Opposition Accessory Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Fortitude Save +5",
+        "description": "This item gives a +5 Resistance Bonus to your Fortitude Saves."
+      },
+      {
+        "name": "Earth Affinity",
+        "description": "This item has an affinity with Earth."
+      }
+    ],
+    "description": "Fortitude Save +5, Earth Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Earth Opposition Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Earth",
+      "gem": "Opposition"
     }
   },
   {
-    "name": "Material Fire Escalation Accessory Upgrade",
+    "name": "Ethereal Earth Escalation Accessory Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Wizardry VI",
+        "description": "Passive: +150 Enhancement Bonus to Spell Points. (If you have Sorcerer or Favored Soul levels, you gain additional spell points proportionate to the ratio of those levels to other classes)"
+      },
+      {
+        "name": "Wisdom Skills - Exceptional Bonus +2",
+        "description": "Passive: +2 Exceptional Bonus to Heal, Listen, and Spot."
+      },
+      {
+        "name": "Earth Affinity",
+        "description": "This item has an affinity with Earth."
+      }
+    ],
+    "description": "Wizardry VI, Wisdom Skills - Exceptional Bonus +2, Earth Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Earth Escalation Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Earth",
+      "gem": "Escalation"
     }
   },
   {
-    "name": "Material Fire Escalation Accessory Upgrade",
+    "name": "Material Air Dominion Accessory Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Minor Lightning Guard",
+        "description": "This item has a 50% chance to shock those that attack the wearer, causing 1 to 4 electricity damage on a successful melee attack."
+      },
+      {
+        "name": "Air Affinity",
+        "description": "This item has an affinity with Air."
+      }
+    ],
+    "description": "Minor Lightning Guard, Air Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Air Dominion Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Air",
+      "gem": "Dominion"
     }
   },
   {
-    "name": "Ethereal Fire Escalation Accessory Upgrade",
+    "name": "Material Air Opposition Accessory Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Greater Lightning Resistance",
+        "description": "This property absorbs the first 30 points of Electric damage per attack that the wearer would normally take."
+      },
+      {
+        "name": "Air Affinity",
+        "description": "This item has an affinity with Air."
+      }
+    ],
+    "description": "Greater Lightning Resistance, Air Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Air Opposition Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Air",
+      "gem": "Opposition"
     }
   },
   {
-    "name": "Ethereal Fire Escalation Accessory Upgrade",
+    "name": "Material Air Escalation Accessory Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Elemental Energy",
+        "description": "Harnessing a small amount of the power and potential of the raw elements, this items gives you a +10 bonus to your maximum hit points. This stacks with all bonuses except Elemental Energy."
+      },
+      {
+        "name": "Dexterity Skills - Exceptional Bonus +2",
+        "description": "Passive: +2 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble."
+      },
+      {
+        "name": "Air Affinity",
+        "description": "This item has an affinity with Air."
+      }
+    ],
+    "description": "Elemental Energy, Dexterity Skills - Exceptional Bonus +2, Air Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Air Escalation Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Air",
+      "gem": "Escalation"
     }
   },
   {
-    "name": "Material Fire Opposition Accessory Upgrade",
+    "name": "Ethereal Air Dominion Accessory Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Lightning Lore III",
+        "description": "Passive: Your Electric spells gain a 13% Equipment Bonus to their chance to Critical hit."
+      },
+      {
+        "name": "Air Affinity",
+        "description": "This item has an affinity with Air."
+      }
+    ],
+    "description": "Lightning Lore III, Air Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Air Dominion Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Air",
+      "gem": "Dominion"
+    }
+  },
+  {
+    "name": "Ethereal Air Opposition Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Reflex Save +5",
+        "description": "This item gives a +5 Resistance Bonus to your Reflex Saves."
+      },
+      {
+        "name": "Air Affinity",
+        "description": "This item has an affinity with Air."
+      }
+    ],
+    "description": "Reflex Save +5, Air Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Air Opposition Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Air",
+      "gem": "Opposition"
+    }
+  },
+  {
+    "name": "Ethereal Air Escalation Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Wizardry VI",
+        "description": "Passive: +150 Enhancement Bonus to Spell Points. (If you have Sorcerer or Favored Soul levels, you gain additional spell points proportionate to the ratio of those levels to other classes)"
+      },
+      {
+        "name": "Charisma Skills - Exceptional Bonus +2",
+        "description": "Passive: +2 Exceptional Bonus to Bluff, Diplomacy, Haggle, Intimidate, Perform, and Use Magic Device."
+      },
+      {
+        "name": "Air Affinity",
+        "description": "This item has an affinity with Air."
+      }
+    ],
+    "description": "Wizardry VI, Charisma Skills - Exceptional Bonus +2, Air Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Air Escalation Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Air",
+      "gem": "Escalation"
     }
   },
   {
@@ -2474,8 +3239,120 @@
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Minor Fire Guard",
+        "description": "This item has a 50% chance to burn those that attack the wearer, causing 1 to 4 fire damage on a successful melee attack."
+      },
+      {
+        "name": "Fire Affinity",
+        "description": "This item has an affinity with Fire."
+      }
+    ],
+    "description": "Minor Fire Guard, Fire Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Fire Dominion Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Fire",
+      "gem": "Dominion"
+    }
+  },
+  {
+    "name": "Material Fire Opposition Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Greater Fire Resistance",
+        "description": "This property absorbs the first 30 points of Fire damage per attack that the wearer would normally take."
+      },
+      {
+        "name": "Fire Affinity",
+        "description": "This item has an affinity with Fire."
+      }
+    ],
+    "description": "Greater Fire Resistance, Fire Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Fire Opposition Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Fire",
+      "gem": "Opposition"
+    }
+  },
+  {
+    "name": "Material Fire Escalation Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Elemental Energy",
+        "description": "Harnessing a small amount of the power and potential of the raw elements, this items gives you a +10 bonus to your maximum hit points. This stacks with all bonuses except Elemental Energy."
+      },
+      {
+        "name": "Dexterity Skills - Exceptional Bonus +2",
+        "description": "Passive: +2 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble."
+      },
+      {
+        "name": "Fire Affinity",
+        "description": "This item has an affinity with Fire."
+      }
+    ],
+    "description": "Elemental Energy, Dexterity Skills - Exceptional Bonus +2, Fire Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Fire Escalation Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Fire",
+      "gem": "Escalation"
     }
   },
   {
@@ -2483,224 +3360,120 @@
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Fire Lore III",
+        "description": "Passive: Your Fire spells gain a 13% Equipment Bonus to their chance to Critical hit."
+      },
+      {
+        "name": "Fire Affinity",
+        "description": "This item has an affinity with Fire."
+      }
+    ],
+    "description": "Fire Lore III, Fire Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Fire Dominion Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Fire",
+      "gem": "Dominion"
     }
   },
   {
-    "name": "Ethereal Negative Energy Opposition Accessory Upgrade",
+    "name": "Ethereal Fire Opposition Accessory Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Reflex Save +5",
+        "description": "This item gives a +5 Resistance Bonus to your Reflex Saves."
+      },
+      {
+        "name": "Fire Affinity",
+        "description": "This item has an affinity with Fire."
+      }
+    ],
+    "description": "Reflex Save +5, Fire Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Fire Opposition Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Fire",
+      "gem": "Opposition"
     }
   },
   {
-    "name": "Ethereal Negative Energy Escalation Accessory Upgrade",
+    "name": "Ethereal Fire Escalation Accessory Upgrade",
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Negative Energy Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Negative Energy Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Negative Energy Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Negative Energy Opposition Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Negative Energy Opposition Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Negative Energy Dominion Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Negative Energy Dominion Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Positive Energy Opposition Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Positive Energy Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Positive Energy Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Positive Energy Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Positive Energy Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Positive Energy Opposition Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Positive Energy Dominion Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Positive Energy Dominion Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Water Opposition Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Water Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Water Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Water Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Water Escalation Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Material Water Opposition Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
-    }
-  },
-  {
-    "name": "Ethereal Water Dominion Accessory Upgrade",
-    "quantity": 1,
-    "binding": {
-      "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Wizardry VI",
+        "description": "Passive: +150 Enhancement Bonus to Spell Points. (If you have Sorcerer or Favored Soul levels, you gain additional spell points proportionate to the ratio of those levels to other classes)"
+      },
+      {
+        "name": "Intelligence Skills - Exceptional Bonus +2",
+        "description": "Passive: +2 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft."
+      },
+      {
+        "name": "Fire Affinity",
+        "description": "This item has an affinity with Fire."
+      }
+    ],
+    "description": "Wizardry VI, Intelligence Skills - Exceptional Bonus +2, Fire Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Fire Escalation Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Fire",
+      "gem": "Escalation"
     }
   },
   {
@@ -2708,8 +3481,729 @@
     "quantity": 1,
     "binding": {
       "type": "Bound",
-      "location": "Character",
-      "when": "Acquisition"
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Minor Ice Guard",
+        "description": "This item has a 50% chance to freeze those that attack the wearer, causing 1 to 6 cold damage on a successful melee attack."
+      },
+      {
+        "name": "Water Affinity",
+        "description": "This item has an affinity with Water."
+      }
+    ],
+    "description": "Minor Ice Guard, Water Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Water Dominion Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Water",
+      "gem": "Dominion"
+    }
+  },
+  {
+    "name": "Material Water Opposition Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Greater Cold Resistance",
+        "description": "This property absorbs the first 30 points of Cold damage per attack that the wearer would normally take."
+      },
+      {
+        "name": "Water Affinity",
+        "description": "This item has an affinity with Water."
+      }
+    ],
+    "description": "Greater Cold Resistance, Water Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Water Opposition Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Water",
+      "gem": "Opposition"
+    }
+  },
+  {
+    "name": "Material Water Escalation Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Elemental Energy",
+        "description": "Harnessing a small amount of the power and potential of the raw elements, this items gives you a +10 bonus to your maximum hit points. This stacks with all bonuses except Elemental Energy."
+      },
+      {
+        "name": "Strength Skills - Exceptional Bonus +2",
+        "description": "Passive:  +2 Exceptional Bonus to Jump and Swim."
+      },
+      {
+        "name": "Water Affinity",
+        "description": "This item has an affinity with Water."
+      }
+    ],
+    "description": "Elemental Energy, Strength Skills - Exceptional Bonus +2, Water Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Water Escalation Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Water",
+      "gem": "Escalation"
+    }
+  },
+  {
+    "name": "Ethereal Water Dominion Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Ice Lore III",
+        "description": "Passive:  Your Cold spells gain a 13% Equipment Bonus to their chance to Critical hit."
+      },
+      {
+        "name": "Water Affinity",
+        "description": "This item has an affinity with Water."
+      }
+    ],
+    "description": "Ice Lore III, Water Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Water Dominion Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Water",
+      "gem": "Dominion"
+    }
+  },
+  {
+    "name": "Ethereal Water Opposition Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Will Save +5",
+        "description": "This item gives a +5 Resistance Bonus to your Will Saves."
+      },
+      {
+        "name": "Water Affinity",
+        "description": "This item has an affinity with Water."
+      }
+    ],
+    "description": "Will Save +5, Water Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Water Opposition Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Water",
+      "gem": "Opposition"
+    }
+  },
+  {
+    "name": "Ethereal Water Escalation Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Wizardry VI",
+        "description": "Passive:  +150 Enhancement Bonus to Spell Points.  (If you have Sorcerer or Favored Soul levels, you gain additional spell points proportionate to the ratio of those levels to other classes)"
+      },
+      {
+        "name": "Wisdom Skills - Exceptional Bonus +2",
+        "description": "Passive:  +2 Exceptional Bonus to Heal, Listen, and Spot."
+      },
+      {
+        "name": "Water Affinity",
+        "description": "This item has an affinity with Water."
+      }
+    ],
+    "description": "Wizardry VI, Wisdom Skills - Exceptional Bonus +2, Water Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Water Escalation Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Water",
+      "gem": "Escalation"
+    }
+  },
+  {
+    "name": "Material Positive Dominion Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Minor Good Guard",
+        "description": "This item has a 50% chance to damage those that attack the wearer, causing 1 to 6 good damage on a successful melee attack."
+      },
+      {
+        "name": "Positive Energy Affinity",
+        "description": "This item has an affinity with Positive Energy."
+      }
+    ],
+    "description": "Minor Good Guard, Positive Energy Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Positive Energy Dominion Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Positive",
+      "gem": "Dominion"
+    }
+  },
+  {
+    "name": "Material Positive Opposition Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Lesser Regeneration",
+        "description": "This item is imbued with an undeniable goodness that slowly heals the wearer over time."
+      },
+      {
+        "name": "Positive Energy Affinity",
+        "description": "This item has an affinity with Positive Energy."
+      }
+    ],
+    "description": "Lesser Regeneration, Positive Energy Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Positive Energy Opposition Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Positive",
+      "gem": "Opposition"
+    }
+  },
+  {
+    "name": "Material Positive Escalation Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Elemental Energy",
+        "description": "Harnessing a small amount of the power and potential of the raw elements, this items gives you a +10 bonus to your maximum hit points. This stacks with all bonuses except Elemental Energy."
+      },
+      {
+        "name": "Constitution Skills - Exceptional Bonus +2",
+        "description": "Passive: +2 Exceptional Bonus to Concentration."
+      },
+      {
+        "name": "Positive Energy Affinity",
+        "description": "This item has an affinity with Positive Energy."
+      }
+    ],
+    "description": "Elemental Energy, Constitution Skills - Exceptional Bonus +2, Positive Energy Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Positive Energy Escalation Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Positive",
+      "gem": "Escalation"
+    }
+  },
+  {
+    "name": "Ethereal Positive Dominion Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Healing Lore III",
+        "description": "Passive: Your Positive Energy spells gain a 13% Equipment Bonus to their chance to Critical hit."
+      },
+      {
+        "name": "Positive Energy Affinity",
+        "description": "This item has an affinity with Positive Energy."
+      }
+    ],
+    "description": "Healing Lore III, Positive Energy Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Positive Energy Dominion Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Positive",
+      "gem": "Dominion"
+    }
+  },
+  {
+    "name": "Ethereal Positive Opposition Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Will Save +5",
+        "description": "This item gives a +5 Resistance Bonus to your Will Saves."
+      },
+      {
+        "name": "Positive Energy Affinity",
+        "description": "This item has an affinity with Positive Energy."
+      }
+    ],
+    "description": "Will Save +5, Positive Energy Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Positive Energy Opposition Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Positive",
+      "gem": "Opposition"
+    }
+  },
+  {
+    "name": "Ethereal Positive Escalation Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Wizardry VI",
+        "description": "Passive: +150 Enhancement Bonus to Spell Points. (If you have Sorcerer or Favored Soul levels, you gain additional spell points proportionate to the ratio of those levels to other classes)"
+      },
+      {
+        "name": "Charisma Skills - Exceptional Bonus +2",
+        "description": "Passive: +2 Exceptional Bonus to Bluff, Diplomacy, Haggle, Intimidate, Perform, and Use Magic Device."
+      },
+      {
+        "name": "Positive Energy Affinity",
+        "description": "This item has an affinity with Positive Energy."
+      }
+    ],
+    "description": "Wizardry VI, Charisma Skills - Exceptional Bonus +2, Positive Energy Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Positive Energy Escalation Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Positive",
+      "gem": "Escalation"
+    }
+  },
+  {
+    "name": "Material Negative Dominion Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Minor Evil Guard",
+        "description": "This item has a 50% chance to damage those that attack the wearer, causing 1 to 6 evil damage on a successful melee attack."
+      },
+      {
+        "name": "Negative Energy Affinity",
+        "description": "This item has an affinity with Negative Energy."
+      }
+    ],
+    "description": "Minor Evil Guard, Negative Energy Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Negative Energy Dominion Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Negative",
+      "gem": "Dominion"
+    }
+  },
+  {
+    "name": "Material Negative Opposition Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Blindness Immunity",
+        "description": "Grants its wearer immunity to Blindness effects."
+      },
+      {
+        "name": "Proof Against Disease +6",
+        "description": "This item grants its wearer immunity to natural diseases. This item also grants a +6 Enhancement Bonus to Saving Throws against magical diseases, and the wearer does not fail saving throws against them on a roll of a natural 1 (this renders the wearer immune to magical diseases with a DC of less than 7 + their Fortitude save)."
+      },
+      {
+        "name": "Negative Energy Affinity",
+        "description": "This item has an affinity with Negative Energy."
+      }
+    ],
+    "description": "Blindness Immunity, Proof Against Disease +6, Negative Energy Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Negative Energy Opposition Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Negative",
+      "gem": "Opposition"
+    }
+  },
+  {
+    "name": "Material Negative Escalation Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Elemental Energy",
+        "description": "Harnessing a small amount of the power and potential of the raw elements, this items gives you a +10 bonus to your maximum hit points. This stacks with all bonuses except Elemental Energy."
+      },
+      {
+        "name": "Strength Skills - Exceptional Bonus +2",
+        "description": "Passive: +2 Exceptional Bonus to Jump and Swim."
+      },
+      {
+        "name": "Negative Energy Affinity",
+        "description": "This item has an affinity with Negative Energy."
+      }
+    ],
+    "description": "Elemental Energy, Strength Skills - Exceptional Bonus +2, Negative Energy Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Material Negative Energy Escalation Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Material",
+      "focus": "Negative",
+      "gem": "Escalation"
+    }
+  },
+  {
+    "name": "Ethereal Negative Dominion Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Void Lore III",
+        "description": "Passive: Your Negative Energy spells gain a 13% Equipment Bonus to their chance to Critical hit."
+      },
+      {
+        "name": "Negative Energy Affinity",
+        "description": "This item has an affinity with Negative Energy."
+      }
+    ],
+    "description": "Void Lore III, Negative Energy Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Negative Energy Dominion Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Negative",
+      "gem": "Dominion"
+    }
+  },
+  {
+    "name": "Ethereal Negative Opposition Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Fortitude Save +5",
+        "description": "This item gives a +5 Resistance Bonus to your Fortitude Saves."
+      },
+      {
+        "name": "Negative Energy Affinity",
+        "description": "This item has an affinity with Negative Energy."
+      }
+    ],
+    "description": "Fortitude Save +5, Negative Energy Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Negative Energy Opposition Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Negative",
+      "gem": "Opposition"
+    }
+  },
+  {
+    "name": "Ethereal Negative Energy Escalation Accessory Upgrade",
+    "quantity": 1,
+    "binding": {
+      "type": "Bound",
+      "to": "Character",
+      "from": "Acquisition"
+    },
+    "effectsAdded": [
+      {
+        "name": "Wizardry VI",
+        "description": "Passive: +150 Enhancement Bonus to Spell Points. (If you have Sorcerer or Favored Soul levels, you gain additional spell points proportionate to the ratio of those levels to other classes)"
+      },
+      {
+        "name": "Intelligence Skills - Exceptional Bonus +2",
+        "description": "Passive: +2 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft."
+      },
+      {
+        "name": "Negative Energy Affinity",
+        "description": "This item has an affinity with Negative Energy."
+      }
+    ],
+    "description": "Wizardry VI, Intelligence Skills - Exceptional Bonus +2, Negative Energy Affinity",
+    "requirements": [
+      {
+        "name": "Green Steen Accessory",
+        "quantity": 1
+      },
+      {
+        "name": "Ethereal Negative Energy Escalation Shard of Power",
+        "quantity": 1
+      },
+      {
+        "name": "Shavarath Low Energy Cell",
+        "quantity": 1
+      }
+    ],
+    "traits": {
+      "essence": "Ethereal",
+      "focus": "Negative",
+      "gem": "Escalation"
     }
   }
 ]

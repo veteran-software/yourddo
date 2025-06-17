@@ -28,7 +28,7 @@
     "@eslint/js": "^9.29.0",
     "@types/bootstrap": "^5.2.10",
     "@types/luxon": "^3.6.2",
-    "@types/node": "^24.0.1",
+    "@types/node": "^24.0.3",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",
@@ -41,7 +41,7 @@
     "prettier": "^3.5.3",
     "sass": "^1.89.2",
     "typescript": "~5.8.3",
-    "typescript-eslint": "^8.34.0",
+    "typescript-eslint": "^8.34.1",
     "vite": "^6.3.5",
     "vite-plugin-compression": "^0.5.1"
   },

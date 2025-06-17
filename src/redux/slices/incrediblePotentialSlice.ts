@@ -8,8 +8,9 @@ const initialState: IncrediblePotentialState = {
   craftedIngredients: {} as Record<string, number>,
   filterMode: 'OR',
   filteredRingList: baseItems,
-  filteredUpgradeList: altarOfSubjugation.filter((recipe: CraftingIngredient) =>
-    recipe.name.toLowerCase().includes('ring upgrade')
+  filteredUpgradeList: [...altarOfSubjugation].filter(
+    (recipe: CraftingIngredient) =>
+      recipe.name.toLowerCase().includes('ring upgrade')
   ),
   rawMaterials: {} as Record<string, number>,
   ringFilters: baseItems
@@ -22,7 +23,7 @@ const initialState: IncrediblePotentialState = {
   selectedRingFilters: [],
   selectedUpgrade: undefined,
   selectedUpgradeFilters: [],
-  upgradeFilters: altarOfSubjugation
+  upgradeFilters: [...altarOfSubjugation]
     .filter((recipe: CraftingIngredient) =>
       recipe.name.toLowerCase().includes('ring upgrade')
     )

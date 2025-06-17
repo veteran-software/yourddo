@@ -8,7 +8,7 @@ import {
 import type { AppDispatch } from '../../../redux/store.ts'
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { useDevastationFocused } from '../hooks/useDevastationFocused.ts'
+import useDevastationFocused from '../hooks/useDevastationFocused.ts'
 import IngredientDropdownSection from './IngredientDropdownSection.tsx'
 import IngredientDropdownToggle from './IngredientDropdownToggle.tsx'
 
@@ -41,6 +41,7 @@ const DevastationFocusedDropdown = () => {
   )
 
   const renderSection = (name: string, ingredients: CraftingIngredient[]) => {
+    // console.log('ingredients', ingredients)
     return (
       <IngredientDropdownSection
         clickHandler={selectDevastationFocused}
@@ -70,9 +71,10 @@ const DevastationFocusedDropdown = () => {
           className='py-0 w-100'
           style={{ maxHeight: '50vh', overflowY: 'auto' }}
         >
-          {Object.entries(ingredientsMap).map(([element, ingredients]) =>
-            renderSection(element, ingredients)
-          )}
+          {Object.entries(ingredientsMap).map(([element, ingredients]) => {
+            // console.log(element, ingredients)
+            return renderSection(element, ingredients)
+          })}
         </Dropdown.Menu>
       </Dropdown>
 
