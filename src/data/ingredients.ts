@@ -31,11 +31,7 @@ export const ingredients: Ingredient[] = [
       type: 'Unbound'
     },
     weight: 0.05,
-    foundIn: [
-      'A Relic of a Sovereign Past',
-      "Ataraxia's Haven",
-      'Made to Order'
-    ]
+    foundIn: ['A Relic of a Sovereign Past', "Ataraxia's Haven", 'Made to Order']
   },
   {
     name: 'Agate Shard',
@@ -145,8 +141,7 @@ export const ingredients: Ingredient[] = [
   },
   {
     name: 'Arcane Ingot',
-    description:
-      'This magical metal is warm to the touch and can be shaped into whatever weapon you desire.',
+    description: 'This magical metal is warm to the touch and can be shaped into whatever weapon you desire.',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -169,8 +164,7 @@ export const ingredients: Ingredient[] = [
   },
   {
     name: 'Barrier Fragment',
-    description:
-      'Fragments of a shattered barrier. Used at the Ritual Table to unseal power.',
+    description: 'Fragments of a shattered barrier. Used at the Ritual Table to unseal power.',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -203,16 +197,11 @@ export const ingredients: Ingredient[] = [
     binding: {
       type: 'Unbound'
     },
-    foundIn: [
-      'Smashing Pumpkins',
-      'Grave Work',
-      "The Kobolds' Newest Ringleader"
-    ]
+    foundIn: ['Smashing Pumpkins', 'Grave Work', "The Kobolds' Newest Ringleader"]
   },
   {
     name: 'Black Dragon Scale',
-    description:
-      'This is a large, strong, and pliable scale from a Black Dragon.',
+    description: 'This is a large, strong, and pliable scale from a Black Dragon.',
     binding: {
       type: 'Unbound'
     },
@@ -221,8 +210,7 @@ export const ingredients: Ingredient[] = [
   },
   {
     name: 'Black Dust of Vile Darkness',
-    description:
-      'This dust radiates corruption and evil. What might it have been before it became dust?',
+    description: 'This dust radiates corruption and evil. What might it have been before it became dust?',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -241,11 +229,7 @@ export const ingredients: Ingredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    foundIn: [
-      'The Isle of Dread (Legendary)',
-      'Skeletons in the Closet',
-      'Draconic Raider’s Reward Box'
-    ]
+    foundIn: ['The Isle of Dread (Legendary)', 'Skeletons in the Closet', 'Draconic Raider’s Reward Box']
   },
   {
     name: 'Black Stone',
@@ -321,9 +305,7 @@ export const ingredients: Ingredient[] = [
     type: 'This item may be usable in an eldritch device.',
     foundIn: ['The Eldritch Chamber (Meridia)'],
     binding: {
-      type: 'Bound',
-      from: 'Acquisition',
-      to: 'Character'
+      type: 'Unbound'
     },
     baseValue: {
       platinum: 990
@@ -364,8 +346,7 @@ export const ingredients: Ingredient[] = [
   {
     name: 'Green Briar Twigs',
     type: 'This item may be usable in an eldritch device.',
-    description:
-      'Fresh green twigs with very small thorns. These Twigs are humming like the Altar of Fecundity.',
+    description: 'Fresh green twigs with very small thorns. These Twigs are humming like the Altar of Fecundity.',
     binding: {
       type: 'Unbound'
     },
@@ -392,6 +373,18 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Ritual Sacrifice', 'The Vale of Twilight (rare encounters)']
   },
   {
+    name: 'Large Splintered Horn',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A splintered horn from some unknown creature. This item is resonating like the Altar of Fecundity.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Shroud']
+  },
+  {
     name: 'Locust Husk',
     type: 'This item may be usable in an eldritch device.',
     description:
@@ -409,8 +402,7 @@ export const ingredients: Ingredient[] = [
   {
     name: 'Medium Devil Scales',
     type: 'This item may be usable in an eldritch device.',
-    description:
-      'A few reptilian looking devil scales. This item is humming like the Altar of Subjugation.',
+    description: 'A few reptilian looking devil scales. This item is humming like the Altar of Subjugation.',
     binding: {
       type: 'Unbound'
     },
@@ -431,8 +423,7 @@ export const ingredients: Ingredient[] = [
   {
     name: 'Medium Gnawed Bone',
     type: 'This item may be usable in an eldritch device.',
-    description:
-      'A dry bone that has been gnawed clean. This item is humming like the Altar of Subjugation.',
+    description: 'A dry bone that has been gnawed clean. This item is humming like the Altar of Subjugation.',
     binding: {
       type: 'Unbound'
     },
@@ -442,8 +433,7 @@ export const ingredients: Ingredient[] = [
   {
     name: 'Medium Length of Infernal Chain',
     type: 'This item may be usable in an eldritch device.',
-    description:
-      'A length of dirty, barbed chain. This item is humming like the Altar of Subjugation.',
+    description: 'A length of dirty, barbed chain. This item is humming like the Altar of Subjugation.',
     binding: {
       type: 'Unbound'
     },
@@ -452,6 +442,18 @@ export const ingredients: Ingredient[] = [
     },
     weight: 0.1,
     foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Medium Splintered Horn',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A splintered horn from some unknown creature. This item is resonating like the Altar of Fecundity.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 25
+    },
+    foundIn: ['The Shroud']
   },
   {
     name: 'Medium Sulfurous Stone',
@@ -470,8 +472,7 @@ export const ingredients: Ingredient[] = [
   {
     name: 'Medium Twisted Shrapnel',
     type: 'This item may be usable in an eldritch device.',
-    description:
-      'A sharp and twisted hunk of metal. This item is humming like the Altar of Subjugation.',
+    description: 'A sharp and twisted hunk of metal. This item is humming like the Altar of Subjugation.',
     binding: {
       type: 'Unbound'
     },
@@ -519,6 +520,19 @@ export const ingredients: Ingredient[] = [
     },
     weight: 0.1,
     foundIn: ['The Shroud', 'Tower of Despair']
+  },
+  {
+    name: 'Shavarath Low Energy Cell',
+    description: 'A small vessel with a charge of energy inside. This item is humming like the Altar of Invasion.',
+    type: 'This item may be usable in an eldritch device.',
+    foundIn: ['The Shroud', 'Devil Assault', 'Amrath'],
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1900
+    },
+    weight: 0.01
   },
   {
     name: 'Shavarath Stone of Battle',
@@ -597,8 +611,7 @@ export const ingredients: Ingredient[] = [
   },
   {
     name: 'Shavarath Trophy of War',
-    description:
-      'This item is found when a powerful denizen of Shavarath is defeated.',
+    description: 'This item is found when a powerful denizen of Shavarath is defeated.',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -659,5 +672,3 @@ export const ingredients: Ingredient[] = [
     ]
   }
 ] as const
-
-export type IngredientName = (typeof ingredients)[number]['name']

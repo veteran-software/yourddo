@@ -1,6 +1,6 @@
 import camelcase from 'camelcase'
 import { useEffect, useState } from 'react'
-import { Container, Image, ListGroup, Stack } from 'react-bootstrap'
+import { Container, Image, Stack } from 'react-bootstrap'
 import type { CraftingIngredient } from '../types/crafting.ts'
 
 const CraftedIngredientDisplay = (props: Props) => {
@@ -12,10 +12,7 @@ const CraftedIngredientDisplay = (props: Props) => {
     if (!ingredient) return
     void (async () => {
       let formattedName = ingredient.name
-      if (
-        formattedName.toLowerCase().includes('shard of') &&
-        formattedName.toLowerCase().includes('power')
-      ) {
+      if (formattedName.toLowerCase().includes('shard of') && formattedName.toLowerCase().includes('power')) {
         formattedName = ingredient.name
           .replace('Ethereal', '')
           .replace('Material', '')
@@ -24,9 +21,7 @@ const CraftedIngredientDisplay = (props: Props) => {
           .replace('Escalation', '')
           .trim()
       }
-      const image = (await import(
-        `../assets/icons/${camelcase(formattedName)}.png`
-      )) as {
+      const image = (await import(`../assets/icons/${camelcase(formattedName)}.png`)) as {
         default: string
       }
       setImageSrc(image.default)
@@ -38,20 +33,18 @@ const CraftedIngredientDisplay = (props: Props) => {
   }
 
   return (
-    <ListGroup.Item>
-      <Stack direction='horizontal' gap={3}>
-        <Image src={imageSrc} alt={ingredient.name} title={ingredient.name} />
+    <Stack direction='horizontal' gap={3}>
+      <Image src={imageSrc} alt={ingredient.name} title={ingredient.name} />
 
-        <Stack direction='vertical' gap={0}>
-          <strong>{ingredient.name}</strong>
-          <small>Crafting Location: {ingredient.craftedIn}</small>
-        </Stack>
-
-        <Container className='w-auto'>
-          <strong>{String(quantity)}</strong>
-        </Container>
+      <Stack direction='vertical' gap={0}>
+        <strong>{ingredient.name}</strong>
+        <small>Crafting Location: {ingredient.craftedIn}</small>
       </Stack>
-    </ListGroup.Item>
+
+      <Container className='w-auto'>
+        <strong>{String(quantity)}</strong>
+      </Container>
+    </Stack>
   )
 }
 
