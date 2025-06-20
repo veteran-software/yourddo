@@ -11,13 +11,8 @@ import { ESSENCES, FOCI, GEMS } from './constants.ts'
  * @param {keyof T} key - The key of the object based on which sorting should occur.
  * @returns {T[]} A new array with the objects sorted by the specified key in ascending order.
  */
-export const sortObjectArray = <T extends object>(
-  array: T[],
-  key: keyof T
-): T[] => {
-  return [...array].sort((a: T, b: T) =>
-    String(a[key]).localeCompare(String(b[key]))
-  )
+export const sortObjectArray = <T extends object>(array: T[], key: keyof T): T[] => {
+  return [...array].sort((a: T, b: T) => String(a[key]).localeCompare(String(b[key])))
 }
 
 /**
@@ -41,25 +36,7 @@ export const removeWhitespace = (input: string, replace?: string): string => {
  * @param {string} label - The input string to be formatted.
  * @returns {string} The input string transformed into kebab-case format.
  */
-export const formatAsKebabCase = (label: string): string =>
-  kebabCase(removeWhitespace(label), false)
-
-/**
- * Filters a list of crafting ingredients by checking if the name of the first
- * requirement (treated as an enhancement) includes the specified element.
- *
- * @param {CraftingIngredient[]} ingList - The list of crafting ingredients to be filtered.
- * @param {string} element - The string element used to match against the first requirement's name in the crafting ingredients.
- * @returns {CraftingIngredient[]} A filtered list of crafting ingredients where the first requirement's name includes the specified element.
- */
-export const filterSublistByElement = (
-  ingList: CraftingIngredient[],
-  element: string
-): CraftingIngredient[] => {
-  return ingList.filter((ingredient: CraftingIngredient) => {
-    return (ingredient.requirements?.[0] as Enhancement).name.includes(element)
-  })
-}
+export const formatAsKebabCase = (label: string): string => kebabCase(removeWhitespace(label), false)
 
 /**
  * Filters a list of crafting ingredients based on a search string and a specified search field.
@@ -84,21 +61,17 @@ export const filterForSublist = (
       }
 
       if (Array.isArray(item[searchField])) {
-        const foundItem = (item[searchField] as Enhancement[]).find(
-          (enhancement: Enhancement) => enhancement.name.includes(searchString)
+        const foundItem = (item[searchField] as Enhancement[]).find((enhancement: Enhancement) =>
+          enhancement.name.includes(searchString)
         )
         if (!foundItem) return false
 
-        return item[searchField].find((enhancement: Enhancement) =>
-          enhancement.name.includes(searchString)
-        )
+        return item[searchField].find((enhancement: Enhancement) => enhancement.name.includes(searchString))
       }
     })
     .toSorted(
       (a: CraftingIngredient, b: CraftingIngredient) =>
-        a.effectsAdded?.[0].name.localeCompare(
-          b.effectsAdded?.[0].name ?? ''
-        ) ?? 0
+        a.effectsAdded?.[0].name.localeCompare(b.effectsAdded?.[0].name ?? '') ?? 0
     )
 }
 

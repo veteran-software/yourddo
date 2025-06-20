@@ -3,42 +3,29 @@ import type { CraftingIngredient } from '../../../types/crafting.ts'
 
 const useIngredientsMap = (
   items: CraftingIngredient[],
-  elemental: ElementalList[],
-  filterCallback: (
-    item: CraftingIngredient,
-    elementName: string,
-    elements: string[]
-  ) => boolean
+  elemental: Element[],
+  filterCallback?: (item: CraftingIngredient, elementName: string, elements?: string[]) => boolean
 ) => {
-  const [ingredientsMap, setIngredientsMap] = useState<
-    Record<string, CraftingIngredient[]>
-  >({})
+  const [ingredientsMap, setIngredientsMap] = useState<Record<string, CraftingIngredient[]>>({})
 
   useEffect(() => {
-    const updatedMap: Record<string, CraftingIngredient[]> = {}
-    elemental.forEach((ele: ElementalList) => {
-      updatedMap[ele.name] = items.filter(
-        (item) =>
-          filterCallback(item, ele.name, ele.elements) &&
-          ((item.effectsAdded as CraftingIngredient[])
-            .at(1)
-            ?.name.includes(`Aspect of ${ele.name}`) ??
-            '')
-      )
+    const ingredientsMapByElement: Record<string, CraftingIngredient[]> = {}
+    elemental.forEach((element: Element) => {
+      const ingredientsForThisElement: CraftingIngredient[] = items.filter((item: CraftingIngredient): boolean => {
+        return filterCallback ? filterCallback(item, element.name, element.elements) : true
+      })
+
+      // Keeps the dropdown more focused
+      if (ingredientsForThisElement.length > 0) ingredientsMapByElement[element.name] = ingredientsForThisElement
     })
 
-    console.log(updatedMap)
-    setIngredientsMap({ ...updatedMap })
+    setIngredientsMap({ ...ingredientsMapByElement })
   }, [items, elemental, filterCallback])
-
-  useEffect(() => {
-    console.log(ingredientsMap)
-  }, [ingredientsMap])
 
   return { ingredientsMap }
 }
 
-interface ElementalList {
+interface Element {
   name: string
   elements: string[]
 }

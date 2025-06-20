@@ -17,27 +17,23 @@ const useRecipeBuilder = () => {
     (recipe: CraftingIngredient | undefined) => {
       if (recipe) {
         if (recipe.craftedIn) {
-          recipe.requirements?.forEach(
-            (requirement: CraftingIngredient | string) => {
-              if (typeof requirement !== 'string') {
-                const ingredient: CraftingIngredient | undefined =
-                  altarOfSubjugation.find(
-                    (recipe: CraftingIngredient) =>
-                      recipe.name === requirement.name
-                  )
+          recipe.requirements.forEach((requirement: CraftingIngredient | string) => {
+            if (typeof requirement !== 'string') {
+              const ingredient: CraftingIngredient | undefined = altarOfSubjugation.find(
+                (recipe: CraftingIngredient) => recipe.name === requirement.name
+              )
 
-                if (ingredient) {
-                  // Crafted Ingredient
-                  dispatch(addCraftedIngredient(ingredient))
+              if (ingredient) {
+                // Crafted Ingredient
+                dispatch(addCraftedIngredient(ingredient))
 
-                  recipeBuilder(ingredient)
-                } else {
-                  // Raw material you find in the wild
-                  dispatch(addRawMaterial(requirement))
-                }
+                recipeBuilder(ingredient)
+              } else {
+                // Raw material you find in the wild
+                dispatch(addRawMaterial(requirement))
               }
             }
-          )
+          })
         }
       }
     },

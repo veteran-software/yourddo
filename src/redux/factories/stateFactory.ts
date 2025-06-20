@@ -1,4 +1,4 @@
-import fecundity from '../../data/altarOfFecundity.json'
+import { altarOfFecundity } from '../../data/altarOfFecundity.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
 import type { GreenSteelState } from '../slices/hgsSlice.ts'
 
@@ -7,9 +7,7 @@ export const createInitialState = (): GreenSteelState => ({
   devastationFilterMode: 'OR',
   devastationItemFilters: [],
   devastationBasicItems: [],
-  fecundityItems: (fecundity as CraftingIngredient[]).filter((item) =>
-    item.name.startsWith('Green Steel')
-  ),
+  fecundityItems: altarOfFecundity.filter((item: CraftingIngredient) => item.name.startsWith('Green Steel')),
   invasionFilterMode: 'OR',
   invasionItemFilters: [],
   invasionItems: [],

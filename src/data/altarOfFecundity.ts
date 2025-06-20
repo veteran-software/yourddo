@@ -12,11 +12,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     description:
       'This glowing orb is powered with the ancient eldritch magic of the giants. Valairea will be quite interested to see it.',
     requirements: [
-      'Chunk of Shavarath Dirt',
-      'Gnoll Whittled Branch',
-      'Polished White Marble Stone',
-      'Spider Spun Thread',
-      'Special Energy Cell'
+      {
+        name: 'Chunk of Shavarath Dirt',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gnoll Whittled Branch',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Polished White Marble Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Spider Spun Thread',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Special Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1
   },
@@ -32,11 +52,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
       'A heavy, polished triangular stone with numerous fine carvings on the surface. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Shavarath Stone of Victory',
-      'Shavarath Stone of Strategy',
-      'Shavarath Stone of Foresight',
-      'Shavarath Stone of Battle',
-      'Shavarath Stone of Might'
+      {
+        name: 'Shavarath Stone of Victory',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Stone of Strategy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Stone of Foresight',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Stone of Battle',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Stone of Might',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -54,11 +94,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
       'An extremely dense piece of unrefined metallic ore. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Glistening Pebbles',
-      'Green Briar Twigs',
-      'Locust Husk',
-      'Chipmunk Funk',
-      'Eberron Energy Cell'
+      {
+        name: 'Glistening Pebbles',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Green Briar Twigs',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Locust Husk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Chipmunk Funk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -72,15 +132,34 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description:
-      'Several iridescent strands of sturdy fiber. This item is humming like the Altar of Fecundity.',
+    description: 'Several iridescent strands of sturdy fiber. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Glistening Pebbles',
-      'Green Briar Twigs',
-      'Locust Husk',
-      'Lammanian Lily Petals',
-      'Eberron Energy Cell'
+      {
+        name: 'Glistening Pebbles',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Green Briar Twigs',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Locust Husk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Lammanian Lily Petals',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -94,15 +173,34 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description:
-      'A tall, thin yellow candle. This item is humming like the Altar of Fecundity.',
+    description: 'A tall, thin yellow candle. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Glistening Pebbles',
-      'Green Briar Twigs',
-      'Locust Husk',
-      'Bitterscrub Fungus',
-      'Eberron Energy Cell'
+      {
+        name: 'Glistening Pebbles',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Green Briar Twigs',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Locust Husk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Bitterscrub Fungus',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -116,15 +214,34 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description:
-      'A tall, thin red candle. This item is humming like the Altar of Fecundity.',
+    description: 'A tall, thin red candle. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Glistening Pebbles',
-      'Green Briar Twigs',
-      'Chipmunk Funk',
-      'Lammanian Lily Petals',
-      'Eberron Energy Cell'
+      {
+        name: 'Glistening Pebbles',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Green Briar Twigs',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Chipmunk Funk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Lammanian Lily Petals',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -138,15 +255,34 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description:
-      'A tall, thin blue candle. This item is humming like the Altar of Fecundity.',
+    description: 'A tall, thin blue candle. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Glistening Pebbles',
-      'Green Briar Twigs',
-      'Chipmunk Funk',
-      'Bitterscrub Fungus',
-      'Eberron Energy Cell'
+      {
+        name: 'Glistening Pebbles',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Green Briar Twigs',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Chipmunk Funk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Bitterscrub Fungus',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -160,15 +296,34 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description:
-      'A tall, thin green candle. This item is humming like the Altar of Fecundity.',
+    description: 'A tall, thin green candle. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Glistening Pebbles',
-      'Green Briar Twigs',
-      'Lammanian Lily Petals',
-      'Bitterscrub Fungus',
-      'Eberron Energy Cell'
+      {
+        name: 'Glistening Pebbles',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Green Briar Twigs',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Lammanian Lily Petals',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Bitterscrub Fungus',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -182,15 +337,34 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description:
-      'A tall, thin violet candle. This item is humming like the Altar of Fecundity.',
+    description: 'A tall, thin violet candle. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Glistening Pebbles',
-      'Locust Husk',
-      'Chipmunk Funk',
-      'Lammanian Lily Petals',
-      'Eberron Energy Cell'
+      {
+        name: 'Glistening Pebbles',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Locust Husk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Chipmunk Funk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Lammanian Lily Petals',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -204,15 +378,34 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description:
-      'An extremely sparkly, faceted jewel. This item is humming like the Altar of Fecundity.',
+    description: 'An extremely sparkly, faceted jewel. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Glistening Pebbles',
-      'Locust Husk',
-      'Chipmunk Funk',
-      'Bitterscrub Fungus',
-      'Eberron Energy Cell'
+      {
+        name: 'Glistening Pebbles',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Locust Husk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Chipmunk Funk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Bitterscrub Fungus',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -226,15 +419,34 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description:
-      'A small, wide container of musky smelling balm. This item is humming like the Altar of Fecundity.',
+    description: 'A small, wide container of musky smelling balm. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Glistening Pebbles',
-      'Locust Husk',
-      'Lammanian Lily Petals',
-      'Bitterscrub Fungus',
-      'Eberron Energy Cell'
+      {
+        name: 'Glistening Pebbles',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Locust Husk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Lammanian Lily Petals',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Bitterscrub Fungus',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -248,15 +460,34 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description:
-      'A finely crafted sculpture of a scarab beetle. This item is humming like the Altar of Fecundity.',
+    description: 'A finely crafted sculpture of a scarab beetle. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Glistening Pebbles',
-      'Chipmunk Funk',
-      'Lammanian Lily Petals',
-      'Bitterscrub Fungus',
-      'Eberron Energy Cell'
+      {
+        name: 'Glistening Pebbles',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Chipmunk Funk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Lammanian Lily Petals',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Bitterscrub Fungus',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -274,11 +505,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
       'A small, narrow bottle of dark oil with a spicy smell. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Green Briar Twigs',
-      'Locust Husk',
-      'Chipmunk Funk',
-      'Lammanian Lily Petals',
-      'Eberron Energy Cell'
+      {
+        name: 'Green Briar Twigs',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Locust Husk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Chipmunk Funk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Lammanian Lily Petals',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -292,15 +543,34 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description:
-      'An extremely sparkly, faceted jewel. This item is humming like the Altar of Fecundity.',
+    description: 'An extremely sparkly, faceted jewel. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Green Briar Twigs',
-      'Locust Husk',
-      'Chipmunk Funk',
-      'Bitterscrub Fungus',
-      'Eberron Energy Cell'
+      {
+        name: 'Green Briar Twigs',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Locust Husk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Chipmunk Funk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Bitterscrub Fungus',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -314,15 +584,34 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description:
-      'A small, wide container of musky smelling balm. This item is humming like the Altar of Fecundity.',
+    description: 'A small, wide container of musky smelling balm. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Green Briar Twigs',
-      'Locust Husk',
-      'Lammanian Lily Petals',
-      'Bitterscrub Fungus',
-      'Eberron Energy Cell'
+      {
+        name: 'Green Briar Twigs',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Locust Husk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Lammanian Lily Petals',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Bitterscrub Fungus',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -336,15 +625,34 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description:
-      'A finely crafted sculpture of a scarab beetle. This item is humming like the Altar of Fecundity.',
+    description: 'A finely crafted sculpture of a scarab beetle. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Green Briar Twigs',
-      'Chipmunk Funk',
-      'Lammanian Lily Petals',
-      'Bitterscrub Fungus',
-      'Eberron Energy Cell'
+      {
+        name: 'Green Briar Twigs',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Chipmunk Funk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Lammanian Lily Petals',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Bitterscrub Fungus',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -362,89 +670,267 @@ export const altarOfFecundity: CraftingIngredient[] = [
       'A small, narrow bottle of dark oil with a spicy smell. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
-      'Locust Husk',
-      'Chipmunk Funk',
-      'Lammanian Lily Petals',
-      'Bitterscrub Fungus',
-      'Eberron Energy Cell'
+      {
+        name: 'Locust Husk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Chipmunk Funk',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Lammanian Lily Petals',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Bitterscrub Fungus',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
     name: 'Green Steel Dagger',
     ingredientType: 'Green Steel Weapon',
+    description: 'A short simple weapon with a pointed blade used for stabbing.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Equip'
+    },
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Blue Taper',
-      'Wondrous Balm',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Blue Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Balm',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
     name: 'Green Steel Hand Axe',
     ingredientType: 'Green Steel Weapon',
+    description: 'A smaller version of the Battleaxe, favored as an offhand weapon by dwarves.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Equip'
+    },
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Balm',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Balm',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
     name: 'Green Steel Kama',
     ingredientType: 'Green Steel Weapon',
+    description:
+      'A weapon with a straight inside edge attached perpendicularly to a thin wooden haft and wielded with one hand.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Equip'
+    },
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Scarab',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Scarab',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
     name: 'Green Steel Kukri',
     ingredientType: 'Green Steel Weapon',
+    description: 'A heavy, curved knife with a sharp edge on the inside of the curve.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Equip'
+    },
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Oil',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Oil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
     name: 'Green Steel Light Mace',
     ingredientType: 'Green Steel Weapon',
+    description: 'A smaller simple weapon comprised of a solid blunt head attached to a haft.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Equip'
+    },
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Red Taper',
-      'Wondrous Jewel',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Red Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Jewel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
     name: 'Green Steel Light Pick',
     ingredientType: 'Green Steel Weapon',
+    description:
+      "A small hammer with a sharp, pointed head designed to concentrate the force of its blow on a small area. Similar to a miner's pick, but smaller and reinforced for battle.",
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Equip'
+    },
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Red Taper',
-      'Wondrous Balm',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Red Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Balm',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -453,11 +939,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Jewel',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Jewel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -466,11 +972,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Blue Taper',
-      'Wondrous Balm',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Blue Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Balm',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -479,11 +1005,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Red Taper',
-      'Wondrous Balm',
-      'Large Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Red Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Balm',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Large Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -492,11 +1038,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Jewel',
-      'Large Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Jewel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Large Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -505,11 +1071,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Red Taper',
-      'Wondrous Scarab',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Red Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Scarab',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -518,11 +1104,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Red Taper',
-      'Wondrous Jewel',
-      'Large Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Red Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Jewel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Large Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -531,11 +1137,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Blue Taper',
-      'Wondrous Oil',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Blue Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Oil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -544,11 +1170,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Red Taper',
-      'Wondrous Scarab',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Red Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Scarab',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -557,11 +1203,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Balm',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Balm',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -570,11 +1236,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Blue Taper',
-      'Wondrous Jewel',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Blue Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Jewel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -583,11 +1269,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Blue Taper',
-      'Wondrous Jewel',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Blue Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Jewel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -596,11 +1302,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Red Taper',
-      'Wondrous Oil',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Red Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Oil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -609,11 +1335,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Oil',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Oil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -622,11 +1368,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Balm',
-      'Large Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Balm',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Large Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -635,11 +1401,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Jewel',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Jewel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -648,11 +1434,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Scarab',
-      'Large Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Scarab',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Large Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -661,11 +1467,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Oil',
-      'Large Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Oil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Large Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -674,11 +1500,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Red Taper',
-      'Wondrous Balm',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Red Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Balm',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -687,11 +1533,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Red Taper',
-      'Wondrous Jewel',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Red Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Jewel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -700,11 +1566,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Red Taper',
-      'Wondrous Oil',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Red Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Oil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -713,11 +1599,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Red Taper',
-      'Wondrous Scarab',
-      'Large Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Red Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Scarab',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Large Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -726,11 +1632,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Red Taper',
-      'Wondrous Oil',
-      'Large Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Red Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Oil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Large Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -739,11 +1665,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Blue Taper',
-      'Wondrous Scarab',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Blue Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Scarab',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -752,11 +1698,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Blue Taper',
-      'Wondrous Scarab',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Blue Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Scarab',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -765,11 +1731,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Blue Taper',
-      'Wondrous Oil',
-      'Large Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Blue Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Oil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Large Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -778,11 +1764,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Scarab',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Scarab',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -791,11 +1797,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Blue Taper',
-      'Wondrous Oil',
-      'Medium Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Blue Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Oil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -804,11 +1830,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Blue Taper',
-      'Wondrous Jewel',
-      'Large Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Blue Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Jewel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Large Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -817,11 +1863,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Yellow Taper',
-      'Wondrous Oil',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Yellow Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Oil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -830,11 +1896,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Blue Taper',
-      'Wondrous Scarab',
-      'Large Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Blue Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Scarab',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Large Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -843,11 +1929,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Ore of Travail',
-      'Blue Taper',
-      'Wondrous Balm',
-      'Large Splintered Horn'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ore of Travail',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Blue Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Balm',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Large Splintered Horn',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -856,11 +1962,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Filaments of Toil',
-      'Green Taper',
-      'Wondrous Jewel',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Filaments of Toil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Green Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Jewel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -869,11 +1995,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Filaments of Toil',
-      'Green Taper',
-      'Wondrous Balm',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Filaments of Toil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Green Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Balm',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -882,11 +2028,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Filaments of Toil',
-      'Green Taper',
-      'Wondrous Scarab',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Filaments of Toil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Green Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Scarab',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -895,11 +2061,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Filaments of Toil',
-      'Green Taper',
-      'Wondrous Oil',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Filaments of Toil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Green Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Oil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -908,11 +2094,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Filaments of Toil',
-      'Violet Taper',
-      'Wondrous Jewel',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Filaments of Toil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Violet Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Jewel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -921,11 +2127,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Filaments of Toil',
-      'Violet Taper',
-      'Wondrous Balm',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Filaments of Toil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Violet Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Balm',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -934,11 +2160,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Filaments of Toil',
-      'Violet Taper',
-      'Wondrous Scarab',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Filaments of Toil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Violet Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Scarab',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -947,11 +2193,31 @@ export const altarOfFecundity: CraftingIngredient[] = [
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
-      'Shavarath Signet Stone',
-      'Filaments of Toil',
-      'Violet Taper',
-      'Wondrous Oil',
-      'Eberron Energy Cell'
+      {
+        name: 'Shavarath Signet Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Filaments of Toil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Violet Taper',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Wondrous Oil',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Eberron Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -961,11 +2227,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -976,11 +2244,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -991,11 +2261,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1006,11 +2278,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1021,11 +2295,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1036,11 +2312,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1051,11 +2329,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1066,11 +2346,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1081,11 +2363,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1096,11 +2380,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1111,11 +2397,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1126,11 +2414,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1141,11 +2431,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1156,11 +2448,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1171,11 +2465,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1186,11 +2482,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1201,11 +2499,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1216,11 +2516,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1231,11 +2533,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1246,11 +2550,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1261,11 +2567,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1276,11 +2584,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1291,11 +2601,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1306,11 +2618,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1321,11 +2635,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1336,11 +2652,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1351,11 +2669,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1366,11 +2686,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1381,11 +2703,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1396,11 +2720,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1411,11 +2737,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1426,11 +2754,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1441,11 +2771,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1456,11 +2788,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1471,11 +2805,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1486,11 +2822,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1501,11 +2839,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1516,11 +2856,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1531,11 +2873,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1546,11 +2890,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1561,11 +2907,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1576,11 +2924,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1591,11 +2941,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1606,11 +2958,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1621,11 +2975,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1636,11 +2992,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1651,11 +3009,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1666,11 +3026,13 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Codex Rune',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       },
       {
         name: 'Commendation of Valor',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   },
@@ -1694,23 +3056,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Fire',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Fire',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Cloudy Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -1723,8 +3090,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
       from: 'Acquisition'
     },
     augmentType: 'Green Steel Epic Active',
-    description:
-      'Grants a resistance bonus to saves and protection from magic missiles.',
+    description: 'Grants a resistance bonus to saves and protection from magic missiles.',
     baseValue: {
       platinum: 350
     },
@@ -1734,23 +3100,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Positive Energy',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Inferior Focus of Negative Energy',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Ethereal Essence',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Cloudy Gem of Opposition',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   },
@@ -1774,23 +3145,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Air',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Inferior Focus of Fire',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Cloudy Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1803,8 +3179,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
       from: 'Acquisition'
     },
     augmentType: 'Green Steel Epic Active',
-    description:
-      "The caster's appearance becomes extremely blurred, giving enemies a 50% miss chance when attacking.",
+    description: "The caster's appearance becomes extremely blurred, giving enemies a 50% miss chance when attacking.",
     baseValue: {
       platinum: 350
     },
@@ -1814,23 +3189,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Diluted Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Cloudy Flawless Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -1854,23 +3234,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Focus of Negative Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Negative Energy',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1894,23 +3279,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Superior Focus of Air',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Water',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1934,23 +3324,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Negative Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Negative Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -1974,23 +3369,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Negative Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Negative Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -2014,23 +3414,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Negative Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Negative Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -2054,23 +3459,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Negative Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Negative Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -2094,23 +3504,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Negative Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Negative Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -2134,23 +3549,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Focus of Positive Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Positive Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Pure Material Essence',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Pure Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -2174,23 +3594,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Positive Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Cloudy Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -2214,23 +3639,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Focus of Positive Energy',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Cloudy Gem of Escalation',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2253,23 +3683,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Positive Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Positive Energy',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Positive Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2293,23 +3728,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Positive Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -2333,23 +3773,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Negative Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -2373,23 +3818,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -2413,23 +3863,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -2453,23 +3908,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Focus of Earth',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Water',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Pure Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Escalation',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   },
@@ -2482,8 +3942,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
       from: 'Acquisition'
     },
     augmentType: 'Green Steel Epic Active',
-    description:
-      "Summons a cute animal. It's not very useful. Runs away and hides after a few minutes.",
+    description: "Summons a cute animal. It's not very useful. Runs away and hides after a few minutes.",
     baseValue: {
       platinum: 350
     },
@@ -2493,23 +3952,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Superior Focus of Water',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Positive Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Pure Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Pure Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Escalation',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   },
@@ -2532,23 +3996,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Water',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Water',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Water',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Opposition',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   },
@@ -2571,23 +4040,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Superior Focus of Earth',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Air',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Fire',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Water',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   },
@@ -2610,23 +4084,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Superior Focus of Earth',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Fire',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Inferior Focus of Air',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Pure Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2649,19 +4128,23 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Water',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Water',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Opposition',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -2684,23 +4167,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Cloudy Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   },
@@ -2723,23 +4211,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Cloudy Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   },
@@ -2762,23 +4255,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Cloudy Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   },
@@ -2801,23 +4299,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Cloudy Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   },
@@ -2840,23 +4343,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Cloudy Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   },
@@ -2879,23 +4387,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Cloudy Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   },
@@ -2919,23 +4432,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Air',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Air',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Diluted Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -2959,23 +4477,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Negative Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Negative Energy',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Material Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2998,23 +4521,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Positive Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Positive Energy',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Positive Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Dominion',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   },
@@ -3037,23 +4565,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Pure Ethereal Essence',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Water',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Escalation',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -3076,23 +4609,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Pure Ethereal Essence',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Positive Energy',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Escalation',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -3115,23 +4653,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Pure Ethereal Essence',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Negative Energy',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Escalation',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -3154,23 +4697,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Ethereal Essence',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Pure Ethereal Essence',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Air',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       },
       {
         name: 'Legendary Gem of Escalation',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Escalation',
-        quantity: 2
+        quantity: 2,
+        requirements: []
       }
     ]
   },
@@ -3193,23 +4741,28 @@ export const altarOfFecundity: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Legendary Inferior Focus of Positive Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Focus of Positive Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Superior Focus of Positive Energy',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       },
       {
         name: 'Legendary Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Legendary Flawless Gem of Escalation',
-        quantity: 3
+        quantity: 3,
+        requirements: []
       }
     ]
   }

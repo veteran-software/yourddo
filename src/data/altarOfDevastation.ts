@@ -6,23 +6,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Large Glowing Arrowhead',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Gnawed Bone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Twisted Shrapnel',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Sulfurous Stone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -37,23 +42,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Large Gnawed Bone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Length of Infernal Chain',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Devil Scales',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Twisted Shrapnel',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -68,23 +78,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Large Glowing Arrowhead',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Gnawed Bone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Length of Infernal Chain',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Twisted Shrapnel',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -99,23 +114,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Large Length of Infernal Chain',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Devil Scales',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Twisted Shrapnel',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Sulfurous Stone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -130,23 +150,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Large Glowing Arrowhead',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Length of Infernal Chain',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Devil Scales',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Sulfurous Stone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -161,23 +186,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Large Glowing Arrowhead',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Gnawed Bone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Devil Scales',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Twisted Shrapnel',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -192,23 +222,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Large Glowing Arrowhead',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Devil Scales',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Twisted Shrapnel',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Sulfurous Stone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -223,23 +258,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Large Glowing Arrowhead',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Length of Infernal Chain',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Twisted Shrapnel',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Sulfurous Stone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -254,23 +294,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Large Gnawed Bone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Length of Infernal Chain',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Devil Scales',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Sulfurous Stone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -285,23 +330,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Large Glowing Arrowhead',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Gnawed Bone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Devil Scales',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Sulfurous Stone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -316,23 +366,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Large Glowing Arrowhead',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Gnawed Bone',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Length of Infernal Chain',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Large Devil Scales',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -348,23 +403,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Air',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -378,8 +438,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Air Opposition Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Ethereal Air Opposition Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Ethereal Air Opposition Shard of Supreme Power.'
       }
     ]
   },
@@ -388,23 +447,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Air',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -418,8 +482,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Air Escalation Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Ethereal Air Escalation Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Ethereal Air Escalation Shard of Supreme Power.'
       }
     ]
   },
@@ -428,23 +491,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Air',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -458,8 +526,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Air Escalation Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Material Air Escalation Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Material Air Escalation Shard of Supreme Power.'
       }
     ]
   },
@@ -468,23 +535,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Air',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -498,8 +570,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Air Opposition Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Material Air Opposition Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Material Air Opposition Shard of Supreme Power.'
       }
     ]
   },
@@ -508,23 +579,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Air',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -538,8 +614,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Air Dominion Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Ethereal Air Dominion Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Ethereal Air Dominion Shard of Supreme Power.'
       }
     ]
   },
@@ -548,23 +623,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Air',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -578,8 +658,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Air Dominion Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Material Air Dominion Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Material Air Dominion Shard of Supreme Power.'
       }
     ]
   },
@@ -588,23 +667,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Earth',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -618,8 +702,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Earth Opposition Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Ethereal Earth Opposition Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Ethereal Earth Opposition Shard of Supreme Power.'
       }
     ]
   },
@@ -628,23 +711,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Earth',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -658,8 +746,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Earth Escalation Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Material Earth Escalation Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Material Earth Escalation Shard of Supreme Power.'
       }
     ]
   },
@@ -668,23 +755,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Earth',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -698,8 +790,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Earth Escalation Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Ethereal Earth Escalation Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Ethereal Earth Escalation Shard of Supreme Power.'
       }
     ]
   },
@@ -708,23 +799,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Earth',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -738,8 +834,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Earth Opposition Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Material Earth Opposition Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Material Earth Opposition Shard of Supreme Power.'
       }
     ]
   },
@@ -748,23 +843,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Earth',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -778,8 +878,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Earth Dominion Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Material Earth Dominion Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Material Earth Dominion Shard of Supreme Power.'
       }
     ]
   },
@@ -788,23 +887,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Earth',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -818,8 +922,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Earth Dominion Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Ethereal Earth Dominion Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Ethereal Earth Dominion Shard of Supreme Power.'
       }
     ]
   },
@@ -828,23 +931,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Fire',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -858,8 +966,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Fire Opposition Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Ethereal Fire Opposition Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Ethereal Fire Opposition Shard of Supreme Power.'
       }
     ]
   },
@@ -868,23 +975,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Fire',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -898,8 +1010,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Fire Escalation Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Material Fire Escalation Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Material Fire Escalation Shard of Supreme Power.'
       }
     ]
   },
@@ -908,23 +1019,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Fire',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -938,8 +1054,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Fire Escalation Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Ethereal Fire Escalation Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Ethereal Fire Escalation Shard of Supreme Power.'
       }
     ]
   },
@@ -948,23 +1063,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Fire',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -978,8 +1098,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Fire Opposition Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Material Fire Opposition Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Material Fire Opposition Shard of Supreme Power.'
       }
     ]
   },
@@ -988,23 +1107,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Fire',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1018,8 +1142,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Fire Dominion Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Material Fire Dominion Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Material Fire Dominion Shard of Supreme Power.'
       }
     ]
   },
@@ -1028,23 +1151,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Fire',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1058,8 +1186,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Fire Dominion Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Ethereal Fire Dominion Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Ethereal Fire Dominion Shard of Supreme Power.'
       }
     ]
   },
@@ -1068,23 +1195,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Negative Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1108,23 +1240,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Negative Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1148,23 +1285,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Negative Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1188,23 +1330,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Negative Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1228,23 +1375,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Negative Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1268,23 +1420,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Negative Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1308,23 +1465,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Positive Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1348,23 +1510,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Positive Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1388,23 +1555,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Positive Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1428,23 +1600,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Positive Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1468,23 +1645,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Positive Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1508,23 +1690,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Positive Energy',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1548,23 +1735,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Water',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1578,8 +1770,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Water Opposition Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Ethereal Water Opposition Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Ethereal Water Opposition Shard of Supreme Power.'
       }
     ]
   },
@@ -1588,23 +1779,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Water',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1618,8 +1814,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Water Escalation Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Material Water Escalation Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Material Water Escalation Shard of Supreme Power.'
       }
     ]
   },
@@ -1628,23 +1823,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Water',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Escalation',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1658,8 +1858,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Water Escalation Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Ethereal Water Escalation Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Ethereal Water Escalation Shard of Supreme Power.'
       }
     ]
   },
@@ -1668,23 +1867,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Water',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Opposition',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1698,8 +1902,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Water Opposition Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Material Water Opposition Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Material Water Opposition Shard of Supreme Power.'
       }
     ]
   },
@@ -1708,23 +1911,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Water',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Ethereal Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1738,8 +1946,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Water Dominion Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Ethereal Water Dominion Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Ethereal Water Dominion Shard of Supreme Power.'
       }
     ]
   },
@@ -1748,23 +1955,28 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Superior Focus of Water',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Flawless Gem of Dominion',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Pure Material Essence',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1,
@@ -1778,8 +1990,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Water Dominion Shard of Supreme Power',
-        description:
-          'This shard has been imbued with the energy of Material Water Dominion Shard of Supreme Power.'
+        description: 'This shard has been imbued with the energy of Material Water Dominion Shard of Supreme Power.'
       }
     ]
   },
@@ -1791,15 +2002,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1811,15 +2025,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1831,15 +2048,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1851,15 +2071,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1871,15 +2094,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1891,15 +2117,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1911,15 +2140,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1931,15 +2163,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1951,15 +2186,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1971,15 +2209,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1991,15 +2232,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2011,15 +2255,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2031,15 +2278,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2051,15 +2301,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2071,15 +2324,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2091,15 +2347,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2111,15 +2370,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2131,15 +2393,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2151,15 +2416,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Positive Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2171,15 +2439,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Positive Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2191,15 +2462,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Positive Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2211,15 +2485,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Positive Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2231,15 +2508,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Positive Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2251,15 +2531,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Positive Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2271,15 +2554,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2291,15 +2577,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2311,15 +2600,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2331,15 +2623,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2351,15 +2646,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2371,15 +2669,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2391,15 +2692,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2411,15 +2715,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2431,15 +2738,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2451,15 +2761,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2471,15 +2784,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2491,15 +2807,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2511,15 +2830,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Positive Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2531,15 +2853,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Positive Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2551,15 +2876,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Positive Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2571,15 +2899,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Positive Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2591,15 +2922,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Positive Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2611,15 +2945,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Positive Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2631,15 +2968,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2651,15 +2991,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2671,15 +3014,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2691,15 +3037,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2711,15 +3060,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2731,15 +3083,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2751,15 +3106,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Positive Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2771,15 +3129,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Positive Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2791,15 +3152,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Positive Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2811,15 +3175,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Positive Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2831,15 +3198,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Positive Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2851,15 +3221,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Positive Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2871,15 +3244,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2891,15 +3267,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2911,15 +3290,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2931,15 +3313,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2951,15 +3336,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2971,15 +3359,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2991,15 +3382,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3011,15 +3405,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3031,15 +3428,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3051,15 +3451,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3071,15 +3474,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3091,15 +3497,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3111,15 +3520,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Positive Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3131,15 +3543,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Positive Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3151,15 +3566,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Positive Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3171,15 +3589,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Positive Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3191,15 +3612,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Positive Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3211,15 +3635,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Positive Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3231,15 +3658,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3251,15 +3681,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3271,15 +3704,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3291,15 +3727,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3311,15 +3750,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3331,15 +3773,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3351,15 +3796,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3371,15 +3819,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3391,15 +3842,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3411,15 +3865,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3431,15 +3888,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3451,15 +3911,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3471,15 +3934,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3491,15 +3957,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3511,15 +3980,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3531,15 +4003,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3551,15 +4026,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Ethereal Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3571,15 +4049,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Material Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3607,15 +4088,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Air Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -3626,8 +4110,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Charisma +2',
-        description:
-          'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
+        description: 'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
       },
       {
         name: 'Air Guard'
@@ -3643,15 +4126,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Air Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -3662,8 +4148,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Dexterity +2',
-        description:
-          'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
+        description: 'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
       },
       {
         name: 'Air Guard'
@@ -3679,15 +4164,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Air Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -3715,15 +4203,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Air Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -3750,15 +4241,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Air Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -3786,15 +4280,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Air Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -3822,15 +4319,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Earth Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -3841,8 +4341,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Constitution +2',
-        description:
-          'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
+        description: 'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
       },
       {
         name: 'Earthgrab'
@@ -3858,15 +4357,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Earth Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -3894,15 +4396,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Earth Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -3930,15 +4435,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Earth Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -3966,15 +4474,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Earth Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4001,15 +4512,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Earth Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4037,15 +4551,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Fire Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4056,8 +4573,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Dexterity +2',
-        description:
-          'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
+        description: 'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
       },
       {
         name: 'Incineration'
@@ -4073,15 +4589,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Fire Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4092,8 +4611,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Intelligence +2',
-        description:
-          "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
+        description: "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
       },
       {
         name: 'Incineration'
@@ -4109,15 +4627,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Fire Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4145,15 +4666,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Fire Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4181,15 +4705,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Fire Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4216,15 +4743,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Fire Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4252,15 +4782,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Negative Energy Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4271,8 +4804,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Intelligence +2',
-        description:
-          "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
+        description: "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
       },
       {
         name: 'Slay Living'
@@ -4288,15 +4820,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Negative Energy Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4307,8 +4842,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Strength +2',
-        description:
-          'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
+        description: 'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
       },
       {
         name: 'Slay Living'
@@ -4324,15 +4858,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Negative Energy Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4360,15 +4897,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Negative Energy Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4379,8 +4919,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Nullification +72',
-        description:
-          'Passive: +72 Equipment Bonus to Negative Energy Spell Power.'
+        description: 'Passive: +72 Equipment Bonus to Negative Energy Spell Power.'
       },
       {
         name: 'Slay Living'
@@ -4396,15 +4935,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Negative Energy Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4432,15 +4974,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Negative Energy Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4468,15 +5013,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Positive Energy Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4487,8 +5035,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Charisma +2',
-        description:
-          'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
+        description: 'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
       },
       {
         name: 'Greater Disruption'
@@ -4504,15 +5051,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Positive Energy Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4523,8 +5073,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Constitution +2',
-        description:
-          'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
+        description: 'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
       },
       {
         name: 'Greater Disruption'
@@ -4540,15 +5089,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Positive Energy Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4575,15 +5127,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Positive Energy Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4611,15 +5166,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Positive Energy Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4646,15 +5204,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Positive Energy Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4682,15 +5243,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Water Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4701,8 +5265,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Strength +2',
-        description:
-          'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
+        description: 'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
       },
       {
         name: 'Crushing Wave'
@@ -4718,15 +5281,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Water Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4754,15 +5320,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Water Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4790,15 +5359,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Water Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4825,15 +5397,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Water Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4861,15 +5436,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Water Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4897,16 +5475,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ash Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ash / Enervation Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4933,16 +5514,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ash Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ash / Enervation Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4953,8 +5537,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Intelligence +2',
-        description:
-          "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
+        description: "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
       },
       {
         name: 'Enervation'
@@ -4970,16 +5553,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ash Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ash / Enervation Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -4990,8 +5576,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Dexterity +2',
-        description:
-          'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
+        description: 'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
       },
       {
         name: 'Enervation'
@@ -5007,16 +5592,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ash Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ash / Enervation Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5044,16 +5632,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ash Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ash / Enervation Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5081,16 +5672,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ash Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ash / Enervation Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5117,16 +5711,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Dust Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Dust / Disintegration Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5154,16 +5751,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Dust Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Dust / Disintegration Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5191,16 +5791,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Dust Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Dust / Disintegration Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5211,8 +5814,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Constitution +2',
-        description:
-          'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
+        description: 'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
       },
       {
         name: 'Disintegration'
@@ -5228,16 +5830,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Dust Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Dust / Disintegration Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5265,16 +5870,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Dust Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Dust / Disintegration Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5302,16 +5910,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Dust Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Dust / Disintegration Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5338,16 +5949,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Freezing Ice Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Freezing Ice Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5375,16 +5989,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Freezing Ice Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Freezing Ice Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5395,8 +6012,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Charisma +2',
-        description:
-          'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
+        description: 'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
       },
       {
         name: 'Freezing Ice'
@@ -5412,16 +6028,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Freezing Ice Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Freezing Ice Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5432,8 +6051,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Dexterity +2',
-        description:
-          'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
+        description: 'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
       },
       {
         name: 'Freezing Ice'
@@ -5449,16 +6067,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Freezing Ice Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Freezing Ice Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5486,16 +6107,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Freezing Ice Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Freezing Ice Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5523,16 +6147,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Freezing Ice Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Freezing Ice Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5559,16 +6186,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Lightning Strike Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Lightning Strike Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5596,16 +6226,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Lightning Strike Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Lightning Strike Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5616,8 +6249,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Charisma +2',
-        description:
-          'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
+        description: 'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
       },
       {
         name: 'Lightning Strike'
@@ -5633,16 +6265,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Lightning Strike Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Lightning Strike Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5653,8 +6288,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Dexterity +2',
-        description:
-          'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
+        description: 'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
       },
       {
         name: 'Lightning Strike'
@@ -5670,16 +6304,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Lightning Strike Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Lightning Strike Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5707,16 +6344,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Lightning Strike Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Lightning Strike Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5744,16 +6384,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Lightning Strike Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Lightning Strike Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5780,16 +6423,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Balance of Land and Sky Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Tempered / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5817,16 +6463,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Balance of Land and Sky Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Tempered / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5854,16 +6503,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Balance of Land and Sky Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Tempered / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5874,8 +6526,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Strength +2',
-        description:
-          'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
+        description: 'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
       },
       {
         name: 'Elemental Mastery'
@@ -5891,16 +6542,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Balance of Land and Sky Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Tempered / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5928,16 +6582,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Balance of Land and Sky Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Tempered / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -5965,16 +6622,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Balance of Land and Sky Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Tempered / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6001,16 +6661,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Magma Surge Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Magma Surge Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6038,16 +6701,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Magma Surge Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Magma Surge Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6058,8 +6724,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Intelligence +2',
-        description:
-          "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
+        description: "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
       },
       {
         name: 'Magma Surge'
@@ -6075,16 +6740,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Magma Surge Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Magma Surge Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6095,8 +6763,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Dexterity +2',
-        description:
-          'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
+        description: 'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
       },
       {
         name: 'Magma Surge'
@@ -6112,16 +6779,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Magma Surge Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Magma Surge Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6149,16 +6819,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Magma Surge Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Magma Surge Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6186,16 +6859,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Magma Surge Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Magma Surge Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6231,16 +6907,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Mineral Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Mineral Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6277,16 +6956,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Mineral Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Mineral Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6323,16 +7005,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Mineral Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Mineral Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6343,8 +7028,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Constitution +2',
-        description:
-          'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
+        description: 'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
       },
       {
         name: 'Metalline'
@@ -6369,16 +7053,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Mineral Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Mineral Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6415,16 +7102,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Mineral Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Mineral Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6461,16 +7151,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Mineral Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Mineral Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6497,16 +7190,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ooze Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ooze / Sunder Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6534,16 +7230,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ooze Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ooze / Sunder Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6571,16 +7270,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ooze Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ooze / Sunder Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6591,8 +7293,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Strength +2',
-        description:
-          'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
+        description: 'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
       },
       {
         name: 'Sundering Ooze'
@@ -6608,16 +7309,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ooze Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ooze / Sunder Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6645,16 +7349,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ooze Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ooze / Sunder Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6682,16 +7389,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ooze Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ooze / Sunder Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6718,16 +7428,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Radiance Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Radiance Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6755,16 +7468,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Radiance Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Radiance Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6775,8 +7491,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Intelligence +2',
-        description:
-          "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
+        description: "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
       },
       {
         name: 'Radiance'
@@ -6792,16 +7507,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Radiance Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Radiance Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6812,8 +7530,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Dexterity +2',
-        description:
-          'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
+        description: 'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
       },
       {
         name: 'Radiance'
@@ -6829,16 +7546,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Radiance Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Radiance Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6866,16 +7586,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Radiance Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Radiance Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6903,16 +7626,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Radiance Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Radiance Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6939,16 +7665,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Corrosive Salt Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Corrosive Salt Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -6976,16 +7705,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Corrosive Salt Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Corrosive Salt Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7013,16 +7745,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Corrosive Salt Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Corrosive Salt Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7033,8 +7768,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Strength +2',
-        description:
-          'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
+        description: 'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
       },
       {
         name: 'Corrosive Salt'
@@ -7050,16 +7784,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Corrosive Salt Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Corrosive Salt Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7087,16 +7824,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Corrosive Salt Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Corrosive Salt Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7124,16 +7864,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Corrosive Salt Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Corrosive Salt Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7160,16 +7903,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Smoke Screen Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Smoke Screen / Blur Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7197,16 +7943,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Smoke Screen Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Smoke Screen / Blur Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7217,8 +7966,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Intelligence +2',
-        description:
-          "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
+        description: "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
       },
       {
         name: 'Smoke Screen'
@@ -7234,16 +7982,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Smoke Screen Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Smoke Screen / Blur Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7254,8 +8005,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Dexterity +2',
-        description:
-          'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
+        description: 'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
       },
       {
         name: 'Smoke Screen'
@@ -7271,16 +8021,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Smoke Screen Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Smoke Screen / Blur Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7308,16 +8061,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Smoke Screen Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Smoke Screen / Blur Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7345,16 +8101,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Smoke Screen Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Smoke Screen / Blur Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7381,16 +8140,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Steam Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Steam Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7418,16 +8180,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Steam Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Steam Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7455,16 +8220,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Steam Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Steam Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7475,8 +8243,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Strength +2',
-        description:
-          'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
+        description: 'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
       },
       {
         name: 'Steam'
@@ -7492,16 +8259,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Steam Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Steam Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7529,16 +8299,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Steam Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Steam Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7566,16 +8339,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Steam Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Steam Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7602,16 +8378,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Vacuum Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Vacuum / Trap the Soul Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7639,16 +8418,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Vacuum Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Vacuum / Trap the Soul Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7659,8 +8441,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Charisma +2',
-        description:
-          'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
+        description: 'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
       },
       {
         name: 'Trap the Soul'
@@ -7676,16 +8457,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Vacuum Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Vacuum / Trap the Soul Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7696,8 +8480,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Dexterity +2',
-        description:
-          'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
+        description: 'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
       },
       {
         name: 'Trap the Soul'
@@ -7713,16 +8496,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Vacuum Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Vacuum / Trap the Soul Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7750,16 +8536,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Vacuum Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Vacuum / Trap the Soul Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7787,16 +8576,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Vacuum Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Vacuum / Trap the Soul Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7827,16 +8619,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Existential Stalemate Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Existential Stalemate / Concordant Opposition Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Positive Energy Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7868,16 +8663,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Existential Stalemate Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Existential Stalemate / Concordant Opposition Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Positive Energy Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7888,8 +8686,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Charisma +2',
-        description:
-          'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
+        description: 'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
       },
       {
         name: 'Concordant Opposition'
@@ -7909,16 +8706,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Existential Stalemate Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Existential Stalemate / Concordant Opposition Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Positive Energy Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7929,8 +8729,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Constitution +2',
-        description:
-          'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
+        description: 'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
       },
       {
         name: 'Concordant Opposition'
@@ -7950,16 +8749,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Existential Stalemate Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Existential Stalemate / Concordant Opposition Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Positive Energy Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -7991,16 +8793,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Existential Stalemate Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Existential Stalemate / Concordant Opposition Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Positive Energy Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8031,16 +8836,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Existential Stalemate Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Existential Stalemate / Concordant Opposition Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Positive Energy Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8067,16 +8875,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tempered Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Balance of Land and Sky / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8104,16 +8915,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tempered Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Balance of Land and Sky / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8141,16 +8955,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tempered Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Balance of Land and Sky / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8161,8 +8978,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Constitution +2',
-        description:
-          'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
+        description: 'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
       },
       {
         name: 'Elemental Mastery'
@@ -8178,16 +8994,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tempered Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Balance of Land and Sky / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8215,16 +9034,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tempered Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Balance of Land and Sky / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8252,16 +9074,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tempered Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Balance of Land and Sky / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8290,15 +9115,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Air Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8331,15 +9159,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Air Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8355,8 +9186,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       },
       {
         name: 'Air Guard'
@@ -8372,15 +9202,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Air Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8391,8 +9224,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Electricity Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Electricity resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Electricity resistance.'
       },
       {
         name: 'Air Guard'
@@ -8408,15 +9240,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Air Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8427,8 +9262,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Lightning Lore V',
-        description:
-          'Passive: Your Electric spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Electric spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Air Guard'
@@ -8444,15 +9278,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Air Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8463,8 +9300,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Lightning Guard II',
-        description:
-          'When Attacked: Deals 2 to 8 Electric damage to your attacker.'
+        description: 'When Attacked: Deals 2 to 8 Electric damage to your attacker.'
       },
       {
         name: 'Air Guard'
@@ -8480,15 +9316,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Air Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8516,15 +9355,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Earth Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8556,15 +9398,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Earth Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8596,15 +9441,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Earth Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8615,8 +9463,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Acid Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Acid resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Acid resistance.'
       },
       {
         name: 'Earthgrab Guard'
@@ -8632,15 +9479,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Earth Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8667,15 +9517,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Earth Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8686,8 +9539,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Acid Lore V',
-        description:
-          'Passive: Your Acid spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Acid spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Earthgrab Guard'
@@ -8703,15 +9555,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Earth Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8739,15 +9594,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Fire Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8763,8 +9621,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       },
       {
         name: 'Incineration Guard'
@@ -8780,15 +9637,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Fire Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8804,8 +9664,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Intelligence Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
+        description: 'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
       },
       {
         name: 'Incineration Guard'
@@ -8821,15 +9680,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Fire Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8840,8 +9702,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Fire Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Fire resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Fire resistance.'
       },
       {
         name: 'Incineration Guard'
@@ -8857,15 +9718,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Fire Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8892,15 +9756,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Fire Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8911,8 +9778,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Fire Lore V',
-        description:
-          'Passive: Your Fire spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Fire spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Incineration Guard'
@@ -8928,15 +9794,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Fire Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8964,15 +9833,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Negative Energy Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -8988,8 +9860,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Intelligence Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
+        description: 'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
       },
       {
         name: 'Slay Living Guard'
@@ -9005,15 +9876,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Negative Energy Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9045,15 +9919,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Negative Energy Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9064,8 +9941,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Deathblock',
-        description:
-          'The wearer of this item is immune to all death spells and magical death effects.'
+        description: 'The wearer of this item is immune to all death spells and magical death effects.'
       },
       {
         name: 'Slay Living Guard'
@@ -9081,15 +9957,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Negative Energy Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9100,8 +9979,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Void Lore V',
-        description:
-          'Passive: Your Negative Energy spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Negative Energy spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Slay Living Guard'
@@ -9117,15 +9995,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Negative Energy Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9153,15 +10034,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Negative Energy Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9189,15 +10073,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Positive Energy Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9230,15 +10117,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Positive Energy Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9270,15 +10160,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Positive Energy Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9306,15 +10199,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Positive Energy Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9342,15 +10238,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Positive Energy Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9361,8 +10260,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Healing Lore V',
-        description:
-          'Passive: Your Healing spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Healing spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Greater Disruption Guard'
@@ -9378,15 +10276,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Positive Energy Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9414,15 +10315,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Water Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9454,15 +10358,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Water Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9494,15 +10401,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Water Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9513,8 +10423,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Cold Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Cold resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Cold resistance.'
       },
       {
         name: 'Crushing Wave Guard'
@@ -9530,15 +10439,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Water Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9549,8 +10461,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ice Lore V',
-        description:
-          'Passive: Your Cold spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Cold spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Crushing Wave Guard'
@@ -9566,15 +10477,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Water Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9601,15 +10515,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Water Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9636,16 +10553,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ash Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ash / Enervation Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9656,8 +10576,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Fire Lore V',
-        description:
-          'Passive: Your Fire spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Fire spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Enervation Guard'
@@ -9673,16 +10592,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ash Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ash / Enervation Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9698,8 +10620,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Intelligence Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
+        description: 'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
       },
       {
         name: 'Enervation Guard'
@@ -9715,16 +10636,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ash Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ash / Enervation Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9740,8 +10664,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       },
       {
         name: 'Enervation Guard'
@@ -9757,16 +10680,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ash Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ash / Enervation Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9794,16 +10720,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ash Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ash / Enervation Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9814,8 +10743,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Fire Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Fire resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Fire resistance.'
       },
       {
         name: 'Enervation Guard'
@@ -9831,16 +10759,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ash Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ash / Enervation Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9851,8 +10782,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Acid Lore V',
-        description:
-          'Passive: Your Acid spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Acid spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Disintegration Guard'
@@ -9868,16 +10798,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Dust Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Dust / Disintegration Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9904,16 +10837,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Dust Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Dust / Disintegration Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9945,16 +10881,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Dust Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Dust / Disintegration Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -9986,16 +10925,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Dust Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Dust / Disintegration Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10023,16 +10965,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Dust Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Dust / Disintegration Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10043,8 +10988,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Acid Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Acid resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Acid resistance.'
       },
       {
         name: 'Disintegration Guard'
@@ -10060,16 +11004,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Dust Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Dust / Disintegration Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10080,8 +11027,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Lightning Lore V',
-        description:
-          'Passive: Your Electric spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Electric spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Freezing Ice Guard'
@@ -10097,16 +11043,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Freezing Ice Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Freezing Ice Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10117,8 +11066,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Lightning Guard II',
-        description:
-          'When Attacked: Deals 2 to 8 Electric damage to your attacker.'
+        description: 'When Attacked: Deals 2 to 8 Electric damage to your attacker.'
       },
       {
         name: 'Freezing Ice Guard'
@@ -10134,16 +11082,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Freezing Ice Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Freezing Ice Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10176,16 +11127,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Freezing Ice Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Freezing Ice Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10201,8 +11155,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       },
       {
         name: 'Freezing Ice Guard'
@@ -10218,16 +11171,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Freezing Ice Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Freezing Ice Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10255,16 +11211,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Freezing Ice Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Freezing Ice Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10275,8 +11234,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Electricity Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Electricity resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Electricity resistance.'
       },
       {
         name: 'Freezing Ice Guard'
@@ -10292,16 +11250,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Freezing Ice Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Freezing Ice Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10312,8 +11273,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Lightning Lore V',
-        description:
-          'Passive: Your Electric spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Electric spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Lightning Storm Guard'
@@ -10329,16 +11289,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Lightning Strike Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Lightning Strike Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10349,8 +11312,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Lightning Guard II',
-        description:
-          'When Attacked: Deals 2 to 8 Electric damage to your attacker.'
+        description: 'When Attacked: Deals 2 to 8 Electric damage to your attacker.'
       },
       {
         name: 'Lightning Storm Guard'
@@ -10366,16 +11328,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Lightning Strike Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Lightning Strike Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10408,16 +11373,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Lightning Strike Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Lightning Strike Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10433,8 +11401,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       },
       {
         name: 'Lightning Storm Guard'
@@ -10450,16 +11417,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Lightning Strike Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Lightning Strike Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10487,16 +11457,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Lightning Strike Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Lightning Strike Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10507,8 +11480,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Electricity Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Electricity resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Electricity resistance.'
       },
       {
         name: 'Lightning Storm Guard'
@@ -10524,16 +11496,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Lightning Strike Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Lightning Strike Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10544,8 +11519,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ice Lore V',
-        description:
-          'Passive:  Your Cold spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive:  Your Cold spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Elemental Mastery Guard'
@@ -10561,16 +11535,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Balance of Land and Sky Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Tempered / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10581,8 +11558,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Cold Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Cold resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Cold resistance.'
       },
       {
         name: 'Elemental Mastery Guard'
@@ -10598,16 +11574,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Balance of Land and Sky Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Tempered / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10635,16 +11614,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Balance of Land and Sky Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Tempered / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10676,16 +11658,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Balance of Land and Sky Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Tempered / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10717,16 +11702,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Balance of Land and Sky Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Tempered / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10753,16 +11741,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Balance of Land and Sky Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Tempered / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10773,8 +11764,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Fire Lore V',
-        description:
-          'Passive: Your Fire spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Fire spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Magma Surge Guard'
@@ -10790,16 +11780,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Magma Surge Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Magma Surge Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10826,16 +11819,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Magma Surge Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Magma Surge Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10851,8 +11847,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Intelligence Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
+        description: 'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
       },
       {
         name: 'Magma Surge Guard'
@@ -10868,16 +11863,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Magma Surge Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Magma Surge Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10893,8 +11891,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       },
       {
         name: 'Magma Surge Guard'
@@ -10910,16 +11907,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Magma Surge Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Magma Surge Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10947,16 +11947,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Magma Surge Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Magma Surge Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -10967,8 +11970,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Fire Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Fire resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Fire resistance.'
       },
       {
         name: 'Magma Surge Guard'
@@ -10984,16 +11986,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Magma Surge Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Magma Surge Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11004,8 +12009,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Acid Lore V',
-        description:
-          'Passive: Your Acid spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Acid spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Fortification 100%'
@@ -11027,16 +12031,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Mineral Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Mineral Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11069,16 +12076,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Mineral Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Mineral Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11116,16 +12126,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Mineral Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Mineral Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11163,16 +12176,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Mineral Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Mineral Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11206,16 +12222,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Mineral Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Mineral Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11226,8 +12245,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Acid Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Acid resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Acid resistance.'
       },
       {
         name: 'Fortification 100%'
@@ -11249,16 +12267,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Mineral Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Mineral Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11269,8 +12290,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ice Lore V',
-        description:
-          'Passive: Your Cold spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Cold spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Sundering Ooze Guard'
@@ -11286,16 +12306,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ooze Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ooze / Sunder Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11322,16 +12345,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ooze Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ooze / Sunder Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11363,16 +12389,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ooze Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ooze / Sunder Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11404,16 +12433,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ooze Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ooze / Sunder Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11441,16 +12473,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ooze Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ooze / Sunder Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11461,8 +12496,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Cold Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Cold resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Cold resistance.'
       },
       {
         name: 'Sundering Ooze Guard'
@@ -11478,16 +12512,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Ooze Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Ooze / Sunder Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11498,8 +12535,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Fire Lore V',
-        description:
-          'Passive: Your Fire spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Fire spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Radiance Guard'
@@ -11515,16 +12551,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Radiance Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Radiance Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11551,16 +12590,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Radiance Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Radiance Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11576,8 +12618,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Intelligence Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
+        description: 'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
       },
       {
         name: 'Radiance Guard'
@@ -11593,16 +12634,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Radiance Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Radiance Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11618,8 +12662,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       },
       {
         name: 'Radiance Guard'
@@ -11635,16 +12678,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Radiance Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Radiance Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11672,16 +12718,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Radiance Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Radiance Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11692,8 +12741,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Fire Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Fire resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Fire resistance.'
       },
       {
         name: 'Radiance Guard'
@@ -11709,16 +12757,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Radiance Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Radiance Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11729,8 +12780,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ice Lore V',
-        description:
-          'Passive: Your Cold spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Cold spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Corrosive Salt Guard'
@@ -11746,16 +12796,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Corrosive Salt Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Corrosive Salt Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11782,16 +12835,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Corrosive Salt Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Corrosive Salt Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11823,16 +12879,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Corrosive Salt Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Corrosive Salt Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11864,16 +12923,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Corrosive Salt Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Corrosive Salt Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11901,16 +12963,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Corrosive Salt Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Corrosive Salt Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11921,8 +12986,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Cold Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Cold resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Cold resistance.'
       },
       {
         name: 'Corrosive Salt Guard'
@@ -11938,16 +13002,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Corrosive Salt Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Corrosive Salt Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -11958,8 +13025,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Fire Lore V',
-        description:
-          'Passive: Your Fire spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Fire spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Smoke Screen'
@@ -11975,16 +13041,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Smoke Screen Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Smoke Screen / Blur Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12011,16 +13080,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Smoke Screen Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Smoke Screen / Blur Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12036,8 +13108,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Intelligence Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
+        description: 'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
       },
       {
         name: 'Smoke Screen'
@@ -12053,16 +13124,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Smoke Screen Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Smoke Screen / Blur Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12078,8 +13152,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       },
       {
         name: 'Smoke Screen'
@@ -12095,16 +13168,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Smoke Screen Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Smoke Screen / Blur Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12132,16 +13208,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Smoke Screen Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Smoke Screen / Blur Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12152,8 +13231,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Fire Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Fire resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Fire resistance.'
       },
       {
         name: 'Smoke Screen'
@@ -12169,16 +13247,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Smoke Screen Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Smoke Screen / Blur Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Fire Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12189,8 +13270,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ice Lore V',
-        description:
-          'Passive: Your Cold spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Cold spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Steam Guard'
@@ -12206,16 +13286,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Steam Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Steam Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12242,16 +13325,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Steam Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Steam Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12283,16 +13369,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Steam Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Steam Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12324,16 +13413,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Steam Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Steam Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12361,16 +13453,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Steam Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Steam Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12381,8 +13476,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Cold Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Cold resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Cold resistance.'
       },
       {
         name: 'Steam Guard'
@@ -12398,16 +13492,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Steam Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Steam Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Water Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12418,8 +13515,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Lightning Lore V',
-        description:
-          'Passive: Your Electric spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Electric spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Trap the Soul Guard'
@@ -12435,16 +13531,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Vacuum Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Vacuum / Trap the Soul Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12455,8 +13554,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Lightning Guard II',
-        description:
-          'When Attacked: Deals 2 to 8 Electric damage to your attacker.'
+        description: 'When Attacked: Deals 2 to 8 Electric damage to your attacker.'
       },
       {
         name: 'Trap the Soul Guard'
@@ -12472,16 +13570,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Vacuum Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Vacuum / Trap the Soul Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12514,16 +13615,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Vacuum Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Vacuum / Trap the Soul Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12539,8 +13643,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       },
       {
         name: 'Trap the Soul Guard'
@@ -12556,16 +13659,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Vacuum Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Vacuum / Trap the Soul Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12593,16 +13699,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Vacuum Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Vacuum / Trap the Soul Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Air Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12613,8 +13722,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Electricity Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Electricity resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Electricity resistance.'
       },
       {
         name: 'Trap the Soul Guard'
@@ -12630,16 +13738,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Elemental Vacuum Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Elemental Vacuum / Trap the Soul Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Air Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12650,8 +13761,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Healing Lore V',
-        description:
-          'Passive: Your Healing spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Healing spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Concordant Opposition'
@@ -12671,16 +13781,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Existential Stalemate Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Existential Stalemate / Concordant Opposition Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Positive Energy Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12712,16 +13825,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Existential Stalemate Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Existential Stalemate / Concordant Opposition Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Positive Energy Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12758,16 +13874,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Existential Stalemate Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Existential Stalemate / Concordant Opposition Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Positive Energy Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12803,16 +13922,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Existential Stalemate Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Existential Stalemate / Concordant Opposition Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Positive Energy Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12844,16 +13966,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Existential Stalemate Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Existential Stalemate / Concordant Opposition Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Positive Energy Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12885,16 +14010,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Existential Stalemate Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Existential Stalemate / Concordant Opposition Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Positive Energy Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12905,8 +14033,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Acid Lore V',
-        description:
-          'Passive: Your Acid spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Acid spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       },
       {
         name: 'Elemental Mastery Guard'
@@ -12922,16 +14049,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tempered Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Balance of Land and Sky / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12958,16 +14088,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tempered Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Balance of Land and Sky / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Dominion'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -12999,16 +14132,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tempered Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Balance of Land and Sky / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13040,16 +14176,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tempered Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Balance of Land and Sky / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Escalation'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13077,16 +14216,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tempered Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Balance of Land and Sky / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Ethereal Earth Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13097,8 +14239,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Acid Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Acid resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Acid resistance.'
       },
       {
         name: 'Elemental Mastery Guard'
@@ -13114,16 +14255,19 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tempered Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Balance of Land and Sky / Elemental Mastery Dual Shard of Supreme Power',
         quantity: 1,
+        requirements: [],
         description: 'Material Earth Opposition'
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13149,15 +14293,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13168,8 +14315,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Charisma +2',
-        description:
-          'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
+        description: 'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
       }
     ],
     effectsRemoved: [],
@@ -13182,15 +14328,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13201,8 +14350,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Dexterity +2',
-        description:
-          'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
+        description: 'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
       }
     ],
     effectsRemoved: [],
@@ -13215,15 +14363,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13248,15 +14399,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13280,15 +14434,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13313,15 +14470,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13346,15 +14506,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13365,8 +14528,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Constitution +2',
-        description:
-          'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
+        description: 'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
       }
     ],
     effectsRemoved: [],
@@ -13379,15 +14541,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13412,15 +14577,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13445,15 +14613,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13478,15 +14649,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13510,15 +14684,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13543,15 +14720,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13562,8 +14742,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Dexterity +2',
-        description:
-          'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
+        description: 'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.'
       }
     ],
     effectsRemoved: [],
@@ -13576,15 +14755,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13595,8 +14777,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Intelligence +2',
-        description:
-          "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
+        description: "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
       }
     ],
     effectsRemoved: [],
@@ -13609,15 +14790,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13642,15 +14826,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13675,15 +14862,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13707,15 +14897,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13740,15 +14933,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13759,8 +14955,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Intelligence +2',
-        description:
-          "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
+        description: "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence."
       }
     ],
     effectsRemoved: [],
@@ -13773,15 +14968,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13792,8 +14990,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Strength +2',
-        description:
-          'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
+        description: 'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
       }
     ],
     effectsRemoved: [],
@@ -13806,15 +15003,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13839,15 +15039,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13858,8 +15061,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Nullification +72',
-        description:
-          'Passive: +72 Equipment Bonus to Negative Energy Spell Power.'
+        description: 'Passive: +72 Equipment Bonus to Negative Energy Spell Power.'
       }
     ],
     effectsRemoved: [],
@@ -13872,15 +15074,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13905,15 +15110,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13938,15 +15146,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13957,8 +15168,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Charisma +2',
-        description:
-          'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
+        description: 'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.'
       }
     ],
     effectsRemoved: [],
@@ -13971,15 +15181,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -13990,8 +15203,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Constitution +2',
-        description:
-          'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
+        description: 'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.'
       }
     ],
     effectsRemoved: [],
@@ -14004,15 +15216,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14036,15 +15251,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14069,15 +15287,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14101,15 +15322,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14134,15 +15358,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14153,8 +15380,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Insightful Strength +2',
-        description:
-          'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
+        description: 'This item increases the physical strength of the wearer, granting a +2 Insight bonus to Strength.'
       }
     ],
     effectsRemoved: [],
@@ -14167,15 +15393,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14200,15 +15429,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14233,15 +15465,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14265,15 +15500,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14298,15 +15536,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Weapon',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14332,15 +15573,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14370,15 +15614,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14394,8 +15641,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       }
     ],
     effectsRemoved: [],
@@ -14408,15 +15654,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14427,8 +15676,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Electricity Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Electricity resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Electricity resistance.'
       }
     ],
     effectsRemoved: [],
@@ -14441,15 +15689,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14460,8 +15711,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Lightning Lore V',
-        description:
-          'Passive: Your Electric spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Electric spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       }
     ],
     effectsRemoved: [],
@@ -14474,15 +15724,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14493,8 +15746,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Lightning Guard II',
-        description:
-          'When Attacked: Deals 2 to 8 Electric damage to your attacker.'
+        description: 'When Attacked: Deals 2 to 8 Electric damage to your attacker.'
       }
     ],
     effectsRemoved: [],
@@ -14507,15 +15759,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14540,15 +15795,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14577,15 +15835,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14614,15 +15875,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14633,8 +15897,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Acid Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Acid resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Acid resistance.'
       }
     ],
     effectsRemoved: [],
@@ -14647,15 +15910,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14679,15 +15945,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14698,8 +15967,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Acid Lore V',
-        description:
-          'Passive: Your Acid spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Acid spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       }
     ],
     effectsRemoved: [],
@@ -14712,15 +15980,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14745,15 +16016,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14769,8 +16043,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +6 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       }
     ],
     effectsRemoved: [],
@@ -14783,15 +16056,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14807,8 +16083,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Intelligence Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
+        description: 'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
       }
     ],
     effectsRemoved: [],
@@ -14821,15 +16096,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14840,8 +16118,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Fire Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Fire resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Fire resistance.'
       }
     ],
     effectsRemoved: [],
@@ -14854,15 +16131,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14886,15 +16166,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14905,8 +16188,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Fire Lore V',
-        description:
-          'Passive: Your Fire spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Fire spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       }
     ],
     effectsRemoved: [],
@@ -14919,15 +16201,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14952,15 +16237,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -14976,8 +16264,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
       },
       {
         name: 'Intelligence Skills - Exceptional Bonus +6',
-        description:
-          'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
+        description: 'Passive: +6 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
       }
     ],
     effectsRemoved: [],
@@ -14990,15 +16277,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15027,15 +16317,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15046,8 +16339,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Deathblock',
-        description:
-          'The wearer of this item is immune to all death spells and magical death effects.'
+        description: 'The wearer of this item is immune to all death spells and magical death effects.'
       }
     ],
     effectsRemoved: [],
@@ -15060,15 +16352,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15079,8 +16374,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Void Lore V',
-        description:
-          'Passive: Your Negative Energy spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Negative Energy spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       }
     ],
     effectsRemoved: [],
@@ -15093,15 +16387,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15126,15 +16423,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15159,15 +16459,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15197,15 +16500,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15234,15 +16540,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15267,15 +16576,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15300,15 +16612,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15319,8 +16634,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Healing Lore V',
-        description:
-          'Passive: Your Healing spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Healing spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       }
     ],
     effectsRemoved: [],
@@ -15333,15 +16647,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15366,15 +16683,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15403,15 +16723,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15440,15 +16763,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Escalation Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15459,8 +16785,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Inherent Cold Resistance - 10',
-        description:
-          'This item provides a +10 Inherent bonus to your Cold resistance.'
+        description: 'This item provides a +10 Inherent bonus to your Cold resistance.'
       }
     ],
     effectsRemoved: [],
@@ -15473,15 +16798,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Opposition Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15492,8 +16820,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ice Lore V',
-        description:
-          'Passive: Your Cold spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
+        description: 'Passive: Your Cold spells gain a 15% Equipment Bonus to their chance to Critical Hit.'
       }
     ],
     effectsRemoved: [],
@@ -15506,15 +16833,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1
@@ -15538,15 +16868,18 @@ export const altarOfDevastation: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Green Steel Accessory',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Dominion Shard of Supreme Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath High Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     quantity: 1

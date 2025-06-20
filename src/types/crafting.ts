@@ -1,17 +1,12 @@
-import type { IngredientName } from '../data/ingredients.ts'
-import type { Binding, Cost, Enhancement, Spell } from './core.ts'
+import type { Enhancement, Spell } from './core.ts'
+import type { Ingredient } from './ingredients.ts'
 
-export interface CraftingIngredient {
-  name: string
+export interface CraftingIngredient extends Ingredient {
   title?: string
   ingredientType?: string
-  description?: string
   quantity: number
-  baseValue?: Cost
-  weight?: number
-  foundIn?: string
   craftedIn?: string
-  requirements?: (CraftingIngredient | IngredientName)[]
+  requirements: CraftingIngredient[]
   effectsAdded?: Enhancement[]
   effectsRemoved?: Enhancement[]
   accessoryEffectsAdded?: Enhancement[]
@@ -19,9 +14,7 @@ export interface CraftingIngredient {
   weaponEffectsAdded?: Enhancement[]
   weaponEffectsRemoved?: Enhancement[]
   spell?: Spell
-  binding?: Binding
   enhancements?: Enhancement[]
-  notes?: string
   augmentType?: 'Green Steel Epic Active'
   minimumLevel?: number
   minLevelIncrease?: {

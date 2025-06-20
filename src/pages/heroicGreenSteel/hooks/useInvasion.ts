@@ -1,103 +1,34 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import type { CraftingIngredient } from '../../../types/crafting'
-import { filterForSublist } from '../../../utils/objectUtils.ts'
+import { deconstructShard } from '../../../utils/objectUtils.ts'
+import { baseElemental, type ElementalList } from '../helpers/elementalData.ts'
+import useIngredientsMap from './useIngredientMap.ts'
 
 const useInvasion = () => {
-  const { invasionItems } = useAppSelector(
-    (state) => state.greenSteel,
-    shallowEqual
-  )
+  const { invasionItems, selectedSubjugationItem } = useAppSelector((state) => state.greenSteel, shallowEqual)
 
-  const [airItems, setAirItems] = useState<CraftingIngredient[]>([])
-  const [earthItems, setEarthItems] = useState<CraftingIngredient[]>([])
-  const [fireItems, setFireItems] = useState<CraftingIngredient[]>([])
-  const [waterItems, setWaterItems] = useState<CraftingIngredient[]>([])
-  const [negativeItems, setNegativeItems] = useState<CraftingIngredient[]>([])
-  const [positiveItems, setPositiveItems] = useState<CraftingIngredient[]>([])
+  const items: CraftingIngredient[] = useMemo(() => {
+    return [...invasionItems].filter((item: CraftingIngredient) => {
+      if (selectedSubjugationItem) {
+        return selectedSubjugationItem.requirements[0].name.startsWith(deconstructShard(item.name).focus)
+      }
 
-  const affinities: AffinityList[] = useMemo(
-    () =>
-      [
-        {
-          name: 'Air Affinity',
-          elements: ['Air'],
-          ingredients: airItems
-        },
-        {
-          name: 'Earth Affinity',
-          elements: ['Earth'],
-          ingredients: earthItems
-        },
-        {
-          name: 'Fire Affinity',
-          elements: ['Fire'],
-          ingredients: fireItems
-        },
-        {
-          name: 'Water Affinity',
-          elements: ['Water'],
-          ingredients: waterItems
-        },
-        {
-          name: 'Negative Energy Affinity',
-          elements: ['Negative'],
-          ingredients: negativeItems
-        },
-        {
-          name: 'Positive Energy Affinity',
-          elements: ['Positive'],
-          ingredients: positiveItems
-        }
-      ] as AffinityList[],
-    [airItems, earthItems, fireItems, waterItems, negativeItems, positiveItems]
-  )
+      return true
+    })
+  }, [invasionItems, selectedSubjugationItem])
 
-  useEffect(() => {
-    setAirItems(filterForSublist(invasionItems, 'Air Affinity', 'effectsAdded'))
-    setEarthItems(
-      filterForSublist(invasionItems, 'Earth Affinity', 'effectsAdded')
-    )
-    setFireItems(
-      filterForSublist(invasionItems, 'Fire Affinity', 'effectsAdded')
-    )
-    setWaterItems(
-      filterForSublist(invasionItems, 'Water Affinity', 'effectsAdded')
-    )
-    setNegativeItems(
-      filterForSublist(
-        invasionItems,
-        'Negative Energy Affinity',
-        'effectsAdded'
-      )
-    )
-    setPositiveItems(
-      filterForSublist(
-        invasionItems,
-        'Positive Energy Affinity',
-        'effectsAdded'
-      )
-    )
-  }, [invasionItems])
+  const elemental: ElementalList[] = useMemo(() => baseElemental, [])
 
-  return {
-    affinities,
-    items: {
-      airItems,
-      earthItems,
-      fireItems,
-      waterItems,
-      negativeItems,
-      positiveItems
-    }
-  }
-}
+  const filterCallback = useCallback((item: CraftingIngredient, _elementName: string) => {
+    return deconstructShard(item.name).focus === _elementName
+  }, [])
 
-interface AffinityList {
-  name: string
-  elements: string[]
-  ingredients: CraftingIngredient[]
+  const { ingredientsMap } = useIngredientsMap(items, elemental, filterCallback)
+  console.log(ingredientsMap)
+
+  return { ingredientsMap }
 }
 
 export default useInvasion

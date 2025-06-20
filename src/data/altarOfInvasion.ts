@@ -4,11 +4,31 @@ export const altarOfInvasion: CraftingIngredient[] = [
   {
     name: 'Inferior Focus of Earth',
     requirements: [
-      'Small Glowing Arrowhead',
-      'Small Gnawed Bone',
-      'Small Length of Infernal Chain',
-      'Small Twisted Shrapnel',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Small Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Length of Infernal Chain',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -20,11 +40,31 @@ export const altarOfInvasion: CraftingIngredient[] = [
   {
     name: 'Inferior Focus of Air',
     requirements: [
-      'Small Glowing Arrowhead',
-      'Small Gnawed Bone',
-      'Small Twisted Shrapnel',
-      'Small Sulfurous Stone',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Small Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -36,11 +76,31 @@ export const altarOfInvasion: CraftingIngredient[] = [
   {
     name: 'Inferior Focus of Fire',
     requirements: [
-      'Small Glowing Arrowhead',
-      'Small Gnawed Bone',
-      'Small Devil Scales',
-      'Small Twisted Shrapnel',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Small Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -52,11 +112,31 @@ export const altarOfInvasion: CraftingIngredient[] = [
   {
     name: 'Inferior Focus of Water',
     requirements: [
-      'Small Glowing Arrowhead',
-      'Small Gnawed Bone',
-      'Small Length of Infernal Chain',
-      'Small Devil Scales',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Small Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Length of Infernal Chain',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -68,11 +148,31 @@ export const altarOfInvasion: CraftingIngredient[] = [
   {
     name: 'Inferior Focus of Positive Energy',
     requirements: [
-      'Small Glowing Arrowhead',
-      'Small Gnawed Bone',
-      'Small Devil Scales',
-      'Small Sulfurous Stone',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Small Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -84,11 +184,31 @@ export const altarOfInvasion: CraftingIngredient[] = [
   {
     name: 'Inferior Focus of Negative Energy',
     requirements: [
-      'Small Glowing Arrowhead',
-      'Small Length of Infernal Chain',
-      'Small Twisted Shrapnel',
-      'Small Sulfurous Stone',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Small Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Length of Infernal Chain',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -100,11 +220,31 @@ export const altarOfInvasion: CraftingIngredient[] = [
   {
     name: 'Diluted Material Essence',
     requirements: [
-      'Small Glowing Arrowhead',
-      'Small Devil Scales',
-      'Small Twisted Shrapnel',
-      'Small Sulfurous Stone',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Small Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -116,11 +256,31 @@ export const altarOfInvasion: CraftingIngredient[] = [
   {
     name: 'Diluted Ethereal Essence',
     requirements: [
-      'Small Glowing Arrowhead',
-      'Small Length of Infernal Chain',
-      'Small Devil Scales',
-      'Small Sulfurous Stone',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Small Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Length of Infernal Chain',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -132,11 +292,31 @@ export const altarOfInvasion: CraftingIngredient[] = [
   {
     name: 'Cloudy Gem of Dominion',
     requirements: [
-      'Small Gnawed Bone',
-      'Small Length of Infernal Chain',
-      'Small Devil Scales',
-      'Small Twisted Shrapnel',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Small Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Length of Infernal Chain',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -148,11 +328,31 @@ export const altarOfInvasion: CraftingIngredient[] = [
   {
     name: 'Cloudy Gem of Opposition',
     requirements: [
-      'Small Gnawed Bone',
-      'Small Length of Infernal Chain',
-      'Small Devil Scales',
-      'Small Sulfurous Stone',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Small Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Length of Infernal Chain',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -164,11 +364,31 @@ export const altarOfInvasion: CraftingIngredient[] = [
   {
     name: 'Cloudy Gem of Escalation',
     requirements: [
-      'Small Length of Infernal Chain',
-      'Small Devil Scales',
-      'Small Twisted Shrapnel',
-      'Small Sulfurous Stone',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Small Length of Infernal Chain',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Small Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -181,11 +401,31 @@ export const altarOfInvasion: CraftingIngredient[] = [
   {
     name: 'Material Earth Dominion Shard of Power',
     requirements: [
-      'Shard of Power',
-      'Inferior Focus of Earth',
-      'Diluted Material Essence',
-      'Cloudy Gem of Dominion',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Inferior Focus of Earth',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -198,19 +438,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Earth Dominion',
-        description:
-          'This shard has been imbued with the energy of Material Earth Dominion.'
+        description: 'This shard has been imbued with the energy of Material Earth Dominion.'
       }
     ]
   },
   {
     name: 'Material Earth Opposition Shard of Power',
     requirements: [
-      'Inferior Focus of Earth',
-      'Cloudy Gem of Opposition',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Earth',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -223,19 +482,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Earth Opposition',
-        description:
-          'This shard has been imbued with the energy of Material Earth Opposition.'
+        description: 'This shard has been imbued with the energy of Material Earth Opposition.'
       }
     ]
   },
   {
     name: 'Material Earth Escalation Shard of Power',
     requirements: [
-      'Inferior Focus of Earth',
-      'Cloudy Gem of Escalation',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Earth',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -248,19 +526,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Earth Escalation',
-        description:
-          'This shard has been imbued with the energy of Material Earth Escalation.'
+        description: 'This shard has been imbued with the energy of Material Earth Escalation.'
       }
     ]
   },
   {
     name: 'Ethereal Earth Dominion Shard of Power',
     requirements: [
-      'Inferior Focus of Earth',
-      'Cloudy Gem of Dominion',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Earth',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -273,19 +570,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Earth Dominion',
-        description:
-          'This shard has been imbued with the energy of Ethereal Earth Dominion.'
+        description: 'This shard has been imbued with the energy of Ethereal Earth Dominion.'
       }
     ]
   },
   {
     name: 'Ethereal Earth Opposition Shard of Power',
     requirements: [
-      'Inferior Focus of Earth',
-      'Cloudy Gem of Opposition',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Earth',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -298,19 +614,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Earth Opposition',
-        description:
-          'This shard has been imbued with the energy of Ethereal Earth Opposition.'
+        description: 'This shard has been imbued with the energy of Ethereal Earth Opposition.'
       }
     ]
   },
   {
     name: 'Ethereal Earth Escalation Shard of Power',
     requirements: [
-      'Inferior Focus of Earth',
-      'Cloudy Gem of Escalation',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Earth',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -323,19 +658,39 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Earth Escalation',
-        description:
-          'This shard has been imbued with the energy of Ethereal Earth Escalation.'
+        description: 'This shard has been imbued with the energy of Ethereal Earth Escalation.'
       }
     ]
   },
+
   {
     name: 'Material Air Dominion Shard of Power',
     requirements: [
-      'Inferior Focus of Air',
-      'Cloudy Gem of Dominion',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Air',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -348,19 +703,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Air Dominion',
-        description:
-          'This shard has been imbued with the energy of Material Air Dominion.'
+        description: 'This shard has been imbued with the energy of Material Air Dominion.'
       }
     ]
   },
   {
     name: 'Material Air Opposition Shard of Power',
     requirements: [
-      'Inferior Focus of Air',
-      'Cloudy Gem of Opposition',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Air',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -373,19 +747,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Air Opposition',
-        description:
-          'This shard has been imbued with the energy of Material Air Opposition.'
+        description: 'This shard has been imbued with the energy of Material Air Opposition.'
       }
     ]
   },
   {
     name: 'Material Air Escalation Shard of Power',
     requirements: [
-      'Inferior Focus of Air',
-      'Cloudy Gem of Escalation',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Air',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -398,19 +791,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Air Escalation',
-        description:
-          'This shard has been imbued with the energy of Material Air Escalation.'
+        description: 'This shard has been imbued with the energy of Material Air Escalation.'
       }
     ]
   },
   {
     name: 'Ethereal Air Dominion Shard of Power',
     requirements: [
-      'Inferior Focus of Air',
-      'Cloudy Gem of Dominion',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Air',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -423,19 +835,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Air Dominion',
-        description:
-          'This shard has been imbued with the energy of Ethereal Air Dominion.'
+        description: 'This shard has been imbued with the energy of Ethereal Air Dominion.'
       }
     ]
   },
   {
     name: 'Ethereal Air Opposition Shard of Power',
     requirements: [
-      'Inferior Focus of Air',
-      'Cloudy Gem of Opposition',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Air',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -448,19 +879,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Air Opposition',
-        description:
-          'This shard has been imbued with the energy of Ethereal Air Opposition.'
+        description: 'This shard has been imbued with the energy of Ethereal Air Opposition.'
       }
     ]
   },
   {
     name: 'Ethereal Air Escalation Shard of Power',
     requirements: [
-      'Inferior Focus of Air',
-      'Cloudy Gem of Escalation',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Air',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -473,19 +923,39 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Air Escalation',
-        description:
-          'This shard has been imbued with the energy of Ethereal Air Escalation.'
+        description: 'This shard has been imbued with the energy of Ethereal Air Escalation.'
       }
     ]
   },
+
   {
     name: 'Material Fire Dominion Shard of Power',
     requirements: [
-      'Inferior Focus of Fire',
-      'Cloudy Gem of Dominion',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Fire',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -498,19 +968,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Fire Dominion',
-        description:
-          'This shard has been imbued with the energy of Material Fire Dominion.'
+        description: 'This shard has been imbued with the energy of Material Fire Dominion.'
       }
     ]
   },
   {
     name: 'Material Fire Opposition Shard of Power',
     requirements: [
-      'Inferior Focus of Fire',
-      'Cloudy Gem of Opposition',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Fire',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -523,19 +1012,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Fire Opposition',
-        description:
-          'This shard has been imbued with the energy of Material Fire Opposition.'
+        description: 'This shard has been imbued with the energy of Material Fire Opposition.'
       }
     ]
   },
   {
     name: 'Material Fire Escalation Shard of Power',
     requirements: [
-      'Inferior Focus of Fire',
-      'Cloudy Gem of Escalation',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Fire',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -548,19 +1056,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Fire Escalation',
-        description:
-          'This shard has been imbued with the energy of Material Fire Escalation.'
+        description: 'This shard has been imbued with the energy of Material Fire Escalation.'
       }
     ]
   },
   {
     name: 'Ethereal Fire Dominion Shard of Power',
     requirements: [
-      'Inferior Focus of Fire',
-      'Cloudy Gem of Dominion',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Fire',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -573,19 +1100,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Fire Dominion',
-        description:
-          'This shard has been imbued with the energy of Ethereal Fire Dominion.'
+        description: 'This shard has been imbued with the energy of Ethereal Fire Dominion.'
       }
     ]
   },
   {
     name: 'Ethereal Fire Opposition Shard of Power',
     requirements: [
-      'Inferior Focus of Fire',
-      'Cloudy Gem of Opposition',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Fire',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -598,19 +1144,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Fire Opposition',
-        description:
-          'This shard has been imbued with the energy of Ethereal Fire Opposition.'
+        description: 'This shard has been imbued with the energy of Ethereal Fire Opposition.'
       }
     ]
   },
   {
     name: 'Ethereal Fire Escalation Shard of Power',
     requirements: [
-      'Inferior Focus of Fire',
-      'Cloudy Gem of Escalation',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Fire',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -623,19 +1188,39 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Fire Escalation',
-        description:
-          'This shard has been imbued with the energy of Ethereal Fire Escalation.'
+        description: 'This shard has been imbued with the energy of Ethereal Fire Escalation.'
       }
     ]
   },
+
   {
     name: 'Material Water Dominion Shard of Power',
     requirements: [
-      'Inferior Focus of Water',
-      'Cloudy Gem of Dominion',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Water',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -648,19 +1233,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Water Dominion',
-        description:
-          'This shard has been imbued with the energy of Material Water Dominion.'
+        description: 'This shard has been imbued with the energy of Material Water Dominion.'
       }
     ]
   },
   {
     name: 'Material Water Opposition Shard of Power',
     requirements: [
-      'Inferior Focus of Water',
-      'Cloudy Gem of Opposition',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Water',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -673,19 +1277,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Water Opposition',
-        description:
-          'This shard has been imbued with the energy of Material Water Opposition.'
+        description: 'This shard has been imbued with the energy of Material Water Opposition.'
       }
     ]
   },
   {
     name: 'Material Water Escalation Shard of Power',
     requirements: [
-      'Inferior Focus of Water',
-      'Cloudy Gem of Escalation',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Water',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -698,19 +1321,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Water Escalation',
-        description:
-          'This shard has been imbued with the energy of Material Water Escalation.'
+        description: 'This shard has been imbued with the energy of Material Water Escalation.'
       }
     ]
   },
   {
     name: 'Ethereal Water Dominion Shard of Power',
     requirements: [
-      'Inferior Focus of Water',
-      'Cloudy Gem of Dominion',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Water',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -723,19 +1365,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Water Dominion',
-        description:
-          'This shard has been imbued with the energy of Ethereal Water Dominion.'
+        description: 'This shard has been imbued with the energy of Ethereal Water Dominion.'
       }
     ]
   },
   {
     name: 'Ethereal Water Opposition Shard of Power',
     requirements: [
-      'Inferior Focus of Water',
-      'Cloudy Gem of Opposition',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Water',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -748,19 +1409,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Water Opposition',
-        description:
-          'This shard has been imbued with the energy of Ethereal Water Opposition.'
+        description: 'This shard has been imbued with the energy of Ethereal Water Opposition.'
       }
     ]
   },
   {
     name: 'Ethereal Water Escalation Shard of Power',
     requirements: [
-      'Inferior Focus of Water',
-      'Cloudy Gem of Escalation',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Water',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -773,19 +1453,39 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Water Escalation',
-        description:
-          'This shard has been imbued with the energy of Ethereal Water Escalation.'
+        description: 'This shard has been imbued with the energy of Ethereal Water Escalation.'
       }
     ]
   },
+
   {
     name: 'Material Positive Energy Dominion Shard of Power',
     requirements: [
-      'Inferior Focus of Positive Energy',
-      'Cloudy Gem of Dominion',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Positive Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -798,19 +1498,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Positive Energy Dominion',
-        description:
-          'This shard has been imbued with the energy of Material Positive Energy Dominion.'
+        description: 'This shard has been imbued with the energy of Material Positive Energy Dominion.'
       }
     ]
   },
   {
     name: 'Material Positive Energy Opposition Shard of Power',
     requirements: [
-      'Inferior Focus of Positive Energy',
-      'Cloudy Gem of Opposition',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Positive Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -823,19 +1542,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Positive Energy Opposition',
-        description:
-          'This shard has been imbued with the energy of Material Positive Energy Opposition.'
+        description: 'This shard has been imbued with the energy of Material Positive Energy Opposition.'
       }
     ]
   },
   {
     name: 'Material Positive Energy Escalation Shard of Power',
     requirements: [
-      'Inferior Focus of Positive Energy',
-      'Cloudy Gem of Escalation',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Positive Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -848,19 +1586,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Positive Energy Escalation',
-        description:
-          'This shard has been imbued with the energy of Material Positive Energy Escalation.'
+        description: 'This shard has been imbued with the energy of Material Positive Energy Escalation.'
       }
     ]
   },
   {
     name: 'Ethereal Positive Energy Dominion Shard of Power',
     requirements: [
-      'Inferior Focus of Positive Energy',
-      'Cloudy Gem of Dominion',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Positive Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -873,19 +1630,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Positive Energy Dominion',
-        description:
-          'This shard has been imbued with the energy of Ethereal Positive Energy Dominion.'
+        description: 'This shard has been imbued with the energy of Ethereal Positive Energy Dominion.'
       }
     ]
   },
   {
     name: 'Ethereal Positive Energy Opposition Shard of Power',
     requirements: [
-      'Inferior Focus of Positive Energy',
-      'Cloudy Gem of Opposition',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Positive Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -898,19 +1674,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Positive Energy Opposition',
-        description:
-          'This shard has been imbued with the energy of Ethereal Positive Energy Opposition.'
+        description: 'This shard has been imbued with the energy of Ethereal Positive Energy Opposition.'
       }
     ]
   },
   {
     name: 'Ethereal Positive Energy Escalation Shard of Power',
     requirements: [
-      'Inferior Focus of Positive Energy',
-      'Cloudy Gem of Escalation',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Positive Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -923,19 +1718,39 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Positive Energy Escalation',
-        description:
-          'This shard has been imbued with the energy of Ethereal Positive Energy Escalation.'
+        description: 'This shard has been imbued with the energy of Ethereal Positive Energy Escalation.'
       }
     ]
   },
+
   {
     name: 'Material Negative Energy Dominion Shard of Power',
     requirements: [
-      'Inferior Focus of Negative Energy',
-      'Cloudy Gem of Dominion',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Negative Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -948,19 +1763,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Negative Energy Dominion',
-        description:
-          'This shard has been imbued with the energy of Material Negative Energy Dominion.'
+        description: 'This shard has been imbued with the energy of Material Negative Energy Dominion.'
       }
     ]
   },
   {
     name: 'Material Negative Energy Opposition Shard of Power',
     requirements: [
-      'Inferior Focus of Negative Energy',
-      'Cloudy Gem of Opposition',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Negative Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -973,19 +1807,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Negative Energy Opposition',
-        description:
-          'This shard has been imbued with the energy of Material Negative Energy Opposition.'
+        description: 'This shard has been imbued with the energy of Material Negative Energy Opposition.'
       }
     ]
   },
   {
     name: 'Material Negative Energy Escalation Shard of Power',
     requirements: [
-      'Inferior Focus of Negative Energy',
-      'Cloudy Gem of Escalation',
-      'Diluted Material Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Negative Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -998,19 +1851,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Material Negative Energy Escalation',
-        description:
-          'This shard has been imbued with the energy of Material Negative Energy Escalation.'
+        description: 'This shard has been imbued with the energy of Material Negative Energy Escalation.'
       }
     ]
   },
   {
     name: 'Ethereal Negative Energy Dominion Shard of Power',
     requirements: [
-      'Inferior Focus of Negative Energy',
-      'Cloudy Gem of Dominion',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Negative Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -1023,19 +1895,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Negative Energy Dominion',
-        description:
-          'This shard has been imbued with the energy of Ethereal Negative Energy Dominion.'
+        description: 'This shard has been imbued with the energy of Ethereal Negative Energy Dominion.'
       }
     ]
   },
   {
     name: 'Ethereal Negative Energy Opposition Shard of Power',
     requirements: [
-      'Inferior Focus of Negative Energy',
-      'Cloudy Gem of Opposition',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Negative Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -1048,19 +1939,38 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Negative Energy Opposition',
-        description:
-          'This shard has been imbued with the energy of Ethereal Negative Energy Opposition.'
+        description: 'This shard has been imbued with the energy of Ethereal Negative Energy Opposition.'
       }
     ]
   },
   {
     name: 'Ethereal Negative Energy Escalation Shard of Power',
     requirements: [
-      'Inferior Focus of Negative Energy',
-      'Cloudy Gem of Escalation',
-      'Diluted Ethereal Essence',
-      'Shard of Power',
-      'Shavarath Low Energy Cell'
+      {
+        name: 'Inferior Focus of Negative Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Cloudy Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Diluted Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shard of Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Low Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     quantity: 1,
     craftedIn: 'Altar of Invasion',
@@ -1073,8 +1983,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ethereal Negative Energy Escalation',
-        description:
-          'This shard has been imbued with the energy of Ethereal Negative Energy Escalation.'
+        description: 'This shard has been imbued with the energy of Ethereal Negative Energy Escalation.'
       }
     ]
   },
@@ -1102,16 +2011,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Acid, Earth Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1138,16 +2050,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Acid Absorption - 10%, Earth Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1173,16 +2088,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Constitution +6, Earth Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1208,16 +2126,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Corrosion +66, Earth Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1244,16 +2165,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Heightened Awareness 1, Earth Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1278,16 +2202,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Wisdom +6, Earth Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -1313,16 +2240,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Shock, Air Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1352,16 +2282,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Electricity Absorption - 10%, Air Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1390,16 +2323,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Dexterity +6, Air Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1428,16 +2364,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Magnetism +66, Air Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1467,16 +2406,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Heightened Awareness 1, Air Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1505,16 +2447,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Charisma +6, Air Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1544,16 +2489,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Flaming, Fire Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1583,16 +2531,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Fire Absorption - 10%, Fire Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1621,16 +2572,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Dexterity +6, Fire Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1659,16 +2613,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Combustion +66, Fire Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1698,16 +2655,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Heightened Awareness 1, Fire Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1736,16 +2696,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Intelligence +6, Fire Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1775,16 +2738,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Frost, Water Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1814,16 +2780,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Cold Absorption - 10%, Water Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1853,16 +2822,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Strength +6, Water Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1891,16 +2863,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Glaciation +66, Water Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1930,16 +2905,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Heightened Awareness 1, Water Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -1969,16 +2947,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Wisdom +6, Water Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2008,16 +2989,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Holy, Positive Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2048,16 +3032,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Healing Amplification: +20, Positive Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2086,16 +3073,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Constitution +6, Positive Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2114,8 +3104,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Devotion +66',
-        description:
-          'Passive: +66 Equipment Bonus to Positive Energy Spell Power.'
+        description: 'Passive: +66 Equipment Bonus to Positive Energy Spell Power.'
       },
       {
         name: 'Positive Energy Affinity',
@@ -2125,16 +3114,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Devotion +66, Positive Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2164,16 +3156,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Heightened Awareness 1, Positive Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2202,16 +3197,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Charisma +6, Positive Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2242,16 +3240,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Unholy, Negative Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2281,16 +3282,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Negative Energy Absorption: +30, Negative Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2319,16 +3323,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Strength +6, Negative Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2347,8 +3354,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Nullification +66',
-        description:
-          'Passive: +66 Equipment Bonus to Negative Energy Spell Power.'
+        description: 'Passive: +66 Equipment Bonus to Negative Energy Spell Power.'
       },
       {
         name: 'Negative Energy Affinity',
@@ -2358,16 +3364,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Nullification +66, Negative Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2397,16 +3406,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Heightened Awareness 1, Negative Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2435,16 +3447,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Intelligence +6, Negative Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Weapon',
-        quantity: 1
+        name: 'Green Steel Weapon',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ],
     minLevelIncrease: {
@@ -2475,16 +3490,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Minor Acid Guard, Earth Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2510,16 +3528,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Greater Acid Resistance, Earth Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2546,20 +3567,22 @@ export const altarOfInvasion: CraftingIngredient[] = [
         description: 'This item has an affinity with Earth.'
       }
     ],
-    description:
-      'Elemental Energy, Constitution Skills - Exceptional Bonus +2, Earth Affinity',
+    description: 'Elemental Energy, Constitution Skills - Exceptional Bonus +2, Earth Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Earth Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2574,8 +3597,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Acid Lore III',
-        description:
-          'Passive: Your Acid spells gain a 13% Equipment Bonus to their chance to Critical hit.'
+        description: 'Passive: Your Acid spells gain a 13% Equipment Bonus to their chance to Critical hit.'
       },
       {
         name: 'Earth Affinity',
@@ -2585,16 +3607,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Acid Lore III, Earth Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2609,8 +3634,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Fortitude Save +5',
-        description:
-          'This item gives a +5 Resistance Bonus to your Fortitude Saves.'
+        description: 'This item gives a +5 Resistance Bonus to your Fortitude Saves.'
       },
       {
         name: 'Earth Affinity',
@@ -2620,16 +3644,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Fortitude Save +5, Earth Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2656,20 +3683,22 @@ export const altarOfInvasion: CraftingIngredient[] = [
         description: 'This item has an affinity with Earth.'
       }
     ],
-    description:
-      'Wizardry VI, Wisdom Skills - Exceptional Bonus +2, Earth Affinity',
+    description: 'Wizardry VI, Wisdom Skills - Exceptional Bonus +2, Earth Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Earth Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2695,16 +3724,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Minor Lightning Guard, Air Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2730,16 +3762,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Greater Lightning Resistance, Air Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2759,28 +3794,29 @@ export const altarOfInvasion: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +2',
-        description:
-          'Passive: +2 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +2 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       },
       {
         name: 'Air Affinity',
         description: 'This item has an affinity with Air.'
       }
     ],
-    description:
-      'Elemental Energy, Dexterity Skills - Exceptional Bonus +2, Air Affinity',
+    description: 'Elemental Energy, Dexterity Skills - Exceptional Bonus +2, Air Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Air Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2795,8 +3831,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Lightning Lore III',
-        description:
-          'Passive: Your Electric spells gain a 13% Equipment Bonus to their chance to Critical hit.'
+        description: 'Passive: Your Electric spells gain a 13% Equipment Bonus to their chance to Critical hit.'
       },
       {
         name: 'Air Affinity',
@@ -2806,16 +3841,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Lightning Lore III, Air Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2830,8 +3868,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Reflex Save +5',
-        description:
-          'This item gives a +5 Resistance Bonus to your Reflex Saves.'
+        description: 'This item gives a +5 Resistance Bonus to your Reflex Saves.'
       },
       {
         name: 'Air Affinity',
@@ -2841,16 +3878,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Reflex Save +5, Air Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2878,20 +3918,22 @@ export const altarOfInvasion: CraftingIngredient[] = [
         description: 'This item has an affinity with Air.'
       }
     ],
-    description:
-      'Wizardry VI, Charisma Skills - Exceptional Bonus +2, Air Affinity',
+    description: 'Wizardry VI, Charisma Skills - Exceptional Bonus +2, Air Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Air Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2917,16 +3959,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Minor Fire Guard, Fire Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2952,16 +3997,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Greater Fire Resistance, Fire Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -2981,28 +4029,29 @@ export const altarOfInvasion: CraftingIngredient[] = [
       },
       {
         name: 'Dexterity Skills - Exceptional Bonus +2',
-        description:
-          'Passive: +2 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
+        description: 'Passive: +2 Exceptional Bonus to Balance, Hide, Move Silently, Open Lock, and Tumble.'
       },
       {
         name: 'Fire Affinity',
         description: 'This item has an affinity with Fire.'
       }
     ],
-    description:
-      'Elemental Energy, Dexterity Skills - Exceptional Bonus +2, Fire Affinity',
+    description: 'Elemental Energy, Dexterity Skills - Exceptional Bonus +2, Fire Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Fire Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3017,8 +4066,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Fire Lore III',
-        description:
-          'Passive: Your Fire spells gain a 13% Equipment Bonus to their chance to Critical hit.'
+        description: 'Passive: Your Fire spells gain a 13% Equipment Bonus to their chance to Critical hit.'
       },
       {
         name: 'Fire Affinity',
@@ -3028,16 +4076,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Fire Lore III, Fire Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3052,8 +4103,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Reflex Save +5',
-        description:
-          'This item gives a +5 Resistance Bonus to your Reflex Saves.'
+        description: 'This item gives a +5 Resistance Bonus to your Reflex Saves.'
       },
       {
         name: 'Fire Affinity',
@@ -3063,16 +4113,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Reflex Save +5, Fire Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3092,28 +4145,29 @@ export const altarOfInvasion: CraftingIngredient[] = [
       },
       {
         name: 'Intelligence Skills - Exceptional Bonus +2',
-        description:
-          'Passive: +2 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
+        description: 'Passive: +2 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
       },
       {
         name: 'Fire Affinity',
         description: 'This item has an affinity with Fire.'
       }
     ],
-    description:
-      'Wizardry VI, Intelligence Skills - Exceptional Bonus +2, Fire Affinity',
+    description: 'Wizardry VI, Intelligence Skills - Exceptional Bonus +2, Fire Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Fire Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3139,16 +4193,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Minor Ice Guard, Water Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3174,16 +4231,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Greater Cold Resistance, Water Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3210,20 +4270,22 @@ export const altarOfInvasion: CraftingIngredient[] = [
         description: 'This item has an affinity with Water.'
       }
     ],
-    description:
-      'Elemental Energy, Strength Skills - Exceptional Bonus +2, Water Affinity',
+    description: 'Elemental Energy, Strength Skills - Exceptional Bonus +2, Water Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Water Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3238,8 +4300,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Ice Lore III',
-        description:
-          'Passive:  Your Cold spells gain a 13% Equipment Bonus to their chance to Critical hit.'
+        description: 'Passive:  Your Cold spells gain a 13% Equipment Bonus to their chance to Critical hit.'
       },
       {
         name: 'Water Affinity',
@@ -3249,16 +4310,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Ice Lore III, Water Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3283,16 +4347,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Will Save +5, Water Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3319,20 +4386,22 @@ export const altarOfInvasion: CraftingIngredient[] = [
         description: 'This item has an affinity with Water.'
       }
     ],
-    description:
-      'Wizardry VI, Wisdom Skills - Exceptional Bonus +2, Water Affinity',
+    description: 'Wizardry VI, Wisdom Skills - Exceptional Bonus +2, Water Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Water Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3358,16 +4427,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Minor Good Guard, Positive Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3382,8 +4454,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Lesser Regeneration',
-        description:
-          'This item is imbued with an undeniable goodness that slowly heals the wearer over time.'
+        description: 'This item is imbued with an undeniable goodness that slowly heals the wearer over time.'
       },
       {
         name: 'Positive Energy Affinity',
@@ -3393,16 +4464,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Lesser Regeneration, Positive Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3429,20 +4503,22 @@ export const altarOfInvasion: CraftingIngredient[] = [
         description: 'This item has an affinity with Positive Energy.'
       }
     ],
-    description:
-      'Elemental Energy, Constitution Skills - Exceptional Bonus +2, Positive Energy Affinity',
+    description: 'Elemental Energy, Constitution Skills - Exceptional Bonus +2, Positive Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Positive Energy Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3457,8 +4533,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Healing Lore III',
-        description:
-          'Passive: Your Positive Energy spells gain a 13% Equipment Bonus to their chance to Critical hit.'
+        description: 'Passive: Your Positive Energy spells gain a 13% Equipment Bonus to their chance to Critical hit.'
       },
       {
         name: 'Positive Energy Affinity',
@@ -3468,16 +4543,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Healing Lore III, Positive Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3502,16 +4580,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Will Save +5, Positive Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3539,20 +4620,22 @@ export const altarOfInvasion: CraftingIngredient[] = [
         description: 'This item has an affinity with Positive Energy.'
       }
     ],
-    description:
-      'Wizardry VI, Charisma Skills - Exceptional Bonus +2, Positive Energy Affinity',
+    description: 'Wizardry VI, Charisma Skills - Exceptional Bonus +2, Positive Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3578,16 +4661,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Minor Evil Guard, Negative Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3614,20 +4700,22 @@ export const altarOfInvasion: CraftingIngredient[] = [
         description: 'This item has an affinity with Negative Energy.'
       }
     ],
-    description:
-      'Blindness Immunity, Proof Against Disease +6, Negative Energy Affinity',
+    description: 'Blindness Immunity, Proof Against Disease +6, Negative Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3654,20 +4742,22 @@ export const altarOfInvasion: CraftingIngredient[] = [
         description: 'This item has an affinity with Negative Energy.'
       }
     ],
-    description:
-      'Elemental Energy, Strength Skills - Exceptional Bonus +2, Negative Energy Affinity',
+    description: 'Elemental Energy, Strength Skills - Exceptional Bonus +2, Negative Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Material Negative Energy Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3682,8 +4772,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Void Lore III',
-        description:
-          'Passive: Your Negative Energy spells gain a 13% Equipment Bonus to their chance to Critical hit.'
+        description: 'Passive: Your Negative Energy spells gain a 13% Equipment Bonus to their chance to Critical hit.'
       },
       {
         name: 'Negative Energy Affinity',
@@ -3693,16 +4782,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Void Lore III, Negative Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3717,8 +4809,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     effectsAdded: [
       {
         name: 'Fortitude Save +5',
-        description:
-          'This item gives a +5 Resistance Bonus to your Fortitude Saves.'
+        description: 'This item gives a +5 Resistance Bonus to your Fortitude Saves.'
       },
       {
         name: 'Negative Energy Affinity',
@@ -3728,16 +4819,19 @@ export const altarOfInvasion: CraftingIngredient[] = [
     description: 'Fortitude Save +5, Negative Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   },
@@ -3757,28 +4851,29 @@ export const altarOfInvasion: CraftingIngredient[] = [
       },
       {
         name: 'Intelligence Skills - Exceptional Bonus +2',
-        description:
-          'Passive: +2 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
+        description: 'Passive: +2 Exceptional Bonus to Disable Device, Repair, Search, and Spellcraft.'
       },
       {
         name: 'Negative Energy Affinity',
         description: 'This item has an affinity with Negative Energy.'
       }
     ],
-    description:
-      'Wizardry VI, Intelligence Skills - Exceptional Bonus +2, Negative Energy Affinity',
+    description: 'Wizardry VI, Intelligence Skills - Exceptional Bonus +2, Negative Energy Affinity',
     requirements: [
       {
-        name: 'Green Steen Accessory',
-        quantity: 1
+        name: 'Green Steel Accessory',
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Power',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       },
       {
         name: 'Shavarath Low Energy Cell',
-        quantity: 1
+        quantity: 1,
+        requirements: []
       }
     ]
   }
