@@ -1,27 +1,19 @@
 import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
-import {
-  resetSubjugationItem,
-  selectSubjugationItem
-} from '../../../redux/slices/hgsSlice.ts'
+import { resetSubjugationItem, selectSubjugationItem } from '../../../redux/slices/hgsSlice.ts'
 import type { AppDispatch } from '../../../redux/store.ts'
+import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import {
-  type ElementalList,
-  subjugationElementalList
-} from '../helpers/elementalData.ts'
-import useSubjugationBasic from '../hooks/useSubjugation.ts'
+import { type ElementalList, subjugationElementalList } from '../helpers/elementalData.ts'
+import useSubjugationBasic from '../hooks/useSubjugationBasic.ts'
 import IngredientDropdownSection from './IngredientDropdownSection.tsx'
 import IngredientDropdownToggle from './IngredientDropdownToggle.tsx'
 
 const SubjugationBasicDropdown = () => {
   const dispatch: AppDispatch = useAppDispatch()
 
-  const { selectedSubjugationItem } = useAppSelector(
-    (state) => state.greenSteel,
-    shallowEqual
-  )
+  const { selectedSubjugationItem } = useAppSelector((state) => state.greenSteel, shallowEqual)
 
   const { ingredientsMap } = useSubjugationBasic()
 
@@ -43,28 +35,35 @@ const SubjugationBasicDropdown = () => {
     </>
   )
 
+  const isAspect = (name: string) => {
+    return !name.includes('Balance') && !name.includes('Stalemate') && !name.includes('Tempered')
+  }
+
   const renderSection = (name: string, ingredients: CraftingIngredient[]) => {
+    // Needed to filter here otherwise the code required to filter inside `useIngredientsMap` would be ugly and gross
+    // At the end of the day, there's minimal performance hit, and there's only a half-dozen or so effects getting filtered out
+    const filteredIngredients = ingredients.filter((ingredient) =>
+      ingredient.effectsAdded?.some(
+        (effect: Enhancement) =>
+          effect.name.includes(`Aspect of ${name.split(' (', 1)[0].trim()}`) ||
+          effect.name.includes('Balance') ||
+          effect.name.includes('Stalemate') ||
+          effect.name.includes('Tempered')
+      )
+    )
+
     return (
       <IngredientDropdownSection
         clickHandler={selectSubjugationItem}
         header={
-          <Stack
-            direction='horizontal'
-            gap={2}
-            className='align-items-center justify-content-center'
-          >
-            {name}
+          <Stack direction='horizontal' gap={2} className='align-items-center justify-content-center'>
+            {isAspect(name) ? `Aspect of ${name}` : name}
           </Stack>
         }
-        ingredientList={ingredients}
+        ingredientList={filteredIngredients}
       />
     )
   }
-
-  /**
-   * I LEFT OFF WORKING ON GETTING THE SUBJUGATION DROPDOWN LIST LOOKING CORRECT
-   * STILL HAVE TO CLEAN UP THE CODE AFTERWARD
-   */
 
   return (
     <>
@@ -76,32 +75,23 @@ const SubjugationBasicDropdown = () => {
         <Dropdown className='d-flex flex-grow-1'>
           <IngredientDropdownToggle label={label} />
 
-          <Dropdown.Menu
-            className='py-0'
-            style={{ maxHeight: '50vh', overflowY: 'auto' }}
-          >
+          <Dropdown.Menu className='py-0' style={{ maxHeight: '50vh', overflowY: 'auto' }}>
             {Object.entries(ingredientsMap).map(([name, ingredients]) => {
               if (ingredients.length > 6) {
-                const foci: ElementalList[] = subjugationElementalList.filter(
-                  (element) => element.name.includes(name)
-                )
+                const foci: ElementalList[] = subjugationElementalList.filter((element) => element.name.includes(name))
                 if (foci.length > 1) {
                   return (
                     <>
                       {renderSection(
-                        `${name} (T1: ${foci[1]?.elements[0]})`,
+                        `${name} (T1: ${foci[0]?.elements[0]})`,
                         ingredients.filter((ing: CraftingIngredient) =>
-                          (ing.requirements as CraftingIngredient[])
-                            .at(0)
-                            ?.name.includes(foci[0]?.elements[0])
+                          ing.requirements.at(0)?.name.includes(foci[1]?.elements[0])
                         )
                       )}
                       {renderSection(
-                        `${name} (T1: ${foci[0]?.elements[0]})`,
+                        `${name} (T1: ${foci[1]?.elements[0]})`,
                         ingredients.filter((ing: CraftingIngredient) =>
-                          (ing.requirements as CraftingIngredient[])
-                            .at(0)
-                            ?.name.includes(foci[1]?.elements[0])
+                          ing.requirements.at(0)?.name.includes(foci[0]?.elements[0])
                         )
                       )}
                     </>

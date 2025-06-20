@@ -4,15 +4,13 @@ import { useAppSelector } from '../../redux/hooks.ts'
 import DevastationBasicDropdown from './components/DevastationBasicDropdown.tsx'
 import DevastationFocusedDropdown from './components/DevastationFocusedDropdown.tsx'
 import FecundityDropdown from './components/FecundityDropdown.tsx'
+import IngredientList from './components/IngredientList.tsx'
 import InvasionDropdown from './components/InvasionDropdown.tsx'
 import SubjugationBasicDropdown from './components/SubjugationBasicDropdown.tsx'
 import SubjugationSpellDropdown from './components/SubjugationSpellDropdown.tsx'
 
 const HeroicGreenSteel = () => {
-  const { selectedFecundityItem } = useAppSelector(
-    (state) => state.greenSteel,
-    shallowEqual
-  )
+  const { selectedFecundityItem } = useAppSelector((state) => state.greenSteel, shallowEqual)
 
   return (
     <Container fluid className='px-0'>
@@ -35,6 +33,9 @@ const HeroicGreenSteel = () => {
                   <DevastationFocusedDropdown />
                 </>
               )}
+            </Col>
+            <Col>
+              <IngredientList />
             </Col>
           </Row>
         </Card.Body>

@@ -3,10 +3,7 @@ import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import { altarOfSubjugation } from '../../../data/altarOfSubjugation.ts'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
-import {
-  resetSubjugationSpell,
-  selectSubjugationSpell
-} from '../../../redux/slices/hgsSlice.ts'
+import { resetSubjugationSpell, selectSubjugationSpell } from '../../../redux/slices/hgsSlice.ts'
 import type { AppDispatch } from '../../../redux/store.ts'
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
@@ -15,15 +12,12 @@ import IngredientDropdownToggle from './IngredientDropdownToggle.tsx'
 
 const SubjugationSpellDropdown = () => {
   const dispatch: AppDispatch = useAppDispatch()
-  const {
-    subjugationItems,
-    selectedSubjugationSpell,
-    selectedDevastationFocused
-  } = useAppSelector((state) => state.greenSteel, shallowEqual)
-
-  const [spells, setSpells] = useState<Record<string, CraftingIngredient>>(
-    {} as Record<string, CraftingIngredient>
+  const { subjugationItems, selectedSubjugationSpell, selectedDevastationFocused } = useAppSelector(
+    (state) => state.greenSteel,
+    shallowEqual
   )
+
+  const [spells, setSpells] = useState<Record<string, CraftingIngredient>>({} as Record<string, CraftingIngredient>)
   const [label, setLabel] = useState<string>()
 
   const populateSpellList = useCallback((spells: CraftingIngredient[]) => {
@@ -51,11 +45,7 @@ const SubjugationSpellDropdown = () => {
   }, [populateSpellList, subjugationItems])
   useEffect(() => {
     if (selectedSubjugationSpell?.spell) {
-      setLabel(
-        `${selectedSubjugationSpell.spell.name} (CL: ${String(
-          selectedSubjugationSpell.spell.casterLevel
-        )})`
-      )
+      setLabel(`${selectedSubjugationSpell.spell.name} (CL: ${String(selectedSubjugationSpell.spell.casterLevel)})`)
     } else {
       setLabel('Select a Bonus Spell...')
     }
@@ -63,10 +53,7 @@ const SubjugationSpellDropdown = () => {
 
   useEffect(() => {
     if (selectedDevastationFocused) {
-      const { focus } = deconstructShard(
-        (selectedDevastationFocused.requirements as CraftingIngredient[]).at(1)
-          ?.name ?? ''
-      )
+      const { focus } = deconstructShard(selectedDevastationFocused.requirements.at(1)?.name ?? '')
 
       if (focus) {
         // console.log('we have a focus!', focus)
@@ -76,9 +63,7 @@ const SubjugationSpellDropdown = () => {
               return effect.name.includes(`Aspect of ${focus}`)
             })
           )
-          .filter(
-            (spellItem: CraftingIngredient) => spellItem.spell !== undefined
-          )
+          .filter((spellItem: CraftingIngredient) => spellItem.spell !== undefined)
 
         // console.log(spellList)
 
@@ -93,12 +78,7 @@ const SubjugationSpellDropdown = () => {
     } else {
       populateSpellList(subjugationItems)
     }
-  }, [
-    dispatch,
-    populateSpellList,
-    selectedDevastationFocused,
-    subjugationItems
-  ])
+  }, [dispatch, populateSpellList, selectedDevastationFocused, subjugationItems])
 
   return (
     <Stack direction='horizontal' gap={2} className='mt-2'>
@@ -119,38 +99,29 @@ const SubjugationSpellDropdown = () => {
           }
         />
 
-        <Dropdown.Menu
-          className='py-0 w-100'
-          style={{ maxHeight: '50vh', overflowY: 'auto' }}
-        >
-          {Object.entries(spells).map(
-            ([name, item]: [string, CraftingIngredient], idx: number) => {
-              if (!item.spell) return <></>
+        <Dropdown.Menu className='py-0 w-100' style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+          {Object.entries(spells).map(([name, item]: [string, CraftingIngredient], idx: number) => {
+            if (!item.spell) return <></>
 
-              return (
-                <>
-                  <Dropdown.Header className='border-bottom bg-light-subtle text-white'>
-                    <h6 className='m-0 text-center'>{name}</h6>
-                  </Dropdown.Header>
+            return (
+              <>
+                <Dropdown.Header className='border-bottom bg-light-subtle text-white'>
+                  <h6 className='m-0 text-center'>{name}</h6>
+                </Dropdown.Header>
 
-                  <Dropdown.Item
-                    key={`${item.spell.name}-${String(idx)}`}
-                    onClick={() => {
-                      dispatch(selectSubjugationSpell(item))
-                    }}
-                  >
-                    <small>{`${item.spell.name} (CL: ${String(
-                      item.spell.casterLevel
-                    )}, Charges: ${String(
-                      item.spell.charges
-                    )}, Recharge ${String(
-                      item.spell.rechargePerDay
-                    )}/day)`}</small>
-                  </Dropdown.Item>
-                </>
-              )
-            }
-          )}
+                <Dropdown.Item
+                  key={`${item.spell.name}-${String(idx)}`}
+                  onClick={() => {
+                    dispatch(selectSubjugationSpell(item))
+                  }}
+                >
+                  <small>{`${item.spell.name} (CL: ${String(item.spell.casterLevel)}, Charges: ${String(
+                    item.spell.charges
+                  )}, Recharge ${String(item.spell.rechargePerDay)}/day)`}</small>
+                </Dropdown.Item>
+              </>
+            )
+          })}
         </Dropdown.Menu>
       </Dropdown>
 

@@ -8,11 +8,7 @@ const IngredientDropdownToggle = (props: Props) => {
     <Dropdown.Toggle
       disabled={disabled}
       className='w-100 d-flex flex-row align-items-center justify-content-center border-light'
-      title={
-        disabled
-          ? 'You can only select a Basic upgrade or a Focused upgrade'
-          : undefined
-      }
+      title={disabled ? 'You can only select a Basic upgrade or a Focused upgrade' : undefined}
     >
       {label}
     </Dropdown.Toggle>

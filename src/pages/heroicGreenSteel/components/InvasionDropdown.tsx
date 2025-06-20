@@ -1,11 +1,11 @@
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
-import {
-  resetInvasionItem,
-  selectInvasionItem
-} from '../../../redux/slices/hgsSlice.ts'
+import { resetInvasionItem, selectInvasionItem } from '../../../redux/slices/hgsSlice.ts'
 import type { AppDispatch } from '../../../redux/store.ts'
+import type { CraftingIngredient } from '../../../types/crafting.ts'
 import useInvasion from '../hooks/useInvasion.ts'
 import IngredientDropdownSection from './IngredientDropdownSection.tsx'
 import IngredientDropdownToggle from './IngredientDropdownToggle.tsx'
@@ -13,29 +13,35 @@ import IngredientDropdownToggle from './IngredientDropdownToggle.tsx'
 const InvasionDropdown = () => {
   const dispatch: AppDispatch = useAppDispatch()
 
-  const { selectedInvasionItem } = useAppSelector(
+  const { selectedInvasionItem, selectedSubjugationItem, selectedDevastationFocused } = useAppSelector(
     (state) => state.greenSteel,
     shallowEqual
   )
 
-  const { affinities } = useInvasion()
+  const { ingredientsMap } = useInvasion()
 
-  const label = (
-    <>
-      <Col sm={1}>T1:</Col>
-      <Col sm={11} className='d-flex justify-content-start'>
-        <strong>
-          <small>
-            {selectedInvasionItem?.effectsAdded
-              ? selectedInvasionItem.effectsAdded
-                  .map((effect) => effect.name)
-                  .join(', ')
-              : 'Select an Upgrade...'}
-          </small>
-        </strong>
-      </Col>
-    </>
-  )
+  const [label, setLabel] = useState<React.JSX.Element>(<></>)
+
+  useEffect(() => {
+    setLabel(
+      <>
+        <Col sm={1}>T1:</Col>
+        <Col sm={11} className='d-flex justify-content-start'>
+          <strong>
+            <small>
+              {selectedInvasionItem?.effectsAdded
+                ? selectedInvasionItem.effectsAdded.map((effect) => effect.name).join(', ')
+                : 'Select an Upgrade...'}
+            </small>
+          </strong>
+        </Col>
+      </>
+    )
+  }, [selectedInvasionItem])
+
+  useEffect(() => {
+    dispatch(resetInvasionItem())
+  }, [selectedSubjugationItem, selectedDevastationFocused, dispatch])
 
   return (
     <>
@@ -45,27 +51,21 @@ const InvasionDropdown = () => {
         <Dropdown className='d-flex flex-grow-1'>
           <IngredientDropdownToggle label={label} />
 
-          <Dropdown.Menu
-            className='py-0 w-100'
-            style={{ maxHeight: '50vh', overflowY: 'auto' }}
-          >
-            {affinities.map((affinity) => (
+          <Dropdown.Menu className='py-0 w-100' style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+            {Object.entries(ingredientsMap).map(([name, ingredients]) => (
               <IngredientDropdownSection
-                key={`${affinity.name}-${affinity.elements.join('-')}`}
+                key={`${name}-${ingredients
+                  .map((ingredient: CraftingIngredient) =>
+                    (ingredient.effectsAdded as CraftingIngredient[]).map((effect: CraftingIngredient) => effect.name)
+                  )
+                  .join('-')}`}
                 clickHandler={selectInvasionItem}
                 header={
-                  <Stack
-                    direction='horizontal'
-                    gap={2}
-                    className='align-items-center justify-content-center'
-                  >
-                    {affinity.name}
-                    <Stack direction='horizontal' gap={2}>
-                      ({affinity.elements[0]})
-                    </Stack>
+                  <Stack direction='horizontal' gap={2} className='align-items-center justify-content-center'>
+                    {name}
                   </Stack>
                 }
-                ingredientList={affinity.ingredients}
+                ingredientList={ingredients}
               />
             ))}
           </Dropdown.Menu>
