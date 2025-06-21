@@ -14,7 +14,7 @@ const processStatus = (response: string): boolean | undefined => {
     const rolesPresent: number = [
       'TurbineEmployee',
       'TurbineVIP',
-      'StormeachLimited',
+      'StormreachLimited',
       'StormreachStandard',
       'StormreachGuest',
       'StormreachEUPre'
