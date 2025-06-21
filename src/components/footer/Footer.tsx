@@ -1,0 +1,92 @@
+import { DateTime } from 'luxon'
+import { useLayoutEffect, useRef } from 'react'
+import { Container, Navbar, Stack } from 'react-bootstrap'
+import { serverStatusApi } from '../../api/serverStatusApi.ts'
+import { useAppDispatch } from '../../redux/hooks.ts'
+import { setFooterHeight } from '../../redux/slices/appSlice.ts'
+import type { AppDispatch } from '../../redux/store.ts'
+import ServerStatusDisplay from '../ServerStatusDisplay.tsx'
+import Countdown from '../timer/Countdown.tsx'
+
+const polling = {
+  pollingInterval: 60000, // re-check every minute
+  skipPollingIfUnfocused: true
+}
+
+const Footer = () => {
+  const dispatch: AppDispatch = useAppDispatch()
+
+  const { data: argoUp } = serverStatusApi.useArgonnessenQuery(undefined, polling)
+  const { data: cannithUp } = serverStatusApi.useCannithQuery(undefined, polling)
+  const { data: ghallandaUp } = serverStatusApi.useGhallandaQuery(undefined, polling)
+  const { data: khyberUp } = serverStatusApi.useKhyberQuery(undefined, polling)
+  const { data: orienUp } = serverStatusApi.useOrienQuery(undefined, polling)
+  const { data: sarlonaUp } = serverStatusApi.useSarlonaQuery(undefined, polling)
+  const { data: thelanisUp } = serverStatusApi.useThelanisQuery(undefined, polling)
+  const { data: wayfinderUp } = serverStatusApi.useWayfinderQuery(undefined, polling)
+  // const { data: hardcoreUp } = serverStatusApi.useHardcoreQuery(undefined, polling)
+  // const { data: lamanniaUp } = serverStatusApi.useLamanniaQuery(undefined, polling)
+  const { data: cormyrUp } = serverStatusApi.useCormyrQuery(undefined, polling)
+
+  const navRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const box = navRef.current?.getBoundingClientRect()
+    if (box?.height) {
+      dispatch(setFooterHeight(box.height))
+    }
+  }, [dispatch])
+
+  return (
+    <Navbar ref={navRef} sticky='bottom' variant='dark' className='text-center bg-primary z-1'>
+      <Container fluid className='text-center m-auto w-auto'>
+        <Stack direction='vertical' gap={1} className='align-items-center'>
+          <Stack direction='horizontal' gap={3} className='align-items-center justify-content-center'>
+            <ServerStatusDisplay name='Argonnessen' up={argoUp} />
+            &bull;
+            <ServerStatusDisplay name='Cannith' up={cannithUp} />
+            &bull;
+            <ServerStatusDisplay name='Ghallanda' up={ghallandaUp} />
+            &bull;
+            <ServerStatusDisplay name='Khyber' up={khyberUp} />
+            &bull;
+            <ServerStatusDisplay name='Orien' up={orienUp} />
+            &bull;
+            <ServerStatusDisplay name='Sarlona' up={sarlonaUp} />
+            &bull;
+            <ServerStatusDisplay name='Thelanis' up={thelanisUp} />
+            &bull;
+            <ServerStatusDisplay name='Wayfinder' up={wayfinderUp} />
+            {/*
+            I think both of these servers are no longer in existence.
+            They don't show up in the server list when pinging the data center anymore
+            */}
+            {/*&bull;*/}
+            {/*<ServerStatusDisplay name='Hardcore' up={hardcoreUp} />*/}
+            {/*&bull;*/}
+            {/*<ServerStatusDisplay name='Lamannia' up={lamanniaUp} />*/}
+            &bull;
+            <ServerStatusDisplay name='Cormyr' up={cormyrUp} />
+            &bull;
+            {/* 64-bit servers coming soon */}
+            <ServerStatusDisplay name='Shadowdale' up={undefined} comingSoon={true} />
+            &bull;
+            <ServerStatusDisplay name='Thrane' up={undefined} comingSoon={true} />
+            &bull;
+            <ServerStatusDisplay name='Moonsea' up={undefined} comingSoon={true} />
+          </Stack>
+
+          {/* Hide the timer at 1pm EST [the usual time the servers are back online after an update] */}
+          {DateTime.now().toSeconds() <= 1752080400 && (
+            <Stack className='w-auto justify-content-center' direction='horizontal' gap={2}>
+              <strong>Countdown to 64-bit Servers:</strong>
+              <Countdown targetTimestamp={1752066000} />
+            </Stack>
+          )}
+        </Stack>
+      </Container>
+    </Navbar>
+  )
+}
+
+export default Footer

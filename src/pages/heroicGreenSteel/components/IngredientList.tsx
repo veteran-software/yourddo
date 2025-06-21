@@ -28,27 +28,25 @@ const IngredientList = () => {
   const [craftedMaterials, setCraftedMaterials] = useState<Record<string, number>>({})
 
   const recipeBuilder = useCallback((recipe: CraftingIngredient, whereToLook: CraftingIngredient[]) => {
-    if (recipe.craftedIn) {
-      recipe.requirements.forEach((requirement: CraftingIngredient) => {
-        const ingredient: CraftingIngredient | undefined = whereToLook.find(
-          (altarIngredient: CraftingIngredient) => altarIngredient.name === requirement.name
-        )
+    recipe.requirements.forEach((requirement: CraftingIngredient) => {
+      const ingredient: CraftingIngredient | undefined = whereToLook.find(
+        (altarIngredient: CraftingIngredient) => altarIngredient.name === requirement.name
+      )
 
-        if (ingredient) {
-          setCraftedMaterials((prev) => ({
-            ...prev,
-            [ingredient.name]: (prev[ingredient.name] ?? 0) + requirement.quantity
-          }))
+      if (ingredient) {
+        setCraftedMaterials((prev: Record<string, number>) => ({
+          ...prev,
+          [ingredient.name]: (prev[ingredient.name] ?? 0) + requirement.quantity
+        }))
 
-          recipeBuilder(ingredient, whereToLook)
-        } else {
-          setRawMaterials((prev) => ({
-            ...prev,
-            [requirement.name]: (prev[requirement.name] ?? 0) + requirement.quantity
-          }))
-        }
-      })
-    }
+        recipeBuilder(ingredient, whereToLook)
+      } else {
+        setRawMaterials((prev: Record<string, number>) => ({
+          ...prev,
+          [requirement.name]: (prev[requirement.name] ?? 0) + requirement.quantity
+        }))
+      }
+    })
   }, [])
 
   useEffect(() => {
@@ -102,65 +100,71 @@ const IngredientList = () => {
 
   return (
     <Stack direction='vertical' gap={3} className='m-0 p-0'>
-      <Card>
-        <Card.Header className='text-center'>
-          <h6 className='mb-0'>Full Ingredient List</h6>
-        </Card.Header>
-        <Card.Body className='m-0 p-0'>
-          <Accordion alwaysOpen={false} className='rounded-0'>
-            {Object.entries(rawMaterials).length > 0 && (
-              <Accordion.Item eventKey='0' className='rounded-0'>
-                <Accordion.Header>Materials to Farm</Accordion.Header>
-                <Accordion.Body className='p-0'>
-                  <ListGroup variant='flush'>
-                    {Object.entries(rawMaterials).map(([name, count]: [name: string, count: number]) => {
-                      // Don't want to display the weapons required to charge depleted cells
-                      // It's basically ingredient bloat
-                      if (name === 'Enchanted Weapon') {
-                        return <></>
-                      }
+      {(Object.entries(rawMaterials).length > 0 || Object.entries(craftedMaterials).length > 0) && (
+        <Card>
+          <Card.Header className='text-center'>
+            <h6 className='mb-0'>Full Ingredient List</h6>
+          </Card.Header>
+          <Card.Body className='m-0 p-0'>
+            <Accordion alwaysOpen={false} className='rounded-0'>
+              {Object.entries(rawMaterials).length > 0 && (
+                <Accordion.Item eventKey='0' className='rounded-0'>
+                  <Accordion.Header>Materials to Farm</Accordion.Header>
+                  <Accordion.Body className='p-0'>
+                    <ListGroup variant='flush'>
+                      {Object.entries(rawMaterials).map(([name, count]: [name: string, count: number]) => {
+                        // Don't want to display the weapons required to charge depleted cells
+                        // It's basically ingredient bloat
+                        if (
+                          /\b((green\s+steel)|enchanted|earth|air|fire|water|positive|negative)\s+(accessory|weapon)\b/i.test(
+                            name
+                          )
+                        ) {
+                          return <></>
+                        }
 
-                      return (
-                        <ListGroup.Item key={name}>
-                          <FarmedIngredientDisplay
-                            ingredient={findIngredientByName(name, ingredients)}
-                            quantity={count}
-                          />
-                        </ListGroup.Item>
-                      )
-                    })}
-                  </ListGroup>
-                </Accordion.Body>
-              </Accordion.Item>
-            )}
+                        return (
+                          <ListGroup.Item key={name}>
+                            <FarmedIngredientDisplay
+                              ingredient={findIngredientByName(name, ingredients as CraftingIngredient[])}
+                              quantity={count}
+                            />
+                          </ListGroup.Item>
+                        )
+                      })}
+                    </ListGroup>
+                  </Accordion.Body>
+                </Accordion.Item>
+              )}
 
-            {Object.entries(craftedMaterials).length > 0 && (
-              <Accordion.Item eventKey='1' className='rounded-0'>
-                <Accordion.Header>Materials to Craft</Accordion.Header>
-                <Accordion.Body className='p-0'>
-                  <ListGroup variant='flush'>
-                    {Object.entries(craftedMaterials).map(([name, count]: [name: string, count: number]) => {
-                      return (
-                        <ListGroup.Item key={name}>
-                          <CraftedIngredientDisplay
-                            ingredient={findIngredientByName(name, [
-                              ...altarOfFecundity,
-                              ...altarOfInvasion,
-                              ...altarOfSubjugation,
-                              ...altarOfDevastation
-                            ])}
-                            quantity={count}
-                          />
-                        </ListGroup.Item>
-                      )
-                    })}
-                  </ListGroup>
-                </Accordion.Body>
-              </Accordion.Item>
-            )}
-          </Accordion>
-        </Card.Body>
-      </Card>
+              {Object.entries(craftedMaterials).length > 0 && (
+                <Accordion.Item eventKey='1' className='rounded-0'>
+                  <Accordion.Header>Materials to Craft</Accordion.Header>
+                  <Accordion.Body className='p-0'>
+                    <ListGroup variant='flush'>
+                      {Object.entries(craftedMaterials).map(([name, count]: [name: string, count: number]) => {
+                        return (
+                          <ListGroup.Item key={name}>
+                            <CraftedIngredientDisplay
+                              ingredient={findIngredientByName(name, [
+                                ...altarOfFecundity,
+                                ...altarOfInvasion,
+                                ...altarOfSubjugation,
+                                ...altarOfDevastation
+                              ])}
+                              quantity={count}
+                            />
+                          </ListGroup.Item>
+                        )
+                      })}
+                    </ListGroup>
+                  </Accordion.Body>
+                </Accordion.Item>
+              )}
+            </Accordion>
+          </Card.Body>
+        </Card>
+      )}
 
       <Card>
         <Card.Header className='text-center'>
@@ -177,7 +181,7 @@ const IngredientList = () => {
                   <ListGroup variant='flush'>
                     {selectedInvasionItem.requirements.map((ingredient: CraftingIngredient) => (
                       <ListGroup.Item key={ingredient.name}>
-                        <FarmedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
+                        <CraftedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
                       </ListGroup.Item>
                     ))}
                   </ListGroup>
@@ -192,7 +196,7 @@ const IngredientList = () => {
                   <ListGroup variant='flush'>
                     {selectedSubjugationItem.requirements.map((ingredient: CraftingIngredient) => (
                       <ListGroup.Item key={ingredient.name}>
-                        <FarmedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
+                        <CraftedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
                       </ListGroup.Item>
                     ))}
                   </ListGroup>

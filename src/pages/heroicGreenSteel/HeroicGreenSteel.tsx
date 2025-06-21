@@ -13,7 +13,7 @@ const HeroicGreenSteel = () => {
   const { selectedFecundityItem } = useAppSelector((state) => state.greenSteel, shallowEqual)
 
   return (
-    <Container fluid className='px-0'>
+    <Container className='px-0'>
       <Card>
         <Card.Header className='text-center'>
           <h4 className='mb-0'>Heroic Green Steel Crafting</h4>

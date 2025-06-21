@@ -2,6 +2,8 @@ import camelcase from 'camelcase'
 import { useEffect, useState } from 'react'
 import { Container, Image, Stack } from 'react-bootstrap'
 import type { CraftingIngredient } from '../types/crafting.ts'
+import type { Ingredient } from '../types/ingredients.ts'
+import { FOCI } from '../utils/constants.ts'
 
 const CraftedIngredientDisplay = (props: Props) => {
   const { ingredient, quantity } = props
@@ -10,20 +12,26 @@ const CraftedIngredientDisplay = (props: Props) => {
 
   useEffect(() => {
     if (!ingredient) return
+
     void (async () => {
-      let formattedName = ingredient.name
-      if (formattedName.toLowerCase().includes('shard of') && formattedName.toLowerCase().includes('power')) {
+      let formattedName: string = ingredient.name
+
+      if (/\bshard\s+of(?:\s+\w+)?\s+power\b/i.test(formattedName)) {
         formattedName = ingredient.name
-          .replace('Ethereal', '')
-          .replace('Material', '')
-          .replace('Dominion', '')
-          .replace('Opposition', '')
-          .replace('Escalation', '')
+          .replace(/\b(ethereal|material|dominion|opposition|escalation)\b/gi, '')
+          .replace(/\s+/g, ' ')
           .trim()
       }
+
+      const regex = new RegExp(`\\b(${FOCI.join('|')})\\s+(Weapon|Accessory)\\b`, 'gi')
+      if (regex.test(formattedName)) {
+        formattedName = `Green Steel ${formattedName}`
+      }
+
       const image = (await import(`../assets/icons/${camelcase(formattedName)}.png`)) as {
         default: string
       }
+
       setImageSrc(image.default)
     })()
   }, [ingredient])
@@ -33,12 +41,14 @@ const CraftedIngredientDisplay = (props: Props) => {
   }
 
   return (
-    <Stack direction='horizontal' gap={3}>
+    <Stack direction='horizontal' gap={3} className='align-items-center'>
       <Image src={imageSrc} alt={ingredient.name} title={ingredient.name} />
 
-      <Stack direction='vertical' gap={0}>
-        <strong>{ingredient.name}</strong>
-        <small>Crafting Location: {ingredient.craftedIn}</small>
+      <Stack direction='vertical' gap={0} className='text-wrap justify-content-center'>
+        {ingredient.name}
+        {(ingredient as CraftingIngredient).craftedIn && (
+          <small>Crafting Location: {(ingredient as CraftingIngredient).craftedIn}</small>
+        )}
       </Stack>
 
       <Container className='w-auto'>
@@ -49,7 +59,7 @@ const CraftedIngredientDisplay = (props: Props) => {
 }
 
 interface Props {
-  ingredient: CraftingIngredient | undefined
+  ingredient: CraftingIngredient | Ingredient | undefined
   quantity: number
 }
 

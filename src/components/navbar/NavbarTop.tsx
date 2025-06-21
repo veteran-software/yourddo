@@ -29,7 +29,7 @@ const NavbarTop = () => {
 
   return (
     <Navbar expand='lg' className='bg-primary mb-sm-1 mb-lg-2 z-1' sticky='top' ref={navRef}>
-      <Container>
+      <Container fluid>
         <Navbar.Brand href='/' className='p-0'>
           <Image src={logo} height={45} />
         </Navbar.Brand>

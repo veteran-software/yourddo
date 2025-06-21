@@ -38,7 +38,6 @@ const DevastationFocusedDropdown = () => {
   )
 
   const renderSection = (name: string, ingredients: CraftingIngredient[]) => {
-    // console.log('ingredients', ingredients)
     return (
       <IngredientDropdownSection
         clickHandler={selectDevastationFocused}
@@ -59,7 +58,6 @@ const DevastationFocusedDropdown = () => {
 
         <Dropdown.Menu className='py-0 w-100' style={{ maxHeight: '50vh', overflowY: 'auto' }}>
           {Object.entries(ingredientsMap).map(([element, ingredients]) => {
-            // console.log(element, ingredients)
             return renderSection(element, ingredients)
           })}
         </Dropdown.Menu>

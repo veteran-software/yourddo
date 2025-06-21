@@ -56,7 +56,6 @@ const SubjugationSpellDropdown = () => {
       const { focus } = deconstructShard(selectedDevastationFocused.requirements.at(1)?.name ?? '')
 
       if (focus) {
-        // console.log('we have a focus!', focus)
         const spellList: CraftingIngredient[] = altarOfSubjugation
           .filter((spellItem: CraftingIngredient) =>
             spellItem.effectsAdded?.some((effect: Enhancement) => {
@@ -64,8 +63,6 @@ const SubjugationSpellDropdown = () => {
             })
           )
           .filter((spellItem: CraftingIngredient) => spellItem.spell !== undefined)
-
-        // console.log(spellList)
 
         if (spellList.length) {
           populateSpellList(spellList)
@@ -99,7 +96,13 @@ const SubjugationSpellDropdown = () => {
           }
         />
 
-        <Dropdown.Menu className='py-0 w-100' style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+        <Dropdown.Menu
+          className='py-0 w-100'
+          style={{
+            maxHeight: '50vh',
+            overflowY: 'auto'
+          }}
+        >
           {Object.entries(spells).map(([name, item]: [string, CraftingIngredient], idx: number) => {
             if (!item.spell) return <></>
 
