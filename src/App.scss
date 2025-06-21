@@ -5,11 +5,12 @@ main {
   width: 100vw;
 }
 
-@keyframes logo-spin {
-  from {
+@keyframes spin {
+  0% {
     transform: rotate(0deg);
   }
-  to {
+  100% {
     transform: rotate(360deg);
   }
 }
+

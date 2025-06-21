@@ -3,18 +3,13 @@ import { defineConfig } from 'vite'
 import compression from 'vite-plugin-compression'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   css: {
     devSourcemap: false,
     preprocessorOptions: {
       scss: {
         api: 'modern-compiler',
-        silenceDeprecations: [
-          'mixed-decls',
-          'color-functions',
-          'global-builtin',
-          'import'
-        ]
+        silenceDeprecations: ['mixed-decls', 'color-functions', 'global-builtin', 'import']
       }
     }
   },
@@ -26,5 +21,17 @@ export default defineConfig({
       deleteOriginFile: true,
       filter: /\.(js|css|json|html|svg|png)$/
     })
-  ]
-})
+  ],
+  server: {
+    proxy:
+      mode === 'development'
+        ? {
+            '/api': {
+              target: 'https://gls.ddo.com/',
+              changeOrigin: true,
+              rewrite: (path: string) => path.replace(/^\/api/, 'GLS.DataCenterServer/StatusServer.aspx')
+            }
+          }
+        : undefined
+  }
+}))

@@ -522,6 +522,21 @@ export const ingredients: Ingredient[] = [
     foundIn: ['The Shroud', 'Tower of Despair']
   },
   {
+    name: 'Shard of Power',
+    description: 'This shard of crystal emanates power.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      gold: 49500
+    },
+    inventoryMaxStack: 1,
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Devil Assault']
+  },
+  {
     name: 'Shavarath Low Energy Cell',
     description: 'A small vessel with a charge of energy inside. This item is humming like the Altar of Invasion.',
     type: 'This item may be usable in an eldritch device.',
@@ -619,6 +634,90 @@ export const ingredients: Ingredient[] = [
     },
     weight: 0.1,
     foundIn: ['Tower of Despair']
+  },
+  {
+    name: 'Small Devil Scales',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A few reptilian looking devil scales. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 15,
+      gold: 5
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Small Glowing Arrowhead',
+    description:
+      'A metal arrowhead that gives off a pale greenish light. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 15,
+      gold: 5
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Small Gnawed Bone',
+    description: 'A dry bone that has been gnawed clean. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 15,
+      gold: 5
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Small Length of Infernal Chain',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A length of dirty, barbed chain. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 15,
+      gold: 5
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Small Sulfurous Stone',
+    type: 'This item may be usable in an eldritch device.',
+    description:
+      'A rough, crumbly piece of yellowish gray stone that smells of sulfur. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 15,
+      gold: 5
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Small Twisted Shrapnel',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A sharp and twisted hunk of metal. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 15,
+      gold: 5
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
   },
   {
     name: 'Special Energy Cell',

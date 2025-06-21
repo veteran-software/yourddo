@@ -26,7 +26,6 @@ const useInvasion = () => {
   }, [])
 
   const { ingredientsMap } = useIngredientsMap(items, elemental, filterCallback)
-  console.log(ingredientsMap)
 
   return { ingredientsMap }
 }

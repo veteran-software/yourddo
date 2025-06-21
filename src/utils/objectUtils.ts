@@ -1,7 +1,6 @@
 import kebabCase from 'kebab-case'
 import type { Enhancement } from '../types/core.ts'
 import type { CraftingIngredient } from '../types/crafting.ts'
-import type { Ingredient } from '../types/ingredients.ts'
 import { ESSENCES, FOCI, GEMS } from './constants.ts'
 
 /**
@@ -117,8 +116,11 @@ export const deconstructShard = (
  * @function
  * @param {string} ingredientName - The name of the ingredient to search for.
  * @param whereToLook
- * @returns {Ingredient | undefined} The ingredient object if found, or undefined if no match is found.
+ * @returns {CraftingIngredient | undefined} The ingredient object if found, or undefined if no match is found.
  */
-export const findIngredientByName = (ingredientName: string, whereToLook: Ingredient[]): Ingredient | undefined => {
-  return whereToLook.find((ingredient: Ingredient) => ingredient.name === ingredientName)
+export const findIngredientByName = (
+  ingredientName: string,
+  whereToLook: CraftingIngredient[]
+): CraftingIngredient | undefined => {
+  return whereToLook.find((ingredient: CraftingIngredient) => ingredient.name === ingredientName)
 }
