@@ -18,7 +18,8 @@ export default defineConfig({
       '/api': {
         target: 'https://gls.ddo.com/',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, 'GLS.DataCenterServer/StatusServer.aspx')
+        secure: false,
+        rewrite: (path: string) => path.replace(/^\/api/, 'GLS.DataCenterServer/StatusServer.aspx')
       }
     }
   }

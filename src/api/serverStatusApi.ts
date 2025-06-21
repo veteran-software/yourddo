@@ -35,12 +35,12 @@ const processStatus = (response: string): boolean | undefined => {
 export const serverStatusApi = createApi({
   reducerPath: 'serverStatus',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api',
+    baseUrl: import.meta.env.VITE_API_BASE_URL as string,
     prepareHeaders: (headers) => {
       headers.set('Accept', 'text/xml')
       return headers
     },
-    mode: 'no-cors',
+    credentials: 'include',
     responseHandler: 'text'
   }),
   endpoints: (build) => ({
