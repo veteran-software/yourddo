@@ -31,7 +31,7 @@ const RawMaterialList = (props: Props) => {
         }
 
         return (
-          <ListGroup.Item>
+          <ListGroup.Item key={`${ing}-${String(count)}`}>
             <FarmedIngredientDisplay key={ing} ingredient={ingredientsMap[ing]} quantity={count} />
           </ListGroup.Item>
         )

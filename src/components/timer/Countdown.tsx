@@ -31,10 +31,10 @@ const Countdown = (props: Props) => {
     }
   }, [onComplete, targetTimestamp])
 
-  const days: number = remainingTime.days || 0
-  const hours: number = remainingTime.hours || 0
-  const minutes: number = remainingTime.minutes || 0
-  const seconds: number = Math.floor(remainingTime.seconds || 0)
+  const days: number = remainingTime.days
+  const hours: number = remainingTime.hours
+  const minutes: number = remainingTime.minutes
+  const seconds: number = Math.floor(remainingTime.seconds)
 
   return (
     <span>
