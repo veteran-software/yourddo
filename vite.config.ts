@@ -1,6 +1,5 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-import compression from 'vite-plugin-compression'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -13,15 +12,7 @@ export default defineConfig(({ mode }) => ({
       }
     }
   },
-  plugins: [
-    react(),
-    compression({
-      ext: '.br',
-      algorithm: 'brotliCompress',
-      deleteOriginFile: false,
-      filter: /\.(js|css|json|html|svg|png)$/
-    })
-  ],
+  plugins: [react()],
   server: {
     proxy:
       mode === 'development'
