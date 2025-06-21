@@ -1,0 +1,39 @@
+version: 1
+frontend:
+  customHeaders:
+    - pattern: '**/*.js'
+      headers:
+        - key: 'Content-Encoding'
+          value: 'br'
+        - key: 'Content-Type'
+          value: 'application/javascript'
+    - pattern: '**/*.css'
+      headers:
+        - key: 'Content-Encoding'
+          value: 'br'
+        - key: 'Content-Type'
+          value: 'text/css'
+    - pattern: '**/*.json'
+      headers:
+        - key: 'Content-Encoding'
+          value: 'br'
+        - key: 'Content-Type'
+          value: 'application/json'
+    - pattern: '**/*.html'
+      headers:
+        - key: 'Content-Encoding'
+          value: 'br'
+        - key: 'Content-Type'
+          value: 'text/html'
+    - pattern: '**/*.svg'
+      headers:
+        - key: 'Content-Encoding'
+          value: 'br'
+        - key: 'Content-Type'
+          value: 'image/svg+xml'
+    - pattern: '**/*.png'
+      headers:
+        - key: 'Content-Encoding'
+          value: 'br'
+        - key: 'Content-Type'
+          value: 'image/png'

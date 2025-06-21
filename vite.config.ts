@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => ({
     compression({
       ext: '.br',
       algorithm: 'brotliCompress',
-      deleteOriginFile: true,
+      deleteOriginFile: false,
       filter: /\.(js|css|json|html|svg|png)$/
     })
   ],
