@@ -11,44 +11,28 @@ const { actions, reducer } = createSlice({
   initialState: createInitialState(),
   name: 'greenSteel',
   reducers: {
-    setSubjugationSpell: (state, action: PayloadAction<CraftingIngredient>) => {
-      state.selectedSubjugationSpell = action.payload
-    },
     selectFecundityItem: (state, action: PayloadAction<CraftingIngredient>) => {
-      if (
-        state.selectedFecundityItem &&
-        state.selectedFecundityItem.ingredientType !==
-          action.payload.ingredientType
-      ) {
+      if (state.selectedFecundityItem && state.selectedFecundityItem.ingredientType !== action.payload.ingredientType) {
         resetPlanner(state)
       }
 
       state.selectedFecundityItem = action.payload
 
-      const baseItemType: 'Weapon' | 'Accessory' =
-        action.payload.ingredientType?.endsWith('Weapon')
-          ? 'Weapon'
-          : 'Accessory'
-      state.invasionItems = filterItemsBySuffix(
-        [...altarOfInvasion],
-        `${baseItemType} Upgrade`
-      )
+      const baseItemType: 'Weapon' | 'Accessory' = action.payload.ingredientType?.endsWith('Weapon')
+        ? 'Weapon'
+        : 'Accessory'
+      state.invasionItems = filterItemsBySuffix([...altarOfInvasion], `${baseItemType} Upgrade`)
 
-      state.subjugationItems = filterItemsBySuffix(
-        [...altarOfSubjugation],
-        `${baseItemType} Upgrade`
-      )
+      state.subjugationItems = filterItemsBySuffix([...altarOfSubjugation], `${baseItemType} Upgrade`)
 
       // T3 Focused Effects
       state.devastationFocusedEffects = altarOfDevastation.filter(
         (ingredient: CraftingIngredient) =>
-          !ingredient.name.includes('Basic') &&
-          ingredient.name.includes(`${baseItemType} Upgrade`)
+          !ingredient.name.includes('Basic') && ingredient.name.includes(`${baseItemType} Upgrade`)
       )
 
-      state.devastationBasicItems = altarOfDevastation.filter(
-        (ingredient: CraftingIngredient) =>
-          ingredient.name.includes(`Basic ${baseItemType} Upgrade`)
+      state.devastationBasicItems = altarOfDevastation.filter((ingredient: CraftingIngredient) =>
+        ingredient.name.includes(`Basic ${baseItemType} Upgrade`)
       )
     },
     resetFecundityItem: (state) => {
@@ -60,37 +44,25 @@ const { actions, reducer } = createSlice({
     resetInvasionItem: (state) => {
       state.selectedInvasionItem = undefined
     },
-    selectSubjugationItem: (
-      state,
-      action: PayloadAction<CraftingIngredient>
-    ) => {
+    selectSubjugationItem: (state, action: PayloadAction<CraftingIngredient>) => {
       state.selectedSubjugationItem = action.payload
     },
     resetSubjugationItem: (state) => {
       state.selectedSubjugationItem = undefined
     },
-    selectSubjugationSpell: (
-      state,
-      action: PayloadAction<CraftingIngredient>
-    ) => {
+    selectSubjugationSpell: (state, action: PayloadAction<CraftingIngredient>) => {
       state.selectedSubjugationSpell = action.payload
     },
     resetSubjugationSpell: (state) => {
       state.selectedSubjugationSpell = undefined
     },
-    selectDevastationItem: (
-      state,
-      action: PayloadAction<CraftingIngredient>
-    ) => {
+    selectDevastationItem: (state, action: PayloadAction<CraftingIngredient>) => {
       state.selectedDevastationBasic = action.payload
     },
     resetDevastationBasic: (state) => {
       state.selectedDevastationBasic = undefined
     },
-    selectDevastationFocused: (
-      state,
-      action: PayloadAction<CraftingIngredient>
-    ) => {
+    selectDevastationFocused: (state, action: PayloadAction<CraftingIngredient>) => {
       state.selectedDevastationFocused = action.payload
     },
     resetDevastationFocused: (state) => {
@@ -124,7 +96,6 @@ export interface GreenSteelState {
 }
 
 export const {
-  setSubjugationSpell,
   selectFecundityItem,
   resetFecundityItem,
   selectInvasionItem,

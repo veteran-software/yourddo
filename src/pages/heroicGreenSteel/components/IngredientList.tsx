@@ -2,17 +2,13 @@ import { Accordion, Card, ListGroup, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import CraftedIngredientDisplay from '../../../components/CraftedIngredientDisplay.tsx'
 import FarmedIngredientDisplay from '../../../components/FarmedIngredientDisplay.tsx'
-import { altarOfDevastation } from '../../../data/altarOfDevastation.ts'
-import { altarOfFecundity } from '../../../data/altarOfFecundity.ts'
-import { altarOfInvasion } from '../../../data/altarOfInvasion.ts'
-import { altarOfSubjugation } from '../../../data/altarOfSubjugation.ts'
 import { ingredients } from '../../../data/ingredients.ts'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 import type { Ingredient } from '../../../types/ingredients.ts'
-import { findIngredientByName } from '../../../utils/objectUtils.ts'
 import useRecipeBuilder from '../hooks/useRecipeBuilder.ts'
 import FecundityList from './lists/FecundityList.tsx'
+import MaterialsAccordion from './MaterialsAccordion.tsx'
 
 const IngredientList = () => {
   const {
@@ -50,62 +46,7 @@ const IngredientList = () => {
             <h6 className='mb-0'>Full Ingredient List</h6>
           </Card.Header>
           <Card.Body className='m-0 p-0'>
-            <Accordion alwaysOpen={false} className='rounded-0'>
-              {Object.entries(rawMaterials).length > 0 && (
-                <Accordion.Item eventKey='0' className='rounded-0'>
-                  <Accordion.Header>Materials to Farm</Accordion.Header>
-                  <Accordion.Body className='p-0'>
-                    <ListGroup variant='flush'>
-                      {Object.entries(rawMaterials).map(([name, count]: [name: string, count: number]) => {
-                        // Don't want to display the weapons required to charge depleted cells
-                        // It's basically ingredient bloat
-                        if (
-                          /\b((green\s+steel)|enchanted|earth|air|fire|water|positive|negative)\s+(accessory|weapon)\b/i.test(
-                            name
-                          )
-                        ) {
-                          return <></>
-                        }
-
-                        return (
-                          <ListGroup.Item key={name}>
-                            <FarmedIngredientDisplay
-                              ingredient={findIngredientByName(name, ingredients as CraftingIngredient[])}
-                              quantity={count}
-                            />
-                          </ListGroup.Item>
-                        )
-                      })}
-                    </ListGroup>
-                  </Accordion.Body>
-                </Accordion.Item>
-              )}
-
-              {Object.entries(craftedMaterials).length > 0 && (
-                <Accordion.Item eventKey='1' className='rounded-0'>
-                  <Accordion.Header>Materials to Craft</Accordion.Header>
-                  <Accordion.Body className='p-0'>
-                    <ListGroup variant='flush'>
-                      {Object.entries(craftedMaterials).map(([name, count]: [name: string, count: number]) => {
-                        return (
-                          <ListGroup.Item key={name}>
-                            <CraftedIngredientDisplay
-                              ingredient={findIngredientByName(name, [
-                                ...altarOfFecundity,
-                                ...altarOfInvasion,
-                                ...altarOfSubjugation,
-                                ...altarOfDevastation
-                              ])}
-                              quantity={count}
-                            />
-                          </ListGroup.Item>
-                        )
-                      })}
-                    </ListGroup>
-                  </Accordion.Body>
-                </Accordion.Item>
-              )}
-            </Accordion>
+            <MaterialsAccordion rawMaterials={rawMaterials} craftedMaterials={craftedMaterials} />
           </Card.Body>
         </Card>
       )}
