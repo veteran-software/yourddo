@@ -1,9 +1,7 @@
 import type { Binding } from '../types/core.ts'
 
 export const bindingText = (binding: Binding) =>
-  `Bound to ${binding.location ?? 'Unknown'} (from ${
-    binding.when ?? 'Unknown'
-  })`
+  `Bound to ${binding.to ?? 'Unknown'} (from ${binding.from ?? 'Unknown'})`
 export const craftedMaterialInstructions = (ringName: string) =>
   `Craft the Focus, Gem, and Essence. Combine them in the Altar of Subjugation to create the imbued Shard of Great Power. Finally, apply the imbued Shard onto your ${ringName}`
 

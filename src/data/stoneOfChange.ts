@@ -17,7 +17,8 @@ export const stoneOfChange: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Small Khyber Dragonshard',
-        quantity: 10
+        quantity: 10,
+        requirements: []
       }
     ]
   },
@@ -37,7 +38,8 @@ export const stoneOfChange: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Tiny Khyber Dragonshard',
-        quantity: 100
+        quantity: 100,
+        requirements: []
       }
     ]
   }
