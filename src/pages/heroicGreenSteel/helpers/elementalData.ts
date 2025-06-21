@@ -4,10 +4,7 @@ export interface ElementalList {
 }
 
 export const baseElemental: ElementalList[] = [
-  {
-    name: 'Air',
-    elements: ['Air', 'Air']
-  },
+  { name: 'Air', elements: ['Air', 'Air'] },
   { name: 'Earth', elements: ['Earth', 'Earth'] },
   { name: 'Fire', elements: ['Fire', 'Fire'] },
   { name: 'Water', elements: ['Water', 'Water'] },
@@ -43,14 +40,8 @@ export const subjugationElementalList: ElementalList[] = [
   { name: 'Vacuum', elements: ['Negative', 'Air'] },
   { name: 'Balance of Land and Sky', elements: ['Air', 'Earth'] },
   { name: 'Balance of Land and Sky', elements: ['Earth', 'Air'] },
-  {
-    name: 'Existential Stalemate',
-    elements: ['Negative', 'Positive']
-  },
-  {
-    name: 'Existential Stalemate',
-    elements: ['Positive', 'Negative']
-  },
+  { name: 'Existential Stalemate', elements: ['Negative', 'Positive'] },
+  { name: 'Existential Stalemate', elements: ['Positive', 'Negative'] },
   { name: 'Tempered', elements: ['Fire', 'Water'] },
   { name: 'Tempered', elements: ['Water', 'Fire'] }
 ] as ElementalList[]
@@ -70,9 +61,6 @@ export const devastationElementalList: ElementalList[] = [
   { name: 'Steam', elements: ['Steam', 'Water'] },
   { name: 'Vacuum', elements: ['Vacuum', 'Air'] },
   { name: 'Balance of Land and Sky', elements: ['Tempered', 'Earth'] },
-  {
-    name: 'Existential Stalemate',
-    elements: ['Existential Stalemate', 'Positive']
-  },
+  { name: 'Existential Stalemate', elements: ['Existential Stalemate', 'Positive'] },
   { name: 'Tempered', elements: ['Balance of Land and Sky', 'Water'] }
 ] as ElementalList[]

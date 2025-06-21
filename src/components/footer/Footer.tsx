@@ -38,7 +38,7 @@ const Footer = () => {
   }, [dispatch])
 
   return (
-    <Navbar ref={navRef} sticky='bottom' variant='dark' className='text-center bg-primary z-1'>
+    <Navbar ref={navRef} sticky='bottom' variant='dark' className='text-center bg-primary'>
       <Container fluid className='text-center m-auto w-auto'>
         <Stack direction='vertical' gap={1} className='align-items-center'>
           <Stack direction='horizontal' gap={3} className='align-items-center justify-content-center'>

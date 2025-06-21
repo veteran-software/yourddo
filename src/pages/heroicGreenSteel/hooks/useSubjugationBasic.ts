@@ -4,13 +4,25 @@ import { useAppSelector } from '../../../redux/hooks.ts'
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 import { deconstructShard } from '../../../utils/objectUtils.ts'
-import { type ElementalList, subjugationElementalList } from '../helpers/elementalData.ts'
+import { baseElemental, type ElementalList, subjugationElementalList } from '../helpers/elementalData.ts'
 import useIngredientsMap from './useIngredientMap.ts'
 
 const useSubjugationBasic = () => {
-  const { subjugationItems, selectedDevastationFocused } = useAppSelector((state) => state.greenSteel, shallowEqual)
+  const { selectedInvasionItem, subjugationItems, selectedDevastationFocused } = useAppSelector(
+    (state) => state.greenSteel,
+    shallowEqual
+  )
 
   const items: CraftingIngredient[] = useMemo(() => {
+    if (selectedInvasionItem) {
+      const { focus } = deconstructShard(selectedInvasionItem.name)
+
+      return [...subjugationItems].filter((item: CraftingIngredient) =>
+        // The T1 Focus is the Affinity for ingredient #1 for T2
+        item.requirements.some((ingredient: CraftingIngredient) => ingredient.name.startsWith(focus))
+      )
+    }
+
     if (selectedDevastationFocused) {
       const { focus } = deconstructShard(selectedDevastationFocused.requirements[1].name)
 
@@ -21,19 +33,22 @@ const useSubjugationBasic = () => {
     }
 
     return [...subjugationItems]
-  }, [selectedDevastationFocused, subjugationItems])
+  }, [selectedInvasionItem, selectedDevastationFocused, subjugationItems])
 
   const elemental: ElementalList[] = useMemo(() => subjugationElementalList, [])
 
-  const isAspect = (elementName: string): boolean => {
-    return elementName.includes('Balance') || elementName.includes('Existential') || elementName === 'Tempered'
-  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const filterCallback = useCallback((item: CraftingIngredient, elementName: string, _elements?: string[]) => {
+    const directMatchNamespaces = new Set(
+      subjugationElementalList.filter((el) => !baseElemental.some((base) => base.name === el.name)).map((el) => el.name)
+    )
 
-  const filterCallback = useCallback((item: CraftingIngredient, elementName: string, elements?: string[]) => {
-    if ((elements?.[0] ?? '') === (elements?.[1] ?? '') && isAspect(elementName)) {
-      return item.effectsAdded?.some((effect: Enhancement) => effect.name.includes(`Aspect of ${elementName}`)) ?? false
-    } else {
+    if (directMatchNamespaces.has(elementName)) {
+      // For composite elements (Ash, Magma, etc.) and special cases (Balance, Stalemate, etc.)
       return item.effectsAdded?.some((effect: Enhancement) => effect.name.includes(elementName)) ?? false
+    } else {
+      // For base elements (Fire, Water, etc.), require "Aspect of" prefix
+      return item.effectsAdded?.some((effect: Enhancement) => effect.name === `Aspect of ${elementName}`) ?? false
     }
   }, [])
 

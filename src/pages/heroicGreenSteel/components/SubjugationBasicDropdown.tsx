@@ -3,7 +3,6 @@ import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
 import { resetSubjugationItem, selectSubjugationItem } from '../../../redux/slices/hgsSlice.ts'
 import type { AppDispatch } from '../../../redux/store.ts'
-import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 import { type ElementalList, subjugationElementalList } from '../helpers/elementalData.ts'
 import useSubjugationBasic from '../hooks/useSubjugationBasic.ts'
@@ -40,18 +39,6 @@ const SubjugationBasicDropdown = () => {
   }
 
   const renderSection = (name: string, ingredients: CraftingIngredient[]) => {
-    // Needed to filter here otherwise the code required to filter inside `useIngredientsMap` would be ugly and gross
-    // At the end of the day, there's minimal performance hit, and there's only a half-dozen or so effects getting filtered out
-    const filteredIngredients = ingredients.filter((ingredient) =>
-      ingredient.effectsAdded?.some(
-        (effect: Enhancement) =>
-          effect.name.includes(`Aspect of ${name.split(' (', 1)[0].trim()}`) ||
-          effect.name.includes('Balance') ||
-          effect.name.includes('Stalemate') ||
-          effect.name.includes('Tempered')
-      )
-    )
-
     return (
       <IngredientDropdownSection
         clickHandler={selectSubjugationItem}
@@ -60,7 +47,7 @@ const SubjugationBasicDropdown = () => {
             {isAspect(name) ? `Aspect of ${name}` : name}
           </Stack>
         }
-        ingredientList={filteredIngredients}
+        ingredientList={ingredients}
       />
     )
   }
@@ -75,10 +62,18 @@ const SubjugationBasicDropdown = () => {
         <Dropdown className='d-flex flex-grow-1'>
           <IngredientDropdownToggle label={label} />
 
-          <Dropdown.Menu className='py-0' style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+          <Dropdown.Menu
+            className='py-0 w-100'
+            style={{
+              maxHeight: '50vh',
+              overflowY: 'auto'
+            }}
+          >
             {Object.entries(ingredientsMap).map(([name, ingredients]) => {
               if (ingredients.length > 6) {
-                const foci: ElementalList[] = subjugationElementalList.filter((element) => element.name.includes(name))
+                const foci: ElementalList[] = subjugationElementalList.filter((element: ElementalList) =>
+                  element.name.includes(name)
+                )
                 if (foci.length > 1) {
                   return (
                     <>
