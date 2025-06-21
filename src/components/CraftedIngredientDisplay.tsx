@@ -1,40 +1,12 @@
-import camelcase from 'camelcase'
-import { useEffect, useState } from 'react'
 import { Container, Image, Stack } from 'react-bootstrap'
+import useIngredientImage from '../hooks/useIngredientImage.ts'
 import type { CraftingIngredient } from '../types/crafting.ts'
 import type { Ingredient } from '../types/ingredients.ts'
-import { FOCI } from '../utils/constants.ts'
 
 const CraftedIngredientDisplay = (props: Props) => {
   const { ingredient, quantity } = props
 
-  const [imageSrc, setImageSrc] = useState<string>()
-
-  useEffect(() => {
-    if (!ingredient) return
-
-    void (async () => {
-      let formattedName: string = ingredient.name
-
-      if (/\bshard\s+of(?:\s+\w+)?\s+power\b/i.test(formattedName)) {
-        formattedName = ingredient.name
-          .replace(/\b(ethereal|material|dominion|opposition|escalation)\b/gi, '')
-          .replace(/\s+/g, ' ')
-          .trim()
-      }
-
-      const regex = new RegExp(`\\b(${FOCI.join('|')})\\s+(Weapon|Accessory)\\b`, 'gi')
-      if (regex.test(formattedName)) {
-        formattedName = `Green Steel ${formattedName}`
-      }
-
-      const image = (await import(`../assets/icons/${camelcase(formattedName)}.png`)) as {
-        default: string
-      }
-
-      setImageSrc(image.default)
-    })()
-  }, [ingredient])
+  const { imageSrc } = useIngredientImage(ingredient?.name ?? '')
 
   if (!ingredient) {
     return <></>

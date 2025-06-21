@@ -1,33 +1,12 @@
-import camelcase from 'camelcase'
-import { useEffect, useState } from 'react'
 import { Container, Image, Stack } from 'react-bootstrap'
-import { shallowEqual } from 'react-redux'
-import { useAppSelector } from '../redux/hooks.ts'
+import useIngredientImage from '../hooks/useIngredientImage.ts'
 import type { Ingredient } from '../types/ingredients.ts'
 import NoteTooltip from './NoteTooltip.tsx'
 
 const FarmedIngredientDisplay = (props: Props) => {
   const { ingredient, quantity, showLocation = true, showQuantity = true } = props
 
-  const { selectedFecundityItem } = useAppSelector((state) => state.greenSteel, shallowEqual)
-
-  const [imageSrc, setImageSrc] = useState<string>()
-
-  useEffect(() => {
-    if (!ingredient) return
-    void (async () => {
-      let name = ingredient.name
-      if (/\bgreen\s+steel\s+(accessory|weapon)\b/i.test(ingredient.name)) {
-        name = selectedFecundityItem?.name ?? ''
-      }
-
-      const image = (await import(`../assets/icons/${camelcase(name)}.png`)) as {
-        default: string
-      }
-
-      setImageSrc(image.default)
-    })()
-  }, [ingredient, selectedFecundityItem?.name])
+  const { imageSrc } = useIngredientImage(ingredient?.name ?? '')
 
   if (!ingredient) {
     return <></>
