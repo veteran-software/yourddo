@@ -2,7 +2,7 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
   css: {
     devSourcemap: false,
     preprocessorOptions: {
@@ -14,15 +14,12 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [react()],
   server: {
-    proxy:
-      mode === 'development'
-        ? {
-            '/api': {
-              target: 'https://gls.ddo.com/',
-              changeOrigin: true,
-              rewrite: (path: string) => path.replace(/^\/api/, 'GLS.DataCenterServer/StatusServer.aspx')
-            }
-          }
-        : undefined
+    proxy: {
+      '/api': {
+        target: 'https://gls.ddo.com/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, 'GLS.DataCenterServer/StatusServer.aspx')
+      }
+    }
   }
-}))
+})
