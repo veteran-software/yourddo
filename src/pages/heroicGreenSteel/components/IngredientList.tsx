@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Accordion, Card, ListGroup, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import CraftedIngredientDisplay from '../../../components/CraftedIngredientDisplay.tsx'
@@ -27,53 +27,72 @@ const IngredientList = () => {
   const [rawMaterials, setRawMaterials] = useState<Record<string, number>>({})
   const [craftedMaterials, setCraftedMaterials] = useState<Record<string, number>>({})
 
-  const recipeBuilder = useCallback((recipe: CraftingIngredient, whereToLook: CraftingIngredient[]) => {
-    recipe.requirements.forEach((requirement: CraftingIngredient) => {
-      const ingredient: CraftingIngredient | undefined = whereToLook.find(
-        (altarIngredient: CraftingIngredient) => altarIngredient.name === requirement.name
-      )
+  const buildRecipe = (recipe: CraftingIngredient, whereToLook: CraftingIngredient[]) => {
+    const rawMaterials: Record<string, number> = {}
+    const craftedMaterials: Record<string, number> = {}
 
-      if (ingredient) {
-        setCraftedMaterials((prev: Record<string, number>) => ({
-          ...prev,
-          [ingredient.name]: (prev[ingredient.name] ?? 0) + requirement.quantity
-        }))
+    const traverse = (recipeIngredient: CraftingIngredient) => {
+      recipeIngredient.requirements.forEach((requirement: CraftingIngredient) => {
+        const ingredient: CraftingIngredient | undefined = findIngredientByName(requirement.name, whereToLook)
+        if (ingredient) {
+          craftedMaterials[ingredient.name] = (craftedMaterials[ingredient.name] ?? 0) + requirement.quantity
 
-        recipeBuilder(ingredient, whereToLook)
-      } else {
-        setRawMaterials((prev: Record<string, number>) => ({
-          ...prev,
-          [requirement.name]: (prev[requirement.name] ?? 0) + requirement.quantity
-        }))
-      }
-    })
-  }, [])
+          traverse(ingredient)
+        } else {
+          rawMaterials[requirement.name] = (rawMaterials[requirement.name] ?? 0) + requirement.quantity
+        }
+      })
+    }
+
+    traverse(recipe)
+
+    return {
+      rawMaterials,
+      craftedMaterials
+    }
+  }
 
   useEffect(() => {
     setRawMaterials({})
     setCraftedMaterials({})
 
-    if (selectedFecundityItem) {
-      recipeBuilder(selectedFecundityItem, altarOfFecundity)
+    const newRaw: Record<string, number> = {}
+    const newCrafted: Record<string, number> = {}
+
+    ;[
+      selectedFecundityItem,
+      selectedInvasionItem,
+      selectedSubjugationItem,
+      selectedDevastationBasic,
+      selectedDevastationFocused
+    ].forEach((item: CraftingIngredient | undefined) => {
+      if (!item) return
+
+      const { rawMaterials = {}, craftedMaterials = {} } = buildRecipe(item, [
+        ...altarOfFecundity,
+        ...altarOfInvasion,
+        ...altarOfSubjugation,
+        ...altarOfDevastation
+      ])
+
+      Object.entries(rawMaterials).forEach(([key, value]) => {
+        newRaw[key] = (newRaw[key] ?? 0) + value
+      })
+
+      Object.entries(craftedMaterials).forEach(([key, value]) => {
+        newCrafted[key] = (newCrafted[key] ?? 0) + value
+      })
+    })
+
+    if (JSON.stringify(rawMaterials) !== JSON.stringify(newRaw)) {
+      setRawMaterials(newRaw)
     }
 
-    if (selectedInvasionItem) {
-      recipeBuilder(selectedInvasionItem, altarOfInvasion)
+    if (JSON.stringify(craftedMaterials) !== JSON.stringify(newCrafted)) {
+      setCraftedMaterials(newCrafted)
     }
-
-    if (selectedSubjugationItem) {
-      recipeBuilder(selectedSubjugationItem, altarOfSubjugation)
-    }
-
-    if (selectedDevastationBasic) {
-      recipeBuilder(selectedDevastationBasic, altarOfDevastation)
-    }
-
-    if (selectedDevastationFocused) {
-      recipeBuilder(selectedDevastationFocused, altarOfDevastation)
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    recipeBuilder,
     selectedDevastationBasic,
     selectedDevastationFocused,
     selectedFecundityItem,
