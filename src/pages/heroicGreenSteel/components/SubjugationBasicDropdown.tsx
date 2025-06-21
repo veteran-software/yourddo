@@ -74,6 +74,7 @@ const SubjugationBasicDropdown = () => {
                 const foci: ElementalList[] = subjugationElementalList.filter((element: ElementalList) =>
                   element.name.includes(name)
                 )
+
                 if (foci.length > 1) {
                   return (
                     <>

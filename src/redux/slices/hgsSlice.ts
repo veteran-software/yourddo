@@ -56,14 +56,16 @@ const { actions, reducer } = createSlice({
     resetSubjugationSpell: (state) => {
       state.selectedSubjugationSpell = undefined
     },
-    selectDevastationItem: (state, action: PayloadAction<CraftingIngredient>) => {
+    selectDevastationBasic: (state, action: PayloadAction<CraftingIngredient>) => {
       state.selectedDevastationBasic = action.payload
+      state.selectedDevastationFocused = undefined
     },
     resetDevastationBasic: (state) => {
       state.selectedDevastationBasic = undefined
     },
     selectDevastationFocused: (state, action: PayloadAction<CraftingIngredient>) => {
       state.selectedDevastationFocused = action.payload
+      state.selectedDevastationBasic = undefined
     },
     resetDevastationFocused: (state) => {
       state.selectedDevastationFocused = undefined
@@ -102,7 +104,7 @@ export const {
   resetInvasionItem,
   selectSubjugationItem,
   resetSubjugationItem,
-  selectDevastationItem,
+  selectDevastationBasic,
   resetDevastationBasic,
   selectDevastationFocused,
   resetDevastationFocused,

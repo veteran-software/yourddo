@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
+import { Button, Col, Container, Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import { altarOfSubjugation } from '../../../data/altarOfSubjugation.ts'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
@@ -12,11 +12,15 @@ import IngredientDropdownToggle from './IngredientDropdownToggle.tsx'
 
 const SubjugationSpellDropdown = () => {
   const dispatch: AppDispatch = useAppDispatch()
-  const { subjugationItems, selectedSubjugationSpell, selectedDevastationFocused } = useAppSelector(
-    (state) => state.greenSteel,
-    shallowEqual
-  )
+  const {
+    subjugationItems,
+    selectedSubjugationSpell,
+    selectedSubjugationItem,
+    selectedDevastationFocused,
+    selectedInvasionItem
+  } = useAppSelector((state) => state.greenSteel, shallowEqual)
 
+  const [active, setActive] = useState<string>('')
   const [spells, setSpells] = useState<Record<string, CraftingIngredient>>({} as Record<string, CraftingIngredient>)
   const [label, setLabel] = useState<string>()
 
@@ -24,6 +28,7 @@ const SubjugationSpellDropdown = () => {
     if (spells.length === 0) {
       setSpells({} as Record<string, CraftingIngredient>)
       setLabel('No spells available for the selected upgrade')
+      setActive('')
       return
     }
 
@@ -43,11 +48,14 @@ const SubjugationSpellDropdown = () => {
   useEffect(() => {
     populateSpellList(subjugationItems)
   }, [populateSpellList, subjugationItems])
+
   useEffect(() => {
     if (selectedSubjugationSpell?.spell) {
       setLabel(`${selectedSubjugationSpell.spell.name} (CL: ${String(selectedSubjugationSpell.spell.casterLevel)})`)
+      setActive(selectedSubjugationSpell.spell.name)
     } else {
       setLabel('Select a Bonus Spell...')
+      setActive('')
     }
   }, [selectedSubjugationSpell?.spell])
 
@@ -72,10 +80,38 @@ const SubjugationSpellDropdown = () => {
 
         dispatch(selectSubjugationSpell(spellList[0]))
       }
-    } else {
-      populateSpellList(subjugationItems)
+
+      return
     }
-  }, [dispatch, populateSpellList, selectedDevastationFocused, subjugationItems])
+
+    if (selectedSubjugationItem && !selectedInvasionItem) {
+      dispatch(selectSubjugationSpell(selectedSubjugationItem))
+
+      populateSpellList([selectedSubjugationItem])
+
+      return
+    }
+
+    if (!selectedSubjugationItem && selectedInvasionItem) {
+      const t1Focus: string = deconstructShard(selectedInvasionItem.name).focus
+      const spellList: CraftingIngredient[] = altarOfSubjugation
+        .filter((spellItem: CraftingIngredient) => spellItem.requirements[0].name.includes(t1Focus))
+        .filter((spellItem: CraftingIngredient) => spellItem.spell !== undefined)
+
+      populateSpellList(spellList)
+
+      return
+    }
+
+    populateSpellList(subjugationItems)
+  }, [
+    dispatch,
+    populateSpellList,
+    selectedDevastationFocused,
+    subjugationItems,
+    selectedSubjugationItem,
+    selectedInvasionItem
+  ])
 
   return (
     <Stack direction='horizontal' gap={2} className='mt-2'>
@@ -105,24 +141,27 @@ const SubjugationSpellDropdown = () => {
         >
           {Object.entries(spells).map(([name, item]: [string, CraftingIngredient], idx: number) => {
             if (!item.spell) return <></>
+            const key: string = item.spell.name
 
             return (
-              <>
+              <Container key={`${item.spell.name}-${String(idx)}`} className='m-0 p-0 w-auto'>
                 <Dropdown.Header className='border-bottom bg-light-subtle text-white'>
                   <h6 className='m-0 text-center'>{name}</h6>
                 </Dropdown.Header>
 
                 <Dropdown.Item
-                  key={`${item.spell.name}-${String(idx)}`}
+                  active={active === key}
+                  key={key}
                   onClick={() => {
                     dispatch(selectSubjugationSpell(item))
+                    setActive(key)
                   }}
                 >
                   <small>{`${item.spell.name} (CL: ${String(item.spell.casterLevel)}, Charges: ${String(
                     item.spell.charges
                   )}, Recharge ${String(item.spell.rechargePerDay)}/day)`}</small>
                 </Dropdown.Item>
-              </>
+              </Container>
             )
           })}
         </Dropdown.Menu>

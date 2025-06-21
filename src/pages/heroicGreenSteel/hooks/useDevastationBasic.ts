@@ -12,7 +12,7 @@ export const useDevastationBasic = () => {
   const elemental: ElementalList[] = useMemo(() => baseElemental, [])
 
   const filterCallback = useCallback(
-    (item: CraftingIngredient, elementName: string, _elements?: string[]) => item.name.includes(elementName),
+    (item: CraftingIngredient, elementName: string) => item.name.includes(elementName),
     []
   )
 
