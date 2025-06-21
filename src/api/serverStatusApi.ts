@@ -40,7 +40,7 @@ export const serverStatusApi = createApi({
       headers.set('Accept', 'text/xml')
       return headers
     },
-    mode: 'no-cors',
+    credentials: 'include',
     responseHandler: 'text'
   }),
   endpoints: (build) => ({
