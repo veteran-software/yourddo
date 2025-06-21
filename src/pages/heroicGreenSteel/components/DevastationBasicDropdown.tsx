@@ -2,7 +2,7 @@ import { type FC } from 'react'
 import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
-import { resetDevastationBasic, selectDevastationItem } from '../../../redux/slices/hgsSlice.ts'
+import { resetDevastationBasic, selectDevastationBasic } from '../../../redux/slices/hgsSlice.ts'
 import type { AppDispatch } from '../../../redux/store.ts'
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
@@ -41,7 +41,7 @@ const DevastationBasicDropdown: FC = () => {
   const renderSection = (name: string, ingredients: CraftingIngredient[]) => {
     return (
       <IngredientDropdownSection
-        clickHandler={selectDevastationItem}
+        clickHandler={selectDevastationBasic}
         header={
           <Stack direction='horizontal' gap={2} className='align-items-center justify-content-center'>
             {name}

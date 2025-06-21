@@ -9,12 +9,10 @@ export const useDevastationBasic = () => {
   const { devastationBasicItems } = useAppSelector((state) => state.greenSteel, shallowEqual)
 
   const items: CraftingIngredient[] = useMemo(() => [...devastationBasicItems], [devastationBasicItems])
-
   const elemental: ElementalList[] = useMemo(() => baseElemental, [])
 
   const filterCallback = useCallback(
-    (item: CraftingIngredient, _elementName: string, elements?: string[]) =>
-      item.requirements[1]?.name.includes(elements?.[0] ?? ''),
+    (item: CraftingIngredient, elementName: string, _elements?: string[]) => item.name.includes(elementName),
     []
   )
 

@@ -40,7 +40,9 @@ const useSubjugationBasic = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const filterCallback = useCallback((item: CraftingIngredient, elementName: string, _elements?: string[]) => {
     const directMatchNamespaces = new Set(
-      subjugationElementalList.filter((el) => !baseElemental.some((base) => base.name === el.name)).map((el) => el.name)
+      subjugationElementalList
+        .filter((el: ElementalList) => !baseElemental.some((base: ElementalList) => base.name === el.name))
+        .map((el: ElementalList) => el.name)
     )
 
     if (directMatchNamespaces.has(elementName)) {

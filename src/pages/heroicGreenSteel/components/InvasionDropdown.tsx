@@ -13,10 +13,7 @@ import IngredientDropdownToggle from './IngredientDropdownToggle.tsx'
 const InvasionDropdown = () => {
   const dispatch: AppDispatch = useAppDispatch()
 
-  const { selectedInvasionItem, selectedSubjugationItem, selectedDevastationFocused } = useAppSelector(
-    (state) => state.greenSteel,
-    shallowEqual
-  )
+  const { selectedInvasionItem } = useAppSelector((state) => state.greenSteel, shallowEqual)
 
   const { ingredientsMap } = useInvasion()
 
@@ -39,10 +36,6 @@ const InvasionDropdown = () => {
     )
   }, [selectedInvasionItem])
 
-  useEffect(() => {
-    dispatch(resetInvasionItem())
-  }, [selectedSubjugationItem, selectedDevastationFocused, dispatch])
-
   return (
     <>
       <hr />
@@ -51,7 +44,13 @@ const InvasionDropdown = () => {
         <Dropdown className='d-flex flex-grow-1'>
           <IngredientDropdownToggle label={label} />
 
-          <Dropdown.Menu className='py-0 w-100' style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+          <Dropdown.Menu
+            className='py-0 w-100'
+            style={{
+              maxHeight: '50vh',
+              overflowY: 'auto'
+            }}
+          >
             {Object.entries(ingredientsMap).map(([name, ingredients]) => (
               <IngredientDropdownSection
                 key={`${name}-${ingredients
