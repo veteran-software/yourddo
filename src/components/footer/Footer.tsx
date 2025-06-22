@@ -38,10 +38,10 @@ const Footer = () => {
   }, [dispatch])
 
   return (
-    <Navbar ref={navRef} sticky='bottom' variant='dark' className='text-center bg-primary'>
-      <Container fluid className='text-center m-auto w-auto'>
-        <Stack direction='vertical' gap={1} className='align-items-center'>
-          <Stack direction='horizontal' gap={3} className='align-items-center justify-content-center'>
+    <Navbar ref={navRef} fixed='bottom' variant='dark' className='bg-primary overflow-x-auto overflow-y-hidden'>
+      <Container fluid className='m-auto w-auto py-0'>
+        <Stack direction='vertical' gap={1}>
+          <Stack direction='horizontal' gap={3}>
             <ServerStatusDisplay name='Argonnessen' up={argoUp} />
             &bull;
             <ServerStatusDisplay name='Cannith' up={cannithUp} />

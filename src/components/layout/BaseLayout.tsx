@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Alert, Container, Stack } from 'react-bootstrap'
+import { shallowEqual } from 'react-redux'
 import { Outlet } from 'react-router-dom'
+import { useAppSelector } from '../../redux/hooks.ts'
 import Footer from '../footer/Footer.tsx'
 import NavbarTop from '../navbar/NavbarTop.tsx'
 
 const BaseLayout = () => {
   const [subdomain, setSubdomain] = useState('')
+
+  const { footerHeight } = useAppSelector((state) => state.app, shallowEqual)
 
   useEffect(() => {
     const fullHostname = window.location.hostname
@@ -25,7 +29,11 @@ const BaseLayout = () => {
       direction='vertical'
       gap={1}
       className='px-0 user-select-none h-100 w-100 justify-content-between overflow-hidden'
-      style={{ scrollbarWidth: 'thin', scrollbarColor: 'var(--bs-primary) transparent' }}
+      style={{
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'var(--bs-primary) transparent',
+        paddingBottom: `${String(footerHeight + 5)}px`
+      }}
     >
       <NavbarTop />
 
