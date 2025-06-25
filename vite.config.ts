@@ -7,6 +7,7 @@ export default defineConfig({
     devSourcemap: false,
     preprocessorOptions: {
       scss: {
+        api: 'modern-compiler',
         silenceDeprecations: ['mixed-decls', 'color-functions', 'global-builtin', 'import']
       }
     }
@@ -21,7 +22,7 @@ export default defineConfig({
         target: 'https://gls.ddo.com/',
         changeOrigin: true,
         secure: false,
-        rewrite: (path: string) => path.replace(/^\/api/, 'GLS.DataCenterServer/Service.asmx?op=GetDatacenterStatus')
+        rewrite: (path: string) => path.replace(/^\/api/, 'GLS.DataCenterServer/StatusServer.aspx')
       }
     }
   },
