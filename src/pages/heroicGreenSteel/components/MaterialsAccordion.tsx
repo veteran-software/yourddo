@@ -22,11 +22,9 @@ const MaterialsAccordion = (props: Props) => {
               {Object.entries(rawMaterials).map(([name, count]: [name: string, count: number]) => {
                 // Don't want to display the weapons required to charge depleted cells
                 // It's basically ingredient bloat
-                if (
-                  /\b((green\s+steel)|enchanted|earth|air|fire|water|positive|negative)\s+(accessory|weapon)\b/i.test(
-                    name
-                  )
-                ) {
+                const pattern = new RegExp(`\\b(${prefixes.join('|')})\\s+(${suffixes.join('|')})\\b`, 'i')
+
+                if (pattern.test(name)) {
                   return <></>
                 }
 
@@ -82,3 +80,31 @@ interface Props {
 }
 
 export default MaterialsAccordion
+
+const prefixes = [
+  'green steel',
+  'enchanted',
+  'earth',
+  'air',
+  'fire',
+  'water',
+  'positive',
+  'negative',
+  'ash',
+  'dust',
+  'ice',
+  'lightning',
+  'magma',
+  'mineral',
+  'ooze',
+  'radiance',
+  'salt',
+  'smoke',
+  'steam',
+  'vacuum',
+  'land',
+  'stalemate',
+  'tempered'
+]
+
+const suffixes = ['accessory', 'weapon']
