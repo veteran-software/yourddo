@@ -42,7 +42,7 @@ const IngredientDropdownSection = (props: Props) => {
               <small>
                 {ingredient.effectsAdded
                   ?.map((effect: Enhancement) => effect.name)
-                  .sort((a, b) => a.localeCompare(b))
+                  .toSorted((a, b) => a.localeCompare(b))
                   .join(', ')}
               </small>
             </Dropdown.Item>

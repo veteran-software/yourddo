@@ -7,7 +7,6 @@ import { resetFecundityItem, selectFecundityItem } from '../../../redux/slices/h
 import type { AppDispatch } from '../../../redux/store.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 import { filterForSublist } from '../../../utils/objectUtils.ts'
-import IngredientDropdownSection from './IngredientDropdownSection.tsx'
 import IngredientDropdownToggle from './IngredientDropdownToggle.tsx'
 
 const FecundityDropdown = () => {
@@ -45,7 +44,13 @@ const FecundityDropdown = () => {
         <Dropdown className='d-flex flex-grow-1'>
           <IngredientDropdownToggle label={label} />
 
-          <Dropdown.Menu className='py-0 w-100' style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+          <Dropdown.Menu
+            className='py-0 w-100'
+            style={{
+              maxHeight: '50vh',
+              overflowY: 'auto'
+            }}
+          >
             <Dropdown.Header className='border-bottom bg-light-subtle text-white'>
               <h6 className='m-0 text-center'>Weapons</h6>
             </Dropdown.Header>
@@ -67,19 +72,26 @@ const FecundityDropdown = () => {
                 </Dropdown.Item>
               ))}
 
-            {/*<IngredientDropdownSection*/}
-            {/*  clickHandler={selectFecundityItem}*/}
-            {/*  header='Weapons'*/}
-            {/*  ingredientList={weaponList}*/}
-            {/*  fecundity*/}
-            {/*/>*/}
+            <Dropdown.Header className='border-bottom bg-light-subtle text-white'>
+              <h6 className='m-0 text-center'>Accessories</h6>
+            </Dropdown.Header>
 
-            <IngredientDropdownSection
-              clickHandler={selectFecundityItem}
-              header='Accessories'
-              ingredientList={accessoryList}
-              fecundity
-            />
+            {accessoryList.length > 0 &&
+              accessoryList.map((ingredient) => (
+                <Dropdown.Item
+                  key={ingredient.name}
+                  onClick={() => {
+                    dispatch(selectFecundityItem(ingredient))
+                  }}
+                >
+                  <FarmedIngredientDisplay
+                    ingredient={ingredient}
+                    quantity={1}
+                    showLocation={false}
+                    showQuantity={false}
+                  />
+                </Dropdown.Item>
+              ))}
           </Dropdown.Menu>
         </Dropdown>
 

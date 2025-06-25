@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { Container, Navbar, Stack } from 'react-bootstrap'
+import { FaCircleNotch } from 'react-icons/fa6'
 import { serverStatusApi } from '../../api/serverStatusApi.ts'
 import { useAppDispatch } from '../../redux/hooks.ts'
 import { setFooterHeight } from '../../redux/slices/appSlice.ts'
@@ -12,12 +13,20 @@ import { extractServerName, isServerUp } from './helpers/helpers.ts'
 const Footer = () => {
   const dispatch: AppDispatch = useAppDispatch()
 
-  const [trigger, { data }] = serverStatusApi.useAllServersMutation()
+  const [trigger, { data, isLoading }] = serverStatusApi.useAllServersMutation()
 
   const navRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     trigger().catch(console.error)
+
+    const intervalId = setInterval(() => {
+      trigger().catch(console.error)
+    }, 90000)
+
+    return () => {
+      clearInterval(intervalId)
+    }
   }, [trigger])
 
   useLayoutEffect(() => {
@@ -32,6 +41,15 @@ const Footer = () => {
       <Container fluid className='m-auto w-auto py-0'>
         <Stack direction='vertical' gap={1}>
           <Stack direction='horizontal' gap={2}>
+            {isLoading && (
+              <FaCircleNotch
+                title='Loading...'
+                size={15}
+                color='gray'
+                style={{ animation: 'spin 1s linear infinite' }}
+              />
+            )}
+
             {data?.map((server, idx: number) => {
               return (
                 <>

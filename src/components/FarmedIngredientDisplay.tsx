@@ -1,4 +1,5 @@
 import { Container, Image, Stack } from 'react-bootstrap'
+import { FaCircleNotch } from 'react-icons/fa6'
 import useIngredientImage from '../hooks/useIngredientImage.ts'
 import type { Ingredient } from '../types/ingredients.ts'
 import NoteTooltip from './NoteTooltip.tsx'
@@ -14,7 +15,11 @@ const FarmedIngredientDisplay = (props: Props) => {
 
   return (
     <Stack direction='horizontal' gap={3}>
-      <Image src={imageSrc} alt={ingredient.name} title={ingredient.name} />
+      {imageSrc === '' ? (
+        <FaCircleNotch title='Loading...' size={36} color='gray' style={{ animation: 'spin 1s linear infinite' }} />
+      ) : (
+        <Image src={imageSrc} alt={ingredient.name} title={ingredient.name} />
+      )}
 
       <Stack direction='vertical' gap={0} className='text-wrap justify-content-center'>
         <Stack direction='horizontal' gap={2}>
