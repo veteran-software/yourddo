@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { useEffect, useLayoutEffect, useRef } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useRef } from 'react'
 import { Container, Navbar, Stack } from 'react-bootstrap'
 import { FaCircleNotch } from 'react-icons/fa6'
 import { serverStatusApi } from '../../api/serverStatusApi.ts'
@@ -51,11 +51,13 @@ const Footer = () => {
             )}
 
             {data?.map((server, idx: number) => {
+              const serverName: string = extractServerName(server)
+
               return (
-                <>
+                <Fragment key={`${serverName}-${String(idx)}`}>
                   {idx > 0 && <>&bull;</>}
                   <ServerStatusDisplay name={extractServerName(server)} up={isServerUp(server)} />
-                </>
+                </Fragment>
               )
             })}
 
