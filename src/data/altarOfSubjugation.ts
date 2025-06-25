@@ -2028,7 +2028,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Positive Dominion Weapon Upgrade',
+    name: 'Material Positive Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Good Burst, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2066,7 +2066,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Opposition Weapon Upgrade',
+    name: 'Material Positive Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Healing Amplification: +40, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2105,7 +2105,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Escalation Weapon Upgrade',
+    name: 'Material Positive Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Constitution +1, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2144,7 +2144,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Dominion Weapon Upgrade',
+    name: 'Ethereal Positive Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Devotion +72, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2183,7 +2183,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Opposition Weapon Upgrade',
+    name: 'Ethereal Positive Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2222,7 +2222,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Escalation Weapon Upgrade',
+    name: 'Ethereal Positive Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Charisma +1, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2262,7 +2262,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Negative Dominion Weapon Upgrade',
+    name: 'Material Negative Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Evil Burst, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2300,7 +2300,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Weapon Upgrade',
+    name: 'Material Negative Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Negative Energy Absorption: +40, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2338,7 +2338,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Weapon Upgrade',
+    name: 'Material Negative Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Strength +1, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2377,7 +2377,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Weapon Upgrade',
+    name: 'Ethereal Negative Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Nullification +72, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2416,7 +2416,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Weapon Upgrade',
+    name: 'Ethereal Negative Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2455,7 +2455,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Weapon Upgrade',
+    name: 'Ethereal Negative Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Intelligence +1, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -3387,7 +3387,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Positive Dominion Weapon Upgrade',
+    name: 'Material Positive Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Good Burst, Aspect of Lightning, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -3425,7 +3425,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Opposition Weapon Upgrade',
+    name: 'Material Positive Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Healing Amplification: +40, Aspect of Lightning, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -3464,7 +3464,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Escalation Weapon Upgrade',
+    name: 'Material Positive Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Constitution +1, Aspect of Lightning, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -3503,7 +3503,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Dominion Weapon Upgrade',
+    name: 'Ethereal Positive Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Devotion +72, Aspect of Lightning, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -3542,7 +3542,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Opposition Weapon Upgrade',
+    name: 'Ethereal Positive Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Lightning, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -3581,7 +3581,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Escalation Weapon Upgrade',
+    name: 'Ethereal Positive Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Charisma +1, Aspect of Lightning, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -3621,7 +3621,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Negative Dominion Weapon Upgrade',
+    name: 'Material Negative Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Evil Burst, Aspect of Vacuum, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -3659,7 +3659,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Weapon Upgrade',
+    name: 'Material Negative Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Negative Energy Absorption: +40, Aspect of Vacuum, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -3697,7 +3697,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Weapon Upgrade',
+    name: 'Material Negative Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Strength +1, Aspect of Vacuum, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -3736,7 +3736,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Weapon Upgrade',
+    name: 'Ethereal Negative Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Nullification +72, Aspect of Vacuum, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -3775,7 +3775,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Weapon Upgrade',
+    name: 'Ethereal Negative Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Vacuum, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -3814,7 +3814,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Weapon Upgrade',
+    name: 'Ethereal Negative Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Intelligence +1, Aspect of Vacuum, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -4794,7 +4794,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Positive Dominion Weapon Upgrade',
+    name: 'Material Positive Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Good Burst, Aspect of Radiance, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -4832,7 +4832,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Opposition Weapon Upgrade',
+    name: 'Material Positive Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Healing Amplification: +40, Aspect of Radiance, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -4871,7 +4871,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Escalation Weapon Upgrade',
+    name: 'Material Positive Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Constitution +1, Aspect of Radiance, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -4910,7 +4910,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Dominion Weapon Upgrade',
+    name: 'Ethereal Positive Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Devotion +72, Aspect of Radiance, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -4949,7 +4949,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Opposition Weapon Upgrade',
+    name: 'Ethereal Positive Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Radiance, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -4988,7 +4988,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Escalation Weapon Upgrade',
+    name: 'Ethereal Positive Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Charisma +1, Aspect of Radiance, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -5028,7 +5028,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Negative Dominion Weapon Upgrade',
+    name: 'Material Negative Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Evil Burst, Aspect of Ash, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -5066,7 +5066,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Weapon Upgrade',
+    name: 'Material Negative Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Negative Energy Absorption: +40, Aspect of Ash, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -5104,7 +5104,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Weapon Upgrade',
+    name: 'Material Negative Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Strength +1, Aspect of Ash, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -5143,7 +5143,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Weapon Upgrade',
+    name: 'Ethereal Negative Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Nullification +72, Aspect of Ash, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -5182,7 +5182,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Weapon Upgrade',
+    name: 'Ethereal Negative Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Ash, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -5221,7 +5221,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Weapon Upgrade',
+    name: 'Ethereal Negative Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Intelligence +1, Aspect of Ash, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -6201,7 +6201,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Positive Dominion Weapon Upgrade',
+    name: 'Material Positive Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Good Burst, Aspect of Steam, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -6239,7 +6239,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Opposition Weapon Upgrade',
+    name: 'Material Positive Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Healing Amplification: +40, Aspect of Steam, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -6278,7 +6278,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Escalation Weapon Upgrade',
+    name: 'Material Positive Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Constitution +1, Aspect of Steam, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -6317,7 +6317,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Dominion Weapon Upgrade',
+    name: 'Ethereal Positive Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Devotion +72, Aspect of Steam, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -6356,7 +6356,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Opposition Weapon Upgrade',
+    name: 'Ethereal Positive Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Steam, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -6395,7 +6395,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Escalation Weapon Upgrade',
+    name: 'Ethereal Positive Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Charisma +1, Aspect of Steam, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -6435,7 +6435,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Negative Dominion Weapon Upgrade',
+    name: 'Material Negative Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Evil Burst, Aspect of Salt, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -6473,7 +6473,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Weapon Upgrade',
+    name: 'Material Negative Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Negative Energy Absorption: +40, Aspect of Salt, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -6511,7 +6511,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Weapon Upgrade',
+    name: 'Material Negative Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Strength +1, Aspect of Salt, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -6550,7 +6550,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Weapon Upgrade',
+    name: 'Ethereal Negative Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Nullification +72, Aspect of Salt, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -6589,7 +6589,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Weapon Upgrade',
+    name: 'Ethereal Negative Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Salt, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -6628,7 +6628,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Weapon Upgrade',
+    name: 'Ethereal Negative Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Intelligence +1, Aspect of Salt, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -7578,7 +7578,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Positive Dominion Weapon Upgrade',
+    name: 'Material Positive Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Good Burst, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -7616,7 +7616,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Opposition Weapon Upgrade',
+    name: 'Material Positive Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Healing Amplification: +40, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -7655,7 +7655,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Escalation Weapon Upgrade',
+    name: 'Material Positive Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Constitution +1, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -7694,7 +7694,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Dominion Weapon Upgrade',
+    name: 'Ethereal Positive Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Devotion +72, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -7733,7 +7733,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Opposition Weapon Upgrade',
+    name: 'Ethereal Positive Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -7772,7 +7772,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Escalation Weapon Upgrade',
+    name: 'Ethereal Positive Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Charisma +1, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -7812,7 +7812,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Negative Dominion Weapon Upgrade',
+    name: 'Material Negative Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Evil Burst, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -7859,7 +7859,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Weapon Upgrade',
+    name: 'Material Negative Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Negative Energy Absorption: +40, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -7906,7 +7906,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Weapon Upgrade',
+    name: 'Material Negative Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Exceptional Strength +1, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -7954,7 +7954,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Weapon Upgrade',
+    name: 'Ethereal Negative Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Nullification +72, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -8002,7 +8002,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Weapon Upgrade',
+    name: 'Ethereal Negative Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Heightened Awareness 2, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -8050,7 +8050,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Weapon Upgrade',
+    name: 'Ethereal Negative Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Exceptional Intelligence +1, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -9009,7 +9009,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Positive Dominion Weapon Upgrade',
+    name: 'Material Positive Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Good Burst, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -9056,7 +9056,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Opposition Weapon Upgrade',
+    name: 'Material Positive Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Healing Amplification: +40, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -9104,7 +9104,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Escalation Weapon Upgrade',
+    name: 'Material Positive Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Exceptional Constitution +1, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -9152,7 +9152,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Dominion Weapon Upgrade',
+    name: 'Ethereal Positive Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Devotion +72, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -9200,7 +9200,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Opposition Weapon Upgrade',
+    name: 'Ethereal Positive Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Heightened Awareness 2, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -9248,7 +9248,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Escalation Weapon Upgrade',
+    name: 'Ethereal Positive Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Exceptional Charisma +1, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -9297,7 +9297,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Negative Dominion Weapon Upgrade',
+    name: 'Material Negative Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Evil Burst, Aspect of Negative Energy, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -9335,7 +9335,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Weapon Upgrade',
+    name: 'Material Negative Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Negative Energy Absorption: +40, Aspect of Negative Energy, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -9373,7 +9373,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Weapon Upgrade',
+    name: 'Material Negative Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Strength +1, Aspect of Negative Energy, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -9412,7 +9412,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Weapon Upgrade',
+    name: 'Ethereal Negative Energy Dominion Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Nullification +72, Aspect of Negative Energy, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -9451,7 +9451,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Weapon Upgrade',
+    name: 'Ethereal Negative Energy Opposition Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Negative Energy, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -9490,7 +9490,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Weapon Upgrade',
+    name: 'Ethereal Negative Energy Escalation Weapon Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Intelligence +1, Aspect of Negative Energy, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -10467,7 +10467,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Positive Dominion Accessory Upgrade',
+    name: 'Material Positive Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Lesser Good Guard, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -10505,7 +10505,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Opposition Accessory Upgrade',
+    name: 'Material Positive Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Improved Regeneration, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -10544,7 +10544,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Escalation Accessory Upgrade',
+    name: 'Material Positive Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Improved Elemental Energy, Constitution Skills - Exceptional Bonus +4, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
@@ -10588,7 +10588,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Dominion Accessory Upgrade',
+    name: 'Ethereal Positive Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Healing Lore IV, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -10627,7 +10627,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Opposition Accessory Upgrade',
+    name: 'Ethereal Positive Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Resistance +1 (Will), Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -10666,7 +10666,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Escalation Accessory Upgrade',
+    name: 'Ethereal Positive Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Elemental Spell Power, Charisma Skills - Exceptional Bonus +4, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
@@ -10711,7 +10711,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Negative Dominion Accessory Upgrade',
+    name: 'Material Negative Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Lesser Evil Guard, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -10749,7 +10749,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Accessory Upgrade',
+    name: 'Material Negative Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Immunity to Fear, Proof Against Poison +6, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -10791,7 +10791,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Accessory Upgrade',
+    name: 'Material Negative Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Improved Elemental Energy, Strength Skills - Exceptional Bonus +4, Aspect of Dust, Max Charges = 2, Recharge 2/day',
@@ -10835,7 +10835,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Accessory Upgrade',
+    name: 'Ethereal Negative Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Void Lore IV, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -10874,7 +10874,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Accessory Upgrade',
+    name: 'Ethereal Negative Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Resistance +1 (Fortitude), Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -10913,7 +10913,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Accessory Upgrade',
+    name: 'Ethereal Negative Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Elemental Spell Power, Intelligence Skills - Exceptional Bonus +4, Aspect of Dust, Max Charges = 2, Recharge 2/day',
@@ -11889,7 +11889,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Positive Dominion Accessory Upgrade',
+    name: 'Material Positive Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Lesser Good Guard, Aspect of Lightning, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -11927,7 +11927,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Opposition Accessory Upgrade',
+    name: 'Material Positive Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Improved Regeneration, Aspect of Lightning, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -11966,7 +11966,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Escalation Accessory Upgrade',
+    name: 'Material Positive Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Improved Elemental Energy, Constitution Skills - Exceptional Bonus +4, Aspect of Lightning, Max Charges = 2, Recharge 2/day',
@@ -12010,7 +12010,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Dominion Accessory Upgrade',
+    name: 'Ethereal Positive Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Healing Lore IV, Aspect of Lightning, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -12049,7 +12049,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Opposition Accessory Upgrade',
+    name: 'Ethereal Positive Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Resistance +1 (Will), Aspect of Lightning, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -12088,7 +12088,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Escalation Accessory Upgrade',
+    name: 'Ethereal Positive Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Elemental Spell Power, Charisma Skills - Exceptional Bonus +4, Aspect of Lightning, Max Charges = 2, Recharge 2/day',
@@ -12133,7 +12133,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Negative Dominion Accessory Upgrade',
+    name: 'Material Negative Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Lesser Evil Guard, Aspect of Vacuum, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -12171,7 +12171,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Accessory Upgrade',
+    name: 'Material Negative Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Immunity to Fear, Proof Against Poison +6, Aspect of Vacuum, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -12213,7 +12213,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Accessory Upgrade',
+    name: 'Material Negative Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Improved Elemental Energy, Strength Skills - Exceptional Bonus +4, Aspect of Vacuum, Max Charges = 2, Recharge 2/day',
@@ -12257,7 +12257,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Accessory Upgrade',
+    name: 'Ethereal Negative Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Void Lore IV, Aspect of Vacuum, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -12296,7 +12296,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Accessory Upgrade',
+    name: 'Ethereal Negative Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Resistance +1 (Fortitude), Aspect of Vacuum, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -12335,7 +12335,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Accessory Upgrade',
+    name: 'Ethereal Negative Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Elemental Spell Power, Intelligence Skills - Exceptional Bonus +4, Aspect of Vacuum, Max Charges = 2, Recharge 2/day',
@@ -13360,7 +13360,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Positive Dominion Accessory Upgrade',
+    name: 'Material Positive Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Lesser Good Guard, Aspect of Radiance, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -13398,7 +13398,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Opposition Accessory Upgrade',
+    name: 'Material Positive Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Improved Regeneration, Aspect of Radiance, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -13437,7 +13437,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Escalation Accessory Upgrade',
+    name: 'Material Positive Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Improved Elemental Energy, Constitution Skills - Exceptional Bonus +4, Aspect of Radiance, Max Charges = 2, Recharge 2/day',
@@ -13481,7 +13481,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Dominion Accessory Upgrade',
+    name: 'Ethereal Positive Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Healing Lore IV, Aspect of Radiance, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -13520,7 +13520,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Opposition Accessory Upgrade',
+    name: 'Ethereal Positive Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Resistance +1 (Will), Aspect of Radiance, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -13559,7 +13559,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Escalation Accessory Upgrade',
+    name: 'Ethereal Positive Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Elemental Spell Power, Charisma Skills - Exceptional Bonus +4, Aspect of Radiance, Max Charges = 2, Recharge 2/day',
@@ -13604,7 +13604,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Negative Dominion Accessory Upgrade',
+    name: 'Material Negative Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Lesser Evil Guard, Aspect of Ash, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -13642,7 +13642,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Accessory Upgrade',
+    name: 'Material Negative Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Immunity to Fear, Proof Against Poison +6, Aspect of Ash, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -13684,7 +13684,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Accessory Upgrade',
+    name: 'Material Negative Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Improved Elemental Energy, Strength Skills - Exceptional Bonus +4, Aspect of Ash, Max Charges = 3, Recharge 3/day',
@@ -13728,7 +13728,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Accessory Upgrade',
+    name: 'Ethereal Negative Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Void Lore IV, Aspect of Ash, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -13767,7 +13767,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Accessory Upgrade',
+    name: 'Ethereal Negative Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Resistance +1 (Fortitude), Aspect of Ash, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -13806,7 +13806,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Accessory Upgrade',
+    name: 'Ethereal Negative Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Elemental Spell Power, Intelligence Skills - Exceptional Bonus +4, Aspect of Ash, Max Charges = 3, Recharge 3/day',
@@ -14831,7 +14831,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Positive Dominion Accessory Upgrade',
+    name: 'Material Positive Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Lesser Good Guard, Aspect of Steam, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -14869,7 +14869,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Opposition Accessory Upgrade',
+    name: 'Material Positive Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Improved Regeneration, Aspect of Steam, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -14908,7 +14908,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Escalation Accessory Upgrade',
+    name: 'Material Positive Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Improved Elemental Energy, Constitution Skills - Exceptional Bonus +4, Aspect of Steam, Max Charges = 3, Recharge 3/day',
@@ -14952,7 +14952,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Dominion Accessory Upgrade',
+    name: 'Ethereal Positive Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Healing Lore IV, Aspect of Steam, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -14991,7 +14991,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Opposition Accessory Upgrade',
+    name: 'Ethereal Positive Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Resistance +1 (Will), Aspect of Steam, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -15030,7 +15030,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Escalation Accessory Upgrade',
+    name: 'Ethereal Positive Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Elemental Spell Power, Charisma Skills - Exceptional Bonus +4, Aspect of Steam, Max Charges = 3, Recharge 3/day',
@@ -15075,7 +15075,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Negative Dominion Accessory Upgrade',
+    name: 'Material Negative Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Lesser Evil Guard, Aspect of Salt, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -15113,7 +15113,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Accessory Upgrade',
+    name: 'Material Negative Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Immunity to Fear, Proof Against Poison +6, Aspect of Salt, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -15155,7 +15155,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Accessory Upgrade',
+    name: 'Material Negative Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Improved Elemental Energy, Strength Skills - Exceptional Bonus +4, Aspect of Salt, Max Charges = 2, Recharge 2/day',
@@ -15199,7 +15199,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Accessory Upgrade',
+    name: 'Ethereal Negative Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Void Lore IV, Aspect of Salt, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -15238,7 +15238,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Accessory Upgrade',
+    name: 'Ethereal Negative Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Resistance +1 (Fortitude), Aspect of Salt, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -15277,7 +15277,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Accessory Upgrade',
+    name: 'Ethereal Negative Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Elemental Spell Power, Intelligence Skills - Exceptional Bonus +4, Aspect of Salt, Max Charges = 2, Recharge 2/day',
@@ -16272,7 +16272,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Positive Dominion Accessory Upgrade',
+    name: 'Material Positive Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Lesser Good Guard, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -16310,7 +16310,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Opposition Accessory Upgrade',
+    name: 'Material Positive Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Improved Regeneration, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -16349,7 +16349,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Escalation Accessory Upgrade',
+    name: 'Material Positive Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Improved Elemental Energy, Constitution Skills - Exceptional Bonus +4, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day',
@@ -16393,7 +16393,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Dominion Accessory Upgrade',
+    name: 'Ethereal Positive Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Healing Lore IV, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -16432,7 +16432,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Opposition Accessory Upgrade',
+    name: 'Ethereal Positive Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Resistance +1 (Will), Aspect of Positive Energy, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -16471,7 +16471,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Escalation Accessory Upgrade',
+    name: 'Ethereal Positive Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Elemental Spell Power, Charisma Skills - Exceptional Bonus +4, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day',
@@ -16516,7 +16516,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Negative Dominion Accessory Upgrade',
+    name: 'Material Negative Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Lesser Evil Guard, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -16563,7 +16563,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Accessory Upgrade',
+    name: 'Material Negative Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description:
       'Immunity to Fear, Proof Against Poison +6, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
@@ -16615,7 +16615,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Accessory Upgrade',
+    name: 'Material Negative Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description:
       'Improved Elemental Energy, Strength Skills - Exceptional Bonus +4, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
@@ -16668,7 +16668,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Accessory Upgrade',
+    name: 'Ethereal Negative Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Void Lore IV, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -16716,7 +16716,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Accessory Upgrade',
+    name: 'Ethereal Negative Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Exceptional Resistance +1 (Fortitude), Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -16764,7 +16764,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Accessory Upgrade',
+    name: 'Ethereal Negative Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description:
       'Elemental Spell Power, Intelligence Skills - Exceptional Bonus +4, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
@@ -17768,7 +17768,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Positive Dominion Accessory Upgrade',
+    name: 'Material Positive Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Lesser Good Guard, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -17815,7 +17815,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Opposition Accessory Upgrade',
+    name: 'Material Positive Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Improved Regeneration, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -17863,7 +17863,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Positive Escalation Accessory Upgrade',
+    name: 'Material Positive Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description:
       'Improved Elemental Energy, Constitution Skills - Exceptional Bonus +4, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
@@ -17917,7 +17917,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Dominion Accessory Upgrade',
+    name: 'Ethereal Positive Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Healing Lore IV, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -17965,7 +17965,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Opposition Accessory Upgrade',
+    name: 'Ethereal Positive Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description: 'Exceptional Resistance +1 (Will), Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
     quantity: 1,
@@ -18013,7 +18013,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Positive Escalation Accessory Upgrade',
+    name: 'Ethereal Positive Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item of Existential Stalemate',
     description:
       'Elemental Spell Power, Charisma Skills - Exceptional Bonus +4, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate',
@@ -18067,7 +18067,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
 
   {
-    name: 'Material Negative Dominion Accessory Upgrade',
+    name: 'Material Negative Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Lesser Evil Guard, Aspect of Negative Energy, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -18105,7 +18105,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Accessory Upgrade',
+    name: 'Material Negative Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Immunity to Fear, Proof Against Poison +6, Aspect of Negative Energy, Max Charges = 3, Recharge 3/day',
@@ -18148,7 +18148,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Accessory Upgrade',
+    name: 'Material Negative Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Improved Elemental Energy, Strength Skills - Exceptional Bonus +4, Aspect of Negative Energy, Max Charges = 3, Recharge 3/day',
@@ -18192,7 +18192,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Accessory Upgrade',
+    name: 'Ethereal Negative Energy Dominion Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Void Lore IV, Aspect of Negative Energy, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -18231,7 +18231,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Accessory Upgrade',
+    name: 'Ethereal Negative Energy Opposition Accessory Upgrade',
     title: 'Lieutenant Item',
     description: 'Exceptional Resistance +1 (Fortitude), Aspect of Negative Energy, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -18270,7 +18270,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Accessory Upgrade',
+    name: 'Ethereal Negative Energy Escalation Accessory Upgrade',
     title: 'Lieutenant Item',
     description:
       'Elemental Spell Power, Intelligence Skills - Exceptional Bonus +4, Aspect of Negative Energy, Max Charges = 3, Recharge 3/day',
@@ -18411,7 +18411,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
-    name: 'Material Positive Dominion Ring Upgrade',
+    name: 'Material Positive Energy Dominion Ring Upgrade',
     title: 'Holy Burst Item',
     description: 'Unarmed & Handwraps only: Holy Burst',
     quantity: 1,
@@ -18435,7 +18435,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
-    name: 'Material Negative Dominion Ring Upgrade',
+    name: 'Material Negative Energy Dominion Ring Upgrade',
     title: 'Unholy Burst Item',
     description: 'Unarmed & Handwraps only: Unholy Burst',
     quantity: 1,
@@ -18555,7 +18555,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
-    name: 'Material Positive Escalation Ring Upgrade',
+    name: 'Material Positive Energy Escalation Ring Upgrade',
     title: 'Insightful Constitution +2 Item',
     description: 'Insightful Constitution +2',
     quantity: 1,
@@ -18579,7 +18579,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
-    name: 'Material Negative Escalation Ring Upgrade',
+    name: 'Material Negative Energy Escalation Ring Upgrade',
     title: 'Insightful Strength +2 Item',
     description: 'Insightful Strength +2',
     quantity: 1,
@@ -18675,7 +18675,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
-    name: 'Material Positive Opposition Ring Upgrade',
+    name: 'Material Positive Energy Opposition Ring Upgrade',
     title: 'Item',
     description: 'Healing Amplification: +40',
     quantity: 1,
@@ -18699,7 +18699,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
-    name: 'Material Negative Opposition Ring Upgrade',
+    name: 'Material Negative Energy Opposition Ring Upgrade',
     title: 'Item',
     description: 'Immunity to Fear',
     quantity: 1,
@@ -18814,7 +18814,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
-    name: 'Ethereal Positive Dominion Ring Upgrade',
+    name: 'Ethereal Positive Energy Dominion Ring Upgrade',
     title: 'Devotion Item',
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
@@ -18837,7 +18837,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
-    name: 'Ethereal Negative Dominion Ring Upgrade',
+    name: 'Ethereal Negative Energy Dominion Ring Upgrade',
     title: 'Nullification Item',
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
@@ -18956,7 +18956,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
-    name: 'Ethereal Positive Escalation Ring Upgrade',
+    name: 'Ethereal Positive Energy Escalation Ring Upgrade',
     title: 'Insightful Charisma +2 Item',
     description: 'Insightful Charisma +2',
     quantity: 1,
@@ -18980,7 +18980,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
-    name: 'Ethereal Negative Escalation Ring Upgrade',
+    name: 'Ethereal Negative Energy Escalation Ring Upgrade',
     title: 'Insightful Intelligence +2 Item',
     description: 'Insightful Intelligence +2',
     quantity: 1,
@@ -19100,7 +19100,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
-    name: 'Ethereal Positive Opposition Ring Upgrade',
+    name: 'Ethereal Positive Energy Opposition Ring Upgrade',
     title: 'Item',
     description: 'Heightened Awareness 2',
     quantity: 1,
@@ -19124,7 +19124,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
   },
   {
-    name: 'Ethereal Negative Opposition Ring Upgrade',
+    name: 'Ethereal Negative Energy Opposition Ring Upgrade',
     title: 'Item',
     description: 'Heightened Awareness 2',
     quantity: 1,

@@ -80,13 +80,13 @@ const SubjugationBasicDropdown = () => {
                   return (
                     <Fragment key={foci.map((focus) => focus.name).join('|')}>
                       {renderSection(
-                        `${name} (T1: ${foci[0]?.elements[0]})`,
+                        `${name} (T1: ${foci[0]?.elements[1]})`,
                         ingredients.filter((ing: CraftingIngredient) =>
-                          ing.requirements.at(0)?.name.includes(foci[1]?.elements[0])
+                          ing.requirements.at(0)?.name.includes(foci[0]?.elements[1])
                         )
                       )}
                       {renderSection(
-                        `${name} (T1: ${foci[1]?.elements[0]})`,
+                        `${name} (T1: ${foci[0]?.elements[0]})`,
                         ingredients.filter((ing: CraftingIngredient) =>
                           ing.requirements.at(0)?.name.includes(foci[0]?.elements[0])
                         )

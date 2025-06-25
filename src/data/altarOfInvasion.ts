@@ -3218,7 +3218,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Dominion Weapon Upgrade',
+    name: 'Material Negative Energy Dominion Weapon Upgrade',
     title: 'Unholy Item',
     quantity: 1,
     binding: {
@@ -3261,7 +3261,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Opposition Weapon Upgrade',
+    name: 'Material Negative Energy Opposition Weapon Upgrade',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3303,7 +3303,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Material Negative Escalation Weapon Upgrade',
+    name: 'Material Negative Energy Escalation Weapon Upgrade',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3344,7 +3344,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Dominion Weapon Upgrade',
+    name: 'Ethereal Negative Energy Dominion Weapon Upgrade',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3385,7 +3385,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Opposition Weapon Upgrade',
+    name: 'Ethereal Negative Energy Opposition Weapon Upgrade',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3427,7 +3427,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     }
   },
   {
-    name: 'Ethereal Negative Escalation Weapon Upgrade',
+    name: 'Ethereal Negative Energy Escalation Weapon Upgrade',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4640,7 +4640,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     ]
   },
   {
-    name: 'Material Negative Dominion Accessory Upgrade',
+    name: 'Material Negative Energy Dominion Accessory Upgrade',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4678,7 +4678,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     ]
   },
   {
-    name: 'Material Negative Opposition Accessory Upgrade',
+    name: 'Material Negative Energy Opposition Accessory Upgrade',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4720,7 +4720,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     ]
   },
   {
-    name: 'Material Negative Escalation Accessory Upgrade',
+    name: 'Material Negative Energy Escalation Accessory Upgrade',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4762,7 +4762,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     ]
   },
   {
-    name: 'Ethereal Negative Dominion Accessory Upgrade',
+    name: 'Ethereal Negative Energy Dominion Accessory Upgrade',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4799,7 +4799,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
     ]
   },
   {
-    name: 'Ethereal Negative Opposition Accessory Upgrade',
+    name: 'Ethereal Negative Energy Opposition Accessory Upgrade',
     quantity: 1,
     binding: {
       type: 'Bound',
