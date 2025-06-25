@@ -13,6 +13,10 @@ const useIngredientImage = (ingredientName: string) => {
     void (async () => {
       const formattedName: string = formatIngredientName(ingredientName, selectedFecundityItem)
 
+      if (ingredientName === '') {
+        return
+      }
+
       const image = (await import(`../assets/icons/${camelcase(formattedName)}.png`)) as {
         default: string
       }

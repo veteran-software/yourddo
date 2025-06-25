@@ -2415,7 +2415,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Ethereal Positive Dominion Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Dominion Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -2438,7 +2438,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Material Positive Dominion Shard of Supreme Power',
+        name: 'Material Positive Energy Dominion Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -2461,7 +2461,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Ethereal Positive Escalation Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Escalation Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -2484,7 +2484,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Material Positive Escalation Shard of Supreme Power',
+        name: 'Material Positive Energy Escalation Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -2507,7 +2507,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Ethereal Positive Opposition Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Opposition Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -2530,7 +2530,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Material Positive Opposition Shard of Supreme Power',
+        name: 'Material Positive Energy Opposition Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -2829,7 +2829,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Ethereal Positive Dominion Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Dominion Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -2852,7 +2852,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Material Positive Dominion Shard of Supreme Power',
+        name: 'Material Positive Energy Dominion Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -2875,7 +2875,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Ethereal Positive Escalation Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Escalation Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -2898,7 +2898,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Material Positive Escalation Shard of Supreme Power',
+        name: 'Material Positive Energy Escalation Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -2921,7 +2921,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Ethereal Positive Opposition Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Opposition Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -2944,7 +2944,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Material Positive Opposition Shard of Supreme Power',
+        name: 'Material Positive Energy Opposition Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3105,7 +3105,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Ethereal Positive Dominion Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Dominion Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3128,7 +3128,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Material Positive Dominion Shard of Supreme Power',
+        name: 'Material Positive Energy Dominion Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3151,7 +3151,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Ethereal Positive Escalation Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Escalation Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3174,7 +3174,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Material Positive Escalation Shard of Supreme Power',
+        name: 'Material Positive Energy Escalation Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3197,7 +3197,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Ethereal Positive Opposition Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Opposition Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3220,7 +3220,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Material Positive Opposition Shard of Supreme Power',
+        name: 'Material Positive Energy Opposition Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3519,7 +3519,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Ethereal Positive Dominion Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Dominion Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3542,7 +3542,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Material Positive Dominion Shard of Supreme Power',
+        name: 'Material Positive Energy Dominion Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3565,7 +3565,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Ethereal Positive Escalation Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Escalation Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3588,7 +3588,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Material Positive Escalation Shard of Supreme Power',
+        name: 'Material Positive Energy Escalation Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3611,7 +3611,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Ethereal Positive Opposition Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Opposition Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3634,7 +3634,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     craftedIn: 'Altar of Devastation',
     requirements: [
       {
-        name: 'Material Positive Opposition Shard of Supreme Power',
+        name: 'Material Positive Energy Opposition Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3800,7 +3800,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Ethereal Positive Dominion Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Dominion Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3823,7 +3823,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Material Positive Dominion Shard of Supreme Power',
+        name: 'Material Positive Energy Dominion Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3846,7 +3846,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Ethereal Positive Escalation Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Escalation Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3869,7 +3869,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Material Positive Escalation Shard of Supreme Power',
+        name: 'Material Positive Energy Escalation Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3892,7 +3892,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Ethereal Positive Opposition Shard of Supreme Power',
+        name: 'Ethereal Positive Energy Opposition Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -3915,7 +3915,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Material Positive Opposition Shard of Supreme Power',
+        name: 'Material Positive Energy Opposition Shard of Supreme Power',
         quantity: 1,
         requirements: []
       },
@@ -16883,5 +16883,31 @@ export const altarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1
+  },
+  {
+    name: 'Shavarath High Energy Cell',
+    ingredientType: 'This item may be usable in an eldritch device.',
+    description:
+      'A vessel with a powerful charge of energy inside. This cell is resonating like the Altar of Devastation.',
+    quantity: 1,
+    craftedIn: 'Altar of Devastation',
+    requirements: [
+      {
+        name: 'Enchanted Weapon',
+        description: 'Weapon with +6 through +15 enchantment level.',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Depleted Shavarath Medium Energy Cell',
+        quantity: 1,
+        description:
+          'An empty vessel capable of storing energy. Empty cells can be charged by combining them with suitably powerful magic weapons.',
+        requirements: []
+      }
+    ],
+    notes:
+      'To charge a Depleted Shavarath High Energy Cell, combine it on the Altar of Devastation with a +8 to +15 weapon.\n' +
+      "Note: The +X you're looking for is in the top-right corner of the item examine window—not in the weapon’s name."
   }
 ] as const

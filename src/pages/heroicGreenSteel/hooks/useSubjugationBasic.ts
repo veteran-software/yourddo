@@ -8,12 +8,40 @@ import { baseElemental, type ElementalList, subjugationElementalList } from '../
 import useIngredientsMap from './useIngredientMap.ts'
 
 const useSubjugationBasic = () => {
-  const { selectedInvasionItem, subjugationItems, selectedDevastationFocused } = useAppSelector(
-    (state) => state.greenSteel,
-    shallowEqual
-  )
+  const { selectedInvasionItem, subjugationItems, selectedDevastationFocused, selectedSubjugationItem } =
+    useAppSelector((state) => state.greenSteel, shallowEqual)
 
   const items: CraftingIngredient[] = useMemo(() => {
+    if (selectedSubjugationItem && selectedInvasionItem) {
+      const invasionFocus = deconstructShard(selectedInvasionItem.name).focus
+      const subjugationFocus = deconstructShard(selectedSubjugationItem.name).focus
+      const subjugationAspect = selectedSubjugationItem.effectsAdded?.at(-1)?.name
+
+      const elementData = subjugationElementalList.filter(
+        (el: ElementalList) => subjugationAspect?.includes(el.name) ?? false
+      )
+      if (
+        elementData[0].elements[0] === invasionFocus &&
+        elementData[0].elements[1] === subjugationFocus.split(' ')[0]
+      ) {
+        return [...subjugationItems].filter(
+          (item: CraftingIngredient) =>
+            item.effectsAdded?.some((effect: Enhancement) => effect.name.includes(invasionFocus)) ?? false
+        )
+      }
+
+      if (
+        elementData[1].elements[0] === invasionFocus &&
+        elementData[1].elements[1] === subjugationFocus.split(' ')[0]
+      ) {
+        return [...subjugationItems].filter(
+          (item: CraftingIngredient) =>
+            item.effectsAdded?.some((effect: Enhancement) => effect.name.includes(subjugationFocus.split(' ')[0])) ??
+            false
+        )
+      }
+    }
+
     if (selectedInvasionItem) {
       const { focus } = deconstructShard(selectedInvasionItem.name)
 
@@ -33,7 +61,7 @@ const useSubjugationBasic = () => {
     }
 
     return [...subjugationItems]
-  }, [selectedInvasionItem, selectedDevastationFocused, subjugationItems])
+  }, [selectedSubjugationItem, subjugationItems, selectedInvasionItem, selectedDevastationFocused])
 
   const elemental: ElementalList[] = useMemo(() => subjugationElementalList, [])
 

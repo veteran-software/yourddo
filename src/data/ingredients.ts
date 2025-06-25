@@ -300,6 +300,22 @@ export const ingredients: Ingredient[] = [
       "Note: The +X you're looking for is in the top-right corner of the item examine window—not in the weapon’s name."
   },
   {
+    name: 'Depleted Shavarath High Energy Cell',
+    description:
+      'An empty vessel capable of storing a lot of energy. Empty cells can be charged by combining them with suitably powerful magic weapons.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 2000
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault'],
+    notes:
+      'To charge a Depleted Shavarath High Energy Cell, combine it on the Altar of Subjugation with a +8 to +15 weapon.\n' +
+      "Note: The +X you're looking for is in the top-right corner of the item examine window—not in the weapon’s name."
+  },
+  {
     name: 'Eberron Energy Cell',
     description: 'A small vessel with a charge of energy inside.',
     type: 'This item may be usable in an eldritch device.',
@@ -371,6 +387,74 @@ export const ingredients: Ingredient[] = [
     },
     weight: 0.01,
     foundIn: ['Ritual Sacrifice', 'The Vale of Twilight (rare encounters)']
+  },
+  {
+    name: 'Large Devil Scales',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A few reptilian looking devil scales. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Unbound'
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Large Glowing Arrowhead',
+    type: 'This item may be usable in an eldritch device.',
+    description:
+      'A metal arrowhead that gives off a pale greenish light. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Unbound'
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Large Gnawed Bone',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A dry bone that has been gnawed clean. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Unbound'
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Large Length of Infernal Chain',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A length of dirty, barbed chain. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 25
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Large Twisted Shrapnel',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A sharp and twisted hunk of metal. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Unbound'
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Large Sulfurous Stone',
+    type: 'This item may be usable in an eldritch device.',
+    description:
+      'A rough, crumbly piece of yellowish gray stone that smells of sulfur. This item is humming like the Altar of Subjugation.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 25
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
   },
   {
     name: 'Large Splintered Horn',
@@ -533,6 +617,18 @@ export const ingredients: Ingredient[] = [
       gold: 49500
     },
     inventoryMaxStack: 1,
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Devil Assault']
+  },
+  {
+    name: 'Shard of Supreme Power',
+    description:
+      'This weighty shard of crystal radiates immense power. Crystals like this can absorb and combine the power from various sources like foci and essences. Once imbued, this shard may be able to be combined with a weapon or accessory, thereby transferring the power into that item.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
     weight: 0.1,
     foundIn: ['The Shroud', 'Devil Assault']
   },

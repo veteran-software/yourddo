@@ -62,7 +62,13 @@ const DevastationBasicDropdown: FC = () => {
         <Dropdown className='d-flex flex-grow-1'>
           <IngredientDropdownToggle label={label} disabled={selectedDevastationFocused !== undefined} />
 
-          <Dropdown.Menu className='py-0 w-100' style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+          <Dropdown.Menu
+            className='py-0 w-100'
+            style={{
+              maxHeight: '50vh',
+              overflowY: 'auto'
+            }}
+          >
             {Object.entries(ingredientsMap).map(([element, ingredients]) => renderSection(element, ingredients))}
           </Dropdown.Menu>
         </Dropdown>

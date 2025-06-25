@@ -1,13 +1,13 @@
 import { Accordion, Card, ListGroup, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
-import CraftedIngredientDisplay from '../../../components/CraftedIngredientDisplay.tsx'
-import FarmedIngredientDisplay from '../../../components/FarmedIngredientDisplay.tsx'
-import { ingredients } from '../../../data/ingredients.ts'
-import { useAppSelector } from '../../../redux/hooks.ts'
-import type { CraftingIngredient } from '../../../types/crafting.ts'
-import type { Ingredient } from '../../../types/ingredients.ts'
-import useRecipeBuilder from '../hooks/useRecipeBuilder.ts'
-import FecundityList from './lists/FecundityList.tsx'
+import CraftedIngredientDisplay from '../../../../components/CraftedIngredientDisplay.tsx'
+import FarmedIngredientDisplay from '../../../../components/FarmedIngredientDisplay.tsx'
+import { ingredients } from '../../../../data/ingredients.ts'
+import { useAppSelector } from '../../../../redux/hooks.ts'
+import type { CraftingIngredient } from '../../../../types/crafting.ts'
+import type { Ingredient } from '../../../../types/ingredients.ts'
+import useRecipeBuilder from '../../hooks/useRecipeBuilder.ts'
+import FecundityList from './FecundityList.tsx'
 import MaterialsAccordion from './MaterialsAccordion.tsx'
 
 const IngredientList = () => {
@@ -112,7 +112,7 @@ const IngredientList = () => {
                   <ListGroup variant='flush'>
                     {selectedDevastationBasic.requirements.map((ingredient: CraftingIngredient) => (
                       <ListGroup.Item key={ingredient.name}>
-                        <FarmedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
+                        <CraftedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
                       </ListGroup.Item>
                     ))}
                   </ListGroup>
@@ -127,7 +127,7 @@ const IngredientList = () => {
                   <ListGroup variant='flush'>
                     {selectedDevastationFocused.requirements.map((ingredient: CraftingIngredient) => (
                       <ListGroup.Item key={ingredient.name}>
-                        <FarmedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
+                        <CraftedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
                       </ListGroup.Item>
                     ))}
                   </ListGroup>

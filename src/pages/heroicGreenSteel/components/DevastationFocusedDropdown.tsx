@@ -40,6 +40,7 @@ const DevastationFocusedDropdown = () => {
   const renderSection = (name: string, ingredients: CraftingIngredient[]) => {
     return (
       <IngredientDropdownSection
+        key={`${name}=${btoa(JSON.stringify(ingredients))}`}
         clickHandler={selectDevastationFocused}
         header={
           <Stack direction='horizontal' gap={2} className='align-items-center justify-content-center'>

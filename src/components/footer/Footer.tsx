@@ -1,34 +1,33 @@
 import { DateTime } from 'luxon'
-import { useLayoutEffect, useRef } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useRef } from 'react'
 import { Container, Navbar, Stack } from 'react-bootstrap'
+import { FaCircleNotch } from 'react-icons/fa6'
 import { serverStatusApi } from '../../api/serverStatusApi.ts'
 import { useAppDispatch } from '../../redux/hooks.ts'
 import { setFooterHeight } from '../../redux/slices/appSlice.ts'
 import type { AppDispatch } from '../../redux/store.ts'
 import ServerStatusDisplay from '../ServerStatusDisplay.tsx'
 import Countdown from '../timer/Countdown.tsx'
-
-const polling = {
-  pollingInterval: 60000, // re-check every minute
-  skipPollingIfUnfocused: true
-}
+import { extractServerName, isServerUp } from './helpers/helpers.ts'
 
 const Footer = () => {
   const dispatch: AppDispatch = useAppDispatch()
 
-  const { data: argoUp } = serverStatusApi.useArgonnessenQuery(undefined, polling)
-  const { data: cannithUp } = serverStatusApi.useCannithQuery(undefined, polling)
-  const { data: ghallandaUp } = serverStatusApi.useGhallandaQuery(undefined, polling)
-  const { data: khyberUp } = serverStatusApi.useKhyberQuery(undefined, polling)
-  const { data: orienUp } = serverStatusApi.useOrienQuery(undefined, polling)
-  const { data: sarlonaUp } = serverStatusApi.useSarlonaQuery(undefined, polling)
-  const { data: thelanisUp } = serverStatusApi.useThelanisQuery(undefined, polling)
-  const { data: wayfinderUp } = serverStatusApi.useWayfinderQuery(undefined, polling)
-  // const { data: hardcoreUp } = serverStatusApi.useHardcoreQuery(undefined, polling)
-  // const { data: lamanniaUp } = serverStatusApi.useLamanniaQuery(undefined, polling)
-  const { data: cormyrUp } = serverStatusApi.useCormyrQuery(undefined, polling)
+  const [trigger, { data, isLoading }] = serverStatusApi.useAllServersMutation()
 
   const navRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    trigger().catch(console.error)
+
+    const intervalId = setInterval(() => {
+      trigger().catch(console.error)
+    }, 90000)
+
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [trigger])
 
   useLayoutEffect(() => {
     const box = navRef.current?.getBoundingClientRect()
@@ -41,39 +40,39 @@ const Footer = () => {
     <Navbar ref={navRef} fixed='bottom' variant='dark' className='bg-primary overflow-x-auto overflow-y-hidden'>
       <Container fluid className='m-auto w-auto py-0'>
         <Stack direction='vertical' gap={1}>
-          <Stack direction='horizontal' gap={3}>
-            <ServerStatusDisplay name='Argonnessen' up={argoUp} />
-            &bull;
-            <ServerStatusDisplay name='Cannith' up={cannithUp} />
-            &bull;
-            <ServerStatusDisplay name='Ghallanda' up={ghallandaUp} />
-            &bull;
-            <ServerStatusDisplay name='Khyber' up={khyberUp} />
-            &bull;
-            <ServerStatusDisplay name='Orien' up={orienUp} />
-            &bull;
-            <ServerStatusDisplay name='Sarlona' up={sarlonaUp} />
-            &bull;
-            <ServerStatusDisplay name='Thelanis' up={thelanisUp} />
-            &bull;
-            <ServerStatusDisplay name='Wayfinder' up={wayfinderUp} />
-            {/*
-            I think both of these servers are no longer in existence.
-            They don't show up in the server list when pinging the data center anymore
-            */}
-            {/*&bull;*/}
-            {/*<ServerStatusDisplay name='Hardcore' up={hardcoreUp} />*/}
-            {/*&bull;*/}
-            {/*<ServerStatusDisplay name='Lamannia' up={lamanniaUp} />*/}
-            &bull;
-            <ServerStatusDisplay name='Cormyr' up={cormyrUp} />
-            &bull;
-            {/* 64-bit servers coming soon */}
-            <ServerStatusDisplay name='Shadowdale' up={undefined} comingSoon={true} />
-            &bull;
-            <ServerStatusDisplay name='Thrane' up={undefined} comingSoon={true} />
-            &bull;
-            <ServerStatusDisplay name='Moonsea' up={undefined} comingSoon={true} />
+          <Stack direction='horizontal' gap={2}>
+            {isLoading && (
+              <FaCircleNotch
+                title='Loading...'
+                size={15}
+                color='gray'
+                style={{ animation: 'spin 1s linear infinite' }}
+              />
+            )}
+
+            {data?.map((server, idx: number) => {
+              const serverName: string = extractServerName(server)
+
+              return (
+                <Fragment key={`${serverName}-${String(idx)}`}>
+                  {idx > 0 && <>&bull;</>}
+                  <ServerStatusDisplay name={extractServerName(server)} up={isServerUp(server)} />
+                </Fragment>
+              )
+            })}
+
+            {/* 64-bit servers coming soon; everything "should auto-update on launch day" */}
+            {/* So I'm going to gate these behind the timer and see what happens /shrug */}
+            {DateTime.now().toSeconds() <= 1752080400 && (
+              <>
+                &bull;
+                <ServerStatusDisplay name='Shadowdale' up={undefined} comingSoon={true} />
+                &bull;
+                <ServerStatusDisplay name='Thrane' up={undefined} comingSoon={true} />
+                &bull;
+                <ServerStatusDisplay name='Moonsea' up={undefined} comingSoon={true} />
+              </>
+            )}
           </Stack>
 
           {/* Hide the timer at 1pm EST [the usual time the servers are back online after an update] */}
