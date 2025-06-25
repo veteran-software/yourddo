@@ -26,12 +26,14 @@ const RawMaterialList = (props: Props) => {
       </ListGroup.Item>
 
       {sortedMaterials.map(([ing, count]) => {
+        if (/\b(enchanted)\s+(accessory|weapon)\b/i.test(ing)) {
+          return <></>
+        }
+
         return (
-          <FarmedIngredientDisplay
-            key={ing}
-            ingredient={ingredientsMap[ing]}
-            quantity={count}
-          />
+          <ListGroup.Item key={`${ing}-${String(count)}`}>
+            <FarmedIngredientDisplay key={ing} ingredient={ingredientsMap[ing]} quantity={count} />
+          </ListGroup.Item>
         )
       })}
     </ListGroup>

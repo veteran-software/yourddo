@@ -8,14 +8,25 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         api: 'modern-compiler',
-        silenceDeprecations: [
-          'mixed-decls',
-          'color-functions',
-          'global-builtin',
-          'import'
-        ]
+        silenceDeprecations: ['mixed-decls', 'color-functions', 'global-builtin', 'import']
       }
     }
   },
-  plugins: [react()]
+  plugins: [react()],
+  server: {
+    fs: {
+      strict: true
+    },
+    proxy: {
+      '/api': {
+        target: 'https://gls.ddo.com/',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path: string) => path.replace(/^\/api/, 'GLS.DataCenterServer/StatusServer.aspx')
+      }
+    }
+  },
+  build: {
+    modulePreload: true
+  }
 })

@@ -15,4 +15,4 @@ body:
     id: context
     attributes:
       label: URL or Page (if applicable)
-      placeholder: "e.g., https://yourddo.com/incrediblePotential"
+      placeholder: "e.g., https://yourddo.com/incredible-potential"

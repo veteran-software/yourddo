@@ -10,6 +10,7 @@ import {
 import { useAppDispatch } from '../../redux/hooks.ts'
 import { setFilterMode } from '../../redux/slices/incrediblePotentialSlice.ts'
 import type { AppDispatch } from '../../redux/store.ts'
+import { removeWhitespace } from '../../utils/objectUtils.ts'
 
 // Styles for the filter components
 const customStyles = {
@@ -116,7 +117,7 @@ const FilterSection = <T,>(props: Props<T>) => {
           <ToggleButton
             id='filter-mode-or'
             type='radio'
-            variant={filterMode === 'OR' ? 'primary' : 'outline-primary'}
+            variant={filterMode === 'OR' ? 'light' : 'outline-light'}
             name='filter-mode'
             value='OR'
             checked={filterMode === 'OR'}
@@ -134,7 +135,7 @@ const FilterSection = <T,>(props: Props<T>) => {
           <ToggleButton
             id='filter-mode-and'
             type='radio'
-            variant={filterMode === 'AND' ? 'primary' : 'outline-primary'}
+            variant={filterMode === 'AND' ? 'light' : 'outline-light'}
             name='filter-mode'
             value='AND'
             checked={filterMode === 'AND'}
@@ -180,7 +181,7 @@ const FilterSection = <T,>(props: Props<T>) => {
               <div style={customStyles.disabledFilter}>
                 <Form.Check
                   type='switch'
-                  id={`filter-${filter.replace(/\s+/g, '-').toLowerCase()}`}
+                  id={`filter-${removeWhitespace(filter, '-').toLowerCase()}`}
                   checked={selectedFilters.includes(filter)}
                   onChange={() => {
                     toggleFilter(filter)
@@ -200,7 +201,7 @@ const FilterSection = <T,>(props: Props<T>) => {
             ) : (
               <Form.Check
                 type='switch'
-                id={`filter-${filter.replace(/\s+/g, '-').toLowerCase()}`}
+                id={`filter-${removeWhitespace(filter, '-').toLowerCase()}`}
                 checked={selectedFilters.includes(filter)}
                 onChange={() => {
                   toggleFilter(filter)

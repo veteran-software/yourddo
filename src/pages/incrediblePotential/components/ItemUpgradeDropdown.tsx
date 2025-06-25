@@ -81,7 +81,7 @@ const ItemUpgradeDropdown = (props: Props) => {
 
   const effectDetail = (requirement: Enhancement): string => {
     const enhancementDetail = enhancementMap[requirement.name.toLowerCase()]
-    return enhancementDetail.description
+    return enhancementDetail.description ?? 'Unknown Enhancement'
   }
 
   const joinEffects = (effects: Enhancement[] | undefined) => {

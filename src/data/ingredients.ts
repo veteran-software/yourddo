@@ -31,11 +31,7 @@ export const ingredients: Ingredient[] = [
       type: 'Unbound'
     },
     weight: 0.05,
-    foundIn: [
-      'A Relic of a Sovereign Past',
-      "Ataraxia's Haven",
-      'Made to Order'
-    ]
+    foundIn: ['A Relic of a Sovereign Past', "Ataraxia's Haven", 'Made to Order']
   },
   {
     name: 'Agate Shard',
@@ -145,12 +141,11 @@ export const ingredients: Ingredient[] = [
   },
   {
     name: 'Arcane Ingot',
-    description:
-      'This magical metal is warm to the touch and can be shaped into whatever weapon you desire.',
+    description: 'This magical metal is warm to the touch and can be shaped into whatever weapon you desire.',
     binding: {
       type: 'Bound',
-      location: 'Account',
-      when: 'Acquisition'
+      to: 'Account',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 100
@@ -169,12 +164,11 @@ export const ingredients: Ingredient[] = [
   },
   {
     name: 'Barrier Fragment',
-    description:
-      'Fragments of a shattered barrier. Used at the Ritual Table to unseal power.',
+    description: 'Fragments of a shattered barrier. Used at the Ritual Table to unseal power.',
     binding: {
       type: 'Bound',
-      location: 'Account',
-      when: 'Acquisition'
+      to: 'Account',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 100
@@ -203,16 +197,11 @@ export const ingredients: Ingredient[] = [
     binding: {
       type: 'Unbound'
     },
-    foundIn: [
-      'Smashing Pumpkins',
-      'Grave Work',
-      "The Kobolds' Newest Ringleader"
-    ]
+    foundIn: ['Smashing Pumpkins', 'Grave Work', "The Kobolds' Newest Ringleader"]
   },
   {
     name: 'Black Dragon Scale',
-    description:
-      'This is a large, strong, and pliable scale from a Black Dragon.',
+    description: 'This is a large, strong, and pliable scale from a Black Dragon.',
     binding: {
       type: 'Unbound'
     },
@@ -221,12 +210,11 @@ export const ingredients: Ingredient[] = [
   },
   {
     name: 'Black Dust of Vile Darkness',
-    description:
-      'This dust radiates corruption and evil. What might it have been before it became dust?',
+    description: 'This dust radiates corruption and evil. What might it have been before it became dust?',
     binding: {
       type: 'Bound',
-      location: 'Account',
-      when: 'Acquisition'
+      to: 'Account',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 100
@@ -238,14 +226,10 @@ export const ingredients: Ingredient[] = [
     description: 'This pearl is an opalescent dark color.',
     binding: {
       type: 'Bound',
-      location: 'Account',
-      when: 'Acquisition'
+      to: 'Account',
+      from: 'Acquisition'
     },
-    foundIn: [
-      'The Isle of Dread (Legendary)',
-      'Skeletons in the Closet',
-      'Draconic Raider’s Reward Box'
-    ]
+    foundIn: ['The Isle of Dread (Legendary)', 'Skeletons in the Closet', 'Draconic Raider’s Reward Box']
   },
   {
     name: 'Black Stone',
@@ -291,8 +275,8 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Meridia'],
     binding: {
       type: 'Bound',
-      when: 'Acquisition',
-      location: 'Character'
+      from: 'Acquisition',
+      to: 'Character'
     },
     baseValue: {
       gold: 5
@@ -316,14 +300,28 @@ export const ingredients: Ingredient[] = [
       "Note: The +X you're looking for is in the top-right corner of the item examine window—not in the weapon’s name."
   },
   {
+    name: 'Depleted Shavarath High Energy Cell',
+    description:
+      'An empty vessel capable of storing a lot of energy. Empty cells can be charged by combining them with suitably powerful magic weapons.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 2000
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault'],
+    notes:
+      'To charge a Depleted Shavarath High Energy Cell, combine it on the Altar of Subjugation with a +8 to +15 weapon.\n' +
+      "Note: The +X you're looking for is in the top-right corner of the item examine window—not in the weapon’s name."
+  },
+  {
     name: 'Eberron Energy Cell',
     description: 'A small vessel with a charge of energy inside.',
     type: 'This item may be usable in an eldritch device.',
     foundIn: ['The Eldritch Chamber (Meridia)'],
     binding: {
-      type: 'Bound',
-      when: 'Acquisition',
-      location: 'Character'
+      type: 'Unbound'
     },
     baseValue: {
       platinum: 990
@@ -353,8 +351,8 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Meridia'],
     binding: {
       type: 'Bound',
-      when: 'Acquisition',
-      location: 'Character'
+      from: 'Acquisition',
+      to: 'Character'
     },
     baseValue: {
       gold: 5
@@ -364,8 +362,7 @@ export const ingredients: Ingredient[] = [
   {
     name: 'Green Briar Twigs',
     type: 'This item may be usable in an eldritch device.',
-    description:
-      'Fresh green twigs with very small thorns. These Twigs are humming like the Altar of Fecundity.',
+    description: 'Fresh green twigs with very small thorns. These Twigs are humming like the Altar of Fecundity.',
     binding: {
       type: 'Unbound'
     },
@@ -392,6 +389,86 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Ritual Sacrifice', 'The Vale of Twilight (rare encounters)']
   },
   {
+    name: 'Large Devil Scales',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A few reptilian looking devil scales. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Unbound'
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Large Glowing Arrowhead',
+    type: 'This item may be usable in an eldritch device.',
+    description:
+      'A metal arrowhead that gives off a pale greenish light. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Unbound'
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Large Gnawed Bone',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A dry bone that has been gnawed clean. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Unbound'
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Large Length of Infernal Chain',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A length of dirty, barbed chain. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 25
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Large Twisted Shrapnel',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A sharp and twisted hunk of metal. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Unbound'
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Large Sulfurous Stone',
+    type: 'This item may be usable in an eldritch device.',
+    description:
+      'A rough, crumbly piece of yellowish gray stone that smells of sulfur. This item is humming like the Altar of Subjugation.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 25
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Large Splintered Horn',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A splintered horn from some unknown creature. This item is resonating like the Altar of Fecundity.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Shroud']
+  },
+  {
     name: 'Locust Husk',
     type: 'This item may be usable in an eldritch device.',
     description:
@@ -409,8 +486,7 @@ export const ingredients: Ingredient[] = [
   {
     name: 'Medium Devil Scales',
     type: 'This item may be usable in an eldritch device.',
-    description:
-      'A few reptilian looking devil scales. This item is humming like the Altar of Subjugation.',
+    description: 'A few reptilian looking devil scales. This item is humming like the Altar of Subjugation.',
     binding: {
       type: 'Unbound'
     },
@@ -431,8 +507,7 @@ export const ingredients: Ingredient[] = [
   {
     name: 'Medium Gnawed Bone',
     type: 'This item may be usable in an eldritch device.',
-    description:
-      'A dry bone that has been gnawed clean. This item is humming like the Altar of Subjugation.',
+    description: 'A dry bone that has been gnawed clean. This item is humming like the Altar of Subjugation.',
     binding: {
       type: 'Unbound'
     },
@@ -442,8 +517,7 @@ export const ingredients: Ingredient[] = [
   {
     name: 'Medium Length of Infernal Chain',
     type: 'This item may be usable in an eldritch device.',
-    description:
-      'A length of dirty, barbed chain. This item is humming like the Altar of Subjugation.',
+    description: 'A length of dirty, barbed chain. This item is humming like the Altar of Subjugation.',
     binding: {
       type: 'Unbound'
     },
@@ -452,6 +526,18 @@ export const ingredients: Ingredient[] = [
     },
     weight: 0.1,
     foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Medium Splintered Horn',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A splintered horn from some unknown creature. This item is resonating like the Altar of Fecundity.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 25
+    },
+    foundIn: ['The Shroud']
   },
   {
     name: 'Medium Sulfurous Stone',
@@ -470,8 +556,7 @@ export const ingredients: Ingredient[] = [
   {
     name: 'Medium Twisted Shrapnel',
     type: 'This item may be usable in an eldritch device.',
-    description:
-      'A sharp and twisted hunk of metal. This item is humming like the Altar of Subjugation.',
+    description: 'A sharp and twisted hunk of metal. This item is humming like the Altar of Subjugation.',
     binding: {
       type: 'Unbound'
     },
@@ -486,8 +571,8 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Meridia'],
     binding: {
       type: 'Bound',
-      when: 'Acquisition',
-      location: 'Character'
+      from: 'Acquisition',
+      to: 'Character'
     },
     baseValue: {
       gold: 5
@@ -500,8 +585,8 @@ export const ingredients: Ingredient[] = [
       "This ring's power has not been fully unleashed. When this ring is combined with 9 Shavarath War Trophies and an Imbued Shard of Great Power in an Alter of Subjugation, its full potential will be revealed.",
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 10020
@@ -514,11 +599,51 @@ export const ingredients: Ingredient[] = [
       'This dense shard of crystal radiates power. Crystals like this can absorb and combine the power from various sources like foci and essences. Once imbued, this shard may be able to be combined with a weapon or accessory, thereby transferring the power into that item.',
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     weight: 0.1,
     foundIn: ['The Shroud', 'Tower of Despair']
+  },
+  {
+    name: 'Shard of Power',
+    description: 'This shard of crystal emanates power.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      gold: 49500
+    },
+    inventoryMaxStack: 1,
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Devil Assault']
+  },
+  {
+    name: 'Shard of Supreme Power',
+    description:
+      'This weighty shard of crystal radiates immense power. Crystals like this can absorb and combine the power from various sources like foci and essences. Once imbued, this shard may be able to be combined with a weapon or accessory, thereby transferring the power into that item.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Devil Assault']
+  },
+  {
+    name: 'Shavarath Low Energy Cell',
+    description: 'A small vessel with a charge of energy inside. This item is humming like the Altar of Invasion.',
+    type: 'This item may be usable in an eldritch device.',
+    foundIn: ['The Shroud', 'Devil Assault', 'Amrath'],
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1900
+    },
+    weight: 0.01
   },
   {
     name: 'Shavarath Stone of Battle',
@@ -527,8 +652,8 @@ export const ingredients: Ingredient[] = [
       'A polished red triangular stone with the quality of marble. This item is humming like the Altar of Fecundity.',
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 20
@@ -542,8 +667,8 @@ export const ingredients: Ingredient[] = [
       'A polished green triangular stone with the quality of marble. This item is humming like the Altar of Fecundity.',
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 20
@@ -557,8 +682,8 @@ export const ingredients: Ingredient[] = [
       'A polished purple triangular stone with the quality of marble. This item is humming like the Altar of Fecundity.',
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 20
@@ -572,8 +697,8 @@ export const ingredients: Ingredient[] = [
       'A polished yellow triangular stone with the quality of marble. This item is humming like the Altar of Fecundity.',
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 20
@@ -587,8 +712,8 @@ export const ingredients: Ingredient[] = [
       'A polished blue triangular stone with the quality of marble. This item is humming like the Altar of Fecundity.',
     binding: {
       type: 'Bound',
-      location: 'Character',
-      when: 'Acquisition'
+      to: 'Character',
+      from: 'Acquisition'
     },
     baseValue: {
       platinum: 20
@@ -597,15 +722,98 @@ export const ingredients: Ingredient[] = [
   },
   {
     name: 'Shavarath Trophy of War',
-    description:
-      'This item is found when a powerful denizen of Shavarath is defeated.',
+    description: 'This item is found when a powerful denizen of Shavarath is defeated.',
     binding: {
       type: 'Bound',
-      location: 'Account',
-      when: 'Acquisition'
+      to: 'Account',
+      from: 'Acquisition'
     },
     weight: 0.1,
     foundIn: ['Tower of Despair']
+  },
+  {
+    name: 'Small Devil Scales',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A few reptilian looking devil scales. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 15,
+      gold: 5
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Small Glowing Arrowhead',
+    description:
+      'A metal arrowhead that gives off a pale greenish light. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 15,
+      gold: 5
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Small Gnawed Bone',
+    description: 'A dry bone that has been gnawed clean. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 15,
+      gold: 5
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Small Length of Infernal Chain',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A length of dirty, barbed chain. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 15,
+      gold: 5
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Small Sulfurous Stone',
+    type: 'This item may be usable in an eldritch device.',
+    description:
+      'A rough, crumbly piece of yellowish gray stone that smells of sulfur. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 15,
+      gold: 5
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
+  },
+  {
+    name: 'Small Twisted Shrapnel',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A sharp and twisted hunk of metal. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 15,
+      gold: 5
+    },
+    weight: 0.1,
+    foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
   },
   {
     name: 'Special Energy Cell',
@@ -615,8 +823,8 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Meridia'],
     binding: {
       type: 'Bound',
-      when: 'Acquisition',
-      location: 'Character'
+      from: 'Acquisition',
+      to: 'Character'
     },
     baseValue: {
       platinum: 990
@@ -631,8 +839,8 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Meridia'],
     binding: {
       type: 'Bound',
-      when: 'Acquisition',
-      location: 'Character'
+      from: 'Acquisition',
+      to: 'Character'
     },
     baseValue: {
       gold: 5
@@ -659,5 +867,3 @@ export const ingredients: Ingredient[] = [
     ]
   }
 ] as const
-
-export type IngredientName = (typeof ingredients)[number]['name']

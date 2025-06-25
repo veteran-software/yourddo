@@ -317,8 +317,8 @@ export type BindingWhen = 'Acquisition' | 'Equip'
 // INTERFACES
 export interface Binding {
   type: BindingType
-  location?: BindingLocation
-  when?: BindingWhen
+  to?: BindingLocation
+  from?: BindingWhen
 }
 
 export interface Cost {
@@ -333,7 +333,7 @@ export interface Enhancement {
   basePriceModifier?: BasePriceModifier
   bonus?: Bonus
   damage?: DamageType[]
-  description: string
+  description?: string
   minLevelIncrease?: {
     noMinimumLevel?: number
     minimumLevel?: number
@@ -366,7 +366,7 @@ export interface Ring {
 
 export interface Spell {
   name: string
-  description: string
+  description?: string
   casterLevel?: number
   charges?: number
   rechargePerDay?: number

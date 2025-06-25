@@ -23,21 +23,13 @@ const NavbarTop = () => {
   }, [dispatch])
 
   const activeMenus = useMemo(
-    () =>
-      [heroicMenu, epicMenu, legendaryMenu].filter((menu) =>
-        menu.items.some((item) => item.active)
-      ),
+    () => [heroicMenu, epicMenu, legendaryMenu].filter((menu) => menu.items.some((item) => item.active)),
     []
   )
 
   return (
-    <Navbar
-      expand='lg'
-      className='bg-primary mb-sm-1 mb-lg-2'
-      sticky='top'
-      ref={navRef}
-    >
-      <Container>
+    <Navbar expand='lg' className='bg-primary mb-sm-1 mb-lg-2 z-1' sticky='top' ref={navRef}>
+      <Container fluid>
         <Navbar.Brand href='/' className='p-0'>
           <Image src={logo} height={45} />
         </Navbar.Brand>
