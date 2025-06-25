@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { convertXML } from 'simple-xml-to-json'
+import type { Child, ServerStatusResponse } from '../types/serverStatus.ts'
 
 const processStatus = (response: string): boolean | undefined => {
   if (response.length === 0) {
@@ -148,36 +149,3 @@ export const serverStatusApi = createApi({
     })
   })
 })
-
-export interface ServerStatusResponse {
-  Status: Status
-}
-
-export interface Status {
-  children: Child[]
-}
-
-export interface Child {
-  allow_admin_role?: AllowAdminRole
-  allow_billing_role?: AllowAdminRole
-  deny_admin_role?: unknown
-  deny_billing_role?: unknown
-  farmid?: AllowAdminRole
-  lastassignedqueuenumber?: AllowAdminRole
-  loginservers?: AllowAdminRole
-  logintierlastnumbers?: AllowAdminRole
-  logintiermultipliers?: AllowAdminRole
-  logintiers?: AllowAdminRole
-  name?: AllowAdminRole
-  nowservingqueuenumber?: AllowAdminRole
-  queuenames?: AllowAdminRole
-  queueurls?: AllowAdminRole
-  wait_hint?: AllowAdminRole
-  we_perma_death?: AllowAdminRole
-  world_full?: AllowAdminRole
-  world_pvppermission?: AllowAdminRole
-}
-
-export interface AllowAdminRole {
-  content: string
-}
