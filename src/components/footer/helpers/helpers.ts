@@ -9,10 +9,11 @@ import type {
 
 const stripSoapEnvelope = (xmlString: string): string => {
   return xmlString
-    .replace(/<[^:>]+:Envelope[^>]*>/, '')
-    .replace(/<\/[^:>]+:Envelope>/, '')
-    .replace(/<[^:>]+:Body[^>]*>/, '')
-    .replace(/<\/[^:>]+:Body>/, '')
+    .replace(/<[\w-]+:Envelope[^>]*>/g, '')
+    .replace(/<\/[\w-]+:Envelope>/g, '')
+    .replace(/<[\w-]+:Body[^>]*>/g, '')
+    .replace(/<\/[\w-]+:Body>/g, '')
+
     .trim()
 }
 
