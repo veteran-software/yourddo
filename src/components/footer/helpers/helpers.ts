@@ -1,5 +1,4 @@
 import { convertXML } from 'simple-xml-to-json'
-import sanitizeHtml from 'sanitize-html'
 import type {
   Child,
   ServerStatusData,
@@ -23,18 +22,42 @@ import type {
  * removed.
  */
 const stripSoapEnvelope = (xmlString: string): string => {
+  const processString = (input: string): string => {
+    const tagPairs = [
+      ['<s:Envelope', '</s:Envelope>'],
+      ['<soap:Envelope', '</soap:Envelope>'],
+      ['<SOAP-ENV:Envelope', '</SOAP-ENV:Envelope>'],
+      ['<s:Body', '</s:Body>'],
+      ['<soap:Body', '</soap:Body>'],
+      ['<SOAP-ENV:Body', '</SOAP-ENV:Body>']
+    ]
+
+    let result = input
+    for (const [openTag, closeTag] of tagPairs) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      while (true) {
+        const startIndex = result.toLowerCase().indexOf(openTag.toLowerCase())
+        if (startIndex === -1) break
+
+        const endTag = result.toLowerCase().indexOf('>', startIndex)
+        if (endTag === -1) break
+
+        const closeIndex = result.toLowerCase().indexOf(closeTag.toLowerCase())
+        if (closeIndex === -1) break
+
+        const closeEndIndex = closeIndex + closeTag.length
+
+        // Remove the tag
+        result = result.slice(0, startIndex) + result.slice(endTag + 1, closeIndex) + result.slice(closeEndIndex)
+      }
+    }
+    return result
+  }
+
   let previous
   do {
     previous = xmlString
-    xmlString = xmlString
-      .replace(/<[\w-]+:Envelope[^>]*>/g, '')
-      .replace(/<\/[\w-]+:Envelope>/g, '')
-      .replace(/<[\w-]+:Body[^>]*>/g, '')
-      .replace(/<\/[\w-]+:Body>/g, '')
-    xmlString = sanitizeHtml(xmlString, {
-      allowedTags: sanitizeHtml.defaults.allowedTags.filter(tag => tag !== 'script'),
-      allowedAttributes: false
-    })
+    xmlString = processString(xmlString)
   } while (xmlString !== previous)
 
   return xmlString.trim()
@@ -63,7 +86,7 @@ export const processStatus = (response: string): ServerStatusData[] => {
  * Extracts and processes the server status information from the provided server status result object.
  *
  * This function retrieves the XML content from a specified child within the provided server status object,
- * then unescapes the XML content to restore its original structure. After un-escaping, it converts the XML
+ * then unescapes the XML content to restore its original structure. After unescaping, it converts the XML
  * content into a `ServerStatusResponse` object. If the required XML content is not found, the function
  * returns `undefined`.
  *
