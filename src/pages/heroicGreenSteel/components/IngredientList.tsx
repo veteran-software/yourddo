@@ -112,7 +112,7 @@ const IngredientList = () => {
                   <ListGroup variant='flush'>
                     {selectedDevastationBasic.requirements.map((ingredient: CraftingIngredient) => (
                       <ListGroup.Item key={ingredient.name}>
-                        <FarmedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
+                        <CraftedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
                       </ListGroup.Item>
                     ))}
                   </ListGroup>
@@ -127,7 +127,7 @@ const IngredientList = () => {
                   <ListGroup variant='flush'>
                     {selectedDevastationFocused.requirements.map((ingredient: CraftingIngredient) => (
                       <ListGroup.Item key={ingredient.name}>
-                        <FarmedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
+                        <CraftedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
                       </ListGroup.Item>
                     ))}
                   </ListGroup>

@@ -6,9 +6,14 @@ export const formatIngredientName = (ingredientName: string, fecundityItem?: Cra
 
   if (/\bshard\s+of(?:\s+\w+)?\s+power\b/i.test(formattedName)) {
     formattedName = ingredientName
-      .replace(/\b(ethereal|material|dominion|opposition|escalation)\b/gi, '')
+      .replace(/\b(ethereal|material|dominion|escalation)\b/gi, '')
       .replace(/\s+/g, ' ')
+      .replace(/\//g, '')
       .trim()
+
+    if (!formattedName.includes('Concordant')) {
+      formattedName = formattedName.replace(/\b(opposition)\b/gi, '')
+    }
   }
 
   if (fecundityItem && /\bgreen\s+steel\s+(accessory|weapon)\b/i.test(ingredientName)) {

@@ -30,6 +30,10 @@ const MaterialsAccordion = (props: Props) => {
                   return <></>
                 }
 
+                if (findIngredientByName(name, ingredients as CraftingIngredient[]) === undefined) {
+                  console.log(name, ingredients)
+                }
+
                 return (
                   <ListGroup.Item key={name}>
                     <FarmedIngredientDisplay
