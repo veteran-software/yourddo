@@ -3070,7 +3070,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Weapon Upgrade",
+    "name": "Material Positive Energy Dominion Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Good Burst, Aspect of Mineral, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -3118,7 +3118,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Weapon Upgrade",
+    "name": "Material Positive Energy Opposition Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Healing Amplification: +40, Aspect of Mineral, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -3167,7 +3167,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Weapon Upgrade",
+    "name": "Material Positive Energy Escalation Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Constitution +1, Aspect of Mineral, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -3216,7 +3216,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Weapon Upgrade",
+    "name": "Ethereal Positive Energy Dominion Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Devotion +72, Aspect of Mineral, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -3265,7 +3265,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Weapon Upgrade",
+    "name": "Ethereal Positive Energy Opposition Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Heightened Awareness 2, Aspect of Mineral, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -3314,7 +3314,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Weapon Upgrade",
+    "name": "Ethereal Positive Energy Escalation Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Charisma +1, Aspect of Mineral, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -4783,7 +4783,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Weapon Upgrade",
+    "name": "Material Positive Energy Dominion Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Good Burst, Aspect of Lightning, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -4831,7 +4831,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Weapon Upgrade",
+    "name": "Material Positive Energy Opposition Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Healing Amplification: +40, Aspect of Lightning, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -4880,7 +4880,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Weapon Upgrade",
+    "name": "Material Positive Energy Escalation Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Constitution +1, Aspect of Lightning, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -4929,7 +4929,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Weapon Upgrade",
+    "name": "Ethereal Positive Energy Dominion Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Devotion +72, Aspect of Lightning, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -4978,7 +4978,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Weapon Upgrade",
+    "name": "Ethereal Positive Energy Opposition Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Heightened Awareness 2, Aspect of Lightning, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -5027,7 +5027,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Weapon Upgrade",
+    "name": "Ethereal Positive Energy Escalation Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Charisma +1, Aspect of Lightning, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -6544,7 +6544,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Weapon Upgrade",
+    "name": "Material Positive Energy Dominion Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Good Burst, Aspect of Radiance, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -6592,7 +6592,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Weapon Upgrade",
+    "name": "Material Positive Energy Opposition Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Healing Amplification: +40, Aspect of Radiance, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -6641,7 +6641,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Weapon Upgrade",
+    "name": "Material Positive Energy Escalation Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Constitution +1, Aspect of Radiance, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -6690,7 +6690,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Weapon Upgrade",
+    "name": "Ethereal Positive Energy Dominion Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Devotion +72, Aspect of Radiance, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -6739,7 +6739,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Weapon Upgrade",
+    "name": "Ethereal Positive Energy Opposition Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Heightened Awareness 2, Aspect of Radiance, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -6788,7 +6788,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Weapon Upgrade",
+    "name": "Ethereal Positive Energy Escalation Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Charisma +1, Aspect of Radiance, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -8305,7 +8305,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Weapon Upgrade",
+    "name": "Material Positive Energy Dominion Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Good Burst, Aspect of Steam, Max Charges = 3, Recharge 3/day",
     "quantity": 1,
@@ -8353,7 +8353,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Weapon Upgrade",
+    "name": "Material Positive Energy Opposition Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Healing Amplification: +40, Aspect of Steam, Max Charges = 3, Recharge 3/day",
     "quantity": 1,
@@ -8402,7 +8402,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Weapon Upgrade",
+    "name": "Material Positive Energy Escalation Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Constitution +1, Aspect of Steam, Max Charges = 3, Recharge 3/day",
     "quantity": 1,
@@ -8451,7 +8451,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Weapon Upgrade",
+    "name": "Ethereal Positive Energy Dominion Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Devotion +72, Aspect of Steam, Max Charges = 3, Recharge 3/day",
     "quantity": 1,
@@ -8500,7 +8500,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Weapon Upgrade",
+    "name": "Ethereal Positive Energy Opposition Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Heightened Awareness 2, Aspect of Steam, Max Charges = 3, Recharge 3/day",
     "quantity": 1,
@@ -8549,7 +8549,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Weapon Upgrade",
+    "name": "Ethereal Positive Energy Escalation Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Charisma +1, Aspect of Steam, Max Charges = 3, Recharge 3/day",
     "quantity": 1,
@@ -10036,7 +10036,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Weapon Upgrade",
+    "name": "Material Positive Energy Dominion Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Good Burst, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day",
     "quantity": 1,
@@ -10084,7 +10084,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Weapon Upgrade",
+    "name": "Material Positive Energy Opposition Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Healing Amplification: +40, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day",
     "quantity": 1,
@@ -10133,7 +10133,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Weapon Upgrade",
+    "name": "Material Positive Energy Escalation Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Constitution +1, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day",
     "quantity": 1,
@@ -10182,7 +10182,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Weapon Upgrade",
+    "name": "Ethereal Positive Energy Dominion Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Devotion +72, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day",
     "quantity": 1,
@@ -10231,7 +10231,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Weapon Upgrade",
+    "name": "Ethereal Positive Energy Opposition Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Heightened Awareness 2, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day",
     "quantity": 1,
@@ -10280,7 +10280,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Weapon Upgrade",
+    "name": "Ethereal Positive Energy Escalation Weapon Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Charisma +1, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day",
     "quantity": 1,
@@ -11821,7 +11821,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Weapon Upgrade",
+    "name": "Material Positive Energy Dominion Weapon Upgrade",
     "title": "Lieutenant Item of Existential Stalemate",
     "description": "Good Burst, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate",
     "quantity": 1,
@@ -11878,7 +11878,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Weapon Upgrade",
+    "name": "Material Positive Energy Opposition Weapon Upgrade",
     "title": "Lieutenant Item of Existential Stalemate",
     "description": "Healing Amplification: +40, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate",
     "quantity": 1,
@@ -11936,7 +11936,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Weapon Upgrade",
+    "name": "Material Positive Energy Escalation Weapon Upgrade",
     "title": "Lieutenant Item of Existential Stalemate",
     "description": "Exceptional Constitution +1, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate",
     "quantity": 1,
@@ -11994,7 +11994,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Weapon Upgrade",
+    "name": "Ethereal Positive Energy Dominion Weapon Upgrade",
     "title": "Lieutenant Item of Existential Stalemate",
     "description": "Devotion +72, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate",
     "quantity": 1,
@@ -12052,7 +12052,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Weapon Upgrade",
+    "name": "Ethereal Positive Energy Opposition Weapon Upgrade",
     "title": "Lieutenant Item of Existential Stalemate",
     "description": "Heightened Awareness 2, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate",
     "quantity": 1,
@@ -12110,7 +12110,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Weapon Upgrade",
+    "name": "Ethereal Positive Energy Escalation Weapon Upgrade",
     "title": "Lieutenant Item of Existential Stalemate",
     "description": "Exceptional Charisma +1, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate",
     "quantity": 1,
@@ -13626,7 +13626,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Accessory Upgrade",
+    "name": "Material Positive Energy Dominion Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Lesser Good Guard, Aspect of Mineral, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -13674,7 +13674,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Accessory Upgrade",
+    "name": "Material Positive Energy Opposition Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Improved Regeneration, Aspect of Mineral, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -13723,7 +13723,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Accessory Upgrade",
+    "name": "Material Positive Energy Escalation Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Improved Elemental Energy, Constitution Skills - Exceptional Bonus +4, Aspect of Mineral, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -13776,7 +13776,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Accessory Upgrade",
+    "name": "Ethereal Positive Energy Dominion Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Healing Lore IV, Aspect of Mineral, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -13825,7 +13825,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Accessory Upgrade",
+    "name": "Ethereal Positive Energy Opposition Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Resistance +1 (Will), Aspect of Mineral, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -13874,7 +13874,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Accessory Upgrade",
+    "name": "Ethereal Positive Energy Escalation Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Elemental Spell Power, Charisma Skills - Exceptional Bonus +4, Aspect of Mineral, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -15391,7 +15391,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Accessory Upgrade",
+    "name": "Material Positive Energy Dominion Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Lesser Good Guard, Aspect of Lightning, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -15439,7 +15439,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Accessory Upgrade",
+    "name": "Material Positive Energy Opposition Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Improved Regeneration, Aspect of Lightning, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -15488,7 +15488,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Accessory Upgrade",
+    "name": "Material Positive Energy Escalation Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Improved Elemental Energy, Constitution Skills - Exceptional Bonus +4, Aspect of Lightning, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -15541,7 +15541,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Accessory Upgrade",
+    "name": "Ethereal Positive Energy Dominion Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Healing Lore IV, Aspect of Lightning, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -15590,7 +15590,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Accessory Upgrade",
+    "name": "Ethereal Positive Energy Opposition Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Resistance +1 (Will), Aspect of Lightning, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -15639,7 +15639,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Accessory Upgrade",
+    "name": "Ethereal Positive Energy Escalation Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Elemental Spell Power, Charisma Skills - Exceptional Bonus +4, Aspect of Lightning, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -17204,7 +17204,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Accessory Upgrade",
+    "name": "Material Positive Energy Dominion Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Lesser Good Guard, Aspect of Radiance, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -17252,7 +17252,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Accessory Upgrade",
+    "name": "Material Positive Energy Opposition Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Improved Regeneration, Aspect of Radiance, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -17301,7 +17301,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Accessory Upgrade",
+    "name": "Material Positive Energy Escalation Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Improved Elemental Energy, Constitution Skills - Exceptional Bonus +4, Aspect of Radiance, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -17354,7 +17354,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Accessory Upgrade",
+    "name": "Ethereal Positive Energy Dominion Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Healing Lore IV, Aspect of Radiance, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -17403,7 +17403,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Accessory Upgrade",
+    "name": "Ethereal Positive Energy Opposition Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Resistance +1 (Will), Aspect of Radiance, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -17452,7 +17452,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Accessory Upgrade",
+    "name": "Ethereal Positive Energy Escalation Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Elemental Spell Power, Charisma Skills - Exceptional Bonus +4, Aspect of Radiance, Max Charges = 2, Recharge 2/day",
     "quantity": 1,
@@ -19017,7 +19017,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Accessory Upgrade",
+    "name": "Material Positive Energy Dominion Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Lesser Good Guard, Aspect of Steam, Max Charges = 3, Recharge 3/day",
     "quantity": 1,
@@ -19065,7 +19065,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Accessory Upgrade",
+    "name": "Material Positive Energy Opposition Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Improved Regeneration, Aspect of Steam, Max Charges = 3, Recharge 3/day",
     "quantity": 1,
@@ -19114,7 +19114,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Accessory Upgrade",
+    "name": "Material Positive Energy Escalation Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Improved Elemental Energy, Constitution Skills - Exceptional Bonus +4, Aspect of Steam, Max Charges = 3, Recharge 3/day",
     "quantity": 1,
@@ -19167,7 +19167,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Accessory Upgrade",
+    "name": "Ethereal Positive Energy Dominion Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Healing Lore IV, Aspect of Steam, Max Charges = 3, Recharge 3/day",
     "quantity": 1,
@@ -19216,7 +19216,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Accessory Upgrade",
+    "name": "Ethereal Positive Energy Opposition Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Resistance +1 (Will), Aspect of Steam, Max Charges = 3, Recharge 3/day",
     "quantity": 1,
@@ -19265,7 +19265,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Accessory Upgrade",
+    "name": "Ethereal Positive Energy Escalation Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Elemental Spell Power, Charisma Skills - Exceptional Bonus +4, Aspect of Steam, Max Charges = 3, Recharge 3/day",
     "quantity": 1,
@@ -20800,7 +20800,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Accessory Upgrade",
+    "name": "Material Positive Energy Dominion Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Lesser Good Guard, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day",
     "quantity": 1,
@@ -20848,7 +20848,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Accessory Upgrade",
+    "name": "Material Positive Energy Opposition Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Improved Regeneration, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day",
     "quantity": 1,
@@ -20897,7 +20897,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Accessory Upgrade",
+    "name": "Material Positive Energy Escalation Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Improved Elemental Energy, Constitution Skills - Exceptional Bonus +4, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day",
     "quantity": 1,
@@ -20950,7 +20950,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Accessory Upgrade",
+    "name": "Ethereal Positive Energy Dominion Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Healing Lore IV, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day",
     "quantity": 1,
@@ -20999,7 +20999,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Accessory Upgrade",
+    "name": "Ethereal Positive Energy Opposition Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Exceptional Resistance +1 (Will), Aspect of Positive Energy, Max Charges = 1, Recharge 1/day",
     "quantity": 1,
@@ -21048,7 +21048,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Accessory Upgrade",
+    "name": "Ethereal Positive Energy Escalation Accessory Upgrade",
     "title": "Lieutenant Item",
     "description": "Elemental Spell Power, Charisma Skills - Exceptional Bonus +4, Aspect of Positive Energy, Max Charges = 1, Recharge 1/day",
     "quantity": 1,
@@ -22637,7 +22637,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Accessory Upgrade",
+    "name": "Material Positive Energy Dominion Accessory Upgrade",
     "title": "Lieutenant Item of Existential Stalemate",
     "description": "Lesser Good Guard, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate",
     "quantity": 1,
@@ -22694,7 +22694,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Accessory Upgrade",
+    "name": "Material Positive Energy Opposition Accessory Upgrade",
     "title": "Lieutenant Item of Existential Stalemate",
     "description": "Improved Regeneration, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate",
     "quantity": 1,
@@ -22752,7 +22752,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Accessory Upgrade",
+    "name": "Material Positive Energy Escalation Accessory Upgrade",
     "title": "Lieutenant Item of Existential Stalemate",
     "description": "Improved Elemental Energy, Constitution Skills - Exceptional Bonus +4, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate",
     "quantity": 1,
@@ -22815,7 +22815,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Accessory Upgrade",
+    "name": "Ethereal Positive Energy Dominion Accessory Upgrade",
     "title": "Lieutenant Item of Existential Stalemate",
     "description": "Healing Lore IV, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate",
     "quantity": 1,
@@ -22873,7 +22873,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Accessory Upgrade",
+    "name": "Ethereal Positive Energy Opposition Accessory Upgrade",
     "title": "Lieutenant Item of Existential Stalemate",
     "description": "Exceptional Resistance +1 (Will), Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate",
     "quantity": 1,
@@ -22931,7 +22931,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Accessory Upgrade",
+    "name": "Ethereal Positive Energy Escalation Accessory Upgrade",
     "title": "Lieutenant Item of Existential Stalemate",
     "description": "Elemental Spell Power, Charisma Skills - Exceptional Bonus +4, Wisdom +6, Diplomacy +10, Haggle +10, Existential Stalemate",
     "quantity": 1,
@@ -23453,7 +23453,7 @@
     }
   },
   {
-    "name": "Material Positive Dominion Ring Upgrade",
+    "name": "Material Positive Energy Dominion Ring Upgrade",
     "title": "Holy Burst Item",
     "description": "Unarmed & Handwraps only: Holy Burst",
     "quantity": 1,
@@ -23687,7 +23687,7 @@
     }
   },
   {
-    "name": "Material Positive Escalation Ring Upgrade",
+    "name": "Material Positive Energy Escalation Ring Upgrade",
     "title": "Insightful Constitution +2 Item",
     "description": "Insightful Constitution +2",
     "quantity": 1,
@@ -23917,7 +23917,7 @@
     }
   },
   {
-    "name": "Material Positive Opposition Ring Upgrade",
+    "name": "Material Positive Energy Opposition Ring Upgrade",
     "title": "Item",
     "description": "Healing Amplification: +40",
     "quantity": 1,
@@ -24146,7 +24146,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Dominion Ring Upgrade",
+    "name": "Ethereal Positive Energy Dominion Ring Upgrade",
     "title": "Devotion Item",
     "quantity": 1,
     "craftedIn": "Altar of Subjugation",
@@ -24378,7 +24378,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Escalation Ring Upgrade",
+    "name": "Ethereal Positive Energy Escalation Ring Upgrade",
     "title": "Insightful Charisma +2 Item",
     "description": "Insightful Charisma +2",
     "quantity": 1,
@@ -24612,7 +24612,7 @@
     }
   },
   {
-    "name": "Ethereal Positive Opposition Ring Upgrade",
+    "name": "Ethereal Positive Energy Opposition Ring Upgrade",
     "title": "Item",
     "description": "Heightened Awareness 2",
     "quantity": 1,
