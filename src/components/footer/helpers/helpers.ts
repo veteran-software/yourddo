@@ -22,13 +22,17 @@ import type {
  * removed.
  */
 const stripSoapEnvelope = (xmlString: string): string => {
-  return xmlString
-    .replace(/<[\w-]+:Envelope[^>]*>/g, '')
-    .replace(/<\/[\w-]+:Envelope>/g, '')
-    .replace(/<[\w-]+:Body[^>]*>/g, '')
-    .replace(/<\/[\w-]+:Body>/g, '')
+  let previous
+  do {
+    previous = xmlString
+    xmlString = xmlString
+      .replace(/<[\w-]+:Envelope[^>]*>/g, '')
+      .replace(/<\/[\w-]+:Envelope>/g, '')
+      .replace(/<[\w-]+:Body[^>]*>/g, '')
+      .replace(/<\/[\w-]+:Body>/g, '')
+  } while (xmlString !== previous)
 
-    .trim()
+  return xmlString.trim()
 }
 
 /**
@@ -75,9 +79,9 @@ export const extractStatus = (serverStatus: StatusServerResult): ServerStatusRes
   const unescapedXml = resultsXml
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&')
     .replace(/&quot;/g, '"')
     .replace(/&apos;/g, "'")
+    .replace(/&amp;/g, '&')
 
   return convertXML(unescapedXml) as ServerStatusResponse
 }
