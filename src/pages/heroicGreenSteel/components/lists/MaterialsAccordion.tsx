@@ -30,7 +30,7 @@ const MaterialsAccordion = (props: Props) => {
                 }
 
                 if (findIngredientByName(name, ingredients as CraftingIngredient[]) === undefined) {
-                  console.log(name, ingredients)
+                  console.debug(name, ingredients)
                 }
 
                 return (

@@ -12,8 +12,6 @@ const useInvasion = () => {
   const items: CraftingIngredient[] = useMemo(() => {
     return [...invasionItems].filter((item: CraftingIngredient) => {
       if (selectedSubjugationItem) {
-        console.log(selectedSubjugationItem.requirements[0].name.startsWith(deconstructShard(item.name).focus))
-
         return selectedSubjugationItem.requirements[0].name.startsWith(deconstructShard(item.name).focus)
       }
 
@@ -24,8 +22,6 @@ const useInvasion = () => {
   const elemental: ElementalList[] = useMemo(() => baseElemental, [])
 
   const filterCallback = useCallback((item: CraftingIngredient, _elementName: string) => {
-    console.log(deconstructShard(item.name).focus, '|', _elementName)
-    console.log(deconstructShard(item.name).focus === _elementName)
     return deconstructShard(item.name).focus === _elementName
   }, [])
 
