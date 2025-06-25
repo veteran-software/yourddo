@@ -13,6 +13,9 @@ export default defineConfig({
   },
   plugins: [react()],
   server: {
+    fs: {
+      strict: true
+    },
     proxy: {
       '/api': {
         target: 'https://gls.ddo.com/',
@@ -21,5 +24,8 @@ export default defineConfig({
         rewrite: (path: string) => path.replace(/^\/api/, 'GLS.DataCenterServer/Service.asmx?op=GetDatacenterStatus')
       }
     }
+  },
+  build: {
+    modulePreload: true
   }
 })
