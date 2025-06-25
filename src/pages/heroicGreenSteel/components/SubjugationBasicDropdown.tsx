@@ -42,6 +42,7 @@ const SubjugationBasicDropdown = () => {
   const renderSection = (name: string, ingredients: CraftingIngredient[]) => {
     return (
       <IngredientDropdownSection
+        key={`${name}=${btoa(JSON.stringify(ingredients))}`}
         clickHandler={selectSubjugationItem}
         header={
           <Stack direction='horizontal' gap={2} className='align-items-center justify-content-center'>
