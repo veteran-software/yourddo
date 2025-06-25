@@ -1,13 +1,14 @@
+import { Fragment } from 'react'
 import { Accordion, ListGroup } from 'react-bootstrap'
-import CraftedIngredientDisplay from '../../../components/CraftedIngredientDisplay.tsx'
-import FarmedIngredientDisplay from '../../../components/FarmedIngredientDisplay.tsx'
-import { altarOfDevastation } from '../../../data/altarOfDevastation.ts'
-import { altarOfFecundity } from '../../../data/altarOfFecundity.ts'
-import { altarOfInvasion } from '../../../data/altarOfInvasion.ts'
-import { altarOfSubjugation } from '../../../data/altarOfSubjugation.ts'
-import { ingredients } from '../../../data/ingredients.ts'
-import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { findIngredientByName } from '../../../utils/objectUtils.ts'
+import CraftedIngredientDisplay from '../../../../components/CraftedIngredientDisplay.tsx'
+import FarmedIngredientDisplay from '../../../../components/FarmedIngredientDisplay.tsx'
+import { altarOfDevastation } from '../../../../data/altarOfDevastation.ts'
+import { altarOfFecundity } from '../../../../data/altarOfFecundity.ts'
+import { altarOfInvasion } from '../../../../data/altarOfInvasion.ts'
+import { altarOfSubjugation } from '../../../../data/altarOfSubjugation.ts'
+import { ingredients } from '../../../../data/ingredients.ts'
+import type { CraftingIngredient } from '../../../../types/crafting.ts'
+import { findIngredientByName } from '../../../../utils/objectUtils.ts'
 
 const MaterialsAccordion = (props: Props) => {
   const { craftedMaterials, rawMaterials } = props
@@ -25,7 +26,7 @@ const MaterialsAccordion = (props: Props) => {
                 const pattern = new RegExp(`\\b(${prefixes.join('|')})\\s+(${suffixes.join('|')})\\b`, 'i')
 
                 if (pattern.test(name)) {
-                  return <></>
+                  return <Fragment key={name} />
                 }
 
                 if (findIngredientByName(name, ingredients as CraftingIngredient[]) === undefined) {
@@ -88,8 +89,8 @@ const prefixes = [
   'air',
   'fire',
   'water',
-  'positive',
-  'negative',
+  'positive energy',
+  'negative energy',
   'ash',
   'dust',
   'ice',

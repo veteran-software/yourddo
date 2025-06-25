@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
@@ -77,7 +78,7 @@ const SubjugationBasicDropdown = () => {
 
                 if (foci.length > 1) {
                   return (
-                    <>
+                    <Fragment key={foci.map((focus) => focus.name).join('|')}>
                       {renderSection(
                         `${name} (T1: ${foci[0]?.elements[0]})`,
                         ingredients.filter((ing: CraftingIngredient) =>
@@ -90,7 +91,7 @@ const SubjugationBasicDropdown = () => {
                           ing.requirements.at(0)?.name.includes(foci[0]?.elements[0])
                         )
                       )}
-                    </>
+                    </Fragment>
                   )
                 }
               }
