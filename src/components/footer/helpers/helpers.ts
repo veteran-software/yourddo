@@ -30,6 +30,8 @@ const stripSoapEnvelope = (xmlString: string): string => {
       .replace(/<\/[\w-]+:Envelope>/g, '')
       .replace(/<[\w-]+:Body[^>]*>/g, '')
       .replace(/<\/[\w-]+:Body>/g, '')
+      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '') // Matches both <script> and self-closing <script/>
+      .replace(/<script\b[^/>]*\/>/gi, '') // Catches any remaining self-closing script tags
   } while (xmlString !== previous)
 
   return xmlString.trim()
