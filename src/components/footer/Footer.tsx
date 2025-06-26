@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { useLayoutEffect, useRef } from 'react'
 import { Container, Navbar, Stack } from 'react-bootstrap'
 import { serverStatusApi } from '../../api/serverStatusApi.ts'
+import { serverStatusLamApi } from '../../api/serverStatusLamApi.ts'
 import { useAppDispatch } from '../../redux/hooks.ts'
 import { setFooterHeight } from '../../redux/slices/appSlice.ts'
 import type { AppDispatch } from '../../redux/store.ts'
@@ -25,7 +26,7 @@ const Footer = () => {
   const { data: thelanisUp } = serverStatusApi.useThelanisQuery(undefined, polling)
   const { data: wayfinderUp } = serverStatusApi.useWayfinderQuery(undefined, polling)
   // const { data: hardcoreUp } = serverStatusApi.useHardcoreQuery(undefined, polling)
-  // const { data: lamanniaUp } = serverStatusApi.useLamanniaQuery(undefined, polling)
+  const { data: lamanniaUp } = serverStatusLamApi.useLamanniaQuery(undefined, polling)
   const { data: cormyrUp } = serverStatusApi.useCormyrQuery(undefined, polling)
 
   const navRef = useRef<HTMLDivElement>(null)
@@ -42,9 +43,11 @@ const Footer = () => {
       <Container fluid className='m-auto w-auto py-0'>
         <Stack direction='vertical' gap={1}>
           <Stack direction='horizontal' gap={3}>
-            <ServerStatusDisplay name='Argonnessen' up={argoUp} />
+            <ServerStatusDisplay name='Cormyr' up={cormyrUp} />
             &bull;
             <ServerStatusDisplay name='Cannith' up={cannithUp} />
+            &bull;
+            <ServerStatusDisplay name='Argonnessen' up={argoUp} />
             &bull;
             <ServerStatusDisplay name='Ghallanda' up={ghallandaUp} />
             &bull;
@@ -58,15 +61,13 @@ const Footer = () => {
             &bull;
             <ServerStatusDisplay name='Wayfinder' up={wayfinderUp} />
             {/*
-            I think both of these servers are no longer in existence.
-            They don't show up in the server list when pinging the data center anymore
+            I think Hardcore is no longer in existence.
+            It doesn't show up in the server list when pinging the data center
             */}
             {/*&bull;*/}
             {/*<ServerStatusDisplay name='Hardcore' up={hardcoreUp} />*/}
-            {/*&bull;*/}
-            {/*<ServerStatusDisplay name='Lamannia' up={lamanniaUp} />*/}
             &bull;
-            <ServerStatusDisplay name='Cormyr' up={cormyrUp} />
+            <ServerStatusDisplay name='Lamannia' up={lamanniaUp} />
             &bull;
             {/* 64-bit servers coming soon */}
             <ServerStatusDisplay name='Shadowdale' up={undefined} comingSoon={true} />

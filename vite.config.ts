@@ -7,7 +7,6 @@ export default defineConfig({
     devSourcemap: false,
     preprocessorOptions: {
       scss: {
-        api: 'modern-compiler',
         silenceDeprecations: ['mixed-decls', 'color-functions', 'global-builtin', 'import']
       }
     }
@@ -18,6 +17,12 @@ export default defineConfig({
       strict: true
     },
     proxy: {
+      '/api-lam': {
+        target: 'https://gls-lm.ddo.com/',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path: string) => path.replace(/^\/api-lam/, 'GLS.DataCenterServer/StatusServer.aspx')
+      },
       '/api': {
         target: 'https://gls.ddo.com/',
         changeOrigin: true,
