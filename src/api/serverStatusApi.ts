@@ -1,37 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { convertXML } from 'simple-xml-to-json'
-import type { Child, ServerStatusResponse } from '../types/serverStatus.ts'
-
-const processStatus = (response: string): boolean | undefined => {
-  if (response.length === 0) {
-    return undefined
-  }
-
-  const parsedResponse: ServerStatusResponse = convertXML(response) as ServerStatusResponse
-  const billingRoles = parsedResponse.Status.children.find((child: Child) => child.allow_billing_role)
-    ?.allow_billing_role?.content
-
-  if (billingRoles) {
-    const rolesPresent: number = [
-      'TurbineEmployee',
-      'TurbineVIP',
-      'StormreachLimited',
-      'StormreachStandard',
-      'StormreachGuest',
-      'StormreachEUPre'
-    ].reduce((count, str) => {
-      if (billingRoles.includes(str)) {
-        count++
-      }
-
-      return count
-    }, 0)
-
-    return rolesPresent >= 5
-  }
-
-  return false
-}
+import { processStatus } from './utils/helpers.ts'
 
 export const serverStatusApi = createApi({
   reducerPath: 'serverStatus',
@@ -126,15 +94,6 @@ export const serverStatusApi = createApi({
         url: '',
         // eslint-disable-next-line sonarjs/no-hardcoded-ip
         params: new URLSearchParams({ s: '10.192.145.80' })
-      }),
-      transformResponse: processStatus
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    lamannia: build.query<boolean | undefined, void>({
-      query: () => ({
-        url: '',
-        // eslint-disable-next-line sonarjs/no-hardcoded-ip
-        params: new URLSearchParams({ s: '10.192.160.64' })
       }),
       transformResponse: processStatus
     }),
