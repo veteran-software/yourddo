@@ -1,5 +1,6 @@
-import { Container, Image, Stack } from 'react-bootstrap'
+import { Container, Image, OverlayTrigger, Stack } from 'react-bootstrap'
 import useIngredientImage from '../hooks/useIngredientImage.ts'
+import IngredientPopover from '../pages/heroicGreenSteel/components/IngredientPopover.tsx'
 import type { CraftingIngredient } from '../types/crafting.ts'
 import type { Ingredient } from '../types/ingredients.ts'
 
@@ -14,7 +15,15 @@ const CraftedIngredientDisplay = (props: Props) => {
 
   return (
     <Stack direction='horizontal' gap={3} className='align-items-center'>
-      <Image src={imageSrc} alt={ingredient.name} title={ingredient.name} />
+      <OverlayTrigger
+        overlay={IngredientPopover({
+          ingredient,
+          popper: {}
+        })}
+        placement='auto'
+      >
+        <Image src={imageSrc} alt={ingredient.name} title={ingredient.name} />
+      </OverlayTrigger>
 
       <Stack direction='vertical' gap={0} className='text-wrap justify-content-center'>
         {ingredient.name}

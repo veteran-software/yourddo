@@ -1,10 +1,4 @@
-export type Ability =
-  | 'Strength'
-  | 'Dexterity'
-  | 'Constitution'
-  | 'Intelligence'
-  | 'Wisdom'
-  | 'Charisma'
+export type Ability = 'Strength' | 'Dexterity' | 'Constitution' | 'Intelligence' | 'Wisdom' | 'Charisma'
 
 export type Skill =
   | 'Balance'
@@ -29,13 +23,7 @@ export type Skill =
   | 'Spot'
   | 'Swim'
 
-export type AbilityLong =
-  | 'Strength'
-  | 'Dexterity'
-  | 'Constitution'
-  | 'Intelligence'
-  | 'Wisdom'
-  | 'Charisma'
+export type AbilityLong = 'Strength' | 'Dexterity' | 'Constitution' | 'Intelligence' | 'Wisdom' | 'Charisma'
 export type AbilityShort = 'STR' | 'DEX' | 'CON' | 'INT' | 'WIS' | 'CHA'
 
 export type Alignment =
@@ -192,13 +180,7 @@ export type EnergyType = 'Negative Energy' | 'Positive Energy'
 
 export type PhysicalDamage = 'Bludgeoning' | 'Piercing' | 'Slashing'
 
-export type ElementalDamage =
-  | 'Acid'
-  | 'Cold'
-  | 'Electric'
-  | 'Fire'
-  | 'Sonic'
-  | EnergyType
+export type ElementalDamage = 'Acid' | 'Cold' | 'Electric' | 'Fire' | 'Sonic' | EnergyType
 
 export type AlignmentDamage = 'Evil' | 'Good' | 'Law' | 'Chaotic'
 
@@ -215,12 +197,7 @@ export type OtherDamage =
 
 export type WeaponProficiency = 'Simple' | 'Martial' | 'Exotic'
 
-export type WeaponClass =
-  | 'Bludgeoning'
-  | 'Piercing'
-  | 'Slashing'
-  | 'Ranged'
-  | 'Thrown'
+export type WeaponClass = 'Bludgeoning' | 'Piercing' | 'Slashing' | 'Ranged' | 'Thrown'
 
 export type Bludgeoning =
   | 'Club'
@@ -235,12 +212,7 @@ export type Bludgeoning =
   | 'Unarmed'
   | 'Warhammer'
 
-export type Piercing =
-  | 'Dagger'
-  | 'Heavy Pick'
-  | 'Light Pick'
-  | 'Rapier'
-  | 'Shortsword'
+export type Piercing = 'Dagger' | 'Heavy Pick' | 'Light Pick' | 'Rapier' | 'Shortsword'
 
 export type Slashing =
   | 'Bastard Sword'
@@ -266,12 +238,7 @@ export type Ranged =
   | 'Repeating Light Crossbow'
   | 'Shortbow'
 
-export type Thrown =
-  | 'Dart'
-  | 'Shuriken'
-  | 'Throwing Axe'
-  | 'Throwing Dagger'
-  | 'Throwing Hammer'
+export type Thrown = 'Dart' | 'Shuriken' | 'Throwing Axe' | 'Throwing Dagger' | 'Throwing Hammer'
 
 export type Race =
   | 'Dragonborn'
@@ -301,12 +268,7 @@ export type Race =
   | 'Shadar-kai'
   | 'Trailblazer'
 
-export type WeaponHandedness =
-  | 'Light'
-  | 'One-handed'
-  | 'Two-handed'
-  | 'Ranged'
-  | 'Thrown'
+export type WeaponHandedness = 'Light' | 'One-handed' | 'Two-handed' | 'Ranged' | 'Thrown'
 
 export type BindingType = 'Bound' | 'Unbound'
 
@@ -338,9 +300,12 @@ export interface Enhancement {
     noMinimumLevel?: number
     minimumLevel?: number
   }
+  modifier?: number | string
   name: string
   type?: 'Prefix' | 'Suffix' | '--Crafting'
   notes?: string
+  charges?: number
+  rechargePerDay?: number
 }
 
 export interface BasePriceModifier {
