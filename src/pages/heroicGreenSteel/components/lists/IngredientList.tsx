@@ -10,12 +10,16 @@ import { findIngredientByName } from '../../../../utils/objectUtils.ts'
 import { allAltars } from '../../helpers/elementalData.ts'
 import useRecipeBuilder from '../../hooks/useRecipeBuilder.ts'
 import TierAccordionItem from '../TierAccordionItem.tsx'
-import FecundityList from './FecundityList.tsx'
 import MaterialsAccordion from './MaterialsAccordion.tsx'
 
 const IngredientList = () => {
-  const { selectedSubjugationItem, selectedInvasionItem, selectedDevastationFocused, selectedDevastationBasic } =
-    useAppSelector((state) => state.greenSteel, shallowEqual)
+  const {
+    selectedFecundityItem,
+    selectedSubjugationItem,
+    selectedInvasionItem,
+    selectedDevastationFocused,
+    selectedDevastationBasic
+  } = useAppSelector((state) => state.greenSteel, shallowEqual)
 
   const { rawMaterials, craftedMaterials } = useRecipeBuilder()
 
@@ -66,7 +70,13 @@ const IngredientList = () => {
         </Card.Header>
         <Card.Body className='m-0 p-0'>
           <Accordion alwaysOpen={false} className='rounded-0'>
-            <FecundityList callback={getDisplay} />
+            <TierAccordionItem
+              eventKey='2'
+              tier='Base Item'
+              altarName='Altar of Fecundity'
+              selectedItem={selectedFecundityItem}
+              getDisplay={getDisplay}
+            />
 
             <TierAccordionItem
               eventKey='3'
