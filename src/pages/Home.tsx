@@ -1,9 +1,6 @@
 import { Container } from 'react-bootstrap'
-import { dbToJson } from '../~temp/convert.ts'
 
 const Home = () => {
-  dbToJson()
-
   return (
     <Container>
       <h1 className='text-center'>YourDDO</h1>
