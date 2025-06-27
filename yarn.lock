@@ -1115,12 +1115,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^24.0.4":
-  version: 24.0.4
-  resolution: "@types/node@npm:24.0.4"
+"@types/node@npm:^24.0.5":
+  version: 24.0.5
+  resolution: "@types/node@npm:24.0.5"
   dependencies:
     undici-types: "npm:~7.8.0"
-  checksum: 10c0/590e8cb0ec59fb9cd566402120e690d87ecbdf57f1ee2b8493266121ed33aa4b25949a0c6156b84a6ffb9250baaf1f80e9af142da542ed603e6ee73fc4d1115f
+  checksum: 10c0/5e0f6aedce6984087d0e62cd5e4147276b8fc14f5ec2987ef1cd89ff20ea79566db5c61ffa7bdfd9dfe67f22794422e3b2b922ad4b22e769d1ef67095e66b331
   languageName: node
   linkType: hard
 
@@ -2204,22 +2204,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-sonarjs@npm:^3.0.3":
-  version: 3.0.3
-  resolution: "eslint-plugin-sonarjs@npm:3.0.3"
+"eslint-plugin-sonarjs@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "eslint-plugin-sonarjs@npm:3.0.4"
   dependencies:
     "@eslint-community/regexpp": "npm:4.12.1"
     builtin-modules: "npm:3.3.0"
     bytes: "npm:3.1.2"
     functional-red-black-tree: "npm:1.0.1"
     jsx-ast-utils: "npm:3.3.5"
+    lodash.merge: "npm:4.6.2"
     minimatch: "npm:9.0.5"
     scslre: "npm:0.3.0"
     semver: "npm:7.7.2"
     typescript: "npm:>=5"
   peerDependencies:
     eslint: ^8.0.0 || ^9.0.0
-  checksum: 10c0/95dcf89039833a8524b3a5e012a93d7a9d6739ee1c3e782a52b2ec7bc9ed9199c5723252b2ae9d0b41c46ff7c2e433297015fa78f8c19b494aa5267550b948fb
+  checksum: 10c0/d7cc259237a4e35d54533f7824a8f1e1fd285358b5e4ad86c8900a2cbaf865212d9324387447eea9b10e5d66a18a9446f35fd60b7fe0b36b6f9dc9395ef50eae
   languageName: node
   linkType: hard
 
@@ -3251,7 +3252,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.merge@npm:^4.6.2":
+"lodash.merge@npm:4.6.2, lodash.merge@npm:^4.6.2":
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: 10c0/402fa16a1edd7538de5b5903a90228aa48eb5533986ba7fa26606a49db2572bf414ff73a2c9f5d5fd36b31c46a5d5c7e1527749c07cbcf965ccff5fbdf32c506
@@ -3729,12 +3730,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.6.1":
-  version: 3.6.1
-  resolution: "prettier@npm:3.6.1"
+"prettier@npm:^3.6.2":
+  version: 3.6.2
+  resolution: "prettier@npm:3.6.2"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10c0/cf54254b9ddf1a8dff12f84bf0089e6aef3eeb9d0ce9d0344e39549ddc4f5c290fc5060d7d5a597848b9617e53e05b33a4118e37cd560f9e132ecc19c211300a
+  checksum: 10c0/488cb2f2b99ec13da1e50074912870217c11edaddedeadc649b1244c749d15ba94e846423d062e2c4c9ae683e2d65f754de28889ba06e697ac4f988d44f45812
   languageName: node
   linkType: hard
 
@@ -3880,21 +3881,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^7.6.2":
-  version: 7.6.2
-  resolution: "react-router-dom@npm:7.6.2"
+"react-router-dom@npm:^7.6.3":
+  version: 7.6.3
+  resolution: "react-router-dom@npm:7.6.3"
   dependencies:
-    react-router: "npm:7.6.2"
+    react-router: "npm:7.6.3"
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10c0/9a8370333b5c1ada5ed76a2c30a90ca5a5a8e6c8565165f147fb42b150f2b258b9e73935fe4945c459d770841abdfaf99c28f7e13da93b1f49b28e6a8e87aadb
+  checksum: 10c0/51ebd9c71255d836a055b87745070c1800733212088fbb1a7031ce16cbf420ad12a4286faebfc7dc62be6931a0eee74f4dc68f05e7d7a63933bc53b5c9c101f6
   languageName: node
   linkType: hard
 
-"react-router@npm:7.6.2":
-  version: 7.6.2
-  resolution: "react-router@npm:7.6.2"
+"react-router@npm:7.6.3":
+  version: 7.6.3
+  resolution: "react-router@npm:7.6.3"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -3904,7 +3905,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10c0/c8ef65f2a378f38e3cba900d67fa2b80a41c1c3925102875ee07c12faa01ea40991cb3fbefaf3ff6914e724c755732e3d7dec2b1bdef09e0fddd00fccc85a06a
+  checksum: 10c0/43c8dd124d1c3f9fb11afa905fb0c87e19b73b04877e9be09f84eac34948ea90d6c4aae408c8030fe6dc4ed88c0bcf2e857b53a817ebbe5ce7d26e485a330c7d
   languageName: node
   linkType: hard
 
@@ -5026,7 +5027,7 @@ __metadata:
     "@reduxjs/toolkit": "npm:^2.8.2"
     "@types/bootstrap": "npm:^5.2.10"
     "@types/luxon": "npm:^3.6.2"
-    "@types/node": "npm:^24.0.4"
+    "@types/node": "npm:^24.0.5"
     "@types/react": "npm:^19.1.8"
     "@types/react-dom": "npm:^19.1.6"
     "@vitejs/plugin-react": "npm:^4.6.0"
@@ -5036,17 +5037,17 @@ __metadata:
     eslint-plugin-react: "npm:^7.37.5"
     eslint-plugin-react-hooks: "npm:^5.2.0"
     eslint-plugin-react-refresh: "npm:^0.4.20"
-    eslint-plugin-sonarjs: "npm:^3.0.3"
+    eslint-plugin-sonarjs: "npm:^3.0.4"
     globals: "npm:^16.2.0"
     kebab-case: "npm:^2.0.2"
     luxon: "npm:^3.6.1"
-    prettier: "npm:^3.6.1"
+    prettier: "npm:^3.6.2"
     react: "npm:^19.1.0"
     react-bootstrap: "npm:^2.10.10"
     react-dom: "npm:^19.1.0"
     react-icons: "npm:^5.5.0"
     react-redux: "npm:^9.2.0"
-    react-router-dom: "npm:^7.6.2"
+    react-router-dom: "npm:^7.6.3"
     sass: "npm:^1.89.2"
     simple-xml-to-json: "npm:^1.2.3"
     title-case: "npm:^4.3.2"

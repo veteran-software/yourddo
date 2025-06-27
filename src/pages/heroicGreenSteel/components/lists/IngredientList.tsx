@@ -1,41 +1,49 @@
 import { Accordion, Card, ListGroup, Stack } from 'react-bootstrap'
+import { FaExclamationTriangle } from 'react-icons/fa'
 import { shallowEqual } from 'react-redux'
 import CraftedIngredientDisplay from '../../../../components/CraftedIngredientDisplay.tsx'
 import FarmedIngredientDisplay from '../../../../components/FarmedIngredientDisplay.tsx'
+import { altarOfDevastation } from '../../../../data/altarOfDevastation.ts'
 import { ingredients } from '../../../../data/ingredients.ts'
 import { useAppSelector } from '../../../../redux/hooks.ts'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
 import type { Ingredient } from '../../../../types/ingredients.ts'
+import { findIngredientByName } from '../../../../utils/objectUtils.ts'
+import { allAltars } from '../../helpers/elementalData.ts'
 import useRecipeBuilder from '../../hooks/useRecipeBuilder.ts'
 import FecundityList from './FecundityList.tsx'
 import MaterialsAccordion from './MaterialsAccordion.tsx'
 
 const IngredientList = () => {
-  const {
-    selectedSubjugationItem,
-    selectedSubjugationSpell,
-    selectedInvasionItem,
-    selectedDevastationFocused,
-    selectedDevastationBasic
-  } = useAppSelector((state) => state.greenSteel, shallowEqual)
+  const { selectedSubjugationItem, selectedInvasionItem, selectedDevastationFocused, selectedDevastationBasic } =
+    useAppSelector((state) => state.greenSteel, shallowEqual)
 
   const { rawMaterials, craftedMaterials } = useRecipeBuilder()
 
-  const getDisplay = (requirement: CraftingIngredient, whereToLook: CraftingIngredient[]) => {
-    const ingredient: CraftingIngredient | undefined = whereToLook.find(
-      (altarIngredient: CraftingIngredient) => altarIngredient.name === requirement.name
-    )
+  const getDisplay = (requirement: CraftingIngredient) => {
+    const ingredient: CraftingIngredient | undefined = findIngredientByName(requirement.name, allAltars)
 
     if (ingredient) {
-      return <CraftedIngredientDisplay ingredient={ingredient} quantity={requirement.quantity} />
+      return (
+        <ListGroup.Item key={ingredient.name}>
+          <CraftedIngredientDisplay ingredient={ingredient} quantity={requirement.quantity} />
+        </ListGroup.Item>
+      )
     } else {
-      const farmedIngredient = ingredients.find((farmedIng: Ingredient) => farmedIng.name === requirement.name)
+      const farmedIngredient: Ingredient | undefined = ingredients.find(
+        (farmedIng: Ingredient) => farmedIng.name === requirement.name
+      )
+
       if (farmedIngredient) {
-        return <FarmedIngredientDisplay ingredient={farmedIngredient} quantity={requirement.quantity} />
+        return (
+          <ListGroup.Item key={farmedIngredient.name}>
+            <FarmedIngredientDisplay ingredient={farmedIngredient} quantity={requirement.quantity} />
+          </ListGroup.Item>
+        )
       }
     }
 
-    return <>Unknown</>
+    return <></>
   }
 
   return (
@@ -64,11 +72,13 @@ const IngredientList = () => {
                 <Accordion.Header>[Tier: 1] : {selectedInvasionItem.name}</Accordion.Header>
                 <Accordion.Body className='p-0'>
                   <ListGroup variant='flush'>
-                    {selectedInvasionItem.requirements.map((ingredient: CraftingIngredient) => (
-                      <ListGroup.Item key={ingredient.name}>
-                        <CraftedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
-                      </ListGroup.Item>
-                    ))}
+                    <ListGroup.Item variant='secondary' className='text-center'>
+                      <small>
+                        Combine the following ingredients in the <strong>Altar of Invasion</strong>.<br />
+                        Hover or tap on the ingredient image to learn more about each ingredient.
+                      </small>
+                    </ListGroup.Item>
+                    {selectedInvasionItem.requirements.map((ingredient: CraftingIngredient) => getDisplay(ingredient))}
                   </ListGroup>
                 </Accordion.Body>
               </Accordion.Item>
@@ -79,27 +89,15 @@ const IngredientList = () => {
                 <Accordion.Header>[Tier: 2] : {selectedSubjugationItem.name}</Accordion.Header>
                 <Accordion.Body className='p-0'>
                   <ListGroup variant='flush'>
-                    {selectedSubjugationItem.requirements.map((ingredient: CraftingIngredient) => (
-                      <ListGroup.Item key={ingredient.name}>
-                        <CraftedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
-                      </ListGroup.Item>
-                    ))}
-                  </ListGroup>
-                </Accordion.Body>
-              </Accordion.Item>
-            )}
-
-            {selectedSubjugationSpell && (
-              <Accordion.Item eventKey='5' className='rounded-0'>
-                <Accordion.Header>
-                  [Tier: 2 Spell] : {selectedSubjugationSpell.spell?.name ?? 'Unknown Spell'} (CL:{' '}
-                  {selectedSubjugationSpell.spell?.casterLevel ?? 0})
-                </Accordion.Header>
-                <Accordion.Body className='p-0'>
-                  <ListGroup>
-                    <ListGroup.Item className='px-2'>
-                      All upgrades in the Altar of Subjugation provide a spell. No additional materials are required.
+                    <ListGroup.Item variant='secondary' className='text-center'>
+                      <small>
+                        Combine the following ingredients in the <strong>Altar of Subjugation</strong>.<br />
+                        Hover or tap on the ingredient image to learn more about each ingredient.
+                      </small>
                     </ListGroup.Item>
+                    {selectedSubjugationItem.requirements.map((ingredient: CraftingIngredient) =>
+                      getDisplay(ingredient)
+                    )}
                   </ListGroup>
                 </Accordion.Body>
               </Accordion.Item>
@@ -110,11 +108,15 @@ const IngredientList = () => {
                 <Accordion.Header>[Tier: 3 Basic] : {selectedDevastationBasic.name}</Accordion.Header>
                 <Accordion.Body className='p-0'>
                   <ListGroup variant='flush'>
-                    {selectedDevastationBasic.requirements.map((ingredient: CraftingIngredient) => (
-                      <ListGroup.Item key={ingredient.name}>
-                        <CraftedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
-                      </ListGroup.Item>
-                    ))}
+                    <ListGroup.Item variant='secondary' className='text-center'>
+                      <small>
+                        Combine the following ingredients in the <strong>Altar of Devastation</strong>.<br />
+                        Hover or tap on the ingredient image to learn more about each ingredient.
+                      </small>
+                    </ListGroup.Item>
+                    {selectedDevastationBasic.requirements.map((ingredient: CraftingIngredient) =>
+                      getDisplay(ingredient)
+                    )}
                   </ListGroup>
                 </Accordion.Body>
               </Accordion.Item>
@@ -122,14 +124,50 @@ const IngredientList = () => {
 
             {selectedDevastationFocused && (
               <Accordion.Item eventKey='7' className='rounded-0'>
-                <Accordion.Header>[Tier: 3 Focused] : {selectedDevastationFocused.name}</Accordion.Header>
+                <Accordion.Header>
+                  {selectedDevastationFocused.requirements[1].name.includes('Dual Shard') && (
+                    <span className='align-bottom'>
+                      <FaExclamationTriangle color='yellow' />
+                      &nbsp;
+                    </span>
+                  )}
+                  [Tier: 3 Focused] : {selectedDevastationFocused.name}
+                </Accordion.Header>
                 <Accordion.Body className='p-0'>
                   <ListGroup variant='flush'>
-                    {selectedDevastationFocused.requirements.map((ingredient: CraftingIngredient) => (
-                      <ListGroup.Item key={ingredient.name}>
-                        <CraftedIngredientDisplay ingredient={ingredient} quantity={ingredient.quantity} />
+                    {selectedDevastationFocused.requirements.some((selected: CraftingIngredient) =>
+                      selected.name.includes('Dual Shard')
+                    ) && (
+                      <ListGroup.Item variant='info'>
+                        <span className='text-decoration-underline'>
+                          To craft the <strong>{selectedDevastationFocused.requirements[1].name}</strong>:
+                        </span>
+                        <ol>
+                          <li>
+                            Create a(n){' '}
+                            {
+                              findIngredientByName(selectedDevastationFocused.requirements[1].name, altarOfDevastation)
+                                ?.requirements[0].name
+                            }
+                          </li>
+                          <li>
+                            Create a(n){' '}
+                            {
+                              findIngredientByName(selectedDevastationFocused.requirements[1].name, altarOfDevastation)
+                                ?.requirements[1].name
+                            }
+                          </li>
+                          <li>
+                            Combine both in the <strong>Altar of Devastation</strong> with a{' '}
+                            <strong>Shavarath High Energy Cell</strong>
+                          </li>
+                        </ol>
                       </ListGroup.Item>
-                    ))}
+                    )}
+
+                    {selectedDevastationFocused.requirements.map((ingredient: CraftingIngredient) =>
+                      getDisplay(ingredient)
+                    )}
                   </ListGroup>
                 </Accordion.Body>
               </Accordion.Item>

@@ -16,9 +16,15 @@ const FecundityList = (props: Props) => {
         <Accordion.Header>[Base Item] : {selectedFecundityItem.name}</Accordion.Header>
         <Accordion.Body className='p-0'>
           <ListGroup variant='flush'>
-            {selectedFecundityItem.requirements.map((ingredient: CraftingIngredient) => (
-              <ListGroup.Item key={ingredient.name}>{callback(ingredient, altarOfFecundity)}</ListGroup.Item>
-            ))}
+            <ListGroup.Item variant='secondary' className='text-center'>
+              <small>
+                Combine the following ingredients in the <strong>Altar of Fecundity</strong>.<br />
+                Hover or tap on the ingredient image to learn more about each ingredient.
+              </small>
+            </ListGroup.Item>
+            {selectedFecundityItem.requirements.map((ingredient: CraftingIngredient) =>
+              callback(ingredient, altarOfFecundity)
+            )}
           </ListGroup>
         </Accordion.Body>
       </Accordion.Item>

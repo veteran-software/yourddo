@@ -43,7 +43,9 @@ const BaseLayout = () => {
           are not guaranteed. This site version is intended for development testing and early previews for user
           feedback.
           <br />
-          <strong className='text-uppercase'>Use site version for actual crafting reference at your own risk!</strong>
+          <strong className='text-uppercase text-decoration-underline'>
+            Use this site version for actual crafting reference at your own risk!
+          </strong>
         </Alert>
       )}
 
