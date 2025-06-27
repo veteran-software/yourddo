@@ -43,7 +43,6 @@ const Home = () => {
         <a href='https://github.com/veteran-software/yourddo' target='_blank' rel='noreferrer'>
           GitHub
         </a>
-        .
       </p>
       <p>
         Our goal is to eventually cover all crafting systems available in the game, including older or niche systems
