@@ -1,5 +1,6 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
-import { Container, Image, Nav, Navbar } from 'react-bootstrap'
+import { Button, Container, Image, Nav, Navbar } from 'react-bootstrap'
+import { FaGithub } from 'react-icons/fa6'
 import logo from '../../assets/logo.png'
 import { useAppDispatch } from '../../redux/hooks'
 import { setHeaderHeight } from '../../redux/slices/appSlice'
@@ -35,10 +36,19 @@ const NavbarTop = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls='responsive-navbar-nav' />
         <Navbar.Collapse id='responsive-navbar-nav'>
-          <Nav className='me-auto w-100 justify-content-end'>
+          <Nav className='me-auto w-100 justify-content-end gap-3'>
             {activeMenus.map((menu: NavMenuDropdown) => (
               <MenuDropdown key={menu.title} menu={menu} />
             ))}
+            <Nav.Link
+              as={Button}
+              href='https://github.com/veteran-software/yourddo'
+              target='_blank'
+              rel='noreferrer'
+              title='YourDDO on GitHub'
+            >
+              <FaGithub size={25} />
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -1,3 +1,9 @@
+import { altarOfDevastation } from '../../../data/altarOfDevastation.ts'
+import { altarOfFecundity } from '../../../data/altarOfFecundity.ts'
+import { altarOfInvasion } from '../../../data/altarOfInvasion.ts'
+import { altarOfSubjugation } from '../../../data/altarOfSubjugation.ts'
+import type { CraftingIngredient } from '../../../types/crafting.ts'
+
 export interface ElementalList {
   name: string
   elements: string[]
@@ -64,3 +70,10 @@ export const devastationElementalList: ElementalList[] = [
   { name: 'Existential Stalemate', elements: ['Existential Stalemate', 'Positive'] },
   { name: 'Tempered', elements: ['Balance of Land and Sky', 'Water'] }
 ] as ElementalList[]
+
+export const allAltars: CraftingIngredient[] = [
+  ...altarOfFecundity,
+  ...altarOfInvasion,
+  ...altarOfSubjugation,
+  ...altarOfDevastation
+]

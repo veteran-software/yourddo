@@ -3036,6 +3036,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
       }
     ]
   },
+  // Legendary Active Augments
   {
     name: 'Legendary Green Steel Augment: Flame Arrow (Arrows)',
     minimumLevel: 26,

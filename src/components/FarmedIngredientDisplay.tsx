@@ -29,7 +29,7 @@ const FarmedIngredientDisplay = (props: Props) => {
 
         {showLocation && (
           <small>
-            Farming Location{(ingredient.foundIn?.length ?? 0) > 1 ? 's' : ''}:{' '}
+            Farming Location{(ingredient.foundIn?.length ?? 0) > 1 ? 's' : ''}:&nbsp;
             {ingredient.foundIn?.toSorted((a: string, b: string) => a.localeCompare(b)).join(', ')}
           </small>
         )}
