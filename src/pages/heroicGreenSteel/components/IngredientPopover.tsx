@@ -36,7 +36,7 @@ const IngredientPopover = (props: Props) => {
             }
 
             return (
-              <ListGroup.Item>
+              <ListGroup.Item key={`${ing.name}-${String(idx)}`}>
                 <FarmedIngredientDisplay
                   ingredient={findIngredientByName(ing.name, ingredients as CraftingIngredient[])}
                   quantity={ing.quantity}

@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Accordion, Card, ListGroup, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import CraftedIngredientDisplay from '../../../../components/CraftedIngredientDisplay.tsx'
@@ -46,7 +47,7 @@ const IngredientList = () => {
       }
     }
 
-    return <></>
+    return <Fragment key={'undefined-ingredient'} />
   }
 
   const hasMaterials = Object.entries(rawMaterials).length > 0 || Object.entries(craftedMaterials).length > 0
