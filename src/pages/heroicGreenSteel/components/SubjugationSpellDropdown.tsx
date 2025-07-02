@@ -7,7 +7,7 @@ import { resetSubjugationSpell, selectSubjugationSpell } from '../../../redux/sl
 import type { AppDispatch } from '../../../redux/store.ts'
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { deconstructShard } from '../../../utils/objectUtils.ts'
+import { deconstructHgsShard } from '../../../utils/objectUtils.ts'
 import IngredientDropdownToggle from './IngredientDropdownToggle.tsx'
 
 const SubjugationSpellDropdown = () => {
@@ -61,7 +61,7 @@ const SubjugationSpellDropdown = () => {
 
   useEffect(() => {
     if (selectedDevastationFocused) {
-      const { focus } = deconstructShard(selectedDevastationFocused.requirements.at(1)?.name ?? '')
+      const { focus } = deconstructHgsShard(selectedDevastationFocused.requirements?.at(1)?.name ?? '')
 
       if (focus) {
         const spellList: CraftingIngredient[] = altarOfSubjugation
@@ -93,9 +93,9 @@ const SubjugationSpellDropdown = () => {
     }
 
     if (!selectedSubjugationItem && selectedInvasionItem) {
-      const t1Focus: string = deconstructShard(selectedInvasionItem.name).focus
+      const t1Focus: string = deconstructHgsShard(selectedInvasionItem.name).focus
       const spellList: CraftingIngredient[] = altarOfSubjugation
-        .filter((spellItem: CraftingIngredient) => spellItem.requirements[0].name.includes(t1Focus))
+        .filter((spellItem: CraftingIngredient) => spellItem.requirements?.[0].name.includes(t1Focus))
         .filter((spellItem: CraftingIngredient) => spellItem.spell !== undefined)
 
       populateSpellList(spellList)

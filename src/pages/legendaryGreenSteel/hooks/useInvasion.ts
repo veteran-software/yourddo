@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import type { CraftingIngredient } from '../../../types/crafting'
-import { deconstructHgsShard, deconstructLgsShard } from '../../../utils/objectUtils.ts'
+import { deconstructLgsShard } from '../../../utils/objectUtils.ts'
 import { baseElemental, type ElementalList } from '../../heroicGreenSteel/helpers/elementalData.ts'
 import useIngredientsMap from '../../heroicGreenSteel/hooks/useIngredientMap.ts'
 
@@ -12,7 +12,7 @@ const useInvasion = () => {
   const items: CraftingIngredient[] = useMemo(() => {
     return [...invasionItems].filter((item: CraftingIngredient) => {
       if (selectedSubjugationItem) {
-        return selectedSubjugationItem.requirements?.[0].name.startsWith(deconstructHgsShard(item.name).focus)
+        return selectedSubjugationItem.requirements?.[0].name.startsWith(deconstructLgsShard(item.name)?.focusP ?? '')
       }
 
       return true

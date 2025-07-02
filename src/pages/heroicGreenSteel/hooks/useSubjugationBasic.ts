@@ -3,7 +3,7 @@ import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { deconstructShard } from '../../../utils/objectUtils.ts'
+import { deconstructHgsShard } from '../../../utils/objectUtils.ts'
 import { baseElemental, type ElementalList, subjugationElementalList } from '../helpers/elementalData.ts'
 import useIngredientsMap from './useIngredientMap.ts'
 
@@ -13,9 +13,9 @@ const useSubjugationBasic = () => {
 
   const items: CraftingIngredient[] = useMemo(() => {
     if (selectedSubjugationItem && selectedInvasionItem) {
-      const invasionFocus = deconstructShard(selectedInvasionItem.name).focus
-      const subjugationFocus = deconstructShard(selectedSubjugationItem.name).focus
-      const subjugationAspect = selectedSubjugationItem.effectsAdded?.at(-1)?.name
+      const invasionFocus: string = deconstructHgsShard(selectedInvasionItem.name).focus
+      const subjugationFocus: string = deconstructHgsShard(selectedSubjugationItem.name).focus
+      const subjugationAspect: string | undefined = selectedSubjugationItem.effectsAdded?.at(-1)?.name
 
       const elementData = subjugationElementalList.filter(
         (el: ElementalList) => subjugationAspect?.includes(el.name) ?? false
@@ -43,16 +43,16 @@ const useSubjugationBasic = () => {
     }
 
     if (selectedInvasionItem) {
-      const { focus } = deconstructShard(selectedInvasionItem.name)
+      const { focus } = deconstructHgsShard(selectedInvasionItem.name)
 
       return [...subjugationItems].filter((item: CraftingIngredient) =>
         // The T1 Focus is the Affinity for ingredient #1 for T2
-        item.requirements.some((ingredient: CraftingIngredient) => ingredient.name.startsWith(focus))
+        item.requirements?.some((ingredient: CraftingIngredient) => ingredient.name.startsWith(focus))
       )
     }
 
     if (selectedDevastationFocused) {
-      const { focus } = deconstructShard(selectedDevastationFocused.requirements[1].name)
+      const { focus } = deconstructHgsShard(selectedDevastationFocused.requirements?.[1].name ?? '')
 
       return [...subjugationItems].filter(
         (item: CraftingIngredient) =>

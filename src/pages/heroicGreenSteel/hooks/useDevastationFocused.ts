@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { deconstructShard } from '../../../utils/objectUtils.ts'
+import { deconstructHgsShard } from '../../../utils/objectUtils.ts'
 import { devastationElementalList, type ElementalList } from '../helpers/elementalData.ts'
 import useIngredientsMap from './useIngredientMap.ts'
 
@@ -16,19 +16,19 @@ const useDevastationFocused = () => {
     // T1 and T2 are both selected
     if (selectedInvasionItem && selectedSubjugationItem) {
       return [...devastationFocusedEffects].filter((ingredient: CraftingIngredient) => {
-        const requiredSubjugationShard: string | undefined = ingredient.requirements[1].description
+        const requiredSubjugationShard: string | undefined = ingredient.requirements?.[1].description
 
         // Triple Shard (Basic Element)
         if (!requiredSubjugationShard) {
-          const t1Focus: string = deconstructShard(selectedInvasionItem.name).focus
-          const t2Focus: string = deconstructShard(selectedSubjugationItem.name).focus
-          const t3Focus: string = deconstructShard(ingredient.name).focus
+          const t1Focus: string = deconstructHgsShard(selectedInvasionItem.name).focus
+          const t2Focus: string = deconstructHgsShard(selectedSubjugationItem.name).focus
+          const t3Focus: string = deconstructHgsShard(ingredient.name).focus
 
           return t1Focus === t2Focus && t2Focus === t3Focus
         }
 
-        const ingredientNameFocus = deconstructShard(ingredient.name).focus
-        const subjugationAspect = selectedSubjugationItem.effectsAdded?.at(-1)?.name
+        const ingredientNameFocus: string = deconstructHgsShard(ingredient.name).focus
+        const subjugationAspect: string | undefined = selectedSubjugationItem.effectsAdded?.at(-1)?.name
 
         if (!subjugationAspect) return false
 
@@ -39,8 +39,8 @@ const useDevastationFocused = () => {
     // Only T2 is selected
     if (!selectedInvasionItem && selectedSubjugationItem) {
       return [...devastationFocusedEffects].filter((ingredient: CraftingIngredient) => {
-        const ingredientNameFocus = deconstructShard(ingredient.name).focus
-        const subjugationAspect = selectedSubjugationItem.effectsAdded?.at(-1)?.name
+        const ingredientNameFocus: string = deconstructHgsShard(ingredient.name).focus
+        const subjugationAspect: string | undefined = selectedSubjugationItem.effectsAdded?.at(-1)?.name
 
         if (!subjugationAspect) return false
 
@@ -54,7 +54,9 @@ const useDevastationFocused = () => {
   const elemental: ElementalList[] = useMemo(() => devastationElementalList, [])
 
   const filterCallback = useCallback((item: CraftingIngredient, _elementName: string, elements?: string[]) => {
-    const reqs: CraftingIngredient[] = item.requirements
+    const reqs: CraftingIngredient[] | undefined = item.requirements
+
+    if (!reqs) return false
 
     const elementOneCheck: boolean = reqs[0]?.name.includes(elements?.[0] ?? '') ?? false
     const elementTwoCheck: boolean =

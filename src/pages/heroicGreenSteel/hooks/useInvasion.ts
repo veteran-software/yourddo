@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import type { CraftingIngredient } from '../../../types/crafting'
-import { deconstructShard } from '../../../utils/objectUtils.ts'
+import { deconstructHgsShard } from '../../../utils/objectUtils.ts'
 import { baseElemental, type ElementalList } from '../helpers/elementalData.ts'
 import useIngredientsMap from './useIngredientMap.ts'
 
@@ -12,7 +12,7 @@ const useInvasion = () => {
   const items: CraftingIngredient[] = useMemo(() => {
     return [...invasionItems].filter((item: CraftingIngredient) => {
       if (selectedSubjugationItem) {
-        return selectedSubjugationItem.requirements[0].name.startsWith(deconstructShard(item.name).focus)
+        return selectedSubjugationItem.requirements?.[0].name.startsWith(deconstructHgsShard(item.name).focus)
       }
 
       return true
@@ -22,7 +22,7 @@ const useInvasion = () => {
   const elemental: ElementalList[] = useMemo(() => baseElemental, [])
 
   const filterCallback = useCallback((item: CraftingIngredient, _elementName: string) => {
-    return deconstructShard(item.name).focus === _elementName
+    return deconstructHgsShard(item.name).focus === _elementName
   }, [])
 
   const { ingredientsMap } = useIngredientsMap(items, elemental, filterCallback)
