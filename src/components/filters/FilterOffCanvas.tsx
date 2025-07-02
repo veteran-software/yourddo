@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Button, Offcanvas } from 'react-bootstrap'
 import { FaFilter } from 'react-icons/fa6'
-import FilterSection from '../../../components/filters/FilterSection.tsx'
-import { filtersText } from '../../../utils/strings.ts'
+import { filtersText } from '../../utils/strings.ts'
+import FilterSection from './FilterSection.tsx'
 
 const FilterOffCanvas = <T,>(props: Props<T>) => {
   const {
@@ -11,7 +11,9 @@ const FilterOffCanvas = <T,>(props: Props<T>) => {
     getItemFilters,
     items,
     selectedFilters,
-    setSelectedFilters
+    setSelectedFilters,
+    setFilterMode,
+    showFilterMode = true
   } = props
 
   const [show, setShow] = useState(false)
@@ -48,6 +50,8 @@ const FilterOffCanvas = <T,>(props: Props<T>) => {
             maxFilterColumns={1}
             selectedFilters={selectedFilters}
             setSelectedFilters={setSelectedFilters}
+            setFilterMode={setFilterMode}
+            showFilterMode={showFilterMode}
           />
         </Offcanvas.Body>
       </Offcanvas>
@@ -58,10 +62,12 @@ const FilterOffCanvas = <T,>(props: Props<T>) => {
 interface Props<T> {
   filterMode: 'AND' | 'OR'
   filterOptions: string[]
+  getItemFilters: (item: T) => string[]
   items: T[]
   selectedFilters: string[]
   setSelectedFilters: (selectedFilters: string[]) => void
-  getItemFilters: (item: T) => string[]
+  setFilterMode: (mode: 'OR' | 'AND') => void
+  showFilterMode?: boolean
 }
 
 export default FilterOffCanvas

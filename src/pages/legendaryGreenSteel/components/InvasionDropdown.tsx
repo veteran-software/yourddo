@@ -1,23 +1,41 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
+import FilterOffCanvas from '../../../components/filters/FilterOffCanvas.tsx'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
-import { resetInvasionItem, selectInvasionItem } from '../../../redux/slices/lgsSlice.ts'
+import {
+  resetInvasionItem,
+  selectInvasionItem,
+  setInvasionFilterMode,
+  setInvasionItemFilters
+} from '../../../redux/slices/lgsSlice.ts'
 import type { AppDispatch } from '../../../redux/store.ts'
+import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 import IngredientDropdownToggle from '../../heroicGreenSteel/components/IngredientDropdownToggle.tsx'
+import { filterIngredientsMap, parseUniqueEffects } from '../helpers/filterUtils.ts'
 import useInvasion from '../hooks/useInvasion.ts'
 import IngredientDropdownSection from './IngredientDropdownSection.tsx'
 
 const InvasionDropdown = () => {
   const dispatch: AppDispatch = useAppDispatch()
 
-  const { selectedInvasionItem } = useAppSelector((state) => state.legendaryGreenSteel, shallowEqual)
+  const { selectedInvasionItem, invasionItemFilters, invasionFilterMode } = useAppSelector(
+    (state) => state.legendaryGreenSteel,
+    shallowEqual
+  )
 
   const { ingredientsMap } = useInvasion()
 
   const [label, setLabel] = useState<React.JSX.Element>(<></>)
+
+  const uniqueEffects: string[] = useMemo(() => parseUniqueEffects(ingredientsMap), [ingredientsMap])
+
+  const filteredIngredientsMap: Record<string, CraftingIngredient[]> = useMemo(
+    () => filterIngredientsMap(invasionItemFilters, ingredientsMap),
+    [ingredientsMap, invasionItemFilters]
+  )
 
   useEffect(() => {
     setLabel(
@@ -27,7 +45,13 @@ const InvasionDropdown = () => {
           <strong>
             <small>
               {selectedInvasionItem?.effectsAdded
-                ? selectedInvasionItem.effectsAdded.map((effect) => effect.name).join(', ')
+                ? selectedInvasionItem.effectsAdded
+                    .map((effect: Enhancement) => {
+                      return `${effect.name}${
+                        effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''
+                      }`
+                    })
+                    .join(', ')
                 : 'Select an Upgrade...'}
             </small>
           </strong>
@@ -39,7 +63,7 @@ const InvasionDropdown = () => {
   return (
     <>
       <hr />
-      <small>Eldritch Altar of Invasion</small>
+      <small>Legendary Altar of Invasion</small>
       <Stack direction='horizontal' gap={2}>
         <Dropdown className='d-flex flex-grow-1'>
           <IngredientDropdownToggle label={label} />
@@ -51,7 +75,7 @@ const InvasionDropdown = () => {
               overflowY: 'auto'
             }}
           >
-            {Object.entries(ingredientsMap).map(([name, ingredients]) => (
+            {Object.entries(filteredIngredientsMap).map(([name, ingredients]) => (
               <IngredientDropdownSection
                 key={`${name}-${ingredients
                   .map((ingredient: CraftingIngredient) =>
@@ -80,6 +104,20 @@ const InvasionDropdown = () => {
             Reset
           </Button>
         )}
+
+        <FilterOffCanvas
+          filterMode={invasionFilterMode}
+          filterOptions={uniqueEffects}
+          items={Object.values(ingredientsMap).flat()}
+          getItemFilters={(item: CraftingIngredient): string[] => {
+            return item.effectsAdded?.map((enhancement: Enhancement) => enhancement.name) ?? []
+          }}
+          selectedFilters={invasionItemFilters}
+          setSelectedFilters={(filters: string[]) => {
+            dispatch(setInvasionItemFilters(filters))
+          }}
+          setFilterMode={(mode: 'OR' | 'AND') => dispatch(setInvasionFilterMode(mode))}
+        />
       </Stack>
     </>
   )
