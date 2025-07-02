@@ -3,12 +3,12 @@ import { altarOfDevastation } from '../../data/altarOfDevastation.ts'
 import { altarOfInvasion } from '../../data/altarOfInvasion.ts'
 import { altarOfSubjugation } from '../../data/altarOfSubjugation.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
-import { createInitialState } from '../factories/stateFactory.ts'
+import { createInitialHgsState } from '../factories/stateFactory.ts'
 import { filterItemsBySuffix } from '../helpers/filterHelpers.ts'
 import { resetPlanner } from '../helpers/resetHelpers.ts'
 
 const { actions, reducer } = createSlice({
-  initialState: createInitialState(),
+  initialState: createInitialHgsState(),
   name: 'greenSteel',
   reducers: {
     selectFecundityItem: (state, action: PayloadAction<CraftingIngredient>) => {

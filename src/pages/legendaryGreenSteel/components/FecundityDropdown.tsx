@@ -1,18 +1,18 @@
+import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import FarmedIngredientDisplay from '../../../components/FarmedIngredientDisplay.tsx'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
-import { resetFecundityItem, selectFecundityItem } from '../../../redux/slices/hgsSlice.ts'
+import { resetFecundityItem, selectFecundityItem } from '../../../redux/slices/lgsSlice.ts'
 import type { AppDispatch } from '../../../redux/store.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 import { filterForSublist, sortObjectArray } from '../../../utils/objectUtils.ts'
-import IngredientDropdownToggle from './IngredientDropdownToggle.tsx'
+import IngredientDropdownToggle from '../../heroicGreenSteel/components/IngredientDropdownToggle.tsx'
 
 const FecundityDropdown = () => {
   const dispatch: AppDispatch = useAppDispatch()
-
-  const { fecundityItems, selectedFecundityItem } = useAppSelector((state) => state.greenSteel, shallowEqual)
+  const { fecundityItems, selectedFecundityItem } = useAppSelector((state) => state.legendaryGreenSteel, shallowEqual)
 
   const [weaponList, setWeaponList] = useState<CraftingIngredient[]>([])
   const [accessoryList, setAccessoryList] = useState<CraftingIngredient[]>([])
@@ -22,7 +22,7 @@ const FecundityDropdown = () => {
     setAccessoryList(sortObjectArray(filterForSublist(fecundityItems, 'Accessory', 'ingredientType'), 'name'))
   }, [fecundityItems])
 
-  const label = (
+  const label: React.JSX.Element = (
     <>
       <Col sm={1}>B:</Col>
       <Col sm={11} className='d-flex justify-content-start'>

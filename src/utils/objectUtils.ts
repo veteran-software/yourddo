@@ -88,7 +88,7 @@ export const filterForSublist = (
  *   - `essence` {string}: A matched essence term or default message if no match is found.
  *   - `gem` {string}: A matched gem term or default message if no match is found.
  */
-export const deconstructShard = (
+export const deconstructHgsShard = (
   shard: string
 ): {
   focus: string
@@ -99,14 +99,75 @@ export const deconstructShard = (
   const essenceRegex = new RegExp(`\\b(${ESSENCES.join('|')})\\b`, 'i')
   const gemRegex = new RegExp(`\\b(${GEMS.join('|')})\\b`, 'i')
 
-  const focusMatch = RegExp(focusRegex).exec(shard)
-  const essenceMatch = RegExp(essenceRegex).exec(shard)
-  const gemMatch = RegExp(gemRegex).exec(shard)
+  const focusMatch: RegExpExecArray | null = RegExp(focusRegex).exec(shard)
+  const essenceMatch: RegExpExecArray | null = RegExp(essenceRegex).exec(shard)
+  const gemMatch: RegExpExecArray | null = RegExp(gemRegex).exec(shard)
 
   return {
     focus: focusMatch ? focusMatch[0] : 'No focus found',
     essence: essenceMatch ? essenceMatch[0] : 'No essence found',
     gem: gemMatch ? gemMatch[0] : 'No gem found'
+  }
+}
+
+/**
+ * Deconstructs a logical-gem-shard string into its components based on specific rules.
+ *
+ * @function
+ * @param {string} shard - Input string representing a logical-gem-shard.
+ * @returns {Object|null} Parsed object containing components if valid, otherwise `null`.
+ *
+ * @property {string} [focusP] - Primary focus type, possibly modified to include "Energy".
+ * @property {string} [focusS] - Secondary focus type (only for Tier 3 shards), possibly modified to include "Energy".
+ * @property {string} essence - The type of essence within the shard.
+ * @property {string} gem - The gem type within the shard.
+ *
+ * The function validates the structure and components of the `shard` string before parsing it into an object.
+ * The components are extracted depending on the number of elements in the shard string (3 for the lower tier,
+ * 4 for Tier 3). If validation fails or the string does not meet criteria, the function returns `null`.
+ */
+export const deconstructLgsShard = (
+  shard: string
+): {
+  focusP: string
+  focusS?: string
+  essence: string
+  gem: string
+} | null => {
+  const feg: string | null = extractParenthesesContent(shard)
+  if (!feg) return null
+
+  const elements: string[] = feg.split(' ')
+  if (elements.length < 3 || elements.length > 4) {
+    return null
+  }
+
+  if (elements.length === 3) {
+    const [focus, essence, gem] = elements
+
+    if (!isValidFocus(focus) || !ESSENCES.includes(essence) || !GEMS.includes(gem)) {
+      return null
+    }
+
+    return {
+      focusP: focus === 'Positive' || focus === 'Negative' ? focus + ' Energy' : focus,
+      essence,
+      gem
+    }
+  } else {
+    // 4 elements from Tier 3
+    const [focus1, focus2, essence, gem] = elements
+
+    if (!isValidFocus(focus1) || !isValidFocus(focus2) || !ESSENCES.includes(essence) || !GEMS.includes(gem)) {
+      return null
+    }
+
+    return {
+      focusP: focus1 === 'Positive' || focus1 === 'Negative' ? focus1 + ' Energy' : focus1,
+      focusS: focus2 === 'Positive' || focus2 === 'Negative' ? focus2 + ' Energy' : focus2,
+      essence,
+      gem
+    }
   }
 }
 
@@ -123,4 +184,69 @@ export const findIngredientByName = (
   whereToLook: CraftingIngredient[]
 ): CraftingIngredient | undefined => {
   return whereToLook.find((ingredient: CraftingIngredient) => ingredient.name === ingredientName)
+}
+
+/**
+ * Determines whether the given string contains the term "Augment".
+ *
+ * This function performs a case-insensitive search within the provided string
+ * to check for the presence of the word "Augment". It uses a regular expression
+ * to match the term as a whole word in any part of the input string.
+ *
+ * @param {string} name - The input string to test for the presence of "Augment".
+ * @returns {boolean} Returns `true` if the term "Augment" is found in the input string, otherwise `false`.
+ */
+export const isAugment = (name: string): boolean => {
+  return /\bAugment\b/gi.test(name)
+}
+
+/**
+ * Determines whether a given name corresponds to a Legendary weapon or item.
+ *
+ * This function evaluates the provided name to check if it contains the term
+ * "Legendary" (case-insensitive) and verifies it as an augmentable item.
+ *
+ * @param {string} name - The name of the item to be evaluated.
+ * @returns {boolean} Returns true if the name includes "Legendary" and is augmentable; otherwise, false.
+ */
+export const isLgsWeaponOrAccessory = (name: string): boolean => {
+  return /\bLegendary\b/gi.test(name) && !isAugment(name)
+}
+
+/**
+ * Extracts content inside parentheses from a given string.
+ *
+ * This function searches for all substrings within parentheses in the input string,
+ * removes the parentheses, and combines the extracted content into a single string
+ * with spaces separating multiple matches. If no parentheses are found in the input,
+ * it returns an empty string.
+ *
+ * @param {string} str - The input string from which to extract content inside parentheses.
+ * @returns {string} A string containing the content of all matched parentheses, separated by spaces; empty string if no matches are found.
+ */
+export const extractParenthesesContent = (str: string): string | null => {
+  const regex = /\(([^()]*)\)/gi
+  const matches: RegExpMatchArray | null = str.match(regex)
+
+  if (!matches) return null
+
+  // Remove the parentheses and join if there were multiple matches
+  return matches[0].substring(1, matches[0].length - 1)
+}
+
+/**
+ * Determines whether the provided focus is valid based on specific conditions.
+ *
+ * The function checks if the given `focus` parameter is either 'Positive' or 'Negative'.
+ * If true, it appends ' Energy' to the `focus` and verifies its presence in the `FOCI` array.
+ * If the `focus` does not match either 'Positive' or 'Negative', it directly validates its presence in the `FOCI` array.
+ *
+ * @param {string} focus - A string representing the focus to be validated.
+ * @returns {boolean} Returns `true` if the `focus` meets the criteria and exists in the `FOCI` array, otherwise `false`.
+ */
+export const isValidFocus = (focus: string): boolean => {
+  if (focus === 'Positive' || focus === 'Negative') {
+    return FOCI.includes(focus + ' Energy')
+  }
+  return FOCI.includes(focus)
 }

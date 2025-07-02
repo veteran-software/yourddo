@@ -4,7 +4,7 @@ import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../redux/hooks.ts'
 import { formatIngredientName } from '../utils/utils.ts'
 
-const useIngredientImage = (ingredientName: string) => {
+const useIngredientImage = (ingredientName: string, img?: string) => {
   const { selectedFecundityItem } = useAppSelector((state) => state.greenSteel, shallowEqual)
 
   const [imageSrc, setImageSrc] = useState<string>()
@@ -17,13 +17,13 @@ const useIngredientImage = (ingredientName: string) => {
         return
       }
 
-      const image = (await import(`../assets/icons/${camelcase(formattedName)}.png`)) as {
+      const image = (await import(`../assets/icons/${img ?? camelcase(formattedName)}.png`)) as {
         default: string
       }
 
       setImageSrc(image.default)
     })()
-  }, [ingredientName, selectedFecundityItem])
+  }, [img, ingredientName, selectedFecundityItem])
 
   return { imageSrc }
 }

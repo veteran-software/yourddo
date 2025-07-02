@@ -2222,6 +2222,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Shortsword',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelShortsword',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2239,6 +2241,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Morningstar',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelMorningstar',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2256,6 +2260,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Longbow',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelLongbow',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2273,6 +2279,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Great Crossbow',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelGreatCrossbow',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2290,6 +2298,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Maul',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelMaul',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2307,6 +2317,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Greatsword',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelGreatsword',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2324,6 +2336,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Longsword',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelLongsword',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2341,6 +2355,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Warhammer',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelWarhammer',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2358,6 +2374,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Sceptre',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelSceptre',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2375,6 +2393,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Dagger',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelDagger',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2392,6 +2412,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Throwing Hammer',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelThrowingHammer',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2409,6 +2431,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Khopesh',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelKhopesh',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2426,6 +2450,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Weave Boots',
+    ingredientType: 'Legendary Green Steel Accessory',
+    image: 'greenSteelWeaveBoots',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2443,6 +2469,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Weave Gloves',
+    ingredientType: 'Legendary Green Steel Accessory',
+    image: 'greenSteelWeaveGloves',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2460,6 +2488,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Belt',
+    ingredientType: 'Legendary Green Steel Accessory',
+    image: 'greenSteelBelt',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2477,6 +2507,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Weave Cloak',
+    ingredientType: 'Legendary Green Steel Accessory',
+    image: 'greenSteelWeaveCloak',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2494,6 +2526,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Helm',
+    ingredientType: 'Legendary Green Steel Accessory',
+    image: 'greenSteelHelm',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2511,6 +2545,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Necklace',
+    ingredientType: 'Legendary Green Steel Accessory',
+    image: 'greenSteelNecklace',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2528,6 +2564,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Bracers',
+    ingredientType: 'Legendary Green Steel Accessory',
+    image: 'greenSteelBracers',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2545,6 +2583,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Goggles',
+    ingredientType: 'Legendary Green Steel Accessory',
+    image: 'greenSteelGoggles',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2562,6 +2602,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Bastard Sword',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelBastardSword',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2579,6 +2621,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Hand Axe',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelHandAxe',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2596,6 +2640,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Kama',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelKama',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2613,6 +2659,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Kukri',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelKukri',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2630,6 +2678,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Light Mace',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelLightMace',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2647,6 +2697,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Light Pick',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelLightPick',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2664,6 +2716,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Heavy Mace',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelHeavyMace',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2681,6 +2735,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Quarterstaff',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelQuarterstaff',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2698,6 +2754,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Scimitar',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelScimitar',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2715,6 +2773,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Sickle',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelSickle',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2732,6 +2792,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Throwing Dagger',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelThrowingDagger',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2749,6 +2811,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Light Crossbow',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelLightCrossbow',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2766,6 +2830,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Battle Axe',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelBattleAxe',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2783,6 +2849,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Dwarven Waraxe',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelDwarvenWaraxe',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2800,6 +2868,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Falchion',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelFalchion',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2817,6 +2887,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Greataxe',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelGreataxe',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2834,6 +2906,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Heavy Pick',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelHeavyPick',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2851,6 +2925,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Rapier',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelRapier',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2868,6 +2944,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Shuriken',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelShuriken',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2885,6 +2963,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Throwing Axe',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelThrowingAxe',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2902,6 +2982,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Heavy Crossbow',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelHeavyCrossbow',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2919,6 +3001,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Repeating Heavy Crossbow',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelRepeatingHeavyCrossbow',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2936,6 +3020,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Repeating Light Crossbow',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelRepeatingLightCrossbow',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2953,6 +3039,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Shortbow',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelShortbow',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2970,6 +3058,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Greatclub',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelGreatclub',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -2987,6 +3077,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Light Hammer',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelLightHammer',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -3004,6 +3096,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Dart',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelDart',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -3021,6 +3115,8 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Handwraps',
+    ingredientType: 'Legendary Green Steel Weapon',
+    image: 'greenSteelHandwraps',
     craftedIn: 'Eldritch Altar of Fecundity',
     quantity: 1,
     requirements: [
@@ -3039,6 +3135,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   // Legendary Active Augments
   {
     name: 'Legendary Green Steel Augment: Flame Arrow (Arrows)',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3084,6 +3181,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Nightshield',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3128,6 +3226,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Haste',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3173,6 +3272,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Displacement',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3217,6 +3317,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Dark Discorporation',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3262,6 +3363,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Stormrage',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3307,6 +3409,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Your Flesh is Weak',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3352,6 +3455,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: You Cannot Evade Me',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3397,6 +3501,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Your Will is Mine',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3442,6 +3547,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Food for Thought',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3487,6 +3593,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Blood Feast',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3532,6 +3639,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Reincarnate',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3577,6 +3685,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Animal Growth',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3622,6 +3731,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Tenacious Pack',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3667,6 +3777,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Greater Vigor, Mass',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3711,6 +3822,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Good Weapons',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3756,6 +3868,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Evil Weapons',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3801,6 +3914,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Lawful Weapons',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3846,6 +3960,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Chaotic Weapons',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3891,6 +4006,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Radiant Forcefield',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3936,6 +4052,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Summon Frog',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -3980,6 +4097,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Polar Ray',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4024,6 +4142,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Protection from Elements, Mass',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4068,6 +4187,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Cometfall',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4112,6 +4232,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Quench',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4151,6 +4272,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Call Kindred Being (Armor)',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4195,6 +4317,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Call Kindred Being (Golem)',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4239,6 +4362,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Call Kindred Being (Succubus)',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4283,6 +4407,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Call Kindred Being (Dream Reaver)',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4327,6 +4452,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Call Kindred Being (Lich)',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4371,6 +4497,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Call Kindred Being (Gargoyle)',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4415,6 +4542,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Conjure Bolts',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4460,6 +4588,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Animate Ally',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4505,6 +4634,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Panacea',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4549,6 +4679,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Sigil of Warding',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4593,6 +4724,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Sigil of Lifeshielding',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4637,6 +4769,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Sigil of Energy Negation',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4681,6 +4814,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Sigil of Battering Spellcraft',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
@@ -4725,6 +4859,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Restoration',
+    image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
       type: 'Bound',
