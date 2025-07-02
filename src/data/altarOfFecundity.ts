@@ -3694,7 +3694,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
     },
     augmentType: 'Green Steel Epic Active',
     description:
-      'Grants an Animal, Magical Beast,m or Vermin a +4 Size Bonus to Strength, a +4 Size Bonus to Constitution, and a -2 penalty to Dexterity.',
+      'Grants an Animal, Magical Beast, or Vermin a +4 Size Bonus to Strength, a +4 Size Bonus to Constitution, and a -2 penalty to Dexterity.',
     baseValue: {
       platinum: 350
     },

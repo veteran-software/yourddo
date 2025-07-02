@@ -2603,7 +2603,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 1, AOE)',
     effectsAdded: [
       {
-        name: 'MRR',
+        name: 'Magical Resistance Rating',
         modifier: 35,
         bonus: 'Enhancement'
       }
@@ -2683,7 +2683,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 1, EOE)',
     effectsAdded: [
       {
-        name: 'MRR',
+        name: 'Magical Resistance Rating',
         modifier: 35,
         bonus: 'Enhancement'
       }
@@ -2763,7 +2763,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 1, FOE)',
     effectsAdded: [
       {
-        name: 'MRR',
+        name: 'Magical Resistance Rating',
         modifier: 35,
         bonus: 'Enhancement'
       }
@@ -2843,7 +2843,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 1, WOE)',
     effectsAdded: [
       {
-        name: 'MRR',
+        name: 'Magical Resistance Rating',
         modifier: 35,
         bonus: 'Enhancement'
       }
@@ -2923,7 +2923,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 1, NOE)',
     effectsAdded: [
       {
-        name: 'MRR',
+        name: 'Magical Resistance Rating',
         modifier: 35,
         bonus: 'Enhancement'
       }
@@ -3003,7 +3003,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 1, POE)',
     effectsAdded: [
       {
-        name: 'MRR',
+        name: 'Magical Resistance Rating',
         modifier: 35,
         bonus: 'Enhancement'
       }

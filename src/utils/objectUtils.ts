@@ -234,6 +234,7 @@ export const extractParenthesesContent = (str: string): string | null => {
   return matches[0].substring(1, matches[0].length - 1)
 }
 
+// noinspection GrazieInspection
 /**
  * Determines whether the provided focus is valid based on specific conditions.
  *

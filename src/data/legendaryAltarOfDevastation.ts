@@ -31,7 +31,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -72,7 +72,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -113,7 +113,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -154,7 +154,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -195,7 +195,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -236,7 +236,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -277,7 +277,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -318,7 +318,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -359,7 +359,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -400,7 +400,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -441,7 +441,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -476,7 +476,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -491,7 +491,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AaDE)',
     effectsAdded: [
       {
-        name: 'Electric Spell Power +37',
+        name: 'Electric Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -520,7 +521,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -535,7 +536,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WaDE)',
     effectsAdded: [
       {
-        name: 'Cold Spell Power +37',
+        name: 'Cold Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -564,7 +566,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -579,7 +581,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PaDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power +37',
+        name: 'Positive Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -608,7 +611,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -623,7 +626,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NaDE)',
     effectsAdded: [
       {
-        name: 'Negative and Poison Spell Power +37',
+        name: 'Negative and Poison Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -652,7 +656,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -667,7 +671,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EeDE)',
     effectsAdded: [
       {
-        name: 'Acid Spell Power +37',
+        name: 'Acid Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -696,7 +701,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -711,7 +716,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WeDE)',
     effectsAdded: [
       {
-        name: 'Cold Spell Power +37',
+        name: 'Cold Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -740,7 +746,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -755,7 +761,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PeDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power +37',
+        name: 'Positive Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -784,7 +791,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -799,7 +806,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NeDE)',
     effectsAdded: [
       {
-        name: 'Negative and Poison Spell Power +37',
+        name: 'Negative and Poison Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -828,7 +836,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -843,7 +851,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FfDE)',
     effectsAdded: [
       {
-        name: 'Fire Spell Power +37',
+        name: 'Fire Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -872,7 +881,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -887,7 +896,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EfDE)',
     effectsAdded: [
       {
-        name: 'Acid Spell Power +37',
+        name: 'Acid Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -916,7 +926,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -931,7 +941,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AfDE)',
     effectsAdded: [
       {
-        name: 'Electric Spell Power +37',
+        name: 'Electric Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -960,7 +971,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -975,7 +986,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PfDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power +37',
+        name: 'Positive Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -1004,7 +1016,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1019,7 +1031,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NfDE)',
     effectsAdded: [
       {
-        name: 'Negative and Poison Spell Power +37',
+        name: 'Negative and Poison Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -1048,7 +1061,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1063,7 +1076,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WwDE)',
     effectsAdded: [
       {
-        name: 'Cold Spell Power +37',
+        name: 'Cold Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -1092,7 +1106,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1107,7 +1121,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FwDE)',
     effectsAdded: [
       {
-        name: 'Fire Spell Power +37',
+        name: 'Fire Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -1136,7 +1151,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1151,7 +1166,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EwDE)',
     effectsAdded: [
       {
-        name: 'Acid Spell Power +37',
+        name: 'Acid Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -1180,7 +1196,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1195,7 +1211,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PwDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power +37',
+        name: 'Positive Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -1224,7 +1241,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1239,7 +1256,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NwDE)',
     effectsAdded: [
       {
-        name: 'Negative and Poison Spell Power +37',
+        name: 'Negative and Poison Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -1268,7 +1286,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1283,7 +1301,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NnDE)',
     effectsAdded: [
       {
-        name: 'Negative and Poison Spell Power +37',
+        name: 'Negative and Poison Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -1312,7 +1331,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1327,7 +1346,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PpDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power +37',
+        name: 'Positive Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -1356,7 +1376,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1371,7 +1391,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NpDE)',
     effectsAdded: [
       {
-        name: 'Negative and Poison Spell Power +37',
+        name: 'Negative and Poison Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -1400,7 +1421,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1443,7 +1464,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1486,7 +1507,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1504,7 +1525,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         name: 'Good Blast on Vorpal (12d120)'
       },
       {
-        name: ' Weapon become Good aligned.'
+        name: 'Good-Aligned Weapon'
       }
     ]
   },
@@ -1532,7 +1553,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1575,7 +1596,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1618,7 +1639,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1661,7 +1682,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1704,7 +1725,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1747,7 +1768,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1790,7 +1811,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1833,7 +1854,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1876,7 +1897,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1919,7 +1940,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1962,7 +1983,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2005,7 +2026,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2048,7 +2069,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2091,7 +2112,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2109,7 +2130,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         name: 'Good Blast on Vorpal (12d120)'
       },
       {
-        name: ' Weapon become Good aligned.'
+        name: 'Good-Aligned Weapon'
       }
     ]
   },
@@ -2137,7 +2158,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2180,7 +2201,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2198,7 +2219,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         name: 'Good Blast on Vorpal (12d120)'
       },
       {
-        name: ' Makes weapon Good Aligned'
+        name: 'Good-Aligned Weapon'
       }
     ]
   },
@@ -2226,7 +2247,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2241,7 +2262,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AaEE)',
     effectsAdded: [
       {
-        name: 'Charisma +2',
+        name: 'Charisma',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2270,7 +2292,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2285,7 +2307,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WaEE)',
     effectsAdded: [
       {
-        name: 'Wisdom +2',
+        name: 'Wisdom',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2314,7 +2337,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2329,7 +2352,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PaEE)',
     effectsAdded: [
       {
-        name: 'Charisma +2',
+        name: 'Charisma',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2358,7 +2382,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2373,7 +2397,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NaEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +2',
+        name: 'Intelligence',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2402,7 +2427,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2417,7 +2442,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EeEE)',
     effectsAdded: [
       {
-        name: 'Wisdom +2',
+        name: 'Wisdom',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2446,7 +2472,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2461,7 +2487,9 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WeEE)',
     effectsAdded: [
       {
-        name: '+2 Wisdom (Exceptional)'
+        name: 'Wisdom',
+        modifier: 2,
+        bonus: 'Exceptional'
       }
     ]
   },
@@ -2489,7 +2517,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2504,7 +2532,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PeEE)',
     effectsAdded: [
       {
-        name: 'Charisma +2',
+        name: 'Charisma',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2533,7 +2562,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2548,7 +2577,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NeEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +2',
+        name: 'Intelligence',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2577,7 +2607,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2592,7 +2622,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FfEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +2',
+        name: 'Intelligence',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2621,7 +2652,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2636,7 +2667,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EfEE)',
     effectsAdded: [
       {
-        name: 'Wisdom +2',
+        name: 'Wisdom',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2665,7 +2697,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2680,7 +2712,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AfEE)',
     effectsAdded: [
       {
-        name: 'Charisma +2',
+        name: 'Charisma',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2709,7 +2742,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2724,7 +2757,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PfEE)',
     effectsAdded: [
       {
-        name: 'Charisma +2',
+        name: 'Charisma',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2753,7 +2787,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2768,7 +2802,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NfEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +2',
+        name: 'Intelligence',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2797,7 +2832,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2812,7 +2847,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WwEE)',
     effectsAdded: [
       {
-        name: 'Wisdom +2',
+        name: 'Wisdom',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2841,7 +2877,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2856,7 +2892,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FwEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +2',
+        name: 'Intelligence',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2885,7 +2922,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2900,7 +2937,9 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EwEE)',
     effectsAdded: [
       {
-        name: '+2 Wisdom (Exceptional)'
+        name: 'Wisdom',
+        modifier: 2,
+        bonus: 'Exceptional'
       }
     ]
   },
@@ -2928,7 +2967,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2943,7 +2982,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PwEE)',
     effectsAdded: [
       {
-        name: 'Charisma +2',
+        name: 'Charisma',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -2972,7 +3012,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -2987,7 +3027,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NwEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +2',
+        name: 'Intelligence',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3016,7 +3057,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3031,7 +3072,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NnEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +2',
+        name: 'Intelligence',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3060,7 +3102,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3075,7 +3117,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PpEE)',
     effectsAdded: [
       {
-        name: 'Charisma +2',
+        name: 'Charisma',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3104,7 +3147,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3119,7 +3162,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NpEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +2',
+        name: 'Intelligence',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3148,7 +3192,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3163,7 +3207,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AaEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +2',
+        name: 'Dexterity',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3192,7 +3237,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3207,7 +3252,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WaEM)',
     effectsAdded: [
       {
-        name: 'Strength +2',
+        name: 'Strength',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3236,7 +3282,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3251,7 +3297,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PaEM)',
     effectsAdded: [
       {
-        name: 'Constitution +2',
+        name: 'Constitution',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3280,7 +3327,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3295,7 +3342,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NaEM)',
     effectsAdded: [
       {
-        name: 'Strength +2',
+        name: 'Strength',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3324,7 +3372,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3339,7 +3387,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EeEM)',
     effectsAdded: [
       {
-        name: 'Constitution +2',
+        name: 'Constitution',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3368,7 +3417,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3383,7 +3432,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WeEM)',
     effectsAdded: [
       {
-        name: 'Strength +2',
+        name: 'Strength',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3412,7 +3462,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3427,7 +3477,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PeEM)',
     effectsAdded: [
       {
-        name: 'Constitution +2',
+        name: 'Constitution',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3456,7 +3507,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3471,7 +3522,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NeEM)',
     effectsAdded: [
       {
-        name: 'Strength +2',
+        name: 'Strength',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3500,7 +3552,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3515,7 +3567,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FfEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +2',
+        name: 'Dexterity',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3544,7 +3597,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3559,7 +3612,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EfEM)',
     effectsAdded: [
       {
-        name: 'Constitution +2',
+        name: 'Constitution',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3588,7 +3642,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3603,7 +3657,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AfEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +2',
+        name: 'Dexterity',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3632,7 +3687,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3647,7 +3702,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PfEM)',
     effectsAdded: [
       {
-        name: 'Constitution +2',
+        name: 'Constitution',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3676,7 +3732,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3691,7 +3747,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NfEM)',
     effectsAdded: [
       {
-        name: 'Strength +2',
+        name: 'Strength',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3720,7 +3777,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3735,7 +3792,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WwEM)',
     effectsAdded: [
       {
-        name: 'Strength +2',
+        name: 'Strength',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3764,7 +3822,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3779,7 +3837,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FwEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +2',
+        name: 'Dexterity',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3808,7 +3867,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3823,7 +3882,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EwEM)',
     effectsAdded: [
       {
-        name: 'Constitution +2',
+        name: 'Constitution',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3852,7 +3912,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3867,7 +3927,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PwEM)',
     effectsAdded: [
       {
-        name: 'Constitution +2',
+        name: 'Constitution',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3896,7 +3957,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3911,7 +3972,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NwEM)',
     effectsAdded: [
       {
-        name: 'Strength +2',
+        name: 'Strength',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3940,7 +4002,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3955,7 +4017,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NnEM)',
     effectsAdded: [
       {
-        name: 'Strength +2',
+        name: 'Strength',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -3984,7 +4047,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -3999,7 +4062,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PpEM)',
     effectsAdded: [
       {
-        name: 'Constitution +2',
+        name: 'Constitution',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -4028,7 +4092,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4043,7 +4107,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NpEM)',
     effectsAdded: [
       {
-        name: 'Strength +2',
+        name: 'Strength',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -4072,7 +4137,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4087,7 +4152,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AaOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4116,7 +4182,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4131,7 +4197,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WaOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4160,7 +4227,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4175,7 +4242,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PaOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4204,7 +4272,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4219,7 +4287,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NaOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4248,7 +4317,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4263,7 +4332,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EeOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4292,7 +4362,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4307,7 +4377,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WeOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4336,7 +4407,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4351,7 +4422,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PeOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4380,7 +4452,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4395,7 +4467,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NeOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4424,7 +4497,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4439,7 +4512,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FfOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4468,7 +4542,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4483,7 +4557,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EfOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4512,7 +4587,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4527,7 +4602,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PfOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4556,7 +4632,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4571,7 +4647,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NfOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4600,7 +4677,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4615,7 +4692,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WwOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4644,7 +4722,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4659,7 +4737,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FwOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4688,7 +4767,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4703,7 +4782,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EwOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4732,7 +4812,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4747,7 +4827,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AfOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4776,7 +4857,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4791,7 +4872,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PwOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4820,7 +4902,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4835,7 +4917,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NwOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4864,7 +4947,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4879,7 +4962,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NnOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4908,7 +4992,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4923,7 +5007,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PpOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4952,7 +5037,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -4967,7 +5052,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NpOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -4996,7 +5082,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5011,7 +5097,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AaOM)',
     effectsAdded: [
       {
-        name: 'Electric Absorption +35%',
+        name: 'Electric Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5040,7 +5127,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5055,7 +5142,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WaOM)',
     effectsAdded: [
       {
-        name: 'Cold Absorption +35%',
+        name: 'Cold Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5084,7 +5172,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5099,7 +5187,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PaOM)',
     effectsAdded: [
       {
-        name: 'Positive Healing Amplification +70',
+        name: 'Positive Healing Amplification',
+        modifier: 70,
         bonus: 'Competence'
       }
     ]
@@ -5128,7 +5217,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5143,7 +5232,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NaOM)',
     effectsAdded: [
       {
-        name: 'Negative Energy Absorption +35%',
+        name: 'Negative Energy Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5172,7 +5262,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5187,7 +5277,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EeOM)',
     effectsAdded: [
       {
-        name: 'Acid Absorption +35%',
+        name: 'Acid Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5216,7 +5307,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5231,7 +5322,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WeOM)',
     effectsAdded: [
       {
-        name: 'Cold Absorption +35%',
+        name: 'Cold Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5260,7 +5352,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5275,7 +5367,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PeOM)',
     effectsAdded: [
       {
-        name: 'Positive Healing Amplification +70',
+        name: 'Positive Healing Amplification',
+        modifier: 70,
         bonus: 'Competence'
       }
     ]
@@ -5304,7 +5397,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5319,7 +5412,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NeOM)',
     effectsAdded: [
       {
-        name: 'Negative Energy Absorption +35%',
+        name: 'Negative Energy Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5348,7 +5442,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5363,7 +5457,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FfOM)',
     effectsAdded: [
       {
-        name: 'Fire Absorption +35%',
+        name: 'Fire Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5392,7 +5487,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5407,7 +5502,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EfOM)',
     effectsAdded: [
       {
-        name: 'Acid Absorption +35%',
+        name: 'Acid Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5436,7 +5532,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5451,7 +5547,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AfOM)',
     effectsAdded: [
       {
-        name: 'Electrical Absorption +35%',
+        name: 'Electrical Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5480,7 +5577,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5495,7 +5592,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PfOM)',
     effectsAdded: [
       {
-        name: 'Positive Healing Amplification +70',
+        name: 'Positive Healing Amplification',
+        modifier: 70,
         bonus: 'Competence'
       }
     ]
@@ -5524,7 +5622,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5539,7 +5637,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NfOM)',
     effectsAdded: [
       {
-        name: 'Negative Energy Absorption +35%',
+        name: 'Negative Energy Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5568,7 +5667,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5583,7 +5682,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WwOM)',
     effectsAdded: [
       {
-        name: 'Cold Absorption +35%',
+        name: 'Cold Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5612,7 +5712,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5627,7 +5727,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FwOM)',
     effectsAdded: [
       {
-        name: 'Fire Absorption +35%',
+        name: 'Fire Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5656,7 +5757,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5671,7 +5772,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EwOM)',
     effectsAdded: [
       {
-        name: 'Acid Absorption +35%',
+        name: 'Acid Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5700,7 +5802,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5715,7 +5817,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PwOM)',
     effectsAdded: [
       {
-        name: 'Positive Healing Amplification +70',
+        name: 'Positive Healing Amplification',
+        modifier: 70,
         bonus: 'Competence'
       }
     ]
@@ -5744,7 +5847,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5759,7 +5862,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NwOM)',
     effectsAdded: [
       {
-        name: 'Negative Energy Absorption +35%',
+        name: 'Negative Energy Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5788,7 +5892,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5803,7 +5907,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NnOM)',
     effectsAdded: [
       {
-        name: 'Negative Energy Absorption +35%',
+        name: 'Negative Energy Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5832,7 +5937,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5847,7 +5952,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PpOM)',
     effectsAdded: [
       {
-        name: 'Positive Healing Amplification +70',
+        name: 'Positive Healing Amplification',
+        modifier: 70,
         bonus: 'Competence'
       }
     ]
@@ -5876,7 +5982,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5891,7 +5997,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NpOM)',
     effectsAdded: [
       {
-        name: 'Negative Energy Absorption +35%',
+        name: 'Negative Energy Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -5920,7 +6027,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5935,7 +6042,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EaDE)',
     effectsAdded: [
       {
-        name: 'Acid Spell Power +37',
+        name: 'Acid Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -5964,7 +6072,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -5979,7 +6087,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FaDE)',
     effectsAdded: [
       {
-        name: 'Fire Spell Power +37',
+        name: 'Fire Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -6008,7 +6117,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6023,7 +6132,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AeDE)',
     effectsAdded: [
       {
-        name: 'Electric Spell Power +37',
+        name: 'Electric Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -6052,7 +6162,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6095,7 +6205,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6138,7 +6248,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6181,7 +6291,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6196,7 +6306,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EaEE)',
     effectsAdded: [
       {
-        name: 'Wisdom +2',
+        name: 'Wisdom',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -6225,7 +6336,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6240,7 +6351,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FaEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +2',
+        name: 'Intelligence',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -6269,7 +6381,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6284,7 +6396,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EaEM)',
     effectsAdded: [
       {
-        name: 'Constitution +2',
+        name: 'Constitution',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -6313,7 +6426,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6328,7 +6441,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FaEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +2',
+        name: 'Dexterity',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -6357,7 +6471,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6372,7 +6486,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EaOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -6401,7 +6516,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6416,7 +6531,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FaOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -6445,7 +6561,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6460,7 +6576,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EaOM)',
     effectsAdded: [
       {
-        name: 'Acid Absorption +35%',
+        name: 'Acid Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -6489,7 +6606,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6504,7 +6621,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FaOM)',
     effectsAdded: [
       {
-        name: 'Fire Absorption +35%',
+        name: 'Fire Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -6533,7 +6651,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6548,7 +6666,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FeDE)',
     effectsAdded: [
       {
-        name: 'Fire Spell Power +37',
+        name: 'Fire Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -6577,7 +6696,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6620,7 +6739,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6635,7 +6754,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AeEE)',
     effectsAdded: [
       {
-        name: 'Charisma +2',
+        name: 'Charisma',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -6664,7 +6784,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6679,7 +6799,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FeEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +2',
+        name: 'Intelligence',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -6708,7 +6829,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6723,7 +6844,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AeEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +2',
+        name: 'Dexterity',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -6752,7 +6874,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6767,7 +6889,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FeEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +2',
+        name: 'Dexterity',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -6796,7 +6919,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6811,7 +6934,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AeOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -6840,7 +6964,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6855,7 +6979,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FeOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -6884,7 +7009,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6899,7 +7024,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AeOM)',
     effectsAdded: [
       {
-        name: 'Electrical Absorption +35%',
+        name: 'Electrical Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -6928,7 +7054,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6943,7 +7069,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FeOM)',
     effectsAdded: [
       {
-        name: 'Fire Absorption +35%',
+        name: 'Fire Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -6972,7 +7099,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -6987,7 +7114,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WfDE)',
     effectsAdded: [
       {
-        name: 'Cold Spell Power +37',
+        name: 'Cold Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -7016,7 +7144,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7059,7 +7187,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7074,7 +7202,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WfEE)',
     effectsAdded: [
       {
-        name: 'Wisdom +2',
+        name: 'Wisdom',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -7103,7 +7232,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7118,7 +7247,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WfEM)',
     effectsAdded: [
       {
-        name: 'Strength +2',
+        name: 'Strength',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -7147,7 +7277,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7162,7 +7292,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WfOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -7191,7 +7322,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7206,7 +7337,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WfOM)',
     effectsAdded: [
       {
-        name: 'Cold Absorption +35%',
+        name: 'Cold Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -7235,7 +7367,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7250,7 +7382,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AwDE)',
     effectsAdded: [
       {
-        name: 'Electric Spell Power +37',
+        name: 'Electric Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -7279,7 +7412,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7322,7 +7455,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7337,7 +7470,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AwEE)',
     effectsAdded: [
       {
-        name: 'Charisma +2',
+        name: 'Charisma',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -7366,7 +7500,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7381,7 +7515,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AwEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +2',
+        name: 'Dexterity',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -7410,7 +7545,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7425,7 +7560,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AwOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -7454,7 +7590,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7469,7 +7605,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AwOM)',
     effectsAdded: [
       {
-        name: 'Electrical Absorption +35%',
+        name: 'Electrical Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -7498,7 +7635,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7513,7 +7650,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AnDE)',
     effectsAdded: [
       {
-        name: 'Electric Power +37',
+        name: 'Electric Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -7542,7 +7680,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7557,7 +7695,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EnDE)',
     effectsAdded: [
       {
-        name: 'Acid Power +37',
+        name: 'Acid Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -7586,7 +7725,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7601,7 +7740,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FnDE)',
     effectsAdded: [
       {
-        name: 'Fire Power +37',
+        name: 'Fire Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -7630,7 +7770,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7645,7 +7785,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WnDE)',
     effectsAdded: [
       {
-        name: 'Cold Power +37',
+        name: 'Cold Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -7674,7 +7815,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7689,7 +7830,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PnDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power +37',
+        name: 'Positive Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -7718,7 +7860,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7761,7 +7903,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7804,7 +7946,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7847,7 +7989,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7890,7 +8032,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7933,7 +8075,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7948,10 +8090,10 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PnDM)',
     effectsAdded: [
       {
-        name: 'Good Blast on Vorpal (11d120)'
+        name: 'Good Blast on Vorpal (12d120)'
       },
       {
-        name: ' Makes weapon Good Aligned'
+        name: 'Good-Aligned Weapon'
       }
     ]
   },
@@ -7979,7 +8121,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -7994,7 +8136,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AnEE)',
     effectsAdded: [
       {
-        name: 'Charisma +2',
+        name: 'Charisma',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -8023,7 +8166,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8038,7 +8181,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EnEE)',
     effectsAdded: [
       {
-        name: 'Wisdom +2',
+        name: 'Wisdom',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -8067,7 +8211,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8082,7 +8226,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FnEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +2',
+        name: 'Intelligence',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -8111,7 +8256,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8126,7 +8271,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WnEE)',
     effectsAdded: [
       {
-        name: 'Wisdom +2',
+        name: 'Wisdom',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -8155,7 +8301,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8170,7 +8316,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PnEE)',
     effectsAdded: [
       {
-        name: 'Charisma +2',
+        name: 'Charisma',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -8199,7 +8346,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8214,7 +8361,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AnEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +2',
+        name: 'Dexterity',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -8243,7 +8391,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8258,7 +8406,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EnEM)',
     effectsAdded: [
       {
-        name: 'Constitution +2',
+        name: 'Constitution',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -8287,7 +8436,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8302,7 +8451,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FnEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +2',
+        name: 'Dexterity',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -8331,7 +8481,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8346,7 +8496,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WnEM)',
     effectsAdded: [
       {
-        name: 'Strength +2',
+        name: 'Strength',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -8375,7 +8526,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8390,7 +8541,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PnEM)',
     effectsAdded: [
       {
-        name: 'Constitution +2',
+        name: 'Constitution',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -8419,7 +8571,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8434,7 +8586,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AnOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -8463,7 +8616,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8478,7 +8631,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EnOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -8507,7 +8661,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8522,7 +8676,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FnOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -8551,7 +8706,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8566,7 +8721,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WnOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -8595,7 +8751,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8610,7 +8766,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PnOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -8639,7 +8796,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8654,7 +8811,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AnOM)',
     effectsAdded: [
       {
-        name: 'Electrical Absorption +35%',
+        name: 'Electrical Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -8683,7 +8841,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8698,7 +8856,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EnOM)',
     effectsAdded: [
       {
-        name: 'Acid Absorption +35%',
+        name: 'Acid Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -8727,7 +8886,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8742,7 +8901,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FnOM)',
     effectsAdded: [
       {
-        name: 'Fire Absorption +35%',
+        name: 'Fire Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -8771,7 +8931,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8786,7 +8946,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WnOM)',
     effectsAdded: [
       {
-        name: 'Cold Absorption +35%',
+        name: 'Cold Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -8815,7 +8976,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8830,7 +8991,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PnOM)',
     effectsAdded: [
       {
-        name: 'Positive Healing Amplification +70',
+        name: 'Positive Healing Amplification',
+        modifier: 70,
         bonus: 'Competence'
       }
     ]
@@ -8859,7 +9021,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8874,7 +9036,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, ApDE)',
     effectsAdded: [
       {
-        name: 'Electric Spell Power +37',
+        name: 'Electric Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -8903,7 +9066,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8918,7 +9081,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EpDE)',
     effectsAdded: [
       {
-        name: 'Acid Spell Power +37',
+        name: 'Acid Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -8947,7 +9111,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -8962,7 +9126,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FpDE)',
     effectsAdded: [
       {
-        name: 'Fire Spell Power +37',
+        name: 'Fire Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -8991,7 +9156,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9006,7 +9171,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WpDE)',
     effectsAdded: [
       {
-        name: 'Cold Spell Power +37',
+        name: 'Cold Spell Power',
+        modifier: 37,
         bonus: 'Exceptional'
       }
     ]
@@ -9035,7 +9201,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9078,7 +9244,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9121,7 +9287,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9164,7 +9330,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9207,7 +9373,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9250,7 +9416,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9265,7 +9431,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, ApEE)',
     effectsAdded: [
       {
-        name: 'Charisma +2',
+        name: 'Charisma',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -9294,7 +9461,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9309,7 +9476,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EpEE)',
     effectsAdded: [
       {
-        name: 'Wisdom +2',
+        name: 'Wisdom',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -9338,7 +9506,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9353,7 +9521,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FpEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +2',
+        name: 'Intelligence',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -9382,7 +9551,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9397,7 +9566,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WpEE)',
     effectsAdded: [
       {
-        name: 'Wisdom +2',
+        name: 'Wisdom',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -9426,7 +9596,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9441,7 +9611,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, ApEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +2',
+        name: 'Dexterity',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -9470,7 +9641,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9485,7 +9656,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EpEM)',
     effectsAdded: [
       {
-        name: 'Constitution +2',
+        name: 'Constitution',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -9514,7 +9686,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9529,7 +9701,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FpEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +2',
+        name: 'Dexterity',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -9558,7 +9731,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9573,7 +9746,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WpEM)',
     effectsAdded: [
       {
-        name: 'Strength +2',
+        name: 'Strength',
+        modifier: 2,
         bonus: 'Exceptional'
       }
     ]
@@ -9602,7 +9776,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9617,7 +9791,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, ApOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -9646,7 +9821,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9661,7 +9836,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EpOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -9690,7 +9866,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9705,7 +9881,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FpOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -9734,7 +9911,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9749,7 +9926,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WpOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Exceptional'
       }
     ]
@@ -9778,7 +9956,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9793,7 +9971,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, ApOM)',
     effectsAdded: [
       {
-        name: 'Electrical Absorption +35%',
+        name: 'Electrical Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -9822,7 +10001,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9837,7 +10016,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EpOM)',
     effectsAdded: [
       {
-        name: 'Acid Absorption +35%',
+        name: 'Acid Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -9866,7 +10046,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9881,7 +10061,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FpOM)',
     effectsAdded: [
       {
-        name: 'Fire Absorption +35%',
+        name: 'Fire Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -9910,7 +10091,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9925,7 +10106,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WpOM)',
     effectsAdded: [
       {
-        name: 'Cold Absorption +35%',
+        name: 'Cold Absorption',
+        modifier: '35%',
         bonus: 'Enhancement'
       }
     ]
@@ -9950,7 +10132,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -9965,7 +10147,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, ADE)',
     effectsAdded: [
       {
-        name: 'Electric spell critical damage +5%',
+        name: 'Electric Spell Critical Damage',
+        modifier: '5%',
         bonus: 'Quality'
       }
     ]
@@ -9990,7 +10173,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10005,7 +10188,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, EDE)',
     effectsAdded: [
       {
-        name: 'Acid spell critical damage +5%',
+        name: 'Acid Spell Critical Damage',
+        modifier: '5%',
         bonus: 'Quality'
       }
     ]
@@ -10030,7 +10214,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10045,7 +10229,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, FDE)',
     effectsAdded: [
       {
-        name: 'Fire spell critical damage +5%',
+        name: 'Fire Spell Critical Damage',
+        modifier: '5%',
         bonus: 'Quality'
       }
     ]
@@ -10070,7 +10255,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10085,7 +10270,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, WDE)',
     effectsAdded: [
       {
-        name: 'Cold spell critical damage +5%',
+        name: 'Cold Spell Critical Damage',
+        modifier: '5%',
         bonus: 'Quality'
       }
     ]
@@ -10110,7 +10296,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10125,7 +10311,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, NDE)',
     effectsAdded: [
       {
-        name: 'Negative spell critical damage +5%',
+        name: 'Negative Spell Critical Damage',
+        modifier: '5%',
         bonus: 'Quality'
       }
     ]
@@ -10150,7 +10337,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10165,7 +10352,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, PDE)',
     effectsAdded: [
       {
-        name: 'Positive spells critical damage +5%',
+        name: 'Positive Spell Critical Damage',
+        modifier: '5%',
         bonus: 'Quality'
       }
     ]
@@ -10190,7 +10378,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10229,7 +10417,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10268,7 +10456,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10307,7 +10495,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10346,7 +10534,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10385,7 +10573,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10424,7 +10612,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10439,31 +10627,38 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, AEE)',
     effectsAdded: [
       {
-        name: 'Maximum Spell Points +75',
+        name: 'Maximum Spell Points',
+        modifier: 75,
         bonus: 'Quality'
       },
       {
-        name: 'Bluff +6',
+        name: 'Bluff',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Diplomacy +6',
+        name: 'Diplomacy',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Haggle +6',
+        name: 'Haggle',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Intimidate +6',
+        name: 'Intimidate',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Perform +6',
+        name: 'Perform',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Use Magic Device +1',
+        name: 'Use Magic Device',
+        modifier: 1,
         bonus: 'Quality'
       }
     ]
@@ -10488,7 +10683,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10503,19 +10698,23 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, EEE)',
     effectsAdded: [
       {
-        name: 'Maximum Spell Points +75',
+        name: 'Maximum Spell Points',
+        modifier: 75,
         bonus: 'Quality'
       },
       {
-        name: 'Heal +6',
+        name: 'Heal',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Listen +6',
+        name: 'Listen',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Spot +6',
+        name: 'Spot',
+        modifier: 6,
         bonus: 'Quality'
       }
     ]
@@ -10540,7 +10739,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10555,23 +10754,28 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, FEE)',
     effectsAdded: [
       {
-        name: 'Maximum Spell Points +75',
+        name: 'Maximum Spell Points',
+        modifier: 75,
         bonus: 'Quality'
       },
       {
-        name: 'Disable Device +6',
+        name: 'Disable Device',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Repair +6',
+        name: 'Repair',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Search +6',
+        name: 'Search',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Spellcraft +6',
+        name: 'Spellcraft',
+        modifier: 6,
         bonus: 'Quality'
       }
     ]
@@ -10596,7 +10800,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10611,19 +10815,23 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, WEE)',
     effectsAdded: [
       {
-        name: 'Maximum Spell Points +75',
+        name: 'Maximum Spell Points',
+        modifier: 75,
         bonus: 'Quality'
       },
       {
-        name: 'Heal +6',
+        name: 'Heal',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Listen +6',
+        name: 'Listen',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Spot +6',
+        name: 'Spot',
+        modifier: 6,
         bonus: 'Quality'
       }
     ]
@@ -10648,7 +10856,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10663,23 +10871,28 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, NEE)',
     effectsAdded: [
       {
-        name: 'Maximum Spell Points +75',
+        name: 'Maximum Spell Points',
+        modifier: 75,
         bonus: 'Quality'
       },
       {
-        name: 'Disable Device +6',
+        name: 'Disable Device',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Repair +6',
+        name: 'Repair',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Search +6',
+        name: 'Search',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Spellcraft +6',
+        name: 'Spellcraft',
+        modifier: 6,
         bonus: 'Quality'
       }
     ]
@@ -10704,7 +10917,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10719,31 +10932,38 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, PEE)',
     effectsAdded: [
       {
-        name: 'Maximum Spell Points +75',
+        name: 'Maximum Spell Points',
+        modifier: 75,
         bonus: 'Quality'
       },
       {
-        name: 'Bluff +6',
+        name: 'Bluff',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Diplomacy +6',
+        name: 'Diplomacy',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Haggle +6',
+        name: 'Haggle',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Intimidate +6',
+        name: 'Intimidate',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Perform +6',
+        name: 'Perform',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Use Magic Device +1',
+        name: 'Use Magic Device',
+        modifier: 1,
         bonus: 'Quality'
       }
     ]
@@ -10768,7 +10988,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10783,27 +11003,33 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, AEM)',
     effectsAdded: [
       {
-        name: 'Maximum Hit Points +14',
+        name: 'Maximum Hit Points',
+        modifier: 14,
         bonus: 'Quality'
       },
       {
-        name: 'Balance +6',
+        name: 'Balance',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Hide +6',
+        name: 'Hide',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Move Silently +6',
+        name: 'Move Silently',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Open Lock +6',
+        name: 'Open Lock',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Tumble +6',
+        name: 'Tumble',
+        modifier: 6,
         bonus: 'Quality'
       }
     ]
@@ -10828,7 +11054,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10843,11 +11069,13 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, EEM)',
     effectsAdded: [
       {
-        name: 'Maximum Hit Points +14',
+        name: 'Maximum Hit Points',
+        modifier: 14,
         bonus: 'Quality'
       },
       {
-        name: 'Concentration +6',
+        name: 'Concentration',
+        modifier: 6,
         bonus: 'Quality'
       }
     ]
@@ -10872,7 +11100,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10887,27 +11115,33 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, FEM)',
     effectsAdded: [
       {
-        name: 'Maximum Hit Points +14',
+        name: 'Maximum Hit Points',
+        modifier: 14,
         bonus: 'Quality'
       },
       {
-        name: 'Balance +6',
+        name: 'Balance',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Hide +6',
+        name: 'Hide',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Move Silently +6',
+        name: 'Move Silently',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Open Lock +6',
+        name: 'Open Lock',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Tumble +6',
+        name: 'Tumble',
+        modifier: 6,
         bonus: 'Quality'
       }
     ]
@@ -10932,7 +11166,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10947,15 +11181,18 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, WEM)',
     effectsAdded: [
       {
-        name: 'Maximum Hit Points +14',
+        name: 'Maximum Hit Points',
+        modifier: 14,
         bonus: 'Quality'
       },
       {
-        name: 'Jump +6',
+        name: 'Jump',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Swim +6',
+        name: 'Swim',
+        modifier: 6,
         bonus: 'Quality'
       }
     ]
@@ -10980,7 +11217,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -10995,15 +11232,18 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, NEM)',
     effectsAdded: [
       {
-        name: 'Maximum Hit Points +14',
+        name: 'Maximum Hit Points',
+        modifier: 14,
         bonus: 'Quality'
       },
       {
-        name: 'Jump +6',
+        name: 'Jump',
+        modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Swim +6',
+        name: 'Swim',
+        modifier: 6,
         bonus: 'Quality'
       }
     ]
@@ -11028,7 +11268,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11043,11 +11283,13 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, PEM)',
     effectsAdded: [
       {
-        name: 'Maximum Hit Points +14',
+        name: 'Maximum Hit Points',
+        modifier: 14,
         bonus: 'Quality'
       },
       {
-        name: 'Concentration +6',
+        name: 'Concentration',
+        modifier: 6,
         bonus: 'Quality'
       }
     ]
@@ -11072,7 +11314,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11087,7 +11329,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, AOE)',
     effectsAdded: [
       {
-        name: 'Reflex Save +2',
+        name: 'Reflex Save',
+        modifier: 2,
         bonus: 'Quality'
       }
     ]
@@ -11112,7 +11355,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11127,7 +11370,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, EOE)',
     effectsAdded: [
       {
-        name: 'Fortitude Save +2',
+        name: 'Fortitude Save',
+        modifier: 2,
         bonus: 'Quality'
       }
     ]
@@ -11152,7 +11396,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11167,7 +11411,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, FOE)',
     effectsAdded: [
       {
-        name: 'Reflex Save +2',
+        name: 'Reflex Save',
+        modifier: 2,
         bonus: 'Quality'
       }
     ]
@@ -11192,7 +11437,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11207,7 +11452,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, WOE)',
     effectsAdded: [
       {
-        name: 'Will Save +2',
+        name: 'Will Save',
+        modifier: 2,
         bonus: 'Quality'
       }
     ]
@@ -11232,7 +11478,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11247,7 +11493,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, NOE)',
     effectsAdded: [
       {
-        name: 'Fortitude Save +2',
+        name: 'Fortitude Save',
+        modifier: 2,
         bonus: 'Quality'
       }
     ]
@@ -11272,7 +11519,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11287,7 +11534,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, POE)',
     effectsAdded: [
       {
-        name: 'Will Save +2',
+        name: 'Will Save',
+        modifier: 2,
         bonus: 'Quality'
       }
     ]
@@ -11312,7 +11560,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11327,7 +11575,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, AOM)',
     effectsAdded: [
       {
-        name: 'Electric Resistance +17',
+        name: 'Electric Resistance',
+        modifier: 17,
         bonus: 'Competence'
       }
     ]
@@ -11352,7 +11601,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11367,7 +11616,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, EOM)',
     effectsAdded: [
       {
-        name: 'Acid Resistance +17',
+        name: 'Acid Resistance',
+        modifier: 17,
         bonus: 'Competence'
       }
     ]
@@ -11392,7 +11642,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11407,7 +11657,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, FOM)',
     effectsAdded: [
       {
-        name: 'Fire Resistance +17',
+        name: 'Fire Resistance',
+        modifier: 17,
         bonus: 'Competence'
       }
     ]
@@ -11432,7 +11683,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11447,7 +11698,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, WOM)',
     effectsAdded: [
       {
-        name: 'Cold Resistance +17',
+        name: 'Cold Resistance',
+        modifier: 17,
         bonus: 'Competence'
       }
     ]
@@ -11472,7 +11724,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11490,7 +11742,8 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         name: 'Deathblock'
       },
       {
-        name: ' Negative Resistance +25',
+        name: 'Negative Resistance',
+        modifier: 25,
         bonus: 'Enhancement'
       }
     ]
@@ -11515,7 +11768,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
       }
     ],
     quantity: 1,
-    craftedIn: 'Legendary Altar of Subjugation',
+    craftedIn: 'Legendary Altar of Devastation',
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -11530,11 +11783,13 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 3, POM)',
     effectsAdded: [
       {
-        name: 'Unconscious Range +32',
+        name: 'Unconscious Range',
+        modifier: 32,
         bonus: 'Quality'
       },
       {
-        name: ' Positive Healing per 10s +4',
+        name: 'Positive Healing per 10s',
+        modifier: 4,
         bonus: 'Quality'
       }
     ]

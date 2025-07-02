@@ -486,7 +486,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, ADE)',
     effectsAdded: [
       {
-        name: 'Electric Spell Power +37',
+        name: 'Electric Spell Power',
+        modifier: 37,
         bonus: 'Quality'
       }
     ]
@@ -525,7 +526,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, ADE)',
     effectsAdded: [
       {
-        name: 'Electric Spell Critical Damage +10%',
+        name: 'Electric Spell Critical Damage',
+        modifier: '10%',
         bonus: 'Insight'
       }
     ]
@@ -564,7 +566,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, EDE)',
     effectsAdded: [
       {
-        name: 'Acid Spell Power +37',
+        name: 'Acid Spell Power',
+        modifier: 37,
         bonus: 'Quality'
       }
     ]
@@ -603,7 +606,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, EDE)',
     effectsAdded: [
       {
-        name: 'Acid Spell Critical Damage +10%',
+        name: 'Acid Spell Critical Damage',
+        modifier: '10%',
         bonus: 'Insight'
       }
     ]
@@ -642,7 +646,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, FDE)',
     effectsAdded: [
       {
-        name: 'Fire Spell Power +37',
+        name: 'Fire Spell Power',
+        modifier: 37,
         bonus: 'Quality'
       }
     ]
@@ -681,7 +686,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, FDE)',
     effectsAdded: [
       {
-        name: 'Fire Spell Critical Damage +10%',
+        name: 'Fire Spell Critical Damage',
+        modifier: '10%',
         bonus: 'Insight'
       }
     ]
@@ -720,7 +726,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, WDE)',
     effectsAdded: [
       {
-        name: 'Cold Spell Power +37',
+        name: 'Cold Spell Power',
+        modifier: 37,
         bonus: 'Quality'
       }
     ]
@@ -759,7 +766,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, WDE)',
     effectsAdded: [
       {
-        name: 'Cold Spell Critical Damage +10%',
+        name: 'Cold Spell Critical Damage',
+        modifier: '10%',
         bonus: 'Insight'
       }
     ]
@@ -798,7 +806,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, NDE)',
     effectsAdded: [
       {
-        name: 'Negative and Poison Spell Power +37',
+        name: 'Negative and Poison Spell Power',
+        modifier: 37,
         bonus: 'Quality'
       }
     ]
@@ -837,7 +846,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, NDE)',
     effectsAdded: [
       {
-        name: 'Negative Spell Critical Damage +10%',
+        name: 'Negative Spell Critical Damage',
+        modifier: '10%',
         bonus: 'Insight'
       }
     ]
@@ -876,7 +886,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, PDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power +37',
+        name: 'Positive Spell Power',
+        modifier: 37,
         bonus: 'Quality'
       }
     ]
@@ -915,7 +926,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, PDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Critical Damage +10%',
+        name: 'Positive Spell Critical Damage',
+        modifier: '10%',
         bonus: 'Insight'
       }
     ]
@@ -1413,7 +1425,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, AEE)',
     effectsAdded: [
       {
-        name: 'Charisma +6',
+        name: 'Charisma',
+        modifier: 6,
         bonus: 'Insight'
       }
     ]
@@ -1452,31 +1465,38 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, AEE)',
     effectsAdded: [
       {
-        name: 'Maximum Spell Points +151',
+        name: 'Maximum Spell Points',
+        modifier: 151,
         bonus: 'Insight'
       },
       {
-        name: 'Bluff +11',
+        name: 'Bluff',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Diplomacy +11',
+        name: 'Diplomacy',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Haggle +11',
+        name: 'Haggle',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Intimidate +11',
+        name: 'Intimidate',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Perform +11',
+        name: 'Perform',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Use Magic Device + 3',
+        name: 'Use Magic Device',
+        modifier: 3,
         bonus: 'Insight'
       }
     ]
@@ -1515,7 +1535,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, EEE)',
     effectsAdded: [
       {
-        name: 'Wisdom +6',
+        name: 'Wisdom',
+        modifier: 6,
         bonus: 'Insight'
       }
     ]
@@ -1554,19 +1575,23 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, EEE)',
     effectsAdded: [
       {
-        name: 'Maximum Spell Points +151',
+        name: 'Maximum Spell Points',
+        modifier: 151,
         bonus: 'Insight'
       },
       {
-        name: 'Heal +11',
+        name: 'Heal',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Listen +11',
+        name: 'Listen',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Spot +11',
+        name: 'Spot',
+        modifier: 11,
         bonus: 'Insight'
       }
     ]
@@ -1605,7 +1630,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, FEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +6',
+        name: 'Intelligence',
+        modifier: 6,
         bonus: 'Insight'
       }
     ]
@@ -1644,23 +1670,28 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, FEE)',
     effectsAdded: [
       {
-        name: 'Maximum Spell Points +151',
+        name: 'Maximum Spell Points',
+        modifier: 151,
         bonus: 'Insight'
       },
       {
-        name: 'Disable Device +11',
+        name: 'Disable Device',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Repair +11',
+        name: 'Repair',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Search +11',
+        name: 'Search',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Spellcraft +11',
+        name: 'Spellcraft',
+        modifier: 11,
         bonus: 'Insight'
       }
     ]
@@ -1699,7 +1730,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, WEE)',
     effectsAdded: [
       {
-        name: 'Wisdom +6',
+        name: 'Wisdom',
+        modifier: 6,
         bonus: 'Insight'
       }
     ]
@@ -1738,19 +1770,23 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, WEE)',
     effectsAdded: [
       {
-        name: 'Maximum Spell Points +151',
+        name: 'Maximum Spell Points',
+        modifier: 151,
         bonus: 'Insight'
       },
       {
-        name: 'Heal +11',
+        name: 'Heal',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Listen +11',
+        name: 'Listen',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Spot +11',
+        name: 'Spot',
+        modifier: 11,
         bonus: 'Insight'
       }
     ]
@@ -1789,7 +1825,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, NEE)',
     effectsAdded: [
       {
-        name: 'Intelligence +6',
+        name: 'Intelligence',
+        modifier: 6,
         bonus: 'Insight'
       }
     ]
@@ -1828,23 +1865,28 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, NEE)',
     effectsAdded: [
       {
-        name: 'Maximum Spell Points +151',
+        name: 'Maximum Spell Points',
+        modifier: 151,
         bonus: 'Insight'
       },
       {
-        name: 'Disable Device +11',
+        name: 'Disable Device',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Repair +11',
+        name: 'Repair',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Search +11',
+        name: 'Search',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Spellcraft +11',
+        name: 'Spellcraft',
+        modifier: 11,
         bonus: 'Insight'
       }
     ]
@@ -1883,7 +1925,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, PEE)',
     effectsAdded: [
       {
-        name: 'Charisma +6',
+        name: 'Charisma',
+        modifier: 6,
         bonus: 'Insight'
       }
     ]
@@ -1922,31 +1965,38 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, PEE)',
     effectsAdded: [
       {
-        name: 'Maximum Spell Points +151',
+        name: 'Maximum Spell Points',
+        modifier: 151,
         bonus: 'Insight'
       },
       {
-        name: 'Bluff +11',
+        name: 'Bluff',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Diplomacy +11',
+        name: 'Diplomacy',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Haggle +11',
+        name: 'Haggle',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Intimidate +11',
+        name: 'Intimidate',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Perform +11',
+        name: 'Perform',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Use Magic Device + 3',
+        name: 'Use Magic Device',
+        modifier: 3,
         bonus: 'Insight'
       }
     ]
@@ -1985,7 +2035,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, AEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +6',
+        name: 'Dexterity',
+        modifier: 6,
         bonus: 'Insight'
       }
     ]
@@ -2024,27 +2075,33 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, AEM)',
     effectsAdded: [
       {
-        name: 'Maximum Hit Points +28',
+        name: 'Maximum Hit Points',
+        modifier: 28,
         bonus: 'Insight'
       },
       {
-        name: 'Balance +11',
+        name: 'Balance',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Hide +11',
+        name: 'Hide',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Move Silently +11',
+        name: 'Move Silently',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Open Lock +11',
+        name: 'Open Lock',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Tumble +11',
+        name: 'Tumble',
+        modifier: 11,
         bonus: 'Insight'
       }
     ]
@@ -2083,7 +2140,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, EEM)',
     effectsAdded: [
       {
-        name: 'Constitution +6',
+        name: 'Constitution',
+        modifier: 6,
         bonus: 'Insight'
       }
     ]
@@ -2122,11 +2180,13 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, EEM)',
     effectsAdded: [
       {
-        name: 'Maximum Hit Points +28',
+        name: 'Maximum Hit Points',
+        modifier: 28,
         bonus: 'Insight'
       },
       {
-        name: 'Concentration +11',
+        name: 'Concentration',
+        modifier: 11,
         bonus: 'Insight'
       }
     ]
@@ -2165,7 +2225,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, FEM)',
     effectsAdded: [
       {
-        name: 'Dexterity +6',
+        name: 'Dexterity',
+        modifier: 6,
         bonus: 'Insight'
       }
     ]
@@ -2204,27 +2265,33 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, FEM)',
     effectsAdded: [
       {
-        name: 'Maximum Hit Points +28',
+        name: 'Maximum Hit Points',
+        modifier: 28,
         bonus: 'Insight'
       },
       {
-        name: 'Balance +11',
+        name: 'Balance',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Hide +11',
+        name: 'Hide',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Move Silently +11',
+        name: 'Move Silently',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Open Lock +11',
+        name: 'Open Lock',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Tumble +11',
+        name: 'Tumble',
+        modifier: 11,
         bonus: 'Insight'
       }
     ]
@@ -2263,7 +2330,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, WEM)',
     effectsAdded: [
       {
-        name: 'Strength +6',
+        name: 'Strength',
+        modifier: 6,
         bonus: 'Insight'
       }
     ]
@@ -2302,15 +2370,18 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, WEM)',
     effectsAdded: [
       {
-        name: 'Maximum Hit Points +28',
+        name: 'Maximum Hit Points',
+        modifier: 28,
         bonus: 'Insight'
       },
       {
-        name: 'Jump +11',
+        name: 'Jump',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Swim +11',
+        name: 'Swim',
+        modifier: 11,
         bonus: 'Insight'
       }
     ]
@@ -2349,7 +2420,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, NEM)',
     effectsAdded: [
       {
-        name: 'Strength +6',
+        name: 'Strength',
+        modifier: 6,
         bonus: 'Insight'
       }
     ]
@@ -2388,15 +2460,18 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, NEM)',
     effectsAdded: [
       {
-        name: 'Maximum Hit Points +28',
+        name: 'Maximum Hit Points',
+        modifier: 28,
         bonus: 'Insight'
       },
       {
-        name: 'Jump +11',
+        name: 'Jump',
+        modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Swim +11',
+        name: 'Swim',
+        modifier: 11,
         bonus: 'Insight'
       }
     ]
@@ -2435,7 +2510,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, PEM)',
     effectsAdded: [
       {
-        name: 'Constitution +6',
+        name: 'Constitution',
+        modifier: 6,
         bonus: 'Insight'
       }
     ]
@@ -2474,11 +2550,13 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, PEM)',
     effectsAdded: [
       {
-        name: 'Maximum Hit Points +28',
+        name: 'Maximum Hit Points',
+        modifier: 28,
         bonus: 'Insight'
       },
       {
-        name: 'Concentration +11',
+        name: 'Concentration',
+        modifier: 11,
         bonus: 'Insight'
       }
     ]
@@ -2517,7 +2595,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, AOE)',
     effectsAdded: [
       {
-        name: 'MRR +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Quality'
       }
     ]
@@ -2556,7 +2635,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, AOE)',
     effectsAdded: [
       {
-        name: 'Reflex Save +7',
+        name: 'Reflex Save',
+        modifier: 7,
         bonus: 'Insight'
       }
     ]
@@ -2595,7 +2675,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, EOE)',
     effectsAdded: [
       {
-        name: 'MRR +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Quality'
       }
     ]
@@ -2634,7 +2715,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, EOE)',
     effectsAdded: [
       {
-        name: 'Fortitude Save +7',
+        name: 'Fortitude Save',
+        modifier: 7,
         bonus: 'Insight'
       }
     ]
@@ -2673,7 +2755,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, FOE)',
     effectsAdded: [
       {
-        name: 'MRR +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Quality'
       }
     ]
@@ -2712,7 +2795,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, FOE)',
     effectsAdded: [
       {
-        name: 'Reflex Save +7',
+        name: 'Reflex Save',
+        modifier: 7,
         bonus: 'Insight'
       }
     ]
@@ -2751,7 +2835,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, WOE)',
     effectsAdded: [
       {
-        name: 'MRR +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Quality'
       }
     ]
@@ -2790,7 +2875,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, WOE)',
     effectsAdded: [
       {
-        name: 'Will Save +7',
+        name: 'Will Save',
+        modifier: 7,
         bonus: 'Insight'
       }
     ]
@@ -2829,7 +2915,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, NOE)',
     effectsAdded: [
       {
-        name: 'MRR +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Quality'
       }
     ]
@@ -2868,7 +2955,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, NOE)',
     effectsAdded: [
       {
-        name: 'Fortitude Save +7',
+        name: 'Fortitude Save',
+        modifier: 7,
         bonus: 'Insight'
       }
     ]
@@ -2907,7 +2995,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, POE)',
     effectsAdded: [
       {
-        name: 'MRR +9',
+        name: 'Magical Resistance Rating',
+        modifier: 9,
         bonus: 'Quality'
       }
     ]
@@ -2946,7 +3035,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, POE)',
     effectsAdded: [
       {
-        name: 'Will Save +7',
+        name: 'Will Save',
+        modifier: 7,
         bonus: 'Insight'
       }
     ]
@@ -2985,7 +3075,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, AOM)',
     effectsAdded: [
       {
-        name: 'Electrical Absorption +30%',
+        name: 'Electrical Absorption',
+        modifier: '30%',
         bonus: 'Enhancement'
       }
     ]
@@ -3024,7 +3115,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, AOM)',
     effectsAdded: [
       {
-        name: 'Electric Resistance +25',
+        name: 'Electric Resistance',
+        modifier: 25,
         bonus: 'Insight'
       }
     ]
@@ -3063,7 +3155,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, EOM)',
     effectsAdded: [
       {
-        name: 'Acid Absorption +30%',
+        name: 'Acid Absorption',
+        modifier: '30%',
         bonus: 'Enhancement'
       }
     ]
@@ -3102,7 +3195,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, EOM)',
     effectsAdded: [
       {
-        name: 'Acid Resistance +25',
+        name: 'Acid Resistance',
+        modifier: 25,
         bonus: 'Insight'
       }
     ]
@@ -3141,7 +3235,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, FOM)',
     effectsAdded: [
       {
-        name: 'Fire Absorption +30%',
+        name: 'Fire Absorption',
+        modifier: '30%',
         bonus: 'Enhancement'
       }
     ]
@@ -3180,7 +3275,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, FOM)',
     effectsAdded: [
       {
-        name: 'Fire Resistance +25',
+        name: 'Fire Resistance',
+        modifier: 25,
         bonus: 'Insight'
       }
     ]
@@ -3219,7 +3315,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, WOM)',
     effectsAdded: [
       {
-        name: 'Cold Absorption +30%',
+        name: 'Cold Absorption',
+        modifier: '30%',
         bonus: 'Enhancement'
       }
     ]
@@ -3258,7 +3355,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, WOM)',
     effectsAdded: [
       {
-        name: 'Cold Resistance +25',
+        name: 'Cold Resistance',
+        modifier: 25,
         bonus: 'Insight'
       }
     ]
@@ -3297,7 +3395,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, NOM)',
     effectsAdded: [
       {
-        name: 'Negative Energy Absorption +30%',
+        name: 'Negative Energy Absorption',
+        modifier: '30%',
         bonus: 'Enhancement'
       }
     ]
@@ -3336,7 +3435,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, NOM)',
     effectsAdded: [
       {
-        name: 'Fortitude Save vs Poison +4',
+        name: 'Fortitude Save vs Poison',
+        modifier: 4,
         bonus: 'Insight'
       },
       {
@@ -3378,7 +3478,8 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, POM)',
     effectsAdded: [
       {
-        name: 'Positive Healing Amplification +50',
+        name: 'Positive Healing Amplification',
+        modifier: 50,
         bonus: 'Enhancement'
       }
     ]
@@ -3417,11 +3518,13 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Equipment, Tier 2, POM)',
     effectsAdded: [
       {
-        name: 'Unconscious Range +64',
+        name: 'Unconscious Range',
+        modifier: 64,
         bonus: 'Insight'
       },
       {
-        name: 'Positive Healing per 10s +8',
+        name: 'Positive Healing per 10s',
+        modifier: 8,
         bonus: 'Insight'
       }
     ]

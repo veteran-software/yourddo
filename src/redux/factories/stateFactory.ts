@@ -25,18 +25,24 @@ export const createInitialHgsState = (): GreenSteelState => ({
 })
 
 export const createInitialLgsState = (): LegendaryGreenSteelState => ({
-  devastationFilterMode: 'OR',
+  activeAugmentFilters: [],
+  activeAugments: [],
+  bonusEffectFilters: [],
+  bonusEffects: [],
+  devastationFilterMode: 'AND',
   devastationItemFilters: [],
   devastationItems: [],
   fecundityItems: [...altarOfFecundity].filter((item: CraftingIngredient) => isLgsWeaponOrAccessory(item.name)),
-  invasionFilterMode: 'OR',
+  invasionFilterMode: 'AND',
   invasionItemFilters: [],
   invasionItems: [],
+  selectedActiveAugment: undefined,
+  selectedBonusEffect: undefined,
   selectedDevastationItem: undefined,
   selectedFecundityItem: undefined,
   selectedInvasionItem: undefined,
   selectedSubjugationItem: undefined,
-  subjugationFilterMode: 'OR',
+  subjugationFilterMode: 'AND',
   subjugationItemFilters: [],
   subjugationItems: []
 })

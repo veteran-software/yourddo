@@ -25,7 +25,7 @@ const useRecipeBuilder = () => {
     const craftedMaterials: Record<string, number> = {}
 
     const traverse = (recipeIngredient: CraftingIngredient) => {
-      recipeIngredient.requirements.forEach((requirement: CraftingIngredient) => {
+      recipeIngredient.requirements?.forEach((requirement: CraftingIngredient) => {
         const ingredient: CraftingIngredient | undefined = findIngredientByName(requirement.name, whereToLook)
         if (ingredient) {
           craftedMaterials[ingredient.name] = (craftedMaterials[ingredient.name] ?? 0) + requirement.quantity
