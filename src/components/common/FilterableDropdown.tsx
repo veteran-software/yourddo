@@ -30,7 +30,7 @@ const FilterableDropdown = (props: Props) => {
 
   const renderDropdownItems = (key: string, ingredients: CraftingIngredient[]) => {
     if (ingredients.length === 0) {
-      return <Dropdown.Item disabled>No matching effects found.</Dropdown.Item>
+      return <></>
     }
 
     if (groupBySecondaryFocus && renderSectionHeader) {

@@ -2,12 +2,12 @@ import { Card, Col, Container, Row, Stack } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../redux/hooks.ts'
+import { LegendaryIngredientList } from '../common/helpers/IngredientList.tsx'
 import ActiveAugment from './components/ActiveAugment.tsx'
 import BonusEffectDropdown from './components/BonusEffectDropdown.tsx'
 import DevastationDropdown from './components/DevastationDropdown.tsx'
 import FecundityDropdown from './components/FecundityDropdown.tsx'
 import InvasionDropdown from './components/InvasionDropdown.tsx'
-import LegendaryIngredientList from './components/LegendaryIngredientList.tsx'
 import SubjugationDropdown from './components/SubjugationDropdown.tsx'
 
 const LegendaryGreenSteel = () => {
@@ -32,19 +32,22 @@ const LegendaryGreenSteel = () => {
 
         <Card.Body>
           <Row md={1} lg={2}>
-            <Stack direction='vertical' gap={3} className='w-auto'>
-              <FecundityDropdown />
+            <Col>
+              <Stack direction='vertical' gap={3}>
+                <FecundityDropdown />
 
-              {selectedFecundityItem && (
-                <>
-                  <InvasionDropdown />
-                  <SubjugationDropdown />
-                  <DevastationDropdown />
-                  <BonusEffectDropdown />
-                  <ActiveAugment />
-                </>
-              )}
-            </Stack>
+                {selectedFecundityItem && (
+                  <>
+                    <InvasionDropdown />
+                    <SubjugationDropdown />
+                    <DevastationDropdown />
+                    <BonusEffectDropdown />
+                    <ActiveAugment />
+                  </>
+                )}
+              </Stack>
+            </Col>
+
             <Col>
               <LegendaryIngredientList />
             </Col>
