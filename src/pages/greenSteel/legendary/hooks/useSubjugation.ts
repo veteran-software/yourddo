@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts'
 import { resetSubjugationItem } from '../../../../redux/slices/lgsSlice.ts'
@@ -15,6 +15,17 @@ const useSubjugation = () => {
     shallowEqual
   )
 
+  useEffect(() => {
+    if (selectedBonusEffect && selectedSubjugationItem) {
+      const lowerFoci: string[] = selectedBonusEffect.lowerFoci
+      const subjugationFocus: string = deconstructLgsShard(selectedSubjugationItem.name)?.focusP ?? ''
+
+      if (!lowerFoci.includes(subjugationFocus)) {
+        dispatch(resetSubjugationItem())
+      }
+    }
+  }, [selectedBonusEffect, selectedSubjugationItem, dispatch])
+
   const items: CraftingIngredient[] = useMemo(() => {
     return [...subjugationItems].filter((item: CraftingIngredient) => {
       if (selectedBonusEffect) {
@@ -22,7 +33,9 @@ const useSubjugation = () => {
         const itemFocus: string = deconstructLgsShard(item.name)?.focusP ?? ''
 
         if (selectedSubjugationItem) {
-          dispatch(resetSubjugationItem())
+          const subjugationFocus: string = deconstructLgsShard(selectedSubjugationItem.name)?.focusP ?? ''
+
+          return lowerFoci.includes(subjugationFocus)
         }
 
         if (selectedInvasionItem) {
@@ -41,7 +54,7 @@ const useSubjugation = () => {
 
       return true
     })
-  }, [dispatch, selectedBonusEffect, selectedInvasionItem, selectedSubjugationItem, subjugationItems])
+  }, [selectedBonusEffect, selectedInvasionItem, selectedSubjugationItem, subjugationItems])
 
   const elemental: ElementalList[] = useMemo(() => baseElemental, [])
 
