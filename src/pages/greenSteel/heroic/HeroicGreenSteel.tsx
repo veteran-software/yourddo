@@ -1,12 +1,12 @@
-import { Card, Col, Container, Row } from 'react-bootstrap'
+import { Card, Col, Container, Row, Stack } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
-import { useAppSelector } from '../../redux/hooks.ts'
+import { useAppSelector } from '../../../redux/hooks.ts'
 import DevastationBasicDropdown from './components/DevastationBasicDropdown.tsx'
 import DevastationFocusedDropdown from './components/DevastationFocusedDropdown.tsx'
 import FecundityDropdown from './components/FecundityDropdown.tsx'
 import InvasionDropdown from './components/InvasionDropdown.tsx'
-import IngredientList from './components/lists/IngredientList.tsx'
+import HeroicIngredientList from './components/lists/HeroicIngredientList.tsx'
 import SubjugationBasicDropdown from './components/SubjugationBasicDropdown.tsx'
 import SubjugationSpellDropdown from './components/SubjugationSpellDropdown.tsx'
 
@@ -32,7 +32,7 @@ const HeroicGreenSteel = () => {
 
         <Card.Body>
           <Row md={1} lg={2}>
-            <Col>
+            <Stack direction='vertical' gap={2}>
               <FecundityDropdown />
 
               {selectedFecundityItem && (
@@ -44,9 +44,9 @@ const HeroicGreenSteel = () => {
                   <DevastationFocusedDropdown />
                 </>
               )}
-            </Col>
+            </Stack>
             <Col>
-              <IngredientList />
+              <HeroicIngredientList />
             </Col>
           </Row>
         </Card.Body>

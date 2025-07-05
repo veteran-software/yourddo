@@ -38,6 +38,8 @@ const Footer = () => {
     }
   }, [dispatch])
 
+  const targetTime: DateTime = DateTime.fromISO('2025-07-15T14:00:00.000', { zone: 'est' })
+
   return (
     <Navbar ref={navRef} fixed='bottom' variant='dark' className='bg-primary overflow-x-auto overflow-y-hidden'>
       <Container fluid className='m-auto w-auto py-0'>
@@ -77,11 +79,11 @@ const Footer = () => {
             <ServerStatusDisplay name='Moonsea' up={undefined} comingSoon={true} />
           </Stack>
 
-          {/* Hide the timer at 1pm EST [the usual time the servers are back online after an update] */}
-          {DateTime.now().toSeconds() <= 1752080400 && (
+          {/* Hide the timer at 6pm EST */}
+          {DateTime.now().toSeconds() <= targetTime.plus({ hours: 4 }).toSeconds() && (
             <Stack className='w-auto justify-content-center' direction='horizontal' gap={2}>
               <strong>Countdown to 64-bit Servers:</strong>
-              <Countdown targetTimestamp={1752066000} />
+              <Countdown targetTimestamp={targetTime.toSeconds()} />
             </Stack>
           )}
         </Stack>

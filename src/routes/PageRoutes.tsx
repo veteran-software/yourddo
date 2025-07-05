@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom'
 import BaseLayout from '../components/layout/BaseLayout.tsx'
-import HeroicGreenSteel from '../pages/heroicGreenSteel/HeroicGreenSteel.tsx'
+import HeroicGreenSteel from '../pages/greenSteel/heroic/HeroicGreenSteel.tsx'
+import LegendaryGreenSteel from '../pages/greenSteel/legendary/LegendaryGreenSteel.tsx'
 import Home from '../pages/Home.tsx'
 import IncrediblePotential from '../pages/incrediblePotential/IncrediblePotential.tsx'
-import LegendaryGreenSteel from '../pages/legendaryGreenSteel/LegendaryGreenSteel.tsx'
 
 const PageRoutes = () => {
   return (

@@ -1,10 +1,10 @@
 import type { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import type { ReactNode } from 'react'
 import { Dropdown } from 'react-bootstrap'
-import { useAppDispatch } from '../../../redux/hooks.ts'
-import type { AppDispatch } from '../../../redux/store.ts'
-import type { Enhancement } from '../../../types/core.ts'
-import type { CraftingIngredient } from '../../../types/crafting.ts'
+import { useAppDispatch } from '../../../../redux/hooks.ts'
+import type { AppDispatch } from '../../../../redux/store.ts'
+import type { Enhancement } from '../../../../types/core.ts'
+import type { CraftingIngredient } from '../../../../types/crafting.ts'
 
 const IngredientDropdownSection = (props: Props) => {
   const { clickHandler, fecundity, header, ingredientList } = props
@@ -41,7 +41,11 @@ const IngredientDropdownSection = (props: Props) => {
             >
               <small>
                 {ingredient.effectsAdded
-                  ?.map((effect: Enhancement) => effect.name)
+                  ?.map((effect: Enhancement) => {
+                    return `${effect.name}${
+                      effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''
+                    }`
+                  })
                   .toSorted((a: string, b: string) => a.localeCompare(b))
                   .join(', ')}
               </small>

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Accordion, ListGroup } from 'react-bootstrap'
 import { FaExclamationTriangle } from 'react-icons/fa'
-import type { CraftingIngredient } from '../../../types/crafting.ts'
+import type { CraftingIngredient } from '../../../../types/crafting.ts'
 import DualShardInstructions from './DualShardInstructions.tsx'
 
 const TierAccordionItem = (props: Props) => {

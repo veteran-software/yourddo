@@ -13,7 +13,7 @@ const ServerStatusDisplay = (props: Props) => {
     if (comingSoon) {
       return (
         <FaCircleNotch
-          title='Coming July 9th!'
+          title='Coming July 15th!'
           size={15}
           color='gray'
           style={{ animation: 'spin 1s linear infinite' }}

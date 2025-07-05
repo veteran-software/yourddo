@@ -149,30 +149,9 @@ const FilterSection = <T,>(props: Props<T>) => {
         lg={maxFilterColumns}
         className='g-2'
       >
-        {filterOptions.map((filter) => (
-          <Col key={filter}>
-            {filterMode === 'AND' && incompatibleFilters.includes(filter) && !selectedFilters.includes(filter) ? (
-              <div style={customStyles.disabledFilter}>
-                <Form.Check
-                  type='switch'
-                  id={`filter-${removeWhitespace(filter, '-').toLowerCase()}`}
-                  checked={selectedFilters.includes(filter)}
-                  onChange={() => {
-                    toggleFilter(filter)
-                  }}
-                  disabled={true}
-                  className='text-truncate'
-                  label={
-                    <span className='d-flex justify-content-between align-items-center w-100'>
-                      <span className='text-truncate'>{filter}</span>
-                      <Badge bg='secondary' pill className='ms-1'>
-                        {filterCounts[filter]}
-                      </Badge>
-                    </span>
-                  }
-                />
-              </div>
-            ) : (
+        {filterOptions.map((filter) => {
+          return (
+            <Col key={filter}>
               <Form.Check
                 type='switch'
                 id={`filter-${removeWhitespace(filter, '-').toLowerCase()}`}
@@ -180,6 +159,9 @@ const FilterSection = <T,>(props: Props<T>) => {
                 onChange={() => {
                   toggleFilter(filter)
                 }}
+                disabled={
+                  filterMode === 'AND' && incompatibleFilters.includes(filter) && !selectedFilters.includes(filter)
+                }
                 className='text-truncate'
                 label={
                   <span className='d-flex justify-content-between align-items-center w-100'>
@@ -190,9 +172,9 @@ const FilterSection = <T,>(props: Props<T>) => {
                   </span>
                 }
               />
-            )}
-          </Col>
-        ))}
+            </Col>
+          )
+        })}
       </Row>
 
       {selectedFilters.length > 0 && (

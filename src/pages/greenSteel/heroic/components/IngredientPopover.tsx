@@ -1,12 +1,12 @@
 import { ListGroup, Popover, PopoverBody, PopoverHeader } from 'react-bootstrap'
 import type { OverlayInjectedProps } from 'react-bootstrap/OverlayTrigger'
-import CraftedIngredientDisplay from '../../../components/CraftedIngredientDisplay.tsx'
-import FarmedIngredientDisplay from '../../../components/FarmedIngredientDisplay.tsx'
-import { ingredients } from '../../../data/ingredients.ts'
-import type { CraftingIngredient } from '../../../types/crafting.ts'
-import type { Ingredient } from '../../../types/ingredients.ts'
-import { findIngredientByName } from '../../../utils/objectUtils.ts'
-import { allAltars } from '../helpers/elementalData.ts'
+import CraftedIngredientDisplay from '../../../../components/CraftedIngredientDisplay.tsx'
+import FarmedIngredientDisplay from '../../../../components/FarmedIngredientDisplay.tsx'
+import { ingredients } from '../../../../data/ingredients.ts'
+import type { CraftingIngredient } from '../../../../types/crafting.ts'
+import type { Ingredient } from '../../../../types/ingredients.ts'
+import { findIngredientByName } from '../../../../utils/objectUtils.ts'
+import { allAltars } from '../../common/helpers/elementalData.ts'
 
 const IngredientPopover = (props: Props) => {
   const { ingredient, popper } = props
@@ -20,7 +20,7 @@ const IngredientPopover = (props: Props) => {
       </PopoverHeader>
       <PopoverBody className='m-0 p-0'>
         <ListGroup variant='flush'>
-          {(ingredient as CraftingIngredient).requirements.map((ing: CraftingIngredient, idx: number) => {
+          {(ingredient as CraftingIngredient).requirements?.map((ing: CraftingIngredient, idx: number) => {
             const altarCheck: CraftingIngredient | undefined = findIngredientByName(ing.name, allAltars)
 
             if (altarCheck) {

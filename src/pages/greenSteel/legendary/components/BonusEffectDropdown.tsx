@@ -1,34 +1,33 @@
 import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
-import { resetActiveAugment, setActiveAugment } from '../../../redux/slices/lgsSlice.ts'
-import type { AppDispatch } from '../../../redux/store.ts'
-import type { CraftingIngredient } from '../../../types/crafting.ts'
-import IngredientDropdownToggle from '../../heroicGreenSteel/components/IngredientDropdownToggle.tsx'
+import { type LegendaryGreenSteelBonus, legendaryGreenSteelBonus } from '../../../../data/legendaryGreenSteelBonus.ts'
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts'
+import { resetBonusEffect, setBonusEffect } from '../../../../redux/slices/lgsSlice.ts'
+import type { AppDispatch } from '../../../../redux/store.ts'
+import IngredientDropdownToggle from '../../heroic/components/IngredientDropdownToggle.tsx'
 
-const ActiveAugment = () => {
+const BonusEffectDropdown = () => {
   const dispatch: AppDispatch = useAppDispatch()
 
-  const { selectedActiveAugment, activeAugments } = useAppSelector((state) => state.legendaryGreenSteel, shallowEqual)
+  const { selectedBonusEffect } = useAppSelector((state) => state.legendaryGreenSteel, shallowEqual)
 
   const label = (
     <>
-      <Col sm={1} title='Legendary Green Steel : Active Augment'>
-        <small>Aug:</small>
+      <Col sm={1} title='Legendary Green Steel : Bonus Effect'>
+        <small>Bonus:</small>
       </Col>
 
       <Col sm={11} className='d-flex justify-content-start'>
         <strong>
-          <small>{selectedActiveAugment ? selectedActiveAugment.name : 'Select an Augment...'}</small>
+          <small>{selectedBonusEffect ? selectedBonusEffect.name : 'Select a Bonus...'}</small>
         </strong>
       </Col>
     </>
   )
 
   return (
-    <>
-      <hr />
-      <small>Active Augment</small>
+    <Stack direction='vertical' gap={0}>
+      <small>Bonus Effect</small>
 
       <Stack direction='horizontal' gap={2}>
         <Dropdown className='d-flex flex-grow-1'>
@@ -41,11 +40,11 @@ const ActiveAugment = () => {
               overflowY: 'auto'
             }}
           >
-            {activeAugments.map((bonus: CraftingIngredient) => (
+            {legendaryGreenSteelBonus.map((bonus: LegendaryGreenSteelBonus) => (
               <Dropdown.Item
                 key={bonus.name}
                 onClick={() => {
-                  dispatch(setActiveAugment(bonus))
+                  dispatch(setBonusEffect(bonus))
                 }}
               >
                 <Stack direction='vertical' gap={1} title={bonus.description}>
@@ -61,19 +60,19 @@ const ActiveAugment = () => {
           </Dropdown.Menu>
         </Dropdown>
 
-        {selectedActiveAugment && (
+        {selectedBonusEffect && (
           <Button
             variant='outline-info'
             onClick={() => {
-              dispatch(resetActiveAugment())
+              dispatch(resetBonusEffect())
             }}
           >
             Reset
           </Button>
         )}
       </Stack>
-    </>
+    </Stack>
   )
 }
 
-export default ActiveAugment
+export default BonusEffectDropdown
