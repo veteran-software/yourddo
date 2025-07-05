@@ -145,7 +145,7 @@ export const deconstructLgsShard = (
   if (elements.length === 3) {
     const [focus, essence, gem] = elements
 
-    if (!isValidFocus(focus) || !ESSENCES.includes(essence) || !GEMS.includes(gem)) {
+    if (!isValidFocus(focus.replace('Legendary ', '')) || !ESSENCES.includes(essence) || !GEMS.includes(gem)) {
       return null
     }
 
@@ -179,7 +179,7 @@ export const deconstructLgsShard = (
  * @param whereToLook
  * @returns {CraftingIngredient | undefined} The ingredient object if found, or undefined if no match is found.
  */
-export const findIngredientByName = (
+export const findCraftedIngredientByName = (
   ingredientName: string,
   whereToLook: CraftingIngredient[]
 ): CraftingIngredient | undefined => {

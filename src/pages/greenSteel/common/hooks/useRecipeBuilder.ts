@@ -9,7 +9,7 @@ import { legendaryAltarOfInvasion } from '../../../../data/legendaryAltarOfInvas
 import { legendaryAltarOfSubjugation } from '../../../../data/legendaryAltarOfSubjugation.ts'
 import { useAppSelector } from '../../../../redux/hooks.ts'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
-import { findIngredientByName } from '../../../../utils/objectUtils.ts'
+import { findCraftedIngredientByName } from '../../../../utils/objectUtils.ts'
 
 type GreenSteelType = 'heroic' | 'legendary'
 
@@ -58,7 +58,7 @@ const useRecipeBuilder = (type: GreenSteelType) => {
 
     const traverse = (recipeIngredient: CraftingIngredient) => {
       recipeIngredient.requirements?.forEach((requirement: CraftingIngredient) => {
-        const ingredient: CraftingIngredient | undefined = findIngredientByName(requirement.name, whereToLook)
+        const ingredient: CraftingIngredient | undefined = findCraftedIngredientByName(requirement.name, whereToLook)
         if (ingredient) {
           craftedMaterials[ingredient.name] = (craftedMaterials[ingredient.name] ?? 0) + requirement.quantity
           traverse(ingredient)

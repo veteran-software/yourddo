@@ -25,7 +25,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Commendations of Valor',
+        name: 'Commendation of Valor',
         quantity: 100,
         requirements: []
       }
@@ -66,7 +66,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Commendations of Valor',
+        name: 'Commendation of Valor',
         quantity: 100,
         requirements: []
       }
@@ -107,7 +107,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Commendations of Valor',
+        name: 'Commendation of Valor',
         quantity: 100,
         requirements: []
       }
@@ -148,7 +148,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Commendations of Valor',
+        name: 'Commendation of Valor',
         quantity: 100,
         requirements: []
       }
@@ -189,7 +189,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Commendations of Valor',
+        name: 'Commendation of Valor',
         quantity: 100,
         requirements: []
       }
@@ -230,7 +230,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Commendations of Valor',
+        name: 'Commendation of Valor',
         quantity: 100,
         requirements: []
       }
@@ -271,7 +271,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Commendations of Valor',
+        name: 'Commendation of Valor',
         quantity: 100,
         requirements: []
       }
@@ -312,7 +312,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Commendations of Valor',
+        name: 'Commendation of Valor',
         quantity: 100,
         requirements: []
       }
@@ -353,7 +353,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Commendations of Valor',
+        name: 'Commendation of Valor',
         quantity: 100,
         requirements: []
       }
@@ -394,7 +394,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Commendations of Valor',
+        name: 'Commendation of Valor',
         quantity: 100,
         requirements: []
       }
@@ -435,7 +435,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Commendations of Valor',
+        name: 'Commendation of Valor',
         quantity: 100,
         requirements: []
       }

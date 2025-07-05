@@ -8,7 +8,7 @@ import { altarOfInvasion } from '../../../../../data/altarOfInvasion.ts'
 import { altarOfSubjugation } from '../../../../../data/altarOfSubjugation.ts'
 import { ingredients } from '../../../../../data/ingredients.ts'
 import type { CraftingIngredient } from '../../../../../types/crafting.ts'
-import { findIngredientByName } from '../../../../../utils/objectUtils.ts'
+import { findCraftedIngredientByName } from '../../../../../utils/objectUtils.ts'
 
 const MaterialsAccordion = (props: Props) => {
   const { craftedMaterials, rawMaterials } = props
@@ -29,14 +29,14 @@ const MaterialsAccordion = (props: Props) => {
                   return <Fragment key={name} />
                 }
 
-                if (findIngredientByName(name, ingredients as CraftingIngredient[]) === undefined) {
-                  console.debug(name)
+                if (findCraftedIngredientByName(name, ingredients as CraftingIngredient[]) === undefined) {
+                  console.log(name)
                 }
 
                 return (
                   <ListGroup.Item key={name}>
                     <FarmedIngredientDisplay
-                      ingredient={findIngredientByName(name, ingredients as CraftingIngredient[])}
+                      ingredient={findCraftedIngredientByName(name, ingredients as CraftingIngredient[])}
                       quantity={count}
                     />
                   </ListGroup.Item>
@@ -56,7 +56,7 @@ const MaterialsAccordion = (props: Props) => {
                 return (
                   <ListGroup.Item key={name}>
                     <CraftedIngredientDisplay
-                      ingredient={findIngredientByName(name, [
+                      ingredient={findCraftedIngredientByName(name, [
                         ...altarOfFecundity,
                         ...altarOfInvasion,
                         ...altarOfSubjugation,

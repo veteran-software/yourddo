@@ -7,9 +7,29 @@ import { baseElemental, type ElementalList } from '../../common/helpers/elementa
 import useIngredientsMap from '../../heroic/hooks/useIngredientMap.ts'
 
 export const useDevastation = () => {
-  const { devastationItems } = useAppSelector((state) => state.legendaryGreenSteel, shallowEqual)
+  const { devastationItems, selectedBonusEffect } = useAppSelector((state) => state.legendaryGreenSteel, shallowEqual)
 
-  const items: CraftingIngredient[] = useMemo(() => [...devastationItems], [devastationItems])
+  const items: CraftingIngredient[] = useMemo(
+    () =>
+      [...devastationItems].filter((item: CraftingIngredient) => {
+        if (selectedBonusEffect) {
+          const tier3Foci: string[] = selectedBonusEffect.tier3Foci
+          const shard = deconstructLgsShard(item.name)
+
+          if (shard?.focusP && shard.focusS) {
+            return (
+              (tier3Foci[0].includes(shard.focusP) && tier3Foci[1].includes(shard.focusS)) ||
+              (tier3Foci[1].includes(shard.focusP) && tier3Foci[0].includes(shard.focusS))
+            )
+          }
+
+          return false
+        }
+
+        return true
+      }),
+    [devastationItems, selectedBonusEffect]
+  )
   const elemental: ElementalList[] = useMemo(() => baseElemental, [])
 
   const filterCallback = useCallback((item: CraftingIngredient, elementName: string) => {

@@ -1,10 +1,10 @@
 import { ListGroup } from 'react-bootstrap'
 import { altarOfDevastation } from '../../../../data/altarOfDevastation.ts'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
-import { findIngredientByName } from '../../../../utils/objectUtils.ts'
+import { findCraftedIngredientByName } from '../../../../utils/objectUtils.ts'
 
 const DualShardInstructions = ({ selectedItem }: { selectedItem: { requirements: CraftingIngredient[] } }) => {
-  const dualShardIngredient = findIngredientByName(selectedItem.requirements[1].name, altarOfDevastation)
+  const dualShardIngredient = findCraftedIngredientByName(selectedItem.requirements[1].name, altarOfDevastation)
 
   if (!dualShardIngredient) return null
 

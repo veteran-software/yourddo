@@ -5,7 +5,7 @@ import MaterialsAccordion from '../../pages/greenSteel/heroic/components/lists/M
 import TierAccordionItem from '../../pages/greenSteel/heroic/components/TierAccordionItem.tsx'
 import type { CraftingIngredient } from '../../types/crafting'
 import type { Ingredient } from '../../types/ingredients.ts'
-import { findIngredientByName } from '../../utils/objectUtils'
+import { findCraftedIngredientByName } from '../../utils/objectUtils'
 import CraftedIngredientDisplay from '../CraftedIngredientDisplay.tsx'
 import FarmedIngredientDisplay from '../FarmedIngredientDisplay.tsx'
 
@@ -13,7 +13,7 @@ const BaseIngredientList = (props: Props) => {
   const { craftedMaterials, ingredientSources, rawMaterials, tiers } = props
 
   const getDisplay = (requirement: CraftingIngredient) => {
-    const ingredient: CraftingIngredient | undefined = findIngredientByName(requirement.name, ingredientSources)
+    const ingredient: CraftingIngredient | undefined = findCraftedIngredientByName(requirement.name, ingredientSources)
 
     if (ingredient) {
       return (
