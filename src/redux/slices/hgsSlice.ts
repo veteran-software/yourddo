@@ -79,6 +79,9 @@ const { actions, reducer } = createSlice({
     setDevastationBasicFilterMode: (state, action: PayloadAction<'OR' | 'AND'>) => {
       state.devastationBasicFilterMode = action.payload
     },
+    setDevastationFocusedFilterMode: (state, action: PayloadAction<'OR' | 'AND'>) => {
+      state.devastationBasicFilterMode = action.payload
+    },
     setInvasionItemFilters: (state, action: PayloadAction<string[]>) => {
       state.invasionItemFilters = [...action.payload]
     },
@@ -139,7 +142,8 @@ export const {
   setInvasionItemFilters,
   setSubjugationItemFilters,
   setDevastationBasicItemFilters,
-  setDevastationFocusedItemFilters
+  setDevastationFocusedItemFilters,
+  setDevastationFocusedFilterMode
 } = actions
 
 export default reducer

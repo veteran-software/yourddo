@@ -47,9 +47,9 @@ const FilterableDropdown = (props: Props) => {
           )}
         </Dropdown.Header>
 
-        {ingredients.map((ingredient: CraftingIngredient) => (
+        {ingredients.map((ingredient: CraftingIngredient, idx: number) => (
           <Dropdown.Item
-            key={ingredient.name}
+            key={`${ingredient.name}-${String(idx)}`}
             onClick={() => {
               onSelect(ingredient)
             }}
@@ -93,7 +93,9 @@ const FilterableDropdown = (props: Props) => {
             }}
           >
             {Object.entries(filteredItems ?? items).map(([key, ingredients]: [string, CraftingIngredient[]]) => (
-              <Fragment>{renderDropdownItems(key, ingredients)}</Fragment>
+              <Fragment key={`${key}-${ingredients.map((ing: CraftingIngredient) => ing.name).join('|')}`}>
+                {renderDropdownItems(key, ingredients)}
+              </Fragment>
             ))}
           </Dropdown.Menu>
         </Dropdown>

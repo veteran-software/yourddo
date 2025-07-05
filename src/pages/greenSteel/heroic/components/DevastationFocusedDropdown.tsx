@@ -5,8 +5,8 @@ import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts'
 import {
   resetDevastationFocused,
   selectDevastationFocused,
-  setDevastationBasicFilterMode,
-  setDevastationBasicItemFilters
+  setDevastationFocusedFilterMode,
+  setDevastationFocusedItemFilters
 } from '../../../../redux/slices/hgsSlice.ts'
 import type { AppDispatch } from '../../../../redux/store.ts'
 import type { Enhancement } from '../../../../types/core.ts'
@@ -51,8 +51,8 @@ const DevastationFocusedDropdown = () => {
       canFilter
       filterMode={devastationFocusedFilterMode}
       filters={devastationFocusedItemFilters}
-      onFilterModeChange={(mode: 'OR' | 'AND') => dispatch(setDevastationBasicFilterMode(mode))}
-      onFiltersChange={(filters: string[]) => dispatch(setDevastationBasicItemFilters(filters))}
+      onFilterModeChange={(mode: 'OR' | 'AND') => dispatch(setDevastationFocusedFilterMode(mode))}
+      onFiltersChange={(filters: string[]) => dispatch(setDevastationFocusedItemFilters(filters))}
       renderSectionHeader={renderHeader}
       renderSectionBody={renderBody}
     />
