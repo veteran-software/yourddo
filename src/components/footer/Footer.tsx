@@ -72,11 +72,11 @@ const Footer = () => {
             <ServerStatusDisplay name='Lamannia' up={lamanniaUp} />
             &bull;
             {/* 64-bit servers coming soon */}
-            <ServerStatusDisplay name='Shadowdale' up={undefined} comingSoon={true} />
+            <ServerStatusDisplay name='Shadowdale' up={undefined} comingSoon={true} comingSoonDate={targetTime} />
             &bull;
-            <ServerStatusDisplay name='Thrane' up={undefined} comingSoon={true} />
+            <ServerStatusDisplay name='Thrane' up={undefined} comingSoon={true} comingSoonDate={targetTime} />
             &bull;
-            <ServerStatusDisplay name='Moonsea' up={undefined} comingSoon={true} />
+            <ServerStatusDisplay name='Moonsea' up={undefined} comingSoon={true} comingSoonDate={targetTime} />
           </Stack>
 
           {/* Hide the timer at 6pm EST */}
