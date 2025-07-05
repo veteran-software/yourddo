@@ -38,7 +38,7 @@ const Footer = () => {
     }
   }, [dispatch])
 
-  const targetTime: DateTime = DateTime.fromISO('2025-07-15T14:00:00.000', { zone: 'est' })
+  const targetTime: DateTime = DateTime.fromISO('2025-07-15T18:00:00.000', { zone: 'gmt' })
 
   return (
     <Navbar ref={navRef} fixed='bottom' variant='dark' className='bg-primary overflow-x-auto overflow-y-hidden'>

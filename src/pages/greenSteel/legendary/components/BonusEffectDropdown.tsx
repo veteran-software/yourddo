@@ -4,7 +4,6 @@ import { type LegendaryGreenSteelBonus, legendaryGreenSteelBonus } from '../../.
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts'
 import { resetBonusEffect, setBonusEffect } from '../../../../redux/slices/lgsSlice.ts'
 import type { AppDispatch } from '../../../../redux/store.ts'
-import IngredientDropdownToggle from '../../heroic/components/IngredientDropdownToggle.tsx'
 
 const BonusEffectDropdown = () => {
   const dispatch: AppDispatch = useAppDispatch()
@@ -31,7 +30,9 @@ const BonusEffectDropdown = () => {
 
       <Stack direction='horizontal' gap={2}>
         <Dropdown className='d-flex flex-grow-1'>
-          <IngredientDropdownToggle label={label} />
+          <Dropdown.Toggle className='w-100 d-flex flex-row align-items-center justify-content-center border-light'>
+            {label}
+          </Dropdown.Toggle>
 
           <Dropdown.Menu
             className='py-0 w-100'
