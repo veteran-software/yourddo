@@ -45,7 +45,10 @@ const useRecipeBuilder = () => {
     dispatch(clearRawMaterials())
   }
 
-  return { recipeBuilder, resetRecipe }
+  return {
+    recipeBuilder,
+    resetRecipe
+  }
 }
 
 export default useRecipeBuilder

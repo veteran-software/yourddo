@@ -67,7 +67,12 @@ const BaseItemDropdown = (props: Props) => {
     <Stack direction='horizontal' gap={2}>
       <Dropdown className='d-flex flex-grow-1'>
         <Dropdown.Toggle variant='outline-info w-100'>{buttonLabel}</Dropdown.Toggle>
-        <Dropdown.Menu style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+        <Dropdown.Menu
+          style={{
+            maxHeight: '50vh',
+            overflowY: 'auto'
+          }}
+        >
           {filteredRingList.map((item: Ring, idx: number) => (
             <Dropdown.Item
               key={`${item.name}-${String(idx)}`}

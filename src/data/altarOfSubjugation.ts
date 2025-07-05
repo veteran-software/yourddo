@@ -12,15 +12,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     },
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Medium Glowing Arrowhead', quantity: 1, requirements: [] },
-      { name: 'Medium Gnawed Bone', quantity: 1, requirements: [] },
-      { name: 'Medium Twisted Shrapnel', quantity: 1, requirements: [] },
+      {
+        name: 'Medium Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Medium Length of Infernal Chain',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -34,11 +50,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     },
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Medium Glowing Arrowhead', quantity: 1, requirements: [] },
-      { name: 'Medium Gnawed Bone', quantity: 1, requirements: [] },
-      { name: 'Medium Twisted Shrapnel', quantity: 1, requirements: [] },
-      { name: 'Medium Sulfurous Stone', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Medium Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -52,11 +88,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     },
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Medium Glowing Arrowhead', quantity: 1, requirements: [] },
-      { name: 'Medium Gnawed Bone', quantity: 1, requirements: [] },
-      { name: 'Medium Twisted Shrapnel', quantity: 1, requirements: [] },
-      { name: 'Medium Devil Scales', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Medium Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -70,15 +126,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     },
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Medium Glowing Arrowhead', quantity: 1, requirements: [] },
-      { name: 'Medium Gnawed Bone', quantity: 1, requirements: [] },
+      {
+        name: 'Medium Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Medium Length of Infernal Chain',
         quantity: 1,
         requirements: []
       },
-      { name: 'Medium Devil Scales', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Medium Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -92,11 +164,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     },
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Medium Glowing Arrowhead', quantity: 1, requirements: [] },
-      { name: 'Medium Gnawed Bone', quantity: 1, requirements: [] },
-      { name: 'Medium Sulfurous Stone', quantity: 1, requirements: [] },
-      { name: 'Medium Devil Scales', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Medium Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -110,15 +202,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     },
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Medium Glowing Arrowhead', quantity: 1, requirements: [] },
-      { name: 'Medium Twisted Shrapnel', quantity: 1, requirements: [] },
+      {
+        name: 'Medium Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Medium Length of Infernal Chain',
         quantity: 1,
         requirements: []
       },
-      { name: 'Medium Sulfurous Stone', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Medium Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -132,11 +240,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     },
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Medium Glowing Arrowhead', quantity: 1, requirements: [] },
-      { name: 'Medium Twisted Shrapnel', quantity: 1, requirements: [] },
-      { name: 'Medium Sulfurous Stone', quantity: 1, requirements: [] },
-      { name: 'Medium Devil Scales', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Medium Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -150,15 +278,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     },
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Medium Glowing Arrowhead', quantity: 1, requirements: [] },
+      {
+        name: 'Medium Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Medium Length of Infernal Chain',
         quantity: 1,
         requirements: []
       },
-      { name: 'Medium Sulfurous Stone', quantity: 1, requirements: [] },
-      { name: 'Medium Devil Scales', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Medium Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -172,15 +316,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     },
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Medium Gnawed Bone', quantity: 1, requirements: [] },
-      { name: 'Medium Twisted Shrapnel', quantity: 1, requirements: [] },
+      {
+        name: 'Medium Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Medium Length of Infernal Chain',
         quantity: 1,
         requirements: []
       },
-      { name: 'Medium Devil Scales', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Medium Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -194,15 +354,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     },
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Medium Gnawed Bone', quantity: 1, requirements: [] },
+      {
+        name: 'Medium Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Medium Length of Infernal Chain',
         quantity: 1,
         requirements: []
       },
-      { name: 'Medium Sulfurous Stone', quantity: 1, requirements: [] },
-      { name: 'Medium Devil Scales', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Medium Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   {
@@ -216,15 +392,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     },
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Medium Twisted Shrapnel', quantity: 1, requirements: [] },
+      {
+        name: 'Medium Twisted Shrapnel',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Medium Length of Infernal Chain',
         quantity: 1,
         requirements: []
       },
-      { name: 'Medium Sulfurous Stone', quantity: 1, requirements: [] },
-      { name: 'Medium Devil Scales', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Medium Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Medium Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ]
   },
   // Shard of Great Power Recipes
@@ -235,11 +427,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Earth', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Dominion', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Earth',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -260,11 +472,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Earth', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Opposition', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Earth',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -285,11 +517,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Earth', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Escalation', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Earth',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -310,11 +562,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Earth', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Dominion', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Earth',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -335,11 +607,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Earth', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Opposition', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Earth',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -360,11 +652,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Earth', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Escalation', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Earth',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -385,11 +697,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Air', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Dominion', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Air',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -410,11 +742,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Air', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Opposition', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Air',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -435,11 +787,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Air', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Escalation', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Air',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -460,11 +832,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Air', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Dominion', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Air',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -485,11 +877,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Air', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Opposition', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Air',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -510,11 +922,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Air', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Escalation', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Air',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -535,11 +967,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Fire', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Dominion', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Fire',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -560,11 +1012,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Fire', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Opposition', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Fire',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -585,11 +1057,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Fire', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Escalation', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Fire',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -610,11 +1102,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Fire', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Dominion', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Fire',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -635,11 +1147,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Fire', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Opposition', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Fire',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -660,11 +1192,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Fire', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Escalation', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Fire',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -685,11 +1237,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Water', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Dominion', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Water',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -710,11 +1282,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Water', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Opposition', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Water',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -735,11 +1327,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Water', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Escalation', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Water',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -760,11 +1372,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Water', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Dominion', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Water',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -785,11 +1417,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Water', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Opposition', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Water',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -810,11 +1462,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Water', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Escalation', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Water',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -835,11 +1507,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Positive Energy', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Dominion', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Positive Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -860,11 +1552,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Positive Energy', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Opposition', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Positive Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -885,11 +1597,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Positive Energy', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Escalation', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Positive Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -910,11 +1642,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Positive Energy', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Dominion', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Positive Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -935,11 +1687,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Positive Energy', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Opposition', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Positive Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -960,11 +1732,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Positive Energy', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Escalation', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Positive Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -985,11 +1777,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Negative Energy', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Dominion', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Negative Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1010,11 +1822,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Negative Energy', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Opposition', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Negative Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1035,11 +1867,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Negative Energy', quantity: 1, requirements: [] },
-      { name: 'Material Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Escalation', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Negative Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Material Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1060,11 +1912,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Negative Energy', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Dominion', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Negative Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Dominion',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1085,11 +1957,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Negative Energy', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Opposition', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Negative Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Opposition',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1110,11 +2002,31 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Shard of Great Power', quantity: 1, requirements: [] },
-      { name: 'Focus of Negative Energy', quantity: 1, requirements: [] },
-      { name: 'Ethereal Essence', quantity: 1, requirements: [] },
-      { name: 'Gem of Escalation', quantity: 1, requirements: [] },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shard of Great Power',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Focus of Negative Energy',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Ethereal Essence',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Gem of Escalation',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1137,13 +2049,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1176,13 +2096,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1215,13 +2143,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1254,13 +2190,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1293,13 +2237,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1332,13 +2284,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1372,13 +2332,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1408,13 +2376,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1444,13 +2420,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1480,13 +2464,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1516,13 +2508,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1552,13 +2552,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1589,13 +2597,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1628,13 +2644,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1667,13 +2691,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1706,13 +2738,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1745,13 +2785,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1784,13 +2832,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1824,13 +2880,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1863,13 +2927,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1902,13 +2974,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1941,13 +3021,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -1980,13 +3068,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2019,13 +3115,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2059,13 +3163,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2098,13 +3210,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2138,13 +3258,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2178,13 +3306,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2218,13 +3354,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2258,13 +3402,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2299,13 +3451,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2338,13 +3498,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2377,13 +3545,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2417,13 +3593,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2457,13 +3641,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2497,13 +3689,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2537,13 +3737,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2573,13 +3781,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2609,13 +3825,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2645,13 +3869,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2681,13 +3913,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2717,13 +3957,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2754,13 +4002,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2791,13 +4047,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2828,13 +4092,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2865,13 +4137,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2902,13 +4182,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2939,13 +4227,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -2977,13 +4273,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3015,13 +4319,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3053,13 +4365,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3091,13 +4411,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3129,13 +4457,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3167,13 +4503,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3206,13 +4550,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3243,13 +4595,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3280,13 +4640,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3317,13 +4685,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3354,13 +4730,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3391,13 +4775,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3429,13 +4821,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3467,13 +4867,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3506,13 +4914,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3545,13 +4961,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3584,13 +5008,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3623,13 +5055,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3663,13 +5103,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3701,13 +5149,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3739,13 +5195,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3778,13 +5242,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3817,13 +5289,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3856,13 +5336,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Air Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3896,13 +5384,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3934,13 +5430,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -3972,13 +5476,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4010,13 +5522,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4048,13 +5568,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4086,13 +5614,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4125,13 +5661,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4162,13 +5706,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4199,13 +5751,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4236,13 +5796,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4273,13 +5841,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4310,13 +5886,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4348,13 +5932,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4386,13 +5978,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4424,13 +6024,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4462,13 +6070,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4500,13 +6116,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4538,13 +6162,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4577,13 +6209,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4620,13 +6260,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4663,13 +6311,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4706,13 +6362,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4749,13 +6413,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4792,13 +6464,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4836,13 +6516,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4874,13 +6562,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4913,13 +6609,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4952,13 +6656,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -4991,13 +6703,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5030,13 +6750,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5070,13 +6798,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5108,13 +6844,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5146,13 +6890,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5185,13 +6937,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5224,13 +6984,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5263,13 +7031,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5303,13 +7079,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5341,13 +7125,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5379,13 +7171,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5417,13 +7217,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5455,13 +7263,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5493,13 +7309,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5532,13 +7356,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5569,13 +7401,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5606,13 +7446,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5643,13 +7491,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5680,13 +7536,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5717,13 +7581,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5755,13 +7627,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5798,13 +7678,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5841,13 +7729,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5884,13 +7780,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5927,13 +7831,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -5970,13 +7882,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6014,13 +7934,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6052,13 +7980,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6090,13 +8026,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6128,13 +8072,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6166,13 +8118,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6204,13 +8164,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6243,13 +8211,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6281,13 +8257,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6320,13 +8304,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6359,13 +8351,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6398,13 +8398,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6437,13 +8445,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6477,13 +8493,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6515,13 +8539,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6553,13 +8585,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6592,13 +8632,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6631,13 +8679,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6670,13 +8726,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Water Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6710,13 +8774,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6748,13 +8820,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6786,13 +8866,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6824,13 +8912,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6862,13 +8958,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6900,13 +9004,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6939,13 +9051,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -6976,13 +9096,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7013,13 +9141,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7050,13 +9186,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7087,13 +9231,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7124,13 +9276,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7162,13 +9322,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7200,13 +9368,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7238,13 +9414,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7276,13 +9460,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7314,13 +9506,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7352,13 +9552,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7391,13 +9599,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7429,13 +9645,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7467,13 +9691,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7505,13 +9737,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7543,13 +9783,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7581,13 +9829,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7620,13 +9876,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7658,13 +9922,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7697,13 +9969,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7736,13 +10016,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7775,13 +10063,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7814,13 +10110,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7854,13 +10158,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7901,13 +10213,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7948,13 +10268,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -7996,13 +10324,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8044,13 +10380,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8092,13 +10436,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8141,13 +10493,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8179,13 +10539,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8217,13 +10585,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8255,13 +10631,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8293,13 +10677,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8331,13 +10723,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8370,13 +10770,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8407,13 +10815,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8444,13 +10860,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8481,13 +10905,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8518,13 +10950,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8555,13 +10995,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8593,13 +11041,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8631,13 +11087,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8669,13 +11133,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8707,13 +11179,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8745,13 +11225,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8783,13 +11271,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8822,13 +11318,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8860,13 +11364,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8898,13 +11410,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8936,13 +11456,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -8974,13 +11502,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9012,13 +11548,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9051,13 +11595,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9098,13 +11650,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9146,13 +11706,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9194,13 +11762,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9242,13 +11818,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9290,13 +11874,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9339,13 +11931,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9377,13 +11977,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9415,13 +12023,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9454,13 +12070,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9493,13 +12117,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9532,13 +12164,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Weapon', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Weapon',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9572,13 +12212,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9610,13 +12258,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9649,13 +12305,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9691,13 +12355,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9729,13 +12401,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9768,13 +12448,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9811,13 +12499,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9846,13 +12542,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9882,13 +12586,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9921,13 +12633,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9956,13 +12676,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -9991,13 +12719,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10031,13 +12767,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10069,13 +12813,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10108,13 +12860,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10150,13 +12910,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10188,13 +12956,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10227,13 +13003,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10270,13 +13054,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10308,13 +13100,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10347,13 +13147,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10389,13 +13197,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10427,13 +13243,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10466,13 +13290,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10509,13 +13341,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10547,13 +13387,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10587,13 +13435,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10630,13 +13486,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10669,13 +13533,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10709,13 +13581,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10753,13 +13633,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10791,13 +13679,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10834,13 +13730,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10877,13 +13781,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10916,13 +13828,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -10956,13 +13876,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Earth Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Earth Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11000,13 +13928,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11036,13 +13972,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11073,13 +14017,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11113,13 +14065,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11149,13 +14109,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11185,13 +14153,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11226,13 +14202,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11263,13 +14247,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11301,13 +14293,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11342,13 +14342,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11379,13 +14387,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11417,13 +14433,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11459,13 +14483,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11497,13 +14529,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11536,13 +14576,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11578,13 +14626,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11616,13 +14672,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11655,13 +14719,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11698,13 +14770,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11735,13 +14815,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11773,13 +14861,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11814,13 +14910,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11851,13 +14955,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11889,13 +15001,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11931,13 +15051,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -11969,13 +15097,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12009,13 +15145,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12052,13 +15196,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12091,13 +15243,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12131,13 +15291,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12175,13 +15343,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12213,13 +15389,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12256,13 +15440,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12299,13 +15491,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12338,13 +15538,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12378,13 +15586,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Air Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Air Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12422,13 +15638,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12460,13 +15684,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12499,13 +15731,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12541,13 +15781,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12579,13 +15827,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12618,13 +15874,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12661,13 +15925,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12698,13 +15970,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12736,13 +16016,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12777,13 +16065,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12814,13 +16110,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12852,13 +16156,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12894,13 +16206,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12932,13 +16252,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -12971,13 +16299,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13013,13 +16349,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13051,13 +16395,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13090,13 +16442,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13133,13 +16493,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13176,13 +16544,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13220,13 +16596,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13267,13 +16651,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13310,13 +16702,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13354,13 +16754,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13402,13 +16810,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13440,13 +16856,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13480,13 +16904,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13523,13 +16955,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13562,13 +17002,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13602,13 +17050,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13646,13 +17102,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13684,13 +17148,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13727,13 +17199,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13770,13 +17250,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13809,13 +17297,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13849,13 +17345,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Fire Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Fire Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13893,13 +17397,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13931,13 +17443,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -13970,13 +17490,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14012,13 +17540,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14050,13 +17586,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14089,13 +17633,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14132,13 +17684,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14169,13 +17729,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14207,13 +17775,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14248,13 +17824,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14285,13 +17869,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14323,13 +17915,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14365,13 +17965,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14408,13 +18016,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14452,13 +18068,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14499,13 +18123,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14542,13 +18174,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14586,13 +18226,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14634,13 +18282,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14672,13 +18328,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14711,13 +18375,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14753,13 +18425,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14791,13 +18471,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14830,13 +18518,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14873,13 +18569,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14911,13 +18615,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14951,13 +18663,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -14994,13 +18714,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15033,13 +18761,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15073,13 +18809,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15117,13 +18861,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15155,13 +18907,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15198,13 +18958,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15241,13 +19009,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15280,13 +19056,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15320,13 +19104,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Water Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Water Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15364,13 +19156,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15402,13 +19202,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15441,13 +19249,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15483,13 +19299,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15521,13 +19345,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15560,13 +19392,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15603,13 +19443,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15640,13 +19488,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15678,13 +19534,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15719,13 +19583,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15756,13 +19628,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15794,13 +19674,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15836,13 +19724,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15874,13 +19770,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15913,13 +19817,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15955,13 +19867,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -15993,13 +19913,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16032,13 +19960,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16075,13 +20011,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16113,13 +20057,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16152,13 +20104,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16194,13 +20154,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16232,13 +20200,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16271,13 +20247,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16314,13 +20298,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16352,13 +20344,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16392,13 +20392,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16435,13 +20443,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16474,13 +20490,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16514,13 +20538,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16558,13 +20590,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16606,13 +20646,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16658,13 +20706,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16710,13 +20766,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16758,13 +20822,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16807,13 +20879,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Positive Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Positive Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16860,13 +20940,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16898,13 +20986,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16937,13 +21033,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -16979,13 +21083,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17017,13 +21129,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17056,13 +21176,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17099,13 +21227,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17136,13 +21272,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17174,13 +21318,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17215,13 +21367,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17252,13 +21412,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17290,13 +21458,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17332,13 +21508,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17370,13 +21554,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17409,13 +21601,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17451,13 +21651,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17489,13 +21697,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17528,13 +21744,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17571,13 +21795,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17609,13 +21841,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17648,13 +21888,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17690,13 +21938,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17728,13 +21984,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17767,13 +22031,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17810,13 +22082,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17857,13 +22137,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17906,13 +22194,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -17959,13 +22255,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18007,13 +22311,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18056,13 +22368,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18109,13 +22429,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18148,13 +22476,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18191,13 +22527,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18234,13 +22578,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18273,13 +22625,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18313,13 +22673,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Negative Energy Accessory', quantity: 1, requirements: [] },
+      {
+        name: 'Negative Energy Accessory',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Medium Energy Cell', quantity: 1, requirements: [] }
+      {
+        name: 'Shavarath Medium Energy Cell',
+        quantity: 1,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18357,13 +22725,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18372,7 +22748,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         notes: 'Unarmed & Handwraps only'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Water Dominion Ring Upgrade',
@@ -18381,13 +22762,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18396,7 +22785,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         notes: 'Unarmed & Handwraps only'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Air Dominion Ring Upgrade',
@@ -18405,13 +22799,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18420,7 +22822,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         notes: 'Unarmed & Handwraps only'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Earth Dominion Ring Upgrade',
@@ -18429,13 +22836,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18444,7 +22859,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         notes: 'Unarmed & Handwraps only'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Positive Energy Dominion Ring Upgrade',
@@ -18453,13 +22873,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18468,7 +22896,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         notes: 'Unarmed & Handwraps only'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Negative Energy Dominion Ring Upgrade',
@@ -18477,13 +22910,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18492,7 +22933,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         notes: 'Unarmed & Handwraps only'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Fire Escalation Ring Upgrade',
@@ -18501,13 +22947,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18516,7 +22970,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Water Escalation Ring Upgrade',
@@ -18525,13 +22984,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18540,7 +23007,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Air Escalation Ring Upgrade',
@@ -18549,13 +23021,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18564,7 +23044,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Earth Escalation Ring Upgrade',
@@ -18573,13 +23058,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18588,7 +23081,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Positive Energy Escalation Ring Upgrade',
@@ -18597,13 +23095,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18612,7 +23118,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Negative Energy Escalation Ring Upgrade',
@@ -18621,13 +23132,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18636,7 +23155,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Fire Opposition Ring Upgrade',
@@ -18645,16 +23169,34 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
-    effectsAdded: [{ name: 'Fire Absorption - 15%', description: '' }],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsAdded: [
+      {
+        name: 'Fire Absorption - 15%',
+        description: ''
+      }
+    ],
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Water Opposition Ring Upgrade',
@@ -18663,16 +23205,34 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
-    effectsAdded: [{ name: 'Cold Absorption - 15%', description: '' }],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsAdded: [
+      {
+        name: 'Cold Absorption - 15%',
+        description: ''
+      }
+    ],
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Air Opposition Ring Upgrade',
@@ -18681,16 +23241,34 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
-    effectsAdded: [{ name: 'Electricity Absorption - 15%', description: '' }],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsAdded: [
+      {
+        name: 'Electricity Absorption - 15%',
+        description: ''
+      }
+    ],
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Earth Opposition Ring Upgrade',
@@ -18699,16 +23277,34 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
-    effectsAdded: [{ name: 'Acid Absorption - 15%', description: '' }],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsAdded: [
+      {
+        name: 'Acid Absorption - 15%',
+        description: ''
+      }
+    ],
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Positive Energy Opposition Ring Upgrade',
@@ -18717,13 +23313,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18732,7 +23336,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Equipment'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Material Negative Energy Opposition Ring Upgrade',
@@ -18741,13 +23350,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Material Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18755,7 +23372,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         description: ''
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Fire Dominion Ring Upgrade',
@@ -18763,13 +23385,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18778,7 +23408,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Equipment'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Water Dominion Ring Upgrade',
@@ -18786,13 +23421,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18801,7 +23444,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Equipment'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Air Dominion Ring Upgrade',
@@ -18809,13 +23457,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18824,7 +23480,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Equipment'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Earth Dominion Ring Upgrade',
@@ -18832,13 +23493,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18847,7 +23516,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Equipment'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Positive Energy Dominion Ring Upgrade',
@@ -18855,13 +23529,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18870,7 +23552,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Equipment'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Negative Energy Dominion Ring Upgrade',
@@ -18878,13 +23565,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Dominion Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18893,7 +23588,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Equipment'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Fire Escalation Ring Upgrade',
@@ -18902,13 +23602,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18917,7 +23625,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Water Escalation Ring Upgrade',
@@ -18926,13 +23639,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18941,7 +23662,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Air Escalation Ring Upgrade',
@@ -18950,13 +23676,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18965,7 +23699,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Earth Escalation Ring Upgrade',
@@ -18974,13 +23713,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -18989,7 +23736,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Positive Energy Escalation Ring Upgrade',
@@ -18998,13 +23750,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -19013,7 +23773,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Negative Energy Escalation Ring Upgrade',
@@ -19022,13 +23787,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Escalation Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -19037,7 +23810,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Fire Opposition Ring Upgrade',
@@ -19046,13 +23824,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Fire Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -19061,7 +23847,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Water Opposition Ring Upgrade',
@@ -19070,13 +23861,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Water Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -19085,7 +23884,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Air Opposition Ring Upgrade',
@@ -19094,13 +23898,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Air Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -19109,7 +23921,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Earth Opposition Ring Upgrade',
@@ -19118,13 +23935,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Earth Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -19133,7 +23958,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Positive Energy Opposition Ring Upgrade',
@@ -19142,13 +23972,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Positive Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -19157,7 +23995,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Ethereal Negative Energy Opposition Ring Upgrade',
@@ -19166,13 +24009,21 @@ export const altarOfSubjugation: CraftingIngredient[] = [
     quantity: 1,
     craftedIn: 'Altar of Subjugation',
     requirements: [
-      { name: 'Ring of Incredible Potential', quantity: 1, requirements: [] },
+      {
+        name: 'Ring of Incredible Potential',
+        quantity: 1,
+        requirements: []
+      },
       {
         name: 'Ethereal Negative Energy Opposition Shard of Great Power',
         quantity: 1,
         requirements: []
       },
-      { name: 'Shavarath Trophy of War', quantity: 9, requirements: [] }
+      {
+        name: 'Shavarath Trophy of War',
+        quantity: 9,
+        requirements: []
+      }
     ],
     effectsAdded: [
       {
@@ -19181,7 +24032,12 @@ export const altarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       }
     ],
-    effectsRemoved: [{ name: 'Incredible Potential', description: '' }]
+    effectsRemoved: [
+      {
+        name: 'Incredible Potential',
+        description: ''
+      }
+    ]
   },
   {
     name: 'Shavarath Medium Energy Cell',

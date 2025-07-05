@@ -13,11 +13,7 @@ const InstructionsPopover = (props: Props) => {
 
   return (
     <OverlayTrigger trigger='click' placement='auto' overlay={popover}>
-      <Button
-        size='sm'
-        variant='outline-info'
-        className='py-0 d-flex align-items-center'
-      >
+      <Button size='sm' variant='outline-info' className='py-0 d-flex align-items-center'>
         <Stack direction='horizontal' gap={1} className='align-items-center'>
           Crafting Instructions
           <FaRegQuestionCircle size={13} />
