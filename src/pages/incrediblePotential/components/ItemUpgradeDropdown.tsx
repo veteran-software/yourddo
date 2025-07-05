@@ -7,6 +7,7 @@ import { enhancements } from '../../../data/enhancements.ts'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
 import {
   setFilteredUpgradeList,
+  setFilterMode,
   setSelectedUpgrade,
   setSelectedUpgradeFilters
 } from '../../../redux/slices/incrediblePotentialSlice.ts'
@@ -91,7 +92,13 @@ const ItemUpgradeDropdown = (props: Props) => {
       <Stack direction='horizontal' gap={2}>
         <Dropdown className='d-flex flex-grow-1'>
           <Dropdown.Toggle variant='outline-warning w-100'>{buttonLabel}</Dropdown.Toggle>
-          <Dropdown.Menu style={{ maxHeight: '50vh', overflowY: 'auto' }} className='py-0'>
+          <Dropdown.Menu
+            style={{
+              maxHeight: '50vh',
+              overflowY: 'auto'
+            }}
+            className='py-0'
+          >
             {filteredUpgradeList.length > 1 && selectedUpgradeFilters.length > 0 && (
               <Dropdown.Item className='border-top bg-light' key={`informational-dropdown-item`}>
                 <div className='text-wrap text-black text-center'>{filterMultipleResults}</div>
@@ -115,9 +122,10 @@ const ItemUpgradeDropdown = (props: Props) => {
         <FilterOffCanvas
           filterMode={filterMode}
           filterOptions={upgradeFilters}
+          setFilterMode={(mode: 'OR' | 'AND') => dispatch(setFilterMode(mode))}
           items={filteredUpgradeList}
           getItemFilters={(item: CraftingIngredient): string[] => {
-            return item.enhancements?.map((enhancement) => enhancement.name) ?? []
+            return item.enhancements?.map((enhancement: Enhancement) => enhancement.name) ?? []
           }}
           selectedFilters={selectedUpgradeFilters}
           setSelectedFilters={(filters: string[]) => {
