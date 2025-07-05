@@ -1987,9 +1987,10 @@ export const altarOfInvasion: CraftingIngredient[] = [
       }
     ]
   },
-
+  // Weapons
   {
     name: 'Material Earth Dominion Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Acid Item',
     quantity: 1,
     binding: {
@@ -2029,6 +2030,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Opposition Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Lieutenant Item',
     quantity: 1,
     binding: {
@@ -2068,6 +2070,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Escalation Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Health +6 Item',
     quantity: 1,
     binding: {
@@ -2106,6 +2109,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Dominion Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Corrosion Item',
     quantity: 1,
     binding: {
@@ -2144,6 +2148,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Opposition Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Lieutenant Item',
     quantity: 1,
     binding: {
@@ -2183,6 +2188,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Escalation Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2218,8 +2224,10 @@ export const altarOfInvasion: CraftingIngredient[] = [
       }
     ]
   },
+
   {
     name: 'Material Air Dominion Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2262,6 +2270,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Opposition Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2304,6 +2313,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Escalation Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2345,6 +2355,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Dominion Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2386,6 +2397,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Opposition Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2428,6 +2440,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Escalation Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2467,8 +2480,10 @@ export const altarOfInvasion: CraftingIngredient[] = [
       noMinimumLevel: 11
     }
   },
+
   {
     name: 'Material Fire Dominion Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2511,6 +2526,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Opposition Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2553,6 +2569,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Escalation Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2594,6 +2611,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Dominion Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2635,6 +2653,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Opposition Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2677,6 +2696,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Escalation Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2716,8 +2736,10 @@ export const altarOfInvasion: CraftingIngredient[] = [
       noMinimumLevel: 11
     }
   },
+
   {
     name: 'Material Water Dominion Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2760,6 +2782,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Opposition Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2802,6 +2825,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Escalation Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2844,6 +2868,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Dominion Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2885,6 +2910,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Opposition Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2927,6 +2953,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Escalation Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -2967,8 +2994,10 @@ export const altarOfInvasion: CraftingIngredient[] = [
       noMinimumLevel: 11
     }
   },
+
   {
     name: 'Material Positive Energy Dominion Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3011,6 +3040,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Opposition Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3054,6 +3084,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Escalation Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3095,6 +3126,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Dominion Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3136,6 +3168,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Opposition Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3178,6 +3211,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Escalation Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3217,8 +3251,10 @@ export const altarOfInvasion: CraftingIngredient[] = [
       noMinimumLevel: 11
     }
   },
+
   {
     name: 'Material Negative Energy Dominion Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Unholy Item',
     quantity: 1,
     binding: {
@@ -3262,6 +3298,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Opposition Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3304,6 +3341,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Escalation Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3345,6 +3383,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Dominion Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3386,6 +3425,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Opposition Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3428,6 +3468,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Escalation Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3467,9 +3508,10 @@ export const altarOfInvasion: CraftingIngredient[] = [
       noMinimumLevel: 11
     }
   },
-
+  // Accessories
   {
     name: 'Material Earth Dominion Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3508,6 +3550,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Opposition Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3546,6 +3589,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Escalation Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3588,6 +3632,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Dominion Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3625,6 +3670,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Opposition Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3662,6 +3708,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Escalation Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3702,8 +3749,10 @@ export const altarOfInvasion: CraftingIngredient[] = [
       }
     ]
   },
+
   {
     name: 'Material Air Dominion Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3742,6 +3791,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Opposition Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3780,6 +3830,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Escalation Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3822,6 +3873,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Dominion Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3859,6 +3911,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Opposition Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3896,6 +3949,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Escalation Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3937,8 +3991,10 @@ export const altarOfInvasion: CraftingIngredient[] = [
       }
     ]
   },
+
   {
     name: 'Material Fire Dominion Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -3977,6 +4033,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Opposition Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4015,6 +4072,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Escalation Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4057,6 +4115,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Dominion Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4094,6 +4153,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Opposition Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4131,6 +4191,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Escalation Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4171,8 +4232,10 @@ export const altarOfInvasion: CraftingIngredient[] = [
       }
     ]
   },
+
   {
     name: 'Material Water Dominion Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4211,6 +4274,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Opposition Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4249,6 +4313,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Escalation Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4291,6 +4356,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Dominion Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4328,6 +4394,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Opposition Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4365,6 +4432,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Escalation Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4405,8 +4473,10 @@ export const altarOfInvasion: CraftingIngredient[] = [
       }
     ]
   },
+
   {
     name: 'Material Positive Energy Dominion Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4445,6 +4515,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Opposition Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4482,6 +4553,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Escalation Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4524,6 +4596,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Dominion Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4561,6 +4634,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Opposition Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4598,6 +4672,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Escalation Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4639,8 +4714,10 @@ export const altarOfInvasion: CraftingIngredient[] = [
       }
     ]
   },
+
   {
     name: 'Material Negative Energy Dominion Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4679,6 +4756,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Opposition Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4721,6 +4799,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Escalation Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4763,6 +4842,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Dominion Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4800,6 +4880,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Opposition Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',
@@ -4837,6 +4918,7 @@ export const altarOfInvasion: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Escalation Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     quantity: 1,
     binding: {
       type: 'Bound',

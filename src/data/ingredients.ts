@@ -284,6 +284,33 @@ export const ingredients: Ingredient[] = [
     weight: 0.01
   },
   {
+    name: 'Codex Rune',
+    description: "An ephemeral reminder of what you've done, and what's been done to you.",
+    type: 'This item may be put in a Legendary eldritch device.',
+    foundIn: ['The Codex and the Shroud', 'Creeping Death', 'To Curse the Sky'],
+    binding: {
+      type: 'Bound',
+      from: 'Acquisition',
+      to: 'Account'
+    },
+    baseValue: {
+      platinum: 100
+    }
+  },
+  {
+    name: 'Commendation of Valor',
+    description: 'This is a token of favor earned for your valorous actions.',
+    foundIn: ['Any Epic Quest', "Epic Otto's Irresistible Box"],
+    binding: {
+      type: 'Bound',
+      from: 'Acquisition',
+      to: 'Character'
+    },
+    baseValue: {
+      gold: 1
+    }
+  },
+  {
     name: 'Depleted Shavarath Medium Energy Cell',
     description:
       'An empty vessel capable of storing energy. Empty cells can be charged by combining them with suitably powerful magic weapons.',
@@ -467,6 +494,282 @@ export const ingredients: Ingredient[] = [
       platinum: 45
     },
     foundIn: ['The Shroud']
+  },
+  {
+    name: 'Legendary Large Devil Scales',
+    image: 'lgsDevilScale',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description: 'A few reptilian looking devil scales. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Large Glowing Arrowhead',
+    image: 'lgsGlowingArrowhead',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description:
+      'A metal arrowhead that gives off a pale greenish light. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Large Gnawed Bone',
+    image: 'lgsGnawedBone',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description: 'A dry bone that has been gnawed clean. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Large Length of Infernal Chain',
+    image: 'lgsLengthOfInfernalChain',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description: 'A length of dirty, barbed chain. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Large Twisted Shrapnel',
+    image: 'lgsTwistedShrapnel',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description: 'A sharp and twisted hunk of metal. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Large Sulfurous Stone',
+    image: 'lgsSulfurousStone',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description:
+      'A rough, crumbly piece of yellowish gray stone that smells of sulfur. This item is humming like the Altar of Devastation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Medium Devil Scales',
+    image: 'lgsDevilScale',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description: 'A few reptilian looking devil scales. This item is humming like the Altar of Subjugation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Medium Glowing Arrowhead',
+    image: 'lgsGlowingArrowhead',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description:
+      'A metal arrowhead that gives off a pale greenish light. This item is humming like the Altar of Subjugation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Medium Gnawed Bone',
+    image: 'lgsGnawedBone',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description: 'A dry bone that has been gnawed clean. This item is humming like the Altar of Subjugation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Medium Length of Infernal Chain',
+    image: 'lgsLengthOfInfernalChain',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description: 'A length of dirty, barbed chain. This item is humming like the Altar of Subjugation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Medium Twisted Shrapnel',
+    image: 'lgsTwistedShrapnel',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description: 'A sharp and twisted hunk of metal. This item is humming like the Altar of Subjugation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Medium Sulfurous Stone',
+    image: 'lgsSulfurousStone',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description:
+      'A rough, crumbly piece of yellowish gray stone that smells of sulfur. This item is humming like the Altar of Subjugation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Small Devil Scales',
+    image: 'lgsDevilScale',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description: 'A few reptilian looking devil scales. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Small Glowing Arrowhead',
+    image: 'lgsGlowingArrowhead',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description:
+      'A metal arrowhead that gives off a pale greenish light. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Small Gnawed Bone',
+    image: 'lgsGnawedBone',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description: 'A dry bone that has been gnawed clean. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Small Length of Infernal Chain',
+    image: 'lgsLengthOfInfernalChain',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description: 'A length of dirty, barbed chain. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Small Twisted Shrapnel',
+    image: 'lgsTwistedShrapnel',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description: 'A sharp and twisted hunk of metal. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Small Sulfurous Stone',
+    image: 'lgsSulfurousStone',
+    type: 'This item may be may be put in a Legendary eldritch device.',
+    description:
+      'A rough, crumbly piece of yellowish gray stone that smells of sulfur. This item is humming like the Altar of Invasion.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 45
+    },
+    foundIn: ['The Codex and the Shroud']
   },
   {
     name: 'Locust Husk',
