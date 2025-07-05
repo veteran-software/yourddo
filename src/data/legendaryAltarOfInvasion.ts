@@ -483,6 +483,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Air Ethereal Dominion)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, ADE)',
     effectsAdded: [
       {
@@ -523,6 +524,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Air Ethereal Dominion)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, ADE)',
     effectsAdded: [
       {
@@ -563,6 +565,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Earth Ethereal Dominion)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, EDE)',
     effectsAdded: [
       {
@@ -603,6 +606,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Earth Ethereal Dominion)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, EDE)',
     effectsAdded: [
       {
@@ -643,6 +647,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Fire Ethereal Dominion)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, FDE)',
     effectsAdded: [
       {
@@ -683,6 +688,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Fire Ethereal Dominion)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, FDE)',
     effectsAdded: [
       {
@@ -723,6 +729,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Water Ethereal Dominion)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, WDE)',
     effectsAdded: [
       {
@@ -763,6 +770,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Water Ethereal Dominion)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, WDE)',
     effectsAdded: [
       {
@@ -803,6 +811,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Negative Ethereal Dominion)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, NDE)',
     effectsAdded: [
       {
@@ -843,6 +852,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Negative Ethereal Dominion)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, NDE)',
     effectsAdded: [
       {
@@ -883,6 +893,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Positive Ethereal Dominion)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, PDE)',
     effectsAdded: [
       {
@@ -923,6 +934,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Positive Ethereal Dominion)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, PDE)',
     effectsAdded: [
       {
@@ -963,6 +975,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Air Material Dominion)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, ADM)',
     effectsAdded: [
       {
@@ -1001,6 +1014,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Air Material Dominion)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, ADM)',
     effectsAdded: [
       {
@@ -1039,6 +1053,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Earth Material Dominion)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, EDM)',
     effectsAdded: [
       {
@@ -1077,6 +1092,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Earth Material Dominion)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, EDM)',
     effectsAdded: [
       {
@@ -1115,6 +1131,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Fire Material Dominion)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, FDM)',
     effectsAdded: [
       {
@@ -1153,6 +1170,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Fire Material Dominion)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, FDM)',
     effectsAdded: [
       {
@@ -1191,6 +1209,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Water Material Dominion)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, WDM)',
     effectsAdded: [
       {
@@ -1229,6 +1248,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Water Material Dominion)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, WDM)',
     effectsAdded: [
       {
@@ -1267,6 +1287,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Negative Material Dominion)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, NDM)',
     effectsAdded: [
       {
@@ -1305,6 +1326,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Negative Material Dominion)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, NDM)',
     effectsAdded: [
       {
@@ -1343,6 +1365,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Positive Material Dominion)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, PDM)',
     effectsAdded: [
       {
@@ -1384,6 +1407,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Positive Material Dominion)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, PDM)',
     effectsAdded: [
       {
@@ -1422,6 +1446,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Air Ethereal Escalation)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, AEE)',
     effectsAdded: [
       {
@@ -1462,6 +1487,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Air Ethereal Escalation)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, AEE)',
     effectsAdded: [
       {
@@ -1531,6 +1557,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Earth Ethereal Escalation)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, EEE)',
     effectsAdded: [
       {
@@ -1571,6 +1598,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Earth Ethereal Escalation)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, EEE)',
     effectsAdded: [
       {
@@ -1626,6 +1654,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Fire Ethereal Escalation)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, FEE)',
     effectsAdded: [
       {
@@ -1666,6 +1695,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Fire Ethereal Escalation)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, FEE)',
     effectsAdded: [
       {
@@ -1726,6 +1756,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Water Ethereal Escalation)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, WEE)',
     effectsAdded: [
       {
@@ -1766,6 +1797,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Water Ethereal Escalation)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, WEE)',
     effectsAdded: [
       {
@@ -1821,6 +1853,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Negative Ethereal Escalation)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, NEE)',
     effectsAdded: [
       {
@@ -1861,6 +1894,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Negative Ethereal Escalation)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, NEE)',
     effectsAdded: [
       {
@@ -1921,6 +1955,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Positive Ethereal Escalation)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, PEE)',
     effectsAdded: [
       {
@@ -1961,6 +1996,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Positive Ethereal Escalation)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, PEE)',
     effectsAdded: [
       {
@@ -2030,6 +2066,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Air Material Escalation)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, AEM)',
     effectsAdded: [
       {
@@ -2070,6 +2107,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Air Material Escalation)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, AEM)',
     effectsAdded: [
       {
@@ -2140,6 +2178,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Earth Material Escalation)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, EEM)',
     effectsAdded: [
       {
@@ -2180,6 +2219,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Earth Material Escalation)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, EEM)',
     effectsAdded: [
       {
@@ -2225,6 +2265,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Fire Material Escalation)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, FEM)',
     effectsAdded: [
       {
@@ -2265,6 +2306,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Fire Material Escalation)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, FEM)',
     effectsAdded: [
       {
@@ -2335,6 +2377,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Water Material Escalation)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, WEM)',
     effectsAdded: [
       {
@@ -2375,6 +2418,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Water Material Escalation)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, WEM)',
     effectsAdded: [
       {
@@ -2425,6 +2469,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Negative Material Escalation)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, NEM)',
     effectsAdded: [
       {
@@ -2465,6 +2510,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Negative Material Escalation)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, NEM)',
     effectsAdded: [
       {
@@ -2515,6 +2561,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Positive Material Escalation)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, PEM)',
     effectsAdded: [
       {
@@ -2555,6 +2602,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Positive Material Escalation)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, PEM)',
     effectsAdded: [
       {
@@ -2600,6 +2648,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Air Ethereal Opposition)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, AOE)',
     effectsAdded: [
       {
@@ -2640,6 +2689,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Air Ethereal Opposition)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, AOE)',
     effectsAdded: [
       {
@@ -2680,6 +2730,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Earth Ethereal Opposition)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, EOE)',
     effectsAdded: [
       {
@@ -2720,6 +2771,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Earth Ethereal Opposition)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, EOE)',
     effectsAdded: [
       {
@@ -2760,6 +2812,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Fire Ethereal Opposition)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, FOE)',
     effectsAdded: [
       {
@@ -2800,6 +2853,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Fire Ethereal Opposition)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, FOE)',
     effectsAdded: [
       {
@@ -2840,6 +2894,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Water Ethereal Opposition)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, WOE)',
     effectsAdded: [
       {
@@ -2880,6 +2935,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Water Ethereal Opposition)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, WOE)',
     effectsAdded: [
       {
@@ -2920,6 +2976,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Negative Ethereal Opposition)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, NOE)',
     effectsAdded: [
       {
@@ -2960,6 +3017,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Negative Ethereal Opposition)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, NOE)',
     effectsAdded: [
       {
@@ -3000,6 +3058,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Positive Ethereal Opposition)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, POE)',
     effectsAdded: [
       {
@@ -3040,6 +3099,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Positive Ethereal Opposition)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, POE)',
     effectsAdded: [
       {
@@ -3080,6 +3140,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Air Material Opposition)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, AOM)',
     effectsAdded: [
       {
@@ -3120,6 +3181,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Air Material Opposition)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, AOM)',
     effectsAdded: [
       {
@@ -3159,6 +3221,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Earth Material Opposition)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, EOM)',
     effectsAdded: [
       {
@@ -3199,6 +3262,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Earth Material Opposition)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, EOM)',
     effectsAdded: [
       {
@@ -3238,6 +3302,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Fire Material Opposition)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, FOM)',
     effectsAdded: [
       {
@@ -3278,6 +3343,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Fire Material Opposition)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, FOM)',
     effectsAdded: [
       {
@@ -3317,6 +3383,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Water Material Opposition)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, WOM)',
     effectsAdded: [
       {
@@ -3357,6 +3424,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Water Material Opposition)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, WOM)',
     effectsAdded: [
       {
@@ -3396,6 +3464,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Negative Material Opposition)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, NOM)',
     effectsAdded: [
       {
@@ -3436,6 +3505,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Negative Material Opposition)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, NOM)',
     effectsAdded: [
       {
@@ -3478,6 +3548,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Weapon Augment (Positive Material Opposition)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Weapon, Tier 1, POM)',
     effectsAdded: [
       {
@@ -3518,6 +3589,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 1',
     minimumLevel: 26,
     name: 'Tier 1 Equipment Augment (Positive Material Opposition)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Equipment, Tier 1, POM)',
     effectsAdded: [
       {

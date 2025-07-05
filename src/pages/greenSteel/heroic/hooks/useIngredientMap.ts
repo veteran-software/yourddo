@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import type { CraftingIngredient } from '../../../types/crafting.ts'
+import type { CraftingIngredient } from '../../../../types/crafting.ts'
 
 const useIngredientsMap = (
   items: CraftingIngredient[],

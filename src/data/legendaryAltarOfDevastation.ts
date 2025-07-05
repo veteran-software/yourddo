@@ -452,6 +452,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     },
     type: 'This item may be put in a Legendary eldritch device.'
   },
+
   {
     requirements: [
       {

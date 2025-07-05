@@ -61,8 +61,8 @@ export const filterForSublist = (
       }
 
       if (Array.isArray(item[searchField])) {
-        const foundItem = (item[searchField] as Enhancement[]).find((enhancement: Enhancement) =>
-          enhancement.name.includes(searchString)
+        const foundItem: Enhancement | undefined = (item[searchField] as Enhancement[]).find(
+          (enhancement: Enhancement) => enhancement.name.includes(searchString)
         )
         if (!foundItem) return false
 

@@ -1,8 +1,8 @@
-import { altarOfDevastation } from '../../../data/altarOfDevastation.ts'
-import { altarOfFecundity } from '../../../data/altarOfFecundity.ts'
-import { altarOfInvasion } from '../../../data/altarOfInvasion.ts'
-import { altarOfSubjugation } from '../../../data/altarOfSubjugation.ts'
-import type { CraftingIngredient } from '../../../types/crafting.ts'
+import { altarOfDevastation } from '../../../../data/altarOfDevastation.ts'
+import { altarOfFecundity } from '../../../../data/altarOfFecundity.ts'
+import { altarOfInvasion } from '../../../../data/altarOfInvasion.ts'
+import { altarOfSubjugation } from '../../../../data/altarOfSubjugation.ts'
+import type { CraftingIngredient } from '../../../../types/crafting.ts'
 
 export interface ElementalList {
   name: string

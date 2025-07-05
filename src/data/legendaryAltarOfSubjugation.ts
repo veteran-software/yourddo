@@ -483,6 +483,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Air Ethereal Dominion)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, ADE)',
     effectsAdded: [
       {
@@ -523,6 +524,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Air Ethereal Dominion)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, ADE)',
     effectsAdded: [
       {
@@ -563,6 +565,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Earth Ethereal Dominion)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, EDE)',
     effectsAdded: [
       {
@@ -603,6 +606,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Earth Ethereal Dominion)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, EDE)',
     effectsAdded: [
       {
@@ -643,6 +647,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Fire Ethereal Dominion)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, FDE)',
     effectsAdded: [
       {
@@ -683,6 +688,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Fire Ethereal Dominion)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, FDE)',
     effectsAdded: [
       {
@@ -723,6 +729,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Water Ethereal Dominion)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, WDE)',
     effectsAdded: [
       {
@@ -763,6 +770,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Water Ethereal Dominion)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, WDE)',
     effectsAdded: [
       {
@@ -803,6 +811,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Negative Ethereal Dominion)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, NDE)',
     effectsAdded: [
       {
@@ -843,6 +852,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Negative Ethereal Dominion)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, NDE)',
     effectsAdded: [
       {
@@ -883,6 +893,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Positive Ethereal Dominion)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, PDE)',
     effectsAdded: [
       {
@@ -923,6 +934,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Positive Ethereal Dominion)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, PDE)',
     effectsAdded: [
       {
@@ -963,6 +975,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Air Material Dominion)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, ADM)',
     effectsAdded: [
       {
@@ -1001,6 +1014,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Air Material Dominion)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, ADM)',
     effectsAdded: [
       {
@@ -1039,6 +1053,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Earth Material Dominion)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, EDM)',
     effectsAdded: [
       {
@@ -1077,6 +1092,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Earth Material Dominion)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, EDM)',
     effectsAdded: [
       {
@@ -1115,6 +1131,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Fire Material Dominion)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, FDM)',
     effectsAdded: [
       {
@@ -1153,6 +1170,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Fire Material Dominion)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, FDM)',
     effectsAdded: [
       {
@@ -1191,6 +1209,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Water Material Dominion)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, WDM)',
     effectsAdded: [
       {
@@ -1229,6 +1248,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Water Material Dominion)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, WDM)',
     effectsAdded: [
       {
@@ -1267,6 +1287,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Negative Material Dominion)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, NDM)',
     effectsAdded: [
       {
@@ -1305,6 +1326,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Negative Material Dominion)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, NDM)',
     effectsAdded: [
       {
@@ -1343,6 +1365,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Positive Material Dominion)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, PDM)',
     effectsAdded: [
       {
@@ -1384,6 +1407,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Positive Material Dominion)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, PDM)',
     effectsAdded: [
       {
@@ -1422,6 +1446,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Air Ethereal Escalation)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, AEE)',
     effectsAdded: [
       {
@@ -1462,6 +1487,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Air Ethereal Escalation)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, AEE)',
     effectsAdded: [
       {
@@ -1532,6 +1558,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Earth Ethereal Escalation)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, EEE)',
     effectsAdded: [
       {
@@ -1572,6 +1599,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Earth Ethereal Escalation)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, EEE)',
     effectsAdded: [
       {
@@ -1627,6 +1655,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Fire Ethereal Escalation)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, FEE)',
     effectsAdded: [
       {
@@ -1667,6 +1696,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Fire Ethereal Escalation)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, FEE)',
     effectsAdded: [
       {
@@ -1727,6 +1757,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Water Ethereal Escalation)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, WEE)',
     effectsAdded: [
       {
@@ -1767,6 +1798,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Water Ethereal Escalation)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, WEE)',
     effectsAdded: [
       {
@@ -1822,6 +1854,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Negative Ethereal Escalation)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, NEE)',
     effectsAdded: [
       {
@@ -1862,6 +1895,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Negative Ethereal Escalation)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, NEE)',
     effectsAdded: [
       {
@@ -1922,6 +1956,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Positive Ethereal Escalation)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, PEE)',
     effectsAdded: [
       {
@@ -1962,6 +1997,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Positive Ethereal Escalation)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, PEE)',
     effectsAdded: [
       {
@@ -2032,6 +2068,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Air Material Escalation)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, AEM)',
     effectsAdded: [
       {
@@ -2072,6 +2109,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Air Material Escalation)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, AEM)',
     effectsAdded: [
       {
@@ -2137,6 +2175,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Earth Material Escalation)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, EEM)',
     effectsAdded: [
       {
@@ -2177,6 +2216,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Earth Material Escalation)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, EEM)',
     effectsAdded: [
       {
@@ -2222,6 +2262,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Fire Material Escalation)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, FEM)',
     effectsAdded: [
       {
@@ -2262,6 +2303,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Fire Material Escalation)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, FEM)',
     effectsAdded: [
       {
@@ -2327,6 +2369,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Water Material Escalation)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, WEM)',
     effectsAdded: [
       {
@@ -2367,6 +2410,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Water Material Escalation)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, WEM)',
     effectsAdded: [
       {
@@ -2417,6 +2461,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Negative Material Escalation)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, NEM)',
     effectsAdded: [
       {
@@ -2457,6 +2502,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Negative Material Escalation)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, NEM)',
     effectsAdded: [
       {
@@ -2507,6 +2553,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Positive Material Escalation)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, PEM)',
     effectsAdded: [
       {
@@ -2547,6 +2594,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Positive Material Escalation)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, PEM)',
     effectsAdded: [
       {
@@ -2592,6 +2640,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Air Ethereal Opposition)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, AOE)',
     effectsAdded: [
       {
@@ -2632,6 +2681,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Air Ethereal Opposition)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, AOE)',
     effectsAdded: [
       {
@@ -2672,6 +2722,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Earth Ethereal Opposition)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, EOE)',
     effectsAdded: [
       {
@@ -2712,6 +2763,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Earth Ethereal Opposition)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, EOE)',
     effectsAdded: [
       {
@@ -2752,6 +2804,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Fire Ethereal Opposition)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, FOE)',
     effectsAdded: [
       {
@@ -2792,6 +2845,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Fire Ethereal Opposition)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, FOE)',
     effectsAdded: [
       {
@@ -2832,6 +2886,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Water Ethereal Opposition)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, WOE)',
     effectsAdded: [
       {
@@ -2872,6 +2927,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Water Ethereal Opposition)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, WOE)',
     effectsAdded: [
       {
@@ -2912,6 +2968,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Negative Ethereal Opposition)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, NOE)',
     effectsAdded: [
       {
@@ -2952,6 +3009,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Negative Ethereal Opposition)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, NOE)',
     effectsAdded: [
       {
@@ -2992,6 +3050,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Positive Ethereal Opposition)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, POE)',
     effectsAdded: [
       {
@@ -3032,6 +3091,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Positive Ethereal Opposition)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, POE)',
     effectsAdded: [
       {
@@ -3072,6 +3132,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Air Material Opposition)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, AOM)',
     effectsAdded: [
       {
@@ -3112,6 +3173,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Air Material Opposition)',
+    image: 'lgsAirAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, AOM)',
     effectsAdded: [
       {
@@ -3152,6 +3214,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Earth Material Opposition)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, EOM)',
     effectsAdded: [
       {
@@ -3192,6 +3255,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Earth Material Opposition)',
+    image: 'lgsEarthAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, EOM)',
     effectsAdded: [
       {
@@ -3232,6 +3296,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Fire Material Opposition)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, FOM)',
     effectsAdded: [
       {
@@ -3272,6 +3337,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Fire Material Opposition)',
+    image: 'lgsFireAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, FOM)',
     effectsAdded: [
       {
@@ -3312,6 +3378,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Water Material Opposition)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, WOM)',
     effectsAdded: [
       {
@@ -3352,6 +3419,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Water Material Opposition)',
+    image: 'lgsWaterAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, WOM)',
     effectsAdded: [
       {
@@ -3392,6 +3460,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Negative Material Opposition)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, NOM)',
     effectsAdded: [
       {
@@ -3432,6 +3501,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Negative Material Opposition)',
+    image: 'lgsNegativeAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, NOM)',
     effectsAdded: [
       {
@@ -3475,6 +3545,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Weapon Augment (Positive Material Opposition)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Weapon, Tier 2, POM)',
     effectsAdded: [
       {
@@ -3515,6 +3586,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     augmentType: 'Green Steel Epic Tier 2',
     minimumLevel: 26,
     name: 'Tier 2 Equipment Augment (Positive Material Opposition)',
+    image: 'lgsPositiveAugment',
     title: 'Green Steel Augment (Equipment, Tier 2, POM)',
     effectsAdded: [
       {

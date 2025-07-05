@@ -5,9 +5,11 @@ import type { GreenSteelState } from '../slices/hgsSlice.ts'
 import type { LegendaryGreenSteelState } from '../slices/lgsSlice.ts'
 
 export const createInitialHgsState = (): GreenSteelState => ({
+  devastationFocusedFilterMode: 'OR',
+  devastationFocusedItemFilters: [],
   devastationFocusedEffects: [],
-  devastationFilterMode: 'OR',
-  devastationItemFilters: [],
+  devastationBasicFilterMode: 'OR',
+  devastationBasicItemFilters: [],
   devastationBasicItems: [],
   fecundityItems: [...altarOfFecundity].filter((item: CraftingIngredient) => item.name.startsWith('Green Steel')),
   invasionFilterMode: 'OR',
@@ -25,9 +27,11 @@ export const createInitialHgsState = (): GreenSteelState => ({
 })
 
 export const createInitialLgsState = (): LegendaryGreenSteelState => ({
+  activeAugmentFilterMode: 'AND',
   activeAugmentFilters: [],
   activeAugments: [],
   bonusEffectFilters: [],
+  bonusEffectFilterMode: 'AND',
   bonusEffects: [],
   devastationFilterMode: 'AND',
   devastationItemFilters: [],

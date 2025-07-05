@@ -69,6 +69,27 @@ const { actions, reducer } = createSlice({
     },
     resetDevastationFocused: (state) => {
       state.selectedDevastationFocused = undefined
+    },
+    setInvasionFilterMode: (state, action: PayloadAction<'OR' | 'AND'>) => {
+      state.invasionFilterMode = action.payload
+    },
+    setSubjugationFilterMode: (state, action: PayloadAction<'OR' | 'AND'>) => {
+      state.subjugationFilterMode = action.payload
+    },
+    setDevastationBasicFilterMode: (state, action: PayloadAction<'OR' | 'AND'>) => {
+      state.devastationBasicFilterMode = action.payload
+    },
+    setInvasionItemFilters: (state, action: PayloadAction<string[]>) => {
+      state.invasionItemFilters = [...action.payload]
+    },
+    setSubjugationItemFilters: (state, action: PayloadAction<string[]>) => {
+      state.subjugationItemFilters = [...action.payload]
+    },
+    setDevastationBasicItemFilters: (state, action: PayloadAction<string[]>) => {
+      state.devastationBasicItemFilters = [...action.payload]
+    },
+    setDevastationFocusedItemFilters: (state, action: PayloadAction<string[]>) => {
+      state.devastationFocusedItemFilters = [...action.payload]
     }
   }
 })
@@ -90,11 +111,13 @@ export interface GreenSteelState {
 
   invasionItemFilters: string[]
   subjugationItemFilters: string[]
-  devastationItemFilters: string[]
+  devastationBasicItemFilters: string[]
+  devastationFocusedItemFilters: string[]
 
   invasionFilterMode: 'OR' | 'AND'
   subjugationFilterMode: 'OR' | 'AND'
-  devastationFilterMode: 'OR' | 'AND'
+  devastationBasicFilterMode: 'OR' | 'AND'
+  devastationFocusedFilterMode: 'OR' | 'AND'
 }
 
 export const {
@@ -109,7 +132,14 @@ export const {
   selectDevastationFocused,
   resetDevastationFocused,
   selectSubjugationSpell,
-  resetSubjugationSpell
+  resetSubjugationSpell,
+  setInvasionFilterMode,
+  setSubjugationFilterMode,
+  setDevastationBasicFilterMode,
+  setInvasionItemFilters,
+  setSubjugationItemFilters,
+  setDevastationBasicItemFilters,
+  setDevastationFocusedItemFilters
 } = actions
 
 export default reducer

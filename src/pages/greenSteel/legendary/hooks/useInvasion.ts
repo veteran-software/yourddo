@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react'
 import { shallowEqual } from 'react-redux'
-import { useAppSelector } from '../../../redux/hooks.ts'
-import type { CraftingIngredient } from '../../../types/crafting'
-import { deconstructLgsShard } from '../../../utils/objectUtils.ts'
-import { baseElemental, type ElementalList } from '../../heroicGreenSteel/helpers/elementalData.ts'
-import useIngredientsMap from '../../heroicGreenSteel/hooks/useIngredientMap.ts'
+import { useAppSelector } from '../../../../redux/hooks.ts'
+import type { CraftingIngredient } from '../../../../types/crafting.ts'
+import { deconstructLgsShard } from '../../../../utils/objectUtils.ts'
+import { baseElemental, type ElementalList } from '../../common/helpers/elementalData.ts'
+import useIngredientsMap from '../../heroic/hooks/useIngredientMap.ts'
 
 const useInvasion = () => {
   const { invasionItems, selectedSubjugationItem } = useAppSelector((state) => state.legendaryGreenSteel, shallowEqual)
