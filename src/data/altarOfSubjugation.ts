@@ -1131,6 +1131,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   // HGS Weapon Recipes
   {
     name: 'Material Earth Dominion Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Lieutenant Item',
     description: 'Acid Burst, Aspect of Earth, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -1169,6 +1170,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Opposition Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Lieutenant Item',
     description: 'Acid Absorption - 15%, Aspect of Earth, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -1207,6 +1209,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Escalation Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Lieutenant Item',
     description: 'Exceptional Constitution +1, Aspect of Earth, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -1245,6 +1248,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Dominion Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Lieutenant Item',
     description: 'Corrosion +72, Aspect of Earth, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -1283,6 +1287,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Opposition Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Earth, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -1321,6 +1326,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Escalation Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Lieutenant Item',
     description: 'Exceptional Wisdom +1, Aspect of Earth, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -1360,6 +1366,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
 
   {
     name: 'Material Air Dominion Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Lieutenant Item of Balance +11',
     description: 'Shocking Burst, Balance of Land and Sky, Balance +11',
     quantity: 1,
@@ -1395,6 +1402,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Opposition Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Lieutenant Item of Balance +11',
     description: 'Electricity Absorption - 15%, Balance of Land and Sky, Balance +11',
     quantity: 1,
@@ -1430,6 +1438,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Escalation Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Lieutenant Item of Balance +11',
     description: 'Exceptional Dexterity +1, Balance of Land and Sky, Balance +11',
     quantity: 1,
@@ -1465,6 +1474,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Dominion Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Lieutenant Item of Balance +11',
     description: 'Magnetism +72, Balance of Land and Sky, Balance +11',
     quantity: 1,
@@ -1500,6 +1510,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Opposition Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Lieutenant Item of Balance +11',
     description: 'Heightened Awareness 2, Balance of Land and Sky, Balance +11',
     quantity: 1,
@@ -1535,6 +1546,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Escalation Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Lieutenant Item of Balance +11',
     description: 'Exceptional Charisma +1, Balance of Land and Sky, Balance +11',
     quantity: 1,
@@ -1571,6 +1583,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
 
   {
     name: 'Material Fire Dominion Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Lieutenant Item',
     description: 'Flaming Burst, Aspect of Magma, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -1609,6 +1622,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Opposition Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Lieutenant Item',
     description: 'Fire Absorption - 15%, Aspect of Magma, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -1647,6 +1661,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Escalation Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Lieutenant Item',
     description: 'Exceptional Dexterity +1, Aspect of Magma, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -1685,6 +1700,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Dominion Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Lieutenant Item',
     description: 'Combustion +72, Aspect of Magma, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -1723,6 +1739,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Opposition Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Magma, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -1761,6 +1778,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Escalation Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Lieutenant Item',
     description: 'Exceptional Intelligence +1, Aspect of Magma, Max Charges = 1, Recharge 1/day',
     quantity: 1,
@@ -1800,6 +1818,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
 
   {
     name: 'Material Water Dominion Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Lieutenant Item',
     description: 'Icy Burst, Aspect of Ooze, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -1838,6 +1857,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Opposition Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Lieutenant Item',
     description: 'Cold Absorption - 15%, Aspect of Ooze, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -1876,6 +1896,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Escalation Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Lieutenant Item',
     description: 'Exceptional Strength +1, Aspect of Ooze, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -1914,6 +1935,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Dominion Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Lieutenant Item',
     description: 'Glaciation +72, Aspect of Ooze, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -1952,6 +1974,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Opposition Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Ooze, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -1990,6 +2013,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Escalation Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Lieutenant Item',
     description: 'Exceptional Wisdom +1, Aspect of Ooze, Max Charges = 3, Recharge 3/day',
     quantity: 1,
@@ -2029,6 +2053,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
 
   {
     name: 'Material Positive Energy Dominion Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Lieutenant Item',
     description: 'Good Burst, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2067,6 +2092,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Opposition Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Lieutenant Item',
     description: 'Healing Amplification: +40, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2106,6 +2132,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Escalation Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Lieutenant Item',
     description: 'Exceptional Constitution +1, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2145,6 +2172,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Dominion Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Lieutenant Item',
     description: 'Devotion +72, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2184,6 +2212,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Opposition Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2223,6 +2252,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Escalation Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Lieutenant Item',
     description: 'Exceptional Charisma +1, Aspect of Mineral, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2263,6 +2293,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
 
   {
     name: 'Material Negative Energy Dominion Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Lieutenant Item',
     description: 'Evil Burst, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2301,6 +2332,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Opposition Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Lieutenant Item',
     description: 'Negative Energy Absorption: +40, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2339,6 +2371,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Escalation Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Lieutenant Item',
     description: 'Exceptional Strength +1, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2378,6 +2411,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Dominion Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Lieutenant Item',
     description: 'Nullification +72, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2417,6 +2451,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Opposition Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Lieutenant Item',
     description: 'Heightened Awareness 2, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,
@@ -2456,6 +2491,7 @@ export const altarOfSubjugation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Escalation Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Lieutenant Item',
     description: 'Exceptional Intelligence +1, Aspect of Dust, Max Charges = 2, Recharge 2/day',
     quantity: 1,

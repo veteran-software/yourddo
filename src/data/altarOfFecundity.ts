@@ -3135,6 +3135,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   // Legendary Active Augments
   {
     name: 'Legendary Green Steel Augment: Flame Arrow (Arrows)',
+    type: 'Summoning',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3181,6 +3182,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Nightshield',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3226,6 +3228,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Haste',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3272,6 +3275,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Displacement',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3317,6 +3321,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Dark Discorporation',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3363,6 +3368,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Stormrage',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3409,6 +3415,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Your Flesh is Weak',
+    type: 'Damage',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3455,6 +3462,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: You Cannot Evade Me',
+    type: 'Damage',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3501,6 +3509,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Your Will is Mine',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3547,6 +3556,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Food for Thought',
+    type: 'Damage',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3593,6 +3603,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Blood Feast',
+    type: 'Damage',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3639,6 +3650,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Reincarnate',
+    type: 'Healing & Resurrection',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3731,6 +3743,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Tenacious Pack',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3777,6 +3790,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Greater Vigor, Mass',
+    type: 'Healing & Resurrection',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3822,6 +3836,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Good Weapons',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3868,6 +3883,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Evil Weapons',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3914,6 +3930,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Lawful Weapons',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -3960,6 +3977,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Chaotic Weapons',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4006,6 +4024,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Radiant Forcefield',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4052,6 +4071,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Summon Frog',
+    type: 'Summoning',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4097,6 +4117,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Polar Ray',
+    type: 'Damage',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4142,6 +4163,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Protection from Elements, Mass',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4187,6 +4209,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Cometfall',
+    type: 'Damage',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4232,6 +4255,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Quench',
+    type: 'Healing & Resurrection',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4272,6 +4296,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Call Kindred Being (Armor)',
+    type: 'Summoning',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4317,6 +4342,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Call Kindred Being (Golem)',
+    type: 'Summoning',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4362,6 +4388,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Call Kindred Being (Succubus)',
+    type: 'Summoning',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4407,6 +4434,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Call Kindred Being (Dream Reaver)',
+    type: 'Summoning',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4452,6 +4480,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Call Kindred Being (Lich)',
+    type: 'Summoning',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4497,6 +4526,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Call Kindred Being (Gargoyle)',
+    type: 'Summoning',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4542,6 +4572,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Conjure Bolts',
+    type: 'Summoning',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4588,6 +4619,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Animate Ally',
+    type: 'Healing & Resurrection',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4634,6 +4666,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Panacea',
+    type: 'Healing & Resurrection',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4679,6 +4712,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Sigil of Warding',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4724,6 +4758,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Sigil of Lifeshielding',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4769,6 +4804,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Sigil of Energy Negation',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4814,6 +4850,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Sigil of Battering Spellcraft',
+    type: 'Buff',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
@@ -4859,6 +4896,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
   },
   {
     name: 'Legendary Green Steel Augment: Restoration',
+    type: 'Healing & Resurrection',
     image: 'legendaryGreenSteelAugment',
     minimumLevel: 26,
     binding: {
