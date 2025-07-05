@@ -7,7 +7,7 @@ import NoteTooltip from './NoteTooltip.tsx'
 const FarmedIngredientDisplay = (props: Props) => {
   const { ingredient, quantity, showLocation = true, showQuantity = true } = props
 
-  const { imageSrc } = useIngredientImage(ingredient?.name ?? '')
+  const { imageSrc } = useIngredientImage(ingredient?.name ?? '', ingredient?.image)
 
   if (!ingredient) {
     return <></>

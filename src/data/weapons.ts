@@ -38,8 +38,7 @@ export const weapons: Weapon[] = [
       gold: 2
     },
     weight: 1.0,
-    description:
-      'A short simple weapon with a pointed blade used for stabbing.',
+    description: 'A short simple weapon with a pointed blade used for stabbing.',
     material: 'Steel'
   }
 ]

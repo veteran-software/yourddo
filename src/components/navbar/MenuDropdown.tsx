@@ -11,11 +11,7 @@ const MenuDropdown = (props: Props) => {
     <NavDropdown title={menu.title} id={`${menu.id}-nav-dropdown`}>
       {sortObjectArray(menu.items, 'label').map((item) =>
         item.active ? (
-          <NavDropdown.Item
-            as={Link}
-            key={formatAsKebabCase(item.label)}
-            to={`/${formatAsKebabCase(item.label)}`}
-          >
+          <NavDropdown.Item as={Link} key={formatAsKebabCase(item.label)} to={`/${formatAsKebabCase(item.label)}`}>
             {titleCase(item.label.toLowerCase())}
           </NavDropdown.Item>
         ) : null

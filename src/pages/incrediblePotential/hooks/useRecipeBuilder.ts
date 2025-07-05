@@ -17,7 +17,7 @@ const useRecipeBuilder = () => {
     (recipe: CraftingIngredient | undefined) => {
       if (recipe) {
         if (recipe.craftedIn) {
-          recipe.requirements.forEach((requirement: CraftingIngredient | string) => {
+          recipe.requirements?.forEach((requirement: CraftingIngredient | string) => {
             if (typeof requirement !== 'string') {
               const ingredient: CraftingIngredient | undefined = altarOfSubjugation.find(
                 (recipe: CraftingIngredient) => recipe.name === requirement.name
@@ -45,7 +45,10 @@ const useRecipeBuilder = () => {
     dispatch(clearRawMaterials())
   }
 
-  return { recipeBuilder, resetRecipe }
+  return {
+    recipeBuilder,
+    resetRecipe
+  }
 }
 
 export default useRecipeBuilder

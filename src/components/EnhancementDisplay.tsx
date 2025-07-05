@@ -10,10 +10,7 @@ const EnhancementDisplay = (props: Props) => {
   }
 
   return (
-    <Container
-      className='align-top'
-      key={`displayed-enhancement-${enhancement.name}`}
-    >
+    <Container className='align-top' key={`displayed-enhancement-${enhancement.name}`}>
       <FaCaretRight size={15} />
       &nbsp;
       <strong>{enhancement.name}</strong>:{' '}

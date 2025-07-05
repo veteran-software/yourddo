@@ -5,10 +5,7 @@ const NoteTooltip = (props: Props) => {
   const { id, text } = props
 
   return (
-    <OverlayTrigger
-      placement='auto'
-      overlay={<Tooltip id={id}>{text}</Tooltip>}
-    >
+    <OverlayTrigger placement='auto' overlay={<Tooltip id={id}>{text}</Tooltip>}>
       <FaCircleExclamation color='red' />
     </OverlayTrigger>
   )

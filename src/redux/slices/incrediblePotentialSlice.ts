@@ -8,15 +8,12 @@ const initialState: IncrediblePotentialState = {
   craftedIngredients: {} as Record<string, number>,
   filterMode: 'OR',
   filteredRingList: baseItems,
-  filteredUpgradeList: [...altarOfSubjugation].filter(
-    (recipe: CraftingIngredient) =>
-      recipe.name.toLowerCase().includes('ring upgrade')
+  filteredUpgradeList: [...altarOfSubjugation].filter((recipe: CraftingIngredient) =>
+    recipe.name.toLowerCase().includes('ring upgrade')
   ),
   rawMaterials: {} as Record<string, number>,
   ringFilters: baseItems
-    .flatMap((item: Ring): string[] =>
-      item.enchantments.slice(0, 2).map((enhancement) => enhancement.name)
-    )
+    .flatMap((item: Ring): string[] => item.enchantments.slice(0, 2).map((enhancement) => enhancement.name))
     .filter((value, index, self) => self.indexOf(value) === index) // Remove duplicates
     .sort((a: string, b: string) => a.localeCompare(b)),
   selectedRing: undefined,
@@ -24,13 +21,10 @@ const initialState: IncrediblePotentialState = {
   selectedUpgrade: undefined,
   selectedUpgradeFilters: [],
   upgradeFilters: [...altarOfSubjugation]
-    .filter((recipe: CraftingIngredient) =>
-      recipe.name.toLowerCase().includes('ring upgrade')
-    )
+    .filter((recipe: CraftingIngredient) => recipe.name.toLowerCase().includes('ring upgrade'))
     .flatMap(
       (item: CraftingIngredient): string[] =>
-        item.effectsAdded?.slice(0, 2).map((enhancement) => enhancement.name) ??
-        []
+        item.effectsAdded?.slice(0, 2).map((enhancement) => enhancement.name) ?? []
     )
     .filter((value, index, self) => self.indexOf(value) === index)
 }
@@ -39,23 +33,16 @@ const { actions, reducer } = createSlice({
   initialState,
   name: 'incrediblePotential',
   reducers: {
-    addCraftedIngredient: (
-      state,
-      action: PayloadAction<CraftingIngredient>
-    ) => {
+    addCraftedIngredient: (state, action: PayloadAction<CraftingIngredient>) => {
       state.craftedIngredients = {
         ...state.craftedIngredients,
-        [action.payload.name]:
-          (state.craftedIngredients[action.payload.name] ?? 0) +
-          action.payload.quantity
+        [action.payload.name]: (state.craftedIngredients[action.payload.name] ?? 0) + action.payload.quantity
       }
     },
     addRawMaterial: (state, action: PayloadAction<CraftingIngredient>) => {
       state.rawMaterials = {
         ...state.rawMaterials,
-        [action.payload.name]:
-          (state.rawMaterials[action.payload.name] ?? 0) +
-          action.payload.quantity
+        [action.payload.name]: (state.rawMaterials[action.payload.name] ?? 0) + action.payload.quantity
       }
     },
     clearCraftedIngredients: (state) => {
@@ -79,10 +66,7 @@ const { actions, reducer } = createSlice({
     setSelectedUpgradeFilters: (state, action: PayloadAction<string[]>) => {
       state.selectedUpgradeFilters = action.payload
     },
-    setSelectedUpgrade: (
-      state,
-      action: PayloadAction<CraftingIngredient | undefined>
-    ) => {
+    setSelectedUpgrade: (state, action: PayloadAction<CraftingIngredient | undefined>) => {
       state.selectedUpgrade = action.payload
     },
     setFilterMode: (state, action: PayloadAction<'OR' | 'AND'>) => {

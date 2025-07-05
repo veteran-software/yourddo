@@ -4,19 +4,10 @@ import EnhancementDisplay from '../../../components/EnhancementDisplay.tsx'
 import { enhancements } from '../../../data/enhancements.ts'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import type { Enhancement } from '../../../types/core.ts'
-import {
-  bindingText,
-  equipsTo,
-  ingredientType,
-  minimumLevel,
-  ringText
-} from '../../../utils/strings.ts'
+import { bindingText, equipsTo, ingredientType, minimumLevel, ringText } from '../../../utils/strings.ts'
 
 const SelectedRingDetails = () => {
-  const { selectedRing, selectedUpgrade } = useAppSelector(
-    (state) => state.incrediblePotential,
-    shallowEqual
-  )
+  const { selectedRing, selectedUpgrade } = useAppSelector((state) => state.incrediblePotential, shallowEqual)
 
   if (selectedRing) {
     return (
@@ -33,10 +24,7 @@ const SelectedRingDetails = () => {
 
           <Card.Body className='d-flex small'>
             <Stack direction='vertical' gap={1}>
-              <Stack
-                direction='horizontal'
-                className='justify-content-end w-100'
-              >
+              <Stack direction='horizontal' className='justify-content-end w-100'>
                 {equipsTo}
                 {selectedRing.slot.join(', ')}
               </Stack>
@@ -52,42 +40,31 @@ const SelectedRingDetails = () => {
               </Container>
 
               {selectedRing.binding && (
-                <Container>
-                  {selectedRing.binding.type === 'Bound' &&
-                    bindingText(selectedRing.binding)}
-                </Container>
+                <Container>{selectedRing.binding.type === 'Bound' && bindingText(selectedRing.binding)}</Container>
               )}
 
               {selectedRing.exclusive && <Container>Exclusive</Container>}
 
-              {selectedRing.enchantments.map(
-                (enhancement: Enhancement, idx: number) => {
-                  if (enhancement.name === 'Incredible Potential') {
-                    if (selectedUpgrade) {
-                      return (
-                        <EnhancementDisplay
-                          key={`${enhancement.name}-${String(idx)}`}
-                          enhancement={selectedUpgrade.enhancements?.[0]}
-                        />
-                      )
-                    }
+              {selectedRing.enchantments.map((enhancement: Enhancement, idx: number) => {
+                if (enhancement.name === 'Incredible Potential') {
+                  if (selectedUpgrade) {
+                    return (
+                      <EnhancementDisplay
+                        key={`${enhancement.name}-${String(idx)}`}
+                        enhancement={selectedUpgrade.enhancements?.[0]}
+                      />
+                    )
                   }
-
-                  return (
-                    <EnhancementDisplay
-                      key={`${enhancement.name}-${String(idx)}`}
-                      enhancement={enhancement}
-                    />
-                  )
                 }
-              )}
+
+                return <EnhancementDisplay key={`${enhancement.name}-${String(idx)}`} enhancement={enhancement} />
+              })}
 
               {selectedUpgrade && (
                 <EnhancementDisplay
                   enhancement={enhancements.find(
                     (enh: Enhancement) =>
-                      enh.name.toLowerCase() ===
-                      selectedUpgrade.effectsAdded?.[0].name.toLowerCase()
+                      enh.name.toLowerCase() === selectedUpgrade.effectsAdded?.[0].name.toLowerCase()
                   )}
                 />
               )}

@@ -27,3 +27,11 @@ export const formatIngredientName = (ingredientName: string, fecundityItem?: Cra
 
   return formattedName
 }
+
+export const isVowel = (letter: string): boolean => {
+  return /^[aeiou]$/i.test(letter)
+}
+
+export const elementColor = (element: string): string => {
+  return element.toLowerCase().replace(' energy', '')
+}

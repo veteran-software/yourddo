@@ -543,8 +543,7 @@ export const baseItems: Ring[] = [
       },
       {
         name: 'Confounding Enchantment',
-        description:
-          'The shifting nature of the magic that enchants this ring makes the effects hard to determine.',
+        description: 'The shifting nature of the magic that enchants this ring makes the effects hard to determine.',
         bonus: 'Exceptional'
       },
       {

@@ -5,6 +5,7 @@ import { serverStatusLamApi } from '../api/serverStatusLamApi.ts'
 import appReducer from './slices/appSlice'
 import greenSteelReducer from './slices/hgsSlice.ts'
 import incrediblePotentialReducer from './slices/incrediblePotentialSlice'
+import legendaryGreenSteelReducer from './slices/lgsSlice.ts'
 
 const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
 
     app: appReducer,
     greenSteel: greenSteelReducer,
-    incrediblePotential: incrediblePotentialReducer
+    incrediblePotential: incrediblePotentialReducer,
+    legendaryGreenSteel: legendaryGreenSteelReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(serverStatusApi.middleware).concat(serverStatusLamApi.middleware)
