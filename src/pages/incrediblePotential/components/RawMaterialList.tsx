@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 import { ListGroup } from 'react-bootstrap'
 import FarmedIngredientDisplay from '../../../components/FarmedIngredientDisplay.tsx'
 import { ingredients } from '../../../data/ingredients.ts'
@@ -25,9 +25,9 @@ const RawMaterialList = (props: Props) => {
         <strong>{rawMaterialsText}</strong>
       </ListGroup.Item>
 
-      {sortedMaterials.map(([ing, count]) => {
+      {sortedMaterials.map(([ing, count], idx: number) => {
         if (/\b(enchanted)\s+(accessory|weapon)\b/i.test(ing)) {
-          return <></>
+          return <Fragment key={`${ing}-${String(count)}-${String(idx)}`} />
         }
 
         return (

@@ -4067,6 +4067,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   // Focused Weapon Upgrades
   {
     name: 'Ethereal Air Opposition Focused Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Great Commander Item of Air',
     effectsAdded: [
       {
@@ -4106,6 +4107,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Escalation Focused Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Great Commander Item of Air',
     effectsAdded: [
       {
@@ -4144,6 +4146,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Escalation Focused Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Great Commander Item of Air',
     effectsAdded: [
       {
@@ -4182,6 +4185,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Opposition Focused Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Great Commander Item of Air',
     effectsAdded: [
       {
@@ -4221,6 +4225,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Dominion Focused Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Great Commander Item of Air',
     effectsAdded: [
       {
@@ -4259,6 +4264,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Dominion Focused Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Great Commander Item of Air',
     effectsAdded: [
       {
@@ -4296,8 +4302,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Earth Opposition Focused Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Great Commander Item of Earth',
     effectsAdded: [
       {
@@ -4337,6 +4345,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Escalation Focused Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Great Commander Item of Earth',
     effectsAdded: [
       {
@@ -4375,6 +4384,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Escalation Focused Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Great Commander Item of Earth',
     effectsAdded: [
       {
@@ -4414,6 +4424,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Opposition Focused Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Great Commander Item of Earth',
     effectsAdded: [
       {
@@ -4453,6 +4464,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Dominion Focused Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Great Commander Item of Earth',
     effectsAdded: [
       {
@@ -4492,6 +4504,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Dominion Focused Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Great Commander Item of Earth',
     effectsAdded: [
       {
@@ -4528,8 +4541,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Fire Opposition Focused Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -4569,6 +4584,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Escalation Focused Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -4607,6 +4623,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Escalation Focused Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -4645,6 +4662,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Opposition Focused Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -4684,6 +4702,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Dominion Focused Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -4723,6 +4742,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Dominion Focused Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -4759,8 +4779,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Negative Energy Opposition Focused Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Great Commander Item of Negative Energy',
     effectsAdded: [
       {
@@ -4800,6 +4822,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Escalation Focused Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Great Commander Item of Negative Energy',
     effectsAdded: [
       {
@@ -4838,6 +4861,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Escalation Focused Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Great Commander Item of Negative Energy',
     effectsAdded: [
       {
@@ -4876,6 +4900,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Opposition Focused Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Great Commander Item of Negative Energy',
     effectsAdded: [
       {
@@ -4915,6 +4940,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Dominion Focused Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Great Commander Item of Negative Energy',
     effectsAdded: [
       {
@@ -4953,6 +4979,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Dominion Focused Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Great Commander Item of Negative Energy',
     effectsAdded: [
       {
@@ -4990,8 +5017,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Positive Energy Opposition Focused Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -5031,6 +5060,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Escalation Focused Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -5069,6 +5099,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Escalation Focused Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -5107,6 +5138,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Opposition Focused Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -5145,6 +5177,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Dominion Focused Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -5184,6 +5217,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Dominion Focused Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -5220,8 +5254,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Water Opposition Focused Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -5261,6 +5297,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Escalation Focused Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -5299,6 +5336,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Escalation Focused Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -5338,6 +5376,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Opposition Focused Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -5377,6 +5416,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Dominion Focused Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -5415,6 +5455,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Dominion Focused Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -5452,8 +5493,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Ash / Enervation Weapon Upgrade',
+    image: 'greenSteelElementalAshWeapon',
     title: 'Great Commander Item of Ash',
     effectsAdded: [
       {
@@ -5494,6 +5537,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ash / Enervation Weapon Upgrade',
+    image: 'greenSteelElementalAshWeapon',
     title: 'Great Commander Item of Ash',
     effectsAdded: [
       {
@@ -5533,6 +5577,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ash / Enervation Weapon Upgrade',
+    image: 'greenSteelElementalAshWeapon',
     title: 'Great Commander Item of Ash',
     effectsAdded: [
       {
@@ -5572,6 +5617,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ash / Enervation Weapon Upgrade',
+    image: 'greenSteelElementalAshWeapon',
     title: 'Great Commander Item of Ash',
     effectsAdded: [
       {
@@ -5611,6 +5657,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ash / Enervation Weapon Upgrade',
+    image: 'greenSteelElementalAshWeapon',
     title: 'Great Commander Item of Ash',
     effectsAdded: [
       {
@@ -5651,6 +5698,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ash / Enervation Weapon Upgrade',
+    image: 'greenSteelElementalAshWeapon',
     title: 'Great Commander Item of Ash',
     effectsAdded: [
       {
@@ -5689,8 +5737,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Dust / Disintegration Weapon Upgrade',
+    image: 'greenSteelElementalDustWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -5730,6 +5780,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Dust / Disintegration Weapon Upgrade',
+    image: 'greenSteelElementalDustWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -5770,6 +5821,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Dust / Disintegration Weapon Upgrade',
+    image: 'greenSteelElementalDustWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -5810,6 +5862,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Dust / Disintegration Weapon Upgrade',
+    image: 'greenSteelElementalDustWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -5849,6 +5902,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Dust / Disintegration Weapon Upgrade',
+    image: 'greenSteelElementalDustWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -5889,6 +5943,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Dust / Disintegration Weapon Upgrade',
+    image: 'greenSteelElementalDustWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -5927,8 +5982,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Freezing Ice Weapon Upgrade',
+    image: 'greenSteelElementalFreezingIceWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -5968,6 +6025,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Freezing Ice Weapon Upgrade',
+    image: 'greenSteelElementalFreezingIceWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -6008,6 +6066,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Freezing Ice Weapon Upgrade',
+    image: 'greenSteelElementalFreezingIceWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -6047,6 +6106,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Freezing Ice Weapon Upgrade',
+    image: 'greenSteelElementalFreezingIceWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -6086,6 +6146,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Freezing Ice Weapon Upgrade',
+    image: 'greenSteelElementalFreezingIceWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -6126,6 +6187,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Freezing Ice Weapon Upgrade',
+    image: 'greenSteelElementalFreezingIceWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -6164,8 +6226,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Lightning Strike Weapon Upgrade',
+    image: 'elementalLightningStrikeWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -6205,6 +6269,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Lightning Strike Weapon Upgrade',
+    image: 'elementalLightningStrikeWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -6245,6 +6310,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Lightning Strike Weapon Upgrade',
+    image: 'elementalLightningStrikeWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -6284,6 +6350,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Lightning Strike Weapon Upgrade',
+    image: 'elementalLightningStrikeWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -6323,6 +6390,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Lightning Strike Weapon Upgrade',
+    image: 'elementalLightningStrikeWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -6363,6 +6431,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Lightning Strike Weapon Upgrade',
+    image: 'elementalLightningStrikeWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -6401,8 +6470,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Tempered / Elemental Mastery Weapon Upgrade',
+    image: 'greenSteelTemperedWeapon',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -6442,6 +6513,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Tempered / Elemental Mastery Weapon Upgrade',
+    image: 'greenSteelTemperedWeapon',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -6482,6 +6554,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Tempered / Elemental Mastery Weapon Upgrade',
+    image: 'greenSteelTemperedWeapon',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -6522,6 +6595,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Tempered / Elemental Mastery Weapon Upgrade',
+    image: 'greenSteelTemperedWeapon',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -6561,6 +6635,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Tempered / Elemental Mastery Weapon Upgrade',
+    image: 'greenSteelTemperedWeapon',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -6601,6 +6676,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Tempered / Elemental Mastery Weapon Upgrade',
+    image: 'greenSteelTemperedWeapon',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -6639,8 +6715,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Magma Surge Weapon Upgrade',
+    image: 'elementalMagmaSurgeWeapon',
     title: 'Great Commander Item of Magma',
     effectsAdded: [
       {
@@ -6680,6 +6758,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Magma Surge Weapon Upgrade',
+    image: 'elementalMagmaSurgeWeapon',
     title: 'Great Commander Item of Magma',
     effectsAdded: [
       {
@@ -6720,6 +6799,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Magma Surge Weapon Upgrade',
+    image: 'elementalMagmaSurgeWeapon',
     title: 'Great Commander Item of Magma',
     effectsAdded: [
       {
@@ -6759,6 +6839,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Magma Surge Weapon Upgrade',
+    image: 'elementalMagmaSurgeWeapon',
     title: 'Great Commander Item of Magma',
     effectsAdded: [
       {
@@ -6798,6 +6879,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Magma Surge Weapon Upgrade',
+    image: 'elementalMagmaSurgeWeapon',
     title: 'Great Commander Item of Magma',
     effectsAdded: [
       {
@@ -6838,6 +6920,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Magma Surge Weapon Upgrade',
+    image: 'elementalMagmaSurgeWeapon',
     title: 'Great Commander Item of Magma',
     effectsAdded: [
       {
@@ -6876,8 +6959,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Mineral Weapon Upgrade',
+    image: 'greenSteelElementalMineralWeapon',
     title: 'Great Commander Item of Mineral',
     effectsAdded: [
       {
@@ -6926,6 +7011,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Mineral Weapon Upgrade',
+    image: 'greenSteelElementalMineralWeapon',
     title: 'Great Commander Item of Mineral',
     effectsAdded: [
       {
@@ -6975,6 +7061,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Mineral Weapon Upgrade',
+    image: 'greenSteelElementalMineralWeapon',
     title: 'Great Commander Item of Mineral',
     effectsAdded: [
       {
@@ -7024,6 +7111,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Mineral Weapon Upgrade',
+    image: 'greenSteelElementalMineralWeapon',
     title: 'Great Commander Item of Mineral',
     effectsAdded: [
       {
@@ -7072,6 +7160,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Mineral Weapon Upgrade',
+    image: 'greenSteelElementalMineralWeapon',
     title: 'Great Commander Item of Mineral',
     effectsAdded: [
       {
@@ -7121,6 +7210,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Mineral Weapon Upgrade',
+    image: 'greenSteelElementalMineralWeapon',
     title: 'Great Commander Item of Mineral',
     effectsAdded: [
       {
@@ -7168,8 +7258,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Ooze / Sunder Weapon Upgrade',
+    image: 'greenSteelElementalOozeWeapon',
     title: 'Great Commander Item of Ooze',
     effectsAdded: [
       {
@@ -7209,6 +7301,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ooze / Sunder Weapon Upgrade',
+    image: 'greenSteelElementalOozeWeapon',
     title: 'Great Commander Item of Ooze',
     effectsAdded: [
       {
@@ -7249,6 +7342,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ooze / Sunder Weapon Upgrade',
+    image: 'greenSteelElementalOozeWeapon',
     title: 'Great Commander Item of Ooze',
     effectsAdded: [
       {
@@ -7289,6 +7383,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ooze / Sunder Weapon Upgrade',
+    image: 'greenSteelElementalOozeWeapon',
     title: 'Great Commander Item of Ooze',
     effectsAdded: [
       {
@@ -7328,6 +7423,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ooze / Sunder Weapon Upgrade',
+    image: 'greenSteelElementalOozeWeapon',
     title: 'Great Commander Item of Ooze',
     effectsAdded: [
       {
@@ -7368,6 +7464,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ooze / Sunder Weapon Upgrade',
+    image: 'greenSteelElementalOozeWeapon',
     title: 'Great Commander Item of Ooze',
     effectsAdded: [
       {
@@ -7406,8 +7503,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Radiance Weapon Upgrade',
+    image: 'greenSteelElementalRadianceWeapon',
     title: 'Great Commander Item of Radiance',
     effectsAdded: [
       {
@@ -7447,6 +7546,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Radiance Weapon Upgrade',
+    image: 'greenSteelElementalRadianceWeapon',
     title: 'Great Commander Item of Radiance',
     effectsAdded: [
       {
@@ -7487,6 +7587,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Radiance Weapon Upgrade',
+    image: 'greenSteelElementalRadianceWeapon',
     title: 'Great Commander Item of Radiance',
     effectsAdded: [
       {
@@ -7526,6 +7627,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Radiance Weapon Upgrade',
+    image: 'greenSteelElementalRadianceWeapon',
     title: 'Great Commander Item of Radiance',
     effectsAdded: [
       {
@@ -7565,6 +7667,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Radiance Weapon Upgrade',
+    image: 'greenSteelElementalRadianceWeapon',
     title: 'Great Commander Item of Radiance',
     effectsAdded: [
       {
@@ -7605,6 +7708,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Radiance Weapon Upgrade',
+    image: 'greenSteelElementalRadianceWeapon',
     title: 'Great Commander Item of Radiance',
     effectsAdded: [
       {
@@ -7643,8 +7747,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Corrosive Salt Weapon Upgrade',
+    image: 'greenSteelElementalCorrosiveSaltWeapon',
     title: 'Great Commander Item of Salt',
     effectsAdded: [
       {
@@ -7684,6 +7790,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Corrosive Salt Weapon Upgrade',
+    image: 'greenSteelElementalCorrosiveSaltWeapon',
     title: 'Great Commander Item of Salt',
     effectsAdded: [
       {
@@ -7724,6 +7831,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Corrosive Salt Weapon Upgrade',
+    image: 'greenSteelElementalCorrosiveSaltWeapon',
     title: 'Great Commander Item of Salt',
     effectsAdded: [
       {
@@ -7764,6 +7872,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Corrosive Salt Weapon Upgrade',
+    image: 'greenSteelElementalCorrosiveSaltWeapon',
     title: 'Great Commander Item of Salt',
     effectsAdded: [
       {
@@ -7803,6 +7912,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Corrosive Salt Weapon Upgrade',
+    image: 'greenSteelElementalCorrosiveSaltWeapon',
     title: 'Great Commander Item of Salt',
     effectsAdded: [
       {
@@ -7843,6 +7953,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Corrosive Salt Weapon Upgrade',
+    image: 'greenSteelElementalCorrosiveSaltWeapon',
     title: 'Great Commander Item of Salt',
     effectsAdded: [
       {
@@ -7881,8 +7992,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Smoke Screen / Blur Weapon Upgrade',
+    image: 'elementalSmokeScreenWeapon',
     title: 'Great Commander Item of Smoke',
     effectsAdded: [
       {
@@ -7922,6 +8035,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Smoke Screen / Blur Weapon Upgrade',
+    image: 'elementalSmokeScreenWeapon',
     title: 'Great Commander Item of Smoke',
     effectsAdded: [
       {
@@ -7962,6 +8076,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Smoke Screen / Blur Weapon Upgrade',
+    image: 'elementalSmokeScreenWeapon',
     title: 'Great Commander Item of Smoke',
     effectsAdded: [
       {
@@ -8001,6 +8116,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Smoke Screen / Blur Weapon Upgrade',
+    image: 'elementalSmokeScreenWeapon',
     title: 'Great Commander Item of Smoke',
     effectsAdded: [
       {
@@ -8040,6 +8156,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Smoke Screen / Blur Weapon Upgrade',
+    image: 'elementalSmokeScreenWeapon',
     title: 'Great Commander Item of Smoke',
     effectsAdded: [
       {
@@ -8080,6 +8197,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Smoke Screen / Blur Weapon Upgrade',
+    image: 'elementalSmokeScreenWeapon',
     title: 'Great Commander Item of Smoke',
     effectsAdded: [
       {
@@ -8118,8 +8236,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Steam Weapon Upgrade',
+    image: 'greenSteelElementalSteamWeapon',
     title: 'Great Commander Item of Steam',
     effectsAdded: [
       {
@@ -8159,6 +8279,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Steam Weapon Upgrade',
+    image: 'greenSteelElementalSteamWeapon',
     title: 'Great Commander Item of Steam',
     effectsAdded: [
       {
@@ -8199,6 +8320,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Steam Weapon Upgrade',
+    image: 'greenSteelElementalSteamWeapon',
     title: 'Great Commander Item of Steam',
     effectsAdded: [
       {
@@ -8239,6 +8361,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Steam Weapon Upgrade',
+    image: 'greenSteelElementalSteamWeapon',
     title: 'Great Commander Item of Steam',
     effectsAdded: [
       {
@@ -8278,6 +8401,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Steam Weapon Upgrade',
+    image: 'greenSteelElementalSteamWeapon',
     title: 'Great Commander Item of Steam',
     effectsAdded: [
       {
@@ -8318,6 +8442,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Steam Weapon Upgrade',
+    image: 'greenSteelElementalSteamWeapon',
     title: 'Great Commander Item of Steam',
     effectsAdded: [
       {
@@ -8356,8 +8481,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Vacuum / Trap the Soul Weapon Upgrade',
+    image: 'greenSteelElementalVacuumWeapon',
     title: 'Great Commander Item of Vacuum',
     effectsAdded: [
       {
@@ -8397,6 +8524,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Vacuum / Trap the Soul Weapon Upgrade',
+    image: 'greenSteelElementalVacuumWeapon',
     title: 'Great Commander Item of Vacuum',
     effectsAdded: [
       {
@@ -8437,6 +8565,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Vacuum / Trap the Soul Weapon Upgrade',
+    image: 'greenSteelElementalVacuumWeapon',
     title: 'Great Commander Item of Vacuum',
     effectsAdded: [
       {
@@ -8476,6 +8605,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Vacuum / Trap the Soul Weapon Upgrade',
+    image: 'greenSteelElementalVacuumWeapon',
     title: 'Great Commander Item of Vacuum',
     effectsAdded: [
       {
@@ -8515,6 +8645,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Vacuum / Trap the Soul Weapon Upgrade',
+    image: 'greenSteelElementalVacuumWeapon',
     title: 'Great Commander Item of Vacuum',
     effectsAdded: [
       {
@@ -8555,6 +8686,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Vacuum / Trap the Soul Weapon Upgrade',
+    image: 'greenSteelElementalVacuumWeapon',
     title: 'Great Commander Item of Vacuum',
     effectsAdded: [
       {
@@ -8593,8 +8725,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Existential Stalemate / Concordant Opposition Weapon Upgrade',
+    image: 'greenSteelExistentialStalemateWeapon',
     title: 'Great Commander Item of Existential Stalemate',
     effectsAdded: [
       {
@@ -8638,6 +8772,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Existential Stalemate / Concordant Opposition Weapon Upgrade',
+    image: 'greenSteelExistentialStalemateWeapon',
     title: 'Great Commander Item of Existential Stalemate',
     effectsAdded: [
       {
@@ -8682,6 +8817,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Existential Stalemate / Concordant Opposition Weapon Upgrade',
+    image: 'greenSteelExistentialStalemateWeapon',
     title: 'Great Commander Item of Existential Stalemate',
     effectsAdded: [
       {
@@ -8725,6 +8861,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Existential Stalemate / Concordant Opposition Weapon Upgrade',
+    image: 'greenSteelExistentialStalemateWeapon',
     title: 'Great Commander Item of Existential Stalemate',
     effectsAdded: [
       {
@@ -8768,6 +8905,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Existential Stalemate / Concordant Opposition Weapon Upgrade',
+    image: 'greenSteelExistentialStalemateWeapon',
     title: 'Great Commander Item of Existential Stalemate',
     effectsAdded: [
       {
@@ -8812,6 +8950,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Existential Stalemate / Concordant Opposition Weapon Upgrade',
+    image: 'greenSteelExistentialStalemateWeapon',
     title: 'Great Commander Item of Existential Stalemate',
     effectsAdded: [
       {
@@ -8853,8 +8992,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Balance of Land and Sky / Elemental Mastery Weapon Upgrade',
+    image: 'greenSteelBalanceOfLandAndSkyWeapon',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -8894,6 +9035,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Balance of Land and Sky / Elemental Mastery Weapon Upgrade',
+    image: 'greenSteelBalanceOfLandAndSkyWeapon',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -8934,6 +9076,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Balance of Land and Sky / Elemental Mastery Weapon Upgrade',
+    image: 'greenSteelBalanceOfLandAndSkyWeapon',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -8974,6 +9117,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Balance of Land and Sky / Elemental Mastery Weapon Upgrade',
+    image: 'greenSteelBalanceOfLandAndSkyWeapon',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -9013,6 +9157,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Balance of Land and Sky / Elemental Mastery Weapon Upgrade',
+    image: 'greenSteelBalanceOfLandAndSkyWeapon',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -9053,6 +9198,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Balance of Land and Sky / Elemental Mastery Weapon Upgrade',
+    image: 'greenSteelBalanceOfLandAndSkyWeapon',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -9091,9 +9237,11 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   // Focused Accessory Upgrades
   {
     name: 'Ethereal Air Opposition Focused Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9133,6 +9281,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Escalation Focused Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9177,6 +9326,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Escalation Focused Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9220,6 +9370,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Opposition Focused Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9258,6 +9409,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Dominion Focused Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9296,6 +9448,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Dominion Focused Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9332,8 +9485,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Earth Opposition Focused Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9373,6 +9528,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Escalation Focused Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9416,6 +9572,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Escalation Focused Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9459,6 +9616,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Opposition Focused Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9497,6 +9655,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Dominion Focused Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9535,6 +9694,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Dominion Focused Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9571,8 +9731,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Fire Opposition Focused Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     title: 'Great Commander Item of Incineration',
     effectsAdded: [
       {
@@ -9612,6 +9774,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Escalation Focused Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     title: 'Great Commander Item of Incineration',
     effectsAdded: [
       {
@@ -9655,6 +9818,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Escalation Focused Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     title: 'Great Commander Item of Incineration',
     effectsAdded: [
       {
@@ -9698,6 +9862,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Opposition Focused Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     title: 'Great Commander Item of Incineration',
     effectsAdded: [
       {
@@ -9736,6 +9901,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Dominion Focused Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     title: 'Great Commander Item of Incineration',
     effectsAdded: [
       {
@@ -9774,6 +9940,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Dominion Focused Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     title: 'Great Commander Item of Incineration',
     effectsAdded: [
       {
@@ -9810,8 +9977,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Negative Energy Opposition Focused Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9851,6 +10020,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Escalation Focused Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9894,6 +10064,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Escalation Focused Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9937,6 +10108,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Opposition Focused Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -9975,6 +10147,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Dominion Focused Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -10013,6 +10186,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Dominion Focused Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -10050,8 +10224,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Positive Energy Opposition Focused Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -10091,6 +10267,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Escalation Focused Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -10135,6 +10312,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Escalation Focused Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -10178,6 +10356,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Opposition Focused Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -10217,6 +10396,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Dominion Focused Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -10256,6 +10436,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Dominion Focused Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -10292,8 +10473,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Water Opposition Focused Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -10333,6 +10516,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Escalation Focused Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -10376,6 +10560,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Escalation Focused Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -10419,6 +10604,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Opposition Focused Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -10457,6 +10643,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Dominion Focused Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -10495,6 +10682,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Dominion Focused Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -10531,8 +10719,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Ash / Enervation Accessory Upgrade',
+    image: 'greenSteelElementalAshAccessory',
     title: 'Great Commander Item of Ash',
     effectsAdded: [
       {
@@ -10572,6 +10762,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ash / Enervation Accessory Upgrade',
+    image: 'greenSteelElementalAshAccessory',
     title: 'Great Commander Item of Ash',
     effectsAdded: [
       {
@@ -10611,6 +10802,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ash / Enervation Accessory Upgrade',
+    image: 'greenSteelElementalAshAccessory',
     title: 'Great Commander Item of Ash',
     effectsAdded: [
       {
@@ -10655,6 +10847,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ash / Enervation Accessory Upgrade',
+    image: 'greenSteelElementalAshAccessory',
     title: 'Great Commander Item of Ash',
     effectsAdded: [
       {
@@ -10699,6 +10892,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ash / Enervation Accessory Upgrade',
+    image: 'greenSteelElementalAshAccessory',
     title: 'Great Commander Item of Ash',
     effectsAdded: [
       {
@@ -10739,6 +10933,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ash / Enervation Accessory Upgrade',
+    image: 'greenSteelElementalAshAccessory',
     title: 'Great Commander Item of Ash',
     effectsAdded: [
       {
@@ -10776,8 +10971,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Dust / Disintegration Accessory Upgrade',
+    image: 'greenSteelElementalDustAccessory',
     title: 'Great Commander Item of Annihilation',
     effectsAdded: [
       {
@@ -10817,6 +11014,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Dust / Disintegration Accessory Upgrade',
+    image: 'greenSteelElementalDustAccessory',
     title: 'Great Commander Item of Annihilation',
     effectsAdded: [
       {
@@ -10856,6 +11054,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Dust / Disintegration Accessory Upgrade',
+    image: 'greenSteelElementalDustAccessory',
     title: 'Great Commander Item of Annihilation',
     effectsAdded: [
       {
@@ -10900,6 +11099,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Dust / Disintegration Accessory Upgrade',
+    image: 'greenSteelElementalDustAccessory',
     title: 'Great Commander Item of Annihilation',
     effectsAdded: [
       {
@@ -10944,6 +11144,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Dust / Disintegration Accessory Upgrade',
+    image: 'greenSteelElementalDustAccessory',
     title: 'Great Commander Item of Annihilation',
     effectsAdded: [
       {
@@ -10984,6 +11185,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Dust / Disintegration Accessory Upgrade',
+    image: 'greenSteelElementalDustAccessory',
     title: 'Great Commander Item of Annihilation',
     effectsAdded: [
       {
@@ -11021,8 +11223,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Freezing Ice Accessory Upgrade',
+    image: 'greenSteelElementalFreezingIceAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -11062,6 +11266,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Freezing Ice Accessory Upgrade',
+    image: 'greenSteelElementalFreezingIceAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -11101,6 +11306,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Freezing Ice Accessory Upgrade',
+    image: 'greenSteelElementalFreezingIceAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -11146,6 +11352,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Freezing Ice Accessory Upgrade',
+    image: 'greenSteelElementalFreezingIceAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -11190,6 +11397,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Freezing Ice Accessory Upgrade',
+    image: 'greenSteelElementalFreezingIceAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -11230,6 +11438,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Freezing Ice Accessory Upgrade',
+    image: 'greenSteelElementalFreezingIceAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -11267,8 +11476,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Lightning Strike Accessory Upgrade',
+    image: 'elementalLightningStrikeAccessory',
     title: 'Great Commander Item of Lightning',
     effectsAdded: [
       {
@@ -11308,6 +11519,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Lightning Strike Accessory Upgrade',
+    image: 'elementalLightningStrikeAccessory',
     title: 'Great Commander Item of Lightning',
     effectsAdded: [
       {
@@ -11347,6 +11559,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Lightning Strike Accessory Upgrade',
+    image: 'elementalLightningStrikeAccessory',
     title: 'Great Commander Item of Lightning',
     effectsAdded: [
       {
@@ -11392,6 +11605,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Lightning Strike Accessory Upgrade',
+    image: 'elementalLightningStrikeAccessory',
     title: 'Great Commander Item of Lightning',
     effectsAdded: [
       {
@@ -11436,6 +11650,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Lightning Strike Accessory Upgrade',
+    image: 'elementalLightningStrikeAccessory',
     title: 'Great Commander Item of Lightning',
     effectsAdded: [
       {
@@ -11476,6 +11691,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Lightning Strike Accessory Upgrade',
+    image: 'elementalLightningStrikeAccessory',
     title: 'Great Commander Item of Lightning',
     effectsAdded: [
       {
@@ -11513,8 +11729,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Tempered / Elemental Mastery Accessory Upgrade',
+    image: 'greenSteelTemperedAccessory',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -11554,6 +11772,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Tempered / Elemental Mastery Accessory Upgrade',
+    image: 'greenSteelTemperedAccessory',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -11593,6 +11812,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Tempered / Elemental Mastery Accessory Upgrade',
+    image: 'greenSteelTemperedAccessory',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -11633,6 +11853,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Tempered / Elemental Mastery Accessory Upgrade',
+    image: 'greenSteelTemperedAccessory',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -11677,6 +11898,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Tempered / Elemental Mastery Accessory Upgrade',
+    image: 'greenSteelTemperedAccessory',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -11721,6 +11943,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Tempered / Elemental Mastery Accessory Upgrade',
+    image: 'greenSteelTemperedAccessory',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -11758,8 +11981,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Magma Surge Accessory Upgrade',
+    image: 'elementalMagmaSurgeAccessory',
     title: 'Great Commander Item of Magma',
     effectsAdded: [
       {
@@ -11799,6 +12024,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Magma Surge Accessory Upgrade',
+    image: 'elementalMagmaSurgeAccessory',
     title: 'Great Commander Item of Magma',
     effectsAdded: [
       {
@@ -11838,6 +12064,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Magma Surge Accessory Upgrade',
+    image: 'elementalMagmaSurgeAccessory',
     title: 'Great Commander Item of Magma',
     effectsAdded: [
       {
@@ -11882,6 +12109,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Magma Surge Accessory Upgrade',
+    image: 'elementalMagmaSurgeAccessory',
     title: 'Great Commander Item of Magma',
     effectsAdded: [
       {
@@ -11926,6 +12154,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Magma Surge Accessory Upgrade',
+    image: 'elementalMagmaSurgeAccessory',
     title: 'Great Commander Item of Magma',
     effectsAdded: [
       {
@@ -11966,6 +12195,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Magma Surge Accessory Upgrade',
+    image: 'elementalMagmaSurgeAccessory',
     title: 'Great Commander Item of Magma',
     effectsAdded: [
       {
@@ -12003,8 +12233,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Mineral Accessory Upgrade',
+    image: 'greenSteelElementalMineralAccessory',
     title: 'Great Commander Item of Mineral',
     effectsAdded: [
       {
@@ -12050,6 +12282,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Mineral Accessory Upgrade',
+    image: 'greenSteelElementalMineralAccessory',
     title: 'Great Commander Item of Mineral',
     effectsAdded: [
       {
@@ -12095,6 +12328,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Mineral Accessory Upgrade',
+    image: 'greenSteelElementalMineralAccessory',
     title: 'Great Commander Item of Mineral',
     effectsAdded: [
       {
@@ -12145,6 +12379,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Mineral Accessory Upgrade',
+    image: 'greenSteelElementalMineralAccessory',
     title: 'Great Commander Item of Mineral',
     effectsAdded: [
       {
@@ -12195,6 +12430,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Mineral Accessory Upgrade',
+    image: 'greenSteelElementalMineralAccessory',
     title: 'Great Commander Item of Mineral',
     effectsAdded: [
       {
@@ -12241,6 +12477,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Mineral Accessory Upgrade',
+    image: 'greenSteelElementalMineralAccessory',
     title: 'Great Commander Item of Mineral',
     effectsAdded: [
       {
@@ -12284,8 +12521,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Ooze / Sunder Accessory Upgrade',
+    image: 'greenSteelElementalOozeAccessory',
     title: 'Great Commander Item of Ooze',
     effectsAdded: [
       {
@@ -12325,6 +12564,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ooze / Sunder Accessory Upgrade',
+    image: 'greenSteelElementalOozeAccessory',
     title: 'Great Commander Item of Ooze',
     effectsAdded: [
       {
@@ -12364,6 +12604,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ooze / Sunder Accessory Upgrade',
+    image: 'greenSteelElementalOozeAccessory',
     title: 'Great Commander Item of Ooze',
     effectsAdded: [
       {
@@ -12408,6 +12649,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ooze / Sunder Accessory Upgrade',
+    image: 'greenSteelElementalOozeAccessory',
     title: 'Great Commander Item of Ooze',
     effectsAdded: [
       {
@@ -12452,6 +12694,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ooze / Sunder Accessory Upgrade',
+    image: 'greenSteelElementalOozeAccessory',
     title: 'Great Commander Item of Ooze',
     effectsAdded: [
       {
@@ -12492,6 +12735,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Ooze / Sunder Accessory Upgrade',
+    image: 'greenSteelElementalOozeAccessory',
     title: 'Great Commander Item of Ooze',
     effectsAdded: [
       {
@@ -12529,8 +12773,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Radiance Accessory Upgrade',
+    image: 'greenSteelElementalRadianceAccessory',
     title: 'Great Commander Item of Radiance',
     effectsAdded: [
       {
@@ -12570,6 +12816,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Radiance Accessory Upgrade',
+    image: 'greenSteelElementalRadianceAccessory',
     title: 'Great Commander Item of Radiance',
     effectsAdded: [
       {
@@ -12609,6 +12856,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Radiance Accessory Upgrade',
+    image: 'greenSteelElementalRadianceAccessory',
     title: 'Great Commander Item of Radiance',
     effectsAdded: [
       {
@@ -12653,6 +12901,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Radiance Accessory Upgrade',
+    image: 'greenSteelElementalRadianceAccessory',
     title: 'Great Commander Item of Radiance',
     effectsAdded: [
       {
@@ -12697,6 +12946,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Radiance Accessory Upgrade',
+    image: 'greenSteelElementalRadianceAccessory',
     title: 'Great Commander Item of Radiance',
     effectsAdded: [
       {
@@ -12737,6 +12987,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Radiance Accessory Upgrade',
+    image: 'greenSteelElementalRadianceAccessory',
     title: 'Great Commander Item of Radiance',
     effectsAdded: [
       {
@@ -12774,8 +13025,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Corrosive Salt Accessory Upgrade',
+    image: 'greenSteelElementalCorrosiveSaltAccessory',
     title: 'Great Commander Item of Salt',
     effectsAdded: [
       {
@@ -12815,6 +13068,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Corrosive Salt Accessory Upgrade',
+    image: 'greenSteelElementalCorrosiveSaltAccessory',
     title: 'Great Commander Item of Salt',
     effectsAdded: [
       {
@@ -12854,6 +13108,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Corrosive Salt Accessory Upgrade',
+    image: 'greenSteelElementalCorrosiveSaltAccessory',
     title: 'Great Commander Item of Salt',
     effectsAdded: [
       {
@@ -12898,6 +13153,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Corrosive Salt Accessory Upgrade',
+    image: 'greenSteelElementalCorrosiveSaltAccessory',
     title: 'Great Commander Item of Salt',
     effectsAdded: [
       {
@@ -12942,6 +13198,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Corrosive Salt Accessory Upgrade',
+    image: 'greenSteelElementalCorrosiveSaltAccessory',
     title: 'Great Commander Item of Salt',
     effectsAdded: [
       {
@@ -12982,6 +13239,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Corrosive Salt Accessory Upgrade',
+    image: 'greenSteelElementalCorrosiveSaltAccessory',
     title: 'Great Commander Item of Salt',
     effectsAdded: [
       {
@@ -13019,8 +13277,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Smoke Screen / Blur Accessory Upgrade',
+    image: 'greenSteelElementalSmokeScreenAccessory',
     title: 'Great Commander Item of Smoke',
     effectsAdded: [
       {
@@ -13060,6 +13320,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Smoke Screen / Blur Accessory Upgrade',
+    image: 'greenSteelElementalSmokeScreenAccessory',
     title: 'Great Commander Item of Smoke',
     effectsAdded: [
       {
@@ -13099,6 +13360,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Smoke Screen / Blur Accessory Upgrade',
+    image: 'greenSteelElementalSmokeScreenAccessory',
     title: 'Great Commander Item of Smoke',
     effectsAdded: [
       {
@@ -13143,6 +13405,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Smoke Screen / Blur Accessory Upgrade',
+    image: 'greenSteelElementalSmokeScreenAccessory',
     title: 'Great Commander Item of Smoke',
     effectsAdded: [
       {
@@ -13187,6 +13450,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Smoke Screen / Blur Accessory Upgrade',
+    image: 'greenSteelElementalSmokeScreenAccessory',
     title: 'Great Commander Item of Smoke',
     effectsAdded: [
       {
@@ -13227,6 +13491,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Smoke Screen / Blur Accessory Upgrade',
+    image: 'greenSteelElementalSmokeScreenAccessory',
     title: 'Great Commander Item of Smoke',
     effectsAdded: [
       {
@@ -13264,8 +13529,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Steam Accessory Upgrade',
+    image: 'greenSteelElementalSteamAccessory',
     title: 'Great Commander Item of Steam',
     effectsAdded: [
       {
@@ -13305,6 +13572,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Steam Accessory Upgrade',
+    image: 'greenSteelElementalSteamAccessory',
     title: 'Great Commander Item of Steam',
     effectsAdded: [
       {
@@ -13344,6 +13612,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Steam Accessory Upgrade',
+    image: 'greenSteelElementalSteamAccessory',
     title: 'Great Commander Item of Steam',
     effectsAdded: [
       {
@@ -13388,6 +13657,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Steam Accessory Upgrade',
+    image: 'greenSteelElementalSteamAccessory',
     title: 'Great Commander Item of Steam',
     effectsAdded: [
       {
@@ -13432,6 +13702,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Steam Accessory Upgrade',
+    image: 'greenSteelElementalSteamAccessory',
     title: 'Great Commander Item of Steam',
     effectsAdded: [
       {
@@ -13472,6 +13743,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Steam Accessory Upgrade',
+    image: 'greenSteelElementalSteamAccessory',
     title: 'Great Commander Item of Steam',
     effectsAdded: [
       {
@@ -13509,8 +13781,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Elemental Vacuum / Trap the Soul Accessory Upgrade',
+    image: 'greenSteelElementalVacuumAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -13550,6 +13824,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Vacuum / Trap the Soul Accessory Upgrade',
+    image: 'greenSteelElementalVacuumAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -13589,6 +13864,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Vacuum / Trap the Soul Accessory Upgrade',
+    image: 'greenSteelElementalVacuumAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -13634,6 +13910,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Vacuum / Trap the Soul Accessory Upgrade',
+    image: 'greenSteelElementalVacuumAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -13678,6 +13955,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Vacuum / Trap the Soul Accessory Upgrade',
+    image: 'greenSteelElementalVacuumAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -13718,6 +13996,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Elemental Vacuum / Trap the Soul Accessory Upgrade',
+    image: 'greenSteelElementalVacuumAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -13755,8 +14034,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Existential Stalemate / Concordant Opposition Accessory Upgrade',
+    image: 'greenSteelExistentialStalemateAccessory',
     title: 'Great Commander Item of Existential Stalemate',
     effectsAdded: [
       {
@@ -13800,6 +14081,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Existential Stalemate / Concordant Opposition Accessory Upgrade',
+    image: 'greenSteelExistentialStalemateAccessory',
     title: 'Great Commander Item of Existential Stalemate',
     effectsAdded: [
       {
@@ -13844,6 +14126,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Existential Stalemate / Concordant Opposition Accessory Upgrade',
+    image: 'greenSteelExistentialStalemateAccessory',
     title: 'Great Commander Item of Existential Stalemate',
     effectsAdded: [
       {
@@ -13893,6 +14176,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Existential Stalemate / Concordant Opposition Accessory Upgrade',
+    image: 'greenSteelExistentialStalemateAccessory',
     title: 'Great Commander Item of Existential Stalemate',
     effectsAdded: [
       {
@@ -13941,6 +14225,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Existential Stalemate / Concordant Opposition Accessory Upgrade',
+    image: 'greenSteelExistentialStalemateAccessory',
     title: 'Great Commander Item of Existential Stalemate',
     effectsAdded: [
       {
@@ -13985,6 +14270,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Existential Stalemate / Concordant Opposition Accessory Upgrade',
+    image: 'greenSteelExistentialStalemateAccessory',
     title: 'Great Commander Item of Existential Stalemate',
     effectsAdded: [
       {
@@ -14027,8 +14313,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Balance of Land and Sky / Elemental Mastery Accessory Upgrade',
+    image: 'greenSteelBalanceOfLandAndSkyAccessory',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -14068,6 +14356,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Balance of Land and Sky / Elemental Mastery Accessory Upgrade',
+    image: 'greenSteelBalanceOfLandAndSkyAccessory',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -14107,6 +14396,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Balance of Land and Sky / Elemental Mastery Accessory Upgrade',
+    image: 'greenSteelBalanceOfLandAndSkyAccessory',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -14151,6 +14441,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Balance of Land and Sky / Elemental Mastery Accessory Upgrade',
+    image: 'greenSteelBalanceOfLandAndSkyAccessory',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -14195,6 +14486,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Balance of Land and Sky / Elemental Mastery Accessory Upgrade',
+    image: 'greenSteelBalanceOfLandAndSkyAccessory',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -14235,6 +14527,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Balance of Land and Sky / Elemental Mastery Accessory Upgrade',
+    image: 'greenSteelBalanceOfLandAndSkyAccessory',
     title: 'Great Commander Item of Elemental Mastery',
     effectsAdded: [
       {
@@ -14272,9 +14565,11 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   // Basic Weapon Upgrades
   {
     name: 'Ethereal Air Opposition Basic Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Great Commander Item of Air',
     effectsAdded: [
       {
@@ -14311,6 +14606,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Escalation Basic Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Great Commander Item of Air',
     effectsAdded: [
       {
@@ -14346,6 +14642,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Escalation Basic Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Great Commander Item of Air',
     effectsAdded: [
       {
@@ -14381,6 +14678,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Opposition Basic Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Great Commander Item of Air',
     effectsAdded: [
       {
@@ -14417,6 +14715,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Dominion Basic Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Great Commander Item of Air',
     effectsAdded: [
       {
@@ -14452,6 +14751,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Dominion Basic Weapon Upgrade',
+    image: 'greenSteelAirWeapon',
     title: 'Great Commander Item of Air',
     effectsAdded: [
       {
@@ -14486,8 +14786,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Earth Opposition Basic Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Great Commander Item of Earth',
     effectsAdded: [
       {
@@ -14524,6 +14826,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Escalation Basic Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Great Commander Item of Earth',
     effectsAdded: [
       {
@@ -14559,6 +14862,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Escalation Basic Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Great Commander Item of Earth',
     effectsAdded: [
       {
@@ -14595,6 +14899,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Opposition Basic Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -14631,6 +14936,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Dominion Basic Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -14667,6 +14973,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Dominion Basic Weapon Upgrade',
+    image: 'greenSteelEarthWeapon',
     title: 'Great Commander Item of Earth',
     effectsAdded: [
       {
@@ -14700,8 +15007,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Fire Opposition Basic Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -14738,6 +15047,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Escalation Basic Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -14773,6 +15083,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Escalation Basic Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -14808,6 +15119,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Opposition Basic Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -14844,6 +15156,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Dominion Basic Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -14880,6 +15193,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Dominion Basic Weapon Upgrade',
+    image: 'greenSteelFireWeapon',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -14913,8 +15227,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Negative Energy Opposition Basic Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Great Commander Item of Negative Energy',
     effectsAdded: [
       {
@@ -14951,6 +15267,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Escalation Basic Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Great Commander Item of Negative Energy',
     effectsAdded: [
       {
@@ -14986,6 +15303,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Escalation Basic Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Great Commander Item of Negative Energy',
     effectsAdded: [
       {
@@ -15021,6 +15339,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Opposition Basic Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Great Commander Item of Negative Energy',
     effectsAdded: [
       {
@@ -15057,6 +15376,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Dominion Basic Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Great Commander Item of Negative Energy',
     effectsAdded: [
       {
@@ -15092,6 +15412,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Dominion Basic Weapon Upgrade',
+    image: 'greenSteelNegativeEnergyWeapon',
     title: 'Great Commander Item of Negative Energy',
     effectsAdded: [
       {
@@ -15126,8 +15447,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Positive Energy Opposition Basic Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -15164,6 +15487,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Escalation Basic Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -15199,6 +15523,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Escalation Basic Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -15234,6 +15559,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Opposition Basic Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -15269,6 +15595,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Dominion Basic Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -15305,6 +15632,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Dominion Basic Weapon Upgrade',
+    image: 'greenSteelPositiveEnergyWeapon',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -15338,8 +15666,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Water Opposition Basic Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -15376,6 +15706,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Escalation Basic Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -15411,6 +15742,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Escalation Basic Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -15447,6 +15779,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Opposition Basic Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -15483,6 +15816,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Dominion Basic Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -15518,6 +15852,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Dominion Basic Weapon Upgrade',
+    image: 'greenSteelWaterWeapon',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -15555,6 +15890,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   // Basic Accessory Upgrades
   {
     name: 'Ethereal Air Opposition Basic Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -15591,6 +15927,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Escalation Basic Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -15632,6 +15969,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Escalation Basic Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -15672,6 +16010,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Opposition Basic Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -15707,6 +16046,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Air Dominion Basic Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -15742,6 +16082,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Air Dominion Basic Accessory Upgrade',
+    image: 'greenSteelAirAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -15775,8 +16116,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Earth Opposition Basic Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -15813,6 +16156,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Escalation Basic Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -15853,6 +16197,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Escalation Basic Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -15893,6 +16238,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Opposition Basic Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -15928,6 +16274,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Earth Dominion Basic Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -15963,6 +16310,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Earth Dominion Basic Accessory Upgrade',
+    image: 'greenSteelEarthAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -15996,8 +16344,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Fire Opposition Basic Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     title: 'Great Commander Item of Incineration',
     effectsAdded: [
       {
@@ -16034,6 +16384,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Escalation Basic Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     title: 'Great Commander Item of Incineration',
     effectsAdded: [
       {
@@ -16074,6 +16425,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Escalation Basic Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     title: 'Great Commander Item of Incineration',
     effectsAdded: [
       {
@@ -16114,6 +16466,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Opposition Basic Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     title: 'Great Commander Item of Incineration',
     effectsAdded: [
       {
@@ -16149,6 +16502,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Fire Dominion Basic Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     title: 'Great Commander Item of Incineration',
     effectsAdded: [
       {
@@ -16184,6 +16538,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Fire Dominion Basic Accessory Upgrade',
+    image: 'greenSteelFireAccessory',
     title: 'Great Commander Item of Incineration',
     effectsAdded: [
       {
@@ -16217,8 +16572,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Negative Energy Opposition Basic Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -16255,6 +16612,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Escalation Basic Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -16295,6 +16653,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Escalation Basic Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -16335,6 +16694,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Opposition Basic Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -16370,6 +16730,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Negative Energy Dominion Basic Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -16405,6 +16766,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Negative Energy Dominion Basic Accessory Upgrade',
+    image: 'greenSteelNegativeEnergyAccessory',
     title: 'Great Commander Item',
     effectsAdded: [
       {
@@ -16439,8 +16801,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Positive Energy Opposition Basic Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -16477,6 +16841,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Escalation Basic Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -16518,6 +16883,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Escalation Basic Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -16558,6 +16924,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Opposition Basic Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -16594,6 +16961,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Positive Energy Dominion Basic Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -16630,6 +16998,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Positive Energy Dominion Basic Accessory Upgrade',
+    image: 'greenSteelPositiveEnergyAccessory',
     title: 'Great Commander Item of Positive Energy',
     effectsAdded: [
       {
@@ -16663,8 +17032,10 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Ethereal Water Opposition Basic Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -16701,6 +17072,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Escalation Basic Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -16741,6 +17113,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Escalation Basic Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -16781,6 +17154,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Opposition Basic Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -16816,6 +17190,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Ethereal Water Dominion Basic Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -16851,6 +17226,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
   },
   {
     name: 'Material Water Dominion Basic Accessory Upgrade',
+    image: 'greenSteelWaterAccessory',
     title: 'Great Commander Item of Water',
     effectsAdded: [
       {
@@ -16884,6 +17260,7 @@ export const altarOfDevastation: CraftingIngredient[] = [
     ],
     quantity: 1
   },
+
   {
     name: 'Shavarath High Energy Cell',
     ingredientType: 'This item may be usable in an eldritch device.',

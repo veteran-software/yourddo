@@ -1,11 +1,4 @@
-import type {
-  Ability,
-  Alignment,
-  Enhancement,
-  Race,
-  Skill,
-  Spell
-} from './core.ts'
+import type { Ability, Alignment, Enhancement, Race, Skill, Spell } from './core.ts'
 
 export interface HealingAmplification {
   positive: number

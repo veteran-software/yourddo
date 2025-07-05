@@ -1,15 +1,5 @@
 import { useMemo } from 'react'
-import {
-  Badge,
-  ButtonGroup,
-  Col,
-  Form,
-  Row,
-  ToggleButton
-} from 'react-bootstrap'
-import { useAppDispatch } from '../../redux/hooks.ts'
-import { setFilterMode } from '../../redux/slices/incrediblePotentialSlice.ts'
-import type { AppDispatch } from '../../redux/store.ts'
+import { Badge, ButtonGroup, Col, Form, Row, ToggleButton } from 'react-bootstrap'
 import { removeWhitespace } from '../../utils/objectUtils.ts'
 
 // Styles for the filter components
@@ -34,16 +24,16 @@ const FilterSection = <T,>(props: Props<T>) => {
     getItemFilters,
     maxFilterColumns = 3,
     selectedFilters,
-    setSelectedFilters
+    setSelectedFilters,
+    setFilterMode,
+    showFilterMode = true
   } = props
-  const dispatch: AppDispatch = useAppDispatch()
-
   // Calculate the count of items for each filter
   const filterCounts: Record<string, number> = useMemo(() => {
     const counts: Record<string, number> = {}
 
     filterOptions.forEach((filter: string) => {
-      counts[filter] = items.filter((item: T) => {
+      counts[filter] ??= items.filter((item: T) => {
         return getItemFilters(item).includes(filter)
       }).length
     })
@@ -65,9 +55,7 @@ const FilterSection = <T,>(props: Props<T>) => {
 
     // Get the current filtered items based on selected filters
     const currentFilteredItems: T[] = items.filter((item: T) =>
-      selectedFilters.every((filterName: string) =>
-        getItemFilters(item).includes(filterName)
-      )
+      selectedFilters.every((filterName: string) => getItemFilters(item).includes(filterName))
     )
 
     // For each unselected filter, check if adding it would result in no matches
@@ -75,9 +63,7 @@ const FilterSection = <T,>(props: Props<T>) => {
       .filter((filter: string) => !selectedFilters.includes(filter))
       .filter((filter: string) => {
         // Would adding this filter result in no matches?
-        return !currentFilteredItems.some((item) =>
-          getItemFilters(item).includes(filter)
-        )
+        return !currentFilteredItems.some((item) => getItemFilters(item).includes(filter))
       })
   }, [selectedFilters, filterMode, filterOptions, items, getItemFilters])
 
@@ -90,14 +76,10 @@ const FilterSection = <T,>(props: Props<T>) => {
 
       if (filterMode === 'OR') {
         // OR logic: Show items that have ANY of the selected filters
-        return selectedFilters.some((filter: string) =>
-          itemFilters.includes(filter)
-        )
+        return selectedFilters.some((filter: string) => itemFilters.includes(filter))
       } else {
         // AND logic: Show items that have ALL the selected filters
-        return selectedFilters.every((filter: string) =>
-          itemFilters.includes(filter)
-        )
+        return selectedFilters.every((filter: string) => itemFilters.includes(filter))
       }
     })
   }, [items, selectedFilters, filterMode, getItemFilters])
@@ -107,63 +89,57 @@ const FilterSection = <T,>(props: Props<T>) => {
       <div className='d-flex justify-content-between mb-2'>
         <h6 className='mb-0'>
           Filter Options:
-          {selectedFilters.length > 0 && (
-            <small className='text-info ms-2'>
-              {filteredItems.length} matches
-            </small>
-          )}
+          {selectedFilters.length > 0 && <small className='text-info ms-2'>{filteredItems.length} matches</small>}
         </h6>
-        <ButtonGroup size='sm'>
-          <ToggleButton
-            id='filter-mode-or'
-            type='radio'
-            variant={filterMode === 'OR' ? 'light' : 'outline-light'}
-            name='filter-mode'
-            value='OR'
-            checked={filterMode === 'OR'}
-            onChange={() => {
-              dispatch(setFilterMode('OR'))
-              // Reset filters when changing modes to avoid confusion
-              if (filterMode !== 'OR') {
-                setSelectedFilters([])
-              }
-            }}
-            size='sm'
-          >
-            OR
-          </ToggleButton>
-          <ToggleButton
-            id='filter-mode-and'
-            type='radio'
-            variant={filterMode === 'AND' ? 'light' : 'outline-light'}
-            name='filter-mode'
-            value='AND'
-            checked={filterMode === 'AND'}
-            onChange={() => {
-              dispatch(setFilterMode('AND'))
-              // Reset filters when changing modes to avoid confusion
-              if (filterMode !== 'AND') {
-                setSelectedFilters([])
-              }
-            }}
-            size='sm'
-          >
-            AND
-          </ToggleButton>
-        </ButtonGroup>
+        {showFilterMode && (
+          <ButtonGroup size='sm'>
+            <ToggleButton
+              id='filter-mode-or'
+              type='radio'
+              variant={filterMode === 'OR' ? 'light' : 'outline-light'}
+              name='filter-mode'
+              value='OR'
+              checked={filterMode === 'OR'}
+              onChange={() => {
+                setFilterMode('OR')
+                // Reset filters when changing modes to avoid confusion
+                if (filterMode !== 'OR') {
+                  setSelectedFilters([])
+                }
+              }}
+              size='sm'
+            >
+              OR
+            </ToggleButton>
+            <ToggleButton
+              id='filter-mode-and'
+              type='radio'
+              variant={filterMode === 'AND' ? 'light' : 'outline-light'}
+              name='filter-mode'
+              value='AND'
+              checked={filterMode === 'AND'}
+              onChange={() => {
+                setFilterMode('AND')
+                // Reset filters when changing modes to avoid confusion
+                if (filterMode !== 'AND') {
+                  setSelectedFilters([])
+                }
+              }}
+              size='sm'
+            >
+              AND
+            </ToggleButton>
+          </ButtonGroup>
+        )}
       </div>
 
       <small className='text-muted d-block mb-2'>
         {filterMode === 'OR'
           ? 'Items with ANY selected option will appear'
           : 'Items with ALL selected options will appear'}
-        {filterMode === 'AND' &&
-          incompatibleFilters.length > 0 &&
-          selectedFilters.length > 0 && (
-            <span className='d-block mt-1'>
-              Some filters are disabled because they would result in no matches
-            </span>
-          )}
+        {filterMode === 'AND' && incompatibleFilters.length > 0 && selectedFilters.length > 0 && (
+          <span className='d-block mt-1'>Some filters are disabled because they would result in no matches</span>
+        )}
       </small>
 
       <Row
@@ -173,32 +149,9 @@ const FilterSection = <T,>(props: Props<T>) => {
         lg={maxFilterColumns}
         className='g-2'
       >
-        {filterOptions.map((filter) => (
-          <Col key={filter}>
-            {filterMode === 'AND' &&
-            incompatibleFilters.includes(filter) &&
-            !selectedFilters.includes(filter) ? (
-              <div style={customStyles.disabledFilter}>
-                <Form.Check
-                  type='switch'
-                  id={`filter-${removeWhitespace(filter, '-').toLowerCase()}`}
-                  checked={selectedFilters.includes(filter)}
-                  onChange={() => {
-                    toggleFilter(filter)
-                  }}
-                  disabled={true}
-                  className='text-truncate'
-                  label={
-                    <span className='d-flex justify-content-between align-items-center w-100'>
-                      <span className='text-truncate'>{filter}</span>
-                      <Badge bg='secondary' pill className='ms-1'>
-                        {filterCounts[filter]}
-                      </Badge>
-                    </span>
-                  }
-                />
-              </div>
-            ) : (
+        {filterOptions.map((filter) => {
+          return (
+            <Col key={filter}>
               <Form.Check
                 type='switch'
                 id={`filter-${removeWhitespace(filter, '-').toLowerCase()}`}
@@ -206,6 +159,9 @@ const FilterSection = <T,>(props: Props<T>) => {
                 onChange={() => {
                   toggleFilter(filter)
                 }}
+                disabled={
+                  filterMode === 'AND' && incompatibleFilters.includes(filter) && !selectedFilters.includes(filter)
+                }
                 className='text-truncate'
                 label={
                   <span className='d-flex justify-content-between align-items-center w-100'>
@@ -216,9 +172,9 @@ const FilterSection = <T,>(props: Props<T>) => {
                   </span>
                 }
               />
-            )}
-          </Col>
-        ))}
+            </Col>
+          )
+        })}
       </Row>
 
       {selectedFilters.length > 0 && (
@@ -263,8 +219,10 @@ interface Props<T> {
   getItemFilters: (item: T) => string[]
   items: T[]
   maxFilterColumns?: number
+  setFilterMode: (mode: 'OR' | 'AND') => void
   selectedFilters: string[]
   setSelectedFilters: (selectedFilters: string[]) => void
+  showFilterMode?: boolean
 }
 
 export default FilterSection

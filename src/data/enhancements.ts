@@ -102,93 +102,75 @@ export const enhancements: Enhancement[] = [
   },
   {
     name: 'Ethereal Air Dominion',
-    description:
-      'This shard has been imbued with the energy of Ethereal Air Dominion.'
+    description: 'This shard has been imbued with the energy of Ethereal Air Dominion.'
   },
   {
     name: 'Ethereal Air Escalation',
-    description:
-      'This shard has been imbued with the energy of Ethereal Air Escalation.'
+    description: 'This shard has been imbued with the energy of Ethereal Air Escalation.'
   },
   {
     name: 'Ethereal Air Opposition',
-    description:
-      'This shard has been imbued with the energy of Ethereal Air Opposition.'
+    description: 'This shard has been imbued with the energy of Ethereal Air Opposition.'
   },
   {
     name: 'Ethereal Earth Dominion',
-    description:
-      'This shard has been imbued with the energy of Ethereal Earth Dominion.'
+    description: 'This shard has been imbued with the energy of Ethereal Earth Dominion.'
   },
   {
     name: 'Ethereal Earth Escalation',
-    description:
-      'This shard has been imbued with the energy of Ethereal Earth Escalation.'
+    description: 'This shard has been imbued with the energy of Ethereal Earth Escalation.'
   },
   {
     name: 'Ethereal Earth Opposition',
-    description:
-      'This shard has been imbued with the energy of Ethereal Earth Opposition.'
+    description: 'This shard has been imbued with the energy of Ethereal Earth Opposition.'
   },
   {
     name: 'Ethereal Fire Dominion',
-    description:
-      'This shard has been imbued with the energy of Ethereal Fire Dominion.'
+    description: 'This shard has been imbued with the energy of Ethereal Fire Dominion.'
   },
   {
     name: 'Ethereal Fire Escalation',
-    description:
-      'This shard has been imbued with the energy of Ethereal Fire Escalation.'
+    description: 'This shard has been imbued with the energy of Ethereal Fire Escalation.'
   },
   {
     name: 'Ethereal Fire Opposition',
-    description:
-      'This shard has been imbued with the energy of Ethereal Fire Opposition.'
+    description: 'This shard has been imbued with the energy of Ethereal Fire Opposition.'
   },
   {
     name: 'Ethereal Negative Energy Dominion',
-    description:
-      'This shard has been imbued with the energy of Ethereal Negative Energy Dominion.'
+    description: 'This shard has been imbued with the energy of Ethereal Negative Energy Dominion.'
   },
   {
     name: 'Ethereal Negative Energy Escalation',
-    description:
-      'This shard has been imbued with the energy of Ethereal Negative Energy Escalation.'
+    description: 'This shard has been imbued with the energy of Ethereal Negative Energy Escalation.'
   },
   {
     name: 'Ethereal Negative Energy Opposition',
-    description:
-      'This shard has been imbued with the energy of Ethereal Negative Energy Opposition.'
+    description: 'This shard has been imbued with the energy of Ethereal Negative Energy Opposition.'
   },
   {
     name: 'Ethereal Positive Energy Dominion',
-    description:
-      'This shard has been imbued with the energy of Ethereal Positive Energy Dominion.'
+    description: 'This shard has been imbued with the energy of Ethereal Positive Energy Dominion.'
   },
   {
     name: 'Ethereal Positive Energy Escalation',
-    description:
-      'This shard has been imbued with the energy of Ethereal Positive Energy Escalation.'
+    description: 'This shard has been imbued with the energy of Ethereal Positive Energy Escalation.'
   },
   {
     name: 'Ethereal Positive Energy Opposition',
-    description:
-      'This shard has been imbued with the energy of Ethereal Positive Energy Opposition.'
+    description: 'This shard has been imbued with the energy of Ethereal Positive Energy Opposition.'
   },
   {
     name: 'Ethereal Water Dominion',
-    description:
-      'This shard has been imbued with the energy of Ethereal Water Dominion.'
+    description: 'This shard has been imbued with the energy of Ethereal Water Dominion.'
   },
   {
     name: 'Ethereal Water Escalation',
-    description:
-      'This shard has been imbued with the energy of Ethereal Water Escalation.'
+    description: 'This shard has been imbued with the energy of Ethereal Water Escalation.'
   },
   {
     name: 'Ethereal Water Opposition',
-    description:
-      'This shard has been imbued with the energy of Ethereal Water Opposition.'
+    description: 'This shard has been imbued with the energy of Ethereal Water Opposition.'
   },
   {
     name: 'Fire Absorption - 15%',
@@ -269,32 +251,27 @@ export const enhancements: Enhancement[] = [
   },
   {
     name: 'Insightful Charisma +2',
-    description:
-      'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.',
+    description: 'This item makes the wearer have more flair, granting a +2 Insight bonus to Charisma.',
     bonus: 'Insight'
   },
   {
     name: 'Insightful Constitution +2',
-    description:
-      'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.',
+    description: 'This item gives the wearer improved health, granting a +2 Insight bonus to Constitution.',
     bonus: 'Insight'
   },
   {
     name: 'Insightful Dexterity +2',
-    description:
-      'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.',
+    description: 'This item makes the wearer more nimble and dexterous, granting a +2 Insight bonus to Dexterity.',
     bonus: 'Insight'
   },
   {
     name: 'Insightful Intelligence +2',
-    description:
-      "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence.",
+    description: "This item focuses the power of the wearer's mind, granting a +2 Insight bonus to Intelligence.",
     bonus: 'Insight'
   },
   {
     name: 'Insightful Strength +2',
-    description:
-      'This item increases the physical power of the wearer, granting a +2 Insight bonus to Strength.',
+    description: 'This item increases the physical power of the wearer, granting a +2 Insight bonus to Strength.',
     bonus: 'Insight'
   },
   {
@@ -321,93 +298,75 @@ export const enhancements: Enhancement[] = [
   },
   {
     name: 'Material Air Dominion',
-    description:
-      'This shard has been imbued with the energy of Material Air Dominion.'
+    description: 'This shard has been imbued with the energy of Material Air Dominion.'
   },
   {
     name: 'Material Air Escalation',
-    description:
-      'This shard has been imbued with the energy of Material Air Escalation.'
+    description: 'This shard has been imbued with the energy of Material Air Escalation.'
   },
   {
     name: 'Material Air Opposition',
-    description:
-      'This shard has been imbued with the energy of Material Air Opposition.'
+    description: 'This shard has been imbued with the energy of Material Air Opposition.'
   },
   {
     name: 'Material Earth Dominion',
-    description:
-      'This shard has been imbued with the energy of Material Earth Dominion.'
+    description: 'This shard has been imbued with the energy of Material Earth Dominion.'
   },
   {
     name: 'Material Earth Escalation',
-    description:
-      'This shard has been imbued with the energy of Material Earth Escalation.'
+    description: 'This shard has been imbued with the energy of Material Earth Escalation.'
   },
   {
     name: 'Material Earth Opposition',
-    description:
-      'This shard has been imbued with the energy of Material Earth Opposition.'
+    description: 'This shard has been imbued with the energy of Material Earth Opposition.'
   },
   {
     name: 'Material Fire Dominion',
-    description:
-      'This shard has been imbued with the energy of Material Fire Dominion.'
+    description: 'This shard has been imbued with the energy of Material Fire Dominion.'
   },
   {
     name: 'Material Fire Escalation',
-    description:
-      'This shard has been imbued with the energy of Material Fire Escalation.'
+    description: 'This shard has been imbued with the energy of Material Fire Escalation.'
   },
   {
     name: 'Material Fire Opposition',
-    description:
-      'This shard has been imbued with the energy of Material Fire Opposition.'
+    description: 'This shard has been imbued with the energy of Material Fire Opposition.'
   },
   {
     name: 'Material Negative Energy Dominion',
-    description:
-      'This shard has been imbued with the energy of Material Negative Energy Dominion.'
+    description: 'This shard has been imbued with the energy of Material Negative Energy Dominion.'
   },
   {
     name: 'Material Negative Energy Escalation',
-    description:
-      'This shard has been imbued with the energy of Material Negative Energy Escalation.'
+    description: 'This shard has been imbued with the energy of Material Negative Energy Escalation.'
   },
   {
     name: 'Material Negative Energy Opposition',
-    description:
-      'This shard has been imbued with the energy of Material Negative Energy Opposition.'
+    description: 'This shard has been imbued with the energy of Material Negative Energy Opposition.'
   },
   {
     name: 'Material Positive Energy Dominion',
-    description:
-      'This shard has been imbued with the energy of Material Positive Energy Dominion.'
+    description: 'This shard has been imbued with the energy of Material Positive Energy Dominion.'
   },
   {
     name: 'Material Positive Energy Escalation',
-    description:
-      'This shard has been imbued with the energy of Material Positive Energy Escalation.'
+    description: 'This shard has been imbued with the energy of Material Positive Energy Escalation.'
   },
   {
     name: 'Material Positive Energy Opposition',
-    description:
-      'This shard has been imbued with the energy of Material Positive Energy Opposition.'
+    description: 'This shard has been imbued with the energy of Material Positive Energy Opposition.'
   },
   {
     name: 'Material Water Dominion',
-    description:
-      'This shard has been imbued with the energy of Material Water Dominion.'
+    description: 'This shard has been imbued with the energy of Material Water Dominion.'
   },
   {
     name: 'Material Water Escalation',
-    description:
-      'This shard has been imbued with the energy of Material Water Escalation.'
+    description: 'This shard has been imbued with the energy of Material Water Escalation.'
   },
   {
     name: 'Material Water Opposition',
-    description:
-      'This shard has been imbued with the energy of Material Water Opposition.'
+    description: 'This shard has been imbued with the energy of Material Water Opposition.'
   },
   {
     name: 'Negative Energy Absorption: +40',
@@ -416,8 +375,7 @@ export const enhancements: Enhancement[] = [
   },
   {
     name: 'Nullification +78',
-    description:
-      'Passive: +78 Equipment Bonus to Negative Energy and Poison Spell Power.',
+    description: 'Passive: +78 Equipment Bonus to Negative Energy and Poison Spell Power.',
     bonus: 'Equipment'
   },
   {

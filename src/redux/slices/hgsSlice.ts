@@ -3,12 +3,12 @@ import { altarOfDevastation } from '../../data/altarOfDevastation.ts'
 import { altarOfInvasion } from '../../data/altarOfInvasion.ts'
 import { altarOfSubjugation } from '../../data/altarOfSubjugation.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
-import { createInitialState } from '../factories/stateFactory.ts'
+import { createInitialHgsState } from '../factories/stateFactory.ts'
 import { filterItemsBySuffix } from '../helpers/filterHelpers.ts'
 import { resetPlanner } from '../helpers/resetHelpers.ts'
 
 const { actions, reducer } = createSlice({
-  initialState: createInitialState(),
+  initialState: createInitialHgsState(),
   name: 'greenSteel',
   reducers: {
     selectFecundityItem: (state, action: PayloadAction<CraftingIngredient>) => {
@@ -69,6 +69,30 @@ const { actions, reducer } = createSlice({
     },
     resetDevastationFocused: (state) => {
       state.selectedDevastationFocused = undefined
+    },
+    setInvasionFilterMode: (state, action: PayloadAction<'OR' | 'AND'>) => {
+      state.invasionFilterMode = action.payload
+    },
+    setSubjugationFilterMode: (state, action: PayloadAction<'OR' | 'AND'>) => {
+      state.subjugationFilterMode = action.payload
+    },
+    setDevastationBasicFilterMode: (state, action: PayloadAction<'OR' | 'AND'>) => {
+      state.devastationBasicFilterMode = action.payload
+    },
+    setDevastationFocusedFilterMode: (state, action: PayloadAction<'OR' | 'AND'>) => {
+      state.devastationBasicFilterMode = action.payload
+    },
+    setInvasionItemFilters: (state, action: PayloadAction<string[]>) => {
+      state.invasionItemFilters = [...action.payload]
+    },
+    setSubjugationItemFilters: (state, action: PayloadAction<string[]>) => {
+      state.subjugationItemFilters = [...action.payload]
+    },
+    setDevastationBasicItemFilters: (state, action: PayloadAction<string[]>) => {
+      state.devastationBasicItemFilters = [...action.payload]
+    },
+    setDevastationFocusedItemFilters: (state, action: PayloadAction<string[]>) => {
+      state.devastationFocusedItemFilters = [...action.payload]
     }
   }
 })
@@ -90,11 +114,13 @@ export interface GreenSteelState {
 
   invasionItemFilters: string[]
   subjugationItemFilters: string[]
-  devastationItemFilters: string[]
+  devastationBasicItemFilters: string[]
+  devastationFocusedItemFilters: string[]
 
   invasionFilterMode: 'OR' | 'AND'
   subjugationFilterMode: 'OR' | 'AND'
-  devastationFilterMode: 'OR' | 'AND'
+  devastationBasicFilterMode: 'OR' | 'AND'
+  devastationFocusedFilterMode: 'OR' | 'AND'
 }
 
 export const {
@@ -109,7 +135,15 @@ export const {
   selectDevastationFocused,
   resetDevastationFocused,
   selectSubjugationSpell,
-  resetSubjugationSpell
+  resetSubjugationSpell,
+  setInvasionFilterMode,
+  setSubjugationFilterMode,
+  setDevastationBasicFilterMode,
+  setInvasionItemFilters,
+  setSubjugationItemFilters,
+  setDevastationBasicItemFilters,
+  setDevastationFocusedItemFilters,
+  setDevastationFocusedFilterMode
 } = actions
 
 export default reducer

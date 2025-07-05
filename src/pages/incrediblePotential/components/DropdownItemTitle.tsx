@@ -11,17 +11,12 @@ const DropdownItemTitle = (props: Props) => {
   return (
     <h6 className='d-flex flex-row justify-content-between'>
       <Stack direction='horizontal' gap={2} className='align-items-center'>
-        {notes && (
-          <NoteTooltip id={`${title}-${subtitle ?? ''}`} text={notes} />
-        )}
+        {notes && <NoteTooltip id={`${title}-${subtitle ?? ''}`} text={notes} />}
         <strong>{title}</strong>
       </Stack>
 
       {subtitle && (
-        <Container
-          className='m-0 p-0 w-auto d-none d-md-block'
-          style={{ fontSize: '0.7rem' }}
-        >
+        <Container className='m-0 p-0 w-auto d-none d-md-block' style={{ fontSize: '0.7rem' }}>
           ({subtitle})
         </Container>
       )}
