@@ -34,7 +34,7 @@ const FilterableDropdown = (props: Props) => {
     }
 
     if (groupBySecondaryFocus && renderSectionHeader) {
-      return renderSectionHeader(key, ingredients)
+      return renderSectionHeader(key, ingredients) as React.JSX.Element
     }
 
     return (
