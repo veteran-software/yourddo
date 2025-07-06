@@ -55,7 +55,7 @@ const MinimumLevel = () => {
           >
             {renderLevelGroup('Heroic Levels', 1, 19)}
             {renderLevelGroup('Epic Levels', 20, 29)}
-            {renderLevelGroup('Legendary Levels', 30, 34)}
+            {renderLevelGroup('Legendary Levels', 30, 32)}
           </Dropdown.Menu>
         </Dropdown>
       </Card.Body>
