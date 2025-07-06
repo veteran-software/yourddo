@@ -41,7 +41,7 @@ const Footer = () => {
   const targetTime: DateTime = DateTime.fromISO('2025-07-15T18:00:00.000', { zone: 'gmt' })
 
   return (
-    <Navbar ref={navRef} fixed='bottom' variant='dark' className='bg-primary overflow-x-auto overflow-y-hidden'>
+    <Navbar ref={navRef} fixed='bottom' className='overflow-x-auto overflow-y-hidden'>
       <Container fluid className='m-auto w-auto py-0'>
         <Stack direction='vertical' gap={1}>
           <Stack direction='horizontal' gap={3}>
