@@ -1,6 +1,7 @@
 import type { NavDropdownType, NavMenuDropdown } from './types.ts'
 
 const menuItems: NavDropdownType[] = [
+  { label: 'Cauldron Of Cadence', image: '', active: true },
   { label: 'Legendary Crafting', image: '', active: false },
   { label: 'Nebula Fragment Crafting', image: '', active: false },
   { label: 'Soulforge', image: '', active: false },

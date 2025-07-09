@@ -1,5 +1,5 @@
 import kebabCase from 'kebab-case'
-import type { Enhancement } from '../types/core.ts'
+import type { Binding, Enhancement } from '../types/core.ts'
 import type { CraftingIngredient } from '../types/crafting.ts'
 import { ESSENCES, FOCI, GEMS } from './constants.ts'
 
@@ -250,4 +250,21 @@ export const isValidFocus = (focus: string): boolean => {
     return FOCI.includes(focus + ' Energy')
   }
   return FOCI.includes(focus)
+}
+
+/**
+ * Generates a string representation of a `Binding` object.
+ *
+ * The returned string is composed based on the `type`, `to`, and `from` properties
+ * of the provided `Binding` object. The `to` property, if present, appends " to {value}"
+ * to the result, and the `from` property, if present, appends " on {value}".
+ *
+ * @param {Binding} binding - The binding object containing properties `type`, `to`, and `from`.
+ * @returns {string} A formatted string representation of the given `Binding` object.
+ */
+export const bindingDisplay = (binding: Binding): string => {
+  const to: string = binding.to ? ` to ${binding.to}` : ''
+  const from: string = binding.from ? ` on ${binding.from}` : ''
+
+  return `${binding.type}${to}${from}`
 }
