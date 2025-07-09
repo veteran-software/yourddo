@@ -49,7 +49,7 @@ const BaseLayout = () => {
         </Alert>
       )}
 
-      <Container className='w-100 h-100 overflow-y-auto d-flex flex-column justify-content-start'>
+      <Container fluid className='w-100 h-100 overflow-y-auto d-flex flex-column justify-content-start'>
         <Outlet />
       </Container>
 

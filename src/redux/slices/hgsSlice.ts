@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit/react'
 import { altarOfDevastation } from '../../data/altarOfDevastation.ts'
 import { altarOfInvasion } from '../../data/altarOfInvasion.ts'
 import { altarOfSubjugation } from '../../data/altarOfSubjugation.ts'

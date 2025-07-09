@@ -3,9 +3,10 @@ import { serverStatusApi } from '../api/serverStatusApi.ts'
 import { serverStatusLamApi } from '../api/serverStatusLamApi.ts'
 
 import appReducer from './slices/appSlice'
-import greenSteelReducer from './slices/hgsSlice.ts'
+import cannithCraftingReducer from './slices/cannithCraftingSlice'
+import greenSteelReducer from './slices/hgsSlice'
 import incrediblePotentialReducer from './slices/incrediblePotentialSlice'
-import legendaryGreenSteelReducer from './slices/lgsSlice.ts'
+import legendaryGreenSteelReducer from './slices/lgsSlice'
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     [serverStatusLamApi.reducerPath]: serverStatusLamApi.reducer,
 
     app: appReducer,
+    cannithCrafting: cannithCraftingReducer,
     greenSteel: greenSteelReducer,
     incrediblePotential: incrediblePotentialReducer,
     legendaryGreenSteel: legendaryGreenSteelReducer
