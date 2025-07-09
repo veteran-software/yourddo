@@ -3,7 +3,7 @@ import type { NavDropdownType, NavMenuDropdown } from './types.ts'
 const menuItems: NavDropdownType[] = [
   { label: 'Alchemical', image: '', active: false },
   { label: 'Against The Slave Lords', image: '', active: false },
-  { label: 'Cannith Crafting', image: '', active: true },
+  { label: 'Cannith Crafting', image: '', active: false },
   { label: 'Cauldron Of Sora Katra', image: '', active: false },
   { label: 'Dampened', image: '', active: false },
   { label: 'Dragonscale Armor', image: '', active: false },
