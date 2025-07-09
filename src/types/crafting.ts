@@ -16,6 +16,7 @@ export interface CraftingIngredient extends Ingredient {
   spell?: Spell
   enhancements?: Enhancement[]
   augmentType?:
+    | 'Colorless'
     | 'Green Steel Epic Active'
     | 'Green Steel Epic Tier 1'
     | 'Green Steel Epic Tier 2'
@@ -37,11 +38,13 @@ export interface CraftingIngredient extends Ingredient {
     minimumLevel?: number
   }
   augments?: Augment[]
-  setBonus?: {
-    name: string
-    numPiecesEquipped?: number
-    enhancements?: Enhancement[]
-  }[]
+  setBonus?: []
+}
+
+export interface SetBonus {
+  name: string
+  numPiecesEquipped?: number
+  enhancements?: Enhancement[]
 }
 
 /**
