@@ -163,6 +163,17 @@ export const ingredients: Ingredient[] = [
     ]
   },
   {
+    name: "Attunement's Gaze",
+    type: 'Goggles',
+    description: 'Gaze into the unknown.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Project Nemesis', 'Nemesis Rune Barter']
+  },
+  {
     name: 'Barrier Fragment',
     description: 'Fragments of a shattered barrier. Used at the Ritual Table to unseal power.',
     binding: {
@@ -284,6 +295,41 @@ export const ingredients: Ingredient[] = [
     weight: 0.01
   },
   {
+    name: "Citadel's Gaze",
+    type: 'Helm',
+    description:
+      "Presented as a gift from the Boromar Clan to the Knight-Marshall of the Citadel, Sir Banarak Tithon, this helmet contains immense personal significance. It's a shame he doesn't wear it, as it's a uniquely beautiful piece.",
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Too Hot to Handle', 'Forge Rune Barter']
+  },
+  {
+    name: 'Cloak of the Mountain',
+    image: 'raidCloak',
+    type: 'Cloak',
+    description: 'This dark gray cloak seems to ripple, despite being carved of smooth gray stone.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Killing Time', 'Time Rune Barter']
+  },
+  {
+    name: 'Coat of Van Richten',
+    type: 'Medium Armor',
+    description: "An old coat of Van Richten's. He lost it once in an encounter gone bad, it's found another home now.",
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['The Curse of Strahd', 'Rudolph van Richten (Barter NPC)', 'Strahd Rune Barter']
+  },
+  {
     name: 'Codex Rune',
     description: "An ephemeral reminder of what you've done, and what's been done to you.",
     type: 'This item may be put in a Legendary eldritch device.',
@@ -309,6 +355,17 @@ export const ingredients: Ingredient[] = [
     baseValue: {
       gold: 1
     }
+  },
+  {
+    name: 'Crystalline Gauntlets',
+    type: 'Gloves',
+    description: 'These are made of cut and polished gemstones, and hum with primal magics.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Too Hot to Handle', 'Forge Rune Barter']
   },
   {
     name: 'Depleted Shavarath Medium Energy Cell',
@@ -343,6 +400,19 @@ export const ingredients: Ingredient[] = [
       "Note: The +X you're looking for is in the top-right corner of the item examine window—not in the weapon’s name."
   },
   {
+    name: "Dumathoin's Bracers",
+    image: 'raidBracers',
+    type: 'Bracers',
+    description:
+      '"Hold the gates! No green-skin will step one foot into Thunderholme!" - Dumathoin Thunderstone, Captain of the Guard',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Temple of the Deathwyrm', 'Deathwyrm Rune Barter']
+  },
+  {
     name: 'Eberron Energy Cell',
     description: 'A small vessel with a charge of energy inside.',
     type: 'This item may be usable in an eldritch device.',
@@ -354,6 +424,19 @@ export const ingredients: Ingredient[] = [
       platinum: 990
     },
     weight: 0.01
+  },
+  {
+    name: 'Empty Soul Vessel',
+    description: 'A victorious reminder of your achievements. Perhaps these can be used for something...',
+    foundIn: ['Fables of the Feywild (Legendary Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 100
+    }
   },
   {
     name: 'Glistening Pebbles',
@@ -399,6 +482,39 @@ export const ingredients: Ingredient[] = [
     },
     weight: 0.01,
     foundIn: ['Rainbow in the Dark', 'The Coalescence Chamber']
+  },
+  {
+    name: 'Helm of the Final Watcher',
+    type: 'Helm',
+    description: 'Keep your eyes on the skies.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Project Nemesis', 'Nemesis Rune Barter']
+  },
+  {
+    name: 'Guided Sight',
+    type: 'Trinket',
+    description: 'Dragonborn scouts often used these scopes to examine the road ahead for danger.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Riding the Storm Out', 'Dalwyneth (Barter NPC)', 'Draconic Raider’s Reward Box']
+  },
+  {
+    name: "Kelas' Volatile Mixture",
+    type: 'Orb',
+    description: 'A small and simple inscription adorns the label... "Do Not Drink"',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Skeletons in the Closet', 'Dread Rune Barter']
   },
   {
     name: 'Lammanian Lily Petals',
@@ -787,6 +903,30 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Let Sleeping Dust Lie', 'The Vale of Twilight (rare encounters)']
   },
   {
+    name: 'Mail of the Mroranon',
+    image: 'coatOfVanRichten',
+    type: 'Medium Armor',
+    description: 'This powerful armor is an ancient keepsake of the Mroranon Clan of the Ironroot Mountains.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Killing Time', 'Time Rune Barter', 'Draconic Raider’s Reward Box']
+  },
+  {
+    name: 'Mantle of Escher',
+    image: 'raidRobe',
+    type: 'Robe',
+    description: 'Once worn by Escher in life, this robe confers surprisingly strong magical properties',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['The Curse of Strahd', 'Rudolph van Richten (Barter NPC)', 'Strahd Rune Barter']
+  },
+  {
     name: 'Medium Devil Scales',
     type: 'This item may be usable in an eldritch device.',
     description: 'A few reptilian looking devil scales. This item is humming like the Altar of Subjugation.',
@@ -867,6 +1007,43 @@ export const ingredients: Ingredient[] = [
     foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
   },
   {
+    name: 'Page Regalia: Exiled Tactica',
+    image: 'raidCloakYellow',
+    type: 'Cloak',
+    description:
+      'A cloak that manifested from an especially forbidden page from the University Library through unknown means. It now seeks purpose.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Fire Over Morgrave', 'Ceremony Rune Barter']
+  },
+  {
+    name: 'Page Regalia: Unsanctioned Arcana',
+    image: 'raidCloakYellow',
+    type: 'Cloak',
+    description:
+      'A cloak that manifested from an especially forbidden page from the University Library through unknown means. It now seeks purpose.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Fire Over Morgrave', 'Ceremony Rune Barter', 'Draconic Raider’s Reward Box']
+  },
+  {
+    name: 'Platemail of Strahd',
+    type: 'Heavy Armor',
+    description: 'An old painting in Castle Ravenloft depicts Strahd wearing this very set of armor.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['The Curse of Strahd', 'Rudolph van Richten (Barter NPC)', 'Strahd Rune Barter']
+  },
+  {
     name: 'Polished White Marble Stone',
     description:
       "A piece of polished white marble that was given to you so you could try out Valaireas's Combination in an eldritch device.",
@@ -881,6 +1058,18 @@ export const ingredients: Ingredient[] = [
       gold: 5
     },
     weight: 0.01
+  },
+  {
+    name: 'Quori-Infused Core',
+    type: 'Trinket',
+    description:
+      'This was taken from the Lord of Blades, and has clear signs of Quori influence. You should probably hold onto it, at least for a little while.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Lord of Blades (Legendary)', "Kenneth d'Cannith", 'Blades Rune Barter']
   },
   {
     name: 'Ring of Incredible Potential',
@@ -1151,6 +1340,76 @@ export const ingredients: Ingredient[] = [
     weight: 0.01
   },
   {
+    name: 'Staggershockers',
+    type: 'Gloves',
+    description: 'Aim before releasing.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Project Nemesis', 'Nemesis Rune Barter']
+  },
+  {
+    name: 'Strange Tidings',
+    image: 'raidRing',
+    type: 'Ring',
+    description: 'Those who bear this ring have a knack for finding information no one was ever meant to know.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Defiler of the Just', 'Melene (Barter NPC)']
+  },
+  {
+    name: 'Tattered Scrolls of the Broken One',
+    type: 'Bracers',
+    description: 'Wrap these ancient scrolls around yourself to unlock incredible holy power.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Too Hot to Handle', 'Forge Rune Barter']
+  },
+  {
+    name: "The Family's Blessing",
+    type: 'Necklace',
+    description: "You're an honorary part of the Family. Wear it with pride.",
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Project Nemesis', 'Nemesis Rune Barter']
+  },
+  {
+    name: 'The Stablestone',
+    type: 'Trinket',
+    description: 'The more things change, the more they stay the same.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ['Hunt or Be Hunted', 'Maes Toben']
+  },
+  {
+    name: 'Thread of Fate',
+    description: 'A victorious reminder of your achievements. Perhaps these can be used for something...',
+    foundIn: ['Level 30+ Raids'],
+    binding: {
+      type: 'Bound',
+      from: 'Acquisition',
+      to: 'Account'
+    },
+    baseValue: {
+      gold: 5
+    },
+    weight: 0.01
+  },
+  {
     name: 'Tiny Khyber Dragonshard',
     description:
       'A translucent smoky crystal with colored veins of midnight blue and oily black, pulsing with the power of The Dragon Below. This is a material component for the Trap the Soul spell.',
@@ -1168,5 +1427,16 @@ export const ingredients: Ingredient[] = [
       'Collegium of the Twelve (Nerena) [Guild Airship Amenity]',
       "Amrath (Ver'quea)"
     ]
+  },
+  {
+    name: 'Vestments of Ravenloft',
+    type: 'Light Armor',
+    description: "Barovia calls those who have seen its mists, even after they've returned home.",
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    foundIn: ["Old Baba's Hut", 'Adrian Martikov']
   }
 ] as const
