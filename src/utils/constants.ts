@@ -27,3 +27,5 @@ export const FOCI: string[] = [
 export const ESSENCES: string[] = ['Material', 'Ethereal']
 
 export const GEMS: string[] = ['Dominion', 'Opposition', 'Escalation']
+
+export const ICON_BASE = 'https://yourddo.s3.us-east-2.amazonaws.com/icons/'

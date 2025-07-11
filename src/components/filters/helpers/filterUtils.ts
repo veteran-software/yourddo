@@ -1,5 +1,5 @@
-import type { Enhancement } from '../../../../types/core.ts'
-import type { CraftingIngredient } from '../../../../types/crafting.ts'
+import type { Enhancement } from '../../../types/core.ts'
+import type { CraftingIngredient } from '../../../types/crafting.ts'
 
 /**
  * Filters the `ingredients` map based on the provided item filters.
