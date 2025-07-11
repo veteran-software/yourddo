@@ -41,15 +41,13 @@ const FilterableDropdown = (props: Props) => {
 
     if (isCraftedIngredient(ingredient)) {
       return (
-        <>
-          <CraftedIngredientDisplay
-            ingredient={ingredient}
-            quantity={1}
-            showLocation={true}
-            showQuantity={false}
-            showEffects={displayEffectsAdded}
-          />
-        </>
+        <CraftedIngredientDisplay
+          ingredient={ingredient}
+          quantity={1}
+          showLocation={true}
+          showQuantity={false}
+          showEffects={displayEffectsAdded}
+        />
       )
     }
 

@@ -23,8 +23,8 @@ const ItemDisplay = (props: Props) => {
 
               <Card.Body className='p-0'>
                 <ListGroup variant='flush'>
-                  {selectedItem.requirements.map((req: CraftingIngredient) => (
-                    <ListGroup.Item>
+                  {selectedItem.requirements.map((req: CraftingIngredient, idx: number) => (
+                    <ListGroup.Item key={`${req.name}-${String(idx)}`}>
                       <Stack direction='horizontal' className='w-100 align-items-center justify-content-between'>
                         <strong>
                           <small>{req.name}</small>
@@ -50,8 +50,8 @@ const ItemDisplay = (props: Props) => {
 
               <Card.Body className='p-0'>
                 <ListGroup variant='flush'>
-                  {selectedItem.foundIn.map((location: string) => (
-                    <ListGroup.Item>{location}</ListGroup.Item>
+                  {selectedItem.foundIn.map((location: string, idx: number) => (
+                    <ListGroup.Item key={`${location}-${String(idx)}`}>{location}</ListGroup.Item>
                   ))}
                 </ListGroup>
               </Card.Body>
@@ -69,8 +69,8 @@ const ItemDisplay = (props: Props) => {
               <Card.Body className='p-0'>
                 <ListGroup variant='flush'>
                   {selectedItem.effectsAdded.length ? (
-                    selectedItem.effectsAdded.map((effect: Enhancement) => (
-                      <ListGroup.Item>
+                    selectedItem.effectsAdded.map((effect: Enhancement, idx: number) => (
+                      <ListGroup.Item key={`${effect.name}-${String(idx)}`}>
                         <small>
                           {effect.name}
                           {effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''}
