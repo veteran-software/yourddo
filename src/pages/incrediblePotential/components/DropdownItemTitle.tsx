@@ -1,5 +1,5 @@
 import { Container, Stack } from 'react-bootstrap'
-import NoteTooltip from '../../../components/NoteTooltip.tsx'
+import NoteTooltip from '../../../components/common/NoteTooltip.tsx'
 
 const DropdownItemTitle = (props: Props) => {
   const { notes, subtitle, title } = props

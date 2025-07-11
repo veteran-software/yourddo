@@ -6,7 +6,7 @@ import { serverStatusLamApi } from '../../api/serverStatusLamApi.ts'
 import { useAppDispatch } from '../../redux/hooks.ts'
 import { setFooterHeight } from '../../redux/slices/appSlice.ts'
 import type { AppDispatch } from '../../redux/store.ts'
-import ServerStatusDisplay from '../ServerStatusDisplay.tsx'
+import ServerStatusDisplay from '../common/ServerStatusDisplay.tsx'
 import Countdown from '../timer/Countdown.tsx'
 
 const polling = {

@@ -1,6 +1,6 @@
 import { Card, Container, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
-import EnhancementDisplay from '../../../components/EnhancementDisplay.tsx'
+import EnhancementDisplay from '../../../components/common/EnhancementDisplay.tsx'
 import { enhancements } from '../../../data/enhancements.ts'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import type { Enhancement } from '../../../types/core.ts'

@@ -1,6 +1,7 @@
 import { type FC, useMemo } from 'react'
 import { shallowEqual } from 'react-redux'
 import FilterableDropdown from '../../../../components/common/FilterableDropdown.tsx'
+import { filterIngredientsMap } from '../../../../components/filters/helpers/filterUtils.ts'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts'
 import {
   resetDevastationBasic,
@@ -11,7 +12,6 @@ import {
 import type { AppDispatch } from '../../../../redux/store.ts'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
 import { oneFocusDropdownLabel } from '../../common/helpers/helpers.ts'
-import { filterIngredientsMap } from '../../legendary/helpers/filterUtils.ts'
 import { renderBody, renderHeader } from '../../legendary/helpers/renderHelpers.tsx'
 import { useDevastationBasic } from '../hooks/useDevastationBasic.ts'
 

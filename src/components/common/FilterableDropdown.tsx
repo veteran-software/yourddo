@@ -1,11 +1,12 @@
-import { Fragment, type ReactNode, useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { titleCase } from 'title-case'
-import { parseUniqueEffects } from '../../pages/greenSteel/legendary/helpers/filterUtils.ts'
 import type { Enhancement } from '../../types/core.ts'
 import type { CraftingIngredient } from '../../types/crafting'
-import FarmedIngredientDisplay from '../FarmedIngredientDisplay'
 import FilterOffCanvas from '../filters/FilterOffCanvas.tsx'
+import { parseUniqueEffects } from '../filters/helpers/filterUtils.ts'
+import CraftedIngredientDisplay from './CraftedIngredientDisplay.tsx'
+import FarmedIngredientDisplay from './FarmedIngredientDisplay.tsx'
 
 const FilterableDropdown = (props: Props) => {
   const {
@@ -25,8 +26,35 @@ const FilterableDropdown = (props: Props) => {
     renderSectionHeader,
     renderSectionBody,
     selectedItem,
-    title
+    title,
+    displayEffectsAdded = false
   } = props
+
+  const isCraftedIngredient = (ingredient: CraftingIngredient): boolean => {
+    return 'craftedIn' in ingredient || 'effectsAdded' in ingredient
+  }
+
+  const renderIngredientContent = (ingredient: CraftingIngredient) => {
+    if (renderSectionBody) {
+      return renderSectionBody(ingredient)
+    }
+
+    if (isCraftedIngredient(ingredient)) {
+      return (
+        <>
+          <CraftedIngredientDisplay
+            ingredient={ingredient}
+            quantity={1}
+            showLocation={true}
+            showQuantity={false}
+            showEffects={displayEffectsAdded}
+          />
+        </>
+      )
+    }
+
+    return <FarmedIngredientDisplay ingredient={ingredient} quantity={1} showLocation={true} showQuantity={false} />
+  }
 
   const renderDropdownItems = (key: string, ingredients: CraftingIngredient[]) => {
     if (ingredients.length === 0) {
@@ -34,7 +62,7 @@ const FilterableDropdown = (props: Props) => {
     }
 
     if (groupBySecondaryFocus && renderSectionHeader) {
-      return renderSectionHeader(key, ingredients) as React.JSX.Element
+      return renderSectionHeader(key, ingredients)
     }
 
     return (
@@ -54,11 +82,9 @@ const FilterableDropdown = (props: Props) => {
               onSelect(ingredient)
             }}
           >
-            {renderSectionBody ? (
-              renderSectionBody(ingredient)
-            ) : (
-              <FarmedIngredientDisplay ingredient={ingredient} quantity={1} showLocation={false} showQuantity={false} />
-            )}
+            <Stack direction='vertical' gap={1}>
+              {renderIngredientContent(ingredient)}
+            </Stack>
           </Dropdown.Item>
         ))}
       </>
@@ -125,27 +151,32 @@ const FilterableDropdown = (props: Props) => {
 }
 
 /**
- * Properties:
- * - canFilter: Optional boolean value indicating whether the filtering functionality is enabled.
- * - disabled: Optional boolean value to indicate if the component is disabled.
- * - dropdownTriggerPrefix: Optional string used as a prefix for the dropdown trigger.
- * - filterMode: Optional mode ('OR' or 'AND') for applying filters.
- * - filters: Optional array of strings representing active filters.
- * - items: A required object where keys are strings and values are arrays of CraftingIngredient objects.
- * - label: A required string used as a label for the component.
- * - onFilterModeChange: Optional callback function triggered when the filter mode changes.
- * - onFiltersChange: Optional callback function triggered when the filters change.
- * - onReset: Optional callback function triggered to handle reset functionality.
- * - onSelect: Required callback function triggered when an item is selected.
- * - selectedItem: Optional selected CraftingIngredient item.
- * - title: A required string representing the title of the component.
+ * @property {boolean} [canFilter] - Indicates if filtering is enabled.
+ * @property {boolean} [disabled] - Determines if the component is disabled.
+ * @property {boolean} [displayEffectsAdded] - Flag to display additional effects if enabled.
+ * @property {string} [dropdownTriggerPrefix] - Optional prefix for the dropdown trigger.
+ * @property {'OR' | 'AND'} [filterMode] - Logical mode used for filtering, can be 'OR' or 'AND'.
+ * @property {Record<string, CraftingIngredient[]>} [filteredItems] - A record of filtered items.
+ * @property {string[]} [filters] - List of currently active filters.
+ * @property {boolean} [groupBySecondaryFocus] - Indicates if items should be grouped by a secondary focus.
+ * @property {Record<string, CraftingIngredient[]>} items - A record of items categorized by a key.
+ * @property {string} label - Label text for the component or input.
+ * @property {(mode: 'OR' | 'AND') => void} [onFilterModeChange] - Callback function triggered when the filter mode changes.
+ * @property {(filters: string[]) => void} [onFiltersChange] - Callback function invoked when filters are updated.
+ * @property {() => void} [onReset] - Callback function invoked when resetting filters or selection.
+ * @property {(item: CraftingIngredient) => void} onSelect - Callback function triggered when an item is selected.
+ * @property {(ingredient: CraftingIngredient) => ReactNode} [renderSectionBody] - Optional function to render the body of a section.
+ * @property {(name: string, ingredients?: CraftingIngredient[]) => ReactNode} [renderSectionHeader] - Optional function to render the header of a section.
+ * @property {CraftingIngredient | undefined} selectedItem - The currently selected item, if any.
+ * @property {string} title - The title or heading of the component.
  */
 interface Props {
   canFilter?: boolean
   disabled?: boolean
+  displayEffectsAdded?: boolean
   dropdownTriggerPrefix?: string
-  filteredItems?: Record<string, CraftingIngredient[]>
   filterMode?: 'OR' | 'AND'
+  filteredItems?: Record<string, CraftingIngredient[]>
   filters?: string[]
   groupBySecondaryFocus?: boolean
   items: Record<string, CraftingIngredient[]>
@@ -154,8 +185,8 @@ interface Props {
   onFiltersChange?: (filters: string[]) => void
   onReset?: () => void
   onSelect: (item: CraftingIngredient) => void
-  renderSectionHeader?: (name: string, ingredients?: CraftingIngredient[]) => ReactNode
-  renderSectionBody?: (ingredient: CraftingIngredient) => ReactNode
+  renderSectionBody?: (ingredient: CraftingIngredient) => React.JSX.Element
+  renderSectionHeader?: (name: string, ingredients?: CraftingIngredient[]) => React.JSX.Element
   selectedItem: CraftingIngredient | undefined
   title: string
 }

@@ -1,5 +1,4 @@
 import { shallowEqual } from 'react-redux'
-import BaseIngredientList, { type TierItem } from '../../../../components/common/BaseIngredientList'
 import { altarOfFecundity } from '../../../../data/altarOfFecundity.ts'
 import { legendaryAltarOfDevastation } from '../../../../data/legendaryAltarOfDevastation.ts'
 import { legendaryAltarOfInvasion } from '../../../../data/legendaryAltarOfInvasion.ts'
@@ -7,6 +6,7 @@ import { legendaryAltarOfSubjugation } from '../../../../data/legendaryAltarOfSu
 import { useAppSelector } from '../../../../redux/hooks'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
 import useRecipeBuilder from '../../common/hooks/useRecipeBuilder'
+import BaseIngredientList, { type TierItem } from '../BaseIngredientList.tsx'
 import { allAltars } from './elementalData.ts'
 
 const createTierItem = (
