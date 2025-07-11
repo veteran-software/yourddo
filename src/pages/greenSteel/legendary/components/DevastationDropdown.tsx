@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import FilterableDropdown from '../../../../components/common/FilterableDropdown.tsx'
+import { filterIngredientsMap } from '../../../../components/filters/helpers/filterUtils.ts'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts'
 import {
   resetDevastationItem,
@@ -14,7 +15,6 @@ import type { Enhancement } from '../../../../types/core.ts'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
 import { deconstructLgsShard } from '../../../../utils/objectUtils.ts'
 import { elementColor } from '../../../../utils/utils.ts'
-import { filterIngredientsMap } from '../helpers/filterUtils.ts'
 import { useDevastation } from '../hooks/useDevastation.ts'
 
 const DevastationDropdown = () => {

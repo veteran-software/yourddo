@@ -132,7 +132,7 @@ export const altarOfFecundity: CraftingIngredient[] = [
     binding: {
       type: 'Unbound'
     },
-    description: 'Several iridescent strands of sturdy fiber. This item is humming like the Altar of Fecundity.',
+    description: 'Several iridiscent strands of sturdy fiber. This item is humming like the Altar of Fecundity.',
     quantity: 1,
     requirements: [
       {

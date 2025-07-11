@@ -97,7 +97,8 @@ const SubjugationSpellDropdown = () => {
   ])
 
   const renderSpellBody = (ingredient: CraftingIngredient) => {
-    if (!ingredient.spell) return null
+    if (!ingredient.spell) return <></>
+
     return (
       <small>{`${ingredient.spell.name} (CL: ${String(ingredient.spell.casterLevel)}, Charges: ${String(
         ingredient.spell.charges

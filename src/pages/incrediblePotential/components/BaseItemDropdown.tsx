@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { Dropdown, Image, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
-import ringImage from '../../../assets/icons/ringOfIncrediblePotential.png'
 import FilterOffCanvas from '../../../components/filters/FilterOffCanvas.tsx'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
 import {
@@ -11,6 +10,7 @@ import {
 } from '../../../redux/slices/incrediblePotentialSlice.ts'
 import type { AppDispatch } from '../../../redux/store.ts'
 import type { Enhancement, Ring } from '../../../types/core.ts'
+import { ICON_BASE } from '../../../utils/constants.ts'
 import { baseItems } from '../data/baseItems.ts'
 import DropdownItemTitle from './DropdownItemTitle.tsx'
 
@@ -53,7 +53,12 @@ const BaseItemDropdown = (props: Props) => {
 
   const renderItem = (item: Ring) => (
     <Stack direction='horizontal' gap={3}>
-      <Image src={ringImage} alt={item.name} title={item.name} className='d-none d-md-block' />
+      <Image
+        src={`${ICON_BASE}ringOfIncrediblePotential.png`}
+        alt={item.name}
+        title={item.name}
+        className='d-none d-md-block'
+      />
       <Stack direction='vertical' gap={0}>
         <DropdownItemTitle title={item.name} />
         <small className='d-none d-lg-block'>

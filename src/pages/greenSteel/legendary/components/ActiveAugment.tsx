@@ -1,6 +1,6 @@
 import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
-import CraftedIngredientDisplay from '../../../../components/CraftedIngredientDisplay.tsx'
+import CraftedIngredientDisplay from '../../../../components/common/CraftedIngredientDisplay.tsx'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts'
 import { resetActiveAugment, setActiveAugment } from '../../../../redux/slices/lgsSlice.ts'
 import type { AppDispatch } from '../../../../redux/store.ts'

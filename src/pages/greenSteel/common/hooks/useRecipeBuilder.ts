@@ -60,10 +60,10 @@ const useRecipeBuilder = (type: GreenSteelType) => {
       recipeIngredient.requirements?.forEach((requirement: CraftingIngredient) => {
         const ingredient: CraftingIngredient | undefined = findCraftedIngredientByName(requirement.name, whereToLook)
         if (ingredient) {
-          craftedMaterials[ingredient.name] = (craftedMaterials[ingredient.name] ?? 0) + requirement.quantity
+          craftedMaterials[ingredient.name] = (craftedMaterials[ingredient.name] ?? 0) + (requirement.quantity ?? 1)
           traverse(ingredient)
         } else {
-          rawMaterials[requirement.name] = (rawMaterials[requirement.name] ?? 0) + requirement.quantity
+          rawMaterials[requirement.name] = (rawMaterials[requirement.name] ?? 0) + (requirement.quantity ?? 1)
         }
       })
     }

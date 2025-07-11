@@ -5,8 +5,8 @@ import type { Enhancement } from '../../types/core.ts'
 import type { CraftingIngredient, SetBonus } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { bindingDisplay } from '../../utils/objectUtils.ts'
-import CraftedIngredientDisplay from '../CraftedIngredientDisplay.tsx'
-import FarmedIngredientDisplay from '../FarmedIngredientDisplay.tsx'
+import CraftedIngredientDisplay from './CraftedIngredientDisplay.tsx'
+import FarmedIngredientDisplay from './FarmedIngredientDisplay.tsx'
 
 const UpgradeItemData = (props: Props) => {
   const { ingredient } = props
@@ -108,7 +108,7 @@ const UpgradeItemData = (props: Props) => {
                   <ListGroup.Item key={`req-${String(reqIdx)}`}>
                     <FarmedIngredientDisplay
                       ingredient={ingredients.find((ingredient: Ingredient) => ingredient.name === req.name)}
-                      quantity={req.quantity}
+                      quantity={req.quantity ?? 1}
                     />
                   </ListGroup.Item>
                 ))}
