@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import FilterableDropdown from '../../../../components/common/FilterableDropdown.tsx'
+import { filterIngredientsMap } from '../../../../components/filters/helpers/filterUtils.ts'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks.ts'
 import {
   resetSubjugationItem,
@@ -13,7 +14,6 @@ import type { AppDispatch } from '../../../../redux/store.ts'
 import type { Enhancement } from '../../../../types/core.ts'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
 import { type ElementalList, subjugationElementalList } from '../../common/helpers/elementalData.ts'
-import { filterIngredientsMap } from '../../legendary/helpers/filterUtils.ts'
 import useSubjugationBasic from '../hooks/useSubjugationBasic.ts'
 
 const SubjugationBasicDropdown = () => {
@@ -56,7 +56,7 @@ const SubjugationBasicDropdown = () => {
   }
 
   const renderSectionHeader = (name: string, ingredients?: CraftingIngredient[]) => {
-    if (!ingredients) return null
+    if (!ingredients) return <></>
 
     // Handle the special case for items with more than 6 ingredients (Ash, Dust, Vacuum, etc.)
     if (ingredients.length > 6) {

@@ -11,7 +11,7 @@ import type { CraftingIngredient, SetBonus } from '../../../types/crafting.ts'
  * @returns {SetBonus[]} A sorted array of unique set bonuses retrieved from the crafting ingredients.
  */
 export const effects = (data: CraftingIngredient[]): SetBonus[] => {
-  const allSetBonuses: SetBonus[] = data.flatMap((item: CraftingIngredient) => (item.setBonus ?? []) as SetBonus[])
+  const allSetBonuses: SetBonus[] = data.flatMap((item: CraftingIngredient) => item.setBonus ?? [])
 
   const uniqueSetBonuses = new Map(allSetBonuses.map((bonus: SetBonus) => [bonus.name, bonus]))
 

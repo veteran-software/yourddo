@@ -1,5 +1,5 @@
 import { Stack } from 'react-bootstrap'
-import CraftedIngredientDisplay from '../../../../components/CraftedIngredientDisplay.tsx'
+import CraftedIngredientDisplay from '../../../../components/common/CraftedIngredientDisplay.tsx'
 import type { Enhancement } from '../../../../types/core.ts'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
 import { elementColor } from '../../../../utils/utils.ts'

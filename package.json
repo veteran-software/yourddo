@@ -15,7 +15,7 @@
     "bootstrap": "^5.3.7",
     "camelcase": "^8.0.0",
     "kebab-case": "^2.0.2",
-    "luxon": "^3.6.1",
+    "luxon": "^3.7.1",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.0",
@@ -30,7 +30,7 @@
     "@eslint/js": "^9.30.1",
     "@types/bootstrap": "^5.2.10",
     "@types/luxon": "^3.6.2",
-    "@types/node": "^24.0.12",
+    "@types/node": "^24.0.13",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@types/titlecase": "^1.1.2",
@@ -45,7 +45,7 @@
     "sass": "^1.89.2",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.36.0",
-    "vite": "^7.0.3",
+    "vite": "^7.0.4",
     "vite-plugin-compression": "^0.5.1"
   },
   "packageManager": "yarn@4.9.2"

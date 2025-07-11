@@ -3,6 +3,7 @@ import { serverStatusApi } from '../api/serverStatusApi.ts'
 import { serverStatusLamApi } from '../api/serverStatusLamApi.ts'
 
 import appReducer from './slices/appSlice'
+import dinosaurBoneReducer from './slices/dinosaurBoneSlice'
 import greenSteelReducer from './slices/hgsSlice.ts'
 import incrediblePotentialReducer from './slices/incrediblePotentialSlice'
 import legendaryGreenSteelReducer from './slices/lgsSlice.ts'
@@ -13,6 +14,7 @@ const store = configureStore({
     [serverStatusLamApi.reducerPath]: serverStatusLamApi.reducer,
 
     app: appReducer,
+    dinosaurBone: dinosaurBoneReducer,
     greenSteel: greenSteelReducer,
     incrediblePotential: incrediblePotentialReducer,
     legendaryGreenSteel: legendaryGreenSteelReducer

@@ -335,4 +335,7 @@ export interface Spell {
   casterLevel?: number
   charges?: number
   rechargePerDay?: number
+  target?: string[]
+  duration?: string
+  school?: string
 }

@@ -36,13 +36,13 @@ const { actions, reducer } = createSlice({
     addCraftedIngredient: (state, action: PayloadAction<CraftingIngredient>) => {
       state.craftedIngredients = {
         ...state.craftedIngredients,
-        [action.payload.name]: (state.craftedIngredients[action.payload.name] ?? 0) + action.payload.quantity
+        [action.payload.name]: (state.craftedIngredients[action.payload.name] ?? 0) + (action.payload.quantity ?? 1)
       }
     },
     addRawMaterial: (state, action: PayloadAction<CraftingIngredient>) => {
       state.rawMaterials = {
         ...state.rawMaterials,
-        [action.payload.name]: (state.rawMaterials[action.payload.name] ?? 0) + action.payload.quantity
+        [action.payload.name]: (state.rawMaterials[action.payload.name] ?? 0) + (action.payload.quantity ?? 1)
       }
     },
     clearCraftedIngredients: (state) => {

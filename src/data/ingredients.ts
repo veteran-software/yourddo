@@ -163,6 +163,28 @@ export const ingredients: Ingredient[] = [
     ]
   },
   {
+    name: 'Aspect of Tar',
+    image: 'dinosaurBoneNamedHornAugment',
+    description:
+      'Slotted Effect: Your attacks and offensive spells have a chance to reduce enemy Physical and Magical Resistance Rating and summon Tar oozes to your aid.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 500
+    },
+    foundIn: ['Skeletons in the Closet'],
+    minimumLevel: 31,
+    augmentType: 'Isle of Dread: Horn (Weapon)',
+    enhancements: [
+      {
+        name: 'Legendary Ooze'
+      }
+    ]
+  },
+  {
     name: "Attunement's Gaze",
     type: 'Goggles',
     description: 'Gaze into the unknown.',
@@ -241,6 +263,27 @@ export const ingredients: Ingredient[] = [
       from: 'Acquisition'
     },
     foundIn: ['The Isle of Dread (Legendary)', 'Skeletons in the Closet', 'Draconic Raider’s Reward Box']
+  },
+  {
+    name: "Black Sands' Desire",
+    image: 'dinosaurBoneNamedHornAugment',
+    description: 'Slotted Effect: Your attacks and offensive spells have a chance to significantly slow your enemies.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 500
+    },
+    foundIn: ['Skeletons in the Closet'],
+    minimumLevel: 31,
+    augmentType: 'Isle of Dread: Horn (Weapon)',
+    enhancements: [
+      {
+        name: 'Legendary Salt'
+      }
+    ]
   },
   {
     name: 'Black Stone',
@@ -400,6 +443,29 @@ export const ingredients: Ingredient[] = [
       "Note: The +X you're looking for is in the top-right corner of the item examine window—not in the weapon’s name."
   },
   {
+    name: 'Dimensional Horn',
+    image: 'dinosaurBoneNamedHornAugment',
+    description: 'Slotted Effect: 5% Enhancement bonus to Dodge Bypass.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 500
+    },
+    foundIn: ['Skeletons in the Closet'],
+    minimumLevel: 31,
+    augmentType: 'Isle of Dread: Horn (Accessory)',
+    enhancements: [
+      {
+        name: 'Dodge Bypass',
+        modifier: '5%',
+        bonus: 'Enhancement'
+      }
+    ]
+  },
+  {
     name: "Dumathoin's Bracers",
     image: 'raidBracers',
     type: 'Bracers',
@@ -437,6 +503,177 @@ export const ingredients: Ingredient[] = [
     baseValue: {
       platinum: 100
     }
+  },
+  {
+    name: 'Fossilized Amber',
+    image: 'dinosaurBoneNamedHornAugment',
+    description: 'Slotted Effect: 250 Unconsciousness Range. You heal 20 HP every minute from Positive Energy.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 500
+    },
+    foundIn: ['Skeletons in the Closet'],
+    minimumLevel: 31,
+    augmentType: 'Isle of Dread: Horn (Accessory)',
+    enhancements: [
+      {
+        name: 'Unconsciousness Range',
+        modifier: 250,
+        bonus: 'Enhancement'
+      },
+      {
+        name: 'Heal Over Time',
+        modifier: 20,
+        notes: 'per minute from Positive Energy'
+      }
+    ]
+  },
+  {
+    name: 'Fossilized Ankylosaur Rib',
+    image: 'dinosaurBone',
+    type: 'Ingredient',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    description:
+      'This fossilized dinosaur bone can be used to fashion rare and powerful equipment in the Isle of Dread.',
+    foundIn: ['Isle of Dread Quests (Legendary)', 'The Isle of Dread (Wilderness) (Legendary)']
+  },
+  {
+    name: 'Fossilized Pteradon Vertebra',
+    image: 'dinosaurBone',
+    type: 'Ingredient',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    description:
+      'This fossilized dinosaur bone can be used to fashion rare and powerful equipment in the Isle of Dread.',
+    foundIn: ['Isle of Dread Quests (Legendary)', 'The Isle of Dread (Wilderness) (Legendary)']
+  },
+  {
+    name: 'Fossilized Raptor Claw',
+    image: 'dinosaurBone',
+    type: 'Ingredient',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    description:
+      'This fossilized dinosaur bone can be used to fashion rare and powerful equipment in the Isle of Dread.',
+    foundIn: ['Isle of Dread Quests (Legendary)', 'The Isle of Dread (Wilderness) (Legendary)']
+  },
+  {
+    name: 'Fossilized Triceratops Horn',
+    image: 'dinosaurBone',
+    type: 'Ingredient',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    description:
+      'This fossilized dinosaur bone can be used to fashion rare and powerful equipment in the Isle of Dread.',
+    foundIn: ['Isle of Dread Quests (Legendary)', 'The Isle of Dread (Wilderness) (Legendary)']
+  },
+  {
+    name: 'Fossilized Tyrannosaurus Tooth',
+    image: 'dinosaurBone',
+    type: 'Ingredient',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    description:
+      'This fossilized dinosaur bone can be used to fashion rare and powerful equipment in the Isle of Dread.',
+    foundIn: ['The Isle of Dread (Wilderness) (Legendary)']
+  },
+  {
+    name: 'Fragment of Extraplanar Alignment',
+    image: 'dinosaurBoneNamedScaleAugment',
+    description:
+      'Slotted Effect: +23% Enhancement bonus to Alignment absorption, which includes Law, Chaos, Good, and Evil damage.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 500
+    },
+    foundIn: ['Skeletons in the Closet'],
+    minimumLevel: 31,
+    augmentType: 'Isle of Dread: Scale (Armor)',
+    enhancements: [
+      {
+        name: 'Chaos Absorption',
+        modifier: '23%',
+        bonus: 'Enhancement'
+      },
+      {
+        name: 'Evil Absorption',
+        modifier: '23%',
+        bonus: 'Enhancement'
+      },
+      {
+        name: 'Good Absorption',
+        modifier: '23%',
+        bonus: 'Enhancement'
+      },
+      {
+        name: 'Law Absorption',
+        modifier: '23%',
+        bonus: 'Enhancement'
+      }
+    ]
+  },
+  {
+    name: 'Fragment of Extraplanar Shadow',
+    image: 'dinosaurBoneNamedScaleAugment',
+    description:
+      'Slotted Effect: +3% Profane Doublestrike and Doubleshot, +15% Enhancement bonus to Melee Alacrity, +20% Enhancement bonus to Ranged Alacrity.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 500
+    },
+    foundIn: ['Skeletons in the Closet'],
+    minimumLevel: 31,
+    augmentType: 'Isle of Dread: Scale (Armor)',
+    enhancements: [
+      {
+        name: 'Doublestrike',
+        modifier: '3%',
+        bonus: 'Profane'
+      },
+      {
+        name: 'Doubleshot',
+        modifier: '3%',
+        bonus: 'Profane'
+      },
+      {
+        name: 'Melee Alacrity',
+        modifier: '15%',
+        bonus: 'Enhancement'
+      },
+      {
+        name: 'Ranged Alacrity',
+        modifier: '20%',
+        bonus: 'Enhancement'
+      }
+    ]
   },
   {
     name: 'Glistening Pebbles',
