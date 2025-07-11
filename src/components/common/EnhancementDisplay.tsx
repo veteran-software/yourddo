@@ -1,6 +1,6 @@
 import { Container } from 'react-bootstrap'
 import { FaCaretRight } from 'react-icons/fa6'
-import type { Enhancement } from '../types/core.ts'
+import type { Enhancement } from '../../types/core.ts'
 
 const EnhancementDisplay = (props: Props) => {
   const { enhancement } = props

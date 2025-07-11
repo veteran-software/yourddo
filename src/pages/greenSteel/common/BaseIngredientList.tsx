@@ -1,13 +1,13 @@
 import { Fragment } from 'react'
 import { Accordion, Card, ListGroup, Stack } from 'react-bootstrap'
-import { ingredients } from '../../data/ingredients.ts'
-import MaterialsAccordion from '../../pages/greenSteel/heroic/components/lists/MaterialsAccordion.tsx'
-import TierAccordionItem from '../../pages/greenSteel/heroic/components/TierAccordionItem.tsx'
-import type { CraftingIngredient } from '../../types/crafting'
-import type { Ingredient } from '../../types/ingredients.ts'
-import { findCraftedIngredientByName } from '../../utils/objectUtils'
-import CraftedIngredientDisplay from '../CraftedIngredientDisplay.tsx'
-import FarmedIngredientDisplay from '../FarmedIngredientDisplay.tsx'
+import CraftedIngredientDisplay from '../../../components/common/CraftedIngredientDisplay.tsx'
+import FarmedIngredientDisplay from '../../../components/common/FarmedIngredientDisplay.tsx'
+import { ingredients } from '../../../data/ingredients.ts'
+import type { CraftingIngredient } from '../../../types/crafting.ts'
+import type { Ingredient } from '../../../types/ingredients.ts'
+import { findCraftedIngredientByName } from '../../../utils/objectUtils.ts'
+import MaterialsAccordion from '../heroic/components/lists/MaterialsAccordion.tsx'
+import TierAccordionItem from '../heroic/components/TierAccordionItem.tsx'
 
 const BaseIngredientList = (props: Props) => {
   const { craftedMaterials, ingredientSources, rawMaterials, tiers } = props
@@ -18,7 +18,7 @@ const BaseIngredientList = (props: Props) => {
     if (ingredient) {
       return (
         <ListGroup.Item key={ingredient.name}>
-          <CraftedIngredientDisplay ingredient={ingredient} quantity={requirement.quantity} />
+          <CraftedIngredientDisplay ingredient={ingredient} quantity={requirement.quantity ?? 1} />
         </ListGroup.Item>
       )
     } else {
@@ -29,7 +29,7 @@ const BaseIngredientList = (props: Props) => {
       if (farmedIngredient) {
         return (
           <ListGroup.Item key={farmedIngredient.name}>
-            <FarmedIngredientDisplay ingredient={farmedIngredient} quantity={requirement.quantity} />
+            <FarmedIngredientDisplay ingredient={farmedIngredient} quantity={requirement.quantity ?? 1} />
           </ListGroup.Item>
         )
       }

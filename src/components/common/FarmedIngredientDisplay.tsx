@@ -1,13 +1,16 @@
+import camelcase from 'camelcase'
 import { Container, Image, Stack } from 'react-bootstrap'
 import { FaCircleNotch } from 'react-icons/fa6'
-import useIngredientImage from '../hooks/useIngredientImage.ts'
-import type { Ingredient } from '../types/ingredients.ts'
+import type { Ingredient } from '../../types/ingredients.ts'
+import { ICON_BASE } from '../../utils/constants.ts'
+import { formatIngredientName } from '../../utils/utils.ts'
 import NoteTooltip from './NoteTooltip.tsx'
 
 const FarmedIngredientDisplay = (props: Props) => {
   const { ingredient, quantity, showLocation = true, showQuantity = true } = props
 
-  const { imageSrc } = useIngredientImage(ingredient?.name ?? '', ingredient?.image)
+  const formattedName: string = formatIngredientName(ingredient?.image ?? ingredient?.name ?? '')
+  const imageSrc = `${ICON_BASE}${camelcase(formattedName)}.png`
 
   if (!ingredient) {
     return <></>

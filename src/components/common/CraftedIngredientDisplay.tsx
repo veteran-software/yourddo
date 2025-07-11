@@ -1,8 +1,10 @@
+import camelcase from 'camelcase'
 import { Container, Image, OverlayTrigger, Stack } from 'react-bootstrap'
-import useIngredientImage from '../hooks/useIngredientImage.ts'
-import IngredientPopover from '../pages/greenSteel/heroic/components/IngredientPopover.tsx'
-import type { CraftingIngredient } from '../types/crafting.ts'
-import type { Ingredient } from '../types/ingredients.ts'
+import type { CraftingIngredient } from '../../types/crafting.ts'
+import type { Ingredient } from '../../types/ingredients.ts'
+import { ICON_BASE } from '../../utils/constants.ts'
+import { formatIngredientName } from '../../utils/utils.ts'
+import IngredientPopover from './IngredientPopover.tsx'
 
 const CraftedIngredientDisplay = (props: Props) => {
   const {
@@ -12,13 +14,33 @@ const CraftedIngredientDisplay = (props: Props) => {
     quantity,
     showLocation = true,
     showPopover = true,
-    showQuantity = true
+    showQuantity = true,
+    showEffects = false
   } = props
 
-  const { imageSrc } = useIngredientImage(ingredient?.name ?? '', ingredient?.image)
+  const formattedName: string = formatIngredientName(ingredient?.image ?? ingredient?.name ?? '')
+  const imageSrc = `${ICON_BASE}${camelcase(formattedName)}.png`
 
   if (!ingredient) {
     return <></>
+  }
+
+  const renderEffects = () => {
+    if (!showEffects || !('effectsAdded' in ingredient) || !ingredient.effectsAdded?.length) {
+      return <></>
+    }
+
+    return (
+      <small className='text-muted'>
+        {ingredient.effectsAdded
+          .map((effect) => {
+            return `${effect.name}${
+              effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''
+            }`
+          })
+          .join(', ')}
+      </small>
+    )
   }
 
   return (
@@ -42,6 +64,7 @@ const CraftedIngredientDisplay = (props: Props) => {
         {showLocation && (ingredient as CraftingIngredient).craftedIn && (
           <small>Crafting Location: {(ingredient as CraftingIngredient).craftedIn}</small>
         )}
+        {renderEffects()}
       </Stack>
 
       {showQuantity && (
@@ -61,6 +84,7 @@ interface Props {
   showLocation?: boolean
   showPopover?: boolean
   showQuantity?: boolean
+  showEffects?: boolean
 }
 
 export default CraftedIngredientDisplay

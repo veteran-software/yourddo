@@ -1,12 +1,12 @@
 import { ListGroup, Popover, PopoverBody, PopoverHeader } from 'react-bootstrap'
 import type { OverlayInjectedProps } from 'react-bootstrap/OverlayTrigger'
-import CraftedIngredientDisplay from '../../../../components/CraftedIngredientDisplay.tsx'
-import FarmedIngredientDisplay from '../../../../components/FarmedIngredientDisplay.tsx'
-import { ingredients } from '../../../../data/ingredients.ts'
-import type { CraftingIngredient } from '../../../../types/crafting.ts'
-import type { Ingredient } from '../../../../types/ingredients.ts'
-import { findCraftedIngredientByName } from '../../../../utils/objectUtils.ts'
-import { allAltars } from '../../common/helpers/elementalData.ts'
+import { ingredients } from '../../data/ingredients.ts'
+import { allAltars } from '../../pages/greenSteel/common/helpers/elementalData.ts'
+import type { CraftingIngredient } from '../../types/crafting.ts'
+import type { Ingredient } from '../../types/ingredients.ts'
+import { findCraftedIngredientByName } from '../../utils/objectUtils.ts'
+import CraftedIngredientDisplay from './CraftedIngredientDisplay.tsx'
+import FarmedIngredientDisplay from './FarmedIngredientDisplay.tsx'
 
 const IngredientPopover = (props: Props) => {
   const { ingredient, popper } = props
@@ -28,7 +28,7 @@ const IngredientPopover = (props: Props) => {
                 <ListGroup.Item key={`${ing.name}-${String(idx)}`}>
                   <CraftedIngredientDisplay
                     ingredient={altarCheck}
-                    quantity={ing.quantity}
+                    quantity={ing.quantity ?? 0}
                     key={`${ing.name}-${String(idx)}`}
                   />
                 </ListGroup.Item>
@@ -39,7 +39,7 @@ const IngredientPopover = (props: Props) => {
               <ListGroup.Item key={`${ing.name}-${String(idx)}`}>
                 <FarmedIngredientDisplay
                   ingredient={findCraftedIngredientByName(ing.name, ingredients as CraftingIngredient[])}
-                  quantity={ing.quantity}
+                  quantity={ing.quantity ?? 0}
                   key={`${ing.name}-${String(idx)}`}
                 />
               </ListGroup.Item>
