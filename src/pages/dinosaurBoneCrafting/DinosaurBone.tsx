@@ -143,7 +143,7 @@ const DinosaurBone = () => {
 
   const augmentOptions = useMemo<Record<string, CraftingIngredient[]>>(() => {
     return availableAugmentSlots.reduce<Record<string, CraftingIngredient[]>>((acc, slot) => {
-      let options: CraftingIngredient[] = []
+      let options: CraftingIngredient[]
 
       if (slot === 'isleOfDreadSetBonus') {
         options = dinosaurBoneCrafting.filter((ing) => ing.setBonus)

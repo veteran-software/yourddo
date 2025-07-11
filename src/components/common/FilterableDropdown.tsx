@@ -165,8 +165,8 @@ const FilterableDropdown = (props: Props) => {
  * @property {(filters: string[]) => void} [onFiltersChange] - Callback function invoked when filters are updated.
  * @property {() => void} [onReset] - Callback function invoked when resetting filters or selection.
  * @property {(item: CraftingIngredient) => void} onSelect - Callback function triggered when an item is selected.
- * @property {(ingredient: CraftingIngredient) => ReactNode} [renderSectionBody] - Optional function to render the body of a section.
- * @property {(name: string, ingredients?: CraftingIngredient[]) => ReactNode} [renderSectionHeader] - Optional function to render the header of a section.
+ * @property {(ingredient: CraftingIngredient) => Element} [renderSectionBody] - Optional function to render the body of a section.
+ * @property {(name: string, ingredients?: CraftingIngredient[]) => Element} [renderSectionHeader] - Optional function to render the header of a section.
  * @property {CraftingIngredient | undefined} selectedItem - The currently selected item, if any.
  * @property {string} title - The title or heading of the component.
  */
