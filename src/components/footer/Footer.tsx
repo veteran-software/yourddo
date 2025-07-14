@@ -1,6 +1,15 @@
 import { XMLParser } from 'fast-xml-parser'
 import { DateTime } from 'luxon'
-import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import {
+  type Dispatch,
+  Fragment,
+  type SetStateAction,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState
+} from 'react'
 import { Container, Navbar, Stack } from 'react-bootstrap'
 import { serverStatusApi } from '../../api/serverStatusApi.ts'
 import { serverStatusLamApi } from '../../api/serverStatusLamApi.ts'
@@ -42,6 +51,28 @@ const Footer = () => {
   const [gameWorldsLam, setGameWorldsLam] = useState<World[]>()
   const [statusesLam, setStatusesLam] = useState<Record<string, boolean | undefined>>({})
 
+  const iterateResults = useCallback(
+    async (
+      promises: Promise<{
+        name: string
+        data: boolean | undefined
+      }>[],
+      setStatuses: Dispatch<SetStateAction<Record<string, boolean | undefined>>>
+    ) => {
+      const results = await Promise.all(promises)
+
+      setStatuses((prev) => {
+        const updated = { ...prev }
+        results.forEach(({ name, data }) => {
+          updated[name] = data
+        })
+
+        return updated
+      })
+    },
+    []
+  )
+
   useEffect(() => {
     if (xmlData) {
       const parser = new XMLParser({ ignoreAttributes: true })
@@ -70,20 +101,11 @@ const Footer = () => {
         }
       })
 
-      const results = await Promise.all(promises)
-
-      setStatuses((prev) => {
-        const updated = { ...prev }
-        results.forEach(({ name, data }) => {
-          updated[name] = data
-        })
-
-        return updated
-      })
+      await iterateResults(promises, setStatuses)
     }
 
     fetchApiStatuses().catch(console.error)
-  }, [gameWorlds, statusTrigger])
+  }, [gameWorlds, iterateResults, statusTrigger])
 
   useEffect(() => {
     if (xmlDataLam) {
@@ -115,26 +137,11 @@ const Footer = () => {
         }
       })
 
-      const results = await Promise.all(promises)
-
-      setStatusesLam((prev) => {
-        const updated = { ...prev }
-        results.forEach(({ name, data }) => {
-          updated[name] = data
-        })
-
-        return updated
-      })
+      await iterateResults(promises, setStatusesLam)
     }
 
     fetchApiStatuses().catch(console.error)
-  }, [gameWorldsLam, statusTriggerLam])
-
-  useEffect(() => {
-    if (Object.keys(statuses).length > 0) {
-      console.log(statuses)
-    }
-  }, [statuses])
+  }, [gameWorldsLam, iterateResults, statusTriggerLam])
 
   const targetTime: DateTime = DateTime.fromISO('2025-07-15T18:00:00.000', { zone: 'gmt' })
 
