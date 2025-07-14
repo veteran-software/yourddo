@@ -13,12 +13,6 @@ export const serverStatusLamApi = createApi({
     responseHandler: 'text'
   }),
   endpoints: (build) => ({
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    dc: build.query<string | undefined, void>({
-      query: () => ({
-        url: 'dc'
-      })
-    }),
     status: build.query<boolean | undefined, string>({
       query: (ipAddress: string) => ({
         url: 'status',
@@ -28,6 +22,12 @@ export const serverStatusLamApi = createApi({
         }
       }),
       transformResponse: processStatus
+    }),
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    dc: build.query<string | undefined, void>({
+      query: () => ({
+        url: 'dc'
+      })
     })
   })
 })
