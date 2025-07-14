@@ -13,14 +13,21 @@ export const serverStatusLamApi = createApi({
     responseHandler: 'text'
   }),
   endpoints: (build) => ({
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    lamannia: build.query<boolean | undefined, void>({
-      query: () => ({
-        url: '',
-        // eslint-disable-next-line sonarjs/no-hardcoded-ip
-        params: new URLSearchParams({ s: '10.192.160.64' })
+    status: build.query<boolean | undefined, string>({
+      query: (ipAddress: string) => ({
+        url: 'status',
+        params: new URLSearchParams({ s: ipAddress }),
+        headers: {
+          Accept: 'application/xml'
+        }
       }),
       transformResponse: processStatus
+    }),
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    dc: build.query<string | undefined, void>({
+      query: () => ({
+        url: 'dc'
+      })
     })
   })
 })
