@@ -11,5 +11,13 @@
   "endOfLine": "lf",
   "singleAttributePerLine": false,
   "arrowParens": "always",
-  "singleQuote": true
+  "singleQuote": true,
+  "overrides": [
+    {
+      "files": ".prettierrc",
+      "options": {
+        "parser": "json"
+      }
+    }
+  ]
 }

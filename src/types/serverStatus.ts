@@ -66,3 +66,46 @@ export interface StatusServerResultChild {
 export interface LastUpdated {
   content: string
 }
+
+// For parsing the raw XML stuff
+export interface Root {
+  ArrayOfDatacenterStruct: ArrayOfDatacenterStruct
+}
+
+export interface ArrayOfDatacenterStruct {
+  DatacenterStruct: DatacenterStruct | DatacenterStruct[]
+}
+
+export interface DatacenterStruct {
+  KeyName: string
+  Datacenter: Datacenter
+}
+
+export interface Datacenter {
+  datacenter: Datacenter2
+}
+
+export interface Datacenter2 {
+  Datacenter: Datacenter3
+}
+
+export interface Datacenter3 {
+  Name: string
+  Worlds: Worlds
+  AuthServer: string
+  PatchServer: string
+  LauncherConfigurationServer: string
+}
+
+export interface Worlds {
+  World: World | World[]
+}
+
+export interface World {
+  Name: string
+  LoginServerUrl: string
+  ChatServerUrl: string
+  StatusServerUrl: string
+  Language?: string
+  Order: number
+}
