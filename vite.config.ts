@@ -17,13 +17,25 @@ export default defineConfig({
       strict: true
     },
     proxy: {
+      '/api/dc': {
+        target: 'https://gls.ddo.com/',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path: string) => path.replace(/^\/api\/dc/, 'GLS.DataCenterServer/Datacenters.xml')
+      },
+      '/api-lam/dc': {
+        target: 'https://gls-lm.ddo.com/',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path: string) => path.replace(/^\/api-lam\/dc/, 'GLS.DataCenterServer/Datacenters.xml')
+      },
       '/api-lam': {
         target: 'https://gls-lm.ddo.com/',
         changeOrigin: true,
         secure: false,
         rewrite: (path: string) => path.replace(/^\/api-lam/, 'GLS.DataCenterServer/StatusServer.aspx')
       },
-      '/api': {
+      '/api/status': {
         target: 'https://gls.ddo.com/',
         changeOrigin: true,
         secure: false,

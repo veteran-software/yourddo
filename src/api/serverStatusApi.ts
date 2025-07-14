@@ -14,95 +14,18 @@ export const serverStatusApi = createApi({
   }),
   endpoints: (build) => ({
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    argonnessen: build.query<boolean | undefined, void>({
+    dc: build.query<string | undefined, void>({
       query: () => ({
-        url: '',
-        // eslint-disable-next-line sonarjs/no-hardcoded-ip
-        params: new URLSearchParams({ s: '10.192.145.11' }),
+        url: 'dc'
+      })
+    }),
+    status: build.query<boolean | undefined, string>({
+      query: (ipAddress: string) => ({
+        url: 'status',
+        params: new URLSearchParams({ s: ipAddress }),
         headers: {
           Accept: 'application/xml'
         }
-      }),
-      transformResponse: processStatus
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    cannith: build.query<boolean | undefined, void>({
-      query: () => ({
-        url: '',
-        // eslint-disable-next-line sonarjs/no-hardcoded-ip
-        params: new URLSearchParams({ s: '10.192.145.17' })
-      }),
-      transformResponse: processStatus
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    ghallanda: build.query<boolean | undefined, void>({
-      query: () => ({
-        url: '',
-        // eslint-disable-next-line sonarjs/no-hardcoded-ip
-        params: new URLSearchParams({ s: '10.192.145.23' })
-      }),
-      transformResponse: processStatus
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    khyber: build.query<boolean | undefined, void>({
-      query: () => ({
-        url: '',
-        // eslint-disable-next-line sonarjs/no-hardcoded-ip
-        params: new URLSearchParams({ s: '10.192.145.29' })
-      }),
-      transformResponse: processStatus
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    orien: build.query<boolean | undefined, void>({
-      query: () => ({
-        url: '',
-        // eslint-disable-next-line sonarjs/no-hardcoded-ip
-        params: new URLSearchParams({ s: '10.192.145.35' })
-      }),
-      transformResponse: processStatus
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    sarlona: build.query<boolean | undefined, void>({
-      query: () => ({
-        url: '',
-        // eslint-disable-next-line sonarjs/no-hardcoded-ip
-        params: new URLSearchParams({ s: '10.192.145.41' })
-      }),
-      transformResponse: processStatus
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    thelanis: build.query<boolean | undefined, void>({
-      query: () => ({
-        url: '',
-        // eslint-disable-next-line sonarjs/no-hardcoded-ip
-        params: new URLSearchParams({ s: '10.192.145.47' })
-      }),
-      transformResponse: processStatus
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    wayfinder: build.query<boolean | undefined, void>({
-      query: () => ({
-        url: '',
-        // eslint-disable-next-line sonarjs/no-hardcoded-ip
-        params: new URLSearchParams({ s: '10.192.145.53' })
-      }),
-      transformResponse: processStatus
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    hardcore: build.query<boolean | undefined, void>({
-      query: () => ({
-        url: '',
-        // eslint-disable-next-line sonarjs/no-hardcoded-ip
-        params: new URLSearchParams({ s: '10.192.145.80' })
-      }),
-      transformResponse: processStatus
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    cormyr: build.query<boolean | undefined, void>({
-      query: () => ({
-        url: '',
-        // eslint-disable-next-line sonarjs/no-hardcoded-ip
-        params: new URLSearchParams({ s: '10.193.146.10' })
       }),
       transformResponse: processStatus
     })
