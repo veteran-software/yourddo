@@ -22,7 +22,7 @@ import Countdown from '../timer/Countdown.tsx'
 
 const polling = {
   pollingInterval: 60000, // re-check every minute
-  skipPollingIfUnfocused: true
+  skipPollingIfUnfocused: false
 }
 
 const Footer = () => {
@@ -30,10 +30,12 @@ const Footer = () => {
 
   const { data: xmlData } = serverStatusApi.useDcQuery(undefined, polling)
   const [statusTrigger] = serverStatusApi.useLazyStatusQuery()
+  const mainServersIntervalId = useRef<number>(-1)
 
   // Lamannia
   const { data: xmlDataLam } = serverStatusLamApi.useDcQuery(undefined, polling)
   const [statusTriggerLam] = serverStatusLamApi.useLazyStatusQuery()
+  const lamServerIntervalId = useRef<number>(-1)
 
   const navRef = useRef<HTMLDivElement>(null)
 
@@ -105,6 +107,14 @@ const Footer = () => {
     }
 
     fetchApiStatuses().catch(console.error)
+
+    mainServersIntervalId.current = window.setInterval(() => {
+      fetchApiStatuses().catch(console.error)
+    }, 60000)
+
+    return () => {
+      clearInterval(mainServersIntervalId.current)
+    }
   }, [gameWorlds, iterateResults, statusTrigger])
 
   useEffect(() => {
@@ -141,6 +151,14 @@ const Footer = () => {
     }
 
     fetchApiStatuses().catch(console.error)
+
+    lamServerIntervalId.current = window.setInterval(() => {
+      fetchApiStatuses().catch(console.error)
+    }, 60000)
+
+    return () => {
+      clearInterval(lamServerIntervalId.current)
+    }
   }, [gameWorldsLam, iterateResults, statusTriggerLam])
 
   const targetTime: DateTime = DateTime.fromISO('2025-07-15T18:00:00.000', { zone: 'gmt' })
