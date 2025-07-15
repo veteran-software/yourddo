@@ -1,0 +1,18 @@
+name: "Question / Help"
+description: Ask about something confusing, unclear, or undocumented
+title: "[QUESTION] <brief summary>"
+labels: [ question ]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What do you want to know or need help with?
+      placeholder: "How do I import legacy planner builds into the new site?"
+    validations:
+      required: true
+  - type: input
+    id: context
+    attributes:
+      label: URL or Page (if applicable)
+      placeholder: "e.g., https://yourddo.com/incredible-potential"
