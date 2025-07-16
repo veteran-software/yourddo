@@ -163,7 +163,7 @@ const Footer = () => {
     }
   }, [gameWorldsLam, iterateResults, statusTriggerLam])
 
-  const targetTime: DateTime = DateTime.fromISO('2025-07-15T18:00:00.000', { zone: 'gmt' })
+  const targetTime: DateTime = DateTime.fromISO('2025-07-17T18:00:00.000', { zone: 'gmt' })
 
   return (
     <Navbar ref={navRef} fixed='bottom' variant='dark' className='bg-primary overflow-x-auto overflow-y-hidden'>
