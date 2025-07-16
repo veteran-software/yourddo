@@ -25,6 +25,8 @@ const polling = {
   skipPollingIfUnfocused: false
 }
 
+const stripPrefix = (name: string) => name.replace(/(?: ?\[(?:Old|US|EU)] ?)+/g, '')
+
 const Footer = () => {
   const dispatch: AppDispatch = useAppDispatch()
 
@@ -66,7 +68,7 @@ const Footer = () => {
       setStatuses((prev) => {
         const updated = { ...prev }
         results.forEach(({ name, data }) => {
-          updated[name] = data
+          updated[stripPrefix(name)] = data
         })
 
         return updated
@@ -98,7 +100,7 @@ const Footer = () => {
         const result = await statusTrigger(params.get('s') ?? '')
 
         return {
-          name: world.Name,
+          name: stripPrefix(world.Name),
           data: 'data' in result ? result.data : undefined
         }
       })
@@ -122,9 +124,9 @@ const Footer = () => {
       const parser = new XMLParser({ ignoreAttributes: true })
       const obj: Root = parser.parse(xmlDataLam) as Root
 
-      const ddoLam = (obj.ArrayOfDatacenterStruct.DatacenterStruct as DatacenterStruct[]).find(
-        (dcs: DatacenterStruct) => dcs.KeyName.toLowerCase() === 'ddo'
-      )
+      const ddoLam: DatacenterStruct | undefined = (
+        obj.ArrayOfDatacenterStruct.DatacenterStruct as DatacenterStruct[]
+      ).find((dcs: DatacenterStruct) => dcs.KeyName.toLowerCase() === 'ddo')
       if (ddoLam) {
         setGameWorldsLam([ddoLam.Datacenter.datacenter.Datacenter.Worlds.World as World])
       } else {
@@ -142,7 +144,7 @@ const Footer = () => {
         const result = await statusTriggerLam(params.get('s') ?? '')
 
         return {
-          name: world.Name,
+          name: stripPrefix(world.Name),
           data: 'data' in result ? result.data : undefined
         }
       })
@@ -165,42 +167,51 @@ const Footer = () => {
 
   return (
     <Navbar ref={navRef} fixed='bottom' variant='dark' className='bg-primary overflow-x-auto overflow-y-hidden'>
-      <Container fluid className='m-auto w-auto py-0'>
+      <Container fluid className='m-auto w-auto py-0 text-center'>
         <Stack direction='vertical' gap={1}>
-          <Stack direction='horizontal' gap={3}>
-            {gameWorlds?.map((world: World, idx: number) => (
-              <Fragment key={world.Name}>
-                {idx > 0 && <>&bull;</>}
-                <ServerStatusDisplay name={world.Name} up={statuses[world.Name]} />
-              </Fragment>
-            ))}
+          {/* 64-bit servers & Lam */}
+          <Stack direction='horizontal' gap={3} className='w-auto justify-content-center'>
+            {gameWorlds
+              ?.filter((world) => world.Name.includes('[US]') || world.Name.includes('[EU]'))
+              .map((world: World, idx: number) => {
+                return (
+                  <Fragment key={world.Name}>
+                    {idx > 0 && <>&bull;</>}
+                    <ServerStatusDisplay name={stripPrefix(world.Name)} up={statuses[stripPrefix(world.Name)]} />
+                  </Fragment>
+                )
+              })}
 
-            {gameWorldsLam?.map((world: World) => (
-              <Fragment key={world.Name}>
-                &bull;
-                <ServerStatusDisplay name={world.Name} up={statusesLam[world.Name]} />
-              </Fragment>
-            ))}
+            {gameWorldsLam?.map((world: World) => {
+              if (!statusesLam[world.Name]) {
+                return <></>
+              }
 
-            {/* 64-bit servers coming soon */}
-            {statuses.Shadowdale === undefined && (
-              <>
-                &bull;
-                <ServerStatusDisplay name='Shadowdale' up={undefined} comingSoon={true} comingSoonDate={targetTime} />
-              </>
-            )}
-            {statuses.Thrane === undefined && (
-              <>
-                &bull;
-                <ServerStatusDisplay name='Thrane' up={undefined} comingSoon={true} comingSoonDate={targetTime} />
-              </>
-            )}
-            {statuses.Moonsea === undefined && (
-              <>
-                &bull;
-                <ServerStatusDisplay name='Moonsea' up={undefined} comingSoon={true} comingSoonDate={targetTime} />
-              </>
-            )}
+              return (
+                <Fragment key={world.Name}>
+                  <>&bull;</>
+                  <ServerStatusDisplay name={world.Name} up={statusesLam[world.Name]} />
+                </Fragment>
+              )
+            })}
+          </Stack>
+
+          <hr className='my-1' />
+
+          {/* Legacy Servers */}
+          <Stack direction='horizontal' gap={3} className='w-auto justify-content-center'>
+            {gameWorlds
+              ?.filter((world) => world.Name.includes('[Old]'))
+              .map((world: World, idx: number) => {
+                if (world.Name.includes('[Old]')) {
+                  return (
+                    <Fragment key={world.Name}>
+                      {idx > 0 && <>&bull;</>}
+                      <ServerStatusDisplay name={stripPrefix(world.Name)} up={statuses[stripPrefix(world.Name)]} />
+                    </Fragment>
+                  )
+                }
+              })}
           </Stack>
 
           {/* Hide the timer at 6pm EST */}
