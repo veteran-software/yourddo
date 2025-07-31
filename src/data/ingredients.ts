@@ -400,6 +400,25 @@ export const ingredients: Ingredient[] = [
     }
   },
   {
+    name: 'Crystallized Spiderweb',
+    description:
+      'This spiderweb is frozen with subtle magic. It appears to be used for upgrading items found within the same adventure area.',
+    foundIn: [
+      'The Lords of Dust (Epic)',
+      'Servants of the Overlord (Epic)',
+      'The Spinner of Shadows (Epic)',
+      'Beyond the Rift (Epic)'
+    ],
+    binding: {
+      type: 'Bound',
+      from: 'Acquisition',
+      to: 'Character'
+    },
+    baseValue: {
+      gold: 1
+    }
+  },
+  {
     name: 'Crystalline Gauntlets',
     type: 'Gloves',
     description: 'These are made of cut and polished gemstones, and hum with primal magics.',
