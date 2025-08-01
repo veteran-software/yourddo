@@ -1,5 +1,4 @@
 import { DateTime, Duration } from 'luxon'
-import type { Valid } from 'luxon/src/_util'
 import { useEffect, useState } from 'react'
 
 const Countdown = (props: Props) => {
@@ -9,9 +8,9 @@ const Countdown = (props: Props) => {
 
   useEffect(() => {
     const updateRemainingTime = () => {
-      const now: DateTime<Valid> = DateTime.now()
-      const targetTime: DateTime<Valid> = DateTime.fromSeconds(targetTimestamp)
-      const diff: Duration<Valid> = targetTime.diff(now, ['days', 'hours', 'minutes', 'seconds'])
+      const now: DateTime = DateTime.now()
+      const targetTime: DateTime = DateTime.fromSeconds(targetTimestamp)
+      const diff: Duration = targetTime.diff(now, ['days', 'hours', 'minutes', 'seconds'])
 
       if (diff.toMillis() <= 0) {
         setRemainingTime(Duration.fromMillis(0))
@@ -44,8 +43,8 @@ const Countdown = (props: Props) => {
 }
 
 const calculateRemainingTime = (targetTimestamp: number): Duration => {
-  const now: DateTime<Valid> = DateTime.now() // Current time
-  const targetTime: DateTime<Valid> = DateTime.fromSeconds(targetTimestamp) // Target Unix timestamp
+  const now: DateTime = DateTime.now() // Current time
+  const targetTime: DateTime = DateTime.fromSeconds(targetTimestamp) // Target Unix timestamp
   return targetTime.diff(now, ['days', 'hours', 'minutes', 'seconds'])
 }
 
