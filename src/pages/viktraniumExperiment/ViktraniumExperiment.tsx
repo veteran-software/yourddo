@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Card, Col, Container, Row, Stack } from 'react-bootstrap'
+import { Alert, Card, Col, Container, Row, Stack } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { titleCase } from 'title-case'
@@ -138,6 +138,10 @@ const ViktraniumExperiment = () => {
 
   return (
     <Container className='px-0'>
+      <Alert key='lamannia-alert' variant='warning' className='text-center mb-2'>
+        The information contained in this crafting planner is based on <strong>Lamannia Loot Preview #1</strong>.
+      </Alert>
+
       <Card>
         <Card.Header className='text-center p-1'>
           <Card.Title>
