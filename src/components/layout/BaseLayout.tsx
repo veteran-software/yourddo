@@ -32,7 +32,7 @@ const BaseLayout = () => {
       style={{
         scrollbarWidth: 'thin',
         scrollbarColor: 'var(--bs-primary) transparent',
-        paddingBottom: `${String(footerHeight + 5)}px`
+        paddingBottom: `${String(footerHeight * 2 + 15)}px`
       }}
     >
       <NavbarTop />

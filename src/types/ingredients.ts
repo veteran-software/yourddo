@@ -14,11 +14,21 @@ export interface Ingredient {
   name: string
   notes?: string
   type?: string
+  subType?: string
   weight?: number
+  update?: number
 }
 
 export type TAugmentType =
   | 'Colorless'
+  | 'Green'
+  | 'Red'
+  | 'Yellow'
+  | 'Blue'
+  | 'Orange'
+  | 'Purple'
+  | 'Sun'
+  | 'Moon'
   | 'Green Steel Epic Active'
   | 'Green Steel Epic Tier 1'
   | 'Green Steel Epic Tier 2'
@@ -34,3 +44,13 @@ export type TAugmentType =
   | 'Isle of Dread: Scale (Armor)'
   | 'Isle of Dread: Fang (Armor)'
   | 'Isle of Dread: Set Bonus'
+  | 'Lamordia: Melancholic (Weapon)'
+  | 'Lamordia: Dolorous (Weapon)'
+  | 'Lamordia: Miserable (Weapon)'
+  | 'Lamordia: Woeful (Weapon)'
+  | 'Lamordia: Melancholic (Accessory)'
+  | 'Lamordia: Dolorous (Accessory)'
+  | 'Lamordia: Miserable (Accessory)'
+  | 'Lamordia: Woeful (Accessory)'
+  | 'Lamordia: Melancholic (Armor)'
+  | 'Lamordia: Dolorous (Armor)'

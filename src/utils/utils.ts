@@ -1,5 +1,6 @@
 import { titleCase } from 'title-case'
 import type { CraftingIngredient } from '../types/crafting.ts'
+import type { Ingredient } from '../types/ingredients.ts'
 import { FOCI } from './constants.ts'
 
 /**
@@ -48,4 +49,45 @@ export const camelCaseToTitleCase = (str: string): string => {
   const spaced: string = str.replace(/([a-z])([A-Z])/g, '$1 $2')
 
   return titleCase(spaced.toLowerCase())
+}
+
+export const accumulateIngredients = (
+  item: CraftingIngredient,
+  accumulator: Record<string, number> = {}
+): Record<string, number> => {
+  if (!item.requirements || item.requirements.length === 0) {
+    return accumulator
+  }
+
+  for (const req of item.requirements) {
+    const name = req.name
+    const qty = req.quantity ?? 1
+
+    accumulator[name] = (accumulator[name] ?? 0) + qty
+
+    if (req.requirements && req.requirements.length > 0) {
+      accumulateIngredients(req, accumulator)
+    }
+  }
+
+  return accumulator
+}
+
+export const getCumulativeIngredients = (
+  selectedItem: Ingredient | null | undefined,
+  selectedAugments: Record<string, Ingredient | null>
+): Record<string, number> => {
+  const accumulator: Record<string, number> = {}
+
+  if (selectedItem) {
+    accumulateIngredients(selectedItem, accumulator)
+  }
+
+  for (const augment of Object.values(selectedAugments)) {
+    if (augment) {
+      accumulateIngredients(augment, accumulator)
+    }
+  }
+
+  return accumulator
 }

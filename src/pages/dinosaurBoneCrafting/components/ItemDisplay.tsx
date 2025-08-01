@@ -1,4 +1,5 @@
 import { Card, ListGroup, Stack } from 'react-bootstrap'
+import NoteTooltip from '../../../components/common/NoteTooltip.tsx'
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 
@@ -75,6 +76,12 @@ const ItemDisplay = (props: Props) => {
                           {effect.name}
                           {effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''}
                         </small>
+                        {effect.notes && (
+                          <>
+                            &nbsp;
+                            <NoteTooltip id={effect.name} text={effect.notes} color={'yellow'} />
+                          </>
+                        )}
                       </ListGroup.Item>
                     ))
                   ) : (

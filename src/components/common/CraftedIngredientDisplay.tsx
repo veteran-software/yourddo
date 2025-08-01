@@ -1,9 +1,10 @@
 import camelcase from 'camelcase'
-import { Container, Image, OverlayTrigger, Stack } from 'react-bootstrap'
+import { Container, OverlayTrigger, Stack } from 'react-bootstrap'
 import type { CraftingIngredient } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { ICON_BASE } from '../../utils/constants.ts'
 import { formatIngredientName } from '../../utils/utils.ts'
+import FallbackImage from './FallbackImage.tsx'
 import IngredientPopover from './IngredientPopover.tsx'
 
 const CraftedIngredientDisplay = (props: Props) => {
@@ -53,10 +54,10 @@ const CraftedIngredientDisplay = (props: Props) => {
           })}
           placement='auto'
         >
-          <Image src={imageSrc} alt={ingredient.name} title={ingredient.name} />
+          <FallbackImage src={imageSrc} alt={ingredient.name} />
         </OverlayTrigger>
       ) : (
-        <Image src={imageSrc} alt={ingredient.name} title={ingredient.name} />
+        <FallbackImage src={imageSrc} alt={ingredient.name} />
       )}
 
       <Stack direction='vertical' gap={0} className='text-wrap justify-content-center'>
