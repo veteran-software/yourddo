@@ -13,7 +13,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Spellcasting implement +13',
+        name: 'Universal Spell Power',
         bonus: 'Implement',
         modifier: 13
       },
@@ -23,10 +23,15 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 4
       },
       {
-        name: 'Insightful Potency +27',
+        name: 'Spell Power (each)',
         bonus: 'Insight',
         modifier: 27,
         notes: 'This is not Universal Spell Power. It applies individually to each spell power.'
+      },
+      {
+        name: 'Will Save',
+        bonus: 'Resistance',
+        modifier: 7
       }
     ],
     augments: [
@@ -46,7 +51,28 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Universal Spell Power',
+        bonus: 'Implement',
+        modifier: 13
+      },
+      {
+        name: '+4 Orb Bonus',
+        bonus: 'Orb',
+        modifier: 4
+      },
+      {
+        name: 'Negative and Poison Spell Power',
+        bonus: 'Quality',
+        modifier: 21
+      },
+      {
+        name: 'Spell DC: Necromancy',
+        bonus: 'Equipment',
+        modifier: 3
+      }
+    ],
     augments: [
       {
         purple: null
@@ -64,7 +90,28 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Universal Spell Power',
+        bonus: 'Implement',
+        modifier: 13
+      },
+      {
+        name: '+4 Orb Bonus',
+        bonus: 'Orb',
+        modifier: 4
+      },
+      {
+        name: 'Light and Alignment Spell Power',
+        bonus: 'Quality',
+        modifier: 21
+      },
+      {
+        name: 'Spell Penetration',
+        bonus: 'Equipment',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         purple: null
@@ -82,7 +129,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Armor Class',
+        bonus: 'Enhancement',
+        modifier: 5
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 8
+      }
+    ],
     augments: [
       {
         red: null
@@ -100,7 +158,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Armor Class',
+        bonus: 'Enhancement',
+        modifier: 5
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 8
+      }
+    ],
     augments: [
       {
         red: null
@@ -118,7 +187,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Armor Class',
+        bonus: 'Enhancement',
+        modifier: 5
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 8
+      }
+    ],
     augments: [
       {
         red: null
@@ -136,7 +216,23 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Armor Class',
+        bonus: 'Enhancement',
+        modifier: 5
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 8
+      },
+      {
+        name: 'Threat Increase: Melee',
+        bonus: 'Quality',
+        modifier: '13%'
+      }
+    ],
     augments: [
       {
         red: null
@@ -154,7 +250,28 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Universal Spell Power',
+        bonus: 'Implement',
+        modifier: 13
+      },
+      {
+        name: '+4 Orb Bonus',
+        bonus: 'Orb',
+        modifier: 4
+      },
+      {
+        name: 'Cold Spell Power',
+        bonus: 'Quality',
+        modifier: 21
+      },
+      {
+        name: 'Spell Penetration',
+        bonus: 'Equipment',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         purple: null
@@ -172,7 +289,13 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Armor Class',
+        bonus: 'Enhancement',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         red: null
@@ -190,7 +313,13 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Armor Class',
+        bonus: 'Enhancement',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         red: null
@@ -208,7 +337,13 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Armor Class',
+        bonus: 'Enhancement',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         red: null
@@ -226,7 +361,13 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Armor Class',
+        bonus: 'Enhancement',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         red: null
@@ -244,7 +385,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Spell DC: Enchantment',
+        bonus: 'Equipment',
+        modifier: 2
+      },
+      {
+        name: 'Saves vs Spells',
+        bonus: 'Resistance',
+        modifier: 4
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -265,7 +417,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Spell DC: Transmutation',
+        bonus: 'Equipment',
+        modifier: 2
+      },
+      {
+        name: 'Saves vs Spells',
+        bonus: 'Insight',
+        modifier: 1
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -308,7 +471,16 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Improved Deception +10'
+      },
+      {
+        name: 'Assassinate DCs',
+        bonus: 'Quality',
+        modifier: 1
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -329,7 +501,23 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Ranged Attack',
+        bonus: 'Competence',
+        modifier: 2
+      },
+      {
+        name: 'Ranged Damage',
+        bonus: 'Competence',
+        modifier: 1
+      },
+      {
+        name: 'Doubleshot',
+        bonus: 'Enhancement',
+        modifier: '3%'
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -350,7 +538,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Cold Absorption',
+        bonus: 'Insight',
+        modifier: '4%'
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -371,7 +570,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Acid Absorption',
+        bonus: 'Insight',
+        modifier: '4%'
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -392,7 +602,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Sonic Absorption',
+        bonus: 'Insight',
+        modifier: '4%'
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -413,7 +634,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Acid Absorption',
+        bonus: 'Quality',
+        modifier: '2%'
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -434,7 +666,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Fire Absorption',
+        bonus: 'Quality',
+        modifier: '2%'
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -455,7 +698,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Fire Absorption',
+        bonus: 'Insight',
+        modifier: '4%'
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -476,7 +730,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Sonic Absorption',
+        bonus: 'Quality',
+        modifier: '2%'
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -497,7 +762,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Electric Absorption',
+        bonus: 'Quality',
+        modifier: '2%'
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -518,7 +794,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Cold Absorption',
+        bonus: 'Quality',
+        modifier: '2%'
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -539,7 +826,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Electric Absorption',
+        bonus: 'Insight',
+        modifier: '4%'
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -560,7 +858,24 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Quality',
+        modifier: 1,
+        notes: '+1 per Religious Lore Feat'
+      },
+      {
+        name: 'Unconscious Range',
+        bonus: 'Enhancement',
+        modifier: 128
+      },
+      {
+        name: 'Positive Healing',
+        bonus: 'per 10 sec',
+        modifier: 16
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -581,7 +896,16 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Jet Propulsion'
+      },
+      {
+        name: 'Jump',
+        bonus: 'Competence',
+        modifier: 10
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -602,7 +926,28 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Movement Speed',
+        bonus: 'Enhancement',
+        modifier: '18%'
+      },
+      {
+        name: 'Attack Speed',
+        bonus: 'Enhancement',
+        modifier: '6%'
+      },
+      {
+        name: 'Sneak Attack',
+        bonus: 'Enhancement',
+        modifier: 3
+      },
+      {
+        name: 'Sneak Attack Damage',
+        bonus: 'Enhancement',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -623,7 +968,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Fortitude Save',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Fortification',
+        bonus: 'Insight',
+        modifier: '35%'
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -644,7 +1000,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Cold Resistance',
+        bonus: 'Enhancement',
+        modifier: 18
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -665,7 +1032,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Acid Resistance',
+        bonus: 'Enhancement',
+        modifier: 18
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -686,7 +1064,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Sonic Resistance',
+        bonus: 'Enhancement',
+        modifier: 18
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -707,7 +1096,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Acid Resistance',
+        bonus: 'Insight',
+        modifier: 8
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -728,7 +1128,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Fire Resistance',
+        bonus: 'Insight',
+        modifier: 8
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -749,7 +1160,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Fire Resistance',
+        bonus: 'Enhancement',
+        modifier: 18
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -770,7 +1192,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Sonic Resistance',
+        bonus: 'Insight',
+        modifier: 8
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -791,7 +1224,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Electric Resistance',
+        bonus: 'Insight',
+        modifier: 8
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -812,7 +1256,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Cold Resistance',
+        bonus: 'Insight',
+        modifier: 8
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -833,7 +1288,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Electric Resistance',
+        bonus: 'Enhancement',
+        modifier: 18
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -854,7 +1320,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Reflex Save',
+        bonus: 'Resistance',
+        modifier: 5
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Quality',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -875,7 +1352,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Negative Healing Amplification',
+        bonus: 'Profane',
+        modifier: 19
+      },
+      {
+        name: 'Negative and Poison Spell Power',
+        bonus: 'Quality',
+        modifier: 17
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -896,7 +1384,14 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Enhanced Ki +1'
+      },
+      {
+        name: 'Reinforced Fists'
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -917,7 +1412,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Intelligence',
+        bonus: 'Insight',
+        modifier: 2
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -938,7 +1444,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Dexterity',
+        bonus: 'Insight',
+        modifier: 2
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -959,7 +1476,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Charisma',
+        bonus: 'Insight',
+        modifier: 2
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -980,7 +1508,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Dexterity',
+        bonus: 'Insight',
+        modifier: 2
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1001,7 +1540,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Strength',
+        bonus: 'Insight',
+        modifier: 2
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1022,7 +1572,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Strength',
+        bonus: 'Insight',
+        modifier: 2
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1043,7 +1604,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Charisma',
+        bonus: 'Insight',
+        modifier: 2
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1064,7 +1636,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Wisdom',
+        bonus: 'Insight',
+        modifier: 2
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1085,7 +1668,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Intelligence',
+        bonus: 'Insight',
+        modifier: 2
+      },
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1106,7 +1700,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Wisdom',
+        bonus: 'Insight',
+        modifier: 2
+      },
+      {
+        name: 'Physical Resistance Rating',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1127,7 +1732,43 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Trip',
+        bonus: 'Profane',
+        modifier: 1
+      },
+      {
+        name: 'Improved Trip',
+        bonus: 'Profane',
+        modifier: 1
+      },
+      {
+        name: 'Sunder',
+        bonus: 'Profane',
+        modifier: 1
+      },
+      {
+        name: 'Improved Sunder',
+        bonus: 'Profane',
+        modifier: 1
+      },
+      {
+        name: 'Stunning Blow',
+        bonus: 'Profane',
+        modifier: 1
+      },
+      {
+        name: 'Stunning Fist',
+        bonus: 'Profane',
+        modifier: 1
+      },
+      {
+        name: 'Fortification Bypass',
+        bonus: 'Enhancement',
+        modifier: '8%'
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1148,7 +1789,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Repair Amplification',
+        bonus: 'Enhancement',
+        modifier: 19
+      },
+      {
+        name: 'Repair and Rust Spell Power',
+        bonus: 'Quality',
+        modifier: 17
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1190,7 +1842,16 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Soundproof'
+      },
+      {
+        name: 'Listen',
+        bonus: 'Competence',
+        modifier: 10
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1211,7 +1872,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Spell DC: Illusion',
+        bonus: 'Equipment',
+        modifier: 2
+      },
+      {
+        name: 'Spellcraft',
+        bonus: 'Competence',
+        modifier: 10
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1232,7 +1904,13 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Use Magic Device',
+        bonus: 'Competence',
+        modifier: 1
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1253,7 +1931,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Spell DC: Evocation',
+        bonus: 'Equipment',
+        modifier: 2
+      },
+      {
+        name: 'Spellcraft',
+        bonus: 'Insight',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1274,7 +1963,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Constitution',
+        bonus: 'Insight',
+        modifier: 2
+      },
+      {
+        name: 'Fortification Bypass',
+        bonus: 'Insight',
+        modifier: '3%'
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1295,7 +1995,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Attack',
+        bonus: 'Legendary',
+        modifier: 1
+      },
+      {
+        name: 'Unconscious Range',
+        bonus: 'Enhancement',
+        modifier: 65
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1316,7 +2027,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Will Save',
+        bonus: 'Resistance',
+        modifier: 5
+      },
+      {
+        name: 'Proof Against Poison',
+        bonus: 'Enhancement',
+        modifier: 4
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1336,7 +2058,14 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Feat: Wind Through the Trees'
+      },
+      {
+        name: 'Immunity: Fear'
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1379,7 +2108,16 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Doublestrike',
+        bonus: 'Enhancement',
+        modifier: '6%'
+      },
+      {
+        name: 'Tendon Slice 4'
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1399,7 +2137,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Magical Resistance Rating',
+        bonus: 'Quality',
+        modifier: 2
+      },
+      {
+        name: 'Maximum Hit Points',
+        bonus: 'Profane',
+        modifier: 16
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1441,7 +2190,16 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Spell Power (each)',
+        bonus: 'Quality',
+        modifier: 9
+      },
+      {
+        name: 'True Seeing'
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1462,7 +2220,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Spell Cost Reduction',
+        bonus: 'Enhancement',
+        modifier: '5%'
+      },
+      {
+        name: 'Threat Decrease: Spells',
+        bonus: 'Enhancement',
+        modifier: '8%'
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1482,7 +2251,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Maximum Spell Points',
+        bonus: 'Insight',
+        modifier: 48
+      },
+      {
+        name: 'Maximum Spell Points',
+        bonus: 'Enhancement',
+        modifier: 96
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1524,7 +2304,18 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Will Save',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Fortitude Save',
+        bonus: 'Resistance',
+        modifier: 5
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1545,7 +2336,33 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Dodge',
+        bonus: 'Enhancement',
+        modifier: '5%'
+      },
+      {
+        name: 'Disable Device',
+        bonus: 'Exceptional',
+        modifier: 2
+      },
+      {
+        name: 'Repair',
+        bonus: 'Exceptional',
+        modifier: 2
+      },
+      {
+        name: 'Search',
+        bonus: 'Exceptional',
+        modifier: 2
+      },
+      {
+        name: 'Spellcraft',
+        bonus: 'Exceptional',
+        modifier: 2
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -1592,7 +2409,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         name: 'Maximum Charge Tier V'
       },
       {
-        name: 'Magnetism',
+        name: 'Electric Spell Power',
         bonus: 'Insight',
         modifier: 52
       },
@@ -1687,12 +2504,12 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
       {
-        name: 'Natural Armor Bonus',
+        name: 'Armor Class',
         bonus: 'Natural Armor',
         modifier: 5
       },
@@ -1727,12 +2544,12 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
       {
-        name: 'Natural Armor Bonus',
+        name: 'Armor Class',
         bonus: 'Natural Armor',
         modifier: 5
       },
@@ -1765,12 +2582,12 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
       {
-        name: 'Natural Armor Bonus',
+        name: 'Armor Class',
         bonus: 'Natural Armor',
         modifier: 5
       },
@@ -1805,12 +2622,12 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
       {
-        name: 'Natural Armor Bonus',
+        name: 'Armor Class',
         bonus: 'Natural Armor',
         modifier: 5
       },
@@ -1845,12 +2662,12 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
       {
-        name: 'Natural Armor Bonus',
+        name: 'Armor Class',
         bonus: 'Natural Armor',
         modifier: 5
       },
@@ -1885,12 +2702,12 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
       {
-        name: 'Natural Armor Bonus',
+        name: 'Armor Class',
         bonus: 'Natural Armor',
         modifier: 5
       },
@@ -1925,7 +2742,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1960,7 +2777,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1995,7 +2812,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2032,7 +2849,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2069,7 +2886,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2106,7 +2923,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2144,7 +2961,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2177,7 +2994,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2210,7 +3027,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2243,7 +3060,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2276,7 +3093,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2309,7 +3126,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2404,7 +3221,13 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Cold Absorption',
+        bonus: 'Enhancement',
+        modifier: '18%'
+      }
+    ],
     augments: [
       {
         lamordiaMelancholicAccessory: null,
@@ -2475,7 +3298,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         name: 'Maximum Charge Tier V'
       },
       {
-        name: 'Glaciation',
+        name: 'Cold Spell Power',
         bonus: 'Insight',
         modifier: 52
       },

@@ -1955,3 +1955,9 @@ const LViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     ]
   }
 ]
+
+export const craftedLegendaryViktraniumWeapons: Record<string, CraftingIngredient[]> = {
+  Melee: [...LViktraniumExperimentCraftedItems.filter((item: CraftingIngredient) => item.type === 'Melee')],
+  Ranged: [...LViktraniumExperimentCraftedItems.filter((item: CraftingIngredient) => item.type === 'Ranged')],
+  Throwing: [...LViktraniumExperimentCraftedItems.filter((item: CraftingIngredient) => item.type === 'Throwing')]
+} as const

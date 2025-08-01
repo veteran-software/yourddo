@@ -56,6 +56,7 @@ const FilterableDropdown = (props: Props) => {
   }
 
   const renderDropdownItems = (key: string, ingredients: CraftingIngredient[]) => {
+    // `ingredients` is ending up here as undefined sometimes, that shouldn't happen. if nothing is sent, it should be an empty array
     if (ingredients.length === 0) {
       return <></>
     }
@@ -117,8 +118,8 @@ const FilterableDropdown = (props: Props) => {
               overflowY: 'auto'
             }}
           >
-            {Object.entries(filteredItems ?? items).map(([key, ingredients]: [string, CraftingIngredient[]]) => (
-              <Fragment key={`${key}-${ingredients.map((ing: CraftingIngredient) => ing.name).join('|')}`}>
+            {Object.entries(filteredItems ?? items).map(([key, ingredients]: [string, Ingredient[]]) => (
+              <Fragment key={`${key}-${ingredients.map((ing: Ingredient) => ing.name).join('|')}`}>
                 {renderDropdownItems(key, ingredients)}
               </Fragment>
             ))}

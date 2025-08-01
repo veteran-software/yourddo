@@ -16,6 +16,7 @@ export interface Ingredient {
   type?: string
   subType?: string
   weight?: number
+  update?: number
 }
 
 export type TAugmentType =

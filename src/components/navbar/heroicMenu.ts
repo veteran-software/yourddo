@@ -10,7 +10,6 @@ const menuItems: NavDropdownType[] = [
   { label: 'Dragontouched Armor', image: '', active: false },
   { label: 'Fountain Of Necrotic Might', image: '', active: false },
   { label: 'Green Steel', image: '', active: true },
-  { label: 'Heroic Viktranium Experiment', image: '', active: true },
   { label: 'Incredible Potential', image: '', active: true },
   { label: 'Lost Purpose', image: '', active: false },
   { label: 'Nearly Finished', image: '', active: false },
@@ -19,7 +18,8 @@ const menuItems: NavDropdownType[] = [
   { label: 'Storemreaver Monument', image: '', active: false },
   { label: 'Suppressed Power', image: '', active: false },
   { label: 'Trace Of Madness', image: '', active: false },
-  { label: 'Unholy Defiler Of The Hidden Hand', image: '', active: false }
+  { label: 'Unholy Defiler Of The Hidden Hand', image: '', active: false },
+  { label: 'Viktranium Experiment', image: '', active: true }
 ]
 
 export const heroicMenu: NavMenuDropdown = {

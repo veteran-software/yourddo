@@ -1,6 +1,6 @@
 import type { CraftingIngredient } from '../../types/crafting.ts'
 
-const hViktraniumExperiment: CraftingIngredient[] = [
+const HViktraniumExperimentAugments: CraftingIngredient[] = [
   {
     name: 'Melancholic Flames',
     description: 'Slotted Effect: Adds Adamantine material type. On hit: 1d6 Fire Damage',
@@ -13,6 +13,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Material Type: Adamantine'
@@ -23,19 +24,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -56,6 +57,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Material Type: Cold Iron'
@@ -66,19 +68,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -99,6 +101,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Material Type: Silver'
@@ -109,19 +112,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -142,6 +145,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Material Type: Crystal'
@@ -155,19 +159,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -189,6 +193,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Spell Penetration',
@@ -204,19 +209,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -238,6 +243,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Spell Cost Reduction',
@@ -253,19 +259,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -287,6 +293,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Spell Power (all)',
@@ -302,19 +309,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -335,22 +342,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -371,22 +379,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -407,22 +416,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -443,22 +453,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -480,6 +491,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Spell DCs (all)',
@@ -495,19 +507,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -528,6 +540,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Strength',
@@ -537,23 +550,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -574,6 +587,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Wisdom',
@@ -583,23 +597,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -620,6 +634,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Charisma',
@@ -629,23 +644,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -666,6 +681,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Constitution',
@@ -675,23 +691,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -712,6 +728,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Intelligence',
@@ -721,23 +738,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -758,6 +775,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Dexterity',
@@ -767,23 +785,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -804,6 +822,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Fire Spellpower',
@@ -813,23 +832,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -850,6 +869,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Cold Spellpower',
@@ -859,23 +879,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -896,6 +916,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Electric Spellpower',
@@ -905,23 +926,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -942,6 +963,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Acid Spellpower',
@@ -951,23 +973,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -988,6 +1010,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Light and Alignment Spellpower',
@@ -997,23 +1020,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1034,6 +1057,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Negative and Poison Spellpower',
@@ -1043,23 +1067,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1080,6 +1104,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Sonic Spellpower',
@@ -1089,23 +1114,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1126,6 +1151,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Force and Physical Spellpower',
@@ -1135,23 +1161,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1172,6 +1198,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Positive Spellpower',
@@ -1181,23 +1208,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1218,6 +1245,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Repair Spellpower',
@@ -1227,23 +1255,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1264,6 +1292,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Strength',
@@ -1273,19 +1302,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1306,6 +1335,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Dexterity',
@@ -1315,19 +1345,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1348,6 +1378,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Constitution',
@@ -1357,19 +1388,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1390,6 +1421,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Intelligence',
@@ -1399,19 +1431,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1432,6 +1464,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Wisdom',
@@ -1441,19 +1474,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1474,6 +1507,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Charisma',
@@ -1483,19 +1517,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1516,6 +1550,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Maximum Hit Points',
@@ -1525,19 +1560,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1558,6 +1593,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Fire Spell Crit Damage',
@@ -1567,19 +1603,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1600,6 +1636,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Cold Spell Crit Damage',
@@ -1609,19 +1646,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1642,6 +1679,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Electric Spell Crit Damage',
@@ -1651,19 +1689,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1684,6 +1722,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Acid Spell Crit Damage',
@@ -1693,19 +1732,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1726,6 +1765,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Light and Alignment Spell Crit Damage',
@@ -1735,19 +1775,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1768,6 +1808,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Negative and Poison Spell Crit Damage',
@@ -1777,19 +1818,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1810,6 +1851,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Sonic Spell Crit Damage',
@@ -1819,19 +1861,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1852,6 +1894,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Force and Physical Spell Crit Damage',
@@ -1861,19 +1904,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1894,6 +1937,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Positive Spell Crit Damage',
@@ -1903,19 +1947,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1936,6 +1980,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Repair Spell Crit Damage',
@@ -1945,19 +1990,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1978,6 +2023,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Positive Healing Amplification',
@@ -1987,19 +2033,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2020,6 +2066,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Repair Amplification',
@@ -2029,19 +2076,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2062,6 +2109,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Negative Healing Amplification',
@@ -2071,19 +2119,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2104,6 +2152,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Attack',
@@ -2113,19 +2162,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2146,6 +2195,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Damage',
@@ -2155,19 +2205,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2188,6 +2238,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Sneak Attack',
@@ -2202,19 +2253,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2235,6 +2286,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Critical Confirmation',
@@ -2249,19 +2301,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2282,6 +2334,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Fire Spell Crit Damage',
@@ -2291,19 +2344,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2324,6 +2377,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Cold Spell Crit Damage',
@@ -2333,19 +2387,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2366,6 +2420,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Electric Spell Crit Damage',
@@ -2375,19 +2430,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2408,6 +2463,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Acid Spell Crit Damage',
@@ -2417,19 +2473,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2450,6 +2506,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Light and Alignment Spell Crit Damage',
@@ -2459,19 +2516,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2492,6 +2549,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Negative and Poison Spell Crit Damage',
@@ -2501,19 +2559,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2534,6 +2592,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Sonic Spell Crit Damage',
@@ -2543,19 +2602,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2576,6 +2635,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Force and Physical Spell Crit Damage',
@@ -2585,19 +2645,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2618,6 +2678,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Positive Spell Crit Damage',
@@ -2627,19 +2688,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2660,6 +2721,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Repair Spell Crit Damage',
@@ -2669,19 +2731,19 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -2702,6 +2764,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Physical Resistance Rating',
@@ -2711,23 +2774,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2748,6 +2811,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Magical Resistance Rating',
@@ -2757,23 +2821,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2794,6 +2858,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Spell Penetration',
@@ -2803,23 +2868,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2840,6 +2905,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Stunning DC',
@@ -2849,23 +2915,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2886,6 +2952,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Trip DC',
@@ -2895,23 +2962,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2932,6 +2999,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Sunder DC',
@@ -2941,23 +3009,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2978,6 +3046,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Assassinate DC',
@@ -2987,23 +3056,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3024,6 +3093,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Fire Spell Crit Damage',
@@ -3033,23 +3103,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3070,6 +3140,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Cold Spell Crit Damage',
@@ -3079,23 +3150,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3116,6 +3187,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Electric Spell Crit Damage',
@@ -3125,23 +3197,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3162,6 +3234,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Acid Spell Crit Damage',
@@ -3171,23 +3244,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3208,6 +3281,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Light and Alignment Spell Crit Damage',
@@ -3217,23 +3291,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3254,6 +3328,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Negative and Poison Spell Crit Damage',
@@ -3263,23 +3338,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3300,6 +3375,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Sonic Spell Crit Damage',
@@ -3309,23 +3385,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3346,6 +3422,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Force and Physical Spell Crit Damage',
@@ -3355,23 +3432,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3392,6 +3469,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Positive Spell Crit Damage',
@@ -3401,23 +3479,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3438,6 +3516,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Repair Spell Crit Damage',
@@ -3447,23 +3526,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3484,6 +3563,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Saving Throws (all)',
@@ -3493,23 +3573,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformers',
+        name: 'Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3531,6 +3611,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Enhanced Ghostly'
@@ -3538,23 +3619,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformers',
+        name: 'Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3576,6 +3657,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Relentless Fury'
@@ -3583,23 +3665,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformers',
+        name: 'Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3620,6 +3702,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Fortification Bypass',
@@ -3629,23 +3712,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformers',
+        name: 'Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3666,6 +3749,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Maximum Spell Points',
@@ -3675,23 +3759,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformers',
+        name: 'Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3712,6 +3796,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Spell DCs',
@@ -3721,23 +3806,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformers',
+        name: 'Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3758,6 +3843,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Spell DCs',
@@ -3767,23 +3853,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformers',
+        name: 'Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3804,6 +3890,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Fortification',
@@ -3813,23 +3900,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3851,6 +3938,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Healing Amplification',
@@ -3870,23 +3958,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3907,6 +3995,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Deathblock'
@@ -3917,23 +4006,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3954,6 +4043,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Universal Spell Lore',
@@ -3963,23 +4053,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wires',
+        name: 'Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 25
       }
     ],
@@ -4000,6 +4090,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Sneak Attack Dice',
@@ -4009,23 +4100,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformers',
+        name: 'Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4046,6 +4137,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Spell DCs',
@@ -4065,23 +4157,23 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformers',
+        name: 'Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4092,7 +4184,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
   },
   {
     name: 'Dolorous Voidwheel',
-    description: 'Slotted Effect: +Exceptional bonus to Universal Spell Power.',
+    description: 'Slotted Effect: +5 Exceptional bonus to Universal Spell Power.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Dolorous (Armor)',
@@ -4102,6 +4194,7 @@ const hViktraniumExperiment: CraftingIngredient[] = [
       to: 'Account',
       from: 'Acquisition'
     },
+    craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
         name: 'Universal Spell Power',
@@ -4111,23 +4204,772 @@ const hViktraniumExperiment: CraftingIngredient[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformers',
+        name: 'Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternators',
+        name: 'Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistors',
+        name: 'Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulators',
+        name: 'Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductors',
+        name: 'Bleak Conductor',
+        quantity: 50
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Miserable Destruction',
+    description:
+      'Slotted Effect: Your attacks apply a stack of Armor Destruction. (-1 Penalty to Armor Class, -1% of its Fortification. 20 Second Duration. Stacks up to 15 times.) This effect may trigger once every three seconds.',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Miserable (Weapon)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [],
+    requirements: [
+      {
+        name: 'Bleak Wire',
+        quantity: 100
+      },
+      {
+        name: 'Bleak Alternator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 25
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Miserable Maiming',
+    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Miserable (Weapon)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [],
+    requirements: [
+      {
+        name: 'Bleak Wire',
+        quantity: 100
+      },
+      {
+        name: 'Bleak Alternator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 25
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Miserable Humanoid Bane',
+    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Miserable (Weapon)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [],
+    requirements: [
+      {
+        name: 'Bleak Wire',
+        quantity: 100
+      },
+      {
+        name: 'Bleak Alternator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 25
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Miserable Monstrous Humanoid Bane',
+    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Miserable (Weapon)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [],
+    requirements: [
+      {
+        name: 'Bleak Wire',
+        quantity: 100
+      },
+      {
+        name: 'Bleak Alternator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 25
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Miserable Vermin Bane',
+    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Miserable (Weapon)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [],
+    requirements: [
+      {
+        name: 'Bleak Wire',
+        quantity: 100
+      },
+      {
+        name: 'Bleak Alternator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 25
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Miserable Undead Bane',
+    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Miserable (Weapon)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [],
+    requirements: [
+      {
+        name: 'Bleak Wire',
+        quantity: 100
+      },
+      {
+        name: 'Bleak Alternator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 25
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Miserable Armor-Piercing',
+    description: 'Adds Armor-Piercing. +8% Enhancement bonus to Bypass Enemy Fortification.',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Miserable (Weapon)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [
+      {
+        name: 'Bypass Fortification',
+        bonus: 'Enhancement',
+        modifier: '8%'
+      }
+    ],
+    requirements: [
+      {
+        name: 'Bleak Wire',
+        quantity: 100
+      },
+      {
+        name: 'Bleak Alternator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 25
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Melancholic: Doubleshot',
+    description: 'Slotted Effect: +3% Enhancement bonus to Doubleshot.',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Melancholic (Accessory)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [
+      {
+        name: 'Doubleshot',
+        bonus: 'Enhancement',
+        modifier: '3%'
+      }
+    ],
+    requirements: [
+      {
+        name: 'Bleak Alternator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 25
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Melancholic: Doublestrike',
+    description: 'Slotted Effect: +6% Enhancement bonus to Doublestrike.',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Melancholic (Accessory)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [
+      {
+        name: 'Doublestrike',
+        bonus: 'Enhancement',
+        modifier: '6%'
+      }
+    ],
+    requirements: [
+      {
+        name: 'Bleak Alternator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 25
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 25
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Dolorous: Quality Strength',
+    description: 'Slotted Effect: +1 Quality bonus to Strength.',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Dolorous (Accessory)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [
+      {
+        name: 'Strength',
+        bonus: 'Quality',
+        modifier: 1
+      }
+    ],
+    requirements: [
+      {
+        name: 'Bleak Alternator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 50
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Dolorous: Quality Dexterity',
+    description: 'Slotted Effect: +1 Quality bonus to Dexterity.',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Dolorous (Accessory)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [
+      {
+        name: 'Dexterity',
+        bonus: 'Quality',
+        modifier: 1
+      }
+    ],
+    requirements: [
+      {
+        name: 'Bleak Alternator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 50
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Dolorous: Quality Constitution',
+    description: 'Slotted Effect: +1 Quality bonus to Constitution.',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Dolorous (Accessory)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [
+      {
+        name: 'Constitution',
+        bonus: 'Quality',
+        modifier: 1
+      }
+    ],
+    requirements: [
+      {
+        name: 'Bleak Alternator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 50
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Dolorous: Quality Intelligence',
+    description: 'Slotted Effect: +1 Quality bonus to Intelligence.',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Dolorous (Accessory)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [
+      {
+        name: 'Intelligence',
+        bonus: 'Quality',
+        modifier: 1
+      }
+    ],
+    requirements: [
+      {
+        name: 'Bleak Alternator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 50
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Dolorous: Quality Wisdom',
+    description: 'Slotted Effect: +1 Quality bonus to Wisdom.',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Dolorous (Accessory)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [
+      {
+        name: 'Wisdom',
+        bonus: 'Quality',
+        modifier: 1
+      }
+    ],
+    requirements: [
+      {
+        name: 'Bleak Alternator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 50
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Dolorous: Quality Charisma',
+    description: 'Slotted Effect: +1 Quality bonus to Charisma.',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Dolorous (Accessory)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [
+      {
+        name: 'Charisma',
+        bonus: 'Quality',
+        modifier: 1
+      }
+    ],
+    requirements: [
+      {
+        name: 'Bleak Alternator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 50
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Dolorous: Quality Accuracy',
+    description: 'Slotted Effect: ',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Dolorous (Accessory)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [],
+    requirements: [
+      {
+        name: 'Bleak Alternator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 50
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Dolorous: Quality Damage',
+    description: 'Slotted Effect: ',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Dolorous (Accessory)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [],
+    requirements: [
+      {
+        name: 'Bleak Alternator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Conductor',
+        quantity: 50
+      }
+    ],
+    baseValue: {
+      platinum: 500
+    },
+    weight: 0.01
+  },
+  {
+    name: 'Dolorous: Quality Combat Mastery',
+    description: 'Slotted Effect: ',
+    minimumLevel: 8,
+    type: 'Augment',
+    augmentType: 'Lamordia: Dolorous (Accessory)',
+    quantity: 1,
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    craftedIn: 'Ludendorf Town Hall',
+    effectsAdded: [],
+    requirements: [
+      {
+        name: 'Bleak Alternator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Resistor',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Insulator',
+        quantity: 50
+      },
+      {
+        name: 'Bleak Conductor',
         quantity: 50
       }
     ],

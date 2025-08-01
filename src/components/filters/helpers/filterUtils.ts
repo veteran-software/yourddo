@@ -6,8 +6,8 @@ import type { Ingredient } from '../../../types/ingredients.ts'
  * Filters the `ingredients` map based on the provided item filters.
  *
  * @param {string[]} itemFilters - An array of item filter strings used to filter the ingredients.
- * @param {Record<string, CraftingIngredient[]>} ingredientsMap - A map where the keys are element names and the values are arrays of CraftingIngredient objects.
- * @returns {Record<string, CraftingIngredient[]>} A new ingredients map containing only the ingredients that match the item filters for each element.
+ * @param {Record<string, Ingredient[]>} ingredientsMap - A map where the keys are element names and the values are arrays of CraftingIngredient objects.
+ * @returns {Record<string, Ingredient[]>} A new ingredients map containing only the ingredients that match the item filters for each element.
  */
 export const filterIngredientsMap = (
   itemFilters: string[],
@@ -32,10 +32,10 @@ export const filterIngredientsMap = (
  * effect names found in the `effectsAdded` property of each ingredient. The resulting
  * effect names are returned as a sorted array in alphabetical order.
  *
- * @param {Record<string, CraftingIngredient[]>} ingredientsMap - A mapping of ingredient keys to arrays of `CraftingIngredient` objects.
+ * @param {Record<string, Ingredient[]>} ingredientsMap - A mapping of ingredient keys to arrays of `CraftingIngredient` objects.
  * @returns {string[]} A sorted array of unique effect names found within the ingredients.
  */
-export const parseUniqueEffects = (ingredientsMap: Record<string, CraftingIngredient[]>): string[] => {
+export const parseUniqueEffects = (ingredientsMap: Record<string, Ingredient[]>): string[] => {
   const effects = new Set<string>()
   Object.values(ingredientsMap).forEach((ingredients: CraftingIngredient[]) => {
     ingredients.forEach((ingredient: CraftingIngredient) => {

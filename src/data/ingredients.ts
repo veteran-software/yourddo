@@ -469,19 +469,11 @@ export const ingredients: Ingredient[] = [
     name: 'Crystallized Spiderweb',
     description:
       'This spiderweb is frozen with subtle magic. It appears to be used for upgrading items found within the same adventure area.',
-    foundIn: [
-      'The Lords of Dust (Epic)',
-      'Servants of the Overlord (Epic)',
-      'The Spinner of Shadows (Epic)',
-      'Beyond the Rift (Epic)'
-    ],
+    foundIn: ['Web of Chaos Quests (Epic)'],
     binding: {
       type: 'Bound',
-      from: 'Acquisition',
-      to: 'Character'
-    },
-    baseValue: {
-      gold: 1
+      to: 'Account',
+      from: 'Acquisition'
     }
   },
   {
@@ -526,6 +518,17 @@ export const ingredients: Ingredient[] = [
     notes:
       'To charge a Depleted Shavarath High Energy Cell, combine it on the Altar of Subjugation with a +8 to +15 weapon.\n' +
       "Note: The +X you're looking for is in the top-right corner of the item examine window—not in the weapon’s name."
+  },
+  {
+    name: 'Desert Sand Crystal',
+    description:
+      'This small chunk of sand that has crystallized. It appears to be used for upgrading items found within the same adventure.',
+    foundIn: ['Sands of Menechtarun Quests (Epic)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
   },
   {
     name: 'Dethek Runestone',
@@ -712,6 +715,17 @@ export const ingredients: Ingredient[] = [
     foundIn: ['The Isle of Dread (Wilderness) (Legendary)']
   },
   {
+    name: 'Fractured Sliver of Time',
+    description:
+      'This is a crushed fragment of what was an incredible artifact. It appears to be used for upgrading items found within the same adventures.',
+    foundIn: ['Devil Assault (Epic)', 'The Chronoscope (Epic)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
+  },
+  {
     name: 'Fragment of Extraplanar Alignment',
     image: 'dinosaurBoneNamedScaleAugment',
     description:
@@ -803,6 +817,17 @@ export const ingredients: Ingredient[] = [
     },
     weight: 0.01,
     foundIn: ['Rainbow in the Dark', 'Running with the Devils']
+  },
+  {
+    name: 'Glowing Fen Mushroom',
+    description:
+      "This glowing mushroom doesn't look edible. It appears to be used for upgrading items found within the same adventure.",
+    foundIn: ['The Red Fens (Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
   },
   {
     name: 'Gnoll Whittled Branch',
@@ -1213,6 +1238,17 @@ export const ingredients: Ingredient[] = [
     foundIn: ['The Codex and the Shroud']
   },
   {
+    name: "Legendary Quartermaster's Chit",
+    description:
+      'These are worth quite a bit to the right person. Someone in Saltmarsh will likely give you a fair price.',
+    foundIn: ['Saltmarsh (Legendary Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
+  },
+  {
     name: 'Legendary Small Devil Scales',
     image: 'lgsDevilScale',
     type: 'This item may be may be put in a Legendary eldritch device.',
@@ -1342,6 +1378,17 @@ export const ingredients: Ingredient[] = [
       from: 'Acquisition'
     },
     foundIn: ['The Curse of Strahd', 'Rudolph van Richten (Barter NPC)', 'Strahd Rune Barter']
+  },
+  {
+    name: 'Medal of House Deneith',
+    description:
+      'These battleworn medals have been dented and dinged beyond repair. It appears to be used for upgrading items found within the same adventure.',
+    foundIn: ['Sentinels of Stormreach (Epic Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
   },
   {
     name: 'Medium Devil Scales',
@@ -1477,6 +1524,17 @@ export const ingredients: Ingredient[] = [
     weight: 0.01
   },
   {
+    name: "Quartermaster's Chit",
+    description:
+      'These are worth quite a bit to the right person. Someone in Saltmarsh will likely give you a fair price.',
+    foundIn: ['Saltmarsh (Heroic Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
+  },
+  {
     name: 'Quori-Infused Core',
     type: 'Trinket',
     description:
@@ -1501,6 +1559,28 @@ export const ingredients: Ingredient[] = [
       platinum: 10020
     },
     foundIn: ['Tower of Despair']
+  },
+  {
+    name: 'Saltmeadow Hay',
+    description:
+      'This is sheathe of fine-quality hay, the smell of the salty marsh air still lingering within. It appears to be used for upgrading items found within the same adventure.',
+    foundIn: ['Saltmarsh (Quests)', 'Saltmarsh (Rare Encounters)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
+  },
+  {
+    name: 'Scrap of Patterned Cloth',
+    description:
+      'This is a scrap of fabric that must have been used for constructing costumes. It appears to be used for upgrading items within the same adventure.',
+    foundIn: ['Phiarlan Carnival (Epic Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
   },
   {
     name: 'Shard of Great Power',
@@ -1768,6 +1848,17 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Project Nemesis', 'Nemesis Rune Barter']
   },
   {
+    name: 'Star Fragment',
+    description:
+      'This fragment of an unknown material glows like a star within your hands. It seems to be the key to unlocking ultimate power.',
+    foundIn: ['Saltmarsh (Legendary Rare Encounters)', 'The Chronoscope (Legendary)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
+  },
+  {
     name: 'Strange Tidings',
     image: 'raidRing',
     type: 'Ring',
@@ -1844,6 +1935,17 @@ export const ingredients: Ingredient[] = [
       'Collegium of the Twelve (Nerena) [Guild Airship Amenity]',
       "Amrath (Ver'quea)"
     ]
+  },
+  {
+    name: 'Vault Key',
+    description:
+      'This key opens a lock that has been long forgotten. It appears to be used for upgrading items found within the same adventures',
+    foundIn: ['The Vault of Night (Epic Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
   },
   {
     name: 'Vestments of Ravenloft',
