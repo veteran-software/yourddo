@@ -27,6 +27,7 @@ import {
 import type { AppDispatch } from '../../redux/store.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
+import type { Ingredient } from '../../types/ingredients.ts'
 import { camelCaseToTitleCase, getCumulativeIngredients } from '../../utils/utils.ts'
 import CumulativeIngredientsCard from './components/CumulativeIngredientsCard.tsx'
 import ItemDisplay from './components/ItemDisplay.tsx'
@@ -141,7 +142,7 @@ const DinosaurBone = () => {
 
   const augmentOptions = useMemo<Record<string, CraftingIngredient[]>>(() => {
     return availableAugmentSlots.reduce<Record<string, CraftingIngredient[]>>((acc, slot) => {
-      let options: CraftingIngredient[]
+      let options: Ingredient[]
 
       if (slot === 'isleOfDreadSetBonus') {
         options = dinosaurBoneCrafting.filter((ing) => ing.setBonus)
