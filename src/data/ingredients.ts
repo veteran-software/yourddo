@@ -299,6 +299,72 @@ export const ingredients: Ingredient[] = [
     foundIn: ['The Haunted Halls of Eveningstar']
   },
   {
+    name: 'Bleak Alternator',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Bleak Conductor',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Bleak Insulator',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Bleak Resistor',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Bleak Transformer',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Bleak Wire',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
     name: 'Blighted Scarab',
     description: 'The desicated husk of this scarab radiates an sickly glow.',
     binding: {
@@ -462,6 +528,21 @@ export const ingredients: Ingredient[] = [
       "Note: The +X you're looking for is in the top-right corner of the item examine window—not in the weapon’s name."
   },
   {
+    name: 'Dethek Runestone',
+    description:
+      'Someone took this stone slab, covered faintly in Dwarf-inscribed enchantments, and attached a handle to the back, turning it into a shield.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 10804
+    },
+    weight: 0.1,
+    foundIn: ['Fire on Thunder Peak']
+  },
+  {
     name: 'Dimensional Horn',
     image: 'dinosaurBoneNamedHornAugment',
     description: 'Slotted Effect: 5% Enhancement bonus to Dodge Bypass.',
@@ -514,6 +595,20 @@ export const ingredients: Ingredient[] = [
     name: 'Empty Soul Vessel',
     description: 'A victorious reminder of your achievements. Perhaps these can be used for something...',
     foundIn: ['Fables of the Feywild (Legendary Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 100
+    }
+  },
+  {
+    name: 'Esoteric Relic',
+    description:
+      "This tiny, handheld relic doesn't seem to hold much value on its own, but would likely be appreciated by the Morgrave Reliquary.",
+    foundIn: ['Vecna Unleashed (Any Chest)'],
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -868,6 +963,20 @@ export const ingredients: Ingredient[] = [
     foundIn: ['The Shroud']
   },
   {
+    name: 'Legendary Esoteric Relic',
+    description:
+      "This tiny, handheld relic doesn't seem to hold much value on its own, but would likely be appreciated by the Morgrave Reliquary.",
+    foundIn: ['Vecna Unleashed (Any Chest)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 100
+    }
+  },
+  {
     name: 'Legendary Large Devil Scales',
     image: 'lgsDevilScale',
     type: 'This item may be may be put in a Legendary eldritch device.',
@@ -958,6 +1067,58 @@ export const ingredients: Ingredient[] = [
       platinum: 45
     },
     foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: 'Legendary Mark of Bal Molesh',
+    image: '',
+    type: 'Cauldron of Sora Katra',
+    description:
+      'this token bears the military insignia of a Droaam Warlord: Bal Molesh, a powerful and insidious tiefling also knows as the Venom Lord.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    foundIn: []
+  },
+  {
+    name: 'Legendary Mark of Rhesh Turakbar',
+    image: '',
+    type: 'Cauldron of Sora Katra',
+    description:
+      'this token bears the military insignia of a Droaam Warlord: Rhesh Turakbar, a minotaur who thirsts constantly for blood and warfare.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    foundIn: []
+  },
+  {
+    name: 'Legendary Mark of Sheshka',
+    image: '',
+    type: 'Cauldron of Sora Katra',
+    description:
+      'this token bears the military insignia of a Droaam Warlord: Sheshka, a calm yet fearsome medusa whose kingdom predates the Droaam nation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    foundIn: []
+  },
+  {
+    name: 'Legendary Mark of Tzaryan Rrac',
+    image: '',
+    type: 'Cauldron of Sora Katra',
+    description:
+      'this token bears the military insignia of a Droaam Warlord: Tzaryan Rrac, an ogre mage whose appetite for destructive arcane power knows no bounds.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    foundIn: []
   },
   {
     name: 'Legendary Medium Devil Scales',

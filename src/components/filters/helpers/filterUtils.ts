@@ -1,5 +1,6 @@
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
+import type { Ingredient } from '../../../types/ingredients.ts'
 
 /**
  * Filters the `ingredients` map based on the provided item filters.
@@ -10,7 +11,7 @@ import type { CraftingIngredient } from '../../../types/crafting.ts'
  */
 export const filterIngredientsMap = (
   itemFilters: string[],
-  ingredientsMap: Record<string, CraftingIngredient[]>
+  ingredientsMap: Record<string, Ingredient[]>
 ): Record<string, CraftingIngredient[]> => {
   if (!itemFilters.length) return ingredientsMap
 

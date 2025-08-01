@@ -7,6 +7,7 @@ import dinosaurBoneReducer from './slices/dinosaurBoneSlice'
 import greenSteelReducer from './slices/hgsSlice.ts'
 import incrediblePotentialReducer from './slices/incrediblePotentialSlice'
 import legendaryGreenSteelReducer from './slices/lgsSlice.ts'
+import viktraniumExperimentReducer from './slices/viktraniumSlice.ts'
 
 const store = configureStore({
   reducer: {
@@ -17,7 +18,8 @@ const store = configureStore({
     dinosaurBone: dinosaurBoneReducer,
     greenSteel: greenSteelReducer,
     incrediblePotential: incrediblePotentialReducer,
-    legendaryGreenSteel: legendaryGreenSteelReducer
+    legendaryGreenSteel: legendaryGreenSteelReducer,
+    viktraniumExperiment: viktraniumExperimentReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(serverStatusApi.middleware).concat(serverStatusLamApi.middleware)

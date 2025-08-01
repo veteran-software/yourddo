@@ -1202,10 +1202,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/luxon@npm:^3.6.2":
-  version: 3.6.2
-  resolution: "@types/luxon@npm:3.6.2"
-  checksum: 10c0/7572ee52b3d3e9dd10464b90561a728b90f34b9a257751cc3ce23762693dd1d14fa98b7f103e2efe2c6f49033331f91de5681ffd65cca88618cefe555be326db
+"@types/luxon@npm:^3.7.1":
+  version: 3.7.1
+  resolution: "@types/luxon@npm:3.7.1"
+  checksum: 10c0/2db30c13b58adcd86daa447faa3ba59515fe907ead8ee3e6bb716d662812af0619d712f6c1eb190cdd7f9d2c00444c3ecd80af0f36e8143eb0c5e7339d6b2aca
   languageName: node
   linkType: hard
 
@@ -1241,12 +1241,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^19.1.6":
-  version: 19.1.6
-  resolution: "@types/react-dom@npm:19.1.6"
+"@types/react-dom@npm:^19.1.7":
+  version: 19.1.7
+  resolution: "@types/react-dom@npm:19.1.7"
   peerDependencies:
     "@types/react": ^19.0.0
-  checksum: 10c0/7ba74eee2919e3f225e898b65fdaa16e54952aaf9e3472a080ddc82ca54585e46e60b3c52018d21d4b7053f09d27b8293e9f468b85f9932ff452cd290cc131e8
+  checksum: 10c0/8db5751c1567552fe4e1ece9f5823b682f2994ec8d30ed34ba0ef984e3c8ace1435f8be93d02f55c350147e78ac8c4dbcd8ed2c3b6a60f575bc5374f588c51c9
   languageName: node
   linkType: hard
 
@@ -1259,12 +1259,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:>=16.9.11, @types/react@npm:^19.1.8":
+"@types/react@npm:>=16.9.11":
   version: 19.1.8
   resolution: "@types/react@npm:19.1.8"
   dependencies:
     csstype: "npm:^3.0.2"
   checksum: 10c0/4908772be6dc941df276931efeb0e781777fa76e4d5d12ff9f75eb2dcc2db3065e0100efde16fde562c5bafa310cc8f50c1ee40a22640459e066e72cd342143e
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^19.1.9":
+  version: 19.1.9
+  resolution: "@types/react@npm:19.1.9"
+  dependencies:
+    csstype: "npm:^3.0.2"
+  checksum: 10c0/b418da4aaf18fbc6df4f1b7096dda7ee152d697cac00d729ffd855b2b44a3a9cfb2ecb017ed20979ea3a7d98a5ce5fcf01ac1a3614d4a3e4d7069a0c45e49b0f
   languageName: node
   linkType: hard
 
@@ -3966,14 +3975,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^19.1.0":
-  version: 19.1.0
-  resolution: "react-dom@npm:19.1.0"
+"react-dom@npm:^19.1.1":
+  version: 19.1.1
+  resolution: "react-dom@npm:19.1.1"
   dependencies:
     scheduler: "npm:^0.26.0"
   peerDependencies:
-    react: ^19.1.0
-  checksum: 10c0/3e26e89bb6c67c9a6aa86cb888c7a7f8258f2e347a6d2a15299c17eb16e04c19194e3452bc3255bd34000a61e45e2cb51e46292392340432f133e5a5d2dfb5fc
+    react: ^19.1.1
+  checksum: 10c0/8c91198510521299c56e4e8d5e3a4508b2734fb5e52f29eeac33811de64e76fe586ad32c32182e2e84e070d98df67125da346c3360013357228172dbcd20bcdd
   languageName: node
   linkType: hard
 
@@ -4069,10 +4078,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^19.1.0":
-  version: 19.1.0
-  resolution: "react@npm:19.1.0"
-  checksum: 10c0/530fb9a62237d54137a13d2cfb67a7db6a2156faed43eecc423f4713d9b20c6f2728b026b45e28fcd72e8eadb9e9ed4b089e99f5e295d2f0ad3134251bdd3698
+"react@npm:^19.1.1":
+  version: 19.1.1
+  resolution: "react@npm:19.1.1"
+  checksum: 10c0/8c9769a2dfd02e603af6445058325e6c8a24b47b185d0e461f66a6454765ddcaecb3f0a90184836c68bb509f3c38248359edbc42f0d07c23eb500a5c30c87b4e
   languageName: node
   linkType: hard
 
@@ -5201,10 +5210,10 @@ __metadata:
     "@popperjs/core": "npm:^2.11.8"
     "@reduxjs/toolkit": "npm:^2.8.2"
     "@types/bootstrap": "npm:^5.2.10"
-    "@types/luxon": "npm:^3.6.2"
+    "@types/luxon": "npm:^3.7.1"
     "@types/node": "npm:^24.1.0"
-    "@types/react": "npm:^19.1.8"
-    "@types/react-dom": "npm:^19.1.6"
+    "@types/react": "npm:^19.1.9"
+    "@types/react-dom": "npm:^19.1.7"
     "@vitejs/plugin-react": "npm:^4.7.0"
     bootstrap: "npm:^5.3.7"
     camelcase: "npm:^8.0.0"
@@ -5218,9 +5227,9 @@ __metadata:
     kebab-case: "npm:^2.0.2"
     luxon: "npm:^3.7.1"
     prettier: "npm:^3.6.2"
-    react: "npm:^19.1.0"
+    react: "npm:^19.1.1"
     react-bootstrap: "npm:^2.10.10"
-    react-dom: "npm:^19.1.0"
+    react-dom: "npm:^19.1.1"
     react-icons: "npm:^5.5.0"
     react-redux: "npm:^9.2.0"
     react-router-dom: "npm:^7.7.1"

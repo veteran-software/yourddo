@@ -63,6 +63,13 @@ export type Bonus =
   | 'Morale'
   | 'Music'
   | 'Mythic'
+  | 'Natural Armor'
+  | 'On-damage : 3 sec'
+  | 'On-hit'
+  | 'On-hit : 5% Chance'
+  | 'On-vorpal'
+  | 'Orb'
+  | 'Over-Time : per minute'
   | 'Primal'
   | 'Profane'
   | 'Psionic'
@@ -76,6 +83,7 @@ export type Bonus =
   | 'Special'
   | '--Craftable'
   | 'Stacking'
+  | 'Vitality'
 
 export type Condition =
   | 'Ability Damage'

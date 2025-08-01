@@ -3,6 +3,7 @@ import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { titleCase } from 'title-case'
 import type { Enhancement } from '../../types/core.ts'
 import type { CraftingIngredient } from '../../types/crafting'
+import type { Ingredient } from '../../types/ingredients.ts'
 import FilterOffCanvas from '../filters/FilterOffCanvas.tsx'
 import { parseUniqueEffects } from '../filters/helpers/filterUtils.ts'
 import CraftedIngredientDisplay from './CraftedIngredientDisplay.tsx'
@@ -154,18 +155,18 @@ const FilterableDropdown = (props: Props) => {
  * @property {boolean} [displayEffectsAdded] - Flag to display additional effects if enabled.
  * @property {string} [dropdownTriggerPrefix] - Optional prefix for the dropdown trigger.
  * @property {'OR' | 'AND'} [filterMode] - Logical mode used for filtering, can be 'OR' or 'AND'.
- * @property {Record<string, CraftingIngredient[]>} [filteredItems] - A record of filtered items.
+ * @property {Record<string, Ingredient[]>} [filteredItems] - A record of filtered items.
  * @property {string[]} [filters] - List of currently active filters.
  * @property {boolean} [groupBySecondaryFocus] - Indicates if items should be grouped by a secondary focus.
- * @property {Record<string, CraftingIngredient[]>} items - A record of items categorized by a key.
+ * @property {Record<string, Ingredient[]>} items - A record of items categorized by a key.
  * @property {string} label - Label text for the component or input.
  * @property {(mode: 'OR' | 'AND') => void} [onFilterModeChange] - Callback function triggered when the filter mode changes.
  * @property {(filters: string[]) => void} [onFiltersChange] - Callback function invoked when filters are updated.
  * @property {() => void} [onReset] - Callback function invoked when resetting filters or selection.
- * @property {(item: CraftingIngredient) => void} onSelect - Callback function triggered when an item is selected.
- * @property {(ingredient: CraftingIngredient) => Element} [renderSectionBody] - Optional function to render the body of a section.
- * @property {(name: string, ingredients?: CraftingIngredient[]) => Element} [renderSectionHeader] - Optional function to render the header of a section.
- * @property {CraftingIngredient | undefined} selectedItem - The currently selected item, if any.
+ * @property {(item: Ingredient) => void} onSelect - Callback function triggered when an item is selected.
+ * @property {(ingredient: Ingredient) => Element} [renderSectionBody] - Optional function to render the body of a section.
+ * @property {(name: string, ingredients?: Ingredient[]) => Element} [renderSectionHeader] - Optional function to render the header of a section.
+ * @property {Ingredient | undefined} selectedItem - The currently selected item, if any.
  * @property {string} title - The title or heading of the component.
  */
 interface Props {
@@ -174,18 +175,18 @@ interface Props {
   displayEffectsAdded?: boolean
   dropdownTriggerPrefix?: string
   filterMode?: 'OR' | 'AND'
-  filteredItems?: Record<string, CraftingIngredient[]>
+  filteredItems?: Record<string, Ingredient[]>
   filters?: string[]
   groupBySecondaryFocus?: boolean
-  items: Record<string, CraftingIngredient[]>
+  items: Record<string, Ingredient[]>
   label: string
   onFilterModeChange?: (mode: 'OR' | 'AND') => void
   onFiltersChange?: (filters: string[]) => void
   onReset?: () => void
-  onSelect: (item: CraftingIngredient) => void
-  renderSectionBody?: (ingredient: CraftingIngredient) => React.JSX.Element
-  renderSectionHeader?: (name: string, ingredients?: CraftingIngredient[]) => React.JSX.Element
-  selectedItem: CraftingIngredient | undefined
+  onSelect: (item: Ingredient) => void
+  renderSectionBody?: (ingredient: Ingredient) => React.JSX.Element
+  renderSectionHeader?: (name: string, ingredients?: Ingredient[]) => React.JSX.Element
+  selectedItem: Ingredient | undefined
   title: string
 }
 

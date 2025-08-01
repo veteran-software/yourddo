@@ -14,11 +14,20 @@ export interface Ingredient {
   name: string
   notes?: string
   type?: string
+  subType?: string
   weight?: number
 }
 
 export type TAugmentType =
   | 'Colorless'
+  | 'Green'
+  | 'Red'
+  | 'Yellow'
+  | 'Blue'
+  | 'Orange'
+  | 'Purple'
+  | 'Sun'
+  | 'Moon'
   | 'Green Steel Epic Active'
   | 'Green Steel Epic Tier 1'
   | 'Green Steel Epic Tier 2'
@@ -37,6 +46,7 @@ export type TAugmentType =
   | 'Lamordia: Melancholic (Weapon)'
   | 'Lamordia: Dolorous (Weapon)'
   | 'Lamordia: Miserable (Weapon)'
+  | 'Lamordia: Woeful (Weapon)'
   | 'Lamordia: Melancholic (Accessory)'
   | 'Lamordia: Dolorous (Accessory)'
   | 'Lamordia: Miserable (Accessory)'

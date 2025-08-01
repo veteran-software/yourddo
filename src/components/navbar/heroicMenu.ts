@@ -10,6 +10,7 @@ const menuItems: NavDropdownType[] = [
   { label: 'Dragontouched Armor', image: '', active: false },
   { label: 'Fountain Of Necrotic Might', image: '', active: false },
   { label: 'Green Steel', image: '', active: true },
+  { label: 'Heroic Viktranium Experiment', image: '', active: true },
   { label: 'Incredible Potential', image: '', active: true },
   { label: 'Lost Purpose', image: '', active: false },
   { label: 'Nearly Finished', image: '', active: false },

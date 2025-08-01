@@ -1,9 +1,10 @@
 import camelcase from 'camelcase'
-import { Container, Image, Stack } from 'react-bootstrap'
+import { Container, Stack } from 'react-bootstrap'
 import { FaCircleNotch } from 'react-icons/fa6'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { ICON_BASE } from '../../utils/constants.ts'
 import { formatIngredientName } from '../../utils/utils.ts'
+import FallbackImage from './FallbackImage.tsx'
 import NoteTooltip from './NoteTooltip.tsx'
 
 const FarmedIngredientDisplay = (props: Props) => {
@@ -21,7 +22,7 @@ const FarmedIngredientDisplay = (props: Props) => {
       {imageSrc === '' ? (
         <FaCircleNotch title='Loading...' size={36} color='gray' style={{ animation: 'spin 1s linear infinite' }} />
       ) : (
-        <Image src={imageSrc} alt={ingredient.name} title={ingredient.name} />
+        <FallbackImage src={imageSrc} alt={ingredient.name} />
       )}
 
       <Stack direction='vertical' gap={0} className='text-wrap justify-content-center'>
