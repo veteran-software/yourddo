@@ -13,6 +13,7 @@ import { lootLegendaryViktraniumItems } from '../../data/viktraniumExperiment/lC
 import { craftedLegendaryViktraniumWeapons } from '../../data/viktraniumExperiment/lViktraniumExperimentCraftedItems.ts'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks.ts'
 import {
+  resetSelectedHeroicCraftedItem,
   resetSelectedHeroicLootItem,
   resetSelectedLegendaryCraftedItem,
   resetSelectedLegendaryLootItem,
@@ -21,6 +22,7 @@ import {
   setItemFilterMode,
   setItemFilters,
   setSelectedAugment,
+  setSelectedHeroicCraftedItem,
   setSelectedHeroicLootItem,
   setSelectedLegendaryCraftedItem,
   setSelectedLegendaryLootItem
@@ -172,8 +174,8 @@ const ViktraniumExperiment = () => {
                   title={'Heroic Crafted Weapons'}
                   items={craftedHeroicViktraniumWeapons}
                   filteredItems={filteredCraftedHeroicViktraniumWeapons}
-                  onSelect={(weapon: CraftingIngredient) => dispatch(setSelectedHeroicLootItem(weapon))}
-                  onReset={() => dispatch(resetSelectedHeroicLootItem())}
+                  onSelect={(weapon: CraftingIngredient) => dispatch(setSelectedHeroicCraftedItem(weapon))}
+                  onReset={() => dispatch(resetSelectedHeroicCraftedItem())}
                   selectedItem={selectedHeroicCraftedItem ?? undefined}
                   label={
                     selectedHeroicCraftedItem ? selectedHeroicCraftedItem.name : 'Select a Heroic Crafted Weapon...'
