@@ -21,7 +21,9 @@ export const update75Augments: AugmentItem[] = [
         name: 'Material Type: Adamantine'
       },
       {
-        name: 'On hit: 16d6 Fire damage'
+        name: 'Fire Damage',
+        bonus: 'On-hit',
+        modifier: '16d6'
       }
     ],
     requirements: [
@@ -66,7 +68,9 @@ export const update75Augments: AugmentItem[] = [
         name: 'Material Type: Cold Iron'
       },
       {
-        name: 'On hit: 16d6 Cold damage'
+        name: 'Cold Damage',
+        bonus: 'On-hit',
+        modifier: '16d6'
       }
     ],
     requirements: [
@@ -111,7 +115,9 @@ export const update75Augments: AugmentItem[] = [
         name: 'Material Type: Silver'
       },
       {
-        name: 'On hit: 16d6 Electric damage'
+        name: 'Electric Damage',
+        bonus: 'On-hit',
+        modifier: '16d6'
       }
     ],
     requirements: [
@@ -159,7 +165,9 @@ export const update75Augments: AugmentItem[] = [
         name: 'Material Type: Byeshk'
       },
       {
-        name: 'On hit: 16d6 Acid damage'
+        name: 'Acid Damage',
+        bonus: 'On-hit',
+        modifier: '16d6'
       }
     ],
     requirements: [
@@ -927,10 +935,10 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Material Type: Adamantine'
+        name: 'Damage (chance): Magical Resistance Rating'
       },
       {
-        name: 'On hit: 16d6 Fire damage'
+        name: 'Damage (chance): Universal Spell Power'
       }
     ],
     requirements: [
@@ -977,10 +985,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Material Type: Cold Iron'
-      },
-      {
-        name: 'On hit: 16d6 Cold damage'
+        name: 'Damage (chance): Freeze'
       }
     ],
     requirements: [
@@ -1027,10 +1032,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Material Type: Silver'
-      },
-      {
-        name: 'On hit: 16d6 Electric damage'
+        name: 'Damage (chance): Inflict Vulnerability'
       }
     ],
     requirements: [
@@ -1077,13 +1079,10 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Material Type: Crystal'
+        name: 'Damage (chance): Physical Resistance Rating'
       },
       {
-        name: 'Material Type: Byeshk'
-      },
-      {
-        name: 'On hit: 16d6 Acid damage'
+        name: 'Damage (chance): Positive Healing Amplification'
       }
     ],
     requirements: [
@@ -1129,15 +1128,8 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Spell Penetration',
-        bonus: 'Enhancement',
-        modifier: 9
-      },
-      {
-        name: 'Spell DCs',
-        bonus: 'Exceptional',
-        modifier: 2,
-        notes: 'Requires slotting in a Quarterstaff'
+        name: 'Temporary Hit Points (chance)',
+        modifier: 1000
       }
     ],
     requirements: [
@@ -1184,15 +1176,10 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Spell Cost Reduction',
-        bonus: 'Enhancement',
-        modifier: '10%'
+        name: 'Damage (chance): Physical Resistance Rating'
       },
       {
-        name: 'Spell DCs',
-        bonus: 'Exceptional',
-        modifier: 2,
-        notes: 'Requires slotting in a Quarterstaff'
+        name: 'Damage (chance): Magical Resistance Rating'
       }
     ],
     requirements: [
@@ -1224,7 +1211,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Fire (ML:34)',
-    description: 'Slotted Effect: +159 Equipment bonus to Fire Spellpower.',
+    description: 'Slotted Effect: +159 Equipment bonus to Fire Spell Power.',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -1238,7 +1225,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Fire Spellpower',
+        name: 'Fire Spell Power',
         bonus: 'Equipment',
         modifier: 159
       }
@@ -1272,7 +1259,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Cold (ML:34)',
-    description: 'Slotted Effect: +159 Equipment bonus to Cold Spellpower.',
+    description: 'Slotted Effect: +159 Equipment bonus to Cold Spell Power.',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -1286,7 +1273,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Cold Spellpower',
+        name: 'Cold Spell Power',
         bonus: 'Equipment',
         modifier: 159
       }
@@ -1320,7 +1307,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Electric (ML:34)',
-    description: 'Slotted Effect: +159 Equipment bonus to Electric Spellpower.',
+    description: 'Slotted Effect: +159 Equipment bonus to Electric Spell Power.',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -1334,7 +1321,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Electric Spellpower',
+        name: 'Electric Spell Power',
         bonus: 'Equipment',
         modifier: 159
       }
@@ -1368,7 +1355,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Acid (ML:34)',
-    description: 'Slotted Effect: +159 Equipment bonus to Acid Spellpower.',
+    description: 'Slotted Effect: +159 Equipment bonus to Acid Spell Power.',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -1382,7 +1369,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Acid Spellpower',
+        name: 'Acid Spell Power',
         bonus: 'Equipment',
         modifier: 159
       }
@@ -1416,7 +1403,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Light (ML:34)',
-    description: 'Slotted Effect: +159 Equipment bonus to Light and Alignment Spellpower.',
+    description: 'Slotted Effect: +159 Equipment bonus to Light and Alignment Spell Power.',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -1430,7 +1417,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Light and Alignment Spellpower',
+        name: 'Light and Alignment Spell Power',
         bonus: 'Equipment',
         modifier: 159
       }
@@ -1464,7 +1451,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Negative (ML:34)',
-    description: 'Slotted Effect: +159 Equipment bonus to Negative and Poison Spellpower.',
+    description: 'Slotted Effect: +159 Equipment bonus to Negative and Poison Spell Power.',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -1478,7 +1465,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Negative and Poison Spellpower',
+        name: 'Negative and Poison Spell Power',
         bonus: 'Equipment',
         modifier: 159
       }
@@ -1512,7 +1499,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Sonic (ML:34)',
-    description: 'Slotted Effect: +159 Equipment bonus to Sonic Spellpower.',
+    description: 'Slotted Effect: +159 Equipment bonus to Sonic Spell Power.',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -1526,7 +1513,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Sonic Spellpower',
+        name: 'Sonic Spell Power',
         bonus: 'Equipment',
         modifier: 159
       }
@@ -1560,7 +1547,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Force (ML:34)',
-    description: 'Slotted Effect: +159 Equipment bonus to Force and Physical Spellpower.',
+    description: 'Slotted Effect: +159 Equipment bonus to Force and Physical Spell Power.',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -1574,7 +1561,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Force and Physical Spellpower',
+        name: 'Force and Physical Spell Power',
         bonus: 'Equipment',
         modifier: 159
       }
@@ -1608,7 +1595,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Positive (ML:34)',
-    description: 'Slotted Effect: +159 Equipment bonus to Positive Spellpower.',
+    description: 'Slotted Effect: +159 Equipment bonus to Positive Spell Power.',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -1622,7 +1609,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Positive Spellpower',
+        name: 'Positive Spell Power',
         bonus: 'Equipment',
         modifier: 159
       }
@@ -1656,7 +1643,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Repair (ML:34)',
-    description: 'Slotted Effect: +159 Equipment bonus to Repair Spellpower.',
+    description: 'Slotted Effect: +159 Equipment bonus to Repair Spell Power.',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -1670,7 +1657,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Repair Spellpower',
+        name: 'Repair Spell Power',
         bonus: 'Equipment',
         modifier: 159
       }
@@ -4627,17 +4614,17 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Spell DCs',
+        name: 'Spell DC',
         bonus: 'Profane',
         modifier: 2
       },
       {
-        name: 'Tactical DCs',
+        name: 'Tactical DC',
         bonus: 'Profane',
         modifier: 2
       },
       {
-        name: 'Assassinate',
+        name: 'Assassinate DC',
         bonus: 'Profane',
         modifier: 2
       }
@@ -4732,7 +4719,11 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Improved Destruction'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Wire',
@@ -4774,7 +4765,11 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Maiming 7'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Wire',
@@ -4804,7 +4799,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Humanoid Bane (ML:34)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Humanoid Bane. This weapon is attuned specifically to those that walk among us, dealing an additional 7d10 bane damage vs. Humanoids',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -4816,7 +4812,13 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Humanoid Bane 7',
+        bonus: 'On-hit vs Humanoid',
+        modifier: '7d10'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Wire',
@@ -4846,7 +4848,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Monstrous Humanoid Bane (ML:34)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Monstrous Humanoid Bane. This weapon is attuned specifically to hunt those who are descended from monsters, dealing an additional 7d10 bane damage vs. Monstrous Humanoids',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -4858,7 +4861,13 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Monstrous Humanoid Bane 7',
+        bonus: 'On-hit vs Monstrous Humanoid',
+        modifier: '7d10'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Wire',
@@ -4888,7 +4897,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Vermin Bane (ML:34)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Vermin Bane. This weapon is ideal for clearing out rats and other annoying beasts. It deals an additional 7d10 bane damage vs. Vermin',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -4900,7 +4910,13 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Vermin Bane 7',
+        bonus: 'On-hit vs Vermin',
+        modifier: '7d10'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Wire',
@@ -4930,7 +4946,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Undead Bane (ML:34)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Undead Bane. Those that have died must return, and this weapon is attuned specifically to lay them to rest. This weapon deals an additional 7d10 bane damage vs. Undead',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -4942,7 +4959,13 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Undead Bane 7',
+        bonus: 'On-hit vs Undead',
+        modifier: '7d10'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Wire',
@@ -5372,7 +5395,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Dolorous: Quality Accuracy (ML:34)',
-    description: 'Slotted Effect: ',
+    description: 'Slotted Effect: +5 Quality bonus to Attack.',
     minimumLevel: 34,
     type: 'Augment',
     augmentType: 'Lamordia: Dolorous (Accessory)',
@@ -5384,7 +5407,13 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Attack',
+        bonus: 'Quality',
+        modifier: 5
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Alternator',
@@ -5422,7 +5451,14 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Damage',
+        bonus: 'Quality',
+        modifier: 5,
+        notes: ''
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Alternator',
@@ -5460,7 +5496,38 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Trip DC',
+        bonus: 'Quality',
+        modifier: 3
+      },
+      {
+        name: 'Improved Trip DC',
+        bonus: 'Quality',
+        modifier: 3
+      },
+      {
+        name: 'Sunder DC',
+        bonus: 'Quality',
+        modifier: 3
+      },
+      {
+        name: 'Improved Sunder DC',
+        bonus: 'Quality',
+        modifier: 3
+      },
+      {
+        name: 'Stunning Blow DC',
+        bonus: 'Quality',
+        modifier: 3
+      },
+      {
+        name: 'Stunning Fist DC',
+        bonus: 'Quality',
+        modifier: 3
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Alternator',
@@ -5487,7 +5554,7 @@ export const update75Augments: AugmentItem[] = [
   // Heroic Augments
   {
     name: 'Melancholic Flames (ML:8)',
-    description: 'Slotted Effect: Adds Adamantine material type. On hit: 1d6 Fire Damage',
+    description: 'Slotted Effect: Adds Adamantine material type. On hit: 2d6 Fire Damage',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Melancholic (Weapon)',
@@ -5503,7 +5570,9 @@ export const update75Augments: AugmentItem[] = [
         name: 'Material Type: Adamantine'
       },
       {
-        name: 'On hit: 1d6 Fire damage'
+        name: 'Fire Damage',
+        bonus: 'On-hit',
+        modifier: '2d6'
       }
     ],
     requirements: [
@@ -5531,7 +5600,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Melancholic Chill (ML:8)',
-    description: 'Slotted Effect: Adds Cold Iron material type. On hit: 1d6 Cold Damage',
+    description: 'Slotted Effect: Adds Cold Iron material type. On hit: 2d6 Cold Damage',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Melancholic (Weapon)',
@@ -5547,7 +5616,9 @@ export const update75Augments: AugmentItem[] = [
         name: 'Material Type: Cold Iron'
       },
       {
-        name: 'On hit: 1d6 Cold damage'
+        name: 'Cold Damage',
+        bonus: 'On-hit',
+        modifier: '2d6'
       }
     ],
     requirements: [
@@ -5575,7 +5646,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Melancholic Sparks (ML:8)',
-    description: 'Slotted Effect: Adds Silver material type. On hit: 1d6 Electric Damage',
+    description: 'Slotted Effect: Adds Silver material type. On hit: 2d6 Electric Damage',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Melancholic (Weapon)',
@@ -5591,7 +5662,9 @@ export const update75Augments: AugmentItem[] = [
         name: 'Material Type: Silver'
       },
       {
-        name: 'On hit: 1d6 Electric damage'
+        name: 'Electric Damage',
+        bonus: 'On-hit',
+        modifier: '2d6'
       }
     ],
     requirements: [
@@ -5619,7 +5692,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Melancholic Acid (ML:8)',
-    description: 'Slotted Effect: Adds Crystal and Byeshk material type. On hit: 1d6 Acid Damage',
+    description: 'Slotted Effect: Adds Crystal and Byeshk material type. On hit: 2d6 Acid Damage',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Melancholic (Weapon)',
@@ -5638,7 +5711,9 @@ export const update75Augments: AugmentItem[] = [
         name: 'Material Type: Byeshk'
       },
       {
-        name: 'On hit: 1d6 Acid damage'
+        name: 'Acid Damage',
+        bonus: 'On-hit',
+        modifier: '2d6'
       }
     ],
     requirements: [
@@ -5816,7 +5891,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Dreadful Flames (ML:8)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Flaming. This effect causes the edges of this weapon to burn with enchanted flames, dealing 6d6 Fire damage on each critical hit.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Dolorous (Weapon)',
@@ -5827,7 +5903,11 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'On Critical Hit: 6d6 Fire Damage'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Alternator',
@@ -5853,7 +5933,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Dreadful Chill (ML:8)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Freezing. This effect causes the edges of this weapon to become frozen to the touch, dealing 6d6 Ice damage on each critical hit.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Dolorous (Weapon)',
@@ -5864,7 +5945,11 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'On Critical Hit: 6d6 Ice Damage'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Alternator',
@@ -5890,7 +5975,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Dreadful Sparks (ML:8)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Jolting. This effect causes the edges of this weapon to arc with electricity, dealing 6d6 Lightning damage on each critical hit.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Dolorous (Weapon)',
@@ -5901,7 +5987,11 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'On Critical Hit: 6d6 Lightning Damage'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Alternator',
@@ -5927,7 +6017,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Dreadful Acid (ML:8)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Corroding. This effect causes the edges of this weapon to drip with acid, dealing 6d6 Acid damage on each critical hit.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Dolorous (Weapon)',
@@ -5938,7 +6029,11 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'On Critical Hit: 6d6 Acid Damage'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Alternator',
@@ -6296,7 +6391,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Fire (ML:8)',
-    description: 'Slotted Effect: +70 Equipment bonus to Fire Spellpower.',
+    description: 'Slotted Effect: +70 Equipment bonus to Fire Spell Power.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -6309,7 +6404,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Fire Spellpower',
+        name: 'Fire Spell Power',
         bonus: 'Equipment',
         modifier: 70
       }
@@ -6343,7 +6438,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Cold (ML:8)',
-    description: 'Slotted Effect: +70 Equipment bonus to Cold Spellpower.',
+    description: 'Slotted Effect: +70 Equipment bonus to Cold Spell Power.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -6356,7 +6451,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Cold Spellpower',
+        name: 'Cold Spell Power',
         bonus: 'Equipment',
         modifier: 70
       }
@@ -6390,7 +6485,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Electric (ML:8)',
-    description: 'Slotted Effect: +70 Equipment bonus to Electric Spellpower.',
+    description: 'Slotted Effect: +70 Equipment bonus to Electric Spell Power.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -6403,7 +6498,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Electric Spellpower',
+        name: 'Electric Spell Power',
         bonus: 'Equipment',
         modifier: 70
       }
@@ -6437,7 +6532,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Acid (ML:8)',
-    description: 'Slotted Effect: +70 Equipment bonus to Acid Spellpower.',
+    description: 'Slotted Effect: +70 Equipment bonus to Acid Spell Power.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -6450,7 +6545,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Acid Spellpower',
+        name: 'Acid Spell Power',
         bonus: 'Equipment',
         modifier: 70
       }
@@ -6484,7 +6579,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Light (ML:8)',
-    description: 'Slotted Effect: +70 Equipment bonus to Light and Alignment Spellpower.',
+    description: 'Slotted Effect: +70 Equipment bonus to Light and Alignment Spell Power.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -6497,7 +6592,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Light and Alignment Spellpower',
+        name: 'Light and Alignment Spell Power',
         bonus: 'Equipment',
         modifier: 70
       }
@@ -6531,7 +6626,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Negative (ML:8)',
-    description: 'Slotted Effect: +70 Equipment bonus to Negative and Poison Spellpower.',
+    description: 'Slotted Effect: +70 Equipment bonus to Negative and Poison Spell Power.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -6544,7 +6639,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Negative and Poison Spellpower',
+        name: 'Negative and Poison Spell Power',
         bonus: 'Equipment',
         modifier: 70
       }
@@ -6578,7 +6673,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Sonic (ML:8)',
-    description: 'Slotted Effect: +70 Equipment bonus to Sonic Spellpower.',
+    description: 'Slotted Effect: +70 Equipment bonus to Sonic Spell Power.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -6591,7 +6686,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Sonic Spellpower',
+        name: 'Sonic Spell Power',
         bonus: 'Equipment',
         modifier: 70
       }
@@ -6625,7 +6720,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Force (ML:8)',
-    description: 'Slotted Effect: +70 Equipment bonus to Force and Physical Spellpower.',
+    description: 'Slotted Effect: +70 Equipment bonus to Force and Physical Spell Power.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -6638,7 +6733,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Force and Physical Spellpower',
+        name: 'Force and Physical Spell Power',
         bonus: 'Equipment',
         modifier: 70
       }
@@ -6672,7 +6767,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Positive (ML:8)',
-    description: 'Slotted Effect: +70 Equipment bonus to Positive Spellpower.',
+    description: 'Slotted Effect: +70 Equipment bonus to Positive Spell Power.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -6685,7 +6780,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Positive Spellpower',
+        name: 'Positive Spell Power',
         bonus: 'Equipment',
         modifier: 70
       }
@@ -6719,7 +6814,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Arcana: Repair (ML:8)',
-    description: 'Slotted Effect: +70 Equipment bonus to Repair Spellpower.',
+    description: 'Slotted Effect: +70 Equipment bonus to Repair Spell Power.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -6732,7 +6827,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Repair Spellpower',
+        name: 'Repair Spell Power',
         bonus: 'Equipment',
         modifier: 70
       }
@@ -9757,7 +9852,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Maiming (ML:8)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Maiming. When you score a critical hit with this weapon, it does an additional +2d8 damage.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -9768,7 +9864,11 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Maiming'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Wire',
@@ -9798,7 +9898,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Humanoid Bane (ML:8)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Humanoid Bane. This weapon is attuned specifically to those that walk among us, dealing an additional 2d10 bane damage vs. Humanoids',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -9809,7 +9910,13 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Humanoid Bane 2',
+        bonus: 'On-hit vs Humanoid',
+        modifier: '2d10'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Wire',
@@ -9839,7 +9946,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Monstrous Humanoid Bane (ML:8)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Monstrous Humanoid Bane. This weapon is attuned specifically to hunt those who are descended from monsters, dealing an additional 2d10 bane damage vs. Monstrous Humanoids',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -9850,7 +9958,13 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Monstrous Humanoid Bane 2',
+        bonus: 'On-hit vs Monstrous Humanoid',
+        modifier: '2d10'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Wire',
@@ -9880,7 +9994,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Vermin Bane (ML:8)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Vermin Bane. This weapon is ideal for clearing out rats and other annoying beasts. It deals an additional 2d10 bane damage vs. Vermin',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -9891,7 +10006,13 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Vermin Bane 2',
+        bonus: 'On-hit vs Vermin',
+        modifier: '2d10'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Wire',
@@ -9921,7 +10042,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Miserable Undead Bane (ML:8)',
-    description: '<string table error; tableDID [0x25000013] token [0x0A039775]>',
+    description:
+      'Slotted Effect: Adds Undead Bane. Those that have died must return, and this weapon is attuned specifically to lay them to rest. This weapon deals an additional 2d10 bane damage vs. Undead',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Miserable (Weapon)',
@@ -9932,7 +10054,13 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Undead Bane 2',
+        bonus: 'On-hit vs Undead',
+        modifier: '2d10'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Wire',
@@ -10008,8 +10136,8 @@ export const update75Augments: AugmentItem[] = [
     weight: 0.01
   },
   {
-    name: 'Melancholic: Doubleshot (ML:8)',
-    description: 'Slotted Effect: +3% Enhancement bonus to Doubleshot.',
+    name: 'Melancholic: Doublestrike (ML:8)',
+    description: 'Slotted Effect: +6% Enhancement bonus to Doublestrike.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Melancholic (Accessory)',
@@ -10022,9 +10150,9 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Doubleshot',
+        name: 'Doublestrike',
         bonus: 'Enhancement',
-        modifier: '3%'
+        modifier: '6%'
       }
     ],
     requirements: [
@@ -10051,8 +10179,8 @@ export const update75Augments: AugmentItem[] = [
     weight: 0.01
   },
   {
-    name: 'Melancholic: Doublestrike (ML:8)',
-    description: 'Slotted Effect: +6% Enhancement bonus to Doublestrike.',
+    name: 'Melancholic: Doubleshot (ML:8)',
+    description: 'Slotted Effect: +3% Enhancement bonus to Doubleshot.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Melancholic (Accessory)',
@@ -10065,9 +10193,9 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Doublestrike',
+        name: 'Doubleshot',
         bonus: 'Enhancement',
-        modifier: '6%'
+        modifier: '3%'
       }
     ],
     requirements: [
@@ -10353,7 +10481,7 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Dolorous: Quality Accuracy (ML:8)',
-    description: 'Slotted Effect: ',
+    description: 'Slotted Effect: +1 Quality bonus to Attack.',
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Dolorous (Accessory)',
@@ -10364,7 +10492,13 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Attack',
+        bonus: 'Quality',
+        modifier: 1
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Alternator',
@@ -10401,7 +10535,15 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Damage',
+        bonus: 'Quality',
+        modifier: 1,
+        notes:
+          'As of Loot Preview #2, the in-game interface on Lamannia says this provides Wisdom which is likely incorrect.'
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Alternator',
@@ -10427,7 +10569,8 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Dolorous: Quality Combat Mastery (ML:8)',
-    description: 'Slotted Effect: ',
+    description:
+      "Slotted Effect: +1 Quality bonus to the DC to resist the character's Trip, Improved Trip, Sunder, Improved Sunder, Stunning Blow, and Stunning Fist attempts.",
     minimumLevel: 8,
     type: 'Augment',
     augmentType: 'Lamordia: Dolorous (Accessory)',
@@ -10438,7 +10581,38 @@ export const update75Augments: AugmentItem[] = [
     },
     update: 75,
     craftedIn: 'Ludendorf Town Hall',
-    effectsAdded: [],
+    effectsAdded: [
+      {
+        name: 'Trip DC',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Improved Trip DC',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Sunder DC',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Improved Sunder DC',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Stunning Blow DC',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Stunning Fist DC',
+        bonus: 'Quality',
+        modifier: 1
+      }
+    ],
     requirements: [
       {
         name: 'Bleak Alternator',
@@ -10474,7 +10648,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Abjuration DCs',
         bonus: 'Profane',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -10489,7 +10663,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Abjuration DCs',
         bonus: 'Profane',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
@@ -10524,12 +10698,12 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Balance',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       },
       {
         name: 'Tumble',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       }
     ]
   },
@@ -10574,7 +10748,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Conjuration DCs',
         bonus: 'Profane',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -10589,7 +10763,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Conjuration DCs',
         bonus: 'Profane',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
@@ -10602,7 +10776,7 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         bonus: 'Profane',
         modifier: 2
       },
@@ -10622,44 +10796,14 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       },
       {
         name: 'Open Lock',
         bonus: 'Profane',
-        modifier: 4
-      }
-    ]
-  },
-  {
-    name: 'Lunar Gem of Divination (Heroic)',
-    minimumLevel: 1,
-    augmentType: 'Moon',
-    image: 'augmentGreyBookBlueBorder',
-    update: 75,
-    foundIn: ['Chill of Ravenloft Expansion'],
-    effectsAdded: [
-      {
-        name: 'Divination DCs',
-        bonus: 'Profane',
-        modifier: 1
-      }
-    ]
-  },
-  {
-    name: 'Lunar Gem of Divination (Legendary)',
-    minimumLevel: 30,
-    augmentType: 'Moon',
-    image: 'augmentGreyBookBlueBorder',
-    update: 75,
-    foundIn: ['Chill of Ravenloft Expansion'],
-    effectsAdded: [
-      {
-        name: 'Divination DCs',
-        bonus: 'Profane',
-        modifier: 3
+        modifier: 6
       }
     ]
   },
@@ -10674,7 +10818,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Enchantment DCs',
         bonus: 'Profane',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -10689,7 +10833,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Enchantment DCs',
         bonus: 'Profane',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
@@ -10704,7 +10848,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Evocation DCs',
         bonus: 'Profane',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -10719,7 +10863,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Evocation DCs',
         bonus: 'Profane',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
@@ -10732,12 +10876,12 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         bonus: 'Profane',
         modifier: 2
       },
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         bonus: 'Profane',
         modifier: 2
       }
@@ -10752,14 +10896,14 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       },
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       }
     ]
   },
@@ -10777,7 +10921,12 @@ export const update75Augments: AugmentItem[] = [
         modifier: 2
       },
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
+        bonus: 'Profane',
+        modifier: 2
+      },
+      {
+        name: 'Concentration',
         bonus: 'Profane',
         modifier: 2
       }
@@ -10794,12 +10943,17 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Heal',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       },
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
+      },
+      {
+        name: 'Concentration',
+        bonus: 'Profane',
+        modifier: 6
       }
     ]
   },
@@ -10834,12 +10988,12 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Hide',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       },
       {
         name: 'Move Silently',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       }
     ]
   },
@@ -10854,7 +11008,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Illusion DCs',
         bonus: 'Profane',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -10869,7 +11023,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Illusion DCs',
         bonus: 'Profane',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
@@ -10904,12 +11058,12 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Jump',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       },
       {
         name: 'Swim',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       }
     ]
   },
@@ -10922,17 +11076,17 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         bonus: 'Profane',
         modifier: 2
       },
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         bonus: 'Profane',
         modifier: 2
       },
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         bonus: 'Profane',
         modifier: 2
       }
@@ -10947,19 +11101,19 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       },
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       },
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       }
     ]
   },
@@ -10974,7 +11128,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Necromancy DCs',
         bonus: 'Profane',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -10989,7 +11143,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Necromancy DCs',
         bonus: 'Profane',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
@@ -11004,7 +11158,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Pact Dice',
         bonus: 'Profane',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -11032,12 +11186,12 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         bonus: 'Profane',
         modifier: 2
       },
       {
-        name: 'Use Magic Device',
+        name: 'Skill: Use Magic Device',
         bonus: 'Profane',
         modifier: 2
       }
@@ -11052,14 +11206,14 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       },
       {
-        name: 'Use Magic Device',
+        name: 'Skill: Use Magic Device',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       }
     ]
   },
@@ -11072,7 +11226,7 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Search',
+        name: 'Skill: Search',
         bonus: 'Profane',
         modifier: 2
       },
@@ -11092,14 +11246,14 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Search',
+        name: 'Skill: Search',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       },
       {
         name: 'Spot',
         bonus: 'Profane',
-        modifier: 4
+        modifier: 6
       }
     ]
   },
@@ -11114,7 +11268,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Transmutation DCs',
         bonus: 'Profane',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -11129,7 +11283,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Transmutation DCs',
         bonus: 'Profane',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
@@ -11144,7 +11298,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Abjuration DCs',
         bonus: 'Artifact',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -11159,7 +11313,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Abjuration DCs',
         bonus: 'Artifact',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
@@ -11234,7 +11388,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Conjuration DCs',
         bonus: 'Artifact',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -11249,12 +11403,12 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Conjuration DCs',
         bonus: 'Artifact',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
   {
-    name: 'Solar Gem of Divination (Heroic)',
+    name: 'Solar Gem of Critical Confirmation (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
     image: 'augmentGreyBookBlueBorder',
@@ -11262,24 +11416,9 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Divination DCs',
+        name: 'Critical Confirmation',
         bonus: 'Artifact',
-        modifier: 1
-      }
-    ]
-  },
-  {
-    name: 'Solar Gem of Divination (Legendary)',
-    minimumLevel: 30,
-    augmentType: 'Sun',
-    image: 'augmentGreyBookBlueBorder',
-    update: 75,
-    foundIn: ['Chill of Ravenloft Expansion'],
-    effectsAdded: [
-      {
-        name: 'Divination DCs',
-        bonus: 'Artifact',
-        modifier: 3
+        modifier: 2
       }
     ]
   },
@@ -11314,6 +11453,36 @@ export const update75Augments: AugmentItem[] = [
     ]
   },
   {
+    name: 'Solar Gem of Elemental Absorption (Heroic)',
+    minimumLevel: 30,
+    augmentType: 'Sun',
+    image: 'augmentGreyBookBlueBorder',
+    update: 75,
+    foundIn: ['Chill of Ravenloft Expansion'],
+    effectsAdded: [
+      {
+        name: 'Fire Absorption',
+        bonus: 'Artifact',
+        modifier: '3%'
+      },
+      {
+        name: 'Cold Absorption',
+        bonus: 'Artifact',
+        modifier: '3%'
+      },
+      {
+        name: 'Electric Absorption',
+        bonus: 'Artifact',
+        modifier: '3%'
+      },
+      {
+        name: 'Acid Absorption',
+        bonus: 'Artifact',
+        modifier: '3%'
+      }
+    ]
+  },
+  {
     name: 'Solar Gem of Enchantment (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
@@ -11324,7 +11493,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Enchantment DCs',
         bonus: 'Artifact',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -11339,7 +11508,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Enchantment DCs',
         bonus: 'Artifact',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
@@ -11354,7 +11523,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Evocation DCs',
         bonus: 'Artifact',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -11369,7 +11538,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Evocation DCs',
         bonus: 'Artifact',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
@@ -11414,7 +11583,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Illusion DCs',
         bonus: 'Artifact',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -11429,7 +11598,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Illusion DCs',
         bonus: 'Artifact',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
@@ -11444,7 +11613,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Necromancy DCs',
         bonus: 'Artifact',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -11459,7 +11628,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Necromancy DCs',
         bonus: 'Artifact',
-        modifier: 3
+        modifier: 4
       }
     ]
   },
@@ -11504,7 +11673,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Transmutation DCs',
         bonus: 'Artifact',
-        modifier: 1
+        modifier: 2
       }
     ]
   },
@@ -11519,7 +11688,7 @@ export const update75Augments: AugmentItem[] = [
       {
         name: 'Transmutation DCs',
         bonus: 'Artifact',
-        modifier: 3
+        modifier: 4
       }
     ]
   }

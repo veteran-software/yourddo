@@ -1496,27 +1496,27 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
         bonus: 'Profane'
       },
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         modifier: 22,
         bonus: 'Competence'
       },
@@ -1612,7 +1612,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
         bonus: 'Competence'
       },
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         modifier: 22,
         bonus: 'Competence'
       },
@@ -1704,22 +1704,22 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
         bonus: 'Profane'
       },
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Search',
+        name: 'Skill: Search',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         modifier: 22,
         bonus: 'Competence'
       }
@@ -1811,7 +1811,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
         bonus: 'Competence'
       },
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         modifier: 22,
         bonus: 'Competence'
       },
@@ -1903,22 +1903,22 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
         bonus: 'Profane'
       },
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Search',
+        name: 'Skill: Search',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         modifier: 22,
         bonus: 'Competence'
       }
@@ -2005,27 +2005,27 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
         bonus: 'Profane'
       },
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         modifier: 22,
         bonus: 'Competence'
       },
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         modifier: 22,
         bonus: 'Competence'
       },

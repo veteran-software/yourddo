@@ -3,6 +3,258 @@ import type { AugmentItem } from '../../types/augmentItem.ts'
 // TODO: Move all Dinosaur Bone crafted augments here
 export const update55Augments: AugmentItem[] = [
   {
+    name: 'Sapphire of Stunning +6',
+    augmentType: 'Blue',
+    minimumLevel: 8,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Stunning DC',
+        bonus: 'Enhancement',
+        modifier: 6
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Vertigo +6',
+    augmentType: 'Blue',
+    minimumLevel: 8,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Trip DC',
+        bonus: 'Enhancement',
+        modifier: 6
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Shatter +6',
+    augmentType: 'Blue',
+    minimumLevel: 8,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Sunder DC',
+        bonus: 'Enhancement',
+        modifier: 6
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Accuracy +8',
+    augmentType: 'Blue',
+    minimumLevel: 8,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Attack',
+        bonus: 'Competence',
+        modifier: 8
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Dodge 5%',
+    augmentType: 'Blue',
+    minimumLevel: 8,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Dodge',
+        bonus: 'Enhancement',
+        modifier: '5%'
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Healing Amplification +18',
+    augmentType: 'Blue',
+    minimumLevel: 8,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Healing Amplification',
+        bonus: 'Competence',
+        modifier: 18
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Negative Amplification +18',
+    augmentType: 'Blue',
+    minimumLevel: 8,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Negative Amplification',
+        bonus: 'Profane',
+        modifier: 18
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Repair Amplification +18',
+    augmentType: 'Blue',
+    minimumLevel: 8,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Repair Amplification',
+        bonus: 'Enhancement',
+        modifier: 18
+      }
+    ]
+  },
+  {
+    name: 'Topaz of Damage +4',
+    augmentType: 'Yellow',
+    minimumLevel: 8,
+    image: 'yellowAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Damage',
+        bonus: 'Competence',
+        modifier: 4
+      }
+    ]
+  },
+  //
+  {
+    name: 'Topaz of Fire Resistance 45',
+    augmentType: 'Yellow',
+    minimumLevel: 32,
+    image: 'yellowAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Fire Resistance',
+        modifier: 45
+      }
+    ]
+  },
+  {
+    name: 'Topaz of Sonic Resistance 45',
+    augmentType: 'Yellow',
+    minimumLevel: 32,
+    image: 'yellowAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Sonic Resistance',
+        modifier: 45
+      }
+    ]
+  },
+  {
+    name: 'Topaz of Ranged Power +12',
+    augmentType: 'Yellow',
+    minimumLevel: 32,
+    image: 'yellowAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Ranged Power',
+        bonus: 'Enhancement',
+        modifier: 12
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Natural Armor +14',
+    augmentType: 'Blue',
+    minimumLevel: 32,
+    foundIn: [],
+    image: 'blueAugmentGreenBorder',
+    effectsAdded: [
+      {
+        name: 'Armor Class',
+        bonus: 'Natural Armor',
+        modifier: 14
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of False Life +54',
+    augmentType: 'Blue',
+    minimumLevel: 32,
+    foundIn: [],
+    image: 'blueAugmentGreenBorder',
+    effectsAdded: [
+      {
+        name: 'Maximum Hit Points',
+        bonus: 'Enhancement',
+        modifier: 54
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Negative Amplification +57',
+    augmentType: 'Blue',
+    minimumLevel: 32,
+    foundIn: [],
+    image: 'blueAugmentGreenBorder',
+    effectsAdded: [
+      {
+        name: 'Negative Amplification',
+        bonus: 'Profane',
+        modifier: 57
+      }
+    ]
+  },
+  {
+    name: 'Ruby of Acid (9d6)',
+    augmentType: 'Red',
+    minimumLevel: 32,
+    image: 'redAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Acid Damage',
+        bonus: 'On-hit',
+        modifier: '9d6'
+      }
+    ]
+  },
+  {
+    name: 'Ruby of Corrosion 153',
+    augmentType: 'Red',
+    minimumLevel: 32,
+    image: 'redAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Spell Power: Acid',
+        bonus: 'Equipment',
+        modifier: 153
+      }
+    ]
+  },
+  {
+    name: 'Ruby of Radiance 153',
+    augmentType: 'Red',
+    minimumLevel: 32,
+    image: 'redAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Spell Power: Light & Alignment',
+        bonus: 'Equipment',
+        modifier: 153
+      }
+    ]
+  },
+  //
+  {
     image: '',
     augmentType: 'Yellow',
     minimumLevel: 8,

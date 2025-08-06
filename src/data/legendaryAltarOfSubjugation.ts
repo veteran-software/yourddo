@@ -1496,32 +1496,32 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       },
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Use Magic Device',
+        name: 'Skill: Use Magic Device',
         modifier: 3,
         bonus: 'Insight'
       }
@@ -1613,7 +1613,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       },
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         modifier: 11,
         bonus: 'Insight'
       },
@@ -1705,22 +1705,22 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       },
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Search',
+        name: 'Skill: Search',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         modifier: 11,
         bonus: 'Insight'
       }
@@ -1812,7 +1812,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       },
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         modifier: 11,
         bonus: 'Insight'
       },
@@ -1904,22 +1904,22 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       },
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Search',
+        name: 'Skill: Search',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         modifier: 11,
         bonus: 'Insight'
       }
@@ -2006,32 +2006,32 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       },
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         modifier: 11,
         bonus: 'Insight'
       },
       {
-        name: 'Use Magic Device',
+        name: 'Skill: Use Magic Device',
         modifier: 3,
         bonus: 'Insight'
       }

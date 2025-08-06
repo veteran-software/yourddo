@@ -1917,12 +1917,6 @@ const LViktraniumExperimentCraftedItems: CraftingIngredient[] = [
         name: '+15 Enhancement Bonus',
         bonus: 'Enhancement',
         modifier: 15
-      },
-      {
-        name: 'Decreased Threat Generation',
-        description: '+1% Quality bonus to Decreased threat generated from spell damage.',
-        bonus: 'Quality',
-        modifier: '1%'
       }
     ],
     requirements: [
