@@ -13,6 +13,7 @@ export interface CraftingIngredient extends Ingredient {
     noMinimumLevel?: number
     minimumLevel?: number
   }
+  minorArtifact?: boolean
   quantity?: number
   requirements?: CraftingIngredient[]
   runeArmBlast?: Spell

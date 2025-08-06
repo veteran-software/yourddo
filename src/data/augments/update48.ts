@@ -1186,5 +1186,271 @@ export const update48Augments: AugmentItem[] = [
       }
     ],
     foundIn: ['The Feywild (Rare Encounters)']
+  },
+  //
+  {
+    name: 'Sapphire of Stunning +4',
+    augmentType: 'Blue',
+    minimumLevel: 4,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Stunning DC',
+        bonus: 'Enhancement',
+        modifier: 4
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Vertigo +4',
+    augmentType: 'Blue',
+    minimumLevel: 4,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Trip DC',
+        bonus: 'Enhancement',
+        modifier: 4
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Shatter +4',
+    augmentType: 'Blue',
+    minimumLevel: 4,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Sunder DC',
+        bonus: 'Enhancement',
+        modifier: 4
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Accuracy +5',
+    augmentType: 'Blue',
+    minimumLevel: 4,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Attack',
+        bonus: 'Competence',
+        modifier: 5
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Dodge 3%',
+    augmentType: 'Blue',
+    minimumLevel: 4,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Dodge',
+        bonus: 'Enhancement',
+        modifier: '3%'
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Healing Amplification +11',
+    augmentType: 'Blue',
+    minimumLevel: 4,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Healing Amplification',
+        bonus: 'Competence',
+        modifier: 11
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Negative Amplification +11',
+    augmentType: 'Blue',
+    minimumLevel: 4,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Negative Amplification',
+        bonus: 'Profane',
+        modifier: 11
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Repair Amplification +11',
+    augmentType: 'Blue',
+    minimumLevel: 4,
+    image: 'blueAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Repair Amplification',
+        bonus: 'Enhancement',
+        modifier: 11
+      }
+    ]
+  },
+  {
+    name: 'Topaz of Damage +3',
+    augmentType: 'Yellow',
+    minimumLevel: 4,
+    image: 'yellowAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Damage',
+        bonus: 'Competence',
+        modifier: 3
+      }
+    ]
+  },
+  {
+    name: 'Topaz of Spell Penetration +2',
+    augmentType: 'Yellow',
+    minimumLevel: 4,
+    image: 'yellowAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Spell Penetration',
+        bonus: 'Equipment',
+        modifier: 2
+      }
+    ]
+  },
+  //
+  {
+    name: 'Topaz of Cold Resistance 40',
+    augmentType: 'Yellow',
+    minimumLevel: 28,
+    image: 'yellowAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Cold Resistance',
+        modifier: 40
+      }
+    ]
+  },
+  {
+    name: 'Topaz of Wizardry +261',
+    augmentType: 'Yellow',
+    minimumLevel: 28,
+    image: 'yellowAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Maximum Spell Points',
+        modifier: 261
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Protection +10',
+    augmentType: 'Blue',
+    minimumLevel: 28,
+    foundIn: [],
+    image: 'blueAugmentGreenBorder',
+    effectsAdded: [
+      {
+        name: 'Armor Class',
+        bonus: 'Protection',
+        modifier: 10
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Stunning +14',
+    augmentType: 'Blue',
+    minimumLevel: 28,
+    foundIn: [],
+    image: 'blueAugmentGreenBorder',
+    effectsAdded: [
+      {
+        name: 'Stun DC',
+        bonus: 'Enhancement',
+        modifier: 14
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Accuracy +20',
+    augmentType: 'Blue',
+    minimumLevel: 28,
+    foundIn: [],
+    image: 'blueAugmentGreenBorder',
+    effectsAdded: [
+      {
+        name: 'Attack',
+        bonus: 'Competence',
+        modifier: 14
+      }
+    ]
+  },
+  {
+    name: 'Sapphire of Healing Amplification +50',
+    augmentType: 'Blue',
+    minimumLevel: 28,
+    foundIn: [],
+    image: 'blueAugmentGreenBorder',
+    effectsAdded: [
+      {
+        name: 'Healing Amplification',
+        bonus: 'Competence',
+        modifier: 50
+      }
+    ]
+  },
+  {
+    name: 'Ruby of Frost (8d6)',
+    augmentType: 'Red',
+    minimumLevel: 28,
+    image: 'redAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Cold Damage',
+        bonus: 'On-hit',
+        modifier: '8d6'
+      }
+    ]
+  },
+  {
+    name: 'Ruby of Glaciation 139',
+    augmentType: 'Red',
+    minimumLevel: 28,
+    image: 'redAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Spell Power: Cold',
+        bonus: 'Equipment',
+        modifier: 139
+      }
+    ]
+  },
+  {
+    name: 'Ruby of Resonance 139',
+    augmentType: 'Red',
+    minimumLevel: 28,
+    image: 'redAugmentGreenBorder',
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Spell Power: Sonic',
+        bonus: 'Equipment',
+        modifier: 139
+      }
+    ]
   }
 ]

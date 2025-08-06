@@ -10633,32 +10633,32 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         bonus: 'Quality'
       },
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Use Magic Device',
+        name: 'Skill: Use Magic Device',
         modifier: 1,
         bonus: 'Quality'
       }
@@ -10709,7 +10709,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         bonus: 'Quality'
       },
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         modifier: 6,
         bonus: 'Quality'
       },
@@ -10760,22 +10760,22 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         bonus: 'Quality'
       },
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Search',
+        name: 'Skill: Search',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         modifier: 6,
         bonus: 'Quality'
       }
@@ -10826,7 +10826,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         bonus: 'Quality'
       },
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         modifier: 6,
         bonus: 'Quality'
       },
@@ -10877,22 +10877,22 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         bonus: 'Quality'
       },
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Search',
+        name: 'Skill: Search',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         modifier: 6,
         bonus: 'Quality'
       }
@@ -10938,32 +10938,32 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         bonus: 'Quality'
       },
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         modifier: 6,
         bonus: 'Quality'
       },
       {
-        name: 'Use Magic Device',
+        name: 'Skill: Use Magic Device',
         modifier: 1,
         bonus: 'Quality'
       }

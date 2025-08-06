@@ -1,4 +1,8 @@
 import type { AugmentItem } from '../types/augmentItem'
+import { update14Augments } from './augments/update14.ts'
+import { update19Augments } from './augments/update19.ts'
+import { update37Augments } from './augments/update37.ts'
+import { update42Augments } from './augments/update42.ts'
 import { update48Augments } from './augments/update48.ts'
 import { update50Augments } from './augments/update50.ts'
 import { update52Augments } from './augments/update52.ts'
@@ -13,6 +17,10 @@ import { update69Augments } from './augments/update69.ts'
 import { update75Augments } from './augments/update75.ts'
 
 export const augments: AugmentItem[] = [
+  ...update14Augments,
+  ...update19Augments,
+  ...update37Augments,
+  ...update42Augments,
   ...update48Augments,
   ...update50Augments,
   ...update52Augments,
@@ -154,7 +162,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         bonus: 'Competence',
         modifier: 10
       }
@@ -169,7 +177,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         bonus: 'Competence',
         modifier: 13
       }
@@ -184,7 +192,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         bonus: 'Competence',
         modifier: 15
       }
@@ -199,7 +207,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         bonus: 'Competence',
         modifier: 17
       }
@@ -214,7 +222,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         bonus: 'Competence',
         modifier: 18
       }
@@ -229,7 +237,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         bonus: 'Competence',
         modifier: 19
       }
@@ -244,7 +252,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         bonus: 'Competence',
         modifier: 5
       }
@@ -259,7 +267,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Bluff',
+        name: 'Skill: Bluff',
         bonus: 'Competence',
         modifier: 20
       }
@@ -784,7 +792,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         bonus: 'Competence',
         modifier: 10
       }
@@ -800,7 +808,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         bonus: 'Competence',
         modifier: 13
       }
@@ -816,7 +824,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         bonus: 'Competence',
         modifier: 15
       }
@@ -832,7 +840,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         bonus: 'Competence',
         modifier: 17
       }
@@ -848,7 +856,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         bonus: 'Competence',
         modifier: 18
       }
@@ -864,7 +872,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         bonus: 'Competence',
         modifier: 19
       }
@@ -880,7 +888,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Diplomacy',
+        name: 'Skill: Diplomacy',
         bonus: 'Competence',
         modifier: 5
       }
@@ -896,7 +904,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         bonus: 'Competence',
         modifier: 10
       }
@@ -912,7 +920,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         bonus: 'Competence',
         modifier: 13
       }
@@ -928,7 +936,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         bonus: 'Competence',
         modifier: 15
       }
@@ -944,7 +952,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         bonus: 'Competence',
         modifier: 17
       }
@@ -960,7 +968,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         bonus: 'Competence',
         modifier: 18
       }
@@ -976,7 +984,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         bonus: 'Competence',
         modifier: 19
       }
@@ -992,7 +1000,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Disable Device',
+        name: 'Skill: Disable Device',
         bonus: 'Competence',
         modifier: 5
       }
@@ -1164,7 +1172,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         bonus: 'Competence',
         modifier: 10
       }
@@ -1180,7 +1188,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         bonus: 'Competence',
         modifier: 13
       }
@@ -1196,7 +1204,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         bonus: 'Competence',
         modifier: 15
       }
@@ -1212,7 +1220,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         bonus: 'Competence',
         modifier: 17
       }
@@ -1228,7 +1236,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         bonus: 'Competence',
         modifier: 18
       }
@@ -1244,7 +1252,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         bonus: 'Competence',
         modifier: 19
       }
@@ -1260,7 +1268,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Haggle',
+        name: 'Skill: Haggle',
         bonus: 'Competence',
         modifier: 5
       }
@@ -1724,7 +1732,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         bonus: 'Competence',
         modifier: 10
       }
@@ -1740,7 +1748,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         bonus: 'Competence',
         modifier: 13
       }
@@ -1756,7 +1764,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         bonus: 'Competence',
         modifier: 15
       }
@@ -1772,7 +1780,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         bonus: 'Competence',
         modifier: 17
       }
@@ -1788,7 +1796,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         bonus: 'Competence',
         modifier: 18
       }
@@ -1804,7 +1812,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         bonus: 'Competence',
         modifier: 19
       }
@@ -1820,7 +1828,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Intimidate',
+        name: 'Skill: Intimidate',
         bonus: 'Competence',
         modifier: 5
       }
@@ -1948,7 +1956,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         bonus: 'Competence',
         modifier: 10
       }
@@ -1964,7 +1972,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         bonus: 'Competence',
         modifier: 13
       }
@@ -1980,7 +1988,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         bonus: 'Competence',
         modifier: 15
       }
@@ -1996,7 +2004,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         bonus: 'Competence',
         modifier: 17
       }
@@ -2012,7 +2020,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         bonus: 'Competence',
         modifier: 18
       }
@@ -2028,7 +2036,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         bonus: 'Competence',
         modifier: 19
       }
@@ -2044,7 +2052,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Listen',
+        name: 'Skill: Listen',
         bonus: 'Competence',
         modifier: 5
       }
@@ -2284,7 +2292,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         bonus: 'Competence',
         modifier: 10
       }
@@ -2300,7 +2308,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         bonus: 'Competence',
         modifier: 13
       }
@@ -2316,7 +2324,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         bonus: 'Competence',
         modifier: 15
       }
@@ -2332,7 +2340,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         bonus: 'Competence',
         modifier: 17
       }
@@ -2348,7 +2356,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         bonus: 'Competence',
         modifier: 18
       }
@@ -2364,7 +2372,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         bonus: 'Competence',
         modifier: 19
       }
@@ -2380,7 +2388,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Perform',
+        name: 'Skill: Perform',
         bonus: 'Competence',
         modifier: 5
       }
@@ -2396,7 +2404,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         bonus: 'Competence',
         modifier: 10
       }
@@ -2412,7 +2420,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         bonus: 'Competence',
         modifier: 13
       }
@@ -2428,7 +2436,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         bonus: 'Competence',
         modifier: 15
       }
@@ -2444,7 +2452,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         bonus: 'Competence',
         modifier: 17
       }
@@ -2460,7 +2468,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         bonus: 'Competence',
         modifier: 18
       }
@@ -2476,7 +2484,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         bonus: 'Competence',
         modifier: 19
       }
@@ -2492,7 +2500,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Repair',
+        name: 'Skill: Repair',
         bonus: 'Competence',
         modifier: 5
       }
@@ -2508,7 +2516,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Search',
+        name: 'Skill: Search',
         bonus: 'Competence',
         modifier: 10
       }
@@ -2524,7 +2532,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Search',
+        name: 'Skill: Search',
         bonus: 'Competence',
         modifier: 13
       }
@@ -2540,7 +2548,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Search',
+        name: 'Skill: Search',
         bonus: 'Competence',
         modifier: 15
       }
@@ -2556,7 +2564,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Search',
+        name: 'Skill: Search',
         bonus: 'Competence',
         modifier: 17
       }
@@ -2572,7 +2580,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Search',
+        name: 'Skill: Search',
         bonus: 'Competence',
         modifier: 18
       }
@@ -2588,7 +2596,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Search',
+        name: 'Skill: Search',
         bonus: 'Competence',
         modifier: 19
       }
@@ -2604,7 +2612,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Search',
+        name: 'Skill: Search',
         bonus: 'Competence',
         modifier: 5
       }
@@ -2620,7 +2628,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         bonus: 'Competence',
         modifier: 10
       }
@@ -2636,7 +2644,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         bonus: 'Competence',
         modifier: 13
       }
@@ -2652,7 +2660,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         bonus: 'Competence',
         modifier: 15
       }
@@ -2668,7 +2676,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         bonus: 'Competence',
         modifier: 17
       }
@@ -2684,7 +2692,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         bonus: 'Competence',
         modifier: 18
       }
@@ -2700,7 +2708,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         bonus: 'Competence',
         modifier: 19
       }
@@ -2716,7 +2724,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spellcraft',
+        name: 'Skill: Spellcraft',
         bonus: 'Competence',
         modifier: 5
       }
@@ -3533,14 +3541,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Ruby of Acid (8d6)',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with an additional 8d6 Acid damage on hit. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfAcid8d6.png',
-    foundIn: []
-  },
-  {
     name: 'Ruby of Adamantine Arms',
     description:
       'Drag this augment into a slot to upgrade a weapon to have Adamantine as an additional damage type. This augment can go in a Red, Orange, or Purple Augment Slot.',
@@ -3570,14 +3570,6 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with a +125 Equipment bonus to Fire Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 24,
     image: 'rubyOfCombustion125.png',
-    foundIn: []
-  },
-  {
-    name: 'Ruby of Combustion 139',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with a +139 Equipment bonus to Fire Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfCombustion139.png',
     foundIn: []
   },
   {
@@ -3637,14 +3629,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Ruby of Corrosion 139',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with a +139 Equipment bonus to Acid Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfCorrosion139.png',
-    foundIn: []
-  },
-  {
     name: 'Ruby of Corrosion 38',
     description:
       'Drag this augment into a slot to upgrade a weapon with a +38 Equipment bonus to Acid Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
@@ -3698,14 +3682,6 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with a +125 Equipment bonus to Positive Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 24,
     image: 'rubyOfDevotion125.png',
-    foundIn: []
-  },
-  {
-    name: 'Ruby of Devotion 139',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with a +139 Equipment bonus to Positive Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfDevotion139.png',
     foundIn: []
   },
   {
@@ -3813,14 +3789,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Ruby of Flame (8d6)',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with an additional 8d6 Fire damage on hit. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfFlame8d6.png',
-    foundIn: []
-  },
-  {
     name: 'Ruby of Frost (1d6)',
     description:
       'Drag this augment into a slot to upgrade a weapon with an additional 1d6 Cold damage on hit. This augment can go in a Red, Orange, or Purple Augment Slot.',
@@ -3877,14 +3845,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Ruby of Frost (8d6)',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with an additional 8d6 Cold damage on hit. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfFrost8d6.png',
-    foundIn: []
-  },
-  {
     name: 'Ruby of Ghostbane',
     description:
       'Drag this augment into a slot to upgrade a weapon with Ghost Touch and an additional 1 to 6 Bane damage on hit vs Undead. This augment can go in a Red, Orange, or Purple Augment Slot.',
@@ -3906,14 +3866,6 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with a +125 Equipment bonus to Cold Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 24,
     image: 'rubyOfGlaciation125.png',
-    foundIn: []
-  },
-  {
-    name: 'Ruby of Glaciation 139',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with a +139 Equipment bonus to Cold Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfGlaciation139.png',
     foundIn: []
   },
   {
@@ -3981,14 +3933,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Ruby of Impulse 139',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with a +139 Equipment bonus to Force Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfImpulse139.png',
-    foundIn: []
-  },
-  {
     name: 'Ruby of Impulse 38',
     description:
       'Drag this augment into a slot to upgrade a weapon with a +38 Equipment bonus to Force Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
@@ -4053,14 +3997,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Ruby of Magnetism 139',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with a +139 Equipment bonus to Electric Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfMagnetism139.png',
-    foundIn: []
-  },
-  {
     name: 'Ruby of Magnetism 38',
     description:
       'Drag this augment into a slot to upgrade a weapon with a +38 Equipment bonus to Electric Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
@@ -4114,14 +4050,6 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with a +125 Equipment bonus to Negative Energy Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 24,
     image: 'rubyOfNullification125.png',
-    foundIn: []
-  },
-  {
-    name: 'Ruby of Nullification 139',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with a +139 Equipment bonus to Negative Energy Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfNullification139.png',
     foundIn: []
   },
   {
@@ -4189,14 +4117,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Ruby of Radiance 139',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with a +139 Equipment bonus to Light and Alignment Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfRadiance139.png',
-    foundIn: []
-  },
-  {
     name: 'Ruby of Radiance 38',
     description:
       'Drag this augment into a slot to upgrade a weapon with a +38 Equipment bonus to Light and Alignment Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
@@ -4253,14 +4173,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Ruby of Reconstruction 139',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with a +139 Equipment bonus to Repair and Rust Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfReconstruction139.png',
-    foundIn: []
-  },
-  {
     name: 'Ruby of Reconstruction 38',
     description:
       'Drag this augment into a slot to upgrade a weapon with a +38 Equipment bonus to Repair and Rust Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
@@ -4314,14 +4226,6 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with a +125 Equipment bonus to Sonic Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 24,
     image: 'rubyOfResonance125.png',
-    foundIn: []
-  },
-  {
-    name: 'Ruby of Resonance 139',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with a +139 Equipment bonus to Sonic Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfResonance139.png',
     foundIn: []
   },
   {
@@ -4421,14 +4325,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Ruby of Shock (8d6)',
-    description:
-      'Drag this augment into a slot to upgrade a weapon with an additional 8d6 Electric damage on hit. This augment can go in a Red, Orange, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'rubyOfShock8d6.png',
-    foundIn: []
-  },
-  {
     name: 'Ruby of Silvered Strikes',
     description:
       'Drag this augment into a slot to upgrade a weapon to have Alchemical Silver as an additional damage type. This augment can go in a Red, Orange, or Purple Augment Slot.',
@@ -4499,70 +4395,6 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with an additional 1 to 4 Light Damage on hit and to have Alchemical Silver as an additional damage type. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 1,
     image: 'rubyOfTheVampireSlayer.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Accuracy +10',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +10 Enhancement bonus to your attack bonus. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 12,
-    image: 'sapphireOfAccuracy10.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Accuracy +12',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +12 Enhancement bonus to your attack bonus. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 16,
-    image: 'sapphireOfAccuracy12.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Accuracy +15',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +15 Enhancement bonus to your attack bonus. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 20,
-    image: 'sapphireOfAccuracy15.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Accuracy +17',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +17 Enhancement bonus to your attack bonus. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 24,
-    image: 'sapphireOfAccuracy17.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Accuracy +2',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +2 Enhancement bonus to your attack bonus. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 1,
-    image: 'sapphireOfAccuracy2.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Accuracy +20',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +20 Enhancement bonus to your attack bonus. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'sapphireOfAccuracy20.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Accuracy +5',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +5 Enhancement bonus to your attack bonus. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 4,
-    image: 'sapphireOfAccuracy5.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Accuracy +8',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +8 Enhancement bonus to your attack bonus. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 8,
-    image: 'sapphireOfAccuracy8.png',
     foundIn: []
   },
   {
@@ -4644,14 +4476,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Sapphire of Defense +32',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +32 Enhancement bonus to your Physical Resistance Rating and Magical Resistance Rating. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'sapphireOfDefense32.png',
-    foundIn: []
-  },
-  {
     name: 'Sapphire of Defense +8',
     description:
       'Drag this augment into a slot to upgrade an item to provide a +8 Enhancement bonus to your Physical Resistance Rating and Magical Resistance Rating. This augment can go in a Blue, Green, or Purple Augment Slot.',
@@ -4716,14 +4540,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Sapphire of False Life +48',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +48 Enhancement bonus to your maximum Hit Points. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'sapphireOfFalseLife48.png',
-    foundIn: []
-  },
-  {
     name: 'Sapphire of Good Luck +1',
     description:
       'Drag this augment into a slot to upgrade an item to provide a +1 Luck bonus to all Saving Throws and Skill Checks. This augment can go in a Blue, Green, or Purple Augment Slot.',
@@ -4780,14 +4596,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Sapphire of Natural Armor +12',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +12 Natural Armor bonus to your Armor Class. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'sapphireOfNaturalArmor12.png',
-    foundIn: []
-  },
-  {
     name: 'Sapphire of Natural Armor +3',
     description:
       'Drag this augment into a slot to upgrade an item to provide a +3 Natural Armor bonus to your Armor Class. This augment can go in a Blue, Green, or Purple Augment Slot.',
@@ -4833,14 +4641,6 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade an item to provide a +1 Protection bonus to your Armor Class. This augment can go in a Blue, Green, or Purple Augment Slot.',
     minimumLevel: 1,
     image: 'sapphireOfProtection1.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Protection +10',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +10 Protection bonus to your Armor Class. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'sapphireOfProtection10.png',
     foundIn: []
   },
   {
@@ -4900,14 +4700,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Sapphire of Resistance +10',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +10 Resistance bonus to your Saving Throws. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'sapphireOfResistance10.png',
-    foundIn: []
-  },
-  {
     name: 'Sapphire of Resistance +3',
     description:
       'Drag this augment into a slot to upgrade an item to provide a +3 Resistance bonus to your Saving Throws. This augment can go in a Blue, Green, or Purple Augment Slot.',
@@ -4953,198 +4745,6 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade an item to provide a +9 Resistance bonus to your Saving Throws. This augment can go in a Blue, Green, or Purple Augment Slot.',
     minimumLevel: 24,
     image: 'sapphireOfResistance9.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Shatter +11',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +11 Enhancement bonus to your Sunder DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 20,
-    image: 'sapphireOfShatter11.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Shatter +12',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +12 Enhancement bonus to your Sunder DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 24,
-    image: 'sapphireOfShatter12.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Shatter +14',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +14 Enhancement bonus to your Sunder DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'sapphireOfShatter14.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Shatter +2',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +2 Enhancement bonus to your Sunder DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 1,
-    image: 'sapphireOfShatter2.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Shatter +4',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +4 Enhancement bonus to your Sunder DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 4,
-    image: 'sapphireOfShatter4.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Shatter +6',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +6 Enhancement bonus to your Sunder DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 8,
-    image: 'sapphireOfShatter6.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Shatter +7',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +7 Enhancement bonus to your Sunder DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 12,
-    image: 'sapphireOfShatter7.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Shatter +9',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +9 Enhancement bonus to your Sunder DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 16,
-    image: 'sapphireOfShatter9.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Stunning +11',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +11 Enhancement bonus to your Stunning DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 20,
-    image: 'sapphireOfStunning11.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Stunning +12',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +12 Enhancement bonus to your Stunning DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 24,
-    image: 'sapphireOfStunning12.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Stunning +14',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +14 Enhancement bonus to your Stunning DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'sapphireOfStunning14.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Stunning +2',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +2 Enhancement bonus to your Stunning DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 1,
-    image: 'sapphireOfStunning2.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Stunning +4',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +4 Enhancement bonus to your Stunning DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 4,
-    image: 'sapphireOfStunning4.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Stunning +6',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +6 Enhancement bonus to your Stunning DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 8,
-    image: 'sapphireOfStunning6.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Stunning +7',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +7 Enhancement bonus to your Stunning DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 12,
-    image: 'sapphireOfStunning7.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Stunning +9',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +9 Enhancement bonus to your Stunning DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 16,
-    image: 'sapphireOfStunning9.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Vertigo +11',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +11 Enhancement bonus to your Trip DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 20,
-    image: 'sapphireOfVertigo11.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Vertigo +12',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +12 Enhancement bonus to your Trip DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 24,
-    image: 'sapphireOfVertigo12.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Vertigo +14',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +14 Enhancement bonus to your Trip DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 28,
-    image: 'sapphireOfVertigo14.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Vertigo +2',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +2 Enhancement bonus to your Trip DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 1,
-    image: 'sapphireOfVertigo2.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Vertigo +4',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +4 Enhancement bonus to your Trip DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 4,
-    image: 'sapphireOfVertigo4.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Vertigo +6',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +6 Enhancement bonus to your Trip DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 8,
-    image: 'sapphireOfVertigo6.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Vertigo +7',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +7 Enhancement bonus to your Trip DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 12,
-    image: 'sapphireOfVertigo7.png',
-    foundIn: []
-  },
-  {
-    name: 'Sapphire of Vertigo +9',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +9 Enhancement bonus to your Trip DCs. This augment can go in a Blue, Green, or Purple Augment Slot.',
-    minimumLevel: 16,
-    image: 'sapphireOfVertigo9.png',
     foundIn: []
   },
   {
@@ -5278,14 +4878,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Topaz of Acid Resistance 40',
-    description:
-      'Drag this augment into a slot to upgrade an item to absorb the first 40 points of Acid damage per attack that the wearer would normally take. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 28,
-    image: 'topazOfAcidResistance40.png',
-    foundIn: []
-  },
-  {
     name: 'Topaz of Acid Resistance 5',
     description:
       'Drag this augment into a slot to upgrade an item to absorb the first 5 points of Acid damage per attack that the wearer would normally take. This augment can go in a Yellow, Green, or Orange Augment Slot.',
@@ -5358,14 +4950,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Topaz of Cold Resistance 40',
-    description:
-      'Drag this augment into a slot to upgrade an item to absorb the first 40 points of Cold damage per attack that the wearer would normally take. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 28,
-    image: 'topazOfColdResistance40.png',
-    foundIn: []
-  },
-  {
     name: 'Topaz of Cold Resistance 5',
     description:
       'Drag this augment into a slot to upgrade an item to absorb the first 5 points of Cold damage per attack that the wearer would normally take. This augment can go in a Yellow, Green, or Orange Augment Slot.',
@@ -5379,70 +4963,6 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade an item to provide your Conjuration spells with a +1 Enhancement bonus to the DC of the saving throw to resist them. This augment can go in a Yellow, Green, or Orange Augment Slot.',
     minimumLevel: 16,
     image: 'topazOfConjuration.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Damage +1',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +1 Competence bonus to your damage. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 1,
-    image: 'topazOfDamage1.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Damage +10',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +10 Competence bonus to your damage. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 28,
-    image: 'topazOfDamage10.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Damage +3',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +3 Competence bonus to your damage. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 4,
-    image: 'topazOfDamage3.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Damage +4',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +4 Competence bonus to your damage. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 8,
-    image: 'topazOfDamage4.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Damage +5',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +5 Competence bonus to your damage. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 12,
-    image: 'topazOfDamage5.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Damage +6',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +6 Comptence bonus to your damage. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 16,
-    image: 'topazOfDamage6.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Damage +8',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +8 Competence bonus to your damage. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 20,
-    image: 'topazOfDamage8.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Damage +9',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +9 Competence bonus to your damage. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 24,
-    image: 'topazOfDamage9.png',
     foundIn: []
   },
   {
@@ -5499,14 +5019,6 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade an item to absorb the first 35 points of Electric damage per attack that the wearer would normally take. This augment can go in a Yellow, Green, or Orange Augment Slot.',
     minimumLevel: 24,
     image: 'topazOfElectricResistance35.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Electric Resistance 40',
-    description:
-      'Drag this augment into a slot to upgrade an item to absorb the first 40 points of Electric damage per attack that the wearer would normally take. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 28,
-    image: 'topazOfElectricResistance40.png',
     foundIn: []
   },
   {
@@ -5595,14 +5107,6 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade an item to absorb the first 35 points of Fire damage per attack that the wearer would normally take. This augment can go in a Yellow, Green, or Orange Augment Slot.',
     minimumLevel: 24,
     image: 'topazOfFireResistance35.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Fire Resistance 40',
-    description:
-      'Drag this augment into a slot to upgrade an item to absorb the first 40 points of Fire damage per attack that the wearer would normally take. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 28,
-    image: 'topazOfFireResistance40.png',
     foundIn: []
   },
   {
@@ -5814,14 +5318,6 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Topaz of Sonic Resistance 40',
-    description:
-      'Drag this augment into a slot to upgrade an item to absorb the first 40 points of Sonic damage per attack that the wearer would normally take. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 28,
-    image: 'topazOfSonicResistance40.png',
-    foundIn: []
-  },
-  {
     name: 'Topaz of Sonic Resistance 5',
     description:
       'Drag this augment into a slot to upgrade an item to absorb the first 5 points of Sonic damage per attack that the wearer would normally take. This augment can go in a Yellow, Green, or Orange Augment Slot.',
@@ -5830,43 +5326,11 @@ export const augments: AugmentItem[] = [
     foundIn: []
   },
   {
-    name: 'Topaz of Spell Penetration +1',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +1 Enhancement bonus to your spell penetration. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 1,
-    image: 'topazOfSpellPenetration1.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Spell Penetration +2',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +2 Enhancement bonus to your spell penetration. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 4,
-    image: 'topazOfSpellPenetration2.png',
-    foundIn: []
-  },
-  {
     name: 'Topaz of Spell Penetration +3',
     description:
       'Drag this augment into a slot to upgrade an item to provide a +3 Enhancement bonus to your spell penetration. This augment can go in a Yellow, Green, or Orange Augment Slot.',
     minimumLevel: 12,
     image: 'topazOfSpellPenetration3.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Spell Penetration +4',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +4 Enhancement bonus to your spell penetration. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 20,
-    image: 'topazOfSpellPenetration4.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Spell Penetration +5',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +5 Enhancement bonus to your spell penetration. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 24,
-    image: 'topazOfSpellPenetration5.png',
     foundIn: []
   },
   {
@@ -5923,14 +5387,6 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade an item to provide a +228 Enhancement bonus to your maximum Spell Points. This augment can go in a Yellow, Green, or Orange Augment Slot.',
     minimumLevel: 24,
     image: 'topazOfWizardry228.png',
-    foundIn: []
-  },
-  {
-    name: 'Topaz of Wizardry +261',
-    description:
-      'Drag this augment into a slot to upgrade an item to provide a +261 Enhancement bonus to your maximum Spell Points. This augment can go in a Yellow, Green, or Orange Augment Slot.',
-    minimumLevel: 28,
-    image: 'topazOfWizardry261.png',
     foundIn: []
   },
   {
