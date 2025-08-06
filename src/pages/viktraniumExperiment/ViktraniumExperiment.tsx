@@ -3,14 +3,25 @@ import { Alert, Card, Col, Container, Row, Stack } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { titleCase } from 'title-case'
-import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown
+  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import FilterableDropdown from '../../components/common/FilterableDropdown.tsx'
-import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
+import {
+  filterIngredientsMap
+} from '../../components/filters/helpers/filterUtils.ts'
 import { augments } from '../../data/augments.ts'
-import { lootHeroicViktraniumItems } from '../../data/viktraniumExperiment/hChillOfRavenloftLoot.ts'
-import { craftedHeroicViktraniumWeapons } from '../../data/viktraniumExperiment/hViktraniumExperimentCraftedItems.ts'
-import { lootLegendaryViktraniumItems } from '../../data/viktraniumExperiment/lChillOfRavenloftLoot.ts'
-import { craftedLegendaryViktraniumWeapons } from '../../data/viktraniumExperiment/lViktraniumExperimentCraftedItems.ts'
+import {
+  lootHeroicViktraniumItems
+} from '../../data/viktraniumExperiment/hChillOfRavenloftLoot.ts'
+import {
+  craftedHeroicViktraniumWeapons
+} from '../../data/viktraniumExperiment/hViktraniumExperimentCraftedItems.ts'
+import {
+  lootLegendaryViktraniumItems
+} from '../../data/viktraniumExperiment/lChillOfRavenloftLoot.ts'
+import {
+  craftedLegendaryViktraniumWeapons
+} from '../../data/viktraniumExperiment/lViktraniumExperimentCraftedItems.ts'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks.ts'
 import {
   resetSelectedHeroicCraftedItem,
@@ -30,8 +41,12 @@ import {
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Augment, CraftingIngredient } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
-import { camelCaseToTitleCase, getCumulativeIngredients } from '../../utils/utils.ts'
-import CumulativeIngredientsCard from '../dinosaurBoneCrafting/components/CumulativeIngredientsCard.tsx'
+import {
+  camelCaseToTitleCase,
+  getCumulativeIngredients
+} from '../../utils/utils.ts'
+import CumulativeIngredientsCard
+  from '../dinosaurBoneCrafting/components/CumulativeIngredientsCard.tsx'
 import ItemDisplay from '../dinosaurBoneCrafting/components/ItemDisplay.tsx'
 
 const ViktraniumExperiment = () => {
@@ -142,7 +157,7 @@ const ViktraniumExperiment = () => {
     <Container className='px-0'>
       <Alert key='lamannia-alert' variant='warning' className='text-center mb-2'>
         The information contained in this crafting planner is based on{' '}
-        <strong>Chill on Ravenloft Loot Preview #1 on Lamannia</strong> and is a WIP.
+        <strong>Chill on Ravenloft Loot Preview #2 on Lamannia</strong> and is a WIP.
       </Alert>
 
       <Card>
