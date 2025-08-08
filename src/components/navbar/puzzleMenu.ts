@@ -7,6 +7,11 @@ export const menuItems: NavDropdownType[] = [
     active: true
   },
   {
+    label: 'Total Chaos',
+    image: '',
+    active: true
+  },
+  {
     label: 'The Shroud',
     image: '',
     active: true

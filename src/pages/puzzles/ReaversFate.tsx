@@ -31,7 +31,10 @@ const ReaversFate: React.FC = () => {
   return (
     <Card>
       <Card.Header className='text-center p-1'>
-        <h4 className='mb-0'>Reaver's Fate</h4>
+        <Card.Title>
+          <h4 className='mb-0'>The Reaver's Fate</h4>
+          <small>Ruins of Gianthold</small>
+        </Card.Title>
         <small>
           <a
             href='https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Puzzle%20Solvers%22'

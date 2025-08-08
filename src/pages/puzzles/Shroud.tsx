@@ -7,7 +7,7 @@ import inactiveTileImg from '../../assets/tile_inactive.png'
 import useLightsOutSolver from './lightsOut/hooks/useLightsOutSolver.ts'
 import type { Board, Config, Presses } from './lightsOut/types/types.ts'
 
-const LightsOut = () => {
+const Shroud = () => {
   const { initBoard, makeRectConfig, makeCircular4x4Config, toggleCell, randomPresses, applyPresses, solveBoard } =
     useLightsOutSolver()
 
@@ -105,7 +105,10 @@ const LightsOut = () => {
   return (
     <Card>
       <Card.Header className='text-center p-1'>
-        <h4 className='mb-0'>The Shroud (Phase: 3)</h4>
+        <Card.Title>
+          <h4 className='mb-0'>The Shroud / The Codex and the Shroud</h4>
+          <small>The Vale of Twilight</small>
+        </Card.Title>
         <small>
           <a
             href='https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Puzzle%20Solvers%22'
@@ -227,4 +230,4 @@ const LightsOut = () => {
   )
 }
 
-export default LightsOut
+export default Shroud
