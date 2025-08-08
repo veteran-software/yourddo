@@ -1,28 +1,21 @@
 import React, { useLayoutEffect, useState } from 'react'
 import { Button, Card, Col, Form, Row, ToggleButton } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
-import activeTileImg from '../../../assets/tile_active.png'
-import emptyTileImg from '../../../assets/tile_empty.png'
-import inactiveTileImg from '../../../assets/tile_inactive.png'
-import type { Board, Config, Presses } from '../types/types.ts'
-import {
-  makeCircular4x4Config,
-  makeRectConfig
-} from '../utils/configBuilder.ts'
-import { getSolver } from '../utils/lightsOutSolver.ts'
-
-// Initialize an empty board
-const initBoard = (config: Config): Board => {
-  return Array.from({ length: config.rows }, () => Array(config.cols).fill(0) as number[])
-}
+import activeTileImg from '../../assets/tile_active.png'
+import emptyTileImg from '../../assets/tile_empty.png'
+import inactiveTileImg from '../../assets/tile_inactive.png'
+import useLightsOutSolver from './lightsOut/hooks/useLightsOutSolver.ts'
+import type { Board, Config, Presses } from './lightsOut/types/types.ts'
 
 const LightsOut = () => {
+  const { initBoard, makeRectConfig, makeCircular4x4Config, toggleCell, randomPresses, applyPresses, solveBoard } =
+    useLightsOutSolver()
+
   const options = {
     '3x3': makeRectConfig(3, 3),
     '4x4': makeRectConfig(4, 4),
     '5x5': makeRectConfig(5, 5),
     '6x6': makeRectConfig(6, 6),
-    Monastery: makeRectConfig(4, 5),
     'Circular (4x4)': makeCircular4x4Config()
   } as const
 
@@ -45,67 +38,13 @@ const LightsOut = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [configName])
 
-  const ringPositions: [number, number][] = config.wrap
-    ? [
-        [0, 1],
-        [0, 2], // top edge
-        [1, 3],
-        [2, 3], // right edge
-        [3, 2],
-        [3, 1], // bottom edge
-        [2, 0],
-        [1, 0] // left edge
-      ]
-    : []
-
-  const toggleCell = (r: number, c: number): void => {
-    const copy = board.map((row) => row.slice())
-
-    if (config.wrap) {
-      // find this cell in the ring
-      const idx = ringPositions.findIndex(([rr, cc]) => rr === r && cc === c)
-      if (idx >= 0) {
-        // self, previous, next (with wrap)
-        const len = ringPositions.length
-        const neighbors: [number, number][] = [
-          ringPositions[idx],
-          ringPositions[(idx - 1 + len) % len],
-          ringPositions[(idx + 1) % len]
-        ]
-        for (const [nr, nc] of neighbors) {
-          if (mask[nr][nc]) {
-            copy[nr][nc] = copy[nr][nc] ? 0 : 1
-          }
-        }
-      }
-    } else {
-      // standard plus‐shaped toggle
-      const dirs: [number, number][] = [
-        [0, 0],
-        [-1, 0],
-        [1, 0],
-        [0, -1],
-        [0, 1]
-      ]
-      for (const [dr, dc] of dirs) {
-        const nr = r + dr
-        const nc = c + dc
-        if (nr >= 0 && nr < R && nc >= 0 && nc < C && mask[nr][nc]) {
-          copy[nr][nc] = copy[nr][nc] ? 0 : 1
-        }
-      }
-    }
-
-    setBoard(copy)
-  }
-
   const handleSolve = (): void => {
     setEditMode(false)
-    const solver = getSolver(config)
-    const sol = solver.solve(board)
-    setSolution(sol)
-    setShowSolution(sol !== null)
-    setMarkedSolution(sol?.map((r) => r.map(() => 0)) ?? null)
+    const { presses, marked } = solveBoard(board, config)
+
+    setSolution(presses)
+    setShowSolution(presses !== null)
+    setMarkedSolution(marked)
   }
 
   const handleReset = (): void => {
@@ -113,6 +52,17 @@ const LightsOut = () => {
     setSolution(null)
     setMarkedSolution(null)
     setEditMode(true)
+    setShowSolution(false)
+  }
+
+  const handleRandom = (): void => {
+    const presses = randomPresses(config)
+    const newBoard = applyPresses(initBoard(config), config, presses)
+
+    setBoard(newBoard)
+    setSolution(presses)
+    setMarkedSolution(presses.map((row) => row.map(() => 0)))
+    setEditMode(false)
     setShowSolution(false)
   }
 
@@ -129,59 +79,6 @@ const LightsOut = () => {
     setShowSolution(false)
   }
 
-  const handleRandom = (): void => {
-    const randomPresses: number[][] = Array.from({ length: R }, () => Array(C).fill(0) as number[])
-    for (let r = 0; r < R; r++) {
-      for (let c = 0; c < C; c++) {
-        // eslint-disable-next-line sonarjs/pseudo-random
-        if (mask[r][c] && Math.random() < 0.5) {
-          randomPresses[r][c] = 1
-        }
-      }
-    }
-
-    const newBoard = initBoard(config)
-    randomPresses.forEach((rowArr, r) => {
-      rowArr.forEach((press, c) => {
-        if (press === 1) {
-          if (config.wrap) {
-            const idx = ringPositions.findIndex(([rr, cc]) => rr === r && cc === c)
-            if (idx >= 0) {
-              const len = ringPositions.length
-              for (const j of [idx, (idx - 1 + len) % len, (idx + 1) % len]) {
-                const [rr, cc] = ringPositions[j]
-                newBoard[rr][cc] ^= 1
-              }
-            }
-          } else {
-            // rectangular: standard plus‐shape
-            const dirs: [number, number][] = [
-              [0, 0],
-              [-1, 0],
-              [1, 0],
-              [0, -1],
-              [0, 1]
-            ]
-
-            for (const [dr, dc] of dirs) {
-              const rr = r + dr,
-                cc = c + dc
-              if (rr >= 0 && rr < R && cc >= 0 && cc < C && mask[rr][cc]) {
-                newBoard[rr][cc] ^= 1
-              }
-            }
-          }
-        }
-      })
-    })
-
-    setBoard(newBoard)
-    setSolution(randomPresses)
-    setMarkedSolution(randomPresses.map((row) => row.map(() => 0 as number)))
-    setEditMode(false)
-    setShowSolution(false)
-  }
-
   const handleCellClick = (r: number, c: number): void => {
     if (!mask[r][c]) return
 
@@ -195,11 +92,11 @@ const LightsOut = () => {
       setShowSolution(false)
     } else {
       if (solution && showSolution && solution[r][c] === 1 && markedSolution && markedSolution[r][c] === 0) {
-        const m2 = markedSolution.map((row) => row.slice())
+        const m2: number[][] = markedSolution.map((row: number[]) => row.slice())
         m2[r][c] = 1
         setMarkedSolution(m2)
       }
-      toggleCell(r, c)
+      setBoard((prev) => toggleCell(prev, config, r, c))
     }
   }
 
@@ -214,7 +111,7 @@ const LightsOut = () => {
             href='https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Puzzle%20Solvers%22'
             target='_blank'
             rel='noreferrer'
-            title='Green Steel Known Issues & Bug Reports'
+            title='Puzzle Solver Known Issues & Bug Reports'
           >
             Known Issues / Bug Reports <FaArrowUpRightFromSquare size={10} />
           </a>

@@ -7,7 +7,9 @@ import HeroicGreenSteel from '../pages/greenSteel/heroic/HeroicGreenSteel.tsx'
 import LegendaryGreenSteel from '../pages/greenSteel/legendary/LegendaryGreenSteel.tsx'
 import Home from '../pages/Home.tsx'
 import IncrediblePotential from '../pages/incrediblePotential/IncrediblePotential.tsx'
-import Shroud from '../pages/puzzles/shroud/Shroud.tsx'
+import ReaversFate from '../pages/puzzles/ReaversFate.tsx'
+import Shroud from '../pages/puzzles/Shroud.tsx'
+import ViktraniumExperiment from '../pages/viktraniumExperiment/ViktraniumExperiment.tsx'
 
 const PageRoutes = () => {
   return (
@@ -21,8 +23,10 @@ const PageRoutes = () => {
         <Route path='/green-steel' element={<HeroicGreenSteel />} />
         <Route path='/incredible-potential' element={<IncrediblePotential />} />
         <Route path='/legendary-green-steel' element={<LegendaryGreenSteel />} />
+        <Route path='/viktranium-experiment' element={<ViktraniumExperiment />} />
 
-        <Route path='/shroud' element={<Shroud />} />
+        <Route path='/reavers-fate' element={<ReaversFate />} />
+        <Route path='/the-shroud' element={<Shroud />} />
       </Route>
     </Routes>
   )
