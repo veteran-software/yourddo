@@ -2,6 +2,11 @@ import type { NavDropdownType, NavMenuDropdown } from './types.ts'
 
 export const menuItems: NavDropdownType[] = [
   {
+    label: 'Monastery Of The Scorpion',
+    image: '',
+    active: true
+  },
+  {
     label: 'Reavers Fate',
     image: '',
     active: true
