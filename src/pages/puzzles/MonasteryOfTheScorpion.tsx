@@ -173,12 +173,12 @@ const MonasteryOfTheScorpion = () => {
         )}
 
         <Row style={{ gridTemplateColumns: `repeat(${COLS},64px)` }} className='g-0 d-grid justify-content-center mb-3'>
-          {Array.from({ length: ROWS }).flatMap((_, r) =>
-            Array.from({ length: COLS }).map((_, c) => {
-              const isHole = !mask[r][c]
-              const on = board[r][c] === 1
-              const press = solution && showSolution ? solution[r][c] === 1 : false
-              const marked = markedSolution ? markedSolution[r][c] === 1 : false
+          {Array.from({ length: ROWS }).flatMap((_, row) =>
+            Array.from({ length: COLS }).map((_, col) => {
+              const isHole = !mask[row][col]
+              const on = board[row][col] === 1
+              const press = solution && showSolution ? solution[row][col] === 1 : false
+              const marked = markedSolution ? markedSolution[row][col] === 1 : false
 
               const bgUrl = isHole ? emptyTileImg : on ? activeTileImg : inactiveTileImg
 
@@ -197,11 +197,19 @@ const MonasteryOfTheScorpion = () => {
 
               return (
                 <div
-                  key={`${r}-${c}`}
+                  key={`${String(row)}-${String(col)}`}
+                  role='button'
+                  tabIndex={0}
                   className={`${baseClasses} ${borderClasses}`}
                   style={style}
                   onClick={() => {
-                    handleCellClick(r, c)
+                    handleCellClick(row, col)
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      handleCellClick(row, col)
+                    }
                   }}
                 />
               )

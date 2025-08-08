@@ -156,12 +156,12 @@ const TotalChaos = () => {
           style={{ gridTemplateColumns: `repeat(${String(C)}, 64px)` }}
           className='g-0 d-grid justify-content-center'
         >
-          {Array.from({ length: R }).flatMap((_, r) =>
-            Array.from({ length: C }).map((_, c) => {
-              const isHole = !mask[r][c]
-              const on = board[r][c] === 1
-              const press = solution && showSolution ? solution[r][c] === 1 : false
-              const marked = markedSolution ? markedSolution[r][c] === 1 : false
+          {Array.from({ length: R }).flatMap((_, row) =>
+            Array.from({ length: C }).map((_, col) => {
+              const isHole = !mask[row][col]
+              const on = board[row][col] === 1
+              const press = solution && showSolution ? solution[row][col] === 1 : false
+              const marked = markedSolution ? markedSolution[row][col] === 1 : false
 
               let bgUrl: string
               if (isHole) {
@@ -185,11 +185,19 @@ const TotalChaos = () => {
 
               return (
                 <div
-                  key={`${String(r)}-${String(c)}`}
+                  key={`${String(row)}-${String(col)}`}
+                  role='button'
+                  tabIndex={0}
                   className={`${borderClasses} ${baseClasses}`}
                   style={style}
                   onClick={() => {
-                    handleCellClick(r, c)
+                    handleCellClick(row, col)
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      handleCellClick(row, col)
+                    }
                   }}
                 />
               )
