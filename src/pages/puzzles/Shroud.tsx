@@ -1,11 +1,12 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Card, Col, Form, Row, ToggleButton } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import activeTileImg from '../../assets/tile_active.png'
 import emptyTileImg from '../../assets/tile_empty.png'
 import inactiveTileImg from '../../assets/tile_inactive.png'
 import useLightsOutSolver from './lightsOut/hooks/useLightsOutSolver.ts'
-import type { Board, Config, Presses } from './lightsOut/types/types.ts'
+import usePuzzleState from './lightsOut/hooks/usePuzzleState.ts'
+import type { Config } from './lightsOut/types/types.ts'
 
 const Shroud = () => {
   const { initBoard, makeRectConfig, makeCircular4x4Config, toggleCell, randomPresses, applyPresses, solveBoard } =
@@ -21,22 +22,21 @@ const Shroud = () => {
 
   const [configName, setConfigName] = useState<keyof typeof options>('3x3')
   const config: Config = options[configName]
+
+  const {
+    board,
+    setBoard,
+    solution,
+    setSolution,
+    markedSolution,
+    setMarkedSolution,
+    editMode,
+    setEditMode,
+    showSolution,
+    setShowSolution
+  } = usePuzzleState(config, initBoard)
+
   const { rows: R, cols: C, mask } = config
-
-  const [board, setBoard] = useState<Board>(() => initBoard(config))
-  const [solution, setSolution] = useState<Presses>(null)
-  const [markedSolution, setMarkedSolution] = useState<Presses>(null)
-  const [editMode, setEditMode] = useState<boolean>(true)
-  const [showSolution, setShowSolution] = useState<boolean>(false)
-
-  useLayoutEffect(() => {
-    setBoard(initBoard(config))
-    setSolution(null)
-    setMarkedSolution(null)
-    setEditMode(true)
-    setShowSolution(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [configName])
 
   const handleSolve = (): void => {
     setEditMode(false)
