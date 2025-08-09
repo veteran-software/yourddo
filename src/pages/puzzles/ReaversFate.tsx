@@ -1,0 +1,172 @@
+import React, { useState } from 'react'
+import { Button, Card, Col, Form, InputGroup, Row, Stack } from 'react-bootstrap'
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
+import Board from './mastermind/components/Board.tsx'
+import Peg from './mastermind/components/Peg.tsx'
+import useMastermindSolver from './mastermind/hooks/useMastermindSolver.ts'
+import type { Color } from './mastermind/types/types.ts'
+
+const MAX_ATTEMPTS = 10
+const INITIAL_GUESS: Color[] = [1, 1, 2, 2]
+
+const ReaversFate: React.FC = () => {
+  const { currentGuess, possibleCount, guesses, finished, reset, submitFeedback } = useMastermindSolver(
+    INITIAL_GUESS,
+    MAX_ATTEMPTS
+  )
+
+  const [blackInput, setBlackInput] = useState(0)
+  const [whiteInput, setWhiteInput] = useState(0)
+
+  const handleSubmit = () => {
+    const result = submitFeedback({ black: blackInput, white: whiteInput })
+    if (result.error) {
+      alert(result.error)
+    } else {
+      setBlackInput(0)
+      setWhiteInput(0)
+    }
+  }
+
+  return (
+    <Card>
+      <Card.Header className='text-center p-1'>
+        <Card.Title>
+          <h4 className='mb-0'>The Reaver's Fate</h4>
+          <small>Ruins of Gianthold</small>
+        </Card.Title>
+        <small>
+          <a
+            href='https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Puzzle%20Solvers%22'
+            target='_blank'
+            rel='noreferrer'
+            title='Puzzle Solver Known Issues & Bug Reports'
+          >
+            Known Issues / Bug Reports <FaArrowUpRightFromSquare size={10} />
+          </a>
+        </small>
+      </Card.Header>
+
+      <Card.Body>
+        <Row xs={1} md={2} lg={3} className='g-2' style={{ marginBottom: 16 }}>
+          <Col xs={12} md={6} lg={4}>
+            {finished && (
+              <Card>
+                <Card.Header className='text-center p-1'>
+                  <h5 className='mb-0'>
+                    {possibleCount === 1 ? (
+                      <>
+                        Solved in {guesses.length + 1} {guesses.length === 1 ? 'step' : 'steps'}!
+                      </>
+                    ) : (
+                      <>Failed to solve within {MAX_ATTEMPTS} attempts.</>
+                    )}
+                  </h5>
+                </Card.Header>
+                {possibleCount === 1 ? (
+                  <>
+                    <Card.Header className='text-center p-1'>
+                      <h5 className='mb-0'>Solution</h5>
+                    </Card.Header>
+                    <Card.Body>
+                      <Stack direction='horizontal' gap={2} className='justify-content-center'>
+                        {currentGuess.map((c, i) => (
+                          <Peg key={i} color={c} />
+                        ))}
+                      </Stack>
+                    </Card.Body>
+                  </>
+                ) : (
+                  <Card.Body>
+                    <h2>Failed to solve within {MAX_ATTEMPTS} attempts.</h2>
+                  </Card.Body>
+                )}
+              </Card>
+            )}
+          </Col>
+
+          <Col xs={12} md={6} lg={4}>
+            <Card>
+              <Card.Header className='text-center p-1'>
+                <h5 className='mb-0'>
+                  Attempt {guesses.length + 1} of {MAX_ATTEMPTS}
+                </h5>
+              </Card.Header>
+
+              <Card.Body className='text-center p-1'>
+                <small className='mb-0'>Remaining possibilities: {possibleCount}</small>
+              </Card.Body>
+
+              <Card.Header className='text-center p-1'>
+                <h6 className='mb-0'>Next Guess:</h6>
+              </Card.Header>
+
+              <Card.Body>
+                <Stack direction='horizontal' gap={2} className='justify-content-center'>
+                  Next Guess:
+                  {currentGuess.map((c, i) => (
+                    <Peg key={i} color={c} />
+                  ))}
+                </Stack>
+              </Card.Body>
+
+              <Card.Header className='text-center p-1'>
+                <h6 className='mb-0'>Feedback</h6>
+              </Card.Header>
+
+              <Card.Body>
+                <InputGroup>
+                  <InputGroup.Text id='black-feedback'>Black:</InputGroup.Text>
+                  <Form.Control
+                    type='number'
+                    min={0}
+                    max={4}
+                    value={blackInput}
+                    onChange={(e) => {
+                      setBlackInput(Number(e.target.value))
+                    }}
+                  />
+                  <InputGroup.Text id='white-feedback'>White:</InputGroup.Text>
+                  <Form.Control
+                    type='number'
+                    min={0}
+                    max={4}
+                    value={whiteInput}
+                    onChange={(e) => {
+                      setWhiteInput(Number(e.target.value))
+                    }}
+                  />
+                </InputGroup>
+              </Card.Body>
+
+              <Card.Footer>
+                {!finished ? (
+                  <Button className='w-100' variant='outline-light' onClick={handleSubmit}>
+                    Submit Feedback
+                  </Button>
+                ) : (
+                  <Button className='w-100' variant='outline-light' onClick={reset}>
+                    Start Over
+                  </Button>
+                )}
+              </Card.Footer>
+            </Card>
+          </Col>
+
+          <Col xs={12} md={6} lg={4}>
+            <Card>
+              <Card.Header className='text-center p-1'>
+                <h5 className='mb-0'>Previous Guesses & Feedback</h5>
+              </Card.Header>
+              <Card.Body>
+                <Board guesses={guesses} />
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
+  )
+}
+
+export default ReaversFate

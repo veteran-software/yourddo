@@ -9,6 +9,7 @@ import { epicMenu } from './epicMenu.ts'
 import { heroicMenu } from './heroicMenu'
 import { legendaryMenu } from './legendaryMenu.ts'
 import MenuDropdown from './MenuDropdown.tsx'
+import { puzzleMenu } from './puzzleMenu.ts'
 import type { NavMenuDropdown } from './types'
 
 const NavbarTop = () => {
@@ -24,7 +25,7 @@ const NavbarTop = () => {
   }, [dispatch])
 
   const activeMenus = useMemo(
-    () => [heroicMenu, epicMenu, legendaryMenu].filter((menu) => menu.items.some((item) => item.active)),
+    () => [puzzleMenu, heroicMenu, epicMenu, legendaryMenu].filter((menu) => menu.items.some((item) => item.active)),
     []
   )
 
