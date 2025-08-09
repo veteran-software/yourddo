@@ -153,7 +153,7 @@ const useMastermindSolver = (initialGuess: Color[] = [1, 1, 2, 2], maxAttempts =
    * 6. Updates the set of possible solutions. If only one remains, selects it as the next guess and ends the game.
    * 7. If multiple possibilities remain, calculates the next guess using a minimax strategy and updates the current guess.
    */
-  const submitFeedback = ({ black, white }: FeedbackType): { error?: string } => {
+  const submitFeedback = ({ black, white }: FeedbackType): { error?: string } | undefined => {
     if (black + white > 4) {
       return { error: 'Sum of black+white cannot exceed 4.' }
     }
@@ -172,7 +172,6 @@ const useMastermindSolver = (initialGuess: Color[] = [1, 1, 2, 2], maxAttempts =
       const trial: FeedbackType = getFeedback(code, currentGuess)
       return trial.black === black && trial.white === white
     })
-
 
     if (nextPossible.length === 0) {
       return { error: 'Inconsistent feedback – no codes remain.' }
@@ -200,7 +199,8 @@ const useMastermindSolver = (initialGuess: Color[] = [1, 1, 2, 2], maxAttempts =
     // Check for win or exhaustion
     if (black === 4 || newGuesses.length >= maxAttempts) {
       setFinished(true)
-      return {}
+
+      return undefined
     }
 
     // Narrow possibilities
@@ -208,13 +208,15 @@ const useMastermindSolver = (initialGuess: Color[] = [1, 1, 2, 2], maxAttempts =
     if (nextPossible.length === 1) {
       setCurrentGuess(nextPossible[0])
       setFinished(true)
-      return {}
+
+      return undefined
     }
 
     // Pick next via minimax
     const next: Color[] = selectNextGuess(nextPossible, allCodes)
     setCurrentGuess(next)
-    return {}
+
+    return undefined
   }
 
   return {
@@ -238,7 +240,7 @@ export interface SolverHook {
   guesses: Guess[]
   finished: boolean
   reset: () => void
-  submitFeedback: (fb: FeedbackType) => { error?: string }
+  submitFeedback: (fb: FeedbackType) => { error?: string } | undefined
 }
 
 export default useMastermindSolver
