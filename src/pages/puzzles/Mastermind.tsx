@@ -1,5 +1,14 @@
 import React, { useState } from 'react'
-import { Alert, Button, Card, Col, Form, InputGroup, Row, Stack } from 'react-bootstrap'
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Form,
+  InputGroup,
+  Row,
+  Stack
+} from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import Board from './mastermind/components/Board.tsx'
 import Peg from './mastermind/components/Peg.tsx'
@@ -78,8 +87,8 @@ const Mastermind: React.FC = () => {
                     </Card.Header>
                     <Card.Body>
                       <Stack direction='horizontal' gap={2} className='justify-content-center'>
-                        {currentGuess.map((c, i) => (
-                          <Peg key={i} color={c} />
+                        {currentGuess.map((c: Color, idx: number) => (
+                          <Peg key={`${String(c)}-${String(idx)}`} color={c} />
                         ))}
                       </Stack>
                     </Card.Body>
@@ -114,8 +123,8 @@ const Mastermind: React.FC = () => {
                   <Card.Body>
                     <Stack direction='horizontal' gap={2} className='justify-content-center'>
                       Next Guess:
-                      {currentGuess.map((c, i) => (
-                        <Peg key={i} color={c} />
+                      {currentGuess.map((c: Color, idx: number) => (
+                        <Peg key={`${String(c)}-${String(idx)}`} color={c} />
                       ))}
                     </Stack>
                   </Card.Body>
