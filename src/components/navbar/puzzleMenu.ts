@@ -17,6 +17,11 @@ export const menuItems: NavDropdownType[] = [
     active: true
   },
   {
+    label: 'The Key To The Mythal',
+    image: '',
+    active: true
+  },
+  {
     label: 'The Shroud',
     image: '',
     active: true

@@ -139,6 +139,7 @@ const MonasteryOfTheScorpion = () => {
             </Button>
             <ToggleButton
               id='edit-mode-toggle'
+              className='z-0'
               value={''}
               type='checkbox'
               variant={editMode ? 'warning' : 'success'}

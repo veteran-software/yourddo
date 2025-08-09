@@ -1,5 +1,14 @@
 import React, { useState } from 'react'
-import { Alert, Button, Card, Col, Form, InputGroup, Row, Stack } from 'react-bootstrap'
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Form,
+  InputGroup,
+  Row,
+  Stack
+} from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import Board from './mastermind/components/Board.tsx'
 import Peg from './mastermind/components/Peg.tsx'
@@ -9,7 +18,7 @@ import type { Color, FeedbackType } from './mastermind/types/types.ts'
 const MAX_ATTEMPTS = 10
 const INITIAL_GUESS: Color[] = [1, 1, 2, 2]
 
-const ReaversFate: React.FC = () => {
+const Mastermind: React.FC = () => {
   const { currentGuess, possibleCount, guesses, finished, reset, submitFeedback } = useMastermindSolver(
     INITIAL_GUESS,
     MAX_ATTEMPTS
@@ -39,8 +48,8 @@ const ReaversFate: React.FC = () => {
     <Card>
       <Card.Header className='text-center p-1'>
         <Card.Title>
-          <h4 className='mb-0'>The Reaver's Fate</h4>
-          <small>Ruins of Gianthold</small>
+          <h4 className='mb-0'>Mastermind Solver</h4>
+          <small>The Reaver's Fate | The Key to Mythal</small>
         </Card.Title>
         <small>
           <a
@@ -78,8 +87,8 @@ const ReaversFate: React.FC = () => {
                     </Card.Header>
                     <Card.Body>
                       <Stack direction='horizontal' gap={2} className='justify-content-center'>
-                        {currentGuess.map((c, i) => (
-                          <Peg key={i} color={c} />
+                        {currentGuess.map((c: Color, idx: number) => (
+                          <Peg key={`${String(c)}-${String(idx)}`} color={c} />
                         ))}
                       </Stack>
                     </Card.Body>
@@ -114,8 +123,8 @@ const ReaversFate: React.FC = () => {
                   <Card.Body>
                     <Stack direction='horizontal' gap={2} className='justify-content-center'>
                       Next Guess:
-                      {currentGuess.map((c, i) => (
-                        <Peg key={i} color={c} />
+                      {currentGuess.map((c: Color, idx: number) => (
+                        <Peg key={`${String(c)}-${String(idx)}`} color={c} />
                       ))}
                     </Stack>
                   </Card.Body>
@@ -183,4 +192,4 @@ const ReaversFate: React.FC = () => {
   )
 }
 
-export default ReaversFate
+export default Mastermind
