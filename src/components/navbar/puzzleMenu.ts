@@ -22,6 +22,11 @@ export const menuItems: NavDropdownType[] = [
     active: true
   },
   {
+    label: 'The Shadow Crypt',
+    image: '',
+    active: true
+  },
+  {
     label: 'The Shroud',
     image: '',
     active: true

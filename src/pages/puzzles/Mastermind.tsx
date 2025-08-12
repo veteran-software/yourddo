@@ -1,14 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Alert,
-  Button,
-  Card,
-  Col,
-  Form,
-  InputGroup,
-  Row,
-  Stack
-} from 'react-bootstrap'
+import { Alert, Button, Card, Col, Form, InputGroup, Row, Stack } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import Board from './mastermind/components/Board.tsx'
 import Peg from './mastermind/components/Peg.tsx'
@@ -49,7 +40,7 @@ const Mastermind: React.FC = () => {
       <Card.Header className='text-center p-1'>
         <Card.Title>
           <h4 className='mb-0'>Mastermind Solver</h4>
-          <small>The Reaver's Fate | The Key to Mythal</small>
+          <small>The Reaver's Fate | The Key to the Mythal</small>
         </Card.Title>
         <small>
           <a
