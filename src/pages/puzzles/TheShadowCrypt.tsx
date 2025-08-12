@@ -98,7 +98,7 @@ const TheShadowCrypt = () => {
                   <Form>
                     {steps.map((step: string, idx: number) => (
                       <Form.Check
-                        key={idx}
+                        key={`${step}-${String(idx)}`}
                         type='checkbox'
                         id={`${label}-${String(idx)}`}
                         label={step === '(DD)' ? '↻ Dimension Door → back to start' : `Move ${getMovement(step)}`}
