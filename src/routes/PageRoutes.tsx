@@ -10,6 +10,7 @@ import IncrediblePotential from '../pages/incrediblePotential/IncrediblePotentia
 import Mastermind from '../pages/puzzles/Mastermind.tsx'
 import MonasteryOfTheScorpion from '../pages/puzzles/MonasteryOfTheScorpion.tsx'
 import Shroud from '../pages/puzzles/Shroud.tsx'
+import TheShadowCrypt from '../pages/puzzles/TheShadowCrypt.tsx'
 import TotalChaos from '../pages/puzzles/TotalChaos.tsx'
 import ViktraniumExperiment from '../pages/viktraniumExperiment/ViktraniumExperiment.tsx'
 
@@ -31,6 +32,7 @@ const PageRoutes = () => {
         <Route path='/reavers-fate' element={<Mastermind />} />
         <Route path='/total-chaos' element={<TotalChaos />} />
         <Route path='/the-key-to-the-mythal' element={<Mastermind />} />
+        <Route path='/the-shadow-crypt' element={<TheShadowCrypt />} />
         <Route path='/the-shroud' element={<Shroud />} />
       </Route>
     </Routes>
