@@ -10,6 +10,7 @@ import legendaryGreenSteelReducer from './slices/lgsSlice.ts'
 import viktraniumExperimentReducer from './slices/viktraniumSlice.ts'
 
 const store = configureStore({
+  devTools: process.env.NODE_ENV !== 'production',
   reducer: {
     [serverStatusApi.reducerPath]: serverStatusApi.reducer,
     [serverStatusLamApi.reducerPath]: serverStatusLamApi.reducer,
