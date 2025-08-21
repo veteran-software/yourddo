@@ -14,7 +14,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -26,19 +31,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -63,7 +68,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -75,19 +85,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -112,7 +122,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -124,19 +139,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -161,7 +176,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -173,19 +193,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -210,7 +230,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -222,19 +247,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -259,7 +284,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -271,19 +301,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -308,7 +338,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -320,19 +355,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -357,7 +392,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -369,19 +409,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -406,7 +446,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -418,19 +463,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -455,7 +500,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -467,19 +517,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -504,7 +554,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -516,19 +571,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -553,7 +608,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -565,19 +625,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -602,7 +662,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -614,19 +679,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -651,7 +716,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -663,19 +733,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -700,7 +770,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -712,19 +787,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -749,7 +824,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -761,19 +841,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -798,7 +878,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -810,19 +895,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -847,7 +932,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -859,19 +949,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -896,7 +986,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -908,19 +1003,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -945,7 +1040,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -957,19 +1057,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -994,7 +1094,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1006,19 +1111,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1043,7 +1148,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1055,19 +1165,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1092,7 +1202,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1104,19 +1219,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1141,7 +1256,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1153,19 +1273,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1190,7 +1310,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1202,19 +1327,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1239,7 +1364,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1251,19 +1381,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1288,7 +1418,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1300,19 +1435,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1337,7 +1472,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1353,19 +1493,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1390,7 +1530,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1406,19 +1551,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1443,7 +1588,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1459,19 +1609,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1496,7 +1646,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1512,19 +1667,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1549,7 +1704,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1565,19 +1725,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1602,7 +1762,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1614,19 +1779,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1651,7 +1816,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1663,19 +1833,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1700,7 +1870,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1712,19 +1887,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1749,7 +1924,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1761,19 +1941,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1798,7 +1978,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1810,19 +1995,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1847,7 +2032,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1859,19 +2049,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1896,7 +2086,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1908,19 +2103,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1945,7 +2140,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1957,19 +2157,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [
@@ -1994,7 +2194,12 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: '+4 Enhancement Bonus',
+        name: 'Attack',
+        bonus: 'Enhancement',
+        modifier: 4
+      },
+      {
+        name: 'Damage',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2008,19 +2213,19 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     requirements: [
       {
         name: 'Bleak Alternator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Resistor',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Insulator',
-        quantity: 25
+        quantity: 5
       },
       {
         name: 'Bleak Conductor',
-        quantity: 25
+        quantity: 5
       }
     ],
     augments: [

@@ -344,6 +344,7 @@ export const ingredients: Ingredient[] = [
   },
   {
     name: 'Bleak Transformer',
+    image: 'bleakTransformer',
     description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
     binding: {
       type: 'Unbound'
