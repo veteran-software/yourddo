@@ -28,19 +28,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -75,19 +75,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -123,19 +123,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -173,19 +173,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -224,19 +224,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -275,19 +275,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -326,19 +326,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -365,19 +365,19 @@ export const update75Augments: AugmentItem[] = [
     effectsAdded: [],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -404,19 +404,19 @@ export const update75Augments: AugmentItem[] = [
     effectsAdded: [],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -443,19 +443,19 @@ export const update75Augments: AugmentItem[] = [
     effectsAdded: [],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -482,19 +482,19 @@ export const update75Augments: AugmentItem[] = [
     effectsAdded: [],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -520,19 +520,19 @@ export const update75Augments: AugmentItem[] = [
     effectsAdded: [],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -559,19 +559,19 @@ export const update75Augments: AugmentItem[] = [
     effectsAdded: [],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -610,19 +610,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -654,19 +654,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -698,19 +698,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -742,19 +742,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -786,19 +786,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -830,19 +830,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -874,19 +874,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -918,19 +918,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -962,19 +962,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -1006,19 +1006,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -1050,19 +1050,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -1094,23 +1094,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1142,23 +1142,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1190,23 +1190,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1238,23 +1238,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1286,23 +1286,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1334,23 +1334,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1384,23 +1384,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -1431,23 +1431,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -1478,23 +1478,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -1528,23 +1528,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -1575,23 +1575,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -1625,23 +1625,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -1673,23 +1673,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1721,23 +1721,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1769,23 +1769,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1817,23 +1817,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1865,23 +1865,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1913,23 +1913,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -1961,23 +1961,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2009,23 +2009,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2057,23 +2057,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2105,23 +2105,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2152,23 +2152,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2199,23 +2199,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2248,23 +2248,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2297,23 +2297,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2346,23 +2346,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2395,23 +2395,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2443,23 +2443,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2491,19 +2491,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2535,19 +2535,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2579,19 +2579,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2623,19 +2623,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2667,19 +2667,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2711,19 +2711,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2755,19 +2755,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2799,19 +2799,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2843,19 +2843,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2887,19 +2887,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2931,19 +2931,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -2975,19 +2975,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3019,19 +3019,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3063,19 +3063,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3107,19 +3107,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3151,19 +3151,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3195,19 +3195,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3239,19 +3239,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3283,19 +3283,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -3327,19 +3327,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3371,19 +3371,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3415,19 +3415,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3459,19 +3459,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3503,19 +3503,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3553,19 +3553,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3602,19 +3602,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3646,19 +3646,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3690,19 +3690,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3734,19 +3734,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3778,19 +3778,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3822,19 +3822,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3866,19 +3866,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3910,19 +3910,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3954,19 +3954,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -3998,19 +3998,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4042,19 +4042,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4086,19 +4086,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4130,19 +4130,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4174,19 +4174,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4218,19 +4218,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4262,19 +4262,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4306,19 +4306,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4350,19 +4350,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4395,19 +4395,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4464,19 +4464,19 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -4508,23 +4508,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -4556,23 +4556,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -4604,23 +4604,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -4652,23 +4652,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -4700,23 +4700,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -4748,23 +4748,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -4796,23 +4796,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -4844,23 +4844,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -4892,23 +4892,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -4940,23 +4940,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -4988,23 +4988,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -5036,23 +5036,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -5084,23 +5084,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -5132,23 +5132,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -5180,23 +5180,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -5228,23 +5228,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -5276,23 +5276,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -5324,23 +5324,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -5371,23 +5371,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -5418,23 +5418,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -5466,23 +5466,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -5514,23 +5514,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -5562,23 +5562,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -5610,23 +5610,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -5658,23 +5658,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -5717,23 +5717,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -5766,23 +5766,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -5814,23 +5814,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Wire',
+        name: 'Legendary Bleak Wire',
         quantity: 100
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 25
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 25
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 25
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 25
       }
     ],
@@ -5862,23 +5862,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -5920,23 +5920,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
@@ -5968,23 +5968,23 @@ export const update75Augments: AugmentItem[] = [
     ],
     requirements: [
       {
-        name: 'Bleak Transformer',
+        name: 'Legendary Bleak Transformer',
         quantity: 50
       },
       {
-        name: 'Bleak Alternator',
+        name: 'Legendary Bleak Alternator',
         quantity: 50
       },
       {
-        name: 'Bleak Resistor',
+        name: 'Legendary Bleak Resistor',
         quantity: 50
       },
       {
-        name: 'Bleak Insulator',
+        name: 'Legendary Bleak Insulator',
         quantity: 50
       },
       {
-        name: 'Bleak Conductor',
+        name: 'Legendary Bleak Conductor',
         quantity: 50
       }
     ],
