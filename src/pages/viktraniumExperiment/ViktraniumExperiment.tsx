@@ -155,9 +155,9 @@ const ViktraniumExperiment = () => {
 
   return (
     <Container className='px-0'>
-      <Alert key='lamannia-alert' variant='warning' className='text-center mb-2'>
-        The information contained in this crafting planner is based on{' '}
-        <strong>Chill on Ravenloft Loot Preview #2 on Lamannia</strong> and is a WIP.
+      <Alert key='lamannia-alert' variant='info' className='text-center mb-2'>
+        Crafted items &amp; augments are accurate as of Aug 20, 2025 (live release of the Chill of Ravenloft expansion.)
+        Quest loot items will be updated as they are discovered.
       </Alert>
 
       <Card>
