@@ -200,7 +200,7 @@ const Shroud = () => {
               }
 
               const baseClasses = 'd-flex align-items-center justify-content-center bg-body'
-              // green border for un‐clicked solution tiles, yellow for clicked ones
+              // green border for un‐clicked solution tiles
               const borderClasses: string = press ? toggleMarked(marked) : 'border'
 
               const style: React.CSSProperties = {

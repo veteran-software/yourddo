@@ -3,7 +3,7 @@ import { Image } from 'react-bootstrap'
 import { ICON_BASE } from '../../utils/constants.ts'
 
 const FallbackImage = (props: Props) => {
-  const { alt, src } = props
+  const { alt, src, width } = props
 
   const [imgSrc, setImgSrc] = useState(src)
 
@@ -15,6 +15,7 @@ const FallbackImage = (props: Props) => {
         setImgSrc(`${ICON_BASE}unknown.png`)
       }}
       alt={alt}
+      style={{ width: width ?? undefined }}
     />
   )
 }
@@ -22,6 +23,7 @@ const FallbackImage = (props: Props) => {
 interface Props {
   src: string
   alt: string
+  width?: string
 }
 
 export default FallbackImage
