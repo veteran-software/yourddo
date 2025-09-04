@@ -2,9 +2,10 @@ import { useMemo } from 'react'
 import { Card, Col, Container, Row, Stack } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
-import { titleCase } from 'title-case'
+import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import FilterableDropdown from '../../components/common/FilterableDropdown.tsx'
 import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
+import { augments } from '../../data/augments.ts'
 import { dinosaurBoneCrafting } from '../../data/dinosaurBoneCrafting/dinosaurBoneCrafting.ts'
 import { dinosaurBoneAccessoryItems } from '../../data/dinosaurBoneCrafting/factories/accessoryItemFactory.ts'
 import { dinosaurBoneArmorItems } from '../../data/dinosaurBoneCrafting/factories/armorItemFactory.ts'
@@ -24,8 +25,10 @@ import {
   setSelectedItem
 } from '../../redux/slices/dinosaurBoneSlice.ts'
 import type { AppDispatch } from '../../redux/store.ts'
+import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
-import { camelCaseToTitleCase } from '../../utils/utils.ts'
+import type { Ingredient } from '../../types/ingredients.ts'
+import { camelCaseToTitleCase, getCumulativeIngredients } from '../../utils/utils.ts'
 import CumulativeIngredientsCard from './components/CumulativeIngredientsCard.tsx'
 import ItemDisplay from './components/ItemDisplay.tsx'
 
@@ -126,10 +129,6 @@ const DinosaurBone = () => {
     return prefixMatch && isWeapon
   }
 
-  // helper for augment dropdown labels
-  const resolveAugmentLabel = (slot: string, header: string): string =>
-    selectedAugments[slot]?.name ?? `Select ${header}...`
-
   const availableAugmentSlots = useMemo<string[]>(() => {
     if (!selectedItem?.augments?.length) return []
     const aug = selectedItem.augments[0]
@@ -143,7 +142,7 @@ const DinosaurBone = () => {
 
   const augmentOptions = useMemo<Record<string, CraftingIngredient[]>>(() => {
     return availableAugmentSlots.reduce<Record<string, CraftingIngredient[]>>((acc, slot) => {
-      let options: CraftingIngredient[]
+      let options: Ingredient[]
 
       if (slot === 'isleOfDreadSetBonus') {
         options = dinosaurBoneCrafting.filter((ing) => ing.setBonus)
@@ -152,9 +151,9 @@ const DinosaurBone = () => {
           .replace(/^isleOfDread/, '')
           .replace(/([A-Z])/g, ' $1')
           .trim()
-        const words = clean.split(' ')
-        options = dinosaurBoneCrafting.filter(
-          (ing) =>
+        const words: string[] = clean.split(' ')
+        options = [...dinosaurBoneCrafting, ...augments].filter(
+          (ing: CraftingIngredient | AugmentItem) =>
             ing.augmentType?.toLowerCase().includes(words[0].toLowerCase()) &&
             ing.augmentType.toLowerCase().includes(words[1]?.toLowerCase() ?? '')
         )
@@ -177,47 +176,6 @@ const DinosaurBone = () => {
       })
     )
   }, [augmentOptions, augmentFilters])
-
-  const accumulateIngredients = (
-    item: CraftingIngredient,
-    accumulator: Record<string, number> = {}
-  ): Record<string, number> => {
-    if (!item.requirements || item.requirements.length === 0) {
-      return accumulator
-    }
-
-    for (const req of item.requirements) {
-      const name = req.name
-      const qty = req.quantity ?? 1
-
-      accumulator[name] = (accumulator[name] ?? 0) + qty
-
-      if (req.requirements && req.requirements.length > 0) {
-        accumulateIngredients(req, accumulator)
-      }
-    }
-
-    return accumulator
-  }
-
-  const getCumulativeIngredients = (
-    selectedItem: CraftingIngredient | null | undefined,
-    selectedAugments: Record<string, CraftingIngredient | null>
-  ): Record<string, number> => {
-    const accumulator: Record<string, number> = {}
-
-    if (selectedItem) {
-      accumulateIngredients(selectedItem, accumulator)
-    }
-
-    for (const augment of Object.values(selectedAugments)) {
-      if (augment) {
-        accumulateIngredients(augment, accumulator)
-      }
-    }
-
-    return accumulator
-  }
 
   return (
     <Container className='px-0'>
@@ -334,64 +292,18 @@ const DinosaurBone = () => {
                 <Card className='mt-3'>
                   <Card.Header>Augment Slots</Card.Header>
                   <Card.Body>
-                    {availableAugmentSlots.length > 0 ? (
-                      <Stack gap={3}>
-                        {availableAugmentSlots.map((slot) => {
-                          const clean: string = slot
-                            .replace(/^isleOfDread/, '')
-                            .replace(/([A-Z])/g, ' $1')
-                            .trim()
-                          const parts: string[] = clean.split(' ')
-                          const primary: string = titleCase(parts[0] || '')
-                          const secondary: string = titleCase(parts.slice(1).join(' '))
-                          const colorSlots = new Set<string>([
-                            'red',
-                            'blue',
-                            'yellow',
-                            'purple',
-                            'orange',
-                            'green',
-                            'colorless',
-                            'sun',
-                            'moon'
-                          ])
-                          const isColorSlot = colorSlots.has(clean.toLowerCase())
-                          const secondarySlot = secondary ? ` (${secondary})` : ''
-                          // Color slots are standalone; others get the full prefix and optional parentheses
-                          const header = isColorSlot
-                            ? `${primary} Augment`
-                            : `Isle of Dread: ${primary} Slot${secondarySlot}`
-                          const itemsMap = { [header]: augmentOptions[slot] }
-                          const filteredOptions = { [header]: filteredAugmentOptions[slot] }
-
-                          return (
-                            <FilterableDropdown
-                              key={slot}
-                              dropdownTriggerPrefix='Aug:'
-                              title={header}
-                              items={itemsMap}
-                              filteredItems={filteredOptions}
-                              onSelect={(aug: CraftingIngredient) => {
-                                handleSelectAugment(slot, aug)
-                              }}
-                              onReset={() => {
-                                handleResetAugment(slot)
-                              }}
-                              selectedItem={selectedAugments[slot] ?? undefined}
-                              label={resolveAugmentLabel(slot, header)}
-                              canFilter
-                              displayEffectsAdded
-                              onFilterModeChange={(mode: 'OR' | 'AND') => dispatch(setAugmentFilterMode(mode))}
-                              onFiltersChange={(filters: string[]) => dispatch(setAugmentFilters(filters))}
-                              filters={augmentFilters}
-                              filterMode={augmentFilterMode}
-                            />
-                          )
-                        })}
-                      </Stack>
-                    ) : (
-                      <p>No augment slots available.</p>
-                    )}
+                    <AugmentSlotFilterableDropdown
+                      availableAugmentSlots={availableAugmentSlots}
+                      augmentOptions={augmentOptions}
+                      filteredAugmentOptions={filteredAugmentOptions}
+                      selectedAugments={selectedAugments}
+                      augmentFilters={augmentFilters}
+                      augmentFilterMode={augmentFilterMode}
+                      handleSelectAugment={handleSelectAugment}
+                      handleResetAugment={handleResetAugment}
+                      handleFilterModeChange={(mode: 'OR' | 'AND') => dispatch(setAugmentFilterMode(mode))}
+                      handleFiltersChange={(filters: string[]) => dispatch(setAugmentFilters(filters))}
+                    />
                   </Card.Body>
                 </Card>
               )}
@@ -419,10 +331,6 @@ const DinosaurBone = () => {
                       />
                     </Col>
                   </Row>
-                  {/*<Stack direction='horizontal' gap={3} className='align-items-start'>*/}
-                  {/*  <ItemDisplay selectedItem={selectedItem} />*/}
-                  {/*  <CumulativeIngredientsCard ingredients={getCumulativeIngredients(selectedItem, selectedAugments)} />*/}
-                  {/*</Stack>*/}
 
                   <Card className='mt-3'>
                     <Card.Header>

@@ -2,11 +2,11 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { FaCircleExclamation } from 'react-icons/fa6'
 
 const NoteTooltip = (props: Props) => {
-  const { id, text } = props
+  const { color = 'red', id, text } = props
 
   return (
     <OverlayTrigger placement='auto' overlay={<Tooltip id={id}>{text}</Tooltip>}>
-      <FaCircleExclamation color='red' />
+      <FaCircleExclamation color={color} />
     </OverlayTrigger>
   )
 }
@@ -14,6 +14,7 @@ const NoteTooltip = (props: Props) => {
 interface Props {
   id: string
   text: string
+  color?: string
 }
 
 export default NoteTooltip

@@ -299,6 +299,73 @@ export const ingredients: Ingredient[] = [
     foundIn: ['The Haunted Halls of Eveningstar']
   },
   {
+    name: 'Bleak Alternator',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Bleak Conductor',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Bleak Insulator',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Bleak Resistor',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Bleak Transformer',
+    image: 'bleakTransformer',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Bleak Wire',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 1
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
     name: 'Blighted Scarab',
     description: 'The desicated husk of this scarab radiates an sickly glow.',
     binding: {
@@ -400,6 +467,17 @@ export const ingredients: Ingredient[] = [
     }
   },
   {
+    name: 'Crystallized Spiderweb',
+    description:
+      'This spiderweb is frozen with subtle magic. It appears to be used for upgrading items found within the same adventure area.',
+    foundIn: ['Web of Chaos Quests (Epic)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
+  },
+  {
     name: 'Crystalline Gauntlets',
     type: 'Gloves',
     description: 'These are made of cut and polished gemstones, and hum with primal magics.',
@@ -441,6 +519,32 @@ export const ingredients: Ingredient[] = [
     notes:
       'To charge a Depleted Shavarath High Energy Cell, combine it on the Altar of Subjugation with a +8 to +15 weapon.\n' +
       "Note: The +X you're looking for is in the top-right corner of the item examine window—not in the weapon’s name."
+  },
+  {
+    name: 'Desert Sand Crystal',
+    description:
+      'This small chunk of sand that has crystallized. It appears to be used for upgrading items found within the same adventure.',
+    foundIn: ['Sands of Menechtarun Quests (Epic)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
+  },
+  {
+    name: 'Dethek Runestone',
+    description:
+      'Someone took this stone slab, covered faintly in Dwarf-inscribed enchantments, and attached a handle to the back, turning it into a shield.',
+    binding: {
+      type: 'Bound',
+      to: 'Character',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 10804
+    },
+    weight: 0.1,
+    foundIn: ['Fire on Thunder Peak']
   },
   {
     name: 'Dimensional Horn',
@@ -495,6 +599,20 @@ export const ingredients: Ingredient[] = [
     name: 'Empty Soul Vessel',
     description: 'A victorious reminder of your achievements. Perhaps these can be used for something...',
     foundIn: ['Fables of the Feywild (Legendary Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 100
+    }
+  },
+  {
+    name: 'Esoteric Relic',
+    description:
+      "This tiny, handheld relic doesn't seem to hold much value on its own, but would likely be appreciated by the Morgrave Reliquary.",
+    foundIn: ['Vecna Unleashed (Any Chest)'],
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -598,6 +716,17 @@ export const ingredients: Ingredient[] = [
     foundIn: ['The Isle of Dread (Wilderness) (Legendary)']
   },
   {
+    name: 'Fractured Sliver of Time',
+    description:
+      'This is a crushed fragment of what was an incredible artifact. It appears to be used for upgrading items found within the same adventures.',
+    foundIn: ['Devil Assault (Epic)', 'The Chronoscope (Epic)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
+  },
+  {
     name: 'Fragment of Extraplanar Alignment',
     image: 'dinosaurBoneNamedScaleAugment',
     description:
@@ -654,12 +783,12 @@ export const ingredients: Ingredient[] = [
     augmentType: 'Isle of Dread: Scale (Armor)',
     enhancements: [
       {
-        name: 'Doublestrike',
+        name: 'Doublestrike Chance',
         modifier: '3%',
         bonus: 'Profane'
       },
       {
-        name: 'Doubleshot',
+        name: 'Doubleshot Chance',
         modifier: '3%',
         bonus: 'Profane'
       },
@@ -689,6 +818,17 @@ export const ingredients: Ingredient[] = [
     },
     weight: 0.01,
     foundIn: ['Rainbow in the Dark', 'Running with the Devils']
+  },
+  {
+    name: 'Glowing Fen Mushroom',
+    description:
+      "This glowing mushroom doesn't look edible. It appears to be used for upgrading items found within the same adventure.",
+    foundIn: ['The Red Fens (Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
   },
   {
     name: 'Gnoll Whittled Branch',
@@ -849,6 +989,20 @@ export const ingredients: Ingredient[] = [
     foundIn: ['The Shroud']
   },
   {
+    name: 'Legendary Esoteric Relic',
+    description:
+      "This tiny, handheld relic doesn't seem to hold much value on its own, but would likely be appreciated by the Morgrave Reliquary.",
+    foundIn: ['Vecna Unleashed (Any Chest)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 100
+    }
+  },
+  {
     name: 'Legendary Large Devil Scales',
     image: 'lgsDevilScale',
     type: 'This item may be may be put in a Legendary eldritch device.',
@@ -941,6 +1095,58 @@ export const ingredients: Ingredient[] = [
     foundIn: ['The Codex and the Shroud']
   },
   {
+    name: 'Legendary Mark of Bal Molesh',
+    image: '',
+    type: 'Cauldron of Sora Katra',
+    description:
+      'this token bears the military insignia of a Droaam Warlord: Bal Molesh, a powerful and insidious tiefling also knows as the Venom Lord.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    foundIn: []
+  },
+  {
+    name: 'Legendary Mark of Rhesh Turakbar',
+    image: '',
+    type: 'Cauldron of Sora Katra',
+    description:
+      'this token bears the military insignia of a Droaam Warlord: Rhesh Turakbar, a minotaur who thirsts constantly for blood and warfare.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    foundIn: []
+  },
+  {
+    name: 'Legendary Mark of Sheshka',
+    image: '',
+    type: 'Cauldron of Sora Katra',
+    description:
+      'this token bears the military insignia of a Droaam Warlord: Sheshka, a calm yet fearsome medusa whose kingdom predates the Droaam nation.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    foundIn: []
+  },
+  {
+    name: 'Legendary Mark of Tzaryan Rrac',
+    image: '',
+    type: 'Cauldron of Sora Katra',
+    description:
+      'this token bears the military insignia of a Droaam Warlord: Tzaryan Rrac, an ogre mage whose appetite for destructive arcane power knows no bounds.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    foundIn: []
+  },
+  {
     name: 'Legendary Medium Devil Scales',
     image: 'lgsDevilScale',
     type: 'This item may be may be put in a Legendary eldritch device.',
@@ -1031,6 +1237,17 @@ export const ingredients: Ingredient[] = [
       platinum: 45
     },
     foundIn: ['The Codex and the Shroud']
+  },
+  {
+    name: "Legendary Quartermaster's Chit",
+    description:
+      'These are worth quite a bit to the right person. Someone in Saltmarsh will likely give you a fair price.',
+    foundIn: ['Saltmarsh (Legendary Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
   },
   {
     name: 'Legendary Small Devil Scales',
@@ -1162,6 +1379,17 @@ export const ingredients: Ingredient[] = [
       from: 'Acquisition'
     },
     foundIn: ['The Curse of Strahd', 'Rudolph van Richten (Barter NPC)', 'Strahd Rune Barter']
+  },
+  {
+    name: 'Medal of House Deneith',
+    description:
+      'These battleworn medals have been dented and dinged beyond repair. It appears to be used for upgrading items found within the same adventure.',
+    foundIn: ['Sentinels of Stormreach (Epic Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
   },
   {
     name: 'Medium Devil Scales',
@@ -1297,6 +1525,17 @@ export const ingredients: Ingredient[] = [
     weight: 0.01
   },
   {
+    name: "Quartermaster's Chit",
+    description:
+      'These are worth quite a bit to the right person. Someone in Saltmarsh will likely give you a fair price.',
+    foundIn: ['Saltmarsh (Heroic Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
+  },
+  {
     name: 'Quori-Infused Core',
     type: 'Trinket',
     description:
@@ -1321,6 +1560,28 @@ export const ingredients: Ingredient[] = [
       platinum: 10020
     },
     foundIn: ['Tower of Despair']
+  },
+  {
+    name: 'Saltmeadow Hay',
+    description:
+      'This is sheathe of fine-quality hay, the smell of the salty marsh air still lingering within. It appears to be used for upgrading items found within the same adventure.',
+    foundIn: ['Saltmarsh (Quests)', 'Saltmarsh (Rare Encounters)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
+  },
+  {
+    name: 'Scrap of Patterned Cloth',
+    description:
+      'This is a scrap of fabric that must have been used for constructing costumes. It appears to be used for upgrading items within the same adventure.',
+    foundIn: ['Phiarlan Carnival (Epic Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
   },
   {
     name: 'Shard of Great Power',
@@ -1588,6 +1849,17 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Project Nemesis', 'Nemesis Rune Barter']
   },
   {
+    name: 'Star Fragment',
+    description:
+      'This fragment of an unknown material glows like a star within your hands. It seems to be the key to unlocking ultimate power.',
+    foundIn: ['Saltmarsh (Legendary Rare Encounters)', 'The Chronoscope (Legendary)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
+  },
+  {
     name: 'Strange Tidings',
     image: 'raidRing',
     type: 'Ring',
@@ -1664,6 +1936,17 @@ export const ingredients: Ingredient[] = [
       'Collegium of the Twelve (Nerena) [Guild Airship Amenity]',
       "Amrath (Ver'quea)"
     ]
+  },
+  {
+    name: 'Vault Key',
+    description:
+      'This key opens a lock that has been long forgotten. It appears to be used for upgrading items found within the same adventures',
+    foundIn: ['The Vault of Night (Epic Quests)'],
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    }
   },
   {
     name: 'Vestments of Ravenloft',

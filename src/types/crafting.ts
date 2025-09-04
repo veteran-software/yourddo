@@ -13,6 +13,7 @@ export interface CraftingIngredient extends Ingredient {
     noMinimumLevel?: number
     minimumLevel?: number
   }
+  minorArtifact?: boolean
   quantity?: number
   requirements?: CraftingIngredient[]
   runeArmBlast?: Spell
@@ -47,6 +48,17 @@ export interface Augment {
   isleOfDreadScaleArmor?: string | null
   isleOfDreadScaleWeapon?: string | null
   isleOfDreadSetBonus?: string | null
+  lamordiaMelancholicWeapon?: string | null
+  lamordiaDolorousWeapon?: string | null
+  lamordiaMiserableWeapon?: string | null // spell powers
+  lamordiaWoefulWeapon?: string | null // spell powers
+  lamordiaMelancholicAccessory?: string | null
+  lamordiaDolorousAccessory?: string | null
+  lamordiaMiserableAccessory?: string | null // spell powers
+  lamordiaWoefulAccessory?: string | null
+  lamordiaMelancholicArmor?: string | null
+  lamordiaDolorousArmor?: string | null
+  moon?: string | null
   orange?: string | null
   purple?: string | null
   red?: string | null

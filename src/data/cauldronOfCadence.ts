@@ -93,7 +93,7 @@ export const setAugmentConfigs = [
   {
     name: 'Touch of Power',
     requiredItem: "Attunement's Gaze",
-    enhancement: createStatEnhancement('Universal Spell Power', 25)
+    enhancement: createStatEnhancement('Spell Power: Universal', 25)
   },
   {
     name: 'Alluring Elocution',
@@ -103,7 +103,7 @@ export const setAugmentConfigs = [
   {
     name: 'Arcane Guardian',
     requiredItem: "Citadel's Gaze",
-    enhancement: createStatEnhancement('Magical Resistance Rating', 30)
+    enhancement: createStatEnhancement('Magical Resistance', 30)
   },
   {
     name: 'Visions of the Beyond',
@@ -118,12 +118,12 @@ export const setAugmentConfigs = [
   {
     name: 'Truthful Blow',
     requiredItem: 'Helm of the Final Watcher',
-    enhancement: createPercentageEnhancement('Fortification Bypass')
+    enhancement: createPercentageEnhancement('Fortification Bypass Chance')
   },
   {
     name: 'Tough Shields',
     requiredItem: "Dumathoin's Bracers",
-    enhancement: createStatEnhancement('Physical Resistance Rating', 30)
+    enhancement: createStatEnhancement('Physical Resistance', 30)
   },
   {
     name: 'Esoterica',
@@ -133,7 +133,7 @@ export const setAugmentConfigs = [
   {
     name: 'Quickblade',
     requiredItem: 'Guided Sight',
-    enhancement: [createPercentageEnhancement('Doublestrike'), createPercentageEnhancement('Doubleshot')]
+    enhancement: [createPercentageEnhancement('Doublestrike Chance'), createPercentageEnhancement('Doubleshot Chance')]
   },
   {
     name: 'Brutal Blows',

@@ -8,7 +8,8 @@ const menuItems: NavDropdownType[] = [
   { label: 'Dinosaur Bone', image: '', active: true },
   { label: 'Esoteric Table', image: '', active: false },
   { label: 'Ritual Table', image: '', active: false },
-  { label: 'Augmentation Altar', image: '', active: false }
+  { label: 'Augmentation Altar', image: '', active: false },
+  { label: 'Viktranium Experiment', image: '', active: true }
 ]
 
 export const legendaryMenu: NavMenuDropdown = {

@@ -962,7 +962,7 @@ export const namedItems: CraftingIngredient[] = [
         type: 'Prefix'
       },
       {
-        name: 'Dodge',
+        name: 'Dodge Chance',
         modifier: '14%',
         bonus: 'Enhancement',
         description: 'Passive: +14% bonus to Dodge.',

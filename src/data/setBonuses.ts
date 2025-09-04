@@ -21,7 +21,7 @@ const setBonuses: SetBonus[] = [
         bonus: 'Profane'
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         modifier: 30,
         bonus: 'Profane'
       },
@@ -36,7 +36,7 @@ const setBonuses: SetBonus[] = [
         bonus: 'Profane'
       },
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         modifier: 3,
         bonus: 'Profane'
       },
@@ -67,12 +67,12 @@ const setBonuses: SetBonus[] = [
         bonus: 'Artifact'
       },
       {
-        name: 'Doublestrike',
+        name: 'Doublestrike Chance',
         modifier: '15%',
         bonus: 'Artifact'
       },
       {
-        name: 'Doubleshot',
+        name: 'Doubleshot Chance',
         modifier: '15%',
         bonus: 'Artifact'
       },
@@ -113,7 +113,7 @@ const setBonuses: SetBonus[] = [
         bonus: 'Artifact'
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 30,
         bonus: 'Artifact'
       }
@@ -170,7 +170,7 @@ const setBonuses: SetBonus[] = [
         bonus: 'Artifact'
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         modifier: 30,
         bonus: 'Artifact'
       },
@@ -232,7 +232,7 @@ const setBonuses: SetBonus[] = [
         bonus: 'Profane'
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         modifier: 30,
         bonus: 'Profane'
       },

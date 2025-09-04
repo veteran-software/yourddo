@@ -18,7 +18,8 @@ const menuItems: NavDropdownType[] = [
   { label: 'Storemreaver Monument', image: '', active: false },
   { label: 'Suppressed Power', image: '', active: false },
   { label: 'Trace Of Madness', image: '', active: false },
-  { label: 'Unholy Defiler Of The Hidden Hand', image: '', active: false }
+  { label: 'Unholy Defiler Of The Hidden Hand', image: '', active: false },
+  { label: 'Viktranium Experiment', image: '', active: true }
 ]
 
 export const heroicMenu: NavMenuDropdown = {
