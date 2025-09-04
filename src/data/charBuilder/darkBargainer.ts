@@ -1,4 +1,4 @@
-const darkBargainer = {
+export const darkBargainer = {
   level1: {
     featsAvailable: [
       {

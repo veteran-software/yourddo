@@ -1,4 +1,4 @@
-const spellCastingFeats: object[] = [
+export const spellCastingFeats: object[] = [
   { name: 'Augment Summoning', selectable: [{ 'Dark Bargainer': [1] }], characterCreation: true },
   { name: 'Combat Casting', selectable: [{ 'Dark Bargainer': [1] }], characterCreation: true },
   { name: 'Mental Toughness', selectable: [{ 'Dark Bargainer': [1] }], characterCreation: true },

@@ -1,4 +1,4 @@
-const proficiencyFeats: object[] = [
+export const proficiencyFeats: object[] = [
   {
     name: 'Martial Weapon Proficiency',
     selectable: [],

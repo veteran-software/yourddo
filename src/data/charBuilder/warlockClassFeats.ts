@@ -1,4 +1,4 @@
-const warlockClassFeats: object[] = [
+export const warlockClassFeats: object[] = [
   { name: 'Pact: Celestial', selectable: [{ 'Dark Bargainer': [1] }], characterCreation: true },
   { name: 'Pact: Fey', selectable: [{ 'Dark Bargainer': [1] }], characterCreation: true },
   { name: 'Pact: Fiend', selectable: [{ 'Dark Bargainer': [1] }], characterCreation: true },

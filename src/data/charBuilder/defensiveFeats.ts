@@ -1,4 +1,4 @@
-const defensiveFeats: object[] = [
+export const defensiveFeats: object[] = [
   { name: 'Diehard', selectable: [{ 'Dark Bargainer': [1] }], characterCreation: true },
   { name: 'Force of Personality', selectable: [{ 'Dark Bargainer': [1] }], characterCreation: true },
   { name: 'Great Fortitude', selectable: [{ 'Dark Bargainer': [1] }], characterCreation: true },
