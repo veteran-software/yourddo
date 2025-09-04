@@ -93,7 +93,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Profane',
         modifier: 10
       }
@@ -149,7 +149,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Profane',
         modifier: 10
       }
@@ -359,7 +359,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Dodge',
+        name: 'Dodge Chance',
         bonus: 'Artifact',
         modifier: '3%'
       }
@@ -373,7 +373,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Doubleshot',
+        name: 'Doubleshot Chance',
         bonus: 'Artifact',
         modifier: '5%'
       }
@@ -387,7 +387,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Doublestrike',
+        name: 'Doublestrike Chance',
         bonus: 'Artifact',
         modifier: '5%'
       }
@@ -415,7 +415,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Fortification Bypass',
+        name: 'Fortification Bypass Chance',
         bonus: 'Artifact',
         modifier: '10%'
       }
@@ -499,7 +499,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Artifact',
         modifier: 10
       }
@@ -541,7 +541,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Artifact',
         modifier: 10
       }
@@ -891,7 +891,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Profane',
         modifier: 30
       }
@@ -947,7 +947,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Profane',
         modifier: 30
       }
@@ -1157,7 +1157,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Dodge',
+        name: 'Dodge Chance',
         bonus: 'Artifact',
         modifier: '10%'
       }
@@ -1171,7 +1171,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Doubleshot',
+        name: 'Doubleshot Chance',
         bonus: 'Artifact',
         modifier: '15%'
       }
@@ -1185,7 +1185,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Doublestrike',
+        name: 'Doublestrike Chance',
         bonus: 'Artifact',
         modifier: '15%'
       }
@@ -1213,7 +1213,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Fortification Bypass',
+        name: 'Fortification Bypass Chance',
         bonus: 'Artifact',
         modifier: '30%'
       }
@@ -1297,7 +1297,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Artifact',
         modifier: 30
       }
@@ -1339,7 +1339,7 @@ export const update69Augments: AugmentItem[] = [
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Artifact',
         modifier: 30
       }

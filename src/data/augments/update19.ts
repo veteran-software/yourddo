@@ -51,7 +51,7 @@ export const update19Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Competence',
         modifier: 17
       }
@@ -65,7 +65,7 @@ export const update19Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Dodge',
+        name: 'Dodge Chance',
         bonus: 'Enhancement',
         modifier: '11%'
       }
@@ -135,7 +135,7 @@ export const update19Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Spell Penetration',
+        name: 'Spell Penetration (Level 9)',
         bonus: 'Equipment',
         modifier: 7
       }

@@ -52,7 +52,7 @@ export const update55Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Competence',
         modifier: 8
       }
@@ -66,7 +66,7 @@ export const update55Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Dodge',
+        name: 'Dodge Chance',
         bonus: 'Enhancement',
         modifier: '5%'
       }
@@ -247,7 +247,22 @@ export const update55Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Spell Power: Light & Alignment',
+        name: 'Spell Power: Light',
+        bonus: 'Equipment',
+        modifier: 153
+      },
+      {
+        name: 'Spell Power: Chaotic',
+        bonus: 'Equipment',
+        modifier: 153
+      },
+      {
+        name: 'Spell Power: Evil',
+        bonus: 'Equipment',
+        modifier: 153
+      },
+      {
+        name: 'Spell Power: Lawful',
         bonus: 'Equipment',
         modifier: 153
       }
@@ -267,7 +282,7 @@ export const update55Augments: AugmentItem[] = [
     foundIn: ['The Isle of Dread'],
     effectsAdded: [
       {
-        name: 'Doubleshot',
+        name: 'Doubleshot Chance',
         bonus: 'Enhancement',
         modifier: '3%'
       }
@@ -339,7 +354,7 @@ export const update55Augments: AugmentItem[] = [
     foundIn: ['The Isle of Dread'],
     effectsAdded: [
       {
-        name: 'Doubleshot',
+        name: 'Doubleshot Chance',
         bonus: 'Enhancement',
         modifier: '8%'
       }
@@ -428,7 +443,7 @@ export const update55Augments: AugmentItem[] = [
     foundIn: ['The Isle of Dread'],
     effectsAdded: [
       {
-        name: 'Doublestrike',
+        name: 'Doublestrike Chance',
         bonus: 'Enhancement',
         modifier: '15%'
       }
@@ -500,7 +515,7 @@ export const update55Augments: AugmentItem[] = [
     foundIn: ['The Isle of Dread'],
     effectsAdded: [
       {
-        name: 'Doublestrike',
+        name: 'Doublestrike Chance',
         bonus: 'Enhancement',
         modifier: '6%'
       }

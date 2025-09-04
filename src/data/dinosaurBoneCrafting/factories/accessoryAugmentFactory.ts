@@ -12,28 +12,19 @@ export const attributeScales = ['Strength', 'Dexterity', 'Constitution', 'Intell
 )
 
 // Spell crit damage scales data
-export const spellCritScales = [
-  ['Fire'],
-  ['Cold'],
-  ['Electric'],
-  ['Acid'],
-  ['Light and Alignment'],
-  ['Negative and Poison'],
-  ['Sonic'],
-  ['Force and Physical'],
-  ['Positive'],
-  ['Repair']
-].map(([type]) => ({
-  name: `${type} Spell Crit Damage`,
-  effectName: `${type} Spell Crit Damage +20%`,
-  modifier: '20%'
-}))
+export const spellCritScales = [['Acid'], ['Light and Alignment'], ['Negative and Poison'], ['Sonic'], ['Untyped']].map(
+  ([type]) => ({
+    name: `${type} Spell Critical Damage`,
+    effectName: `${type} Spell Crit Damage`,
+    modifier: '20%'
+  })
+)
 
 // Special scales
 export const specialScales = [
   {
-    name: 'False Life',
-    effectName: 'Maximum Hit Points +53',
+    name: 'False Life +53',
+    effectName: 'Maximum Hit Points',
     modifier: 53
   }
 ]
@@ -196,8 +187,8 @@ export const createAccessoryClaw = (
 
 // Resistance claws data
 export const resistanceClaws = [
-  ['Physical Resistance Rating', 35, 'Enhancement'],
-  ['Magical Resistance Rating', 35, 'Enhancement']
+  ['Physical Resistance', 35, 'Enhancement'],
+  ['Magical Resistance', 35, 'Enhancement']
 ].map(([type, value, bonus]) => ({
   name: type,
   effectName: `${String(type)} +${String(value)}`,
@@ -221,7 +212,7 @@ export const dcClaws = [
 // Special claws data
 export const specialAccessoryClaws = [
   {
-    name: 'Spell Penetration',
+    name: 'Spell Penetration (Level 9)',
     effectName: 'Spell Penetration +9',
     modifier: 9,
     bonus: 'Equipment'

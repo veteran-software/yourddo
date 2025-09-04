@@ -13,7 +13,7 @@ export const update72DenOfVipersItems: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 15
       },
@@ -58,7 +58,7 @@ export const update72DenOfVipersItems: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 15
       },
@@ -104,12 +104,12 @@ export const update72DenOfVipersItems: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Universal Spell Power',
+        name: 'Spell Power: Universal',
         bonus: 'Implement',
         modifier: 33
       },
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 15
       },
@@ -164,12 +164,12 @@ export const update72DenOfVipersItems: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Universal Spell Power',
+        name: 'Spell Power: Universal',
         bonus: 'Implement',
         modifier: 33
       },
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 15
       },
@@ -224,7 +224,7 @@ export const update72DenOfVipersItems: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 15
       },
@@ -268,7 +268,7 @@ export const update72DenOfVipersItems: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 15
       },
@@ -322,12 +322,12 @@ export const update72DenOfVipersItems: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Universal Spell Power',
+        name: 'Spell Power: Universal',
         bonus: 'Implement',
         modifier: 33
       },
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 15
       },
@@ -376,7 +376,7 @@ export const update72DenOfVipersItems: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 15
       },

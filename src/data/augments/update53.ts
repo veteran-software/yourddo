@@ -12,7 +12,7 @@ export const update53Augments: AugmentItem[] = [
         name: 'Empowered Spell Cost: -4'
       },
       {
-        name: 'Universal Spell Power',
+        name: 'Spell Power: Universal',
         bonus: 'On-damage : 3 sec',
         modifier: 8
       }

@@ -185,7 +185,7 @@ export const update50Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Competence',
         modifier: 2
       }
@@ -199,7 +199,7 @@ export const update50Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Dodge',
+        name: 'Dodge Chance',
         bonus: 'Enhancement',
         modifier: '1%'
       }
@@ -269,7 +269,7 @@ export const update50Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Spell Penetration',
+        name: 'Spell Penetration (Level 9)',
         bonus: 'Equipment',
         modifier: 1
       }
@@ -452,7 +452,22 @@ export const update50Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Spell Power: Light & Alignment',
+        name: 'Spell Power: Light',
+        bonus: 'Equipment',
+        modifier: 139
+      },
+      {
+        name: 'Spell Power: Chaotic',
+        bonus: 'Equipment',
+        modifier: 139
+      },
+      {
+        name: 'Spell Power: Evil',
+        bonus: 'Equipment',
+        modifier: 139
+      },
+      {
+        name: 'Spell Power: Lawful',
         bonus: 'Equipment',
         modifier: 139
       }
