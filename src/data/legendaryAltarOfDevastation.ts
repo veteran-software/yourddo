@@ -4153,7 +4153,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AaOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4198,7 +4198,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WaOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4243,7 +4243,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PaOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4288,7 +4288,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NaOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4333,7 +4333,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EeOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4378,7 +4378,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WeOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4423,7 +4423,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PeOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4468,7 +4468,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NeOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4513,7 +4513,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FfOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4558,7 +4558,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EfOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4603,7 +4603,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PfOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4648,7 +4648,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NfOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4693,7 +4693,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WwOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4738,7 +4738,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FwOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4783,7 +4783,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EwOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4828,7 +4828,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AfOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4873,7 +4873,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PwOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4918,7 +4918,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NwOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -4963,7 +4963,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NnOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -5008,7 +5008,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PpOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -5053,7 +5053,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, NpOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -6487,7 +6487,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EaOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -6532,7 +6532,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FaOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -6935,7 +6935,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AeOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -6980,7 +6980,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FeOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -7293,7 +7293,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WfOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -7561,7 +7561,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AwOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -8587,7 +8587,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, AnOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -8632,7 +8632,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EnOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -8677,7 +8677,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FnOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -8722,7 +8722,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WnOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -8767,7 +8767,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PnOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -9792,7 +9792,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, ApOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -9837,7 +9837,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, EpOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -9882,7 +9882,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, FpOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }
@@ -9927,7 +9927,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, WpOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Exceptional'
       }

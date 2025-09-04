@@ -211,7 +211,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Spell Penetration',
+        name: 'Spell Penetration (Level 9)',
         bonus: 'Enhancement',
         modifier: 9
       },
@@ -1043,7 +1043,12 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Repair Spell Power',
+        name: 'Spell Power: Repair',
+        bonus: 'Insight',
+        modifier: 79
+      },
+      {
+        name: 'Spell Power: Rust',
         bonus: 'Insight',
         modifier: 79
       }
@@ -2098,7 +2103,12 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Repair Spell Power',
+        name: 'Spell Power: Repair',
+        bonus: 'Equipment',
+        modifier: 159
+      },
+      {
+        name: 'Spell Power: Rust',
         bonus: 'Equipment',
         modifier: 159
       }
@@ -3232,7 +3242,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Doublestrike',
+        name: 'Doublestrike Chance',
         bonus: 'Enhancement',
         modifier: '17%'
       }
@@ -3276,7 +3286,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Doubleshot',
+        name: 'Doubleshot Chance',
         bonus: 'Enhancement',
         modifier: '9%'
       }
@@ -3452,7 +3462,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Competence',
         modifier: 23
       }
@@ -4343,7 +4353,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Quality',
         modifier: 5
       }
@@ -4501,7 +4511,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Enhancement',
         modifier: 38
       }
@@ -4549,7 +4559,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Enhancement',
         modifier: 38
       }
@@ -4597,7 +4607,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Spell Penetration',
+        name: 'Spell Penetration (Level 9)',
         bonus: 'Equipment',
         modifier: 10
       }
@@ -5317,7 +5327,17 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Saving Throws (all)',
+        name: 'Fortitude Saving Throws',
+        bonus: 'Resistance',
+        modifier: 12
+      },
+      {
+        name: 'Reflex Saving Throws',
+        bonus: 'Resistance',
+        modifier: 12
+      },
+      {
+        name: 'Will Saving Throws',
         bonus: 'Resistance',
         modifier: 12
       }
@@ -5459,7 +5479,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Fortification Bypass',
+        name: 'Fortification Bypass Chance',
         bonus: 'Enhancement',
         modifier: '23%'
       }
@@ -5961,7 +5981,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Universal Spell Power',
+        name: 'Spell Power: Universal',
         bonus: 'Exceptional',
         modifier: 15
       }
@@ -6202,7 +6222,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Spell Penetration',
+        name: 'Spell Penetration (Level 9)',
         bonus: 'Enhancement',
         modifier: 9
       },
@@ -6973,7 +6993,12 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Repair Spell Power',
+        name: 'Spell Power: Repair',
+        bonus: 'Insight',
+        modifier: 35
+      },
+      {
+        name: 'Spell Power: Rust',
         bonus: 'Insight',
         modifier: 35
       }
@@ -8070,7 +8095,12 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Repair Spell Power',
+        name: 'Spell Power: Repair',
+        bonus: 'Equipment',
+        modifier: 70
+      },
+      {
+        name: 'Spell Power: Rust',
         bonus: 'Equipment',
         modifier: 70
       }
@@ -8866,7 +8896,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Doublestrike',
+        name: 'Doublestrike Chance',
         bonus: 'Enhancement',
         modifier: '6%'
       }
@@ -8910,7 +8940,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Doubleshot',
+        name: 'Doubleshot Chance',
         bonus: 'Enhancement',
         modifier: '3%'
       }
@@ -9086,7 +9116,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Competence',
         modifier: 8
       }
@@ -9976,7 +10006,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Quality',
         modifier: 1
       }
@@ -10134,7 +10164,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Enhancement',
         modifier: 12
       }
@@ -10182,7 +10212,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Enhancement',
         modifier: 12
       }
@@ -10230,7 +10260,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Spell Penetration',
+        name: 'Spell Penetration (Level 9)',
         bonus: 'Equipment',
         modifier: 3
       }
@@ -10950,7 +10980,17 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Saving Throws (all)',
+        name: 'Fortitude Saving Throws',
+        bonus: 'Resistance',
+        modifier: 4
+      },
+      {
+        name: 'Reflex Saving Throws',
+        bonus: 'Resistance',
+        modifier: 4
+      },
+      {
+        name: 'Will Saving Throws',
         bonus: 'Resistance',
         modifier: 4
       }
@@ -11092,7 +11132,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Fortification Bypass',
+        name: 'Fortification Bypass Chance',
         bonus: 'Enhancement',
         modifier: '8%'
       }
@@ -11594,7 +11634,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Universal Spell Power',
+        name: 'Spell Power: Universal',
         bonus: 'Exceptional',
         modifier: 5
       }

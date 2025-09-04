@@ -783,12 +783,12 @@ export const ingredients: Ingredient[] = [
     augmentType: 'Isle of Dread: Scale (Armor)',
     enhancements: [
       {
-        name: 'Doublestrike',
+        name: 'Doublestrike Chance',
         modifier: '3%',
         bonus: 'Profane'
       },
       {
-        name: 'Doubleshot',
+        name: 'Doubleshot Chance',
         modifier: '3%',
         bonus: 'Profane'
       },

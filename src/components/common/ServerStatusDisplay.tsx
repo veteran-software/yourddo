@@ -1,6 +1,5 @@
 import type { DateTime } from 'luxon'
 import { Container, Stack } from 'react-bootstrap'
-import { FaRegQuestionCircle } from 'react-icons/fa'
 import { FaCircleNotch, FaRegCircleDown, FaRegCircleUp } from 'react-icons/fa6'
 import { formatDateWithOrdinal } from '../../utils/dateTimeUtils.ts'
 
@@ -9,7 +8,7 @@ const ServerStatusDisplay = (props: Props) => {
 
   const getIcon = (up: boolean | undefined) => {
     if (up === undefined && !comingSoon) {
-      return <FaRegQuestionCircle size={15} color='yellow' />
+      return <FaRegCircleDown size={15} color={'red'} />
     }
 
     if (comingSoon && comingSoonDate) {

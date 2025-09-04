@@ -51,7 +51,7 @@ export const update42Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Competence',
         modifier: 12
       }
@@ -65,7 +65,7 @@ export const update42Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Dodge',
+        name: 'Dodge Chance',
         bonus: 'Enhancement',
         modifier: '8%'
       }
@@ -135,7 +135,7 @@ export const update42Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Spell Penetration',
+        name: 'Spell Penetration (Level 9)',
         bonus: 'Equipment',
         modifier: 5
       }
@@ -205,12 +205,12 @@ export const update42Augments: AugmentItem[] = [
     image: 'blueAugmentGreenBorder',
     effectsAdded: [
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Enhancement',
         modifier: 32
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Enhancement',
         modifier: 32
       }
@@ -283,6 +283,26 @@ export const update42Augments: AugmentItem[] = [
         name: 'Spell Power: Force',
         bonus: 'Equipment',
         modifier: 139
+      },
+      {
+        name: 'Spell Power: Bludgeoning',
+        bonus: 'Equipment',
+        modifier: 139
+      },
+      {
+        name: 'Spell Power: Piercing',
+        bonus: 'Equipment',
+        modifier: 139
+      },
+      {
+        name: 'Spell Power: Slashing',
+        bonus: 'Equipment',
+        modifier: 139
+      },
+      {
+        name: 'Spell Power: Untyped',
+        bonus: 'Equipment',
+        modifier: 139
       }
     ]
   },
@@ -294,7 +314,12 @@ export const update42Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Spell Power: Repair & Rust',
+        name: 'Spell Power: Repair',
+        bonus: 'Equipment',
+        modifier: 139
+      },
+      {
+        name: 'Spell Power: Rust',
         bonus: 'Equipment',
         modifier: 139
       }

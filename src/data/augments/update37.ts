@@ -51,7 +51,7 @@ export const update37Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Competence',
         modifier: 10
       }
@@ -65,7 +65,7 @@ export const update37Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Dodge',
+        name: 'Dodge Chance',
         bonus: 'Enhancement',
         modifier: '6%'
       }
@@ -135,7 +135,7 @@ export const update37Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Spell Penetration',
+        name: 'Spell Penetration (Level 9)',
         bonus: 'Equipment',
         modifier: 4
       }
@@ -207,7 +207,17 @@ export const update37Augments: AugmentItem[] = [
     image: 'blueAugmentGreenBorder',
     effectsAdded: [
       {
-        name: 'Saving Throws (all)',
+        name: 'Fortitude Saving Throws',
+        bonus: 'Resistance',
+        modifier: 10
+      },
+      {
+        name: 'Reflex Saving Throws',
+        bonus: 'Resistance',
+        modifier: 10
+      },
+      {
+        name: 'Will Saving Throws',
         bonus: 'Resistance',
         modifier: 10
       }
@@ -235,7 +245,7 @@ export const update37Augments: AugmentItem[] = [
     image: 'blueAugmentGreenBorder',
     effectsAdded: [
       {
-        name: 'Dodge',
+        name: 'Dodge Chance',
         bonus: 'Enhancement',
         modifier: '12%'
       }
@@ -278,6 +288,11 @@ export const update37Augments: AugmentItem[] = [
     effectsAdded: [
       {
         name: 'Spell Power: Negative',
+        bonus: 'Equipment',
+        modifier: 139
+      },
+      {
+        name: 'Spell Power: Poison',
         bonus: 'Equipment',
         modifier: 139
       }

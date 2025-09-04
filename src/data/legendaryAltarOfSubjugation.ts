@@ -2644,7 +2644,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, AOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Quality'
       }
@@ -2726,7 +2726,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, EOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Quality'
       }
@@ -2808,7 +2808,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, FOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Quality'
       }
@@ -2890,7 +2890,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, WOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Quality'
       }
@@ -2972,7 +2972,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, NOE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Quality'
       }
@@ -3054,7 +3054,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, POE)',
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         modifier: 9,
         bonus: 'Quality'
       }

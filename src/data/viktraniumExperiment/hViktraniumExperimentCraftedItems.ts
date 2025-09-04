@@ -14,7 +14,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -68,7 +68,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -122,7 +122,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -176,7 +176,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -230,7 +230,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -284,7 +284,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -338,7 +338,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -392,7 +392,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -446,7 +446,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -500,7 +500,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -554,7 +554,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -608,7 +608,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -662,7 +662,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -716,7 +716,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -770,7 +770,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -824,7 +824,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -878,7 +878,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -932,7 +932,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -986,7 +986,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1040,7 +1040,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1094,7 +1094,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1148,7 +1148,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1202,7 +1202,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1256,7 +1256,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1310,7 +1310,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1364,7 +1364,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1418,7 +1418,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1472,7 +1472,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1530,7 +1530,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1588,7 +1588,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1646,7 +1646,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1704,7 +1704,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1762,7 +1762,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1816,7 +1816,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1870,7 +1870,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1924,7 +1924,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -1978,7 +1978,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2032,7 +2032,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2086,7 +2086,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2140,7 +2140,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },
@@ -2194,7 +2194,7 @@ const HViktraniumExperimentCraftedItems: CraftingIngredient[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Enhancement',
         modifier: 4
       },

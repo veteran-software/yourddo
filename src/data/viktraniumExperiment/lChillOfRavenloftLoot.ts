@@ -13,7 +13,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Universal Spell Power',
+        name: 'Spell Power: Universal',
         bonus: 'Implement',
         modifier: 33
       },
@@ -56,7 +56,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Universal Spell Power',
+        name: 'Spell Power: Universal',
         bonus: 'Implement',
         modifier: 33
       },
@@ -98,7 +98,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Universal Spell Power',
+        name: 'Spell Power: Universal',
         bonus: 'Implement',
         modifier: 33
       },
@@ -113,7 +113,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 38
       },
       {
-        name: 'Spell Penetration',
+        name: 'Spell Penetration (Level 9)',
         bonus: 'Equipment',
         modifier: 9
       }
@@ -145,7 +145,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 15
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -177,7 +177,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 15
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -209,7 +209,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 15
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -241,7 +241,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 15
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       },
@@ -273,7 +273,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Universal Spell Power',
+        name: 'Spell Power: Universal',
         bonus: 'Implement',
         modifier: 33
       },
@@ -288,7 +288,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 38
       },
       {
-        name: 'Spell Penetration',
+        name: 'Spell Penetration (Level 9)',
         bonus: 'Equipment',
         modifier: 9
       }
@@ -557,7 +557,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 1
       },
       {
-        name: 'Doubleshot',
+        name: 'Doubleshot Chance',
         bonus: 'Insight',
         modifier: '5%'
       }
@@ -590,7 +590,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: '14%'
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -623,7 +623,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: '14%'
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -656,7 +656,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: '14%'
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -689,7 +689,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: '7%'
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -722,7 +722,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: '7%'
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -755,7 +755,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: '14%'
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -788,7 +788,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: '7%'
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -821,7 +821,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: '7%'
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -854,7 +854,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: '7%'
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -887,7 +887,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: '14%'
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -915,7 +915,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Quality',
         modifier: 1,
         notes: '+1 per Religious Lore Feat'
@@ -1064,7 +1064,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 57
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1097,7 +1097,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 57
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1130,7 +1130,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 57
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1163,7 +1163,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 55
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1196,7 +1196,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 51
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1229,7 +1229,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 57
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1262,7 +1262,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 2
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1295,7 +1295,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 3
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1328,7 +1328,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 6
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1361,7 +1361,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 57
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1394,7 +1394,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 13
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Quality',
         modifier: 9
       }
@@ -1489,7 +1489,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 7
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1522,7 +1522,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 7
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1555,7 +1555,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 7
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1588,7 +1588,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 7
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1621,7 +1621,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 7
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1654,7 +1654,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 7
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1687,7 +1687,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 7
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1720,7 +1720,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 7
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1753,7 +1753,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 7
       },
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1786,7 +1786,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 7
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Insight',
         modifier: 18
       }
@@ -1845,7 +1845,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 3
       },
       {
-        name: 'Fortification Bypass',
+        name: 'Fortification Bypass Chance',
         bonus: 'Enhancement',
         modifier: '23%'
       }
@@ -2065,7 +2065,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 7
       },
       {
-        name: 'Fortification Bypass',
+        name: 'Fortification Bypass Chance',
         bonus: 'Insight',
         modifier: '11%'
       }
@@ -2092,7 +2092,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Legendary',
         modifier: 5
       },
@@ -2210,7 +2210,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Doublestrike',
+        name: 'Doublestrike Chance',
         bonus: 'Enhancement',
         modifier: '17%'
       },
@@ -2239,7 +2239,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Magical Resistance Rating',
+        name: 'Magical Resistance',
         bonus: 'Quality',
         modifier: 9
       },
@@ -2271,12 +2271,12 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Legendary',
         modifier: 5
       },
       {
-        name: 'Physical Resistance Rating',
+        name: 'Physical Resistance',
         bonus: 'Quality',
         modifier: 9
       }
@@ -2485,7 +2485,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Dodge',
+        name: 'Dodge Chance',
         bonus: 'Enhancement',
         modifier: '15%'
       },
@@ -2537,7 +2537,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 6
       },
       {
-        name: 'Spell Penetration',
+        name: 'Spell Penetration (Level 9)',
         bonus: 'Equipment',
         modifier: 10
       }

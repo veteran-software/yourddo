@@ -548,7 +548,7 @@ export const update48Augments: AugmentItem[] = [
         numPiecesEquipped: 3,
         enhancements: [
           {
-            name: 'Magical Resistance Rating',
+            name: 'Magical Resistance',
             modifier: 30,
             bonus: 'Artifact'
           }
@@ -913,12 +913,12 @@ export const update48Augments: AugmentItem[] = [
         numPiecesEquipped: 3,
         enhancements: [
           {
-            name: 'Doublestrike',
+            name: 'Doublestrike Chance',
             modifier: '15%',
             bonus: 'Artifact'
           },
           {
-            name: 'Doubleshot',
+            name: 'Doubleshot Chance',
             modifier: '15%',
             bonus: 'Artifact'
           }
@@ -958,7 +958,7 @@ export const update48Augments: AugmentItem[] = [
         numPiecesEquipped: 3,
         enhancements: [
           {
-            name: 'Universal Spell Power',
+            name: 'Spell Power: Universal',
             modifier: 25,
             bonus: 'Artifact'
           }
@@ -998,7 +998,7 @@ export const update48Augments: AugmentItem[] = [
         numPiecesEquipped: 3,
         enhancements: [
           {
-            name: 'Physical Resistance Rating',
+            name: 'Physical Resistance',
             modifier: 30,
             bonus: 'Artifact'
           }
@@ -1038,7 +1038,7 @@ export const update48Augments: AugmentItem[] = [
         numPiecesEquipped: 3,
         enhancements: [
           {
-            name: 'Fortification Bypass',
+            name: 'Fortification Bypass Chance',
             modifier: '15%',
             bonus: 'Artifact'
           }
@@ -1238,7 +1238,7 @@ export const update48Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Competence',
         modifier: 5
       }
@@ -1252,7 +1252,7 @@ export const update48Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Dodge',
+        name: 'Dodge Chance',
         bonus: 'Enhancement',
         modifier: '3%'
       }
@@ -1322,7 +1322,7 @@ export const update48Augments: AugmentItem[] = [
     foundIn: [],
     effectsAdded: [
       {
-        name: 'Spell Penetration',
+        name: 'Spell Penetration (Level 9)',
         bonus: 'Equipment',
         modifier: 2
       }
@@ -1377,7 +1377,7 @@ export const update48Augments: AugmentItem[] = [
     image: 'blueAugmentGreenBorder',
     effectsAdded: [
       {
-        name: 'Stun DC',
+        name: 'Stunning DC',
         bonus: 'Enhancement',
         modifier: 14
       }
@@ -1391,7 +1391,7 @@ export const update48Augments: AugmentItem[] = [
     image: 'blueAugmentGreenBorder',
     effectsAdded: [
       {
-        name: 'Attack',
+        name: 'Attack Rolls',
         bonus: 'Competence',
         modifier: 14
       }

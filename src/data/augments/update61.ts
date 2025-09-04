@@ -308,7 +308,7 @@ export const update61Augments: AugmentItem[] = [
     name: 'The Art of Sabotage, Vol. 1',
     effectsAdded: [
       {
-        name: 'Fortification Bypass',
+        name: 'Fortification Bypass Chance',
         bonus: 'Enhancement',
         modifier: '14%'
       }
@@ -326,7 +326,7 @@ export const update61Augments: AugmentItem[] = [
     name: 'The Art of Sabotage, Vol. 3',
     effectsAdded: [
       {
-        name: 'Fortification Bypass',
+        name: 'Fortification Bypass Chance',
         bonus: 'Enhancement',
         modifier: '22%'
       }

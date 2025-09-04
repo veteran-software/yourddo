@@ -3922,7 +3922,34 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with a +111 Equipment bonus to Force Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 20,
     image: 'rubyOfImpulse111.png',
-    foundIn: []
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Spell Power: Force',
+        bonus: 'Equipment',
+        modifier: 111
+      },
+      {
+        name: 'Spell Power: Bludgeoning',
+        bonus: 'Equipment',
+        modifier: 111
+      },
+      {
+        name: 'Spell Power: Piercing',
+        bonus: 'Equipment',
+        modifier: 111
+      },
+      {
+        name: 'Spell Power: Slashing',
+        bonus: 'Equipment',
+        modifier: 111
+      },
+      {
+        name: 'Spell Power: Untyped',
+        bonus: 'Equipment',
+        modifier: 111
+      }
+    ]
   },
   {
     name: 'Ruby of Impulse 125',
@@ -3930,7 +3957,34 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with a +125 Equipment bonus to Force Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 24,
     image: 'rubyOfImpulse125.png',
-    foundIn: []
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Spell Power: Force',
+        bonus: 'Equipment',
+        modifier: 125
+      },
+      {
+        name: 'Spell Power: Bludgeoning',
+        bonus: 'Equipment',
+        modifier: 125
+      },
+      {
+        name: 'Spell Power: Piercing',
+        bonus: 'Equipment',
+        modifier: 125
+      },
+      {
+        name: 'Spell Power: Slashing',
+        bonus: 'Equipment',
+        modifier: 125
+      },
+      {
+        name: 'Spell Power: Untyped',
+        bonus: 'Equipment',
+        modifier: 125
+      }
+    ]
   },
   {
     name: 'Ruby of Impulse 38',
@@ -3938,7 +3992,34 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with a +38 Equipment bonus to Force Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 1,
     image: 'rubyOfImpulse38.png',
-    foundIn: []
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Spell Power: Force',
+        bonus: 'Equipment',
+        modifier: 38
+      },
+      {
+        name: 'Spell Power: Bludgeoning',
+        bonus: 'Equipment',
+        modifier: 38
+      },
+      {
+        name: 'Spell Power: Piercing',
+        bonus: 'Equipment',
+        modifier: 38
+      },
+      {
+        name: 'Spell Power: Slashing',
+        bonus: 'Equipment',
+        modifier: 38
+      },
+      {
+        name: 'Spell Power: Untyped',
+        bonus: 'Equipment',
+        modifier: 38
+      }
+    ]
   },
   {
     name: 'Ruby of Impulse 55',
@@ -3946,7 +4027,34 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with a +55 Equipment bonus to Force Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 4,
     image: 'rubyOfImpulse55.png',
-    foundIn: []
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Spell Power: Force',
+        bonus: 'Equipment',
+        modifier: 55
+      },
+      {
+        name: 'Spell Power: Bludgeoning',
+        bonus: 'Equipment',
+        modifier: 55
+      },
+      {
+        name: 'Spell Power: Piercing',
+        bonus: 'Equipment',
+        modifier: 55
+      },
+      {
+        name: 'Spell Power: Slashing',
+        bonus: 'Equipment',
+        modifier: 55
+      },
+      {
+        name: 'Spell Power: Untyped',
+        bonus: 'Equipment',
+        modifier: 55
+      }
+    ]
   },
   {
     name: 'Ruby of Impulse 70',
@@ -3954,7 +4062,34 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with a +70 Equipment bonus to Force Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 8,
     image: 'rubyOfImpulse70.png',
-    foundIn: []
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Spell Power: Force',
+        bonus: 'Equipment',
+        modifier: 70
+      },
+      {
+        name: 'Spell Power: Bludgeoning',
+        bonus: 'Equipment',
+        modifier: 70
+      },
+      {
+        name: 'Spell Power: Piercing',
+        bonus: 'Equipment',
+        modifier: 70
+      },
+      {
+        name: 'Spell Power: Slashing',
+        bonus: 'Equipment',
+        modifier: 70
+      },
+      {
+        name: 'Spell Power: Untyped',
+        bonus: 'Equipment',
+        modifier: 70
+      }
+    ]
   },
   {
     name: 'Ruby of Impulse 84',
@@ -3962,7 +4097,34 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with a +84 Equipment bonus to Force Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 12,
     image: 'rubyOfImpulse84.png',
-    foundIn: []
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Spell Power: Force',
+        bonus: 'Equipment',
+        modifier: 84
+      },
+      {
+        name: 'Spell Power: Bludgeoning',
+        bonus: 'Equipment',
+        modifier: 84
+      },
+      {
+        name: 'Spell Power: Piercing',
+        bonus: 'Equipment',
+        modifier: 84
+      },
+      {
+        name: 'Spell Power: Slashing',
+        bonus: 'Equipment',
+        modifier: 84
+      },
+      {
+        name: 'Spell Power: Untyped',
+        bonus: 'Equipment',
+        modifier: 84
+      }
+    ]
   },
   {
     name: 'Ruby of Impulse 97',
@@ -3970,7 +4132,34 @@ export const augments: AugmentItem[] = [
       'Drag this augment into a slot to upgrade a weapon with a +97 Equipment bonus to Force Spell Power. This augment can go in a Red, Orange, or Purple Augment Slot.',
     minimumLevel: 16,
     image: 'rubyOfImpulse97.png',
-    foundIn: []
+    foundIn: [],
+    effectsAdded: [
+      {
+        name: 'Spell Power: Force',
+        bonus: 'Equipment',
+        modifier: 97
+      },
+      {
+        name: 'Spell Power: Bludgeoning',
+        bonus: 'Equipment',
+        modifier: 97
+      },
+      {
+        name: 'Spell Power: Piercing',
+        bonus: 'Equipment',
+        modifier: 97
+      },
+      {
+        name: 'Spell Power: Slashing',
+        bonus: 'Equipment',
+        modifier: 97
+      },
+      {
+        name: 'Spell Power: Untyped',
+        bonus: 'Equipment',
+        modifier: 97
+      }
+    ]
   },
   {
     name: 'Ruby of Iron Blows',

@@ -66,7 +66,27 @@ export const update57Augments: AugmentItem[] = [
         modifier: 146
       },
       {
-        name: 'Force Spell Power',
+        name: 'Spell Power: Force',
+        bonus: 'Equipment',
+        modifier: 146
+      },
+      {
+        name: 'Spell Power: Bludgeoning',
+        bonus: 'Equipment',
+        modifier: 146
+      },
+      {
+        name: 'Spell Power: Piercing',
+        bonus: 'Equipment',
+        modifier: 146
+      },
+      {
+        name: 'Spell Power: Slashing',
+        bonus: 'Equipment',
+        modifier: 146
+      },
+      {
+        name: 'Spell Power: Untyped',
         bonus: 'Equipment',
         modifier: 146
       }
