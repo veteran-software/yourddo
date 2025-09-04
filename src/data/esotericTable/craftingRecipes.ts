@@ -1,6 +1,6 @@
 import type { CraftingIngredient } from '../../types/crafting.ts'
 
-const craftingRecipes: CraftingIngredient[] = [
+export const craftingRecipes: CraftingIngredient[] = [
   {
     name: 'Warp the Unholy',
     description:

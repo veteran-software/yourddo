@@ -1,4 +1,4 @@
-const skillFocusFeats: object[] = [
+export const skillFocusFeats: object[] = [
   { name: 'Acrobatic', selectable: [{ 'Dark Bargainer': [1] }], characterCreation: true },
   { name: 'Alertness', selectable: [{ 'Dark Bargainer': [1] }], characterCreation: true },
   { name: 'Athletic', selectable: [{ 'Dark Bargainer': [1] }], characterCreation: true },
