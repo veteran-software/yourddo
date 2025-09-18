@@ -10,6 +10,7 @@ import { heroicMenu } from './heroicMenu'
 import { legendaryMenu } from './legendaryMenu.ts'
 import MenuDropdown from './MenuDropdown.tsx'
 import { puzzleMenu } from './puzzleMenu.ts'
+import TroveImport from './TroveImport.tsx'
 import type { NavMenuDropdown } from './types'
 
 const NavbarTop = () => {
@@ -50,6 +51,8 @@ const NavbarTop = () => {
             >
               <FaGithub size={25} />
             </Nav.Link>
+
+            <TroveImport />
           </Nav>
         </Navbar.Collapse>
       </Container>
