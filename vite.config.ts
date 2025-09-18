@@ -7,7 +7,7 @@ export default defineConfig({
     devSourcemap: false,
     preprocessorOptions: {
       scss: {
-        silenceDeprecations: ['mixed-decls', 'color-functions', 'global-builtin', 'import']
+        silenceDeprecations: ['color-functions', 'global-builtin', 'import']
       }
     }
   },
