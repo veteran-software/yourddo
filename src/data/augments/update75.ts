@@ -3551,7 +3551,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Sneak Attack',
+        name: 'Sneak Attack Accuracy',
         bonus: 'Enhancement',
         modifier: 12
       },
@@ -9204,7 +9204,7 @@ export const update75Augments: AugmentItem[] = [
     craftedIn: 'Ludendorf Town Hall',
     effectsAdded: [
       {
-        name: 'Sneak Attack',
+        name: 'Sneak Attack Accuracy',
         bonus: 'Enhancement',
         modifier: 3
       },
@@ -12103,7 +12103,7 @@ export const update75Augments: AugmentItem[] = [
     augmentType: 'Moon',
     image: 'augmentGreyBookBlueBorder',
     update: 75,
-    foundIn: ['Chill of Ravenloft Expansion'],
+    foundIn: ['The Body Snatchers (Heroic) '],
     effectsAdded: [
       {
         name: 'Skill: Diplomacy',
@@ -12124,11 +12124,11 @@ export const update75Augments: AugmentItem[] = [
   },
   {
     name: 'Lunar Gem of Linguistics (Legendary)',
-    minimumLevel: 30,
+    minimumLevel: 1,
     augmentType: 'Moon',
     image: 'augmentGreyBookBlueBorder',
     update: 75,
-    foundIn: ['Chill of Ravenloft Expansion'],
+    foundIn: ['The Body Snatchers (Legendary)'],
     effectsAdded: [
       {
         name: 'Skill: Diplomacy',
@@ -12156,7 +12156,7 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Necromancy DCs',
+        name: 'Spell DC: Necromancy',
         bonus: 'Profane',
         modifier: 2
       }
@@ -12171,7 +12171,7 @@ export const update75Augments: AugmentItem[] = [
     foundIn: ['Chill of Ravenloft Expansion'],
     effectsAdded: [
       {
-        name: 'Necromancy DCs',
+        name: 'Spell DC: Necromancy',
         bonus: 'Profane',
         modifier: 4
       }
@@ -12261,7 +12261,7 @@ export const update75Augments: AugmentItem[] = [
         modifier: 2
       },
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         bonus: 'Profane',
         modifier: 2
       }
@@ -12281,7 +12281,7 @@ export const update75Augments: AugmentItem[] = [
         modifier: 6
       },
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         bonus: 'Profane',
         modifier: 6
       }
@@ -12374,6 +12374,46 @@ export const update75Augments: AugmentItem[] = [
         name: 'Maximum Spell Points',
         bonus: 'Legendary',
         modifier: '10%'
+      }
+    ]
+  },
+  {
+    name: 'Solar Gem of Balance and Tumble (Heroic)',
+    minimumLevel: 1,
+    augmentType: 'Sun',
+    image: 'augmentGreyBookBlueBorder',
+    update: 75,
+    foundIn: ['The Body Snatchers (Heroic)'],
+    effectsAdded: [
+      {
+        name: 'Skill: Balance',
+        bonus: 'Artifact',
+        modifier: 2
+      },
+      {
+        name: 'Skill: Tumble',
+        bonus: 'Artifact',
+        modifier: 2
+      }
+    ]
+  },
+  {
+    name: 'Solar Gem of Balance and Tumble (Legendary)',
+    minimumLevel: 30,
+    augmentType: 'Sun',
+    image: 'augmentGreyBookBlueBorder',
+    update: 75,
+    foundIn: ['The Body Snatchers (Legendary)'],
+    effectsAdded: [
+      {
+        name: 'Skill: Balance',
+        bonus: 'Artifact',
+        modifier: 6
+      },
+      {
+        name: 'Skill: Tumble',
+        bonus: 'Artifact',
+        modifier: 6
       }
     ]
   },
@@ -12638,10 +12678,10 @@ export const update75Augments: AugmentItem[] = [
     augmentType: 'Sun',
     image: 'augmentGreyBookBlueBorder',
     update: 75,
-    foundIn: ['Chill of Ravenloft Expansion'],
+    foundIn: ['The Body Snatchers (Heroic)'],
     effectsAdded: [
       {
-        name: 'Necromancy DCs',
+        name: 'Spell DC: Necromancy',
         bonus: 'Artifact',
         modifier: 2
       }
@@ -12653,10 +12693,10 @@ export const update75Augments: AugmentItem[] = [
     augmentType: 'Sun',
     image: 'augmentGreyBookBlueBorder',
     update: 75,
-    foundIn: ['Chill of Ravenloft Expansion'],
+    foundIn: ['The Body Snatchers (Legendary)'],
     effectsAdded: [
       {
-        name: 'Necromancy DCs',
+        name: 'Spell DC: Necromancy',
         bonus: 'Artifact',
         modifier: 4
       }

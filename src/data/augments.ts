@@ -2740,7 +2740,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         bonus: 'Competence',
         modifier: 10
       }
@@ -2756,7 +2756,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         bonus: 'Competence',
         modifier: 13
       }
@@ -2772,7 +2772,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         bonus: 'Competence',
         modifier: 15
       }
@@ -2788,7 +2788,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         bonus: 'Competence',
         modifier: 17
       }
@@ -2804,7 +2804,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         bonus: 'Competence',
         modifier: 18
       }
@@ -2820,7 +2820,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         bonus: 'Competence',
         modifier: 19
       }
@@ -2836,7 +2836,7 @@ export const augments: AugmentItem[] = [
     augmentType: 'Colorless',
     effectsAdded: [
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         bonus: 'Competence',
         modifier: 5
       }

@@ -1617,7 +1617,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
         bonus: 'Competence'
       },
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         modifier: 22,
         bonus: 'Competence'
       }
@@ -1816,7 +1816,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
         bonus: 'Competence'
       },
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         modifier: 22,
         bonus: 'Competence'
       }

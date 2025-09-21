@@ -188,7 +188,7 @@ export const update69Augments: AugmentItem[] = [
     minimumLevel: 1,
     augmentType: 'Moon',
     image: '',
-    foundIn: ['Myths of Drannor Expansion'],
+    foundIn: ['Myths of Drannor Expansion', 'The Body Snatchers (Heroic)'],
     effectsAdded: [
       {
         name: 'Spell DCs',
@@ -272,7 +272,7 @@ export const update69Augments: AugmentItem[] = [
     minimumLevel: 1,
     augmentType: 'Sun',
     image: '',
-    foundIn: ['Myths of Drannor Expansion'],
+    foundIn: ['Myths of Drannor Expansion', 'The Body Snatchers (Heroic)'],
     effectsAdded: [
       {
         name: 'Armor Class',
@@ -495,7 +495,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Magical Resistance Rating (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -509,7 +509,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Melee Power (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -523,7 +523,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Negative Amplification (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -537,7 +537,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Physical Resistance Rating (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -551,7 +551,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Ranged Power (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -565,7 +565,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Reflex (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -579,8 +579,8 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Repair Amplification (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
-    foundIn: ['Myths of Drannor Expansion'],
+    image: 'augmentGreyBookBlueBorder',
+    foundIn: ['Voices of the Dead (Heroic)', 'The Body Snatchers (Heroic)'],
     effectsAdded: [
       {
         name: 'Repair Amplification',
@@ -593,7 +593,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Sneak Attack Damage (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -607,7 +607,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Sneak Attack Dice (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -621,7 +621,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Spell Critical Chance (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -635,7 +635,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Spell Critical Damage (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -649,7 +649,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Spell DCs (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -663,7 +663,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Spell Penetration (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -677,7 +677,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Spellpower (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -691,7 +691,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Strength (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -705,7 +705,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Strikethrough (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -719,7 +719,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Swift Charging (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -733,11 +733,36 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Tactical DCs (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
-    foundIn: ['Myths of Drannor Expansion'],
+    image: 'augmentGreyBookBlueBorder',
+    foundIn: ['The Key to the Mythal (Heroic)', 'Dinosaur Crisis (Heroic)', 'The Body Snatchers (Heroic)'],
     effectsAdded: [
       {
-        name: 'Tactical DCs',
+        name: 'Trip DC',
+        bonus: 'Artifact',
+        modifier: 1
+      },
+      {
+        name: 'Improved Trip DC',
+        bonus: 'Artifact',
+        modifier: 1
+      },
+      {
+        name: 'Sunder DC',
+        bonus: 'Artifact',
+        modifier: 1
+      },
+      {
+        name: 'Improved Sunder DC',
+        bonus: 'Artifact',
+        modifier: 1
+      },
+      {
+        name: 'Stunning Blow DC',
+        bonus: 'Artifact',
+        modifier: 1
+      },
+      {
+        name: 'Stunning Fist DC',
         bonus: 'Artifact',
         modifier: 1
       }
@@ -747,7 +772,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Threat Decrease (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -761,7 +786,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Threat Increase (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -775,7 +800,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Will (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -789,7 +814,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Wisdom (Heroic)',
     minimumLevel: 1,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -803,7 +828,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Accuracy (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -817,7 +842,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Charisma (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -831,7 +856,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Constitution (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -845,7 +870,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Dexterity (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -859,7 +884,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Healing Amplification (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -873,7 +898,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Intelligence (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -887,7 +912,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Magical Protection (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -901,7 +926,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Melee Power (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -915,7 +940,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Natural Armor (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -929,7 +954,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Negative Amplification (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -943,7 +968,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Physical Protection (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -957,7 +982,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Ranged Power (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -971,7 +996,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Repair Amplification (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -985,8 +1010,8 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Spell Difficulty (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
-    foundIn: ['Myths of Drannor Expansion'],
+    image: 'augmentGreyBookBlueBorder',
+    foundIn: ['Myths of Drannor Expansion', 'The Body Snatchers (Legendary)'],
     effectsAdded: [
       {
         name: 'Spell DCs',
@@ -999,7 +1024,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Spellpower (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1013,7 +1038,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Strength (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1027,7 +1052,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Swift Charging (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1041,7 +1066,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Weapons Damage (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1055,7 +1080,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Lunar Gem of Wisdom (Legendary)',
     minimumLevel: 30,
     augmentType: 'Moon',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1069,8 +1094,8 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Armor Layers (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
-    foundIn: ['Myths of Drannor Expansion'],
+    image: 'augmentGreyBookBlueBorder',
+    foundIn: ['Myths of Drannor Expansion', 'The Body Snatchers (Legendary)'],
     effectsAdded: [
       {
         name: 'Armor Class',
@@ -1083,7 +1108,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Assassination (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1097,7 +1122,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Charisma (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1111,7 +1136,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Constitution (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1125,7 +1150,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Cruelty (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1139,7 +1164,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Dexterity (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1153,7 +1178,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Dodge (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1167,7 +1192,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Doubleshot (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1181,7 +1206,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Doublestrike (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1195,7 +1220,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Enduring (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1209,7 +1234,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Fortification Bypass (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1223,7 +1248,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Fortitude (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1237,7 +1262,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Healing Amplification (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1251,7 +1276,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Imbuement (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1265,7 +1290,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Intelligence (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1279,7 +1304,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of MRR Cap (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1293,7 +1318,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Magical Resistance Rating (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1307,7 +1332,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Melee Power (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1321,7 +1346,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Negative Amplification (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1335,7 +1360,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Physical Resistance Rating (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1349,7 +1374,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Ranged Power (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1363,7 +1388,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Reflex (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1377,8 +1402,8 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Repair Amplification (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
-    foundIn: ['Myths of Drannor Expansion'],
+    image: 'augmentGreyBookBlueBorder',
+    foundIn: ['Voices of the Dead (Legendary)', 'The Body Snatchers (Legendary)'],
     effectsAdded: [
       {
         name: 'Repair Amplification',
@@ -1391,7 +1416,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Sneak Attack Damage (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1405,7 +1430,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Sneak Attack Dice (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1419,7 +1444,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Spell Critical Chance (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1433,7 +1458,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Spell Critical Damage (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1447,7 +1472,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Spell DCs (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1461,7 +1486,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Spell Penetration (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1475,7 +1500,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Spellpower (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1489,7 +1514,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Strength (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1517,7 +1542,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Swift Charging (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1528,14 +1553,78 @@ export const update69Augments: AugmentItem[] = [
     ]
   },
   {
+    name: 'Solar Gem of Tactical DCs (Epic)',
+    minimumLevel: 20,
+    augmentType: 'Sun',
+    image: 'augmentGreyBookBlueBorder',
+    foundIn: ['Dinosaur Crisis (Epic)'],
+    effectsAdded: [
+      {
+        name: 'Trip DC',
+        bonus: 'Artifact',
+        modifier: 2
+      },
+      {
+        name: 'Improved Trip DC',
+        bonus: 'Artifact',
+        modifier: 2
+      },
+      {
+        name: 'Sunder DC',
+        bonus: 'Artifact',
+        modifier: 2
+      },
+      {
+        name: 'Improved Sunder DC',
+        bonus: 'Artifact',
+        modifier: 2
+      },
+      {
+        name: 'Stunning Blow DC',
+        bonus: 'Artifact',
+        modifier: 2
+      },
+      {
+        name: 'Stunning Fist DC',
+        bonus: 'Artifact',
+        modifier: 2
+      }
+    ]
+  },
+  {
     name: 'Solar Gem of Tactical DCs (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
-    foundIn: ['Myths of Drannor Expansion'],
+    image: 'augmentGreyBookBlueBorder',
+    foundIn: ['The Key to the Mythal (Legendary)', 'The Body Snatchers (Legendary)'],
     effectsAdded: [
       {
-        name: 'Tactical DCs',
+        name: 'Trip DC',
+        bonus: 'Artifact',
+        modifier: 3
+      },
+      {
+        name: 'Improved Trip DC',
+        bonus: 'Artifact',
+        modifier: 3
+      },
+      {
+        name: 'Sunder DC',
+        bonus: 'Artifact',
+        modifier: 3
+      },
+      {
+        name: 'Improved Sunder DC',
+        bonus: 'Artifact',
+        modifier: 3
+      },
+      {
+        name: 'Stunning Blow DC',
+        bonus: 'Artifact',
+        modifier: 3
+      },
+      {
+        name: 'Stunning Fist DC',
         bonus: 'Artifact',
         modifier: 3
       }
@@ -1545,7 +1634,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Threat Decrease (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1559,7 +1648,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Threat Increase (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1573,7 +1662,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Will (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
@@ -1587,7 +1676,7 @@ export const update69Augments: AugmentItem[] = [
     name: 'Solar Gem of Wisdom (Legendary)',
     minimumLevel: 30,
     augmentType: 'Sun',
-    image: '',
+    image: 'augmentGreyBookBlueBorder',
     foundIn: ['Myths of Drannor Expansion'],
     effectsAdded: [
       {
