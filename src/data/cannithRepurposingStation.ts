@@ -281,9 +281,39 @@ export const cannithRepurposingStation: CraftingIngredient[] = [
         numPiecesEquipped: 3,
         enhancements: [
           {
-            name: 'Spell DC',
-            modifier: 1,
-            bonus: 'Artifact'
+            name: 'Spell DC: Abjuration',
+            bonus: 'Artifact',
+            modifier: 1
+          },
+          {
+            name: 'Spell DC: Conjuration',
+            bonus: 'Artifact',
+            modifier: 1
+          },
+          {
+            name: 'Spell DC: Enchantment',
+            bonus: 'Artifact',
+            modifier: 1
+          },
+          {
+            name: 'Spell DC: Evocation',
+            bonus: 'Artifact',
+            modifier: 1
+          },
+          {
+            name: 'Spell DC: Illusion',
+            bonus: 'Artifact',
+            modifier: 1
+          },
+          {
+            name: 'Spell DC: Necromancy',
+            bonus: 'Artifact',
+            modifier: 1
+          },
+          {
+            name: 'Spell DC: Transmutation',
+            bonus: 'Artifact',
+            modifier: 1
           },
           {
             name: 'Spell Penetration (Level 9)',

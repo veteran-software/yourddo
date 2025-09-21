@@ -15,12 +15,112 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
       {
         name: 'Spell Power: Universal',
         bonus: 'Implement',
-        modifier: 33
+        modifier: 34
       },
       {
         name: '+15 Orb Bonus',
         bonus: 'Orb',
         modifier: 15
+      },
+      {
+        name: 'Acid Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Bludgeoning Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Chaotic Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Cold Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Electric Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Evil Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Fire Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Force Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Good Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Lawful Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Light Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Negative Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Piercing Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Poison Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Positive Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Repair Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Rust Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Slashing Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Sonic Spell Power',
+        bonus: 'Insight',
+        modifier: 55
+      },
+      {
+        name: 'Untyped Spell Power',
+        bonus: 'Insight',
+        modifier: 55
       },
       {
         name: 'Spell Power (each)',
@@ -42,13 +142,13 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         orange: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Special Delivery (Legendary)']
   },
   {
     name: "Legendary Death's Anchor",
     type: 'Shield',
     subType: 'Orb',
-    minimumLevel: 33,
+    minimumLevel: 34,
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -58,7 +158,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
       {
         name: 'Spell Power: Universal',
         bonus: 'Implement',
-        modifier: 33
+        modifier: 34
       },
       {
         name: '+15 Orb Bonus',
@@ -66,7 +166,12 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 15
       },
       {
-        name: 'Negative and Poison Spell Power',
+        name: 'Negative Spell Power',
+        bonus: 'Quality',
+        modifier: 38
+      },
+      {
+        name: 'Poison Spell Power',
         bonus: 'Quality',
         modifier: 38
       },
@@ -84,7 +189,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         orange: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Special Delivery (Legendary)']
   },
   {
     name: 'Legendary Flickering Divinity',
@@ -132,7 +237,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     name: 'Legendary Frostforged Buckler',
     type: 'Shield',
     subType: 'Buckler',
-    minimumLevel: 33,
+    minimumLevel: 34,
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -143,6 +248,9 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 15
+      },
+      {
+        name: 'Guardbreaking'
       },
       {
         name: 'Physical Resistance',
@@ -158,7 +266,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         orange: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Body Snatchers (Legendary)']
   },
   {
     name: 'Legendary Frostforged Large Shield',
@@ -442,7 +550,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Proper Authorities (Legendary)']
   },
   {
     name: "Legendary Baron Aubrecker's Monogrammed Gloves",
@@ -519,7 +627,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         name: 'Improved Deception +22'
       },
       {
-        name: 'Assassinate DCs',
+        name: 'Assassin Special Ability DC',
         bonus: 'Quality',
         modifier: 4
       }
@@ -703,7 +811,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Body Snatchers (Legendary)']
   },
   {
     name: 'Legendary Downcast Heavy Cloak',
@@ -736,7 +844,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Special Delivery (Legendary)']
   },
   {
     name: 'Legendary Downcast Helm',
@@ -993,7 +1101,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: '15%'
       },
       {
-        name: 'Sneak Attack',
+        name: 'Sneak Attack Accuracy',
         bonus: 'Enhancement',
         modifier: 12
       },
@@ -1012,10 +1120,10 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Body Snatchers (Heroic)']
   },
   {
-    name: "Legendary Gravedigger's Greaves",
+    name: "Legendary Gravekeeper's Greaves",
     type: 'Clothing',
     subType: 'Feet',
     minimumLevel: 34,
@@ -1045,7 +1153,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Body Snatchers (Legendary)']
   },
   {
     name: "Legendary GraveKeeper's Bowler",
@@ -1257,7 +1365,37 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Spell DC (all)',
+        name: 'Spell DC: Abjuration',
+        bonus: 'Quality',
+        modifier: 2
+      },
+      {
+        name: 'Spell DC: Conjuration',
+        bonus: 'Quality',
+        modifier: 2
+      },
+      {
+        name: 'Spell DC: Enchantment',
+        bonus: 'Quality',
+        modifier: 2
+      },
+      {
+        name: 'Spell DC: Evocation',
+        bonus: 'Quality',
+        modifier: 2
+      },
+      {
+        name: 'Spell DC: Illusion',
+        bonus: 'Quality',
+        modifier: 2
+      },
+      {
+        name: 'Spell DC: Necromancy',
+        bonus: 'Quality',
+        modifier: 2
+      },
+      {
+        name: 'Spell DC: Transmutation',
         bonus: 'Quality',
         modifier: 2
       },
@@ -1536,7 +1674,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Body Snatchers (Legendary)']
   },
   {
     name: 'Legendary Lamordian Cowl',
@@ -1668,7 +1806,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Special Delivery (Legendary)']
   },
   {
     name: 'Legendary Lamordian Mystic Cloak',
@@ -1929,6 +2067,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     name: "Legendary Agony's Eyes",
     type: 'Goggles',
     minimumLevel: 34,
+    minorArtifact: true,
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -1945,13 +2084,14 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
       {
         lamordiaMelancholicAccessory: null,
         lamordiaDolorousAccessory: null,
+        lamordiaMiserableAccessory: null,
         green: null,
         blue: null,
         colorless: null,
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Cold Snap (Legendary)']
   },
   {
     name: 'Legendary Auspicious Bracers',
@@ -2001,9 +2141,39 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 3
       },
       {
-        name: 'Skill: Use Magic Device',
-        bonus: 'Competence',
-        modifier: 6
+        name: 'Spell DC: Abjuration',
+        bonus: 'Equipment',
+        modifier: 5
+      },
+      {
+        name: 'Spell DC: Conjuration',
+        bonus: 'Equipment',
+        modifier: 5
+      },
+      {
+        name: 'Spell DC: Enchantment',
+        bonus: 'Equipment',
+        modifier: 5
+      },
+      {
+        name: 'Spell DC: Evocation',
+        bonus: 'Equipment',
+        modifier: 5
+      },
+      {
+        name: 'Spell DC: Illusion',
+        bonus: 'Equipment',
+        modifier: 5
+      },
+      {
+        name: 'Spell DC: Necromancy',
+        bonus: 'Equipment',
+        modifier: 5
+      },
+      {
+        name: 'Spell DC: Transmutation',
+        bonus: 'Equipment',
+        modifier: 5
       }
     ],
     augments: [
@@ -2015,7 +2185,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Ends and Means (Legendary)']
   },
   {
     name: 'Legendary Beads of Winter',
@@ -2047,7 +2217,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['A Light in the Attic (Legendary)']
   },
   {
     name: 'Legendary Black Dynamo',
@@ -2519,7 +2689,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Special Delivery (Legendary)']
   },
   {
     name: "Legendary Viktra's Experiment",
@@ -3171,7 +3341,22 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 15
       },
       {
-        name: 'Elemental Resistance',
+        name: 'Acid Resistance',
+        bonus: 'Competence',
+        modifier: 15
+      },
+      {
+        name: 'Cold Resistance',
+        bonus: 'Competence',
+        modifier: 15
+      },
+      {
+        name: 'Fire Resistance',
+        bonus: 'Competence',
+        modifier: 15
+      },
+      {
+        name: 'Electric Resistance',
         bonus: 'Competence',
         modifier: 15
       }
@@ -3181,6 +3366,7 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         lamordiaMelancholicArmor: null,
         lamordiaDolorousArmor: null,
         lamordiaMiserableAccessory: null,
+        lamordiaWoefulAccessory: null,
         green: null,
         colorless: null,
         sun: null
@@ -3239,7 +3425,22 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 15
       },
       {
-        name: 'Elemental Resistance',
+        name: 'Acid Resistance',
+        bonus: 'Competence',
+        modifier: 15
+      },
+      {
+        name: 'Cold Resistance',
+        bonus: 'Competence',
+        modifier: 15
+      },
+      {
+        name: 'Fire Resistance',
+        bonus: 'Competence',
+        modifier: 15
+      },
+      {
+        name: 'Electric Resistance',
         bonus: 'Competence',
         modifier: 15
       }
@@ -3249,12 +3450,13 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
         lamordiaMelancholicArmor: null,
         lamordiaDolorousArmor: null,
         lamordiaMiserableAccessory: null,
+        lamordiaWoefulAccessory: null,
         green: null,
         colorless: null,
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Body Snatchers (Legendary)']
   },
   {
     name: "Legendary Climber's Remembrance",
@@ -3267,7 +3469,37 @@ const LChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Spell DC (all)',
+        name: 'Spell DC: Abjuration',
+        bonus: 'Insight',
+        modifier: 3
+      },
+      {
+        name: 'Spell DC: Conjuration',
+        bonus: 'Insight',
+        modifier: 3
+      },
+      {
+        name: 'Spell DC: Enchantment',
+        bonus: 'Insight',
+        modifier: 3
+      },
+      {
+        name: 'Spell DC: Evocation',
+        bonus: 'Insight',
+        modifier: 3
+      },
+      {
+        name: 'Spell DC: Illusion',
+        bonus: 'Insight',
+        modifier: 3
+      },
+      {
+        name: 'Spell DC: Necromancy',
+        bonus: 'Insight',
+        modifier: 3
+      },
+      {
+        name: 'Spell DC: Transmutation',
         bonus: 'Insight',
         modifier: 3
       }

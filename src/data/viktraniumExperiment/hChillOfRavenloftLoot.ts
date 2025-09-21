@@ -15,7 +15,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       {
         name: 'Spell Power: Universal',
         bonus: 'Implement',
-        modifier: 13
+        modifier: 8
       },
       {
         name: '+4 Orb Bonus',
@@ -23,10 +23,104 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 4
       },
       {
-        name: 'Spell Power (each)',
+        name: 'Acid Spell Power',
         bonus: 'Insight',
-        modifier: 27,
-        notes: 'This is not Universal Spell Power. It applies individually to each spell power.'
+        modifier: 20
+      },
+      {
+        name: 'Bludgeoning Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Chaotic Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Cold Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Electric Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Evil Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Fire Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Force Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Good Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Lawful Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Light Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Negative Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Piercing Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Poison Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Positive Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Repair Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Rust Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Slashing Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Sonic Spell Power',
+        bonus: 'Insight',
+        modifier: 20
+      },
+      {
+        name: 'Untyped Spell Power',
+        bonus: 'Insight',
+        modifier: 20
       },
       {
         name: 'Will Save',
@@ -41,13 +135,13 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         purple: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Special Delivery (Heroic)']
   },
   {
     name: "Death's Anchor",
     type: 'Shield',
     subType: 'Orb',
-    minimumLevel: 13,
+    minimumLevel: 8,
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -57,7 +151,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       {
         name: 'Spell Power: Universal',
         bonus: 'Implement',
-        modifier: 13
+        modifier: 8
       },
       {
         name: '+4 Orb Bonus',
@@ -65,14 +159,19 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 4
       },
       {
-        name: 'Negative and Poison Spell Power',
+        name: 'Negative Spell Power',
         bonus: 'Quality',
-        modifier: 21
+        modifier: 17
+      },
+      {
+        name: 'Poison Spell Power',
+        bonus: 'Quality',
+        modifier: 17
       },
       {
         name: 'Spell DC: Necromancy',
         bonus: 'Equipment',
-        modifier: 3
+        modifier: 2
       }
     ],
     augments: [
@@ -82,7 +181,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         purple: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Special Delivery (Heroic)']
   },
   {
     name: 'Flickering Divinity',
@@ -129,7 +228,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     name: 'Frostforged Buckler',
     type: 'Shield',
     subType: 'Buckler',
-    minimumLevel: 13,
+    minimumLevel: 8,
     binding: {
       type: 'Bound',
       to: 'Account',
@@ -140,6 +239,9 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         name: 'Armor Class',
         bonus: 'Enhancement',
         modifier: 5
+      },
+      {
+        name: 'Guardbreaking'
       },
       {
         name: 'Physical Resistance',
@@ -154,7 +256,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         red: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Body Snatchers (Heroic)']
   },
   {
     name: 'Frostforged Large Shield',
@@ -429,7 +531,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Proper Authorities (Heroic)']
   },
   {
     name: "Baron Aubrecker's Monogrammed Gloves",
@@ -504,7 +606,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         name: 'Improved Deception +10'
       },
       {
-        name: 'Assassinate DCs',
+        name: 'Assassin Special Ability DC',
         bonus: 'Quality',
         modifier: 1
       }
@@ -517,7 +619,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['A Light in the Attic (Heroic)']
   },
   {
     name: 'Coldlight Runners',
@@ -542,7 +644,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       },
       {
         name: 'Doubleshot Chance',
-        bonus: 'Enhancement',
+        bonus: 'Insight',
         modifier: '2%'
       }
     ],
@@ -554,7 +656,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['A Light in the Attic (Heroic)']
   },
   {
     name: 'Downcast Bowler',
@@ -575,7 +677,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
       {
         name: 'Physical Resistance',
         bonus: 'Insight',
-        modifier: 5
+        modifier: 3
       }
     ],
     augments: [
@@ -586,7 +688,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Ends and Means (Heroic)']
   },
   {
     name: 'Downcast Cap',
@@ -618,7 +720,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['A Miner Sacrifice (Heroic)']
   },
   {
     name: 'Downcast Cowl',
@@ -650,7 +752,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Snowfall and Sunlight (Heroic)']
   },
   {
     name: 'Downcast Elegant Cloak',
@@ -682,7 +784,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Body Snatchers (Heroic)']
   },
   {
     name: 'Downcast Heavy Cloak',
@@ -714,7 +816,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Special Delivery (Heroic)']
   },
   {
     name: 'Downcast Helm',
@@ -746,7 +848,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Cold Snap (Heroic)']
   },
   {
     name: 'Downcast Mystic Cloak',
@@ -778,7 +880,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Wish (Heroic)']
   },
   {
     name: 'Downcast Nimble Cloak',
@@ -810,7 +912,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Proper Authorities (Heroic)']
   },
   {
     name: 'Downcast Stoic Cloak',
@@ -842,7 +944,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Beneath the City Streets (Heroic)']
   },
   {
     name: 'Downcast Top Hat',
@@ -966,7 +1068,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: '6%'
       },
       {
-        name: 'Sneak Attack',
+        name: 'Sneak Attack Accuracy',
         bonus: 'Enhancement',
         modifier: 3
       },
@@ -984,10 +1086,10 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Body Snatchers (Heroic)']
   },
   {
-    name: "Gravedigger's Greaves",
+    name: "Gravekeeper's Greaves",
     type: 'Clothing',
     subType: 'Feet',
     minimumLevel: 8,
@@ -1016,7 +1118,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Body Snatchers (Heroic)']
   },
   {
     name: "Gravekeeper's Bowler",
@@ -1222,7 +1324,37 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Spell DC (all)',
+        name: 'Spell DC: Abjuration',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Spell DC: Conjuration',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Spell DC: Enchantment',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Spell DC: Evocation',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Spell DC: Illusion',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Spell DC: Necromancy',
+        bonus: 'Quality',
+        modifier: 1
+      },
+      {
+        name: 'Spell DC: Transmutation',
         bonus: 'Quality',
         modifier: 1
       },
@@ -1492,7 +1624,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Body Snatchers (Heroic)']
   },
   {
     name: 'Lamordian Cowl',
@@ -1620,7 +1752,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Special Delivery (Heroic)']
   },
   {
     name: 'Lamordian Mystic Cloak',
@@ -1897,7 +2029,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Cold Snap (Heroic)']
   },
   {
     name: 'Auspicious Bracers',
@@ -1948,9 +2080,39 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 1
       },
       {
-        name: 'Skill: Use Magic Device',
-        bonus: 'Competence',
-        modifier: 1
+        name: 'Spell DC: Abjuration',
+        bonus: 'Equipment',
+        modifier: 2
+      },
+      {
+        name: 'Spell DC: Conjuration',
+        bonus: 'Equipment',
+        modifier: 2
+      },
+      {
+        name: 'Spell DC: Enchantment',
+        bonus: 'Equipment',
+        modifier: 2
+      },
+      {
+        name: 'Spell DC: Evocation',
+        bonus: 'Equipment',
+        modifier: 2
+      },
+      {
+        name: 'Spell DC: Illusion',
+        bonus: 'Equipment',
+        modifier: 2
+      },
+      {
+        name: 'Spell DC: Necromancy',
+        bonus: 'Equipment',
+        modifier: 2
+      },
+      {
+        name: 'Spell DC: Transmutation',
+        bonus: 'Equipment',
+        modifier: 2
       }
     ],
     augments: [
@@ -1961,7 +2123,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Ends and Means (Heroic)']
   },
   {
     name: 'Beads of Winter',
@@ -1993,7 +2155,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['A Light in the Attic (Heroic)']
   },
   {
     name: 'Black Dynamo',
@@ -2025,7 +2187,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Zoo Creeper (Heroic)']
   },
   {
     name: "Bodysnatcher's Bracers",
@@ -2057,7 +2219,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Beneath the City Streets (Heroic)']
   },
   {
     name: 'Frost Worm Tooth Ring',
@@ -2466,7 +2628,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Special Delivery (Heroic)']
   },
   {
     name: "Viktra's Experiment",
@@ -3004,7 +3166,22 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 4
       },
       {
-        name: 'Elemental Resistance',
+        name: 'Acid Resistance',
+        bonus: 'Competence',
+        modifier: 5
+      },
+      {
+        name: 'Cold Resistance',
+        bonus: 'Competence',
+        modifier: 5
+      },
+      {
+        name: 'Fire Resistance',
+        bonus: 'Competence',
+        modifier: 5
+      },
+      {
+        name: 'Electric Resistance',
         bonus: 'Competence',
         modifier: 5
       }
@@ -3014,11 +3191,12 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         lamordiaMelancholicArmor: null,
         lamordiaDolorousArmor: null,
         lamordiaMiserableAccessory: null,
+        lamordiaWoefulAccessory: null,
         blue: null,
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Proper Authorities (Heroic)']
   },
   {
     name: 'Downcast Brawler Garb',
@@ -3070,7 +3248,22 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 4
       },
       {
-        name: 'Elemental Resistance',
+        name: 'Acid Resistance',
+        bonus: 'Competence',
+        modifier: 5
+      },
+      {
+        name: 'Cold Resistance',
+        bonus: 'Competence',
+        modifier: 5
+      },
+      {
+        name: 'Fire Resistance',
+        bonus: 'Competence',
+        modifier: 5
+      },
+      {
+        name: 'Electric Resistance',
         bonus: 'Competence',
         modifier: 5
       }
@@ -3080,11 +3273,12 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         lamordiaMelancholicArmor: null,
         lamordiaDolorousArmor: null,
         lamordiaMiserableAccessory: null,
+        lamordiaWoefulAccessory: null,
         blue: null,
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Ends and Means (Heroic)']
   },
   {
     name: 'Downcast Gambeson',
@@ -3103,7 +3297,22 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 4
       },
       {
-        name: 'Elemental Resistance',
+        name: 'Acid Resistance',
+        bonus: 'Competence',
+        modifier: 5
+      },
+      {
+        name: 'Cold Resistance',
+        bonus: 'Competence',
+        modifier: 5
+      },
+      {
+        name: 'Fire Resistance',
+        bonus: 'Competence',
+        modifier: 5
+      },
+      {
+        name: 'Electric Resistance',
         bonus: 'Competence',
         modifier: 5
       }
@@ -3113,11 +3322,12 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         lamordiaMelancholicArmor: null,
         lamordiaDolorousArmor: null,
         lamordiaMiserableAccessory: null,
+        lamordiaWoefulAccessory: null,
         blue: null,
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Special Delivery (Heroic)']
   },
   {
     name: 'Downcast Robe',
@@ -3146,11 +3356,12 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         lamordiaMelancholicArmor: null,
         lamordiaDolorousArmor: null,
         lamordiaMiserableAccessory: null,
+        lamordiaWoefulAccessory: null,
         blue: null,
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['A Miner Sacrifice (Heroic)']
   },
   {
     name: 'Downcast Vest',
@@ -3169,7 +3380,22 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         modifier: 4
       },
       {
-        name: 'Elemental Resistance',
+        name: 'Acid Resistance',
+        bonus: 'Competence',
+        modifier: 5
+      },
+      {
+        name: 'Cold Resistance',
+        bonus: 'Competence',
+        modifier: 5
+      },
+      {
+        name: 'Fire Resistance',
+        bonus: 'Competence',
+        modifier: 5
+      },
+      {
+        name: 'Electric Resistance',
         bonus: 'Competence',
         modifier: 5
       }
@@ -3179,11 +3405,12 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         lamordiaMelancholicArmor: null,
         lamordiaDolorousArmor: null,
         lamordiaMiserableAccessory: null,
+        lamordiaWoefulAccessory: null,
         blue: null,
         sun: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Body Snatchers (Heroic)']
   },
   {
     name: "Climber's Remembrance",
@@ -3197,7 +3424,37 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
     },
     effectsAdded: [
       {
-        name: 'Spell DC (all)',
+        name: 'Spell DC: Abjuration',
+        bonus: 'Insight',
+        modifier: 1
+      },
+      {
+        name: 'Spell DC: Conjuration',
+        bonus: 'Insight',
+        modifier: 1
+      },
+      {
+        name: 'Spell DC: Enchantment',
+        bonus: 'Insight',
+        modifier: 1
+      },
+      {
+        name: 'Spell DC: Evocation',
+        bonus: 'Insight',
+        modifier: 1
+      },
+      {
+        name: 'Spell DC: Illusion',
+        bonus: 'Insight',
+        modifier: 1
+      },
+      {
+        name: 'Spell DC: Necromancy',
+        bonus: 'Insight',
+        modifier: 1
+      },
+      {
+        name: 'Spell DC: Transmutation',
         bonus: 'Insight',
         modifier: 1
       }
@@ -3211,7 +3468,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         moon: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['The Wish (Heroic)']
   },
   {
     name: 'Contraption Keyring',
@@ -3243,7 +3500,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         blue: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Locked Away (Part One) (Heroic)']
   },
   {
     name: "Dreadmonger Gang's Signet",
@@ -3269,7 +3526,7 @@ const HChillOfRavenloftLoot: CraftingIngredient[] = [
         blue: null
       }
     ],
-    foundIn: ['Chill of Ravenloft Expansion']
+    foundIn: ['Beneath the City Streets (Heroic)']
   },
   {
     name: 'Goggles of the Frozen Night',

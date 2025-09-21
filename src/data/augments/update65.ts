@@ -93,7 +93,7 @@ export const update65Augments: AugmentItem[] = [
         numPiecesEquipped: 3,
         enhancements: [
           {
-            name: 'Assassinate DCs',
+            name: 'Assassin Special Ability DC',
             bonus: 'Artifact',
             modifier: 3
           }

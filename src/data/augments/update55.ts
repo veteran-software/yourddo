@@ -610,7 +610,7 @@ export const update55Augments: AugmentItem[] = [
     foundIn: ['The Isle of Dread'],
     effectsAdded: [
       {
-        name: 'Necromancy DCs',
+        name: 'Spell DC: Necromancy',
         bonus: 'Equipment',
         modifier: 6
       }
