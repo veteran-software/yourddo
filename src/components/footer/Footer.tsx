@@ -25,7 +25,7 @@ const polling = {
   skipPollingIfUnfocused: false
 }
 
-const stripPrefix = (name: string) => name.replace(/(?: ?\[(?:Old|US|EU)] ?)+/g, '')
+const stripPrefix = (name: string) => name.replaceAll(/(?: ?\[(?:Old|US|EU)] ?)+/g, '')
 
 const Footer = () => {
   const dispatch: AppDispatch = useAppDispatch()
@@ -67,9 +67,9 @@ const Footer = () => {
 
       setStatuses((prev) => {
         const updated = { ...prev }
-        results.forEach(({ name, data }) => {
+        for (const { name, data } of results) {
           updated[stripPrefix(name)] = data
-        })
+        }
 
         return updated
       })
@@ -110,12 +110,12 @@ const Footer = () => {
 
     fetchApiStatuses().catch(console.error)
 
-    mainServersIntervalId.current = window.setInterval(() => {
+    mainServersIntervalId.current = (globalThis.setInterval as unknown as (handler: TimerHandler, timeout?: number) => number)(() => {
       fetchApiStatuses().catch(console.error)
     }, 60000)
 
     return () => {
-      clearInterval(mainServersIntervalId.current)
+      globalThis.clearInterval(mainServersIntervalId.current as unknown as number)
     }
   }, [gameWorlds, iterateResults, statusTrigger])
 
@@ -154,12 +154,12 @@ const Footer = () => {
 
     fetchApiStatuses().catch(console.error)
 
-    lamServerIntervalId.current = window.setInterval(() => {
+    lamServerIntervalId.current = (globalThis.setInterval as unknown as (handler: TimerHandler, timeout?: number) => number)(() => {
       fetchApiStatuses().catch(console.error)
     }, 60000)
 
     return () => {
-      clearInterval(lamServerIntervalId.current)
+      globalThis.clearInterval(lamServerIntervalId.current as unknown as number)
     }
   }, [gameWorldsLam, iterateResults, statusTriggerLam])
 
