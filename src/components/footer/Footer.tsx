@@ -177,7 +177,11 @@ const Footer = () => {
                 return (
                   <Fragment key={world.Name}>
                     {idx > 0 && <>&bull;</>}
-                    <ServerStatusDisplay name={stripPrefix(world.Name)} up={statuses[stripPrefix(world.Name)]} />
+                    <ServerStatusDisplay
+                      name={stripPrefix(world.Name)}
+                      up={statuses[stripPrefix(world.Name)]}
+                      isGhost={false}
+                    />
                   </Fragment>
                 )
               })}
@@ -190,7 +194,7 @@ const Footer = () => {
               return (
                 <Fragment key={world.Name}>
                   <>&bull;</>
-                  <ServerStatusDisplay name={world.Name} up={statusesLam[world.Name]} />
+                  <ServerStatusDisplay name={world.Name} up={statusesLam[world.Name]} isGhost={false} />
                 </Fragment>
               )
             })}
@@ -207,7 +211,11 @@ const Footer = () => {
                   return (
                     <Fragment key={world.Name}>
                       {idx > 0 && <>&bull;</>}
-                      <ServerStatusDisplay name={stripPrefix(world.Name)} up={statuses[stripPrefix(world.Name)]} />
+                      <ServerStatusDisplay
+                        name={stripPrefix(world.Name)}
+                        up={statuses[stripPrefix(world.Name)]}
+                        isGhost={true}
+                      />
                     </Fragment>
                   )
                 }

@@ -1,25 +1,16 @@
-import type { DateTime } from 'luxon'
 import { Container, Stack } from 'react-bootstrap'
-import { FaCircleNotch, FaRegCircleDown, FaRegCircleUp } from 'react-icons/fa6'
-import { formatDateWithOrdinal } from '../../utils/dateTimeUtils.ts'
+import { FaGhost, FaRegCircleDown, FaRegCircleUp } from 'react-icons/fa6'
 
 const ServerStatusDisplay = (props: Props) => {
-  const { comingSoon = false, comingSoonDate = undefined, name, up } = props
+  const { isGhost = false, name, up } = props
 
   const getIcon = (up: boolean | undefined) => {
-    if (up === undefined && !comingSoon) {
+    if (up === undefined) {
       return <FaRegCircleDown size={15} color={'red'} />
     }
 
-    if (comingSoon && comingSoonDate) {
-      return (
-        <FaCircleNotch
-          title={`Coming ${formatDateWithOrdinal(comingSoonDate.toLocal())}!`}
-          size={15}
-          color='gray'
-          style={{ animation: 'spin 1s linear infinite' }}
-        />
-      )
+    if (isGhost) {
+      return up ? <FaGhost size={15} color={'green'} /> : <FaGhost size={15} color={'red'} />
     }
 
     return up ? <FaRegCircleUp size={15} color={'green'} /> : <FaRegCircleDown size={15} color={'red'} />
@@ -36,8 +27,7 @@ const ServerStatusDisplay = (props: Props) => {
 }
 
 interface Props {
-  comingSoon?: boolean
-  comingSoonDate?: DateTime
+  isGhost: boolean
   name: string
   up: boolean | undefined
 }
