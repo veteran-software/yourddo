@@ -29,7 +29,7 @@ export const createRequirements = (
 ): Partial<CraftingIngredient>[] => {
   return [...baseRequirements, ...additionalItems].map((req: Partial<CraftingIngredient>) => ({
     ...req,
-    quantity
+    quantity: typeof req.quantity === 'number' ? req.quantity : quantity,
   }))
 }
 

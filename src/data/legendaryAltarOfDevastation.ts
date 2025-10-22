@@ -10714,7 +10714,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         bonus: 'Quality'
       },
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         modifier: 6,
         bonus: 'Quality'
       }
@@ -10831,7 +10831,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         bonus: 'Quality'
       },
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         modifier: 6,
         bonus: 'Quality'
       }

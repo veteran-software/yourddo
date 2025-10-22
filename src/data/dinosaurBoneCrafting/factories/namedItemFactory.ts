@@ -429,7 +429,7 @@ export const namedItems: CraftingIngredient[] = [
     foundIn: ['Bullywugs and Booby Traps (Legendary) – End Chest'],
     effectsAdded: [
       {
-        name: 'Necromancy Focus',
+        name: 'Spell DC: Necromancy',
         modifier: 6,
         bonus: 'Equipment',
         description: 'Passive: +6 Equipment bonus to DC of Necromancy spells.',
@@ -890,7 +890,7 @@ export const namedItems: CraftingIngredient[] = [
         type: 'Prefix'
       },
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         modifier: 21,
         bonus: 'Competence',
         description: '+21 Competence bonus to Spot.',

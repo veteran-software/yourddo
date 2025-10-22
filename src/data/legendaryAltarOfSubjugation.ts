@@ -1618,7 +1618,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       },
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         modifier: 11,
         bonus: 'Insight'
       }
@@ -1817,7 +1817,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
         bonus: 'Insight'
       },
       {
-        name: 'Spot',
+        name: 'Skill: Spot',
         modifier: 11,
         bonus: 'Insight'
       }

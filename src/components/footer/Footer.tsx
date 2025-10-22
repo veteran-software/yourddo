@@ -25,7 +25,7 @@ const polling = {
   skipPollingIfUnfocused: false
 }
 
-const stripPrefix = (name: string) => name.replace(/(?: ?\[(?:Old|US|EU)] ?)+/g, '')
+const stripPrefix = (name: string) => name.replaceAll(/(?: ?\[(?:Old|US|EU)] ?)+/g, '')
 
 const Footer = () => {
   const dispatch: AppDispatch = useAppDispatch()
@@ -67,9 +67,9 @@ const Footer = () => {
 
       setStatuses((prev) => {
         const updated = { ...prev }
-        results.forEach(({ name, data }) => {
+        for (const { name, data } of results) {
           updated[stripPrefix(name)] = data
-        })
+        }
 
         return updated
       })
@@ -82,12 +82,14 @@ const Footer = () => {
       const parser = new XMLParser({ ignoreAttributes: true })
       const obj: Root = parser.parse(xmlData) as Root
 
-      setGameWorlds(
-        (
-          (obj.ArrayOfDatacenterStruct.DatacenterStruct as DatacenterStruct).Datacenter.datacenter.Datacenter.Worlds
-            .World as World[]
-        ).toSorted((a: World, b: World) => (a.Order < b.Order ? -1 : 1))
-      )
+      setTimeout(() => {
+        setGameWorlds(
+          (
+            (obj.ArrayOfDatacenterStruct.DatacenterStruct as DatacenterStruct).Datacenter.datacenter.Datacenter.Worlds
+              .World as World[]
+          ).toSorted((a: World, b: World) => (a.Order < b.Order ? -1 : 1))
+        )
+      }, 0)
     }
   }, [xmlData])
 
@@ -110,27 +112,41 @@ const Footer = () => {
 
     fetchApiStatuses().catch(console.error)
 
-    mainServersIntervalId.current = window.setInterval(() => {
+    mainServersIntervalId.current = (
+      globalThis.setInterval as unknown as (handler: TimerHandler, timeout?: number) => number
+    )(() => {
       fetchApiStatuses().catch(console.error)
     }, 60000)
 
     return () => {
-      clearInterval(mainServersIntervalId.current)
+      globalThis.clearInterval(mainServersIntervalId.current as unknown as number)
     }
   }, [gameWorlds, iterateResults, statusTrigger])
+
+  function updateLamanniaStatus(ddoLam: DatacenterStruct | undefined) {
+    if (ddoLam) {
+      setTimeout(() => {
+        setGameWorldsLam([ddoLam.Datacenter.datacenter.Datacenter.Worlds.World as World])
+      }, 0)
+    } else {
+      setTimeout(() => {
+        setGameWorldsLam([])
+      }, 0)
+    }
+  }
 
   useEffect(() => {
     if (xmlDataLam) {
       const parser = new XMLParser({ ignoreAttributes: true })
       const obj: Root = parser.parse(xmlDataLam) as Root
 
-      const ddoLam: DatacenterStruct | undefined = (
-        obj.ArrayOfDatacenterStruct.DatacenterStruct as DatacenterStruct[]
-      ).find((dcs: DatacenterStruct) => dcs.KeyName.toLowerCase() === 'ddo')
-      if (ddoLam) {
-        setGameWorldsLam([ddoLam.Datacenter.datacenter.Datacenter.Worlds.World as World])
+      if (Array.isArray(obj.ArrayOfDatacenterStruct.DatacenterStruct)) {
+        const ddoLam: DatacenterStruct | undefined = obj.ArrayOfDatacenterStruct.DatacenterStruct.find(
+          (dcs: DatacenterStruct) => dcs.KeyName.toLowerCase() === 'ddo'
+        )
+        updateLamanniaStatus(ddoLam)
       } else {
-        setGameWorldsLam([])
+        updateLamanniaStatus(obj.ArrayOfDatacenterStruct.DatacenterStruct)
       }
     }
   }, [xmlDataLam])
@@ -154,12 +170,14 @@ const Footer = () => {
 
     fetchApiStatuses().catch(console.error)
 
-    lamServerIntervalId.current = window.setInterval(() => {
+    lamServerIntervalId.current = (
+      globalThis.setInterval as unknown as (handler: TimerHandler, timeout?: number) => number
+    )(() => {
       fetchApiStatuses().catch(console.error)
     }, 60000)
 
     return () => {
-      clearInterval(lamServerIntervalId.current)
+      globalThis.clearInterval(lamServerIntervalId.current as unknown as number)
     }
   }, [gameWorldsLam, iterateResults, statusTriggerLam])
 
@@ -177,7 +195,11 @@ const Footer = () => {
                 return (
                   <Fragment key={world.Name}>
                     {idx > 0 && <>&bull;</>}
-                    <ServerStatusDisplay name={stripPrefix(world.Name)} up={statuses[stripPrefix(world.Name)]} />
+                    <ServerStatusDisplay
+                      name={stripPrefix(world.Name)}
+                      up={statuses[stripPrefix(world.Name)]}
+                      isGhost={false}
+                    />
                   </Fragment>
                 )
               })}
@@ -190,7 +212,7 @@ const Footer = () => {
               return (
                 <Fragment key={world.Name}>
                   <>&bull;</>
-                  <ServerStatusDisplay name={world.Name} up={statusesLam[world.Name]} />
+                  <ServerStatusDisplay name={world.Name} up={statusesLam[world.Name]} isGhost={false} />
                 </Fragment>
               )
             })}
@@ -207,7 +229,11 @@ const Footer = () => {
                   return (
                     <Fragment key={world.Name}>
                       {idx > 0 && <>&bull;</>}
-                      <ServerStatusDisplay name={stripPrefix(world.Name)} up={statuses[stripPrefix(world.Name)]} />
+                      <ServerStatusDisplay
+                        name={stripPrefix(world.Name)}
+                        up={statuses[stripPrefix(world.Name)]}
+                        isGhost={true}
+                      />
                     </Fragment>
                   )
                 }
