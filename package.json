@@ -13,7 +13,7 @@
   "dependencies": {
     "@dr.pogodin/react-helmet": "^3.0.4",
     "@popperjs/core": "^2.11.8",
-    "@reduxjs/toolkit": "^2.9.0",
+    "@reduxjs/toolkit": "^2.9.2",
     "bootstrap": "^5.3.8",
     "camelcase": "^8.0.0",
     "fast-xml-parser": "^5.3.0",
@@ -26,18 +26,18 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.4",
     "simple-xml-to-json": "^1.2.3",
-    "sitemap": "^8.0.0",
+    "sitemap": "^8.0.1",
     "title-case": "^4.3.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.37.0",
+    "@eslint/js": "^9.38.0",
     "@types/bootstrap": "^5.2.10",
     "@types/luxon": "^3.7.1",
-    "@types/node": "^24.8.0",
+    "@types/node": "^24.9.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.0.4",
-    "eslint": "^9.37.0",
+    "eslint": "^9.38.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.0",
     "eslint-plugin-react-refresh": "^0.4.24",
@@ -46,9 +46,9 @@
     "prettier": "^3.6.2",
     "sass": "^1.93.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.1",
-    "vite": "^7.1.10",
+    "typescript-eslint": "^8.46.2",
+    "vite": "^7.1.11",
     "vite-plugin-compression": "^0.5.1"
   },
-  "packageManager": "yarn@4.9.2"
+  "packageManager": "yarn@4.10.3"
 }

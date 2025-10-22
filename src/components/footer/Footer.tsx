@@ -82,12 +82,14 @@ const Footer = () => {
       const parser = new XMLParser({ ignoreAttributes: true })
       const obj: Root = parser.parse(xmlData) as Root
 
-      setGameWorlds(
-        (
-          (obj.ArrayOfDatacenterStruct.DatacenterStruct as DatacenterStruct).Datacenter.datacenter.Datacenter.Worlds
-            .World as World[]
-        ).toSorted((a: World, b: World) => (a.Order < b.Order ? -1 : 1))
-      )
+      setTimeout(() => {
+        setGameWorlds(
+          (
+            (obj.ArrayOfDatacenterStruct.DatacenterStruct as DatacenterStruct).Datacenter.datacenter.Datacenter.Worlds
+              .World as World[]
+          ).toSorted((a: World, b: World) => (a.Order < b.Order ? -1 : 1))
+        )
+      }, 0)
     }
   }, [xmlData])
 
@@ -110,7 +112,9 @@ const Footer = () => {
 
     fetchApiStatuses().catch(console.error)
 
-    mainServersIntervalId.current = (globalThis.setInterval as unknown as (handler: TimerHandler, timeout?: number) => number)(() => {
+    mainServersIntervalId.current = (
+      globalThis.setInterval as unknown as (handler: TimerHandler, timeout?: number) => number
+    )(() => {
       fetchApiStatuses().catch(console.error)
     }, 60000)
 
@@ -119,18 +123,30 @@ const Footer = () => {
     }
   }, [gameWorlds, iterateResults, statusTrigger])
 
+  function updateLamanniaStatus(ddoLam: DatacenterStruct | undefined) {
+    if (ddoLam) {
+      setTimeout(() => {
+        setGameWorldsLam([ddoLam.Datacenter.datacenter.Datacenter.Worlds.World as World])
+      }, 0)
+    } else {
+      setTimeout(() => {
+        setGameWorldsLam([])
+      }, 0)
+    }
+  }
+
   useEffect(() => {
     if (xmlDataLam) {
       const parser = new XMLParser({ ignoreAttributes: true })
       const obj: Root = parser.parse(xmlDataLam) as Root
 
-      const ddoLam: DatacenterStruct | undefined = (
-        obj.ArrayOfDatacenterStruct.DatacenterStruct as DatacenterStruct[]
-      ).find((dcs: DatacenterStruct) => dcs.KeyName.toLowerCase() === 'ddo')
-      if (ddoLam) {
-        setGameWorldsLam([ddoLam.Datacenter.datacenter.Datacenter.Worlds.World as World])
+      if (Array.isArray(obj.ArrayOfDatacenterStruct.DatacenterStruct)) {
+        const ddoLam: DatacenterStruct | undefined = obj.ArrayOfDatacenterStruct.DatacenterStruct.find(
+          (dcs: DatacenterStruct) => dcs.KeyName.toLowerCase() === 'ddo'
+        )
+        updateLamanniaStatus(ddoLam)
       } else {
-        setGameWorldsLam([])
+        updateLamanniaStatus(obj.ArrayOfDatacenterStruct.DatacenterStruct)
       }
     }
   }, [xmlDataLam])
@@ -154,7 +170,9 @@ const Footer = () => {
 
     fetchApiStatuses().catch(console.error)
 
-    lamServerIntervalId.current = (globalThis.setInterval as unknown as (handler: TimerHandler, timeout?: number) => number)(() => {
+    lamServerIntervalId.current = (
+      globalThis.setInterval as unknown as (handler: TimerHandler, timeout?: number) => number
+    )(() => {
       fetchApiStatuses().catch(console.error)
     }, 60000)
 
