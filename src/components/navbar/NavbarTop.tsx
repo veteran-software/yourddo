@@ -5,12 +5,12 @@ import logo from '../../assets/logo.png'
 import { useAppDispatch } from '../../redux/hooks'
 import { setHeaderHeight } from '../../redux/slices/appSlice'
 import type { AppDispatch } from '../../redux/store'
+import TroveImport from '../trove/TroveImport.tsx'
 import { epicMenu } from './epicMenu.ts'
 import { heroicMenu } from './heroicMenu'
 import { legendaryMenu } from './legendaryMenu.ts'
 import MenuDropdown from './MenuDropdown.tsx'
 import { puzzleMenu } from './puzzleMenu.ts'
-import TroveImport from './TroveImport.tsx'
 import type { NavMenuDropdown } from './types'
 
 const NavbarTop = () => {

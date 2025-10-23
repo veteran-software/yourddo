@@ -1,14 +1,19 @@
 import camelcase from 'camelcase'
 import { Container, Stack } from 'react-bootstrap'
 import { FaCircleNotch } from 'react-icons/fa6'
+import { shallowEqual } from 'react-redux'
+import { useAppSelector } from '../../redux/hooks.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { ICON_BASE } from '../../utils/constants.ts'
+import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
 import { formatIngredientName } from '../../utils/utils.ts'
 import FallbackImage from './FallbackImage.tsx'
 import NoteTooltip from './NoteTooltip.tsx'
 
 const FarmedIngredientDisplay = (props: Props) => {
   const { ingredient, quantity, showLocation = true, showQuantity = true } = props
+
+  const { troveData } = useAppSelector((state) => state.app, shallowEqual)
 
   const formattedName: string = formatIngredientName(ingredient?.image ?? ingredient?.name ?? '')
   const imageSrc = `${ICON_BASE}${camelcase(formattedName)}.png`
@@ -41,7 +46,7 @@ const FarmedIngredientDisplay = (props: Props) => {
 
       {showQuantity && (
         <Container className='w-auto'>
-          <strong>{String(quantity)}</strong>
+          <strong>{getOwnedIngredients(ingredient, quantity, troveData)}</strong>
         </Container>
       )}
     </Stack>

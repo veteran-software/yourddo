@@ -1,16 +1,21 @@
 import camelcase from 'camelcase'
 import { Card, ListGroup, Stack } from 'react-bootstrap'
+import { shallowEqual } from 'react-redux'
 import FallbackImage from '../../../components/common/FallbackImage.tsx'
 import NoteTooltip from '../../../components/common/NoteTooltip.tsx'
 import { ingredients } from '../../../data/ingredients.ts'
+import { useAppSelector } from '../../../redux/hooks.ts'
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 import type { Ingredient } from '../../../types/ingredients.ts'
 import { ICON_BASE } from '../../../utils/constants.ts'
+import { getOwnedIngredients } from '../../../utils/jsxUtils.tsx'
 import { formatIngredientName } from '../../../utils/utils.ts'
 
 const ItemDisplay = (props: Props) => {
   const { selectedItem } = props
+
+  const { troveData } = useAppSelector((state) => state.app, shallowEqual)
 
   return (
     <Card className='w-100 h-100'>
@@ -45,8 +50,9 @@ const ItemDisplay = (props: Props) => {
                             &nbsp;
                             <small>{req.name}</small>
                           </strong>
+
                           <span className='text-muted'>
-                            <small>{req.quantity ?? 1}</small>
+                            <small>{getOwnedIngredients(ingredient, req.quantity ?? 1, troveData)}</small>
                           </span>
                         </Stack>
                       </ListGroup.Item>

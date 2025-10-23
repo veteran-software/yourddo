@@ -1,13 +1,18 @@
 import camelcase from 'camelcase'
 import { Card, Container, ListGroup, Stack } from 'react-bootstrap'
+import { shallowEqual } from 'react-redux'
 import FallbackImage from '../../../components/common/FallbackImage.tsx'
 import { ingredients as ings } from '../../../data/ingredients.ts'
+import { useAppSelector } from '../../../redux/hooks.ts'
 import type { Ingredient } from '../../../types/ingredients.ts'
 import { ICON_BASE } from '../../../utils/constants.ts'
+import { getOwnedIngredients } from '../../../utils/jsxUtils.tsx'
 import { formatIngredientName } from '../../../utils/utils.ts'
 
 const CumulativeIngredientsCard = (props: Props) => {
   const { ingredients } = props
+
+  const { troveData } = useAppSelector((state) => state.app, shallowEqual)
 
   const sortedEntries = Object.entries(ingredients).sort(([a], [b]) => a.localeCompare(b))
 
@@ -36,7 +41,7 @@ const CumulativeIngredientsCard = (props: Props) => {
                       <span>{name}</span>
                     </Container>
                     <Container className='m-0 p-0 text-end'>
-                      <span className='text-muted'>{qty}</span>
+                      <span className='text-muted'>{getOwnedIngredients(ingredient, qty, troveData)}</span>
                     </Container>
                   </Stack>
                 </ListGroup.Item>
