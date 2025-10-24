@@ -77,15 +77,13 @@ const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void)
   const iKey = normItem(itemName)
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!rollup[iKey]) {
-    rollup[iKey] = { binding, byCharacter: {} }
+  if (rollup[iKey] && binding && rollup[iKey].binding && binding !== rollup[iKey].binding) {
+    warn(`Binding mismatch for item ${itemName}: ${binding} vs ${rollup[iKey].binding}`)
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  } else if (binding && rollup[iKey] && !rollup[iKey].binding) {
+    rollup[iKey].binding = binding
   } else {
-    // guard
-    if (binding && rollup[iKey].binding && binding !== rollup[iKey].binding) {
-      warn(`Binding mismatch for item ${itemName}: ${binding} vs ${rollup[iKey].binding}`)
-    } else if (binding && !rollup[iKey].binding) {
-      rollup[iKey].binding = binding
-    }
+    rollup[iKey] = { binding, byCharacter: {} }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -164,7 +162,7 @@ export const buildItemRollupFromCsvFile = (file: File): Promise<BuildResult> =>
  * @returns {ItemRollup | null} The parsed `ItemRollup` object if data is found, or `null` if no data exists in local storage.
  */
 export const getStoredTroveData = (): ItemRollup | null => {
-  const storedData = localStorage.getItem('troveData')
+  const storedData: string | null = localStorage.getItem('troveData')
 
   if (!storedData) {
     return null

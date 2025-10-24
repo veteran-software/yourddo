@@ -6,7 +6,11 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks.ts'
 import { setTroveData } from '../../redux/slices/appSlice.ts'
 import type { AppDispatch } from '../../redux/store.ts'
 import { formatNumber } from '../../utils/objectUtils.ts'
-import { buildItemRollupFromCsvFile, storeTroveData } from '../../utils/troveUtils.ts'
+import {
+  buildItemRollupFromCsvFile,
+  getStoredTroveData,
+  storeTroveData
+} from '../../utils/troveUtils.ts'
 import type { ItemRollup } from './types.ts'
 
 const TroveImport = () => {
@@ -21,7 +25,7 @@ const TroveImport = () => {
   const [errors, setErrors] = useState<string[]>([])
 
   useEffect(() => {
-    const storedData = window.localStorage.getItem('troveData')
+    const storedData = getStoredTroveData()
     if (!storedData && Object.keys(rollup).length > 0) {
       storeTroveData(rollup)
     }
