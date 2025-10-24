@@ -268,3 +268,7 @@ export const bindingDisplay = (binding: Binding): string => {
 
   return `${binding.type}${to}${from}`
 }
+
+export const formatNumber = (num: string | number) => {
+  return Intl.NumberFormat('en-US').format(Number(num))
+}

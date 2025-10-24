@@ -5,6 +5,7 @@ import logo from '../../assets/logo.png'
 import { useAppDispatch } from '../../redux/hooks'
 import { setHeaderHeight } from '../../redux/slices/appSlice'
 import type { AppDispatch } from '../../redux/store'
+import TroveImport from '../trove/TroveImport.tsx'
 import { epicMenu } from './epicMenu.ts'
 import { heroicMenu } from './heroicMenu'
 import { legendaryMenu } from './legendaryMenu.ts'
@@ -50,6 +51,8 @@ const NavbarTop = () => {
             >
               <FaGithub size={25} />
             </Nav.Link>
+
+            <TroveImport />
           </Nav>
         </Navbar.Collapse>
       </Container>
