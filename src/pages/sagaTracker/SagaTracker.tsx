@@ -1,11 +1,4 @@
-import {
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Badge,
   Button,
@@ -17,6 +10,8 @@ import {
   Stack
 } from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
+import IndeterminateCheck from './components/IndeterminateCheck'
+import { loadInitial } from './components/loadInitial'
 import questsData from './quests.json'
 import sagas from './sagas.json'
 import './SagaTracker.css'
@@ -49,51 +44,19 @@ interface QuestDef {
 const allQuests: QuestDef[] = questsData as unknown as QuestDef[]
 
 // Read statuses from localStorage and merge onto the authoritative JSON list
-const loadInitial = (): SagaItem[] => {
-  type Stored = Partial<Pick<SagaItem, 'id' | 'completed' | 'turnedIn'>> & Record<string, unknown>
-
-  // Build a map of id -> { completed, turnedIn } from storage (backward compatible)
-  const statusById: Record<string, { completed: boolean; turnedIn: boolean }> = {}
-
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY_V2)
-    if (raw) {
-      const arr = JSON.parse(raw) as Stored[]
-      if (Array.isArray(arr)) {
-        for (const entry of arr) {
-          const id = typeof entry.id === 'string' ? entry.id : undefined
-          if (!id) continue
-          statusById[id] = {
-            completed: !!entry.completed,
-            turnedIn: !!entry.turnedIn
-          }
-        }
-      }
-    }
-  } catch {
-    // ignore parse/storage errors
-  }
-
-  // Return the authoritative list from JSON with merged statuses (default false)
-  return fixedSagas.map((s) => ({
-    ...s,
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    completed: statusById[s.id]?.completed ?? false,
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    turnedIn: statusById[s.id]?.turnedIn ?? false
-  }))
-}
 
 const SagaTracker = () => {
-  const [items, setItems] = useState<SagaItem[]>(() => loadInitial())
+  const [items, setItems] = useState<SagaItem[]>(() => loadInitial(fixedSagas, STORAGE_KEY_V2) as SagaItem[])
   const [searchQuery, setSearchQuery] = useState('')
   // quest last completion timestamp (epoch ms). Applies globally across sagas
   const [questDoneAt, setQuestDoneAt] = useState<Record<string, number>>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY_QUESTS_V1)
       if (!raw) return {}
+
       const arr = JSON.parse(raw) as { id?: unknown; lastDoneAt?: unknown }[]
       const map: Record<string, number> = {}
+
       if (Array.isArray(arr)) {
         for (const e of arr) {
           const id = typeof e.id === 'string' ? e.id : undefined
@@ -101,17 +64,20 @@ const SagaTracker = () => {
           if (id && Number.isFinite(t)) map[id] = t
         }
       }
+
       // prune unknown quests
       const known = new Set(allQuests.map((q) => q.id))
       for (const k of Object.keys(map)) {
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         if (!known.has(k)) delete map[k]
       }
+
       return map
     } catch {
       return {}
     }
   })
+
   // per-saga turned-in time, used to determine if a quest counts for that saga
   const [turnedInAt, setTurnedInAt] = useState<Record<string, number>>(() => {
     try {
@@ -126,17 +92,20 @@ const SagaTracker = () => {
           if (id && Number.isFinite(t)) map[id] = t
         }
       }
+
       // prune unknown sagas
       const known = new Set(fixedSagas.map((s) => s.id))
       for (const k of Object.keys(map)) {
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         if (!known.has(k)) delete map[k]
       }
+
       return map
     } catch {
       return {}
     }
   })
+
   // expand/collapse state per saga row
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
@@ -156,15 +125,17 @@ const SagaTracker = () => {
     setTurnedInAt((prev) => {
       let changed = false
       const next = { ...prev }
+
       for (const it of items) {
         if (it.turnedIn && (!Number.isFinite(prev[it.id]) || (prev[it.id] ?? 0) === 0)) {
           next[it.id] = Date.now()
           changed = true
         }
       }
+
       return changed ? next : prev
     })
-    // run only on initial mount with initial items
+    // run only on the initial mount with initial items
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -194,10 +165,11 @@ const SagaTracker = () => {
     // If marking the saga as completed, also mark all of its quests as completed (globally)
     const quests = questsBySaga[id] ?? []
     if (quests.length > 0) {
-      // Determine if it is being set to completed now by peeking at current state
+      // Determine if it is being set to "completed" now by peeking at the current state
       const nowCompleted = !items.find((it) => it.id === id)?.completed
       if (nowCompleted) {
         const now = Date.now()
+
         setQuestDoneAt((m) => {
           const next = { ...m }
           for (const q of quests) next[q.id] = now
@@ -210,7 +182,10 @@ const SagaTracker = () => {
   const toggleTurnedIn = (id: string) => {
     setItems((prev) =>
       prev.map((i) => {
-        if (i.id !== id) return i
+        if (i.id !== id) {
+          return i
+        }
+
         const nowTurnedIn = !i.turnedIn
         // update timestamp map to reflect turn-in point for this saga
         // eslint-disable-next-line sonarjs/no-nested-functions
@@ -251,10 +226,12 @@ const SagaTracker = () => {
         if (sid in map) map[sid].push(q)
       }
     }
+
     // sort alphabetically by name for stability
     for (const sid of Object.keys(map)) {
       map[sid].sort((a, b) => a.name.localeCompare(b.name))
     }
+
     return map
   }, [])
 
@@ -283,22 +260,33 @@ const SagaTracker = () => {
   const normalize = (s: string) => s.toLowerCase().trim()
   const questMatches = (qName: string, query: string) => {
     const nq = normalize(query)
-    if (!nq) return true
+
+    if (!nq) {
+      return true
+    }
+
     return normalize(qName).includes(nq)
   }
 
   // When pressing the search button or Enter, auto-expand sagas that have matching quests
   const runSearch = () => {
     const q = searchQuery.trim()
-    if (!q) return
+
+    if (!q) {
+      return
+    }
+
     setExpanded((prev) => {
       const next = { ...prev }
+
       for (const s of fixedSagas) {
         const quests = questsBySaga[s.id] ?? []
+
         if (quests.some((qq) => questMatches(qq.name, q))) {
           next[s.id] = true
         }
       }
+
       return next
     })
   }
@@ -310,11 +298,14 @@ const SagaTracker = () => {
     // Build a quick lookup for quests per saga
     setItems((prev) => {
       let changed = false
+
       const next = prev.map((it) => {
         const quests = questsBySaga[it.id] ?? []
+
         if (quests.length === 0) return it // no auto-check for sagas without quests
         // eslint-disable-next-line sonarjs/no-nested-functions
         const allDone = quests.every((q) => isQuestDoneForSaga(it.id, q.id))
+
         // Only auto-set to true; do not force unchecking when not all done
         if (allDone && !it.completed) {
           changed = true
@@ -327,40 +318,6 @@ const SagaTracker = () => {
       return changed ? next : prev
     })
   }, [questDoneAt, turnedInAt, questsBySaga, isQuestDoneForSaga])
-
-  // A small helper component that can display an indeterminate checkbox
-  const IndeterminateCheck = ({
-    checked,
-    indeterminate,
-    onChange,
-    label,
-    ariaLabel
-  }: {
-    checked: boolean
-    indeterminate: boolean
-    onChange: () => void
-    label?: React.ReactNode
-    ariaLabel?: string
-  }) => {
-    const ref = useRef<HTMLInputElement>(null)
-    useEffect(() => {
-      if (ref.current) ref.current.indeterminate = indeterminate && !checked
-    }, [indeterminate, checked])
-
-    return (
-      <Form.Check type='checkbox'>
-        <Form.Check.Input
-          ref={ref}
-          type='checkbox'
-          checked={checked}
-          onChange={onChange}
-          aria-checked={indeterminate && !checked ? 'mixed' : checked}
-          aria-label={ariaLabel}
-        />
-        {label ? <Form.Check.Label>{label}</Form.Check.Label> : null}
-      </Form.Check>
-    )
-  }
 
   return (
     <Stack gap={3} className='p-2 p-md-3'>
@@ -391,6 +348,7 @@ const SagaTracker = () => {
               </Button>
             </InputGroup>
           </div>
+
           <div className='d-flex gap-2 flex-shrink-0'>
             <Button variant='outline-secondary' onClick={resetChecks} disabled={items.length === 0} title='Uncheck all'>
               Reset Progress
@@ -499,6 +457,7 @@ const SagaTracker = () => {
                       </Button>
                     </Col>
                   </Row>
+
                   {expanded[item.id] && questsBySaga[item.id].length ? (
                     <Row className='pb-2'>
                       <Col xs={12} md={{ span: 10, offset: 1 }}>
