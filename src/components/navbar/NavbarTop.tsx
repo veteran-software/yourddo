@@ -1,6 +1,7 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import { Button, Container, Image, Nav, Navbar } from 'react-bootstrap'
 import { FaGithub } from 'react-icons/fa6'
+import { Link } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import { useAppDispatch } from '../../redux/hooks'
 import { setHeaderHeight } from '../../redux/slices/appSlice'
@@ -42,6 +43,9 @@ const NavbarTop = () => {
             {activeMenus.map((menu: NavMenuDropdown) => (
               <MenuDropdown key={menu.title} menu={menu} />
             ))}
+            <Nav.Link as={Link} to='/saga-tracker'>
+              Saga Tracker
+            </Nav.Link>
             <Nav.Link
               as={Button}
               href='https://github.com/veteran-software/yourddo'

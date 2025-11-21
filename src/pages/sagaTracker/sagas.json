@@ -1,0 +1,147 @@
+[
+  {
+    "id": "saltmarsh-heroic",
+    "name": "Saltmarsh (H)",
+    "levelRange": "3"
+  },
+  {
+    "id": "the-pirates-of-the-thunder-sea-heroic",
+    "name": "The Pirates of the Thunder Sea (H)",
+    "levelRange": "4-7"
+  },
+  {
+    "id": "fables-of-the-feywild-heroic",
+    "name": "Fables of the Feywild (H)",
+    "levelRange": "5"
+  },
+  {
+    "id": "isle-of-dread-heroic",
+    "name": "Isle of Dread (H)",
+    "levelRange": "7"
+  },
+  {
+    "id": "chill-of-ravenloft-heroic",
+    "name": "Chill of Ravenloft (H)",
+    "levelRange": "8"
+  },
+  {
+    "id": "mists-of-ravenloft-heroic",
+    "name": "Mists of Ravenloft (H)",
+    "levelRange": "10-12"
+  },
+  {
+    "id": "myth-drannor-heroic",
+    "name": "Myth Drannor (H)",
+    "levelRange": "13"
+  },
+  {
+    "id": "in-the-wastes-of-gianthold-heroic",
+    "name": "In the Wastes of Gianthold (H)",
+    "levelRange": "13-14"
+  },
+  {
+    "id": "masterminds-of-sharn-heroic",
+    "name": "Masterminds of Sharn (H)",
+    "levelRange": "15-16"
+  },
+  {
+    "id": "cogs-heroic",
+    "name": "Cogs (H)",
+    "levelRange": "15-16"
+  },
+  {
+    "id": "perils-of-cormyr-heroic",
+    "name": "Perils of Cormyr (H)",
+    "levelRange": "15-19"
+  },
+  {
+    "id": "honor-the-huntsilver-heroic",
+    "name": "Honor the Huntsilver (H)",
+    "levelRange": "16-19"
+  },
+  {
+    "id": "vecna-unleashed-heroic",
+    "name": "Vecna Unleashed (H)",
+    "levelRange": "17"
+  },
+  {
+    "id": "the-pirates-of-the-thunder-sea-epic",
+    "name": "The Pirates of the Thunder Sea (E)",
+    "levelRange": "20-25"
+  },
+  {
+    "id": "menace-of-the-underdark-epic",
+    "name": "Menace of the Underdark (E)",
+    "levelRange": "21-23"
+  },
+  {
+    "id": "the-end-of-eberron-epic",
+    "name": "The End of Eberron (E)",
+    "levelRange": "21-23"
+  },
+  {
+    "id": "the-planewalkers-path-epic",
+    "name": "The Planewalker's Path (E)",
+    "levelRange": "21-26"
+  },
+  {
+    "id": "perils-of-cormyr-epic",
+    "name": "Perils of Cormyr (E)",
+    "levelRange": "21-27"
+  },
+  {
+    "id": "honor-the-huntsilver-epic",
+    "name": "Honor the Huntsilver (E)",
+    "levelRange": "23-27"
+  },
+  {
+    "id": "in-the-wastes-of-gianthold-epic",
+    "name": "In the Wastes of Gianthold (E)",
+    "levelRange": "24"
+  },
+  {
+    "id": "mists-of-ravenloft-legendary",
+    "name": "Mists of Ravenloft (L)",
+    "levelRange": "31-32"
+  },
+  {
+    "id": "masterminds-of-sharn-legendary",
+    "name": "Masterminds of Sharn (L)",
+    "levelRange": "32"
+  },
+  {
+    "id": "cogs-legendary",
+    "name": "Cogs (L)",
+    "levelRange": "32"
+  },
+  {
+    "id": "fables-of-the-feywild-legendary",
+    "name": "Fables of the Feywild (L)",
+    "levelRange": "32"
+  },
+  {
+    "id": "saltmarsh-legendary",
+    "name": "Saltmarsh (L)",
+    "levelRange": "32"
+  },
+  {
+    "id": "isle-of-dread-legendary",
+    "name": "Isle of Dread (L)",
+    "levelRange": "32"
+  },
+  {
+    "id": "vecna-unleashed-legendary",
+    "name": "Vecna Unleashed (L)",
+    "levelRange": "34"
+  },
+  {
+    "id": "myth-drannor-legendary",
+    "name": "Myth Drannor (L)",
+    "levelRange": "35"
+  },
+  {
+    "id": "chill-of-ravenloft-legendary",
+    "name": "Chill of Ravenloft (L)",
+    "levelRange": "36"
+  }
+]

@@ -1,0 +1,27 @@
+/* Saga Tracker specific styles */
+
+/* Extra subtle alternating stripe for saga rows */
+.saga-row-stripe {
+    /* Use a tiny bit of emphasis color to tint the background very lightly */
+    background-color: rgba(var(--bs-emphasis-color-rgb, 33, 37, 41), 0.03);
+}
+
+/* Ensure consistent vertical alignment if content wraps */
+.saga-row-stripe .col,
+.saga-row-stripe [class^='col-'],
+.saga-row-stripe [class*=' col-'] {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+}
+
+/* Header alignment helper on wider screens (already using align-items-center in JSX) */
+@media (min-width: 768px) {
+    .saga-header-row .col,
+    .saga-header-row [class^='col-'],
+    .saga-header-row [class*=' col-'] {
+        display: flex;
+        align-items: center;
+        vertical-align: middle;
+    }
+}

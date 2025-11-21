@@ -4,21 +4,27 @@ import BaseLayout from '../components/layout/BaseLayout.tsx'
 import CauldronOfCadence from '../pages/cauldronOfCadence/CauldronOfCadence.tsx'
 import DinosaurBone from '../pages/dinosaurBoneCrafting/DinosaurBone.tsx'
 import HeroicGreenSteel from '../pages/greenSteel/heroic/HeroicGreenSteel.tsx'
-import LegendaryGreenSteel from '../pages/greenSteel/legendary/LegendaryGreenSteel.tsx'
+import LegendaryGreenSteel
+  from '../pages/greenSteel/legendary/LegendaryGreenSteel.tsx'
 import Home from '../pages/Home.tsx'
-import IncrediblePotential from '../pages/incrediblePotential/IncrediblePotential.tsx'
+import IncrediblePotential
+  from '../pages/incrediblePotential/IncrediblePotential.tsx'
 import Mastermind from '../pages/puzzles/Mastermind.tsx'
 import MonasteryOfTheScorpion from '../pages/puzzles/MonasteryOfTheScorpion.tsx'
 import Shroud from '../pages/puzzles/Shroud.tsx'
 import TheShadowCrypt from '../pages/puzzles/TheShadowCrypt.tsx'
 import TotalChaos from '../pages/puzzles/TotalChaos.tsx'
-import ViktraniumExperiment from '../pages/viktraniumExperiment/ViktraniumExperiment.tsx'
+import SagaTracker from '../pages/sagaTracker/SagaTracker.tsx'
+import ViktraniumExperiment
+  from '../pages/viktraniumExperiment/ViktraniumExperiment.tsx'
 
 const PageRoutes = () => {
   return (
     <Routes>
       <Route element={<BaseLayout />}>
         <Route path='/' element={<Home />} />
+
+        <Route path='/saga-tracker' element={<SagaTracker />} />
 
         {/*<Route path='/cannith-crafting' element={<CannithCrafting />} />*/}
         <Route path='/cauldron-of-cadence' element={<CauldronOfCadence />} />
