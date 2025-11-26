@@ -40,10 +40,7 @@ const buildHeader = (slot: string, clean: string, isColorSlot: boolean): string 
     : `${titleCase(parts[0] || '')}: ${titleCase(parts.slice(1)[0])} (${titleCase(parts.slice(1)[1])})`
 }
 
-const groupByAugmentType = (
-  list: Ingredient[] | undefined,
-  fallbackHeader: string
-): Record<string, Ingredient[]> => {
+const groupByAugmentType = (list: Ingredient[] | undefined, fallbackHeader: string): Record<string, Ingredient[]> => {
   if (!list || list.length === 0) return {}
 
   return list.reduce<Record<string, Ingredient[]>>((m, ing: Ingredient) => {
@@ -145,20 +142,47 @@ const AugmentSlotFilterableDropdown = (props: Props) => {
             const isColorSlot: boolean = isColorSlotName(clean)
             const header: string = buildHeader(slot, clean, isColorSlot)
             // Group color slots by augment color to organize alphabetically by color
-            const itemsMap = isColorSlot
-              ? groupByAugmentType(augmentOptions[slot], header)
-              : { [header]: augmentOptions[slot] }
-            const filteredOptions = isColorSlot
-              ? groupByAugmentType(filteredAugmentOptions[slot], header)
-              : { [header]: filteredAugmentOptions[slot] }
+            const isLamordiaSlot = clean.toLowerCase().startsWith('lamordia')
+
+            // Helper to split Lamordia augments into Heroic vs Legendary headers
+            const groupLamordiaByTier = (list: Ingredient[] | undefined): Record<string, Ingredient[]> => {
+              if (!list || list.length === 0) return { Heroic: [], Legendary: [] }
+              const heroic: Ingredient[] = []
+              const legendary: Ingredient[] = []
+              list.forEach((ing) => {
+                const lvl = ing.minimumLevel ?? 0
+                if (lvl >= 30) legendary.push(ing)
+                else heroic.push(ing)
+              })
+              // Sort within each tier for consistent display
+              heroic.sort((a, b) => a.name.localeCompare(b.name))
+              legendary.sort((a, b) => a.name.localeCompare(b.name))
+              return { Heroic: heroic, Legendary: legendary }
+            }
+
+            // Avoid nested ternaries: common helper to build groups for a given source map
+            const buildGroups = (
+              source: Record<string, Ingredient[]>,
+              slotKey: string,
+              headerLabel: string
+            ): Record<string, Ingredient[]> => {
+              if (isColorSlot) {
+                return groupByAugmentType(source[slotKey], headerLabel)
+              }
+              if (isLamordiaSlot) {
+                return groupLamordiaByTier(source[slotKey])
+              }
+              return { [headerLabel]: source[slotKey] }
+            }
+
+            const itemsMap = buildGroups(augmentOptions, slot, header)
+            const filteredOptions = buildGroups(filteredAugmentOptions, slot, header)
 
             // Order sections so that primary slot color is first, components next, and Colorless last
-            const orderedItemsMap = isColorSlot
-              ? orderGroups(itemsMap, primary.toLowerCase(), isColorSlot)
-              : itemsMap
-            const orderedFilteredOptions = isColorSlot
-              ? orderGroups(filteredOptions, primary.toLowerCase(), isColorSlot)
-              : filteredOptions
+            const maybeOrder = (groups: Record<string, Ingredient[]>) =>
+              isColorSlot ? orderGroups(groups, primary.toLowerCase(), isColorSlot) : groups
+            const orderedItemsMap = maybeOrder(itemsMap)
+            const orderedFilteredOptions = maybeOrder(filteredOptions)
 
             return (
               <FilterableDropdown
