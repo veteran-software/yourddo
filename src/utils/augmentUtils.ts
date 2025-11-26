@@ -3,13 +3,15 @@ import type { AugmentItem } from '../types/augmentItem.ts'
 
 // Build a type index once to avoid repeated filtering and duplicated code
 const AUGMENTS_BY_TYPE: Record<string, AugmentItem[]> = (() => {
-  const index: Record<string, AugmentItem[]> = {}
+  // Use Partial to accurately reflect that keys are added lazily
+  const index: Partial<Record<string, AugmentItem[]>> = {}
   augmentMaster.forEach((aug: AugmentItem) => {
     const key = (aug.augmentType ?? '').toLowerCase()
-    if (!index[key].length) index[key] = []
+    // Initialize lazily without using a nested assignment in an expression (Sonar rule)
+    index[key] ??= [];
     index[key].push(aug)
   })
-  return index
+  return index as Record<string, AugmentItem[]>
 })()
 
 const getByType = (typeKey: string): AugmentItem[] => {
