@@ -11,7 +11,7 @@ import type { CraftingIngredient } from '../../../../../types/crafting.ts'
 import { findCraftedIngredientByName } from '../../../../../utils/objectUtils.ts'
 
 const MaterialsAccordion = (props: Props) => {
-  const { craftedMaterials, rawMaterials } = props
+  const { craftedMaterials, rawMaterials, ingredientSources } = props
 
   return (
     <Accordion alwaysOpen={false} className='rounded-0'>
@@ -56,12 +56,17 @@ const MaterialsAccordion = (props: Props) => {
                 return (
                   <ListGroup.Item key={name}>
                     <CraftedIngredientDisplay
-                      ingredient={findCraftedIngredientByName(name, [
-                        ...altarOfFecundity,
-                        ...altarOfInvasion,
-                        ...altarOfSubjugation,
-                        ...altarOfDevastation
-                      ])}
+                      ingredient={findCraftedIngredientByName(
+                        name,
+                        ingredientSources && ingredientSources.length > 0
+                          ? ingredientSources
+                          : ([
+                              ...altarOfFecundity,
+                              ...altarOfInvasion,
+                              ...altarOfSubjugation,
+                              ...altarOfDevastation
+                            ] as CraftingIngredient[])
+                      )}
                       quantity={count}
                     />
                   </ListGroup.Item>
@@ -78,6 +83,7 @@ const MaterialsAccordion = (props: Props) => {
 interface Props {
   rawMaterials: Record<string, number>
   craftedMaterials: Record<string, number>
+  ingredientSources?: CraftingIngredient[]
 }
 
 export default MaterialsAccordion

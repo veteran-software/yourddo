@@ -99,7 +99,8 @@ const orderGroups = (
 
   const result: Record<string, Ingredient[]> = {}
   desired.forEach((k) => {
-    if (groups[k].length) result[k] = groups[k]
+    // Guard against keys that are in the desired order but not present in the actual groups
+    if (groups[k]?.length) result[k] = groups[k]
   })
   // Include any unexpected keys (except Colorless) afterward
   keys
