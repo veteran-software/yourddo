@@ -2,7 +2,7 @@ import { Fragment, useMemo } from 'react'
 import { Button, Col, Dropdown, Stack } from 'react-bootstrap'
 import { titleCase } from 'title-case'
 import type { Enhancement } from '../../types/core.ts'
-import type { CraftingIngredient } from '../../types/crafting'
+import type { CraftingIngredient } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import FilterOffCanvas from '../filters/FilterOffCanvas.tsx'
 import { parseUniqueEffects } from '../filters/helpers/filterUtils.ts'
@@ -31,13 +31,29 @@ const FilterableDropdown = (props: Props) => {
     displayEffectsAdded = false
   } = props
 
-  const isCraftedIngredient = (ingredient: CraftingIngredient): boolean => {
+  const isCraftedIngredient = (ingredient: Ingredient): boolean => {
     return 'craftedIn' in ingredient || 'effectsAdded' in ingredient
   }
 
-  const renderIngredientContent = (ingredient: CraftingIngredient) => {
+  const renderIngredientContent = (ingredient: Ingredient) => {
     if (renderSectionBody) {
       return renderSectionBody(ingredient)
+    }
+
+    // When the consumer requests effects display (e.g., Augment dropdowns),
+    // always render using CraftedIngredientDisplay with effects shown and NO location,
+    // regardless of whether the item is farmed or crafted. This ensures the subtext
+    // is a comma-separated list of effects, not farm locations.
+    if (displayEffectsAdded) {
+      return (
+        <CraftedIngredientDisplay
+          ingredient={ingredient}
+          quantity={1}
+          showLocation={false}
+          showQuantity={false}
+          showEffects={true}
+        />
+      )
     }
 
     if (isCraftedIngredient(ingredient)) {
@@ -55,7 +71,7 @@ const FilterableDropdown = (props: Props) => {
     return <FarmedIngredientDisplay ingredient={ingredient} quantity={1} showLocation={true} showQuantity={false} />
   }
 
-  const renderDropdownItems = (key: string, ingredients: CraftingIngredient[]) => {
+  const renderDropdownItems = (key: string, ingredients: Ingredient[]) => {
     // `ingredients` is ending up here as undefined sometimes, that shouldn't happen. if nothing is sent, it should be an empty array
     if (ingredients.length === 0) {
       return <></>
@@ -75,7 +91,7 @@ const FilterableDropdown = (props: Props) => {
           )}
         </Dropdown.Header>
 
-        {ingredients.map((ingredient: CraftingIngredient, idx: number) => (
+        {ingredients.map((ingredient: Ingredient, idx: number) => (
           <Dropdown.Item
             key={`${ingredient.name}-${String(idx)}`}
             onClick={() => {
@@ -137,8 +153,15 @@ const FilterableDropdown = (props: Props) => {
             filterMode={filterMode}
             filterOptions={uniqueEffects}
             items={Object.values(items).flat()}
-            getItemFilters={(item: CraftingIngredient): string[] =>
-              item.effectsAdded?.map((enhancement: Enhancement) => enhancement.name) ?? []
+            getItemFilters={(item: Ingredient): string[] =>
+              // Ingredient may or may not have effectsAdded; access safely
+              (
+                ('effectsAdded' in item && Array.isArray(item.effectsAdded)
+                  ? ((item as CraftingIngredient).effectsAdded as Partial<Enhancement>[])
+                  : [])
+              )
+                .map((enhancement: Partial<Enhancement>) => enhancement.name ?? '')
+                .filter((name: string) => !!name)
             }
             selectedFilters={filters}
             setSelectedFilters={onFiltersChange}

@@ -1,4 +1,4 @@
-import { augments } from '../data/augments.ts'
+import augmentMaster from '../data/augments/augmentMaster.ts'
 import type { AugmentItem } from '../types/augmentItem.ts'
 
 export const findAugmentsForSlot = (slot: string): Record<string, AugmentItem[]> => {
@@ -7,88 +7,102 @@ export const findAugmentsForSlot = (slot: string): Record<string, AugmentItem[]>
   switch (slot.toLowerCase()) {
     case 'red':
       augmentList = {
-        Red: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'red'),
-        Colorless: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless')
+        Red: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'red'),
+        Colorless: [...augmentMaster].filter(
+          (augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless'
+        )
       }
       break
     case 'blue':
       augmentList = {
-        Blue: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'blue'),
-        Colorless: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless')
+        Blue: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'blue'),
+        Colorless: [...augmentMaster].filter(
+          (augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless'
+        )
       }
       break
     case 'yellow':
       augmentList = {
-        Yellow: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'yellow'),
-        Colorless: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless')
+        Yellow: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'yellow'),
+        Colorless: [...augmentMaster].filter(
+          (augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless'
+        )
       }
       break
     case 'purple':
       augmentList = {
-        Red: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'red'),
-        Blue: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'blue'),
-        Purple: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'purple'),
-        Colorless: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless')
+        Red: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'red'),
+        Blue: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'blue'),
+        Purple: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'purple'),
+        Colorless: [...augmentMaster].filter(
+          (augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless'
+        )
       }
       console.log(slot, augmentList)
       break
     case 'orange':
       augmentList = {
-        Red: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'red'),
-        Yellow: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'yellow'),
-        Orange: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'orange'),
-        Colorless: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless')
+        Red: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'red'),
+        Yellow: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'yellow'),
+        Orange: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'orange'),
+        Colorless: [...augmentMaster].filter(
+          (augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless'
+        )
       }
       break
     case 'green':
       augmentList = {
-        Blue: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'blue'),
-        Yellow: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'yellow'),
-        Green: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'green'),
-        Colorless: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless')
+        Blue: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'blue'),
+        Yellow: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'yellow'),
+        Green: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'green'),
+        Colorless: [...augmentMaster].filter(
+          (augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless'
+        )
       }
       break
     case 'sun':
       augmentList = {
-        Sun: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'sun')
+        Sun: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'sun')
       }
       break
     case 'moon':
       augmentList = {
-        Moon: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'moon')
+        Moon: [...augmentMaster].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'moon')
       }
       break
     case 'lamordia: dolorous (armor)':
       augmentList = {
-        'Lamordia: Dolorous (Armor)': [...augments].filter(
+        'Lamordia: Dolorous (Armor)': [...augmentMaster].filter(
           (augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'lamordia: dolorous (armor)'
         )
       }
       break
     case 'lamordia: melancholic (armor)':
       augmentList = {
-        'Lamordia: Melancholic (Armor)': [...augments].filter(
+        'Lamordia: Melancholic (Armor)': [...augmentMaster].filter(
           (augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'lamordia: melancholic (armor)'
         )
       }
       break
     case 'lamordia: miserable (accessory)':
       augmentList = {
-        'Lamordia: Miserable (Accessory)': [...augments].filter(
+        'Lamordia: Miserable (Accessory)': [...augmentMaster].filter(
           (augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'lamordia: miserable (accessory)'
         )
       }
       break
     case 'lamordia: woeful (accessory)':
       augmentList = {
-        'Lamordia: Woeful (Accessory)': [...augments].filter(
+        'Lamordia: Woeful (Accessory)': [...augmentMaster].filter(
           (augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'lamordia: woeful (accessory)'
         )
       }
       break
     default: // colorless
       augmentList = {
-        Colorless: [...augments].filter((augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless')
+        Colorless: [...augmentMaster].filter(
+          (augment: AugmentItem) => augment.augmentType?.toLowerCase() === 'colorless'
+        )
       }
       break
   }

@@ -5,7 +5,7 @@ import { shallowEqual } from 'react-redux'
 import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import FilterableDropdown from '../../components/common/FilterableDropdown.tsx'
 import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
-import { augments } from '../../data/augments.ts'
+import augmentMaster from '../../data/augments/augmentMaster.ts'
 import { dinosaurBoneCrafting } from '../../data/dinosaurBoneCrafting/dinosaurBoneCrafting.ts'
 import { dinosaurBoneAccessoryItems } from '../../data/dinosaurBoneCrafting/factories/accessoryItemFactory.ts'
 import { dinosaurBoneArmorItems } from '../../data/dinosaurBoneCrafting/factories/armorItemFactory.ts'
@@ -67,7 +67,7 @@ const DinosaurBone = () => {
     [dinosaurArmorAndAccessories, itemFilters]
   )
 
-  const handleSelectAugment = (slot: string, augment: CraftingIngredient) => {
+  const handleSelectAugment = (slot: string, augment: Ingredient) => {
     dispatch(
       setSelectedAugment({
         slot,
@@ -152,7 +152,7 @@ const DinosaurBone = () => {
           .replace(/([A-Z])/g, ' $1')
           .trim()
         const words: string[] = clean.split(' ')
-        options = [...dinosaurBoneCrafting, ...augments].filter(
+        options = [...dinosaurBoneCrafting, ...augmentMaster].filter(
           (ing: CraftingIngredient | AugmentItem) =>
             ing.augmentType?.toLowerCase().includes(words[0].toLowerCase()) &&
             ing.augmentType.toLowerCase().includes(words[1]?.toLowerCase() ?? '')

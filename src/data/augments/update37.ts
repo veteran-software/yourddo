@@ -139,9 +139,7 @@ export const update37Augments: AugmentItem[] = [
         bonus: 'Equipment',
         modifier: 4
       }
-    ],
-    notes:
-      'The in game name is actually one + number lower.  However the description shows the numbers here. Need to verify which is correct'
+    ]
   },
   {
     name: 'Topaz of Melee Power +2',
