@@ -115,13 +115,8 @@ const toAugmentObject = (augments?: string[]): Augment[] | undefined => {
     if (m) {
       const mood = m[1]
       const slot = m[2]
-      const key = `lamordia${mood}${slot}`.replace(' ', '')
-      // Ensure camelCase for mood
-      const k = key
-        .replace('Melancholic', 'Melancholic')
-        .replace('Dolorous', 'Dolorous')
-        .replace('Miserable', 'Miserable')
-        .replace('Woeful', 'Woeful')
+      // Build the Augment key in camelCase, e.g., lamordiaMelancholicWeapon
+      const k = `lamordia${mood}${slot}`
       a[k.charAt(0).toLowerCase() + k.slice(1)] = null
     }
   })
@@ -136,7 +131,12 @@ const mapItem = (it: U75Item): CraftingIngredient => {
 
   if (jewelryTypes.has(it.type)) {
     type = 'Jewelry'
-    subType = it.type === 'Helmet' ? 'Helm' : it.type === 'Helm' ? 'Helm' : it.type
+    // Normalize subtype: both "Helmet" and "Helm" map to "Helm"
+    if (it.type === 'Helmet' || it.type === 'Helm') {
+      subType = 'Helm'
+    } else {
+      subType = it.type
+    }
   } else if (shieldTypes.has(it.type)) {
     type = 'Shield'
     subType = it.type
