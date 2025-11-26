@@ -91,7 +91,7 @@ const Shroud = () => {
       setMarkedSolution(null)
       setShowSolution(false)
     } else {
-      if (solution && showSolution && solution[r][c] === 1 && markedSolution && markedSolution[r][c] === 0) {
+      if (solution && showSolution && solution[r][c] === 1 && markedSolution?.[r][c] === 0) {
         const m2: number[][] = markedSolution.map((row: number[]) => row.slice())
         m2[r][c] = 1
         setMarkedSolution(m2)

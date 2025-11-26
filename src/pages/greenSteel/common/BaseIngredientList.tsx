@@ -48,7 +48,11 @@ const BaseIngredientList = (props: Props) => {
             <h6 className='mb-0'>Full Ingredient List</h6>
           </Card.Header>
           <Card.Body className='m-0 p-0'>
-            <MaterialsAccordion rawMaterials={rawMaterials} craftedMaterials={craftedMaterials} />
+            <MaterialsAccordion
+              rawMaterials={rawMaterials}
+              craftedMaterials={craftedMaterials}
+              ingredientSources={ingredientSources}
+            />
           </Card.Body>
         </Card>
       )}

@@ -91,7 +91,7 @@ const MonasteryOfTheScorpion = () => {
       setShowSolution(false)
     } else {
       // play mode
-      if (solution && showSolution && solution[r][c] === 1 && markedSolution && markedSolution[r][c] === 0) {
+      if (solution && showSolution && solution[r][c] === 1 && markedSolution?.[r][c] === 0) {
         const m2 = markedSolution.map((row) => row.slice())
 
         m2[r][c] = 1

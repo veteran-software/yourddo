@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Alert, Card, Col, Container, Row, Stack } from 'react-bootstrap'
+import { Card, Col, Container, Row, Stack } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { titleCase } from 'title-case'
@@ -9,19 +9,13 @@ import FilterableDropdown from '../../components/common/FilterableDropdown.tsx'
 import {
   filterIngredientsMap
 } from '../../components/filters/helpers/filterUtils.ts'
-import { augments } from '../../data/augments.ts'
+import augmentMaster from '../../data/augments/augmentMaster.ts'
 import {
-  lootHeroicViktraniumItems
-} from '../../data/viktraniumExperiment/hChillOfRavenloftLoot.ts'
-import {
-  craftedHeroicViktraniumWeapons
-} from '../../data/viktraniumExperiment/hViktraniumExperimentCraftedItems.ts'
-import {
+  craftedHeroicViktraniumWeapons,
+  craftedLegendaryViktraniumWeapons,
+  lootHeroicViktraniumItems,
   lootLegendaryViktraniumItems
-} from '../../data/viktraniumExperiment/lChillOfRavenloftLoot.ts'
-import {
-  craftedLegendaryViktraniumWeapons
-} from '../../data/viktraniumExperiment/lViktraniumExperimentCraftedItems.ts'
+} from '../../data/viktraniumExperiment/update75Adapter.ts'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks.ts'
 import {
   resetSelectedHeroicCraftedItem,
@@ -108,16 +102,52 @@ const ViktraniumExperiment = () => {
     return availableAugmentSlots.reduce<Record<string, AugmentItem[]>>((acc, slot) => {
       const clean: string = slot.replace(/([A-Z])/g, ' $1').trim()
       const words: string[] = clean.split(' ')
+
+      // Helper: map basic slot color to the set of allowed augmentType colors
+      const color = (words[0] ?? '').toLowerCase()
+      const allowedBySlot: Record<string, string[]> = {
+        // Basic primary colors allow themselves + Colorless
+        red: ['Red', 'Colorless'],
+        blue: ['Blue', 'Colorless'],
+        yellow: ['Yellow', 'Colorless'],
+        // Mixed colors per requirements
+        purple: ['Red', 'Blue', 'Purple', 'Colorless'],
+        orange: ['Red', 'Yellow', 'Orange', 'Colorless'],
+        green: ['Blue', 'Yellow', 'Green', 'Colorless'],
+        // Colorless slot only allows Colorless augments
+        colorless: ['Colorless']
+      }
+
       // Basic Color Augments
       if (words.length === 1) {
-        acc[slot] = [...augments].filter((ing: AugmentItem) => ing.augmentType === titleCase(words[0]))
+        const allowed = allowedBySlot[color]
+        if (allowed && allowed.length > 0) {
+          acc[slot] = [...augmentMaster]
+            .filter((ing: AugmentItem) => allowed.includes((ing.augmentType ?? '') as string))
+            .sort((a: AugmentItem, b: AugmentItem) => {
+              // Sort by augmentType (color) then by name for stable grouping
+              const at: string = (a.augmentType ?? '') as string
+              const bt: string = (b.augmentType ?? '') as string
+              if (at !== bt) return at.localeCompare(bt)
+              return a.name.localeCompare(b.name)
+            })
+          return acc
+        }
+
+        // Fallback: if unknown color (e.g., Sun/Moon), match the exact type name
+        acc[slot] = [...augmentMaster]
+          .filter((ing: AugmentItem) => ing.augmentType === titleCase(words[0]))
+          .sort((a: AugmentItem, b: AugmentItem) => a.name.localeCompare(b.name))
         return acc
       }
 
-      acc[slot] = [...augments].filter(
-        (ing: AugmentItem) =>
-          ing.augmentType === `${titleCase(words[0])}: ${titleCase(words[1])} (${titleCase(words[2])})`
-      )
+      // Focused/Multi-word augments use strict type matching (e.g., "Red: Something (Minor)")
+      acc[slot] = [...augmentMaster]
+        .filter(
+          (ing: AugmentItem) =>
+            ing.augmentType === `${titleCase(words[0])}: ${titleCase(words[1])} (${titleCase(words[2])})`
+        )
+        .sort((a: AugmentItem, b: AugmentItem) => a.name.localeCompare(b.name))
       return acc
     }, {})
   }, [availableAugmentSlots])
@@ -130,7 +160,7 @@ const ViktraniumExperiment = () => {
     return Object.fromEntries(
       Object.entries(augmentOptions).map(([slot, options]) => {
         const filteredForSlot = filterIngredientsMap(augmentFilters, { '': options })['']
-        return [slot, filteredForSlot as AugmentItem[]]
+        return [slot, filteredForSlot]
       })
     )
   }, [augmentOptions, augmentFilters])
@@ -155,11 +185,6 @@ const ViktraniumExperiment = () => {
 
   return (
     <Container className='px-0'>
-      <Alert key='lamannia-alert' variant='info' className='text-center mb-2'>
-        Crafted items &amp; augments are accurate as of Aug 20, 2025 (live release of the Chill of Ravenloft expansion.)
-        Quest loot items will be updated as they are discovered.
-      </Alert>
-
       <Card>
         <Card.Header className='text-center p-1'>
           <Card.Title>

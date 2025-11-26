@@ -9,18 +9,19 @@ import type { Ingredient } from '../../../types/ingredients.ts'
  * @param {Record<string, Ingredient[]>} ingredientsMap - A map where the keys are element names and the values are arrays of CraftingIngredient objects.
  * @returns {Record<string, Ingredient[]>} A new ingredients map containing only the ingredients that match the item filters for each element.
  */
-export const filterIngredientsMap = (
+export const filterIngredientsMap = <T extends Ingredient>(
   itemFilters: string[],
-  ingredientsMap: Record<string, Ingredient[]>
-): Record<string, CraftingIngredient[]> => {
+  ingredientsMap: Record<string, T[]>
+): Record<string, T[]> => {
   if (!itemFilters.length) return ingredientsMap
 
   return Object.fromEntries(
     Object.entries(ingredientsMap).map(([element, ingredients]) => [
       element,
-      ingredients.filter((ingredient: CraftingIngredient) =>
-        ingredient.effectsAdded?.some((effect: Enhancement) => itemFilters.includes(effect.name))
-      )
+      ingredients.filter((ingredient: T) => {
+        const effects = (ingredient as CraftingIngredient).effectsAdded as Partial<Enhancement>[] | undefined
+        return effects?.some((effect) => itemFilters.includes(effect.name ?? '')) ?? false
+      })
     ])
   )
 }
@@ -37,10 +38,11 @@ export const filterIngredientsMap = (
  */
 export const parseUniqueEffects = (ingredientsMap: Record<string, Ingredient[]>): string[] => {
   const effects = new Set<string>()
-  Object.values(ingredientsMap).forEach((ingredients: CraftingIngredient[]) => {
-    ingredients.forEach((ingredient: CraftingIngredient) => {
-      ingredient.effectsAdded?.forEach((effect: Enhancement) => {
-        effects.add(effect.name)
+  Object.values(ingredientsMap).forEach((ingredients: Ingredient[]) => {
+    ingredients.forEach((ingredient: Ingredient) => {
+      const ingEffects = (ingredient as CraftingIngredient).effectsAdded as Partial<Enhancement>[] | undefined
+      ingEffects?.forEach((effect) => {
+        if (effect.name) effects.add(effect.name)
       })
     })
   })
