@@ -124,7 +124,6 @@ function main() {
 
   console.error('ERROR: Content mismatch after sorting. Aborting without writing.')
   process.exitCode = 2
-  return
 }
 
 try {
