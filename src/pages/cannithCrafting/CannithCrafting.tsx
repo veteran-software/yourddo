@@ -17,15 +17,11 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown
-  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import FallbackImage from '../../components/common/FallbackImage.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import {
-  filterIngredientsMap
-} from '../../components/filters/helpers/filterUtils.ts'
-import cannithPhase1
-  from '../../data/cannithCrafting/cannithEnhancements.phase1.json'
+import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
+import cannithPhase1 from '../../data/cannithCrafting/cannithEnhancements.phase1.json'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
@@ -298,6 +294,7 @@ const CannithCrafting = () => {
     const utf8 = encodeURIComponent(input).replace(/%([0-9A-F]{2})/g, (_, p1) => String.fromCharCode(parseInt(p1, 16)))
     // noinspection JSUnresolvedReference
     const b64 = typeof btoa === 'function' ? btoa(utf8) : Buffer.from(utf8, 'binary').toString('base64')
+    // eslint-disable-next-line sonarjs/slow-regex
     return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')
   }
   const base64UrlDecode = (input: string): string => {
