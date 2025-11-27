@@ -14,6 +14,7 @@ import {
   Stack,
   Table
 } from 'react-bootstrap'
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import AugmentSlotFilterableDropdown
   from '../../components/common/AugmentSlotFilterableDropdown.tsx'
@@ -27,7 +28,7 @@ import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { findAugmentsForSlot } from '../../utils/augmentUtils.ts'
-import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
+import { getOwnedIngredients, toSingularName } from '../../utils/jsxUtils.tsx'
 
 type CoreChoice = string | null
 
@@ -58,6 +59,8 @@ type Phase1MinLevelIncrease =
     }
   | null
 
+type TAffix = string[] | string | null
+
 interface CannithPhase1Entry {
   name: string
   enchantments?: Phase1EnchantmentMeta[]
@@ -66,9 +69,9 @@ interface CannithPhase1Entry {
   prefixTitle?: string | null
   suffixTitle?: string | null
   // Although normalized to arrays, keep a tolerant type for safety
-  prefix?: string[] | string | null
-  suffix?: string[] | string | null
-  extra?: string[] | string | null
+  prefix?: TAffix
+  suffix?: TAffix
+  extra?: TAffix
   group?: string | null
   minLevelIncrease?: Phase1MinLevelIncrease
   stat?: (number | string)[]
@@ -1006,11 +1009,16 @@ const CannithCrafting = () => {
       <Card>
         <Card.Header className='text-center'>
           <h4 className='mb-0'>Cannith Crafting</h4>
-          <Card.Subtitle>
-            <small>
-              Build a gear set with Prefix, Suffix, Extra, and Augment slots. Data persists for this session.
-            </small>
-          </Card.Subtitle>
+          <small>
+            <a
+              href='https://github.com/veteran-software/yourddo/issues?q=state%3Aopen%20label%3A%22Cannith%20Crafting%22'
+              target='_blank'
+              rel='noreferrer'
+              title='Cannith Crafting Known Issues & Bug Reports'
+            >
+              Known Issues / Bug Reports <FaArrowUpRightFromSquare size={10} />
+            </a>
+          </small>
         </Card.Header>
 
         <Card.Body>
