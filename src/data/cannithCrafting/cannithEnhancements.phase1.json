@@ -5,7 +5,7 @@
       {
         "name": "Bane damage versus Aberrations",
         "statModified": "Weapon Bane Damage (Aberration)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -90,9 +90,8 @@
     "name": "Abjuration Focus",
     "enchantments": [
       {
-        "name": "Equipment bonus to DC of Abjuration Spells",
-        "statModified": "Abjuration DC",
-        "bonusType": "Equipment"
+        "name": "Abjuration Focus",
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -142,9 +141,8 @@
     "name": "Accuracy",
     "enchantments": [
       {
-        "name": "Competence bonus to Attack Rolls",
-        "statModified": "Attack Rolls",
-        "bonusType": "Competence"
+        "name": "Attack Rolls",
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -197,9 +195,8 @@
     "name": "Acid Absorption",
     "enchantments": [
       {
-        "name": "% Enhancement bonus to Acid absorption",
-        "statModified": "Elemental Absorption (Acid)",
-        "bonusType": "Enhancement"
+        "name": "Acid Absorption",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -253,8 +250,7 @@
     "enchantments": [
       {
         "name": "Acid damage",
-        "statModified": "Weapon Damage (Acid)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -339,9 +335,8 @@
     "name": "Acid Lore",
     "enchantments": [
       {
-        "name": "Equipment bonus to Acid Spells chance to Critical Hit",
-        "statModified": "Spell Critical Chance (Acid)",
-        "bonusType": "Equipment"
+        "name": "Acid Spell Critical Chance",
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -394,9 +389,8 @@
     "name": "Acid Resistance",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Resist Acid",
-        "statModified": "Acid Resistance",
-        "bonusType": "Enhancement"
+        "name": "Acid Resistance",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -449,14 +443,20 @@
     "name": "Aligned",
     "enchantments": [
       {
-        "name": "Bypass Alignment based Damage Reduction",
-        "statModified": [
-          "Damage Reduction Bypass (Chaotic)",
-          "Damage Reduction Bypass (Good)",
-          "Damage Reduction Bypass (Evil)",
-          "Damage Reduction Bypass (Lawful)"
-        ],
-        "bonusType": "Enhancement"
+        "name": "Damage Reduction Bypass (Chaotic)",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Damage Reduction Bypass (Good)",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Damage Reduction Bypass (Evil)",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Damage Reduction Bypass (Lawful)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -506,9 +506,8 @@
     "name": "Animal Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Animals",
-        "statModified": "Weapon Bane Damage (Animal)",
-        "bonusType": "Enhancement"
+        "name": "Weapon Bane Damage (Animal)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -593,9 +592,8 @@
     "name": "Armor-Piercing",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Bypass enemy Fortification",
-        "statModified": "Fortification Bypass",
-        "bonusType": "Enhancement"
+        "name": "Fortification Bypass Chance",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -648,9 +646,8 @@
     "name": "Assassinate",
     "enchantments": [
       {
-        "name": "Enhancement bonus to character's Assassinate attempts",
-        "statModified": "Assassinate",
-        "bonusType": "Enhancement"
+        "name": "Assassin Special Ability DC",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -700,9 +697,8 @@
     "name": "Balance",
     "enchantments": [
       {
-        "name": "Competence bonus to Balance",
-        "statModified": "Balance",
-        "bonusType": "Competence"
+        "name": "Balance Skill",
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -755,9 +751,8 @@
     "name": "Bashing",
     "enchantments": [
       {
-        "name": "Bludgeon damage when using Shield Bash",
-        "statModified": "Shield Bash Damage",
-        "bonusType": "Enhancement"
+        "name": "Shield Bash Damage",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -844,7 +839,7 @@
       {
         "name": "Immunity to Blindness Effects",
         "statModified": "Blindness Immunity",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -894,9 +889,8 @@
     "name": "Bludgeon Effect",
     "enchantments": [
       {
-        "name": "Bludgeon damage",
-        "statModified": "Weapon Damage (Bludgeon)",
-        "bonusType": "Enhancement"
+        "name": "Weapon Damage (Bludgeon)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -981,9 +975,8 @@
     "name": "Bluff",
     "enchantments": [
       {
-        "name": "Competence bonus to Bluff",
-        "statModified": "Bluff",
-        "bonusType": "Competence"
+        "name": "Bluff Skill",
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -1036,9 +1029,8 @@
     "name": "Chaos Effect",
     "enchantments": [
       {
-        "name": "Chaos damage",
-        "statModified": "Weapon Damage (Chaos)",
-        "bonusType": "Enhancement"
+        "name": "Weapon Damage (Chaos)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -1120,12 +1112,42 @@
     ]
   },
   {
+    "name": "Champion's [Combined] (Speed & Combat Mastery)",
+    "enchantments": [
+      {
+        "name": "Striding"
+      },
+      {
+        "name": "Combat Mastery"
+      }
+    ],
+    "bound": null,
+    "unbound": {
+      "level": 400,
+      "essence": 800,
+      "purified": 15,
+      "collectible": [
+        {
+          "name": "Mystical Goblet",
+          "qty": 5
+        }
+      ]
+    },
+    "prefixTitle": null,
+    "suffixTitle": null,
+    "prefix": ["Trinket"],
+    "suffix": [],
+    "extra": [],
+    "group": "Save",
+    "minLevelIncrease": null,
+    "stat": []
+  },
+  {
     "name": "Chaotic Outsider Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Chaotic Outsiders",
-        "statModified": "Weapon Bane Damage (Chaotic Outsider)",
-        "bonusType": "Enhancement"
+        "name": "Weapon Bane Damage (Chaotic Outsider)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -1210,9 +1232,8 @@
     "name": "Charisma",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Charisma",
-        "statModified": "Charisma",
-        "bonusType": "Enhancement"
+        "name": "Charisma",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -1264,9 +1285,8 @@
     "name": "Charisma Damaging Effect",
     "enchantments": [
       {
-        "name": "On Critical Hit: Deal extra Charisma damage to your target",
-        "statModified": "Charisma Damage Chance",
-        "bonusType": "Enhancement"
+        "name": "Charisma Damage Chance",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -1316,9 +1336,8 @@
     "name": "Cold Absorption",
     "enchantments": [
       {
-        "name": "% Enhancement bonus to Cold absorption",
-        "statModified": "Elemental Absorption (Cold)",
-        "bonusType": "Enhancement"
+        "name": "Cold absorption",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -1371,9 +1390,8 @@
     "name": "Cold Effect",
     "enchantments": [
       {
-        "name": "Cold damage",
-        "statModified": "Weapon Damage (Cold)",
-        "bonusType": "Enhancement"
+        "name": "Weapon Damage (Cold)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -1458,9 +1476,8 @@
     "name": "Cold Lore",
     "enchantments": [
       {
-        "name": "Equipment bonus to Cold Spells chance to Critical Hit",
-        "statModified": "Spell Critical Chance (Cold)",
-        "bonusType": "Equipment"
+        "name": "Cold Spell Critical Chance",
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -1513,9 +1530,8 @@
     "name": "Cold Resistance",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Resist Cold",
-        "statModified": "Cold Resistance",
-        "bonusType": "Enhancement"
+        "name": "Cold Resistance",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -1568,9 +1584,24 @@
     "name": "Combat Mastery",
     "enchantments": [
       {
-        "name": "Enhancement bonus to character's Trip, Improved Trip, Sunder, Improved Sunder, Stunning Blow, and Stunning Fist attempts",
-        "statModified": ["Trip", "Improved Trip", "Sunder", "Improved Sunder", "Stunning Blow", "Stunning Fist"],
-        "bonusType": "Enhancement"
+        "name": "Trip DC",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Improved Trip DC",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Sunder DC",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Improved Sunder DC",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Stunning DC",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -1622,9 +1653,8 @@
     "name": "Combustion",
     "enchantments": [
       {
-        "name": "Passive: Equipment bonus to Fire Spell Power",
-        "statModified": "Fire Spell Power",
-        "bonusType": "Equipment"
+        "name": "Fire Spell Power",
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -1677,9 +1707,8 @@
     "name": "Concentration",
     "enchantments": [
       {
-        "name": "Competence bonus to Concentration",
-        "statModified": "Concentration",
-        "bonusType": "Competence"
+        "name": "Concentration Skill",
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -1732,9 +1761,8 @@
     "name": "Conjuration Focus",
     "enchantments": [
       {
-        "name": "Equipment bonus to DC of Conjuration Spells",
-        "statModified": "Conjuration DC",
-        "bonusType": "Equipment"
+        "name": "Conjuration Focus",
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -1784,9 +1812,8 @@
     "name": "Constitution",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Constitution",
-        "statModified": "Constitution",
-        "bonusType": "Enhancement"
+        "name": "Constitution",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -1838,9 +1865,8 @@
     "name": "Constitution Damaging Effect",
     "enchantments": [
       {
-        "name": "On Critical Hit: Deal extra Constitution damage to your target",
-        "statModified": "Constitution Damage Chance",
-        "bonusType": "Enhancement"
+        "name": "Constitution Damage Chance",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -1890,9 +1916,8 @@
     "name": "Construct Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Constructs",
-        "statModified": "Weapon Bane Damage (Construct)",
-        "bonusType": "Enhancement"
+        "name": "Weapon Bane Damage (Construct)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -1977,9 +2002,8 @@
     "name": "Corrosion",
     "enchantments": [
       {
-        "name": "Passive: Equipment bonus to Acid Spell Power",
-        "statModified": "Acid Spell Power",
-        "bonusType": "Equipment"
+        "name": "Acid Spell Power",
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -2032,9 +2056,8 @@
     "name": "Deadly",
     "enchantments": [
       {
-        "name": "Competence bonus to Weapon Damage (+[W])",
-        "statModified": "Weapon Damage",
-        "bonusType": "Competence"
+        "name": "Damage",
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -2086,9 +2109,8 @@
     "name": "Deathblock",
     "enchantments": [
       {
-        "name": "Immunity to Death Spells and Magical Death Effects",
-        "statModified": "Deathblock",
-        "bonusType": "Enhancement"
+        "name": "Deathblock",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -2135,12 +2157,36 @@
     "stat": ["Immunity to Death Spells and Magical Death Effects"]
   },
   {
+    "name": "Deception",
+    "enchantments": [
+      {
+        "name": "Sneak Attack Accuracy",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Sneak Attack Damage",
+        "bonus": "Enhancement"
+      }
+    ],
+    "bound": null,
+    "unbound": null,
+    "prefixTitle": null,
+    "suffixTitle": null,
+    "prefix": [],
+    "suffix": [],
+    "extra": [],
+    "group": "Damage",
+    "minLevelIncrease": null,
+    "stat": [
+      1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10, 11, 11, 11
+    ]
+  },
+  {
     "name": "Devotion",
     "enchantments": [
       {
-        "name": "Passive: Equipment bonus to Positive Spell Power",
-        "statModified": "Positive Spell Power",
-        "bonusType": "Equipment"
+        "name": "Positive Spell Power",
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -2193,9 +2239,8 @@
     "name": "Dexterity",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Dexterity",
-        "statModified": "Dexterity",
-        "bonusType": "Enhancement"
+        "name": "Dexterity",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -2247,9 +2292,8 @@
     "name": "Dexterity Damaging Effect",
     "enchantments": [
       {
-        "name": "On Critical Hit: Deal extra Dexterity damage to your target",
-        "statModified": "Dexterity Damage Chance",
-        "bonusType": "Enhancement"
+        "name": "Dexterity Damage Chance",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -2299,9 +2343,9 @@
     "name": "Diplomacy",
     "enchantments": [
       {
-        "name": "Competence bonus to Diplomacy",
+        "name": "Diplomacy Skill",
         "statModified": "Diplomacy",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -2354,9 +2398,8 @@
     "name": "Disable Device",
     "enchantments": [
       {
-        "name": "Competence bonus to Disable Device",
-        "statModified": "Disable Device",
-        "bonusType": "Competence"
+        "name": "Disable Device Skill",
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -2409,14 +2452,12 @@
     "name": "Disease Ward",
     "enchantments": [
       {
-        "name": "Grants Immunity to Natural Diseases.",
-        "statModified": "Natural Disease immunity",
-        "bonusType": "Resistance"
+        "name": "Disease Immunity (Natural)",
+        "bonus": "Resistance"
       },
       {
-        "name": "Enhancement bonus to Saving Throws against Magical Diseases",
-        "statModified": "Fortitude Save (Disease)",
-        "bonusType": "Enhancement"
+        "name": "Fortitude (Disease) Saving Throws",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -2468,9 +2509,8 @@
     "name": "Diversion",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Decreased Threat Generation from Melee Damage",
-        "statModified": "Threat Reduction (Melee)",
-        "bonusType": "Enhancement"
+        "name": "Melee Threat Generation (Decrease)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -2523,9 +2563,8 @@
     "name": "Dodge Bonus",
     "enchantments": [
       {
-        "name": "% Enhancement bonus to Dodge",
-        "statModified": "Dodge",
-        "bonusType": "Enhancement"
+        "name": "Dodge Chance",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -2577,9 +2616,8 @@
     "name": "Doubleshot",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Doubleshot chance",
-        "statModified": "Doubleshot",
-        "bonusType": "Enhancement"
+        "name": "Doubleshot Chance",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -2629,9 +2667,8 @@
     "name": "Doublestrike",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Doublestrike chance",
-        "statModified": "Doublestrike",
-        "bonusType": "Enhancement"
+        "name": "Doublestrike Chance",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -2684,9 +2721,8 @@
     "name": "Dragon Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Dragons",
-        "statModified": "Weapon Bane Damage (Dragon)",
-        "bonusType": "Enhancement"
+        "name": "Weapon Bane Damage (Dragon)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -2771,9 +2807,8 @@
     "name": "Dwarf Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Dwarves",
-        "statModified": "Weapon Bane Damage (Dwarf)",
-        "bonusType": "Enhancement"
+        "name": "Weapon Bane Damage (Dwarf)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -2858,9 +2893,8 @@
     "name": "Efficient Metamagic - Empower II",
     "enchantments": [
       {
-        "name": "Reduce Empower Metamagic cost by 2 SP",
-        "statModified": "Metamagic Cost (Empower)",
-        "bonusType": "Enhancement"
+        "name": "Metamagic Cost Reduction (Empower)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -2904,15 +2938,14 @@
     "extra": ["Trinket", "Runearm"],
     "group": "Static",
     "minLevelIncrease": null,
-    "stat": ["Reduce Spell Point cost of using Empower by 2 SP"]
+    "stat": [2]
   },
   {
     "name": "Efficient Metamagic: Empower Healing I",
     "enchantments": [
       {
-        "name": "Reduce Empower Healing Metamagic cost by 1 SP",
-        "statModified": "Metamagic Cost (Empower Healing)",
-        "bonusType": "Enhancement"
+        "name": "Metamagic Cost Reduction (Empower Healing)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -2956,15 +2989,14 @@
     "extra": ["Trinket", "Runearm"],
     "group": "Static",
     "minLevelIncrease": null,
-    "stat": ["Reduce Spell Point cost of using Empower Healing by 1 SP"]
+    "stat": [1]
   },
   {
     "name": "Efficient Metamagic: Enlarge I",
     "enchantments": [
       {
-        "name": "Reduce Enlarge Metamagic cost by 1 SP",
-        "statModified": "Metamagic Cost (Enlarge)",
-        "bonusType": "Enhancement"
+        "name": "Metamagic Cost Reduction (Enlarge)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -3008,15 +3040,14 @@
     "extra": ["Trinket", "Runearm"],
     "group": "Static",
     "minLevelIncrease": null,
-    "stat": ["Reduce Spell Point cost of using Enlarge by 1 SP"]
+    "stat": [1]
   },
   {
     "name": "Efficient Metamagic: Extend I",
     "enchantments": [
       {
-        "name": "Reduce Extend Metamagic cost by 1 SP",
-        "statModified": "Metamagic Cost (Extend)",
-        "bonusType": "Enhancement"
+        "name": "Metamagic Cost Reduction (Extend)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -3060,15 +3091,14 @@
     "extra": ["Trinket", "Runearm"],
     "group": "Static",
     "minLevelIncrease": null,
-    "stat": ["Reduce Spell Point cost of using Extend by 1 SP"]
+    "stat": [1]
   },
   {
     "name": "Efficient Metamagic: Maximize I",
     "enchantments": [
       {
-        "name": "Reduce Maximize Healing Metamagic cost by 1 SP",
-        "statModified": "Metamagic Cost (Maximize)",
-        "bonusType": "Enhancement"
+        "name": "Metamagic Cost Reduction (Maximize)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -3112,15 +3142,14 @@
     "extra": ["Trinket", "Runearm"],
     "group": "Static",
     "minLevelIncrease": null,
-    "stat": ["Reduce Spell Point cost of using Maximize by 1 SP"]
+    "stat": [1]
   },
   {
     "name": "Electric Effect",
     "enchantments": [
       {
-        "name": "Electric damage",
-        "statModified": "Weapon Damage (Electric)",
-        "bonusType": "Enhancement"
+        "name": "Weapon Damage (Electric)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -3205,9 +3234,8 @@
     "name": "Electric Resistance",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Resist Electric",
-        "statModified": "Electric Resistance",
-        "bonusType": "Enhancement"
+        "name": "Electric Resistance",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -3260,9 +3288,8 @@
     "name": "Electricity Absorption",
     "enchantments": [
       {
-        "name": "% Enhancement bonus to Electric absorption",
-        "statModified": "Elemental Absorption (Electric)",
-        "bonusType": "Enhancement"
+        "name": "Electric Absorption",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -3315,9 +3342,8 @@
     "name": "Electricity Lore",
     "enchantments": [
       {
-        "name": "Equipment bonus to Electric Spells chance to Critical Hit",
-        "statModified": "Spell Critical Chance (Electric)",
-        "bonusType": "Equipment"
+        "name": "Electrical Spell Critical Chance",
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -3370,9 +3396,8 @@
     "name": "Elemental Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Elementals",
-        "statModified": "Weapon Bane Damage (Elemental)",
-        "bonusType": "Enhancement"
+        "name": "Weapon Bane Damage (Elemental)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -3453,9 +3478,8 @@
     "name": "Elf Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Elves",
-        "statModified": "Weapon Bane Damage (Elf)",
-        "bonusType": "Enhancement"
+        "name": "Weapon Bane Damage (Elf)",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -3540,9 +3564,8 @@
     "name": "Enchantment Focus",
     "enchantments": [
       {
-        "name": "Equipment bonus to DC of Enchantment Spells",
-        "statModified": "Enchantment DC",
-        "bonusType": "Equipment"
+        "name": "Enchantment Focus",
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -3592,9 +3615,8 @@
     "name": "Enchantment Resistance",
     "enchantments": [
       {
-        "name": "Resistance bonus saves versus Enchantments",
-        "statModified": "Spell Saves (Enchantment)",
-        "bonusType": "Resistance"
+        "name": "Spell Saves (Enchantment)",
+        "bonus": "Resistance"
       }
     ],
     "bound": {
@@ -3646,9 +3668,8 @@
     "name": "Eternal Faith",
     "enchantments": [
       {
-        "name": "Turn Undead level &amp; maximum Hit Die increased by 2, total Hit Die increase of 4",
-        "statModified": "Turn Undead Hit Die",
-        "bonusType": "Enhancement"
+        "name": "Turn Undead Additional Hit Dice",
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -3700,12 +3721,12 @@
       {
         "name": "Weapon never takes damage from Ooze or Rust",
         "statModified": ["Weapon Damage Negation (Ooze)", "Weapon Damage Negation (Rust)"],
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       },
       {
         "name": "Blinding Flash (3/Rest)",
         "statModified": "Spell Like Ability",
-        "bonusType": "Clickie"
+        "bonus": "Clickie"
       }
     ],
     "bound": {
@@ -3757,7 +3778,7 @@
       {
         "name": "Evil damage",
         "statModified": "Weapon Damage (Evil)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -3844,7 +3865,7 @@
       {
         "name": "Bane damage versus Evil Outsiders",
         "statModified": "Weapon Bane Damage (Evil Outsider)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -3931,7 +3952,7 @@
       {
         "name": "Equipment bonus to DC of Evocation Spells",
         "statModified": "Evocation DC",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -3983,7 +4004,7 @@
       {
         "name": "Enhancement bonus to Maximum Hit Points",
         "statModified": "Maximum Hit Points",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -4038,7 +4059,7 @@
       {
         "name": "On Being Hit: Chance to cast Fear on the attacking enemy",
         "statModified": "Guard Damage (Fear)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -4090,7 +4111,7 @@
       {
         "name": "Causes your character to fall slowly",
         "statModified": "Feather Fall",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -4142,7 +4163,7 @@
       {
         "name": "% Enhancement bonus to Fire absorption",
         "statModified": "Elemental Absorption (Fire)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -4197,7 +4218,7 @@
       {
         "name": "Fire damage",
         "statModified": "Weapon Damage (Fire)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -4284,7 +4305,7 @@
       {
         "name": "Equipment bonus to Fire Spells chance to Critical Hit",
         "statModified": "Spell Critical Chance (Fire)",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -4339,7 +4360,7 @@
       {
         "name": "Enhancement bonus to Resist Fire",
         "statModified": "Fire Resistance",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -4394,7 +4415,7 @@
       {
         "name": "Force damage",
         "statModified": "Weapon Damage (Force)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -4481,7 +4502,7 @@
       {
         "name": "Equipment bonus to Force Spells chance to Critical Hit",
         "statModified": "Spell Critical Chance (Force)",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -4536,7 +4557,7 @@
       {
         "name": "Enhancement bonus to the reduced chance of taking Critical Hit damage on a Critical Hit",
         "statModified": "Fortification",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -4591,7 +4612,7 @@
       {
         "name": "Resistance bonus to Fortitude Saves",
         "statModified": "Fortitude Save",
-        "bonusType": "Resistance"
+        "bonus": "Resistance"
       }
     ],
     "bound": {
@@ -4645,7 +4666,7 @@
       {
         "name": "Bypass Incorporeal creatures 50% chance to avoid damage",
         "statModified": "Ghost Touch",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -4697,7 +4718,7 @@
       {
         "name": "Bane damage versus Giants",
         "statModified": "Weapon Bane Damage (Giant)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -4784,7 +4805,7 @@
       {
         "name": "Passive: Equipment bonus to Cold Spell Power",
         "statModified": "Cold Spell Power",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -4839,7 +4860,7 @@
       {
         "name": "Bane damage versus Gnolls",
         "statModified": "Weapon Bane Damage (Gnoll)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -4926,7 +4947,7 @@
       {
         "name": "Bane damage versus Goblinoids",
         "statModified": "Weapon Bane Damage (Goblinoid)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -5013,7 +5034,7 @@
       {
         "name": "Good damage",
         "statModified": "Weapon Damage (Good)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -5100,7 +5121,7 @@
       {
         "name": "Competence bonus to Haggle",
         "statModified": "Haggle",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -5155,7 +5176,7 @@
       {
         "name": "Bane damage versus Halflings",
         "statModified": "Weapon Bane Damage (Halfling)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -5242,7 +5263,7 @@
       {
         "name": "Competence bonus to Heal",
         "statModified": "Heal",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -5297,7 +5318,7 @@
       {
         "name": "Enhancement bonus to Healing Amplification",
         "statModified": "Healing Amplification",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -5352,7 +5373,7 @@
       {
         "name": "Competence bonus to Hide",
         "statModified": "Hide",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -5407,7 +5428,7 @@
       {
         "name": "Bane damage versus Humans",
         "statModified": "Weapon Bane Damage (Human)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -5494,7 +5515,7 @@
       {
         "name": "Equipment bonus to DC of Illusion Spells",
         "statModified": "Illusion DC",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -5546,7 +5567,7 @@
       {
         "name": "Resistance bonus saves versus Illusions",
         "statModified": "Spell Saves (Illusion)",
-        "bonusType": "Resistance"
+        "bonus": "Resistance"
       }
     ],
     "bound": {
@@ -5600,7 +5621,7 @@
       {
         "name": "Passive: Equipment bonus to Force Spell Power",
         "statModified": "Force Spell Power",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -5655,7 +5676,7 @@
       {
         "name": "Enhancement bonus to Increased Threat Generation from Melee Damage",
         "statModified": "Threat Generation (Melee)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -5710,7 +5731,7 @@
       {
         "name": "Bane damage versus Incorporeals",
         "statModified": "Weapon Bane Damage (Incorporeal)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -5788,15 +5809,13 @@
     ]
   },
   {
-    "name": "Initiate's (Spell Pen & Max SP)",
+    "name": "Initiate's [Combined] (Spell Pen & Max SP)",
     "enchantments": [
       {
-        "name": "Spell Penetration",
-        "statModified": "Spell Penetration"
+        "name": "Spell Penetration"
       },
       {
-        "name": "Maximum Spell Points",
-        "statModified": "Maximum Spell Points"
+        "name": "Wizardry"
       }
     ],
     "bound": null,
@@ -5826,7 +5845,7 @@
       {
         "name": "Insight bonus to DC of Abjuration Spells",
         "statModified": "Abjuration DC",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -5878,7 +5897,7 @@
       {
         "name": "Insight bonus to Attack Rolls",
         "statModified": "Attack Rolls",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -5930,7 +5949,7 @@
       {
         "name": "Insight bonus to Resist Acid",
         "statModified": "Acid Resistance",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -5985,7 +6004,7 @@
       {
         "name": "Insight bonus to character's Assassinate attempts",
         "statModified": "Assassinate",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6037,7 +6056,7 @@
       {
         "name": "Insight bonus to Balance",
         "statModified": "Balance",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6089,7 +6108,7 @@
       {
         "name": "Insight bonus to Bluff",
         "statModified": "Bluff",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6141,7 +6160,7 @@
       {
         "name": "Insight bonus to Charisma",
         "statModified": "Charisma",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6193,7 +6212,7 @@
       {
         "name": "Insight bonus to Resist Cold",
         "statModified": "Cold Resistance",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6248,7 +6267,7 @@
       {
         "name": "Insight bonus to character's Trip, Improved Trip, Sunder, Improved Sunder, Stunning Blow, and Stunning Fist attempts",
         "statModified": ["Trip", "Improved Trip", "Sunder", "Improved Sunder", "Stunning Blow", "Stunning Fist"],
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6300,7 +6319,7 @@
       {
         "name": "Passive: Insight bonus to Fire Spell Power",
         "statModified": "Fire Spell Power",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6355,7 +6374,7 @@
       {
         "name": "Insight bonus to Concentration",
         "statModified": "Concentration",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6407,7 +6426,7 @@
       {
         "name": "Insight bonus to DC of Conjuration Spells",
         "statModified": "Conjuration DC",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6459,7 +6478,7 @@
       {
         "name": "Insight bonus to Constitution",
         "statModified": "Constitution",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6511,7 +6530,7 @@
       {
         "name": "Passive: Insight bonus to Acid Spell Power",
         "statModified": "Acid Spell Power",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6566,7 +6585,7 @@
       {
         "name": "Insight bonus to Weapon Damage (+[W])",
         "statModified": "Attack Rolls",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6616,7 +6635,7 @@
       {
         "name": "Passive: Insight bonus to Positive Spell Power",
         "statModified": "Positive Spell Power",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6671,7 +6690,7 @@
       {
         "name": "Insight bonus to Dexterity",
         "statModified": "Dexterity",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6723,7 +6742,7 @@
       {
         "name": "Insight bonus to Diplomacy",
         "statModified": "Diplomacy",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6775,7 +6794,7 @@
       {
         "name": "Insight bonus to Disable Device",
         "statModified": "Disable Device",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6827,12 +6846,12 @@
       {
         "name": "Grants Immunity to Natural Diseases.",
         "statModified": "Natural Disease immunity",
-        "bonusType": "Resistance"
+        "bonus": "Resistance"
       },
       {
         "name": "Insight bonus to Saving Throws against Magical Diseases",
         "statModified": "Fortitude Save (Disease)",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6884,7 +6903,7 @@
       {
         "name": "Insight bonus to Decreased Threat Generation from Melee Damage",
         "statModified": "Threat Reduction (Melee)",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6936,7 +6955,7 @@
       {
         "name": "% Insight bonus to Dodge",
         "statModified": "Dodge",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -6988,7 +7007,7 @@
       {
         "name": "Insight bonus to Resist Electric",
         "statModified": "Electric Resistance",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7043,7 +7062,7 @@
       {
         "name": "Insight bonus to DC of Enchantment Spells",
         "statModified": "Enchantment DC",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7095,7 +7114,7 @@
       {
         "name": "Insight bonus to Saves against Enchantments",
         "statModified": "Spell Saves (Enchantment)",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7147,7 +7166,7 @@
       {
         "name": "Insight bonus to DC of Evocation Spells",
         "statModified": "Evocation DC",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7199,7 +7218,7 @@
       {
         "name": "Insight bonus to Resist Fire",
         "statModified": "Fire Resistance",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7254,7 +7273,7 @@
       {
         "name": "Insight bonus to the reduced chance of taking Critical Hit damage on a Critical Hit",
         "statModified": "Fortification",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7309,7 +7328,7 @@
       {
         "name": "Passive: Insight bonus to Cold Spell Power",
         "statModified": "Cold Spell Power",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7364,7 +7383,7 @@
       {
         "name": "Insight bonus to Haggle",
         "statModified": "Haggle",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7416,7 +7435,7 @@
       {
         "name": "Insight bonus to Heal",
         "statModified": "Heal",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7468,7 +7487,7 @@
       {
         "name": "Insight bonus to Hide",
         "statModified": "Hide",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7520,7 +7539,7 @@
       {
         "name": "Insight bonus to DC of Illusion Spells",
         "statModified": "Illusion DC",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7572,7 +7591,7 @@
       {
         "name": "Insight bonus to Saves against Illusions",
         "statModified": "Spell Saves (Illusion)",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7624,7 +7643,7 @@
       {
         "name": "Passive: Insight bonus to Force Spell Power",
         "statModified": "Force Spell Power",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7679,7 +7698,7 @@
       {
         "name": "Insight bonus to Increased Threat Generation from Melee Damage",
         "statModified": "Threat Generation (Melee)",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7779,7 +7798,7 @@
       {
         "name": "Insight bonus to Intimidate",
         "statModified": "Intimidate",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7831,7 +7850,7 @@
       {
         "name": "Insight bonus to Jump",
         "statModified": "Jump",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7883,7 +7902,7 @@
       {
         "name": "Insight bonus to Resist Light",
         "statModified": "Light Resistance",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7938,7 +7957,7 @@
       {
         "name": "Insight bonus to Listen",
         "statModified": "Listen",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -7990,7 +8009,7 @@
       {
         "name": "Insight bonus to Magical Resistance Rating",
         "statModified": "Magical Resistance Rating",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8045,7 +8064,7 @@
       {
         "name": "Passive: Insight bonus to Electric Spell Power",
         "statModified": "Electric Spell Power",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8100,7 +8119,7 @@
       {
         "name": "Insight bonus to Move Silently",
         "statModified": "Move Silently",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8152,7 +8171,7 @@
       {
         "name": "Insight bonus to DC of Necromancy Spells",
         "statModified": "Necromancy DC",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8204,7 +8223,7 @@
       {
         "name": "Insight bonus to Resist Negative",
         "statModified": "Negative Resistance",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8259,7 +8278,7 @@
       {
         "name": "Passive: Insight bonus to Negative Spell Power",
         "statModified": "Negative Spell Power",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8314,7 +8333,7 @@
       {
         "name": "Insight bonus to Open Lock",
         "statModified": "Open Lock",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8366,7 +8385,7 @@
       {
         "name": "Insight bonus to Perform",
         "statModified": "Perform",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8418,7 +8437,7 @@
       {
         "name": "Insight bonus to Physical Resistance Rating",
         "statModified": "Physical Resistance Rating",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8473,7 +8492,7 @@
       {
         "name": "Insight bonus to Resist Poison",
         "statModified": "Poison Resistance",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8528,12 +8547,12 @@
       {
         "name": "Grants Immunity to Natural poisons.",
         "statModified": "Natural Poison immunity",
-        "bonusType": "Resistance"
+        "bonus": "Resistance"
       },
       {
         "name": "Insight bonus to Saving Throws against Magical Poisons",
         "statModified": "Fortitude Save (Poison)",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8585,7 +8604,7 @@
       {
         "name": "Passive: Insight bonus to Light Spell Power",
         "statModified": "Light Spell Power",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8640,7 +8659,7 @@
       {
         "name": "Passive: Insight bonus to Repair &amp; Rust Spell Power",
         "statModified": "Repair &amp; Rust Spell Power",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8695,7 +8714,7 @@
       {
         "name": "Insight bonus to Repair",
         "statModified": "Repair",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8747,7 +8766,7 @@
       {
         "name": "Passive: Insight bonus to Sonic Spell Power",
         "statModified": "Sonic Spell Power",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8802,7 +8821,7 @@
       {
         "name": "Insight bonus to Search",
         "statModified": "Search",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8854,7 +8873,7 @@
       {
         "name": "Insight bonus to Confirm Critical Hits &amp; Critical Hit Damage",
         "statModified": ["Confirm Critical Hits", "Critical Hit Damage"],
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8906,7 +8925,7 @@
       {
         "name": "Insight bonus to DC of character's Sunder attempts",
         "statModified": "Sunder",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -8958,7 +8977,7 @@
       {
         "name": "Insight bonus to Resist Sonic",
         "statModified": "Sonic Resistance",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9013,7 +9032,7 @@
       {
         "name": "Insight bonus to Penetrate Spell Resistance",
         "statModified": " Penetrate Spell Resistance",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9065,7 +9084,7 @@
       {
         "name": "Insight bonus to Spell Resistance",
         "statModified": "Spell Resistance",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9120,7 +9139,7 @@
       {
         "name": "Insight bonus to Saves against Spells",
         "statModified": "Spell Saves",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9172,7 +9191,7 @@
       {
         "name": "Insight bonus to Spellsight",
         "statModified": "Spellsight",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9224,7 +9243,7 @@
       {
         "name": "Insight bonus to Spot",
         "statModified": "Spot",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9276,7 +9295,7 @@
       {
         "name": "Insight bonus to Strength",
         "statModified": "Strength",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9328,7 +9347,7 @@
       {
         "name": "Insight bonus to DC of character's Stunning Blow and Stunning Fist attempts",
         "statModified": ["Stunning Blow", "Stunning Fist"],
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9380,7 +9399,7 @@
       {
         "name": "Insight bonus to Swim",
         "statModified": "Swim",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9432,7 +9451,7 @@
       {
         "name": "On Hit: 6% chance to sloe target's movement by 50% for a short period of time",
         "statModified": "Slow Target Chance",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9484,7 +9503,7 @@
       {
         "name": "Insight bonus to DC of Transmutation Spells",
         "statModified": "Transmutation DC",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9536,7 +9555,7 @@
       {
         "name": "Insight bonus to Tumble",
         "statModified": "Tumble",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9588,7 +9607,7 @@
       {
         "name": "Insight bonus to DC of character's Trip and Improved Trip attampts",
         "statModified": ["Trip", "Improved Trip"],
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9640,7 +9659,7 @@
       {
         "name": "Insight bonus to Wisdom",
         "statModified": "Wisdom",
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -9692,7 +9711,7 @@
       {
         "name": "Insight bonus to Maximum Spell Points",
         "statModified": "Maximum Spell Points",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -9747,7 +9766,7 @@
       {
         "name": "Enhancement bonus to Intelligence",
         "statModified": "Intelligence",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -9801,7 +9820,7 @@
       {
         "name": "On Critical Hit: Deal extra Intelligence damage to your target",
         "statModified": "Intelligence Damage Chance",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -9853,7 +9872,7 @@
       {
         "name": "Competence bonus to Intimidate",
         "statModified": "Intimidate",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -9908,7 +9927,7 @@
       {
         "name": "Grants DR 5/Magic to the wearer",
         "statModified": "Damage Reduction",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -9960,7 +9979,7 @@
       {
         "name": "Competence bonus to Jump",
         "statModified": "Jump",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -10015,7 +10034,7 @@
       {
         "name": "Increase Critical Threat Range of Weapon",
         "statModified": "Weapon Critical Range",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -10067,7 +10086,7 @@
       {
         "name": "Law damage",
         "statModified": "Weapon Damage (Law)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -10154,7 +10173,7 @@
       {
         "name": "Bane damage versus Lawful Outsiders",
         "statModified": "Weapon Bane Damage (Lawful Outsider)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -10241,7 +10260,7 @@
       {
         "name": "Reduce Arcane Spell Failure by 5%",
         "statModified": "Arcane Spell Failure",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -10293,7 +10312,7 @@
       {
         "name": "Light damage",
         "statModified": "Weapon Damage (Light)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -10380,7 +10399,7 @@
       {
         "name": "Equipment bonus to Light Spells chance to Critical Hit",
         "statModified": "Spell Critical Chance (Light)",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -10435,7 +10454,7 @@
       {
         "name": "Enhancement bonus to Resist Light",
         "statModified": "Light Resistance",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -10490,7 +10509,7 @@
       {
         "name": "Competence bonus to Listen",
         "statModified": "Listen",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -10545,7 +10564,7 @@
       {
         "name": "Passive: Equipment bonus to Electric Spell Power",
         "statModified": "Electric Spell Power",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -10600,7 +10619,7 @@
       {
         "name": "Enhancement bonus to Melee Attack Speed",
         "statModified": "Melee Attack Speed",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -10657,7 +10676,7 @@
           "Damage Reduction Bypass (Cold Iron)",
           "Damage Reduction Bypass (Mithril)"
         ],
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -10709,7 +10728,7 @@
       {
         "name": "Bane damage versus Monstrous Humanoids",
         "statModified": "Weapon Bane Damage (Monstrous Humanoids)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -10796,7 +10815,7 @@
       {
         "name": "Competence bonus to Move Silently",
         "statModified": "Move Silently",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -10851,7 +10870,7 @@
       {
         "name": "Natural Armor bonus to Armor Class",
         "statModified": "Armor Class",
-        "bonusType": "Natural Armor"
+        "bonus": "Natural Armor"
       }
     ],
     "bound": {
@@ -10905,7 +10924,7 @@
       {
         "name": "Equipment bonus to DC of Necromancy Spells",
         "statModified": "Necromancy DC",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -10957,7 +10976,7 @@
       {
         "name": "Profane bonus to your vulnerability to Negative spells and effects",
         "statModified": "Negative Energy Amplification",
-        "bonusType": "Profane"
+        "bonus": "Profane"
       }
     ],
     "bound": {
@@ -11012,7 +11031,7 @@
       {
         "name": "Negative Energy damage",
         "statModified": "Weapon Damage (Negative)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -11099,7 +11118,7 @@
       {
         "name": "Equipment bonus to Negative Spells chance to Critical Hit",
         "statModified": "Spell Critical Chance (Negative)",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -11154,7 +11173,7 @@
       {
         "name": "Enhancement bonus to Resist Negative",
         "statModified": "Negative Resistance",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -11209,7 +11228,7 @@
       {
         "name": "Passive: Equipment bonus to Negative Spell Power",
         "statModified": "Negative Spell Power",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -11264,7 +11283,7 @@
       {
         "name": "Bane damage versus Oozes",
         "statModified": "Weapon Bane Damage (Ooze)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -11351,7 +11370,7 @@
       {
         "name": "Competence bonus to Open Lock",
         "statModified": "Open Lock",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -11406,7 +11425,7 @@
       {
         "name": "Bane damage versus Orcs",
         "statModified": "Weapon Bane Damage (Orc)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -11493,7 +11512,7 @@
       {
         "name": "Insight bonus to Armor Class and Saving Throws",
         "statModified": ["Armor Class", "Fortitude Save", "Reflex Save", "Will Save"],
-        "bonusType": "Insight"
+        "bonus": "Insight"
       }
     ],
     "bound": {
@@ -11545,7 +11564,7 @@
       {
         "name": "Competence bonus to Perform",
         "statModified": "Perform",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -11600,7 +11619,7 @@
       {
         "name": "+3 Competence bonus to all Charisma based skills",
         "statModified": ["Bluff", "Diplomacy", "Haggle", "Intimidate", "Perform", "Use Magic Device"],
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -11652,7 +11671,7 @@
       {
         "name": "Piercing damage",
         "statModified": "Weapon Damage (Piercing)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -11739,7 +11758,7 @@
       {
         "name": "Bane damage versus Plants",
         "statModified": "Weapon Bane Damage (Plant)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -11826,7 +11845,7 @@
       {
         "name": "Poison damage",
         "statModified": "Weapon Damage (Poison)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -11913,7 +11932,7 @@
       {
         "name": "Enhancement bonus to Resist Poison",
         "statModified": "Poison Resistance",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -11968,12 +11987,12 @@
       {
         "name": "Grants Immunity to Natural poisons.",
         "statModified": "Natural Poison immunity",
-        "bonusType": "Resistance"
+        "bonus": "Resistance"
       },
       {
         "name": "Enhancement bonus to Saving Throws against Magical Poisons",
         "statModified": "Fortitude Save (Poison)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -12027,7 +12046,7 @@
       {
         "name": "Equipment bonus to Positive Spells chance to Critical Hit",
         "statModified": "Spell Critical Chance (Positive)",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -12082,7 +12101,7 @@
       {
         "name": "Passive: Equipment bonus to each Spell Power",
         "statModified": "Universal Spell Power",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -12137,7 +12156,7 @@
       {
         "name": "Deflection bonus to Armor Class",
         "statModified": "Armor Class",
-        "bonusType": "Deflection"
+        "bonus": "Deflection"
       }
     ],
     "bound": {
@@ -12191,7 +12210,7 @@
       {
         "name": "Passive: Equipment bonus to Light Spell Power",
         "statModified": "Light Spell Power",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -12246,7 +12265,7 @@
       {
         "name": "Enhancement bonus to Ranged Attack Speed",
         "statModified": "Ranged Attack Speed",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -12297,7 +12316,7 @@
       {
         "name": "Passive: Equipment bonus to Repair &amp; Rust Spell Power",
         "statModified": "Repair &amp; Rust Spell Power",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -12352,7 +12371,7 @@
       {
         "name": "Resistance bonus to Reflex Saves",
         "statModified": "Reflex Save",
-        "bonusType": "Resistance"
+        "bonus": "Resistance"
       }
     ],
     "bound": {
@@ -12406,7 +12425,7 @@
       {
         "name": "Regenerate 1 Hit Point per minute using positive energy",
         "statModified": "Hit Point Regeneration",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -12458,7 +12477,7 @@
       {
         "name": "Competence bonus to Repair",
         "statModified": "Repair",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -12513,7 +12532,7 @@
       {
         "name": "Enhancement bonus to Repair Amplification",
         "statModified": "Repair Amplification",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -12568,7 +12587,7 @@
       {
         "name": "Equipment bonus to Repair &amp; Rust Spells chance to Critical Hit",
         "statModified": "Spell Critical Chance (Repair &amp; Rust)",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -12623,7 +12642,7 @@
       {
         "name": "Bane damage versus Reptilians",
         "statModified": "Weapon Bane Damage (Reptilian)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -12710,7 +12729,7 @@
       {
         "name": "Resistance bonus to Saves",
         "statModified": ["Will Save", "Reflex Save", "Fortitude Save"],
-        "bonusType": "Resistance"
+        "bonus": "Resistance"
       }
     ],
     "bound": {
@@ -12764,7 +12783,7 @@
       {
         "name": "Passive: Equipment bonus to Sonic Spell Power",
         "statModified": "Sonic Spell Power",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -12814,7 +12833,7 @@
     ]
   },
   {
-    "name": "Sabotaging (Seeker & Deception)",
+    "name": "Sabotaging [Combined] (Seeker & Deception)",
     "enchantments": [
       {
         "name": "Seeker",
@@ -12852,7 +12871,7 @@
       {
         "name": "Increase effective Turn Undead level by 2",
         "statModified": "Turn Undead Level",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -12904,7 +12923,7 @@
       {
         "name": "Competence bonus to Search",
         "statModified": "Search",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -12959,7 +12978,7 @@
       {
         "name": "Enhancement bonus to Confirm Critical Hits &amp; Critical Hit Damage",
         "statModified": ["Confirm Critical Hits", "Critical Hit Damage"],
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -13013,7 +13032,7 @@
       {
         "name": "Enhancement bonus to DC of character's Sunder attempts",
         "statModified": "Sunder",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -13068,7 +13087,7 @@
       {
         "name": "Enhancement bonus to Physical and Magical Resistance Rating",
         "statModified": ["Physical Resistance Rating", "Magical Resistance Rating"],
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -13123,7 +13142,7 @@
       {
         "name": "Enhancement bonus to Increased chance of Secondary Shield Bash",
         "statModified": "Secondary Shield Bash Chance",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -13178,7 +13197,7 @@
       {
         "name": "Piercing damage",
         "statModified": "Weapon Damage (Piercing)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -13312,12 +13331,43 @@
     "stat": ["Increase total Hit Die of Turn Undead by 6"]
   },
   {
+    "name": "Silver Flame's [Combined] (Seeker & Deception)",
+    "enchantments": [
+      {
+        "name": "Turn Undead Hit Dice"
+      },
+      {
+        "name": "Maximum Turn Undead Dice"
+      }
+    ],
+    "bound": null,
+    "unbound": {
+      "level": 400,
+      "essence": 800,
+      "purified": 15,
+      "collectible": [
+        {
+          "name": "Mystical Urn",
+          "qty": 5
+        }
+      ]
+    },
+    "prefixTitle": null,
+    "suffixTitle": null,
+    "prefix": ["Necklace"],
+    "suffix": [],
+    "extra": [],
+    "group": "Save",
+    "minLevelIncrease": null,
+    "stat": []
+  },
+  {
     "name": "Slashing Effect",
     "enchantments": [
       {
         "name": "Slashing damage",
         "statModified": "Weapon Damage (Slashing)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -13404,7 +13454,7 @@
       {
         "name": "+2 Enhancement Bonus to the Perform skill",
         "statModified": "Perform",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -13456,7 +13506,7 @@
       {
         "name": "% Enhancement bonus to Sonic absorption",
         "statModified": "Elemental Absorption (Sonic)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -13511,7 +13561,7 @@
       {
         "name": "Sonic damage",
         "statModified": "Weapon Damage (Sonic)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -13598,7 +13648,7 @@
       {
         "name": "Equipment bonus to Sonic Spells chance to Critical Hit",
         "statModified": "Spell Critical Chance (Sonic)",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -13653,7 +13703,7 @@
       {
         "name": "Enhancement bonus to Resist Sonic",
         "statModified": "Sonic Resistance",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -13708,7 +13758,7 @@
       {
         "name": "Equipment bonus to DC of all Spells",
         "statModified": "Spell DC",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -13760,7 +13810,7 @@
       {
         "name": "Equipment bonus to all Spells chance to Critical Hit",
         "statModified": "Spell Critical Chance",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -13814,7 +13864,7 @@
       {
         "name": "Equipment bonus to Penetrate Spell Resistance",
         "statModified": " Penetrate Spell Resistance",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -13866,7 +13916,7 @@
       {
         "name": "Enhancement bonus to Spell Resistance",
         "statModified": "Spell Resistance",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -13921,7 +13971,7 @@
       {
         "name": "Resistance bonus saves versus Spells",
         "statModified": "Spell Saves",
-        "bonusType": "Resistance"
+        "bonus": "Resistance"
       }
     ],
     "bound": {
@@ -13975,7 +14025,7 @@
       {
         "name": "Competence bonus to Spellsight",
         "statModified": "Spellsight",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -14030,7 +14080,7 @@
       {
         "name": "Competence bonus to Spot",
         "statModified": "Spot",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -14085,7 +14135,7 @@
       {
         "name": "Enhancement bonus to Strength",
         "statModified": "Strength",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -14139,7 +14189,7 @@
       {
         "name": "On Critical Hit: Deal extra Strength damage to your target",
         "statModified": "Strength Damage Chance",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -14191,7 +14241,7 @@
       {
         "name": "Enhancement bonus to Movement Speed",
         "statModified": "Movement Speed",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -14242,7 +14292,7 @@
       {
         "name": "Enhancement bonus to DC of character's Stunning Blow and Stunning Fist attempts",
         "statModified": ["Stunning Blow", "Stunning Fist"],
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -14297,7 +14347,7 @@
       {
         "name": "Competence bonus to Swim",
         "statModified": "Swim",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -14352,7 +14402,7 @@
       {
         "name": "On Hit: 6% chance to sloe target's movement by 50% for a short period of time",
         "statModified": "Slow Target Chance",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -14406,7 +14456,7 @@
       {
         "name": "Equipment bonus to DC of Transmutation Spells",
         "statModified": "Transmutation DC",
-        "bonusType": "Equipment"
+        "bonus": "Equipment"
       }
     ],
     "bound": {
@@ -14458,7 +14508,7 @@
       {
         "name": "Gain the benefit of the True Seeing spell",
         "statModified": "True Seeing",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -14510,7 +14560,7 @@
       {
         "name": "Competence bonus to Tumble",
         "statModified": "Tumble",
-        "bonusType": "Competence"
+        "bonus": "Competence"
       }
     ],
     "bound": {
@@ -14565,7 +14615,7 @@
       {
         "name": "Reduces Arcane Spell Failure by 10%",
         "statModified": "Arcane Spell Failure",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -14617,7 +14667,7 @@
       {
         "name": "On Hit: Chance to inflict a -2 penalty to enemy Armor Class",
         "statModified": "Target Armor Class Reduction",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -14669,7 +14719,7 @@
       {
         "name": "Bane damage versus Undead",
         "statModified": "Weapon Bane Damage (Undead)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -14756,7 +14806,7 @@
       {
         "name": "You are able to breate underwater",
         "statModified": "Underwater Action",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -14812,7 +14862,7 @@
           "Weapon Bane Damage (Monstrous Humanoid)",
           "Weapon Bane Damage (Undead)"
         ],
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -14895,7 +14945,7 @@
       {
         "name": "On Hit: 1d2 Hit Points recovered",
         "statModified": "Hit Point Recovery",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -14982,7 +15032,7 @@
       {
         "name": "On Being Hit: 10% Chance to cast the Rage spell on the wearer",
         "statModified": "Spell Cast Chance (Rage)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -15034,7 +15084,7 @@
       {
         "name": "Bane damage versus Vermin",
         "statModified": "Weapon Bane Damage (Vermin)",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -15121,7 +15171,7 @@
       {
         "name": "Enhancement bonus to DC of character's Trip and Improved Trip attampts",
         "statModified": ["Trip", "Improved Trip"],
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -15176,7 +15226,7 @@
       {
         "name": "Vitality bonus to Maximum Hit Points",
         "statModified": "Maximum Hit Points",
-        "bonusType": "Vitality"
+        "bonus": "Vitality"
       }
     ],
     "bound": {
@@ -15226,7 +15276,7 @@
     ]
   },
   {
-    "name": "Warded (Curse Resist & Prot from Evil)",
+    "name": "Warded [Combined] (Curse Resist & Prot from Evil)",
     "enchantments": [
       {
         "name": "Curse Resistance",
@@ -15259,12 +15309,43 @@
     "stat": []
   },
   {
+    "name": "Watchful [Combined] (Dodge & Heightened Awareness)",
+    "enchantments": [
+      {
+        "name": "Dodge"
+      },
+      {
+        "name": "Heightened Awareness"
+      }
+    ],
+    "bound": null,
+    "unbound": {
+      "level": 400,
+      "essence": 800,
+      "purified": 15,
+      "collectible": [
+        {
+          "name": "Mystical Vessel",
+          "qty": 5
+        }
+      ]
+    },
+    "prefixTitle": null,
+    "suffixTitle": null,
+    "prefix": ["Belt"],
+    "suffix": [],
+    "extra": [],
+    "group": "Save",
+    "minLevelIncrease": null,
+    "stat": []
+  },
+  {
     "name": "Will Save",
     "enchantments": [
       {
         "name": "Resistance bonus to Will Saves",
         "statModified": "Will Save",
-        "bonusType": "Resistance"
+        "bonus": "Resistance"
       }
     ],
     "bound": {
@@ -15318,7 +15399,7 @@
       {
         "name": "Enhancement bonus to Wisdom",
         "statModified": "Wisdom",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -15372,7 +15453,7 @@
       {
         "name": "On Critical Hit: Deal extra Wisdom damage to your target",
         "statModified": "Wisdom Damage Chance",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {
@@ -15424,7 +15505,7 @@
       {
         "name": "Enhancement bonus to Maximum Spell Points",
         "statModified": "Maximum Spell POints",
-        "bonusType": "Enhancement"
+        "bonus": "Enhancement"
       }
     ],
     "bound": {

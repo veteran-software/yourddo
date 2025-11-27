@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Accordion,
   Badge,
@@ -16,14 +16,12 @@ import {
 } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
-import AugmentSlotFilterableDropdown
-  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import { useLocation, useNavigate } from 'react-router-dom'
+import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import FallbackImage from '../../components/common/FallbackImage.tsx'
-import {
-  filterIngredientsMap
-} from '../../components/filters/helpers/filterUtils.ts'
-import cannithPhase1
-  from '../../data/cannithCrafting/cannithEnhancements.phase1.json'
+import PermalinkModal from '../../components/common/PermalinkModal.tsx'
+import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
+import cannithPhase1 from '../../data/cannithCrafting/cannithEnhancements.phase1.json'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
@@ -47,8 +45,7 @@ interface Phase1Materials {
 
 interface Phase1EnchantmentMeta {
   name?: string
-  statModified?: string
-  bonusType?: string
+  bonus?: string
 }
 
 type Phase1MinLevelIncrease =
@@ -252,6 +249,9 @@ const allowedAugmentColorsForSlot = (slotKey: string): string[] => {
 const STORAGE_KEY = 'cannithCraftingState'
 
 const CannithCrafting = () => {
+  // Router utilities (work for both BrowserRouter and HashRouter)
+  const location = useLocation()
+  const navigate = useNavigate()
   // Trove integration: get uploaded inventory from a localStorage-backed Redux slice
   const { troveData } = useAppSelector((state) => state.app, shallowEqual)
   const [items, setItems] = useState<Record<string, ItemState>>({})
@@ -261,6 +261,8 @@ const CannithCrafting = () => {
   const [masterBindingBound, setMasterBindingBound] = useState<boolean>(true)
   // track which item cards are collapsed (default open -> not present in this set)
   const [collapsedKeys, setCollapsedKeys] = useState<string[]>([])
+  // Permalink modal visibility
+  const [showPermalink, setShowPermalink] = useState<boolean>(false)
 
   const ML_OPTIONS: number[] = Array.from({ length: 32 }, (_, i) => i + 1)
 
@@ -287,12 +289,80 @@ const CannithCrafting = () => {
     return floor
   }
 
-  // Load from sessionStorage once
+  // URL-safe base64 helpers
+  const base64UrlEncode = (input: string): string => {
+    const utf8 = encodeURIComponent(input).replace(/%([0-9A-F]{2})/g, (_, p1) => String.fromCharCode(parseInt(p1, 16)))
+    // noinspection JSUnresolvedReference
+    const b64 = typeof btoa === 'function' ? btoa(utf8) : Buffer.from(utf8, 'binary').toString('base64')
+    // eslint-disable-next-line sonarjs/slow-regex
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')
+  }
+  const base64UrlDecode = (input: string): string => {
+    const pad = input.length % 4 === 2 ? '==' : input.length % 4 === 3 ? '=' : input.length % 4 === 1 ? '===' : ''
+    const b64 = input.replace(/-/g, '+').replace(/_/g, '/') + pad
+    // noinspection JSUnresolvedReference
+    const bin = typeof atob === 'function' ? atob(b64) : Buffer.from(b64, 'base64').toString('binary')
+    const percentEncoded = Array.from(bin)
+      .map((c) => '%' + c.charCodeAt(0).toString(16).padStart(2, '0'))
+      .join('')
+    return decodeURIComponent(percentEncoded)
+  }
+
+  // Permalink helpers: read cc from router location first (works in both BrowserRouter and HashRouter),
+  // fall back to manual hash parsing only if needed.
+  const readCcFromUrl = (): { cc: string | null; source: 'search' | 'hash' | null } => {
+    try {
+      // Prefer react-router location.search first (supports HashRouter as well)
+      const routerParams = new URLSearchParams(location.search)
+      const ccFromRouter = routerParams.get('cc')
+      if (ccFromRouter) return { cc: ccFromRouter, source: 'search' }
+
+      // HashRouter-style: the cc lives inside the hash after the route
+      const hash = window.location.hash // e.g., "#/cannith-crafting?cc=..."
+      if (hash && hash.startsWith('#')) {
+        const hashBody = hash.slice(1) // remove '#'
+        const qm = hashBody.indexOf('?')
+        if (qm >= 0) {
+          const query = hashBody.slice(qm + 1)
+          const hashParams = new URLSearchParams(query)
+          const ccFromHash = hashParams.get('cc')
+          if (ccFromHash) return { cc: ccFromHash, source: 'hash' }
+        }
+      }
+    } catch {
+      // ignore
+    }
+    return { cc: null, source: null }
+  }
+
+  const removeCcFromUrl = (source: 'search' | 'hash' | null) => {
+    if (!source) return
+    if (source === 'search') {
+      // Use react-router navigate to remove query in a router-friendly way
+      navigate({ pathname: location.pathname, search: '' }, { replace: true })
+      return
+    }
+    if (typeof window === 'undefined' || !window.history || typeof window.history.replaceState !== 'function') return
+    const { origin, pathname, hash, search } = window.location
+    // HashRouter cleanup: rebuild hash without cc
+    const hashBody = (hash || '').replace(/^#/, '')
+    const [hashPath, hashQuery] = hashBody.split('?')
+    const params = new URLSearchParams(hashQuery ?? '')
+    params.delete('cc')
+    const newHash = params.toString() ? `#${hashPath}?${params.toString()}` : `#${hashPath}`
+    const newUrl = `${origin}${pathname}${search}${newHash}`
+    window.history.replaceState({}, '', newUrl)
+  }
+
+  // Load from permalink (if present) or sessionStorage once
+  const didLoadRef = useRef(false)
   useEffect(() => {
     try {
-      const text = sessionStorage.getItem(STORAGE_KEY)
-      if (text) {
-        const parsed = JSON.parse(text) as {
+      if (didLoadRef.current) return
+      const { cc, source } = readCcFromUrl()
+      const loadedText = cc ? base64UrlDecode(cc) : sessionStorage.getItem(STORAGE_KEY)
+      if (loadedText) {
+        const parsed = JSON.parse(loadedText) as {
           items: Record<string, ItemState>
           activeKeys: string[]
           masterMinLevel?: number
@@ -345,13 +415,17 @@ const CannithCrafting = () => {
         setMasterMinLevel(typeof parsed.masterMinLevel === 'number' ? parsed.masterMinLevel : 1)
         setMasterBindingBound(typeof parsed.masterBindingBound === 'boolean' ? parsed.masterBindingBound : true)
         setCollapsedKeys(Array.isArray(parsed.collapsedKeys) ? parsed.collapsedKeys : [])
+
+        // Clean the URL if we consumed a permalink (from search or hash)
+        if (cc) removeCcFromUrl(source)
+        didLoadRef.current = true
       }
     } catch (err) {
       // Log and continue on corrupt or unparsable storage (do not throw in UI thread)
 
       console.warn('CannithCrafting: failed to load session state – resetting to defaults.', err)
     }
-  }, [])
+  }, [location.search, navigate])
 
   // Persist on change
   useEffect(() => {
@@ -633,8 +707,11 @@ const CannithCrafting = () => {
     disabled: boolean
   ): ReactElement => {
     const effectiveML = item.minLevelOverride ?? masterMinLevel
+    const effectiveBound = item.bindingOverride ?? masterBindingBound
     const baseOptions = affixOptionsBySlot[slotKey]?.[affix] ?? []
-    const filteredOptions = baseOptions.filter((opt) => isEnhancementAllowedAtML(opt, effectiveML))
+    const filteredOptions = baseOptions
+      .filter((opt) => isEnhancementAllowedAtML(opt, effectiveML))
+      .filter((opt) => isEnhancementAvailableForBinding(opt, effectiveBound))
     const currentValue = item[affix]
     const value = currentValue && filteredOptions.includes(currentValue) ? currentValue : 'None'
 
@@ -661,6 +738,14 @@ const CannithCrafting = () => {
     )
   }
 
+  // Helper: whether an enhancement has materials for the current binding selection
+  function isEnhancementAvailableForBinding(name: string | null, boundEffective: boolean): boolean {
+    if (!name) return true
+    const entry = enhancementByName.get(name)
+    if (!entry) return false
+    return boundEffective ? entry.bound != null : entry.unbound != null
+  }
+
   // Helper: determine if an enhancement is "Insightful" for ML gating
   const isInsightfulEnhancement = (name: string | null): boolean => {
     if (!name) {
@@ -675,7 +760,7 @@ const CannithCrafting = () => {
     const isParrying = nameLower.includes('parrying')
     const enchantmentSuggestsInsight = Array.isArray(entry?.enchantments)
       ? entry.enchantments.some(
-          (enchantMeta: Phase1EnchantmentMeta) => (enchantMeta.bonusType ?? '').toLowerCase() === 'insight'
+          (enchantMeta: Phase1EnchantmentMeta) => (enchantMeta.bonus ?? '').toLowerCase() === 'insight'
         )
       : false
 
@@ -791,6 +876,62 @@ const CannithCrafting = () => {
     return value
   }
 
+  // ----- Combined shard helpers -----
+  // Certain shard names represent a combination of two effects. When one of these shards is selected
+  // we should display both effects with their ML-scaled values in the accordion header.
+  const COMBINED_SHARDS: Record<string, [string, string]> = {
+    "Champion's": ['Speed (Striding)', 'Combat Mastery'],
+    "Initiate's": ['Spell Penetration', 'Wizardry'],
+    Warded: ['Curse Resistance', 'Protection from Evil']
+    // Note: "Sabotaging", "Silver Flame's", and "Watchful" can be added here once their effect pairs are defined
+  }
+
+  const isCombinedShard = (name: string | null): name is keyof typeof COMBINED_SHARDS => {
+    if (!name) return false
+    return Object.prototype.hasOwnProperty.call(COMBINED_SHARDS, name)
+  }
+
+  // Detect if a selected dataset entry represents a combined shard based on its own metadata
+  const isCombinedEntry = (name: string | null): boolean => {
+    if (!name) return false
+    const entry = enhancementByName.get(name)
+    if (!entry || !Array.isArray(entry.enchantments)) return false
+    // A combined shard will list multiple component effects under `enchantments`
+    return entry.enchantments.length >= 2
+  }
+
+  // Build a combined header string using the component effect names found in the selected entry's `enchantments` array.
+  // For each component name, we pull the ML-scaled stat from the single-effect dataset entry via getEnhancementDisplay.
+  const getCombinedDisplayFromEntry = (name: string, effectiveML: number): string => {
+    const entry = enhancementByName.get(name)
+    if (!entry || !Array.isArray(entry.enchantments) || entry.enchantments.length === 0) return name
+    // Take the first two components if more are present
+    const componentNames = entry.enchantments
+      .map((meta) => meta?.name)
+      .filter((n): n is string => typeof n === 'string' && !!n)
+      .slice(0, 2)
+
+    const parts: string[] = []
+    for (const compName of componentNames) {
+      const disp = getEnhancementDisplay(compName, effectiveML)
+      if (disp) parts.push(disp)
+    }
+    return parts.length ? parts.join('; ') : name
+  }
+
+  const getCombinedDisplay = (name: string, effectiveML: number): string => {
+    const pair = COMBINED_SHARDS[name]
+    if (!pair) return name
+    const [a, b] = pair
+    const aDisp = getEnhancementDisplay(a, effectiveML)
+    const bDisp = getEnhancementDisplay(b, effectiveML)
+    const parts: string[] = []
+    if (aDisp) parts.push(aDisp)
+    if (bDisp) parts.push(bDisp)
+    // Fallback to shard name if neither part resolved
+    return parts.length ? parts.join('; ') : name
+  }
+
   // Build rows data (icon | name | qty) and shard level for a given enhancement name
   const buildMaterials = (
     name: string | null,
@@ -857,18 +998,31 @@ const CannithCrafting = () => {
       {
         key: 'prefix',
         label: 'Prefix',
-        name: item.prefix && affixOptionsBySlot[slotKey]?.prefix.includes(item.prefix) ? item.prefix : null
+        name:
+          item.prefix &&
+          affixOptionsBySlot[slotKey]?.prefix.includes(item.prefix) &&
+          isEnhancementAvailableForBinding(item.prefix, boundEffective)
+            ? item.prefix
+            : null
       },
       {
         key: 'suffix',
         label: 'Suffix',
-        name: item.suffix && affixOptionsBySlot[slotKey]?.suffix.includes(item.suffix) ? item.suffix : null
+        name:
+          item.suffix &&
+          affixOptionsBySlot[slotKey]?.suffix.includes(item.suffix) &&
+          isEnhancementAvailableForBinding(item.suffix, boundEffective)
+            ? item.suffix
+            : null
       },
       {
         key: 'extra',
         label: 'Extra',
         name:
-          item.hasCannithMark && item.extra && affixOptionsBySlot[slotKey]?.extra.includes(item.extra)
+          item.hasCannithMark &&
+          item.extra &&
+          affixOptionsBySlot[slotKey]?.extra.includes(item.extra) &&
+          isEnhancementAvailableForBinding(item.extra, boundEffective)
             ? item.extra
             : null
       }
@@ -876,18 +1030,33 @@ const CannithCrafting = () => {
 
     // Build list of accordion items to render
     const itemsToRender = selections
-      .map((selection) => ({
-        ...selection,
-        data: buildMaterials(selection.name, boundEffective),
-        valueOnly: getEnhancementValueOnly(selection.name, effectiveML),
-        display: getEnhancementDisplay(selection.name, effectiveML)
-      }))
+      .map((selection) => {
+        // Combined detection prefers dataset metadata, falls back to short-name mapping
+        const combinedByEntry = isCombinedEntry(selection.name)
+        const combinedByShortName = isCombinedShard(selection.name)
+        const combined = combinedByEntry || combinedByShortName
+        return {
+          ...selection,
+          isCombined: combined,
+          data: buildMaterials(selection.name, boundEffective),
+          valueOnly: getEnhancementValueOnly(selection.name, effectiveML),
+          display: combinedByEntry
+            ? getCombinedDisplayFromEntry(selection.name!, effectiveML)
+            : combinedByShortName
+              ? getCombinedDisplay(selection.name!, effectiveML)
+              : getEnhancementDisplay(selection.name, effectiveML)
+        }
+      })
       // Apply ML gating: hide Insightful effects when effective ML < 10
-      .filter((entry) => entry.name && isEnhancementAllowedAtML(entry.name, effectiveML) && entry.data) as {
+      // For combined shards, allow rendering even if materials are not present (dataset has no entry for the shard name)
+      .filter(
+        (entry) => entry.name && isEnhancementAllowedAtML(entry.name, effectiveML) && (entry.data || entry.isCombined)
+      ) as {
       key: string
       label: string
       name: string
-      data: { shardLevel: number | null; rows: { name: string; qty: number }[] }
+      isCombined: boolean
+      data: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
       valueOnly: string | null
       display: string | null
     }[]
@@ -913,34 +1082,38 @@ const CannithCrafting = () => {
             <Accordion.Header>
               <div className='d-flex w-100 align-items-center justify-content-between gap-2'>
                 <strong>{accordionEntry.display ?? ''}</strong>
-                {accordionEntry.data.shardLevel != null && (
+                {accordionEntry.data?.shardLevel != null && (
                   <small className='text-muted'>{`Shard Level ${String(accordionEntry.data.shardLevel)}`}</small>
                 )}
               </div>
             </Accordion.Header>
             <Accordion.Body className='p-0'>
-              <Table size='sm' responsive className='mb-0 align-middle'>
-                <colgroup>
-                  <col style={{ width: '36px' }} />
-                  <col />
-                  <col style={{ width: '1%', whiteSpace: 'nowrap' }} />
-                </colgroup>
-                <tbody>
-                  {accordionEntry.data.rows.map((row) => (
-                    <tr key={`${row.name}-${String(row.qty)}`}>
-                      <td className='text-center'>
-                        <FallbackImage src={materialImageSrc(row.name)} alt={row.name} width='28px' />
-                      </td>
-                      <td className='text-truncate' title={row.name}>
-                        {row.name}
-                      </td>
-                      <td className='text-end'>
-                        {getOwnedIngredients({ name: row.name } as unknown as Ingredient, row.qty, troveData)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
+              {accordionEntry.data ? (
+                <Table size='sm' responsive className='mb-0 align-middle'>
+                  <colgroup>
+                    <col style={{ width: '36px' }} />
+                    <col />
+                    <col style={{ width: '1%', whiteSpace: 'nowrap' }} />
+                  </colgroup>
+                  <tbody>
+                    {accordionEntry.data.rows.map((row) => (
+                      <tr key={`${row.name}-${String(row.qty)}`}>
+                        <td className='text-center'>
+                          <FallbackImage src={materialImageSrc(row.name)} alt={row.name} width='28px' />
+                        </td>
+                        <td className='text-truncate' title={row.name}>
+                          {row.name}
+                        </td>
+                        <td className='text-end'>
+                          {getOwnedIngredients({ name: row.name } as unknown as Ingredient, row.qty, troveData)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              ) : (
+                <div className='p-2 text-muted'>Materials are not available for this combined shard.</div>
+              )}
             </Accordion.Body>
           </Accordion.Item>
         ))}
@@ -1007,18 +1180,34 @@ const CannithCrafting = () => {
   return (
     <Container className='px-0'>
       <Card>
-        <Card.Header className='text-center'>
-          <h4 className='mb-0'>Cannith Crafting</h4>
-          <small>
-            <a
-              href='https://github.com/veteran-software/yourddo/issues?q=state%3Aopen%20label%3A%22Cannith%20Crafting%22'
-              target='_blank'
-              rel='noreferrer'
-              title='Cannith Crafting Known Issues & Bug Reports'
-            >
-              Known Issues / Bug Reports <FaArrowUpRightFromSquare size={10} />
-            </a>
-          </small>
+        <Card.Header>
+          <div className='d-flex align-items-center justify-content-between'>
+            <div className='flex-grow-1 text-center'>
+              <h4 className='mb-0'>Cannith Crafting</h4>
+              <small>
+                <a
+                  href='https://github.com/veteran-software/yourddo/issues?q=state%3Aopen%20label%3A%22Cannith%20Crafting%22'
+                  target='_blank'
+                  rel='noreferrer'
+                  title='Cannith Crafting Known Issues & Bug Reports'
+                >
+                  Known Issues / Bug Reports <FaArrowUpRightFromSquare size={10} />
+                </a>
+              </small>
+            </div>
+            <div className='ms-auto ms-2'>
+              <Button
+                variant='outline-light'
+                size='sm'
+                onClick={() => {
+                  setShowPermalink(true)
+                }}
+                title='Create a permalink'
+              >
+                Permalink
+              </Button>
+            </div>
+          </div>
         </Card.Header>
 
         <Card.Body>
@@ -1309,6 +1498,32 @@ const CannithCrafting = () => {
           </Row>
         </Card.Body>
       </Card>
+      {/* Permalink Modal for sharing current setup */}
+      <PermalinkModal
+        show={showPermalink}
+        onHide={() => {
+          setShowPermalink(false)
+        }}
+        buildUrl={() => {
+          const payload = { items, activeKeys, masterMinLevel, masterBindingBound, collapsedKeys }
+          const json = JSON.stringify(payload)
+          const encoded = base64UrlEncode(json)
+          if (typeof window === 'undefined') return `/cannith-crafting?cc=${encoded}`
+          const { origin, pathname, hash } = window.location
+          // Prefer react-router location to build a stable URL
+          const currentPath = location.pathname || '/cannith-crafting'
+          // If using HashRouter (hash starts with "#/"), embed the cc param inside the hash
+          if (hash && hash.startsWith('#/')) {
+            const params = new URLSearchParams()
+            params.set('cc', encoded)
+            return `${origin}${pathname}#${currentPath}?${params.toString()}`
+          }
+          // BrowserRouter (query string)
+          const url = new URL(origin + currentPath)
+          url.searchParams.set('cc', encoded)
+          return url.toString()
+        }}
+      />
     </Container>
   )
 }
