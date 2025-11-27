@@ -27,7 +27,7 @@ import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { findAugmentsForSlot } from '../../utils/augmentUtils.ts'
-import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
+import { getOwnedIngredients, toSingularName } from '../../utils/jsxUtils.tsx'
 
 type CoreChoice = string | null
 
@@ -58,6 +58,8 @@ type Phase1MinLevelIncrease =
     }
   | null
 
+type TAffix = string[] | string | null
+
 interface CannithPhase1Entry {
   name: string
   enchantments?: Phase1EnchantmentMeta[]
@@ -66,9 +68,9 @@ interface CannithPhase1Entry {
   prefixTitle?: string | null
   suffixTitle?: string | null
   // Although normalized to arrays, keep a tolerant type for safety
-  prefix?: string[] | string | null
-  suffix?: string[] | string | null
-  extra?: string[] | string | null
+  prefix?: TAffix
+  suffix?: TAffix
+  extra?: TAffix
   group?: string | null
   minLevelIncrease?: Phase1MinLevelIncrease
   stat?: (number | string)[]
