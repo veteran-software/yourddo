@@ -40,18 +40,23 @@ function readJson(file) {
   try {
     return JSON.parse(text)
   } catch (err) {
-    throw new Error(`Failed to parse JSON: ${file}\n${err.message}`)
+    // Use a specific error type for parse failures to aid diagnostics
+    const e = new SyntaxError(`Failed to parse JSON: ${file}\n${err.message}`)
+    e.cause = err
+    throw e
   }
 }
 
 function validateArray(arr) {
   if (!Array.isArray(arr)) {
-    throw new Error('Top-level JSON is not an array')
+    throw new TypeError('Top-level JSON is not an array')
   }
   arr.forEach((it, idx) => {
-    if (!isPlainObject(it)) throw new Error(`Item at index ${idx} is not an object`)
+    if (!isPlainObject(it)) throw new TypeError(`Item at index ${idx} is not an object`)
     if (typeof it.name !== 'string' || !it.name) {
-      throw new Error(`Item at index ${idx} has missing/invalid name: ${JSON.stringify(it && it.name)}`)
+      throw new TypeError(
+        `Item at index ${idx} has missing/invalid name: ${JSON.stringify(it && it.name)}`
+      )
     }
   })
 }
@@ -93,31 +98,33 @@ function main() {
   const setAfter = makeMultiset(after)
   const sameContent = multisetEqual(setBefore, setAfter)
 
-  if (!sameContent) {
-    console.error('ERROR: Content mismatch after sorting. Aborting without writing.')
-    process.exitCode = 2
+  // Prefer positive condition branch for readability
+  if (sameContent) {
+    // Summaries
+    const namesBefore = before.slice(0, 10).map((x) => x.name)
+    const namesAfter = after.slice(0, 10).map((x) => x.name)
+
+    console.log(`Validated ${before.length} items. Dry-run=${!WRITE}.`)
+    if (namesBefore.join('|') !== namesAfter.join('|')) {
+      console.log('First 10 before:', namesBefore.join(', '))
+      console.log('First 10 after :', namesAfter.join(', '))
+    } else {
+      console.log('Order already alphabetical (first 10 unchanged).')
+    }
+
+    if (WRITE) {
+      const text = JSON.stringify(after, null, 2) + '\n'
+      fs.writeFileSync(FILE, text, 'utf8')
+      console.log(`File rewritten: ${FILE}`)
+    } else {
+      console.log('No changes written. Run with --write to apply.')
+    }
     return
   }
 
-  // Summaries
-  const namesBefore = before.slice(0, 10).map((x) => x.name)
-  const namesAfter = after.slice(0, 10).map((x) => x.name)
-
-  console.log(`Validated ${before.length} items. Dry-run=${!WRITE}.`)
-  if (namesBefore.join('|') !== namesAfter.join('|')) {
-    console.log('First 10 before:', namesBefore.join(', '))
-    console.log('First 10 after :', namesAfter.join(', '))
-  } else {
-    console.log('Order already alphabetical (first 10 unchanged).')
-  }
-
-  if (WRITE) {
-    const text = JSON.stringify(after, null, 2) + '\n'
-    fs.writeFileSync(FILE, text, 'utf8')
-    console.log(`File rewritten: ${FILE}`)
-  } else {
-    console.log('No changes written. Run with --write to apply.')
-  }
+  console.error('ERROR: Content mismatch after sorting. Aborting without writing.')
+  process.exitCode = 2
+  return
 }
 
 try {
