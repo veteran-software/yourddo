@@ -15,10 +15,14 @@ import {
   Table
 } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
-import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown
+  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import FallbackImage from '../../components/common/FallbackImage.tsx'
-import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
-import cannithPhase1 from '../../data/cannithCrafting/cannithEnhancements.phase1.json'
+import {
+  filterIngredientsMap
+} from '../../components/filters/helpers/filterUtils.ts'
+import cannithPhase1
+  from '../../data/cannithCrafting/cannithEnhancements.phase1.json'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
@@ -340,7 +344,9 @@ const CannithCrafting = () => {
         setCollapsedKeys(Array.isArray(parsed.collapsedKeys) ? parsed.collapsedKeys : [])
       }
     } catch (err) {
-      // ignore corrupt storage
+      // Log and continue on corrupt or unparsable storage (do not throw in UI thread)
+      // eslint-disable-next-line no-console
+      console.warn('CannithCrafting: failed to load session state – resetting to defaults.', err)
     }
   }, [])
 
@@ -914,9 +920,9 @@ const CannithCrafting = () => {
     const materialImageSrc = (materialName: string): string => {
       const slug = materialName
         .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
+        .replaceAll(/[^a-z0-9]+/g, '-')
         // eslint-disable-next-line sonarjs/slow-regex,sonarjs/anchor-precedence
-        .replace(/^-+|-+$/g, '')
+        .replaceAll(/^-+|-+$/g, '')
 
       return `/images/collectibles/${slug}.png`
     }
@@ -941,8 +947,8 @@ const CannithCrafting = () => {
                   <col style={{ width: '1%', whiteSpace: 'nowrap' }} />
                 </colgroup>
                 <tbody>
-                  {accordionEntry.data.rows.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
+                  {accordionEntry.data.rows.map((row) => (
+                    <tr key={`${row.name}-${String(row.qty)}`}>
                       <td className='text-center'>
                         <FallbackImage src={materialImageSrc(row.name)} alt={row.name} width='28px' />
                       </td>
@@ -960,6 +966,60 @@ const CannithCrafting = () => {
           </Accordion.Item>
         ))}
       </Accordion>
+    )
+  }
+
+  // Extracted to reduce nesting/cognitive complexity inside render
+  function renderMinLevelOverride(slotKey: string, item: ItemState): ReactElement {
+    const augmentFloor = computeAugmentMinLevelFloor(item)
+    const effectiveML = item.minLevelOverride ?? masterMinLevel
+
+    // Collect ML increase messages for selected affixes
+    const incPairs: { name: string; inc: number }[] = []
+    const pushIncreaseIfAny = (effectName: string | null) => {
+      if (!effectName) return
+      const inc = getEnhancementMinIncrease(effectName)
+      if (inc > 0) incPairs.push({ name: effectName, inc })
+    }
+
+    pushIncreaseIfAny(item.prefix)
+    pushIncreaseIfAny(item.suffix)
+    pushIncreaseIfAny(item.hasCannithMark ? item.extra : null)
+
+    const selectIsInvalid = incPairs.length > 0 || effectiveML < augmentFloor
+
+    return (
+      <>
+        <Form.Select
+          className={selectIsInvalid ? 'is-invalid' : undefined}
+          value={item.minLevelOverride ?? 0}
+          onChange={(event) => {
+            const valueNum = Number(event.target.value)
+            updateItem(slotKey, (currentItem) => ({
+              ...currentItem,
+              minLevelOverride: valueNum === 0 ? null : valueNum
+            }))
+          }}
+        >
+          <option value={0}>{`Inherit (ML ${String(masterMinLevel)})`}</option>
+          {ML_OPTIONS.map((lvl) => (
+            <option key={lvl} value={lvl} disabled={lvl < augmentFloor}>{`ML ${String(lvl)}`}</option>
+          ))}
+        </Form.Select>
+
+        {incPairs.length > 0 && (
+          <div className='invalid-feedback d-block mt-1'>
+            {incPairs.map((pair) => (
+              <div key={pair.name}>{`Adding the ${pair.name} effect will raise the minimum level of this item by ${String(pair.inc)}.`}</div>
+            ))}
+          </div>
+        )}
+        {effectiveML < augmentFloor && (
+          <div className='invalid-feedback d-block mt-1'>
+            {`Augments on this item require minimum level ${String(augmentFloor)} or higher.`}
+          </div>
+        )}
+      </>
     )
   }
 
@@ -1066,18 +1126,12 @@ const CannithCrafting = () => {
                           <div className='d-flex align-items-center gap-2'>
                             <Form.Select
                               size='sm'
-                              value={
-                                items[slotKey]?.bindingOverride == null
-                                  ? 'inherit'
-                                  : items[slotKey]?.bindingOverride
-                                    ? 'bound'
-                                    : 'unbound'
-                              }
+                              value={items[slotKey]?.bindingOverride == null ? 'inherit' : items[slotKey]?.bindingOverride ? 'bound' : 'unbound'}
                               onChange={(event) => {
                                 const value = event.target.value
                                 updateItem(slotKey, (currentItem) => ({
                                   ...currentItem,
-                                  bindingOverride: value === 'inherit' ? null : value === 'bound' ? true : false
+                                  bindingOverride: value === 'inherit' ? null : value === 'bound'
                                 }))
                               }}
                               title='Binding (override)'
@@ -1120,66 +1174,7 @@ const CannithCrafting = () => {
                                 <Col md={4}>
                                   <Form.Group controlId={`${slotKey}-ml`}>
                                     <Form.Label>Min Level (Override)</Form.Label>
-                                    {(() => {
-                                      const augmentFloor = computeAugmentMinLevelFloor(item)
-                                      const effectiveML = item.minLevelOverride ?? masterMinLevel
-                                      // Collect ML increase messages for selected affixes
-                                      const incPairs: { name: string; inc: number }[] = []
-                                      const pushIncreaseIfAny = (effectName: string | null) => {
-                                        if (!effectName) return
-                                        const inc = getEnhancementMinIncrease(effectName)
-                                        if (inc > 0) incPairs.push({ name: effectName, inc })
-                                      }
-
-                                      // Respect Extra only when Mark is enabled
-                                      pushIncreaseIfAny(item.prefix)
-                                      pushIncreaseIfAny(item.suffix)
-                                      pushIncreaseIfAny(item.hasCannithMark ? item.extra : null)
-
-                                      // Disable options below the augment floor
-                                      const selectIsInvalid = incPairs.length > 0 || effectiveML < augmentFloor
-
-                                      return (
-                                        <>
-                                          <Form.Select
-                                            className={selectIsInvalid ? 'is-invalid' : undefined}
-                                            value={item.minLevelOverride ?? 0}
-                                            onChange={(event) => {
-                                              const valueNum = Number(event.target.value)
-                                              updateItem(slotKey, (currentItem) => ({
-                                                ...currentItem,
-                                                minLevelOverride: valueNum === 0 ? null : valueNum
-                                              }))
-                                            }}
-                                          >
-                                            <option value={0}>{`Inherit (ML ${String(masterMinLevel)})`}</option>
-                                            {ML_OPTIONS.map((lvl) => (
-                                              <option
-                                                key={lvl}
-                                                value={lvl}
-                                                disabled={lvl < augmentFloor}
-                                              >{`ML ${String(lvl)}`}</option>
-                                            ))}
-                                          </Form.Select>
-
-                                          {/* Helper text messages */}
-                                          {incPairs.length > 0 && (
-                                            <div className='invalid-feedback d-block mt-1'>
-                                              {incPairs.map((pair, idx) => (
-                                                <div
-                                                  key={idx}
-                                                >{`Adding the ${pair.name} effect will raise the minimum level of this item by ${String(pair.inc)}.`}</div>
-                                              ))}
-                                            </div>
-                                          )}
-                                          {effectiveML < augmentFloor && (
-                                            <div className='invalid-feedback d-block mt-1'>
-                                              {`Augments on this item require minimum level ${String(augmentFloor)} or higher.`}
-                                            </div>
-                                          )}
-                                        </>
-                                      )
-                                    })()}
+                                    {renderMinLevelOverride(slotKey, item)}
                                   </Form.Group>
                                 </Col>
                               </Row>
@@ -1233,89 +1228,72 @@ const CannithCrafting = () => {
                               ) : (
                                 // Tighten vertical spacing on mobile while keeping comfortable spacing on desktop
                                 <div className='d-flex flex-column gap-2 gap-sm-3 mt-2 mt-sm-3'>
-                                  {item.augmentSlots.map((augmentSlot) => {
-                                    // Note: Avoid hooks inside loops/maps to comply with React Rules of Hooks.
-                                    const groupedByDisplay = findAugmentsForSlot(augmentSlot.slotType)
-
-                                    // AugmentSlotFilterableDropdown expects a flat list keyed by slot name.
-                                    // Flatten grouped results into a single array for this slot key.
-                                    const flatForSlot = Object.values(
-                                      groupedByDisplay
-                                    ).flat() as unknown as Ingredient[]
-
-                                    const augmentOptions = { [augmentSlot.slotType]: flatForSlot } as Record<
-                                      string,
-                                      Ingredient[]
-                                    >
-                                    // Apply filters from the page state to produce filtered options
-                                    const filteredAugmentOptions = filterAugmentOptions(
-                                      augmentOptions,
-                                      augmentSlot.filters,
-                                      augmentSlot.filterMode
-                                    )
-
-                                    const selectedAugments: Record<string, AugmentItem | null> = {
-                                      [augmentSlot.slotType]: augmentSlot.selectedAugment
-                                    }
-
-                                    return (
-                                      <Card key={augmentSlot.id} className='border-0 bg-light-subtle'>
-                                        {/* Restore default Card.Body padding for consistent left spacing */}
-                                        <Card.Body>
-                                          <div className='d-flex flex-column flex-sm-row align-items-end gap-2 flex-wrap'>
-                                            <div className='flex-grow-1 min-w-0 w-100 w-sm-auto align-self-start align-self-sm-auto'>
-                                              <AugmentSlotFilterableDropdown
-                                                availableAugmentSlots={[augmentSlot.slotType]}
-                                                augmentOptions={augmentOptions}
-                                                filteredAugmentOptions={filteredAugmentOptions}
-                                                selectedAugments={selectedAugments}
-                                                augmentFilters={augmentSlot.filters}
-                                                augmentFilterMode={augmentSlot.filterMode}
-                                                handleSelectAugment={(_slot: string, aug: Ingredient) => {
-                                                  handleSelectAugment(
-                                                    slotKey,
-                                                    augmentSlot.id,
-                                                    augmentSlot.slotType,
-                                                    aug
-                                                  )
-                                                }}
-                                                handleResetAugment={() => {
-                                                  handleResetAugment(slotKey, augmentSlot.id)
-                                                }}
-                                                handleFilterModeChange={(mode: 'OR' | 'AND') => {
-                                                  updateItem(slotKey, (currentItem) => ({
-                                                    ...currentItem,
-                                                    augmentSlots: currentItem.augmentSlots.map((s) =>
-                                                      s.id === augmentSlot.id ? { ...s, filterMode: mode } : s
-                                                    )
-                                                  }))
-                                                }}
-                                                handleFiltersChange={(filters: string[]) => {
-                                                  updateItem(slotKey, (currentItem) => ({
-                                                    ...currentItem,
-                                                    augmentSlots: currentItem.augmentSlots.map((s) =>
-                                                      s.id === augmentSlot.id ? { ...s, filters } : s
-                                                    )
-                                                  }))
-                                                }}
-                                              />
-                                            </div>
-                                            <div className='d-flex'>
-                                              <Button
-                                                variant='outline-danger'
-                                                size='sm'
-                                                onClick={() => {
-                                                  removeAugmentSlot(slotKey, augmentSlot.id)
-                                                }}
-                                              >
-                                                Remove
-                                              </Button>
-                                            </div>
+                                  {item.augmentSlots.map((augmentSlot) => (
+                                    <Card key={augmentSlot.id} className='border-0 bg-light-subtle'>
+                                      <Card.Body>
+                                        <div className='d-flex flex-column flex-sm-row align-items-end gap-2 flex-wrap'>
+                                          <div className='flex-grow-1 min-w-0 w-100 w-sm-auto align-self-start align-self-sm-auto'>
+                                            {(() => {
+                                              const groupedByDisplay = findAugmentsForSlot(augmentSlot.slotType)
+                                              const flatForSlot = Object.values(groupedByDisplay).flat() as unknown as Ingredient[]
+                                              const augmentOptions = { [augmentSlot.slotType]: flatForSlot } as Record<string, Ingredient[]>
+                                              const filteredAugmentOptions = filterAugmentOptions(
+                                                augmentOptions,
+                                                augmentSlot.filters,
+                                                augmentSlot.filterMode
+                                              )
+                                              const selectedAugments: Record<string, AugmentItem | null> = {
+                                                [augmentSlot.slotType]: augmentSlot.selectedAugment
+                                              }
+                                              return (
+                                                <AugmentSlotFilterableDropdown
+                                                  availableAugmentSlots={[augmentSlot.slotType]}
+                                                  augmentOptions={augmentOptions}
+                                                  filteredAugmentOptions={filteredAugmentOptions}
+                                                  selectedAugments={selectedAugments}
+                                                  augmentFilters={augmentSlot.filters}
+                                                  augmentFilterMode={augmentSlot.filterMode}
+                                                  handleSelectAugment={(_slot: string, aug: Ingredient) => {
+                                                    handleSelectAugment(slotKey, augmentSlot.id, augmentSlot.slotType, aug)
+                                                  }}
+                                                  handleResetAugment={() => {
+                                                    handleResetAugment(slotKey, augmentSlot.id)
+                                                  }}
+                                                  handleFilterModeChange={(mode: 'OR' | 'AND') => {
+                                                    updateItem(slotKey, (currentItem) => ({
+                                                      ...currentItem,
+                                                      augmentSlots: currentItem.augmentSlots.map((s) =>
+                                                        s.id === augmentSlot.id ? { ...s, filterMode: mode } : s
+                                                      )
+                                                    }))
+                                                  }}
+                                                  handleFiltersChange={(filters: string[]) => {
+                                                    updateItem(slotKey, (currentItem) => ({
+                                                      ...currentItem,
+                                                      augmentSlots: currentItem.augmentSlots.map((s) =>
+                                                        s.id === augmentSlot.id ? { ...s, filters } : s
+                                                      )
+                                                    }))
+                                                  }}
+                                                />
+                                              )
+                                            })()}
                                           </div>
-                                        </Card.Body>
-                                      </Card>
-                                    )
-                                  })}
+                                          <div className='d-flex'>
+                                            <Button
+                                              variant='outline-danger'
+                                              size='sm'
+                                              onClick={() => {
+                                                removeAugmentSlot(slotKey, augmentSlot.id)
+                                              }}
+                                            >
+                                              Remove
+                                            </Button>
+                                          </div>
+                                        </div>
+                                      </Card.Body>
+                                    </Card>
+                                  ))}
                                 </div>
                               )}
                             </Card.Body>
