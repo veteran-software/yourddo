@@ -73,13 +73,23 @@ function main() {
     return (
       n +
       fields.reduce((m, f) => {
-        const a = (after[i][f] ?? [])
+        const a = after[i][f] ?? []
         const b = before[i][f]
-        const eq = Array.isArray(b)
-          ? Array.isArray(a) && a.length === b.length && a.every((v, j) => v === String(b[j]).trim())
-          : typeof b === 'string'
-          ? a.join(',') === b.split(',').map((s) => s.trim()).filter(Boolean).join(',')
-          : (b == null && Array.isArray(a) && a.length === 0)
+
+        let eq
+        if (Array.isArray(b)) {
+          eq = Array.isArray(a) && a.length === b.length && a.every((v, j) => v === String(b[j]).trim())
+        } else if (typeof b === 'string') {
+          const aJoined = (Array.isArray(a) ? a : []).join(',')
+          const bJoined = b
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean)
+            .join(',')
+          eq = aJoined === bJoined
+        } else {
+          eq = b == null && Array.isArray(a) && a.length === 0
+        }
         return m + (eq ? 0 : 1)
       }, 0)
     )
