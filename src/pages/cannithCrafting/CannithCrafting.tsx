@@ -14,6 +14,7 @@ import {
   Stack,
   Table
 } from 'react-bootstrap'
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import AugmentSlotFilterableDropdown
   from '../../components/common/AugmentSlotFilterableDropdown.tsx'
@@ -1008,11 +1009,16 @@ const CannithCrafting = () => {
       <Card>
         <Card.Header className='text-center'>
           <h4 className='mb-0'>Cannith Crafting</h4>
-          <Card.Subtitle>
-            <small>
-              Build a gear set with Prefix, Suffix, Extra, and Augment slots. Data persists for this session.
-            </small>
-          </Card.Subtitle>
+          <small>
+            <a
+              href='https://github.com/veteran-software/yourddo/issues?q=state%3Aopen%20label%3A%22Cannith%20Crafting%22'
+              target='_blank'
+              rel='noreferrer'
+              title='Cannith Crafting Known Issues & Bug Reports'
+            >
+              Known Issues / Bug Reports <FaArrowUpRightFromSquare size={10} />
+            </a>
+          </small>
         </Card.Header>
 
         <Card.Body>
