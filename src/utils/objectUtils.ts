@@ -269,6 +269,11 @@ export const bindingDisplay = (binding: Binding): string => {
   return `${binding.type}${to}${from}`
 }
 
-export const formatNumber = (num: string | number) => {
-  return Intl.NumberFormat('en-US').format(Number(num))
+export const formatNumber = (num: string | number, locale?: string) => {
+  const loc =
+    locale ||
+    // In the browser, prefer the user's language; fall back to en-US in non-browser or if unavailable
+    (typeof navigator !== 'undefined' && (navigator.language || (navigator as any).userLanguage)) ||
+    'en-US'
+  return new Intl.NumberFormat(loc).format(Number(num))
 }

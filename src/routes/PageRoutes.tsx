@@ -1,22 +1,19 @@
 import { Route, Routes } from 'react-router-dom'
 import BaseLayout from '../components/layout/BaseLayout.tsx'
-// import CannithCrafting from '../pages/cannithCrafting/CannithCrafting.tsx'
+import CannithCrafting from '../pages/cannithCrafting/CannithCrafting.tsx'
 import CauldronOfCadence from '../pages/cauldronOfCadence/CauldronOfCadence.tsx'
 import DinosaurBone from '../pages/dinosaurBoneCrafting/DinosaurBone.tsx'
 import HeroicGreenSteel from '../pages/greenSteel/heroic/HeroicGreenSteel.tsx'
-import LegendaryGreenSteel
-  from '../pages/greenSteel/legendary/LegendaryGreenSteel.tsx'
+import LegendaryGreenSteel from '../pages/greenSteel/legendary/LegendaryGreenSteel.tsx'
 import Home from '../pages/Home.tsx'
-import IncrediblePotential
-  from '../pages/incrediblePotential/IncrediblePotential.tsx'
+import IncrediblePotential from '../pages/incrediblePotential/IncrediblePotential.tsx'
 import Mastermind from '../pages/puzzles/Mastermind.tsx'
 import MonasteryOfTheScorpion from '../pages/puzzles/MonasteryOfTheScorpion.tsx'
 import Shroud from '../pages/puzzles/Shroud.tsx'
 import TheShadowCrypt from '../pages/puzzles/TheShadowCrypt.tsx'
 import TotalChaos from '../pages/puzzles/TotalChaos.tsx'
 import SagaTracker from '../pages/sagaTracker/SagaTracker.tsx'
-import ViktraniumExperiment
-  from '../pages/viktraniumExperiment/ViktraniumExperiment.tsx'
+import ViktraniumExperiment from '../pages/viktraniumExperiment/ViktraniumExperiment.tsx'
 
 const PageRoutes = () => {
   return (
@@ -26,7 +23,7 @@ const PageRoutes = () => {
 
         <Route path='/saga-tracker' element={<SagaTracker />} />
 
-        {/*<Route path='/cannith-crafting' element={<CannithCrafting />} />*/}
+        <Route path='/cannith-crafting' element={<CannithCrafting />} />
         <Route path='/cauldron-of-cadence' element={<CauldronOfCadence />} />
         <Route path='/dinosaur-bone' element={<DinosaurBone />} />
         <Route path='/green-steel' element={<HeroicGreenSteel />} />

@@ -8,7 +8,11 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-sitemap": "node scripts/generate-sitemap.js"
+    "generate-sitemap": "node scripts/generate-sitemap.js",
+    "sort:cannith": "node scripts/sortCannithPhase1.mjs",
+    "sort:cannith:write": "node scripts/sortCannithPhase1.mjs --write",
+    "normalize:cannith": "node scripts/normalizeCannithPhase1.mjs",
+    "normalize:cannith:write": "node scripts/normalizeCannithPhase1.mjs --write"
   },
   "dependencies": {
     "@dr.pogodin/react-helmet": "^3.0.4",
