@@ -5,6 +5,7 @@ import type {
   Location,
   TroveCsvRow
 } from '../components/trove/types.ts'
+import { toSingularName } from './jsxUtils.tsx'
 
 /**
  * A Set containing predefined location identifiers used within the application.
@@ -48,24 +49,6 @@ export const normItem = (s: string): string => s.trim().toLowerCase()
  * @returns {string} - The trimmed version of the input string with no leading or trailing whitespace.
  */
 export const normChar = (s: string): string => s.trim()
-
-/**
- * Convert common plural collectible names to their singular form for consistent Trove keys.
- * Mirrors the conservative logic used by the Cannith Crafting page so lookups match.
- */
-const toSingularName = (materialName: string): string => {
-  const raw = (materialName || '').trim()
-  if (!raw) return raw
-  const lower = raw.toLowerCase()
-  // Explicit known mappings first
-  if (lower === 'cannith essences') return 'Cannith Essence'
-  if (lower === 'purified eberron dragonshard fragments') return 'Purified Eberron Dragonshard Fragment'
-  // Conservative heuristics
-  if (/[^aeiou]ies$/i.test(raw)) return raw.replace(/ies$/i, 'y')
-  if (/(ches|shes|xes|zes|ses)$/i.test(raw)) return raw.replace(/es$/i, '')
-  if (/(^.*[^s])s$/i.test(raw)) return raw.replace(/s$/i, '')
-  return raw
-}
 
 /**
  * Updates or inserts item information into the rollup data structure, ensuring values are aggregated correctly

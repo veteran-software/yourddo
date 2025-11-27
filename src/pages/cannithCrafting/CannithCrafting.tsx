@@ -345,7 +345,7 @@ const CannithCrafting = () => {
       }
     } catch (err) {
       // Log and continue on corrupt or unparsable storage (do not throw in UI thread)
-      // eslint-disable-next-line no-console
+
       console.warn('CannithCrafting: failed to load session state – resetting to defaults.', err)
     }
   }, [])
@@ -786,30 +786,6 @@ const CannithCrafting = () => {
     }
 
     return value
-  }
-
-  // Materials renderer: based on binding selection (Bound/Unbound)
-  // Renders a Card with header (effect name + shard level) and a 3-column body: image | material name | quantity
-  // Helper: ensure requirement names are handled in singular form for display and Trove lookup
-  const toSingularName = (materialName: string): string => {
-    const raw = (materialName || '').trim()
-
-    if (!raw) {
-      return raw
-    }
-
-    const lower = raw.toLowerCase()
-
-    // Explicit known mappings first
-    if (lower === 'cannith essences') return 'Cannith Essence'
-    if (lower === 'purified eberron dragonshard fragments') return 'Purified Eberron Dragonshard Fragment'
-
-    // Conservative heuristics
-    if (/[^aeiou]ies$/i.test(raw)) return raw.replace(/ies$/i, 'y')
-    if (/(ches|shes|xes|zes|ses)$/i.test(raw)) return raw.replace(/es$/i, '')
-    if (/(^.*[^s])s$/i.test(raw)) return raw.replace(/s$/i, '')
-
-    return raw
   }
 
   // Build rows data (icon | name | qty) and shard level for a given enhancement name

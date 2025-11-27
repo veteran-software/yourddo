@@ -4,8 +4,8 @@ import type { Ingredient } from '../types/ingredients.ts'
 import { formatNumber } from './objectUtils.ts'
 import { normItem } from './troveUtils.ts'
 
-// Local helper: convert common plural collectible names to singular for consistent Trove keys
-const toSingularName = (materialName: string): string => {
+// convert common plural collectible names to singular for consistent Trove keys
+export const toSingularName = (materialName: string): string => {
   const raw = (materialName || '').trim()
   if (!raw) return raw
   const lower = raw.toLowerCase()
