@@ -317,7 +317,7 @@ export interface Enhancement {
   }
   modifier?: number | string
   name: string
-  type?: 'Prefix' | 'Suffix' | '--Crafting'
+  type?: 'Prefix' | 'Suffix' | 'Extra' | '--Crafting'
   notes?: string
   charges?: number
   rechargePerDay?: number

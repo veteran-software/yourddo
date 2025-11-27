@@ -26,7 +26,8 @@ export type ItemRollup = Record<
   string, // normalized item name
   {
     binding: string
-    byCharacter: Record<string, Record<Location, number>>
+    // List of character-specific holdings to avoid accidental overwrite and preserve duplicates
+    byCharacter: { character: string; locations: Record<Location, number> }[]
   }
 >
 
