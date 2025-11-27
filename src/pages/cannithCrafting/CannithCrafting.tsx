@@ -1010,7 +1010,9 @@ const CannithCrafting = () => {
         {incPairs.length > 0 && (
           <div className='invalid-feedback d-block mt-1'>
             {incPairs.map((pair) => (
-              <div key={pair.name}>{`Adding the ${pair.name} effect will raise the minimum level of this item by ${String(pair.inc)}.`}</div>
+              <div
+                key={pair.name}
+              >{`Adding the ${pair.name} effect will raise the minimum level of this item by ${String(pair.inc)}.`}</div>
             ))}
           </div>
         )}
@@ -1126,7 +1128,13 @@ const CannithCrafting = () => {
                           <div className='d-flex align-items-center gap-2'>
                             <Form.Select
                               size='sm'
-                              value={items[slotKey]?.bindingOverride == null ? 'inherit' : items[slotKey]?.bindingOverride ? 'bound' : 'unbound'}
+                              value={
+                                items[slotKey]?.bindingOverride == null
+                                  ? 'inherit'
+                                  : items[slotKey]?.bindingOverride
+                                    ? 'bound'
+                                    : 'unbound'
+                              }
                               onChange={(event) => {
                                 const value = event.target.value
                                 updateItem(slotKey, (currentItem) => ({
@@ -1235,8 +1243,13 @@ const CannithCrafting = () => {
                                           <div className='flex-grow-1 min-w-0 w-100 w-sm-auto align-self-start align-self-sm-auto'>
                                             {(() => {
                                               const groupedByDisplay = findAugmentsForSlot(augmentSlot.slotType)
-                                              const flatForSlot = Object.values(groupedByDisplay).flat() as unknown as Ingredient[]
-                                              const augmentOptions = { [augmentSlot.slotType]: flatForSlot } as Record<string, Ingredient[]>
+                                              const flatForSlot = Object.values(
+                                                groupedByDisplay
+                                              ).flat() as unknown as Ingredient[]
+                                              const augmentOptions = { [augmentSlot.slotType]: flatForSlot } as Record<
+                                                string,
+                                                Ingredient[]
+                                              >
                                               const filteredAugmentOptions = filterAugmentOptions(
                                                 augmentOptions,
                                                 augmentSlot.filters,
@@ -1254,7 +1267,12 @@ const CannithCrafting = () => {
                                                   augmentFilters={augmentSlot.filters}
                                                   augmentFilterMode={augmentSlot.filterMode}
                                                   handleSelectAugment={(_slot: string, aug: Ingredient) => {
-                                                    handleSelectAugment(slotKey, augmentSlot.id, augmentSlot.slotType, aug)
+                                                    handleSelectAugment(
+                                                      slotKey,
+                                                      augmentSlot.id,
+                                                      augmentSlot.slotType,
+                                                      aug
+                                                    )
                                                   }}
                                                   handleResetAugment={() => {
                                                     handleResetAugment(slotKey, augmentSlot.id)
