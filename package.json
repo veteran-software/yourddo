@@ -23,6 +23,7 @@
     "fast-xml-parser": "^5.3.2",
     "kebab-case": "^2.0.2",
     "luxon": "^3.7.2",
+    "lz-string": "^1.5.0",
     "papaparse": "^5.5.3",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
