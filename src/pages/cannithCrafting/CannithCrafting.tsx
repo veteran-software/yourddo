@@ -17,12 +17,9 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown
-  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type {
-  ShoppingListTotals
-} from '../../components/common/ShoppingListDrawer.tsx'
+import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
@@ -622,58 +619,61 @@ const CannithCrafting = () => {
   }
 
   // Build rows data (icon | name | qty) and shard level for a given enhancement name
-  const buildMaterials = useCallback((
-    name: string | null,
-    bound: boolean | null
-  ): {
-    shardLevel: number | null
-    rows: { name: string; qty: number }[]
-  } | null => {
-    if (!name) {
-      return null
-    }
+  const buildMaterials = useCallback(
+    (
+      name: string | null,
+      bound: boolean | null
+    ): {
+      shardLevel: number | null
+      rows: { name: string; qty: number }[]
+    } | null => {
+      if (!name) {
+        return null
+      }
 
-    const entry = enhancementByName.get(name)
+      const entry = enhancementByName.get(name)
 
-    if (!entry) {
-      return null
-    }
+      if (!entry) {
+        return null
+      }
 
-    const materialsForBinding = bound ? entry.bound : entry.unbound
+      const materialsForBinding = bound ? entry.bound : entry.unbound
 
-    if (!materialsForBinding) {
-      return null
-    }
+      if (!materialsForBinding) {
+        return null
+      }
 
-    const shardLevel: number | null = typeof materialsForBinding.level === 'number' ? materialsForBinding.level : null
-    const essenceQty: number | null =
-      typeof materialsForBinding.essence === 'number' ? materialsForBinding.essence : null
-    const purifiedQty: number | null = materialsForBinding.purified ?? null
-    const collectibles: { name: string; qty: number }[] = Array.isArray(materialsForBinding.collectible)
-      ? materialsForBinding.collectible
-      : []
+      const shardLevel: number | null = typeof materialsForBinding.level === 'number' ? materialsForBinding.level : null
+      const essenceQty: number | null =
+        typeof materialsForBinding.essence === 'number' ? materialsForBinding.essence : null
+      const purifiedQty: number | null = materialsForBinding.purified ?? null
+      const collectibles: { name: string; qty: number }[] = Array.isArray(materialsForBinding.collectible)
+        ? materialsForBinding.collectible
+        : []
 
-    const rows: { name: string; qty: number }[] = []
+      const rows: { name: string; qty: number }[] = []
 
-    if (essenceQty != null && essenceQty > 0) {
-      rows.push({ name: toSingularName('Cannith Essences'), qty: essenceQty })
-    }
+      if (essenceQty != null && essenceQty > 0) {
+        rows.push({ name: toSingularName('Cannith Essences'), qty: essenceQty })
+      }
 
-    if (purifiedQty != null && purifiedQty > 0) {
-      rows.push({ name: toSingularName('Purified Eberron Dragonshard Fragments'), qty: purifiedQty })
-    }
+      if (purifiedQty != null && purifiedQty > 0) {
+        rows.push({ name: toSingularName('Purified Eberron Dragonshard Fragments'), qty: purifiedQty })
+      }
 
-    collectibles.forEach((collectible) => {
-      if (collectible.qty > 0 && collectible.name)
-        rows.push({ name: toSingularName(collectible.name), qty: collectible.qty })
-    })
+      collectibles.forEach((collectible) => {
+        if (collectible.qty > 0 && collectible.name)
+          rows.push({ name: toSingularName(collectible.name), qty: collectible.qty })
+      })
 
-    if (rows.length === 0) {
-      return null
-    }
+      if (rows.length === 0) {
+        return null
+      }
 
-    return { shardLevel, rows }
-  }, [enhancementByName])
+      return { shardLevel, rows }
+    },
+    [enhancementByName]
+  )
 
   // Renders a full-width stacked Accordion of requirement cards (default closed)
   function renderMaterialsAccordion(slotKey: string, item: ItemState): ReactElement | null {
@@ -994,7 +994,7 @@ const CannithCrafting = () => {
       <Card>
         <Card.Header className='position-relative py-3'>
           <div className='d-flex align-items-center'>
-            <div className='position-absolute top-50 start-50 translate-middle w-100 text-center'>
+            <div className='position-absolute top-50 start-50 translate-middle text-center px-3 z-0'>
               <h4 className='mb-0'>Cannith Crafting</h4>
               <small>
                 <a
@@ -1007,11 +1007,13 @@ const CannithCrafting = () => {
                 </a>
               </small>
             </div>
-            <div className='ms-auto ms-2 d-flex align-items-center gap-2'>
+            <div className='ms-auto ms-2 d-flex align-items-center gap-2 position-relative z-1'>
               <Button
                 variant='outline-light'
                 size='sm'
-                onClick={() => { setShowShoppingList(true); }}
+                onClick={() => {
+                  setShowShoppingList(true)
+                }}
                 title='View aggregated required materials'
               >
                 Shopping List
@@ -1292,16 +1294,17 @@ const CannithCrafting = () => {
         onHide={() => {
           setShowPermalink(false)
         }}
-        buildUrl={() => buildPermalinkUrl(
-          encodeCannithPermalink({ items, activeKeys, collapsedKeys, masterMinLevel }),
-          location
-        )}
+        buildUrl={() =>
+          buildPermalinkUrl(encodeCannithPermalink({ items, activeKeys, collapsedKeys, masterMinLevel }), location)
+        }
       />
 
       {/* Shopping List Drawer (reusable component) */}
       <ShoppingListDrawer
         show={showShoppingList}
-        onHide={() => { setShowShoppingList(false); }}
+        onHide={() => {
+          setShowShoppingList(false)
+        }}
         planBound={shoppingListPlanBound}
         onPlanChange={setShoppingListPlanBound}
         totals={aggregateShoppingList.compute(shoppingListPlanBound)}
