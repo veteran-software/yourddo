@@ -103,7 +103,7 @@ const orderGroups = (
   const result: Record<string, Ingredient[]> = {}
   desired.forEach((k) => {
     // Guard against keys that are in the desired order but not present in the actual groups
-    if (groups[k].length) {
+    if (groups[k]?.length) {
       result[k] = groups[k]
     }
   })
