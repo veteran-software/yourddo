@@ -17,11 +17,14 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
-import FallbackImage from '../../components/common/FallbackImage.tsx'
+import AugmentSlotFilterableDropdown
+  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
-import cannithPhase1 from '../../data/cannithCrafting/cannithEnhancements.phase1.json'
+import {
+  filterIngredientsMap
+} from '../../components/filters/helpers/filterUtils.ts'
+import cannithPhase1
+  from '../../data/cannithCrafting/cannithEnhancements.phase1.json'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
@@ -257,7 +260,7 @@ const CannithCrafting = () => {
   const [items, setItems] = useState<Record<string, ItemState>>({})
   const [activeKeys, setActiveKeys] = useState<string[]>([])
   const [masterMinLevel, setMasterMinLevel] = useState<number>(1)
-  // Binding master toggle: true = Bound, false = Unbound
+  // Binding selection removed from UI; keep state for backward-compatible permalink/session payloads (unused in logic)
   const [masterBindingBound, setMasterBindingBound] = useState<boolean>(true)
   // track which item cards are collapsed (default open -> not present in this set)
   const [collapsedKeys, setCollapsedKeys] = useState<string[]>([])
@@ -425,7 +428,7 @@ const CannithCrafting = () => {
 
       console.warn('CannithCrafting: failed to load session state – resetting to defaults.', err)
     }
-  }, [location.search, navigate])
+  }, [location.search, navigate, readCcFromUrl, removeCcFromUrl])
 
   // Persist on change
   useEffect(() => {
@@ -707,11 +710,8 @@ const CannithCrafting = () => {
     disabled: boolean
   ): ReactElement => {
     const effectiveML = item.minLevelOverride ?? masterMinLevel
-    const effectiveBound = item.bindingOverride ?? masterBindingBound
     const baseOptions = affixOptionsBySlot[slotKey]?.[affix] ?? []
-    const filteredOptions = baseOptions
-      .filter((opt) => isEnhancementAllowedAtML(opt, effectiveML))
-      .filter((opt) => isEnhancementAvailableForBinding(opt, effectiveBound))
+    const filteredOptions = baseOptions.filter((opt) => isEnhancementAllowedAtML(opt, effectiveML))
     const currentValue = item[affix]
     const value = currentValue && filteredOptions.includes(currentValue) ? currentValue : 'None'
 
@@ -738,13 +738,7 @@ const CannithCrafting = () => {
     )
   }
 
-  // Helper: whether an enhancement has materials for the current binding selection
-  function isEnhancementAvailableForBinding(name: string | null, boundEffective: boolean): boolean {
-    if (!name) return true
-    const entry = enhancementByName.get(name)
-    if (!entry) return false
-    return boundEffective ? entry.bound != null : entry.unbound != null
-  }
+  // Binding availability is no longer used to filter options; both Bound and Unbound will be shown in materials
 
   // Helper: determine if an enhancement is "Insightful" for ML gating
   const isInsightfulEnhancement = (name: string | null): boolean => {
@@ -991,7 +985,6 @@ const CannithCrafting = () => {
 
   // Renders a full-width stacked Accordion of requirement cards (default closed)
   function renderMaterialsAccordion(slotKey: string, item: ItemState): ReactElement | null {
-    const boundEffective = items[slotKey]?.bindingOverride ?? masterBindingBound
     const effectiveML = items[slotKey]?.minLevelOverride ?? masterMinLevel
 
     const selections: { key: string; label: string; name: string | null }[] = [
@@ -1001,7 +994,7 @@ const CannithCrafting = () => {
         name:
           item.prefix &&
           affixOptionsBySlot[slotKey]?.prefix.includes(item.prefix) &&
-          isEnhancementAvailableForBinding(item.prefix, boundEffective)
+          item.prefix
             ? item.prefix
             : null
       },
@@ -1011,7 +1004,7 @@ const CannithCrafting = () => {
         name:
           item.suffix &&
           affixOptionsBySlot[slotKey]?.suffix.includes(item.suffix) &&
-          isEnhancementAvailableForBinding(item.suffix, boundEffective)
+          item.suffix
             ? item.suffix
             : null
       },
@@ -1022,7 +1015,7 @@ const CannithCrafting = () => {
           item.hasCannithMark &&
           item.extra &&
           affixOptionsBySlot[slotKey]?.extra.includes(item.extra) &&
-          isEnhancementAvailableForBinding(item.extra, boundEffective)
+          item.extra
             ? item.extra
             : null
       }
@@ -1038,7 +1031,9 @@ const CannithCrafting = () => {
         return {
           ...selection,
           isCombined: combined,
-          data: buildMaterials(selection.name, boundEffective),
+          // build both material sets; body will render both
+          boundData: buildMaterials(selection.name, true),
+          unboundData: buildMaterials(selection.name, false),
           valueOnly: getEnhancementValueOnly(selection.name, effectiveML),
           display: combinedByEntry
             ? getCombinedDisplayFromEntry(selection.name!, effectiveML)
@@ -1048,15 +1043,13 @@ const CannithCrafting = () => {
         }
       })
       // Apply ML gating: hide Insightful effects when effective ML < 10
-      // For combined shards, allow rendering even if materials are not present (dataset has no entry for the shard name)
-      .filter(
-        (entry) => entry.name && isEnhancementAllowedAtML(entry.name, effectiveML) && (entry.data || entry.isCombined)
-      ) as {
+      .filter((entry) => entry.name && isEnhancementAllowedAtML(entry.name, effectiveML)) as {
       key: string
       label: string
       name: string
       isCombined: boolean
-      data: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
+      boundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
+      unboundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
       valueOnly: string | null
       display: string | null
     }[]
@@ -1065,14 +1058,72 @@ const CannithCrafting = () => {
       return null
     }
 
-    const materialImageSrc = (materialName: string): string => {
-      const slug = materialName
-        .toLowerCase()
-        .replaceAll(/[^a-z0-9]+/g, '-')
-        // eslint-disable-next-line sonarjs/slow-regex,sonarjs/anchor-precedence
-        .replaceAll(/^-+|-+$/g, '')
+    // Build unified material rows combining Bound and Unbound into a single table with two quantity columns
+    const renderUnifiedMaterials = (
+      boundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null,
+      unboundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
+    ): ReactElement => {
+      // If neither exists, show a compact empty state
+      if (!boundData && !unboundData) {
+        return <div className='p-2 text-muted'>No Bound or Unbound version exists for this shard.</div>
+      }
 
-      return `/images/collectibles/${slug}.png`
+      const boundMap = new Map<string, number>((boundData?.rows ?? []).map((r) => [r.name, r.qty]))
+      const unboundMap = new Map<string, number>((unboundData?.rows ?? []).map((r) => [r.name, r.qty]))
+
+      // Build unified rows and sort so any N/A entries (missing Bound or Unbound) are pushed to the bottom.
+      // Within each group (complete vs N/A), keep alphabetical order by ingredient name.
+      const unifiedRows = Array.from(new Set<string>([...boundMap.keys(), ...unboundMap.keys()]))
+        .map((name) => {
+          const bQty = boundMap.get(name)
+          const uQty = unboundMap.get(name)
+          const hasNA = !(typeof bQty === 'number') || !(typeof uQty === 'number')
+          return { name, bQty, uQty, hasNA }
+        })
+        .sort((left, right) => {
+          if (left.hasNA !== right.hasNA) return left.hasNA ? 1 : -1
+          return left.name.localeCompare(right.name, 'en', { sensitivity: 'base' })
+        })
+
+      return (
+        <Table size='sm' responsive className='mb-0 align-middle'>
+          <colgroup>
+            <col />
+            <col style={{ width: '1%', whiteSpace: 'nowrap' }} />
+            <col style={{ width: '1%', whiteSpace: 'nowrap' }} />
+          </colgroup>
+          <thead>
+            <tr>
+              <th className='ps-2'>Ingredient</th>
+              <th className='text-end'>Bound</th>
+              <th className='text-end'>Unbound</th>
+            </tr>
+          </thead>
+          <tbody>
+            {unifiedRows.map(({ name, bQty, uQty }) => (
+              <tr key={`${name}-${String(bQty ?? 'na')}-${String(uQty ?? 'na')}`}>
+                <td className='text-truncate' title={name}>
+                  {name}
+                </td>
+                <td className='text-end'>
+                  {typeof bQty === 'number'
+                    ? getOwnedIngredients({ name } as unknown as Ingredient, bQty, troveData)
+                    : (
+                        <span className='text-muted'>N/A</span>
+                      )}
+                </td>
+                <td className='text-end'>
+                  {typeof uQty === 'number'
+                    ? getOwnedIngredients({ name } as unknown as Ingredient, uQty, troveData)
+                    : (
+                        <span className='text-muted'>N/A</span>
+                      )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )
     }
 
     return (
@@ -1082,38 +1133,20 @@ const CannithCrafting = () => {
             <Accordion.Header>
               <div className='d-flex w-100 align-items-center justify-content-between gap-2'>
                 <strong>{accordionEntry.display ?? ''}</strong>
-                {accordionEntry.data?.shardLevel != null && (
-                  <small className='text-muted'>{`Shard Level ${String(accordionEntry.data.shardLevel)}`}</small>
-                )}
+                <small className='text-muted'>
+                  {(() => {
+                    const boundLv = accordionEntry.boundData?.shardLevel
+                    const unboundLv = accordionEntry.unboundData?.shardLevel
+                    if (boundLv != null && unboundLv != null) return `Shard Level (Bound ${boundLv} / Unbound ${unboundLv})`
+                    if (boundLv != null) return `Shard Level (Bound ${boundLv})`
+                    if (unboundLv != null) return `Shard Level (Unbound ${unboundLv})`
+                    return ''
+                  })()}
+                </small>
               </div>
             </Accordion.Header>
             <Accordion.Body className='p-0'>
-              {accordionEntry.data ? (
-                <Table size='sm' responsive className='mb-0 align-middle'>
-                  <colgroup>
-                    <col style={{ width: '36px' }} />
-                    <col />
-                    <col style={{ width: '1%', whiteSpace: 'nowrap' }} />
-                  </colgroup>
-                  <tbody>
-                    {accordionEntry.data.rows.map((row) => (
-                      <tr key={`${row.name}-${String(row.qty)}`}>
-                        <td className='text-center'>
-                          <FallbackImage src={materialImageSrc(row.name)} alt={row.name} width='28px' />
-                        </td>
-                        <td className='text-truncate' title={row.name}>
-                          {row.name}
-                        </td>
-                        <td className='text-end'>
-                          {getOwnedIngredients({ name: row.name } as unknown as Ingredient, row.qty, troveData)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              ) : (
-                <div className='p-2 text-muted'>Materials are not available for this combined shard.</div>
-              )}
+              {renderUnifiedMaterials(accordionEntry.boundData, accordionEntry.unboundData)}
             </Accordion.Body>
           </Accordion.Item>
         ))}
@@ -1213,18 +1246,6 @@ const CannithCrafting = () => {
         <Card.Body>
           <Row>
             <Col lg={3} className='mb-3'>
-              <Form.Group className='mb-3' controlId='master-binding'>
-                <Form.Label>Binding</Form.Label>
-                <Form.Select
-                  value={masterBindingBound ? 'bound' : 'unbound'}
-                  onChange={(event) => {
-                    setMasterBindingBound(event.target.value === 'bound')
-                  }}
-                >
-                  <option value='bound'>Bound</option>
-                  <option value='unbound'>Unbound</option>
-                </Form.Select>
-              </Form.Group>
               <Form.Group className='mb-3' controlId='master-min-level'>
                 <Form.Label>Minimum Level</Form.Label>
                 <Form.Select
@@ -1299,28 +1320,6 @@ const CannithCrafting = () => {
                             <strong>{slotLabel(slotKey)}</strong>
                           </div>
                           <div className='d-flex align-items-center gap-2'>
-                            <Form.Select
-                              size='sm'
-                              value={
-                                items[slotKey]?.bindingOverride == null
-                                  ? 'inherit'
-                                  : items[slotKey]?.bindingOverride
-                                    ? 'bound'
-                                    : 'unbound'
-                              }
-                              onChange={(event) => {
-                                const value = event.target.value
-                                updateItem(slotKey, (currentItem) => ({
-                                  ...currentItem,
-                                  bindingOverride: value === 'inherit' ? null : value === 'bound'
-                                }))
-                              }}
-                              title='Binding (override)'
-                            >
-                              <option value='inherit'>{`Inherit (${masterBindingBound ? 'Bound' : 'Unbound'})`}</option>
-                              <option value='bound'>Bound</option>
-                              <option value='unbound'>Unbound</option>
-                            </Form.Select>
                             <Badge
                               bg='secondary'
                               title='Effective Minimum Level'
