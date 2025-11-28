@@ -1,6 +1,5 @@
 import type { AugmentItem } from '../../types/augmentItem.ts'
 
-// TODO: Move all Dinosaur Bone crafted augments here
 export const update55Augments: AugmentItem[] = [
   {
     name: 'Sapphire of Stunning +6',

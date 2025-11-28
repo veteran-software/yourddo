@@ -81,10 +81,10 @@ const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void)
     return
   }
   const qty = Number.isFinite(qtyNum) ? qtyNum : 0
-  // Normalize item key in singular form so lookups (which are also singular) match reliably
+  // Normalize the item key in singular form so lookups (which are also singular) match reliably
   const iKey = normItem(toSingularName(itemName))
 
-  // Initialize entry if missing; do not overwrite existing aggregates.
+  // Initialize the entry if missing; do not overwrite existing aggregates.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!rollup[iKey]) {
     rollup[iKey] = { binding, byCharacter: [] }
@@ -126,7 +126,7 @@ export interface BuildResult {
  * @param {File} file - A file object representing the CSV file to be processed.
  * @returns {Promise<BuildResult>} - A promise that resolves to a `BuildResult` object, containing the parsed data, warnings, and errors.
  *
- * The function uses a library for CSV parsing that supports dynamic typing and multi-threaded processing.
+ * The function uses a library for CSV parsing that supports dynamic typing and multithreaded processing.
  * It processes each row individually, validating and updating the item rollup data.
  * Any parsing errors or warnings encountered during the process are collected and included in the final result.
  *
@@ -208,6 +208,7 @@ export const getStoredTroveData = (): ItemRollup | null => {
   const parsed = parsedUnknown as ParsedShape
   Object.keys(parsed).forEach((key) => {
     const entry = parsed[key]
+
     if (!Array.isArray(entry.byCharacter)) {
       const map = entry.byCharacter
       const arr = Object.entries(map).map(([character, locations]) => ({ character, locations }))

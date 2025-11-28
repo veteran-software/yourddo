@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Accordion,
   Badge,
@@ -17,239 +17,33 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown
-  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import {
-  filterIngredientsMap
-} from '../../components/filters/helpers/filterUtils.ts'
-import cannithPhase1
-  from '../../data/cannithCrafting/cannithEnhancements.phase1.json'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { findAugmentsForSlot } from '../../utils/augmentUtils.ts'
 import { getOwnedIngredients, toSingularName } from '../../utils/jsxUtils.tsx'
-
-type CoreChoice = string | null
-
-// ----- Strict types for Cannith Phase 1 dataset -----
-interface Phase1CollectibleRow {
-  name: string
-  qty: number
-}
-
-interface Phase1Materials {
-  level?: number | null
-  essence?: number | null
-  purified?: number | null
-  collectible?: Phase1CollectibleRow[] | null
-}
-
-interface Phase1EnchantmentMeta {
-  name?: string
-  bonus?: string
-}
-
-type Phase1MinLevelIncrease =
-  | number
-  | {
-      noMinimumLevel?: number
-      minimumLevel?: number
-    }
-  | null
-
-type TAffix = string[] | string | null
-
-interface CannithPhase1Entry {
-  name: string
-  enchantments?: Phase1EnchantmentMeta[]
-  bound?: Phase1Materials | null
-  unbound?: Phase1Materials | null
-  prefixTitle?: string | null
-  suffixTitle?: string | null
-  // Although normalized to arrays, keep a tolerant type for safety
-  prefix?: TAffix
-  suffix?: TAffix
-  extra?: TAffix
-  group?: string | null
-  minLevelIncrease?: Phase1MinLevelIncrease
-  stat?: (number | string)[]
-}
-
-const DATASET = cannithPhase1 as unknown as CannithPhase1Entry[]
-
-interface ItemAugmentSlotState {
-  id: string
-  slotType: string // e.g., 'red', 'blue', 'colorless', 'sun', 'moon', 'lamordia: ...'
-  selectedAugment: AugmentItem | null
-  // Per-slot augment filters
-  filters: string[]
-  filterMode: 'OR' | 'AND'
-}
-
-interface ItemState {
-  slotKey: string
-  prefix: CoreChoice
-  suffix: CoreChoice
-  extra: CoreChoice
-  hasCannithMark: boolean
-  augmentSlots: ItemAugmentSlotState[]
-  minLevelOverride?: number | null
-  // If null/undefined => inherit from master binding; otherwise true=Bound, false=Unbound
-  bindingOverride?: boolean | null
-}
-
-// Utility: map UI slot keys to dataset item tokens used in the phase1 JSON
-const SLOT_KEY_TO_DATA_TOKENS: Record<string, string[]> = {
-  mainHand: ['Weapon (Melee)', 'Weapon (Ranged)', 'Weapon'],
-  offHand: ['Weapon (Melee)', 'Weapon (Ranged)', 'Weapon', 'Off-hand Weapon'],
-  runeArm: ['Runearm', 'Rune Arm'],
-  orb: ['Orb'],
-  armor: ['Armor'],
-  belt: ['Belt'],
-  boots: ['Boots'],
-  bracers: ['Bracers'],
-  cloak: ['Cloak'],
-  gloves: ['Gloves'],
-  goggles: ['Goggles'],
-  helmet: ['Helm', 'Helmet', 'Head'],
-  necklace: ['Necklace', 'Neck'],
-  ring1: ['Ring'],
-  ring2: ['Ring'],
-  trinket: ['Trinket'],
-  shield: ['Shield']
-}
-
-type AffixKind = 'prefix' | 'suffix' | 'extra'
-
-// Extract per-affix options from the dataset for a given slot key
-const getAffixOptions = (slotKey: string, affix: AffixKind): string[] => {
-  const dataTokensForSlot = SLOT_KEY_TO_DATA_TOKENS[slotKey] ?? []
-
-  if (dataTokensForSlot.length === 0) return []
-
-  const fieldName = affix as 'prefix' | 'suffix' | 'extra'
-
-  const options = new Set<string>()
-
-  DATASET.forEach((entry) => {
-    const raw = entry?.[fieldName]
-    if (raw == null) return
-
-    let allowed: string[] = []
-
-    if (Array.isArray(raw)) {
-      allowed = raw.map((value) => value.trim()).filter(Boolean)
-    } else {
-      allowed = raw
-        .split(',')
-        .map((value) => value.trim())
-        .filter(Boolean)
-    }
-
-    // if any token matches our slot tokens, include this enhancement
-    const matches = allowed.some((token) => dataTokensForSlot.includes(token))
-    if (matches) {
-      if (typeof entry?.name === 'string' && entry.name) options.add(entry.name)
-    }
-  })
-
-  return Array.from(options).sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }))
-}
-
-const ALL_SLOT_KEYS: { key: string; label: string }[] = [
-  { key: 'mainHand', label: 'Weapon (Main Hand)' },
-  { key: 'offHand', label: 'Weapon (Off Hand)' },
-  { key: 'runeArm', label: 'Rune Arm' },
-  { key: 'orb', label: 'Orb' },
-  { key: 'armor', label: 'Armor' },
-  { key: 'belt', label: 'Belt' },
-  { key: 'boots', label: 'Boots' },
-  { key: 'bracers', label: 'Bracers' },
-  { key: 'cloak', label: 'Cloak' },
-  { key: 'gloves', label: 'Gloves' },
-  { key: 'goggles', label: 'Goggles' },
-  { key: 'helmet', label: 'Head' },
-  { key: 'necklace', label: 'Neck' },
-  { key: 'ring1', label: 'Ring 1' },
-  { key: 'ring2', label: 'Ring 2' },
-  { key: 'trinket', label: 'Trinket' },
-  { key: 'shield', label: 'Shield' }
-]
-
-// Only colorized slots are eligible for the augment list.
-const AVAILABLE_AUGMENT_TYPES: { key: string; label: string }[] = [
-  { key: 'red', label: 'Red' },
-  { key: 'blue', label: 'Blue' },
-  { key: 'yellow', label: 'Yellow' },
-  { key: 'purple', label: 'Purple' },
-  { key: 'orange', label: 'Orange' },
-  { key: 'green', label: 'Green' },
-  { key: 'colorless', label: 'Colorless' }
-]
-
-const ALLOWED_AUGMENT_KEYS = new Set(AVAILABLE_AUGMENT_TYPES.map((t) => t.key))
-
-// Certain augment slot colors only appear in
-// certain item categories. This function expresses that availability per UI slot key.
-// Notes (from the screenshot text "Found in:"):
-// - Red: Weapons, Shields, or other hand-held items
-// - Blue: Armor/Robes/Outfits, Shields, or other off-hand items (e.g., Orbs, Runearms)
-// - Yellow: Accessory items (Ring, Neck, Boots, Belt, Gloves, Goggles, Helmet, Bracers, Cloak, Trinket)
-// - Purple: Named Weapons, Shields, or other hand-held items
-// - Orange: Named Weapons, Shields, or other hand-held items
-// - Green: Accessory items (and named Armor/Robes/Outfits — omitted here for crafted generics)
-// - Colorless: Any type of item
-const ACCESSORY_SLOT_KEYS = new Set<string>([
-  'belt',
-  'boots',
-  'bracers',
-  'cloak',
-  'gloves',
-  'goggles',
-  'helmet',
-  'necklace',
-  'ring1',
-  'ring2',
-  'trinket'
-])
-
-const isHandHeld = (slotKey: string) => ['mainHand', 'offHand', 'shield', 'orb', 'runeArm'].includes(slotKey)
-const isShield = (slotKey: string) => slotKey === 'shield'
-const isArmor = (slotKey: string) => slotKey === 'armor'
-const isOffHandNonWeapon = (slotKey: string) => slotKey === 'orb' || slotKey === 'runeArm' || slotKey === 'shield'
-
-const allowedAugmentColorsForSlot = (slotKey: string): string[] => {
-  const allowed = new Set<string>()
-
-  // Colorless always allowed
-  allowed.add('colorless')
-
-  // Red: weapons, shields, other hand-held items
-  if (isHandHeld(slotKey)) {
-    allowed.add('red')
-  }
-
-  // Blue: armor/robes/outfits, shields, or other off-hand items (orbs, runearms)
-  if (isArmor(slotKey) || isShield(slotKey) || isOffHandNonWeapon(slotKey)) allowed.add('blue')
-
-  // Yellow: accessories only
-  if (ACCESSORY_SLOT_KEYS.has(slotKey)) allowed.add('yellow')
-
-  // Purple/Orange: named hand-held items — include hand-held categories
-  if (isHandHeld(slotKey)) {
-    allowed.add('purple')
-    allowed.add('orange')
-  }
-
-  // Green: accessories (omit armor named special-case for now)
-  if (ACCESSORY_SLOT_KEYS.has(slotKey)) allowed.add('green')
-
-  return Array.from(allowed)
-}
-
-const STORAGE_KEY = 'cannithCraftingState'
+import {
+  type AffixKind,
+  ALL_SLOT_KEYS,
+  ALLOWED_AUGMENT_KEYS,
+  AVAILABLE_AUGMENT_TYPES,
+  type CannithPhase1Entry,
+  DATASET,
+  type ItemAugmentSlotState,
+  type ItemState,
+  type Phase1EnchantmentMeta
+} from './types.ts'
+import {
+  allowedAugmentColorsForSlot,
+  filterAugmentOptions,
+  getAffixOptions,
+  iterateItemsOnLevelChange,
+  ML_OPTIONS,
+  sanitizeAugmentsOnItems,
+  STORAGE_KEY
+} from './utils.ts'
 
 const CannithCrafting = () => {
   // Router utilities (work for both BrowserRouter and HashRouter)
@@ -267,64 +61,89 @@ const CannithCrafting = () => {
   // Permalink modal visibility
   const [showPermalink, setShowPermalink] = useState<boolean>(false)
 
-  const ML_OPTIONS: number[] = Array.from({ length: 32 }, (_, i) => i + 1)
-
   // ----- Augment color ML floor rules -----
-  const AUGMENT_COLOR_FLOOR: Record<string, number> = {
-    colorless: 1,
-    red: 2,
-    blue: 2,
-    yellow: 3,
-    green: 5,
-    purple: 8,
-    orange: 8
-  }
+  const AUGMENT_COLOR_FLOOR: Record<string, number> = useMemo(
+    () => ({
+      colorless: 1,
+      red: 2,
+      blue: 2,
+      yellow: 3,
+      green: 5,
+      purple: 8,
+      orange: 8
+    }),
+    []
+  )
 
-  function computeAugmentMinLevelFloor(item: ItemState | undefined): number {
-    if (!item) return 1
-    let floor = 1
+  const computeAugmentMinLevelFloor = useCallback(
+    (item: ItemState | undefined): number => {
+      if (!item) return 1
+      let floor = 1
 
-    for (const s of item.augmentSlots) {
-      const f = AUGMENT_COLOR_FLOOR[s.slotType]
-      if (typeof f === 'number') floor = Math.max(floor, f)
-    }
+      for (const s of item.augmentSlots) {
+        const f = AUGMENT_COLOR_FLOOR[s.slotType]
 
-    return floor
-  }
+        floor = Math.max(floor, f)
+      }
+
+      return floor
+    },
+    [AUGMENT_COLOR_FLOOR]
+  )
 
   // URL-safe base64 helpers
   const base64UrlEncode = (input: string): string => {
-    const utf8 = encodeURIComponent(input).replace(/%([0-9A-F]{2})/g, (_, p1) => String.fromCharCode(parseInt(p1, 16)))
-    // noinspection JSUnresolvedReference
-    const b64 = typeof btoa === 'function' ? btoa(utf8) : Buffer.from(utf8, 'binary').toString('base64')
-    // eslint-disable-next-line sonarjs/slow-regex
-    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')
+    const utf8: string = encodeURIComponent(input).replace(/%([0-9A-F]{2})/g, (_, p1: string | number) =>
+      String.fromCharCode(parseInt(String(p1), 16))
+    )
+
+    const b64: string = typeof btoa === 'function' ? btoa(utf8) : Buffer.from(utf8, 'binary').toString('base64')
+
+    return b64
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/={1,2}$/, '')
   }
+
   const base64UrlDecode = (input: string): string => {
-    const pad = input.length % 4 === 2 ? '==' : input.length % 4 === 3 ? '=' : input.length % 4 === 1 ? '===' : ''
-    const b64 = input.replace(/-/g, '+').replace(/_/g, '/') + pad
-    // noinspection JSUnresolvedReference
-    const bin = typeof atob === 'function' ? atob(b64) : Buffer.from(b64, 'base64').toString('binary')
+    let pad: '' | '==' | '=' | '==='
+    if (input.length % 4 === 2) {
+      pad = '=='
+    } else if (input.length % 4 === 3) {
+      pad = '='
+    } else if (input.length % 4 === 1) {
+      pad = '==='
+    } else {
+      pad = ''
+    }
+
+    const b64: string = input.replace(/-/g, '+').replace(/_/g, '/') + pad
+    const bin: string = typeof atob === 'function' ? atob(b64) : Buffer.from(b64, 'base64').toString('binary')
     const percentEncoded = Array.from(bin)
       .map((c) => '%' + c.charCodeAt(0).toString(16).padStart(2, '0'))
       .join('')
+
     return decodeURIComponent(percentEncoded)
   }
 
-  // Permalink helpers: read cc from router location first (works in both BrowserRouter and HashRouter),
+  // Permalink helpers: read cc from the router location first (works in both BrowserRouter and HashRouter),
   // fall back to manual hash parsing only if needed.
-  const readCcFromUrl = (): { cc: string | null; source: 'search' | 'hash' | null } => {
+  const readCcFromUrl = useCallback((): { cc: string | null; source: 'search' | 'hash' | null } => {
     try {
       // Prefer react-router location.search first (supports HashRouter as well)
       const routerParams = new URLSearchParams(location.search)
       const ccFromRouter = routerParams.get('cc')
-      if (ccFromRouter) return { cc: ccFromRouter, source: 'search' }
+
+      if (ccFromRouter) {
+        return { cc: ccFromRouter, source: 'search' }
+      }
 
       // HashRouter-style: the cc lives inside the hash after the route
       const hash = window.location.hash // e.g., "#/cannith-crafting?cc=..."
-      if (hash && hash.startsWith('#')) {
+      if (hash.startsWith('#')) {
         const hashBody = hash.slice(1) // remove '#'
         const qm = hashBody.indexOf('?')
+
         if (qm >= 0) {
           const query = hashBody.slice(qm + 1)
           const hashParams = new URLSearchParams(query)
@@ -335,35 +154,100 @@ const CannithCrafting = () => {
     } catch {
       // ignore
     }
-    return { cc: null, source: null }
-  }
 
-  const removeCcFromUrl = (source: 'search' | 'hash' | null) => {
-    if (!source) return
-    if (source === 'search') {
-      // Use react-router navigate to remove query in a router-friendly way
-      navigate({ pathname: location.pathname, search: '' }, { replace: true })
-      return
-    }
-    if (typeof window === 'undefined' || !window.history || typeof window.history.replaceState !== 'function') return
-    const { origin, pathname, hash, search } = window.location
-    // HashRouter cleanup: rebuild hash without cc
-    const hashBody = (hash || '').replace(/^#/, '')
-    const [hashPath, hashQuery] = hashBody.split('?')
-    const params = new URLSearchParams(hashQuery ?? '')
-    params.delete('cc')
-    const newHash = params.toString() ? `#${hashPath}?${params.toString()}` : `#${hashPath}`
-    const newUrl = `${origin}${pathname}${search}${newHash}`
-    window.history.replaceState({}, '', newUrl)
-  }
+    return { cc: null, source: null }
+  }, [location.search])
+
+  const removeCcFromUrl = useCallback(
+    async (source: 'search' | 'hash' | null) => {
+      if (!source) {
+        return
+      }
+
+      if (source === 'search') {
+        // Use react-router navigate to remove the query in a router-friendly way
+        await navigate({ pathname: location.pathname, search: '' }, { replace: true })
+
+        return
+      }
+
+      if (typeof window === 'undefined' || typeof window.history.replaceState !== 'function') {
+        return
+      }
+
+      const { origin, pathname, hash, search } = window.location
+
+      // HashRouter cleanup: rebuild hash without cc
+      const hashBody = (hash || '').replace(/^#/, '')
+      const [hashPath, hashQuery] = hashBody.split('?')
+
+      const params = new URLSearchParams(hashQuery)
+      params.delete('cc')
+
+      const newHash = params.toString() ? `#${hashPath}?${params.toString()}` : `#${hashPath}`
+      const newUrl = `${origin}${pathname}${search}${newHash}`
+
+      window.history.replaceState({}, '', newUrl)
+    },
+    [location.pathname, navigate]
+  )
+
+  // Build a lookup map for dataset entries by name for quick access when rendering scaled values
+  const enhancementByName = useMemo(() => {
+    const enhancementMap = new Map<string, CannithPhase1Entry>()
+
+    DATASET.forEach((entry: CannithPhase1Entry) => {
+      enhancementMap.set(entry.name, entry)
+    })
+
+    return enhancementMap
+  }, [])
+
+  // Helper: determine if an enhancement is "Insightful" for ML gating
+  const isInsightfulEnhancement = useCallback(
+    (name: string | null): boolean => {
+      if (!name) {
+        return false
+      }
+
+      const entry = enhancementByName.get(name)
+      const nameLower = name.toLowerCase()
+      const nameSuggestsInsight = nameLower.startsWith('insightful ')
+
+      // Parrying is explicitly included in this restriction
+      const isParrying = nameLower.includes('parrying')
+      const enchantmentSuggestsInsight = Array.isArray(entry?.enchantments)
+        ? entry.enchantments.some(
+            (enchantMeta: Phase1EnchantmentMeta) => (enchantMeta.bonus ?? '').toLowerCase() === 'insight'
+          )
+        : false
+
+      return nameSuggestsInsight || enchantmentSuggestsInsight || isParrying
+    },
+    [enhancementByName]
+  )
+
+  // Rule: Insightful effects (including Parrying) cannot be applied if effective ML < 10
+  const isEnhancementAllowedAtML = useCallback(
+    (name: string | null, effectiveML: number): boolean => {
+      if (!name) {
+        return true
+      }
+
+      return !(isInsightfulEnhancement(name) && (effectiveML || 1) < 10)
+    },
+    [isInsightfulEnhancement]
+  )
 
   // Load from permalink (if present) or sessionStorage once
   const didLoadRef = useRef(false)
+
   useEffect(() => {
     try {
       if (didLoadRef.current) return
       const { cc, source } = readCcFromUrl()
       const loadedText = cc ? base64UrlDecode(cc) : sessionStorage.getItem(STORAGE_KEY)
+
       if (loadedText) {
         const parsed = JSON.parse(loadedText) as {
           items: Record<string, ItemState>
@@ -373,59 +257,20 @@ const CannithCrafting = () => {
           collapsedKeys?: string[]
         }
 
-        // sanitize any previously saved augment slots that are no longer supported
-        const sanitizedItems: Record<string, ItemState> = {}
-        Object.entries(parsed.items ?? {}).forEach(([savedSlotKey, savedItem]) => {
-          // Sanitize augment slots and per-slot filters without using any
-          const sanitizedAugmentSlots: ItemAugmentSlotState[] = (savedItem.augmentSlots ?? [])
-            .filter((slot) => ALLOWED_AUGMENT_KEYS.has(slot.slotType))
-            .filter((slot) => allowedAugmentColorsForSlot(savedSlotKey).includes(slot.slotType))
-            .map((slot: Partial<ItemAugmentSlotState>): ItemAugmentSlotState => {
-              const id: string = typeof slot.id === 'string' ? slot.id : crypto.randomUUID()
-              const slotType: string = typeof slot.slotType === 'string' ? slot.slotType : 'colorless'
-
-              // selectedAugment is optional; keep it only if it is an object with a name string
-              const selectedAugment =
-                slot.selectedAugment && typeof (slot.selectedAugment as unknown) === 'object'
-                  ? slot.selectedAugment
-                  : null
-
-              const filters: string[] = Array.isArray((slot as { filters?: unknown }).filters)
-                ? ((slot as { filters?: unknown }).filters as unknown[]).filter(
-                    (v): v is string => typeof v === 'string'
-                  )
-                : []
-
-              const filterMode: 'OR' | 'AND' = ((): 'OR' | 'AND' => {
-                const maybe = (slot as { filterMode?: unknown }).filterMode
-                return maybe === 'AND' || maybe === 'OR' ? maybe : 'OR'
-              })()
-
-              return { id, slotType, selectedAugment, filters, filterMode }
-            })
-
-          sanitizedItems[savedSlotKey] = {
-            ...savedItem,
-            augmentSlots: sanitizedAugmentSlots,
-            // ensure the new field exists; keep the existing value if present
-            minLevelOverride: savedItem.minLevelOverride ?? null,
-            bindingOverride: typeof savedItem.bindingOverride === 'boolean' ? savedItem.bindingOverride : null
-          }
-        })
-
-        setItems(sanitizedItems)
-        setActiveKeys(parsed.activeKeys ?? [])
+        setItems(sanitizeAugmentsOnItems(parsed))
+        setActiveKeys(parsed.activeKeys)
         setMasterMinLevel(typeof parsed.masterMinLevel === 'number' ? parsed.masterMinLevel : 1)
         setMasterBindingBound(typeof parsed.masterBindingBound === 'boolean' ? parsed.masterBindingBound : true)
         setCollapsedKeys(Array.isArray(parsed.collapsedKeys) ? parsed.collapsedKeys : [])
 
         // Clean the URL if we consumed a permalink (from search or hash)
-        if (cc) removeCcFromUrl(source)
+        if (cc) {
+          removeCcFromUrl(source).catch(console.error)
+        }
+
         didLoadRef.current = true
       }
     } catch (err) {
-      // Log and continue on corrupt or unparsable storage (do not throw in UI thread)
-
       console.warn('CannithCrafting: failed to load session state – resetting to defaults.', err)
     }
   }, [location.search, navigate, readCcFromUrl, removeCcFromUrl])
@@ -439,6 +284,7 @@ const CannithCrafting = () => {
       masterBindingBound,
       collapsedKeys
     })
+
     sessionStorage.setItem(STORAGE_KEY, payload)
   }, [items, activeKeys, masterMinLevel, masterBindingBound, collapsedKeys])
 
@@ -447,27 +293,11 @@ const CannithCrafting = () => {
   useEffect(() => {
     const nextItems: Record<string, ItemState> = {}
     let changed = false
-    for (const key of Object.keys(items)) {
-      const currentItem = items[key]
-      const effectiveML = currentItem.minLevelOverride ?? masterMinLevel
-      if (effectiveML >= 10) {
-        nextItems[key] = currentItem
-        continue
-      }
-      let prefix = currentItem.prefix
-      let suffix = currentItem.suffix
-      let extra = currentItem.extra
-      if (prefix && !isEnhancementAllowedAtML(prefix, effectiveML)) prefix = null
-      if (suffix && !isEnhancementAllowedAtML(suffix, effectiveML)) suffix = null
-      if (extra && !isEnhancementAllowedAtML(extra, effectiveML)) extra = null
-      if (prefix !== currentItem.prefix || suffix !== currentItem.suffix || extra !== currentItem.extra) {
-        changed = true
-        nextItems[key] = { ...currentItem, prefix, suffix, extra }
-      } else {
-        nextItems[key] = currentItem
-      }
+
+    changed = iterateItemsOnLevelChange(items, masterMinLevel, nextItems, isEnhancementAllowedAtML, changed)
+    if (changed) {
+      setItems(nextItems)
     }
-    if (changed) setItems(nextItems)
   }, [masterMinLevel, items, isEnhancementAllowedAtML])
 
   // Auto-raise per-item ML override to satisfy augment color ML floors.
@@ -515,13 +345,10 @@ const CannithCrafting = () => {
           return prev
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars,sonarjs/no-unused-vars
         const { [slotKey]: _removed, ...rest } = prev
 
         return rest
-      }
-      // Selecting: initialize item state if missing
-      if (prev[slotKey]) {
-        return prev
       }
 
       const next: ItemState = {
@@ -562,7 +389,7 @@ const CannithCrafting = () => {
 
     const id = crypto.randomUUID()
 
-    updateItem(slotKey, (item) => {
+    updateItem(slotKey, (item: ItemState) => {
       // Disallow adding duplicate color slot types on the same item
       if (item.augmentSlots.some((augmentSlot) => augmentSlot.slotType === augmentType)) {
         return item
@@ -578,10 +405,9 @@ const CannithCrafting = () => {
         let minLevelFloor = 1
 
         for (const augmentSlot of nextAugmentSlots) {
-          const requiredFloor = AUGMENT_COLOR_FLOOR[augmentSlot.slotType]
-          if (typeof requiredFloor === 'number') {
-            minLevelFloor = Math.max(minLevelFloor, requiredFloor)
-          }
+          const requiredFloor: number = AUGMENT_COLOR_FLOOR[augmentSlot.slotType]
+
+          minLevelFloor = Math.max(minLevelFloor, requiredFloor)
         }
 
         return minLevelFloor
@@ -624,53 +450,12 @@ const CannithCrafting = () => {
   }
 
   const handleResetAugment = (slotKey: string, augmentSlotId: string) => {
-    updateItem(slotKey, (item) => ({
+    updateItem(slotKey, (item: ItemState) => ({
       ...item,
-      augmentSlots: item.augmentSlots.map((augmentSlot) =>
+      augmentSlots: item.augmentSlots.map((augmentSlot: ItemAugmentSlotState) =>
         augmentSlot.id === augmentSlotId ? { ...augmentSlot, selectedAugment: null } : augmentSlot
       )
     }))
-  }
-
-  // ----- Augment filtering helpers -----
-  const filterAugmentOptions = (
-    options: Record<string, Ingredient[]>,
-    filters: string[],
-    mode: 'OR' | 'AND'
-  ): Record<string, Ingredient[]> => {
-    if (!filters.length) {
-      return options
-    }
-
-    if (mode === 'OR') {
-      return filterIngredientsMap(filters, options)
-    }
-
-    // AND mode: ingredient must contain ALL selected effects
-    const andFiltered: Record<string, Ingredient[]> = {}
-
-    Object.entries(options).forEach(([slot, list]) => {
-      andFiltered[slot] = list.filter((ingredient) => {
-        const maybe = ingredient as unknown as { effectsAdded?: unknown }
-
-        const effects = Array.isArray(maybe.effectsAdded)
-          ? (maybe.effectsAdded as unknown[]).filter(
-              (e): e is { name?: string } =>
-                typeof (e as { name?: unknown }).name === 'string' || (e as { name?: unknown }).name == null
-            )
-          : undefined
-
-        if (!effects || effects.length === 0) {
-          return false
-        }
-
-        const names = new Set<string>(effects.map((e) => e.name ?? ''))
-
-        return filters.every((f) => names.has(f))
-      })
-    })
-
-    return andFiltered
   }
 
   const slotLabel = (key: string) => ALL_SLOT_KEYS.find((slotDef) => slotDef.key === key)?.label ?? key
@@ -692,16 +477,6 @@ const CannithCrafting = () => {
     return optionsBySlot
   }, [])
 
-  // Build a lookup map for dataset entries by name for quick access when rendering scaled values
-  const enhancementByName = useMemo(() => {
-    const enhancementMap = new Map<string, CannithPhase1Entry>()
-    DATASET.forEach((entry) => {
-      if (entry && typeof entry.name === 'string') enhancementMap.set(entry.name, entry)
-    })
-    return enhancementMap
-  }, [])
-
-  // ----- Affix select renderer to reduce duplication -----
   const renderAffixSelect = (
     slotKey: string,
     item: ItemState,
@@ -710,7 +485,7 @@ const CannithCrafting = () => {
     disabled: boolean
   ): ReactElement => {
     const effectiveML = item.minLevelOverride ?? masterMinLevel
-    const baseOptions = affixOptionsBySlot[slotKey]?.[affix] ?? []
+    const baseOptions = affixOptionsBySlot[slotKey][affix]
     const filteredOptions = baseOptions.filter((opt) => isEnhancementAllowedAtML(opt, effectiveML))
     const currentValue = item[affix]
     const value = currentValue && filteredOptions.includes(currentValue) ? currentValue : 'None'
@@ -736,36 +511,6 @@ const CannithCrafting = () => {
         </Form.Select>
       </Form.Group>
     )
-  }
-
-  // Binding availability is no longer used to filter options; both Bound and Unbound will be shown in materials
-
-  // Helper: determine if an enhancement is "Insightful" for ML gating
-  const isInsightfulEnhancement = (name: string | null): boolean => {
-    if (!name) {
-      return false
-    }
-
-    const entry = enhancementByName.get(name)
-    const nameLower = name.toLowerCase()
-    const nameSuggestsInsight = nameLower.startsWith('insightful ')
-
-    // Parrying is explicitly included in this restriction
-    const isParrying = nameLower.includes('parrying')
-    const enchantmentSuggestsInsight = Array.isArray(entry?.enchantments)
-      ? entry.enchantments.some(
-          (enchantMeta: Phase1EnchantmentMeta) => (enchantMeta.bonus ?? '').toLowerCase() === 'insight'
-        )
-      : false
-
-    return nameSuggestsInsight || enchantmentSuggestsInsight || isParrying
-  }
-
-  // Rule: Insightful effects (including Parrying) cannot be applied if effective ML < 10
-  function isEnhancementAllowedAtML(name: string | null, effectiveML: number): boolean {
-    if (!name) return true
-    if (isInsightfulEnhancement(name) && (effectiveML || 1) < 10) return false
-    return true
   }
 
   // Helper to compute a human-readable display for a selected enhancement at a given effective ML
@@ -871,7 +616,7 @@ const CannithCrafting = () => {
   }
 
   // ----- Combined shard helpers -----
-  // Certain shard names represent a combination of two effects. When one of these shards is selected
+  // Certain shard names represent a combination of two effects. When one of these shards is selected,
   // we should display both effects with their ML-scaled values in the accordion header.
   const COMBINED_SHARDS: Record<string, [string, string]> = {
     "Champion's": ['Speed (Striding)', 'Combat Mastery'],
@@ -881,15 +626,25 @@ const CannithCrafting = () => {
   }
 
   const isCombinedShard = (name: string | null): name is keyof typeof COMBINED_SHARDS => {
-    if (!name) return false
+    if (!name) {
+      return false
+    }
+
     return Object.prototype.hasOwnProperty.call(COMBINED_SHARDS, name)
   }
 
   // Detect if a selected dataset entry represents a combined shard based on its own metadata
   const isCombinedEntry = (name: string | null): boolean => {
-    if (!name) return false
+    if (!name) {
+      return false
+    }
+
     const entry = enhancementByName.get(name)
-    if (!entry || !Array.isArray(entry.enchantments)) return false
+
+    if (!entry || !Array.isArray(entry.enchantments)) {
+      return false
+    }
+
     // A combined shard will list multiple component effects under `enchantments`
     return entry.enchantments.length >= 2
   }
@@ -898,30 +653,45 @@ const CannithCrafting = () => {
   // For each component name, we pull the ML-scaled stat from the single-effect dataset entry via getEnhancementDisplay.
   const getCombinedDisplayFromEntry = (name: string, effectiveML: number): string => {
     const entry = enhancementByName.get(name)
-    if (!entry || !Array.isArray(entry.enchantments) || entry.enchantments.length === 0) return name
+
+    if (!entry || !Array.isArray(entry.enchantments) || entry.enchantments.length === 0) {
+      return name
+    }
+
     // Take the first two components if more are present
-    const componentNames = entry.enchantments
-      .map((meta) => meta?.name)
+    const componentNames: string[] = entry.enchantments
+      .map((meta: Phase1EnchantmentMeta) => meta.name)
       .filter((n): n is string => typeof n === 'string' && !!n)
       .slice(0, 2)
 
     const parts: string[] = []
+
     for (const compName of componentNames) {
-      const disp = getEnhancementDisplay(compName, effectiveML)
-      if (disp) parts.push(disp)
+      const enhancementDisplay: string | null = getEnhancementDisplay(compName, effectiveML)
+      if (enhancementDisplay) {
+        parts.push(enhancementDisplay)
+      }
     }
+
     return parts.length ? parts.join('; ') : name
   }
 
   const getCombinedDisplay = (name: string, effectiveML: number): string => {
     const pair = COMBINED_SHARDS[name]
-    if (!pair) return name
+
     const [a, b] = pair
-    const aDisp = getEnhancementDisplay(a, effectiveML)
-    const bDisp = getEnhancementDisplay(b, effectiveML)
+    const aDisplay = getEnhancementDisplay(a, effectiveML)
+    const bDisplay = getEnhancementDisplay(b, effectiveML)
     const parts: string[] = []
-    if (aDisp) parts.push(aDisp)
-    if (bDisp) parts.push(bDisp)
+
+    if (aDisplay) {
+      parts.push(aDisplay)
+    }
+
+    if (bDisplay) {
+      parts.push(bDisplay)
+    }
+
     // Fallback to shard name if neither part resolved
     return parts.length ? parts.join('; ') : name
   }
@@ -960,19 +730,16 @@ const CannithCrafting = () => {
 
     const rows: { name: string; qty: number }[] = []
 
-    if (essenceQty != null && essenceQty > 0) rows.push({ name: toSingularName('Cannith Essences'), qty: essenceQty })
+    if (essenceQty != null && essenceQty > 0) {
+      rows.push({ name: toSingularName('Cannith Essences'), qty: essenceQty })
+    }
+
     if (purifiedQty != null && purifiedQty > 0) {
       rows.push({ name: toSingularName('Purified Eberron Dragonshard Fragments'), qty: purifiedQty })
     }
 
     collectibles.forEach((collectible) => {
-      if (
-        collectible &&
-        typeof collectible.qty === 'number' &&
-        collectible.qty > 0 &&
-        typeof collectible.name === 'string' &&
-        collectible.name
-      )
+      if (collectible.qty > 0 && collectible.name)
         rows.push({ name: toSingularName(collectible.name), qty: collectible.qty })
     })
 
@@ -985,37 +752,26 @@ const CannithCrafting = () => {
 
   // Renders a full-width stacked Accordion of requirement cards (default closed)
   function renderMaterialsAccordion(slotKey: string, item: ItemState): ReactElement | null {
-    const effectiveML = items[slotKey]?.minLevelOverride ?? masterMinLevel
+    const effectiveML: number = items[slotKey].minLevelOverride ?? masterMinLevel
 
     const selections: { key: string; label: string; name: string | null }[] = [
       {
         key: 'prefix',
         label: 'Prefix',
         name:
-          item.prefix &&
-          affixOptionsBySlot[slotKey]?.prefix.includes(item.prefix) &&
-          item.prefix
-            ? item.prefix
-            : null
+          item.prefix && affixOptionsBySlot[slotKey].prefix.includes(item.prefix) && item.prefix ? item.prefix : null
       },
       {
         key: 'suffix',
         label: 'Suffix',
         name:
-          item.suffix &&
-          affixOptionsBySlot[slotKey]?.suffix.includes(item.suffix) &&
-          item.suffix
-            ? item.suffix
-            : null
+          item.suffix && affixOptionsBySlot[slotKey].suffix.includes(item.suffix) && item.suffix ? item.suffix : null
       },
       {
         key: 'extra',
         label: 'Extra',
         name:
-          item.hasCannithMark &&
-          item.extra &&
-          affixOptionsBySlot[slotKey]?.extra.includes(item.extra) &&
-          item.extra
+          item.hasCannithMark && item.extra && affixOptionsBySlot[slotKey].extra.includes(item.extra) && item.extra
             ? item.extra
             : null
       }
@@ -1028,6 +784,16 @@ const CannithCrafting = () => {
         const combinedByEntry = isCombinedEntry(selection.name)
         const combinedByShortName = isCombinedShard(selection.name)
         const combined = combinedByEntry || combinedByShortName
+
+        let display: string | null
+        if (combinedByEntry) {
+          display = getCombinedDisplayFromEntry(selection.name ?? '', effectiveML)
+        } else if (combinedByShortName) {
+          display = getCombinedDisplay(selection.name ?? '', effectiveML)
+        } else {
+          display = getEnhancementDisplay(selection.name, effectiveML)
+        }
+
         return {
           ...selection,
           isCombined: combined,
@@ -1035,11 +801,7 @@ const CannithCrafting = () => {
           boundData: buildMaterials(selection.name, true),
           unboundData: buildMaterials(selection.name, false),
           valueOnly: getEnhancementValueOnly(selection.name, effectiveML),
-          display: combinedByEntry
-            ? getCombinedDisplayFromEntry(selection.name!, effectiveML)
-            : combinedByShortName
-              ? getCombinedDisplay(selection.name!, effectiveML)
-              : getEnhancementDisplay(selection.name, effectiveML)
+          display: display
         }
       })
       // Apply ML gating: hide Insightful effects when effective ML < 10
@@ -1072,12 +834,13 @@ const CannithCrafting = () => {
       const unboundMap = new Map<string, number>((unboundData?.rows ?? []).map((r) => [r.name, r.qty]))
 
       // Build unified rows and sort so any N/A entries (missing Bound or Unbound) are pushed to the bottom.
-      // Within each group (complete vs N/A), keep alphabetical order by ingredient name.
+      // Within each group (complete vs. N/A), keep alphabetical order by ingredient name.
       const unifiedRows = Array.from(new Set<string>([...boundMap.keys(), ...unboundMap.keys()]))
         .map((name) => {
           const bQty = boundMap.get(name)
           const uQty = unboundMap.get(name)
-          const hasNA = !(typeof bQty === 'number') || !(typeof uQty === 'number')
+          const hasNA = typeof bQty !== 'number' || typeof uQty !== 'number'
+
           return { name, bQty, uQty, hasNA }
         })
         .sort((left, right) => {
@@ -1106,18 +869,18 @@ const CannithCrafting = () => {
                   {name}
                 </td>
                 <td className='text-end'>
-                  {typeof bQty === 'number'
-                    ? getOwnedIngredients({ name } as unknown as Ingredient, bQty, troveData)
-                    : (
-                        <span className='text-muted'>N/A</span>
-                      )}
+                  {typeof bQty === 'number' ? (
+                    getOwnedIngredients({ name } as unknown as Ingredient, bQty, troveData)
+                  ) : (
+                    <span className='text-muted'>N/A</span>
+                  )}
                 </td>
                 <td className='text-end'>
-                  {typeof uQty === 'number'
-                    ? getOwnedIngredients({ name } as unknown as Ingredient, uQty, troveData)
-                    : (
-                        <span className='text-muted'>N/A</span>
-                      )}
+                  {typeof uQty === 'number' ? (
+                    getOwnedIngredients({ name } as unknown as Ingredient, uQty, troveData)
+                  ) : (
+                    <span className='text-muted'>N/A</span>
+                  )}
                 </td>
               </tr>
             ))}
@@ -1137,9 +900,10 @@ const CannithCrafting = () => {
                   {(() => {
                     const boundLv = accordionEntry.boundData?.shardLevel
                     const unboundLv = accordionEntry.unboundData?.shardLevel
-                    if (boundLv != null && unboundLv != null) return `Shard Level (Bound ${boundLv} / Unbound ${unboundLv})`
-                    if (boundLv != null) return `Shard Level (Bound ${boundLv})`
-                    if (unboundLv != null) return `Shard Level (Unbound ${unboundLv})`
+                    if (boundLv != null && unboundLv != null)
+                      return `Shard Level (Bound ${String(boundLv)} / Unbound ${String(unboundLv)})`
+                    if (boundLv != null) return `Shard Level (Bound ${String(boundLv)})`
+                    if (unboundLv != null) return `Shard Level (Unbound ${String(unboundLv)})`
                     return ''
                   })()}
                 </small>
@@ -1154,17 +918,22 @@ const CannithCrafting = () => {
     )
   }
 
-  // Extracted to reduce nesting/cognitive complexity inside render
-  function renderMinLevelOverride(slotKey: string, item: ItemState): ReactElement {
+  // Extracted to reduce nesting/cognitive complexity
+  const renderMinLevelOverride = (slotKey: string, item: ItemState): ReactElement => {
     const augmentFloor = computeAugmentMinLevelFloor(item)
     const effectiveML = item.minLevelOverride ?? masterMinLevel
 
     // Collect ML increase messages for selected affixes
     const incPairs: { name: string; inc: number }[] = []
     const pushIncreaseIfAny = (effectName: string | null) => {
-      if (!effectName) return
-      const inc = getEnhancementMinIncrease(effectName)
-      if (inc > 0) incPairs.push({ name: effectName, inc })
+      if (!effectName) {
+        return
+      }
+
+      const inc: number = getEnhancementMinIncrease(effectName)
+      if (inc > 0) {
+        incPairs.push({ name: effectName, inc })
+      }
     }
 
     pushIncreaseIfAny(item.prefix)
@@ -1180,6 +949,7 @@ const CannithCrafting = () => {
           value={item.minLevelOverride ?? 0}
           onChange={(event) => {
             const valueNum = Number(event.target.value)
+
             updateItem(slotKey, (currentItem) => ({
               ...currentItem,
               minLevelOverride: valueNum === 0 ? null : valueNum
@@ -1187,20 +957,23 @@ const CannithCrafting = () => {
           }}
         >
           <option value={0}>{`Inherit (ML ${String(masterMinLevel)})`}</option>
-          {ML_OPTIONS.map((lvl) => (
-            <option key={lvl} value={lvl} disabled={lvl < augmentFloor}>{`ML ${String(lvl)}`}</option>
+          {ML_OPTIONS.map((lvl: number) => (
+            <option key={lvl} value={lvl} disabled={lvl < augmentFloor}>
+              {`ML ${String(lvl)}`}
+            </option>
           ))}
         </Form.Select>
 
         {incPairs.length > 0 && (
           <div className='invalid-feedback d-block mt-1'>
-            {incPairs.map((pair) => (
+            {incPairs.map((pair: { name: string; inc: number }) => (
               <div
                 key={pair.name}
               >{`Adding the ${pair.name} effect will raise the minimum level of this item by ${String(pair.inc)}.`}</div>
             ))}
           </div>
         )}
+
         {effectiveML < augmentFloor && (
           <div className='invalid-feedback d-block mt-1'>
             {`Augments on this item require minimum level ${String(augmentFloor)} or higher.`}
@@ -1262,8 +1035,9 @@ const CannithCrafting = () => {
 
               <h6 className='mb-2'>Item Slots</h6>
               <ListGroup>
-                {ALL_SLOT_KEYS.map((slotDef) => {
+                {ALL_SLOT_KEYS.map((slotDef: { key: string; label: string }) => {
                   const active = activeKeys.includes(slotDef.key)
+
                   return (
                     <ListGroup.Item
                       key={slotDef.key}
@@ -1294,10 +1068,7 @@ const CannithCrafting = () => {
                 {ALL_SLOT_KEYS.map((slotDef) => slotDef.key)
                   .filter((key) => activeKeys.includes(key))
                   .map((slotKey) => {
-                    const item = items[slotKey]
-                    if (!item) {
-                      return null
-                    }
+                    const item: ItemState = items[slotKey]
 
                     return (
                       <Card key={slotKey} className='shadow-sm'>
@@ -1317,15 +1088,17 @@ const CannithCrafting = () => {
                                 {isCollapsed(slotKey) ? '▸' : '▾'}
                               </span>
                             </Button>
+
                             <strong>{slotLabel(slotKey)}</strong>
                           </div>
+
                           <div className='d-flex align-items-center gap-2'>
-                            <Badge
-                              bg='secondary'
-                              title='Effective Minimum Level'
-                            >{`ML ${String(items[slotKey]?.minLevelOverride ?? masterMinLevel)}`}</Badge>
+                            <Badge bg='secondary' title='Effective Minimum Level'>
+                              {`ML ${String(items[slotKey].minLevelOverride ?? masterMinLevel)}`}
+                            </Badge>
                           </div>
                         </Card.Header>
+
                         <Collapse in={!isCollapsed(slotKey)}>
                           <div id={`cc-body-${slotKey}`}>
                             <Card.Body>
@@ -1469,6 +1242,7 @@ const CannithCrafting = () => {
                                               )
                                             })()}
                                           </div>
+
                                           <div className='d-flex'>
                                             <Button
                                               variant='outline-danger'
@@ -1497,6 +1271,7 @@ const CannithCrafting = () => {
           </Row>
         </Card.Body>
       </Card>
+
       {/* Permalink Modal for sharing current setup */}
       <PermalinkModal
         show={showPermalink}
@@ -1507,19 +1282,27 @@ const CannithCrafting = () => {
           const payload = { items, activeKeys, masterMinLevel, masterBindingBound, collapsedKeys }
           const json = JSON.stringify(payload)
           const encoded = base64UrlEncode(json)
-          if (typeof window === 'undefined') return `/cannith-crafting?cc=${encoded}`
+
+          if (typeof window === 'undefined') {
+            return `/cannith-crafting?cc=${encoded}`
+          }
+
           const { origin, pathname, hash } = window.location
           // Prefer react-router location to build a stable URL
           const currentPath = location.pathname || '/cannith-crafting'
+
           // If using HashRouter (hash starts with "#/"), embed the cc param inside the hash
-          if (hash && hash.startsWith('#/')) {
+          if (hash.startsWith('#/')) {
             const params = new URLSearchParams()
             params.set('cc', encoded)
+
             return `${origin}${pathname}#${currentPath}?${params.toString()}`
           }
+
           // BrowserRouter (query string)
           const url = new URL(origin + currentPath)
           url.searchParams.set('cc', encoded)
+
           return url.toString()
         }}
       />

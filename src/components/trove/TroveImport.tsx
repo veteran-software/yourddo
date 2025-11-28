@@ -6,12 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks.ts'
 import { setTroveData } from '../../redux/slices/appSlice.ts'
 import type { AppDispatch } from '../../redux/store.ts'
 import { formatNumber } from '../../utils/objectUtils.ts'
-import {
-  buildItemRollupFromCsvFile,
-  getStoredTroveData,
-  storeTroveData
-} from '../../utils/troveUtils.ts'
-import type { ItemRollup } from './types.ts'
+import { buildItemRollupFromCsvFile, getStoredTroveData, storeTroveData } from '../../utils/troveUtils.ts'
 
 const TroveImport = () => {
   const dispatch: AppDispatch = useAppDispatch()
@@ -20,16 +15,14 @@ const TroveImport = () => {
 
   const troveInputRef = useRef<HTMLInputElement>(null)
 
-  const [rollup, setRollup] = useState<ItemRollup>({})
   const [warnings, setWarnings] = useState<string[]>([])
   const [errors, setErrors] = useState<string[]>([])
 
+  // Only persist Trove data when the user uploads a file. Avoid background overwrites.
   useEffect(() => {
-    const storedData = getStoredTroveData()
-    if (!storedData && Object.keys(rollup).length > 0) {
-      storeTroveData(rollup)
-    }
-  }, [dispatch, rollup])
+    // Keep this effect for potential future side effects; do not persist here to avoid accidental overwrites.
+    getStoredTroveData()
+  }, [])
 
   useEffect(() => {
     console.log('Trove Import Warnings:', warnings.length ? warnings : 'None')
@@ -46,9 +39,10 @@ const TroveImport = () => {
 
     try {
       const { data, warnings, errors } = await buildItemRollupFromCsvFile(file)
+      // Persist uploaded Trove data immediately; this is the only place we write troveData to localStorage
+      storeTroveData(data)
       dispatch(setTroveData(data))
 
-      setRollup(data)
       setWarnings(warnings)
       setErrors(errors.map((e) => `${e.message} (row ${String(e.row)})`))
     } catch (err) {

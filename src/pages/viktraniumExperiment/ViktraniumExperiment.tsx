@@ -121,6 +121,7 @@ const ViktraniumExperiment = () => {
       // Basic Color Augments
       if (words.length === 1) {
         const allowed = allowedBySlot[color]
+
         if (allowed && allowed.length > 0) {
           acc[slot] = [...augmentMaster]
             .filter((ing: AugmentItem) => allowed.includes((ing.augmentType ?? '') as string))
@@ -128,7 +129,10 @@ const ViktraniumExperiment = () => {
               // Sort by augmentType (color) then by name for stable grouping
               const at: string = (a.augmentType ?? '') as string
               const bt: string = (b.augmentType ?? '') as string
-              if (at !== bt) return at.localeCompare(bt)
+              if (at !== bt) {
+                return at.localeCompare(bt)
+              }
+
               return a.name.localeCompare(b.name)
             })
           return acc
@@ -138,6 +142,7 @@ const ViktraniumExperiment = () => {
         acc[slot] = [...augmentMaster]
           .filter((ing: AugmentItem) => ing.augmentType === titleCase(words[0]))
           .sort((a: AugmentItem, b: AugmentItem) => a.name.localeCompare(b.name))
+
         return acc
       }
 
@@ -148,6 +153,7 @@ const ViktraniumExperiment = () => {
             ing.augmentType === `${titleCase(words[0])}: ${titleCase(words[1])} (${titleCase(words[2])})`
         )
         .sort((a: AugmentItem, b: AugmentItem) => a.name.localeCompare(b.name))
+
       return acc
     }, {})
   }, [availableAugmentSlots])

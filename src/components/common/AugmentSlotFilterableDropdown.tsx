@@ -43,12 +43,32 @@ const buildHeader = (slot: string, clean: string, isColorSlot: boolean): string 
 const groupByAugmentType = (list: Ingredient[] | undefined, fallbackHeader: string): Record<string, Ingredient[]> => {
   if (!list || list.length === 0) return {}
 
-  return list.reduce<Record<string, Ingredient[]>>((m, ing: Ingredient) => {
+  return list.reduce<Record<string, Ingredient[]>>((material, ing: Ingredient) => {
     const key: string = ing.augmentType ?? fallbackHeader
-    if (!m[key]) m[key] = []
-    m[key].push(ing)
-    return m
+    if (!material[key]) {
+      material[key] = []
+    }
+
+    material[key].push(ing)
+
+    return material
   }, {})
+}
+
+const orderAugments = (keys: string[], groups: Record<string, Ingredient[]>) => {
+  const withoutColorless = keys.filter((k) => k.toLowerCase() !== 'colorless')
+  const result: Record<string, Ingredient[]> = {}
+
+  withoutColorless.forEach((k) => {
+    result[k] = groups[k]
+  })
+
+  const colorlessKey = keys.find((k) => k.toLowerCase() === 'colorless')
+  if (colorlessKey) {
+    result[colorlessKey] = groups[colorlessKey]
+  }
+
+  return result
 }
 
 const orderGroups = (
@@ -68,46 +88,39 @@ const orderGroups = (
 
   const keys = Object.keys(groups)
 
-  // Non-color slots: keep existing order but move Colorless (if any) to the end
+  // Non-color slots: keep the existing order but move Colorless (if any) to the end
   if (!isColorSlot) {
-    const withoutColorless = keys.filter((k) => k.toLowerCase() !== 'colorless')
-    const result: Record<string, Ingredient[]> = {}
-    withoutColorless.forEach((k) => {
-      result[k] = groups[k]
-    })
-    const colorlessKey = keys.find((k) => k.toLowerCase() === 'colorless')
-    if (colorlessKey) result[colorlessKey] = groups[colorlessKey]
-    return result
+    return orderAugments(keys, groups)
   }
 
   const desired = desiredOrderBySlot[slotPrimaryLower]
 
   // Unknown color (e.g., Sun/Moon): preserve order, only ensure Colorless at the end
-  if (!desired || desired.length === 0) {
-    const withoutColorless = keys.filter((k) => k.toLowerCase() !== 'colorless')
-    const result: Record<string, Ingredient[]> = {}
-    withoutColorless.forEach((k) => {
-      result[k] = groups[k]
-    })
-    const colorlessKey = keys.find((k) => k.toLowerCase() === 'colorless')
-    if (colorlessKey) result[colorlessKey] = groups[colorlessKey]
-    return result
+  if (desired.length === 0) {
+    return orderAugments(keys, groups)
   }
 
   const result: Record<string, Ingredient[]> = {}
   desired.forEach((k) => {
     // Guard against keys that are in the desired order but not present in the actual groups
-    if (groups[k]?.length) result[k] = groups[k]
+    if (groups[k].length) {
+      result[k] = groups[k]
+    }
   })
+
   // Include any unexpected keys (except Colorless) afterward
   keys
     .filter((k) => !desired.includes(k) && k.toLowerCase() !== 'colorless')
     .forEach((k) => {
       result[k] = groups[k]
     })
+
   // Colorless at the end if present
   const colorlessKey = keys.find((k) => k.toLowerCase() === 'colorless')
-  if (colorlessKey) result[colorlessKey] = groups[colorlessKey]
+  if (colorlessKey) {
+    result[colorlessKey] = groups[colorlessKey]
+  }
+
   return result
 }
 
@@ -141,6 +154,7 @@ const AugmentSlotFilterableDropdown = (props: Props) => {
             const primary: string = titleCase(parts[0] || '')
             const isColorSlot: boolean = isColorSlotName(clean)
             const header: string = buildHeader(slot, clean, isColorSlot)
+
             // Group color slots by augment color to organize alphabetically by color
             const isLamordiaSlot = clean.toLowerCase().startsWith('lamordia')
 
@@ -149,14 +163,20 @@ const AugmentSlotFilterableDropdown = (props: Props) => {
               if (!list || list.length === 0) return { Heroic: [], Legendary: [] }
               const heroic: Ingredient[] = []
               const legendary: Ingredient[] = []
+
               list.forEach((ing) => {
-                const lvl = ing.minimumLevel ?? 0
-                if (lvl >= 30) legendary.push(ing)
-                else heroic.push(ing)
+                const lvl: number = ing.minimumLevel ?? 0
+                if (lvl >= 30) {
+                  legendary.push(ing)
+                } else {
+                  heroic.push(ing)
+                }
               })
-              // Sort within each tier for consistent display
+
+              // Sort within each tier for a consistent display
               heroic.sort((a, b) => a.name.localeCompare(b.name))
               legendary.sort((a, b) => a.name.localeCompare(b.name))
+
               return { Heroic: heroic, Legendary: legendary }
             }
 
@@ -169,9 +189,11 @@ const AugmentSlotFilterableDropdown = (props: Props) => {
               if (isColorSlot) {
                 return groupByAugmentType(source[slotKey], headerLabel)
               }
+
               if (isLamordiaSlot) {
                 return groupLamordiaByTier(source[slotKey])
               }
+
               return { [headerLabel]: source[slotKey] }
             }
 
@@ -181,6 +203,7 @@ const AugmentSlotFilterableDropdown = (props: Props) => {
             // Order sections so that primary slot color is first, components next, and Colorless last
             const maybeOrder = (groups: Record<string, Ingredient[]>) =>
               isColorSlot ? orderGroups(groups, primary.toLowerCase(), isColorSlot) : groups
+
             const orderedItemsMap = maybeOrder(itemsMap)
             const orderedFilteredOptions = maybeOrder(filteredOptions)
 
