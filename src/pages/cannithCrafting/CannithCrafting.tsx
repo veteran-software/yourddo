@@ -17,13 +17,25 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown
+  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
+import type {
+  ShoppingListTotals
+} from '../../components/common/ShoppingListDrawer.tsx'
+import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { findAugmentsForSlot } from '../../utils/augmentUtils.ts'
 import { getOwnedIngredients, toSingularName } from '../../utils/jsxUtils.tsx'
+import {
+  buildPermalinkUrl,
+  encodeCannithPermalink,
+  readCcFromUrl,
+  removeCcFromUrl,
+  tryDecodeCannithPermalink
+} from './permalink.ts'
 import {
   type AffixKind,
   ALL_SLOT_KEYS,
@@ -60,6 +72,9 @@ const CannithCrafting = () => {
   const [collapsedKeys, setCollapsedKeys] = useState<string[]>([])
   // Permalink modal visibility
   const [showPermalink, setShowPermalink] = useState<boolean>(false)
+  // Shopping List drawer visibility and plan (Bound/Unbound)
+  const [showShoppingList, setShowShoppingList] = useState<boolean>(false)
+  const [shoppingListPlanBound, setShoppingListPlanBound] = useState<boolean>(true)
 
   // ----- Augment color ML floor rules -----
   const AUGMENT_COLOR_FLOOR: Record<string, number> = useMemo(
@@ -91,106 +106,7 @@ const CannithCrafting = () => {
     [AUGMENT_COLOR_FLOOR]
   )
 
-  // URL-safe base64 helpers
-  const base64UrlEncode = (input: string): string => {
-    const utf8: string = encodeURIComponent(input).replace(/%([0-9A-F]{2})/g, (_, p1: string | number) =>
-      String.fromCharCode(parseInt(String(p1), 16))
-    )
-
-    const b64: string = typeof btoa === 'function' ? btoa(utf8) : Buffer.from(utf8, 'binary').toString('base64')
-
-    return b64
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/={1,2}$/, '')
-  }
-
-  const base64UrlDecode = (input: string): string => {
-    let pad: '' | '==' | '=' | '==='
-    if (input.length % 4 === 2) {
-      pad = '=='
-    } else if (input.length % 4 === 3) {
-      pad = '='
-    } else if (input.length % 4 === 1) {
-      pad = '==='
-    } else {
-      pad = ''
-    }
-
-    const b64: string = input.replace(/-/g, '+').replace(/_/g, '/') + pad
-    const bin: string = typeof atob === 'function' ? atob(b64) : Buffer.from(b64, 'base64').toString('binary')
-    const percentEncoded = Array.from(bin)
-      .map((c) => '%' + c.charCodeAt(0).toString(16).padStart(2, '0'))
-      .join('')
-
-    return decodeURIComponent(percentEncoded)
-  }
-
-  // Permalink helpers: read cc from the router location first (works in both BrowserRouter and HashRouter),
-  // fall back to manual hash parsing only if needed.
-  const readCcFromUrl = useCallback((): { cc: string | null; source: 'search' | 'hash' | null } => {
-    try {
-      // Prefer react-router location.search first (supports HashRouter as well)
-      const routerParams = new URLSearchParams(location.search)
-      const ccFromRouter = routerParams.get('cc')
-
-      if (ccFromRouter) {
-        return { cc: ccFromRouter, source: 'search' }
-      }
-
-      // HashRouter-style: the cc lives inside the hash after the route
-      const hash = window.location.hash // e.g., "#/cannith-crafting?cc=..."
-      if (hash.startsWith('#')) {
-        const hashBody = hash.slice(1) // remove '#'
-        const qm = hashBody.indexOf('?')
-
-        if (qm >= 0) {
-          const query = hashBody.slice(qm + 1)
-          const hashParams = new URLSearchParams(query)
-          const ccFromHash = hashParams.get('cc')
-          if (ccFromHash) return { cc: ccFromHash, source: 'hash' }
-        }
-      }
-    } catch {
-      // ignore
-    }
-
-    return { cc: null, source: null }
-  }, [location.search])
-
-  const removeCcFromUrl = useCallback(
-    async (source: 'search' | 'hash' | null) => {
-      if (!source) {
-        return
-      }
-
-      if (source === 'search') {
-        // Use react-router navigate to remove the query in a router-friendly way
-        await navigate({ pathname: location.pathname, search: '' }, { replace: true })
-
-        return
-      }
-
-      if (typeof window === 'undefined' || typeof window.history.replaceState !== 'function') {
-        return
-      }
-
-      const { origin, pathname, hash, search } = window.location
-
-      // HashRouter cleanup: rebuild hash without cc
-      const hashBody = (hash || '').replace(/^#/, '')
-      const [hashPath, hashQuery] = hashBody.split('?')
-
-      const params = new URLSearchParams(hashQuery)
-      params.delete('cc')
-
-      const newHash = params.toString() ? `#${hashPath}?${params.toString()}` : `#${hashPath}`
-      const newUrl = `${origin}${pathname}${search}${newHash}`
-
-      window.history.replaceState({}, '', newUrl)
-    },
-    [location.pathname, navigate]
-  )
+  // ----- Permalink encoding/decoding moved to ./permalink.ts -----
 
   // Build a lookup map for dataset entries by name for quick access when rendering scaled values
   const enhancementByName = useMemo(() => {
@@ -245,9 +161,25 @@ const CannithCrafting = () => {
   useEffect(() => {
     try {
       if (didLoadRef.current) return
-      const { cc, source } = readCcFromUrl()
-      const loadedText = cc ? base64UrlDecode(cc) : sessionStorage.getItem(STORAGE_KEY)
+      const { cc, source } = readCcFromUrl(location)
+      if (cc) {
+        // Try compact v2 first
+        const v2 = tryDecodeCannithPermalink(cc)
 
+        if (v2.ok) {
+          const data = v2.data
+          setItems(sanitizeAugmentsOnItems(data))
+          setActiveKeys(data.activeKeys)
+          setMasterMinLevel(typeof data.masterMinLevel === 'number' ? data.masterMinLevel : 1)
+          setCollapsedKeys(Array.isArray(data.collapsedKeys) ? data.collapsedKeys : [])
+          Promise.resolve(removeCcFromUrl(navigate, location, source)).catch(console.error)
+          didLoadRef.current = true
+
+          return
+        }
+      }
+
+      const loadedText = sessionStorage.getItem(STORAGE_KEY)
       if (loadedText) {
         const parsed = JSON.parse(loadedText) as {
           items: Record<string, ItemState>
@@ -256,24 +188,17 @@ const CannithCrafting = () => {
           masterBindingBound?: boolean
           collapsedKeys?: string[]
         }
-
         setItems(sanitizeAugmentsOnItems(parsed))
         setActiveKeys(parsed.activeKeys)
         setMasterMinLevel(typeof parsed.masterMinLevel === 'number' ? parsed.masterMinLevel : 1)
         setMasterBindingBound(typeof parsed.masterBindingBound === 'boolean' ? parsed.masterBindingBound : true)
         setCollapsedKeys(Array.isArray(parsed.collapsedKeys) ? parsed.collapsedKeys : [])
-
-        // Clean the URL if we consumed a permalink (from search or hash)
-        if (cc) {
-          removeCcFromUrl(source).catch(console.error)
-        }
-
         didLoadRef.current = true
       }
     } catch (err) {
       console.warn('CannithCrafting: failed to load session state – resetting to defaults.', err)
     }
-  }, [location.search, navigate, readCcFromUrl, removeCcFromUrl])
+  }, [location, navigate])
 
   // Persist on change
   useEffect(() => {
@@ -697,7 +622,7 @@ const CannithCrafting = () => {
   }
 
   // Build rows data (icon | name | qty) and shard level for a given enhancement name
-  const buildMaterials = (
+  const buildMaterials = useCallback((
     name: string | null,
     bound: boolean | null
   ): {
@@ -748,7 +673,7 @@ const CannithCrafting = () => {
     }
 
     return { shardLevel, rows }
-  }
+  }, [enhancementByName])
 
   // Renders a full-width stacked Accordion of requirement cards (default closed)
   function renderMaterialsAccordion(slotKey: string, item: ItemState): ReactElement | null {
@@ -918,6 +843,87 @@ const CannithCrafting = () => {
     )
   }
 
+  // ----- Shopping List aggregation (reused by the ShoppingListDrawer component) -----
+  const aggregateShoppingList = useMemo(() => {
+    const effectiveMLBySlot = new Map<string, number>()
+    Object.keys(items).forEach((k) => {
+      effectiveMLBySlot.set(k, items[k].minLevelOverride ?? masterMinLevel)
+    })
+
+    const compute = (bound: boolean): ShoppingListTotals => {
+      const totalsMap = new Map<string, number>()
+      let essenceTotal = 0
+      let purifiedTotal = 0
+      let markCount = 0
+
+      // Maintain canonical order and include only active keys
+      const orderedActive = ALL_SLOT_KEYS.map((s) => s.key).filter((k) => activeKeys.includes(k))
+      for (const slotKey of orderedActive) {
+        const item = items[slotKey]
+        if (!item) {
+          continue
+        }
+
+        const effectiveML = effectiveMLBySlot.get(slotKey) ?? masterMinLevel
+
+        // Count Mark of House Cannith selections (each selected item requires one Mark)
+        if (item.hasCannithMark) {
+          markCount += 1
+        }
+
+        // Helper to include a selection if allowed and has materials for chosen binding
+        const include = (name: string | null) => {
+          if (!name) {
+            return
+          }
+
+          if (!isEnhancementAllowedAtML(name, effectiveML)) {
+            return
+          }
+
+          const data = buildMaterials(name, bound)
+          if (!data) {
+            return
+          }
+
+          // Sum essence/purified specially
+          essenceTotal += data.rows.find((r) => r.name === toSingularName('Cannith Essences'))?.qty ?? 0
+          purifiedTotal +=
+            data.rows.find((r) => r.name === toSingularName('Purified Eberron Dragonshard Fragments'))?.qty ?? 0
+
+          for (const r of data.rows) {
+            const key = r.name
+            const prev = totalsMap.get(key) ?? 0
+
+            totalsMap.set(key, prev + r.qty)
+          }
+        }
+
+        include(item.prefix)
+        include(item.suffix)
+        include(item.hasCannithMark ? item.extra : null)
+      }
+
+      // Include Mark of House Cannith itself as a required material when selected
+      if (markCount > 0) {
+        const key = 'Mark of House Cannith'
+        const prev = totalsMap.get(key) ?? 0
+        totalsMap.set(key, prev + markCount)
+      }
+
+      // Build rows, sort alphabetically A→Z
+      const rows = Array.from(totalsMap.entries())
+        .map(([name, qty]) => ({ name, qty }))
+        .sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }))
+
+      return { essence: essenceTotal, purified: purifiedTotal, rows }
+    }
+
+    return {
+      compute
+    }
+  }, [items, masterMinLevel, activeKeys, isEnhancementAllowedAtML, buildMaterials])
+
   // Extracted to reduce nesting/cognitive complexity
   const renderMinLevelOverride = (slotKey: string, item: ItemState): ReactElement => {
     const augmentFloor = computeAugmentMinLevelFloor(item)
@@ -986,9 +992,9 @@ const CannithCrafting = () => {
   return (
     <Container className='px-0'>
       <Card>
-        <Card.Header>
-          <div className='d-flex align-items-center justify-content-between'>
-            <div className='flex-grow-1 text-center'>
+        <Card.Header className='position-relative py-3'>
+          <div className='d-flex align-items-center'>
+            <div className='position-absolute top-50 start-50 translate-middle w-100 text-center'>
               <h4 className='mb-0'>Cannith Crafting</h4>
               <small>
                 <a
@@ -1001,7 +1007,15 @@ const CannithCrafting = () => {
                 </a>
               </small>
             </div>
-            <div className='ms-auto ms-2'>
+            <div className='ms-auto ms-2 d-flex align-items-center gap-2'>
+              <Button
+                variant='outline-light'
+                size='sm'
+                onClick={() => { setShowShoppingList(true); }}
+                title='View aggregated required materials'
+              >
+                Shopping List
+              </Button>
               <Button
                 variant='outline-light'
                 size='sm'
@@ -1278,33 +1292,20 @@ const CannithCrafting = () => {
         onHide={() => {
           setShowPermalink(false)
         }}
-        buildUrl={() => {
-          const payload = { items, activeKeys, masterMinLevel, masterBindingBound, collapsedKeys }
-          const json = JSON.stringify(payload)
-          const encoded = base64UrlEncode(json)
+        buildUrl={() => buildPermalinkUrl(
+          encodeCannithPermalink({ items, activeKeys, collapsedKeys, masterMinLevel }),
+          location
+        )}
+      />
 
-          if (typeof window === 'undefined') {
-            return `/cannith-crafting?cc=${encoded}`
-          }
-
-          const { origin, pathname, hash } = window.location
-          // Prefer react-router location to build a stable URL
-          const currentPath = location.pathname || '/cannith-crafting'
-
-          // If using HashRouter (hash starts with "#/"), embed the cc param inside the hash
-          if (hash.startsWith('#/')) {
-            const params = new URLSearchParams()
-            params.set('cc', encoded)
-
-            return `${origin}${pathname}#${currentPath}?${params.toString()}`
-          }
-
-          // BrowserRouter (query string)
-          const url = new URL(origin + currentPath)
-          url.searchParams.set('cc', encoded)
-
-          return url.toString()
-        }}
+      {/* Shopping List Drawer (reusable component) */}
+      <ShoppingListDrawer
+        show={showShoppingList}
+        onHide={() => { setShowShoppingList(false); }}
+        planBound={shoppingListPlanBound}
+        onPlanChange={setShoppingListPlanBound}
+        totals={aggregateShoppingList.compute(shoppingListPlanBound)}
+        troveData={troveData}
       />
     </Container>
   )
