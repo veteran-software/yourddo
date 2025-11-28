@@ -172,7 +172,6 @@ export type DamageType =
   | 'Cold Iron'
   | 'Crystal'
   | 'Epic'
-  | 'Force'
   | 'Mithral'
   | 'Silver'
   | ElementalDamage

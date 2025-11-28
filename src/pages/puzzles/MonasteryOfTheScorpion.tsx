@@ -173,7 +173,10 @@ const MonasteryOfTheScorpion = () => {
           </Row>
         )}
 
-        <Row style={{ gridTemplateColumns: `repeat(${COLS},64px)` }} className='g-0 d-grid justify-content-center mb-3'>
+        <Row
+          style={{ gridTemplateColumns: `repeat(${String(COLS)},64px)` }}
+          className='g-0 d-grid justify-content-center mb-3'
+        >
           {Array.from({ length: ROWS }).flatMap((_, row) =>
             Array.from({ length: COLS }).map((_, col) => {
               const isHole = !mask[row][col]

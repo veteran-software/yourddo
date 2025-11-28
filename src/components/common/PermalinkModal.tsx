@@ -17,22 +17,20 @@ const PermalinkModal = (props: Props) => {
   }, [show])
 
   const handleCopy = async () => {
-    try {
-      if (navigator && 'clipboard' in navigator) {
-        await navigator.clipboard.writeText(url)
-        setCopyStatus('copied')
-      } else if (inputRef.current) {
-        // Fallback: select the text and prompt the user to copy manually.
-        inputRef.current.focus()
-        inputRef.current.select()
-        setCopyStatus('selected')
-      }
-      setTimeout(() => {
-        setCopyStatus('idle')
-      }, 1500)
-    } catch {
-      // best-effort: ignore copy failures
+    if ('clipboard' in navigator) {
+      await navigator.clipboard.writeText(url).catch(console.error)
+
+      setCopyStatus('copied')
+    } else if (inputRef.current) {
+      // Fallback: select the text and prompt the user to copy manually.
+      inputRef.current.focus()
+      inputRef.current.select()
+
+      setCopyStatus('selected')
     }
+    setTimeout(() => {
+      setCopyStatus('idle')
+    }, 1500)
   }
 
   return (
