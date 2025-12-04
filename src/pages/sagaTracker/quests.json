@@ -1840,6 +1840,20 @@
     ]
   },
   {
+    "id": "2d92edf5-fc8f-4147-adda-a85d4969bee8",
+    "name": "Ettercap Incursion (H)",
+    "sagas": [
+      "myth-drannor-heroic"
+    ]
+  },
+  {
+    "id": "d35df834-df8f-43ce-a6f3-46e04c6daad9",
+    "name": "Ettercap Incursion (L)",
+    "sagas": [
+      "myth-drannor-legendary"
+    ]
+  },
+  {
     "id": "adae7fc7-3927-41b9-aea6-becf0292ffa4",
     "name": "Death Hosts This Banquet (H)",
     "sagas": [
