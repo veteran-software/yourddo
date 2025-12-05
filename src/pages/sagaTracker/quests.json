@@ -232,6 +232,20 @@
     ]
   },
   {
+    "id": "555e5d4f-8c3a-48b0-aa87-a6b16b1bff7c",
+    "name": "Lost at Sea (H)",
+    "sagas": [
+      "masterminds-of-sharn-heroic"
+    ]
+  },
+  {
+    "id": "b6eaf567-2e56-4197-a990-846e4e4e8458",
+    "name": "Lost at Sea (L)",
+    "sagas": [
+      "masterminds-of-sharn-legendary"
+    ]
+  },
+  {
     "id": "a2c4e8d1-4a40-4f0f-9d1a-1e2f3a4b5c6d",
     "name": "Red Rain (H)",
     "sagas": [
