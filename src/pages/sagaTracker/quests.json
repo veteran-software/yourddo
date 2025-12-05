@@ -1686,6 +1686,20 @@
     ]
   },
   {
+    "id": "7ab8ea32-6969-486a-98e1-d3cfa81d4045",
+    "name": "Vecna Denied (H)",
+    "sagas": [
+      "vecna-unleashed-heroic"
+    ]
+  },
+  {
+    "id": "8e14e40f-a469-4d24-9766-03dbffd3350e",
+    "name": "Vecna Denied (L)",
+    "sagas": [
+      "vecna-unleashed-legendary"
+    ]
+  },
+  {
     "id": "dfb39b0e-9ff4-4d18-ac8d-e111a4a40327",
     "name": "The Bark and the Blade (H)",
     "sagas": [
