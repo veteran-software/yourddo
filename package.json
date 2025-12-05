@@ -30,7 +30,7 @@
     "react-dom": "^19.2.1",
     "react-icons": "^5.5.0",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.10.0",
+    "react-router-dom": "^7.10.1",
     "simple-xml-to-json": "^1.2.3",
     "sitemap": "^9.0.0",
     "title-case": "^4.3.2"
@@ -57,5 +57,9 @@
     "vite": "^7.2.6",
     "vite-plugin-compression": "^0.5.1"
   },
-  "packageManager": "yarn@4.11.0"
+  "packageManager": "yarn@4.11.0",
+  "resolutions": {
+    "glob": "^10.5.0",
+    "js-yaml": "^4.1.1"
+  }
 }
