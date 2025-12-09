@@ -65,7 +65,8 @@
     "name": "Trial by Fury (E)",
     "sagas": [
       "the-end-of-eberron-epic",
-      "menace-of-the-underdark-epic"
+      "menace-of-the-underdark-epic",
+      "the-planewalkers-path-epic"
     ]
   },
   {
@@ -73,7 +74,8 @@
     "name": "The Deal and the Demon (E)",
     "sagas": [
       "the-end-of-eberron-epic",
-      "menace-of-the-underdark-epic"
+      "menace-of-the-underdark-epic",
+      "the-planewalkers-path-epic"
     ]
   },
   {
@@ -81,7 +83,8 @@
     "name": "Reclaiming the Rift (E)",
     "sagas": [
       "the-end-of-eberron-epic",
-      "menace-of-the-underdark-epic"
+      "menace-of-the-underdark-epic",
+      "the-planewalkers-path-epic"
     ]
   },
   {
@@ -887,7 +890,8 @@
     "name": "Lost in the Swamp (E)",
     "sagas": [
       "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
+      "perils-of-cormyr-epic",
+      "the-planewalkers-path-epic"
     ]
   },
   {
@@ -903,7 +907,8 @@
     "name": "End of the Road (E)",
     "sagas": [
       "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
+      "perils-of-cormyr-epic",
+      "the-planewalkers-path-epic"
     ]
   },
   {
@@ -919,7 +924,8 @@
     "name": "A Stay at the Inn (E)",
     "sagas": [
       "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
+      "perils-of-cormyr-epic",
+      "the-planewalkers-path-epic"
     ]
   },
   {
@@ -935,7 +941,8 @@
     "name": "Detour (E)",
     "sagas": [
       "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
+      "perils-of-cormyr-epic",
+      "the-planewalkers-path-epic"
     ]
   },
   {
@@ -951,7 +958,8 @@
     "name": "Rest Stop (E)",
     "sagas": [
       "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
+      "perils-of-cormyr-epic",
+      "the-planewalkers-path-epic"
     ]
   },
   {
@@ -1146,7 +1154,8 @@
     "name": "The Lost Thread (E)",
     "sagas": [
       "menace-of-the-underdark-epic",
-      "perils-of-cormyr-epic"
+      "perils-of-cormyr-epic",
+      "the-planewalkers-path-epic"
     ]
   },
   {
@@ -1171,14 +1180,6 @@
     "sagas": [
       "menace-of-the-underdark-epic",
       "perils-of-cormyr-epic"
-    ]
-  },
-  {
-    "id": "6e456cec-066c-4fcb-b7d7-4e56f6578ed9",
-    "name": "The Deal and the Demon (E)",
-    "sagas": [
-      "menace-of-the-underdark-epic",
-      "the-end-of-eberron-epic"
     ]
   },
   {
