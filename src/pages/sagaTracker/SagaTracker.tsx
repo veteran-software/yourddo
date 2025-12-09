@@ -1,20 +1,20 @@
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import {
-  Badge,
-  Button,
-  Card,
-  Col,
-  Form,
-  InputGroup,
-  Row,
-  Stack
-} from 'react-bootstrap'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Badge, Button, Card, Col, Form, InputGroup, Row, Stack } from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import IndeterminateCheck from './components/IndeterminateCheck'
 import { loadInitial } from './components/loadInitial'
 import questsData from './quests.json'
 import sagas from './sagas.json'
 import './SagaTracker.css'
+import {
+  getQuestDoneAt as idbGetQuestDoneAt,
+  getSagaItems as idbGetSagaItems,
+  getTurnedInAt as idbGetTurnedInAt,
+  requestPersistentStorage,
+  setQuestDoneAt as idbSetQuestDoneAt,
+  setSagaItems as idbSetSagaItems,
+  setTurnedInAt as idbSetTurnedInAt
+} from './storage/sagaStore'
 
 interface SagaItem {
   id: string
@@ -48,6 +48,7 @@ const allQuests: QuestDef[] = questsData as unknown as QuestDef[]
 const SagaTracker = () => {
   const [items, setItems] = useState<SagaItem[]>(() => loadInitial(fixedSagas, STORAGE_KEY_V2) as SagaItem[])
   const [searchQuery, setSearchQuery] = useState('')
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
   // quest last completion timestamp (epoch ms). Applies globally across sagas
   const [questDoneAt, setQuestDoneAt] = useState<Record<string, number>>(() => {
     try {
@@ -109,11 +110,115 @@ const SagaTracker = () => {
   // expand/collapse state per saga row
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
+  // One-time: request persistent storage and migrate from localStorage to IndexedDB if needed.
+  useEffect(() => {
+    void (async () => {
+      await requestPersistentStorage()
+
+      try {
+        const [dbItems, dbQuests, dbTurned] = await Promise.all([
+          idbGetSagaItems(),
+          idbGetQuestDoneAt(),
+          idbGetTurnedInAt()
+        ])
+
+        // Items: if IndexedDB empty, migrate from localStorage compact array
+        if (!dbItems) {
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY_V2)
+            if (raw) {
+              const arr = JSON.parse(raw) as { id?: unknown; completed?: unknown; turnedIn?: unknown }[]
+              if (Array.isArray(arr)) {
+                const compact = arr
+                  .map((e) => ({
+                    id: typeof e.id === 'string' ? e.id : undefined,
+                    completed: !!e.completed,
+                    turnedIn: !!e.turnedIn
+                  }))
+                  .filter((e) => !!e.id) as { id: string; completed: boolean; turnedIn: boolean }[]
+                await idbSetSagaItems(compact)
+              }
+            }
+          } catch {
+            // ignore
+          }
+        }
+
+        // Quests map migration
+        if (!dbQuests) {
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY_QUESTS_V1)
+            if (raw) {
+              const arr = JSON.parse(raw) as { id?: unknown; lastDoneAt?: unknown }[]
+              const map: Record<string, number> = {}
+              if (Array.isArray(arr)) {
+                for (const e of arr) {
+                  const id = typeof e.id === 'string' ? e.id : undefined
+                  const t = typeof e.lastDoneAt === 'number' ? e.lastDoneAt : 0
+                  if (id && Number.isFinite(t)) map[id] = t
+                }
+              }
+              await idbSetQuestDoneAt(map)
+            }
+          } catch {
+            // ignore
+          }
+        }
+
+        // Turned-in map migration
+        if (!dbTurned) {
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY_TURNED_IN_AT_V1)
+            if (raw) {
+              const arr = JSON.parse(raw) as { id?: unknown; turnedInAt?: unknown }[]
+              const map: Record<string, number> = {}
+              if (Array.isArray(arr)) {
+                for (const e of arr) {
+                  const id = typeof e.id === 'string' ? e.id : undefined
+                  const t = typeof e.turnedInAt === 'number' ? e.turnedInAt : 0
+                  if (id && Number.isFinite(t)) map[id] = t
+                }
+              }
+              await idbSetTurnedInAt(map)
+            }
+          } catch {
+            // ignore
+          }
+        }
+
+        // Now, load from IndexedDB (may be newly migrated) and hydrate state
+        const [newDbItems, newDbQuests, newDbTurned] = await Promise.all([
+          idbGetSagaItems(),
+          idbGetQuestDoneAt(),
+          idbGetTurnedInAt()
+        ])
+
+        if (newDbItems && Array.isArray(newDbItems)) {
+          const status = new Map(newDbItems.map((e) => [e.id, e]))
+          setItems(
+            fixedSagas.map((s) => ({
+              ...s,
+              completed: !!status.get(s.id)?.completed,
+              turnedIn: !!status.get(s.id)?.turnedIn
+            }))
+          )
+        }
+
+        if (newDbQuests) setQuestDoneAt(newDbQuests)
+        if (newDbTurned) setTurnedInAt(newDbTurned)
+      } catch {
+        // ignore any IDB errors
+      }
+    })()
+  }, [])
+
   useEffect(() => {
     // Persist a compact representation containing only statuses by id.
     try {
       const compact = items.map(({ id, completed, turnedIn }) => ({ id, completed, turnedIn }))
       localStorage.setItem(STORAGE_KEY_V2, JSON.stringify(compact))
+      // Also persist to IndexedDB (more durable)
+      void idbSetSagaItems(compact)
     } catch {
       // ignore storage errors
     }
@@ -143,6 +248,7 @@ const SagaTracker = () => {
     try {
       const compact = Object.entries(questDoneAt).map(([id, lastDoneAt]) => ({ id, lastDoneAt }))
       localStorage.setItem(STORAGE_KEY_QUESTS_V1, JSON.stringify(compact))
+      void idbSetQuestDoneAt(questDoneAt)
     } catch {
       // ignore
     }
@@ -152,6 +258,7 @@ const SagaTracker = () => {
     try {
       const compact = Object.entries(turnedInAt).map(([id, t]) => ({ id, turnedInAt: t }))
       localStorage.setItem(STORAGE_KEY_TURNED_IN_AT_V1, JSON.stringify(compact))
+      void idbSetTurnedInAt(turnedInAt)
     } catch {
       // ignore
     }
@@ -291,6 +398,61 @@ const SagaTracker = () => {
     })
   }
 
+  // Export/Import support
+  const exportSagaData = async () => {
+    try {
+      const payload = {
+        items: items.map(({ id, completed, turnedIn }) => ({ id, completed, turnedIn })),
+        questDoneAt,
+        turnedInAt
+      }
+      const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'yourddo-saga-backup.json'
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch {
+      // ignore
+    }
+  }
+
+  const onImportClick = () => fileInputRef.current?.click()
+  const onImportFile = async (file?: File | null) => {
+    if (!file) return
+    try {
+      const text = await file.text()
+      const data = JSON.parse(text) as {
+        items?: { id: string; completed: boolean; turnedIn: boolean }[]
+        questDoneAt?: Record<string, number>
+        turnedInAt?: Record<string, number>
+      }
+      if (Array.isArray(data.items)) {
+        // write both to state and idb
+        const status = new Map(data.items.map((e) => [e.id, e]))
+        setItems(
+          fixedSagas.map((s) => ({
+            ...s,
+            completed: !!status.get(s.id)?.completed,
+            turnedIn: !!status.get(s.id)?.turnedIn
+          }))
+        )
+        void idbSetSagaItems(data.items)
+      }
+      if (data.questDoneAt && typeof data.questDoneAt === 'object') {
+        setQuestDoneAt(data.questDoneAt)
+        void idbSetQuestDoneAt(data.questDoneAt)
+      }
+      if (data.turnedInAt && typeof data.turnedInAt === 'object') {
+        setTurnedInAt(data.turnedInAt)
+        void idbSetTurnedInAt(data.turnedInAt)
+      }
+    } catch {
+      // ignore
+    }
+  }
+
   // Auto-check a saga as completed when all its quests are completed (since its last turn-in).
   // This only auto-sets to true; it does NOT auto-uncheck if quests are later incomplete,
   // preserving any manual completion choice unless all quests become completed again.
@@ -352,6 +514,19 @@ const SagaTracker = () => {
           <div className='d-flex gap-2 flex-shrink-0'>
             <Button variant='outline-secondary' onClick={resetChecks} disabled={items.length === 0} title='Uncheck all'>
               Reset Progress
+            </Button>
+            <Button variant='outline-secondary' onClick={exportSagaData} title='Download a backup JSON'>
+              Export
+            </Button>
+            <input
+              ref={fileInputRef}
+              type='file'
+              accept='application/json'
+              className='d-none'
+              onChange={(e) => onImportFile(e.target.files?.[0])}
+            />
+            <Button variant='outline-secondary' onClick={onImportClick} title='Restore from a backup JSON'>
+              Import
             </Button>
           </div>
         </Card.Body>
