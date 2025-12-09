@@ -1,5 +1,21 @@
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Badge, Button, Card, Col, Form, InputGroup, Row, Stack } from 'react-bootstrap'
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Form,
+  InputGroup,
+  Row,
+  Stack
+} from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import IndeterminateCheck from './components/IndeterminateCheck'
 import { loadInitial } from './components/loadInitial'
@@ -50,6 +66,7 @@ const SagaTracker = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   // quest last completion timestamp (epoch ms). Applies globally across sagas
+  //eslint-disable-next-line sonarjs/cognitive-complexity
   const [questDoneAt, setQuestDoneAt] = useState<Record<string, number>>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY_QUESTS_V1)
@@ -80,6 +97,7 @@ const SagaTracker = () => {
   })
 
   // per-saga turned-in time, used to determine if a quest counts for that saga
+  //eslint-disable-next-line sonarjs/cognitive-complexity
   const [turnedInAt, setTurnedInAt] = useState<Record<string, number>>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY_TURNED_IN_AT_V1)
@@ -112,7 +130,8 @@ const SagaTracker = () => {
 
   // One-time: request persistent storage and migrate from localStorage to IndexedDB if needed.
   useEffect(() => {
-    void (async () => {
+    //eslint-disable-next-line sonarjs/cognitive-complexity
+    ;(async () => {
       await requestPersistentStorage()
 
       try {
@@ -209,7 +228,7 @@ const SagaTracker = () => {
       } catch {
         // ignore any IDB errors
       }
-    })()
+    })().catch(console.error)
   }, [])
 
   useEffect(() => {
@@ -218,7 +237,7 @@ const SagaTracker = () => {
       const compact = items.map(({ id, completed, turnedIn }) => ({ id, completed, turnedIn }))
       localStorage.setItem(STORAGE_KEY_V2, JSON.stringify(compact))
       // Also persist to IndexedDB (more durable)
-      void idbSetSagaItems(compact)
+      idbSetSagaItems(compact).catch(console.error)
     } catch {
       // ignore storage errors
     }
@@ -248,7 +267,7 @@ const SagaTracker = () => {
     try {
       const compact = Object.entries(questDoneAt).map(([id, lastDoneAt]) => ({ id, lastDoneAt }))
       localStorage.setItem(STORAGE_KEY_QUESTS_V1, JSON.stringify(compact))
-      void idbSetQuestDoneAt(questDoneAt)
+      idbSetQuestDoneAt(questDoneAt).catch(console.error)
     } catch {
       // ignore
     }
@@ -258,7 +277,7 @@ const SagaTracker = () => {
     try {
       const compact = Object.entries(turnedInAt).map(([id, t]) => ({ id, turnedInAt: t }))
       localStorage.setItem(STORAGE_KEY_TURNED_IN_AT_V1, JSON.stringify(compact))
-      void idbSetTurnedInAt(turnedInAt)
+      idbSetTurnedInAt(turnedInAt).catch(console.error)
     } catch {
       // ignore
     }
@@ -399,7 +418,7 @@ const SagaTracker = () => {
   }
 
   // Export/Import support
-  const exportSagaData = async () => {
+  const exportSagaData = () => {
     try {
       const payload = {
         items: items.map(({ id, completed, turnedIn }) => ({ id, completed, turnedIn })),
@@ -438,15 +457,15 @@ const SagaTracker = () => {
             turnedIn: !!status.get(s.id)?.turnedIn
           }))
         )
-        void idbSetSagaItems(data.items)
+        idbSetSagaItems(data.items).catch(console.error)
       }
       if (data.questDoneAt && typeof data.questDoneAt === 'object') {
         setQuestDoneAt(data.questDoneAt)
-        void idbSetQuestDoneAt(data.questDoneAt)
+        idbSetQuestDoneAt(data.questDoneAt).catch(console.error)
       }
       if (data.turnedInAt && typeof data.turnedInAt === 'object') {
         setTurnedInAt(data.turnedInAt)
-        void idbSetTurnedInAt(data.turnedInAt)
+        idbSetTurnedInAt(data.turnedInAt).catch(console.error)
       }
     } catch {
       // ignore
@@ -515,7 +534,13 @@ const SagaTracker = () => {
             <Button variant='outline-secondary' onClick={resetChecks} disabled={items.length === 0} title='Uncheck all'>
               Reset Progress
             </Button>
-            <Button variant='outline-secondary' onClick={exportSagaData} title='Download a backup JSON'>
+            <Button
+              variant='outline-secondary'
+              onClick={() => {
+                exportSagaData()
+              }}
+              title='Download a backup JSON'
+            >
               Export
             </Button>
             <input
@@ -523,7 +548,9 @@ const SagaTracker = () => {
               type='file'
               accept='application/json'
               className='d-none'
-              onChange={(e) => onImportFile(e.target.files?.[0])}
+              onChange={(e) => {
+                onImportFile(e.target.files?.[0]).catch(console.error)
+              }}
             />
             <Button variant='outline-secondary' onClick={onImportClick} title='Restore from a backup JSON'>
               Import
