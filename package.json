@@ -20,7 +20,7 @@
     "@reduxjs/toolkit": "^2.11.2",
     "bootstrap": "^5.3.8",
     "camelcase": "^9.0.0",
-    "fast-xml-parser": "^5.3.3",
+    "fast-xml-parser": "^5.3.4",
     "idb-keyval": "^6.2.2",
     "kebab-case": "^2.0.2",
     "luxon": "^3.7.2",
