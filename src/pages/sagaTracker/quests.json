@@ -2,2220 +2,1551 @@
   {
     "id": "2a2cca20-880d-4995-a8a6-4c03199bd75b",
     "name": "The Lords of Dust (E)",
-    "sagas": [
-      "the-end-of-eberron-epic"
-    ]
+    "sagas": ["the-end-of-eberron-epic"]
   },
   {
     "id": "31786ef2-cef7-453c-b60d-495981d71bfd",
     "name": "The Spinner of Shadows (E)",
-    "sagas": [
-      "the-end-of-eberron-epic"
-    ]
+    "sagas": ["the-end-of-eberron-epic"]
   },
   {
     "id": "3a2e2d43-c453-4c78-aef0-518c4aaad067",
     "name": "Servants of the Overlord (E)",
-    "sagas": [
-      "the-end-of-eberron-epic"
-    ]
+    "sagas": ["the-end-of-eberron-epic"]
   },
   {
     "id": "04e8506f-1746-4b34-ae2b-90da57b7b5a5",
     "name": "Beyond the Rift (E)",
-    "sagas": [
-      "the-end-of-eberron-epic",
-      "the-planewalkers-path-epic"
-    ]
+    "sagas": ["the-end-of-eberron-epic", "the-planewalkers-path-epic"]
   },
   {
     "id": "8e5b42b2-c434-4105-8db2-3b8335789cea",
     "name": "The House of Death Undone (E)",
-    "sagas": [
-      "the-end-of-eberron-epic",
-      "menace-of-the-underdark-epic"
-    ]
+    "sagas": ["the-end-of-eberron-epic", "menace-of-the-underdark-epic"]
   },
   {
     "id": "ef7a4a3b-5c70-4c8e-b9ea-6e139a217b78",
     "name": "The House of Rusted Blades (E)",
-    "sagas": [
-      "the-end-of-eberron-epic",
-      "menace-of-the-underdark-epic"
-    ]
+    "sagas": ["the-end-of-eberron-epic", "menace-of-the-underdark-epic"]
   },
   {
     "id": "89599384-43ce-41bf-b8d2-1f8fcee9cc6e",
     "name": "The House of Broken Chains (E)",
-    "sagas": [
-      "the-end-of-eberron-epic",
-      "menace-of-the-underdark-epic"
-    ]
+    "sagas": ["the-end-of-eberron-epic", "menace-of-the-underdark-epic"]
   },
   {
     "id": "321f6a2a-fde8-4b05-b494-b41d209f8d7d",
     "name": "The Portal Opens (E)",
-    "sagas": [
-      "the-end-of-eberron-epic",
-      "menace-of-the-underdark-epic"
-    ]
+    "sagas": ["the-end-of-eberron-epic", "menace-of-the-underdark-epic"]
   },
   {
     "id": "6fb03836-e3a5-46f6-9403-647f5782fa28",
     "name": "Trial by Fury (E)",
-    "sagas": [
-      "the-end-of-eberron-epic",
-      "menace-of-the-underdark-epic",
-      "the-planewalkers-path-epic"
-    ]
+    "sagas": ["the-end-of-eberron-epic", "menace-of-the-underdark-epic", "the-planewalkers-path-epic"]
   },
   {
     "id": "eb4134be-90a4-47ac-93da-8de9fe014df4",
     "name": "The Deal and the Demon (E)",
-    "sagas": [
-      "the-end-of-eberron-epic",
-      "menace-of-the-underdark-epic",
-      "the-planewalkers-path-epic"
-    ]
+    "sagas": ["the-end-of-eberron-epic", "menace-of-the-underdark-epic", "the-planewalkers-path-epic"]
   },
   {
     "id": "86508528-5268-483f-a0d5-981fef23031e",
     "name": "Reclaiming the Rift (E)",
-    "sagas": [
-      "the-end-of-eberron-epic",
-      "menace-of-the-underdark-epic",
-      "the-planewalkers-path-epic"
-    ]
+    "sagas": ["the-end-of-eberron-epic", "menace-of-the-underdark-epic", "the-planewalkers-path-epic"]
   },
   {
     "id": "cd9bab34-e7d7-4fed-a385-07c44d88b406",
     "name": "Bargain of Blood (H)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-heroic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-heroic"]
   },
   {
     "id": "c277bdbd-1c8e-4d0e-8c20-3a81c018f007",
     "name": "Irestone Inlet (H)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-heroic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-heroic"]
   },
   {
     "id": "be65699c-fbcf-4675-8723-6fce26698bd8",
     "name": "The Legend of Two-Toed Tobias (H)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-heroic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-heroic"]
   },
   {
     "id": "b3e77ea2-6be3-46d6-903d-d3d8eee498ac",
     "name": "Ghost of a Chance (H)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-heroic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-heroic"]
   },
   {
     "id": "59972d50-9509-450c-af57-d00b1d3f788d",
     "name": "Old Grey Garl (H)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-heroic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-heroic"]
   },
   {
     "id": "b7e03169-057a-43bc-b153-946dad42c81e",
     "name": "The Troglodytes' Get (H)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-heroic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-heroic"]
   },
   {
     "id": "c70fb41d-6459-418b-b459-d5dad73763ee",
     "name": "Bargain of Blood (E)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-epic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-epic"]
   },
   {
     "id": "17b6088b-ae60-446d-907e-4fc3f3b99f99",
     "name": "Storm the Beaches (H)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-heroic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-heroic"]
   },
   {
     "id": "1b71e8ea-5060-4b7a-98ac-7756509ae23e",
     "name": "Spies in the House (E)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-epic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-epic"]
   },
   {
     "id": "0d9fc15e-dc82-41eb-9165-824380cb112f",
     "name": "Prove your Worth (E)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-epic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-epic"]
+  },
+  {
+    "id": "c03868fc-18a2-4397-88d0-8925bf3eb32b",
+    "name": "Prove your Worth (H)",
+    "sagas": ["the-pirates-of-the-thunder-sea-heroic"]
   },
   {
     "id": "b176a09f-5245-42bb-bf25-e39140d86586",
     "name": "A Legend Revisited (E)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-epic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-epic"]
   },
   {
     "id": "b292b537-787b-4636-a329-570126f5d002",
     "name": "Old Tomb, New Tenants (E)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-epic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-epic"]
   },
   {
     "id": "b7473742-acb1-493c-bc45-983c049ff2c7",
     "name": "Ghost of a Chance (E)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-epic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-epic"]
   },
   {
     "id": "a21ce67f-79f3-44ef-aabc-5b85aa1d4497",
     "name": "Precious Cargo (E)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-epic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-epic"]
   },
   {
     "id": "04ed6bad-8572-47be-adda-fb0a2e6ce846",
     "name": "Storm the Beaches (E)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-epic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-epic"]
   },
   {
     "id": "c98572b5-606b-43a1-9f6c-ecff813690e5",
     "name": "The Tide Turns (H)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-heroic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-heroic"]
   },
   {
     "id": "bd2f74b3-2268-4f17-af7e-8a97cb75e7ae",
     "name": "The Tide Turns (E)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-epic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-epic"]
   },
   {
     "id": "4834844b-75b0-41da-b598-5dc5438b701d",
     "name": "The Black Loch (H)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-heroic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-heroic"]
   },
   {
     "id": "2c7df2f9-5df9-4e5f-8b2b-6d5f7a2b9b4a",
     "name": "The Black Loch (E)",
-    "sagas": [
-      "the-pirates-of-the-thunder-sea-epic"
-    ]
+    "sagas": ["the-pirates-of-the-thunder-sea-epic"]
   },
   {
     "id": "c0f0aa2c-7c5b-4a4b-a3c8-3b1d2f67c9e1",
     "name": "A Sharn Welcome (H)",
-    "sagas": [
-      "masterminds-of-sharn-heroic"
-    ]
+    "sagas": ["masterminds-of-sharn-heroic"]
   },
   {
     "id": "f6b3a3b0-3d4f-4b2e-9e34-8e9f5c9b2d6a",
     "name": "A Sharn Welcome (L)",
-    "sagas": [
-      "masterminds-of-sharn-legendary"
-    ]
+    "sagas": ["masterminds-of-sharn-legendary"]
   },
   {
     "id": "555e5d4f-8c3a-48b0-aa87-a6b16b1bff7c",
     "name": "Lost at Sea (H)",
-    "sagas": [
-      "masterminds-of-sharn-heroic"
-    ]
+    "sagas": ["masterminds-of-sharn-heroic"]
   },
   {
     "id": "b6eaf567-2e56-4197-a990-846e4e4e8458",
     "name": "Lost at Sea (L)",
-    "sagas": [
-      "masterminds-of-sharn-legendary"
-    ]
+    "sagas": ["masterminds-of-sharn-legendary"]
   },
   {
     "id": "a2c4e8d1-4a40-4f0f-9d1a-1e2f3a4b5c6d",
     "name": "Red Rain (H)",
-    "sagas": [
-      "masterminds-of-sharn-heroic"
-    ]
+    "sagas": ["masterminds-of-sharn-heroic"]
   },
   {
     "id": "b3d5f9e2-5b51-4a10-8c2b-2f3a4b5c6d7e",
     "name": "Red Rain (L)",
-    "sagas": [
-      "masterminds-of-sharn-legendary"
-    ]
+    "sagas": ["masterminds-of-sharn-legendary"]
   },
   {
     "id": "c4e6a0f3-6c62-4b21-9d3c-3a4b5c6d7e8f",
     "name": "Just Business (H)",
-    "sagas": [
-      "masterminds-of-sharn-heroic"
-    ]
+    "sagas": ["masterminds-of-sharn-heroic"]
   },
   {
     "id": "d5f7b104-7d73-4c32-ad4d-4b5c6d7e8f90",
     "name": "Just Business (L)",
-    "sagas": [
-      "masterminds-of-sharn-legendary"
-    ]
+    "sagas": ["masterminds-of-sharn-legendary"]
   },
   {
     "id": "e6a8c215-8e84-4d43-be5e-5c6d7e8f901a",
     "name": "Best Laid Plans (H)",
-    "sagas": [
-      "masterminds-of-sharn-heroic"
-    ]
+    "sagas": ["masterminds-of-sharn-heroic"]
   },
   {
     "id": "65ab6bcd-0396-441a-83df-a371e4c2fa04",
     "name": "Best Laid Plans (L)",
-    "sagas": [
-      "masterminds-of-sharn-legendary"
-    ]
+    "sagas": ["masterminds-of-sharn-legendary"]
   },
   {
     "id": "6c47af82-b0b0-407d-af0e-290589dfdea6",
     "name": "The Same Old Song (H)",
-    "sagas": [
-      "masterminds-of-sharn-heroic"
-    ]
+    "sagas": ["masterminds-of-sharn-heroic"]
   },
   {
     "id": "d6ffb5fc-188c-439f-bc7c-2397dd2e045d",
     "name": "The Same Old Song (L)",
-    "sagas": [
-      "masterminds-of-sharn-legendary"
-    ]
+    "sagas": ["masterminds-of-sharn-legendary"]
   },
   {
     "id": "32802a9b-62ac-4ab3-9843-753158ac6d8e",
     "name": "No Refunds (H)",
-    "sagas": [
-      "masterminds-of-sharn-heroic"
-    ]
+    "sagas": ["masterminds-of-sharn-heroic"]
   },
   {
     "id": "3bf3146a-d239-4c98-a3a4-0b12c3d4e5f6",
     "name": "No Refunds (L)",
-    "sagas": [
-      "masterminds-of-sharn-legendary"
-    ]
+    "sagas": ["masterminds-of-sharn-legendary"]
   },
   {
     "id": "4c04257b-e34a-4da9-b4b5-1c23d4e5f607",
     "name": "House of Pain (H)",
-    "sagas": [
-      "masterminds-of-sharn-heroic"
-    ]
+    "sagas": ["masterminds-of-sharn-heroic"]
   },
   {
     "id": "21b74353-697d-4e8e-81df-a309f678424f",
     "name": "House of Pain (L)",
-    "sagas": [
-      "masterminds-of-sharn-legendary"
-    ]
+    "sagas": ["masterminds-of-sharn-legendary"]
   },
   {
     "id": "15e84abf-d160-4a5d-a547-1783728abdc9",
     "name": "Blown Deadline (H)",
-    "sagas": [
-      "masterminds-of-sharn-heroic"
-    ]
+    "sagas": ["masterminds-of-sharn-heroic"]
   },
   {
     "id": "804e86eb-7c85-4098-9c81-4b702cfae765",
     "name": "Blown Deadline (L)",
-    "sagas": [
-      "masterminds-of-sharn-legendary"
-    ]
+    "sagas": ["masterminds-of-sharn-legendary"]
   },
   {
     "id": "edf6f908-9178-4caf-b13e-11688cb57a5e",
     "name": "Reach for the Sky (H)",
-    "sagas": [
-      "masterminds-of-sharn-heroic"
-    ]
+    "sagas": ["masterminds-of-sharn-heroic"]
   },
   {
     "id": "91597ad0-389f-42fe-a909-6178293a4b5c",
     "name": "Reach for the Sky (L)",
-    "sagas": [
-      "masterminds-of-sharn-legendary"
-    ]
+    "sagas": ["masterminds-of-sharn-legendary"]
   },
   {
     "id": "a26a8be1-49a0-430f-ba1a-72893a4b5c6d",
     "name": "Ruinous Schemes (H)",
-    "sagas": [
-      "cogs-heroic"
-    ]
+    "sagas": ["cogs-heroic"]
   },
   {
     "id": "fe66402a-c44f-4df3-904e-1b09a8223493",
     "name": "Ruinous Schemes (L)",
-    "sagas": [
-      "cogs-legendary"
-    ]
+    "sagas": ["cogs-legendary"]
   },
   {
     "id": "b41f765e-41b4-4197-9397-f9e4a7a92b27",
     "name": "Roll Call (H)",
-    "sagas": [
-      "cogs-heroic"
-    ]
+    "sagas": ["cogs-heroic"]
   },
   {
     "id": "fe07a07e-a18b-4e78-a646-422700b34fd2",
     "name": "Roll Call (L)",
-    "sagas": [
-      "cogs-legendary"
-    ]
+    "sagas": ["cogs-legendary"]
   },
   {
     "id": "9a3f37e2-f8d1-45ca-ad8d-39ce57819d26",
     "name": "Smash and Burn (H)",
-    "sagas": [
-      "cogs-heroic"
-    ]
+    "sagas": ["cogs-heroic"]
   },
   {
     "id": "f7bf0116-9ef5-4854-a06f-c7d87e8f901a",
     "name": "Smash and Burn (L)",
-    "sagas": [
-      "cogs-legendary"
-    ]
+    "sagas": ["cogs-legendary"]
   },
   {
     "id": "08d01227-af06-4965-b171-d8e8901a2b3c",
     "name": "Thralls of the Fungus Lord (H)",
-    "sagas": [
-      "cogs-heroic"
-    ]
+    "sagas": ["cogs-heroic"]
   },
   {
     "id": "08385b34-87d7-4eef-bfe7-77cce0e12456",
     "name": "Thralls of the Fungus Lord (L)",
-    "sagas": [
-      "cogs-legendary"
-    ]
+    "sagas": ["cogs-legendary"]
   },
   {
     "id": "590663b2-9a1f-4447-83b5-37f03864d26d",
     "name": "The Wraithcallers (H)",
-    "sagas": [
-      "cogs-heroic"
-    ]
+    "sagas": ["cogs-heroic"]
   },
   {
     "id": "498cc763-ba51-4efa-ab85-17b6cb64a004",
     "name": "The Wraithcallers (L)",
-    "sagas": [
-      "cogs-legendary"
-    ]
+    "sagas": ["cogs-legendary"]
   },
   {
     "id": "9f0e27b9-0eb5-4db5-be68-6393aae6c6f6",
     "name": "Security Detail (H)",
-    "sagas": [
-      "cogs-heroic"
-    ]
+    "sagas": ["cogs-heroic"]
   },
   {
     "id": "5d25677c-f55b-4eba-a6c6-3d34e5f60718",
     "name": "Security Detail (L)",
-    "sagas": [
-      "cogs-legendary"
-    ]
+    "sagas": ["cogs-legendary"]
   },
   {
     "id": "6e36788d-066c-4fcb-b7d7-4e45f6071829",
     "name": "Scavenger Hunt (H)",
-    "sagas": [
-      "cogs-heroic"
-    ]
+    "sagas": ["cogs-heroic"]
   },
   {
     "id": "c48f56a0-9702-420b-86bc-72034c88e50e",
     "name": "Scavenger Hunt (L)",
-    "sagas": [
-      "cogs-legendary"
-    ]
+    "sagas": ["cogs-legendary"]
   },
   {
     "id": "28eec699-1492-4b0b-a8a5-f09ea0082a48",
     "name": "The Magma Must Flow (H)",
-    "sagas": [
-      "cogs-heroic"
-    ]
+    "sagas": ["cogs-heroic"]
   },
   {
     "id": "376ec820-46ee-405e-9c3f-86fd8f3c52b2",
     "name": "The Magma Must Flow (L)",
-    "sagas": [
-      "cogs-legendary"
-    ]
+    "sagas": ["cogs-legendary"]
   },
   {
     "id": "a27abcd0-4aa0-430f-bb1a-82893a4b5c6d",
     "name": "Fresh-baked Dreams (H)",
-    "sagas": [
-      "mists-of-ravenloft-heroic"
-    ]
+    "sagas": ["mists-of-ravenloft-heroic"]
   },
   {
     "id": "843f765d-7e13-4f59-bd19-0872a6b39db2",
     "name": "Fresh-baked Dreams (L)",
-    "sagas": [
-      "mists-of-ravenloft-legendary"
-    ]
+    "sagas": ["mists-of-ravenloft-legendary"]
   },
   {
     "id": "0e6bb095-7acb-4d69-ae6a-4f2438d453b2",
     "name": "Into the Mists (H)",
-    "sagas": [
-      "mists-of-ravenloft-heroic"
-    ]
+    "sagas": ["mists-of-ravenloft-heroic"]
   },
   {
     "id": "f82edb2d-25b3-4b2d-877a-9843dfbab100",
     "name": "Into the Mists (L)",
-    "sagas": [
-      "mists-of-ravenloft-legendary"
-    ]
+    "sagas": ["mists-of-ravenloft-legendary"]
   },
   {
     "id": "e6beee34-8ee4-4743-af5e-c6c76d7e8f90",
     "name": "An Invitation to Dinner (H)",
-    "sagas": [
-      "mists-of-ravenloft-heroic"
-    ]
+    "sagas": ["mists-of-ravenloft-heroic"]
   },
   {
     "id": "f7cff045-9ff5-4854-b06f-d7d87e8f901a",
     "name": "An Invitation to Dinner (L)",
-    "sagas": [
-      "mists-of-ravenloft-legendary"
-    ]
+    "sagas": ["mists-of-ravenloft-legendary"]
   },
   {
     "id": "f2f87d71-47fe-460c-8659-159e3ba6c120",
     "name": "Death House (H)",
-    "sagas": [
-      "mists-of-ravenloft-heroic"
-    ]
+    "sagas": ["mists-of-ravenloft-heroic"]
   },
   {
     "id": "b9c4f133-6a16-409b-a936-ce3813106ef2",
     "name": "Death House (L)",
-    "sagas": [
-      "mists-of-ravenloft-legendary"
-    ]
+    "sagas": ["mists-of-ravenloft-legendary"]
   },
   {
     "id": "d002d05d-b238-4619-bf0a-b2f1f7042149",
     "name": "Sealed in Amber (H)",
-    "sagas": [
-      "mists-of-ravenloft-heroic"
-    ]
+    "sagas": ["mists-of-ravenloft-heroic"]
   },
   {
     "id": "8dd01dcd-816b-4ef8-add3-34a15b176ff8",
     "name": "Sealed in Amber (L)",
-    "sagas": [
-      "mists-of-ravenloft-legendary"
-    ]
+    "sagas": ["mists-of-ravenloft-legendary"]
   },
   {
     "id": "4c14449a-e44a-4da9-a5b5-2c33d4e5f607",
     "name": "Oath of Vengeance (H)",
-    "sagas": [
-      "mists-of-ravenloft-heroic"
-    ]
+    "sagas": ["mists-of-ravenloft-heroic"]
   },
   {
     "id": "5d2555ab-f55b-4eba-b6c6-3d44e5f60718",
     "name": "Oath of Vengeance (L)",
-    "sagas": [
-      "mists-of-ravenloft-legendary"
-    ]
+    "sagas": ["mists-of-ravenloft-legendary"]
   },
   {
     "id": "b06d3721-09db-4e83-ab9a-c5ec19c6a303",
     "name": "A Raven at the Door (H)",
-    "sagas": [
-      "mists-of-ravenloft-heroic"
-    ]
+    "sagas": ["mists-of-ravenloft-heroic"]
   },
   {
     "id": "91b37bb8-83e9-4010-8dbf-099fe1342767",
     "name": "A Raven at the Door (L)",
-    "sagas": [
-      "mists-of-ravenloft-legendary"
-    ]
+    "sagas": ["mists-of-ravenloft-legendary"]
   },
   {
     "id": "b55ca623-0d37-47ae-b3bd-74c227eb4449",
     "name": "Mad Tea Party (H)",
-    "sagas": [
-      "mists-of-ravenloft-heroic"
-    ]
+    "sagas": ["mists-of-ravenloft-heroic"]
   },
   {
     "id": "6affef2b-75a8-466f-a82d-265e8d2f5624",
     "name": "Mad Tea Party (L)",
-    "sagas": [
-      "mists-of-ravenloft-legendary"
-    ]
+    "sagas": ["mists-of-ravenloft-legendary"]
   },
   {
     "id": "a28aaaff-4aa0-430f-ab1a-82993a4b5c6d",
     "name": "Ravens' Bane (H)",
-    "sagas": [
-      "mists-of-ravenloft-heroic"
-    ]
+    "sagas": ["mists-of-ravenloft-heroic"]
   },
   {
     "id": "b39bb010-5bb1-4410-bc2b-93953a4b5c6d",
     "name": "Ravens' Bane (L)",
-    "sagas": [
-      "mists-of-ravenloft-legendary"
-    ]
+    "sagas": ["mists-of-ravenloft-legendary"]
   },
   {
     "id": "8b074c4e-c018-4514-8891-6158fa524576",
     "name": "Wrath of the Earth (H)",
-    "sagas": [
-      "mists-of-ravenloft-heroic"
-    ]
+    "sagas": ["mists-of-ravenloft-heroic"]
   },
   {
     "id": "abdc0e20-4ea1-4393-b547-5f518ff29498",
     "name": "Wrath of the Earth (L)",
-    "sagas": [
-      "mists-of-ravenloft-legendary"
-    ]
+    "sagas": ["mists-of-ravenloft-legendary"]
   },
   {
     "id": "66f00750-f696-456c-b8f0-b0fcf6a077e8",
     "name": "The Final Vintage (H)",
-    "sagas": [
-      "mists-of-ravenloft-heroic"
-    ]
+    "sagas": ["mists-of-ravenloft-heroic"]
   },
   {
     "id": "f7dff454-9ff5-4854-a06f-d7d98e8f901a",
     "name": "The Final Vintage (L)",
-    "sagas": [
-      "mists-of-ravenloft-legendary"
-    ]
+    "sagas": ["mists-of-ravenloft-legendary"]
   },
   {
     "id": "08e00565-af06-4965-b171-e8e8a01a2b3c",
     "name": "Sunrise (H)",
-    "sagas": [
-      "mists-of-ravenloft-heroic"
-    ]
+    "sagas": ["mists-of-ravenloft-heroic"]
   },
   {
     "id": "1dee202f-c272-4ec6-8e70-79bcc932bf84",
     "name": "Sunrise (L)",
-    "sagas": [
-      "mists-of-ravenloft-legendary"
-    ]
+    "sagas": ["mists-of-ravenloft-legendary"]
   },
   {
     "id": "ea3700b1-1585-49c3-a252-10171079c2e6",
     "name": "The Maze of Madness (H)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-heroic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-heroic"]
   },
   {
     "id": "cc746ad6-1513-4745-8196-5951cf79b145",
     "name": "The Maze of Madness (E)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-epic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-epic"]
   },
   {
     "id": "01be248a-c743-4cbd-8e38-8755918a1eeb",
     "name": "A Cry for Help (H)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-heroic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-heroic"]
   },
   {
     "id": "5d345abb-f55b-4eba-a6c6-3d45e5f60718",
     "name": "A Cry for Help (E)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-epic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-epic"]
   },
   {
     "id": "6e456bcc-066c-4fcb-b7d7-4e56f6071829",
     "name": "Feast or Famine (H)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-heroic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-heroic"]
   },
   {
     "id": "ab8baa3a-f349-49bd-89b2-f9a166ece605",
     "name": "Feast or Famine (E)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-epic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-epic"]
   },
   {
     "id": "aac3dfc9-90a0-4b5a-9300-4072fda72bc8",
     "name": "Trial by Fire (H)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-heroic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-heroic"]
   },
   {
     "id": "101c79e6-b172-40c8-aa93-af73131ac542",
     "name": "Trial by Fire (E)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-epic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-epic"]
   },
   {
     "id": "a289af10-4aa0-430f-bb1a-82893b4c5d6e",
     "name": "Foundation of Discord (H)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-heroic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-heroic"]
   },
   {
     "id": "2730291f-c190-4a17-a67c-99f265ead64e",
     "name": "Foundation of Discord (E)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-epic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-epic"]
   },
   {
     "id": "6eef3d1a-7d4b-460e-8b70-44598f27b3fe",
     "name": "The Crucible (H)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-heroic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-heroic"]
   },
   {
     "id": "1f63a2c4-1828-4568-8a9c-1493d8581c15",
     "name": "The Crucible (E)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-epic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-epic"]
   },
   {
     "id": "e6cde354-8ee4-4743-af5e-c6c75d6e7f80",
     "name": "A Cabal for One (H)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-heroic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-heroic"]
   },
   {
     "id": "f7def465-9ff5-4854-b06f-d7d86e7f8091",
     "name": "Return to Cabal for One (E)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-epic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-epic"]
   },
   {
     "id": "7e6040ab-9444-450d-ba46-5214cc85d1cd",
     "name": "Gianthold Tor (H)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-heroic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-heroic"]
   },
   {
     "id": "cb77fe46-bfba-42b9-bd7b-59065686ef4d",
     "name": "Return to Gianthold Tor (E)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-epic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-epic"]
   },
   {
     "id": "22f84f5e-93cf-43b5-89b2-f7791dfb5744",
     "name": "Madstone Crater (H)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-heroic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-heroic"]
   },
   {
     "id": "4249f93b-0b28-428f-a50d-5ba2d9d43dc9",
     "name": "Return to Madstone Crater (E)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-epic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-epic"]
   },
   {
     "id": "4c2349ba-e44a-4da9-a5b5-2c34d5e6f708",
     "name": "The Prison of the Planes (H)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-heroic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-heroic"]
   },
   {
     "id": "5d345acb-f55b-4eba-b6c6-3d45e6f70819",
     "name": "Return to Prison of the Planes (E)",
-    "sagas": [
-      "in-the-wastes-of-gianthold-epic"
-    ]
+    "sagas": ["in-the-wastes-of-gianthold-epic"]
   },
   {
     "id": "b8ed90cc-e3dc-40db-86db-96cc3357d39a",
     "name": "Through a Mirror Darkly (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "06243f1e-8661-448d-83c8-d777714e086a",
     "name": "Through a Mirror Darkly (E)",
-    "sagas": [
-      "the-planewalkers-path-epic",
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["the-planewalkers-path-epic", "honor-the-huntsilver-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "bc3dbd85-9093-4a20-8411-dda0a2caa184",
     "name": "Army of Shadow (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "dcfa0451-2363-4a8a-8e12-65c9f8c5004a",
     "name": "Army of Shadow (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "a289af10-4aa0-430f-ab1a-82893a2b3c4d",
     "name": "The Thrill of the Hunt (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "b39bb021-5bb1-4410-bc2b-93943a2b3c4d",
     "name": "The Thrill of the Hunt (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "f96c6084-64b4-4a63-91dc-2769068fe290",
     "name": "A Lesson in Deception (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "f4f2d6ce-8879-45a9-a6d2-2b8fac9e70a9",
     "name": "A Lesson in Deception (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "67ceae1c-0acd-4450-9be3-4f00768f09c3",
     "name": "Friends in Low Places (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "f7dff465-9ff5-4854-a06f-d7d85e4f5061",
     "name": "Friends in Low Places (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "08e00576-af06-4965-b171-e8e86f506172",
     "name": "The Druid's Curse (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "9faaa7e9-5acc-4ab8-951b-ede0e860209a",
     "name": "The Druid's Curse (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "94d48d95-85cf-4f87-a35c-e39b3d2d220d",
     "name": "Lost in the Swamp (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "5be8b6ca-f974-444d-9e8e-06917e34642f",
     "name": "Lost in the Swamp (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic",
-      "the-planewalkers-path-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic", "the-planewalkers-path-epic"]
   },
   {
     "id": "cb7c1c14-96e6-44e0-bf4a-f6c87ce47ff7",
     "name": "End of the Road (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "5d345acb-f55b-4eba-a6c6-3d45e958a6b7",
     "name": "End of the Road (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic",
-      "the-planewalkers-path-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic", "the-planewalkers-path-epic"]
   },
   {
     "id": "6e456bdc-066c-4fcb-b7d7-4e56f069b7c8",
     "name": "A Stay at the Inn (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "1c840250-751b-42ae-95a7-475c0124b5a4",
     "name": "A Stay at the Inn (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic",
-      "the-planewalkers-path-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic", "the-planewalkers-path-epic"]
   },
   {
     "id": "1442c042-9040-4ada-9a31-73269ea0a09c",
     "name": "Detour (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "1c468edb-edb0-45bb-b99d-1ef3351df7af",
     "name": "Detour (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic",
-      "the-planewalkers-path-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic", "the-planewalkers-path-epic"]
   },
   {
     "id": "a289af20-4aa0-430f-bb1a-828932aceb1c",
     "name": "Rest Stop (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "c40e7769-de91-4a72-8573-ea84a7b5acb1",
     "name": "Rest Stop (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic",
-      "the-planewalkers-path-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic", "the-planewalkers-path-epic"]
   },
   {
     "id": "d34c60cc-f866-4dae-924e-fcc2f18bf029",
     "name": "The Tracker's Trap (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "1300301e-4eff-4d82-a59e-bfb24aee3b49",
     "name": "The Tracker's Trap (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "e6cee364-8ee4-4743-af5e-c6c74def5061",
     "name": "What Goes Up (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "f7dff475-9ff5-4854-b06f-d7d85ef06172",
     "name": "What Goes Up (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "f6c53688-08e4-4cf2-8c4c-496f708a7473",
     "name": "Breaking the Ranks (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "cd3ae100-c77e-4a56-919c-7cc4f7c999f0",
     "name": "Breaking the Ranks (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "852fd80b-1a18-4a35-a538-8e56b890d6ac",
     "name": "A Break in the Ice (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "62e279e2-a01e-4982-ae01-e465700fb0f8",
     "name": "A Break in the Ice (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "4c2349ca-e44a-4da9-a5b5-2c34d4356cb7",
     "name": "Lines of Supply (H)",
-    "sagas": [
-      "honor-the-huntsilver-heroic",
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["honor-the-huntsilver-heroic", "perils-of-cormyr-heroic"]
   },
   {
     "id": "5d345adb-f55b-4eba-b6c6-3d45e5467dc8",
     "name": "Lines of Supply (E)",
-    "sagas": [
-      "honor-the-huntsilver-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["honor-the-huntsilver-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "a8d6b50f-5533-4560-bb34-a22bf729f37c",
     "name": "Murder by Night (H)",
-    "sagas": [
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["perils-of-cormyr-heroic"]
   },
   {
     "id": "5fed0788-c1f4-4943-8b76-1d5a27932c6b",
     "name": "The Riddle (H)",
-    "sagas": [
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["perils-of-cormyr-heroic"]
   },
   {
     "id": "528fc40d-5c1b-4d06-b57b-f120175a57c2",
     "name": "Escape Plan (H)",
-    "sagas": [
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["perils-of-cormyr-heroic"]
   },
   {
     "id": "eb13ab22-ba2d-4fc2-8ce9-c8075a13cc9b",
     "name": "Disciples of Shar (H)",
-    "sagas": [
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["perils-of-cormyr-heroic"]
   },
   {
     "id": "b9c7ca1e-5284-47e0-aea1-9ea87f9447a3",
     "name": "Disciples of Shar (E)",
-    "sagas": [
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["perils-of-cormyr-epic"]
   },
   {
     "id": "51dcb653-e9a6-408b-bb90-fff51550ca10",
     "name": "Shadow of a Doubt (H)",
-    "sagas": [
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["perils-of-cormyr-heroic"]
   },
   {
     "id": "3ebb54a1-ba4e-4f9f-aff7-0c3052a8c096",
     "name": "Shadow of a Doubt (E)",
-    "sagas": [
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["perils-of-cormyr-epic"]
   },
   {
     "id": "a289b020-4aa0-430f-ab1a-82893a9bc12d",
     "name": "Outbreak (H)",
-    "sagas": [
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["perils-of-cormyr-heroic"]
   },
   {
     "id": "b39bc131-5bb1-4410-bc2b-93943aacd23e",
     "name": "Outbreak (E)",
-    "sagas": [
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["perils-of-cormyr-epic"]
   },
   {
     "id": "72ba7877-0877-4f9a-91e0-b3d900254516",
     "name": "Thorn and Paw (H)",
-    "sagas": [
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["perils-of-cormyr-heroic"]
   },
   {
     "id": "b159ee65-f142-42b6-814d-715ac2ee6a4a",
     "name": "Thorn and Paw (E)",
-    "sagas": [
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["perils-of-cormyr-epic"]
   },
   {
     "id": "b368fe65-6e2c-4f75-b9ae-0c3e431deb08",
     "name": "Overgrowth (H)",
-    "sagas": [
-      "perils-of-cormyr-heroic"
-    ]
+    "sagas": ["perils-of-cormyr-heroic"]
   },
   {
     "id": "f7dff575-9ff5-4854-a06f-d7d85be01672",
     "name": "Overgrowth (E)",
-    "sagas": [
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["perils-of-cormyr-epic"]
   },
   {
     "id": "08e00686-af06-4965-b171-e8e86c017283",
     "name": "Impossible Demands (E)",
-    "sagas": [
-      "menace-of-the-underdark-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["menace-of-the-underdark-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "e8279a91-a6e3-46c4-ac55-fba7420a26df",
     "name": "The Unquiet Graves (E)",
-    "sagas": [
-      "menace-of-the-underdark-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["menace-of-the-underdark-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "fb8be7f5-2248-4a9c-875e-4451c5a63690",
     "name": "The Lost Thread (E)",
-    "sagas": [
-      "menace-of-the-underdark-epic",
-      "perils-of-cormyr-epic",
-      "the-planewalkers-path-epic"
-    ]
+    "sagas": ["menace-of-the-underdark-epic", "perils-of-cormyr-epic", "the-planewalkers-path-epic"]
   },
   {
     "id": "39bacada-e518-4fac-92db-83eddb542867",
     "name": "The Battle for Eveningstar (E)",
-    "sagas": [
-      "menace-of-the-underdark-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["menace-of-the-underdark-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "c9e4edb0-9446-43ae-b192-7122624a3d03",
     "name": "Don't Drink the Water (E)",
-    "sagas": [
-      "menace-of-the-underdark-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["menace-of-the-underdark-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "5d345bdb-f55b-4eba-a6c6-3d45e5467dc8",
     "name": "In the Belly of the Beast (E)",
-    "sagas": [
-      "menace-of-the-underdark-epic",
-      "perils-of-cormyr-epic"
-    ]
+    "sagas": ["menace-of-the-underdark-epic", "perils-of-cormyr-epic"]
   },
   {
     "id": "31d7e542-57b1-4b89-8a94-a56888aa29dd",
     "name": "Combatting Corruption (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "2e648ede-a001-498a-8033-75f0a18a26bb",
     "name": "Combatting Corruption (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "3ab48123-92e6-4947-9a6b-5850f5ab8d1c",
     "name": "The Legend of the Lost Locket (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "cc3e0fe4-1429-497e-ab60-620233cd028c",
     "name": "The Legend of the Lost Locket (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "45deda89-5cfe-4a1a-988e-d856a95ae668",
     "name": "A Frosty Reception (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "79f4b7db-c2ba-4841-905e-97bb7095e78b",
     "name": "A Frosty Reception (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "a8b138ce-3943-4ebf-80bb-26f2be120feb",
     "name": "Witch Hunt (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "6d7963d3-c002-4415-b606-9661a8a7e9b0",
     "name": "Witch Hunt (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "88b8b0cb-d569-4cce-a3fd-1e87b8dc82e8",
     "name": "The Endless Revels (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "535db3b9-f905-43da-a7ca-8db761e74837",
     "name": "The Endless Revels (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "827b5c2d-cc77-4acf-8744-a2a90f333acc",
     "name": "Make Believe (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "2b6d1fec-c2d0-4a83-8a40-5b9faf06e99f",
     "name": "Make Believe (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "5ce8f8b1-f58e-4abe-8a39-c49cf7707c49",
     "name": "Wake Me Up Inside (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "b699ce75-9f6e-4fbf-b719-601b4f78ae01",
     "name": "Wake Me Up Inside (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "d786c78a-2f7a-4c33-9d88-e57077b5f40b",
     "name": "Quid Pro Quo (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "9e13af04-bfc1-4b38-98c0-0c5a519b8956",
     "name": "Quid Pro Quo (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "c6c45442-5656-4b50-8a53-0018c072b0e4",
     "name": "The Icemount Curse (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "94b493cc-dc54-471c-8805-e1bdec442abf",
     "name": "The Icemount Curse (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "3d376f02-8b35-4e16-a0e6-aa38b38905cd",
     "name": "The Knight Who Cried Windmill (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "b3567b63-592c-4818-8e96-f7ff2e8a0cb4",
     "name": "The Knight Who Cried Windmill (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "4b508848-abcc-4200-a189-8010985122ac",
     "name": "The Thornwright (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "b6dfbdf5-a7aa-4d2e-8d13-281062c82d28",
     "name": "The Thornwright (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "0591e531-bde8-4847-9252-ddca37ca261d",
     "name": "Needle in a Fey Stack (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "59840157-d2a6-4dd8-acf4-821a1c2342e7",
     "name": "Needle in a Fey Stack (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "b58144b9-dcf4-4c49-a7c1-14b2efbafba6",
     "name": "Immortality Lessons (H)",
-    "sagas": [
-      "fables-of-the-feywild-heroic"
-    ]
+    "sagas": ["fables-of-the-feywild-heroic"]
   },
   {
     "id": "eb53d0d1-48c2-4354-bc30-0cf7fdf4f521",
     "name": "Immortality Lessons (L)",
-    "sagas": [
-      "fables-of-the-feywild-legendary"
-    ]
+    "sagas": ["fables-of-the-feywild-legendary"]
   },
   {
     "id": "7024c06c-bf9b-45fb-8043-752106849258",
     "name": "The Haunting of Saltmarsh (H)",
-    "sagas": [
-      "saltmarsh-heroic"
-    ]
+    "sagas": ["saltmarsh-heroic"]
   },
   {
     "id": "1bc8190b-9434-478c-b69a-aaa089e1ea67",
     "name": "The Haunting of Saltmarsh (L)",
-    "sagas": [
-      "saltmarsh-legendary"
-    ]
+    "sagas": ["saltmarsh-legendary"]
   },
   {
     "id": "24b8b8ca-26a0-402b-b7be-54c02d0e3f75",
     "name": "Under the Cover of Darkness (H)",
-    "sagas": [
-      "saltmarsh-heroic"
-    ]
+    "sagas": ["saltmarsh-heroic"]
   },
   {
     "id": "22284ef2-83cb-4efb-9e68-8a0820a3d10b",
     "name": "Under the Cover of Darkness (L)",
-    "sagas": [
-      "saltmarsh-legendary"
-    ]
+    "sagas": ["saltmarsh-legendary"]
   },
   {
     "id": "3f5ef50e-261d-4bcb-9091-84528cb802f2",
     "name": "Danger at Dunwater (H)",
-    "sagas": [
-      "saltmarsh-heroic"
-    ]
+    "sagas": ["saltmarsh-heroic"]
   },
   {
     "id": "b3ffe62f-3359-4919-af73-1e51aa51d391",
     "name": "Danger at Dunwater (L)",
-    "sagas": [
-      "saltmarsh-legendary"
-    ]
+    "sagas": ["saltmarsh-legendary"]
   },
   {
     "id": "348bbfdb-34cd-4653-aece-69e1d7396ed8",
     "name": "The Final Enemy (H)",
-    "sagas": [
-      "saltmarsh-heroic"
-    ]
+    "sagas": ["saltmarsh-heroic"]
   },
   {
     "id": "039ffa09-4701-41d9-9559-7276ffa6b0fd",
     "name": "The Final Enemy (L)",
-    "sagas": [
-      "saltmarsh-legendary"
-    ]
+    "sagas": ["saltmarsh-legendary"]
   },
   {
     "id": "6b609bfb-155c-4a04-9d4f-3eff98734ed6",
     "name": "Swim at Your Own Risk (H)",
-    "sagas": [
-      "saltmarsh-heroic"
-    ]
+    "sagas": ["saltmarsh-heroic"]
   },
   {
     "id": "7236e8bd-2118-4f93-8934-31fcdf0cf8d0",
     "name": "Swim at Your Own Risk (L)",
-    "sagas": [
-      "saltmarsh-legendary"
-    ]
+    "sagas": ["saltmarsh-legendary"]
   },
   {
     "id": "1a2ec9af-bcdd-4310-a0fe-1f7fa753f9e5",
     "name": "Back to Basics (H)",
-    "sagas": [
-      "saltmarsh-heroic"
-    ]
+    "sagas": ["saltmarsh-heroic"]
   },
   {
     "id": "85f2fe8e-7540-4763-8b32-9a712d177440",
     "name": "Back to Basics (L)",
-    "sagas": [
-      "saltmarsh-legendary"
-    ]
+    "sagas": ["saltmarsh-legendary"]
   },
   {
     "id": "af9528f0-aa2c-41eb-8f92-e8ff93d10cc9",
     "name": "What Sleeps Below (H)",
-    "sagas": [
-      "saltmarsh-heroic"
-    ]
+    "sagas": ["saltmarsh-heroic"]
   },
   {
     "id": "657bd6c0-98d1-4d9b-a7ae-606062631696",
     "name": "What Sleeps Below (L)",
-    "sagas": [
-      "saltmarsh-legendary"
-    ]
+    "sagas": ["saltmarsh-legendary"]
   },
   {
     "id": "e84b5633-ea50-4bf2-89fd-b24ec73ef19e",
     "name": "The Hijacked Haul (H)",
-    "sagas": [
-      "saltmarsh-heroic"
-    ]
+    "sagas": ["saltmarsh-heroic"]
   },
   {
     "id": "4533493c-0b71-4f9e-87d1-cf6d4497973f",
     "name": "The Hijacked Haul (L)",
-    "sagas": [
-      "saltmarsh-legendary"
-    ]
+    "sagas": ["saltmarsh-legendary"]
   },
   {
     "id": "2143f7fd-435b-451f-8945-8437fb3dc86b",
     "name": "Rest for the Night (H)",
-    "sagas": [
-      "saltmarsh-heroic"
-    ]
+    "sagas": ["saltmarsh-heroic"]
   },
   {
     "id": "0ac1ac88-441f-4433-8491-3f58a9878fd7",
     "name": "Rest for the Night (L)",
-    "sagas": [
-      "saltmarsh-legendary"
-    ]
+    "sagas": ["saltmarsh-legendary"]
   },
   {
     "id": "bbcb4738-ab88-48e6-8b1f-e142b57d92d8",
     "name": "Down You Go (H)",
-    "sagas": [
-      "saltmarsh-heroic"
-    ]
+    "sagas": ["saltmarsh-heroic"]
   },
   {
     "id": "ec81b891-bcea-4ac3-887c-b10ebca19bef",
     "name": "Down You Go (L)",
-    "sagas": [
-      "saltmarsh-legendary"
-    ]
+    "sagas": ["saltmarsh-legendary"]
   },
   {
     "id": "d52d9612-1ea3-4576-8d74-d1e63e339816",
     "name": "The Curse and the Captive Crustacean (H)",
-    "sagas": [
-      "isle-of-dread-heroic"
-    ]
+    "sagas": ["isle-of-dread-heroic"]
   },
   {
     "id": "db65ee34-ae71-4e25-a77d-deec23782ca5",
     "name": "The Curse and the Captive Crustacean (L)",
-    "sagas": [
-      "isle-of-dread-legendary"
-    ]
+    "sagas": ["isle-of-dread-legendary"]
   },
   {
     "id": "251d5cfa-96fe-4e07-9a9e-7facbffed8cf",
     "name": "Bullywugs and Booby Traps (H)",
-    "sagas": [
-      "isle-of-dread-heroic"
-    ]
+    "sagas": ["isle-of-dread-heroic"]
   },
   {
     "id": "3edbaa8f-bb6b-4103-8681-8e36104ccf9c",
     "name": "Bullywugs and Booby Traps (L)",
-    "sagas": [
-      "isle-of-dread-legendary"
-    ]
+    "sagas": ["isle-of-dread-legendary"]
   },
   {
     "id": "af431620-76b8-462e-b5ed-83179af36cc6",
     "name": "Plundering Pirates' Point (H)",
-    "sagas": [
-      "isle-of-dread-heroic"
-    ]
+    "sagas": ["isle-of-dread-heroic"]
   },
   {
     "id": "069a71bd-eb5d-49e3-baaa-4c425ae30333",
     "name": "Plundering Pirates' Point (L)",
-    "sagas": [
-      "isle-of-dread-legendary"
-    ]
+    "sagas": ["isle-of-dread-legendary"]
   },
   {
     "id": "bd026ad6-32bb-4710-940d-fe54cd6d3de2",
     "name": "The Stone Crypt Chronicle (H)",
-    "sagas": [
-      "isle-of-dread-heroic"
-    ]
+    "sagas": ["isle-of-dread-heroic"]
   },
   {
     "id": "42292397-a4b9-45bf-8dcd-b807d1d3f845",
     "name": "The Stone Crypt Chronicle (L)",
-    "sagas": [
-      "isle-of-dread-legendary"
-    ]
+    "sagas": ["isle-of-dread-legendary"]
   },
   {
     "id": "14adbd8b-fcea-4172-9aa6-73e413b51180",
     "name": "Captive of the Hidden God (H)",
-    "sagas": [
-      "isle-of-dread-heroic"
-    ]
+    "sagas": ["isle-of-dread-heroic"]
   },
   {
     "id": "75abe617-74d3-49b4-a4db-8a5c85ca7c60",
     "name": "Captive of the Hidden God (L)",
-    "sagas": [
-      "isle-of-dread-legendary"
-    ]
+    "sagas": ["isle-of-dread-legendary"]
   },
   {
     "id": "07c8a802-5944-47f3-9689-15ff717caaae",
     "name": "Spiders and Flies (H)",
-    "sagas": [
-      "isle-of-dread-heroic"
-    ]
+    "sagas": ["isle-of-dread-heroic"]
   },
   {
     "id": "da3ebfda-489d-4adf-8548-6b8cbad6dd46",
     "name": "Spiders and Flies (L)",
-    "sagas": [
-      "isle-of-dread-legendary"
-    ]
+    "sagas": ["isle-of-dread-legendary"]
   },
   {
     "id": "38939427-3663-4a68-b77a-48930af92d35",
     "name": "The Trouble with Tar Pits (H)",
-    "sagas": [
-      "isle-of-dread-heroic"
-    ]
+    "sagas": ["isle-of-dread-heroic"]
   },
   {
     "id": "1b5e5f04-225c-44b5-a684-8642ede4bae9",
     "name": "The Trouble with Tar Pits (L)",
-    "sagas": [
-      "isle-of-dread-legendary"
-    ]
+    "sagas": ["isle-of-dread-legendary"]
   },
   {
     "id": "1211cd3b-1962-4473-9ca3-e34a7b6368dc",
     "name": "Whispers of Return (H)",
-    "sagas": [
-      "isle-of-dread-heroic"
-    ]
+    "sagas": ["isle-of-dread-heroic"]
   },
   {
     "id": "1f4fecc3-9dd4-443a-a985-61953049a060",
     "name": "Whispers of Return (L)",
-    "sagas": [
-      "isle-of-dread-legendary"
-    ]
+    "sagas": ["isle-of-dread-legendary"]
   },
   {
     "id": "279bbaca-5426-420e-9530-61a8d4357c19",
     "name": "Wild Thing (H)",
-    "sagas": [
-      "isle-of-dread-heroic"
-    ]
+    "sagas": ["isle-of-dread-heroic"]
   },
   {
     "id": "833e7038-a079-45fa-afe9-697324f68f75",
     "name": "Wild Thing (L)",
-    "sagas": [
-      "isle-of-dread-legendary"
-    ]
+    "sagas": ["isle-of-dread-legendary"]
   },
   {
     "id": "c353b6b1-70e4-43fe-8bcf-3e4c36be5a26",
     "name": "Trials of the Triceratops (H)",
-    "sagas": [
-      "isle-of-dread-heroic"
-    ]
+    "sagas": ["isle-of-dread-heroic"]
   },
   {
     "id": "9f5f5f95-1ef9-47ad-92df-73738534d0df",
     "name": "Trials of the Triceratops (L)",
-    "sagas": [
-      "isle-of-dread-legendary"
-    ]
+    "sagas": ["isle-of-dread-legendary"]
   },
   {
     "id": "2c505c23-fe76-4571-b5c7-ef7fcbdbaab4",
     "name": "All Hail the King (H)",
-    "sagas": [
-      "isle-of-dread-heroic"
-    ]
+    "sagas": ["isle-of-dread-heroic"]
   },
   {
     "id": "7b642905-889f-4731-a027-c8a4801efd3d",
     "name": "All Hail the King (L)",
-    "sagas": [
-      "isle-of-dread-legendary"
-    ]
+    "sagas": ["isle-of-dread-legendary"]
   },
   {
     "id": "6386a2a4-8c7e-4d25-b1ce-18030c192d6e",
     "name": "Fall of the Forbidden Temple (H)",
-    "sagas": [
-      "isle-of-dread-heroic"
-    ]
+    "sagas": ["isle-of-dread-heroic"]
   },
   {
     "id": "5e695fed-1e2a-4774-80e7-e61ebc588de1",
     "name": "Fall of the Forbidden Temple (L)",
-    "sagas": [
-      "isle-of-dread-legendary"
-    ]
+    "sagas": ["isle-of-dread-legendary"]
   },
   {
     "id": "19152ee9-9313-4bd3-8a29-fcdc4a5490ea",
     "name": "Vecna Unleashed (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "fabe3675-3bda-46a1-bf21-6248e502c652",
     "name": "Vecna Unleashed (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "7ab8ea32-6969-486a-98e1-d3cfa81d4045",
     "name": "Vecna Denied (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "8e14e40f-a469-4d24-9766-03dbffd3350e",
     "name": "Vecna Denied (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "dfb39b0e-9ff4-4d18-ac8d-e111a4a40327",
     "name": "The Bark and the Blade (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "19befaa8-803c-401e-84e2-574638f19670",
     "name": "The Bark and the Blade (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "f80fc32c-bc71-4307-ad83-0175fe6be984",
     "name": "Enemy of My Enemy (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "c4f71cb0-843a-4a04-a2fb-bf4ab5f540cc",
     "name": "Enemy of My Enemy (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "4da29aa7-a4d1-48e3-95d5-3d8ff7e33a39",
     "name": "Taken in Hand (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "953b8eb4-e29c-4b14-8f3e-ffdc277a8757",
     "name": "Taken in Hand (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "cf83200d-835e-43fe-b51b-89e8fd0bdce4",
     "name": "The Devils to Pay (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "1bf22aa7-28f9-4676-b17f-3bc8b2dd318e",
     "name": "The Devils to Pay (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "94f80aae-5c72-45c2-8683-f93db1a1506f",
     "name": "Turn the Page (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "c8cee980-c9be-474f-9466-96e5b72f9965",
     "name": "Turn the Page (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "721cc580-5e32-4718-9cd0-3c36db66d6f6",
     "name": "Grand Theft Aureon (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "bf3fa10d-d95e-47b4-a23a-b279fd4e1e88",
     "name": "Grand Theft Aureon (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "62956577-8078-4de4-b1e2-496dc9c854e7",
     "name": "The Evil We Know (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "a81ee4d0-77e8-496a-a010-aeddf8882224",
     "name": "The Evil We Know (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "126fc5c0-f2cd-45cb-ac18-64ef7a324201",
     "name": "Law and Order (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "0003bada-5892-4ed3-b327-11b9be1d2c5a",
     "name": "Law and Order (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "5e2d92f0-0c60-4643-8d59-6f11fad43370",
     "name": "Paper Trail (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "ac932fa2-f668-46d7-bc87-63624acade8a",
     "name": "Paper Trail (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "d5047370-fbbc-4a21-b2e9-d431d1cf38a0",
     "name": "Party 101 (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "5ffec8fd-ced8-4789-9286-cf5c5e5d4ebd",
     "name": "Party 101 (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "de57930d-95a9-4506-a8cf-1f865821f728",
     "name": "What Dreams May Come (H)",
-    "sagas": [
-      "vecna-unleashed-heroic"
-    ]
+    "sagas": ["vecna-unleashed-heroic"]
   },
   {
     "id": "c9132c84-85d0-4253-9af6-e5388b882cd1",
     "name": "What Dreams May Come (L)",
-    "sagas": [
-      "vecna-unleashed-legendary"
-    ]
+    "sagas": ["vecna-unleashed-legendary"]
   },
   {
     "id": "2d92edf5-fc8f-4147-adda-a85d4969bee8",
     "name": "The Safehold (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "d35df834-df8f-43ce-a6f3-46e04c6daad9",
     "name": "The Safehold (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "e3db73a4-71d1-4eb9-a587-80739f85c8e8",
     "name": "Ettercap Incursion (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "d83a5ed4-7045-4028-b96b-242932d439a3",
     "name": "Ettercap Incursion (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "adae7fc7-3927-41b9-aea6-becf0292ffa4",
     "name": "Death Hosts This Banquet (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "8f4fcc90-bfcb-4be2-a4a4-ab418f1f18e6",
     "name": "Death Hosts This Banquet (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "65eb8520-9e40-4df9-8db5-dda989613706",
     "name": "The Key to the Mythal (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "1e3ddf29-fb16-42eb-a06b-eaeff3aa9267",
     "name": "The Key to the Mythal (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "fc681e8e-b0e5-45bc-8e87-45150c66e8ac",
     "name": "Secrets of the Red Wizards (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "7436ab85-047a-4e98-9da8-eba281a3cea9",
     "name": "Secrets of the Red Wizards (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "c6dc6c21-ab88-4edf-b78c-218d5bf0221f",
     "name": "The House of Gems (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "81fece92-1447-473b-92aa-8d1a410933b9",
     "name": "The House of Gems (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "d0afb6eb-ad61-47e2-bf90-0b0c74f6afb2",
     "name": "Times Long Past (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "146a26ed-006c-4100-9579-f6bffd8ebf05",
     "name": "Times Long Past (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "a0fd8a6f-3ca4-4a79-a9d3-3ae00593c173",
     "name": "The Zulkir's Plan (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "f684cf96-aa6d-42c1-9e31-59b63c4f08fe",
     "name": "The Zulkir's Plan (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "ca11e5c7-b9ea-4d88-9789-31aca1b32c84",
     "name": "Book Burning (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "1161f878-64a4-48f5-ba62-6427430d7572",
     "name": "Book Burning (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "e2439063-6268-4f36-a919-eb375755594c",
     "name": "Seeds of Decay (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "4adef1dc-e5c9-4d5b-ad3e-5e1ae403d57b",
     "name": "Seeds of Decay (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "cd4dea0a-5b18-445e-a3d4-b3b0ff3787f7",
     "name": "Portal to Below (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "13a06713-d015-40a4-8af6-fd98bac3f28e",
     "name": "Portal to Below (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "9f9f80e8-790a-49c9-ad3f-4488383f3e2b",
     "name": "Voices of the Dead (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "f30c54aa-8676-45da-9e1b-4b30286eae74",
     "name": "Voices of the Dead (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "eeee7eb1-285c-4745-8e6b-d27f8c1227d5",
     "name": "Oghma's Song (H)",
-    "sagas": [
-      "myth-drannor-heroic"
-    ]
+    "sagas": ["myth-drannor-heroic"]
   },
   {
     "id": "6f7519e2-69a0-4ea3-a2f3-31de95df600a",
     "name": "Oghma's Song (L)",
-    "sagas": [
-      "myth-drannor-legendary"
-    ]
+    "sagas": ["myth-drannor-legendary"]
   },
   {
     "id": "40feb4f6-0f1b-44cb-9dd1-18dec9058b86",
     "name": "The Body Snatchers (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "ad4b8dc3-0449-4668-bc2a-e053bf036acf",
     "name": "The Body Snatchers (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   },
   {
     "id": "4a5e072a-03c5-4f06-a16a-6017221c684d",
     "name": "Special Delivery (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "c253f597-6fee-40c3-bd69-c0fd89fb2aaa",
     "name": "Special Delivery (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   },
   {
     "id": "b85f2a59-a189-4805-bf78-9f5776900305",
     "name": "A Miner Sacrifice (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "6b0b1287-9079-4eab-ae51-a8a8edef44df",
     "name": "A Miner Sacrifice (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   },
   {
     "id": "bba07e9e-e477-496d-8d7f-2923ca195c99",
     "name": "Beneath the City Streets (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "178da9b9-e95f-4ed9-b83b-e30853f7c6ac",
     "name": "Beneath the City Streets (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   },
   {
     "id": "2793011e-87b8-458b-8f03-5a76e702de4d",
     "name": "The Proper Authorities (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "9949b9fa-85f0-476d-96c2-92c67268157b",
     "name": "The Proper Authorities (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   },
   {
     "id": "8caf070e-4eca-4366-b62d-bb6157fc709b",
     "name": "The Wish (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "59bb3066-50c7-45e6-9ee5-1247f9ff9aa5",
     "name": "The Wish (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   },
   {
     "id": "11cdde94-45af-427a-ad20-df61c1f52fd1",
     "name": "Ends and Means (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "aeb42218-fb31-482f-9688-7c64e567f70f",
     "name": "Ends and Means (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   },
   {
     "id": "7dbaf5da-a9f1-446d-ab35-249021710007",
     "name": "Cold Snap (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "f1bfb2bc-caa1-43fd-97ef-62de8773b6eb",
     "name": "Cold Snap (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   },
   {
     "id": "2df4d161-6376-441a-b148-c0dc297daf75",
     "name": "Locked Away (pt 1) (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "9524059e-e9ab-40ad-b1e1-e591b778b84f",
     "name": "Locked Away (pt 1) (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   },
   {
     "id": "db61ec29-9731-4ac3-83d9-a29acdc0c7d6",
     "name": "Locked Away (pt 2) (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "d4cb68ad-78cf-4b35-9732-1b08a2c21c3a",
     "name": "Locked Away (pt 2) (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   },
   {
     "id": "72038a7f-a8b3-4018-b603-7f6eae136136",
     "name": "Snowfall and Sunlight (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "cbd3cdd1-5754-4792-a2d9-e31990ae5d57",
     "name": "Snowfall and Sunlight (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   },
   {
     "id": "55471bc6-d53b-4655-9f23-09d9c7a229e1",
     "name": "Zoo Creeper (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "e69fe89b-9eea-44eb-890f-4c54396df8c1",
     "name": "Zoo Creeper (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   },
   {
     "id": "189ee934-3b24-4637-bf64-c013c64674ac",
     "name": "A Light in the Attic (H)",
-    "sagas": [
-      "chill-of-ravenloft-heroic"
-    ]
+    "sagas": ["chill-of-ravenloft-heroic"]
   },
   {
     "id": "626276d6-73f8-4696-8025-e1d20bf8abc7",
     "name": "A Light in the Attic (L)",
-    "sagas": [
-      "chill-of-ravenloft-legendary"
-    ]
+    "sagas": ["chill-of-ravenloft-legendary"]
   }
 ]
