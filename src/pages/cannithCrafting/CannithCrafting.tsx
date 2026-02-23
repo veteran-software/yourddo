@@ -698,11 +698,7 @@ const CannithCrafting = () => {
     const groupedByDisplay = findAugmentsForSlot(augmentSlot.slotType)
     const flatForSlot = Object.values(groupedByDisplay).flat() as unknown as Ingredient[]
     const augmentOptions = { [augmentSlot.slotType]: flatForSlot } as Record<string, Ingredient[]>
-    const filteredAugmentOptions = filterAugmentOptions(
-      augmentOptions,
-      augmentSlot.filters,
-      augmentSlot.filterMode
-    )
+    const filteredAugmentOptions = filterAugmentOptions(augmentOptions, augmentSlot.filters, augmentSlot.filterMode)
     const selectedAugments: Record<string, AugmentItem | null> = {
       [augmentSlot.slotType]: augmentSlot.selectedAugment
     }

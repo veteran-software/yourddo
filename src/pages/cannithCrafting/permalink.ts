@@ -19,9 +19,7 @@ const ENHANCEMENT_NAME_TO_ID: Map<string, number> = (() => {
 })()
 
 const AUGMENT_NAME_TO_ID: Map<string, number> = (() => {
-  const names = augmentMaster
-    .map((a) => a.name)
-    .toSorted((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }))
+  const names = augmentMaster.map((a) => a.name).toSorted((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }))
   const map = new Map<string, number>()
   names.forEach((n, i) => map.set(n, i))
   return map
@@ -81,8 +79,9 @@ export interface PermalinkStatePayload {
 
 // ----- Helpers -----
 const genId = (): string =>
+  (globalThis.crypto as Crypto | undefined)?.randomUUID() ??
   // eslint-disable-next-line sonarjs/pseudo-random
-  (globalThis.crypto as Crypto | undefined)?.randomUUID() ?? `cc-${Date.now().toString()}-${Math.random().toString(36).slice(2)}`
+  `cc-${Date.now().toString()}-${Math.random().toString(36).slice(2)}`
 
 // ----- Encoding -----
 export const encodeCannithPermalink = (args: {
@@ -110,9 +109,7 @@ export const encodeCannithPermalink = (args: {
       const color = COLOR_CODE[s.slotType] ?? 0
       const augId = s.selectedAugment ? (AUGMENT_NAME_TO_ID.get(s.selectedAugment.name) ?? -1) + 1 : 0
       const mode: 0 | 1 = s.filterMode === 'AND' ? 1 : 0
-      const filters = s.filters
-        .map((fx) => EFFECT_NAME_TO_ID.get(fx))
-        .filter((n): n is number => typeof n === 'number')
+      const filters = s.filters.map((fx) => EFFECT_NAME_TO_ID.get(fx)).filter((n): n is number => typeof n === 'number')
       return filters.length ? [color, augId, mode, filters] : [color, augId, mode]
     })
     return [slotIdx, ml, mark, p, su, x, aug]
@@ -123,9 +120,7 @@ export const encodeCannithPermalink = (args: {
 }
 
 // ----- Decoding -----
-export const tryDecodeCannithPermalink = (
-  cc: string
-): { ok: true; data: PermalinkStatePayload } | { ok: false } => {
+export const tryDecodeCannithPermalink = (cc: string): { ok: true; data: PermalinkStatePayload } | { ok: false } => {
   try {
     const text = decompressFromEncodedURIComponent(cc)
     if (!text) return { ok: false }
@@ -137,7 +132,9 @@ export const tryDecodeCannithPermalink = (
     const activeKeysDecoded = p.a.map((i) => ALL_SLOT_KEYS[i]?.key).filter(Boolean)
     const collapsedDecoded = p.c.map((i) => ALL_SLOT_KEYS[i]?.key).filter(Boolean)
 
-    const enhById = new Map<number, string>(Array.from(ENHANCEMENT_NAME_TO_ID.entries()).map(([name, id]) => [id, name]))
+    const enhById = new Map<number, string>(
+      Array.from(ENHANCEMENT_NAME_TO_ID.entries()).map(([name, id]) => [id, name])
+    )
     const augById = new Map<number, string>(Array.from(AUGMENT_NAME_TO_ID.entries()).map(([name, id]) => [id, name]))
     const effectById = new Map<number, string>(Array.from(EFFECT_NAME_TO_ID.entries()).map(([name, id]) => [id, name]))
 
