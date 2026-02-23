@@ -17,9 +17,12 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown
+  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
+import type {
+  ShoppingListTotals
+} from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
@@ -155,47 +158,53 @@ const CannithCrafting = () => {
   // Load from permalink (if present) or sessionStorage once
   const didLoadRef = useRef(false)
 
-  useEffect(() => {
-    try {
-      if (didLoadRef.current) return
-      const { cc, source } = readCcFromUrl(location)
-      if (cc) {
-        // Try compact v2 first
-        const v2 = tryDecodeCannithPermalink(cc)
+  const loadInitialState = useCallback((): boolean => {
+    const { cc, source } = readCcFromUrl(location)
 
-        if (v2.ok) {
-          const data = v2.data
-          setItems(sanitizeAugmentsOnItems(data))
-          setActiveKeys(data.activeKeys)
-          setMasterMinLevel(typeof data.masterMinLevel === 'number' ? data.masterMinLevel : 1)
-          setCollapsedKeys(Array.isArray(data.collapsedKeys) ? data.collapsedKeys : [])
-          Promise.resolve(removeCcFromUrl(navigate, location, source)).catch(console.error)
-          didLoadRef.current = true
-
-          return
-        }
+    if (cc) {
+      const v2 = tryDecodeCannithPermalink(cc)
+      if (v2.ok) {
+        const data = v2.data
+        setItems(sanitizeAugmentsOnItems(data))
+        setActiveKeys(data.activeKeys)
+        setMasterMinLevel(typeof data.masterMinLevel === 'number' ? data.masterMinLevel : 1)
+        setCollapsedKeys(Array.isArray(data.collapsedKeys) ? data.collapsedKeys : [])
+        Promise.resolve(removeCcFromUrl(navigate, location, source)).catch(console.error)
+        return true
       }
+    }
 
-      const loadedText = sessionStorage.getItem(STORAGE_KEY)
-      if (loadedText) {
-        const parsed = JSON.parse(loadedText) as {
-          items: Record<string, ItemState>
-          activeKeys: string[]
-          masterMinLevel?: number
-          masterBindingBound?: boolean
-          collapsedKeys?: string[]
-        }
-        setItems(sanitizeAugmentsOnItems(parsed))
-        setActiveKeys(parsed.activeKeys)
-        setMasterMinLevel(typeof parsed.masterMinLevel === 'number' ? parsed.masterMinLevel : 1)
-        setMasterBindingBound(typeof parsed.masterBindingBound === 'boolean' ? parsed.masterBindingBound : true)
-        setCollapsedKeys(Array.isArray(parsed.collapsedKeys) ? parsed.collapsedKeys : [])
+    const loadedText = sessionStorage.getItem(STORAGE_KEY)
+    if (!loadedText) return false
+
+    const parsed = JSON.parse(loadedText) as {
+      items: Record<string, ItemState>
+      activeKeys: string[]
+      masterMinLevel?: number
+      masterBindingBound?: boolean
+      collapsedKeys?: string[]
+    }
+
+    setItems(sanitizeAugmentsOnItems(parsed))
+    setActiveKeys(parsed.activeKeys)
+    setMasterMinLevel(typeof parsed.masterMinLevel === 'number' ? parsed.masterMinLevel : 1)
+    setMasterBindingBound(typeof parsed.masterBindingBound === 'boolean' ? parsed.masterBindingBound : true)
+    setCollapsedKeys(Array.isArray(parsed.collapsedKeys) ? parsed.collapsedKeys : [])
+
+    return true
+  }, [location, navigate])
+
+  useEffect(() => {
+    if (didLoadRef.current) return
+    try {
+      const loaded = loadInitialState()
+      if (loaded) {
         didLoadRef.current = true
       }
     } catch (err) {
       console.warn('CannithCrafting: failed to load session state – resetting to defaults.', err)
     }
-  }, [location, navigate])
+  }, [loadInitialState])
 
   // Persist on change
   useEffect(() => {
@@ -248,31 +257,27 @@ const CannithCrafting = () => {
   }, [computeAugmentMinLevelFloor, items, masterMinLevel])
 
   const toggleSlot = (slotKey: string) => {
-    // Determine the current state synchronously for this toggle action
     const wasActive = activeKeys.includes(slotKey)
 
-    setActiveKeys((prev) => {
-      if (prev.includes(slotKey)) {
-        // also clear any collapsed state so it defaults open next time
-        setCollapsedKeys((prevCollapsedKeys) => prevCollapsedKeys.filter((key) => key !== slotKey))
-        return prev.filter((key) => key !== slotKey)
-      }
-      return [...prev, slotKey]
-    })
+    if (wasActive) {
+      // Remove from active and clear collapsed state for this slot
+      setActiveKeys((prev) => prev.filter((key) => key !== slotKey))
+      setCollapsedKeys((prevCollapsedKeys) => prevCollapsedKeys.filter((key) => key !== slotKey))
 
-    setItems((prev) => {
-      if (wasActive) {
-        // Deselecting: remove this item's state entirely to clear all data
-        if (!(slotKey in prev)) {
-          return prev
-        }
-
+      // Deselecting: remove this item's state entirely to clear all data
+      setItems((prev) => {
+        if (!(slotKey in prev)) return prev
         // eslint-disable-next-line @typescript-eslint/no-unused-vars,sonarjs/no-unused-vars
         const { [slotKey]: _removed, ...rest } = prev
-
         return rest
-      }
+      })
 
+      return
+    }
+
+    // Activating: add to active and initialize item state
+    setActiveKeys((prev) => [...prev, slotKey])
+    setItems((prev) => {
       const next: ItemState = {
         slotKey,
         prefix: null,
@@ -283,7 +288,6 @@ const CannithCrafting = () => {
         minLevelOverride: null,
         bindingOverride: null
       }
-
       return { ...prev, [slotKey]: next }
     })
   }
@@ -377,6 +381,20 @@ const CannithCrafting = () => {
       augmentSlots: item.augmentSlots.map((augmentSlot: ItemAugmentSlotState) =>
         augmentSlot.id === augmentSlotId ? { ...augmentSlot, selectedAugment: null } : augmentSlot
       )
+    }))
+  }
+
+  const handleFilterModeChange = (slotKey: string, augmentId: string, mode: 'OR' | 'AND') => {
+    updateItem(slotKey, (currentItem) => ({
+      ...currentItem,
+      augmentSlots: currentItem.augmentSlots.map((s) => (s.id === augmentId ? { ...s, filterMode: mode } : s))
+    }))
+  }
+
+  const handleFiltersChange = (slotKey: string, augmentId: string, filters: string[]) => {
+    updateItem(slotKey, (currentItem) => ({
+      ...currentItem,
+      augmentSlots: currentItem.augmentSlots.map((s) => (s.id === augmentId ? { ...s, filters } : s))
     }))
   }
 
@@ -675,6 +693,64 @@ const CannithCrafting = () => {
     [enhancementByName]
   )
 
+  // Extracted to avoid deeply nested functions in JSX
+  const renderAugmentSlot = (slotKey: string, augmentSlot: ItemAugmentSlotState): ReactElement => {
+    const groupedByDisplay = findAugmentsForSlot(augmentSlot.slotType)
+    const flatForSlot = Object.values(groupedByDisplay).flat() as unknown as Ingredient[]
+    const augmentOptions = { [augmentSlot.slotType]: flatForSlot } as Record<string, Ingredient[]>
+    const filteredAugmentOptions = filterAugmentOptions(
+      augmentOptions,
+      augmentSlot.filters,
+      augmentSlot.filterMode
+    )
+    const selectedAugments: Record<string, AugmentItem | null> = {
+      [augmentSlot.slotType]: augmentSlot.selectedAugment
+    }
+
+    return (
+      <Card key={augmentSlot.id} className='border-0 bg-light-subtle'>
+        <Card.Body>
+          <div className='d-flex flex-column flex-sm-row align-items-end gap-2 flex-wrap'>
+            <div className='flex-grow-1 min-w-0 w-100 w-sm-auto align-self-start align-self-sm-auto'>
+              <AugmentSlotFilterableDropdown
+                availableAugmentSlots={[augmentSlot.slotType]}
+                augmentOptions={augmentOptions}
+                filteredAugmentOptions={filteredAugmentOptions}
+                selectedAugments={selectedAugments}
+                augmentFilters={augmentSlot.filters}
+                augmentFilterMode={augmentSlot.filterMode}
+                handleSelectAugment={(_slot, aug) => {
+                  handleSelectAugment(slotKey, augmentSlot.id, augmentSlot.slotType, aug)
+                }}
+                handleResetAugment={() => {
+                  handleResetAugment(slotKey, augmentSlot.id)
+                }}
+                handleFilterModeChange={(mode) => {
+                  handleFilterModeChange(slotKey, augmentSlot.id, mode)
+                }}
+                handleFiltersChange={(filters) => {
+                  handleFiltersChange(slotKey, augmentSlot.id, filters)
+                }}
+              />
+            </div>
+
+            <div className='d-flex'>
+              <Button
+                variant='outline-danger'
+                size='sm'
+                onClick={() => {
+                  removeAugmentSlot(slotKey, augmentSlot.id)
+                }}
+              >
+                Remove
+              </Button>
+            </div>
+          </div>
+        </Card.Body>
+      </Card>
+    )
+  }
+
   // Renders a full-width stacked Accordion of requirement cards (default closed)
   function renderMaterialsAccordion(slotKey: string, item: ItemState): ReactElement | null {
     const effectiveML: number = items[slotKey].minLevelOverride ?? masterMinLevel
@@ -850,73 +926,63 @@ const CannithCrafting = () => {
       effectiveMLBySlot.set(k, items[k].minLevelOverride ?? masterMinLevel)
     })
 
-    const compute = (bound: boolean): ShoppingListTotals => {
+    const ESSENCE_NAME = toSingularName('Cannith Essences')
+    const PURIFIED_NAME = toSingularName('Purified Eberron Dragonshard Fragments')
+
+    const processItemAffixes = (
+      item: ItemState,
+      effectiveML: number,
+      bound: boolean,
+      totalsMap: Map<string, number>
+    ) => {
+      const affixes = [item.prefix, item.suffix, item.hasCannithMark ? item.extra : null]
+      for (const name of affixes) {
+        if (!name || !isEnhancementAllowedAtML(name, effectiveML)) continue
+        const data = buildMaterials(name, bound)
+        if (!data) continue
+
+        for (const r of data.rows) {
+          totalsMap.set(r.name, (totalsMap.get(r.name) ?? 0) + r.qty)
+        }
+      }
+    }
+
+    const getTotalsForItems = (bound: boolean): { totalsMap: Map<string, number>; markCount: number } => {
       const totalsMap = new Map<string, number>()
-      let essenceTotal = 0
-      let purifiedTotal = 0
       let markCount = 0
 
-      // Maintain canonical order and include only active keys
-      const orderedActive = ALL_SLOT_KEYS.map((s) => s.key).filter((k) => activeKeys.includes(k))
-      for (const slotKey of orderedActive) {
+      const orderedActiveKeys = ALL_SLOT_KEYS.map((s) => s.key).filter((k) => activeKeys.includes(k))
+      for (const slotKey of orderedActiveKeys) {
         const item = items[slotKey]
-        if (!item) {
-          continue
-        }
+        if (!item) continue
 
         const effectiveML = effectiveMLBySlot.get(slotKey) ?? masterMinLevel
-
-        // Count Mark of House Cannith selections (each selected item requires one Mark)
         if (item.hasCannithMark) {
           markCount += 1
         }
 
-        // Helper to include a selection if allowed and has materials for chosen binding
-        const include = (name: string | null) => {
-          if (!name) {
-            return
-          }
-
-          if (!isEnhancementAllowedAtML(name, effectiveML)) {
-            return
-          }
-
-          const data = buildMaterials(name, bound)
-          if (!data) {
-            return
-          }
-
-          // Sum essence/purified specially
-          essenceTotal += data.rows.find((r) => r.name === toSingularName('Cannith Essences'))?.qty ?? 0
-          purifiedTotal +=
-            data.rows.find((r) => r.name === toSingularName('Purified Eberron Dragonshard Fragments'))?.qty ?? 0
-
-          for (const r of data.rows) {
-            const key = r.name
-            const prev = totalsMap.get(key) ?? 0
-
-            totalsMap.set(key, prev + r.qty)
-          }
-        }
-
-        include(item.prefix)
-        include(item.suffix)
-        include(item.hasCannithMark ? item.extra : null)
+        processItemAffixes(item, effectiveML, bound, totalsMap)
       }
+      return { totalsMap, markCount }
+    }
 
-      // Include Mark of House Cannith itself as a required material when selected
+    const compute = (bound: boolean): ShoppingListTotals => {
+      const { totalsMap, markCount } = getTotalsForItems(bound)
+
       if (markCount > 0) {
         const key = 'Mark of House Cannith'
-        const prev = totalsMap.get(key) ?? 0
-        totalsMap.set(key, prev + markCount)
+        totalsMap.set(key, (totalsMap.get(key) ?? 0) + markCount)
       }
 
-      // Build rows, sort alphabetically A→Z
       const rows = Array.from(totalsMap.entries())
         .map(([name, qty]) => ({ name, qty }))
         .sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }))
 
-      return { essence: essenceTotal, purified: purifiedTotal, rows }
+      return {
+        essence: totalsMap.get(ESSENCE_NAME) ?? 0,
+        purified: totalsMap.get(PURIFIED_NAME) ?? 0,
+        rows
+      }
     }
 
     return {
@@ -1195,85 +1261,8 @@ const CannithCrafting = () => {
                                   No augment slots added. Use the selector above to add one.
                                 </p>
                               ) : (
-                                // Tighten vertical spacing on mobile while keeping comfortable spacing on desktop
                                 <div className='d-flex flex-column gap-2 gap-sm-3 mt-2 mt-sm-3'>
-                                  {item.augmentSlots.map((augmentSlot) => (
-                                    <Card key={augmentSlot.id} className='border-0 bg-light-subtle'>
-                                      <Card.Body>
-                                        <div className='d-flex flex-column flex-sm-row align-items-end gap-2 flex-wrap'>
-                                          <div className='flex-grow-1 min-w-0 w-100 w-sm-auto align-self-start align-self-sm-auto'>
-                                            {(() => {
-                                              const groupedByDisplay = findAugmentsForSlot(augmentSlot.slotType)
-                                              const flatForSlot = Object.values(
-                                                groupedByDisplay
-                                              ).flat() as unknown as Ingredient[]
-                                              const augmentOptions = { [augmentSlot.slotType]: flatForSlot } as Record<
-                                                string,
-                                                Ingredient[]
-                                              >
-                                              const filteredAugmentOptions = filterAugmentOptions(
-                                                augmentOptions,
-                                                augmentSlot.filters,
-                                                augmentSlot.filterMode
-                                              )
-                                              const selectedAugments: Record<string, AugmentItem | null> = {
-                                                [augmentSlot.slotType]: augmentSlot.selectedAugment
-                                              }
-                                              return (
-                                                <AugmentSlotFilterableDropdown
-                                                  availableAugmentSlots={[augmentSlot.slotType]}
-                                                  augmentOptions={augmentOptions}
-                                                  filteredAugmentOptions={filteredAugmentOptions}
-                                                  selectedAugments={selectedAugments}
-                                                  augmentFilters={augmentSlot.filters}
-                                                  augmentFilterMode={augmentSlot.filterMode}
-                                                  handleSelectAugment={(_slot: string, aug: Ingredient) => {
-                                                    handleSelectAugment(
-                                                      slotKey,
-                                                      augmentSlot.id,
-                                                      augmentSlot.slotType,
-                                                      aug
-                                                    )
-                                                  }}
-                                                  handleResetAugment={() => {
-                                                    handleResetAugment(slotKey, augmentSlot.id)
-                                                  }}
-                                                  handleFilterModeChange={(mode: 'OR' | 'AND') => {
-                                                    updateItem(slotKey, (currentItem) => ({
-                                                      ...currentItem,
-                                                      augmentSlots: currentItem.augmentSlots.map((s) =>
-                                                        s.id === augmentSlot.id ? { ...s, filterMode: mode } : s
-                                                      )
-                                                    }))
-                                                  }}
-                                                  handleFiltersChange={(filters: string[]) => {
-                                                    updateItem(slotKey, (currentItem) => ({
-                                                      ...currentItem,
-                                                      augmentSlots: currentItem.augmentSlots.map((s) =>
-                                                        s.id === augmentSlot.id ? { ...s, filters } : s
-                                                      )
-                                                    }))
-                                                  }}
-                                                />
-                                              )
-                                            })()}
-                                          </div>
-
-                                          <div className='d-flex'>
-                                            <Button
-                                              variant='outline-danger'
-                                              size='sm'
-                                              onClick={() => {
-                                                removeAugmentSlot(slotKey, augmentSlot.id)
-                                              }}
-                                            >
-                                              Remove
-                                            </Button>
-                                          </div>
-                                        </div>
-                                      </Card.Body>
-                                    </Card>
-                                  ))}
+                                  {item.augmentSlots.map((augmentSlot) => renderAugmentSlot(slotKey, augmentSlot))}
                                 </div>
                               )}
                             </Card.Body>
