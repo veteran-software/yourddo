@@ -1007,7 +1007,7 @@ const CannithCrafting = () => {
                 </a>
               </small>
             </div>
-            <div className='ms-auto ms-2 d-flex align-items-center gap-2 position-relative z-1'>
+            <div className='ms-auto ms-2 d-flex align-items-center gap-2'>
               <Button
                 variant='outline-light'
                 size='sm'
