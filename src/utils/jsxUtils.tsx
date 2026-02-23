@@ -137,7 +137,7 @@ export const getOwnedIngredients = (
       )
     }
 
-    // trove present but item not owned
+    // If Trove is present but item not owned
     return (
       <Container className='d-flex justify-content-end pe-1'>
         <OverlayTrigger trigger={['click', 'hover']} placement='auto' overlay={popover}>
