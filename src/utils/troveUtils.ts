@@ -56,7 +56,7 @@ const parseQuantity = (row: TroveCsvRow, itemName: string, warn: (m: string) => 
   }
   if (row.Quantity.trim() !== '') {
     const parsed = Number(row.Quantity.trim())
-    if (!isNaN(parsed)) {
+    if (!Number.isNaN(parsed)) {
       return parsed
     }
 
@@ -125,10 +125,10 @@ const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void)
   const iKey = normItem(toSingularName(itemName))
 
   // Initialize the entry if missing; do not overwrite existing aggregates.
-  if (!rollup[iKey]) {
-    rollup[iKey] = { binding, byCharacter: [] }
-  } else {
+  if (rollup[iKey]) {
     updateBinding(rollup[iKey], binding, itemName, warn)
+  } else {
+    rollup[iKey] = { binding, byCharacter: [] }
   }
 
   // Find existing character entry; if none, create it
