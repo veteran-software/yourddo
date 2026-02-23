@@ -98,8 +98,12 @@ const buildPopover = (
       {renderBindingNode(ingredient, troveBinding)}
       <ul className='mb-0'>
         {entries.map(({ character, locations }) => {
-          const location = Object.keys(locations).join(', ')
+          const filteredLocations = Object.entries(locations)
+            .filter(([, qty]) => qty > 0)
+            .map(([loc]) => loc)
+          const location = filteredLocations.join(', ')
           const qty = Object.values(locations).reduce((sum, q) => sum + q, 0)
+          if (qty === 0) return null
           return (
             <li key={character}>
               {character === '-' ? location : character} {character === '-' ? '' : `(${location})`}: {formatNumber(qty)}
