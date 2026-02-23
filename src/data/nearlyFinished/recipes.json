@@ -1,0 +1,2594 @@
+{
+  "meltingStation": [
+    {
+      "name": "Metallic Ingot",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Iron Defender Rivet",
+          "quantity": 1
+        },
+        {
+          "name": "Iron Defender Claw",
+          "quantity": 1
+        },
+        {
+          "name": "Iron Juggernaut Part",
+          "quantity": 1
+        },
+        {
+          "name": "Iron Juggernaut Plating",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "name": "Dense Ingot",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Quorforged Juggernaut Part",
+          "quantity": 1
+        },
+        {
+          "name": "Quorforged Juggernaut Plating",
+          "quantity": 1
+        },
+        {
+          "name": "Iron Juggernaut Part",
+          "quantity": 1
+        },
+        {
+          "name": "Iron Juggernaut Plating",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "name": "Pliable Ingot",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Iron Defender Rivet",
+          "quantity": 1
+        },
+        {
+          "name": "Iron Defender Claw",
+          "quantity": 1
+        },
+        {
+          "name": "Magefire Cannon Part",
+          "quantity": 1
+        },
+        {
+          "name": "Magefire Cannon Core",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "name": "Glowing Ingot",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Magefire Cannon Part",
+          "quantity": 1
+        },
+        {
+          "name": "Magefire Cannon Core",
+          "quantity": 1
+        },
+        {
+          "name": "Quorforged Juggernaut Part",
+          "quantity": 1
+        },
+        {
+          "name": "Quorforged Juggernaut Plating",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "name": "Durable Alloy",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Iron Defender Rivet",
+          "quantity": 1
+        },
+        {
+          "name": "Iron Defender Claw",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "name": "Volatile Alloy",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Pliable Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Quorforged Juggernaut Part",
+          "quantity": 1
+        },
+        {
+          "name": "Quorforged Juggernaut Plating",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "name": "Fortified Compound",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Durable Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Pliable Ingot",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "name": "Mercurial Compound",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Volatile Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Pliable Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Dense Ingot",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "name": "Reforged Metallic Ingot",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Iron Defender Rivet",
+          "quantity": 5
+        },
+        {
+          "name": "Magefire Cannon Part",
+          "quantity": 5
+        },
+        {
+          "name": "Worker Drone Plating",
+          "quantity": 5
+        },
+        {
+          "name": "Shield Guardian Gyroscope",
+          "quantity": 5
+        }
+      ]
+    },
+    {
+      "name": "Reforged Dense Ingot",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Iron Defender Rivet",
+          "quantity": 5
+        },
+        {
+          "name": "Magefire Cannon Part",
+          "quantity": 5
+        },
+        {
+          "name": "Worker Drone Actuator",
+          "quantity": 5
+        },
+        {
+          "name": "Shield Guardian Core",
+          "quantity": 5
+        }
+      ]
+    },
+    {
+      "name": "Reforged Pliable Ingot",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Iron Defender Claw",
+          "quantity": 5
+        },
+        {
+          "name": "Magefire Cannon Core",
+          "quantity": 5
+        },
+        {
+          "name": "Worker Drone Plating",
+          "quantity": 5
+        },
+        {
+          "name": "Shield Guardian Gyroscope",
+          "quantity": 5
+        }
+      ]
+    },
+    {
+      "name": "Reforged Glowing Ingot",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Iron Defender Claw",
+          "quantity": 5
+        },
+        {
+          "name": "Magefire Cannon Core",
+          "quantity": 5
+        },
+        {
+          "name": "Worker Drone Actuator",
+          "quantity": 5
+        },
+        {
+          "name": "Shield Guardian Core",
+          "quantity": 5
+        }
+      ]
+    },
+    {
+      "name": "Energizing Alloy",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Reforged Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Pliable Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Worker Drone Plating",
+          "quantity": 5
+        },
+        {
+          "name": "Shield Guardian Gyroscope",
+          "quantity": 5
+        }
+      ]
+    },
+    {
+      "name": "Dampening Alloy",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Worker Drone Actuator",
+          "quantity": 5
+        },
+        {
+          "name": "Shield Guardian Core",
+          "quantity": 5
+        }
+      ]
+    },
+    {
+      "name": "Caustic Compound",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Pliable Ingot",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "name": "Stabilizing Compound",
+      "quantity": 1,
+      "requirements": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        }
+      ]
+    }
+  ],
+  "reforgingStation": [
+    {
+      "item": "The Cornerstone Champion",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "choices": [
+        {
+          "name": "Quality Strength +3"
+        },
+        {
+          "name": "Quality Dexterity +3"
+        },
+        {
+          "name": "Quality Wisdom +3"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Silver Dragonscale Capelet",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "choices": [
+        {
+          "name": "Insightful Strength +6"
+        },
+        {
+          "name": "Insightful Dexterity +6"
+        },
+        {
+          "name": "Insightful Intelligence +6"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Silver Dragonscale Helmet",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "choices": [
+        {
+          "name": "Insightful Strength +6"
+        },
+        {
+          "name": "Insightful Dexterity +6"
+        },
+        {
+          "name": "Insightful Intelligence +6"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Wildwood Wrists",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "choices": [
+        {
+          "name": "Intelligence +13"
+        },
+        {
+          "name": "Wisdom +13"
+        },
+        {
+          "name": "Dexterity +13"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Fetters of the Forgewraith",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "Fetters of the Forgewraith",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Fetters of Unreality"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "Fetters of the Forgewraith",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    },
+    {
+      "item": "Hoarfrost, Herald of the Bitter Ice",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "Hoarfrost, Herald of the Bitter Ice",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Fetters of Unreality"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "Hoarfrost, Herald of the Bitter Ice",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    },
+    {
+      "item": "The Hallowed Splinters",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "The Hallowed Splinters",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Conjure Radiant Bolt"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "The Hallowed Splinters",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    },
+    {
+      "item": "Baz'Morath, the Curator of Decay",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "Baz'Morath, the Curator of Decay",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Fetters of Unreality"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "Baz'Morath, the Curator of Decay",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    },
+    {
+      "item": "The Eclipse Itself",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null,
+          "orange": null
+        }
+      ]
+    },
+    {
+      "item": "The Eclipse Itself",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Finishing Touch"
+        }
+      ],
+      "choices": [
+        {
+          "name": "Combustion +148 & Fire Lore +22%"
+        },
+        {
+          "name": "Glaciation +148 & Ice Lore +22%"
+        },
+        {
+          "name": "Magnetism +148 & Lightning Lore +22%"
+        },
+        {
+          "name": "Corrosion +148 & Acid Lore +22%"
+        },
+        {
+          "name": "Nullification +148 & Void Lore +22%"
+        },
+        {
+          "name": "Devotion +148 & Healing Lore +22%"
+        },
+        {
+          "name": "Impulse +148 & Kinetic Lore +22%"
+        },
+        {
+          "name": "Resonance +148 & Sonic Lore +22%"
+        }
+      ]
+    },
+    {
+      "item": "The Eclipse Itself",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "choices": [
+        {
+          "name": "Abjuration Focus +2"
+        },
+        {
+          "name": "Conjuration Focus +2"
+        },
+        {
+          "name": "Enchantment Focus +2"
+        },
+        {
+          "name": "Evocation Focus +2"
+        },
+        {
+          "name": "Illusion Focus +2"
+        },
+        {
+          "name": "Necromancy Focus +2"
+        },
+        {
+          "name": "Transmutation Focus +2"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Celestial Topaz Ring",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Pliable Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Intelligence +8"
+        },
+        {
+          "name": "Wisdom +8"
+        },
+        {
+          "name": "Charisma +8"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Legendary Celestial Topaz Ring",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Pliable Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Intelligence +13"
+        },
+        {
+          "name": "Wisdom +13"
+        },
+        {
+          "name": "Charisma +13"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "The Shattered Onyx",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Insightful Charisma +3"
+        },
+        {
+          "name": "Insightful Wisdom +3"
+        },
+        {
+          "name": "Insightful Intelligence +3"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "The Legendary Shattered Onyx",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Insightful Charisma +6"
+        },
+        {
+          "name": "Insightful Wisdom +6"
+        },
+        {
+          "name": "Insightful Intelligence +6"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Collective Sight",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Strength +8"
+        },
+        {
+          "name": "Dexterity +8"
+        },
+        {
+          "name": "Constitution +8"
+        },
+        {
+          "name": "Intelligence +8"
+        },
+        {
+          "name": "Wisdom +8"
+        },
+        {
+          "name": "Charisma +8"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Legendary Collective Sight",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Strength +13"
+        },
+        {
+          "name": "Dexterity +13"
+        },
+        {
+          "name": "Constitution +13"
+        },
+        {
+          "name": "Intelligence +13"
+        },
+        {
+          "name": "Wisdom +13"
+        },
+        {
+          "name": "Charisma +13"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Collective Sight",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Insightful Strength +3"
+        },
+        {
+          "name": "Insightful Dexterity +3"
+        },
+        {
+          "name": "Insightful Constitution +3"
+        },
+        {
+          "name": "Insightful Intelligence +3"
+        },
+        {
+          "name": "Insightful Wisdom +3"
+        },
+        {
+          "name": "Insightful Charisma +3"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Legendary Collective Sight",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Insightful Strength +6"
+        },
+        {
+          "name": "Insightful Dexterity +6"
+        },
+        {
+          "name": "Insightful Constitution +6"
+        },
+        {
+          "name": "Insightful Intelligence +6"
+        },
+        {
+          "name": "Insightful Wisdom +6"
+        },
+        {
+          "name": "Insightful Charisma +6"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Untold, Crack in the Sky",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "Untold, Crack in the Sky",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Armor-Piercing - 21%"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "Untold, Crack in the Sky",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    },
+    {
+      "item": "The Everstorm, Maelstrom Courser",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "The Everstorm, Maelstrom Courser",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Utter Disintegration"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "The Everstorm, Maelstrom Courser",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    },
+    {
+      "item": "The Wide Open Sky",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "The Wide Open Sky",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Aligned"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "The Wide Open Sky",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    },
+    {
+      "item": "Stickerclick, the Bitter Hail of Bolts",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "Stickerclick, the Bitter Hail of Bolts",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Fetters of Unreality"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "Stickerclick, the Bitter Hail of Bolts",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    },
+    {
+      "item": "Resplendant Fury",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Pliable Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Insightful Charisma +3"
+        },
+        {
+          "name": "Insightful Wisdom +3"
+        },
+        {
+          "name": "Insightful Intelligence +3"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Legendary Resplendant Fury",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Pliable Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Insightful Charisma +6"
+        },
+        {
+          "name": "Insightful Wisdom +6"
+        },
+        {
+          "name": "Insightful Intelligence +6"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Stygian Wrath",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Insightful Charisma +3"
+        },
+        {
+          "name": "Insightful Wisdom +3"
+        },
+        {
+          "name": "Insightful Intelligence +3"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Legendary Stygian Wrath",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Insightful Charisma +6"
+        },
+        {
+          "name": "Insightful Wisdom +6"
+        },
+        {
+          "name": "Insightful Intelligence +6"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Black Satin Waist",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Pliable Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Quality Charisma +1"
+        },
+        {
+          "name": "Quality Intelligence +1"
+        },
+        {
+          "name": "Quality Wisdom +1"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Legendary Black Satin Waist",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Pliable Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Quality Charisma +3"
+        },
+        {
+          "name": "Quality Intelligence +3"
+        },
+        {
+          "name": "Quality Wisdom +3"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Celestial Amethyst Ring",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Pliable Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Strength +8"
+        },
+        {
+          "name": "Intelligence +8"
+        },
+        {
+          "name": "Charisma +8"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Legendary Celestial Amethyst Ring",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Pliable Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Metallic Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Strength +13"
+        },
+        {
+          "name": "Intelligence +13"
+        },
+        {
+          "name": "Charisma +13"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Celestial Emerald Ring",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Constitution +8"
+        },
+        {
+          "name": "Strength +8"
+        },
+        {
+          "name": "Wisdom +8"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Legendary Celestial Emerald Ring",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Constitution +13"
+        },
+        {
+          "name": "Strength +13"
+        },
+        {
+          "name": "Wisdom +13"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Celestial Sapphire Ring",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Dexterity +8"
+        },
+        {
+          "name": "Intelligence +8"
+        },
+        {
+          "name": "Constitution +8"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Legendary Celestial Sapphire Ring",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Dexterity +13"
+        },
+        {
+          "name": "Intelligence +13"
+        },
+        {
+          "name": "Constitution +13"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Celestial Ruby Ring",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Strength +8"
+        },
+        {
+          "name": "Dexterity +8"
+        },
+        {
+          "name": "Intelligence +8"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Legendary Celestial Ruby Ring",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Glowing Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Reforged Dense Ingot",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        }
+      ],
+      "choices": [
+        {
+          "name": "Strength +13"
+        },
+        {
+          "name": "Dexterity +13"
+        },
+        {
+          "name": "Intelligence +13"
+        }
+      ],
+      "effectsAdded": [],
+      "augments": []
+    },
+    {
+      "item": "Constellation, Cursed Blade",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "Constellation, Cursed Blade",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Fetters of Unreality"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "Constellation, Cursed Blade",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    },
+    {
+      "item": "The Shattered Hilt of Constellation",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "The Shattered Hilt of Constellation",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Fetters of Unreality"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "The Shattered Hilt of Constellation",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    },
+    {
+      "item": "The Broken Blade of Constellation",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "The Broken Blade of Constellation",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Fetters of Unreality"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "The Broken Blade of Constellation",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    },
+    {
+      "item": "The Labrythine Edge",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "The Labrythine Edge",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Fetters of Unreality"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "The Labrythine Edge",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    },
+    {
+      "item": "The Fractured Elegance",
+      "stage": "Nearly Finished",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 100
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Almost There"
+        }
+      ],
+      "augments": [
+        {
+          "purple": null
+        }
+      ]
+    },
+    {
+      "item": "The Fractured Elegance",
+      "stage": "Almost There",
+      "cost": [
+        {
+          "name": "Dampening Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 250
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Sovereign Vorpal"
+        },
+        {
+          "name": "Finishing Touch"
+        }
+      ]
+    },
+    {
+      "item": "The Fractured Elegance",
+      "stage": "Finishing Touch",
+      "cost": [
+        {
+          "name": "Energizing Alloy",
+          "quantity": 1
+        },
+        {
+          "name": "Caustic Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Stabilizing Compound",
+          "quantity": 1
+        },
+        {
+          "name": "Thread of Fate",
+          "quantity": 500
+        }
+      ],
+      "effectsAdded": [
+        {
+          "name": "Completed Weapon"
+        }
+      ]
+    }
+  ]
+}

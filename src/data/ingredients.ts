@@ -1472,6 +1472,16 @@ export const ingredients: Ingredient[] = [
     foundIn: ['The Shroud', 'Amrath', 'Devil Assault']
   },
   {
+    name: 'Iron Defender Rivet',
+    type: 'This item may be usable in an eldritch device.',
+    description: 'A sharp and twisted hunk of metal. This item is humming like the Altar of Subjugation.',
+    binding: {
+      type: 'Unbound'
+    },
+    weight: 0.1,
+    foundIn: ['Sharn Chests', 'The Cogs Chests']
+  },
+  {
     name: 'Page Regalia: Exiled Tactica',
     image: 'raidCloakYellow',
     type: 'Cloak',

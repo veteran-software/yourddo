@@ -12,7 +12,7 @@ const menuItems: NavDropdownType[] = [
   { label: 'Green Steel', image: '', active: true },
   { label: 'Incredible Potential', image: '', active: true },
   { label: 'Lost Purpose', image: '', active: false },
-  { label: 'Nearly Finished', image: '', active: false },
+  { label: 'Nearly Finished', image: '', active: true, path: '/nearly-finished' },
   { label: 'Reaper Forge', image: '', active: false },
   { label: 'Stone Of Change', image: '', active: false },
   { label: 'Storemreaver Monument', image: '', active: false },

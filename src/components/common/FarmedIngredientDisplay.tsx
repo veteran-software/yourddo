@@ -1,5 +1,5 @@
 import camelcase from 'camelcase'
-import { Container, Stack } from 'react-bootstrap'
+import { Container, OverlayTrigger, Stack } from 'react-bootstrap'
 import { FaCircleNotch } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../redux/hooks.ts'
@@ -8,6 +8,7 @@ import { ICON_BASE } from '../../utils/constants.ts'
 import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
 import { formatIngredientName } from '../../utils/utils.ts'
 import FallbackImage from './FallbackImage.tsx'
+import IngredientPopover from './IngredientPopover.tsx'
 import NoteTooltip from './NoteTooltip.tsx'
 
 const FarmedIngredientDisplay = (props: Props) => {
@@ -27,7 +28,13 @@ const FarmedIngredientDisplay = (props: Props) => {
       {imageSrc === '' ? (
         <FaCircleNotch title='Loading...' size={36} color='gray' style={{ animation: 'spin 1s linear infinite' }} />
       ) : (
-        <FallbackImage src={imageSrc} alt={ingredient.name} />
+        <OverlayTrigger
+          trigger={['click', 'hover']}
+          overlay={(popperProps) => <IngredientPopover {...popperProps} ingredient={ingredient} />}
+          placement='auto'
+        >
+          <FallbackImage src={imageSrc} alt={ingredient.name} />
+        </OverlayTrigger>
       )}
 
       <Stack direction='vertical' gap={0} className='text-wrap justify-content-center'>
@@ -45,7 +52,7 @@ const FarmedIngredientDisplay = (props: Props) => {
       </Stack>
 
       {showQuantity && (
-        <Container className='w-auto'>
+        <Container className='w-auto ms-auto'>
           <strong>{getOwnedIngredients(ingredient, quantity, troveData)}</strong>
         </Container>
       )}

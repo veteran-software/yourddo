@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Image } from 'react-bootstrap'
 import { ICON_BASE } from '../../utils/constants.ts'
 
@@ -6,6 +6,10 @@ const FallbackImage = (props: Props) => {
   const { alt, src, width } = props
 
   const [imgSrc, setImgSrc] = useState(src)
+
+  useEffect(() => {
+    setImgSrc(src)
+  }, [src])
 
   return (
     <Image

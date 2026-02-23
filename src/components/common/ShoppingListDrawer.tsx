@@ -7,7 +7,9 @@ import type { ItemRollup } from '../trove/types.ts'
 export interface ShoppingListTotals {
   essence: number
   purified: number
-  rows: { name: string; qty: number }[]
+  rows?: { name: string; qty: number }[]
+  farmedRows?: { name: string; qty: number }[]
+  craftedRows?: { name: string; qty: number }[]
 }
 
 interface Props {
@@ -16,12 +18,22 @@ interface Props {
   title?: string
   planBound: boolean
   onPlanChange: (bound: boolean) => void
+  showBindingToggle?: boolean
   totals: ShoppingListTotals
   troveData: ItemRollup | null
 }
 
 const ShoppingListDrawer = (props: Props): ReactElement => {
-  const { show, onHide, title = 'Shopping List', planBound, onPlanChange, totals, troveData } = props
+  const {
+    show,
+    onHide,
+    title = 'Shopping List',
+    planBound,
+    onPlanChange,
+    showBindingToggle = true,
+    totals,
+    troveData
+  } = props
 
   return (
     <Offcanvas show={show} onHide={onHide} placement='end' style={{ minWidth: '25%' }}>
@@ -30,74 +42,154 @@ const ShoppingListDrawer = (props: Props): ReactElement => {
       </Offcanvas.Header>
       <Offcanvas.Body>
         <Stack gap={3}>
-          <Form.Group controlId='shopping-list-plan'>
-            <Form.Label>Crafting Plan</Form.Label>
-            <Form.Select
-              value={planBound ? 'bound' : 'unbound'}
-              onChange={(event) => {
-                onPlanChange(event.target.value === 'bound')
-              }}
-            >
-              <option value='bound'>Bound</option>
-              <option value='unbound'>Unbound</option>
-            </Form.Select>
-          </Form.Group>
+          {showBindingToggle && (
+            <Form.Group controlId='shopping-list-plan'>
+              <Form.Label>Crafting Plan</Form.Label>
+              <Form.Select
+                value={planBound ? 'bound' : 'unbound'}
+                onChange={(event) => {
+                  onPlanChange(event.target.value === 'bound')
+                }}
+              >
+                <option value='bound'>Bound</option>
+                <option value='unbound'>Unbound</option>
+              </Form.Select>
+            </Form.Group>
+          )}
 
-          {totals.rows.length === 0 ? (
+          {(!totals.rows || totals.rows.length === 0) &&
+          (!totals.farmedRows || totals.farmedRows.length === 0) &&
+          (!totals.craftedRows || totals.craftedRows.length === 0) ? (
             <div className='text-muted'>No materials to show. Add items and select affixes.</div>
           ) : (
             <>
-              <Card className='rounded-0'>
-                <Card.Header>
-                  <strong>Summary</strong>
-                </Card.Header>
-                <Card.Body className='p-0'>
-                  <Table size='sm' striped className='mb-0'>
-                    <tbody>
-                      <tr>
-                        <td className='ps-2'>Cannith Essence</td>
-                        <td className='text-end'>{totals.essence}</td>
-                      </tr>
-                      <tr>
-                        <td className='ps-2'>Purified Eberron Dragonshard Fragment</td>
-                        <td className='text-end'>{totals.purified === 0 ? 'N/A' : totals.purified}</td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                </Card.Body>
-              </Card>
+              {(totals.essence > 0 || totals.purified > 0) && (
+                <Card className='rounded-0'>
+                  <Card.Header>
+                    <strong>Summary</strong>
+                  </Card.Header>
+                  <Card.Body className='p-0'>
+                    <Table size='sm' striped className='mb-0'>
+                      <tbody>
+                        {totals.essence > 0 && (
+                          <tr>
+                            <td className='ps-2'>Cannith Essence</td>
+                            <td className='text-end'>{totals.essence}</td>
+                          </tr>
+                        )}
+                        {totals.purified > 0 && (
+                          <tr>
+                            <td className='ps-2'>Purified Eberron Dragonshard Fragment</td>
+                            <td className='text-end'>{totals.purified}</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </Table>
+                  </Card.Body>
+                </Card>
+              )}
 
-              <Card className='rounded-0'>
-                <Card.Header>
-                  <strong>All Materials</strong>
-                </Card.Header>
-                <Card.Body className='p-0'>
-                  <Table size='sm' responsive striped className='mb-0 align-middle'>
-                    <colgroup>
-                      <col className='col-8' />
-                      <col className='col-4' style={{ whiteSpace: 'nowrap' }} />
-                    </colgroup>
-                    <thead>
-                      <tr>
-                        <th className='ps-2'>Ingredient</th>
-                        <th className='text-end'>Have / Required</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {totals.rows.map(({ name, qty }) => (
-                        <tr key={`${name}-${String(qty)}`}>
-                          <td className='text-truncate' title={name}>
-                            {name}
-                          </td>
-                          <td className='text-end'>
-                            {getOwnedIngredients({ name } as unknown as Ingredient, qty, troveData)}
-                          </td>
+              {totals.rows && totals.rows.length > 0 && (
+                <Card className='rounded-0'>
+                  <Card.Header>
+                    <strong>All Materials</strong>
+                  </Card.Header>
+                  <Card.Body className='p-0'>
+                    <Table size='sm' responsive striped className='mb-0 align-middle'>
+                      <colgroup>
+                        <col className='col-8' />
+                        <col className='col-4' style={{ whiteSpace: 'nowrap' }} />
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th className='ps-2'>Ingredient</th>
+                          <th className='text-end'>Have / Required</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </Card.Body>
-              </Card>
+                      </thead>
+                      <tbody>
+                        {totals.rows.map(({ name, qty }) => (
+                          <tr key={`${name}-${String(qty)}`}>
+                            <td className='text-truncate' title={name}>
+                              {name}
+                            </td>
+                            <td className='text-end'>
+                              {getOwnedIngredients({ name } as unknown as Ingredient, qty, troveData)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </Card.Body>
+                </Card>
+              )}
+
+              {totals.farmedRows && totals.farmedRows.length > 0 && (
+                <Card className='rounded-0'>
+                  <Card.Header>
+                    <strong>Farmed Materials</strong>
+                  </Card.Header>
+                  <Card.Body className='p-0'>
+                    <Table size='sm' responsive striped className='mb-0 align-middle'>
+                      <colgroup>
+                        <col className='col-8' />
+                        <col className='col-4' style={{ whiteSpace: 'nowrap' }} />
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th className='ps-2'>Ingredient</th>
+                          <th className='text-end'>Have / Required</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {totals.farmedRows.map(({ name, qty }) => (
+                          <tr key={`${name}-${String(qty)}`}>
+                            <td className='text-truncate' title={name}>
+                              {name}
+                            </td>
+                            <td className='text-end'>
+                              {getOwnedIngredients({ name } as unknown as Ingredient, qty, troveData)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </Card.Body>
+                </Card>
+              )}
+
+              {totals.craftedRows && totals.craftedRows.length > 0 && (
+                <Card className='rounded-0'>
+                  <Card.Header>
+                    <strong>Crafted Materials</strong>
+                  </Card.Header>
+                  <Card.Body className='p-0'>
+                    <Table size='sm' responsive striped className='mb-0 align-middle'>
+                      <colgroup>
+                        <col className='col-8' />
+                        <col className='col-4' style={{ whiteSpace: 'nowrap' }} />
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th className='ps-2'>Ingredient</th>
+                          <th className='text-end'>Have / Required</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {totals.craftedRows.map(({ name, qty }) => (
+                          <tr key={`${name}-${String(qty)}`}>
+                            <td className='text-truncate' title={name}>
+                              {name}
+                            </td>
+                            <td className='text-end'>
+                              {getOwnedIngredients({ name } as unknown as Ingredient, qty, troveData)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </Card.Body>
+                </Card>
+              )}
             </>
           )}
         </Stack>
