@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Alert, Container, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import { Outlet } from 'react-router-dom'
@@ -6,23 +6,23 @@ import { useAppSelector } from '../../redux/hooks.ts'
 import Footer from '../footer/Footer.tsx'
 import NavbarTop from '../navbar/NavbarTop.tsx'
 
+const getSubdomain = () => {
+  const fullHostname = window.location.hostname
+  const hostnameParts = fullHostname.split('.')
+
+  if (hostnameParts.length > 2) {
+    return hostnameParts[0]
+  } else if (hostnameParts.length === 2 && hostnameParts[0] !== 'www') {
+    return hostnameParts[0]
+  } else {
+    return 'No subdomain'
+  }
+}
+
 const BaseLayout = () => {
-  const [subdomain, setSubdomain] = useState('')
+  const [subdomain] = useState(getSubdomain())
 
   const { footerHeight } = useAppSelector((state) => state.app, shallowEqual)
-
-  useEffect(() => {
-    const fullHostname = window.location.hostname
-    const hostnameParts = fullHostname.split('.')
-
-    if (hostnameParts.length > 2) {
-      setSubdomain(hostnameParts[0])
-    } else if (hostnameParts.length === 2 && hostnameParts[0] !== 'www') {
-      setSubdomain(hostnameParts[0])
-    } else {
-      setSubdomain('No subdomain')
-    }
-  }, [])
 
   return (
     <Stack

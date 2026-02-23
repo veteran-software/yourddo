@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button, Card, Container, Form, Nav, Tab, Tabs } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 
@@ -70,11 +70,7 @@ const getMovement = (step: string) => {
 const parseSteps = (route: string): string[] => route.match(/\(DD\)|[NESW]/g) ?? []
 
 const TheShadowCrypt = () => {
-  const [checked, setChecked] = useState<Record<string, boolean[]>>({})
-  const [activeSubpath, setActiveSubpath] = useState<Record<string, string>>({})
-  const [horizontal, setHorizontal] = useState(false)
-
-  useEffect(() => {
+  const [checked, setChecked] = useState<Record<string, boolean[]>>(() => {
     const init: Record<string, boolean[]> = {}
     const iterateItems = (sub: SubPath, opt: PathOption, label: string) => {
       init[`${label}:${opt.label}:${sub.label}`] = parseSteps(sub.route).map(() => false)
@@ -92,8 +88,10 @@ const TheShadowCrypt = () => {
         iterateOptions(opt, label)
       })
     })
-    setChecked(init)
-  }, [])
+    return init
+  })
+  const [activeSubpath, setActiveSubpath] = useState<Record<string, string>>({})
+  const [horizontal, setHorizontal] = useState(false)
 
   const toggle = (key: string, idx: number) => {
     setChecked((prev) => {
