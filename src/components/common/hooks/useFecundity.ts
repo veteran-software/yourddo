@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../redux/hooks.ts'
-import type { CraftingIngredient } from '../../../types/crafting.ts'
 import { filterForSublist, sortObjectArray } from '../../../utils/objectUtils.ts'
 
 type CraftingType = 'Heroic' | 'Legendary'
@@ -14,29 +13,33 @@ const useFecundity = (type: CraftingType) => {
   const { fecundityItems: legendaryFecundityItems, selectedFecundityItem: legendarySelectedFecundityItem } =
     useAppSelector((state) => state.legendaryGreenSteel, shallowEqual)
 
-  const [heroicWeaponList, setHeroicWeaponList] = useState<CraftingIngredient[]>([])
-  const [heroicAccessoryList, setHeroicAccessoryList] = useState<CraftingIngredient[]>([])
-
-  const [legendaryWeaponList, setLegendaryWeaponList] = useState<CraftingIngredient[]>([])
-  const [legendaryAccessoryList, setLegendaryAccessoryList] = useState<CraftingIngredient[]>([])
-
-  useEffect(() => {
+  const heroicWeaponList = useMemo(() => {
     if (type === 'Heroic') {
-      setHeroicWeaponList(sortObjectArray(filterForSublist(heroicFecundityItems, 'Weapon', 'ingredientType'), 'name'))
-      setHeroicAccessoryList(
-        sortObjectArray(filterForSublist(heroicFecundityItems, 'Accessory', 'ingredientType'), 'name')
-      )
+      return sortObjectArray(filterForSublist(heroicFecundityItems, 'Weapon', 'ingredientType'), 'name')
     }
+    return []
+  }, [type, heroicFecundityItems])
 
-    if (type === 'Legendary') {
-      setLegendaryWeaponList(
-        sortObjectArray(filterForSublist(legendaryFecundityItems, 'Weapon', 'ingredientType'), 'name')
-      )
-      setLegendaryAccessoryList(
-        sortObjectArray(filterForSublist(legendaryFecundityItems, 'Accessory', 'ingredientType'), 'name')
-      )
+  const heroicAccessoryList = useMemo(() => {
+    if (type === 'Heroic') {
+      return sortObjectArray(filterForSublist(heroicFecundityItems, 'Accessory', 'ingredientType'), 'name')
     }
-  }, [heroicFecundityItems, legendaryFecundityItems, type])
+    return []
+  }, [type, heroicFecundityItems])
+
+  const legendaryWeaponList = useMemo(() => {
+    if (type === 'Legendary') {
+      return sortObjectArray(filterForSublist(legendaryFecundityItems, 'Weapon', 'ingredientType'), 'name')
+    }
+    return []
+  }, [type, legendaryFecundityItems])
+
+  const legendaryAccessoryList = useMemo(() => {
+    if (type === 'Legendary') {
+      return sortObjectArray(filterForSublist(legendaryFecundityItems, 'Accessory', 'ingredientType'), 'name')
+    }
+    return []
+  }, [type, legendaryFecundityItems])
 
   return {
     heroicSelectedFecundityItem,

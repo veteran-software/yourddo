@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Button, Form, InputGroup, Modal, Stack } from 'react-bootstrap'
 
 const PermalinkModal = (props: Props) => {
@@ -9,12 +9,6 @@ const PermalinkModal = (props: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const url = useMemo(() => buildUrl(), [buildUrl])
-
-  useEffect(() => {
-    if (!show) {
-      setCopyStatus('idle')
-    }
-  }, [show])
 
   const handleCopy = async () => {
     if ('clipboard' in navigator) {
@@ -33,8 +27,24 @@ const PermalinkModal = (props: Props) => {
     }, 1500)
   }
 
+  const handleClose = () => {
+    setCopyStatus('idle')
+    onHide()
+  }
+
+  let buttonVariant: 'success' | 'warning' | 'primary' = 'primary'
+  let buttonText = 'Copy'
+
+  if (copyStatus === 'copied') {
+    buttonVariant = 'success'
+    buttonText = 'Copied'
+  } else if (copyStatus === 'selected') {
+    buttonVariant = 'warning'
+    buttonText = 'Press Ctrl+C'
+  }
+
   return (
-    <Modal show={show} onHide={onHide} centered>
+    <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
@@ -46,17 +56,19 @@ const PermalinkModal = (props: Props) => {
           <InputGroup>
             <Form.Control id='permalink-url' ref={inputRef} value={url} readOnly />
             <Button
-              variant={copyStatus === 'copied' ? 'success' : copyStatus === 'selected' ? 'warning' : 'primary'}
-              onClick={handleCopy}
+              variant={buttonVariant}
+              onClick={() => {
+                void handleCopy()
+              }}
               title='Copy to clipboard'
             >
-              {copyStatus === 'copied' ? 'Copied' : copyStatus === 'selected' ? 'Press Ctrl+C' : 'Copy'}
+              {buttonText}
             </Button>
           </InputGroup>
         </Stack>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='secondary' onClick={onHide}>
+        <Button variant='secondary' onClick={handleClose}>
           Close
         </Button>
       </Modal.Footer>

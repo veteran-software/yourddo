@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { shallowEqual } from 'react-redux'
 import FilterableDropdown from '../../../../components/common/FilterableDropdown.tsx'
 import { altarOfSubjugation } from '../../../../data/altarOfSubjugation.ts'
@@ -19,14 +19,32 @@ const SubjugationSpellDropdown = () => {
     selectedInvasionItem
   } = useAppSelector((state) => state.greenSteel, shallowEqual)
 
-  const [spells, setSpells] = useState<Record<string, CraftingIngredient[]>>({})
-  const [label, setLabel] = useState<string>('Select a Bonus Spell...')
+  const spells: Record<string, CraftingIngredient[]> = useMemo(() => {
+    let spellItems: CraftingIngredient[] = []
 
-  const populateSpellList = useCallback((spellItems: CraftingIngredient[]) => {
+    if (selectedDevastationFocused) {
+      const { focus } = deconstructHgsShard(selectedDevastationFocused.requirements?.at(1)?.name ?? '')
+
+      if (focus) {
+        spellItems = altarOfSubjugation
+          .filter((spellItem: CraftingIngredient) =>
+            spellItem.effectsAdded?.some((effect: Enhancement) => effect.name.includes(`Aspect of ${focus}`))
+          )
+          .filter((spellItem: CraftingIngredient) => spellItem.spell !== undefined)
+      }
+    } else if (selectedSubjugationItem && !selectedInvasionItem) {
+      spellItems = [selectedSubjugationItem]
+    } else if (!selectedSubjugationItem && selectedInvasionItem) {
+      const t1Focus: string = deconstructHgsShard(selectedInvasionItem.name).focus
+      spellItems = altarOfSubjugation
+        .filter((spellItem: CraftingIngredient) => spellItem.requirements?.[0].name.includes(t1Focus))
+        .filter((spellItem: CraftingIngredient) => spellItem.spell !== undefined)
+    } else {
+      spellItems = subjugationItems
+    }
+
     if (spellItems.length === 0) {
-      setSpells({})
-      setLabel('No spells available for the selected upgrade')
-      return
+      return {}
     }
 
     const spellsMap: Record<string, CraftingIngredient[]> = {}
@@ -40,16 +58,18 @@ const SubjugationSpellDropdown = () => {
         spellsMap[effectName].push(item)
       }
     })
-    setSpells(spellsMap)
-  }, [])
+    return spellsMap
+  }, [selectedDevastationFocused, selectedSubjugationItem, selectedInvasionItem, subjugationItems])
 
-  useEffect(() => {
+  const label = useMemo(() => {
     if (selectedSubjugationSpell?.spell) {
-      setLabel(`${selectedSubjugationSpell.spell.name} (CL: ${String(selectedSubjugationSpell.spell.casterLevel)})`)
+      return `${selectedSubjugationSpell.spell.name} (CL: ${String(selectedSubjugationSpell.spell.casterLevel)})`
+    } else if (Object.keys(spells).length === 0) {
+      return 'No spells available for the selected upgrade'
     } else {
-      setLabel('Select a Bonus Spell...')
+      return 'Select a Bonus Spell...'
     }
-  }, [selectedSubjugationSpell?.spell])
+  }, [selectedSubjugationSpell, spells])
 
   useEffect(() => {
     if (selectedDevastationFocused) {
@@ -62,7 +82,6 @@ const SubjugationSpellDropdown = () => {
           )
           .filter((spellItem: CraftingIngredient) => spellItem.spell !== undefined)
 
-        populateSpellList(spellList)
         if (spellList.length) {
           dispatch(selectSubjugationSpell(spellList[0]))
         }
@@ -72,29 +91,8 @@ const SubjugationSpellDropdown = () => {
 
     if (selectedSubjugationItem && !selectedInvasionItem) {
       dispatch(selectSubjugationSpell(selectedSubjugationItem))
-      populateSpellList([selectedSubjugationItem])
-      return
     }
-
-    if (!selectedSubjugationItem && selectedInvasionItem) {
-      const t1Focus: string = deconstructHgsShard(selectedInvasionItem.name).focus
-      const spellList: CraftingIngredient[] = altarOfSubjugation
-        .filter((spellItem: CraftingIngredient) => spellItem.requirements?.[0].name.includes(t1Focus))
-        .filter((spellItem: CraftingIngredient) => spellItem.spell !== undefined)
-
-      populateSpellList(spellList)
-      return
-    }
-
-    populateSpellList(subjugationItems)
-  }, [
-    dispatch,
-    populateSpellList,
-    selectedDevastationFocused,
-    subjugationItems,
-    selectedSubjugationItem,
-    selectedInvasionItem
-  ])
+  }, [dispatch, selectedDevastationFocused, selectedSubjugationItem, selectedInvasionItem])
 
   const renderSpellBody = (ingredient: CraftingIngredient) => {
     if (!ingredient.spell) return <></>

@@ -14,7 +14,7 @@ const useRecipeBuilder = () => {
   const dispatch: AppDispatch = useAppDispatch()
 
   const recipeBuilder = useCallback(
-    (recipe: CraftingIngredient | undefined) => {
+    function buildRecipe(recipe: CraftingIngredient | undefined) {
       if (recipe) {
         if (recipe.craftedIn) {
           recipe.requirements?.forEach((requirement: CraftingIngredient | string) => {
@@ -27,7 +27,7 @@ const useRecipeBuilder = () => {
                 // Crafted Ingredient
                 dispatch(addCraftedIngredient(ingredient))
 
-                recipeBuilder(ingredient)
+                buildRecipe(ingredient)
               } else {
                 // Raw material you find in the wild
                 dispatch(addRawMaterial(requirement))

@@ -11,7 +11,7 @@ import { toSingularName } from './jsxUtils.tsx'
  * A Set containing predefined location identifiers used within the application.
  * The locations represent various storage or interaction points available to the user.
  *
- * LOCATIONS includes the following:
+ * LOCATIONS include the following:
  * - 'SharedBank': Represents a shared banking space accessible by multiple entities.
  * - 'SharedCrafting': Represents a shared crafting area for item creation.
  * - 'Inventory': Represents the player's personal inventory.
@@ -43,12 +43,49 @@ const isLocation = (x: string): x is Location => LOCATIONS.has(x as Location)
 export const normItem = (s: string): string => s.trim().toLowerCase()
 
 /**
- * A function that normalizes a given string by removing any leading and trailing whitespace.
+ * Parses the quantity from the CSV row, defaulting to 0 if the value is invalid or missing.
  *
- * @param {string} s - The input string to be normalized.
- * @returns {string} - The trimmed version of the input string with no leading or trailing whitespace.
+ * @param {TroveCsvRow} row - The row of data containing quantity and item information.
+ * @param {string} itemName - The name of the item, for logging purposes.
+ * @param {function(string): void} warn - A callback function used to log warnings for invalid data.
+ * @returns {number} The parsed quantity, or 0 if parsing fails.
  */
-export const normChar = (s: string): string => s.trim()
+const parseQuantity = (row: TroveCsvRow, itemName: string, warn: (m: string) => void): number => {
+  if (typeof row.Quantity === 'number') {
+    return row.Quantity
+  }
+  if (row.Quantity.trim() !== '') {
+    const parsed = Number(row.Quantity.trim())
+    if (!Number.isNaN(parsed)) {
+      return parsed
+    }
+
+    warn(`Non-numeric quantity "${row.Quantity}" for item "${itemName}" — defaulted to 0.`)
+  }
+
+  return 0
+}
+
+/**
+ * Updates the binding information for an item entry, logging a warning if there's a conflict.
+ *
+ * @param {ItemRollup[string]} entry - The rollup entry for a specific item.
+ * @param {string} binding - The binding type (e.g., 'Bind on Equip', 'Bind on Pickup').
+ * @param {string} itemName - The name of the item, for logging purposes.
+ * @param {function(string): void} warn - A callback function used to log warnings for conflicting data.
+ */
+const updateBinding = (
+  entry: { binding: string },
+  binding: string,
+  itemName: string,
+  warn: (m: string) => void
+): void => {
+  if (binding && entry.binding && binding !== entry.binding) {
+    warn(`Binding mismatch for item ${itemName}: ${binding} vs ${entry.binding}`)
+  } else if (binding && !entry.binding) {
+    entry.binding = binding
+  }
+}
 
 /**
  * Updates or inserts item information into the rollup data structure, ensuring values are aggregated correctly
@@ -60,11 +97,12 @@ export const normChar = (s: string): string => s.trim()
  * @return {void} Does not return a value. Mutates the provided rollup object directly.
  */
 const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void): void => {
-  let character = normChar(row.Character)
+  let character = row.Character.trim()
   const location = row.Location.trim()
   const itemName = row.Name.trim()
-  const qtyNum = typeof row.Quantity === 'number' ? row.Quantity : Number(row.Quantity.trim())
   const binding = row.Binding.trim()
+
+  const qty = parseQuantity(row, itemName, warn)
 
   // If the row is from a shared location, an empty Character should not cause a skip.
   // Bucket such entries under a placeholder '-' character key so they are still tallied.
@@ -73,31 +111,28 @@ const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void)
   }
 
   if (!character || !location || !itemName) {
-    warn(`Missing item/character/location — skipped row: ${JSON.stringify(row)}`)
+    if (location || itemName || character || row.Quantity != null) {
+      warn(`Missing item/character/location — skipped row: ${JSON.stringify(row)}`)
+    }
     return
   }
   if (!isLocation(location)) {
     warn(`Unknown location : ${location} — skipped (${character}/${itemName}).`)
     return
   }
-  const qty = Number.isFinite(qtyNum) ? qtyNum : 0
+
   // Normalize the item key in singular form so lookups (which are also singular) match reliably
   const iKey = normItem(toSingularName(itemName))
 
   // Initialize the entry if missing; do not overwrite existing aggregates.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!rollup[iKey]) {
+  if (rollup[iKey]) {
+    updateBinding(rollup[iKey], binding, itemName, warn)
+  } else {
     rollup[iKey] = { binding, byCharacter: [] }
-  } else if (binding && rollup[iKey].binding && binding !== rollup[iKey].binding) {
-    // If bindings conflict between rows, keep existing but warn
-    warn(`Binding mismatch for item ${itemName}: ${binding} vs ${rollup[iKey].binding}`)
-  } else if (binding && !rollup[iKey].binding) {
-    // Populate binding if previously unknown
-    rollup[iKey].binding = binding
   }
 
   // Find existing character entry; if none, create it
-  const existing = (rollup[iKey].byCharacter as any[]).find?.((e: any) => e.character === character)
+  const existing = rollup[iKey].byCharacter.find((e) => e.character === character)
   if (existing) {
     existing.locations[location] = (existing.locations[location] ?? 0) + qty
   } else {
@@ -192,14 +227,17 @@ export const getStoredTroveData = (): ItemRollup | null => {
 
   // Parse unknown JSON and normalize the legacy shape (byCharacter as an object map) to a new array shape at load time
   type LegacyByCharacterMap = Record<string, Record<Location, number>>
+
   interface LegacyEntry {
     binding: string
     byCharacter: LegacyByCharacterMap
   }
+
   interface ArrayEntry {
     binding: string
     byCharacter: { character: string; locations: Record<Location, number> }[]
   }
+
   type ParsedShape = Record<string, LegacyEntry | ArrayEntry>
 
   const parsedUnknown = JSON.parse(storedData) as unknown
@@ -210,9 +248,12 @@ export const getStoredTroveData = (): ItemRollup | null => {
     const entry = parsed[key]
 
     if (!Array.isArray(entry.byCharacter)) {
-      const map = entry.byCharacter
-      const arr = Object.entries(map).map(([character, locations]) => ({ character, locations }))
-      ;(entry as ArrayEntry).byCharacter = arr
+      const map: LegacyByCharacterMap = entry.byCharacter
+
+      ;(entry as ArrayEntry).byCharacter = Object.entries(map).map(([character, locations]) => ({
+        character,
+        locations
+      }))
     }
   })
   return parsed as unknown as ItemRollup

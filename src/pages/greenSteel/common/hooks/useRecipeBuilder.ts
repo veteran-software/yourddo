@@ -4,9 +4,15 @@ import { altarOfDevastation } from '../../../../data/altarOfDevastation.ts'
 import { altarOfFecundity } from '../../../../data/altarOfFecundity.ts'
 import { altarOfInvasion } from '../../../../data/altarOfInvasion.ts'
 import { altarOfSubjugation } from '../../../../data/altarOfSubjugation.ts'
-import { legendaryAltarOfDevastation } from '../../../../data/legendaryAltarOfDevastation.ts'
-import { legendaryAltarOfInvasion } from '../../../../data/legendaryAltarOfInvasion.ts'
-import { legendaryAltarOfSubjugation } from '../../../../data/legendaryAltarOfSubjugation.ts'
+import {
+  legendaryAltarOfDevastation
+} from '../../../../data/legendaryAltarOfDevastation.ts'
+import {
+  legendaryAltarOfInvasion
+} from '../../../../data/legendaryAltarOfInvasion.ts'
+import {
+  legendaryAltarOfSubjugation
+} from '../../../../data/legendaryAltarOfSubjugation.ts'
 import { useAppSelector } from '../../../../redux/hooks.ts'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
 import { findCraftedIngredientByName } from '../../../../utils/objectUtils.ts'
@@ -81,7 +87,7 @@ const useRecipeBuilder = (type: GreenSteelType) => {
 
     const newRaw: Record<string, number> = {}
     const newCrafted: Record<string, number> = {}
-    const ingredientSources = getIngredientSources(type)
+    const ingredientSources: CraftingIngredient[] = getIngredientSources(type)
 
     const selectedItems: (CraftingIngredient | undefined)[] =
       type === 'heroic'
@@ -103,7 +109,7 @@ const useRecipeBuilder = (type: GreenSteelType) => {
     selectedItems.forEach((item: CraftingIngredient | undefined) => {
       if (!item) return
 
-      const { rawMaterials = {}, craftedMaterials = {} } = buildRecipe(item, ingredientSources)
+      const { rawMaterials, craftedMaterials } = buildRecipe(item, ingredientSources)
 
       Object.entries(rawMaterials).forEach(([key, value]) => {
         newRaw[key] = (newRaw[key] ?? 0) + value

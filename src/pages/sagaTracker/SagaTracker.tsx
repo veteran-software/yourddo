@@ -1,21 +1,5 @@
-import {
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
-import {
-  Badge,
-  Button,
-  Card,
-  Col,
-  Form,
-  InputGroup,
-  Row,
-  Stack
-} from 'react-bootstrap'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Badge, Button, Card, Col, Form, InputGroup, Row, Stack } from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import IndeterminateCheck from './components/IndeterminateCheck'
 import { loadInitial } from './components/loadInitial'
@@ -495,7 +479,6 @@ const SagaTracker = () => {
         return it
       })
 
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       return changed ? next : prev
     })
   }, [questDoneAt, turnedInAt, questsBySaga, isQuestDoneForSaga])

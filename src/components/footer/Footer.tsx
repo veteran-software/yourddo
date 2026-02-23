@@ -195,11 +195,7 @@ const Footer = () => {
                 return (
                   <Fragment key={world.Name}>
                     {idx > 0 && <>&bull;</>}
-                    <ServerStatusDisplay
-                      name={stripPrefix(world.Name)}
-                      up={statuses[stripPrefix(world.Name)]}
-                      isGhost={false}
-                    />
+                    <ServerStatusDisplay name={stripPrefix(world.Name)} up={statuses[stripPrefix(world.Name)]} />
                   </Fragment>
                 )
               })}
@@ -212,7 +208,7 @@ const Footer = () => {
               return (
                 <Fragment key={world.Name}>
                   <>&bull;</>
-                  <ServerStatusDisplay name={world.Name} up={statusesLam[world.Name]} isGhost={false} />
+                  <ServerStatusDisplay name={world.Name} up={statusesLam[world.Name]} />
                 </Fragment>
               )
             })}

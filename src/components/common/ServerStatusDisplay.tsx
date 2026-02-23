@@ -27,7 +27,7 @@ const ServerStatusDisplay = (props: Props) => {
 }
 
 interface Props {
-  isGhost: boolean
+  isGhost?: boolean
   name: string
   up: boolean | undefined
 }

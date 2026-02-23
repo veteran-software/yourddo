@@ -32,8 +32,10 @@ const TotalChaos = () => {
     editMode,
     setEditMode,
     showSolution,
-    setShowSolution
-  } = usePuzzleState(config, initBoard)
+    setShowSolution,
+    handleCellClick,
+    toggleMarked
+  } = usePuzzleState(config, initBoard, toggleCell)
 
   const { rows: R, cols: C, mask } = config
 
@@ -65,28 +67,6 @@ const TotalChaos = () => {
     setShowSolution(false)
   }
 
-  const handleCellClick = (r: number, c: number): void => {
-    if (!mask[r][c]) return
-
-    if (editMode) {
-      // edit mode: flip only this tile
-      const copy = board.map((row) => row.slice())
-      copy[r][c] = copy[r][c] ? 0 : 1
-      setBoard(copy)
-      setSolution(null)
-      setMarkedSolution(null)
-      setShowSolution(false)
-    } else {
-      if (solution && showSolution && solution[r][c] === 1 && markedSolution && markedSolution[r][c] === 0) {
-        const m2: number[][] = markedSolution.map((row: number[]) => row.slice())
-        m2[r][c] = 1
-        setMarkedSolution(m2)
-      }
-      setBoard((prev) => toggleCell(prev, config, r, c))
-    }
-  }
-
-  const toggleMarked = (isMarked: boolean): string => (isMarked ? 'border' : 'border border-4 border-success')
 
   return (
     <Card>
