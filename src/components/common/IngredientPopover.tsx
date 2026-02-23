@@ -9,7 +9,11 @@ import CraftedIngredientDisplay from './CraftedIngredientDisplay.tsx'
 import FarmedIngredientDisplay from './FarmedIngredientDisplay.tsx'
 
 const IngredientPopover = (props: Props) => {
-  const { ingredient, popper } = props
+  const { ingredient, ...popper } = props
+
+  if (!(ingredient as CraftingIngredient).requirements?.length) {
+    return <></>
+  }
 
   return (
     <Popover key={ingredient.name} id={ingredient.name} className='m-0 p-0 position-fixed' {...popper}>
@@ -51,9 +55,8 @@ const IngredientPopover = (props: Props) => {
   )
 }
 
-interface Props {
+interface Props extends Partial<OverlayInjectedProps> {
   ingredient: CraftingIngredient | Ingredient
-  popper: Partial<OverlayInjectedProps>
 }
 
 export default IngredientPopover

@@ -53,10 +53,8 @@ const CraftedIngredientDisplay = (props: Props) => {
     <Stack direction='horizontal' gap={3} className='align-items-center'>
       {showPopover ? (
         <OverlayTrigger
-          overlay={IngredientPopover({
-            ingredient,
-            popper: {}
-          })}
+          trigger={['click', 'hover']}
+          overlay={<IngredientPopover ingredient={ingredient} />}
           placement='auto'
         >
           <FallbackImage src={imageSrc} alt={ingredient.name} />
@@ -74,7 +72,7 @@ const CraftedIngredientDisplay = (props: Props) => {
       </Stack>
 
       {showQuantity && (
-        <Container className='w-auto'>
+        <Container className='w-auto ms-auto'>
           <strong>{getOwnedIngredients(ingredient, quantity, troveData)}</strong>
         </Container>
       )}

@@ -8,6 +8,7 @@ export interface CraftingIngredient extends Ingredient {
   craftedIn?: string
   effectsAdded?: Enhancement[]
   effectsRemoved?: Enhancement[]
+  choices?: Enhancement[]
   ingredientType?: string
   minLevelIncrease?: {
     noMinimumLevel?: number
