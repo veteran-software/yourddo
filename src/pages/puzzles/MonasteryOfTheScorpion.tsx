@@ -64,44 +64,44 @@ const MonasteryOfTheScorpion = () => {
     setShowSolution(false)
   }
 
+  const handleEditCell = (r: number, c: number) => {
+    if (!mask[r][c]) {
+      return
+    }
+
+    if (editAction === 'toggle') {
+      const b2: number[][] = board.map((row) => row.slice())
+      b2[r][c] = b2[r][c] ? 0 : 1
+      setBoard(b2)
+    } else {
+      const m2: boolean[][] = mask.map((row) => row.slice())
+      m2[r][c] = false
+      setMask(m2)
+    }
+
+    setSolution(null)
+    setMarkedSolution(null)
+    setShowSolution(false)
+  }
+
+  const handlePlayCell = (r: number, c: number) => {
+    if (solution && showSolution && solution[r][c] === 1 && markedSolution?.[r][c] === 0) {
+      const m2 = markedSolution.map((row) => row.slice())
+      m2[r][c] = 1
+      setMarkedSolution(m2)
+    }
+
+    const config: Config = { rows: ROWS, cols: COLS, mask }
+    setBoard((prev) => toggleCell(prev, config, r, c))
+  }
+
   const handleCellClick = (r: number, c: number) => {
     if (editMode) {
-      if (editAction === 'toggle') {
-        if (!mask[r][c]) {
-          return
-        }
-
-        const b2: number[][] = board.map((row) => row.slice())
-
-        b2[r][c] = b2[r][c] ? 0 : 1
-        setBoard(b2)
-      } else {
-        if (!mask[r][c]) {
-          return
-        }
-
-        const m2: boolean[][] = mask.map((row) => row.slice())
-
-        m2[r][c] = false
-        setMask(m2)
-      }
-
-      setSolution(null)
-      setMarkedSolution(null)
-      setShowSolution(false)
-    } else {
-      // play mode
-      if (solution && showSolution && solution[r][c] === 1 && markedSolution?.[r][c] === 0) {
-        const m2 = markedSolution.map((row) => row.slice())
-
-        m2[r][c] = 1
-        setMarkedSolution(m2)
-      }
-
-      const config: Config = { rows: ROWS, cols: COLS, mask }
-
-      setBoard((prev) => toggleCell(prev, config, r, c))
+      handleEditCell(r, c)
+      return
     }
+
+    handlePlayCell(r, c)
   }
 
   const toggleMarked = (isMarked: boolean) => (isMarked ? 'border' : 'border border-4 border-success')
@@ -184,7 +184,10 @@ const MonasteryOfTheScorpion = () => {
               const press = solution && showSolution ? solution[row][col] === 1 : false
               const marked = markedSolution ? markedSolution[row][col] === 1 : false
 
-              const bgUrl = isHole ? emptyTileImg : on ? activeTileImg : inactiveTileImg
+              let bgUrl = emptyTileImg
+              if (!isHole) {
+                bgUrl = on ? activeTileImg : inactiveTileImg
+              }
 
               const baseClasses = 'd-flex align-items-center justify-content-center bg-body'
               const borderClasses = press ? toggleMarked(marked) : 'border'
