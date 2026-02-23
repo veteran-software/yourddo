@@ -54,7 +54,7 @@ const CraftedIngredientDisplay = (props: Props) => {
       {showPopover ? (
         <OverlayTrigger
           trigger={['click', 'hover']}
-          overlay={(popperProps) => <IngredientPopover {...popperProps} ingredient={ingredient} />}
+          overlay={<IngredientPopover ingredient={ingredient} />}
           placement='auto'
         >
           <FallbackImage src={imageSrc} alt={ingredient.name} />
