@@ -3,6 +3,7 @@ import { altarOfDevastation } from '../../data/altarOfDevastation.ts'
 import { altarOfInvasion } from '../../data/altarOfInvasion.ts'
 import { altarOfSubjugation } from '../../data/altarOfSubjugation.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
+import { deconstructHgsShard } from '../../utils/objectUtils.ts'
 import { createInitialHgsState } from '../factories/stateFactory.ts'
 import { filterItemsBySuffix } from '../helpers/filterHelpers.ts'
 import { resetPlanner } from '../helpers/resetHelpers.ts'
@@ -40,12 +41,18 @@ const { actions, reducer } = createSlice({
     },
     selectInvasionItem: (state, action: PayloadAction<CraftingIngredient>) => {
       state.selectedInvasionItem = action.payload
+      if (state.selectedSubjugationSpell && !state.selectedSubjugationSpell.requirements?.[0].name.includes(deconstructHgsShard(action.payload.name).focus)) {
+        state.selectedSubjugationSpell = undefined
+      }
     },
     resetInvasionItem: (state) => {
       state.selectedInvasionItem = undefined
     },
     selectSubjugationItem: (state, action: PayloadAction<CraftingIngredient>) => {
       state.selectedSubjugationItem = action.payload
+      if (state.selectedSubjugationSpell && !state.selectedSubjugationSpell.requirements?.[1].name.includes(deconstructHgsShard(action.payload.name).focus)) {
+        state.selectedSubjugationSpell = undefined
+      }
     },
     resetSubjugationItem: (state) => {
       state.selectedSubjugationItem = undefined
