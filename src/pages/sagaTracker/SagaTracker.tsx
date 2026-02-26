@@ -1,5 +1,21 @@
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Badge, Button, Card, Col, Form, InputGroup, Row, Stack } from 'react-bootstrap'
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Form,
+  InputGroup,
+  Row,
+  Stack
+} from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import IndeterminateCheck from './components/IndeterminateCheck'
 import { loadInitial } from './components/loadInitial'
@@ -20,6 +36,7 @@ interface SagaItem {
   id: string
   name: string
   levelRange: string
+  npc: string
   completed: boolean
   turnedIn: boolean
 }
@@ -33,6 +50,7 @@ const fixedSagas: Omit<SagaItem, 'completed' | 'turnedIn'>[] = sagas as unknown 
   id: string
   name: string
   levelRange: string
+  npc: string
 }[]
 
 interface QuestDef {
@@ -457,31 +475,23 @@ const SagaTracker = () => {
   }
 
   // Auto-check a saga as completed when all its quests are completed (since its last turn-in).
-  // This only auto-sets to true; it does NOT auto-uncheck if quests are later incomplete,
-  // preserving any manual completion choice unless all quests become completed again.
   useEffect(() => {
-    // Build a quick lookup for quests per saga
-    setItems((prev) => {
-      let changed = false
+    const nextItems = items.map((it) => {
+      const quests = questsBySaga[it.id] ?? []
+      if (quests.length === 0) return it
 
-      const next = prev.map((it) => {
-        const quests = questsBySaga[it.id] ?? []
-
-        if (quests.length === 0) return it // no auto-check for sagas without quests
-        // eslint-disable-next-line sonarjs/no-nested-functions
-        const allDone = quests.every((q) => isQuestDoneForSaga(it.id, q.id))
-
-        // Only auto-set to true; do not force unchecking when not all done
-        if (allDone && !it.completed) {
-          changed = true
-          return { ...it, completed: true }
-        }
-        return it
-      })
-
-      return changed ? next : prev
+      const allDone = quests.every((q) => isQuestDoneForSaga(it.id, q.id))
+      if (allDone !== it.completed) {
+        return { ...it, completed: allDone }
+      }
+      return it
     })
-  }, [questDoneAt, turnedInAt, questsBySaga, isQuestDoneForSaga])
+
+    const changed = nextItems.some((it, idx) => it.completed !== items[idx].completed)
+    if (changed) {
+      setItems(nextItems)
+    }
+  }, [questDoneAt, turnedInAt, questsBySaga, isQuestDoneForSaga, items])
 
   return (
     <Stack gap={3} className='p-2 p-md-3'>
@@ -591,8 +601,9 @@ const SagaTracker = () => {
 
                     {/* Saga name (no strikethrough when completed) */}
                     <Col xs={12} md={5} className='my-1'>
-                      <div className='d-flex align-items-center gap-2'>
+                      <div className='d-flex flex-column'>
                         <span>{item.name}</span>
+                        <span className='text-secondary small ms-4'>Contact: {item.npc}</span>
                       </div>
                     </Col>
 
