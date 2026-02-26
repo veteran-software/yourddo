@@ -457,10 +457,7 @@ const SagaTracker = () => {
   }
 
   // Auto-check a saga as completed when all its quests are completed (since its last turn-in).
-  // This only auto-sets to true; it does NOT auto-uncheck if quests are later incomplete,
-  // preserving any manual completion choice unless all quests become completed again.
   useEffect(() => {
-    // Build a quick lookup for quests per saga
     setItems((prev) => {
       let changed = false
 
@@ -468,13 +465,11 @@ const SagaTracker = () => {
         const quests = questsBySaga[it.id] ?? []
 
         if (quests.length === 0) return it // no auto-check for sagas without quests
-        // eslint-disable-next-line sonarjs/no-nested-functions
         const allDone = quests.every((q) => isQuestDoneForSaga(it.id, q.id))
 
-        // Only auto-set to true; do not force unchecking when not all done
-        if (allDone && !it.completed) {
+        if (allDone !== it.completed) {
           changed = true
-          return { ...it, completed: true }
+          return { ...it, completed: allDone }
         }
         return it
       })
