@@ -5,13 +5,18 @@ import { formatAsKebabCase, sortObjectArray } from '../../utils/objectUtils.ts'
 import type { NavMenuDropdown } from './types.ts'
 
 const MenuDropdown = (props: Props) => {
-  const { menu } = props
+  const { menu, closeNav } = props
 
   return (
     <NavDropdown title={menu.title} id={`${menu.id}-nav-dropdown`}>
       {sortObjectArray(menu.items, 'label').map((item) =>
         item.active ? (
-          <NavDropdown.Item as={Link} key={formatAsKebabCase(item.label)} to={`/${formatAsKebabCase(item.label)}`}>
+          <NavDropdown.Item
+            as={Link}
+            key={formatAsKebabCase(item.label)}
+            to={`/${formatAsKebabCase(item.label)}`}
+            onClick={closeNav}
+          >
             {titleCase(item.label.toLowerCase())}
           </NavDropdown.Item>
         ) : null
@@ -22,6 +27,7 @@ const MenuDropdown = (props: Props) => {
 
 interface Props {
   menu: NavMenuDropdown
+  closeNav: () => void
 }
 
 export default MenuDropdown

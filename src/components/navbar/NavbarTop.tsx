@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Button, Container, Image, Nav, Navbar } from 'react-bootstrap'
 import { FaGithub } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
@@ -19,6 +19,8 @@ const NavbarTop = () => {
 
   const navRef = useRef<HTMLDivElement>(null)
 
+  const [expanded, setExpanded] = useState(false)
+
   useLayoutEffect(() => {
     const box = navRef.current?.getBoundingClientRect()
     if (box?.height) {
@@ -32,18 +34,26 @@ const NavbarTop = () => {
   )
 
   return (
-    <Navbar expand='lg' className='bg-primary mb-sm-1 mb-lg-2 z-1' sticky='top' ref={navRef}>
+    <Navbar
+      expand='lg'
+      className='bg-primary mb-sm-1 mb-lg-2 z-1'
+      sticky='top'
+      ref={navRef}
+      expanded={expanded}
+      onToggle={setExpanded}
+      collapseOnSelect
+    >
       <Container fluid>
-        <Navbar.Brand href='/' className='p-0'>
+        <Navbar.Brand href='/' className='p-0' onClick={() => { setExpanded(false); }}>
           <Image src={logo} height={45} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls='responsive-navbar-nav' />
         <Navbar.Collapse id='responsive-navbar-nav'>
           <Nav className='me-auto w-100 justify-content-end gap-3'>
             {activeMenus.map((menu: NavMenuDropdown) => (
-              <MenuDropdown key={menu.title} menu={menu} />
+              <MenuDropdown key={menu.title} menu={menu} closeNav={() => { setExpanded(false); }} />
             ))}
-            <Nav.Link as={Link} to='/saga-tracker'>
+            <Nav.Link as={Link} to='/saga-tracker' onClick={() => { setExpanded(false); }}>
               Saga Tracker
             </Nav.Link>
             <Nav.Link
@@ -52,11 +62,12 @@ const NavbarTop = () => {
               target='_blank'
               rel='noreferrer'
               title='YourDDO on GitHub'
+              onClick={() => { setExpanded(false); }}
             >
               <FaGithub size={25} />
             </Nav.Link>
 
-            <TroveImport />
+            <TroveImport closeNav={() => { setExpanded(false); }} />
           </Nav>
         </Navbar.Collapse>
       </Container>
