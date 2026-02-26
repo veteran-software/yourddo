@@ -32,6 +32,14 @@ const SubjugationSpellDropdown = () => {
           )
           .filter((spellItem: CraftingIngredient) => spellItem.spell !== undefined)
       }
+    } else if (selectedSubjugationItem && selectedInvasionItem) {
+      const t1Focus: string = deconstructHgsShard(selectedInvasionItem.name).focus
+      const t2Focus: string = deconstructHgsShard(selectedSubjugationItem.name).focus
+
+      spellItems = subjugationItems
+        .filter((spellItem: CraftingIngredient) => spellItem.requirements?.[0].name.includes(t1Focus))
+        .filter((spellItem: CraftingIngredient) => spellItem.requirements?.[1].name.includes(t2Focus))
+        .filter((spellItem: CraftingIngredient) => spellItem.spell !== undefined)
     } else if (selectedSubjugationItem && !selectedInvasionItem) {
       spellItems = [selectedSubjugationItem]
     } else if (!selectedSubjugationItem && selectedInvasionItem) {
@@ -89,10 +97,25 @@ const SubjugationSpellDropdown = () => {
       }
     }
 
+    if (selectedSubjugationItem && selectedInvasionItem) {
+      const t1Focus: string = deconstructHgsShard(selectedInvasionItem.name).focus
+      const t2Focus: string = deconstructHgsShard(selectedSubjugationItem.name).focus
+
+      const spellList: CraftingIngredient[] = subjugationItems
+        .filter((spellItem: CraftingIngredient) => spellItem.requirements?.[0].name.includes(t1Focus))
+        .filter((spellItem: CraftingIngredient) => spellItem.requirements?.[1].name.includes(t2Focus))
+        .filter((spellItem: CraftingIngredient) => spellItem.spell !== undefined)
+
+      if (spellList.length) {
+        dispatch(selectSubjugationSpell(spellList[0]))
+      }
+      return
+    }
+
     if (selectedSubjugationItem && !selectedInvasionItem) {
       dispatch(selectSubjugationSpell(selectedSubjugationItem))
     }
-  }, [dispatch, selectedDevastationFocused, selectedSubjugationItem, selectedInvasionItem])
+  }, [dispatch, selectedDevastationFocused, selectedSubjugationItem, selectedInvasionItem, subjugationItems])
 
   const renderSpellBody = (ingredient: CraftingIngredient) => {
     if (!ingredient.spell) return <></>

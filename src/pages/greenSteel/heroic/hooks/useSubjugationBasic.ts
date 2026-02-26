@@ -4,64 +4,72 @@ import { useAppSelector } from '../../../../redux/hooks.ts'
 import type { Enhancement } from '../../../../types/core.ts'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
 import { deconstructHgsShard } from '../../../../utils/objectUtils.ts'
-import { baseElemental, type ElementalList, subjugationElementalList } from '../../common/helpers/elementalData.ts'
+import {
+  baseElemental,
+  type ElementalList,
+  subjugationElementalList
+} from '../../common/helpers/elementalData.ts'
 import useIngredientsMap from './useIngredientMap.ts'
 
 const useSubjugationBasic = () => {
-  const { selectedInvasionItem, subjugationItems, selectedDevastationFocused, selectedSubjugationItem } =
+  const { selectedInvasionItem, subjugationItems, selectedDevastationFocused, selectedSubjugationSpell } =
     useAppSelector((state) => state.greenSteel, shallowEqual)
 
   const items: CraftingIngredient[] = useMemo(() => {
-    if (selectedSubjugationItem && selectedInvasionItem) {
-      const invasionFocus: string = deconstructHgsShard(selectedInvasionItem.name).focus
-      const subjugationFocus: string = deconstructHgsShard(selectedSubjugationItem.name).focus
-      const subjugationAspect: string | undefined = selectedSubjugationItem.effectsAdded?.at(-1)?.name
-
-      const elementData = subjugationElementalList.filter(
-        (el: ElementalList) => subjugationAspect?.includes(el.name) ?? false
-      )
-      if (
-        elementData[0].elements[0] === invasionFocus &&
-        elementData[0].elements[1] === subjugationFocus.split(' ')[0]
-      ) {
-        return [...subjugationItems].filter(
-          (item: CraftingIngredient) =>
-            item.effectsAdded?.some((effect: Enhancement) => effect.name.includes(invasionFocus)) ?? false
-        )
-      }
-
-      if (
-        elementData[1].elements[0] === invasionFocus &&
-        elementData[1].elements[1] === subjugationFocus.split(' ')[0]
-      ) {
-        return [...subjugationItems].filter(
-          (item: CraftingIngredient) =>
-            item.effectsAdded?.some((effect: Enhancement) => effect.name.includes(subjugationFocus.split(' ')[0])) ??
-            false
-        )
-      }
-    }
+    let filteredItems = [...subjugationItems]
 
     if (selectedInvasionItem) {
       const { focus } = deconstructHgsShard(selectedInvasionItem.name)
-
-      return [...subjugationItems].filter((item: CraftingIngredient) =>
-        // The T1 Focus is the Affinity for ingredient #1 for T2
+      filteredItems = filteredItems.filter((item: CraftingIngredient) =>
         item.requirements?.some((ingredient: CraftingIngredient) => ingredient.name.startsWith(focus))
       )
     }
 
+    if (selectedSubjugationSpell) {
+      const spellAspect = selectedSubjugationSpell.effectsAdded?.find((effect: Enhancement) =>
+        effect.name.includes('Aspect of')
+      )?.name
+
+      const specialAspect = selectedSubjugationSpell.effectsAdded?.find(
+        (effect: Enhancement) =>
+          effect.name.includes('Balance of Land and Sky') ||
+          effect.name.includes('Existential Stalemate') ||
+          effect.name.includes('Tempered')
+      )?.name
+
+      const targetAspect = spellAspect ?? specialAspect
+
+      if (targetAspect) {
+        filteredItems = filteredItems.filter((item: CraftingIngredient) =>
+          item.effectsAdded?.some((effect: Enhancement) => effect.name === targetAspect)
+        )
+      } else {
+        // Fallback to previous logic if no clear aspect is found (though there should be)
+        filteredItems = filteredItems.filter((item: CraftingIngredient) => {
+          const { focus: t2Focus, essence: t2Essence, gem: t2Gem } = deconstructHgsShard(item.name)
+          const {
+            focus: spellT2Focus,
+            essence: spellT2Essence,
+            gem: spellT2Gem
+          } = deconstructHgsShard(selectedSubjugationSpell.requirements?.[1].name ?? '')
+
+          const focusMatch =
+            t2Focus === spellT2Focus || t2Focus.includes(spellT2Focus) || spellT2Focus.includes(t2Focus)
+          return focusMatch && t2Essence === spellT2Essence && t2Gem === spellT2Gem
+        })
+      }
+    }
+
     if (selectedDevastationFocused) {
       const { focus } = deconstructHgsShard(selectedDevastationFocused.requirements?.[1].name ?? '')
-
-      return [...subjugationItems].filter(
+      filteredItems = filteredItems.filter(
         (item: CraftingIngredient) =>
           item.effectsAdded?.some((effect: Enhancement) => effect.name.includes(`Aspect of ${focus}`)) ?? false
       )
     }
 
-    return [...subjugationItems]
-  }, [selectedSubjugationItem, subjugationItems, selectedInvasionItem, selectedDevastationFocused])
+    return filteredItems
+  }, [subjugationItems, selectedInvasionItem, selectedDevastationFocused, selectedSubjugationSpell])
 
   const elemental: ElementalList[] = useMemo(() => subjugationElementalList, [])
 

@@ -7,17 +7,40 @@ import { baseElemental, type ElementalList } from '../../common/helpers/elementa
 import useIngredientsMap from './useIngredientMap.ts'
 
 const useInvasion = () => {
-  const { invasionItems, selectedSubjugationItem } = useAppSelector((state) => state.greenSteel, shallowEqual)
+  const { invasionItems, selectedSubjugationItem, selectedSubjugationSpell } = useAppSelector(
+    (state) => state.greenSteel,
+    shallowEqual
+  )
 
   const items: CraftingIngredient[] = useMemo(() => {
     return [...invasionItems].filter((item: CraftingIngredient) => {
+      const { focus } = deconstructHgsShard(item.name)
+
       if (selectedSubjugationItem) {
-        return selectedSubjugationItem.requirements?.[0].name.startsWith(deconstructHgsShard(item.name).focus)
+        if (!selectedSubjugationItem.requirements?.[0].name.startsWith(focus)) {
+          return false
+        }
+      }
+
+      if (selectedSubjugationSpell) {
+        const { focus: spellT1Focus } = deconstructHgsShard(selectedSubjugationSpell.requirements?.[0].name ?? '')
+
+        // Ensure we handle "Positive" vs "Positive Energy" and "Negative" vs "Negative Energy"
+        const normalizedSpellT1Focus =
+          spellT1Focus === 'Positive' || spellT1Focus === 'Negative' ? `${spellT1Focus} Energy` : spellT1Focus
+        const normalizedItemFocus = focus === 'Positive' || focus === 'Negative' ? `${focus} Energy` : focus
+
+        if (
+          !normalizedItemFocus.includes(normalizedSpellT1Focus) &&
+          !normalizedSpellT1Focus.includes(normalizedItemFocus)
+        ) {
+          return false
+        }
       }
 
       return true
     })
-  }, [invasionItems, selectedSubjugationItem])
+  }, [invasionItems, selectedSubjugationItem, selectedSubjugationSpell])
 
   const elemental: ElementalList[] = useMemo(() => baseElemental, [])
 
