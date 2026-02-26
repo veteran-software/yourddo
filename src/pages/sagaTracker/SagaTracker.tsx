@@ -1,5 +1,21 @@
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Badge, Button, Card, Col, Form, InputGroup, Row, Stack } from 'react-bootstrap'
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Form,
+  InputGroup,
+  Row,
+  Stack
+} from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import IndeterminateCheck from './components/IndeterminateCheck'
 import { loadInitial } from './components/loadInitial'
@@ -20,6 +36,7 @@ interface SagaItem {
   id: string
   name: string
   levelRange: string
+  npc: string
   completed: boolean
   turnedIn: boolean
 }
@@ -33,6 +50,7 @@ const fixedSagas: Omit<SagaItem, 'completed' | 'turnedIn'>[] = sagas as unknown 
   id: string
   name: string
   levelRange: string
+  npc: string
 }[]
 
 interface QuestDef {
@@ -586,8 +604,9 @@ const SagaTracker = () => {
 
                     {/* Saga name (no strikethrough when completed) */}
                     <Col xs={12} md={5} className='my-1'>
-                      <div className='d-flex align-items-center gap-2'>
+                      <div className='d-flex flex-column'>
                         <span>{item.name}</span>
+                        <span className='text-secondary small ms-4'>Contact: {item.npc}</span>
                       </div>
                     </Col>
 
