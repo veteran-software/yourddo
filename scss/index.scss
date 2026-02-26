@@ -4,6 +4,14 @@ $card-bg: rgb(38, 42, 58);
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
+@media (min-width: 768px) {
+  .position-md-absolute {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+  }
+}
+
 // _custom-colors.scss
 $custom-colors: (
         "air": #939be0,

@@ -1054,9 +1054,9 @@ const CannithCrafting = () => {
   return (
     <Container className='px-0'>
       <Card>
-        <Card.Header className='py-3'>
-          <div className='d-flex flex-column flex-md-row align-items-center justify-content-between gap-3'>
-            <div className='text-center text-md-start'>
+        <Card.Header className='py-3 position-relative'>
+          <div className='d-flex flex-column align-items-center justify-content-center gap-3'>
+            <div className='text-center w-100'>
               <h4 className='mb-0'>Cannith Crafting</h4>
               <small>
                 <a
@@ -1069,7 +1069,7 @@ const CannithCrafting = () => {
                 </a>
               </small>
             </div>
-            <div className='d-flex align-items-center gap-2'>
+            <div className='d-flex align-items-center justify-content-center gap-2 position-md-absolute end-0 me-3'>
               <Button
                 variant='outline-light'
                 size='sm'
