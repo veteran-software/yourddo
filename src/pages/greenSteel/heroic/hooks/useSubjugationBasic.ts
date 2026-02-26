@@ -4,17 +4,16 @@ import { useAppSelector } from '../../../../redux/hooks.ts'
 import type { Enhancement } from '../../../../types/core.ts'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
 import { deconstructHgsShard } from '../../../../utils/objectUtils.ts'
-import { baseElemental, type ElementalList, subjugationElementalList } from '../../common/helpers/elementalData.ts'
+import {
+  baseElemental,
+  type ElementalList,
+  subjugationElementalList
+} from '../../common/helpers/elementalData.ts'
 import useIngredientsMap from './useIngredientMap.ts'
 
 const useSubjugationBasic = () => {
-  const {
-    selectedInvasionItem,
-    subjugationItems,
-    selectedDevastationFocused,
-    selectedSubjugationItem,
-    selectedSubjugationSpell
-  } = useAppSelector((state) => state.greenSteel, shallowEqual)
+  const { selectedInvasionItem, subjugationItems, selectedDevastationFocused, selectedSubjugationSpell } =
+    useAppSelector((state) => state.greenSteel, shallowEqual)
 
   const items: CraftingIngredient[] = useMemo(() => {
     let filteredItems = [...subjugationItems]
@@ -38,7 +37,7 @@ const useSubjugationBasic = () => {
           effect.name.includes('Tempered')
       )?.name
 
-      const targetAspect = spellAspect || specialAspect
+      const targetAspect = spellAspect ?? specialAspect
 
       if (targetAspect) {
         filteredItems = filteredItems.filter((item: CraftingIngredient) =>
@@ -70,13 +69,7 @@ const useSubjugationBasic = () => {
     }
 
     return filteredItems
-  }, [
-    selectedSubjugationItem,
-    subjugationItems,
-    selectedInvasionItem,
-    selectedDevastationFocused,
-    selectedSubjugationSpell
-  ])
+  }, [subjugationItems, selectedInvasionItem, selectedDevastationFocused, selectedSubjugationSpell])
 
   const elemental: ElementalList[] = useMemo(() => subjugationElementalList, [])
 
