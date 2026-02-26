@@ -8,7 +8,8 @@ import type { AppDispatch } from '../../redux/store.ts'
 import { formatNumber } from '../../utils/objectUtils.ts'
 import { buildItemRollupFromCsvFile, getStoredTroveData, storeTroveData } from '../../utils/troveUtils.ts'
 
-const TroveImport = () => {
+const TroveImport = (props: Props) => {
+  const { closeNav } = props
   const dispatch: AppDispatch = useAppDispatch()
 
   const { troveData } = useAppSelector((state) => state.app, shallowEqual)
@@ -68,7 +69,10 @@ const TroveImport = () => {
 
       <Nav.Link
         as={Button}
-        onClick={() => troveInputRef.current?.click()}
+        onClick={() => {
+          closeNav()
+          troveInputRef.current?.click()
+        }}
         title={troveData ? `${formatNumber(Object.keys(troveData).length)} Items Loaded` : 'Import from DH Trove'}
       >
         <Stack direction='horizontal' gap={1} className='align-items-center'>
@@ -78,6 +82,10 @@ const TroveImport = () => {
       </Nav.Link>
     </>
   )
+}
+
+interface Props {
+  closeNav: () => void
 }
 
 export default TroveImport
