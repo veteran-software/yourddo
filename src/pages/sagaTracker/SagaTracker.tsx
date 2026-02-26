@@ -476,25 +476,22 @@ const SagaTracker = () => {
 
   // Auto-check a saga as completed when all its quests are completed (since its last turn-in).
   useEffect(() => {
-    setItems((prev) => {
-      let changed = false
+    const nextItems = items.map((it) => {
+      const quests = questsBySaga[it.id] ?? []
+      if (quests.length === 0) return it
 
-      const next = prev.map((it) => {
-        const quests = questsBySaga[it.id] ?? []
-
-        if (quests.length === 0) return it // no auto-check for sagas without quests
-        const allDone = quests.every((q) => isQuestDoneForSaga(it.id, q.id))
-
-        if (allDone !== it.completed) {
-          changed = true
-          return { ...it, completed: allDone }
-        }
-        return it
-      })
-
-      return changed ? next : prev
+      const allDone = quests.every((q) => isQuestDoneForSaga(it.id, q.id))
+      if (allDone !== it.completed) {
+        return { ...it, completed: allDone }
+      }
+      return it
     })
-  }, [questDoneAt, turnedInAt, questsBySaga, isQuestDoneForSaga])
+
+    const changed = nextItems.some((it, idx) => it.completed !== items[idx].completed)
+    if (changed) {
+      setItems(nextItems)
+    }
+  }, [questDoneAt, turnedInAt, questsBySaga, isQuestDoneForSaga, items])
 
   return (
     <Stack gap={3} className='p-2 p-md-3'>
