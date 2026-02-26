@@ -2,146 +2,175 @@
   {
     "id": "saltmarsh-heroic",
     "name": "Saltmarsh (H)",
-    "levelRange": "3"
+    "levelRange": "3",
+    "npc": "Mattias Deckland"
   },
   {
     "id": "the-pirates-of-the-thunder-sea-heroic",
     "name": "The Pirates of the Thunder Sea (H)",
-    "levelRange": "4-7"
+    "levelRange": "4-7",
+    "npc": "Drell Jake"
   },
   {
     "id": "fables-of-the-feywild-heroic",
     "name": "Fables of the Feywild (H)",
-    "levelRange": "5"
+    "levelRange": "5",
+    "npc": "Gallant Twillford"
   },
   {
     "id": "isle-of-dread-heroic",
     "name": "Isle of Dread (H)",
-    "levelRange": "7"
+    "levelRange": "7",
+    "npc": "Yupan the Tale-weaver"
   },
   {
     "id": "chill-of-ravenloft-heroic",
     "name": "Chill of Ravenloft (H)",
-    "levelRange": "8"
+    "levelRange": "8",
+    "npc": "Nadia Erminthal"
   },
   {
     "id": "mists-of-ravenloft-heroic",
     "name": "Mists of Ravenloft (H)",
-    "levelRange": "10-12"
+    "levelRange": "10-12",
+    "npc": "Livius Lanston"
   },
   {
     "id": "myth-drannor-heroic",
     "name": "Myth Drannor (H)",
-    "levelRange": "13"
+    "levelRange": "13",
+    "npc": "Hinnia Fernshadow"
   },
   {
     "id": "in-the-wastes-of-gianthold-heroic",
     "name": "In the Wastes of Gianthold (H)",
-    "levelRange": "13-14"
+    "levelRange": "13-14",
+    "npc": "Tiragonis"
   },
   {
     "id": "masterminds-of-sharn-heroic",
     "name": "Masterminds of Sharn (H)",
-    "levelRange": "15-16"
+    "levelRange": "15-16",
+    "npc": "Darius Benford"
   },
   {
     "id": "cogs-heroic",
     "name": "Cogs (H)",
-    "levelRange": "15-16"
+    "levelRange": "15-16",
+    "npc": "Bellman Rulth"
   },
   {
     "id": "perils-of-cormyr-heroic",
     "name": "Perils of Cormyr (H)",
-    "levelRange": "15-19"
+    "levelRange": "15-19",
+    "npc": "Horton Waxley"
   },
   {
     "id": "honor-the-huntsilver-heroic",
     "name": "Honor the Huntsilver (H)",
-    "levelRange": "16-19"
+    "levelRange": "16-19",
+    "npc": "Antone Corluk"
   },
   {
     "id": "vecna-unleashed-heroic",
     "name": "Vecna Unleashed (H)",
-    "levelRange": "17"
+    "levelRange": "17",
+    "npc": "Aster the Trail-blazer"
   },
   {
     "id": "the-pirates-of-the-thunder-sea-epic",
     "name": "The Pirates of the Thunder Sea (E)",
-    "levelRange": "20-25"
+    "levelRange": "20-25",
+    "npc": "Cassiopia Carragher"
   },
   {
     "id": "menace-of-the-underdark-epic",
     "name": "Menace of the Underdark (E)",
-    "levelRange": "21-23"
+    "levelRange": "21-23",
+    "npc": "Lady Azana Winter"
   },
   {
     "id": "the-end-of-eberron-epic",
     "name": "The End of Eberron (E)",
-    "levelRange": "21-23"
+    "levelRange": "21-23",
+    "npc": "Gatekeeper Grazla"
   },
   {
     "id": "the-planewalkers-path-epic",
     "name": "The Planewalker's Path (E)",
-    "levelRange": "21-26"
+    "levelRange": "21-26",
+    "npc": "Eclesta Xillian"
   },
   {
     "id": "perils-of-cormyr-epic",
     "name": "Perils of Cormyr (E)",
-    "levelRange": "21-27"
+    "levelRange": "21-27",
+    "npc": "Fidilee Fallowfield"
   },
   {
     "id": "honor-the-huntsilver-epic",
     "name": "Honor the Huntsilver (E)",
-    "levelRange": "23-27"
+    "levelRange": "23-27",
+    "npc": "Belvedere Huntsilver"
   },
   {
     "id": "in-the-wastes-of-gianthold-epic",
     "name": "In the Wastes of Gianthold (E)",
-    "levelRange": "24"
+    "levelRange": "24",
+    "npc": "Paddrog"
   },
   {
     "id": "mists-of-ravenloft-legendary",
     "name": "Mists of Ravenloft (L)",
-    "levelRange": "31-32"
+    "levelRange": "31-32",
+    "npc": "Lavinia Lanston"
   },
   {
     "id": "masterminds-of-sharn-legendary",
     "name": "Masterminds of Sharn (L)",
-    "levelRange": "32"
+    "levelRange": "32",
+    "npc": "Cyrene Gorham"
   },
   {
     "id": "cogs-legendary",
     "name": "Cogs (L)",
-    "levelRange": "32"
+    "levelRange": "32",
+    "npc": "Alle Latham"
   },
   {
     "id": "fables-of-the-feywild-legendary",
     "name": "Fables of the Feywild (L)",
-    "levelRange": "32"
+    "levelRange": "32",
+    "npc": "Amber Brightleaf"
   },
   {
     "id": "saltmarsh-legendary",
     "name": "Saltmarsh (L)",
-    "levelRange": "32"
+    "levelRange": "32",
+    "npc": "Mara Deckland"
   },
   {
     "id": "isle-of-dread-legendary",
     "name": "Isle of Dread (L)",
-    "levelRange": "32"
+    "levelRange": "32",
+    "npc": "Okmak the Tale-weaver"
   },
   {
     "id": "vecna-unleashed-legendary",
     "name": "Vecna Unleashed (L)",
-    "levelRange": "34"
+    "levelRange": "34",
+    "npc": "Orm the Trail-blazer"
   },
   {
     "id": "myth-drannor-legendary",
     "name": "Myth Drannor (L)",
-    "levelRange": "35"
+    "levelRange": "35",
+    "npc": "Lorthas Vinewall"
   },
   {
     "id": "chill-of-ravenloft-legendary",
     "name": "Chill of Ravenloft (L)",
-    "levelRange": "36"
+    "levelRange": "36",
+    "npc": "Bertrand Gustavson"
   }
 ]
