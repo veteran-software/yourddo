@@ -78,6 +78,265 @@ const questMatches = (qName: string, query: string) => {
   return normalize(qName).includes(nq)
 }
 
+const HighlightedText = ({ text, query }: { text: string; query: string }) => {
+  const nq = normalize(query)
+  if (nq.length < 3) return <>{text}</>
+  const escapedQuery = query.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`)
+  const regex = new RegExp(`(${escapedQuery})`, 'gi')
+  const parts = text.split(regex)
+  return (
+    <>
+      {parts.map((part, i) => {
+        const key = `${part}-${String(i)}`
+        return part.toLowerCase() === nq ? (
+          <mark key={key} className='bg-warning text-dark p-0'>
+            {part}
+          </mark>
+        ) : (
+          part
+        )
+      })}
+    </>
+  )
+}
+
+const SagaRow = ({
+  def,
+  idx,
+  item,
+  quests,
+  isExpanded,
+  onToggleExpand,
+  onToggleSaga,
+  onToggleTurnedIn,
+  onResetOne,
+  isQuestDone,
+  onToggleQuest,
+  searchQuery
+}: {
+  def: (typeof fixedSagas)[0]
+  idx: number
+  item: SagaItem
+  quests: QuestDef[]
+  isExpanded: boolean
+  onToggleExpand: () => void
+  onToggleSaga: () => void
+  onToggleTurnedIn: () => void
+  onResetOne: () => void
+  isQuestDone: (sagaId: string, questId: string) => boolean
+  onToggleQuest: (sagaId: string, questId: string) => void
+  searchQuery: string
+}) => {
+  const total = quests.length
+  const done = quests.filter((q) => isQuestDone(def.id, q.id)).length
+  const partial = total > 0 && done > 0 && done < total
+
+  return (
+    <Fragment>
+      <Row
+        className={`align-items-center py-2 px-1 px-md-0 mx-0 rounded saga-data-row ${idx % 2 === 1 ? 'saga-row-stripe' : ''}`}
+      >
+        {/* Done checkbox (order 1 on desktop) */}
+        <Col
+          xs={6}
+          md={1}
+          className='d-flex align-items-center justify-content-start justify-content-md-center my-1 order-3 order-md-1'
+        >
+          <IndeterminateCheck
+            checked={item.completed}
+            indeterminate={partial}
+            onChange={onToggleSaga}
+            className='mb-0'
+            ariaLabel={`Mark ${item.name} as completed`}
+            label={<span className='d-md-none ms-2'>Done</span>}
+          />
+        </Col>
+
+        {/* Saga Name (order 2 on desktop) */}
+        <Col
+          xs={8}
+          md={4}
+          className='d-flex flex-column mb-1 mb-md-0 order-1 order-md-2 text-start justify-content-md-center'
+        >
+          <span className='fw-bold fw-md-normal'>
+            <HighlightedText text={item.name} query={searchQuery} />
+          </span>
+          <span className='text-secondary small ms-4'>Contact: {item.npc}</span>
+        </Col>
+
+        {/* Level Range (order 3 on desktop) */}
+        <Col
+          xs={4}
+          md={2}
+          className='d-flex align-items-center justify-content-end justify-content-md-start mb-1 mb-md-0 order-2 order-md-3'
+        >
+          <Badge bg='secondary' title='Level range' className='w-auto'>
+            {item.levelRange}
+          </Badge>
+        </Col>
+
+        {/* Turned in (order 4 on desktop) */}
+        <Col
+          xs={6}
+          md={2}
+          className='d-flex align-items-center justify-content-start justify-content-md-center my-1 order-4 order-md-4'
+        >
+          <Form.Check
+            type='checkbox'
+            className='mb-0'
+            id={`turned-in-${item.id}`}
+            aria-label={`Mark ${item.name} as turned in`}
+            checked={item.turnedIn}
+            onChange={onToggleTurnedIn}
+            label={<span className='d-md-none'>Turned in</span>}
+          />
+        </Col>
+
+        {/* Actions (order 5 on desktop) */}
+        <Col
+          xs={12}
+          md={3}
+          className='d-flex align-items-center justify-content-end gap-2 mt-2 mt-md-0 order-5 order-md-5'
+        >
+          {quests.length ? (
+            <Button
+              size='sm'
+              variant='outline-info'
+              className='flex-grow-1 flex-md-grow-0'
+              onClick={onToggleExpand}
+              title={isExpanded ? 'Hide quests for this saga' : 'Show quests for this saga'}
+            >
+              {isExpanded ? 'Hide quests' : 'Show quests'}
+            </Button>
+          ) : null}
+          <Button
+            size='sm'
+            variant='outline-secondary'
+            className='flex-grow-1 flex-md-grow-0'
+            onClick={onResetOne}
+            title='Reset this saga for a new run (archiving previous completions)'
+          >
+            New Run
+          </Button>
+        </Col>
+      </Row>
+
+      {isExpanded && quests.length ? (
+        <Row className='pb-2 mx-0'>
+          <Col xs={12} md={{ span: 11, offset: 1 }}>
+            <Card className='mt-1 border-0 bg-light-subtle'>
+              <Card.Body className='py-2 px-3'>
+                <Stack gap={1}>
+                  {quests
+                    .filter((q) => questMatches(q.name, searchQuery))
+                    .map((q) => (
+                      <div
+                        key={q.id}
+                        className='d-flex align-items-center justify-content-between py-1 border-bottom border-secondary-subtle last-child-no-border'
+                      >
+                        <div className='d-flex align-items-center gap-2'>
+                          <Form.Check
+                            type='checkbox'
+                            className='mb-0'
+                            id={`quest-${item.id}-${q.id}`}
+                            checked={isQuestDone(item.id, q.id)}
+                            onChange={() => {
+                              onToggleQuest(item.id, q.id)
+                            }}
+                            label={<HighlightedText text={q.name} query={searchQuery} />}
+                            aria-label={`Mark quest ${q.name} as done for ${item.name}`}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  {!quests.filter((q) => questMatches(q.name, searchQuery)).length && (
+                    <div className='text-secondary small'>No quests matching search.</div>
+                  )}
+                </Stack>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      ) : null}
+    </Fragment>
+  )
+}
+
+const SagaList = ({
+  items,
+  listDefs,
+  questsBySaga,
+  expanded,
+  onToggleExpand,
+  toggle,
+  toggleTurnedIn,
+  resetOne,
+  isQuestDoneForSaga,
+  toggleQuestForSaga,
+  searchQuery
+}: {
+  items: SagaItem[]
+  listDefs: typeof fixedSagas
+  questsBySaga: Record<string, QuestDef[]>
+  expanded: Record<string, boolean>
+  onToggleExpand: (id: string) => void
+  toggle: (id: string) => void
+  toggleTurnedIn: (id: string) => void
+  resetOne: (id: string) => void
+  isQuestDoneForSaga: (sagaId: string, questId: string) => boolean
+  toggleQuestForSaga: (sagaId: string, questId: string) => void
+  searchQuery: string
+}) => (
+  <Stack gap={1}>
+    {/* Header row for columns (visible md+) */}
+    <Row className='text-secondary small fw-semibold d-none d-md-flex saga-header-row px-1 px-md-0 mx-0 mb-1'>
+      <Col md={1} className='d-flex justify-content-md-center'>
+        Done
+      </Col>
+      <Col md={4} className='d-flex justify-content-md-start'>
+        Saga
+      </Col>
+      <Col md={2} className='d-flex justify-content-md-start'>
+        Level Range
+      </Col>
+      <Col md={2} className='d-flex justify-content-md-center'>
+        Turned in
+      </Col>
+      <Col md={3} className='d-flex justify-content-md-end'>
+        Actions
+      </Col>
+    </Row>
+    {listDefs.map((def, idx) => {
+      const item = items.find((i) => i.id === def.id) ?? { ...def, completed: false, turnedIn: false }
+      return (
+        <SagaRow
+          key={def.id}
+          def={def}
+          idx={idx}
+          item={item}
+          quests={questsBySaga[def.id] ?? []}
+          isExpanded={expanded[def.id]}
+          onToggleExpand={() => {
+            onToggleExpand(def.id)
+          }}
+          onToggleSaga={() => {
+            toggle(def.id)
+          }}
+          onToggleTurnedIn={() => {
+            toggleTurnedIn(def.id)
+          }}
+          onResetOne={() => {
+            resetOne(def.id)
+          }}
+          isQuestDone={isQuestDoneForSaga}
+          onToggleQuest={toggleQuestForSaga}
+          searchQuery={searchQuery}
+        />
+      )
+    })}
+  </Stack>
+)
+
 const SagaTracker = () => {
   const [items, setItems] = useState<SagaItem[]>(() => loadInitial(fixedSagas, STORAGE_KEY_V2) as SagaItem[])
   const [searchQuery, setSearchQuery] = useState('')
@@ -148,25 +407,6 @@ const SagaTracker = () => {
   // expand/collapse state per saga row
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
-  const HighlightedText = ({ text, query }: { text: string; query: string }) => {
-    const nq = normalize(query)
-    if (nq.length < 3) return <>{text}</>
-    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
-    const parts = text.split(regex)
-    return (
-      <>
-        {parts.map((part, i) =>
-          part.toLowerCase() === nq ? (
-            <mark key={i} className='bg-warning text-dark p-0'>
-              {part}
-            </mark>
-          ) : (
-            part
-          )
-        )}
-      </>
-    )
-  }
 
   // One-time: request persistent storage and migrate from localStorage to IndexedDB if needed.
   useEffect(() => {
@@ -324,7 +564,7 @@ const SagaTracker = () => {
     for (const item of fixedSagas) {
       const match = /(\d+)/.exec(item.levelRange)
       if (match) {
-        const lv = parseInt(match[1], 10)
+        const lv = Number.parseInt(match[1], 10)
         if (lv < 20) {
           heroic.push(item)
         } else if (lv <= 30) {
@@ -502,222 +742,11 @@ const SagaTracker = () => {
     }
   }
 
-  const SagaRow = ({
-    def,
-    idx,
-    item,
-    quests,
-    isExpanded,
-    onToggleExpand,
-    onToggleSaga,
-    onToggleTurnedIn,
-    onResetOne,
-    isQuestDone,
-    onToggleQuest,
-    searchQuery
-  }: {
-    def: (typeof fixedSagas)[0]
-    idx: number
-    item: SagaItem
-    quests: QuestDef[]
-    isExpanded: boolean
-    onToggleExpand: () => void
-    onToggleSaga: () => void
-    onToggleTurnedIn: () => void
-    onResetOne: () => void
-    isQuestDone: (sagaId: string, questId: string) => boolean
-    onToggleQuest: (sagaId: string, questId: string) => void
-    searchQuery: string
-  }) => {
-    const total = quests.length
-    const done = quests.filter((q) => isQuestDone(def.id, q.id)).length
-    const partial = total > 0 && done > 0 && done < total
-
-    return (
-      <Fragment>
-        <Row
-          className={`align-items-center py-2 px-1 px-md-0 mx-0 rounded saga-data-row ${idx % 2 === 1 ? 'saga-row-stripe' : ''}`}
-        >
-          {/* Done checkbox (order 1 on desktop) */}
-          <Col
-            xs={6}
-            md={1}
-            className='d-flex align-items-center justify-content-start justify-content-md-center my-1 order-3 order-md-1'
-          >
-            <IndeterminateCheck
-              checked={item.completed}
-              indeterminate={partial}
-              onChange={onToggleSaga}
-              className='mb-0'
-              ariaLabel={`Mark ${item.name} as completed`}
-              label={<span className='d-md-none ms-2'>Done</span>}
-            />
-          </Col>
-
-          {/* Saga Name (order 2 on desktop) */}
-          <Col
-            xs={8}
-            md={4}
-            className='d-flex flex-column mb-1 mb-md-0 order-1 order-md-2 text-start justify-content-md-center'
-          >
-            <span className='fw-bold fw-md-normal'>
-              <HighlightedText text={item.name} query={searchQuery} />
-            </span>
-            <span className='text-secondary small ms-4'>Contact: {item.npc}</span>
-          </Col>
-
-          {/* Level Range (order 3 on desktop) */}
-          <Col
-            xs={4}
-            md={2}
-            className='d-flex align-items-center justify-content-end justify-content-md-start mb-1 mb-md-0 order-2 order-md-3'
-          >
-            <Badge bg='secondary' title='Level range' className='w-auto'>
-              {item.levelRange}
-            </Badge>
-          </Col>
-
-          {/* Turned in (order 4 on desktop) */}
-          <Col
-            xs={6}
-            md={2}
-            className='d-flex align-items-center justify-content-start justify-content-md-center my-1 order-4 order-md-4'
-          >
-            <Form.Check
-              type='checkbox'
-              className='mb-0'
-              id={`turned-in-${item.id}`}
-              aria-label={`Mark ${item.name} as turned in`}
-              checked={item.turnedIn}
-              onChange={onToggleTurnedIn}
-              label={<span className='d-md-none'>Turned in</span>}
-            />
-          </Col>
-
-          {/* Actions (order 5 on desktop) */}
-          <Col
-            xs={12}
-            md={3}
-            className='d-flex align-items-center justify-content-end gap-2 mt-2 mt-md-0 order-5 order-md-5'
-          >
-            {quests.length ? (
-              <Button
-                size='sm'
-                variant='outline-info'
-                className='flex-grow-1 flex-md-grow-0'
-                onClick={onToggleExpand}
-                title={isExpanded ? 'Hide quests for this saga' : 'Show quests for this saga'}
-              >
-                {isExpanded ? 'Hide quests' : 'Show quests'}
-              </Button>
-            ) : null}
-            <Button
-              size='sm'
-              variant='outline-secondary'
-              className='flex-grow-1 flex-md-grow-0'
-              onClick={onResetOne}
-              title='Reset this saga for a new run (archiving previous completions)'
-            >
-              New Run
-            </Button>
-          </Col>
-        </Row>
-
-        {isExpanded && quests.length ? (
-          <Row className='pb-2 mx-0'>
-            <Col xs={12} md={{ span: 11, offset: 1 }}>
-              <Card className='mt-1 border-0 bg-light-subtle'>
-                <Card.Body className='py-2 px-3'>
-                  <Stack gap={1}>
-                    {quests
-                      .filter((q) => questMatches(q.name, searchQuery))
-                      .map((q) => (
-                        <div
-                          key={q.id}
-                          className='d-flex align-items-center justify-content-between py-1 border-bottom border-secondary-subtle last-child-no-border'
-                        >
-                          <div className='d-flex align-items-center gap-2'>
-                            <Form.Check
-                              type='checkbox'
-                              className='mb-0'
-                              id={`quest-${item.id}-${q.id}`}
-                              checked={isQuestDone(item.id, q.id)}
-                              onChange={() => {
-                                onToggleQuest(item.id, q.id)
-                              }}
-                              label={<HighlightedText text={q.name} query={searchQuery} />}
-                              aria-label={`Mark quest ${q.name} as done for ${item.name}`}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    {!quests.filter((q) => questMatches(q.name, searchQuery)).length && (
-                      <div className='text-secondary small'>No quests matching search.</div>
-                    )}
-                  </Stack>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        ) : null}
-      </Fragment>
-    )
-  }
 
   const onToggleExpand = (id: string) => {
     setExpanded((e) => ({ ...e, [id]: !e[id] }))
   }
 
-  const SagaList = ({ items: listDefs }: { items: typeof fixedSagas }) => (
-    <Stack gap={1}>
-      {/* Header row for columns (visible md+) */}
-      <Row className='text-secondary small fw-semibold d-none d-md-flex saga-header-row px-1 px-md-0 mx-0 mb-1'>
-        <Col md={1} className='d-flex justify-content-md-center'>
-          Done
-        </Col>
-        <Col md={4} className='d-flex justify-content-md-start'>
-          Saga
-        </Col>
-        <Col md={2} className='d-flex justify-content-md-start'>
-          Level Range
-        </Col>
-        <Col md={2} className='d-flex justify-content-md-center'>
-          Turned in
-        </Col>
-        <Col md={3} className='d-flex justify-content-md-end'>
-          Actions
-        </Col>
-      </Row>
-      {listDefs.map((def, idx) => {
-        const item = items.find((i) => i.id === def.id) ?? { ...def, completed: false, turnedIn: false }
-        return (
-          <SagaRow
-            key={def.id}
-            def={def}
-            idx={idx}
-            item={item}
-            quests={questsBySaga[def.id] ?? []}
-            isExpanded={expanded[def.id]}
-            onToggleExpand={() => {
-              onToggleExpand(def.id)
-            }}
-            onToggleSaga={() => {
-              toggle(def.id)
-            }}
-            onToggleTurnedIn={() => {
-              toggleTurnedIn(def.id)
-            }}
-            onResetOne={() => {
-              resetOne(def.id)
-            }}
-            isQuestDone={isQuestDoneForSaga}
-            onToggleQuest={toggleQuestForSaga}
-            searchQuery={searchQuery}
-          />
-        )
-      })}
-    </Stack>
-  )
 
   const onImportClick = () => fileInputRef.current?.click()
   const onImportFile = async (file?: File | null) => {
@@ -854,13 +883,49 @@ const SagaTracker = () => {
               fill
             >
               <Tab eventKey='heroic' title='Heroic (1-20)'>
-                <SagaList items={categorizedSagas.heroic} />
+                <SagaList
+                  items={items}
+                  listDefs={categorizedSagas.heroic}
+                  questsBySaga={questsBySaga}
+                  expanded={expanded}
+                  onToggleExpand={onToggleExpand}
+                  toggle={toggle}
+                  toggleTurnedIn={toggleTurnedIn}
+                  resetOne={resetOne}
+                  isQuestDoneForSaga={isQuestDoneForSaga}
+                  toggleQuestForSaga={toggleQuestForSaga}
+                  searchQuery={searchQuery}
+                />
               </Tab>
               <Tab eventKey='epic' title='Epic (21-30)'>
-                <SagaList items={categorizedSagas.epic} />
+                <SagaList
+                  items={items}
+                  listDefs={categorizedSagas.epic}
+                  questsBySaga={questsBySaga}
+                  expanded={expanded}
+                  onToggleExpand={onToggleExpand}
+                  toggle={toggle}
+                  toggleTurnedIn={toggleTurnedIn}
+                  resetOne={resetOne}
+                  isQuestDoneForSaga={isQuestDoneForSaga}
+                  toggleQuestForSaga={toggleQuestForSaga}
+                  searchQuery={searchQuery}
+                />
               </Tab>
               <Tab eventKey='legendary' title='Legendary (31+)'>
-                <SagaList items={categorizedSagas.legendary} />
+                <SagaList
+                  items={items}
+                  listDefs={categorizedSagas.legendary}
+                  questsBySaga={questsBySaga}
+                  expanded={expanded}
+                  onToggleExpand={onToggleExpand}
+                  toggle={toggle}
+                  toggleTurnedIn={toggleTurnedIn}
+                  resetOne={resetOne}
+                  isQuestDoneForSaga={isQuestDoneForSaga}
+                  toggleQuestForSaga={toggleQuestForSaga}
+                  searchQuery={searchQuery}
+                />
               </Tab>
             </Tabs>
           )}
