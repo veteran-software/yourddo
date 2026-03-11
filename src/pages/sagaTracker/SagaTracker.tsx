@@ -14,7 +14,9 @@ import {
   Form,
   InputGroup,
   Row,
-  Stack
+  Stack,
+  Tab,
+  Tabs
 } from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import IndeterminateCheck from './components/IndeterminateCheck'
@@ -44,6 +46,7 @@ interface SagaItem {
 const STORAGE_KEY_V2 = 'yourddo:saga-tracker:v2'
 const STORAGE_KEY_QUESTS_V1 = 'yourddo:saga-tracker:quests:v1'
 const STORAGE_KEY_TURNED_IN_AT_V1 = 'yourddo:saga-tracker:turnedInAt:v1'
+const STORAGE_KEY_ACTIVE_TAB = 'yourddo:saga-tracker:activeTab:v1'
 
 // Authoritative fixed list from JSON (no completion fields in file)
 const fixedSagas: Omit<SagaItem, 'completed' | 'turnedIn'>[] = sagas as unknown as {
@@ -66,6 +69,9 @@ const allQuests: QuestDef[] = questsData as unknown as QuestDef[]
 const SagaTracker = () => {
   const [items, setItems] = useState<SagaItem[]>(() => loadInitial(fixedSagas, STORAGE_KEY_V2) as SagaItem[])
   const [searchQuery, setSearchQuery] = useState('')
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return localStorage.getItem(STORAGE_KEY_ACTIVE_TAB) ?? 'heroic'
+  })
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   // quest last completion timestamp (epoch ms). Applies globally across sagas
   //eslint-disable-next-line sonarjs/cognitive-complexity
@@ -285,7 +291,38 @@ const SagaTracker = () => {
     }
   }, [turnedInAt])
 
+  useEffect(() => {
+    if (activeTab) {
+      localStorage.setItem(STORAGE_KEY_ACTIVE_TAB, activeTab)
+    }
+  }, [activeTab])
+
   const completedCount = useMemo(() => items.filter((i) => i.completed).length, [items])
+
+  const categorizedSagas = useMemo(() => {
+    const heroic: SagaItem[] = []
+    const epic: SagaItem[] = []
+    const legendary: SagaItem[] = []
+
+    for (const item of items) {
+      const match = /(\d+)/.exec(item.levelRange)
+      if (match) {
+        const lv = parseInt(match[1], 10)
+        if (lv < 20) {
+          heroic.push(item)
+        } else if (lv <= 30) {
+          epic.push(item)
+        } else {
+          legendary.push(item)
+        }
+      } else {
+        // Default to heroic if no level found, or handle as needed
+        heroic.push(item)
+      }
+    }
+
+    return { heroic, epic, legendary }
+  }, [items])
 
   const toggle = (id: string) => {
     setItems((prev) => prev.map((i) => (i.id === id ? { ...i, completed: !i.completed } : i)))
@@ -439,6 +476,140 @@ const SagaTracker = () => {
     }
   }
 
+  const SagaList = ({ items: listItems }: { items: SagaItem[] }) => (
+    <Stack gap={1}>
+      {/* Header row for columns (visible md+) */}
+      <Row className='text-secondary small fw-semibold d-none d-md-flex saga-header-row px-1 px-md-0 mx-0 mb-1'>
+        <Col md={1} className='d-flex justify-content-md-center'>Done</Col>
+        <Col md={4} className='d-flex justify-content-md-start'>Saga</Col>
+        <Col md={2} className='d-flex justify-content-md-start'>Level Range</Col>
+        <Col md={2} className='d-flex justify-content-md-center'>Turned in</Col>
+        <Col md={3} className='d-flex justify-content-md-end'>
+          Actions
+        </Col>
+      </Row>
+      {listItems.map((item, idx) => (
+        <Fragment key={item.id}>
+          <Row className={`align-items-center py-2 px-1 px-md-0 mx-0 rounded saga-data-row ${idx % 2 === 1 ? 'saga-row-stripe' : ''}`}>
+            {/* Done checkbox (order 1 on desktop) */}
+            <Col xs={6} md={1} className='d-flex align-items-center justify-content-start justify-content-md-center my-1 order-3 order-md-1'>
+              {(() => {
+                const quests = questsBySaga[item.id] ?? []
+                const total = quests.length
+                const done = quests.filter((q) => isQuestDoneForSaga(item.id, q.id)).length
+                const partial = total > 0 && done > 0 && done < total
+
+                return (
+                  <IndeterminateCheck
+                    checked={item.completed}
+                    indeterminate={partial}
+                    onChange={() => {
+                      toggle(item.id)
+                    }}
+                    className='mb-0'
+                    ariaLabel={`Mark ${item.name} as completed`}
+                    label={<span className='d-md-none ms-2'>Done</span>}
+                  />
+                )
+              })()}
+            </Col>
+
+            {/* Saga Name (order 2 on desktop) */}
+            <Col xs={8} md={4} className='d-flex flex-column mb-1 mb-md-0 order-1 order-md-2 text-start justify-content-md-center'>
+              <span className='fw-bold fw-md-normal'>{item.name}</span>
+              <span className='text-secondary small ms-4'>Contact: {item.npc}</span>
+            </Col>
+
+            {/* Level Range (order 3 on desktop) */}
+            <Col xs={4} md={2} className='d-flex align-items-center justify-content-end justify-content-md-start mb-1 mb-md-0 order-2 order-md-3'>
+              <Badge bg='secondary' title='Level range' className='w-auto'>
+                {item.levelRange}
+              </Badge>
+            </Col>
+
+            {/* Turned in (order 4 on desktop) */}
+            <Col xs={6} md={2} className='d-flex align-items-center justify-content-start justify-content-md-center my-1 order-4 order-md-4'>
+              <Form.Check
+                type='checkbox'
+                className='mb-0'
+                id={`turned-in-${item.id}`}
+                aria-label={`Mark ${item.name} as turned in`}
+                checked={item.turnedIn}
+                onChange={() => {
+                  toggleTurnedIn(item.id)
+                }}
+                label={<span className='d-md-none'>Turned in</span>}
+              />
+            </Col>
+
+            {/* Actions (order 5 on desktop) */}
+            <Col xs={12} md={3} className='d-flex align-items-center justify-content-end gap-2 mt-2 mt-md-0 order-5 order-md-5'>
+              {questsBySaga[item.id].length ? (
+                <Button
+                  size='sm'
+                  variant='outline-info'
+                  className='flex-grow-1 flex-md-grow-0'
+                  onClick={() => {
+                    setExpanded((e) => ({ ...e, [item.id]: !e[item.id] }))
+                  }}
+                  title={expanded[item.id] ? 'Hide quests for this saga' : 'Show quests for this saga'}
+                >
+                  {expanded[item.id] ? 'Hide quests' : 'Show quests'}
+                </Button>
+              ) : null}
+              <Button
+                size='sm'
+                variant='outline-secondary'
+                className='flex-grow-1 flex-md-grow-0'
+                onClick={() => {
+                  resetOne(item.id)
+                }}
+                title='Reset this saga (uncheck Completed and Turned in)'
+              >
+                Reset
+              </Button>
+            </Col>
+          </Row>
+
+          {expanded[item.id] && questsBySaga[item.id].length ? (
+            <Row className='pb-2 mx-0'>
+              <Col xs={12} md={{ span: 11, offset: 1 }}>
+                <Card className='mt-1 border-0 bg-light-subtle'>
+                  <Card.Body className='py-2 px-3'>
+                    <Stack gap={1}>
+                      {questsBySaga[item.id]
+                        .filter((q) => questMatches(q.name, searchQuery))
+                        .map((q) => (
+                          <div key={q.id} className='d-flex align-items-center justify-content-between py-1 border-bottom border-secondary-subtle last-child-no-border'>
+                            <div className='d-flex align-items-center gap-2'>
+                              <Form.Check
+                                type='checkbox'
+                                className='mb-0'
+                                id={`quest-${item.id}-${q.id}`}
+                                checked={isQuestDoneForSaga(item.id, q.id)}
+                                onChange={() => {
+                                  toggleQuestForSaga(item.id, q.id)
+                                }}
+                                label={q.name}
+                                aria-label={`Mark quest ${q.name} as done for ${item.name}`}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      {!questsBySaga[item.id].filter((q) => questMatches(q.name, searchQuery)).length && (
+                        <div className='text-secondary small'>No quests matching search.</div>
+                      )}
+                    </Stack>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          ) : null}
+        </Fragment>
+      ))}
+    </Stack>
+  )
+
   const onImportClick = () => fileInputRef.current?.click()
   const onImportFile = async (file?: File | null) => {
     if (!file) return
@@ -499,8 +670,8 @@ const SagaTracker = () => {
       <div className='text-secondary'>Track your DDO saga completion.</div>
 
       <Card>
-        <Card.Body className='d-flex justify-content-between align-items-center'>
-          <div className='flex-grow-1 me-2'>
+        <Card.Body className='d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3'>
+          <div className='flex-grow-1'>
             <InputGroup>
               <Form.Control
                 placeholder='Search quests...'
@@ -523,7 +694,7 @@ const SagaTracker = () => {
             </InputGroup>
           </div>
 
-          <div className='d-flex gap-2 flex-shrink-0'>
+          <div className='d-flex gap-2 flex-shrink-0 flex-wrap'>
             <Button variant='outline-secondary' onClick={resetChecks} disabled={items.length === 0} title='Uncheck all'>
               Reset Progress
             </Button>
@@ -563,132 +734,25 @@ const SagaTracker = () => {
           {items.length === 0 ? (
             <div className='text-secondary'>No sagas found.</div>
           ) : (
-            <Stack gap={2}>
-              {/* Header row for columns (visible md+) */}
-              <Row className='text-secondary small fw-semibold d-none d-md-flex align-items-center saga-header-row'>
-                <Col md={1}>Done</Col>
-                <Col md={5}>Saga</Col>
-                <Col md={2}>Level Range</Col>
-                <Col md={2}>Turned in</Col>
-                <Col md={2} className='text-end'>
-                  Actions
-                </Col>
-              </Row>
-              {items.map((item, idx) => (
-                <Fragment key={item.id}>
-                  <Row className={`align-items-center gy-2 ${idx % 2 === 1 ? 'saga-row-stripe' : ''}`}>
-                    {/* Completed checkbox */}
-                    <Col xs={6} md={1} className='d-flex align-items-center my-1'>
-                      {(() => {
-                        const quests = questsBySaga[item.id] ?? []
-                        const total = quests.length
-                        const done = quests.filter((q) => isQuestDoneForSaga(item.id, q.id)).length
-                        const partial = total > 0 && done > 0 && done < total
-
-                        return (
-                          <IndeterminateCheck
-                            checked={item.completed}
-                            indeterminate={partial}
-                            onChange={() => {
-                              toggle(item.id)
-                            }}
-                            ariaLabel={`Mark ${item.name} as completed`}
-                            label={<span className='d-md-none'>Done</span>}
-                          />
-                        )
-                      })()}
-                    </Col>
-
-                    {/* Saga name (no strikethrough when completed) */}
-                    <Col xs={12} md={5} className='my-1'>
-                      <div className='d-flex flex-column'>
-                        <span>{item.name}</span>
-                        <span className='text-secondary small ms-4'>Contact: {item.npc}</span>
-                      </div>
-                    </Col>
-
-                    {/* Level range in its own column (badge) */}
-                    <Col xs={6} md={2} className='d-flex align-items-center my-1'>
-                      <Badge bg='secondary' title='Level range' className='w-auto'>
-                        {item.levelRange}
-                      </Badge>
-                    </Col>
-
-                    {/* "Turned in" checkbox */}
-                    <Col xs={6} md={2} className='d-flex align-items-center my-1'>
-                      <Form.Check
-                        type='checkbox'
-                        aria-label={`Mark ${item.name} as turned in`}
-                        checked={item.turnedIn}
-                        onChange={() => {
-                          toggleTurnedIn(item.id)
-                        }}
-                        label={<span className='d-md-none'>Turned in</span>}
-                      />
-                    </Col>
-
-                    {/* Actions: Show/Hide quests and per-saga reset */}
-                    <Col xs={12} md={2} className='d-flex align-items-center justify-content-md-end gap-2 mt-2 mt-md-0'>
-                      {questsBySaga[item.id].length ? (
-                        <Button
-                          size='sm'
-                          variant='outline-info'
-                          onClick={() => {
-                            setExpanded((e) => ({ ...e, [item.id]: !e[item.id] }))
-                          }}
-                          title={expanded[item.id] ? 'Hide quests for this saga' : 'Show quests for this saga'}
-                        >
-                          {expanded[item.id] ? 'Hide quests' : 'Show quests'}
-                        </Button>
-                      ) : null}
-                      <Button
-                        size='sm'
-                        variant='outline-secondary'
-                        onClick={() => {
-                          resetOne(item.id)
-                        }}
-                        title='Reset this saga (uncheck Completed and Turned in)'
-                      >
-                        Reset
-                      </Button>
-                    </Col>
-                  </Row>
-
-                  {expanded[item.id] && questsBySaga[item.id].length ? (
-                    <Row className='pb-2'>
-                      <Col xs={12} md={{ span: 10, offset: 1 }}>
-                        <Card className='mt-2'>
-                          <Card.Body>
-                            <Stack gap={1}>
-                              {questsBySaga[item.id]
-                                .filter((q) => questMatches(q.name, searchQuery))
-                                .map((q) => (
-                                  <div key={q.id} className='d-flex align-items-center justify-content-between'>
-                                    <div className='d-flex align-items-center gap-2'>
-                                      <Form.Check
-                                        type='checkbox'
-                                        checked={isQuestDoneForSaga(item.id, q.id)}
-                                        onChange={() => {
-                                          toggleQuestForSaga(item.id, q.id)
-                                        }}
-                                        aria-label={`Mark quest ${q.name} as done for ${item.name}`}
-                                      />
-                                      <span>{q.name}</span>
-                                    </div>
-                                  </div>
-                                ))}
-                              {!questsBySaga[item.id].filter((q) => questMatches(q.name, searchQuery)).length && (
-                                <div className='text-secondary small'>No quests defined.</div>
-                              )}
-                            </Stack>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    </Row>
-                  ) : null}
-                </Fragment>
-              ))}
-            </Stack>
+            <Tabs
+              id='saga-tabs'
+              activeKey={activeTab}
+              onSelect={(k) => {
+                setActiveTab(k ?? 'heroic');
+              }}
+              className='mb-3'
+              fill
+            >
+              <Tab eventKey='heroic' title='Heroic (1-20)'>
+                <SagaList items={categorizedSagas.heroic} />
+              </Tab>
+              <Tab eventKey='epic' title='Epic (21-30)'>
+                <SagaList items={categorizedSagas.epic} />
+              </Tab>
+              <Tab eventKey='legendary' title='Legendary (31+)'>
+                <SagaList items={categorizedSagas.legendary} />
+              </Tab>
+            </Tabs>
           )}
         </Card.Body>
       </Card>
