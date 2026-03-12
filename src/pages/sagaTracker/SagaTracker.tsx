@@ -14,7 +14,9 @@ import {
   Form,
   InputGroup,
   Row,
-  Stack
+  Stack,
+  Tab,
+  Tabs
 } from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import IndeterminateCheck from './components/IndeterminateCheck'
@@ -44,6 +46,7 @@ interface SagaItem {
 const STORAGE_KEY_V2 = 'yourddo:saga-tracker:v2'
 const STORAGE_KEY_QUESTS_V1 = 'yourddo:saga-tracker:quests:v1'
 const STORAGE_KEY_TURNED_IN_AT_V1 = 'yourddo:saga-tracker:turnedInAt:v1'
+const STORAGE_KEY_ACTIVE_TAB = 'yourddo:saga-tracker:activeTab:v1'
 
 // Authoritative fixed list from JSON (no completion fields in file)
 const fixedSagas: Omit<SagaItem, 'completed' | 'turnedIn'>[] = sagas as unknown as {
@@ -63,9 +66,283 @@ const allQuests: QuestDef[] = questsData as unknown as QuestDef[]
 
 // Read statuses from localStorage and merge onto the authoritative JSON list
 
+// fuzzy-ish case-insensitive match (substring on normalized text)
+const normalize = (s: string) => s.toLowerCase().trim()
+const questMatches = (qName: string, query: string) => {
+  const nq = normalize(query)
+
+  if (nq.length < 3) {
+    return true
+  }
+
+  return normalize(qName).includes(nq)
+}
+
+const HighlightedText = ({ text, query }: { text: string; query: string }) => {
+  const nq = normalize(query)
+  if (nq.length < 3) return <>{text}</>
+  const escapedQuery = query.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`)
+  const regex = new RegExp(`(${escapedQuery})`, 'gi')
+  const parts = text.split(regex)
+  return (
+    <>
+      {parts.map((part, i) => {
+        const key = `${part}-${String(i)}`
+        return part.toLowerCase() === nq ? (
+          <mark key={key} className='bg-warning text-dark p-0'>
+            {part}
+          </mark>
+        ) : (
+          part
+        )
+      })}
+    </>
+  )
+}
+
+const SagaRow = ({
+  def,
+  idx,
+  item,
+  quests,
+  isExpanded,
+  onToggleExpand,
+  onToggleSaga,
+  onToggleTurnedIn,
+  onResetOne,
+  isQuestDone,
+  onToggleQuest,
+  searchQuery
+}: {
+  def: (typeof fixedSagas)[0]
+  idx: number
+  item: SagaItem
+  quests: QuestDef[]
+  isExpanded: boolean
+  onToggleExpand: () => void
+  onToggleSaga: () => void
+  onToggleTurnedIn: () => void
+  onResetOne: () => void
+  isQuestDone: (sagaId: string, questId: string) => boolean
+  onToggleQuest: (sagaId: string, questId: string) => void
+  searchQuery: string
+}) => {
+  const total = quests.length
+  const done = quests.filter((q) => isQuestDone(def.id, q.id)).length
+  const partial = total > 0 && done > 0 && done < total
+
+  return (
+    <Fragment>
+      <Row
+        className={`align-items-center py-2 px-1 px-md-0 mx-0 rounded saga-data-row ${idx % 2 === 1 ? 'saga-row-stripe' : ''}`}
+      >
+        {/* Done checkbox (order 1 on desktop) */}
+        <Col
+          xs={6}
+          md={1}
+          className='d-flex align-items-center justify-content-start justify-content-md-center my-1 order-3 order-md-1'
+        >
+          <IndeterminateCheck
+            checked={item.completed}
+            indeterminate={partial}
+            onChange={onToggleSaga}
+            className='mb-0'
+            ariaLabel={`Mark ${item.name} as completed`}
+            label={<span className='d-md-none ms-2'>Done</span>}
+          />
+        </Col>
+
+        {/* Saga Name (order 2 on desktop) */}
+        <Col
+          xs={8}
+          md={4}
+          className='d-flex flex-column mb-1 mb-md-0 order-1 order-md-2 text-start justify-content-md-center'
+        >
+          <span className='fw-bold fw-md-normal'>
+            <HighlightedText text={item.name} query={searchQuery} />
+          </span>
+          <span className='text-secondary small ms-4'>Contact: {item.npc}</span>
+        </Col>
+
+        {/* Level Range (order 3 on desktop) */}
+        <Col
+          xs={4}
+          md={2}
+          className='d-flex align-items-center justify-content-end justify-content-md-start mb-1 mb-md-0 order-2 order-md-3'
+        >
+          <Badge bg='secondary' title='Level range' className='w-auto'>
+            {item.levelRange}
+          </Badge>
+        </Col>
+
+        {/* Turned in (order 4 on desktop) */}
+        <Col
+          xs={6}
+          md={2}
+          className='d-flex align-items-center justify-content-start justify-content-md-center my-1 order-4 order-md-4'
+        >
+          <Form.Check
+            type='checkbox'
+            className='mb-0'
+            id={`turned-in-${item.id}`}
+            aria-label={`Mark ${item.name} as turned in`}
+            checked={item.turnedIn}
+            onChange={onToggleTurnedIn}
+            label={<span className='d-md-none'>Turned in</span>}
+          />
+        </Col>
+
+        {/* Actions (order 5 on desktop) */}
+        <Col
+          xs={12}
+          md={3}
+          className='d-flex align-items-center justify-content-end gap-2 mt-2 mt-md-0 order-5 order-md-5'
+        >
+          {quests.length ? (
+            <Button
+              size='sm'
+              variant='outline-info'
+              className='flex-grow-1 flex-md-grow-0'
+              onClick={onToggleExpand}
+              title={isExpanded ? 'Hide quests for this saga' : 'Show quests for this saga'}
+            >
+              {isExpanded ? 'Hide quests' : 'Show quests'}
+            </Button>
+          ) : null}
+          <Button
+            size='sm'
+            variant='outline-secondary'
+            className='flex-grow-1 flex-md-grow-0'
+            onClick={onResetOne}
+            title='Reset this saga for a new run (archiving previous completions)'
+          >
+            New Run
+          </Button>
+        </Col>
+      </Row>
+
+      {isExpanded && quests.length ? (
+        <Row className='pb-2 mx-0'>
+          <Col xs={12} md={{ span: 11, offset: 1 }}>
+            <Card className='mt-1 border-0 bg-light-subtle'>
+              <Card.Body className='py-2 px-3'>
+                <Stack gap={1}>
+                  {quests
+                    .filter((q) => questMatches(q.name, searchQuery))
+                    .map((q) => (
+                      <div
+                        key={q.id}
+                        className='d-flex align-items-center justify-content-between py-1 border-bottom border-secondary-subtle last-child-no-border'
+                      >
+                        <div className='d-flex align-items-center gap-2'>
+                          <Form.Check
+                            type='checkbox'
+                            className='mb-0'
+                            id={`quest-${item.id}-${q.id}`}
+                            checked={isQuestDone(item.id, q.id)}
+                            onChange={() => {
+                              onToggleQuest(item.id, q.id)
+                            }}
+                            label={<HighlightedText text={q.name} query={searchQuery} />}
+                            aria-label={`Mark quest ${q.name} as done for ${item.name}`}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  {!quests.filter((q) => questMatches(q.name, searchQuery)).length && (
+                    <div className='text-secondary small'>No quests matching search.</div>
+                  )}
+                </Stack>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      ) : null}
+    </Fragment>
+  )
+}
+
+const SagaList = ({
+  items,
+  listDefs,
+  questsBySaga,
+  expanded,
+  onToggleExpand,
+  toggle,
+  toggleTurnedIn,
+  resetOne,
+  isQuestDoneForSaga,
+  toggleQuestForSaga,
+  searchQuery
+}: {
+  items: SagaItem[]
+  listDefs: typeof fixedSagas
+  questsBySaga: Record<string, QuestDef[]>
+  expanded: Record<string, boolean>
+  onToggleExpand: (id: string) => void
+  toggle: (id: string) => void
+  toggleTurnedIn: (id: string) => void
+  resetOne: (id: string) => void
+  isQuestDoneForSaga: (sagaId: string, questId: string) => boolean
+  toggleQuestForSaga: (sagaId: string, questId: string) => void
+  searchQuery: string
+}) => (
+  <Stack gap={1}>
+    {/* Header row for columns (visible md+) */}
+    <Row className='text-secondary small fw-semibold d-none d-md-flex saga-header-row px-1 px-md-0 mx-0 mb-1'>
+      <Col md={1} className='d-flex justify-content-md-center'>
+        Done
+      </Col>
+      <Col md={4} className='d-flex justify-content-md-start'>
+        Saga
+      </Col>
+      <Col md={2} className='d-flex justify-content-md-start'>
+        Level Range
+      </Col>
+      <Col md={2} className='d-flex justify-content-md-center'>
+        Turned in
+      </Col>
+      <Col md={3} className='d-flex justify-content-md-end'>
+        Actions
+      </Col>
+    </Row>
+    {listDefs.map((def, idx) => {
+      const item = items.find((i) => i.id === def.id) ?? { ...def, completed: false, turnedIn: false }
+      return (
+        <SagaRow
+          key={def.id}
+          def={def}
+          idx={idx}
+          item={item}
+          quests={questsBySaga[def.id] ?? []}
+          isExpanded={expanded[def.id]}
+          onToggleExpand={() => {
+            onToggleExpand(def.id)
+          }}
+          onToggleSaga={() => {
+            toggle(def.id)
+          }}
+          onToggleTurnedIn={() => {
+            toggleTurnedIn(def.id)
+          }}
+          onResetOne={() => {
+            resetOne(def.id)
+          }}
+          isQuestDone={isQuestDoneForSaga}
+          onToggleQuest={toggleQuestForSaga}
+          searchQuery={searchQuery}
+        />
+      )
+    })}
+  </Stack>
+)
+
 const SagaTracker = () => {
   const [items, setItems] = useState<SagaItem[]>(() => loadInitial(fixedSagas, STORAGE_KEY_V2) as SagaItem[])
   const [searchQuery, setSearchQuery] = useState('')
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return localStorage.getItem(STORAGE_KEY_ACTIVE_TAB) ?? 'heroic'
+  })
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   // quest last completion timestamp (epoch ms). Applies globally across sagas
   //eslint-disable-next-line sonarjs/cognitive-complexity
@@ -130,6 +407,7 @@ const SagaTracker = () => {
   // expand/collapse state per saga row
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
+
   // One-time: request persistent storage and migrate from localStorage to IndexedDB if needed.
   useEffect(() => {
     //eslint-disable-next-line sonarjs/cognitive-complexity
@@ -137,98 +415,82 @@ const SagaTracker = () => {
       await requestPersistentStorage()
 
       try {
-        const [dbItems, dbQuests, dbTurned] = await Promise.all([
-          idbGetSagaItems(),
-          idbGetQuestDoneAt(),
-          idbGetTurnedInAt()
-        ])
+        let dbItems = await idbGetSagaItems()
+        let dbQuests = await idbGetQuestDoneAt()
+        let dbTurned = await idbGetTurnedInAt()
 
-        // Items: if IndexedDB empty, migrate from localStorage compact array
+        // Fallback/Migration: if IndexedDB empty, try to migrate from localStorage
         if (!dbItems) {
-          try {
-            const raw = localStorage.getItem(STORAGE_KEY_V2)
-            if (raw) {
+          const raw = localStorage.getItem(STORAGE_KEY_V2)
+          if (raw) {
+            try {
               const arr = JSON.parse(raw) as { id?: unknown; completed?: unknown; turnedIn?: unknown }[]
               if (Array.isArray(arr)) {
-                const compact = arr
+                dbItems = arr
                   .map((e) => ({
                     id: typeof e.id === 'string' ? e.id : undefined,
-                    completed: !!e.completed,
-                    turnedIn: !!e.turnedIn
+                    completed: Boolean(e.completed),
+                    turnedIn: Boolean(e.turnedIn)
                   }))
-                  .filter((e) => !!e.id) as { id: string; completed: boolean; turnedIn: boolean }[]
-                await idbSetSagaItems(compact)
+                  .filter((e) => Boolean(e.id)) as { id: string; completed: boolean; turnedIn: boolean }[]
+                await idbSetSagaItems(dbItems)
               }
-            }
-          } catch {
-            // ignore
+            } catch { /* ignore */ }
           }
         }
 
-        // Quests map migration
         if (!dbQuests) {
-          try {
-            const raw = localStorage.getItem(STORAGE_KEY_QUESTS_V1)
-            if (raw) {
+          const raw = localStorage.getItem(STORAGE_KEY_QUESTS_V1)
+          if (raw) {
+            try {
               const arr = JSON.parse(raw) as { id?: unknown; lastDoneAt?: unknown }[]
-              const map: Record<string, number> = {}
               if (Array.isArray(arr)) {
+                dbQuests = {}
                 for (const e of arr) {
                   const id = typeof e.id === 'string' ? e.id : undefined
                   const t = typeof e.lastDoneAt === 'number' ? e.lastDoneAt : 0
-                  if (id && Number.isFinite(t)) map[id] = t
+                  if (id && Number.isFinite(t)) dbQuests[id] = t
                 }
+                await idbSetQuestDoneAt(dbQuests)
               }
-              await idbSetQuestDoneAt(map)
-            }
-          } catch {
-            // ignore
+            } catch { /* ignore */ }
           }
         }
 
-        // Turned-in map migration
         if (!dbTurned) {
-          try {
-            const raw = localStorage.getItem(STORAGE_KEY_TURNED_IN_AT_V1)
-            if (raw) {
+          const raw = localStorage.getItem(STORAGE_KEY_TURNED_IN_AT_V1)
+          if (raw) {
+            try {
               const arr = JSON.parse(raw) as { id?: unknown; turnedInAt?: unknown }[]
-              const map: Record<string, number> = {}
               if (Array.isArray(arr)) {
+                dbTurned = {}
                 for (const e of arr) {
                   const id = typeof e.id === 'string' ? e.id : undefined
                   const t = typeof e.turnedInAt === 'number' ? e.turnedInAt : 0
-                  if (id && Number.isFinite(t)) map[id] = t
+                  if (id && Number.isFinite(t)) dbTurned[id] = t
                 }
+                await idbSetTurnedInAt(dbTurned)
               }
-              await idbSetTurnedInAt(map)
-            }
-          } catch {
-            // ignore
+            } catch { /* ignore */ }
           }
         }
 
-        // Now, load from IndexedDB (may be newly migrated) and hydrate state
-        const [newDbItems, newDbQuests, newDbTurned] = await Promise.all([
-          idbGetSagaItems(),
-          idbGetQuestDoneAt(),
-          idbGetTurnedInAt()
-        ])
-
-        if (newDbItems && Array.isArray(newDbItems)) {
-          const status = new Map(newDbItems.map((e) => [e.id, e]))
+        // Hydrate state from whatever we have (IDB or migrated or nothing)
+        if (dbItems && Array.isArray(dbItems)) {
+          const status = new Map(dbItems.map((e) => [e.id, e]))
           setItems(
             fixedSagas.map((s) => ({
               ...s,
-              completed: !!status.get(s.id)?.completed,
-              turnedIn: !!status.get(s.id)?.turnedIn
+              completed: Boolean(status.get(s.id)?.completed),
+              turnedIn: Boolean(status.get(s.id)?.turnedIn)
             }))
           )
         }
 
-        if (newDbQuests) setQuestDoneAt(newDbQuests)
-        if (newDbTurned) setTurnedInAt(newDbTurned)
-      } catch {
-        // ignore any IDB errors
+        if (dbQuests) setQuestDoneAt(dbQuests)
+        if (dbTurned) setTurnedInAt(dbTurned)
+      } catch (e) {
+        console.error('IDB load/migration failed, relying on localStorage initial state', e)
       }
     })().catch(console.error)
   }, [])
@@ -237,9 +499,10 @@ const SagaTracker = () => {
     // Persist a compact representation containing only statuses by id.
     try {
       const compact = items.map(({ id, completed, turnedIn }) => ({ id, completed, turnedIn }))
-      localStorage.setItem(STORAGE_KEY_V2, JSON.stringify(compact))
-      // Also persist to IndexedDB (more durable)
+      // Primary: IndexedDB
       idbSetSagaItems(compact).catch(console.error)
+      // Fallback/Mirror: localStorage
+      localStorage.setItem(STORAGE_KEY_V2, JSON.stringify(compact))
     } catch {
       // ignore storage errors
     }
@@ -268,8 +531,8 @@ const SagaTracker = () => {
   useEffect(() => {
     try {
       const compact = Object.entries(questDoneAt).map(([id, lastDoneAt]) => ({ id, lastDoneAt }))
-      localStorage.setItem(STORAGE_KEY_QUESTS_V1, JSON.stringify(compact))
       idbSetQuestDoneAt(questDoneAt).catch(console.error)
+      localStorage.setItem(STORAGE_KEY_QUESTS_V1, JSON.stringify(compact))
     } catch {
       // ignore
     }
@@ -278,32 +541,66 @@ const SagaTracker = () => {
   useEffect(() => {
     try {
       const compact = Object.entries(turnedInAt).map(([id, t]) => ({ id, turnedInAt: t }))
-      localStorage.setItem(STORAGE_KEY_TURNED_IN_AT_V1, JSON.stringify(compact))
       idbSetTurnedInAt(turnedInAt).catch(console.error)
+      localStorage.setItem(STORAGE_KEY_TURNED_IN_AT_V1, JSON.stringify(compact))
     } catch {
       // ignore
     }
   }, [turnedInAt])
 
+  useEffect(() => {
+    if (activeTab) {
+      localStorage.setItem(STORAGE_KEY_ACTIVE_TAB, activeTab)
+    }
+  }, [activeTab])
+
   const completedCount = useMemo(() => items.filter((i) => i.completed).length, [items])
 
-  const toggle = (id: string) => {
-    setItems((prev) => prev.map((i) => (i.id === id ? { ...i, completed: !i.completed } : i)))
+  const categorizedSagas = useMemo(() => {
+    const heroic: typeof fixedSagas = []
+    const epic: typeof fixedSagas = []
+    const legendary: typeof fixedSagas = []
 
-    // If marking the saga as completed, also mark all of its quests as completed (globally)
+    for (const item of fixedSagas) {
+      const match = /(\d+)/.exec(item.levelRange)
+      if (match) {
+        const lv = Number.parseInt(match[1], 10)
+        if (lv < 20) {
+          heroic.push(item)
+        } else if (lv <= 30) {
+          epic.push(item)
+        } else {
+          legendary.push(item)
+        }
+      } else {
+        // Default to heroic if no level found, or handle as needed
+        heroic.push(item)
+      }
+    }
+
+    return { heroic, epic, legendary }
+  }, []) // Stable categories, only depends on fixed list
+
+  const toggle = (id: string) => {
+    const item = items.find((i) => i.id === id)
+    if (!item) return
+
+    const nowCompleted = !item.completed
+
+    setItems((prev) => prev.map((i) => (i.id === id ? { ...i, completed: nowCompleted } : i)))
+
+    // Also update all quests for this saga
     const quests = questsBySaga[id] ?? []
     if (quests.length > 0) {
-      // Determine if it is being set to "completed" now by peeking at the current state
-      const nowCompleted = !items.find((it) => it.id === id)?.completed
-      if (nowCompleted) {
-        const now = Date.now()
+      const now = nowCompleted ? Date.now() : 0
 
-        setQuestDoneAt((m) => {
-          const next = { ...m }
-          for (const q of quests) next[q.id] = now
-          return next
-        })
-      }
+      setQuestDoneAt((m) => {
+        const next = { ...m }
+        for (const q of quests) {
+          next[q.id] = now
+        }
+        return next
+      })
     }
   }
 
@@ -384,45 +681,51 @@ const SagaTracker = () => {
     }
   }
 
-  // fuzzy-ish case-insensitive match (substring on normalized text)
-  const normalize = (s: string) => s.toLowerCase().trim()
-  const questMatches = (qName: string, query: string) => {
-    const nq = normalize(query)
-
-    if (!nq) {
-      return true
-    }
-
-    return normalize(qName).includes(nq)
-  }
-
-  // When pressing the search button or Enter, auto-expand sagas that have matching quests
-  const runSearch = () => {
-    const q = searchQuery.trim()
-
-    if (!q) {
-      return
-    }
+  // When pressing the search button or Enter, auto-expand sagas that have matching quests or names
+  useEffect(() => {
+    const nq = normalize(searchQuery)
 
     setExpanded((prev) => {
-      const next = { ...prev }
+      if (nq.length < 3) {
+        // If search is cleared or too short, collapse all
+        return Object.keys(prev).length === 0 ? prev : {}
+      }
 
+      const next: Record<string, boolean> = {}
       for (const s of fixedSagas) {
         const quests = questsBySaga[s.id] ?? []
+        const questMatchesAny = quests.some((qq) => normalize(qq.name).includes(nq))
 
-        if (quests.some((qq) => questMatches(qq.name, q))) {
-          next[s.id] = true
+        next[s.id] = questMatchesAny
+      }
+
+      // Deep comparison to avoid redundant state updates
+      const prevKeys = Object.keys(prev)
+      const nextKeys = Object.keys(next)
+      let changed = prevKeys.length !== nextKeys.length
+
+      if (!changed) {
+        for (const k of nextKeys) {
+          if (next[k] !== prev[k]) {
+            changed = true
+            break
+          }
         }
       }
 
-      return next
+      return changed ? next : prev
     })
+  }, [searchQuery, questsBySaga])
+
+  const runSearch = () => {
+    // Legacy function, now handled by useEffect for auto-expansion
   }
 
   // Export/Import support
   const exportSagaData = () => {
     try {
       const payload = {
+        version: 2,
         items: items.map(({ id, completed, turnedIn }) => ({ id, completed, turnedIn })),
         questDoneAt,
         turnedInAt
@@ -439,12 +742,19 @@ const SagaTracker = () => {
     }
   }
 
+
+  const onToggleExpand = (id: string) => {
+    setExpanded((e) => ({ ...e, [id]: !e[id] }))
+  }
+
+
   const onImportClick = () => fileInputRef.current?.click()
   const onImportFile = async (file?: File | null) => {
     if (!file) return
     try {
       const text = await file.text()
       const data = JSON.parse(text) as {
+        version?: number
         items?: { id: string; completed: boolean; turnedIn: boolean }[]
         questDoneAt?: Record<string, number>
         turnedInAt?: Record<string, number>
@@ -455,8 +765,8 @@ const SagaTracker = () => {
         setItems(
           fixedSagas.map((s) => ({
             ...s,
-            completed: !!status.get(s.id)?.completed,
-            turnedIn: !!status.get(s.id)?.turnedIn
+            completed: Boolean(status.get(s.id)?.completed),
+            turnedIn: Boolean(status.get(s.id)?.turnedIn)
           }))
         )
         idbSetSagaItems(data.items).catch(console.error)
@@ -491,7 +801,7 @@ const SagaTracker = () => {
     if (changed) {
       setItems(nextItems)
     }
-  }, [questDoneAt, turnedInAt, questsBySaga, isQuestDoneForSaga, items])
+  }, [items, questDoneAt, turnedInAt, questsBySaga, isQuestDoneForSaga])
 
   return (
     <Stack gap={3} className='p-2 p-md-3'>
@@ -499,8 +809,8 @@ const SagaTracker = () => {
       <div className='text-secondary'>Track your DDO saga completion.</div>
 
       <Card>
-        <Card.Body className='d-flex justify-content-between align-items-center'>
-          <div className='flex-grow-1 me-2'>
+        <Card.Body className='d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3'>
+          <div className='flex-grow-1'>
             <InputGroup>
               <Form.Control
                 placeholder='Search quests...'
@@ -523,7 +833,7 @@ const SagaTracker = () => {
             </InputGroup>
           </div>
 
-          <div className='d-flex gap-2 flex-shrink-0'>
+          <div className='d-flex gap-2 flex-shrink-0 flex-wrap'>
             <Button variant='outline-secondary' onClick={resetChecks} disabled={items.length === 0} title='Uncheck all'>
               Reset Progress
             </Button>
@@ -563,132 +873,61 @@ const SagaTracker = () => {
           {items.length === 0 ? (
             <div className='text-secondary'>No sagas found.</div>
           ) : (
-            <Stack gap={2}>
-              {/* Header row for columns (visible md+) */}
-              <Row className='text-secondary small fw-semibold d-none d-md-flex align-items-center saga-header-row'>
-                <Col md={1}>Done</Col>
-                <Col md={5}>Saga</Col>
-                <Col md={2}>Level Range</Col>
-                <Col md={2}>Turned in</Col>
-                <Col md={2} className='text-end'>
-                  Actions
-                </Col>
-              </Row>
-              {items.map((item, idx) => (
-                <Fragment key={item.id}>
-                  <Row className={`align-items-center gy-2 ${idx % 2 === 1 ? 'saga-row-stripe' : ''}`}>
-                    {/* Completed checkbox */}
-                    <Col xs={6} md={1} className='d-flex align-items-center my-1'>
-                      {(() => {
-                        const quests = questsBySaga[item.id] ?? []
-                        const total = quests.length
-                        const done = quests.filter((q) => isQuestDoneForSaga(item.id, q.id)).length
-                        const partial = total > 0 && done > 0 && done < total
-
-                        return (
-                          <IndeterminateCheck
-                            checked={item.completed}
-                            indeterminate={partial}
-                            onChange={() => {
-                              toggle(item.id)
-                            }}
-                            ariaLabel={`Mark ${item.name} as completed`}
-                            label={<span className='d-md-none'>Done</span>}
-                          />
-                        )
-                      })()}
-                    </Col>
-
-                    {/* Saga name (no strikethrough when completed) */}
-                    <Col xs={12} md={5} className='my-1'>
-                      <div className='d-flex flex-column'>
-                        <span>{item.name}</span>
-                        <span className='text-secondary small ms-4'>Contact: {item.npc}</span>
-                      </div>
-                    </Col>
-
-                    {/* Level range in its own column (badge) */}
-                    <Col xs={6} md={2} className='d-flex align-items-center my-1'>
-                      <Badge bg='secondary' title='Level range' className='w-auto'>
-                        {item.levelRange}
-                      </Badge>
-                    </Col>
-
-                    {/* "Turned in" checkbox */}
-                    <Col xs={6} md={2} className='d-flex align-items-center my-1'>
-                      <Form.Check
-                        type='checkbox'
-                        aria-label={`Mark ${item.name} as turned in`}
-                        checked={item.turnedIn}
-                        onChange={() => {
-                          toggleTurnedIn(item.id)
-                        }}
-                        label={<span className='d-md-none'>Turned in</span>}
-                      />
-                    </Col>
-
-                    {/* Actions: Show/Hide quests and per-saga reset */}
-                    <Col xs={12} md={2} className='d-flex align-items-center justify-content-md-end gap-2 mt-2 mt-md-0'>
-                      {questsBySaga[item.id].length ? (
-                        <Button
-                          size='sm'
-                          variant='outline-info'
-                          onClick={() => {
-                            setExpanded((e) => ({ ...e, [item.id]: !e[item.id] }))
-                          }}
-                          title={expanded[item.id] ? 'Hide quests for this saga' : 'Show quests for this saga'}
-                        >
-                          {expanded[item.id] ? 'Hide quests' : 'Show quests'}
-                        </Button>
-                      ) : null}
-                      <Button
-                        size='sm'
-                        variant='outline-secondary'
-                        onClick={() => {
-                          resetOne(item.id)
-                        }}
-                        title='Reset this saga (uncheck Completed and Turned in)'
-                      >
-                        Reset
-                      </Button>
-                    </Col>
-                  </Row>
-
-                  {expanded[item.id] && questsBySaga[item.id].length ? (
-                    <Row className='pb-2'>
-                      <Col xs={12} md={{ span: 10, offset: 1 }}>
-                        <Card className='mt-2'>
-                          <Card.Body>
-                            <Stack gap={1}>
-                              {questsBySaga[item.id]
-                                .filter((q) => questMatches(q.name, searchQuery))
-                                .map((q) => (
-                                  <div key={q.id} className='d-flex align-items-center justify-content-between'>
-                                    <div className='d-flex align-items-center gap-2'>
-                                      <Form.Check
-                                        type='checkbox'
-                                        checked={isQuestDoneForSaga(item.id, q.id)}
-                                        onChange={() => {
-                                          toggleQuestForSaga(item.id, q.id)
-                                        }}
-                                        aria-label={`Mark quest ${q.name} as done for ${item.name}`}
-                                      />
-                                      <span>{q.name}</span>
-                                    </div>
-                                  </div>
-                                ))}
-                              {!questsBySaga[item.id].filter((q) => questMatches(q.name, searchQuery)).length && (
-                                <div className='text-secondary small'>No quests defined.</div>
-                              )}
-                            </Stack>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    </Row>
-                  ) : null}
-                </Fragment>
-              ))}
-            </Stack>
+            <Tabs
+              id='saga-tabs'
+              activeKey={activeTab}
+              onSelect={(k) => {
+                setActiveTab(k ?? 'heroic');
+              }}
+              className='mb-3'
+              fill
+            >
+              <Tab eventKey='heroic' title='Heroic (1-20)'>
+                <SagaList
+                  items={items}
+                  listDefs={categorizedSagas.heroic}
+                  questsBySaga={questsBySaga}
+                  expanded={expanded}
+                  onToggleExpand={onToggleExpand}
+                  toggle={toggle}
+                  toggleTurnedIn={toggleTurnedIn}
+                  resetOne={resetOne}
+                  isQuestDoneForSaga={isQuestDoneForSaga}
+                  toggleQuestForSaga={toggleQuestForSaga}
+                  searchQuery={searchQuery}
+                />
+              </Tab>
+              <Tab eventKey='epic' title='Epic (21-30)'>
+                <SagaList
+                  items={items}
+                  listDefs={categorizedSagas.epic}
+                  questsBySaga={questsBySaga}
+                  expanded={expanded}
+                  onToggleExpand={onToggleExpand}
+                  toggle={toggle}
+                  toggleTurnedIn={toggleTurnedIn}
+                  resetOne={resetOne}
+                  isQuestDoneForSaga={isQuestDoneForSaga}
+                  toggleQuestForSaga={toggleQuestForSaga}
+                  searchQuery={searchQuery}
+                />
+              </Tab>
+              <Tab eventKey='legendary' title='Legendary (31+)'>
+                <SagaList
+                  items={items}
+                  listDefs={categorizedSagas.legendary}
+                  questsBySaga={questsBySaga}
+                  expanded={expanded}
+                  onToggleExpand={onToggleExpand}
+                  toggle={toggle}
+                  toggleTurnedIn={toggleTurnedIn}
+                  resetOne={resetOne}
+                  isQuestDoneForSaga={isQuestDoneForSaga}
+                  toggleQuestForSaga={toggleQuestForSaga}
+                  searchQuery={searchQuery}
+                />
+              </Tab>
+            </Tabs>
           )}
         </Card.Body>
       </Card>

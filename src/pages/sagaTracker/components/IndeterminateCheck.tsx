@@ -7,9 +7,10 @@ export interface IndeterminateCheckProps {
   onChange: () => void
   label?: React.ReactNode
   ariaLabel?: string
+  className?: string
 }
 
-const IndeterminateCheck = ({ checked, indeterminate, onChange, label, ariaLabel }: IndeterminateCheckProps) => {
+const IndeterminateCheck = ({ checked, indeterminate, onChange, label, ariaLabel, className }: IndeterminateCheckProps) => {
   const ref = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -17,7 +18,7 @@ const IndeterminateCheck = ({ checked, indeterminate, onChange, label, ariaLabel
   }, [indeterminate, checked])
 
   return (
-    <Form.Check type='checkbox'>
+    <Form.Check type='checkbox' className={className}>
       <Form.Check.Input
         ref={ref}
         type='checkbox'
