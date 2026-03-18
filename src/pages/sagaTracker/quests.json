@@ -735,19 +735,9 @@
     "sagas": ["perils-of-cormyr-heroic"]
   },
   {
-    "id": "b9c7ca1e-5284-47e0-aea1-9ea87f9447a3",
-    "name": "Disciples of Shar (E)",
-    "sagas": ["perils-of-cormyr-epic"]
-  },
-  {
     "id": "51dcb653-e9a6-408b-bb90-fff51550ca10",
     "name": "Shadow of a Doubt (H)",
     "sagas": ["perils-of-cormyr-heroic"]
-  },
-  {
-    "id": "3ebb54a1-ba4e-4f9f-aff7-0c3052a8c096",
-    "name": "Shadow of a Doubt (E)",
-    "sagas": ["perils-of-cormyr-epic"]
   },
   {
     "id": "a289b020-4aa0-430f-ab1a-82893a9bc12d",
