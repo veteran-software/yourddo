@@ -41,50 +41,56 @@ const shieldTypes = new Set(['Shield', 'Orb', 'Buckler', 'Tower Shield'])
 const meleeWeaponTypes = new Set([
   'Bastard Sword',
   'Battle Axe',
+  'Battleaxe',
   'Club',
   'Dagger',
   'Falchion',
+  'Great Axe',
   'Greataxe',
+  'Great Club',
   'Greatclub',
+  'Great Sword',
   'Greatsword',
   'Handaxe',
+  'Hand Axe',
   'Heavy Mace',
+  'Heavy Pick',
   'Khopesh',
   'Kukri',
-  'L. Pick',
+  'Light Hammer',
+  'Light Pick',
   'Light Mace',
   'Longsword',
+  'Long Sword',
   'Maul',
   'Morningstar',
   'Rapier',
   'Scimitar',
   'Shortsword',
+  'Short Sword',
   'Sickle',
   'Warhammer',
+  'War Hammer',
   'Quarterstaff',
   'Handwraps',
-  'Sceptre',
-  'Scepter',
-  'Staff',
-  'Heavy Pick',
-  'Light Pick',
-  'Heavy Flail',
-  'Light Flail',
-  'Trident',
-  'Whip',
-  'Melee'
+  'Dwarven War Axe',
+  'Dwarven Waraxe',
+  'Kama'
 ])
 
 const rangedWeaponTypes = new Set([
   'Longbow',
+  'Long Bow',
   'Shortbow',
-  'Great Xbow',
-  'Light Xbow',
-  'Heavy Xbow',
-  'Repeating Xbow',
+  'Short Bow',
+  'Great Crossbow',
+  'Light Crossbow',
+  'Heavy Crossbow',
+  'Repeating Heavy Crossbow',
+  'Repeating Light Crossbow',
   'Rune Arm'
 ])
-const throwingWeaponTypes = new Set(['Throwing Axe', 'Throwing Dagger', 'Shuriken'])
+const throwingWeaponTypes = new Set(['Throwing Axe', 'Throwing Dagger', 'Throwing Hammer', 'Dart', 'Shuriken'])
 
 const toAugmentObject = (augments?: string[]): Augment[] | undefined => {
   if (!augments?.length) return undefined
