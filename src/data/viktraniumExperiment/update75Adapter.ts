@@ -11,71 +11,59 @@ interface U75Item {
   binding?: Binding
   enchantments?: Enhancement[]
   augments?: string[]
-  dropLocations?: { sourceType?: string; questWildernessChain?: string; difficulty?: string }[]
+  dropLocations?: {
+    sourceType?: string
+    questWildernessChain?: string
+    difficulty?: string
+    bleakConductors?: string
+    bleakInsulators?: string
+    bleakAlternators?: string
+    bleakResistors?: string
+    legendaryBleakMementos?: string
+    legendaryBleakAlternator?: string
+    legendaryBleakResistor?: string
+    legendaryBleakInsulator?: string
+    legendaryBleakConductor?: string
+  }[]
+  dropLocationRaw?: string
 }
 
 // Helpers to categorize items similar to existing static data
-const jewelryTypes = new Set([
-  'Goggles',
-  'Necklace',
-  'Trinket',
-  'Cloak',
-  'Belt',
-  'Ring',
-  'Boots',
-  'Bracers',
-  'Gloves',
-  'Mask',
-  'Circlet',
-  'Helm',
-  'Helmet',
-  'Eyes',
-  'Wrists',
-  'Hands',
-  'Feet',
-  'Head'
-])
+const jewelryTypes = new Set(['Goggles', 'Necklace', 'Trinket', 'Ring', 'Bracers'])
 
-const shieldTypes = new Set(['Shield', 'Orb', 'Buckler', 'Tower Shield'])
+const clothingTypes = new Set(['Belt', 'Boots', 'Gloves', 'Helm', 'Helmet', 'Cloak'])
+
+const shieldTypes = new Set(['Small Shield', 'Large Shield', 'Orb', 'Buckler', 'Tower Shield'])
 
 const meleeWeaponTypes = new Set([
   'Bastard Sword',
   'Battle Axe',
-  'Battleaxe',
   'Club',
   'Dagger',
+  'Dwarven War Axe',
   'Falchion',
   'Great Axe',
-  'Greataxe',
   'Great Club',
-  'Greatclub',
   'Great Sword',
-  'Greatsword',
   'Handaxe',
-  'Hand Axe',
+  'Handwraps',
   'Heavy Mace',
   'Heavy Pick',
+  'Kama',
   'Khopesh',
   'Kukri',
   'Light Hammer',
-  'Light Pick',
   'Light Mace',
-  'Longsword',
+  'Light Pick',
   'Long Sword',
   'Maul',
   'Morningstar',
+  'Quarterstaff',
   'Rapier',
   'Scimitar',
-  'Shortsword',
   'Short Sword',
   'Sickle',
-  'Warhammer',
-  'War Hammer',
-  'Quarterstaff',
-  'Handwraps',
-  'Dwarven War Axe',
-  'Dwarven Waraxe',
-  'Kama'
+  'War Hammer'
 ])
 
 const rangedWeaponTypes = new Set([
@@ -90,6 +78,7 @@ const rangedWeaponTypes = new Set([
   'Repeating Light Crossbow',
   'Rune Arm'
 ])
+
 const throwingWeaponTypes = new Set(['Throwing Axe', 'Throwing Dagger', 'Throwing Hammer', 'Dart', 'Shuriken'])
 
 const toAugmentObject = (augments?: string[]): Augment[] | undefined => {
@@ -143,6 +132,9 @@ const mapItem = (it: U75Item): CraftingIngredient => {
     } else {
       subType = it.type
     }
+  } else if (clothingTypes.has(it.type)) {
+    type = 'Clothing'
+    subType = it.type
   } else if (shieldTypes.has(it.type)) {
     type = 'Shield'
     subType = it.type
@@ -166,14 +158,38 @@ const mapItem = (it: U75Item): CraftingIngredient => {
     }
   }
 
-  // Found in
-  const foundIn: string[] | undefined = (() => {
-    const dl = it.dropLocations?.[0]
-    if (!dl) return undefined
-    if (dl.sourceType === 'Viktranium Crafting') return ['Viktranium Crafting']
-    const locName = dl.questWildernessChain ?? undefined
-    const diff = dl.difficulty ? ` (${dl.difficulty})` : ''
-    return locName ? [`${locName}${diff}`] : undefined
+  // Found in & Requirements
+  const { foundIn, requirements } = (() => {
+    const dl = it.dropLocations?.find((l) => l.sourceType === 'Viktranium Crafting')
+    if (!dl) {
+      const firstDl = it.dropLocations?.[0]
+      if (!firstDl) return { foundIn: undefined, requirements: undefined }
+      const locName = firstDl.questWildernessChain ?? undefined
+      const diff = firstDl.difficulty ? ` (${firstDl.difficulty})` : ''
+      return { foundIn: locName ? [`${locName}${diff}`] : undefined, requirements: undefined }
+    }
+
+    const reqs: { name: string; quantity: number }[] = []
+    if (dl.legendaryBleakMementos)
+      reqs.push({ name: 'Legendary Bleak Memento', quantity: Number(dl.legendaryBleakMementos) })
+    if (dl.bleakConductors) reqs.push({ name: 'Bleak Conductor', quantity: Number(dl.bleakConductors) })
+    if (dl.bleakInsulators) reqs.push({ name: 'Bleak Insulator', quantity: Number(dl.bleakInsulators) })
+    if (dl.bleakAlternators) reqs.push({ name: 'Bleak Alternator', quantity: Number(dl.bleakAlternators) })
+    if (dl.bleakResistors) reqs.push({ name: 'Bleak Resistor', quantity: Number(dl.bleakResistors) })
+
+    if (dl.legendaryBleakAlternator)
+      reqs.push({ name: 'Legendary Bleak Alternator', quantity: Number(dl.legendaryBleakAlternator) })
+    if (dl.legendaryBleakResistor)
+      reqs.push({ name: 'Legendary Bleak Resistor', quantity: Number(dl.legendaryBleakResistor) })
+    if (dl.legendaryBleakInsulator)
+      reqs.push({ name: 'Legendary Bleak Insulator', quantity: Number(dl.legendaryBleakInsulator) })
+    if (dl.legendaryBleakConductor)
+      reqs.push({ name: 'Legendary Bleak Conductor', quantity: Number(dl.legendaryBleakConductor) })
+
+    if (it.dropLocationRaw?.includes('|Wicked|')) {
+      return { foundIn: ['Wicked Viktranium Experiment Crafting'], requirements: reqs }
+    }
+    return { foundIn: ['Viktranium Crafting'], requirements: reqs }
   })()
 
   return {
@@ -185,23 +201,26 @@ const mapItem = (it: U75Item): CraftingIngredient => {
     binding: it.binding,
     effectsAdded: it.enchantments,
     augments: toAugmentObject(it.augments),
-    foundIn
+    foundIn,
+    requirements
   }
 }
 
 const items: CraftingIngredient[] = (rawItems as U75Item[]).map(mapItem)
 
 const isCrafted = (ci: CraftingIngredient) => ci.foundIn?.includes('Viktranium Crafting')
+const isWickedCrafted = (ci: CraftingIngredient) => ci.foundIn?.includes('Wicked Viktranium Experiment Crafting')
 const isHeroic = (ci: CraftingIngredient) => ci.minimumLevel === 8
 const isLegendary = (ci: CraftingIngredient) => ci.minimumLevel === 34
 
 // Loot (non-crafted)
-const lootHeroic = items.filter((i) => !isCrafted(i) && isHeroic(i))
-const lootLegendary = items.filter((i) => !isCrafted(i) && isLegendary(i))
+const lootHeroic = items.filter((i) => !isCrafted(i) && !isWickedCrafted(i) && isHeroic(i))
+const lootLegendary = items.filter((i) => !isCrafted(i) && !isWickedCrafted(i) && isLegendary(i))
 
 // Crafted
 const craftedHeroic = items.filter((i) => isCrafted(i) && isHeroic(i))
 const craftedLegendary = items.filter((i) => isCrafted(i) && isLegendary(i))
+const craftedWickedLegendary = items.filter((i) => isWickedCrafted(i) && isLegendary(i))
 
 // Grouping helpers
 const sortByName = (a: CraftingIngredient, b: CraftingIngredient) => a.name.localeCompare(b.name)
@@ -218,6 +237,7 @@ export const lootHeroicViktraniumItems: Record<string, CraftingIngredient[]> = {
 
 export const craftedHeroicViktraniumWeapons: Record<string, CraftingIngredient[]> = {
   Melee: craftedHeroic.filter((i) => i.type === 'Melee').sort(sortByName),
+  Shields: craftedHeroic.filter((i) => i.type === 'Shield').sort(sortByName),
   Ranged: craftedHeroic.filter((i) => i.type === 'Ranged').sort(sortByName),
   Throwing: craftedHeroic.filter((i) => i.type === 'Throwing').sort(sortByName)
 } as const
@@ -234,6 +254,14 @@ export const lootLegendaryViktraniumItems: Record<string, CraftingIngredient[]> 
 
 export const craftedLegendaryViktraniumWeapons: Record<string, CraftingIngredient[]> = {
   Melee: craftedLegendary.filter((i) => i.type === 'Melee').sort(sortByName),
+  Shields: craftedLegendary.filter((i) => i.type === 'Shield').sort(sortByName),
   Ranged: craftedLegendary.filter((i) => i.type === 'Ranged').sort(sortByName),
   Throwing: craftedLegendary.filter((i) => i.type === 'Throwing').sort(sortByName)
+} as const
+
+export const craftedWickedViktraniumWeapons: Record<string, CraftingIngredient[]> = {
+  Melee: craftedWickedLegendary.filter((i) => i.type === 'Melee').sort(sortByName),
+  Ranged: craftedWickedLegendary.filter((i) => i.type === 'Ranged').sort(sortByName),
+  Shields: craftedWickedLegendary.filter((i) => i.type === 'Shield').sort(sortByName),
+  Throwing: craftedWickedLegendary.filter((i) => i.type === 'Throwing').sort(sortByName)
 } as const

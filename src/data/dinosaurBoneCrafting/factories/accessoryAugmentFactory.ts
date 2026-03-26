@@ -261,7 +261,7 @@ export const createAccessoryHorn = (name: string, effects: Enhancement[]): Craft
       quantity: 50
     },
     {
-      name: 'Fossilized Pteradon Vertebra',
+      name: 'Fossilized Pteranodon Vertebra',
       quantity: 50
     },
     {

@@ -1,12 +1,12 @@
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { meleeWeapons, rangedWeapons, throwingWeapons } from '../../basics/weapons.ts'
+import {
+  meleeWeapons,
+  rangedWeapons,
+  throwingWeapons
+} from '../../basics/weapons.ts'
 
-export const baseDinosaurBoneWeapon = (
-  name: string,
-  itemType: string,
-  extraEffects?: Enhancement
-): CraftingIngredient => ({
+export const baseDinosaurBoneWeapon = (name: string, itemType: string, extraEffects?: Enhancement): CraftingIngredient => ({
   name: `Dinosaur Bone ${name}`,
   description: 'Fashioned of intricately carved bones of long-forgotten Dinosaurs.',
   type: itemType,
@@ -53,7 +53,7 @@ export const baseDinosaurBoneWeapon = (
       quantity: 25
     },
     {
-      name: 'Fossilized Pteradon Vertebra',
+      name: 'Fossilized Pteranodon Vertebra',
       quantity: 25
     },
     {

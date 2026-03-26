@@ -25,7 +25,7 @@ export const createSetBonus = (setBonusData: SetBonus): CraftingIngredient => ({
       quantity: 50
     },
     {
-      name: 'Fossilized Pteradon Vertebra',
+      name: 'Fossilized Pteranodon Vertebra',
       quantity: 50
     },
     {

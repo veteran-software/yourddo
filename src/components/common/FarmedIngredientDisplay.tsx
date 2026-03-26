@@ -29,9 +29,11 @@ const FarmedIngredientDisplay = (props: Props) => {
         <FaCircleNotch title='Loading...' size={36} color='gray' style={{ animation: 'spin 1s linear infinite' }} />
       ) : (
         <OverlayTrigger
-          trigger={['click', 'hover']}
+          trigger={['hover', 'click']}
+          delay={{ show: 250, hide: 1000 }}
           overlay={<IngredientPopover ingredient={ingredient} />}
           placement='auto'
+          rootClose
         >
           <FallbackImage src={imageSrc} alt={ingredient.name} />
         </OverlayTrigger>

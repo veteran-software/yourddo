@@ -109,11 +109,11 @@ export const selectNextGuess = (possible: Color[][], allCodes: Color[][]): Color
  * - `submitFeedback`: A function to submit feedback on the last guess and determine the next guess.
  */
 const useMastermindSolver = (initialGuess: Color[] = [1, 1, 2, 2], maxAttempts = 10): SolverHook => {
-  const allCodes = useMemo(() => generateAllCodes(), [])
+  const allCodes: Color[][] = useMemo(() => generateAllCodes(), [])
 
-  const [possible, setPossible] = useState<Color[][]>(allCodes)
+  const [possible, setPossible] = useState(allCodes)
   const [guesses, setGuesses] = useState<Guess[]>([])
-  const [currentGuess, setCurrentGuess] = useState<Color[]>(initialGuess)
+  const [currentGuess, setCurrentGuess] = useState(initialGuess)
   const [finished, setFinished] = useState(false)
 
   /**

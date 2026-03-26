@@ -49,12 +49,7 @@
       }
     ],
     "enchantmentsRaw": "{{Soundproof}}{{Skill|Listen|10}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Yellow",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Yellow", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Yellow|Sun}}",
     "itemSetsRaw": ""
   },
@@ -145,11 +140,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPower|Implement|8}}{{OrbBonus|4}}{{SpellPower|Potency|20|Insight}}{{Save|Will|5}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple}}",
     "itemSetsRaw": ""
   },
@@ -239,12 +230,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellFocus|Illusion|2}}{{Skill|Spellcraft|10}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -340,12 +326,7 @@
       }
     ],
     "enchantmentsRaw": "{{PactDice|1||Power in Pact +1}}{{SpellFocus|Mastery|2}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -411,12 +392,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellFocus|Enchantment|2}}{{SpellSchoolSave|Spell|4}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -425,7 +401,7 @@
     "name": "Baron Aubrecker's Monogrammed Gloves",
     "type": "Gloves",
     "description": "The material of these gloves is already flaking at the fingers.",
-    "minLevel": "34",
+    "minLevel": "8",
     "absoluteMinLevel": "",
     "binding": {
       "type": "Bound",
@@ -474,13 +450,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellFocus|Transmutation|6}}{{SpellSchoolSave|Spell|5|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -538,12 +508,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellFocus|Transmutation|2}}{{SpellSchoolSave|Spell|1|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Yellow",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Yellow", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Yellow|Moon}}",
     "itemSetsRaw": ""
   },
@@ -599,12 +564,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellFocus|Evocation|2}}{{Skill|Spellcraft|5|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -660,12 +620,7 @@
       }
     ],
     "enchantmentsRaw": "{{Ability|Constitution|2|Insight}}{{ArmorPiercing|3|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -994,12 +949,7 @@
       }
     ],
     "enchantmentsRaw": "{{Accuracy|1|Legendary}}{{UnconsciousRange||65||||Undying +65}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -1121,10 +1071,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1178,10 +1128,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1198,6 +1148,64 @@
       {
         "name": "Vampirism",
         "modifier": "1d2"
+      }
+    ],
+    "enchantmentsRaw": "{{EnhancementBonus|4}}{{Vampirism|Dice|1}}",
+    "augments": [
+      "Lamordia: Melancholic (Weapon)",
+      "Lamordia: Dolorous (Weapon)",
+      "Lamordia: Miserable (Weapon)",
+      "Red"
+    ],
+    "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|{{LamordiaSlot|I|W}}|Red}}",
+    "itemSetsRaw": ""
+  },
+  {
+    "pageTitle": "Cruel Baton",
+    "name": "Cruel Baton",
+    "type": "Club",
+    "description": "Unruly experiments will be put back in their place. With force.",
+    "minLevel": "8",
+    "absoluteMinLevel": "",
+    "binding": {
+      "type": "Bound",
+      "to": "Account",
+      "from": "Acquisition"
+    },
+    "restriction": "",
+    "material": "Steel",
+    "hardness": "18",
+    "durability": "50",
+    "weight": "3",
+    "baseValue": {
+      "platinum": "3200",
+      "copper": "1"
+    },
+    "artifacttype": "",
+    "dropLocations": [
+      {
+        "sourceType": "Viktranium Crafting",
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
+      }
+    ],
+    "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
+    "update": "75",
+    "details": "",
+    "upgradeable": "",
+    "upgradedFrom": "",
+    "bug": "",
+    "replaced": "",
+    "icon": "Club 2",
+    "image": "",
+    "optionsRaw": "",
+    "enchantments": [
+      {
+        "name": "Spell Threat Generation",
+        "modifier": "-1%",
+        "bonus": "Quality"
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|4}}{{Vampirism|Dice|1}}",
@@ -1235,10 +1243,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1292,10 +1300,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1349,10 +1357,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1409,10 +1417,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1466,10 +1474,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1523,9 +1531,9 @@
       {
         "sourceType": "Viktranium Crafting",
         "viktraniumWires": "5",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase||||5|5|5|5}}",
@@ -1578,10 +1586,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1635,10 +1643,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1691,10 +1699,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1748,10 +1756,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1805,10 +1813,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1861,10 +1869,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1918,10 +1926,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -1975,10 +1983,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2032,10 +2040,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2088,10 +2096,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2145,10 +2153,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2202,10 +2210,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2259,10 +2267,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2316,10 +2324,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2373,10 +2381,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2430,10 +2438,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2487,10 +2495,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2548,10 +2556,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2605,10 +2613,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2662,10 +2670,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2718,10 +2726,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2774,10 +2782,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2830,10 +2838,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2844,63 +2852,6 @@
     "bug": "",
     "replaced": "",
     "icon": "Repeating Crossbow 1",
-    "image": "",
-    "optionsRaw": "",
-    "enchantments": [
-      {
-        "name": "Vampirism",
-        "modifier": "1d2"
-      }
-    ],
-    "enchantmentsRaw": "{{EnhancementBonus|4}}{{Vampirism|Dice|1}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Lamordia: Miserable (Weapon)",
-      "Red"
-    ],
-    "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|{{LamordiaSlot|I|W}}|Red}}",
-    "itemSetsRaw": ""
-  },
-  {
-    "pageTitle": "Calamitous Sceptre",
-    "name": "Calamitous Sceptre",
-    "type": "Club",
-    "description": "Small slots in this weapon could easily fit small augmentation devices.",
-    "minLevel": "8",
-    "absoluteMinLevel": "",
-    "binding": {
-      "type": "Bound",
-      "to": "Account",
-      "from": "Acquisition"
-    },
-    "restriction": "",
-    "material": "Steel",
-    "hardness": "18",
-    "durability": "130",
-    "weight": "3",
-    "baseValue": {
-      "platinum": "3200",
-      "copper": "1"
-    },
-    "artifacttype": "",
-    "dropLocations": [
-      {
-        "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
-      }
-    ],
-    "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
-    "update": "75",
-    "details": "",
-    "upgradeable": "",
-    "upgradedFrom": "",
-    "bug": "",
-    "replaced": "",
-    "icon": "Club 2",
     "image": "",
     "optionsRaw": "",
     "enchantments": [
@@ -2943,10 +2894,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -2999,10 +2950,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -3055,10 +3006,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -3112,10 +3063,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -3173,10 +3124,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -3230,10 +3181,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -3291,10 +3242,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -3352,10 +3303,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -3413,10 +3364,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "5",
-        "viktraniumInsulators": "5",
-        "viktraniumAlternators": "5",
-        "viktraniumResistors": "5"
+        "bleakConductors": "5",
+        "bleakInsulators": "5",
+        "bleakAlternators": "5",
+        "bleakResistors": "5"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|||||5|5|5|5}}",
@@ -3494,11 +3445,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|5}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Red"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Red"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Red}}",
     "itemSetsRaw": ""
   },
@@ -3551,11 +3498,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|5}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Red"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Red"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Red}}",
     "itemSetsRaw": ""
   },
@@ -3608,11 +3551,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|5}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Red"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Red"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Red}}",
     "itemSetsRaw": ""
   },
@@ -3665,11 +3604,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|5}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Red"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Red"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Red}}",
     "itemSetsRaw": ""
   },
@@ -3720,12 +3655,7 @@
       }
     ],
     "enchantmentsRaw": "{{Deception|New Improved|10}}{{Assassination|1|Quality}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Yellow",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Yellow", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Yellow|Moon}}",
     "itemSetsRaw": ""
   },
@@ -3925,12 +3855,7 @@
       }
     ],
     "enchantmentsRaw": "{{Marksmanship|New Normal}}{{Doubleshot|2|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -4206,11 +4131,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPower|Implement|8}}{{OrbBonus|4}}{{SpellPower|Nullification|17|Quality}}{{SpellFocus|Necromancy|2}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple}}",
     "itemSetsRaw": ""
   },
@@ -4329,12 +4250,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Cold|4||Insight}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -4445,12 +4361,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Acid|4||Insight}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -4506,12 +4417,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Sonic|4||Insight}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -4630,12 +4536,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Acid|2||Quality}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -4754,12 +4655,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Fire|2||Quality}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -4815,12 +4711,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Fire|4||Insight}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -4876,12 +4767,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Sonic|2||Quality}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -4937,12 +4823,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Electricity|2||Quality}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -5061,12 +4942,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Cold|2||Quality}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -5122,12 +4998,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Electricity|4||Insight}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -5246,12 +5117,7 @@
       }
     ],
     "enchantmentsRaw": "{{TemperanceOfBelief}}{{UnconsciousRange||128||16|10|Strength of Purpose}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Yellow",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Yellow", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Yellow|Moon}}",
     "itemSetsRaw": ""
   },
@@ -5297,12 +5163,7 @@
       }
     ],
     "enchantmentsRaw": "{{JetPropulsion}}{{Skill|Jump|10}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -5419,11 +5280,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPower|Implement|8}}{{OrbBonus|4}}{{SpellPower|Radiance|17|Quality}}{{SpellPenetration|3}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple}}",
     "itemSetsRaw": ""
   },
@@ -5479,11 +5336,7 @@
       }
     ],
     "enchantmentsRaw": "{{Save|Will|5}}{{ProofAgainstPoison|4}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue}}",
     "itemSetsRaw": ""
   },
@@ -5552,11 +5405,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|5}}{{Guardbreaking}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Red"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Red"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Red}}",
     "itemSetsRaw": ""
   },
@@ -5625,11 +5474,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|5}}{{Guardbreaking}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Red"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Red"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Red}}",
     "itemSetsRaw": ""
   },
@@ -5698,11 +5543,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|5}}{{Guardbreaking}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Red"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Red"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Red}}",
     "itemSetsRaw": ""
   },
@@ -5773,11 +5614,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|5}}{{Incite|9|Melee||Quality}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Red"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Red"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Red}}",
     "itemSetsRaw": ""
   },
@@ -5873,11 +5710,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPower|Implement|8}}{{OrbBonus|4}}{{SpellPower|Glaciation|17|Quality}}{{SpellPenetration|3}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple}}",
     "itemSetsRaw": ""
   },
@@ -5945,7 +5778,7 @@
   },
   {
     "pageTitle": "Legendary Ghastly Guards",
-    "name": "Ghastly Guards",
+    "name": "Legendary Ghastly Guards",
     "type": "Bracers",
     "description": "You can see through the material of these bracers. Blows seem to slide around them.",
     "minLevel": "34",
@@ -5983,13 +5816,7 @@
       }
     ],
     "enchantmentsRaw": "{{ItemFeat|Wind Through the Trees}}{{Immune|Fear}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -6033,12 +5860,7 @@
       }
     ],
     "enchantmentsRaw": "{{ItemFeat|Wind Through the Trees|||Wind Through the Trees}}{{Immune|Fear}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -6099,12 +5921,7 @@
       }
     ],
     "enchantmentsRaw": "{{Speed|18||6}}{{Deception|Custom|3||5}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -6461,12 +6278,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalResistance|Cold|18}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -6705,12 +6517,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalResistance|Acid|18}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -6766,12 +6573,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalResistance|Sonic|18}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -7005,12 +6807,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPower|Potency|20|Insight}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -7248,12 +7045,7 @@
       }
     ],
     "enchantmentsRaw": "{{Save|Fortitude|1|Quality}}{{Fortification|35|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -7309,12 +7101,7 @@
       }
     ],
     "enchantmentsRaw": "{{FalseLife|Lifeforce|Profane|16}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -7371,12 +7158,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalResistance|Fire|18}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -7473,12 +7255,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellFocus|Mastery|1|Quality}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -7535,12 +7312,7 @@
       }
     ],
     "enchantmentsRaw": "{{Deadly|1|Quality}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -7799,12 +7571,7 @@
       }
     ],
     "enchantmentsRaw": "{{CombatMastery|2|Insight}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -7860,12 +7627,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalResistance|Electricity|18}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -8178,12 +7940,7 @@
       }
     ],
     "enchantmentsRaw": "{{Save|Reflex|5}}{{Sheltering|2|Magical|Quality}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Yellow",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Yellow", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Yellow|Moon}}",
     "itemSetsRaw": ""
   },
@@ -8433,12 +8190,7 @@
       }
     ],
     "enchantmentsRaw": "{{HealingAmp|Negative|19|Profane}}{{SpellPower|Nullification|17|Quality}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -8492,12 +8244,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancedKi|1}}{{ReinforcedFists}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -8559,12 +8306,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|4}}{{Ghostly}}{{Fortification|70}}",
-    "augments": [
-      "Lamordia: Melancholic (Armor)",
-      "Lamordia: Dolorous (Armor)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Armor)", "Lamordia: Dolorous (Armor)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|A}}|{{LamordiaSlot|D|A}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -8620,12 +8362,7 @@
       }
     ],
     "enchantmentsRaw": "{{Ability|Intelligence|2|Insight}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -8687,12 +8424,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|4}}{{Ghostly}}{{Fortification|70}}",
-    "augments": [
-      "Lamordia: Melancholic (Armor)",
-      "Lamordia: Dolorous (Armor)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Armor)", "Lamordia: Dolorous (Armor)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|A}}|{{LamordiaSlot|D|A}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -8748,12 +8480,7 @@
       }
     ],
     "enchantmentsRaw": "{{Ability|Dexterity|2|Insight}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -8809,12 +8536,7 @@
       }
     ],
     "enchantmentsRaw": "{{Ability|Charisma|2|Insight}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -8876,12 +8598,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|4}}{{Ghostly}}{{Fortification|70}}",
-    "augments": [
-      "Lamordia: Melancholic (Armor)",
-      "Lamordia: Dolorous (Armor)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Armor)", "Lamordia: Dolorous (Armor)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|A}}|{{LamordiaSlot|D|A}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -8935,12 +8652,7 @@
       }
     ],
     "enchantmentsRaw": "{{TrueSeeing}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -9002,12 +8714,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|4}}{{Ghostly}}{{Fortification|70}}",
-    "augments": [
-      "Lamordia: Melancholic (Armor)",
-      "Lamordia: Dolorous (Armor)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Armor)", "Lamordia: Dolorous (Armor)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|A}}|{{LamordiaSlot|D|A}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -9064,12 +8771,7 @@
       }
     ],
     "enchantmentsRaw": "{{Doublestrike|1|Quality}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -9125,12 +8827,7 @@
       }
     ],
     "enchantmentsRaw": "{{Ability|Strength|2|Insight}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -9186,12 +8883,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Force|12}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -9247,12 +8939,7 @@
       }
     ],
     "enchantmentsRaw": "{{Doubleshot|1|Quality}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -9314,12 +9001,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|4}}{{Ghostly}}{{Fortification|70}}",
-    "augments": [
-      "Lamordia: Melancholic (Armor)",
-      "Lamordia: Dolorous (Armor)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Armor)", "Lamordia: Dolorous (Armor)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|A}}|{{LamordiaSlot|D|A}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -9373,12 +9055,7 @@
       }
     ],
     "enchantmentsRaw": "{{PermanantEffect|Spell|Ram's Might}}{{Sheltering|5|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -9434,12 +9111,7 @@
       }
     ],
     "enchantmentsRaw": "{{Ability|Wisdom|2|Insight}}{{Sheltering|5|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -9501,12 +9173,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|4}}{{Ghostly}}{{Fortification|70}}",
-    "augments": [
-      "Lamordia: Melancholic (Armor)",
-      "Lamordia: Dolorous (Armor)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Armor)", "Lamordia: Dolorous (Armor)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|A}}|{{LamordiaSlot|D|A}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -9568,13 +9235,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{Ghostly|15|5|Enhanced Ghostly}}{{Fortification|159}}",
-    "augments": [
-      "Lamordia: Melancholic (Armor)",
-      "Lamordia: Dolorous (Armor)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Armor)", "Lamordia: Dolorous (Armor)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|A}}|{{LamordiaSlot|D|A}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -9722,12 +9383,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPower|Implement|34}}{{OrbBonus|15}}{{SpellPower|Potency|55|Insight}}{{Save|Will|13}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple",
-      "Orange"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple", "Orange"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple|Orange}}",
     "itemSetsRaw": ""
   },
@@ -9775,13 +9431,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellFocus|Illusion|6}}{{Skill|Spellcraft|22}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -9877,13 +9527,7 @@
       }
     ],
     "enchantmentsRaw": "{{PactDice|3||Power in Pact +3}}{{SpellFocus|Mastery|5}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -9949,13 +9593,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellFocus|Enchantment|6}}{{SpellSchoolSave|Spell|12}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -10011,13 +9649,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellFocus|Evocation|6}}{{Skill|Spellcraft|11|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -10073,13 +9705,7 @@
       }
     ],
     "enchantmentsRaw": "{{Ability|Constitution|7|Insight}}{{ArmorPiercing|11|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -10444,13 +10070,7 @@
       }
     ],
     "enchantmentsRaw": "{{Accuracy|5|Legendary}}{{UnconsciousRange||285||||Undying +285}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -10527,10 +10147,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -10540,8 +10160,8 @@
     "upgradedFrom": "",
     "bug": "",
     "replaced": "",
-    "icon": "Bastard Sword 1",
-    "image": "Calamitous Bastard Sword",
+    "icon": "calamitousBastardSword",
+    "image": "calamitousBastardSword",
     "optionsRaw": "",
     "enchantments": null,
     "enchantmentsRaw": "{{EnhancementBonus|15}}",
@@ -10581,10 +10201,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -10635,10 +10255,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -10689,10 +10309,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -10743,10 +10363,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -10801,10 +10421,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -10855,10 +10475,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -10908,10 +10528,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -10961,10 +10581,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11015,10 +10635,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11068,10 +10688,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11122,10 +10742,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11176,10 +10796,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11229,10 +10849,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11283,10 +10903,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11337,10 +10957,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11391,10 +11011,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11444,10 +11064,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11498,10 +11118,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11552,10 +11172,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11606,10 +11226,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11660,10 +11280,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11714,10 +11334,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11768,10 +11388,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11822,10 +11442,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11881,10 +11501,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11935,10 +11555,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -11989,10 +11609,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12042,10 +11662,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12095,10 +11715,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12148,10 +11768,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12178,10 +11798,10 @@
     "itemSetsRaw": ""
   },
   {
-    "pageTitle": "Legendary Calamitous Sceptre",
-    "name": "Legendary Calamitous Sceptre",
+    "pageTitle": "Legendary Cruel Baton",
+    "name": "Legendary Cruel Baton",
     "type": "Club",
-    "description": "Small slots in this weapon could easily fit small augmentation devices.",
+    "description": "Unruly experiments will be put back in their place. With force.",
     "minLevel": "34",
     "absoluteMinLevel": "",
     "binding": {
@@ -12191,24 +11811,24 @@
     },
     "restriction": "",
     "material": "Steel",
-    "hardness": "44",
-    "durability": "390",
+    "hardness": "10",
+    "durability": "50",
     "weight": "3",
     "baseValue": {
-      "platinum": "13600",
-      "copper": "2"
+      "platinum": "3200",
+      "copper": "1"
     },
     "artifacttype": "",
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductors": "25",
+        "legendaryBleakInsulators": "25",
+        "legendaryBleakAlternators": "25",
+        "legendaryBleakResistors": "25"
       }
     ],
-    "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
+    "dropLocationRaw": "{{ViktraniumPurchase|||||25|25|25|25}}",
     "update": "75",
     "details": "",
     "upgradeable": "",
@@ -12216,9 +11836,9 @@
     "bug": "",
     "replaced": "",
     "icon": "Club 2",
-    "image": "Calamitous Sceptre",
+    "image": "",
     "optionsRaw": "",
-    "enchantments": null,
+    "enchantments": [],
     "enchantmentsRaw": "{{EnhancementBonus|15}}",
     "augments": [
       "Lamordia: Melancholic (Weapon)",
@@ -12255,10 +11875,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12308,10 +11928,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12361,10 +11981,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12415,10 +12035,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12474,10 +12094,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12528,10 +12148,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12587,10 +12207,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12646,10 +12266,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12705,10 +12325,10 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Legendary||||25|25|25|25}}",
@@ -12759,11 +12379,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -12819,11 +12439,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -12878,11 +12498,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -12954,11 +12574,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13014,11 +12634,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Wicked||25||25|25|25|25}}",
@@ -13069,11 +12689,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13129,11 +12749,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13194,11 +12814,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13254,11 +12874,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13313,11 +12933,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13373,11 +12993,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13433,11 +13053,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       }
     ],
     "dropLocationRaw": "{{ViktraniumPurchase|Wicked||25||25|25|25|25}}",
@@ -13488,11 +13108,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13548,11 +13168,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13608,11 +13228,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13667,11 +13287,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13727,11 +13347,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13787,11 +13407,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13847,11 +13467,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13907,11 +13527,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -13967,11 +13587,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14026,11 +13646,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14102,11 +13722,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14162,11 +13782,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14222,11 +13842,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14282,11 +13902,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14342,11 +13962,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14402,11 +14022,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14462,11 +14082,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14522,11 +14142,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14582,11 +14202,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14642,11 +14262,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14701,11 +14321,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14760,11 +14380,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14820,11 +14440,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14879,11 +14499,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14938,11 +14558,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -14998,11 +14618,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -15063,11 +14683,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -15122,11 +14742,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -15198,11 +14818,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -15263,11 +14883,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -15327,11 +14947,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -15403,11 +15023,11 @@
     "dropLocations": [
       {
         "sourceType": "Viktranium Crafting",
-        "viktraniumMementos": "25",
-        "viktraniumConductors": "25",
-        "viktraniumInsulators": "25",
-        "viktraniumAlternators": "25",
-        "viktraniumResistors": "25"
+        "legendaryBleakMementos": "25",
+        "legendaryBleakConductor": "25",
+        "legendaryBleakInsulator": "25",
+        "legendaryBleakAlternator": "25",
+        "legendaryBleakResistor": "25"
       },
       {
         "sourceType": "Quest",
@@ -15443,7 +15063,7 @@
     "name": "Legendary Claws of the Coldlight Walker",
     "type": "Gloves",
     "description": "Sharper than they appear, these gloves fell from the form of a fallen Coldlight Walker.",
-    "minLevel": "8",
+    "minLevel": "34",
     "absoluteMinLevel": "",
     "binding": {
       "type": "Bound",
@@ -15485,13 +15105,7 @@
       }
     ],
     "enchantmentsRaw": "{{Deception|New Improved|22}}{{Assassination|4|Quality}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -15650,13 +15264,7 @@
       }
     ],
     "enchantmentsRaw": "{{Marksmanship|Greater}}{{Doubleshot|5|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -15881,12 +15489,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPower|Implement|34}}{{OrbBonus|15}}{{SpellPower|Nullification|39|Quality}}{{SpellFocus|Necromancy|6}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple",
-      "Orange"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple", "Orange"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple|Orange}}",
     "itemSetsRaw": ""
   },
@@ -16006,13 +15609,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Cold|14||Insight}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -16124,13 +15721,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Acid|14||Insight}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -16186,13 +15777,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Sonic|14||Insight}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -16312,13 +15897,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Acid|7||Quality}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -16438,13 +16017,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Fire|7||Quality}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -16500,13 +16073,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Fire|14||Insight}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -16562,13 +16129,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Sonic|7||Quality}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -16577,7 +16138,7 @@
     "name": "Legendary Downcast Nimble Cloak",
     "type": "Cloak",
     "description": "This cloak was abandoned on a rooftop when skullduggery went wrong.",
-    "minLevel": "8",
+    "minLevel": "34",
     "absoluteMinLevel": "",
     "binding": {
       "type": "Bound",
@@ -16624,13 +16185,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Electricity|7||Quality}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -16750,13 +16305,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Cold|7||Quality}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -16812,13 +16361,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Electricity|14||Insight}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -16938,13 +16481,7 @@
       }
     ],
     "enchantmentsRaw": "{{TemperanceOfBelief}}{{UnconsciousRange||128||16|10|Strength of Purpose}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -17001,7 +16538,7 @@
     "name": "Legendary Flickering Divinity",
     "type": "Orb",
     "description": "Light sputters softly somewhere within this orb, a lingering link to some far-off divinity.",
-    "minLevel": "8",
+    "minLevel": "34",
     "absoluteMinLevel": "",
     "binding": {
       "type": "Bound",
@@ -17109,12 +16646,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPower|Implement|34}}{{OrbBonus|15}}{{SpellPower|Radiance|39|Quality}}{{SpellPenetration|10}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple",
-      "Orange"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple", "Orange"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple|Orange}}",
     "itemSetsRaw": ""
   },
@@ -17170,12 +16702,7 @@
       }
     ],
     "enchantmentsRaw": "{{Save|Will|13}}{{ProofAgainstPoison|12}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless}}",
     "itemSetsRaw": ""
   },
@@ -17244,12 +16771,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{Guardbreaking}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple",
-      "Orange"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple", "Orange"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple|Orange}}",
     "itemSetsRaw": ""
   },
@@ -17318,12 +16840,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{Guardbreaking}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple",
-      "Orange"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple", "Orange"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple|Orange}}",
     "itemSetsRaw": ""
   },
@@ -17392,12 +16909,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{Guardbreaking}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple",
-      "Orange"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple", "Orange"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple|Orange}}",
     "itemSetsRaw": ""
   },
@@ -17468,12 +16980,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{Incite|30|Melee||Quality}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple",
-      "Orange"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple", "Orange"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple|Orange}}",
     "itemSetsRaw": ""
   },
@@ -17569,12 +17076,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPower|Implement|34}}{{OrbBonus|15}}{{SpellPower|Glaciation|39|Quality}}{{SpellPenetration|10}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple",
-      "Orange"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple", "Orange"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple|Orange}}",
     "itemSetsRaw": ""
   },
@@ -17698,13 +17200,7 @@
       }
     ],
     "enchantmentsRaw": "{{Speed|30}}{{Deception|Custom|12||18}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -18064,13 +17560,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalResistance|Cold|57}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -18310,13 +17800,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalResistance|Acid|57}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -18372,13 +17856,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalResistance|Sonic|57}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -18613,13 +18091,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPower|Potency|55|Insight}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -18858,13 +18330,7 @@
       }
     ],
     "enchantmentsRaw": "{{Save|Fortitude|3|Quality}}{{Fortification|79|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -18920,13 +18386,7 @@
       }
     ],
     "enchantmentsRaw": "{{FalseLife|Lifeforce|Profane|51}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -18983,13 +18443,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalResistance|Fire|57}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -19086,13 +18540,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellFocus|Mastery|2|Quality}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -19149,13 +18597,7 @@
       }
     ],
     "enchantmentsRaw": "{{Deadly|3|Quality}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -19415,13 +18857,7 @@
       }
     ],
     "enchantmentsRaw": "{{CombatMastery|6|Insight}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -19477,13 +18913,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalResistance|Electricity|57}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -19722,13 +19152,7 @@
       }
     ],
     "enchantmentsRaw": "{{Save|Reflex|13}}{{Sheltering|9|Magical|Quality}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -19847,13 +19271,7 @@
       }
     ],
     "enchantmentsRaw": "{{HealingAmp|Negative|61|Profane}}{{SpellPower|Nullification|39|Quality}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -19907,13 +19325,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancedKi|5}}{{ReinforcedFists|Superior}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -19975,13 +19387,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{Ghostly|15|5|Enhanced Ghostly}}{{Fortification|159}}",
-    "augments": [
-      "Lamordia: Melancholic (Armor)",
-      "Lamordia: Dolorous (Armor)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Armor)", "Lamordia: Dolorous (Armor)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|A}}|{{LamordiaSlot|D|A}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20037,13 +19443,7 @@
       }
     ],
     "enchantmentsRaw": "{{Ability|Intelligence|7|Insight}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20105,13 +19505,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{Ghostly|15|5|Enhanced Ghostly}}{{Fortification|159}}",
-    "augments": [
-      "Lamordia: Melancholic (Armor)",
-      "Lamordia: Dolorous (Armor)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Armor)", "Lamordia: Dolorous (Armor)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|A}}|{{LamordiaSlot|D|A}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20167,13 +19561,7 @@
       }
     ],
     "enchantmentsRaw": "{{Ability|Dexterity|7|Insight}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20229,13 +19617,7 @@
       }
     ],
     "enchantmentsRaw": "{{Ability|Charisma|7|Insight}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20297,13 +19679,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{Ghostly|15|5|Enhanced Ghostly}}{{Fortification|159}}",
-    "augments": [
-      "Lamordia: Melancholic (Armor)",
-      "Lamordia: Dolorous (Armor)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Armor)", "Lamordia: Dolorous (Armor)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|A}}|{{LamordiaSlot|D|A}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20360,13 +19736,7 @@
       }
     ],
     "enchantmentsRaw": "{{Eversight}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20423,13 +19793,7 @@
       }
     ],
     "enchantmentsRaw": "{{Doublestrike|4|Quality}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20485,13 +19849,7 @@
       }
     ],
     "enchantmentsRaw": "{{Ability|Strength|7|Insight}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20547,13 +19905,7 @@
       }
     ],
     "enchantmentsRaw": "{{ElementalAbsorb|Force|17}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20609,13 +19961,7 @@
       }
     ],
     "enchantmentsRaw": "{{Doubleshot|3|Quality}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20677,13 +20023,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{Ghostly|15|5|Enhanced Ghostly}}{{Fortification|159}}",
-    "augments": [
-      "Lamordia: Melancholic (Armor)",
-      "Lamordia: Dolorous (Armor)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Armor)", "Lamordia: Dolorous (Armor)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|A}}|{{LamordiaSlot|D|A}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20737,13 +20077,7 @@
       }
     ],
     "enchantmentsRaw": "{{PermanantEffect|Spell|Ram's Might}}{{Sheltering|18|Magical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20799,13 +20133,7 @@
       }
     ],
     "enchantmentsRaw": "{{Ability|Wisdom|7|Insight}}{{Sheltering|18|Physical|Insight}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20867,13 +20195,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{Ghostly|15|5|Enhanced Ghostly}}{{Fortification|159}}",
-    "augments": [
-      "Lamordia: Melancholic (Armor)",
-      "Lamordia: Dolorous (Armor)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Armor)", "Lamordia: Dolorous (Armor)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|A}}|{{LamordiaSlot|D|A}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -20929,12 +20251,7 @@
       }
     ],
     "enchantmentsRaw": "{{Doublestrike|8|Insight}}{{TendonSlice|12|Time}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless}}",
     "itemSetsRaw": ""
   },
@@ -20990,13 +20307,7 @@
       }
     ],
     "enchantmentsRaw": "{{Sheltering|9|Magical|Quality}}{{FalseLife|Lifeforce|Profane|49}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -21072,13 +20383,7 @@
       }
     ],
     "enchantmentsRaw": "{{CombatMastery|3|Profane}}{{ArmorPiercing|23}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -21134,13 +20439,7 @@
       }
     ],
     "enchantmentsRaw": "{{Accuracy|5|Legendary}}{{Sheltering|9|Physical|Quality}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -21189,13 +20488,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPower|Potency|27|Quality}}{{TrueSeeing}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -21251,12 +20544,7 @@
       }
     ],
     "enchantmentsRaw": "{{MagicalEfficiency|10}}{{Diversion|23|Spell}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless}}",
     "itemSetsRaw": ""
   },
@@ -21304,12 +20592,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPoints|Wizardry|155|Insight}}{{SpellPoints|Wizardry|310}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -21390,13 +20673,7 @@
       }
     ],
     "enchantmentsRaw": "{{Seeker|5|Insight|Exceptional Seeker +5}}{{SkillGroupBonus|Alluring|10|Exceptional}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -21452,13 +20729,7 @@
       }
     ],
     "enchantmentsRaw": "{{Save|Will|3|Quality}}{{Save|Fortitude|13}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -21519,13 +20790,7 @@
       }
     ],
     "enchantmentsRaw": "{{HealingAmp|Repair|61|Enhancement}}{{SpellPower|Reconstruction|39|Quality}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -21579,13 +20844,7 @@
       }
     ],
     "enchantmentsRaw": "{{BloodRage|Enhanced}}{{FalseLife|Specific||57}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Moon}}",
     "itemSetsRaw": ""
   },
@@ -21661,13 +20920,7 @@
       }
     ],
     "enchantmentsRaw": "{{Dodge|15}}{{AbilitySkills|Intelligence|6|Exceptional}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -21729,12 +20982,7 @@
       }
     ],
     "enchantmentsRaw": "{{RuneArmBlast|Electrical Blast|aoe|V}}{{SpellPower|Magnetism|79|Insight}}{{SpellLore|Lightning|23}}{{RuneArmImbue|Electrical|single|VI}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Green",
-      "Yellow"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Green", "Yellow"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Green|Yellow}}",
     "itemSetsRaw": ""
   },
@@ -21790,13 +21038,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellFocus|Conjuration|6}}{{SpellPenetration|10}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Green",
-      "Colorless",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Green", "Colorless", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Green|Colorless|Sun}}",
     "itemSetsRaw": ""
   },
@@ -21910,11 +21152,7 @@
       }
     ],
     "enchantmentsRaw": "{{Doublestrike|2|Insight}}{{TendonSlice|4|Time}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue}}",
     "itemSetsRaw": ""
   },
@@ -23204,12 +22442,7 @@
       }
     ],
     "enchantmentsRaw": "{{Sheltering|2|Magical|Quality}}{{FalseLife|Lifeforce|Profane|16}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -23285,12 +22518,7 @@
       }
     ],
     "enchantmentsRaw": "{{CombatMastery|1|Profane}}{{ArmorPiercing|8}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -23346,12 +22574,7 @@
       }
     ],
     "enchantmentsRaw": "{{Accuracy|1|Legendary}}{{Sheltering|2|Physical|Quality}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Yellow",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Yellow", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Yellow|Sun}}",
     "itemSetsRaw": ""
   },
@@ -23482,12 +22705,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPower|Potency|9|Quality}}{{TrueSeeing}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Yellow",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Yellow", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Yellow|Sun}}",
     "itemSetsRaw": ""
   },
@@ -23543,11 +22761,7 @@
       }
     ],
     "enchantmentsRaw": "{{MagicalEfficiency|5}}{{Diversion|8|Spell}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue}}",
     "itemSetsRaw": ""
   },
@@ -23595,12 +22809,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellPoints|Wizardry|48|Insight}}{{SpellPoints|Wizardry|96}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -24843,12 +24052,7 @@
       }
     ],
     "enchantmentsRaw": "{{Seeker|3|Insight|Exceptional Seeker +3}}{{SkillGroupBonus|Alluring|5|Exceptional}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -24933,12 +24137,7 @@
       }
     ],
     "enchantmentsRaw": "{{Save|Will|1|Quality}}{{Save|Fortitude|5}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -24999,12 +24198,7 @@
       }
     ],
     "enchantmentsRaw": "{{HealingAmp|Repair|19|Enhancement}}{{SpellPower|Reconstruction|17|Quality}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -25165,12 +24359,7 @@
       }
     ],
     "enchantmentsRaw": "{{BloodRage}}{{FalseLife|Specific||18}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Moon"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Moon"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Moon}}",
     "itemSetsRaw": ""
   },
@@ -25679,12 +24868,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{FalseLife|Conditioning|Legendary|20}}{{BottledHeart}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple",
-      "Orange"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple", "Orange"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple|Orange}}",
     "itemSetsRaw": ""
   },
@@ -26322,12 +25506,7 @@
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{Murderous|Spike}}{{RevelInBlood|Shield}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Purple",
-      "Orange"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Purple", "Orange"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Purple|Orange}}",
     "itemSetsRaw": ""
   },
@@ -26455,12 +25634,7 @@
       }
     ],
     "enchantmentsRaw": "{{Dodge|5}}{{AbilitySkills|Intelligence|2|Exceptional}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Blue",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Blue", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Blue|Sun}}",
     "itemSetsRaw": ""
   },
@@ -26522,11 +25696,7 @@
       }
     ],
     "enchantmentsRaw": "{{RuneArmBlast|Electrical Blast|aoe|V}}{{SpellPower|Magnetism|35|Insight}}{{SpellLore|Lightning|10}}{{RuneArmImbue|Electrical|single|II}}",
-    "augments": [
-      "Lamordia: Melancholic (Weapon)",
-      "Lamordia: Dolorous (Weapon)",
-      "Green"
-    ],
+    "augments": ["Lamordia: Melancholic (Weapon)", "Lamordia: Dolorous (Weapon)", "Green"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|W}}|{{LamordiaSlot|D|W}}|Green}}",
     "itemSetsRaw": ""
   },
@@ -26625,12 +25795,7 @@
       }
     ],
     "enchantmentsRaw": "{{SpellFocus|Conjuration|2}}{{SpellPenetration|3}}",
-    "augments": [
-      "Lamordia: Melancholic (Accessory)",
-      "Lamordia: Dolorous (Accessory)",
-      "Yellow",
-      "Sun"
-    ],
+    "augments": ["Lamordia: Melancholic (Accessory)", "Lamordia: Dolorous (Accessory)", "Yellow", "Sun"],
     "augmentsRaw": "{{EmptyAugments|{{LamordiaSlot|M|E}}|{{LamordiaSlot|D|E}}|Yellow|Sun}}",
     "itemSetsRaw": ""
   },
