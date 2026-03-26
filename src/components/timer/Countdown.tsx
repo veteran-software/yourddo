@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 const Countdown = (props: Props) => {
   const { onComplete, targetTimestamp } = props
 
-  const [remainingTime, setRemainingTime] = useState<Duration>(calculateRemainingTime(targetTimestamp))
+  const [remainingTime, setRemainingTime] = useState(calculateRemainingTime(targetTimestamp))
 
   useEffect(() => {
     const updateRemainingTime = () => {

@@ -9,8 +9,8 @@ const usePuzzleState = (
   const [board, setBoard] = useState<Board>(() => initBoard(config))
   const [solution, setSolution] = useState<Presses>(null)
   const [markedSolution, setMarkedSolution] = useState<Presses>(null)
-  const [editMode, setEditMode] = useState<boolean>(true)
-  const [showSolution, setShowSolution] = useState<boolean>(false)
+  const [editMode, setEditMode] = useState(true)
+  const [showSolution, setShowSolution] = useState(false)
 
   const { mask } = config
 

@@ -32,12 +32,12 @@ const Footer = () => {
 
   const { data: xmlData } = serverStatusApi.useDcQuery(undefined, polling)
   const [statusTrigger] = serverStatusApi.useLazyStatusQuery()
-  const mainServersIntervalId = useRef<number>(-1)
+  const mainServersIntervalId = useRef(-1)
 
   // Lamannia
   const { data: xmlDataLam } = serverStatusLamApi.useDcQuery(undefined, polling)
   const [statusTriggerLam] = serverStatusLamApi.useLazyStatusQuery()
-  const lamServerIntervalId = useRef<number>(-1)
+  const lamServerIntervalId = useRef(-1)
 
   const navRef = useRef<HTMLDivElement>(null)
 

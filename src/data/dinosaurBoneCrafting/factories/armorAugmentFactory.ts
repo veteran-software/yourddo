@@ -24,7 +24,7 @@ export const createArmorScale = (name: string, effects: Enhancement[]): Crafting
       quantity: 25
     },
     {
-      name: 'Fossilized Pteradon Vertebra',
+      name: 'Fossilized Pteranodon Vertebra',
       quantity: 25
     },
     {
@@ -57,7 +57,7 @@ export const createArmorFang = (name: string, effects: Enhancement[]): CraftingI
       quantity: 50
     },
     {
-      name: 'Fossilized Pteradon Vertebra',
+      name: 'Fossilized Pteranodon Vertebra',
       quantity: 50
     },
     {

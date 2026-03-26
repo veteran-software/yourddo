@@ -10,7 +10,7 @@ export const baseRequirements: Partial<CraftingIngredient>[] = [
     name: 'Fossilized Triceratops Horn'
   },
   {
-    name: 'Fossilized Pteradon Vertebra'
+    name: 'Fossilized Pteranodon Vertebra'
   },
   {
     name: 'Fossilized Ankylosaur Rib'
@@ -29,7 +29,7 @@ export const createRequirements = (
 ): Partial<CraftingIngredient>[] => {
   return [...baseRequirements, ...additionalItems].map((req: Partial<CraftingIngredient>) => ({
     ...req,
-    quantity: typeof req.quantity === 'number' ? req.quantity : quantity,
+    quantity: typeof req.quantity === 'number' ? req.quantity : quantity
   }))
 }
 

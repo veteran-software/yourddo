@@ -24,9 +24,9 @@ const MonasteryOfTheScorpion = () => {
   const [solution, setSolution] = useState<Presses>(null)
   const [markedSolution, setMarkedSolution] = useState<Presses>(null)
 
-  const [editMode, setEditMode] = useState<boolean>(true)
+  const [editMode, setEditMode] = useState(true)
   const [editAction, setEditAction] = useState<EditAction>('toggle')
-  const [showSolution, setShowSolution] = useState<boolean>(false)
+  const [showSolution, setShowSolution] = useState(false)
 
   // reset the board whenever mask changes (holes => forced off)
   useLayoutEffect(() => {

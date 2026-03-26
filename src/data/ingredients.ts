@@ -664,7 +664,7 @@ export const ingredients: Ingredient[] = [
     foundIn: ['Isle of Dread Quests (Legendary)', 'The Isle of Dread (Wilderness) (Legendary)']
   },
   {
-    name: 'Fossilized Pteradon Vertebra',
+    name: 'Fossilized Pteranodon Vertebra',
     image: 'dinosaurBone',
     type: 'Ingredient',
     binding: {
@@ -987,6 +987,80 @@ export const ingredients: Ingredient[] = [
       platinum: 45
     },
     foundIn: ['The Shroud']
+  },
+  {
+    name: 'Legendary Bleak Alternator',
+    image: 'bleakAlternator',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 100
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Legendary Bleak Conductor',
+    image: 'bleakConductor',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 100
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Legendary Bleak Insulator',
+    image: 'bleakInsulator',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 100
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Legendary Bleak Memento',
+    image: 'bleakInsulator',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 100
+    },
+    foundIn: ['Relentless']
+  },
+  {
+    name: 'Legendary Bleak Resistor',
+    image: 'bleakResistor',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 100
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
+  },
+  {
+    name: 'Legendary Bleak Transformer',
+    image: 'bleakTransformer',
+    description: 'This small piece of machinery can be used to create dreadful machinery in Lamordia.',
+    binding: {
+      type: 'Unbound'
+    },
+    baseValue: {
+      platinum: 100
+    },
+    foundIn: ['Chill of Ravenloft Expansion']
   },
   {
     name: 'Legendary Esoteric Relic',

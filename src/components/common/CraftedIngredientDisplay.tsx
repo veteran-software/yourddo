@@ -2,6 +2,7 @@ import camelcase from 'camelcase'
 import { Container, OverlayTrigger, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../redux/hooks.ts'
+import type { Enhancement } from '../../types/core.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { ICON_BASE } from '../../utils/constants.ts'
@@ -36,15 +37,32 @@ const CraftedIngredientDisplay = (props: Props) => {
       return <></>
     }
 
+    const effects = ingredient.effectsAdded
+    const MAX_VISIBLE_EFFECTS = 3
+
+    const displayedEffects = effects.slice(0, MAX_VISIBLE_EFFECTS)
+    const remainingCount = effects.length - MAX_VISIBLE_EFFECTS
+
+    const effectToString = (effect: Enhancement) => {
+      return `${effect.name}${effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''}`
+    }
+
     return (
       <small className='text-muted'>
-        {ingredient.effectsAdded
-          .map((effect) => {
-            return `${effect.name}${
-              effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''
-            }`
-          })
-          .join(', ')}
+        {displayedEffects.map(effectToString).join(', ')}
+        {remainingCount > 0 && (
+          <OverlayTrigger
+            trigger={['hover', 'click']}
+            delay={{ show: 250, hide: 1000 }}
+            placement='top'
+            rootClose
+            overlay={<IngredientPopover ingredient={ingredient} />}
+          >
+            <span style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+              {`, and ${String(remainingCount)} more...`}
+            </span>
+          </OverlayTrigger>
+        )}
       </small>
     )
   }
@@ -53,9 +71,11 @@ const CraftedIngredientDisplay = (props: Props) => {
     <Stack direction='horizontal' gap={3} className='align-items-center'>
       {showPopover ? (
         <OverlayTrigger
-          trigger={['click', 'hover']}
+          trigger={['hover', 'click']}
+          delay={{ show: 250, hide: 1000 }}
           overlay={<IngredientPopover ingredient={ingredient} />}
           placement='auto'
+          rootClose
         >
           <FallbackImage src={imageSrc} alt={ingredient.name} />
         </OverlayTrigger>

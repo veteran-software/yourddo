@@ -155,10 +155,9 @@ const FilterableDropdown = (props: Props) => {
             items={Object.values(items).flat()}
             getItemFilters={(item: Ingredient): string[] =>
               // Ingredient may or may not have effectsAdded; access safely
-              (
-                ('effectsAdded' in item && Array.isArray(item.effectsAdded)
-                  ? ((item as CraftingIngredient).effectsAdded as Partial<Enhancement>[])
-                  : [])
+              ('effectsAdded' in item && Array.isArray(item.effectsAdded)
+                ? ((item as CraftingIngredient).effectsAdded as Partial<Enhancement>[])
+                : []
               )
                 .map((enhancement: Partial<Enhancement>) => enhancement.name ?? '')
                 .filter((name: string) => !!name)

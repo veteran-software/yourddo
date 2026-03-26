@@ -9,6 +9,7 @@ const { actions, reducer } = createSlice({
     selectedHeroicLootItem: undefined,
     selectedLegendaryCraftedItem: undefined,
     selectedLegendaryLootItem: undefined,
+    selectedWickedCraftedItem: undefined,
     itemFilters: [],
     itemFilterMode: 'AND',
     selectedAugments: {},
@@ -54,6 +55,14 @@ const { actions, reducer } = createSlice({
       state.selectedLegendaryCraftedItem = undefined
       state.selectedAugments = {}
     },
+    setSelectedWickedCraftedItem: (state, action: PayloadAction<CraftingIngredient | undefined>) => {
+      state.selectedWickedCraftedItem = action.payload
+      state.selectedAugments = {}
+    },
+    resetSelectedWickedCraftedItem: (state) => {
+      state.selectedWickedCraftedItem = undefined
+      state.selectedAugments = {}
+    },
     setItemFilterMode: (state, action: PayloadAction<'OR' | 'AND'>) => {
       state.itemFilterMode = action.payload
     },
@@ -88,6 +97,7 @@ interface ViktraniumExperimentState {
   selectedHeroicLootItem: CraftingIngredient | undefined
   selectedLegendaryCraftedItem: CraftingIngredient | undefined
   selectedLegendaryLootItem: CraftingIngredient | undefined
+  selectedWickedCraftedItem: CraftingIngredient | undefined
   itemFilters: string[]
   itemFilterMode: 'OR' | 'AND'
   selectedAugments: Record<string, AugmentItem | null>
@@ -101,8 +111,10 @@ export const {
   setSelectedHeroicCraftedItem,
   setSelectedLegendaryLootItem,
   setSelectedLegendaryCraftedItem,
+  setSelectedWickedCraftedItem,
   resetSelectedLegendaryCraftedItem,
   resetSelectedLegendaryLootItem,
+  resetSelectedWickedCraftedItem,
   setItemFilters,
   setItemFilterMode,
   resetSelectedHeroicLootItem,

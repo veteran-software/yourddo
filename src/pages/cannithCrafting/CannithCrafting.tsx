@@ -17,12 +17,9 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown
-  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type {
-  ShoppingListTotals
-} from '../../components/common/ShoppingListDrawer.tsx'
+import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
@@ -65,16 +62,16 @@ const CannithCrafting = () => {
   const { troveData } = useAppSelector((state) => state.app, shallowEqual)
   const [items, setItems] = useState<Record<string, ItemState>>({})
   const [activeKeys, setActiveKeys] = useState<string[]>([])
-  const [masterMinLevel, setMasterMinLevel] = useState<number>(1)
+  const [masterMinLevel, setMasterMinLevel] = useState(1)
   // Binding selection removed from UI; keep state for backward-compatible permalink/session payloads (unused in logic)
-  const [masterBindingBound, setMasterBindingBound] = useState<boolean>(true)
+  const [masterBindingBound, setMasterBindingBound] = useState(true)
   // track which item cards are collapsed (default open -> not present in this set)
   const [collapsedKeys, setCollapsedKeys] = useState<string[]>([])
   // Permalink modal visibility
-  const [showPermalink, setShowPermalink] = useState<boolean>(false)
+  const [showPermalink, setShowPermalink] = useState(false)
   // Shopping List drawer visibility and plan (Bound/Unbound)
-  const [showShoppingList, setShowShoppingList] = useState<boolean>(false)
-  const [shoppingListPlanBound, setShoppingListPlanBound] = useState<boolean>(true)
+  const [showShoppingList, setShowShoppingList] = useState(false)
+  const [shoppingListPlanBound, setShoppingListPlanBound] = useState(true)
 
   // ----- Augment color ML floor rules -----
   const AUGMENT_COLOR_FLOOR: Record<string, number> = useMemo(

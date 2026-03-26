@@ -3,16 +3,14 @@ import { Card, Col, Container, Row, Stack } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { titleCase } from 'title-case'
-import AugmentSlotFilterableDropdown
-  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import FilterableDropdown from '../../components/common/FilterableDropdown.tsx'
-import {
-  filterIngredientsMap
-} from '../../components/filters/helpers/filterUtils.ts'
+import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
 import augmentMaster from '../../data/augments/augmentMaster.ts'
 import {
   craftedHeroicViktraniumWeapons,
   craftedLegendaryViktraniumWeapons,
+  craftedWickedViktraniumWeapons,
   lootHeroicViktraniumItems,
   lootLegendaryViktraniumItems
 } from '../../data/viktraniumExperiment/update75Adapter.ts'
@@ -22,6 +20,7 @@ import {
   resetSelectedHeroicLootItem,
   resetSelectedLegendaryCraftedItem,
   resetSelectedLegendaryLootItem,
+  resetSelectedWickedCraftedItem,
   setAugmentFilterMode,
   setAugmentFilters,
   setItemFilterMode,
@@ -30,17 +29,14 @@ import {
   setSelectedHeroicCraftedItem,
   setSelectedHeroicLootItem,
   setSelectedLegendaryCraftedItem,
-  setSelectedLegendaryLootItem
+  setSelectedLegendaryLootItem,
+  setSelectedWickedCraftedItem
 } from '../../redux/slices/viktraniumSlice.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Augment, CraftingIngredient } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
-import {
-  camelCaseToTitleCase,
-  getCumulativeIngredients
-} from '../../utils/utils.ts'
-import CumulativeIngredientsCard
-  from '../dinosaurBoneCrafting/components/CumulativeIngredientsCard.tsx'
+import { camelCaseToTitleCase, getCumulativeIngredients } from '../../utils/utils.ts'
+import CumulativeIngredientsCard from '../dinosaurBoneCrafting/components/CumulativeIngredientsCard.tsx'
 import ItemDisplay from '../dinosaurBoneCrafting/components/ItemDisplay.tsx'
 
 const ViktraniumExperiment = () => {
@@ -50,6 +46,7 @@ const ViktraniumExperiment = () => {
     selectedHeroicCraftedItem,
     selectedLegendaryLootItem,
     selectedLegendaryCraftedItem,
+    selectedWickedCraftedItem,
     itemFilters,
     itemFilterMode,
     augmentFilters,
@@ -77,17 +74,27 @@ const ViktraniumExperiment = () => {
     [itemFilters]
   )
 
+  const filteredCraftedWickedViktraniumWeapons: Record<string, CraftingIngredient[]> = useMemo(
+    () => filterIngredientsMap(itemFilters, craftedWickedViktraniumWeapons),
+    [itemFilters]
+  )
+
   const availableAugmentSlots = useMemo<string[]>(() => {
     if (
       !selectedHeroicLootItem?.augments?.length &&
       !selectedHeroicCraftedItem?.augments?.length &&
-      selectedLegendaryLootItem?.augments?.length &&
-      selectedLegendaryCraftedItem?.augments?.length
+      !selectedLegendaryLootItem?.augments?.length &&
+      !selectedLegendaryCraftedItem?.augments?.length &&
+      !selectedWickedCraftedItem?.augments?.length
     )
       return []
 
     const selectedItem =
-      selectedHeroicLootItem ?? selectedHeroicCraftedItem ?? selectedLegendaryLootItem ?? selectedLegendaryCraftedItem
+      selectedHeroicLootItem ??
+      selectedHeroicCraftedItem ??
+      selectedLegendaryLootItem ??
+      selectedLegendaryCraftedItem ??
+      selectedWickedCraftedItem
     if (selectedItem?.augments === undefined) return []
 
     const aug: Augment = selectedItem.augments[0]
@@ -96,7 +103,13 @@ const ViktraniumExperiment = () => {
         return value === null || key.startsWith('lamordia')
       })
       .map(([k]) => k)
-  }, [selectedHeroicLootItem, selectedHeroicCraftedItem, selectedLegendaryLootItem, selectedLegendaryCraftedItem])
+  }, [
+    selectedHeroicLootItem,
+    selectedHeroicCraftedItem,
+    selectedLegendaryLootItem,
+    selectedLegendaryCraftedItem,
+    selectedWickedCraftedItem
+  ])
 
   const augmentOptions = useMemo<Record<string, AugmentItem[]>>(() => {
     return availableAugmentSlots.reduce<Record<string, AugmentItem[]>>((acc, slot) => {
@@ -189,6 +202,8 @@ const ViktraniumExperiment = () => {
     )
   }
 
+  console.log(craftedWickedViktraniumWeapons)
+
   return (
     <Container className='px-0'>
       <Card>
@@ -234,7 +249,8 @@ const ViktraniumExperiment = () => {
                   disabled={
                     selectedLegendaryLootItem !== undefined ||
                     selectedHeroicLootItem !== undefined ||
-                    selectedLegendaryCraftedItem !== undefined
+                    selectedLegendaryCraftedItem !== undefined ||
+                    selectedWickedCraftedItem !== undefined
                   }
                 />
 
@@ -255,7 +271,8 @@ const ViktraniumExperiment = () => {
                   disabled={
                     selectedLegendaryLootItem !== undefined ||
                     selectedHeroicCraftedItem !== undefined ||
-                    selectedLegendaryCraftedItem !== undefined
+                    selectedLegendaryCraftedItem !== undefined ||
+                    selectedWickedCraftedItem !== undefined
                   }
                 />
 
@@ -280,7 +297,8 @@ const ViktraniumExperiment = () => {
                   disabled={
                     selectedLegendaryLootItem !== undefined ||
                     selectedHeroicCraftedItem !== undefined ||
-                    selectedHeroicLootItem !== undefined
+                    selectedHeroicLootItem !== undefined ||
+                    selectedWickedCraftedItem !== undefined
                   }
                 />
 
@@ -301,7 +319,31 @@ const ViktraniumExperiment = () => {
                   disabled={
                     selectedLegendaryCraftedItem !== undefined ||
                     selectedHeroicCraftedItem !== undefined ||
-                    selectedHeroicLootItem !== undefined
+                    selectedHeroicLootItem !== undefined ||
+                    selectedWickedCraftedItem !== undefined
+                  }
+                />
+
+                <FilterableDropdown
+                  dropdownTriggerPrefix='B:'
+                  title={'Wicked Crafted Gear'}
+                  items={craftedWickedViktraniumWeapons}
+                  filteredItems={filteredCraftedWickedViktraniumWeapons}
+                  onSelect={(weapon: CraftingIngredient) => dispatch(setSelectedWickedCraftedItem(weapon))}
+                  onReset={() => dispatch(resetSelectedWickedCraftedItem())}
+                  selectedItem={selectedWickedCraftedItem ?? undefined}
+                  label={selectedWickedCraftedItem ? selectedWickedCraftedItem.name : 'Select a Wicked Crafted Item...'}
+                  canFilter
+                  filterMode={itemFilterMode}
+                  filters={itemFilters}
+                  onFilterModeChange={(mode: 'OR' | 'AND') => dispatch(setItemFilterMode(mode))}
+                  onFiltersChange={(filters: string[]) => dispatch(setItemFilters(filters))}
+                  disabled={
+                    selectedLegendaryLootItem !== undefined ||
+                    selectedLegendaryCraftedItem !== undefined ||
+                    selectedHeroicCraftedItem !== undefined ||
+                    selectedHeroicLootItem !== undefined ||
+                    selectedWickedCraftedItem !== undefined
                   }
                 />
               </Stack>
@@ -310,7 +352,8 @@ const ViktraniumExperiment = () => {
               {(selectedHeroicLootItem ??
                 selectedHeroicCraftedItem ??
                 selectedLegendaryLootItem ??
-                selectedLegendaryCraftedItem) && (
+                selectedLegendaryCraftedItem ??
+                selectedWickedCraftedItem) && (
                 <Card className='mt-3'>
                   <Card.Header>Augment Slots</Card.Header>
                   <Card.Body>
@@ -334,10 +377,13 @@ const ViktraniumExperiment = () => {
 
           <Row className='mt-4'>
             <Col>
-              {!selectedHeroicLootItem &&
-              !selectedHeroicCraftedItem &&
-              !selectedLegendaryLootItem &&
-              !selectedLegendaryCraftedItem ? (
+              {!(
+                selectedHeroicLootItem ??
+                selectedHeroicCraftedItem ??
+                selectedLegendaryLootItem ??
+                selectedLegendaryCraftedItem ??
+                selectedWickedCraftedItem
+              ) ? (
                 <Card>
                   <Card.Body>
                     <p>No item selected.</p>
@@ -353,6 +399,7 @@ const ViktraniumExperiment = () => {
                           selectedHeroicCraftedItem ??
                           selectedLegendaryLootItem ??
                           selectedLegendaryCraftedItem ??
+                          selectedWickedCraftedItem ??
                           ({} as Ingredient)
                         }
                       />
@@ -364,7 +411,8 @@ const ViktraniumExperiment = () => {
                           selectedHeroicLootItem ??
                             selectedHeroicCraftedItem ??
                             selectedLegendaryLootItem ??
-                            selectedLegendaryCraftedItem,
+                            selectedLegendaryCraftedItem ??
+                            selectedWickedCraftedItem,
                           selectedAugments
                         )}
                       />
