@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build:data:cannith": "cd tools/cannithSplit && go run . ../../src/data/cannithCrafting/cannithEnhancements.phase1.json ../../src/data/cannithCrafting/runtime",
-    "build": "yarn build:data:cannith && tsc -b && vite build",
+    "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-sitemap": "node scripts/generate-sitemap.js",
