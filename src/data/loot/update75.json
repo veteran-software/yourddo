@@ -219,7 +219,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Illusion Focus",
+        "name": "Spell DC: Illusion",
         "modifier": "2",
         "bonus": "Equipment"
       },
@@ -280,47 +280,47 @@
         "bonus": "Enhancement"
       },
       {
-        "name": "Abjuration Focus",
+        "name": "Spell DC: Abjuration",
         "modifier": "2",
         "bonus": "Equipment"
       },
       {
-        "name": "Breath Weapon Focus",
+        "name": "Spell DC: Breath Weapon",
         "modifier": "2",
         "bonus": "Equipment"
       },
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "modifier": "2",
         "bonus": "Equipment"
       },
       {
-        "name": "Divination Focus",
+        "name": "Spell DC: Divination",
         "modifier": "2",
         "bonus": "Equipment"
       },
       {
-        "name": "Enchantment Focus",
+        "name": "Spell DC: Enchantment",
         "modifier": "2",
         "bonus": "Equipment"
       },
       {
-        "name": "Evocation Focus",
+        "name": "Spell DC: Evocation",
         "modifier": "2",
         "bonus": "Equipment"
       },
       {
-        "name": "Illusion Focus",
+        "name": "Spell DC: Illusion",
         "modifier": "2",
         "bonus": "Equipment"
       },
       {
-        "name": "Necromancy Focus",
+        "name": "Spell DC: Necromancy",
         "modifier": "2",
         "bonus": "Equipment"
       },
       {
-        "name": "Transmutation Focus",
+        "name": "Spell DC: Transmutation",
         "modifier": "2",
         "bonus": "Equipment"
       }
@@ -371,7 +371,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Enchantment Focus",
+        "name": "Spell DC: Enchantment",
         "modifier": "2",
         "bonus": "Equipment"
       },
@@ -429,7 +429,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Transmutation Focus",
+        "name": "Spell DC: Transmutation",
         "modifier": "6",
         "bonus": "Equipment"
       },
@@ -487,7 +487,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Transmutation Focus",
+        "name": "Spell DC: Transmutation",
         "modifier": "2",
         "bonus": "Equipment"
       },
@@ -553,7 +553,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Evocation Focus",
+        "name": "Spell DC: Evocation",
         "modifier": "2",
         "bonus": "Equipment"
       },
@@ -3700,47 +3700,47 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Abjuration Focus",
+        "name": "Spell DC: Abjuration",
         "modifier": "1",
         "bonus": "Insight"
       },
       {
-        "name": "Breath Weapon Focus",
+        "name": "Spell DC: Breath Weapon",
         "modifier": "1",
         "bonus": "Insight"
       },
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "modifier": "1",
         "bonus": "Insight"
       },
       {
-        "name": "Divination Focus",
+        "name": "Spell DC: Divination",
         "modifier": "1",
         "bonus": "Insight"
       },
       {
-        "name": "Enchantment Focus",
+        "name": "Spell DC: Enchantment",
         "modifier": "1",
         "bonus": "Insight"
       },
       {
-        "name": "Evocation Focus",
+        "name": "Spell DC: Evocation",
         "modifier": "1",
         "bonus": "Insight"
       },
       {
-        "name": "Illusion Focus",
+        "name": "Spell DC: Illusion",
         "modifier": "1",
         "bonus": "Insight"
       },
       {
-        "name": "Necromancy Focus",
+        "name": "Spell DC: Necromancy",
         "modifier": "1",
         "bonus": "Insight"
       },
       {
-        "name": "Transmutation Focus",
+        "name": "Spell DC: Transmutation",
         "modifier": "1",
         "bonus": "Insight"
       }
@@ -4115,17 +4115,17 @@
         "bonus": "Enhancement"
       },
       {
-        "name": "Negative Energy Spell Power",
+        "name": "Spell Power: Negative Energy",
         "modifier": "17",
         "bonus": "Quality"
       },
       {
-        "name": "Poison Spell Power",
+        "name": "Spell Power: Poison",
         "modifier": "17",
         "bonus": "Quality"
       },
       {
-        "name": "Necromancy Focus",
+        "name": "Spell DC: Necromancy",
         "modifier": "2",
         "bonus": "Equipment"
       }
@@ -4869,13 +4869,53 @@
     "enchantments": [
       {
         "name": "Armor Class",
-        "modifier": "4",
-        "bonus": "Enhancement"
+        "modifier": "Enhancement",
+        "bonus": 4
       },
       {
-        "name": "Spell Critical Chance",
-        "modifier": "3",
-        "bonus": "Exceptional"
+        "name": "Spell Critical Chance: Abjuration",
+        "modifier": "Exceptional",
+        "bonus": "3%"
+      },
+      {
+        "name": "Spell Critical Chance: Conjuration",
+        "modifier": "Exceptional",
+        "bonus": "3%"
+      },
+      {
+        "name": "Spell Critical Chance: Divination",
+        "modifier": "Exceptional",
+        "bonus": "3%"
+      },
+      {
+        "name": "Spell Critical Chance: Enchantment",
+        "modifier": "Exceptional",
+        "bonus": "3%"
+      },
+      {
+        "name": "Spell Critical Chance: Evocation",
+        "modifier": "Exceptional",
+        "bonus": "3%"
+      },
+      {
+        "name": "Spell Critical Chance: Illusion",
+        "modifier": "Exceptional",
+        "bonus": "3%"
+      },
+      {
+        "name": "Spell Critical Chance: Innate Attack",
+        "modifier": "Exceptional",
+        "bonus": "3%"
+      },
+      {
+        "name": "Spell Critical Chance: Necromancy",
+        "modifier": "Exceptional",
+        "bonus": "3%"
+      },
+      {
+        "name": "Spell Critical Chance: Transmutation",
+        "modifier": "Exceptional",
+        "bonus": "3%"
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|4}}{{SpellLore|Universal|3|Exceptional}}",
@@ -5249,27 +5289,27 @@
         "bonus": "Enhancement"
       },
       {
-        "name": "Light Spell Power",
+        "name": "Spell Power: Light",
         "modifier": "17",
         "bonus": "Quality"
       },
       {
-        "name": "Chaotic Spell Power",
+        "name": "Spell Power: Chaos",
         "modifier": "17",
         "bonus": "Quality"
       },
       {
-        "name": "Evil Spell Power",
+        "name": "Spell Power: Evil",
         "modifier": "17",
         "bonus": "Quality"
       },
       {
-        "name": "Good Spell Power",
+        "name": "Spell Power: Good",
         "modifier": "17",
         "bonus": "Quality"
       },
       {
-        "name": "Lawful Spell Power",
+        "name": "Spell Power: Lawful",
         "modifier": "17",
         "bonus": "Quality"
       },
@@ -5699,7 +5739,7 @@
         "bonus": "Enhancement"
       },
       {
-        "name": "Cold Spell Power",
+        "name": "Spell Power: Cold",
         "modifier": "17",
         "bonus": "Quality"
       },
@@ -5755,7 +5795,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Cold Spell Power",
+        "name": "Spell Power: Cold",
         "modifier": "35",
         "bonus": "Insight"
       },
@@ -7204,47 +7244,47 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Abjuration Focus",
+        "name": "Spell DC: Abjuration",
         "modifier": "1",
         "bonus": "Quality"
       },
       {
-        "name": "Breath Weapon Focus",
+        "name": "Spell DC: Breath Weapon",
         "modifier": "1",
         "bonus": "Quality"
       },
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "modifier": "1",
         "bonus": "Quality"
       },
       {
-        "name": "Divination Focus",
+        "name": "Spell DC: Divination",
         "modifier": "1",
         "bonus": "Quality"
       },
       {
-        "name": "Enchantment Focus",
+        "name": "Spell DC: Enchantment",
         "modifier": "1",
         "bonus": "Quality"
       },
       {
-        "name": "Evocation Focus",
+        "name": "Spell DC: Evocation",
         "modifier": "1",
         "bonus": "Quality"
       },
       {
-        "name": "Illusion Focus",
+        "name": "Spell DC: Illusion",
         "modifier": "1",
         "bonus": "Quality"
       },
       {
-        "name": "Necromancy Focus",
+        "name": "Spell DC: Necromancy",
         "modifier": "1",
         "bonus": "Quality"
       },
       {
-        "name": "Transmutation Focus",
+        "name": "Spell DC: Transmutation",
         "modifier": "1",
         "bonus": "Quality"
       },
@@ -7540,27 +7580,27 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Trip DC",
+        "name": "Tactical DC: Trip",
         "modifier": "2",
         "bonus": "Insight"
       },
       {
-        "name": "Improved Trip DC",
+        "name": "Tactical DC: Improved Trip",
         "modifier": "2",
         "bonus": "Insight"
       },
       {
-        "name": "Sunder DC",
+        "name": "Tactical DC: Sunder",
         "modifier": "2",
         "bonus": "Insight"
       },
       {
-        "name": "Improved Sunder DC",
+        "name": "Tactical DC: Improved Sunder",
         "modifier": "2",
         "bonus": "Insight"
       },
       {
-        "name": "Stunning DC",
+        "name": "Tactical DC: Stunning",
         "modifier": "2",
         "bonus": "Insight"
       },
@@ -8179,12 +8219,12 @@
         "bonus": "Profane"
       },
       {
-        "name": "Negative Energy Spell Power",
+        "name": "Spell Power: Negative Energy",
         "modifier": "17",
         "bonus": "Quality"
       },
       {
-        "name": "Poison Spell Power",
+        "name": "Spell Power: Poison",
         "modifier": "17",
         "bonus": "Quality"
       }
@@ -9420,7 +9460,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Illusion Focus",
+        "name": "Spell DC: Illusion",
         "modifier": "6",
         "bonus": "Equipment"
       },
@@ -9481,47 +9521,47 @@
         "bonus": "Enhancement"
       },
       {
-        "name": "Abjuration Focus",
+        "name": "Spell DC: Abjuration",
         "modifier": "5",
         "bonus": "Equipment"
       },
       {
-        "name": "Breath Weapon Focus",
+        "name": "Spell DC: Breath Weapon",
         "modifier": "5",
         "bonus": "Equipment"
       },
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "modifier": "5",
         "bonus": "Equipment"
       },
       {
-        "name": "Divination Focus",
+        "name": "Spell DC: Divination",
         "modifier": "5",
         "bonus": "Equipment"
       },
       {
-        "name": "Enchantment Focus",
+        "name": "Spell DC: Enchantment",
         "modifier": "5",
         "bonus": "Equipment"
       },
       {
-        "name": "Evocation Focus",
+        "name": "Spell DC: Evocation",
         "modifier": "5",
         "bonus": "Equipment"
       },
       {
-        "name": "Illusion Focus",
+        "name": "Spell DC: Illusion",
         "modifier": "5",
         "bonus": "Equipment"
       },
       {
-        "name": "Necromancy Focus",
+        "name": "Spell DC: Necromancy",
         "modifier": "5",
         "bonus": "Equipment"
       },
       {
-        "name": "Transmutation Focus",
+        "name": "Spell DC: Transmutation",
         "modifier": "5",
         "bonus": "Equipment"
       }
@@ -9572,7 +9612,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Enchantment Focus",
+        "name": "Spell DC: Enchantment",
         "modifier": "6",
         "bonus": "Equipment"
       },
@@ -9638,7 +9678,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Evocation Focus",
+        "name": "Spell DC: Evocation",
         "modifier": "6",
         "bonus": "Equipment"
       },
@@ -15150,47 +15190,47 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Abjuration Focus",
+        "name": "Spell DC: Abjuration",
         "modifier": "3",
         "bonus": "Insight"
       },
       {
-        "name": "Breath Weapon Focus",
+        "name": "Spell DC: Breath Weapon",
         "modifier": "3",
         "bonus": "Insight"
       },
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "modifier": "3",
         "bonus": "Insight"
       },
       {
-        "name": "Divination Focus",
+        "name": "Spell DC: Divination",
         "modifier": "3",
         "bonus": "Insight"
       },
       {
-        "name": "Enchantment Focus",
+        "name": "Spell DC: Enchantment",
         "modifier": "3",
         "bonus": "Insight"
       },
       {
-        "name": "Evocation Focus",
+        "name": "Spell DC: Evocation",
         "modifier": "3",
         "bonus": "Insight"
       },
       {
-        "name": "Illusion Focus",
+        "name": "Spell DC: Illusion",
         "modifier": "3",
         "bonus": "Insight"
       },
       {
-        "name": "Necromancy Focus",
+        "name": "Spell DC: Necromancy",
         "modifier": "3",
         "bonus": "Insight"
       },
       {
-        "name": "Transmutation Focus",
+        "name": "Spell DC: Transmutation",
         "modifier": "3",
         "bonus": "Insight"
       }
@@ -15473,17 +15513,17 @@
         "bonus": "Enhancement"
       },
       {
-        "name": "Negative Energy Spell Power",
+        "name": "Spell Power: Negative Energy",
         "modifier": "39",
         "bonus": "Quality"
       },
       {
-        "name": "Poison Spell Power",
+        "name": "Spell Power: Poison",
         "modifier": "39",
         "bonus": "Quality"
       },
       {
-        "name": "Necromancy Focus",
+        "name": "Spell DC: Necromancy",
         "modifier": "6",
         "bonus": "Equipment"
       }
@@ -16231,13 +16271,53 @@
     "enchantments": [
       {
         "name": "Armor Class",
-        "modifier": "15",
-        "bonus": "Enhancement"
+        "modifier": "Enhancement",
+        "bonus": 15
       },
       {
-        "name": "Spell Critical Chance",
-        "modifier": "5",
-        "bonus": "Exceptional"
+        "name": "Spell Critical Chance: Abjuration",
+        "modifier": "Exceptional",
+        "bonus": "5%"
+      },
+      {
+        "name": "Spell Critical Chance: Conjuration",
+        "modifier": "Exceptional",
+        "bonus": "5%"
+      },
+      {
+        "name": "Spell Critical Chance: Divination",
+        "modifier": "Exceptional",
+        "bonus": "5%"
+      },
+      {
+        "name": "Spell Critical Chance: Enchantment",
+        "modifier": "Exceptional",
+        "bonus": "5%"
+      },
+      {
+        "name": "Spell Critical Chance: Evocation",
+        "modifier": "Exceptional",
+        "bonus": "5%"
+      },
+      {
+        "name": "Spell Critical Chance: Illusion",
+        "modifier": "Exceptional",
+        "bonus": "5%"
+      },
+      {
+        "name": "Spell Critical Chance: Innate Attack",
+        "modifier": "Exceptional",
+        "bonus": "5%"
+      },
+      {
+        "name": "Spell Critical Chance: Necromancy",
+        "modifier": "Exceptional",
+        "bonus": "5%"
+      },
+      {
+        "name": "Spell Critical Chance: Transmutation",
+        "modifier": "Exceptional",
+        "bonus": "5%"
       }
     ],
     "enchantmentsRaw": "{{EnhancementBonus|15}}{{SpellLore|Universal|5|Exceptional}}",
@@ -16615,27 +16695,27 @@
         "bonus": "Enhancement"
       },
       {
-        "name": "Light Spell Power",
+        "name": "Spell Power: Light",
         "modifier": "39",
         "bonus": "Quality"
       },
       {
-        "name": "Chaotic Spell Power",
+        "name": "Spell Power: Chaos",
         "modifier": "39",
         "bonus": "Quality"
       },
       {
-        "name": "Evil Spell Power",
+        "name": "Spell Power: Evil",
         "modifier": "39",
         "bonus": "Quality"
       },
       {
-        "name": "Good Spell Power",
+        "name": "Spell Power: Good",
         "modifier": "39",
         "bonus": "Quality"
       },
       {
-        "name": "Lawful Spell Power",
+        "name": "Spell Power: Lawful",
         "modifier": "39",
         "bonus": "Quality"
       },
@@ -17065,7 +17145,7 @@
         "bonus": "Enhancement"
       },
       {
-        "name": "Cold Spell Power",
+        "name": "Spell Power: Cold",
         "modifier": "39",
         "bonus": "Quality"
       },
@@ -17121,7 +17201,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Cold Spell Power",
+        "name": "Spell Power: Cold",
         "modifier": "79",
         "bonus": "Insight"
       },
@@ -18489,47 +18569,47 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Abjuration Focus",
+        "name": "Spell DC: Abjuration",
         "modifier": "2",
         "bonus": "Quality"
       },
       {
-        "name": "Breath Weapon Focus",
+        "name": "Spell DC: Breath Weapon",
         "modifier": "2",
         "bonus": "Quality"
       },
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "modifier": "2",
         "bonus": "Quality"
       },
       {
-        "name": "Divination Focus",
+        "name": "Spell DC: Divination",
         "modifier": "2",
         "bonus": "Quality"
       },
       {
-        "name": "Enchantment Focus",
+        "name": "Spell DC: Enchantment",
         "modifier": "2",
         "bonus": "Quality"
       },
       {
-        "name": "Evocation Focus",
+        "name": "Spell DC: Evocation",
         "modifier": "2",
         "bonus": "Quality"
       },
       {
-        "name": "Illusion Focus",
+        "name": "Spell DC: Illusion",
         "modifier": "2",
         "bonus": "Quality"
       },
       {
-        "name": "Necromancy Focus",
+        "name": "Spell DC: Necromancy",
         "modifier": "2",
         "bonus": "Quality"
       },
       {
-        "name": "Transmutation Focus",
+        "name": "Spell DC: Transmutation",
         "modifier": "2",
         "bonus": "Quality"
       },
@@ -18826,27 +18906,27 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Trip DC",
+        "name": "Tactical DC: Trip",
         "modifier": "6",
         "bonus": "Insight"
       },
       {
-        "name": "Improved Trip DC",
+        "name": "Tactical DC: Improved Trip",
         "modifier": "6",
         "bonus": "Insight"
       },
       {
-        "name": "Sunder DC",
+        "name": "Tactical DC: Sunder",
         "modifier": "6",
         "bonus": "Insight"
       },
       {
-        "name": "Improved Sunder DC",
+        "name": "Tactical DC: Improved Sunder",
         "modifier": "6",
         "bonus": "Insight"
       },
       {
-        "name": "Stunning DC",
+        "name": "Tactical DC: Stunning",
         "modifier": "6",
         "bonus": "Insight"
       },
@@ -19260,12 +19340,12 @@
         "bonus": "Profane"
       },
       {
-        "name": "Negative Energy Spell Power",
+        "name": "Spell Power: Negative Energy",
         "modifier": "39",
         "bonus": "Quality"
       },
       {
-        "name": "Poison Spell Power",
+        "name": "Spell Power: Poison",
         "modifier": "39",
         "bonus": "Quality"
       }
@@ -20352,27 +20432,27 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Trip DC",
+        "name": "Tactical DC: Trip",
         "modifier": "3",
         "bonus": "Profane"
       },
       {
-        "name": "Improved Trip DC",
+        "name": "Tactical DC: Improved Trip",
         "modifier": "3",
         "bonus": "Profane"
       },
       {
-        "name": "Sunder DC",
+        "name": "Tactical DC: Sunder",
         "modifier": "3",
         "bonus": "Profane"
       },
       {
-        "name": "Improved Sunder DC",
+        "name": "Tactical DC: Improved Sunder",
         "modifier": "3",
         "bonus": "Profane"
       },
       {
-        "name": "Stunning DC",
+        "name": "Tactical DC: Stunning",
         "modifier": "3",
         "bonus": "Profane"
       },
@@ -20779,12 +20859,12 @@
         "bonus": "Enhancement"
       },
       {
-        "name": "Repair Spell Power",
+        "name": "Spell Power: Repair",
         "modifier": "39",
         "bonus": "Quality"
       },
       {
-        "name": "Rust Spell Power",
+        "name": "Spell Power: Rust",
         "modifier": "39",
         "bonus": "Quality"
       }
@@ -20889,7 +20969,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Dodge",
+        "name": "Dodge Chance",
         "modifier": "15%",
         "bonus": "Enhancement"
       },
@@ -20965,12 +21045,12 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Electric Spell Power",
+        "name": "Spell Power: Electric",
         "modifier": "79",
         "bonus": "Insight"
       },
       {
-        "name": "Electric Spell Critical Chance",
+        "name": "Spell Critical Chance: Electric",
         "modifier": "23",
         "bonus": "Equipment"
       },
@@ -21027,7 +21107,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "modifier": "6",
         "bonus": "Equipment"
       },
@@ -21192,7 +21272,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Abjuration Focus",
+        "name": "Spell DC: Abjuration",
         "modifier": "2",
         "bonus": "Profane"
       }
@@ -21237,7 +21317,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Abjuration Focus",
+        "name": "Spell DC: Abjuration",
         "modifier": "4",
         "bonus": "Profane"
       }
@@ -21372,7 +21452,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "modifier": "4",
         "bonus": "Profane"
       }
@@ -21417,7 +21497,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "modifier": "2",
         "bonus": "Profane"
       }
@@ -21462,7 +21542,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Enchantment Focus",
+        "name": "Spell DC: Enchantment",
         "modifier": "2",
         "bonus": "Profane"
       }
@@ -21507,7 +21587,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Enchantment Focus",
+        "name": "Spell DC: Enchantment",
         "modifier": "4",
         "bonus": "Profane"
       }
@@ -21754,7 +21834,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Illusion Focus",
+        "name": "Spell DC: Illusion",
         "modifier": "2",
         "bonus": "Profane"
       }
@@ -21799,7 +21879,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Illusion Focus",
+        "name": "Spell DC: Illusion",
         "modifier": "4",
         "bonus": "Profane"
       }
@@ -21944,7 +22024,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Necromancy Focus",
+        "name": "Spell DC: Necromancy",
         "modifier": "2",
         "bonus": "Profane"
       }
@@ -21989,7 +22069,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Necromancy Focus",
+        "name": "Spell DC: Necromancy",
         "modifier": "4",
         "bonus": "Profane"
       }
@@ -22336,7 +22416,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Transmutation Focus",
+        "name": "Spell DC: Transmutation",
         "modifier": "2",
         "bonus": "Profane"
       }
@@ -22381,7 +22461,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Transmutation Focus",
+        "name": "Spell DC: Transmutation",
         "modifier": "4",
         "bonus": "Profane"
       }
@@ -22487,27 +22567,27 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Trip DC",
+        "name": "Tactical DC: Trip",
         "modifier": "1",
         "bonus": "Profane"
       },
       {
-        "name": "Improved Trip DC",
+        "name": "Tactical DC: Improved Trip",
         "modifier": "1",
         "bonus": "Profane"
       },
       {
-        "name": "Sunder DC",
+        "name": "Tactical DC: Sunder",
         "modifier": "1",
         "bonus": "Profane"
       },
       {
-        "name": "Improved Sunder DC",
+        "name": "Tactical DC: Improved Sunder",
         "modifier": "1",
         "bonus": "Profane"
       },
       {
-        "name": "Stunning DC",
+        "name": "Tactical DC: Stunning",
         "modifier": "1",
         "bonus": "Profane"
       },
@@ -22849,7 +22929,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "modifier": "2",
         "bonus": "Artifact"
       }
@@ -22894,7 +22974,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "modifier": "4",
         "bonus": "Artifact"
       }
@@ -23921,7 +24001,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Run Arm Focus",
+        "name": "Rune Arm Focus",
         "modifier": "1",
         "bonus": "Artifact"
       }
@@ -23966,7 +24046,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Run Arm Focus",
+        "name": "Rune Arm Focus",
         "modifier": "3",
         "bonus": "Artifact"
       }
@@ -24187,12 +24267,12 @@
         "bonus": "Enhancement"
       },
       {
-        "name": "Repair Spell Power",
+        "name": "Spell Power: Repair",
         "modifier": "17",
         "bonus": "Quality"
       },
       {
-        "name": "Rust Spell Power",
+        "name": "Spell Power: Rust",
         "modifier": "17",
         "bonus": "Quality"
       }
@@ -24912,20 +24992,34 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Repair Spell Power",
-        "notes": "+(Above 159) Equipment bonus to Repair Spell Power"
+        "name": "Spell Power: Repair",
+        "bonus": 171,
+        "modifier": "Equipment"
       },
       {
-        "name": "Rust Spell Power",
-        "notes": "+(Above 159) Equipment bonus to Rust Spell Power"
+        "name": "Spell Power: Rust",
+        "bonus": 171,
+        "modifier": "Equipment"
       },
       {
-        "name": "Repair Spell Critical Damage",
-        "notes": "+(Above 23) Enhancement Bonus to Repair Spell Critical Damage"
+        "name": "Spell Critical Chance: Repair",
+        "bonus": "24%",
+        "modifier": "Equipment"
       },
       {
-        "name": "Rust Spell Critical Damage",
-        "notes": "+(Above 23) Enhancement Bonus to Rust Spell Critical Damage"
+        "name": "Spell Critical Chance: Rust",
+        "bonus": "24%",
+        "modifier": "Equipment"
+      },
+      {
+        "name": "Spell Critical Damage: Repair",
+        "bonus": "25%",
+        "modifier": "Equipment"
+      },
+      {
+        "name": "Spell Critical Damage: Rust",
+        "bonus": "25%",
+        "modifier": "Equipment"
       }
     ],
     "enchantmentsRaw": "{{MemoryOfAnimatedObjects}}",
@@ -25603,7 +25697,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Dodge",
+        "name": "Dodge Chance",
         "modifier": "5%",
         "bonus": "Enhancement"
       },
@@ -25679,12 +25773,12 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Electric Spell Power",
+        "name": "Spell Power: Electric",
         "modifier": "35",
         "bonus": "Insight"
       },
       {
-        "name": "Electric Spell Critical Chance",
+        "name": "Spell Critical Chance: Electric",
         "modifier": "10",
         "bonus": "Equipment"
       },
@@ -25784,7 +25878,7 @@
     "optionsRaw": "",
     "enchantments": [
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "modifier": "2",
         "bonus": "Equipment"
       },

@@ -24,7 +24,7 @@ function isPlainObject(v) {
 }
 
 function readJson(file) {
-  const text = fs.readFileSync(file, 'utf8')
+  const text = fs.readFileSync(file, {encoding: 'utf8'})
   try {
     return JSON.parse(text)
   } catch (err) {

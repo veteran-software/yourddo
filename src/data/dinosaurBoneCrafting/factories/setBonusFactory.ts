@@ -36,11 +36,11 @@ export const createSetBonus = (setBonusData: SetBonus): CraftingIngredient => ({
 })
 
 // Set bonus data
-export const setBonuses: SetBonus[] = [
+export const setBonuses = new Set<SetBonus>([
   findSetBonus('Dread Stalker'),
   findSetBonus('Defender Of Tanaroa'),
   findSetBonus('Echoes Of The Walking Ancestors'),
   findSetBonus('Devastation of the Firemouth'),
   findSetBonus('Deacon of the Auricular'),
   findSetBonus("The Legendary Dread Isle's Curse")
-]
+])

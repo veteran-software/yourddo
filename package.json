@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build:data:cannith": "cd tools/cannithSplit && go run . ../../src/data/cannithCrafting/cannithEnhancements.phase1.json ../../src/data/cannithCrafting/runtime",
+    "build": "yarn build:data:cannith && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-sitemap": "node scripts/generate-sitemap.js",
@@ -55,8 +56,8 @@
     "sass": "^1.98.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.2",
-    "vite": "^8.0.2",
+    "vite": "^8.0.3",
     "vite-plugin-compression": "^0.5.1"
   },
-  "packageManager": "yarn@4.12.0"
+  "packageManager": "yarn@4.13.0"
 }

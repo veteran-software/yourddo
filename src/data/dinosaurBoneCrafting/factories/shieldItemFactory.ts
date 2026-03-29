@@ -1,5 +1,5 @@
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { shieldList } from '../../basics/armor.ts'
+import { shields } from '../../basics/armor.ts'
 import { findSetBonus } from '../../setBonuses.ts'
 
 const shieldItemFactory = (name: string, itemType: string): CraftingIngredient => ({
@@ -40,5 +40,5 @@ const shieldItemFactory = (name: string, itemType: string): CraftingIngredient =
 })
 
 export const dinosaurBoneShieldItems: Record<string, CraftingIngredient[]> = {
-  Shields: [...shieldList.map((name: string) => shieldItemFactory(name, name))]
+  Shields: [...shields.values().map((name: string) => shieldItemFactory(name, name))]
 }

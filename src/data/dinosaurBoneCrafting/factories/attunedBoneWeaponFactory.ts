@@ -48,9 +48,9 @@ export const attunedBoneWeaponFactory = (
 })
 
 export const attunedBoneWeapons: Record<string, CraftingIngredient[]> = {
-  Melee: [...meleeWeapons.map((name: string) => attunedBoneWeaponFactory(name, 'Melee'))],
-  Ranged: [...rangedWeapons.map((name: string) => attunedBoneWeaponFactory(name, 'Ranged'))],
+  Melee: [...meleeWeapons.values().map((name: string) => attunedBoneWeaponFactory(name, 'Melee'))],
+  Ranged: [...rangedWeapons.values().map((name: string) => attunedBoneWeaponFactory(name, 'Ranged'))],
   Throwing: [
-    ...throwingWeapons.map((name: string) => attunedBoneWeaponFactory(name, 'Throwing', { name: 'Returning' }))
+    ...throwingWeapons.values().map((name: string) => attunedBoneWeaponFactory(name, 'Throwing', { name: 'Returning' }))
   ]
 } as const

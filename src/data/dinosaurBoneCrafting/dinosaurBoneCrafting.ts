@@ -238,9 +238,9 @@ dinosaurBoneCrafting.push(
     .filter((item) => item.type === 'fang')
     .map((item) => createArmorFang(item.name, item.effects as Enhancement[]))
 )
-dinosaurBoneCrafting.push(...setBonuses.map((bonusData: SetBonus) => createSetBonus(bonusData)))
-dinosaurBoneCrafting.push(...meleeWeapons.map((name: string) => baseDinosaurBoneWeapon(name, 'Melee')))
-dinosaurBoneCrafting.push(...rangedWeapons.map((name: string) => baseDinosaurBoneWeapon(name, 'Ranged')))
+dinosaurBoneCrafting.push(...setBonuses.values().map((bonusData: SetBonus) => createSetBonus(bonusData)))
+dinosaurBoneCrafting.push(...meleeWeapons.values().map((name: string) => baseDinosaurBoneWeapon(name, 'Melee')))
+dinosaurBoneCrafting.push(...rangedWeapons.values().map((name: string) => baseDinosaurBoneWeapon(name, 'Ranged')))
 dinosaurBoneCrafting.push(
-  ...throwingWeapons.map((name: string) => baseDinosaurBoneWeapon(name, 'Throwing', { name: 'Returning' }))
+  ...throwingWeapons.values().map((name: string) => baseDinosaurBoneWeapon(name, 'Throwing', { name: 'Returning' }))
 )

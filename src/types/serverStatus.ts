@@ -31,10 +31,6 @@ export interface AllowAdminRole {
   content: string
 }
 
-export interface SOAPResponse {
-  GetDatacenterStatusResponse: GetDatacenterStatusResponse
-}
-
 export interface GetDatacenterStatusResponse {
   xmlns: string
   children: GetDatacenterStatusResponseChild[]

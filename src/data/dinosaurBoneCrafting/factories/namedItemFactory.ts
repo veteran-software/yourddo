@@ -1,5 +1,6 @@
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { armorList, clothingList, jewelryList, shieldList } from '../../basics/armor.ts'
+import { clothing, jewelry } from '../../basics/accessories.ts'
+import { armor, shields } from '../../basics/armor.ts'
 import { meleeWeapons, rangedWeapons, throwingWeapons } from '../../basics/weapons.ts'
 import { findSetBonus } from '../../setBonuses.ts'
 
@@ -1586,13 +1587,13 @@ export const namedItemFactory = (): Record<string, CraftingIngredient[]> => {
       continue
     }
 
-    if (armorList.includes(type)) add('Armor', item)
-    else if (shieldList.includes(type)) add('Shield', item)
-    else if (clothingList.includes(type)) add('Clothing', item)
-    else if (jewelryList.includes(type)) add('Jewelry', item)
-    else if (meleeWeapons.includes(type)) add('Melee Weapon', item)
-    else if (rangedWeapons.includes(type)) add('Ranged Weapon', item)
-    else if (throwingWeapons.includes(type)) add('Throwing Weapon', item)
+    if (armor.has(type)) add('Armor', item)
+    else if (shields.has(type)) add('Shield', item)
+    else if (clothing.has(type)) add('Clothing', item)
+    else if (jewelry.has(type)) add('Jewelry', item)
+    else if (meleeWeapons.has(type)) add('Melee Weapon', item)
+    else if (rangedWeapons.has(type)) add('Ranged Weapon', item)
+    else if (throwingWeapons.has(type)) add('Throwing Weapon', item)
     else add('Unknown', item)
   }
 

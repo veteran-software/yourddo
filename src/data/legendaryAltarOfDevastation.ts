@@ -582,7 +582,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PaDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power',
+        name: 'Spell Power: Positive Energy',
         modifier: 37,
         bonus: 'Exceptional'
       }
@@ -762,7 +762,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PeDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power',
+        name: 'Spell Power: Positive Energy',
         modifier: 37,
         bonus: 'Exceptional'
       }
@@ -987,7 +987,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PfDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power',
+        name: 'Spell Power: Positive Energy',
         modifier: 37,
         bonus: 'Exceptional'
       }
@@ -1212,7 +1212,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PwDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power',
+        name: 'Spell Power: Positive Energy',
         modifier: 37,
         bonus: 'Exceptional'
       }
@@ -1347,7 +1347,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PpDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power',
+        name: 'Spell Power: Positive Energy',
         modifier: 37,
         bonus: 'Exceptional'
       }
@@ -7831,7 +7831,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 3, PnDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power',
+        name: 'Spell Power: Positive Energy',
         modifier: 37,
         bonus: 'Exceptional'
       }

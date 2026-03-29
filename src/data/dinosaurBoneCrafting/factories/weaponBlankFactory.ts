@@ -6,7 +6,11 @@ import {
   throwingWeapons
 } from '../../basics/weapons.ts'
 
-export const baseDinosaurBoneWeapon = (name: string, itemType: string, extraEffects?: Enhancement): CraftingIngredient => ({
+export const baseDinosaurBoneWeapon = (
+  name: string,
+  itemType: string,
+  extraEffects?: Enhancement
+): CraftingIngredient => ({
   name: `Dinosaur Bone ${name}`,
   description: 'Fashioned of intricately carved bones of long-forgotten Dinosaurs.',
   type: itemType,
@@ -64,7 +68,9 @@ export const baseDinosaurBoneWeapon = (name: string, itemType: string, extraEffe
 })
 
 export const craftedDinosaurBoneWeapons: Record<string, CraftingIngredient[]> = {
-  Melee: [...meleeWeapons.map((name: string) => baseDinosaurBoneWeapon(name, 'Melee'))],
-  Ranged: [...rangedWeapons.map((name: string) => baseDinosaurBoneWeapon(name, 'Ranged'))],
-  Throwing: [...throwingWeapons.map((name: string) => baseDinosaurBoneWeapon(name, 'Throwing', { name: 'Returning' }))]
+  Melee: [...meleeWeapons.values().map((name: string) => baseDinosaurBoneWeapon(name, 'Melee'))],
+  Ranged: [...rangedWeapons.values().map((name: string) => baseDinosaurBoneWeapon(name, 'Ranged'))],
+  Throwing: [
+    ...throwingWeapons.values().map((name: string) => baseDinosaurBoneWeapon(name, 'Throwing', { name: 'Returning' }))
+  ]
 } as const

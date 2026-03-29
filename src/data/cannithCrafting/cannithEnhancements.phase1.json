@@ -90,7 +90,7 @@
     "name": "Abjuration Focus",
     "enchantments": [
       {
-        "name": "Abjuration Focus",
+        "name": "Spell DC: Abjuration",
         "bonus": "Equipment"
       }
     ],
@@ -335,7 +335,7 @@
     "name": "Acid Lore",
     "enchantments": [
       {
-        "name": "Acid Spell Critical Chance",
+        "name": "Spell Critical Chance: Acid",
         "bonus": "Equipment"
       }
     ],
@@ -1476,7 +1476,7 @@
     "name": "Cold Lore",
     "enchantments": [
       {
-        "name": "Cold Spell Critical Chance",
+        "name": "Spell Critical Chance: Cold",
         "bonus": "Equipment"
       }
     ],
@@ -1584,23 +1584,23 @@
     "name": "Combat Mastery",
     "enchantments": [
       {
-        "name": "Trip DC",
+        "name": "Tactical DC: Trip",
         "bonus": "Enhancement"
       },
       {
-        "name": "Improved Trip DC",
+        "name": "Tactical DC: Improved Trip",
         "bonus": "Enhancement"
       },
       {
-        "name": "Sunder DC",
+        "name": "Tactical DC: Sunder",
         "bonus": "Enhancement"
       },
       {
-        "name": "Improved Sunder DC",
+        "name": "Tactical DC: Improved Sunder",
         "bonus": "Enhancement"
       },
       {
-        "name": "Stunning DC",
+        "name": "Tactical DC: Stunning",
         "bonus": "Enhancement"
       }
     ],
@@ -1653,7 +1653,7 @@
     "name": "Combustion",
     "enchantments": [
       {
-        "name": "Fire Spell Power",
+        "name": "Spell Power: Fire",
         "bonus": "Equipment"
       }
     ],
@@ -1761,7 +1761,7 @@
     "name": "Conjuration Focus",
     "enchantments": [
       {
-        "name": "Conjuration Focus",
+        "name": "Spell DC: Conjuration",
         "bonus": "Equipment"
       }
     ],
@@ -2002,7 +2002,7 @@
     "name": "Corrosion",
     "enchantments": [
       {
-        "name": "Acid Spell Power",
+        "name": "Spell Power: Acid",
         "bonus": "Equipment"
       }
     ],
@@ -2177,15 +2177,13 @@
     "extra": [],
     "group": "Damage",
     "minLevelIncrease": null,
-    "stat": [
-      1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10, 11, 11, 11
-    ]
+    "stat": [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10, 11, 11, 11]
   },
   {
     "name": "Devotion",
     "enchantments": [
       {
-        "name": "Positive Spell Power",
+        "name": "Spell Power: Positive Energy",
         "bonus": "Equipment"
       }
     ],
@@ -2509,7 +2507,7 @@
     "name": "Diversion",
     "enchantments": [
       {
-        "name": "Melee Threat Generation (Decrease)",
+        "name": "Melee Threat Reduction",
         "bonus": "Enhancement"
       }
     ],
@@ -3342,7 +3340,7 @@
     "name": "Electricity Lore",
     "enchantments": [
       {
-        "name": "Electrical Spell Critical Chance",
+        "name": "Spell Critical Chance: Electrical",
         "bonus": "Equipment"
       }
     ],
@@ -3564,7 +3562,7 @@
     "name": "Enchantment Focus",
     "enchantments": [
       {
-        "name": "Enchantment Focus",
+        "name": "Spell DC: Enchantment",
         "bonus": "Equipment"
       }
     ],
@@ -3951,7 +3949,7 @@
     "enchantments": [
       {
         "name": "Equipment bonus to DC of Evocation Spells",
-        "statModified": "Evocation DC",
+        "statModified": "Spell DC: Evocation",
         "bonus": "Equipment"
       }
     ],
@@ -4304,7 +4302,7 @@
     "enchantments": [
       {
         "name": "Equipment bonus to Fire Spells chance to Critical Hit",
-        "statModified": "Spell Critical Chance (Fire)",
+        "statModified": "Spell Critical Chance: Fire",
         "bonus": "Equipment"
       }
     ],
@@ -4501,7 +4499,7 @@
     "enchantments": [
       {
         "name": "Equipment bonus to Force Spells chance to Critical Hit",
-        "statModified": "Spell Critical Chance (Force)",
+        "statModified": "Spell Critical Chance: Force",
         "bonus": "Equipment"
       }
     ],
@@ -4804,7 +4802,7 @@
     "enchantments": [
       {
         "name": "Passive: Equipment bonus to Cold Spell Power",
-        "statModified": "Cold Spell Power",
+        "statModified": "Spell Power: Cold",
         "bonus": "Equipment"
       }
     ],
@@ -5514,7 +5512,7 @@
     "enchantments": [
       {
         "name": "Equipment bonus to DC of Illusion Spells",
-        "statModified": "Illusion DC",
+        "statModified": "Spell DC: Illusion",
         "bonus": "Equipment"
       }
     ],
@@ -5620,7 +5618,7 @@
     "enchantments": [
       {
         "name": "Passive: Equipment bonus to Force Spell Power",
-        "statModified": "Force Spell Power",
+        "statModified": "Spell Power: Force",
         "bonus": "Equipment"
       }
     ],
@@ -5844,7 +5842,7 @@
     "enchantments": [
       {
         "name": "Insight bonus to DC of Abjuration Spells",
-        "statModified": "Abjuration DC",
+        "statModified": "Spell DC: Abjuration",
         "bonus": "Insight"
       }
     ],
@@ -6266,7 +6264,7 @@
     "enchantments": [
       {
         "name": "Insight bonus to character's Trip, Improved Trip, Sunder, Improved Sunder, Stunning Blow, and Stunning Fist attempts",
-        "statModified": ["Trip", "Improved Trip", "Sunder", "Improved Sunder", "Stunning Blow", "Stunning Fist"],
+        "statModified": ["Tactical DC: Trip", "Tactical DC: Improved Trip", "Tactical DC: Sunder", "Tactical DC: Improved Sunder", "Tactical DC: Stunning"],
         "bonus": "Insight"
       }
     ],
@@ -6318,7 +6316,7 @@
     "enchantments": [
       {
         "name": "Passive: Insight bonus to Fire Spell Power",
-        "statModified": "Fire Spell Power",
+        "statModified": "Spell Power: Fire",
         "bonus": "Insight"
       }
     ],
@@ -6425,7 +6423,7 @@
     "enchantments": [
       {
         "name": "Insight bonus to DC of Conjuration Spells",
-        "statModified": "Conjuration DC",
+        "statModified": "Spell DC: Conjuration",
         "bonus": "Insight"
       }
     ],
@@ -6529,7 +6527,7 @@
     "enchantments": [
       {
         "name": "Passive: Insight bonus to Acid Spell Power",
-        "statModified": "Acid Spell Power",
+        "statModified": "Spell Power: Acid",
         "bonus": "Insight"
       }
     ],
@@ -6634,7 +6632,7 @@
     "enchantments": [
       {
         "name": "Passive: Insight bonus to Positive Spell Power",
-        "statModified": "Positive Spell Power",
+        "statModified": "Spell Power: Positive Energy",
         "bonus": "Insight"
       }
     ],
@@ -6954,7 +6952,7 @@
     "enchantments": [
       {
         "name": "% Insight bonus to Dodge",
-        "statModified": "Dodge",
+        "statModified": "Dodge Chance",
         "bonus": "Insight"
       }
     ],
@@ -7061,7 +7059,7 @@
     "enchantments": [
       {
         "name": "Insight bonus to DC of Enchantment Spells",
-        "statModified": "Enchantment DC",
+        "statModified": "Spell DC: Enchantment",
         "bonus": "Insight"
       }
     ],
@@ -7165,7 +7163,7 @@
     "enchantments": [
       {
         "name": "Insight bonus to DC of Evocation Spells",
-        "statModified": "Evocation DC",
+        "statModified": "Spell DC: Evocation",
         "bonus": "Insight"
       }
     ],
@@ -7327,7 +7325,7 @@
     "enchantments": [
       {
         "name": "Passive: Insight bonus to Cold Spell Power",
-        "statModified": "Cold Spell Power",
+        "statModified": "Spell Power: Cold",
         "bonus": "Insight"
       }
     ],
@@ -7538,7 +7536,7 @@
     "enchantments": [
       {
         "name": "Insight bonus to DC of Illusion Spells",
-        "statModified": "Illusion DC",
+        "statModified": "Spell DC: Illusion",
         "bonus": "Insight"
       }
     ],
@@ -7642,7 +7640,7 @@
     "enchantments": [
       {
         "name": "Passive: Insight bonus to Force Spell Power",
-        "statModified": "Force Spell Power",
+        "statModified": "Spell Power: Force",
         "bonus": "Insight"
       }
     ],
@@ -8170,7 +8168,7 @@
     "enchantments": [
       {
         "name": "Insight bonus to DC of Necromancy Spells",
-        "statModified": "Necromancy DC",
+        "statModified": "Spell DC: Necromancy",
         "bonus": "Insight"
       }
     ],
@@ -8277,7 +8275,7 @@
     "enchantments": [
       {
         "name": "Passive: Insight bonus to Negative Spell Power",
-        "statModified": "Negative Spell Power",
+        "statModified": "Spell Power: Negative Energy",
         "bonus": "Insight"
       }
     ],
@@ -8603,7 +8601,7 @@
     "enchantments": [
       {
         "name": "Passive: Insight bonus to Light Spell Power",
-        "statModified": "Light Spell Power",
+        "statModified": "Spell Power: Light",
         "bonus": "Insight"
       }
     ],
@@ -8657,8 +8655,13 @@
     "name": "Insightful Reconstruction",
     "enchantments": [
       {
-        "name": "Passive: Insight bonus to Repair &amp; Rust Spell Power",
-        "statModified": "Repair &amp; Rust Spell Power",
+        "name": "Passive: Insight bonus to Repair Spell Power",
+        "statModified": "Spell Power: Repair",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Passive: Insight bonus to Rust Spell Power",
+        "statModified": "Spell Power: Rust",
         "bonus": "Insight"
       }
     ],
@@ -8765,7 +8768,7 @@
     "enchantments": [
       {
         "name": "Passive: Insight bonus to Sonic Spell Power",
-        "statModified": "Sonic Spell Power",
+        "statModified": "Spell Power: Sonic",
         "bonus": "Insight"
       }
     ],
@@ -8924,7 +8927,7 @@
     "enchantments": [
       {
         "name": "Insight bonus to DC of character's Sunder attempts",
-        "statModified": "Sunder",
+        "statModified": "Tactical DC: Sunder",
         "bonus": "Insight"
       }
     ],
@@ -9346,7 +9349,7 @@
     "enchantments": [
       {
         "name": "Insight bonus to DC of character's Stunning Blow and Stunning Fist attempts",
-        "statModified": ["Stunning Blow", "Stunning Fist"],
+        "statModified": ["Tactical DC: Stunning"],
         "bonus": "Insight"
       }
     ],
@@ -9502,7 +9505,7 @@
     "enchantments": [
       {
         "name": "Insight bonus to DC of Transmutation Spells",
-        "statModified": "Transmutation DC",
+        "statModified": "Spell DC: Transmutation",
         "bonus": "Insight"
       }
     ],
@@ -9606,7 +9609,7 @@
     "enchantments": [
       {
         "name": "Insight bonus to DC of character's Trip and Improved Trip attampts",
-        "statModified": ["Trip", "Improved Trip"],
+        "statModified": ["Tactical DC: Trip", "Tactical DC: Improved Trip"],
         "bonus": "Insight"
       }
     ],
@@ -10398,7 +10401,7 @@
     "enchantments": [
       {
         "name": "Equipment bonus to Light Spells chance to Critical Hit",
-        "statModified": "Spell Critical Chance (Light)",
+        "statModified": "Spell Critical Chance: Light",
         "bonus": "Equipment"
       }
     ],
@@ -10563,7 +10566,7 @@
     "enchantments": [
       {
         "name": "Passive: Equipment bonus to Electric Spell Power",
-        "statModified": "Electric Spell Power",
+        "statModified": "Spell Power: Electric",
         "bonus": "Equipment"
       }
     ],
@@ -10923,7 +10926,7 @@
     "enchantments": [
       {
         "name": "Equipment bonus to DC of Necromancy Spells",
-        "statModified": "Necromancy DC",
+        "statModified": "Spell DC: Necromancy",
         "bonus": "Equipment"
       }
     ],
@@ -11117,7 +11120,7 @@
     "enchantments": [
       {
         "name": "Equipment bonus to Negative Spells chance to Critical Hit",
-        "statModified": "Spell Critical Chance (Negative)",
+        "statModified": "Spell Critical Chance: Negative Energy",
         "bonus": "Equipment"
       }
     ],
@@ -11227,7 +11230,7 @@
     "enchantments": [
       {
         "name": "Passive: Equipment bonus to Negative Spell Power",
-        "statModified": "Negative Spell Power",
+        "statModified": "Spell Power: Negative Energy",
         "bonus": "Equipment"
       }
     ],
@@ -12045,7 +12048,7 @@
     "enchantments": [
       {
         "name": "Equipment bonus to Positive Spells chance to Critical Hit",
-        "statModified": "Spell Critical Chance (Positive)",
+        "statModified": "Spell Critical Chance: Positive Energy",
         "bonus": "Equipment"
       }
     ],
@@ -12100,7 +12103,7 @@
     "enchantments": [
       {
         "name": "Passive: Equipment bonus to each Spell Power",
-        "statModified": "Universal Spell Power",
+        "statModified": "Spell Power: Universal",
         "bonus": "Equipment"
       }
     ],
@@ -12209,7 +12212,7 @@
     "enchantments": [
       {
         "name": "Passive: Equipment bonus to Light Spell Power",
-        "statModified": "Light Spell Power",
+        "statModified": "Spell Power: Light",
         "bonus": "Equipment"
       }
     ],
@@ -12314,8 +12317,13 @@
     "name": "Reconstruction",
     "enchantments": [
       {
-        "name": "Passive: Equipment bonus to Repair &amp; Rust Spell Power",
-        "statModified": "Repair &amp; Rust Spell Power",
+        "name": "Passive: Equipment bonus to Repair Spell Power",
+        "statModified": "Spell Power: Repair",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Passive: Equipment bonus to Rust Spell Power",
+        "statModified": "Spell Power: Rust",
         "bonus": "Equipment"
       }
     ],
@@ -12585,8 +12593,13 @@
     "name": "Repair Lore",
     "enchantments": [
       {
-        "name": "Equipment bonus to Repair &amp; Rust Spells chance to Critical Hit",
-        "statModified": "Spell Critical Chance (Repair &amp; Rust)",
+        "name": "Equipment bonus to Repair Spells chance to Critical Hit",
+        "statModified": "Spell Critical Chance: Repair",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Equipment bonus to Rust Spells chance to Critical Hit",
+        "statModified": "Spell Critical Chance: Rust",
         "bonus": "Equipment"
       }
     ],
@@ -12782,7 +12795,7 @@
     "enchantments": [
       {
         "name": "Passive: Equipment bonus to Sonic Spell Power",
-        "statModified": "Sonic Spell Power",
+        "statModified": "Spell Power: Sonic",
         "bonus": "Equipment"
       }
     ],
@@ -13031,7 +13044,7 @@
     "enchantments": [
       {
         "name": "Enhancement bonus to DC of character's Sunder attempts",
-        "statModified": "Sunder",
+        "statModified": "Tactical DC: Sunder",
         "bonus": "Enhancement"
       }
     ],
@@ -13647,7 +13660,7 @@
     "enchantments": [
       {
         "name": "Equipment bonus to Sonic Spells chance to Critical Hit",
-        "statModified": "Spell Critical Chance (Sonic)",
+        "statModified": "Spell Critical Chance: Sonic",
         "bonus": "Equipment"
       }
     ],
@@ -14291,7 +14304,7 @@
     "enchantments": [
       {
         "name": "Enhancement bonus to DC of character's Stunning Blow and Stunning Fist attempts",
-        "statModified": ["Stunning Blow", "Stunning Fist"],
+        "statModified": ["Tactical DC: Stunning"],
         "bonus": "Enhancement"
       }
     ],
@@ -14455,7 +14468,7 @@
     "enchantments": [
       {
         "name": "Equipment bonus to DC of Transmutation Spells",
-        "statModified": "Transmutation DC",
+        "statModified": "Spell DC: Transmutation",
         "bonus": "Equipment"
       }
     ],
@@ -15169,8 +15182,8 @@
     "name": "Vertigo",
     "enchantments": [
       {
-        "name": "Enhancement bonus to DC of character's Trip and Improved Trip attampts",
-        "statModified": ["Trip", "Improved Trip"],
+        "name": "Enhancement bonus to DC of character's Trip and Improved Trip attempts",
+        "statModified": ["Tactical DC: Trip", "Tactical DC: Improved Trip"],
         "bonus": "Enhancement"
       }
     ],
@@ -15312,7 +15325,7 @@
     "name": "Watchful [Combined] (Dodge & Heightened Awareness)",
     "enchantments": [
       {
-        "name": "Dodge"
+        "name": "Dodge Chance"
       },
       {
         "name": "Heightened Awareness"

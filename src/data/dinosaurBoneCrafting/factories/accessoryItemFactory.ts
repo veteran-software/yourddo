@@ -1,5 +1,5 @@
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { clothingList, jewelryList } from '../../basics/armor.ts'
+import { clothing, jewelry } from '../../basics/accessories.ts'
 import { findSetBonus } from '../../setBonuses.ts'
 
 const clothingItemFactory = (name: string, itemType: string): CraftingIngredient => ({
@@ -46,13 +46,14 @@ const jewelryItemFactory = (name: string, itemType: string): CraftingIngredient 
 }
 
 export const dinosaurBoneAccessoryItems: Record<string, (CraftingIngredient | undefined)[]> = {
-  Clothing: [...clothingList.map((name: string, idx: number) => clothingItemFactory(name, clothingList[idx]))],
+  Clothing: [...clothing.values().map((name: string) => clothingItemFactory(name, name))],
   Jewelry: [
-    ...jewelryList
-      .map((name: string, idx: number) => {
+    ...jewelry
+      .values()
+      .map((name: string) => {
         if (name === 'Goggles' || name === 'Trinket') return
 
-        return jewelryItemFactory(name, jewelryList[idx])
+        return jewelryItemFactory(name, name)
       })
       .filter((item): item is CraftingIngredient => item !== undefined)
   ]
