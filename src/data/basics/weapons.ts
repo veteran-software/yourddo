@@ -1,4 +1,4 @@
-export const meleeWeapons: string[] = [
+export const meleeWeapons = new Set([
   'Bastard Sword',
   'Battle Axe',
   'Club',
@@ -27,9 +27,9 @@ export const meleeWeapons: string[] = [
   'Shortsword',
   'Sickle',
   'Warhammer'
-]
+])
 
-export const rangedWeapons: string[] = [
+export const rangedWeapons = new Set([
   'Great Crossbow',
   'Heavy Crossbow',
   'Light Crossbow',
@@ -37,6 +37,6 @@ export const rangedWeapons: string[] = [
   'Repeating Light Crossbow',
   'Repeating Heavy Crossbow',
   'Shortbow'
-]
+])
 
-export const throwingWeapons: string[] = ['Dart', 'Shuriken', 'Throwing Axe', 'Throwing Hammer', 'Throwing Dagger']
+export const throwingWeapons = new Set(['Dart', 'Shuriken', 'Throwing Axe', 'Throwing Hammer', 'Throwing Dagger'])

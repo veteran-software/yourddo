@@ -897,7 +897,7 @@ export const legendaryAltarOfSubjugation: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 2, PDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power',
+        name: 'Spell Power: Positive Energy',
         modifier: 37,
         bonus: 'Quality'
       }

@@ -1,5 +1,5 @@
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { armorList } from '../../basics/armor.ts'
+import { armor } from '../../basics/armor.ts'
 
 const armorItemFactory = (name: string, itemType: string): CraftingIngredient => {
   let dinosaurWhat = `Dinosaur Bone ${name}`
@@ -48,5 +48,5 @@ const armorItemFactory = (name: string, itemType: string): CraftingIngredient =>
 const armorNamesToTypes = ['Docent', 'Plate', 'Mail', 'Armor', 'Outfit', 'Robe'] as const
 
 export const dinosaurBoneArmorItems: Record<string, CraftingIngredient[]> = {
-  Armor: [...armorList.map((name: string, idx: number) => armorItemFactory(armorNamesToTypes[idx], name))]
+  Armor: [...armor.values().map((name: string, idx: number) => armorItemFactory(armorNamesToTypes[idx], name))]
 }

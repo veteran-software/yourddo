@@ -1,5 +1,8 @@
 import type { Binding, Enhancement } from '../../types/core.ts'
 import type { Augment, CraftingIngredient } from '../../types/crafting.ts'
+import { clothing, jewelry } from '../basics/accessories.ts'
+import { shields } from '../basics/armor.ts'
+import { meleeWeapons, rangedWeapons, throwingWeapons } from '../basics/weapons.ts'
 import rawItems from '../loot/update75.json'
 
 interface U75Item {
@@ -27,59 +30,6 @@ interface U75Item {
   }[]
   dropLocationRaw?: string
 }
-
-// Helpers to categorize items similar to existing static data
-const jewelryTypes = new Set(['Goggles', 'Necklace', 'Trinket', 'Ring', 'Bracers'])
-
-const clothingTypes = new Set(['Belt', 'Boots', 'Gloves', 'Helm', 'Helmet', 'Cloak'])
-
-const shieldTypes = new Set(['Small Shield', 'Large Shield', 'Orb', 'Buckler', 'Tower Shield'])
-
-const meleeWeaponTypes = new Set([
-  'Bastard Sword',
-  'Battle Axe',
-  'Club',
-  'Dagger',
-  'Dwarven War Axe',
-  'Falchion',
-  'Great Axe',
-  'Great Club',
-  'Great Sword',
-  'Handaxe',
-  'Handwraps',
-  'Heavy Mace',
-  'Heavy Pick',
-  'Kama',
-  'Khopesh',
-  'Kukri',
-  'Light Hammer',
-  'Light Mace',
-  'Light Pick',
-  'Long Sword',
-  'Maul',
-  'Morningstar',
-  'Quarterstaff',
-  'Rapier',
-  'Scimitar',
-  'Short Sword',
-  'Sickle',
-  'War Hammer'
-])
-
-const rangedWeaponTypes = new Set([
-  'Longbow',
-  'Long Bow',
-  'Shortbow',
-  'Short Bow',
-  'Great Crossbow',
-  'Light Crossbow',
-  'Heavy Crossbow',
-  'Repeating Heavy Crossbow',
-  'Repeating Light Crossbow',
-  'Rune Arm'
-])
-
-const throwingWeaponTypes = new Set(['Throwing Axe', 'Throwing Dagger', 'Throwing Hammer', 'Dart', 'Shuriken'])
 
 const toAugmentObject = (augments?: string[]): Augment[] | undefined => {
   if (!augments?.length) return undefined
@@ -119,32 +69,37 @@ const toAugmentObject = (augments?: string[]): Augment[] | undefined => {
   return [a as Augment]
 }
 
+const mapItemIsJewelrySubType = (it: U75Item) => {
+  // Normalize subtype: both "Helmet" and "Helm" map to "Helm"
+  if (it.type === 'Helmet' || it.type === 'Helm') {
+    return 'Helm'
+  } else {
+    return it.type
+  }
+}
+
 const mapItem = (it: U75Item): CraftingIngredient => {
   const minLvl = Number(it.minLevel || '0')
   let type: string | undefined
   let subType: string | undefined
 
-  if (jewelryTypes.has(it.type)) {
+  if (jewelry.has(it.type)) {
     type = 'Jewelry'
     // Normalize subtype: both "Helmet" and "Helm" map to "Helm"
-    if (it.type === 'Helmet' || it.type === 'Helm') {
-      subType = 'Helm'
-    } else {
-      subType = it.type
-    }
-  } else if (clothingTypes.has(it.type)) {
+    subType = mapItemIsJewelrySubType(it)
+  } else if (clothing.has(it.type)) {
     type = 'Clothing'
     subType = it.type
-  } else if (shieldTypes.has(it.type)) {
+  } else if (shields.has(it.type)) {
     type = 'Shield'
     subType = it.type
-  } else if (meleeWeaponTypes.has(it.type)) {
+  } else if (meleeWeapons.has(it.type)) {
     type = 'Melee'
     subType = it.type
-  } else if (rangedWeaponTypes.has(it.type)) {
+  } else if (rangedWeapons.has(it.type)) {
     type = 'Ranged'
     subType = it.type
-  } else if (throwingWeaponTypes.has(it.type)) {
+  } else if (throwingWeapons.has(it.type)) {
     type = 'Throwing'
     subType = it.type
   } else {
@@ -158,37 +113,68 @@ const mapItem = (it: U75Item): CraftingIngredient => {
     }
   }
 
+  const noDropLocation = (it: U75Item) => {
+    const firstDl = it.dropLocations?.[0]
+
+    if (!firstDl) {
+      return { foundIn: undefined, requirements: undefined }
+    }
+
+    const locName = firstDl.questWildernessChain ?? undefined
+    const diff = firstDl.difficulty ? ` (${firstDl.difficulty})` : ''
+
+    return { foundIn: locName ? [`${locName}${diff}`] : undefined, requirements: undefined }
+  }
+
   // Found in & Requirements
   const { foundIn, requirements } = (() => {
-    const dl = it.dropLocations?.find((l) => l.sourceType === 'Viktranium Crafting')
-    if (!dl) {
-      const firstDl = it.dropLocations?.[0]
-      if (!firstDl) return { foundIn: undefined, requirements: undefined }
-      const locName = firstDl.questWildernessChain ?? undefined
-      const diff = firstDl.difficulty ? ` (${firstDl.difficulty})` : ''
-      return { foundIn: locName ? [`${locName}${diff}`] : undefined, requirements: undefined }
+    const dropLocation = it.dropLocations?.find((l) => l.sourceType === 'Viktranium Crafting')
+
+    if (!dropLocation) {
+      return noDropLocation(it)
     }
 
     const reqs: { name: string; quantity: number }[] = []
-    if (dl.legendaryBleakMementos)
-      reqs.push({ name: 'Legendary Bleak Memento', quantity: Number(dl.legendaryBleakMementos) })
-    if (dl.bleakConductors) reqs.push({ name: 'Bleak Conductor', quantity: Number(dl.bleakConductors) })
-    if (dl.bleakInsulators) reqs.push({ name: 'Bleak Insulator', quantity: Number(dl.bleakInsulators) })
-    if (dl.bleakAlternators) reqs.push({ name: 'Bleak Alternator', quantity: Number(dl.bleakAlternators) })
-    if (dl.bleakResistors) reqs.push({ name: 'Bleak Resistor', quantity: Number(dl.bleakResistors) })
+    if (dropLocation.legendaryBleakMementos) {
+      reqs.push({ name: 'Legendary Bleak Memento', quantity: Number(dropLocation.legendaryBleakMementos) })
+    }
 
-    if (dl.legendaryBleakAlternator)
-      reqs.push({ name: 'Legendary Bleak Alternator', quantity: Number(dl.legendaryBleakAlternator) })
-    if (dl.legendaryBleakResistor)
-      reqs.push({ name: 'Legendary Bleak Resistor', quantity: Number(dl.legendaryBleakResistor) })
-    if (dl.legendaryBleakInsulator)
-      reqs.push({ name: 'Legendary Bleak Insulator', quantity: Number(dl.legendaryBleakInsulator) })
-    if (dl.legendaryBleakConductor)
-      reqs.push({ name: 'Legendary Bleak Conductor', quantity: Number(dl.legendaryBleakConductor) })
+    if (dropLocation.bleakConductors) {
+      reqs.push({ name: 'Bleak Conductor', quantity: Number(dropLocation.bleakConductors) })
+    }
+
+    if (dropLocation.bleakInsulators) {
+      reqs.push({ name: 'Bleak Insulator', quantity: Number(dropLocation.bleakInsulators) })
+    }
+
+    if (dropLocation.bleakAlternators) {
+      reqs.push({ name: 'Bleak Alternator', quantity: Number(dropLocation.bleakAlternators) })
+    }
+
+    if (dropLocation.bleakResistors) {
+      reqs.push({ name: 'Bleak Resistor', quantity: Number(dropLocation.bleakResistors) })
+    }
+
+    if (dropLocation.legendaryBleakAlternator) {
+      reqs.push({ name: 'Legendary Bleak Alternator', quantity: Number(dropLocation.legendaryBleakAlternator) })
+    }
+
+    if (dropLocation.legendaryBleakResistor) {
+      reqs.push({ name: 'Legendary Bleak Resistor', quantity: Number(dropLocation.legendaryBleakResistor) })
+    }
+
+    if (dropLocation.legendaryBleakInsulator) {
+      reqs.push({ name: 'Legendary Bleak Insulator', quantity: Number(dropLocation.legendaryBleakInsulator) })
+    }
+
+    if (dropLocation.legendaryBleakConductor) {
+      reqs.push({ name: 'Legendary Bleak Conductor', quantity: Number(dropLocation.legendaryBleakConductor) })
+    }
 
     if (it.dropLocationRaw?.includes('|Wicked|')) {
       return { foundIn: ['Wicked Viktranium Experiment Crafting'], requirements: reqs }
     }
+
     return { foundIn: ['Viktranium Crafting'], requirements: reqs }
   })()
 

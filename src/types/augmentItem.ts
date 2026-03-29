@@ -14,4 +14,5 @@ export interface AugmentItem extends Ingredient {
   effectsRemoved?: Partial<Enhancement>[]
   setBonus?: SetBonus[]
   requirements?: CraftingIngredient[]
+  update?: number
 }

@@ -1,12 +1,7 @@
-export const BASIC_ELEMENTS: string[] = ['Air', 'Earth', 'Fire', 'Water', 'Positive', 'Negative']
+export const BASIC_ELEMENTS: string[] = ['Air', 'Earth', 'Fire', 'Water', 'Positive Energy', 'Negative Energy']
 
 export const FOCI: string[] = [
-  'Air',
-  'Earth',
-  'Fire',
-  'Water',
-  'Positive Energy',
-  'Negative Energy',
+  ...BASIC_ELEMENTS,
   'Ash',
   'Dust',
   'Ice',

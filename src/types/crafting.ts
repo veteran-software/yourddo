@@ -38,6 +38,11 @@ export interface Augment {
   blue?: string | null
   colorless?: string | null
   green?: string | null
+  orange?: string | null
+  purple?: string | null
+  red?: string | null
+  yellow?: string | null
+
   isleOfDreadClawAccessory?: string | null
   isleOfDreadClawWeapon?: string | null
   isleOfDreadFangAccessory?: string | null
@@ -49,6 +54,7 @@ export interface Augment {
   isleOfDreadScaleArmor?: string | null
   isleOfDreadScaleWeapon?: string | null
   isleOfDreadSetBonus?: string | null
+
   lamordiaMelancholicWeapon?: string | null
   lamordiaDolorousWeapon?: string | null
   lamordiaMiserableWeapon?: string | null // spell powers
@@ -59,10 +65,7 @@ export interface Augment {
   lamordiaWoefulAccessory?: string | null
   lamordiaMelancholicArmor?: string | null
   lamordiaDolorousArmor?: string | null
+
   moon?: string | null
-  orange?: string | null
-  purple?: string | null
-  red?: string | null
   sun?: string | null
-  yellow?: string | null
 }

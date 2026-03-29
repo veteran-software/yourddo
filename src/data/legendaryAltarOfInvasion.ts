@@ -897,7 +897,7 @@ export const legendaryAltarOfInvasion: CraftingIngredient[] = [
     title: 'Green Steel Augment (Weapon, Tier 1, PDE)',
     effectsAdded: [
       {
-        name: 'Positive Spell Power',
+        name: 'Spell Power: Positive Energy',
         modifier: 139,
         bonus: 'Equipment'
       }
