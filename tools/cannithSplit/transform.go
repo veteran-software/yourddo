@@ -171,6 +171,10 @@ func applyMinLevelIncrease(effectTiers *EffectTiers, minLevelIncrease any) {
 		return
 	}
 
+	processMinimumLevelType(effectTiers, minLevelIncrease)
+}
+
+func processMinimumLevelType(effectTiers *EffectTiers, minLevelIncrease any) {
 	switch t := minLevelIncrease.(type) {
 	case float64, int, string:
 		val := intFromAny(t)
@@ -286,60 +290,7 @@ func transform(raw []RawEnhancement) (
 	display := make([]EffectDisplay, 0, len(raw))
 	plannerEntries := make([]PlannerEntry, 0)
 
-	for _, r := range raw {
-		if strings.TrimSpace(r.Name) == "" {
-			continue
-		}
-
-		effectID := slugify(r.Name)
-
-		effects = append(effects, EffectDefinition{
-			ID:    effectID,
-			Name:  r.Name,
-			Group: normalizeGroup(r.Group),
-		})
-
-		for _, ench := range r.Enchantments {
-			if strings.TrimSpace(ench.Name) == "" {
-				continue
-			}
-			enchantments = append(enchantments, EffectEnchantment{
-				EffectID: effectID,
-				Name:     ench.Name,
-				Bonus:    normalizeBonus(ench.Bonus),
-			})
-		}
-
-		placements = append(placements, EffectPlacement{
-			EffectID:    effectID,
-			PrefixSlots: uniqueSortedNormalized(r.Prefix),
-			SuffixSlots: uniqueSortedNormalized(r.Suffix),
-			ExtraSlots:  uniqueSortedNormalized(r.Extra),
-		})
-
-		effectTiers := buildEffectTiers(r, effectID)
-		if len(effectTiers.Tiers) > 0 {
-			tiers = append(tiers, effectTiers)
-		}
-
-		if r.Bound != nil || r.Unbound != nil {
-			recipes = append(recipes, EffectRecipe{
-				EffectID: effectID,
-				Bound:    r.Bound,
-				Unbound:  r.Unbound,
-			})
-		}
-
-		if r.PrefixTitle != "" || r.SuffixTitle != "" {
-			display = append(display, EffectDisplay{
-				EffectID:    effectID,
-				PrefixTitle: r.PrefixTitle,
-				SuffixTitle: r.SuffixTitle,
-			})
-		}
-
-		plannerEntries = append(plannerEntries, buildPlannerEntries(r, effectID)...)
-	}
+	effects, enchantments, placements, tiers, recipes, display, plannerEntries = processRawEnchantments(raw)
 
 	sort.Slice(effects, func(i, j int) bool {
 		return effects[i].ID < effects[j].ID
@@ -376,4 +327,75 @@ func transform(raw []RawEnhancement) (
 	})
 
 	return effects, enchantments, placements, tiers, recipes, display, plannerEntries
+}
+
+func processRawEnchantments(raw []RawEnhancement) ([]EffectDefinition, []EffectEnchantment, []EffectPlacement, []EffectTiers, []EffectRecipe, []EffectDisplay, []PlannerEntry) {
+	effects := make([]EffectDefinition, 0, len(raw))
+	enchantments := make([]EffectEnchantment, 0)
+	placements := make([]EffectPlacement, 0, len(raw))
+	tiers := make([]EffectTiers, 0, len(raw))
+	recipes := make([]EffectRecipe, 0, len(raw))
+	display := make([]EffectDisplay, 0, len(raw))
+	plannerEntries := make([]PlannerEntry, 0)
+
+	for _, r := range raw {
+		if strings.TrimSpace(r.Name) == "" {
+			continue
+		}
+
+		effectID := slugify(r.Name)
+
+		effects = append(effects, EffectDefinition{
+			ID:    effectID,
+			Name:  r.Name,
+			Group: normalizeGroup(r.Group),
+		})
+
+		enchantments = processEnchantments(r, enchantments, effectID)
+
+		placements = append(placements, EffectPlacement{
+			EffectID:    effectID,
+			PrefixSlots: uniqueSortedNormalized(r.Prefix),
+			SuffixSlots: uniqueSortedNormalized(r.Suffix),
+			ExtraSlots:  uniqueSortedNormalized(r.Extra),
+		})
+
+		effectTiers := buildEffectTiers(r, effectID)
+		if len(effectTiers.Tiers) > 0 {
+			tiers = append(tiers, effectTiers)
+		}
+
+		if r.Bound != nil || r.Unbound != nil {
+			recipes = append(recipes, EffectRecipe{
+				EffectID: effectID,
+				Bound:    r.Bound,
+				Unbound:  r.Unbound,
+			})
+		}
+
+		if r.PrefixTitle != "" || r.SuffixTitle != "" {
+			display = append(display, EffectDisplay{
+				EffectID:    effectID,
+				PrefixTitle: r.PrefixTitle,
+				SuffixTitle: r.SuffixTitle,
+			})
+		}
+
+		plannerEntries = append(plannerEntries, buildPlannerEntries(r, effectID)...)
+	}
+	return effects, enchantments, placements, tiers, recipes, display, plannerEntries
+}
+
+func processEnchantments(r RawEnhancement, enchantments []EffectEnchantment, effectID string) []EffectEnchantment {
+	for _, ench := range r.Enchantments {
+		if strings.TrimSpace(ench.Name) == "" {
+			continue
+		}
+		enchantments = append(enchantments, EffectEnchantment{
+			EffectID: effectID,
+			Name:     ench.Name,
+			Bonus:    normalizeBonus(ench.Bonus),
+		})
+	}
+	return enchantments
 }
