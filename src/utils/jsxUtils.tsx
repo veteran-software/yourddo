@@ -1,22 +1,10 @@
-import { CloseButton, Container, OverlayTrigger, Popover, Stack } from 'react-bootstrap'
-import type { OverlayInjectedProps } from 'react-bootstrap/OverlayTrigger'
+import { Container, OverlayTrigger, Stack } from 'react-bootstrap'
+
+import OverlayWrapper from '../components/common/OwnedIngredientsOverlay.tsx'
 import type { ItemRollup, Location } from '../components/trove/types.ts'
 import type { Ingredient } from '../types/ingredients.ts'
 import { formatNumber } from './objectUtils.ts'
-import { normItem } from './troveUtils.ts'
-
-// convert common plural collectible names to singular for consistent Trove keys
-export const toSingularName = (materialName: string): string => {
-  const raw = (materialName || '').trim()
-  if (!raw) return raw
-  const lower = raw.toLowerCase()
-  if (lower === 'cannith essences') return 'Cannith Essence'
-  if (lower === 'purified eberron dragonshard fragments') return 'Purified Eberron Dragonshard Fragment'
-  if (/[^aeiou]ies$/i.test(raw)) return raw.replace(/ies$/i, 'y')
-  if (/(ches|shes|xes|zes|ses)$/i.test(raw)) return raw.replace(/es$/i, '')
-  if (/(^.*[^s])s$/i.test(raw)) return raw.replace(/s$/i, '')
-  return raw
-}
+import { normItem, toSingularName } from './troveUtils.ts'
 
 // ----- Extracted helpers to reduce cognitive complexity in getOwnedIngredients -----
 interface CharacterEntry {
@@ -96,56 +84,6 @@ const buildPopover = (
   entries: CharacterEntry[],
   troveBinding?: string
 ): React.JSX.Element => <OverlayWrapper id={id} ingredient={ingredient} entries={entries} troveBinding={troveBinding} />
-
-const OverlayWrapper = (
-  props: {
-    id: string
-    ingredient: Ingredient
-    entries: CharacterEntry[]
-    troveBinding?: string
-  } & Partial<OverlayInjectedProps>
-) => {
-  const { id, ingredient, entries, troveBinding, ...popper } = props
-  return (
-    <Popover id={`ing-${id}`} className='m-0 p-0' {...popper}>
-      <Popover.Header
-        as='h3'
-        className='d-flex align-items-center justify-content-between py-1 px-2'
-        style={{ fontSize: '1rem' }}
-      >
-        <div className='flex-grow-1 text-center'>{ingredient.name}</div>
-        <CloseButton
-          className='ms-2'
-          onClick={() => {
-            if ('hide' in props && typeof props.hide === 'function') {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-              props.hide()
-            }
-          }}
-        />
-      </Popover.Header>
-      <Popover.Body className='ps-1' style={{ maxHeight: '300px', overflowY: 'auto' }}>
-        {renderBindingNode(ingredient, troveBinding)}
-        <ul className='mb-0'>
-          {entries.map(({ character, locations }) => {
-            const filteredLocations = Object.entries(locations)
-              .filter(([, qty]) => qty > 0)
-              .map(([loc]) => loc)
-            const location = filteredLocations.join(', ')
-            const qty = Object.values(locations).reduce((sum, q) => sum + q, 0)
-            if (qty === 0) return null
-            return (
-              <li key={character}>
-                {character === '-' ? location : character} {character === '-' ? '' : `(${location})`}:{' '}
-                {formatNumber(qty)}
-              </li>
-            )
-          })}
-        </ul>
-      </Popover.Body>
-    </Popover>
-  )
-}
 
 export const getOwnedIngredients = (
   ingredient: Ingredient | undefined,
