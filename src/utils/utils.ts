@@ -91,3 +91,21 @@ export const getCumulativeIngredients = (
 
   return accumulator
 }
+
+/**
+ * Extract the subdomain from the current hostname.
+ *
+ * @returns {string} - The extracted subdomain or 'No subdomain' if none found.
+ */
+export const getSubdomain = (): string => {
+  const fullHostname = window.location.hostname
+  const hostnameParts = fullHostname.split('.')
+
+  if (hostnameParts.length > 2) {
+    return hostnameParts[0]
+  } else if (hostnameParts.length === 2 && hostnameParts[0] !== 'www') {
+    return hostnameParts[0]
+  } else {
+    return 'No subdomain'
+  }
+}
