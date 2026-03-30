@@ -4,7 +4,8 @@ import OverlayWrapper from '../components/common/OwnedIngredientsOverlay.tsx'
 import type { ItemRollup, Location } from '../components/trove/types.ts'
 import type { Ingredient } from '../types/ingredients.ts'
 import { formatNumber } from './objectUtils.ts'
-import { normItem, toSingularName } from './troveUtils.ts'
+import { toSingularName } from './stringUtils.ts'
+import { normItem } from './troveUtils.ts'
 
 // ----- Extracted helpers to reduce cognitive complexity in getOwnedIngredients -----
 interface CharacterEntry {

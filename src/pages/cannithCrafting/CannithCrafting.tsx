@@ -25,7 +25,8 @@ import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { findAugmentsForSlot } from '../../utils/augmentUtils.ts'
-import { getOwnedIngredients, toSingularName } from '../../utils/jsxUtils.tsx'
+import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
+import { toSingularName } from '../../utils/stringUtils.ts'
 import {
   buildPermalinkUrl,
   encodeCannithPermalink,
