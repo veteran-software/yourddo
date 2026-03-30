@@ -7,9 +7,7 @@ const App = () => {
   const troveData = getStoredTroveData()
 
   useEffect(() => {
-    if (troveData) {
-      console.log('Trove Data:', troveData)
-    }
+    // Perform any initialization logic here
   }, [troveData])
 
   return <PageRoutes />

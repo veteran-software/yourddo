@@ -118,6 +118,7 @@ const OverlayWrapper = (
           className='ms-2'
           onClick={() => {
             if ('hide' in props && typeof props.hide === 'function') {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-call
               props.hide()
             }
           }}
