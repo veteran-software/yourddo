@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build:data:cannith": "cd tools/cannithSplit && go run . ../../src/data/cannithCrafting/cannithEnhancements.phase1.json ../../src/data/cannithCrafting/runtime",
+    "prebuild": "go run ./tools/cannithSplit/main.go ./tools/cannithSplit/transform.go ./tools/cannithSplit/types.go ./tools/cannithSplit/indexes.go src/data/cannithCrafting/cannithEnhancements.phase1.json src/data/cannithCrafting/runtime",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
