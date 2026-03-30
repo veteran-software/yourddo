@@ -40,7 +40,7 @@ const Mastermind: React.FC = () => {
       <Card.Header className='text-center p-1'>
         <Card.Title>
           <h4 className='mb-0'>Mastermind Solver</h4>
-          <small>The Reaver's Fate | The Key to the Mythal</small>
+          <small>The Reaver&apos;s Fate | The Key to the Mythal</small>
         </Card.Title>
         <small>
           <a
