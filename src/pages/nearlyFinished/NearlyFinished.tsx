@@ -138,6 +138,7 @@ const TotalsList = memo(
     )
   }
 )
+TotalsList.displayName = 'TotalsList'
 
 const NearlyFinished = () => {
   const data = recipes as NearlyFinishedData

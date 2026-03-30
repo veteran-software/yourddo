@@ -17,15 +17,19 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown
+  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
+import type {
+  ShoppingListTotals
+} from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { findAugmentsForSlot } from '../../utils/augmentUtils.ts'
-import { getOwnedIngredients, toSingularName } from '../../utils/jsxUtils.tsx'
+import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
+import { toSingularName } from '../../utils/stringUtils.ts'
 import {
   buildPermalinkUrl,
   encodeCannithPermalink,
@@ -164,7 +168,7 @@ const CannithCrafting = () => {
         const data = v2.data
         setItems(sanitizeAugmentsOnItems(data))
         setActiveKeys(data.activeKeys)
-        setMasterMinLevel(typeof data.masterMinLevel === 'number' ? data.masterMinLevel : 1)
+        setMasterMinLevel(data.masterMinLevel ?? 1)
         setCollapsedKeys(Array.isArray(data.collapsedKeys) ? data.collapsedKeys : [])
         Promise.resolve(removeCcFromUrl(navigate, location, source)).catch(console.error)
         return true

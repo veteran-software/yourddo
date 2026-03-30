@@ -1,0 +1,29 @@
+# Set default behavior to handle all files as text and force LF line endings on check-in.
+* text=auto eol=lf
+
+# Explicitly declare text files you want to always be normalized and converted to native line endings on checkout.
+*.js text
+*.jsx text
+*.ts text
+*.tsx text
+*.json text
+*.scss text
+*.css text
+*.md text
+*.html text
+*.yml text
+*.yaml text
+*.mjs text
+*.xml text
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text
+*.webmanifest text
+
+# Ensure .sh files are always LF even on Windows checkout.
+*.sh text eol=lf

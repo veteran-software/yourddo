@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap'
 const Home = () => (
   <Container>
     <h1 className='text-center'>YourDDO</h1>
-    <h6 className='text-center'>I'm back!</h6>
+    <h6 className='text-center'>I&apos;m back!</h6>
 
     <hr />
 

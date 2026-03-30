@@ -1,54 +1,58 @@
-# React + TypeScript + Vite
+# YourDDO ⚔️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to **YourDDO**, a dedicated online resource and toolkit for *Dungeons & Dragons Online* (DDO) players. This project aims to provide fast, reliable, and easy-to-use tools focused on crafting and character optimization.
 
-Currently, two official plugins are available:
+Built with **React**, **TypeScript**, and **Vite**, YourDDO is designed for performance and a modern user experience on both desktop and mobile.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## Expanding the ESLint configuration
+- 🛠 **Crafting Planners:** Comprehensive tools for Cannith Crafting, Green Steel (Heroic & Legendary), Dinosaur Bone Crafting, and more.
+- 💎 **Augment Management:** Easily plan and track your augment slots and set bonuses.
+- 📜 **Saga Tracker:** Keep track of your saga progress across different characters.
+- 🧩 **Puzzle Solvers:** Built-in solvers for common DDO puzzles like Shroud, Monastery of the Scorpion, and Mastermind.
+- 📊 **Real-time Server Status:** Live updates on DDO game servers availability.
+- 📱 **Mobile Friendly:** Responsive design for quick reference during game sessions.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Getting Started
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Prerequisites
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- [Yarn](https://yarnpkg.com/) (version 4.x is used in this project)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Installation
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // Other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/veteran-software/yourddo.git
+   cd yourddo
+   ```
+
+2. Install dependencies:
+   ```bash
+   yarn install
+   ```
+
+3. Start the development server:
+   ```bash
+   yarn dev
+   ```
+
+4. Build for production:
+   ```bash
+   yarn build
+   ```
+
+## 🤝 Contributing
+
+We welcome contributions from the community! Whether you're fixing a bug, suggesting a feature, or improving documentation, your help is appreciated.
+
+Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started.
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+*YourDDO is not affiliated with Standing Stone Games or Daybreak Game Company.*

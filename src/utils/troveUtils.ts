@@ -1,11 +1,7 @@
 import type { ParseError } from 'papaparse'
 import Papa from 'papaparse'
-import type {
-  ItemRollup,
-  Location,
-  TroveCsvRow
-} from '../components/trove/types.ts'
-import { toSingularName } from './jsxUtils.tsx'
+import type { ItemRollup, Location, TroveCsvRow } from '../components/trove/types.ts'
+import { toSingularName } from './stringUtils.ts'
 
 /**
  * A Set containing predefined location identifiers used within the application.

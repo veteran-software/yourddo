@@ -3,21 +3,9 @@ import { Alert, Container, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 import { useAppSelector } from '../../redux/hooks.ts'
+import { getSubdomain } from '../../utils/utils'
 import Footer from '../footer/Footer.tsx'
 import NavbarTop from '../navbar/NavbarTop.tsx'
-
-const getSubdomain = () => {
-  const fullHostname = window.location.hostname
-  const hostnameParts = fullHostname.split('.')
-
-  if (hostnameParts.length > 2) {
-    return hostnameParts[0]
-  } else if (hostnameParts.length === 2 && hostnameParts[0] !== 'www') {
-    return hostnameParts[0]
-  } else {
-    return 'No subdomain'
-  }
-}
 
 const BaseLayout = () => {
   const [subdomain] = useState(getSubdomain())
