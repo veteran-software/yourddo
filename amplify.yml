@@ -15,7 +15,7 @@ frontend:
         - go version
 
         # generate runtime json before frontend build
-        - yuarn preBuild
+        - yarn preBuild
 
     build:
       commands:
