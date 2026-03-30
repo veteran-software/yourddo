@@ -1,0 +1,38 @@
+name: YourDDO - Build
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Use Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: '24'
+        cache: 'yarn'
+
+    - name: Set up Go
+      uses: actions/setup-go@v6
+      with:
+        go-version: '1.26'
+        cache-dependency-path: tools/cannithSplit/go.mod
+
+    - name: Enable Corepack
+      run: corepack enable
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Lint
+      run: yarn lint
+
+    - name: Type check
+      run: yarn build # Since 'build' script runs 'tsc -b && vite build', it includes type checking
