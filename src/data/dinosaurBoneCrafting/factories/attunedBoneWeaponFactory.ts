@@ -1,6 +1,6 @@
 import type { Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import { meleeWeapons, rangedWeapons, throwingWeapons } from '../../basics/weapons.ts'
+import { meleeWeapons, rangedWeapons, throwingWeapons, weaponStylizedNames } from '../../basics/weapons.ts'
 import { findSetBonus } from '../../setBonuses.ts'
 
 export const attunedBoneWeaponFactory = (
@@ -8,7 +8,7 @@ export const attunedBoneWeaponFactory = (
   itemType: string,
   extraEffects?: Enhancement
 ): CraftingIngredient => ({
-  name: `Attuned Bone ${name}`,
+  name: `Attuned Bone ${weaponStylizedNames[name] || name}`,
   description: 'Fashioned of intricately carved bones of long-forgotten Dinosaurs.',
   type: itemType,
   quantity: 1,
