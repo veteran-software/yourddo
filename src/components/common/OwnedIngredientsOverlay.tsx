@@ -1,9 +1,9 @@
 import { CloseButton, Popover } from 'react-bootstrap'
 import type { OverlayInjectedProps } from 'react-bootstrap/OverlayTrigger'
-import type { Location } from '../../components/trove/types.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { renderBindingNode } from '../../utils/jsxUtils.tsx'
 import { formatNumber } from '../../utils/objectUtils.ts'
+import type { Location } from '../trove/types.ts'
 
 interface CharacterEntry {
   character: string
