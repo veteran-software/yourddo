@@ -33,10 +33,15 @@ export const rangedWeapons = new Set([
   'Great Crossbow',
   'Heavy Crossbow',
   'Light Crossbow',
-  'Longbow',
+  'Long Bow',
   'Repeating Light Crossbow',
   'Repeating Heavy Crossbow',
-  'Shortbow'
+  'Short Bow'
 ])
+
+export const weaponStylizedNames: Record<string, string> = {
+  'Long Bow': 'Longbow',
+  'Short Bow': 'Shortbow'
+}
 
 export const throwingWeapons = new Set(['Dart', 'Shuriken', 'Throwing Axe', 'Throwing Hammer', 'Throwing Dagger'])
