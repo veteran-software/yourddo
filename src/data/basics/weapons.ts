@@ -5,9 +5,9 @@ export const meleeWeapons = new Set([
   'Dagger',
   'Dwarven Waraxe',
   'Falchion',
-  'Greataxe',
-  'Greatclub',
-  'Greatsword',
+  'Great Axe',
+  'Great Club',
+  'Great Sword',
   'Hand Axe',
   'Handwraps',
   'Heavy Mace',
@@ -18,13 +18,13 @@ export const meleeWeapons = new Set([
   'Light Hammer',
   'Light Mace',
   'Light Pick',
-  'Longsword',
+  'Long Sword',
   'Maul',
   'Morningstar',
   'Quarterstaff',
   'Rapier',
   'Scimitar',
-  'Shortsword',
+  'Short Sword',
   'Sickle',
   'Warhammer'
 ])
@@ -40,8 +40,13 @@ export const rangedWeapons = new Set([
 ])
 
 export const weaponStylizedNames: Record<string, string> = {
+  'Great Axe': 'Greataxe',
+  'Great Club': 'Greatclub',
+  'Great Sword': 'Greatsword',
   'Long Bow': 'Longbow',
-  'Short Bow': 'Shortbow'
+  'Long Sword': 'Longsword',
+  'Short Bow': 'Shortbow',
+  'Short Sword': 'Shortsword'
 }
 
 export const throwingWeapons = new Set(['Dart', 'Shuriken', 'Throwing Axe', 'Throwing Hammer', 'Throwing Dagger'])
