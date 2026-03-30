@@ -8,12 +8,12 @@ import { toSingularName } from './stringUtils.ts'
 import { normItem } from './troveUtils.ts'
 
 // ----- Extracted helpers to reduce cognitive complexity in getOwnedIngredients -----
-interface CharacterEntry {
+export interface CharacterEntry {
   character: string
   locations: Record<Location, number>
 }
 
-const renderBindingNode = (ingredient: Ingredient | undefined, troveBinding?: string): React.JSX.Element => {
+export const renderBindingNode = (ingredient: Ingredient | undefined, troveBinding?: string): React.JSX.Element => {
   // Prefer explicit binding on the ingredient if present
   if (ingredient?.binding?.type === 'Unbound') {
     return (
@@ -64,7 +64,7 @@ const renderBindingNode = (ingredient: Ingredient | undefined, troveBinding?: st
   return <></>
 }
 
-const normalizeEntries = (byCharacter: unknown): CharacterEntry[] => {
+export const normalizeEntries = (byCharacter: unknown): CharacterEntry[] => {
   if (Array.isArray(byCharacter)) return byCharacter as CharacterEntry[]
   const map = (byCharacter as Record<string, Record<Location, number>>) ?? {}
   return Object.entries(map).map(([character, locations]) => ({ character, locations }))
