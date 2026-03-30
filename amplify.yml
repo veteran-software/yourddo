@@ -2,20 +2,32 @@ version: 1
 frontend:
   phases:
     preBuild:
-      runtime-versions:
-        go: 1.x
-        nodejs: 24.x
       commands:
+        - nvm use 24
         - corepack enable
-        - yarn install
-        - yarn run prebuild
+        - yarn install --immutable
+
+        # install Go
+        - curl -Lo /tmp/go.tar.gz https://go.dev/dl/go1.26.1.linux-amd64.tar.gz
+        - sudo rm -rf /usr/local/go
+        - sudo tar -C /usr/local -xzf /tmp/go.tar.gz
+        - export PATH=/usr/local/go/bin:$PATH
+        - go version
+
+        # generate runtime json before frontend build
+        - yuarn preBuild
+
     build:
       commands:
-        - yarn run build
+        - yarn build
+
   artifacts:
     baseDirectory: dist
     files:
       - '**/*'
+
   cache:
     paths:
       - node_modules/**/*
+      - /root/.cache/go-build/**/*
+      - .yarn/cache/**/*
