@@ -10,6 +10,7 @@ export interface Ingredient {
   foundIn?: string[]
   image?: string
   inventoryMaxStack?: number
+  absoluteMinLevel?: number
   minimumLevel?: number
   name: string
   notes?: string
@@ -17,6 +18,10 @@ export interface Ingredient {
   subType?: string
   weight?: number
   update?: number
+  material?: string
+  hardness?: number
+  durability?: number
+  artifacttype?: string
 }
 
 export type TAugmentType =

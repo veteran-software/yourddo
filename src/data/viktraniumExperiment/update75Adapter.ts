@@ -2,7 +2,11 @@ import type { Binding, Enhancement } from '../../types/core.ts'
 import type { Augment, CraftingIngredient } from '../../types/crafting.ts'
 import { clothing, jewelry } from '../basics/accessories.ts'
 import { shields } from '../basics/armor.ts'
-import { meleeWeapons, rangedWeapons, throwingWeapons } from '../basics/weapons.ts'
+import {
+  meleeWeapons,
+  rangedWeapons,
+  throwingWeapons
+} from '../basics/weapons.ts'
 import rawItems from '../loot/update75.json'
 
 interface U75Item {
@@ -79,6 +83,7 @@ const mapItemIsJewelrySubType = (it: U75Item) => {
 }
 
 const mapItem = (it: U75Item): CraftingIngredient => {
+  console.log(it)
   const minLvl = Number(it.minLevel || '0')
   let type: string | undefined
   let subType: string | undefined
@@ -193,6 +198,7 @@ const mapItem = (it: U75Item): CraftingIngredient => {
 }
 
 const items: CraftingIngredient[] = (rawItems as U75Item[]).map(mapItem)
+console.log(items)
 
 const isCrafted = (ci: CraftingIngredient) => ci.foundIn?.includes('Viktranium Crafting')
 const isWickedCrafted = (ci: CraftingIngredient) => ci.foundIn?.includes('Wicked Viktranium Experiment Crafting')

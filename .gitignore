@@ -24,4 +24,5 @@ dist-ssr
 *.sw?
 .yarn/
 coverage/
-/src/data/cannithCrafting/runtime/*
+/src/data/cannithCrafting/runtime/
+/src/data/loot/runtime/

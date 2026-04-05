@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "prebuild": "go run ./tools/cannithSplit/main.go ./tools/cannithSplit/transform.go ./tools/cannithSplit/types.go ./tools/cannithSplit/indexes.go src/data/cannithCrafting/cannithEnhancements.phase1.json src/data/cannithCrafting/runtime",
+    "items:data": "go run ./tools/dataSpider/main.go",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
