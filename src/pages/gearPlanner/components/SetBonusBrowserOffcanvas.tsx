@@ -89,11 +89,26 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
 
                 // Group by slot
                 const grouped: Record<string, GearItem[]> = {}
-                setItemResults.forEach((item) => {
-                  const slotKey = item.slot || 'Other'
-                  if (!grouped[slotKey]) grouped[slotKey] = []
-                  grouped[slotKey].push(item)
-                })
+                setItemResults
+                  .toSorted((a, b) => {
+                    // Priority 1: Trove ownership
+                    const isOwnedA = troveData?.[normItem(a.name)] ? 1 : 0
+                    const isOwnedB = troveData?.[normItem(b.name)] ? 1 : 0
+                    if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
+
+                    // Priority 2: Min Level (desc)
+                    const levelA = parseInt(a.minLevel, 10) || 0
+                    const levelB = parseInt(b.minLevel, 10) || 0
+                    if (levelB !== levelA) return levelB - levelA
+
+                    // Priority 3: Name (asc)
+                    return a.name.localeCompare(b.name)
+                  })
+                  .forEach((item) => {
+                    const slotKey = item.slot || 'Other'
+                    if (!grouped[slotKey]) grouped[slotKey] = []
+                    grouped[slotKey].push(item)
+                  })
 
                 return (
                   <Accordion data-bs-theme='dark'>

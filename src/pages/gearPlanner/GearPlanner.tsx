@@ -1,6 +1,25 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Accordion, Badge, Button, Card, Col, Container, Form, Modal, Row, Stack, Tab, Tabs } from 'react-bootstrap'
-import { FaChevronRight, FaGear, FaLayerGroup, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6'
+import {
+  Accordion,
+  Badge,
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Modal,
+  Row,
+  Stack,
+  Tab,
+  Tabs
+} from 'react-bootstrap'
+import {
+  FaChevronRight,
+  FaGear,
+  FaLayerGroup,
+  FaMagnifyingGlass,
+  FaXmark
+} from 'react-icons/fa6'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import {
   addSetup as addSetupAction,
@@ -14,12 +33,18 @@ import { getTroveOwners, normItem } from '../../utils/troveUtils.ts'
 import AugmentSlotItem from './components/AugmentSlotItem.tsx'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
 import EnchantmentList from './components/EnchantmentList.tsx'
-import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas
+  from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
 import SetBonusBrowserOffcanvas from './components/SetBonusBrowserOffcanvas.tsx'
 import SetBonusesSummary from './components/SetBonusesSummary.tsx'
-import { checkPotentialConflict, getSlotOwner, normalizeString, resolveConflicts } from './conflictResolver'
+import {
+  checkPotentialConflict,
+  getSlotOwner,
+  normalizeString,
+  resolveConflicts
+} from './conflictResolver'
 import { loadGearData, loadSetBonusIndex } from './dataLoader'
 import {
   ARMOR_TYPES,
@@ -455,13 +480,20 @@ const GearPlanner = () => {
     return allItems
       .filter((i) => shouldShowItem(i, browsingSlot, activeSetup))
       .sort((a, b) => {
+        // Priority 1: Trove ownership
+        const isOwnedA = troveData?.[normItem(a.name)] ? 1 : 0
+        const isOwnedB = troveData?.[normItem(b.name)] ? 1 : 0
+        if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
+
+        // Priority 2: Min Level (desc)
         const levelA = parseInt(a.minLevel, 10) || 0
         const levelB = parseInt(b.minLevel, 10) || 0
         if (levelB !== levelA) return levelB - levelA
 
+        // Priority 3: Name (asc)
         return a.name.localeCompare(b.name)
       })
-  }, [activeSetup, browsingSlot, allItems, shouldShowItem])
+  }, [activeSetup, browsingSlot, allItems, shouldShowItem, troveData])
 
   const searchResultsBySlot = useMemo(() => {
     if (enchantmentSearch.length <= 2) return null
@@ -499,9 +531,17 @@ const GearPlanner = () => {
     return allItems
       .filter(itemMatchesSearch)
       .sort((a, b) => {
+        // Priority 1: Trove ownership
+        const isOwnedA = troveData?.[normItem(a.name)] ? 1 : 0
+        const isOwnedB = troveData?.[normItem(b.name)] ? 1 : 0
+        if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
+
+        // Priority 2: Min Level (desc)
         const levelA = parseInt(a.minLevel, 10) || 0
         const levelB = parseInt(b.minLevel, 10) || 0
         if (levelB !== levelA) return levelB - levelA
+
+        // Priority 3: Name (asc)
         return a.name.localeCompare(b.name)
       })
       .reduce<Record<string, GearItem[]>>((acc, item) => {
@@ -509,7 +549,7 @@ const GearPlanner = () => {
         acc[item.slot].push(item)
         return acc
       }, {})
-  }, [enchantmentSearch, allItems, shouldShowItem, setBonusIndex, activeSetup, isItemVisibleForClasses])
+  }, [enchantmentSearch, allItems, shouldShowItem, setBonusIndex, activeSetup, isItemVisibleForClasses, troveData])
 
   const updateClassProficiencies = (setup: GearSetup, oldClasses: (string | null)[], newClasses: (string | null)[]) => {
     // 1. Identify what filters are granted by OLD classes
@@ -637,6 +677,11 @@ const GearPlanner = () => {
     // Sort within groups
     Object.values(groups).forEach((group) => {
       group.sort((a, b) => {
+        // Priority 1: Trove ownership
+        const isOwnedA = troveData?.[normItem(a.name)] ? 1 : 0
+        const isOwnedB = troveData?.[normItem(b.name)] ? 1 : 0
+        if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
+
         if (b.minimumLevel !== a.minimumLevel) return b.minimumLevel - a.minimumLevel
         return a.name.localeCompare(b.name)
       })
