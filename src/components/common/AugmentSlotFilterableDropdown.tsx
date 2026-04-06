@@ -185,7 +185,7 @@ const groupLamordiaByTier = (list: Ingredient[] | undefined): Record<string, Ing
   const legendary: Ingredient[] = []
 
   list.forEach((ing: Ingredient) => {
-    const lvl: number = ing.minimumLevel ?? 0
+    const lvl = Number(ing.minimumLevel ?? 0)
     if (lvl >= 30) {
       legendary.push(ing)
     } else {

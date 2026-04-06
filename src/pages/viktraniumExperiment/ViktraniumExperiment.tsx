@@ -36,7 +36,7 @@ import {
   setSelectedWickedCraftedItem
 } from '../../redux/slices/viktraniumSlice.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
-import type { Augment, CraftingIngredient } from '../../types/crafting.ts'
+import type { CraftingIngredient } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import {
   camelCaseToTitleCase,
@@ -103,8 +103,8 @@ const ViktraniumExperiment = () => {
       selectedLegendaryCraftedItem ??
       selectedWickedCraftedItem
     if (selectedItem?.augments === undefined) return []
-
-    const aug: Augment = selectedItem.augments[0]
+    const aug = selectedItem.augments[0]
+    if (typeof aug === 'string' || aug === undefined || aug === null) return []
     return Object.entries(aug)
       .filter(([key, value]) => {
         return value === null || key.startsWith('lamordia')
@@ -191,7 +191,7 @@ const ViktraniumExperiment = () => {
     )
   }, [augmentOptions, augmentFilters])
 
-  const handleSelectAugment = (slot: string, augment: Ingredient) => {
+  const handleSelectAugment = (slot: string, augment: AugmentItem) => {
     dispatch(
       setSelectedAugment({
         slot,

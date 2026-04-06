@@ -5,33 +5,32 @@ export interface SetBonusIndexEntry {
 
 export type SetBonusIndex = Record<string, SetBonusIndexEntry[]>
 
-export enum GearSlot {
-  Armor = 'Armor',
-  Head = 'Head',
-  Hands = 'Hands',
-  Cloak = 'Cloak',
-  Waist = 'Waist',
-  Feet = 'Feet',
-  Wrists = 'Wrists',
-  Eyes = 'Eyes',
-  Neck = 'Neck',
-  FirstFinger = 'First Finger',
-  SecondFinger = 'Second Finger',
-  Trinket = 'Trinket',
-  MainHand = 'Main Hand',
-  OffHand = 'Off Hand',
-  Quiver = 'Quiver',
-  Ammunition = 'Ammunition',
-  PetArmor = 'Pet Armor',
-  PetWeapon = 'Pet Weapon',
-  ArtificerPetArmor = 'Iron Defender Armor',
-  ArtificerPetWeapon = 'Iron Defender Weapon',
-  DruidPetArmor = 'Wolf Companion Armor',
-  DruidPetWeapon = 'Wolf Companion Weapon',
-  Augment = 'Augment'
-}
+export const GearSlot = {
+  Armor: 'Armor',
+  Head: 'Head',
+  Hands: 'Hands',
+  Cloak: 'Cloak',
+  Waist: 'Waist',
+  Feet: 'Feet',
+  Wrists: 'Wrists',
+  Eyes: 'Eyes',
+  Neck: 'Neck',
+  FirstFinger: 'First Finger',
+  SecondFinger: 'Second Finger',
+  Trinket: 'Trinket',
+  MainHand: 'Main Hand',
+  OffHand: 'Off Hand',
+  Quiver: 'Quiver',
+  Ammunition: 'Ammunition',
+  ArtificerPetArmor: 'Iron Defender Armor',
+  ArtificerPetWeapon: 'Iron Defender Weapon',
+  DruidPetArmor: 'Wolf Companion Armor',
+  DruidPetWeapon: 'Wolf Companion Weapon',
+  Augment: 'Augment'
+} as const
+export type GearSlot = (typeof GearSlot)[keyof typeof GearSlot]
 
-export const GEAR_SLOTS = [
+export const GEAR_SLOTS: GearSlot[] = [
   GearSlot.Armor,
   GearSlot.Head,
   GearSlot.Hands,
@@ -50,13 +49,12 @@ export const GEAR_SLOTS = [
   GearSlot.Ammunition
 ]
 
-
-export const ARTIFICER_PET_SLOTS = [GearSlot.ArtificerPetArmor, GearSlot.ArtificerPetWeapon]
-export const DRUID_PET_SLOTS = [GearSlot.DruidPetArmor, GearSlot.DruidPetWeapon]
+export const ARTIFICER_PET_SLOTS: GearSlot[] = [GearSlot.ArtificerPetArmor, GearSlot.ArtificerPetWeapon]
+export const DRUID_PET_SLOTS: GearSlot[] = [GearSlot.DruidPetArmor, GearSlot.DruidPetWeapon]
 
 export interface LootEnchantment {
   name: string
-  modifier?: string
+  modifier?: string | number
   bonus?: string
   notes?: string
 }
@@ -218,21 +216,9 @@ export const WEAPON_TYPES: Record<string, string[]> = {
   ]
 }
 
-export const SHIELD_TYPES = [
-  'Buckler',
-  'Large Shield',
-  'Orb',
-  'Small Shield',
-  'Tower Shield'
-]
+export const SHIELD_TYPES = ['Buckler', 'Large Shield', 'Orb', 'Small Shield', 'Tower Shield']
 
-export const ARMOR_TYPES = [
-  'Cloth Armor',
-  'Docent',
-  'Heavy Armor',
-  'Light Armor',
-  'Medium Armor'
-]
+export const ARMOR_TYPES = ['Cloth Armor', 'Docent', 'Heavy Armor', 'Light Armor', 'Medium Armor']
 
 export interface ClassProficiencies {
   weapons: string[]
@@ -319,17 +305,8 @@ export const CLASS_PROFICIENCIES: Record<string, ClassProficiencies> = {
     shields: []
   },
   Wizard: {
-    weapons: [
-      'Club',
-      'Scepter',
-      'Dagger',
-      'Quarterstaff',
-      'Heavy Crossbow',
-      'Light Crossbow',
-      'Throwing Dagger'
-    ],
+    weapons: ['Club', 'Scepter', 'Dagger', 'Quarterstaff', 'Heavy Crossbow', 'Light Crossbow', 'Throwing Dagger'],
     armor: ['Cloth Armor'],
     shields: []
   }
 }
-

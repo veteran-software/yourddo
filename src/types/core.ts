@@ -298,28 +298,29 @@ export interface Binding {
 }
 
 export interface Cost {
-  copper?: number
-  silver?: number
-  gold?: number
-  platinum?: number
+  copper?: number | string
+  silver?: number | string
+  gold?: number | string
+  platinum?: number | string
 }
 
 export interface Enhancement {
   ability?: AbilityLong
   basePriceModifier?: BasePriceModifier
-  bonus?: Bonus
+  bonus?: Bonus | number | string
   damage?: DamageType[]
   description?: string
   minLevelIncrease?: {
-    noMinimumLevel?: number
-    minimumLevel?: number
+    noMinimumLevel?: number | string
+    minimumLevel?: number | string
   }
   modifier?: number | string
   name: string
   type?: 'Prefix' | 'Suffix' | 'Extra' | '--Crafting'
   notes?: string
-  charges?: number
-  rechargePerDay?: number
+  charges?: number | string
+  rechargePerDay?: number | string
+  numPiecesEquipped?: number
 }
 
 export interface BasePriceModifier {

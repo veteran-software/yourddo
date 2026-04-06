@@ -6,13 +6,13 @@ export interface AugmentItem extends Ingredient {
   name: string
   description?: string
   image?: string
-  minimumLevel?: number
+  minimumLevel?: number | string
   binding?: Binding
-  foundIn?: string[]
+  foundIn?: (string | any)[] | null
   craftedIn?: string
   effectsAdded?: Partial<Enhancement>[]
   effectsRemoved?: Partial<Enhancement>[]
   setBonus?: SetBonus[]
   requirements?: CraftingIngredient[]
-  update?: number
+  update?: number | string
 }

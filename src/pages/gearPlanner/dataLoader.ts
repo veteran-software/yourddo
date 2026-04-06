@@ -1,6 +1,7 @@
 import {
   type GearItem,
   GearSlot,
+  type LootEnchantment,
   type LootItem,
   type SetBonusIndex
 } from './types'
@@ -56,7 +57,7 @@ const inferSetBonuses = (item: GearItem) => {
   })
 
   // Also check notes for runtime items
-  const itemAsObj = item as Record<string, unknown>
+  const itemAsObj = item as unknown as Record<string, unknown>
   if (sets.length === 0 && typeof itemAsObj.notes === 'string') {
     const notesStr = itemAsObj.notes.toLowerCase()
     if (notesStr.includes('set bonus')) {
@@ -101,7 +102,8 @@ export const loadGearData = async (): Promise<GearItem[]> => {
 
   // Load Augments
   try {
-    const augResponse = await fetch('/src/data/augments/augmentMaster.json')
+    const augResponse = await fetch('/src/data/loot/runtime/augment.json')
+
     if (augResponse.ok) {
       const augments = (await augResponse.json()) as RawAugment[]
       augments.forEach((aug, index) => {
@@ -117,7 +119,7 @@ export const loadGearData = async (): Promise<GearItem[]> => {
               name: e.name ?? '',
               modifier: e.modifier ?? undefined,
               bonus: e.bonus ?? undefined
-            })) ?? [],
+            } as LootEnchantment)) ?? [],
           augments: [],
           setBonus: aug.setBonus?.map((sb) => ({ name: sb.name })),
           slot: GearSlot.Augment,
