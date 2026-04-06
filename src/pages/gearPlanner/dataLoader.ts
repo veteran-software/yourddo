@@ -1,5 +1,9 @@
-import { u75 } from '../../data/loot/update75'
-import { type GearItem, GearSlot, type LootItem, type SetBonusIndex } from './types'
+import {
+  type GearItem,
+  GearSlot,
+  type LootItem,
+  type SetBonusIndex
+} from './types'
 
 export const loadSetBonusIndex = async (): Promise<SetBonusIndex> => {
   try {
@@ -30,54 +34,6 @@ const SLOT_MAP: Record<string, GearSlot[]> = {
   'ring.json': [GearSlot.FirstFinger, GearSlot.SecondFinger],
   'robe.json': [GearSlot.Armor],
   'trinket.json': [GearSlot.Trinket]
-}
-
-const TYPE_TO_SLOT_MAP: Record<string, GearSlot[]> = {
-  Goggles: [GearSlot.Eyes],
-  Necklace: [GearSlot.Neck],
-  Trinket: [GearSlot.Trinket],
-  Armor: [GearSlot.Armor],
-  Docent: [GearSlot.Armor, GearSlot.ArtificerPetArmor, GearSlot.DruidPetArmor],
-  Cloak: [GearSlot.Cloak],
-  Bracers: [GearSlot.Wrists],
-  Belt: [GearSlot.Waist],
-  Ring: [GearSlot.FirstFinger, GearSlot.SecondFinger],
-  Boots: [GearSlot.Feet],
-  Gloves: [GearSlot.Hands],
-  Helmet: [GearSlot.Head],
-  Helm: [GearSlot.Head],
-  Shield: [GearSlot.OffHand],
-  Orb: [GearSlot.OffHand],
-  Weapon: [GearSlot.MainHand],
-  Longsword: [GearSlot.MainHand],
-  Shortsword: [GearSlot.MainHand],
-  Greataxe: [GearSlot.MainHand],
-  Greatsword: [GearSlot.MainHand],
-  Maul: [GearSlot.MainHand],
-  Warhammer: [GearSlot.MainHand],
-  Dagger: [GearSlot.MainHand],
-  Quarterstaff: [GearSlot.MainHand, GearSlot.OffHand],
-  Bow: [GearSlot.MainHand, GearSlot.OffHand],
-  Crossbow: [GearSlot.MainHand, GearSlot.OffHand],
-  Repeating: [GearSlot.MainHand, GearSlot.OffHand],
-  Light: [GearSlot.MainHand],
-  Heavy: [GearSlot.MainHand],
-  Great: [GearSlot.MainHand],
-  Handwraps: [GearSlot.MainHand],
-  Bastard: [GearSlot.MainHand],
-  Khopesh: [GearSlot.MainHand],
-  Scimitar: [GearSlot.MainHand],
-  Falchion: [GearSlot.MainHand],
-  Kukri: [GearSlot.MainHand],
-  Rapier: [GearSlot.MainHand],
-  Pick: [GearSlot.MainHand],
-  Club: [GearSlot.MainHand],
-  Mace: [GearSlot.MainHand],
-  Morningstar: [GearSlot.MainHand],
-  Sickle: [GearSlot.MainHand],
-  Axe: [GearSlot.MainHand],
-  Hammer: [GearSlot.MainHand],
-  Flail: [GearSlot.MainHand]
 }
 
 const inferSetBonuses = (item: GearItem) => {
@@ -162,7 +118,7 @@ export const loadGearData = async (): Promise<GearItem[]> => {
               modifier: e.modifier ?? undefined,
               bonus: e.bonus ?? undefined
             })) ?? [],
-          augments: [], // Augments don't have slots themselves usually
+          augments: [],
           setBonus: aug.setBonus?.map((sb) => ({ name: sb.name })),
           slot: GearSlot.Augment,
           artifacttype: 'Augment',
@@ -183,6 +139,7 @@ export const loadGearData = async (): Promise<GearItem[]> => {
           optionsRaw: '',
           dropLocations: []
         }
+
         inferSetBonuses(gearItem)
         addItem(gearItem)
       })
@@ -191,49 +148,8 @@ export const loadGearData = async (): Promise<GearItem[]> => {
     console.error('Error loading augments:', error)
   }
 
-  // Add u75 items
-  u75.forEach((uItem, index) => {
-    const typeKey = uItem.type ?? ''
-    const slots: GearSlot[] = TYPE_TO_SLOT_MAP[typeKey] ?? []
-    slots.forEach((slot) => {
-      // @ts-expect-error - u75 items use enchantments instead of enhancements
-      const uEnchantments = uItem.enchantments as { name?: string; modifier?: string; bonus?: string }[] | undefined
-      const gearItem: GearItem = {
-        id: `u75-${String(index)}-${slot}`,
-        name: uItem.name,
-        type: uItem.type ?? 'Unknown',
-        description: uItem.description ?? '',
-        minLevel: String(uItem.minimumLevel ?? '1'),
-        absoluteMinLevel: String(uItem.minimumLevel ?? '1'),
-        enchantments:
-          uEnchantments?.map((e) => ({
-            name: e.name ?? '',
-            modifier: e.modifier ?? undefined,
-            bonus: e.bonus ?? undefined
-          })) ?? [],
-        augments: uItem.augments?.map((a) => {
-          const type = Object.keys(a)[0]
-          return {
-            augmentType: type.charAt(0).toUpperCase() + type.slice(1)
-          }
-        }),
-        setBonus: uItem.setBonus?.map((sb) => ({ name: sb.name })),
-        slot: slot
-      }
-      inferSetBonuses(gearItem)
-      addItem(gearItem)
-    })
-  })
-
   const loadFile = async (fileName: string, slots: GearSlot[]) => {
     try {
-      // Use absolute path from public if possible, or relative if vite handles it.
-      // Since they are in src, they might not be directly fetchable unless imported or in public.
-      // If the user says "included during development" and "available at runtime",
-      // they might be served from a specific path.
-      // Given the environment, I'll try to use dynamic imports if vite supports it for JSON,
-      // or assume they are available at /src/data/loot/runtime/
-
       const response = await fetch(`/src/data/loot/runtime/${fileName}`)
       if (!response.ok) {
         console.warn(`Failed to load ${fileName}: ${response.statusText}`)

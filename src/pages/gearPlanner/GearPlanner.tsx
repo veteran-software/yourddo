@@ -15,7 +15,14 @@ import {
   Tab,
   Tabs
 } from 'react-bootstrap'
-import { FaChevronRight, FaGear, FaLayerGroup, FaListUl, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6'
+import {
+  FaChevronRight,
+  FaGear,
+  FaLayerGroup,
+  FaListUl,
+  FaMagnifyingGlass,
+  FaXmark
+} from 'react-icons/fa6'
 import { findSetBonus } from '../../data/setBonuses'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import {
@@ -337,7 +344,7 @@ const EnchantmentList = React.memo(
           if (source === 'slot') {
             const itemConflicts = conflicts[normalizeString(ench.name)]
             const bonusToMatch = getBonus(ench.bonus)
-            // In DDO, some bonuses with the same name and same type don't stack.
+            // In DDO, bonuses with the same name and same type don't stack.
             // We want to find the conflict that matches this enchantment's bonus type.
             const conflict = itemConflicts?.find((c) => getBonus(c.bonus) === bonusToMatch)
             // console.log('Enchantment:', ench.name, 'Bonus:', ench.bonus, 'Matched Conflict:', conflict);
@@ -900,7 +907,7 @@ const GearPlanner = () => {
         observer.unobserve(currentTarget)
       }
     }
-  }, [loadMore, browsingSlot, itemsToShow]) // Added itemsToShow to re-observe when list expands
+  }, [loadMore, browsingSlot, itemsToShow])
 
   useEffect(() => {
     loadGearData()
@@ -1461,7 +1468,7 @@ const GearPlanner = () => {
               <div className='text-center w-100 d-flex flex-column'>
                 <div className='fw-bold small text-dark mb-1'>{selectedItem.name}</div>
                 <div className='text-secondary mb-1' style={{ fontSize: '0.7rem' }}>
-                  ML: {selectedItem.minLevel || '1'} | {selectedItem.artifacttype || 'Item'}
+                  ML: {selectedItem.minLevel || '1'} | {selectedItem.type || 'Item'}
                 </div>
                 {selectedItem.setBonus && selectedItem.setBonus.length > 0 && (
                   <div className='mt-1 mb-1'>
@@ -1859,10 +1866,6 @@ const GearPlanner = () => {
                           onChange={(e) => {
                             const newClasses = [...activeSetup.classes]
                             newClasses[idx] = e.target.value || null
-
-                            // We need to keep the updateClassProficiencies logic
-                            // I'll update the slice to handle this or just pass the updated fields.
-                            // The original code was mutating the object and then calling setSetups.
 
                             const setupUpdate: Partial<GearSetup> = {
                               id: activeSetup.id,
