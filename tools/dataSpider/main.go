@@ -72,7 +72,7 @@ func processCategory(categoryName string) {
 		sort.Slice(augmentItems, func(i, j int) bool {
 			return naturalLess(augmentItems[i].Name, augmentItems[j].Name)
 		})
-		jsonData, err = json.MarshalIndent(augmentItems, "", "  ")
+		jsonData, err = json.Marshal(augmentItems)
 		if err != nil {
 			logrus.Errorf("Error marshalling Augment JSON for %s: %v", categoryName, err)
 			return
@@ -84,7 +84,7 @@ func processCategory(categoryName string) {
 		sort.Slice(processedItems, func(i, j int) bool {
 			return naturalLess(processedItems[i].Name, processedItems[j].Name)
 		})
-		jsonData, err = json.MarshalIndent(processedItems, "", "  ")
+		jsonData, err = json.Marshal(processedItems)
 		if err != nil {
 			logrus.Errorf("Error marshalling JSON for %s: %v", categoryName, err)
 			return
