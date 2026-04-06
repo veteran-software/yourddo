@@ -1,29 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import {
-  Accordion,
-  Badge,
-  Button,
-  Card,
-  Col,
-  Container,
-  Dropdown,
-  Form,
-  Modal,
-  Offcanvas,
-  Row,
-  Stack,
-  Tab,
-  Tabs
-} from 'react-bootstrap'
-import {
-  FaChevronRight,
-  FaGear,
-  FaLayerGroup,
-  FaListUl,
-  FaMagnifyingGlass,
-  FaXmark
-} from 'react-icons/fa6'
-import { findSetBonus } from '../../data/setBonuses'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Accordion, Badge, Button, Card, Col, Container, Form, Modal, Row, Stack, Tab, Tabs } from 'react-bootstrap'
+import { FaChevronRight, FaGear, FaLayerGroup, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import {
   addSetup as addSetupAction,
@@ -33,15 +10,15 @@ import {
   setAugment as setAugmentAction,
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
-import {
-  checkPotentialConflict,
-  type EnchantmentConflict,
-  getBonus,
-  getSlotOwner,
-  normalizeString,
-  parseModifierValue,
-  resolveConflicts
-} from './conflictResolver'
+import AugmentSlotItem from './components/AugmentSlotItem.tsx'
+import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
+import EnchantmentList from './components/EnchantmentList.tsx'
+import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
+import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
+import SetBonusBrowserOffcanvas from './components/SetBonusBrowserOffcanvas.tsx'
+import SetBonusesSummary from './components/SetBonusesSummary.tsx'
+import { checkPotentialConflict, getSlotOwner, normalizeString, resolveConflicts } from './conflictResolver'
 import { loadGearData, loadSetBonusIndex } from './dataLoader'
 import {
   ARMOR_TYPES,
@@ -51,762 +28,14 @@ import {
   GEAR_CLASSES,
   GEAR_SLOTS,
   type GearAugment,
-  type GearAugmentSlot,
   type GearItem,
   type GearSetup,
   GearSlot,
-  type LootEnchantment,
   type SetBonusIndex,
   SHIELD_TYPES,
   WEAPON_TYPES
 } from './types'
 import './GearPlanner.css'
-
-const SetBonusesSummary = ({
-  equippedItems,
-  slottedAugments,
-  onSetClick
-}: {
-  equippedItems: GearItem[]
-  slottedAugments: Record<string, Record<number, GearAugment | null>>
-  onSetClick?: (setName: string) => void
-}) => {
-  const activeSets = useMemo(() => {
-    const counts: Record<string, number> = {}
-
-    // Count from items
-    equippedItems.forEach((item) => {
-      item.setBonus?.forEach((sb) => {
-        counts[sb.name] = (counts[sb.name] || 0) + 1
-      })
-    })
-
-    // Count from augments
-    for (const itemAugments of Object.values(slottedAugments)) {
-      for (const aug of Object.values(itemAugments)) {
-        if (aug?.setBonus) {
-          for (const sb of aug.setBonus) {
-            counts[sb.name] = (counts[sb.name] ?? 0) + 1
-          }
-        }
-      }
-    }
-
-    return Object.entries(counts)
-      .filter(([, count]) => count > 0)
-      .sort((a, b) => b[1] - a[1])
-  }, [equippedItems, slottedAugments])
-
-  if (activeSets.length === 0) return null
-
-  return (
-    <div className='mt-4 p-3 border border-primary rounded bg-dark-subtle shadow-sm'>
-      <h5 className='mb-3 text-light border-bottom border-primary pb-2 d-flex justify-content-between align-items-center'>
-        <span>
-          <FaLayerGroup className='me-2' /> Active Set Bonuses
-        </span>
-        <Badge bg='dark' className='text-info border border-info small fw-normal'>
-          Click set name to browse items
-        </Badge>
-      </h5>
-      <Row>
-        {activeSets.map(([setName, count]) => {
-          const setDef = findSetBonus(setName)
-          return (
-            <Col md={6} lg={4} key={setName} className='mb-2'>
-              <Card
-                className='bg-dark border-secondary h-100 cursor-pointer gear-planner-set-card'
-                onClick={() => onSetClick?.(setName)}
-              >
-                <Card.Body className='p-2'>
-                  <div className='d-flex justify-content-between align-items-center mb-1'>
-                    <span className='fw-bold text-info'>{setName}</span>
-                    <Badge bg='primary'>
-                      {count} Piece{count > 1 ? 's' : ''}
-                    </Badge>
-                  </div>
-                  {setDef?.enhancements
-                    ?.filter((e) => (e.numPiecesEquipped ?? 0) <= count)
-                    .map((e, idx) => (
-                      <div key={idx} className='small text-secondary ps-2 border-start border-secondary mb-1'>
-                        • {e.name} ({e.numPiecesEquipped} pieces)
-                      </div>
-                    ))}
-                  {(!setDef ||
-                    setDef.enhancements?.filter((e) => (e.numPiecesEquipped ?? 0) <= count).length === 0) && (
-                    <div className='small text-muted ps-2 italic text-center py-2'>
-                      Equip more pieces to see bonuses.
-                    </div>
-                  )}
-                </Card.Body>
-              </Card>
-            </Col>
-          )
-        })}
-      </Row>
-    </div>
-  )
-}
-
-const sortItemsByValue = (a: { value: number }, b: { value: number }) => b.value - a.value
-
-const aggregateEnchantmentEntries = (item: GearItem, itemAugs: Record<number, GearAugment | null> | undefined) => {
-  const entries: { ench: LootEnchantment; sourceName: string }[] = (item.enchantments ?? []).map((e) => ({
-    ench: e,
-    sourceName: item.name
-  }))
-
-  if (itemAugs) {
-    for (const aug of Object.values(itemAugs)) {
-      if (aug?.effectsAdded) {
-        for (const e of aug.effectsAdded) {
-          entries.push({ ench: e, sourceName: `${item.name} (${aug.name})` })
-        }
-      }
-    }
-  }
-  return entries
-}
-
-const EnchantmentsSummary = ({
-  equippedItems,
-  slottedAugments
-}: {
-  equippedItems: GearItem[]
-  slottedAugments: Record<string, Record<number, GearAugment | null>>
-}) => {
-  const aggregated = useMemo(() => {
-    const map: Record<
-      string,
-      {
-        originalName: string
-        bonuses: Record<
-          string,
-          {
-            maxValue: number
-            maxValueStr: string
-            items: { itemName: string; slot: string; value: number; valueStr: string }[]
-          }
-        >
-      }
-    > = {}
-
-    for (const item of equippedItems) {
-      const entries = aggregateEnchantmentEntries(item, slottedAugments[item.id])
-
-      for (const { ench, sourceName } of entries) {
-        const normName = normalizeString(ench.name)
-        const normBonus = getBonus(ench.bonus)
-        const value = parseModifierValue(ench.modifier)
-        const valueStr = ench.modifier?.toString() ?? ''
-
-        if (!map[normName]) {
-          map[normName] = { originalName: ench.name, bonuses: {} }
-        }
-        if (!map[normName].bonuses[normBonus]) {
-          map[normName].bonuses[normBonus] = { maxValue: -Infinity, maxValueStr: '', items: [] }
-        }
-
-        const group = map[normName].bonuses[normBonus]
-        if (value > group.maxValue) {
-          group.maxValue = value
-          group.maxValueStr = valueStr
-        } else if (group.maxValue === -Infinity) {
-          group.maxValue = 0
-          group.maxValueStr = valueStr
-        }
-
-        group.items.push({ itemName: sourceName, slot: item.slot, value, valueStr })
-      }
-    }
-
-    const result = Object.values(map).map((entry) => {
-      const bonuses = Object.entries(entry.bonuses)
-        .map(([bonusType, data]) => {
-          const sortedItems = [...data.items].sort(sortItemsByValue)
-          return {
-            bonusType,
-            maxValue: data.maxValue === -Infinity ? 0 : data.maxValue,
-            maxValueStr: data.maxValueStr,
-            items: sortedItems
-          }
-        })
-        .sort((a, b) => b.maxValue - a.maxValue)
-
-      const isNumeric = bonuses.some((b) => b.maxValue !== 0)
-      const total = isNumeric ? bonuses.reduce((sum, b) => sum + b.maxValue, 0) : 0
-
-      return {
-        name: entry.originalName,
-        total,
-        isNumeric,
-        bonuses
-      }
-    })
-
-    return result.sort((a, b) => a.name.localeCompare(b.name))
-  }, [equippedItems, slottedAugments])
-
-  if (aggregated.length === 0) return null
-
-  return (
-    <div className='mt-4 p-3 border border-info rounded bg-dark-subtle shadow-sm'>
-      <h5 className='mb-3 text-light border-bottom border-info pb-2 d-flex align-items-center'>
-        <FaListUl className='me-2' /> Enchantment Summary
-      </h5>
-      <Row className='g-2'>
-        {aggregated.map((ench, idx) => (
-          <Col key={idx} xs={12} md={6} lg={4}>
-            <Accordion data-bs-theme='dark' className='gear-planner-ench-summary-accordion'>
-              <Accordion.Item eventKey='0'>
-                <Accordion.Header className=''>
-                  <div className='d-flex justify-content-between align-items-center w-100 me-3'>
-                    <span className='fw-bold text-info text-truncate me-2' style={{ fontSize: '0.8rem' }}>
-                      {ench.name}
-                    </span>
-                    {ench.isNumeric && <Badge bg='primary'>+{String(ench.total)}</Badge>}
-                  </div>
-                </Accordion.Header>
-                <Accordion.Body className='p-2 bg-dark'>
-                  {ench.bonuses.map((b, bIdx) => (
-                    <div key={bIdx} className='mb-2 last-child-mb-0'>
-                      <div className='d-flex justify-content-between align-items-center border-bottom border-secondary mb-1 pb-1'>
-                        <span className='small text-light italic text-capitalize'>{b.bonusType}</span>
-                        <span className='small fw-bold text-light'>
-                          {b.maxValue !== 0 ? `+${String(b.maxValue)}` : b.maxValueStr || 'Active'}
-                        </span>
-                      </div>
-                      {b.items.map((item, iIdx) => (
-                        <div
-                          key={iIdx}
-                          className={`ps-2 small d-flex justify-content-between align-items-center ${
-                            item.value === b.maxValue ? 'text-secondary' : 'text-muted text-decoration-line-through'
-                          }`}
-                        >
-                          <span className='text-truncate me-1'>• {item.itemName}</span>
-                          <span className='flex-shrink-0'>
-                            {item.value !== 0 ? `+${String(item.value)}` : item.valueStr}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
-          </Col>
-        ))}
-      </Row>
-    </div>
-  )
-}
-
-const EnchantmentList = React.memo(
-  ({
-    enchantments,
-    itemId,
-    conflicts,
-    equippedItems,
-    source,
-    browsingSlot,
-    slottedAugments
-  }: {
-    enchantments: LootEnchantment[] | null | undefined
-    itemId: string
-    conflicts: Record<string, EnchantmentConflict[]>
-    equippedItems: GearItem[]
-    source: 'slot' | 'search' | 'browser'
-    browsingSlot?: GearSlot | null
-    slottedAugments?: Record<string, Record<number, GearAugment | null>>
-  }) => {
-    if (!enchantments) return null
-    return (
-      <>
-        {enchantments.map((ench: LootEnchantment, idx) => {
-          let isOverridden = false
-          let isRedundant = false
-          let isMax = false
-          let effectiveItems: EnchantmentConflict['items'] = []
-          let overriddenItems: EnchantmentConflict['items'] = []
-          const potential: ReturnType<typeof checkPotentialConflict> =
-            source === 'slot'
-              ? { isConflict: false, currentMax: 0, isRedundant: false }
-              : checkPotentialConflict(ench, equippedItems, browsingSlot ?? undefined, slottedAugments)
-
-          const modifierText = ench.modifier ? `+${ench.modifier}` : ''
-          const bonusText = ench.bonus ? `(${ench.bonus})` : ''
-          const enchModifierText = ench.modifier ? ` (+${ench.modifier} ${ench.bonus ?? ''})` : ''
-          const enchText =
-            source === 'slot'
-              ? `• ${ench.name} ${modifierText} ${bonusText}`.replace(/\s+/g, ' ').trim()
-              : `• ${ench.name}${enchModifierText}`
-
-          if (source === 'slot') {
-            const itemConflicts = conflicts[normalizeString(ench.name)]
-            const bonusToMatch = getBonus(ench.bonus)
-            // In DDO, bonuses with the same name and same type don't stack.
-            // We want to find the conflict that matches this enchantment's bonus type.
-            const conflict = itemConflicts?.find((c) => getBonus(c.bonus) === bonusToMatch)
-            // console.log('Enchantment:', ench.name, 'Bonus:', ench.bonus, 'Matched Conflict:', conflict);
-            const itemInConflict = conflict?.items.find((i) => i.itemId === itemId)
-            // console.log('itemId:', itemId, 'itemInConflict:', itemInConflict);
-            isOverridden = itemInConflict?.isEffective === false
-            isMax = itemInConflict?.isEffective === true
-            effectiveItems = conflict?.items.filter((i) => i.isEffective && i.itemId !== itemId) ?? []
-            overriddenItems = conflict?.items.filter((i) => !i.isEffective && i.itemId !== itemId) ?? []
-
-            // A 'Redundant' label only if:
-            // 1. We are effective (isMax)
-            // 2. We are NOT overriding anything (overriddenItems.length === 0)
-            // 3. There is another item with the EXACT same value (isRedundant)
-            isRedundant =
-              isMax && overriddenItems.length === 0 && effectiveItems.some((i) => i.value === itemInConflict?.value)
-          }
-
-          const overriddenSlotNames = Array.from(new Set(overriddenItems.map((i) => i.slot))).join(', ')
-          const effectiveSlotNames = Array.from(new Set(effectiveItems.map((i) => i.slot))).join(', ')
-
-          let className = 'text-dark'
-          if (source !== 'slot') {
-            className = 'text-dark fw-bold'
-          } else if (isOverridden) {
-            className = 'text-decoration-line-through text-secondary'
-          }
-
-          return (
-            <div
-              key={idx}
-              className={`d-flex align-items-baseline ${className}`}
-              style={source !== 'slot' ? { maxWidth: '300px' } : {}}
-            >
-              <span className='me-1 text-nowrap d-inline-flex gap-1'>
-                {source === 'slot' ? (
-                  <>
-                    {isMax && overriddenItems.length > 0 && (
-                      <Badge bg='warning' text='dark' className='px-1 py-0' style={{ fontSize: '0.6rem' }}>
-                        <small>Overrides {overriddenSlotNames}</small>
-                      </Badge>
-                    )}
-                    {isRedundant && (
-                      <Badge bg='warning' text='dark' className='px-1 py-0' style={{ fontSize: '0.6rem' }}>
-                        <small>Redundant ({effectiveSlotNames})</small>
-                      </Badge>
-                    )}
-                    {isOverridden && (
-                      <Badge bg='danger' className='px-1 py-0' style={{ fontSize: '0.6rem' }}>
-                        <small>Overridden by {effectiveSlotNames}</small>
-                      </Badge>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {potential.isConflict && potential.isRedundant && (
-                      <Badge bg='warning' text='dark' className='px-1 py-0' style={{ fontSize: '0.6rem' }}>
-                        <small>Conflicts: {potential.currentMax}</small>
-                      </Badge>
-                    )}
-                    {potential.isConflict && !potential.isRedundant && (
-                      <Badge bg='info' className='px-1 py-0' style={{ fontSize: '0.6rem' }}>
-                        <small>Upgrades: {potential.currentMax}</small>
-                      </Badge>
-                    )}
-                  </>
-                )}
-              </span>
-              <span className='text-truncate flex-grow-1' title={enchText}>
-                {enchText}
-              </span>
-            </div>
-          )
-        })}
-      </>
-    )
-  }
-)
-EnchantmentList.displayName = 'EnchantmentList'
-
-const AugmentSlotsList = ({ augments }: { augments: GearAugmentSlot[] }) => {
-  return (
-    <div className='d-flex flex-wrap gap-1 mt-1'>
-      {augments.map((slot, idx) => {
-        let bgColor = 'bg-secondary'
-        let textColor = 'text-white'
-
-        switch (slot.augmentType) {
-          case 'Red':
-            bgColor = 'bg-danger'
-            break
-          case 'Blue':
-            bgColor = 'bg-primary'
-            break
-          case 'Yellow':
-            bgColor = 'bg-warning'
-            textColor = 'text-dark'
-            break
-          case 'Purple':
-            bgColor = 'bg-purple' // Need to define in CSS
-            break
-          case 'Orange':
-            bgColor = 'bg-orange' // Need to define in CSS
-            break
-          case 'Green':
-            bgColor = 'bg-success'
-            break
-          case 'Colorless':
-            bgColor = 'bg-light'
-            textColor = 'text-dark'
-            break
-          case 'Sun':
-            bgColor = 'bg-info'
-            textColor = 'text-dark'
-            break
-          case 'Moon':
-            bgColor = 'bg-dark'
-            // eslint-disable-next-line sonarjs/no-redundant-assignments
-            textColor = 'text-white'
-            break
-        }
-
-        return (
-          <Badge
-            key={idx}
-            bg={undefined}
-            className={`px-1 py-0 ${bgColor} ${textColor} border border-dark`}
-            style={{ fontSize: '0.6rem', minWidth: '60px' }}
-          >
-            {slot.name ?? `${slot.augmentType} Slot`}
-          </Badge>
-        )
-      })}
-    </div>
-  )
-}
-
-const AugmentSlotItem = ({
-  selectedItem,
-  idx,
-  augSlot,
-  slotted,
-  applicable,
-  slot,
-  currentConflicts,
-  currentEquipped,
-  currentSlottedAugments,
-  setSlottedAugment,
-  openSetBonusBrowser
-}: {
-  selectedItem: GearItem
-  idx: number
-  augSlot: GearAugmentSlot
-  slotted: GearAugment | null | undefined
-  applicable: { groups: Record<string, GearAugment[]>; sortedGroupNames: string[] }
-  slot: GearSlot
-  currentConflicts: Record<string, EnchantmentConflict[]>
-  currentEquipped: GearItem[]
-  currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  setSlottedAugment: (itemId: string, slotIndex: number, augment: GearAugment | null, slot?: GearSlot) => void
-  openSetBonusBrowser: (setName: string) => void
-}) => {
-  return (
-    <div key={idx} className='mx-n2 px-2 py-1 mb-1 bg-white last-child-mb-0'>
-      <div className='d-flex align-items-center gap-1 mb-1'>
-        <span className='text-dark fw-bold' style={{ fontSize: '0.6rem' }}>
-          {augSlot.name ?? `${augSlot.augmentType} Slot`}
-        </span>
-      </div>
-      <Dropdown className='w-100 flex-shrink-0'>
-        <Dropdown.Toggle
-          variant='outline-dark'
-          id={`aug-drop-${selectedItem.id}-${String(idx)}`}
-          className='w-100 py-0 px-2 text-start d-flex justify-content-between align-items-center gear-planner-augment-toggle'
-          style={{ fontSize: '0.65rem', minHeight: '20px', backgroundColor: 'rgba(0,0,0,0.05)' }}
-        >
-          <span className='text-truncate text-dark'>
-            {slotted ? `${slotted.name} (ML:${String(slotted.minimumLevel)})` : 'Empty Slot'}
-          </span>
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu
-          className='gear-planner-augment-menu'
-          style={{ fontSize: '0.65rem', maxHeight: '200px', overflowY: 'auto' }}
-        >
-          <Dropdown.Item
-            onClick={() => {
-              setSlottedAugment(selectedItem.id, idx, null, slot)
-            }}
-          >
-            Empty Slot
-          </Dropdown.Item>
-          <Dropdown.Divider />
-          {applicable.sortedGroupNames.map((groupName) => (
-            <React.Fragment key={groupName}>
-              <Dropdown.Header className='text-light fw-bold py-0 ps-1' style={{ fontSize: '0.6rem' }}>
-                {groupName} Augments
-              </Dropdown.Header>
-              {applicable.groups[groupName].map((aug) => {
-                const hasConflict = aug.effectsAdded?.some((ench) => {
-                  const pot = checkPotentialConflict(ench, currentEquipped, slot, currentSlottedAugments)
-                  return pot.isConflict && pot.isRedundant
-                })
-                const hasUpgrade = aug.effectsAdded?.some((ench) => {
-                  const pot = checkPotentialConflict(ench, currentEquipped, slot, currentSlottedAugments)
-                  return pot.isConflict && !pot.isRedundant
-                })
-
-                return (
-                  <Dropdown.Item
-                    key={`${aug.name}-${String(aug.minimumLevel)}`}
-                    onClick={() => {
-                      setSlottedAugment(selectedItem.id, idx, aug, slot)
-                    }}
-                    active={slotted?.name === aug.name}
-                    className='d-flex align-items-center justify-content-between'
-                  >
-                    <span className='text-truncate'>
-                      {aug.name} (ML:{aug.minimumLevel})
-                    </span>
-                    <span className='ms-2 flex-shrink-0'>
-                      {hasConflict && (
-                        <Badge bg='warning' text='dark' className='px-1 py-0 ms-1' style={{ fontSize: '0.55rem' }}>
-                          Conflicting
-                        </Badge>
-                      )}
-                      {hasUpgrade && (
-                        <Badge bg='info' className='px-1 py-0 ms-1' style={{ fontSize: '0.55rem' }}>
-                          Upgrade
-                        </Badge>
-                      )}
-                    </span>
-                  </Dropdown.Item>
-                )
-              })}
-            </React.Fragment>
-          ))}
-        </Dropdown.Menu>
-      </Dropdown>
-      {slotted?.setBonus && slotted.setBonus.length > 0 && (
-        <div className='mt-1 ps-2 mb-1'>
-          {slotted.setBonus.map((sb) => (
-            <Badge
-              key={sb.name}
-              bg='warning'
-              text='dark'
-              className='me-1 set-bonus-badge-clickable'
-              style={{ fontSize: '0.6rem' }}
-              onClick={() => {
-                openSetBonusBrowser(sb.name)
-              }}
-            >
-              Set: {sb.name}
-            </Badge>
-          ))}
-        </div>
-      )}
-      {slotted?.effectsAdded && (
-        <div
-          className='mt-1 ps-2 border-start border-2 gear-planner-augment-enchantments flex-grow-1'
-          style={{ fontSize: '0.65rem', minHeight: '0' }}
-        >
-          <EnchantmentList
-            enchantments={slotted.effectsAdded}
-            itemId={`${selectedItem.id}-aug-${String(idx)}`}
-            conflicts={currentConflicts}
-            equippedItems={currentEquipped}
-            source='slot'
-            browsingSlot={slot}
-            slottedAugments={currentSlottedAugments}
-          />
-        </div>
-      )}
-    </div>
-  )
-}
-
-const SearchResultSlot = ({
-  slot,
-  items,
-  getContextInfo,
-  selectItem,
-  setShowEnchantmentSearch,
-  openSetBonusBrowser
-}: {
-  slot: string
-  items: GearItem[]
-  getContextInfo: (slot: string) => {
-    currentConflicts: Record<string, EnchantmentConflict[]>
-    currentEquipped: GearItem[]
-    currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  }
-  selectItem: (slot: GearSlot, item: GearItem | null) => void
-  setShowEnchantmentSearch: (show: boolean) => void
-  openSetBonusBrowser: (setName: string) => void
-}) => {
-  const { currentConflicts, currentEquipped, currentSlottedAugments } = getContextInfo(slot)
-
-  return (
-    <Accordion.Item eventKey={slot} key={slot}>
-      <Accordion.Header className='small fw-bold'>
-        {slot} ({items.length})
-      </Accordion.Header>
-      <Accordion.Body className='p-2 bg-dark'>
-        <Stack gap={2}>
-          {items.map((item) => (
-            <Card
-              key={item.id}
-              className='shadow-sm cursor-pointer border-secondary bg-white text-dark position-relative'
-              onClick={() => {
-                selectItem(item.slot, item)
-                setShowEnchantmentSearch(false)
-              }}
-            >
-              <Card.Body className='p-2'>
-                {currentEquipped.some((e) => e.id === item.id) && (
-                  <Badge
-                    bg='success'
-                    className='position-absolute top-0 end-0 m-1 shadow-sm'
-                    style={{ fontSize: '0.6rem', zIndex: 1 }}
-                  >
-                    Equipped
-                  </Badge>
-                )}
-                <div className='fw-bold small text-truncate text-dark'>{item.name}</div>
-                <div className='text-dark fw-medium' style={{ fontSize: '0.7rem' }}>
-                  ML: {item.minLevel || '1'} | {item.artifacttype || 'Item'}
-                </div>
-                {item.setBonus && item.setBonus.length > 0 && (
-                  <div className='mt-1 mb-1'>
-                    {item.setBonus.map((sb) => (
-                      <Badge
-                        key={sb.name}
-                        bg='warning'
-                        text='dark'
-                        className='me-1 set-bonus-badge-clickable'
-                        style={{ fontSize: '0.6rem' }}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          openSetBonusBrowser(sb.name)
-                        }}
-                      >
-                        Set: {sb.name}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-                {item.augments && item.augments.length > 0 && <AugmentSlotsList augments={item.augments} />}
-                {item.enchantments && item.enchantments.length > 0 && (
-                  <div
-                    className='mt-1 pt-1 border-top border-secondary-subtle overflow-hidden'
-                    style={{ fontSize: '0.7rem' }}
-                  >
-                    <EnchantmentList
-                      enchantments={item.enchantments}
-                      itemId={item.id}
-                      conflicts={currentConflicts}
-                      equippedItems={currentEquipped}
-                      source='search'
-                      browsingSlot={item.slot}
-                      slottedAugments={currentSlottedAugments}
-                    />
-                  </div>
-                )}
-              </Card.Body>
-            </Card>
-          ))}
-        </Stack>
-      </Accordion.Body>
-    </Accordion.Item>
-  )
-}
-
-const BrowserItem = ({
-  item,
-  browsingSlot,
-  currentConflicts,
-  currentEquipped,
-  currentSlottedAugments,
-  selectItem,
-  isMetal,
-  openSetBonusBrowser
-}: {
-  item: GearItem
-  browsingSlot: GearSlot
-  currentConflicts: Record<string, EnchantmentConflict[]>
-  currentEquipped: GearItem[]
-  currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  selectItem: (slot: GearSlot, item: GearItem | null) => void
-  isMetal: (material: string | null | undefined) => boolean
-  openSetBonusBrowser: (setName: string) => void
-}) => {
-  return (
-    <button
-      key={item.id}
-      className='list-group-item list-group-item-action d-flex justify-content-between align-items-start position-relative'
-      onClick={() => {
-        if (browsingSlot) selectItem(browsingSlot, item)
-      }}
-    >
-      <div className='w-100'>
-        <div className='d-flex justify-content-between align-items-center'>
-          <div className='fw-bold text-white fs-6'>
-            {currentEquipped.some((e) => e.id === item.id) && (
-              <Badge bg='success' className='me-2' style={{ fontSize: '0.6rem' }}>
-                Equipped
-              </Badge>
-            )}
-            {item.name}
-          </div>
-          <Badge bg='info' pill>
-            Select
-          </Badge>
-        </div>
-        {item.setBonus && item.setBonus.length > 0 && (
-          <div className='mt-1 mb-1'>
-            {item.setBonus.map((sb) => (
-              <Badge
-                key={sb.name}
-                bg='warning'
-                text='dark'
-                className='me-1 set-bonus-badge-clickable'
-                style={{ fontSize: '0.65rem' }}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  openSetBonusBrowser(sb.name)
-                }}
-              >
-                Set: {sb.name}
-              </Badge>
-            ))}
-          </div>
-        )}
-        {item.augments && item.augments.length > 0 && <AugmentSlotsList augments={item.augments} />}
-        <div className='text-light small mb-1'>
-          ML: {item.minLevel || '1'} | {item.artifacttype || 'Item'} | Material:{' '}
-          <span className={`fw-bold ${isMetal(item.material) ? 'text-danger' : 'text-success'}`}>
-            {item.material || 'Unknown'}
-          </span>
-        </div>
-        {item.enchantments && item.enchantments.length > 0 && (
-          <div
-            className='mt-1 gear-planner-enchantment-box px-2 py-1 rounded small border border-1 border-dark shadow'
-            style={{ fontSize: '0.7rem' }}
-          >
-            <div className='d-flex flex-wrap gap-2'>
-              <EnchantmentList
-                enchantments={item.enchantments}
-                itemId={item.id}
-                conflicts={currentConflicts}
-                equippedItems={currentEquipped}
-                source='browser'
-                browsingSlot={browsingSlot}
-                slottedAugments={currentSlottedAugments}
-              />
-            </div>
-          </div>
-        )}
-      </div>
-    </button>
-  )
-}
 
 const WeaponCategory = ({
   category,
@@ -1238,13 +467,14 @@ const GearPlanner = () => {
     const searchLower = enchantmentSearch.toLowerCase().trim()
 
     const itemMatchesSearch = (item: GearItem) => {
-      // Class-Pet visibility filter
+      if (!activeSetup) return false
+
+      // Basic visibility check
       if (!isItemVisibleForClasses(item, activeSetup)) return false
 
-      // Conflict/Lesser enchantment filter
-      if (!showConflicts && isItemConflicting(item, item.slot)) {
-        return false
-      }
+      // Respect all filters (level, weapon/armor types, conflicts, etc.)
+      // We ignore the active set filter because we want to search all items.
+      if (!shouldShowItem(item, item.slot, activeSetup, true)) return false
 
       let matchesSetName = false
       for (const setName of Object.keys(setBonusIndex)) {
@@ -1277,15 +507,7 @@ const GearPlanner = () => {
         acc[item.slot].push(item)
         return acc
       }, {})
-  }, [
-    enchantmentSearch,
-    allItems,
-    isItemConflicting,
-    showConflicts,
-    setBonusIndex,
-    activeSetup,
-    isItemVisibleForClasses
-  ])
+  }, [enchantmentSearch, allItems, shouldShowItem, setBonusIndex, activeSetup, isItemVisibleForClasses])
 
   const updateClassProficiencies = (setup: GearSetup, oldClasses: (string | null)[], newClasses: (string | null)[]) => {
     // 1. Identify what filters are granted by OLD classes
@@ -1587,75 +809,7 @@ const GearPlanner = () => {
         <FaChevronRight className={showSidebar ? 'rotate-180' : ''} style={{ transition: 'transform 0.3s' }} />
       </Button>
 
-      <Offcanvas
-        show={showSidebar}
-        onHide={() => {
-          setShowSidebar(false)
-        }}
-        scroll
-        className='gear-planner-sidebar gear-planner-offcanvas'
-      >
-        <Offcanvas.Header closeButton className='bg-primary text-white py-2'>
-          <Offcanvas.Title className='fs-6'>Character Settings</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body className='p-3 bg-dark text-white'>
-          <div className='mb-3 border-bottom pb-2'>
-            <div className='fw-bold text-info small'>Current Setup</div>
-            <div className='fs-5 text-truncate'>{activeSetup.name}</div>
-          </div>
-          <div className='mb-3 border-bottom pb-2'>
-            <div className='fw-bold text-info small'>Level Range</div>
-            <div className='fs-6'>
-              ML {activeSetup.minLevel} - {activeSetup.maxLevel}
-            </div>
-          </div>
-          <div className='mb-3'>
-            <div className='fw-bold text-info small mb-1'>Classes</div>
-            {activeSetup.classes.filter((c) => c !== null).length > 0 ? (
-              <Stack gap={1} className='mb-3'>
-                {activeSetup.classes.map(
-                  (cls, idx) =>
-                    cls && (
-                      <Badge key={idx} bg='secondary' className='w-fit text-start py-1 px-2'>
-                        {cls}
-                      </Badge>
-                    )
-                )}
-              </Stack>
-            ) : (
-              <div className='small italic text-secondary mb-3'>No classes selected</div>
-            )}
-          </div>
-          <div className='mb-3'>
-            <div className='fw-bold text-info small mb-1'>Weapon Filters</div>
-            {activeSetup.weaponFilters.length > 0 ? (
-              <div className='d-flex flex-wrap gap-1 mb-3'>
-                {activeSetup.weaponFilters.map((w) => (
-                  <Badge key={w} bg='dark' className='border border-secondary small'>
-                    {w}
-                  </Badge>
-                ))}
-              </div>
-            ) : (
-              <div className='small italic text-secondary mb-3'>No weapon filters</div>
-            )}
-          </div>
-          <div className='mb-3'>
-            <div className='fw-bold text-info small mb-1'>Armor Filters</div>
-            {activeSetup.armorFilters.length > 0 ? (
-              <div className='d-flex flex-wrap gap-1'>
-                {activeSetup.armorFilters.map((a) => (
-                  <Badge key={a} bg='dark' className='border border-secondary small'>
-                    {a}
-                  </Badge>
-                ))}
-              </div>
-            ) : (
-              <div className='small italic text-secondary'>No armor filters</div>
-            )}
-          </div>
-        </Offcanvas.Body>
-      </Offcanvas>
+      <CharacterSettingsSidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} activeSetup={activeSetup} />
 
       <Container fluid='lg' className='py-4'>
         <Card className='shadow'>
@@ -1747,6 +901,7 @@ const GearPlanner = () => {
                       slottedAugments={activeSetup.slottedAugments}
                       onSetClick={openSetBrowser}
                     />
+
                     <EnchantmentsSummary
                       equippedItems={characterEquipped}
                       slottedAugments={activeSetup.slottedAugments}
@@ -1990,276 +1145,51 @@ const GearPlanner = () => {
           </Modal.Footer>
         </Modal>
 
-        <Offcanvas
-          show={showEnchantmentSearch}
-          onHide={() => {
-            setShowEnchantmentSearch(false)
-          }}
-          placement='end'
-          scroll
-          className='gear-planner-enchantment-search gear-planner-offcanvas'
-        >
-          <Offcanvas.Header closeButton className='bg-primary text-white py-2'>
-            <Offcanvas.Title className='fs-6'>Enchantment or Set Bonus Search</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body className='p-3 bg-dark text-white'>
-            <div className='mb-3 position-relative'>
-              <Form.Control
-                type='text'
-                placeholder='Search by name, enchantment, or set bonus (min 3 chars)...'
-                size='sm'
-                value={enchantmentSearch}
-                autoFocus
-                onChange={(e) => {
-                  setEnchantmentSearch(e.target.value)
-                }}
-                className='bg-light text-dark pe-4'
-              />
-              {enchantmentSearch && (
-                <div
-                  className='position-absolute end-0 top-50 translate-middle-y pe-2 cursor-pointer'
-                  onClick={() => {
-                    setEnchantmentSearch('')
-                  }}
-                >
-                  <FaXmark size={14} className='text-muted' />
-                </div>
-              )}
-            </div>
+        <EnchantmentSearchOffcanvas
+          showEnchantmentSearch={showEnchantmentSearch}
+          setShowEnchantmentSearch={setShowEnchantmentSearch}
+          enchantmentSearch={enchantmentSearch}
+          setEnchantmentSearch={setEnchantmentSearch}
+          showConflicts={showConflicts}
+          setShowConflicts={setShowConflicts}
+          searchResultsBySlot={searchResultsBySlot}
+          getContextInfo={getContextInfo}
+          selectItem={selectItem}
+          openSetBonusBrowser={openSetBonusBrowser}
+        />
 
-            <div className='mb-3'>
-              <Form.Check
-                type='checkbox'
-                id='show-conflicts-search'
-                label='Show conflicting/lesser items'
-                checked={showConflicts}
-                onChange={(e) => {
-                  setShowConflicts(e.target.checked)
-                }}
-                className='small text-info'
-              />
-            </div>
+        <SetBonusBrowserOffcanvas
+          showSetBonusBrowser={showSetBonusBrowser}
+          setShowSetBonusBrowser={setShowSetBonusBrowser}
+          browsingSet={browsingSet}
+          setBrowsingSet={setBrowsingSet}
+          filteredSets={filteredSets}
+          setBonusIndex={setBonusIndex}
+          activeSetup={activeSetup}
+          allItems={allItems}
+          isItemVisibleForClasses={isItemVisibleForClasses}
+          getContextInfo={getContextInfo}
+          selectItem={selectItem}
+          openSetBonusBrowser={openSetBonusBrowser}
+        />
 
-            <div className='mt-3 overflow-auto' style={{ maxHeight: 'calc(100vh - 150px)' }}>
-              {(() => {
-                if (enchantmentSearch.length <= 2) {
-                  return (
-                    <div className='text-center py-4 text-secondary small'>Type at least 3 characters to search.</div>
-                  )
-                }
-
-                if (!searchResultsBySlot || Object.keys(searchResultsBySlot).length === 0) {
-                  return (
-                    <div className='text-center py-4 text-secondary small'>No items found with that enchantment.</div>
-                  )
-                }
-
-                return (
-                  <Accordion data-bs-theme='dark'>
-                    {Object.entries(searchResultsBySlot).map(([slot, items]) => (
-                      <SearchResultSlot
-                        key={slot}
-                        slot={slot}
-                        items={items}
-                        getContextInfo={getContextInfo}
-                        selectItem={selectItem}
-                        setShowEnchantmentSearch={setShowEnchantmentSearch}
-                        openSetBonusBrowser={openSetBonusBrowser}
-                      />
-                    ))}
-                  </Accordion>
-                )
-              })()}
-            </div>
-          </Offcanvas.Body>
-        </Offcanvas>
-
-        <Offcanvas
-          show={showSetBonusBrowser}
-          onHide={() => {
-            setShowSetBonusBrowser(false)
-          }}
-          placement='end'
-          scroll
-          className='gear-planner-set-bonus-browser gear-planner-offcanvas'
-        >
-          <Offcanvas.Header closeButton className='bg-primary text-white'>
-            <Offcanvas.Title>Browse Set Bonuses</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body className='bg-dark text-white p-3'>
-            <Form.Group className='mb-3'>
-              <Form.Label className='small text-info fw-bold'>Select a Set</Form.Label>
-              <Form.Select
-                size='sm'
-                className='bg-light text-dark'
-                value={browsingSet ?? ''}
-                onChange={(e) => {
-                  setBrowsingSet(e.target.value || null)
-                }}
-              >
-                <option value=''>Choose a set...</option>
-                {filteredSets.map((setName) => (
-                  <option key={setName} value={setName}>
-                    {setName}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-
-            {browsingSet && (
-              <div className='mt-4'>
-                <h6 className='text-info border-bottom border-info pb-2 mb-3'>Items in: {browsingSet}</h6>
-                <div className='overflow-auto' style={{ maxHeight: 'calc(100vh - 200px)' }}>
-                  {(() => {
-                    const indexedItems = setBonusIndex[browsingSet ?? ''] || []
-                    const min = activeSetup?.minLevel ?? 1
-                    const max = activeSetup?.maxLevel ?? 34
-                    const setItemResults = allItems.filter((item) => {
-                      const itemLevel = Number(item.minLevel)
-                      if (itemLevel < min || itemLevel > max) return false
-                      if (!isItemVisibleForClasses(item, activeSetup)) return false
-                      return indexedItems.some((ii) => ii.name === item.name && ii.minLevel === itemLevel)
-                    })
-
-                    if (setItemResults.length === 0) {
-                      return (
-                        <div className='text-center py-4 text-secondary small'>
-                          No items found for this set in the selected level range.
-                        </div>
-                      )
-                    }
-
-                    // Group by slot
-                    const grouped: Record<string, GearItem[]> = {}
-                    setItemResults.forEach((item) => {
-                      const slotKey = item.slot || 'Other'
-                      if (!grouped[slotKey]) grouped[slotKey] = []
-                      grouped[slotKey].push(item)
-                    })
-
-                    return (
-                      <Accordion data-bs-theme='dark'>
-                        {Object.entries(grouped).map(([slot, items]) => (
-                          <SearchResultSlot
-                            key={slot}
-                            slot={slot}
-                            items={items}
-                            getContextInfo={getContextInfo}
-                            selectItem={selectItem}
-                            setShowEnchantmentSearch={() => {
-                              /* Don't close for set bonus browser */
-                            }}
-                            openSetBonusBrowser={openSetBonusBrowser}
-                          />
-                        ))}
-                      </Accordion>
-                    )
-                  })()}
-                </div>
-              </div>
-            )}
-          </Offcanvas.Body>
-        </Offcanvas>
-
-        <Offcanvas
-          show={browsingSlot !== null}
-          onHide={() => {
-            openSlotBrowser(null)
-          }}
-          placement='end'
-          scroll
-          className='gear-planner-item-browser gear-planner-offcanvas'
-        >
-          <Offcanvas.Header closeButton className='bg-primary text-white'>
-            <Offcanvas.Title>Select Item for {browsingSlot}</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            {browsingSlot && (
-              <>
-                {(() => {
-                  const { currentConflicts, currentEquipped, currentSlottedAugments } = getContextInfo(browsingSlot)
-
-                  return (
-                    <>
-                      <div className='mb-3'>
-                        <p className='text-light small mb-2'>
-                          Showing {Math.min(itemsToShow, filteredItems.length)} of {filteredItems.length} results for{' '}
-                          <strong>{browsingSlot}</strong> (Levels {activeSetup.minLevel}-{activeSetup.maxLevel})
-                        </p>
-                        <Form.Check
-                          type='checkbox'
-                          id='show-conflicts-browser'
-                          label='Show conflicting/lesser items'
-                          checked={showConflicts}
-                          onChange={(e) => {
-                            setShowConflicts(e.target.checked)
-                          }}
-                          className='small text-info'
-                        />
-                        <Form.Group className='mt-2'>
-                          <Form.Select
-                            size='sm'
-                            className='bg-light text-dark'
-                            value={setBonusFilter ?? ''}
-                            onChange={(e) => {
-                              setSetBonusFilter(e.target.value || null)
-                            }}
-                          >
-                            <option value=''>All Set Bonuses (Filter...)</option>
-                            {filteredSets.map((setName) => (
-                              <option key={setName} value={setName}>
-                                {setName}
-                              </option>
-                            ))}
-                          </Form.Select>
-                        </Form.Group>
-                      </div>
-                      <div className='list-group shadow-sm'>
-                        <button
-                          className='list-group-item list-group-item-action text-danger d-flex justify-content-between align-items-center'
-                          onClick={() => {
-                            if (browsingSlot) selectItem(browsingSlot, null)
-                          }}
-                        >
-                          <span>Clear Slot</span>
-                          <FaXmark />
-                        </button>
-                        {filteredItems.slice(0, itemsToShow).map((item) => (
-                          <BrowserItem
-                            key={item.id}
-                            item={item}
-                            browsingSlot={browsingSlot}
-                            currentConflicts={currentConflicts}
-                            currentEquipped={currentEquipped}
-                            currentSlottedAugments={currentSlottedAugments}
-                            selectItem={selectItem}
-                            isMetal={isMetal}
-                            openSetBonusBrowser={openSetBonusBrowser}
-                          />
-                        ))}
-                        {filteredItems.length === 0 && (
-                          <div className='list-group-item text-center py-4 text-light'>
-                            No items found for this slot.
-                          </div>
-                        )}
-                        {itemsToShow < filteredItems.length && (
-                          <div
-                            ref={observerTarget}
-                            className='list-group-item text-center py-3 border-0 bg-transparent'
-                          >
-                            <div className='spinner-border spinner-border-sm text-primary' role='status'>
-                              <span className='visually-hidden'>Loading more...</span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </>
-                  )
-                })()}
-              </>
-            )}
-          </Offcanvas.Body>
-        </Offcanvas>
+        <ItemBrowserOffcanvas
+          browsingSlot={browsingSlot}
+          openSlotBrowser={openSlotBrowser}
+          itemsToShow={itemsToShow}
+          filteredItems={filteredItems}
+          activeSetup={activeSetup}
+          showConflicts={showConflicts}
+          setShowConflicts={setShowConflicts}
+          setBonusFilter={setBonusFilter}
+          setSetBonusFilter={setSetBonusFilter}
+          filteredSets={filteredSets}
+          getContextInfo={getContextInfo}
+          selectItem={selectItem}
+          isMetal={isMetal}
+          openSetBonusBrowser={openSetBonusBrowser}
+          observerTarget={observerTarget}
+        />
       </Container>
     </div>
   )
