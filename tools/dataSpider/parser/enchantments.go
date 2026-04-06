@@ -2961,7 +2961,7 @@ func parseTemplateReturning(rawRetValue string) *api.Enchantment {
 		name = baseName
 	} else {
 		// Otherwise, it's descriptive
-		name = fmt.Sprintf("%s (%s%% Chance)", baseName, percent)
+		name = fmt.Sprintf("%s (%s% Chance)", baseName, percent)
 	}
 
 	return &api.Enchantment{
@@ -4298,7 +4298,7 @@ func parseTemplateMagicalEfficiency(rawMEValue string) *api.Enchantment {
 	// The amount must be stored as a negative percentage (e.g., 5 -> -5%)
 	amount := ""
 	if num, err := strconv.Atoi(amountRaw); err == nil {
-		amount = fmt.Sprintf("-%d%%", num)
+		amount = fmt.Sprintf("-%d%", num)
 	} else {
 		// If conversion fails (e.g., amount is 'I', 'V'), use raw value with a negative prefix
 		amount = "-" + amountRaw + "%"
@@ -4374,7 +4374,7 @@ func parseTemplateDiversion(rawDivValue string) []*api.Enchantment {
 	if err != nil {
 		return nil
 	} // Amount must be convertible to number
-	amount := fmt.Sprintf("-%d%%", amountNum)
+	amount := fmt.Sprintf("-%d%", amountNum)
 
 	styleFlags, exists := diversionStyles[normalizedStyle]
 	if !exists {
@@ -4445,16 +4445,16 @@ func parseTemplateTendonSlice(rawTSValue string) *api.Enchantment {
 	case "percent":
 		name = "Tendon Slice " + amount + "%"
 		displayAmount = amount + "%"
-		notes = fmt.Sprintf("This effect gives a %s%% chance to Hamstring the target for each attack that does damage.", amount)
+		notes = fmt.Sprintf("This effect gives a %s% chance to Hamstring the target for each attack that does damage.", amount)
 	case "time":
 		name = "Tendon Slice " + amount
-		notes = fmt.Sprintf("On Hit: 6%% chance to slow target's movement by 50%% for %s seconds.", amount)
+		notes = fmt.Sprintf("On Hit: 6% chance to slow target's movement by 50%% for %s seconds.", amount)
 	default:
 		// Default: On Hit: {{#expr:{{{1}}}*2}}% chance to slow target's movement by 50% for 3 seconds.
 		val := 0
 		fmt.Sscanf(amount, "%d", &val)
 		name = "Tendon Slice " + amount
-		notes = fmt.Sprintf("On Hit: %d%% chance to slow target's movement by 50%% for 3 seconds.", val*2)
+		notes = fmt.Sprintf("On Hit: %d% chance to slow target's movement by 50%% for 3 seconds.", val*2)
 	}
 
 	return &api.Enchantment{
@@ -11858,7 +11858,7 @@ func parseTemplateFireShield(raw string) *api.Enchantment {
 		otherVersion = "Hot"
 	}
 
-	notes := fmt.Sprintf("When you are %s, there is a 10%% chance that Fire Shield (%s) will be cast on you. If this effect activates while you have an active Fire Shield (%s) from another item source, they will nullify each other.", trigger, version, otherVersion)
+	notes := fmt.Sprintf("When you are %s, there is a 10% chance that Fire Shield (%s) will be cast on you. If this effect activates while you have an active Fire Shield (%s) from another item source, they will nullify each other.", trigger, version, otherVersion)
 
 	return &api.Enchantment{
 		Name:  name,
@@ -13364,10 +13364,10 @@ func parseTemplateLifesealed(raw string) []*api.Enchantment {
 	// 2. Negative Energy Absorption
 	name := "Negative Energy Absorption"
 	if amount != "" {
-		name = fmt.Sprintf("Negative Energy Absorption %s%%", amount)
+		name = fmt.Sprintf("Negative Energy Absorption %s%", amount)
 	}
 
-	notes := fmt.Sprintf("You have a %s%% %s bonus to Negative Energy Absorption.", amount, bonusType)
+	notes := fmt.Sprintf("You have a %s% %s bonus to Negative Energy Absorption.", amount, bonusType)
 
 	results = append(results, &api.Enchantment{
 		Name:      name,
@@ -13986,7 +13986,7 @@ func parseTemplateVulnerability(raw string) *api.Enchantment {
 		vulnerableType = element + " Vulnerable"
 	}
 
-	notes := fmt.Sprintf("On Hit: Applies a stack of %s (%s%% more damage for 3 seconds. This effect stacks up to 20 times, and loses one stack on expiration.). This effect may only occur on-hit once a second.", vulnerableType, percentage)
+	notes := fmt.Sprintf("On Hit: Applies a stack of %s (%s% more damage for 3 seconds. This effect stacks up to 20 times, and loses one stack on expiration.). This effect may only occur on-hit once a second.", vulnerableType, percentage)
 
 	return &api.Enchantment{
 		Name:  name,
