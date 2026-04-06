@@ -1,5 +1,6 @@
 import { Accordion, Form, Offcanvas } from 'react-bootstrap'
 import { FaXmark } from 'react-icons/fa6'
+import type { ItemRollup } from '../../../components/trove/types'
 import type { EnchantmentConflict } from '../conflictResolver'
 import { type GearAugment, type GearItem, GearSlot } from '../types'
 import SearchResultSlot from './SearchResultSlot'
@@ -15,7 +16,8 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
     setShowConflicts,
     setShowEnchantmentSearch,
     showConflicts,
-    showEnchantmentSearch
+    showEnchantmentSearch,
+    troveData
   } = props
 
   return (
@@ -91,6 +93,7 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
                     selectItem={selectItem}
                     setShowEnchantmentSearch={setShowEnchantmentSearch}
                     openSetBonusBrowser={openSetBonusBrowser}
+                    troveData={troveData}
                   />
                 ))}
               </Accordion>
@@ -117,6 +120,7 @@ interface Props {
   }
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   openSetBonusBrowser: (setName: string) => void
+  troveData: ItemRollup | null
 }
 
 export default EnchantmentSearchOffcanvas

@@ -1,4 +1,6 @@
 import { Accordion, Form, Offcanvas } from 'react-bootstrap'
+import type { ItemRollup } from '../../../components/trove/types'
+import { normItem } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver'
 import {
   type GearAugment,
@@ -22,7 +24,8 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
     setBonusIndex,
     setBrowsingSet,
     setShowSetBonusBrowser,
-    showSetBonusBrowser
+    showSetBonusBrowser,
+    troveData
   } = props
 
   return (
@@ -105,6 +108,7 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                           /* Don't close for set bonus browser */
                         }}
                         openSetBonusBrowser={openSetBonusBrowser}
+                        troveData={troveData}
                       />
                     ))}
                   </Accordion>
@@ -135,6 +139,7 @@ interface Props {
   }
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   openSetBonusBrowser: (setName: string) => void
+  troveData: ItemRollup | null
 }
 
 export default SetBonusBrowserOffcanvas

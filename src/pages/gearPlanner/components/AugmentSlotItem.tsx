@@ -1,5 +1,7 @@
 import React from 'react'
 import { Badge, Dropdown } from 'react-bootstrap'
+import { useAppSelector } from '../../../redux/hooks.ts'
+import { getTroveOwners, normItem } from '../../../utils/troveUtils.ts'
 import { checkPotentialConflict, type EnchantmentConflict } from '../conflictResolver.ts'
 import { type GearAugment, type GearAugmentSlot, type GearItem, GearSlot } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
@@ -19,6 +21,8 @@ const AugmentSlotItem = (props: Props) => {
     slotted
   } = props
 
+  const { troveData } = useAppSelector((state) => state.app)
+
   return (
     <div key={idx} className='mx-n2 px-2 py-1 mb-1 bg-white last-child-mb-0'>
       <div className='d-flex align-items-center gap-1 mb-1'>
@@ -34,7 +38,19 @@ const AugmentSlotItem = (props: Props) => {
           className='w-100 py-0 px-2 text-start d-flex justify-content-between align-items-center gear-planner-augment-toggle'
           style={{ fontSize: '0.65rem', minHeight: '20px', backgroundColor: 'rgba(0,0,0,0.05)' }}
         >
-          <span className='text-truncate text-dark'>
+          <span className='text-truncate text-dark d-flex align-items-center'>
+            {slotted &&
+              (() => {
+                const troveEntry = troveData?.[normItem(slotted.name)]
+                if (!troveEntry) return null
+                const owners = getTroveOwners(troveEntry)
+                if (!owners) return null
+                return (
+                  <Badge bg='primary' className='px-1 py-0 me-1 shadow-sm' style={{ fontSize: '0.55rem' }}>
+                    {owners}
+                  </Badge>
+                )
+              })()}
             {slotted ? `${slotted.name} (ML:${String(slotted.minimumLevel)})` : 'Empty Slot'}
           </span>
         </Dropdown.Toggle>
@@ -70,6 +86,9 @@ const AugmentSlotItem = (props: Props) => {
                   return pot.isConflict && !pot.isRedundant
                 })
 
+                const troveEntry = troveData?.[normItem(aug.name)]
+                const owners = troveEntry ? getTroveOwners(troveEntry) : ''
+
                 return (
                   <Dropdown.Item
                     key={`${aug.name}-${String(aug.minimumLevel)}`}
@@ -80,6 +99,11 @@ const AugmentSlotItem = (props: Props) => {
                     className='d-flex align-items-center justify-content-between'
                   >
                     <span className='text-truncate'>
+                      {owners && (
+                        <Badge bg='primary' className='px-1 py-0 me-1' style={{ fontSize: '0.55rem' }}>
+                          {owners}
+                        </Badge>
+                      )}
                       {aug.name} (ML:{aug.minimumLevel})
                     </span>
                     <span className='ms-2 flex-shrink-0'>

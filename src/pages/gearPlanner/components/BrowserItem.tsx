@@ -1,4 +1,6 @@
 import { Badge } from 'react-bootstrap'
+import { useAppSelector } from '../../../redux/hooks.ts'
+import { getTroveOwners, normItem } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import { type GearAugment, type GearItem, GearSlot } from '../types.ts'
 import AugmentSlotsList from './AugmentSlotList.tsx'
@@ -16,6 +18,11 @@ const BrowserItem = (props: Props) => {
     selectItem
   } = props
 
+  const { troveData } = useAppSelector((state) => state.app)
+
+  const troveEntry = troveData?.[normItem(item.name)]
+  const owners = troveEntry ? getTroveOwners(troveEntry) : ''
+
   return (
     <button
       key={item.id}
@@ -25,19 +32,28 @@ const BrowserItem = (props: Props) => {
       }}
     >
       <div className='w-100'>
-        <div className='d-flex justify-content-between align-items-center'>
+        <div className='d-flex justify-content-between align-items-center mb-1'>
           <div className='fw-bold text-white fs-6'>
             {currentEquipped.some((e) => e.id === item.id) && (
               <Badge bg='success' className='me-2' style={{ fontSize: '0.6rem' }}>
                 Equipped
               </Badge>
             )}
+
             {item.name}
+
+            {owners && (
+              <Badge bg='primary' className='me-2' style={{ fontSize: '0.6rem' }}>
+                {owners}
+              </Badge>
+            )}
           </div>
+
           <Badge bg='info' pill>
             Select
           </Badge>
         </div>
+
         {item.setBonus && item.setBonus.length > 0 && (
           <div className='mt-1 mb-1'>
             {item.setBonus.map((sb) => (

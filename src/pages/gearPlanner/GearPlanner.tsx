@@ -10,6 +10,7 @@ import {
   setAugment as setAugmentAction,
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
+import { getTroveOwners, normItem } from '../../utils/troveUtils.ts'
 import AugmentSlotItem from './components/AugmentSlotItem.tsx'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
 import EnchantmentList from './components/EnchantmentList.tsx'
@@ -83,6 +84,7 @@ const GearPlanner = () => {
     artificerPet,
     druidPet
   } = useAppSelector((state) => state.gearPlanner)
+  const { troveData } = useAppSelector((state) => state.app)
 
   const [allItems, setAllItems] = useState<GearItem[]>([])
   const [allAugments, setAllAugments] = useState<GearAugment[]>([])
@@ -679,7 +681,21 @@ const GearPlanner = () => {
               openSlotBrowser(slot)
             }}
           >
-            <span>{slot}</span>
+            <div className='d-flex align-items-center gap-2'>
+              <span>{slot}</span>
+              {selectedItem &&
+                (() => {
+                  const troveEntry = troveData?.[normItem(selectedItem.name)]
+                  if (!troveEntry) return null
+                  const owners = getTroveOwners(troveEntry)
+                  if (!owners) return null
+                  return (
+                    <Badge bg='primary' className='shadow-sm' style={{ fontSize: '0.6rem' }}>
+                      {owners}
+                    </Badge>
+                  )
+                })()}
+            </div>
             <FaMagnifyingGlass className='text-muted' size={12} />
           </Card.Header>
           <Card.Body
@@ -689,11 +705,22 @@ const GearPlanner = () => {
             {selectedItem ? (
               <div className='text-center w-100 d-flex flex-column'>
                 <div className='fw-bold small text-dark mb-1'>{selectedItem.name}</div>
-                <div className='text-secondary mb-1' style={{ fontSize: '0.7rem' }}>
+                <div className='text-secondary mb-0' style={{ fontSize: '0.7rem' }}>
                   ML: {selectedItem.minLevel || '1'} | {selectedItem.type || 'Item'}
+                  {selectedItem.material && (
+                    <>
+                      &nbsp;|&nbsp;
+                      <span
+                        className={`mb-1 fw-bold ${isMetal(selectedItem.material) ? 'text-danger' : 'text-success'}`}
+                        style={{ fontSize: '0.6rem' }}
+                      >
+                        {selectedItem.material} {isMetal(selectedItem.material) && '(Metal)'}
+                      </span>
+                    </>
+                  )}
                 </div>
                 {selectedItem.setBonus && selectedItem.setBonus.length > 0 && (
-                  <div className='mt-1 mb-1'>
+                  <div className='my-0'>
                     {selectedItem.setBonus.map((sb) => (
                       <Badge
                         key={sb.name}
@@ -710,14 +737,7 @@ const GearPlanner = () => {
                     ))}
                   </div>
                 )}
-                {selectedItem.material && (
-                  <div
-                    className={`mb-1 fw-bold ${isMetal(selectedItem.material) ? 'text-danger' : 'text-success'}`}
-                    style={{ fontSize: '0.6rem' }}
-                  >
-                    {selectedItem.material} {isMetal(selectedItem.material) && '(Metal)'}
-                  </div>
-                )}
+
                 {selectedItem.enchantments && selectedItem.enchantments.length > 0 && (
                   <div
                     className='text-start mt-1 pt-1 border-top gear-planner-slot-enchantments'
@@ -1156,6 +1176,7 @@ const GearPlanner = () => {
           getContextInfo={getContextInfo}
           selectItem={selectItem}
           openSetBonusBrowser={openSetBonusBrowser}
+          troveData={troveData}
         />
 
         <SetBonusBrowserOffcanvas
@@ -1171,6 +1192,7 @@ const GearPlanner = () => {
           getContextInfo={getContextInfo}
           selectItem={selectItem}
           openSetBonusBrowser={openSetBonusBrowser}
+          troveData={troveData}
         />
 
         <ItemBrowserOffcanvas
