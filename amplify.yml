@@ -12,6 +12,8 @@ frontend:
         - sudo rm -rf /usr/local/go
         - sudo tar -C /usr/local -xzf /tmp/go.tar.gz
         - export PATH=/usr/local/go/bin:$PATH
+        - export GOPATH=$PWD/.go
+        - export GOCACHE=$PWD/.go-cache
         - go version
 
         # generate runtime json before frontend build
@@ -29,5 +31,6 @@ frontend:
   cache:
     paths:
       - node_modules/**/*
-      - /root/.cache/go-build/**/*
+      - .go/pkg/mod/**/*
+      - .go-cache/**/*
       - .yarn/cache/**/*
