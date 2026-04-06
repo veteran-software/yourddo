@@ -1,13 +1,21 @@
-import { type GearItem, GearSlot, type LootEnchantment, type LootItem, type SetBonusIndex } from './types'
+import {
+  type GearAugment,
+  type GearItem,
+  GearSlot,
+  type LootEnchantment,
+  type LootItem,
+  type SetBonusIndex
+} from './types'
+
+// Use Vite's glob import to gather all runtime JSON files from the generator output.
+// Note: Vite requires a literal string here (no template strings/variables).
+// Path is relative to this file: src/pages/gearPlanner -> src/data/loot/runtime
+const dataModules = import.meta.glob('../../data/loot/runtime/*.json', { eager: true })
 
 export const loadSetBonusIndex = async (): Promise<SetBonusIndex> => {
-  try {
-    const response = await fetch('/src/data/loot/runtime/setBonusIndex.json')
-    if (response.ok) {
-      return (await response.json()) as SetBonusIndex
-    }
-  } catch (error) {
-    console.error('Error loading set bonus index:', error)
+  const module = dataModules['../../data/loot/runtime/setBonusIndex.json']
+  if (module && typeof module === 'object' && 'default' in module) {
+    return module.default as SetBonusIndex
   }
   return {}
 }
@@ -82,8 +90,9 @@ interface RawAugment {
   setBonus?: { name: string }[]
 }
 
-export const loadGearData = async (): Promise<GearItem[]> => {
+export const loadGearData = async (): Promise<{ items: GearItem[]; augments: GearAugment[] }> => {
   const allItems: GearItem[] = []
+  const allAugments: GearAugment[] = []
   const seenKeys = new Set<string>()
 
   const addItem = (item: GearItem) => {
@@ -94,68 +103,60 @@ export const loadGearData = async (): Promise<GearItem[]> => {
     }
   }
 
-  // Load Augments
-  try {
-    const augResponse = await fetch('/src/data/loot/runtime/augment.json')
+  // Process Augments
+  const augModule = dataModules['../../data/loot/runtime/augment.json']
+  if (augModule && typeof augModule === 'object' && 'default' in augModule) {
+    const augments = augModule.default as RawAugment[]
+    augments.forEach((aug, index) => {
+      const gearItem: GearItem = {
+        id: `aug-${String(index)}`,
+        name: aug.name,
+        type: 'Augment',
+        description: aug.description ?? '',
+        minLevel: String(aug.minimumLevel ?? '1'),
+        absoluteMinLevel: String(aug.minimumLevel ?? '1'),
+        enchantments:
+          aug.effectsAdded?.map(
+            (e) =>
+              ({
+                name: e.name ?? '',
+                modifier: e.modifier ?? undefined,
+                bonus: e.bonus ?? undefined
+              }) as LootEnchantment
+          ) ?? [],
+        augments: [],
+        setBonus: aug.setBonus?.map((sb) => ({ name: sb.name })),
+        slot: GearSlot.Augment,
+        artifacttype: 'Augment',
+        material: 'Stone',
+        pageTitle: aug.name,
+        restriction: '',
+        hardness: '0',
+        durability: '0',
+        weight: '0',
+        update: String(aug.update ?? '0'),
+        details: '',
+        upgradeable: '',
+        upgradedFrom: '',
+        bug: '',
+        replaced: '',
+        icon: aug.image ?? '',
+        image: '',
+        optionsRaw: '',
+        dropLocations: []
+      }
 
-    if (augResponse.ok) {
-      const augments = (await augResponse.json()) as RawAugment[]
-      augments.forEach((aug, index) => {
-        const gearItem: GearItem = {
-          id: `aug-${String(index)}`,
-          name: aug.name,
-          type: 'Augment',
-          description: aug.description ?? '',
-          minLevel: String(aug.minimumLevel ?? '1'),
-          absoluteMinLevel: String(aug.minimumLevel ?? '1'),
-          enchantments:
-            aug.effectsAdded?.map(
-              (e) =>
-                ({
-                  name: e.name ?? '',
-                  modifier: e.modifier ?? undefined,
-                  bonus: e.bonus ?? undefined
-                }) as LootEnchantment
-            ) ?? [],
-          augments: [],
-          setBonus: aug.setBonus?.map((sb) => ({ name: sb.name })),
-          slot: GearSlot.Augment,
-          artifacttype: 'Augment',
-          material: 'Stone',
-          pageTitle: aug.name,
-          restriction: '',
-          hardness: '0',
-          durability: '0',
-          weight: '0',
-          update: String(aug.update ?? '0'),
-          details: '',
-          upgradeable: '',
-          upgradedFrom: '',
-          bug: '',
-          replaced: '',
-          icon: aug.image ?? '',
-          image: '',
-          optionsRaw: '',
-          dropLocations: []
-        }
-
-        inferSetBonuses(gearItem)
-        addItem(gearItem)
-      })
-    }
-  } catch (error) {
-    console.error('Error loading augments:', error)
+      inferSetBonuses(gearItem)
+      addItem(gearItem)
+      allAugments.push(gearItem as unknown as GearAugment)
+    })
   }
 
-  const loadFile = async (fileName: string, slots: GearSlot[]) => {
-    try {
-      const response = await fetch(`/src/data/loot/runtime/${fileName}`)
-      if (!response.ok) {
-        console.warn(`Failed to load ${fileName}: ${response.statusText}`)
-        return
-      }
-      const data: LootItem[] = (await response.json()) as LootItem[]
-
+  // Process Loot Files
+  Object.entries(SLOT_MAP).forEach(([fileName, slots]) => {
+    const module = dataModules[`../../data/loot/runtime/${fileName}`]
+    if (module && typeof module === 'object' && 'default' in module) {
+      const data = module.default as LootItem[]
       data.forEach((item: LootItem, index) => {
         slots.forEach((slot: GearSlot) => {
           const gearItem: GearItem = {
@@ -167,13 +168,8 @@ export const loadGearData = async (): Promise<GearItem[]> => {
           addItem(gearItem)
         })
       })
-    } catch (error) {
-      console.error(`Error loading ${fileName}:`, error)
     }
-  }
+  })
 
-  const promises = Object.entries(SLOT_MAP).map(([file, slots]) => loadFile(file, slots))
-  await Promise.all(promises)
-
-  return allItems
+  return { items: allItems, augments: allAugments }
 }

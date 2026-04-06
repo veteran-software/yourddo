@@ -1,26 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import {
-  Accordion,
-  Badge,
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  Modal,
-  Row,
-  Stack,
-  Tab,
-  Tabs
-} from 'react-bootstrap'
-import {
-  FaChevronRight,
-  FaGear,
-  FaLayerGroup,
-  FaMagnifyingGlass,
-  FaXmark
-} from 'react-icons/fa6'
-import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {Accordion, Badge, Button, Card, Col, Container, Form, Modal, Row, Stack, Tab, Tabs} from 'react-bootstrap'
+import {FaChevronRight, FaGear, FaLayerGroup, FaMagnifyingGlass, FaXmark} from 'react-icons/fa6'
+import {useAppDispatch, useAppSelector} from '../../redux/hooks'
 import {
   addSetup as addSetupAction,
   equipItem as equipItemAction,
@@ -29,23 +10,17 @@ import {
   setAugment as setAugmentAction,
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
-import { getTroveOwners, normItem } from '../../utils/troveUtils.ts'
+import {getTroveOwners, normItem} from '../../utils/troveUtils.ts'
 import AugmentSlotItem from './components/AugmentSlotItem.tsx'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
 import EnchantmentList from './components/EnchantmentList.tsx'
-import EnchantmentSearchOffcanvas
-  from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
 import SetBonusBrowserOffcanvas from './components/SetBonusBrowserOffcanvas.tsx'
 import SetBonusesSummary from './components/SetBonusesSummary.tsx'
-import {
-  checkPotentialConflict,
-  getSlotOwner,
-  normalizeString,
-  resolveConflicts
-} from './conflictResolver'
-import { loadGearData, loadSetBonusIndex } from './dataLoader'
+import {checkPotentialConflict, getSlotOwner, normalizeString, resolveConflicts} from './conflictResolver'
+import {loadGearData, loadSetBonusIndex} from './dataLoader'
 import {
   ARMOR_TYPES,
   ARTIFICER_PET_SLOTS,
@@ -166,28 +141,21 @@ const GearPlanner = () => {
   }, [loadMore, browsingSlot, itemsToShow])
 
   useEffect(() => {
-    loadGearData()
-      .then((data) => {
-        setAllItems(data)
-      })
-      .catch(console.error)
-
-    loadSetBonusIndex()
-      .then((data) => {
-        setSetBonusIndex(data)
-      })
-      .catch(console.error)
-
-    fetch('/src/data/loot/runtime/augment.json')
-      .then((response) => response.json())
-      .then((data: GearAugment[]) => {
-        setAllAugments(data)
+    const run = async () => {
+      try {
+        const { items, augments } = await loadGearData()
+        setAllItems(items)
+        setAllAugments(augments)
+        const sbi = await loadSetBonusIndex()
+        setSetBonusIndex(sbi)
+      } catch (err) {
+        console.error('Error loading gear data:', err)
+      } finally {
         setLoading(false)
-      })
-      .catch((err: unknown) => {
-        console.error('Error loading augments:', err)
-        setLoading(false)
-      })
+      }
+    }
+
+    void run()
   }, [])
 
   useEffect(() => {
