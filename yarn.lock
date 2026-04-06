@@ -186,13 +186,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.28.6":
-  version: 7.28.6
-  resolution: "@babel/runtime@npm:7.28.6"
-  checksum: 10c0/358cf2429992ac1c466df1a21c1601d595c46930a13c1d4662fde908d44ee78ec3c183aaff513ecb01ef8c55c3624afe0309eeeb34715672dbfadb7feedb2c0d
-  languageName: node
-  linkType: hard
-
 "@babel/template@npm:^7.27.2":
   version: 7.27.2
   resolution: "@babel/template@npm:7.27.2"
@@ -276,17 +269,6 @@ __metadata:
     "@babel/helper-string-parser": "npm:^7.27.1"
     "@babel/helper-validator-identifier": "npm:^7.27.1"
   checksum: 10c0/ac6f909d6191319e08c80efbfac7bd9a25f80cc83b43cd6d82e7233f7a6b9d6e7b90236f3af7400a3f83b576895bcab9188a22b584eb0f224e80e6d4e95f4517
-  languageName: node
-  linkType: hard
-
-"@dr.pogodin/react-helmet@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "@dr.pogodin/react-helmet@npm:3.1.1"
-  dependencies:
-    "@babel/runtime": "npm:^7.28.6"
-  peerDependencies:
-    react: 19
-  checksum: 10c0/c9c9bd76edf7f0830698dba217f37af1df6d2bb18a00bdde585609f5d0b3644df6be3b02d79b9f3b935b15239519cc2e889cde634add8fe06d062df77b0ba0a4
   languageName: node
   linkType: hard
 
@@ -5127,7 +5109,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "yourddo-react@workspace:."
   dependencies:
-    "@dr.pogodin/react-helmet": "npm:^3.1.1"
     "@eslint/js": "npm:^10.0.1"
     "@popperjs/core": "npm:^2.11.8"
     "@reduxjs/toolkit": "npm:^2.11.2"

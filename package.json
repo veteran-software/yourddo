@@ -22,7 +22,6 @@
     "normalize:cannith:write": "node scripts/normalizeCannithPhase1.mjs --write"
   },
   "dependencies": {
-    "@dr.pogodin/react-helmet": "^3.1.1",
     "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.11.2",
     "bootstrap": "^5.3.8",
