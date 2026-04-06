@@ -1,10 +1,4 @@
-import {
-  type GearItem,
-  GearSlot,
-  type LootEnchantment,
-  type LootItem,
-  type SetBonusIndex
-} from './types'
+import { type GearItem, GearSlot, type LootEnchantment, type LootItem, type SetBonusIndex } from './types'
 
 export const loadSetBonusIndex = async (): Promise<SetBonusIndex> => {
   try {
@@ -115,11 +109,14 @@ export const loadGearData = async (): Promise<GearItem[]> => {
           minLevel: String(aug.minimumLevel ?? '1'),
           absoluteMinLevel: String(aug.minimumLevel ?? '1'),
           enchantments:
-            aug.effectsAdded?.map((e) => ({
-              name: e.name ?? '',
-              modifier: e.modifier ?? undefined,
-              bonus: e.bonus ?? undefined
-            } as LootEnchantment)) ?? [],
+            aug.effectsAdded?.map(
+              (e) =>
+                ({
+                  name: e.name ?? '',
+                  modifier: e.modifier ?? undefined,
+                  bonus: e.bonus ?? undefined
+                }) as LootEnchantment
+            ) ?? [],
           augments: [],
           setBonus: aug.setBonus?.map((sb) => ({ name: sb.name })),
           slot: GearSlot.Augment,
