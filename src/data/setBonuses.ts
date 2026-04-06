@@ -1,6 +1,6 @@
 import type { SetBonus } from '../types/crafting.ts'
 
-const setBonuses: SetBonus[] = [
+export const setBonuses: SetBonus[] = [
   {
     name: "The Legendary Dread Isle's Curse",
     numPiecesEquipped: 5,

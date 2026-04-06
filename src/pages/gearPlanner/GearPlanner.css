@@ -1,0 +1,222 @@
+.italic {
+  font-style: italic;
+}
+
+.bg-dark-subtle {
+  background-color: var(--bs-dark-bg-subtle, #f8f9fa) !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease-in-out;
+}
+
+.gear-planner-muted {
+  color: #6c757d !important; /* Bootstrap text-secondary color for better contrast on light bg */
+}
+
+.gear-planner-enchantment-box {
+  background-color: #ffffff !important; /* Pure white background for the box */
+  color: #000000 !important; /* Pure black text for maximum readability */
+  border: 1px solid #adb5bd !important; /* Slightly darker border */
+}
+
+/* Sidebar styles */
+.gear-planner-sidebar-toggle {
+  position: fixed;
+  left: 0;
+  top: 15%;
+  transform: translateY(-100%);
+  z-index: 1050;
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.gear-planner-sidebar {
+  height: auto !important;
+  max-height: 80vh;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  width: 75% !important; /* Mobile */
+  top: 15% !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.gear-planner-enchantment-search,
+.gear-planner-set-bonus-browser,
+.gear-planner-item-browser {
+  height: 100vh !important;
+  max-height: none !important;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  width: 85% !important; /* Mobile */
+  top: 0 !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: #212529 !important; /* Match Bootstrap dark theme bg */
+  color: #f8f9fa !important; /* Match Bootstrap dark theme text */
+}
+
+/* Allow scrolling the background through the backdrop */
+.offcanvas-backdrop {
+  pointer-events: none;
+}
+
+.offcanvas-backdrop.show {
+  pointer-events: none;
+}
+
+.gear-planner-item-browser .list-group-item {
+  background-color: #2b3035 !important; /* Dark list items */
+  border-color: #495057 !important;
+  color: #f8f9fa !important;
+}
+
+.gear-planner-item-browser .list-group-item:hover {
+  background-color: #373b3e !important;
+}
+
+@media (min-width: 992px) {
+  .gear-planner-sidebar {
+    width: 15% !important; /* Desktop */
+  }
+
+  .gear-planner-enchantment-search,
+  .gear-planner-set-bonus-browser,
+  .gear-planner-item-browser {
+    width: 30% !important; /* Desktop */
+  }
+}
+
+
+/* Ensure the sidebars don't block clicks when not needed if backdrop is gone */
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.gear-planner-slot-enchantments {
+  max-height: 150px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  width: 100%;
+}
+
+.gear-planner-slot-enchantments::-webkit-scrollbar {
+  width: 4px;
+}
+
+.gear-planner-slot-enchantments::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.gear-planner-augment-enchantments {
+  max-height: 80px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  width: 100%;
+}
+
+.gear-planner-augment-enchantments::-webkit-scrollbar {
+  width: 4px;
+}
+
+.gear-planner-augment-enchantments::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.w-fit {
+  width: fit-content;
+}
+
+.gear-planner-global-search {
+  max-width: 400px;
+}
+
+@media (max-width: 767.98px) {
+  .gear-planner-global-search {
+    max-width: 100%;
+  }
+}
+
+/* Custom Tooltip Styling */
+/* Tooltips removed per user request to avoid layout jumping */
+
+.gear-planner-container .bg-purple {
+  background-color: #6f42c1 !important;
+}
+
+.gear-planner-container .bg-orange {
+  background-color: #fd7e14 !important;
+}
+
+.gear-planner-slot-augments {
+  margin-top: 0.5rem;
+}
+
+.gear-planner-slot-augments .dropdown-toggle::after {
+  margin-left: auto;
+}
+
+.gear-planner-augment-toggle {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  line-height: 1.2;
+}
+
+.gear-planner-augment-menu {
+  z-index: 1100 !important;
+}
+
+.gear-planner-augment-menu .dropdown-item {
+  padding: 0.2rem 0.5rem;
+}
+
+.set-bonus-badge-clickable {
+  cursor: pointer;
+  transition: filter 0.2s ease-in-out;
+}
+
+.set-bonus-badge-clickable:hover {
+  filter: brightness(1.2) !important;
+  text-decoration: underline;
+}
+
+/* Enchantment Summary Accordion Styles */
+.gear-planner-ench-summary-accordion .accordion-button {
+  padding: 0.35rem 0.6rem !important;
+  background-color: #2b3035 !important;
+  color: #f8f9fa !important;
+  /*font-size: 0.75rem !important;*/
+}
+
+.gear-planner-ench-summary-accordion .accordion-button::after {
+  background-size: 0.7rem;
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.gear-planner-ench-summary-accordion .accordion-button:not(.collapsed) {
+  box-shadow: none !important;
+  background-color: #3d4246 !important;
+  border-bottom: 1px solid #495057;
+}
+
+.gear-planner-ench-summary-accordion .accordion-item {
+  border: 1px solid #495057 !important;
+  background-color: #212529 !important;
+  margin-bottom: 0.25rem;
+}
+
+.gear-planner-ench-summary-accordion .accordion-body {
+  border-top: 1px solid #495057 !important;
+  padding: 0.5rem !important;
+}
+
+.small-accordion-header .accordion-button {
+  /*font-size: 0.75rem !important;*/
+  line-height: 1.2;
+}

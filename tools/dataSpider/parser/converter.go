@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -307,6 +308,13 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 		data.Enchantments = ParseEnchantments(val, data.Type) // Call the function from parser/enchantments.go
 		data.EnchantmentsRaw = val
 
+		// Extract set bonuses from enchantments
+		if len(data.Enchantments) > 0 {
+			rest, sets := ExtractSetBonus(data.Enchantments)
+			data.Enchantments = rest
+			data.SetBonus = append(data.SetBonus, sets...)
+		}
+
 		// Check for Crystal Cove upgrades and add crafting information
 		for _, ench := range data.Enchantments {
 			if strings.HasPrefix(ench.Name, "Upgradeable - Tier") {
@@ -541,9 +549,49 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 	}
 	if val, ok := fields["itemsets"]; ok {
 		data.ItemSetsRaw = val
+		data.SetBonus = append(data.SetBonus, extractSetBonusesFromText(val)...)
+	}
+
+	// Scan other potential fields for ItemSet template
+	for _, f := range []string{"description", "details", "upgradeable", "notes"} {
+		if val, ok := fields[f]; ok {
+			data.SetBonus = append(data.SetBonus, extractSetBonusesFromText(val)...)
+		}
+	}
+
+	// De-duplicate set bonuses by name
+	if len(data.SetBonus) > 1 {
+		seen := make(map[string]bool)
+		unique := make([]api.SetBonusOut, 0, len(data.SetBonus))
+		for _, s := range data.SetBonus {
+			if s.Name != "" && !seen[s.Name] {
+				seen[s.Name] = true
+				unique = append(unique, s)
+			}
+		}
+		data.SetBonus = unique
 	}
 
 	return data
+}
+
+var itemSetRegex = regexp.MustCompile(`(?i)\{\{ItemSet(?:List)?\|([^}|]+)`)
+
+func extractSetBonusesFromText(text string) []api.SetBonusOut {
+	matches := itemSetRegex.FindAllStringSubmatch(text, -1)
+	if len(matches) == 0 {
+		return nil
+	}
+	var sets []api.SetBonusOut
+	seen := make(map[string]bool)
+	for _, m := range matches {
+		name := strings.TrimSpace(m[1])
+		if name != "" && !seen[name] {
+			seen[name] = true
+			sets = append(sets, api.SetBonusOut{Name: name})
+		}
+	}
+	return sets
 }
 
 // ... (include the unchanged parseTemplatePrice function here)

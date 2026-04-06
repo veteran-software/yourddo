@@ -1,6 +1,6 @@
 import type { CraftingIngredient } from '../../types/crafting.ts'
 
-const u75: CraftingIngredient[] = [
+export const u75: CraftingIngredient[] = [
   {
     name: "Agony's Eyes",
     type: 'Goggles',

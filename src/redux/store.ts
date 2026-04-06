@@ -4,6 +4,7 @@ import { serverStatusLamApi } from '../api/serverStatusLamApi.ts'
 
 import appReducer from './slices/appSlice'
 import dinosaurBoneReducer from './slices/dinosaurBoneSlice'
+import gearPlannerReducer from './slices/gearPlannerSlice.ts'
 import greenSteelReducer from './slices/hgsSlice.ts'
 import incrediblePotentialReducer from './slices/incrediblePotentialSlice'
 import legendaryGreenSteelReducer from './slices/lgsSlice.ts'
@@ -20,7 +21,8 @@ const store = configureStore({
     greenSteel: greenSteelReducer,
     incrediblePotential: incrediblePotentialReducer,
     legendaryGreenSteel: legendaryGreenSteelReducer,
-    viktraniumExperiment: viktraniumExperimentReducer
+    viktraniumExperiment: viktraniumExperimentReducer,
+    gearPlanner: gearPlannerReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(serverStatusApi.middleware).concat(serverStatusLamApi.middleware)

@@ -29,27 +29,34 @@ A high-performance ETL (Extract, Transform, Load) tool written in Go for crawlin
 
 ## Usage
 
-Run the crawler by providing a DDO Compendium category name as a command-line argument.
+Run the crawler to process DDO Compendium categories and save them directly to the `src/data/loot/runtime/` directory.
 
-### General Usage
-
+### Process a Category
 ```bash
-go run main.go <Category_Name_Without_Prefix>
+go run main.go Jewelry
 ```
+This will process all Jewelry sub-categories (Goggles, Ring, etc.) and save them to their respective JSON files.
 
 ### Examples
 
 **Fetch all Items:**
 ```bash
-go run main.go Items > items.json
+go run main.go Items
 ```
 
 **Fetch all Augments (specialized parsing):**
 ```bash
-go run main.go Augments > augments.json
+go run main.go Augment
 ```
 
-*Note: Logs and progress updates are sent to `stderr`, while the final JSON result is sent to `stdout`. Use redirection (e.g., `> output.json`) to save the data.*
+**Run Set Bonus Indexer:**
+```bash
+go run indexer/main.go
+```
+
+*Note: The Set Bonus Indexer automatically scans the `src/data/loot/runtime/` directory and generates `setBonusIndex.json` in the same directory.*
+
+*Note: Data is saved directly to `src/data/loot/runtime/` based on the category processed.*
 
 ## Project Structure
 

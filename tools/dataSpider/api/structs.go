@@ -315,7 +315,8 @@ type ItemData struct {
 	EnchantmentsRaw      string                `json:"-"`
 	Augments             []AugmentItem         `json:"augments,omitempty"`
 	AugmentsRaw          string                `json:"-"`
-	ItemSetsRaw          string                `json:"-"`
+	ItemSetsRaw          string                `json:"itemSetsRaw,omitempty"`
+	SetBonus             []SetBonusOut         `json:"setBonus,omitempty"`
 }
 
 type CraftingRequirement struct {
