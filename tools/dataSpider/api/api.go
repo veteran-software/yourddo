@@ -23,7 +23,10 @@ const (
 // FetchCategoryContent iteratively calls the MediaWiki API, handles pagination,
 // and returns a map of {PageTitle: RawWikitext}.
 func FetchCategoryContent(categoryName string) (map[string]string, error) {
-	initialURL := buildInitialURL(categoryName)
+	encodedCat := url.PathEscape(categoryName)
+	initialQuery := fmt.Sprintf(apiQueryTemplate, encodedCat)
+	initialURL := wikiBaseURL + apiEndpoint + "?" + initialQuery
+
 	contentMap := make(map[string]string)
 	currentURL := initialURL
 	continueToken := ""
@@ -61,12 +64,28 @@ func FetchCategoryContent(categoryName string) (map[string]string, error) {
 			return nil, fmt.Errorf("received non-200 status code %d. Response: %s", resp.StatusCode, string(bodyBytes))
 		}
 
-		apiResponse, err := fetchAndDecodeResponse(currentURL)
+		var apiResponse APISuccessResponse
+		err = json.NewDecoder(resp.Body).Decode(&apiResponse)
+		resp.Body.Close()
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("error decoding JSON response: %w", err)
 		}
 
-		processPages(apiResponse, contentMap)
+		for _, page := range apiResponse.Query.Pages {
+			if len(page.Revisions) > 0 {
+				rev := page.Revisions[0]
+
+				// Safety check the pointer path to ensure content exists
+				if rev.Slots != nil && rev.Slots.Main != nil && rev.Slots.Main.Content != nil {
+					rawContent := *rev.Slots.Main.Content
+					contentMap[page.Title] = rawContent
+				} else {
+					contentMap[page.Title] = ""
+				}
+			} else {
+				contentMap[page.Title] = ""
+			}
+		}
 
 		if cont, ok := apiResponse.Continue["gcmcontinue"]; ok {
 			continueToken = cont
@@ -77,43 +96,4 @@ func FetchCategoryContent(categoryName string) (map[string]string, error) {
 	}
 
 	return contentMap, nil
-}
-
-func buildInitialURL(categoryName string) string {
-	encodedCat := url.PathEscape(categoryName)
-	query := fmt.Sprintf(apiQueryTemplate, encodedCat)
-	return wikiBaseURL + apiEndpoint + "?" + query
-}
-
-func fetchAndDecodeResponse(currentURL string) (*APISuccessResponse, error) {
-	resp, err := http.Get(currentURL)
-	if err != nil {
-		return nil, fmt.Errorf("error fetching URL %s: %w", currentURL, err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		bodyBytes, _ := io.ReadAll(resp.Body)
-		return nil, fmt.Errorf("received non-200 status code %d. Response: %s", resp.StatusCode, string(bodyBytes))
-	}
-
-	var apiResponse APISuccessResponse
-	if err := json.NewDecoder(resp.Body).Decode(&apiResponse); err != nil {
-		return nil, fmt.Errorf("error decoding JSON response: %w", err)
-	}
-	return &apiResponse, nil
-}
-
-func processPages(apiResponse *APISuccessResponse, contentMap map[string]string) {
-	for _, page := range apiResponse.Query.Pages {
-		content := ""
-		if len(page.Revisions) > 0 {
-			rev := page.Revisions[0]
-			// Safety check the pointer path to ensure content exists
-			if rev.Slots != nil && rev.Slots.Main != nil && rev.Slots.Main.Content != nil {
-				content = *rev.Slots.Main.Content
-			}
-		}
-		contentMap[page.Title] = content
-	}
 }
