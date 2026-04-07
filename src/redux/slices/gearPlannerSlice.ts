@@ -73,8 +73,8 @@ const gearPlannerSlice = createSlice({
         Object.assign(setup, action.payload)
 
         // Enforce level range 1-34 and relationship minLevel <= maxLevel
-        setup.minLevel = isNaN(setup.minLevel) ? 1 : Math.max(1, Math.min(34, setup.minLevel))
-        setup.maxLevel = isNaN(setup.maxLevel) ? 34 : Math.max(1, Math.min(34, setup.maxLevel))
+        setup.minLevel = Number.isNaN(setup.minLevel) ? 1 : Math.max(1, Math.min(34, setup.minLevel))
+        setup.maxLevel = Number.isNaN(setup.maxLevel) ? 34 : Math.max(1, Math.min(34, setup.maxLevel))
 
         if (setup.minLevel > setup.maxLevel) {
           if (action.payload.minLevel !== undefined && action.payload.maxLevel === undefined) {

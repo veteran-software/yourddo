@@ -32,12 +32,12 @@ const CharacterSettingsSidebar = (props: Props) => {
 
         <div className='mb-3'>
           <div className='fw-bold text-info small mb-1'>Classes</div>
-          {activeSetup.classes.filter((c) => c !== null).length > 0 ? (
+          {activeSetup.classes.some((c) => c !== null) ? (
             <Stack gap={1} className='mb-3'>
               {activeSetup.classes.map(
                 (cls, idx) =>
                   cls && (
-                    <Badge key={idx} bg='secondary' className='w-fit text-start py-1 px-2'>
+                    <Badge key={`${cls}-${String(idx)}`} bg='secondary' className='w-fit text-start py-1 px-2'>
                       {cls}
                     </Badge>
                   )

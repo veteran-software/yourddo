@@ -24,7 +24,7 @@ const EnchantmentList = (props: Props) => {
         const enchModifierText = ench.modifier ? ` (+${String(ench.modifier)} ${ench.bonus ?? ''})` : ''
         const enchText =
           source === 'slot'
-            ? `• ${ench.name} ${modifierText} ${bonusText}`.replace(/\s+/g, ' ').trim()
+            ? `• ${ench.name} ${modifierText} ${bonusText}`.replaceAll(/\s+/g, ' ').trim()
             : `• ${ench.name}${enchModifierText}`
 
         if (source === 'slot') {
@@ -57,9 +57,9 @@ const EnchantmentList = (props: Props) => {
 
         return (
           <div
-            key={idx}
+            key={`${ench.name}-${String(idx)}`}
             className={`d-flex align-items-baseline ${className}`}
-            style={source !== 'slot' ? { maxWidth: '300px' } : {}}
+            style={source === 'slot' ? {} : { maxWidth: '300px' }}
           >
             <span className='me-1 text-nowrap d-inline-flex gap-1'>
               {source === 'slot' ? (

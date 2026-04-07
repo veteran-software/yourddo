@@ -327,7 +327,7 @@ const GearPlanner = () => {
       }
 
       // Level filter
-      const itemLevel = parseInt(item.minLevel, 10) || 0
+      const itemLevel = Number.parseInt(item.minLevel, 10) || 0
       if (itemLevel < setup.minLevel || itemLevel > setup.maxLevel) {
         return false
       }
@@ -460,8 +460,8 @@ const GearPlanner = () => {
         if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
 
         // Priority 2: Min Level (desc)
-        const levelA = parseInt(a.minLevel, 10) || 0
-        const levelB = parseInt(b.minLevel, 10) || 0
+        const levelA = Number.parseInt(a.minLevel, 10) || 0
+        const levelB = Number.parseInt(b.minLevel, 10) || 0
         if (levelB !== levelA) return levelB - levelA
 
         // Priority 3: Name (asc)
@@ -511,8 +511,8 @@ const GearPlanner = () => {
         if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
 
         // Priority 2: Min Level (desc)
-        const levelA = parseInt(a.minLevel, 10) || 0
-        const levelB = parseInt(b.minLevel, 10) || 0
+        const levelA = Number.parseInt(a.minLevel, 10) || 0
+        const levelB = Number.parseInt(b.minLevel, 10) || 0
         if (levelB !== levelA) return levelB - levelA
 
         // Priority 3: Name (asc)
@@ -551,13 +551,13 @@ const GearPlanner = () => {
     })
 
     // 3. Remove filters that were granted by old classes but NOT by new classes
-    const weaponsToRemove = [...oldWeaponProficiencies].filter((w) => !newWeaponProficiencies.has(w))
-    const armorToRemove = [...oldArmorProficiencies].filter((a) => !newArmorProficiencies.has(a))
-    const shieldsToRemove = [...oldShieldProficiencies].filter((s) => !newShieldProficiencies.has(s))
+    const weaponsToRemove = new Set([...oldWeaponProficiencies].filter((w) => !newWeaponProficiencies.has(w)))
+    const armorToRemove = new Set([...oldArmorProficiencies].filter((a) => !newArmorProficiencies.has(a)))
+    const shieldsToRemove = new Set([...oldShieldProficiencies].filter((s) => !newShieldProficiencies.has(s)))
 
-    const updatedWeaponFilters = setup.weaponFilters.filter((w) => !weaponsToRemove.includes(w))
-    const updatedArmorFilters = setup.armorFilters.filter((a) => !armorToRemove.includes(a))
-    const updatedShieldFilters = setup.shieldFilters.filter((s) => !shieldsToRemove.includes(s))
+    const updatedWeaponFilters = setup.weaponFilters.filter((w) => !weaponsToRemove.has(w))
+    const updatedArmorFilters = setup.armorFilters.filter((a) => !armorToRemove.has(a))
+    const updatedShieldFilters = setup.shieldFilters.filter((s) => !shieldsToRemove.has(s))
 
     // 4. Add filters granted by new classes
     newWeaponProficiencies.forEach((w) => {
@@ -787,12 +787,12 @@ const GearPlanner = () => {
                   <div className='text-start mt-1 pt-1 border-top gear-planner-slot-augments'>
                     {selectedItem.augments.map((augSlot, idx) => {
                       const slotted = currentSlottedAugments[selectedItem.id]?.[idx]
-                      const itemMinLevel = parseInt(selectedItem.minLevel, 10) || 1
+                      const itemMinLevel = Number.parseInt(selectedItem.minLevel, 10) || 1
                       const applicable = getApplicableAugments(augSlot.augmentType, itemMinLevel)
 
                       return (
                         <AugmentSlotItem
-                          key={idx}
+                          key={`${augSlot.name ?? 'unknown-augment-slot'}-${String(idx)}`}
                           selectedItem={selectedItem}
                           idx={idx}
                           augSlot={augSlot}
@@ -846,7 +846,9 @@ const GearPlanner = () => {
         <div className='spinner-border text-primary' role='status'>
           <span className='visually-hidden'>Loading Gear Data...</span>
         </div>
-        <p className='mt-2'>Loading Gear Data...</p>
+        <p className='mt-2' aria-hidden='true'>
+          Loading Gear Data...
+        </p>
       </Container>
     )
   }
@@ -1031,6 +1033,7 @@ const GearPlanner = () => {
           <Modal.Header closeButton className='bg-primary text-white'>
             <Modal.Title>Gear Setup Settings</Modal.Title>
           </Modal.Header>
+
           <Modal.Body className='bg-dark text-white p-4'>
             <Form>
               <Row>
@@ -1063,6 +1066,7 @@ const GearPlanner = () => {
                         />
                       </Form.Group>
                     </Col>
+
                     <Col xs={6}>
                       <Form.Group>
                         <Form.Label className='fw-bold text-info'>Max Level</Form.Label>
@@ -1082,6 +1086,7 @@ const GearPlanner = () => {
 
                   <Form.Group className='mb-3'>
                     <Form.Label className='fw-bold text-info'>Classes (Up to 3)</Form.Label>
+
                     <Stack gap={2}>
                       {[0, 1, 2].map((idx) => (
                         <Form.Select
@@ -1108,6 +1113,7 @@ const GearPlanner = () => {
                           }}
                         >
                           <option value=''>Select Class...</option>
+
                           {GEAR_CLASSES.map((cls) => (
                             <option key={cls} value={cls}>
                               {cls}
@@ -1122,6 +1128,7 @@ const GearPlanner = () => {
                 <Col md={6}>
                   <Form.Group className='mb-3'>
                     <Form.Label className='fw-bold text-info d-block'>Weapon Type Filters</Form.Label>
+
                     <Accordion data-bs-theme='dark' className='border border-secondary rounded overflow-hidden'>
                       {Object.entries(WEAPON_TYPES).map(([category, types]) => (
                         <WeaponCategory
@@ -1203,6 +1210,7 @@ const GearPlanner = () => {
               </Row>
             </Form>
           </Modal.Body>
+
           <Modal.Footer className='bg-primary border-top-0'>
             <Button
               variant='light'

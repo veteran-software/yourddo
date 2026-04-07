@@ -91,9 +91,10 @@ const EnchantmentsSummary = ({
       <h5 className='mb-3 text-light border-bottom border-info pb-2 d-flex align-items-center'>
         <FaListUl className='me-2' /> Enchantment Summary
       </h5>
+
       <Row className='g-2'>
         {aggregated.map((ench, idx) => (
-          <Col key={idx} xs={12} md={6} lg={4}>
+          <Col key={`${ench.name}-${String(idx)}`} xs={12} md={6} lg={4}>
             <Accordion data-bs-theme='dark' className='gear-planner-ench-summary-accordion'>
               <Accordion.Item eventKey='0'>
                 <Accordion.Header className=''>
@@ -104,25 +105,29 @@ const EnchantmentsSummary = ({
                     {ench.isNumeric && <Badge bg='primary'>+{String(ench.total)}</Badge>}
                   </div>
                 </Accordion.Header>
+
                 <Accordion.Body className='p-2 bg-dark'>
-                  {ench.bonuses.map((b, bIdx) => (
-                    <div key={bIdx} className='mb-2 last-child-mb-0'>
+                  {ench.bonuses.map((bonus, bIdx) => (
+                    <div key={`${bonus.bonusType}-${String(bIdx)}`} className='mb-2 last-child-mb-0'>
                       <div className='d-flex justify-content-between align-items-center border-bottom border-secondary mb-1 pb-1'>
-                        <span className='small text-light italic text-capitalize'>{b.bonusType}</span>
+                        <span className='small text-light italic text-capitalize'>{bonus.bonusType}</span>
+
                         <span className='small fw-bold text-light'>
-                          {b.maxValue !== 0 ? `+${String(b.maxValue)}` : b.maxValueStr || 'Active'}
+                          {bonus.maxValue === 0 ? bonus.maxValueStr || 'Active' : `+${String(bonus.maxValue)}`}
                         </span>
                       </div>
-                      {b.items.map((item, iIdx) => (
+
+                      {bonus.items.map((item, iIdx) => (
                         <div
-                          key={iIdx}
+                          key={`${item.itemName}-${String(iIdx)}`}
                           className={`ps-2 small d-flex justify-content-between align-items-center ${
-                            item.value === b.maxValue ? 'text-secondary' : 'text-muted text-decoration-line-through'
+                            item.value === bonus.maxValue ? 'text-secondary' : 'text-muted text-decoration-line-through'
                           }`}
                         >
                           <span className='text-truncate me-1'>• {item.itemName}</span>
+
                           <span className='flex-shrink-0'>
-                            {item.value !== 0 ? `+${String(item.value)}` : item.valueStr}
+                            {item.value === 0 ? item.valueStr : `+${String(item.value)}`}
                           </span>
                         </div>
                       ))}

@@ -47,15 +47,18 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
             }}
             className='bg-light text-dark pe-4'
           />
+
           {enchantmentSearch && (
-            <div
-              className='position-absolute end-0 top-50 translate-middle-y pe-2 cursor-pointer'
+            <button
+              type='button'
+              className='position-absolute end-0 top-50 translate-middle-y pe-2 border-0 bg-transparent'
               onClick={() => {
                 setEnchantmentSearch('')
               }}
+              aria-label='Clear enchantment search'
             >
-              <FaXmark size={14} className='text-muted' />
-            </div>
+              <FaXmark size={14} className='text-dark' />
+            </button>
           )}
         </div>
 

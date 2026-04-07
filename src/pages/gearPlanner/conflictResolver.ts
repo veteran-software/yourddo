@@ -44,10 +44,12 @@ export const getBonus = (bonus: RobustString): string => {
 export const parseModifierValue = (modifier: RobustString): number => {
   if (modifier == null) return 0
   if (typeof modifier === 'number') return modifier
+
   // Remove +, %, [W], etc.
-  const numericStr = modifier.replace(/[+%[\]W]/g, '')
-  const val = parseFloat(numericStr)
-  return isNaN(val) ? 0 : val
+  const numericStr = modifier.replaceAll(/[+%[\]W]/g, '')
+  const val = Number.parseFloat(numericStr)
+
+  return Number.isNaN(val) ? 0 : val
 }
 
 /**
@@ -90,10 +92,8 @@ export const resolveConflicts = (
 
     // Include slotted augments for this item
     if (slottedAugments?.[item.id]) {
-      // console.log('Checking augments for item:', item.id, slottedAugments[item.id]);
       Object.entries(slottedAugments[item.id]).forEach(([slotIdx, aug]) => {
         if (aug?.effectsAdded) {
-          // console.log('Adding augment effects for:', item.id, 'slot:', slotIdx, aug.name);
           aug.effectsAdded.forEach((ench) => {
             allEnchantments.push({
               itemId: `${item.id}-aug-${slotIdx}`,

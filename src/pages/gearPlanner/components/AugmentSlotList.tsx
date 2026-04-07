@@ -47,7 +47,7 @@ const AugmentSlotsList = (props: Props) => {
 
         return (
           <Badge
-            key={idx}
+            key={`${slot.name ?? slot.augmentType}-${String(idx)}`}
             bg={undefined}
             className={`px-1 py-0 ${bgColor} ${textColor} border border-dark`}
             style={{ fontSize: '0.6rem', minWidth: '60px' }}

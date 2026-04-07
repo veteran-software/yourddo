@@ -114,7 +114,9 @@ const ItemBrowserOffcanvas = (props: Props) => {
                     {itemsToShow < filteredItems.length && (
                       <div ref={observerTarget} className='list-group-item text-center py-3 border-0 bg-transparent'>
                         <div className='spinner-border spinner-border-sm text-primary' role='status'>
-                          <span className='visually-hidden'>Loading more...</span>
+                          <span className='visually-hidden' aria-hidden='true'>
+                            Loading more...
+                          </span>
                         </div>
                       </div>
                     )}

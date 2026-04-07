@@ -64,7 +64,7 @@ const SetBonusesSummary = (props: Props) => {
                   {setDef?.enhancements
                     ?.filter((enh) => (enh.numPiecesEquipped ?? 0) <= count)
                     .map((enh, idx) => (
-                      <div key={idx} className='small text-secondary ps-2 border-start border-secondary mb-1'>
+                      <div key={`${enh.name}-${String(idx)}`} className='small text-secondary ps-2 border-start border-secondary mb-1'>
                         • {enh.name} ({enh.numPiecesEquipped} pieces)
                       </div>
                     ))}
