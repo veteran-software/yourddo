@@ -14,6 +14,8 @@ import (
 	"compendium-crawler-go/parser"
 )
 
+const lineDivider = "-------------------------------------------------------------------------"
+
 func main() {
 	if len(os.Args) < 2 {
 		logrus.Info("Usage: go run main.go <Category_Name_Without_Prefix>")
@@ -30,6 +32,7 @@ func main() {
 		"Armor":    {"Docent", "Heavy Armor", "Medium Armor", "Light Armor", "Robe", "Outfit"},
 		"Clothing": {"Cloak", "Boots", "Gloves", "Helmet", "Belt"},
 		"Jewelry":  {"Goggles", "Ring", "Necklace", "Trinket", "Bracers"},
+		"Offhand":  {"Shield", "Baton", "Staff", "Wand", "Dagger"},
 		// Add more aggregate categories as needed
 	}
 
@@ -46,9 +49,9 @@ func main() {
 }
 
 func processCategory(categoryName string) {
-	logrus.Info("-------------------------------------------------------------------------")
+	logrus.Info(lineDivider)
 	logrus.Infof("Starting ETL for Category:%s...", categoryName)
-	logrus.Info("-------------------------------------------------------------------------")
+	logrus.Info(lineDivider)
 
 	// 1. Fetch raw content from MediaWiki API
 	rawResults, err := api.FetchCategoryContent(categoryName)
@@ -63,50 +66,13 @@ func processCategory(categoryName string) {
 	}
 
 	// 2. Determine processing path
-	lowerCat := strings.ToLower(categoryName)
-	var jsonData []byte
-
-	if lowerCat == "augment" || lowerCat == "augments" {
-		augmentItems := parser.ProcessAugmentMap(rawResults)
-		// Sort output by name using natural order
-		sort.Slice(augmentItems, func(i, j int) bool {
-			return naturalLess(augmentItems[i].Name, augmentItems[j].Name)
-		})
-		jsonData, err = json.Marshal(augmentItems)
-		if err != nil {
-			logrus.Errorf("Error marshalling Augment JSON for %s: %v", categoryName, err)
-			return
-		}
-	} else {
-		// Default: process generic item pages
-		processedItems := parser.ProcessContentMap(rawResults)
-		// Sort output by name using natural order
-		sort.Slice(processedItems, func(i, j int) bool {
-			return naturalLess(processedItems[i].Name, processedItems[j].Name)
-		})
-		jsonData, err = json.Marshal(processedItems)
-		if err != nil {
-			logrus.Errorf("Error marshalling JSON for %s: %v", categoryName, err)
-			return
-		}
+	jsonData, done := processDataByCat(categoryName, rawResults)
+	if done {
+		return
 	}
 
 	// 3. Output to file
-	// Locate project root by looking for package.json starting from the executable's directory
-	execDir, _ := os.Getwd()
-	projectRoot := execDir
-	for {
-		if _, err := os.Stat(filepath.Join(projectRoot, "package.json")); err == nil {
-			break
-		}
-		parent := filepath.Dir(projectRoot)
-		if parent == projectRoot {
-			projectRoot = execDir // Fallback
-			break
-		}
-		projectRoot = parent
-	}
-
+	projectRoot := findProjectRoot()
 	outputDir := filepath.Join(projectRoot, "src", "data", "loot", "runtime")
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
 		logrus.Errorf("Error creating output directory %s: %v", outputDir, err)
@@ -121,9 +87,77 @@ func processCategory(categoryName string) {
 		return
 	}
 
-	logrus.Info("-------------------------------------------------------------------------")
+	logrus.Info(lineDivider)
 	logrus.Infof("Processing complete for %s. Successfully parsed items. Output: %s", categoryName, outputPath)
-	logrus.Info("-------------------------------------------------------------------------")
+	logrus.Info(lineDivider)
+}
+
+func findProjectRoot() string {
+	execDir, _ := os.Getwd()
+	projectRoot := execDir
+	for {
+		if _, err := os.Stat(filepath.Join(projectRoot, "package.json")); err == nil {
+			break
+		}
+		parent := filepath.Dir(projectRoot)
+		if parent == projectRoot {
+			projectRoot = execDir // Fallback
+			break
+		}
+		projectRoot = parent
+	}
+	return projectRoot
+}
+
+func processDataByCat(categoryName string, rawResults map[string]string) ([]byte, bool) {
+	lowerCat := strings.ToLower(categoryName)
+	var jsonData []byte
+	var err error
+	var done bool
+
+	if lowerCat == "augment" || lowerCat == "augments" {
+		jsonData, err, done = processAugmentCat(categoryName, rawResults, nil, nil)
+	} else {
+		jsonData, err, done = processItemCat(categoryName, rawResults, nil, nil)
+	}
+
+	if done || err != nil {
+		return nil, true
+	}
+	return jsonData, false
+}
+
+func processItemCat(categoryName string, rawResults map[string]string, jsonData []byte, err error) ([]byte, error, bool) {
+	// Default: process generic item pages
+	processedItems := parser.ProcessContentMap(rawResults)
+	// Sort output by name using natural order
+	sort.Slice(processedItems, func(i, j int) bool {
+		return naturalLess(processedItems[i].Name, processedItems[j].Name)
+	})
+
+	jsonData, err = json.Marshal(processedItems)
+	if err != nil {
+		logrus.Errorf("Error marshalling JSON for %s: %v", categoryName, err)
+		return nil, nil, true
+	}
+
+	return jsonData, err, false
+}
+
+func processAugmentCat(categoryName string, rawResults map[string]string, jsonData []byte, err error) ([]byte, error, bool) {
+	augmentItems := parser.ProcessAugmentMap(rawResults)
+	// Sort output by name using natural order
+	sort.Slice(augmentItems, func(i, j int) bool {
+		return naturalLess(augmentItems[i].Name, augmentItems[j].Name)
+	})
+
+	jsonData, err = json.Marshal(augmentItems)
+	if err != nil {
+		logrus.Errorf("Error marshalling Augment JSON for %s: %v", categoryName, err)
+		return nil, nil, true
+	}
+
+	return jsonData, err, false
 }
 
 func toCamelCase(s string) string {
