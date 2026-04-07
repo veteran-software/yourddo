@@ -130,7 +130,7 @@ export const loadGearData = async (): Promise<{ items: GearItem[]; augments: Gea
         absoluteMinLevel: String(aug.minimumLevel ?? '1'),
         minimumLevel: aug.minimumLevel ?? 1,
         augmentType: aug.augmentType ?? '',
-        enchantments:
+        effectsAdded:
           aug.effectsAdded?.map(
             (e) =>
               ({

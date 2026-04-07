@@ -39,18 +39,6 @@ const AugmentSlotItem = (props: Props) => {
           style={{ fontSize: '0.65rem', minHeight: '20px', backgroundColor: 'rgba(0,0,0,0.05)' }}
         >
           <span className='text-truncate text-dark d-flex align-items-center'>
-            {slotted &&
-              (() => {
-                const troveEntry = troveData?.[normItem(slotted.name)]
-                if (!troveEntry) return null
-                const owners = getTroveOwners(troveEntry)
-                if (!owners) return null
-                return (
-                  <Badge bg='primary' className='px-1 py-0 me-1 shadow-sm' style={{ fontSize: '0.55rem' }}>
-                    {owners}
-                  </Badge>
-                )
-              })()}
             {slotted ? `${slotted.name} (ML:${String(slotted.minimumLevel)})` : 'Empty Slot'}
           </span>
         </Dropdown.Toggle>
@@ -144,7 +132,7 @@ const AugmentSlotItem = (props: Props) => {
           ))}
         </div>
       )}
-      {slotted?.effectsAdded && (
+      {slotted?.effectsAdded && slotted.effectsAdded.length > 0 && (
         <div
           className='mt-1 ps-2 border-start border-2 gear-planner-augment-enchantments flex-grow-1'
           style={{ fontSize: '0.65rem', minHeight: '0' }}

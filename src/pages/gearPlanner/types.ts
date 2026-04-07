@@ -130,6 +130,7 @@ export interface GearItem extends LootItem {
   slot: GearSlot
   augmentType?: string
   minimumLevel?: number
+  effectsAdded?: LootEnchantment[]
 }
 
 export interface Curse {

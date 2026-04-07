@@ -1,15 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type {
-  Curse,
-  GearAugment,
-  GearItem,
-  GearSetup
-} from '../../pages/gearPlanner/types'
-import {
-  ARTIFICER_PET_SLOTS,
-  DRUID_PET_SLOTS,
-  GearSlot
-} from '../../pages/gearPlanner/types'
+import type { Curse, GearAugment, GearItem, GearSetup } from '../../pages/gearPlanner/types'
+import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GearSlot } from '../../pages/gearPlanner/types'
 
 interface PetState {
   slots: Record<string, GearItem | null>
