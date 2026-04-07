@@ -128,6 +128,8 @@ export interface LootItem {
 export interface GearItem extends LootItem {
   id: string // Unique identifier for the gear planner
   slot: GearSlot
+  augmentType?: string
+  minimumLevel?: number
 }
 
 export interface Curse {

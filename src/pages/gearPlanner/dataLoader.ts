@@ -94,6 +94,7 @@ interface RawAugment {
   minimumLevel?: number
   update?: number
   image?: string
+  augmentType?: string
   effectsAdded?: {
     name?: string
     modifier?: string | number
@@ -127,6 +128,8 @@ export const loadGearData = async (): Promise<{ items: GearItem[]; augments: Gea
         description: aug.description ?? '',
         minLevel: String(aug.minimumLevel ?? '1'),
         absoluteMinLevel: String(aug.minimumLevel ?? '1'),
+        minimumLevel: aug.minimumLevel ?? 1,
+        augmentType: aug.augmentType ?? '',
         enchantments:
           aug.effectsAdded?.map(
             (e) =>

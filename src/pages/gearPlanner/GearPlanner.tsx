@@ -641,9 +641,14 @@ const GearPlanner = () => {
     const allowedTypes = colorMap[slotType] || [slotType]
 
     const filtered = allAugments.filter((aug) => {
+      // For typed slots (Red, Blue, etc.), respect the mapping.
+      // For specialty slots (Dino Bone, Lamordia), match exactly or use mapping if defined.
       if (!allowedTypes.includes(aug.augmentType)) return false
 
-      return aug.minimumLevel <= levelLimit
+      // Augments without minimumLevel (or level 0/1) are always applicable.
+      // If the augment has a minimumLevel, it must be <= the item's minimumLevel.
+      const augLevel = aug.minimumLevel ?? 1
+      return augLevel <= levelLimit
     })
 
     // Group by augmentType
