@@ -1,30 +1,33 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {Accordion, Badge, Button, Card, Col, Container, Form, Modal, Row, Stack, Tab, Tabs} from 'react-bootstrap'
-import {FaChevronRight, FaGear, FaLayerGroup, FaMagnifyingGlass, FaXmark} from 'react-icons/fa6'
-import {useAppDispatch, useAppSelector} from '../../redux/hooks'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Accordion, Badge, Button, Card, Col, Container, Form, Modal, Row, Stack, Tab, Tabs } from 'react-bootstrap'
+import { FaChevronRight, FaGear, FaLayerGroup, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import {
   addSetup as addSetupAction,
   equipItem as equipItemAction,
   removeSetup as removeSetupAction,
   setActiveSetup as setActiveSetupAction,
   setAugment as setAugmentAction,
+  setCurse as setCurseAction,
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
-import {getTroveOwners, normItem} from '../../utils/troveUtils.ts'
+import { getTroveOwners, normItem } from '../../utils/troveUtils.ts'
 import AugmentSlotItem from './components/AugmentSlotItem.tsx'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
+import CurseSlotItem from './components/CurseSlotItem.tsx'
 import EnchantmentList from './components/EnchantmentList.tsx'
 import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
 import SetBonusBrowserOffcanvas from './components/SetBonusBrowserOffcanvas.tsx'
 import SetBonusesSummary from './components/SetBonusesSummary.tsx'
-import {checkPotentialConflict, getSlotOwner, normalizeString, resolveConflicts} from './conflictResolver'
-import {loadGearData, loadSetBonusIndex} from './dataLoader'
+import { checkPotentialConflict, getSlotOwner, normalizeString, resolveConflicts } from './conflictResolver'
+import { loadCurses, loadGearData, loadSetBonusIndex } from './dataLoader'
 import {
   ARMOR_TYPES,
   ARTIFICER_PET_SLOTS,
   CLASS_PROFICIENCIES,
+  type Curse,
   DRUID_PET_SLOTS,
   GEAR_CLASSES,
   GEAR_SLOTS,
@@ -88,6 +91,7 @@ const GearPlanner = () => {
 
   const [allItems, setAllItems] = useState<GearItem[]>([])
   const [allAugments, setAllAugments] = useState<GearAugment[]>([])
+  const [allCurses, setAllCurses] = useState<Curse[]>([])
   const [setBonusIndex, setSetBonusIndex] = useState<SetBonusIndex>({})
   const [loading, setLoading] = useState(true)
   const [browsingSlot, setBrowsingSlot] = useState<GearSlot | null>(null)
@@ -148,6 +152,8 @@ const GearPlanner = () => {
         setAllAugments(augments)
         const sbi = await loadSetBonusIndex()
         setSetBonusIndex(sbi)
+        const curses = await loadCurses()
+        setAllCurses(curses)
       } catch (err) {
         console.error('Error loading gear data:', err)
       } finally {
@@ -593,7 +599,8 @@ const GearPlanner = () => {
       shieldFilters: [],
       allowMetalWithDruid: false,
       slots: {} as Record<GearSlot, GearItem | null>,
-      slottedAugments: {}
+      slottedAugments: {},
+      slottedCurses: {}
     }
 
     dispatch(addSetupAction(newSetup))
@@ -611,6 +618,10 @@ const GearPlanner = () => {
 
   const setSlottedAugment = (itemId: string, slotIndex: number, augment: GearAugment | null, slot?: GearSlot) => {
     dispatch(setAugmentAction({ itemId, slotIndex, augment, slot }))
+  }
+
+  const setSlottedCurse = (itemId: string, curse: Curse | null, slot?: GearSlot) => {
+    dispatch(setCurseAction({ itemId, curse, slot }))
   }
 
   const getApplicableAugments = (slotType: string, itemMinLevel: number) => {
@@ -793,6 +804,27 @@ const GearPlanner = () => {
                     })}
                   </div>
                 )}
+                {(() => {
+                  const ineligibleTypes = ['Augment', 'Cosmetic', 'Wand', 'Scroll', 'Quiver', 'Ammunition']
+                  if (ineligibleTypes.includes(selectedItem.type)) return null
+
+                  const slottedCurse = activeSetup.slottedCurses[selectedItem.id]
+
+                  return (
+                    <div className='text-start mt-1 pt-1 border-top gear-planner-slot-curses'>
+                      <CurseSlotItem
+                        selectedItem={selectedItem}
+                        allCurses={allCurses}
+                        slotted={slottedCurse}
+                        slot={slot}
+                        currentConflicts={currentConflicts}
+                        currentEquipped={currentEquipped}
+                        currentSlottedAugments={currentSlottedAugments}
+                        setCurse={setSlottedCurse}
+                      />
+                    </div>
+                  )
+                })()}
               </div>
             ) : (
               <div className='text-center italic small text-secondary'>No Item Selected</div>

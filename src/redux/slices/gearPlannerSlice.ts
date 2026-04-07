@@ -1,10 +1,20 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { GearAugment, GearItem, GearSetup } from '../../pages/gearPlanner/types'
-import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GearSlot } from '../../pages/gearPlanner/types'
+import type {
+  Curse,
+  GearAugment,
+  GearItem,
+  GearSetup
+} from '../../pages/gearPlanner/types'
+import {
+  ARTIFICER_PET_SLOTS,
+  DRUID_PET_SLOTS,
+  GearSlot
+} from '../../pages/gearPlanner/types'
 
 interface PetState {
   slots: Record<string, GearItem | null>
   slottedAugments: Record<string, Record<number, GearAugment | null>>
+  slottedCurses: Record<string, Curse | null>
 }
 
 interface GearPlannerState {
@@ -16,7 +26,8 @@ interface GearPlannerState {
 
 const initialPetState = (): PetState => ({
   slots: {},
-  slottedAugments: {}
+  slottedAugments: {},
+  slottedCurses: {}
 })
 
 const initialState: GearPlannerState = {
@@ -32,7 +43,8 @@ const initialState: GearPlannerState = {
       shieldFilters: [],
       allowMetalWithDruid: false,
       slots: {} as Record<GearSlot, GearItem | null>,
-      slottedAugments: {}
+      slottedAugments: {},
+      slottedCurses: {}
     }
   ],
   activeSetupId: 'default',
@@ -140,10 +152,37 @@ const gearPlannerSlice = createSlice({
       } else if (owner === 'druid_pet') {
         updateAugment(state.druidPet)
       }
+    },
+    setCurse: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        curse: Curse | null
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, curse, slot } = action.payload
+      let owner: 'character' | 'artificer_pet' | 'druid_pet' = 'character'
+
+      if (slot) {
+        owner = getSlotOwner(slot)
+      }
+
+      if (owner === 'character') {
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+        if (setup) {
+          setup.slottedCurses[itemId] = curse
+        }
+      } else if (owner === 'artificer_pet') {
+        state.artificerPet.slottedCurses[itemId] = curse
+      } else if (owner === 'druid_pet') {
+        state.druidPet.slottedCurses[itemId] = curse
+      }
     }
   }
 })
 
-export const { setActiveSetup, addSetup, removeSetup, updateSetup, equipItem, setAugment } = gearPlannerSlice.actions
+export const { setActiveSetup, addSetup, removeSetup, updateSetup, equipItem, setAugment, setCurse } =
+  gearPlannerSlice.actions
 
 export default gearPlannerSlice.reducer

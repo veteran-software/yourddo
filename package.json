@@ -6,11 +6,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "go run ./tools/cannithSplit src/data/cannithCrafting/cannithEnhancements.phase1.json src/data/cannithCrafting/runtime && yarn items:data",
-    "items:data": "yarn items:data:armor && yarn items:data:augment && yarn items:data:clothing && yarn items:data:jewelry",
+    "prebuild": "go run ./tools/cannithSplit src/data/cannithCrafting/cannithEnhancements.phase1.json src/data/cannithCrafting/runtime && yarn items:data && go run ./tools/dataSpider/indexer/main.go",
+    "items:data": "yarn items:data:armor && yarn items:data:augment && yarn items:data:clothing && yarn items:data:collar && yarn items:data:jewelry",
     "items:data:armor": "go run ./tools/dataSpider Armor",
     "items:data:augment": "go run ./tools/dataSpider Augment",
     "items:data:clothing": "go run ./tools/dataSpider Clothing",
+    "items:data:collar": "go run ./tools/dataSpider Collar",
     "items:data:jewelry": "go run ./tools/dataSpider Jewelry",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
@@ -61,7 +62,7 @@
     "sass": "^1.99.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.58.0",
-    "vite": "^8.0.3",
+    "vite": "^8.0.5",
     "vite-plugin-compression": "^0.5.1"
   },
   "packageManager": "yarn@4.13.0"

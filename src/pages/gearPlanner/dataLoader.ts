@@ -1,4 +1,5 @@
 import {
+  type Curse,
   type GearAugment,
   type GearItem,
   GearSlot,
@@ -10,7 +11,18 @@ import {
 // Use Vite's glob import to gather all runtime JSON files from the generator output.
 // Note: Vite requires a literal string here (no template strings/variables).
 // Path is relative to this file: src/pages/gearPlanner -> src/data/loot/runtime
-const dataModules = import.meta.glob('../../data/loot/runtime/*.json', { eager: true })
+const dataModules = import.meta.glob(['../../data/loot/runtime/*.json', '../../data/deckOfManyCurses.json'], {
+  eager: true
+})
+
+export const loadCurses = async (): Promise<Curse[]> => {
+  const module = dataModules['../../data/deckOfManyCurses.json']
+  if (module && typeof module === 'object' && 'default' in module) {
+    const curses = module.default as Curse[]
+    return [...curses].sort((a, b) => a.name.localeCompare(b.name))
+  }
+  return []
+}
 
 export const loadSetBonusIndex = async (): Promise<SetBonusIndex> => {
   const module = dataModules['../../data/loot/runtime/setBonusIndex.json']

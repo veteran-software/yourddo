@@ -30588,7 +30588,7 @@
     "augmentType": "Sun",
     "effectsAdded": [
       {
-        "name": "Run Arm Focus",
+        "name": "Rune Arm Focus",
         "modifier": 1,
         "bonus": "Artifact"
       }
@@ -30602,7 +30602,7 @@
     "augmentType": "Sun",
     "effectsAdded": [
       {
-        "name": "Run Arm Focus",
+        "name": "Rune Arm Focus",
         "modifier": 3,
         "bonus": "Artifact"
       }

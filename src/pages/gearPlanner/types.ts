@@ -130,6 +130,12 @@ export interface GearItem extends LootItem {
   slot: GearSlot
 }
 
+export interface Curse {
+  name: string
+  enchantments: LootEnchantment[]
+  type: string
+}
+
 export interface GearSetup {
   id: string
   name: string
@@ -142,6 +148,7 @@ export interface GearSetup {
   allowMetalWithDruid: boolean // Override for Druid metal restriction
   slots: Record<GearSlot, GearItem | null>
   slottedAugments: Record<string, Record<number, GearAugment | null>> // itemId -> { slotIndex -> augment }
+  slottedCurses: Record<string, Curse | null> // itemId -> curse
 }
 
 export const GEAR_CLASSES = [
