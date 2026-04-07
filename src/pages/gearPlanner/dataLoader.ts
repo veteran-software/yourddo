@@ -139,6 +139,7 @@ export const loadGearData = async (): Promise<{ items: GearItem[]; augments: Gea
                 bonus: e.bonus ?? undefined
               }) as LootEnchantment
           ) ?? [],
+        enchantments: [],
         augments: [],
         setBonus: aug.setBonus?.map((sb) => ({ name: sb.name })),
         slot: GearSlot.Augment,
