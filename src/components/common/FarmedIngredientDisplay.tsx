@@ -6,7 +6,7 @@ import { useAppSelector } from '../../redux/hooks.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { ICON_BASE } from '../../utils/constants.ts'
 import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
-import { formatIngredientName } from '../../utils/utils.ts'
+import { formatDropLocation, formatIngredientName } from '../../utils/utils.ts'
 import FallbackImage from './FallbackImage.tsx'
 import IngredientPopover from './IngredientPopover.tsx'
 import NoteTooltip from './NoteTooltip.tsx'
@@ -22,6 +22,9 @@ const FarmedIngredientDisplay = (props: Props) => {
   if (!ingredient) {
     return <></>
   }
+
+  const locations =
+    ingredient.foundIn?.map((loc) => formatDropLocation(loc)).toSorted((a, b) => a.localeCompare(b)) ?? []
 
   return (
     <Stack direction='horizontal' gap={3}>
@@ -45,10 +48,10 @@ const FarmedIngredientDisplay = (props: Props) => {
           {ingredient.notes && <NoteTooltip id={ingredient.name} text={ingredient.notes} />}
         </Stack>
 
-        {showLocation && (
+        {showLocation && locations.length > 0 && (
           <small>
-            Farming Location{(ingredient.foundIn?.length ?? 0) > 1 ? 's' : ''}:&nbsp;
-            {ingredient.foundIn?.toSorted((a: string, b: string) => a.localeCompare(b)).join(', ')}
+            Farming Location{locations.length > 1 ? 's' : ''}:&nbsp;
+            {locations.join(', ')}
           </small>
         )}
       </Stack>

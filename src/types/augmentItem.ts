@@ -1,3 +1,4 @@
+import type { LootDropLocation } from '../pages/gearPlanner/types.ts'
 import type { Binding, Enhancement } from './core.ts'
 import type { CraftingIngredient, SetBonus } from './crafting.ts'
 import type { Ingredient } from './ingredients.ts'
@@ -8,7 +9,7 @@ export interface AugmentItem extends Ingredient {
   image?: string
   minimumLevel?: number | string
   binding?: Binding
-  foundIn?: (string | any)[] | null
+  foundIn?: (string | LootDropLocation)[] | null
   craftedIn?: string
   effectsAdded?: Partial<Enhancement>[]
   effectsRemoved?: Partial<Enhancement>[]

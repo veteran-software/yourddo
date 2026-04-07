@@ -34,7 +34,7 @@ const InvasionDropdown = () => {
     ? selectedInvasionItem.effectsAdded
         .map((effect: Enhancement) => {
           return `${effect.name}${
-            effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''
+            effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${String(effect.bonus)})` : ''
           }`
         })
         .join(', ')

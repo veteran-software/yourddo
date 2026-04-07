@@ -104,7 +104,7 @@ const ViktraniumExperiment = () => {
       selectedWickedCraftedItem
     if (selectedItem?.augments === undefined) return []
     const aug = selectedItem.augments[0]
-    if (typeof aug === 'string' || aug === undefined || aug === null) return []
+    if (!aug) return []
     return Object.entries(aug)
       .filter(([key, value]) => {
         return value === null || key.startsWith('lamordia')

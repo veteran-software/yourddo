@@ -274,7 +274,7 @@ const AugmentSlotFilterableDropdown = (props: Props) => {
                 items={orderedItemsMap}
                 filteredItems={orderedFilteredOptions}
                 onSelect={(aug: Ingredient) => {
-                  handleSelectAugment(slot, aug)
+                  handleSelectAugment(slot, aug as unknown as Ingredient)
                 }}
                 onReset={() => {
                   handleResetAugment(slot)

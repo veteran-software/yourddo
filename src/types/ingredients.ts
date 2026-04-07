@@ -1,3 +1,4 @@
+import type { LootDropLocation } from '../pages/gearPlanner/types.ts'
 import type { Binding, Cost, Enhancement } from './core.ts'
 
 export interface Ingredient {
@@ -8,7 +9,7 @@ export interface Ingredient {
   description?: string
   enhancements?: Enhancement[]
   enchantments?: Enhancement[] | null
-  foundIn?: (string | any)[] | null
+  foundIn?: (string | LootDropLocation)[] | null
   image?: string
   inventoryMaxStack?: number
   absoluteMinLevel?: number | string

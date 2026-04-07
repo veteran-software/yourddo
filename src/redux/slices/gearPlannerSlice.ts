@@ -43,7 +43,9 @@ const initialState: GearPlannerState = {
   druidPet: initialPetState()
 }
 
-const getSlotOwner = (slot: GearSlot): 'character' | 'artificer_pet' | 'druid_pet' => {
+type SlotOwner = 'character' | 'artificer_pet' | 'druid_pet'
+
+const getSlotOwner = (slot: GearSlot): SlotOwner => {
   if (ARTIFICER_PET_SLOTS.includes(slot)) return 'artificer_pet'
   if (DRUID_PET_SLOTS.includes(slot)) return 'druid_pet'
   return 'character'
@@ -113,7 +115,7 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotIndex, augment, slot } = action.payload
-      let owner: 'character' | 'artificer_pet' | 'druid_pet' = 'character'
+      let owner: SlotOwner = 'character'
 
       if (slot) {
         owner = getSlotOwner(slot)
@@ -153,7 +155,7 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, curse, slot } = action.payload
-      let owner: 'character' | 'artificer_pet' | 'druid_pet' = 'character'
+      let owner: SlotOwner = 'character'
 
       if (slot) {
         owner = getSlotOwner(slot)

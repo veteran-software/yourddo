@@ -78,6 +78,9 @@ export interface LootDropLocation {
     vendorsRaw: string
   }
   isCraftOnly?: boolean
+  vipMonths?: string
+  adventurePack?: string
+  [key: string]: string | number | boolean | undefined | object
 }
 
 export interface GearAugmentSlot {

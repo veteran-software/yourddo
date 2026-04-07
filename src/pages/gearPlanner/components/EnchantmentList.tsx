@@ -19,9 +19,9 @@ const EnchantmentList = (props: Props) => {
             ? { isConflict: false, currentMax: 0, isRedundant: false }
             : checkPotentialConflict(ench, equippedItems, browsingSlot ?? undefined, slottedAugments)
 
-        const modifierText = ench.modifier ? `+${ench.modifier}` : ''
+        const modifierText = ench.modifier ? `+${String(ench.modifier)}` : ''
         const bonusText = ench.bonus ? `(${ench.bonus})` : ''
-        const enchModifierText = ench.modifier ? ` (+${ench.modifier} ${ench.bonus ?? ''})` : ''
+        const enchModifierText = ench.modifier ? ` (+${String(ench.modifier)} ${ench.bonus ?? ''})` : ''
         const enchText =
           source === 'slot'
             ? `• ${ench.name} ${modifierText} ${bonusText}`.replace(/\s+/g, ' ').trim()

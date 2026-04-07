@@ -15,21 +15,21 @@ const dataModules = import.meta.glob(['../../data/loot/runtime/*.json', '../../d
   eager: true
 })
 
-export const loadCurses = async (): Promise<Curse[]> => {
+export const loadCurses = (): Promise<Curse[]> => {
   const module = dataModules['../../data/deckOfManyCurses.json']
   if (module && typeof module === 'object' && 'default' in module) {
     const curses = module.default as Curse[]
-    return [...curses].sort((a, b) => a.name.localeCompare(b.name))
+    return Promise.resolve([...curses].sort((a, b) => a.name.localeCompare(b.name)))
   }
-  return []
+  return Promise.resolve([])
 }
 
-export const loadSetBonusIndex = async (): Promise<SetBonusIndex> => {
+export const loadSetBonusIndex = (): Promise<SetBonusIndex> => {
   const module = dataModules['../../data/loot/runtime/setBonusIndex.json']
   if (module && typeof module === 'object' && 'default' in module) {
-    return module.default as SetBonusIndex
+    return Promise.resolve(module.default as SetBonusIndex)
   }
-  return {}
+  return Promise.resolve({})
 }
 
 const SLOT_MAP: Record<string, GearSlot[]> = {
@@ -103,7 +103,7 @@ interface RawAugment {
   setBonus?: { name: string }[]
 }
 
-export const loadGearData = async (): Promise<{ items: GearItem[]; augments: GearAugment[] }> => {
+export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugment[] }> => {
   const allItems: GearItem[] = []
   const allAugments: GearAugment[] = []
   const seenKeys = new Set<string>()
@@ -187,5 +187,5 @@ export const loadGearData = async (): Promise<{ items: GearItem[]; augments: Gea
     }
   })
 
-  return { items: allItems, augments: allAugments }
+  return Promise.resolve({ items: allItems, augments: allAugments })
 }

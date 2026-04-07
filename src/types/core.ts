@@ -307,7 +307,7 @@ export interface Cost {
 export interface Enhancement {
   ability?: AbilityLong
   basePriceModifier?: BasePriceModifier
-  bonus?: Bonus | number | string
+  bonus?: number | string
   damage?: DamageType[]
   description?: string
   minLevelIncrease?: {
