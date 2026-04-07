@@ -11,6 +11,13 @@ import (
 	"compendium-crawler-go/cleanup"
 )
 
+const (
+	viktranium           = "Viktranium"
+	viktraniumCrafting   = viktranium + " Crafting"
+	dinosaurBone         = "Dinosaur Bone"
+	dinosaurBoneCrafting = dinosaurBone + " Crafting"
+)
+
 // ProcessAugmentMap parses raw wikitext pages into AugmentItem outputs.
 func ProcessAugmentMap(rawContentMap map[string]string) []api.AugmentItem {
 	results := make([]api.AugmentItem, 0, len(rawContentMap))
@@ -112,7 +119,16 @@ func parseNumber(s string, i int) (int, int) {
 
 func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.AugmentItem {
 	var out api.AugmentItem
-	// Name/Description
+
+	parseBasicFields(&out, fields, pageTitle)
+	parseDropAndCrafting(&out, fields, pageTitle)
+	determineAugmentTypeAndImage(&out, fields, pageTitle)
+	parseEffects(&out, fields)
+
+	return out
+}
+
+func parseBasicFields(out *api.AugmentItem, fields map[string]string, pageTitle string) {
 	out.Name = firstNonEmpty(fields["name"], pageTitle)
 	out.Description = fields["description"]
 
@@ -149,31 +165,28 @@ func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.Augmen
 		}
 	}
 	if u := strings.TrimSpace(fields["update"]); u != "" {
-		// Update might be "Update 75" or just "75"
 		uStr := strings.TrimPrefix(strings.ToLower(u), "update")
 		uStr = strings.TrimSpace(uStr)
 		if i, err := strconv.Atoi(uStr); err == nil {
 			out.Update = &i
 		}
 	}
+}
 
-	// FoundIn/CraftedIn: derive from droplocation-related templates
+func parseDropAndCrafting(out *api.AugmentItem, fields map[string]string, pageTitle string) {
 	if val, ok := fields["droplocation"]; ok {
 		drops := ParseMultiTemplateDropLocation(val)
 
-		// 1) Attempt to populate CraftedIn from crafting-type sources
-		if out.CraftedIn == "" { // do not overwrite explicit craftedIn from fields
+		if out.CraftedIn == "" {
 			for _, d := range drops {
 				switch d.SourceType {
-				case "Viktranium Crafting":
-					out.CraftedIn = "Viktranium Crafting"
-				case "Dinosaur Bone Crafting":
-					out.CraftedIn = "Dinosaur Bone Crafting"
+				case viktraniumCrafting:
+					out.CraftedIn = viktraniumCrafting
+				case dinosaurBoneCrafting:
+					out.CraftedIn = dinosaurBoneCrafting
 				case "CraftedAugment":
-					// Prefer explicit craft location if available
 					out.CraftedIn = firstNonEmpty(d.CraftLocation, "Crafted Augment")
 				case "Crafting":
-					// Combine type and location when present
 					ci := strings.TrimSpace(strings.Join(filterNonEmpty([]string{d.CraftingType, d.CraftingLocation}), " - "))
 					out.CraftedIn = firstNonEmpty(ci, d.CraftingType, d.CraftingLocation, "Crafting")
 				}
@@ -183,28 +196,24 @@ func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.Augmen
 			}
 		}
 
-		// 1b) Build Requirements from crafting-type sources
-		var reqItems []api.AugmentItem
-		// Determine Viktranium prefixing: "Bleak" (heroic) vs "Legendary Bleak" (legendary)
 		vikPrefix := ""
-		// Prefer MinimumLevel when available (>=31 considered Legendary in DDO)
 		if out.MinimumLevel != nil && *out.MinimumLevel >= 31 {
 			vikPrefix = "Legendary Bleak "
 		} else {
-			// Fallback: infer from name/title
 			nameLower := strings.ToLower(firstNonEmpty(out.Name, pageTitle))
 			if strings.Contains(nameLower, "(legendary)") {
 				vikPrefix = "Legendary Bleak "
 			} else if strings.Contains(nameLower, "(heroic)") {
 				vikPrefix = "Bleak "
-			} else if out.MinimumLevel != nil { // has min level but <31
+			} else if out.MinimumLevel != nil {
 				vikPrefix = "Bleak "
 			}
 		}
 
+		var reqItems []api.AugmentItem
 		for _, d := range drops {
 			switch d.SourceType {
-			case "Viktranium Crafting":
+			case viktraniumCrafting:
 				for _, r := range buildCraftRequirements(d, vikPrefix) {
 					reqItems = append(reqItems, api.AugmentItem{
 						Title:          r.Title,
@@ -212,7 +221,7 @@ func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.Augmen
 						IngredientType: r.IngredientType,
 					})
 				}
-			case "Dinosaur Bone Crafting":
+			case dinosaurBoneCrafting:
 				for _, r := range buildCraftRequirements(d, "") {
 					reqItems = append(reqItems, api.AugmentItem{
 						Name:           r.Title,
@@ -226,12 +235,10 @@ func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.Augmen
 			out.Requirements = reqItems
 		}
 
-		// 2) Build FoundIn from non-crafting sources only
 		nonCraftDrops := make([]api.DropSourceData, 0, len(drops))
 		for _, d := range drops {
 			switch d.SourceType {
-			case "Viktranium Crafting", "Dinosaur Bone Crafting", "CraftedAugment", "Crafting":
-				// Skip crafting sources for FoundIn
+			case viktraniumCrafting, dinosaurBoneCrafting, "CraftedAugment", "Crafting":
 			default:
 				nonCraftDrops = append(nonCraftDrops, d)
 			}
@@ -239,11 +246,9 @@ func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.Augmen
 		out.FoundIn = summarizeDropSources(nonCraftDrops)
 	}
 
-	// CraftedIn: support variants like "crafted in" / "craftedIn"
 	if ci := strings.TrimSpace(fields["craftedIn"]); ci != "" {
 		out.CraftedIn = ci
-	} else {
-		// search keys loosely
+	} else if out.CraftedIn == "" {
 		for k, v := range fields {
 			if craftedInKeyRegex.MatchString(k) {
 				out.CraftedIn = strings.TrimSpace(v)
@@ -251,16 +256,15 @@ func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.Augmen
 			}
 		}
 	}
+}
 
-	// AugmentType: map the Augment template `color` field for ALL augments
+func determineAugmentTypeAndImage(out *api.AugmentItem, fields map[string]string, pageTitle string) {
 	if col := strings.TrimSpace(fields["color"]); col != "" {
 		if at := augmentTypeFromColor(col); at != "" {
 			out.AugmentType = at
 		}
 	}
-	// Some Augments are authored via Template:Material and embed an Augment template
-	// inside the `use` parameter to indicate color/type. If we still don't have
-	// an augmentType, try to extract a color from `use`.
+
 	if out.AugmentType == "" {
 		if u := strings.TrimSpace(fields["use"]); u != "" {
 			if colorFromUse := extractAugmentColorFromUse(u); colorFromUse != "" {
@@ -271,9 +275,7 @@ func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.Augmen
 		}
 	}
 
-	// 2c) Try to infer from the icon/image filename for named/special augments
 	if out.AugmentType == "" {
-		// Prefer explicit icon field if present; fall back to image
 		icon := strings.TrimSpace(fields["icon"])
 		if icon == "" {
 			icon = strings.TrimSpace(fields["image"])
@@ -285,26 +287,14 @@ func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.Augmen
 		}
 	}
 
-	// 2d) Final fallback: infer from the augment name for common colored gem families
-	// Examples:
-	//  - "Diamond of Dexterity +9"     -> Colorless
-	//  - "Topaz of Acid Resistance 15" -> Yellow
-	//  - "Sapphire of Wizardry"        -> Blue
-	//  - "Solar Gem of Rune Arm DCs"   -> Sun
-	//  - "Lunar Gem of Strength"       -> Moon
 	if out.AugmentType == "" {
 		if at := inferAugmentTypeFromName(firstNonEmpty(out.Name, pageTitle)); at != "" {
 			out.AugmentType = at
 		}
 	}
 
-	// 2e) Name-based override per latest rule:
-	// If the name contains "Solar Gem of" anywhere → force Sun.
-	// If the name starts with "Lunar Gem of"       → force Moon.
-	// This can override a previously inferred/explicit augmentType to match author intent.
 	{
 		nameLower := strings.ToLower(firstNonEmpty(out.Name, pageTitle))
-		// Trim leading spaces for prefix checks
 		nameLowerTrim := strings.TrimSpace(nameLower)
 		if strings.Contains(nameLowerTrim, "solar gem of") {
 			out.AugmentType = "Sun"
@@ -313,7 +303,6 @@ func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.Augmen
 		}
 	}
 
-	// Populate Image: prefer mapping from `icon` field; fall back to `augmentType` mapping, then `image` field
 	iconVal := strings.TrimSpace(fields["icon"])
 	if mappedImg := mapIconToImage(iconVal); mappedImg != "" {
 		out.Image = mappedImg
@@ -322,33 +311,20 @@ func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.Augmen
 	} else {
 		out.Image = fields["image"]
 	}
+}
 
-	// EffectsAdded from enchantments template using existing parser
-	// Also capture Template:ItemSet as setBonus.name for Augment output and
-	// exclude it from effectsAdded.
+func parseEffects(out *api.AugmentItem, fields map[string]string) {
 	if rawE, ok := fields["enchantments"]; ok {
 		ench := ParseEnchantments(rawE, strings.ToLower(fields["type"]))
-		// Use shared helper to separate set bonuses for all consumers
 		normal, sets := ExtractSetBonus(ench)
 		if len(sets) > 0 {
-			// For Augment output, keep singular entry per prior requirement
 			out.SetBonus = []api.SetBonusOut{sets[0]}
 		}
 		out.EffectsAdded = mapEnchantmentsToPartial(normal)
 	}
 
-	// Fallback: Some Augment pages (notably certain Deception augments) omit a
-	// machine-parsable enchantments field and only state the bonuses in the
-	// description. When effectsAdded is empty, try to synthesize Sneak Attack
-	// and Sneak Attack Damage from the description if clearly present.
 	if len(out.EffectsAdded) == 0 && strings.Contains(strings.ToLower(out.Description), "sneak attack") {
-		// Example text:
-		// "Slotted Effect: +12 Enhancement bonus to Sneak Attacks, +18 Enhancement bonus to Sneak Attack Damage."
-		// We will extract the first number tied to "Sneak Attack" and the first number tied to
-		// "Sneak Attack Damage" and emit them as separate effects with bonusType=Enhancement.
 		desc := out.Description
-		// Build regexes that are tolerant to wording and punctuation.
-		// Capture integers; ignore percent signs if ever present.
 		reSneak := regexp.MustCompile(`(?i)\+?\s*(\d+)\s*%?\s*(?:[A-Za-z ]*?)\bSneak Attack\b`)
 		reSneakDmg := regexp.MustCompile(`(?i)\+?\s*(\d+)\s*%?\s*(?:[A-Za-z ]*?)\bSneak Attack Damage\b`)
 
@@ -376,14 +352,11 @@ func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.Augmen
 		}
 	}
 
-	// No consistent field for EffectsRemoved on augment pages; leave empty unless provided
 	if rawR := strings.TrimSpace(fields["effectsremoved"]); rawR != "" {
-		// If ever present, reuse enchantment parser
 		ench := ParseEnchantments(rawR, strings.ToLower(fields["type"]))
 		out.EffectsRemoved = mapEnchantmentsToPartial(ench)
 	}
 
-	// Hardcode for "The Master's Gift" if it has no effects or needs specific ones
 	if strings.EqualFold(out.Name, "The Master's Gift") {
 		out.EffectsAdded = []api.PartialEnhancementOut{
 			{
@@ -393,9 +366,6 @@ func ConvertAugmentToJSON(pageTitle string, fields map[string]string) api.Augmen
 			},
 		}
 	}
-
-	// Set bonuses and Requirements are uncommon for augments; left empty for now.
-	return out
 }
 
 // inferAugmentTypeFromName maps well-known gem names to augment types when
@@ -608,55 +578,58 @@ func parseBinding(s string) *api.BindingOut {
 func summarizeDropSources(drops []api.DropSourceData) []string {
 	var result []string
 	for _, d := range drops {
-		switch d.SourceType {
-		case "Quest":
-			title := firstNonEmpty(d.TitleForLink, d.QuestWildernessChain)
-			if d.WhichChestPerson != "" {
-				result = append(result, fmt.Sprintf("%s (%s)", title, d.WhichChestPerson))
-			} else {
-				result = append(result, title)
-			}
-		case "Store":
-			if d.StoreName != "" {
-				result = append(result, "Store: "+d.StoreName)
-			}
-		case "AdventurePack":
-			if d.AdventurePack != "" {
-				result = append(result, "Adventure Pack: "+d.AdventurePack)
-			}
-		case "MimicTokenPurchase":
-			if d.MimicTokenCount != "" {
-				result = append(result, fmt.Sprintf("Glynereth: Purchase for %sx Mimic Token. This is only available during the Mimic Hunt.", d.MimicTokenCount))
-			} else {
-				result = append(result, "Glynereth: Purchase for Mimic Tokens. This is only available during the Mimic Hunt.")
-			}
-		case "Ingredient":
-			if d.IngredientCount != "" && d.IngredientCount != "1" {
-				result = append(result, fmt.Sprintf("Crafted: Requires %sx %s", d.IngredientCount, d.IngredientName))
-			} else {
-				result = append(result, fmt.Sprintf("Crafted: Requires %s", d.IngredientName))
-			}
-		default:
-			// fallback, try non-empty fields
-			joinedFields := filterNonEmpty([]string{d.QuestWildernessChain, d.StoreName, d.AdventurePack, d.EventName})
-			s := strings.TrimSpace(strings.Join(joinedFields, ", "))
-			if s != "" {
-				result = append(result, s)
-			}
+		if s := formatDropSource(d); s != "" {
+			result = append(result, s)
 		}
 	}
-	// De-duplicate while preserving order
-	seen := map[string]bool{}
-	uniq := make([]string, 0, len(result))
-	for _, v := range result {
+	return uniqueStrings(result)
+}
+
+func formatDropSource(d api.DropSourceData) string {
+	switch d.SourceType {
+	case "Quest":
+		title := firstNonEmpty(d.TitleForLink, d.QuestWildernessChain)
+		if d.WhichChestPerson != "" {
+			return fmt.Sprintf("%s (%s)", title, d.WhichChestPerson)
+		}
+		return title
+	case "Store":
+		if d.StoreName != "" {
+			return "Store: " + d.StoreName
+		}
+	case "AdventurePack":
+		if d.AdventurePack != "" {
+			return "Adventure Pack: " + d.AdventurePack
+		}
+	case "MimicTokenPurchase":
+		if d.MimicTokenCount != "" {
+			return fmt.Sprintf("Glynereth: Purchase for %sx Mimic Token. This is only available during the Mimic Hunt.", d.MimicTokenCount)
+		}
+		return "Glynereth: Purchase for Mimic Tokens. This is only available during the Mimic Hunt."
+	case "Ingredient":
+		if d.IngredientCount != "" && d.IngredientCount != "1" {
+			return fmt.Sprintf("Crafted: Requires %sx %s", d.IngredientCount, d.IngredientName)
+		}
+		return fmt.Sprintf("Crafted: Requires %s", d.IngredientName)
+	default:
+		joinedFields := filterNonEmpty([]string{d.QuestWildernessChain, d.StoreName, d.AdventurePack, d.EventName})
+		return strings.TrimSpace(strings.Join(joinedFields, ", "))
+	}
+	return ""
+}
+
+func uniqueStrings(in []string) []string {
+	seen := make(map[string]bool)
+	var out []string
+	for _, v := range in {
 		v = strings.TrimSpace(v)
 		if v == "" || seen[v] {
 			continue
 		}
 		seen[v] = true
-		uniq = append(uniq, v)
+		out = append(out, v)
 	}
-	return uniq
+	return out
 }
 
 func firstNonEmpty(vals ...string) string {
@@ -725,22 +698,22 @@ func buildCraftRequirements(d api.DropSourceData, vikPrefix string) []api.Crafti
 
 	var out []api.CraftingIngredientOut
 	switch d.SourceType {
-	case "Viktranium Crafting":
+	case viktraniumCrafting:
 		// Use singular titles for Viktranium-crafted augment requirements
-		out = add(out, "Transformer", "Viktranium", d.ViktraniumTransformers)
-		out = add(out, "Memento", "Viktranium", d.ViktraniumMementos)
-		out = add(out, "Wire", "Viktranium", d.ViktraniumWires)
-		out = add(out, "Conductor", "Viktranium", d.ViktraniumConductors)
-		out = add(out, "Insulator", "Viktranium", d.ViktraniumInsulators)
-		out = add(out, "Alternator", "Viktranium", d.ViktraniumAlternators)
-		out = add(out, "Resistor", "Viktranium", d.ViktraniumResistors)
-	case "Dinosaur Bone Crafting":
+		out = add(out, "Transformer", viktranium, d.ViktraniumTransformers)
+		out = add(out, "Memento", viktranium, d.ViktraniumMementos)
+		out = add(out, "Wire", viktranium, d.ViktraniumWires)
+		out = add(out, "Conductor", viktranium, d.ViktraniumConductors)
+		out = add(out, "Insulator", viktranium, d.ViktraniumInsulators)
+		out = add(out, "Alternator", viktranium, d.ViktraniumAlternators)
+		out = add(out, "Resistor", viktranium, d.ViktraniumResistors)
+	case dinosaurBoneCrafting:
 		// Use in-game singular names for each Dinosaur Bone ingredient
-		out = add(out, "Fossilized Raptor Claw", "Dinosaur Bone", d.BoneRaptor)
-		out = add(out, "Fossilized Triceratops Horn", "Dinosaur Bone", d.BoneTriceratops)
-		out = add(out, "Fossilized Pteranodon Vertebra", "Dinosaur Bone", d.BonePteradon)
-		out = add(out, "Fossilized Ankylosaur Rib", "Dinosaur Bone", d.BoneAnkylosaur)
-		out = add(out, "Fossilized Tyrannosaurus Tooth", "Dinosaur Bone", d.BoneTyrannosaurus)
+		out = add(out, "Fossilized Raptor Claw", dinosaurBone, d.BoneRaptor)
+		out = add(out, "Fossilized Triceratops Horn", dinosaurBone, d.BoneTriceratops)
+		out = add(out, "Fossilized Pteranodon Vertebra", dinosaurBone, d.BonePteradon)
+		out = add(out, "Fossilized Ankylosaur Rib", dinosaurBone, d.BoneAnkylosaur)
+		out = add(out, "Fossilized Tyrannosaurus Tooth", dinosaurBone, d.BoneTyrannosaurus)
 		out = add(out, "Black Pearl", "Black Pearls", d.BlackPearls)
 	}
 	return out
