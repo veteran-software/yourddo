@@ -63,6 +63,7 @@ const GearPlanner = () => {
   const [showConflicts, setShowConflicts] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showSidebar, setShowSidebar] = useState(false)
+  const [showPermalink, setShowPermalink] = useState(false)
   const [showEnchantmentSearch, setShowEnchantmentSearch] = useState(false)
   const [showSetBonusBrowser, setShowSetBonusBrowser] = useState(false)
   const [browsingSet, setBrowsingSet] = useState<string | null>(null)
@@ -177,19 +178,33 @@ const GearPlanner = () => {
               </Col>
 
               <Col xs={12} md='auto' className='d-flex gap-2 justify-content-md-end'>
-                <Button
-                  variant='outline-light'
-                  size='sm'
-                  className='d-flex align-items-center gap-2'
-                  onClick={() => {
-                    setShowSettings(true)
-                  }}
-                >
-                  <FaGear /> Setup Settings
-                </Button>
-                <Button variant='outline-light' size='sm' onClick={gpHook.addSetup}>
-                  Add Setup
-                </Button>
+                <ButtonGroup>
+                  <Button
+                    variant='outline-light'
+                    size='sm'
+                    className='d-flex align-items-center gap-2'
+                    onClick={() => {
+                      setShowPermalink(true)
+                    }}
+                  >
+                    <FaLink /> Permalink
+                  </Button>
+
+                  <Button
+                    variant='outline-light'
+                    size='sm'
+                    className='d-flex align-items-center gap-2'
+                    onClick={() => {
+                      setShowSettings(true)
+                    }}
+                  >
+                    <FaGear /> Setup Settings
+                  </Button>
+
+                  <Button variant='outline-light' size='sm' onClick={gpHook.addSetup}>
+                    Add Setup
+                  </Button>
+                </ButtonGroup>
               </Col>
             </Row>
           </Card.Header>
@@ -537,6 +552,15 @@ const GearPlanner = () => {
           itemNameSearch={itemNameSearch}
           setItemNameSearch={setItemNameSearch}
           {...gpHook}
+        />
+
+        <PermalinkModal
+          show={showPermalink}
+          onHide={() => {
+            setShowPermalink(false)
+          }}
+          buildUrl={() => buildPermalinkUrl(encodeGearPermalink(gpHook.activeSetup), location)}
+          title='Create a Gear Planner Permalink'
         />
       </Container>
     </div>
