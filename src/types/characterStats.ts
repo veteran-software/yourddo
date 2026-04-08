@@ -334,6 +334,6 @@ export interface Character {
   }
   destiny: unknown
   craftingLevels: {
-    cannith: number
+    essence: number
   }
 }
