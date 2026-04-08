@@ -1,12 +1,14 @@
-import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
+import {
+  filterIngredientsMap
+} from '../../components/filters/helpers/filterUtils.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import {
   ACCESSORY_SLOT_KEYS,
   type AffixKind,
   ALLOWED_AUGMENT_KEYS,
-  type CannithPhase1Entry,
   type CoreChoice,
   DATASET,
+  type EssencePhase1Entry,
   type ItemAugmentSlotState,
   type ItemState,
   SLOT_KEY_TO_DATA_TOKENS
@@ -21,7 +23,7 @@ export const getAffixOptions = (slotKey: string, affix: AffixKind): string[] => 
 
   const options = new Set<string>()
 
-  DATASET.forEach((entry: CannithPhase1Entry) => {
+  DATASET.forEach((entry: EssencePhase1Entry) => {
     const raw = entry[fieldName]
     if (raw == null) {
       return
@@ -85,9 +87,9 @@ export const allowedAugmentColorsForSlot = (slotKey: string): string[] => {
   return Array.from(allowed)
 }
 
-export const STORAGE_KEY = 'cannithCraftingState'
+export const STORAGE_KEY = 'essenceCraftingState'
 
-export const ML_OPTIONS: number[] = Array.from({ length: 32 }, (_, i) => i + 1)
+export const ML_OPTIONS: number[] = Array.from({ length: 34 }, (_, i) => i + 1)
 
 export const filterAugmentOptions = (
   options: Record<string, Ingredient[]>,

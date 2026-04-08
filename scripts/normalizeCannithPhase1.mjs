@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Normalizes prefix/suffix/extra fields in Cannith Phase 1 dataset to arrays of strings.
+ * Normalizes prefix/suffix/extra fields in Essence Crafting Phase 1 dataset to arrays of strings.
  *
  * Behavior:
  * - For each entry, converts fields {prefix, suffix, extra} as follows:
@@ -15,7 +15,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-const FILE = path.join('src', 'data', 'cannithCrafting', 'cannithEnhancements.phase1.json')
+const FILE = path.join('src', 'data', 'essenceCrafting', 'essenceEnhancements.phase1.json')
 const args = new Set(process.argv.slice(2))
 const WRITE = args.has('--write')
 

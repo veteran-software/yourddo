@@ -250,8 +250,8 @@ func buildPlannerEntries(raw RawEnhancement, effectID string) []PlannerEntry {
 	appendEntries := func(affixType string, slots []string) {
 		for _, slot := range uniqueSortedNormalized(slots) {
 			out = append(out, PlannerEntry{
-				ID:              fmt.Sprintf("cannith-%s-%s-%s", effectID, affixType, slot),
-				SourceType:      "cannith",
+				ID:              fmt.Sprintf("essence-%s-%s-%s", effectID, affixType, slot),
+				SourceType:      "essence",
 				EffectID:        effectID,
 				EnchantmentName: enchantmentName,
 				BonusType:       bonusType,
