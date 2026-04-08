@@ -1,19 +1,28 @@
 import {
+  ARMOR_TYPES,
   type Curse,
   type GearAugment,
   type GearItem,
   GearSlot,
   type LootEnchantment,
   type LootItem,
-  type SetBonusIndex
+  type SetBonusIndex,
+  SHIELD_TYPES,
+  WEAPON_TYPES
 } from './types'
 
 // Use Vite's glob import to gather all runtime JSON files from the generator output.
 // Note: Vite requires a literal string here (no template strings/variables).
 // Path is relative to this file: src/pages/gearPlanner -> src/data/loot/runtime
-const dataModules = import.meta.glob(['../../data/loot/runtime/*.json', '../../data/deckOfManyCurses.json'], {
-  eager: true
-})
+const dataModules = import.meta.glob(
+  [
+    '../../data/loot/runtime/*.json',
+    '../../data/deckOfManyCurses.json'
+  ],
+  {
+    eager: true
+  }
+)
 
 export const loadCurses = (): Promise<Curse[]> => {
   const module = dataModules['../../data/deckOfManyCurses.json']
@@ -48,7 +57,58 @@ const SLOT_MAP: Record<string, GearSlot[]> = {
   'outfit.json': [GearSlot.Armor],
   'ring.json': [GearSlot.FirstFinger, GearSlot.SecondFinger],
   'robe.json': [GearSlot.Armor],
-  'trinket.json': [GearSlot.Trinket]
+  'trinket.json': [GearSlot.Trinket],
+  // Weapons
+  'bastardSword.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'battleAxe.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'club.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'dagger.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'dart.json': [GearSlot.MainHand],
+  'dwarvenWarAxe.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'falchion.json': [GearSlot.MainHand],
+  'greatAxe.json': [GearSlot.MainHand],
+  'greatClub.json': [GearSlot.MainHand],
+  'greatCrossbow.json': [GearSlot.MainHand],
+  'greatSword.json': [GearSlot.MainHand],
+  'handAxe.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'handwraps.json': [GearSlot.MainHand],
+  'heavyCrossbow.json': [GearSlot.MainHand],
+  'heavyMace.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'heavyPick.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'kama.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'khopesh.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'kukri.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'lightCrossbow.json': [GearSlot.MainHand],
+  'lightHammer.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'lightMace.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'lightPick.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'longBow.json': [GearSlot.MainHand],
+  'longSword.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'maul.json': [GearSlot.MainHand],
+  'morningstar.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'quarterstaff.json': [GearSlot.MainHand],
+  'quiver.json': [GearSlot.Quiver],
+  'rapier.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'repeatingHeavyCrossbow.json': [GearSlot.MainHand],
+  'repeatingLightCrossbow.json': [GearSlot.MainHand],
+  'scimitar.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'shortBow.json': [GearSlot.MainHand],
+  'shortSword.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'shuriken.json': [GearSlot.MainHand],
+  'sickle.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'throwingAxe.json': [GearSlot.MainHand],
+  'throwingDagger.json': [GearSlot.MainHand],
+  'throwingHammer.json': [GearSlot.MainHand],
+  'warhammer.json': [GearSlot.MainHand, GearSlot.OffHand],
+  // Shields & Rune Arms
+  'buckler.json': [GearSlot.OffHand],
+  'largeShield.json': [GearSlot.OffHand],
+  'orb.json': [GearSlot.OffHand],
+  'runeArm.json': [GearSlot.OffHand],
+  'smallShield.json': [GearSlot.OffHand],
+  'towerShield.json': [GearSlot.OffHand],
+  // Pet Items
+  'collar.json': [GearSlot.ArtificerPetWeapon, GearSlot.DruidPetWeapon]
 }
 
 const inferSetBonuses = (item: GearItem) => {
@@ -109,6 +169,32 @@ export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugme
   const seenKeys = new Set<string>()
 
   const addItem = (item: GearItem) => {
+    // Basic slot validation to avoid cluttering slots with irrelevant items
+    const typeLower = item.type.toLowerCase()
+
+    if (item.slot === GearSlot.MainHand) {
+      const isWeapon =
+        Object.values(WEAPON_TYPES).flat().includes(item.type) || item.type === 'Handwraps' || item.type === 'Weapon'
+      if (!isWeapon) return
+    }
+
+    if (item.slot === GearSlot.OffHand) {
+      const isShieldOrRuneArm = SHIELD_TYPES.includes(item.type)
+      const isOffhandWeapon =
+        Object.values(WEAPON_TYPES).flat().includes(item.type)  || item.type === 'Weapon'
+      if (!isShieldOrRuneArm && !isOffhandWeapon) return
+    }
+
+    if (item.slot === GearSlot.Quiver) {
+      const allowedQuiverTypes = ['quiver', '', 'bound', 'gear']
+      if (!allowedQuiverTypes.includes(typeLower)) return
+    }
+
+    if (item.slot === GearSlot.Armor) {
+      const isArmor = ARMOR_TYPES.includes(item.type) || item.type === 'Robe' || item.type === 'Outfit'
+      if (!isArmor) return
+    }
+
     const key = `${item.name}|${item.minLevel}|${item.slot}`
     if (!seenKeys.has(key)) {
       allItems.push(item)
@@ -170,15 +256,18 @@ export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugme
 
   // Process Loot Files
   Object.entries(SLOT_MAP).forEach(([fileName, slots]) => {
-    const module = dataModules[`../../data/loot/runtime/${fileName}`]
-    if (module && typeof module === 'object' && 'default' in module) {
+    const path = `../../data/loot/runtime/${fileName}`
+    const module = dataModules[path]
+    if (module && typeof module === 'object' && 'default' in module && Array.isArray(module.default)) {
       const data = module.default as LootItem[]
       data.forEach((item: LootItem, index) => {
         slots.forEach((slot: GearSlot) => {
           const gearItem: GearItem = {
             ...item,
             id: `${fileName}-${String(index)}-${slot}`,
-            slot: slot
+            slot: slot,
+            minLevel: item.minLevel || '1',
+            absoluteMinLevel: item.absoluteMinLevel || item.minLevel || '1'
           }
           inferSetBonuses(gearItem)
           addItem(gearItem)
