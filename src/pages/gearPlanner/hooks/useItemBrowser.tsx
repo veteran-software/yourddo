@@ -3,7 +3,13 @@ import { Accordion } from 'react-bootstrap'
 import BrowserItem from '../components/BrowserItem.tsx'
 import LazyAccordionBody from '../components/LazyAccordionBody.tsx'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
-import { type GearAugment, type GearItem, GearSlot, SHIELD_TYPES, WEAPON_TYPES } from '../types.ts'
+import {
+  type GearAugment,
+  type GearItem,
+  GearSlot,
+  SHIELD_TYPES,
+  WEAPON_TYPES
+} from '../types.ts'
 
 const useItemBrowser = (props: Props) => {
   const {
@@ -198,7 +204,8 @@ const useItemBrowser = (props: Props) => {
   }
 
   const renderTypeGroups = (typeGroups: Record<string, GearItem[]>): ReactElement => {
-    const { currentEquipped } = getContextInfo(browsingSlot!)
+    if (!browsingSlot) return <></>
+    const { currentEquipped } = getContextInfo(browsingSlot)
 
     return (
       <Accordion data-bs-theme='dark'>
