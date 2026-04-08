@@ -234,6 +234,23 @@ type DropSourceData struct {
 
 	// NEW FIELDS from Template:TapestryPurchase
 	IsTapestryPurchase bool `json:"isTapestryPurchase,omitempty"`
+
+	// NEW FIELDS from Template:IngotPurchase
+	IngotType   string `json:"ingotType,omitempty"`
+	IsEpicIngot bool   `json:"isEpicIngot,omitempty"`
+
+	// NEW FIELDS from Template:RayneCloudPurchase
+	Ingredients []CraftingRequirement `json:"ingredients,omitempty"`
+
+	// NEW FIELDS from Template:NightRevelsPurchase
+	NightRevelsChoco   string `json:"nightRevelsChoco,omitempty"`
+	NightRevelsCaramel string `json:"nightRevelsCaramel,omitempty"`
+	NightRevelsAlmond  string `json:"nightRevelsAlmond,omitempty"`
+	NightRevelsCinn    string `json:"nightRevelsCinn,omitempty"`
+	NightRevelsApple   string `json:"nightRevelsApple,omitempty"`
+	NightRevelsScale   string `json:"nightRevelsScale,omitempty"`
+	NightRevelsItems   string `json:"nightRevelsItems,omitempty"`
+	NightRevelsWares   string `json:"nightRevelsWares,omitempty"`
 }
 
 type Enchantment struct {
@@ -295,6 +312,9 @@ type ItemData struct {
 	Weight       string    `json:"weight"`
 	BaseValue    PriceData `json:"baseValue"` // Structured Data
 	ArtifactType string    `json:"artifacttype"`
+	// Quiver Specific
+	Capacity     string `json:"capacity,omitempty"`
+	MaxStackSize string `json:"maxStackSize,omitempty"`
 	// Source & History
 	DropLocations   []DropSourceData `json:"dropLocations"`
 	DropLocationRaw string           `json:"-"` // Keep a raw field for debugging/completeness
