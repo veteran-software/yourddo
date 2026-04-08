@@ -52,6 +52,8 @@ import './GearPlanner.css'
 
 const GearPlanner = () => {
   const dispatch = useAppDispatch()
+  const location = useLocation()
+  const navigate = useNavigate()
   const {
     characterSetups: setups,
     activeSetupId,
