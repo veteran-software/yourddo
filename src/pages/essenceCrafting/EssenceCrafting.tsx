@@ -673,7 +673,7 @@ const EssenceCrafting = () => {
       const rows: { name: string; qty: number }[] = []
 
       if (essenceQty != null && essenceQty > 0) {
-        rows.push({ name: toSingularName('Magic Essences'), qty: essenceQty })
+        rows.push({ name: toSingularName('Magic Item Essences'), qty: essenceQty })
       }
 
       if (purifiedQty != null && purifiedQty > 0) {
@@ -923,7 +923,7 @@ const EssenceCrafting = () => {
       effectiveMLBySlot.set(k, items[k].minLevelOverride ?? masterMinLevel)
     })
 
-    const ESSENCE_NAME = toSingularName('Magic Essences')
+    const ESSENCE_NAME = toSingularName('Magic Item Essences')
     const PURIFIED_NAME = toSingularName('Purified Eberron Dragonshard Fragments')
 
     const processItemAffixes = (
