@@ -1,9 +1,14 @@
-import type { RefObject } from 'react'
+import { type RefObject } from 'react'
 import { Form, Offcanvas } from 'react-bootstrap'
 import { FaXmark } from 'react-icons/fa6'
 import type { EnchantmentConflict } from '../conflictResolver'
-import { type GearAugment, type GearItem, type GearSetup, GearSlot } from '../types'
-import BrowserItem from './BrowserItem'
+import useItemBrowser from '../hooks/useItemBrowser.tsx'
+import {
+  type GearAugment,
+  type GearItem,
+  type GearSetup,
+  GearSlot
+} from '../types'
 
 const ItemBrowserOffcanvas = (props: Props) => {
   const {
@@ -11,18 +16,21 @@ const ItemBrowserOffcanvas = (props: Props) => {
     browsingSlot,
     filteredItems,
     filteredSets,
-    getContextInfo,
-    isMetal,
     itemsToShow,
     observerTarget,
-    openSetBonusBrowser,
     openSlotBrowser,
     selectItem,
     setBonusFilter,
     setSetBonusFilter,
     setShowConflicts,
-    showConflicts
+    showConflicts,
+    itemNameSearch,
+    setItemNameSearch
   } = props
+
+  const { renderCategorizedItems } = useItemBrowser({ ...props })
+
+  const { renderCategorizedItems } = useItemBrowser({ ...props })
 
   return (
     <Offcanvas
@@ -41,89 +49,80 @@ const ItemBrowserOffcanvas = (props: Props) => {
       <Offcanvas.Body>
         {browsingSlot && (
           <>
-            {(() => {
-              const { currentConflicts, currentEquipped, currentSlottedAugments } = getContextInfo(browsingSlot)
+            <div className='mb-3'>
+              <div className='d-flex justify-content-between align-items-center mb-2'>
+                <span className='text-light small'>
+                  Levels {activeSetup.minLevel}-{activeSetup.maxLevel}
+                </span>
+                <Form.Check
+                  type='checkbox'
+                  id='show-conflicts-browser'
+                  label='Show conflicting'
+                  checked={showConflicts}
+                  onChange={(e) => {
+                    setShowConflicts(e.target.checked)
+                  }}
+                  className='small text-info'
+                />
+              </div>
 
-              return (
-                <>
-                  <div className='mb-3'>
-                    <p className='text-light small mb-2'>
-                      Showing {Math.min(itemsToShow, filteredItems.length)} of {filteredItems.length} results for{' '}
-                      <strong>{browsingSlot}</strong> (Levels {activeSetup.minLevel}-{activeSetup.maxLevel})
-                    </p>
+              <Form.Group className='mb-3'>
+                <Form.Control
+                  type='text'
+                  placeholder='Search items by name...'
+                  size='sm'
+                  className='bg-light text-dark fw-bold dark-placeholder'
+                  value={itemNameSearch}
+                  onChange={(e) => {
+                    setItemNameSearch(e.target.value)
+                  }}
+                />
+              </Form.Group>
 
-                    <Form.Check
-                      type='checkbox'
-                      id='show-conflicts-browser'
-                      label='Show conflicting/lesser items'
-                      checked={showConflicts}
-                      onChange={(e) => {
-                        setShowConflicts(e.target.checked)
-                      }}
-                      className='small text-info'
-                    />
+              <Form.Group className='mb-3'>
+                <Form.Select
+                  size='sm'
+                  className='bg-light text-dark'
+                  value={setBonusFilter ?? ''}
+                  onChange={(e) => {
+                    setSetBonusFilter(e.target.value || null)
+                  }}
+                >
+                  <option value=''>All Set Bonuses (Filter...)</option>
+                  {filteredSets.map((setName) => (
+                    <option key={setName} value={setName}>
+                      {setName}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
 
-                    <Form.Group className='mt-2'>
-                      <Form.Select
-                        size='sm'
-                        className='bg-light text-dark'
-                        value={setBonusFilter ?? ''}
-                        onChange={(e) => {
-                          setSetBonusFilter(e.target.value || null)
-                        }}
-                      >
-                        <option value=''>All Set Bonuses (Filter...)</option>
-                        {filteredSets.map((setName) => (
-                          <option key={setName} value={setName}>
-                            {setName}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </Form.Group>
-                  </div>
+              <button
+                className='btn btn-outline-danger btn-sm w-100 d-flex justify-content-between align-items-center mb-3'
+                onClick={() => {
+                  if (browsingSlot) selectItem(browsingSlot, null)
+                }}
+              >
+                <span>Clear Slot</span>
+                <FaXmark />
+              </button>
+            </div>
 
-                  <div className='list-group shadow-sm'>
-                    <button
-                      className='list-group-item list-group-item-action text-danger d-flex justify-content-between align-items-center'
-                      onClick={() => {
-                        if (browsingSlot) selectItem(browsingSlot, null)
-                      }}
-                    >
-                      <span>Clear Slot</span>
-                      <FaXmark />
-                    </button>
+            {renderCategorizedItems()}
 
-                    {filteredItems.slice(0, itemsToShow).map((item) => (
-                      <BrowserItem
-                        key={item.id}
-                        item={item}
-                        browsingSlot={browsingSlot}
-                        currentConflicts={currentConflicts}
-                        currentEquipped={currentEquipped}
-                        currentSlottedAugments={currentSlottedAugments}
-                        selectItem={selectItem}
-                        isMetal={isMetal}
-                        openSetBonusBrowser={openSetBonusBrowser}
-                      />
-                    ))}
+            {filteredItems.length === 0 && (
+              <div className='text-center py-4 text-light'>No items found for this slot.</div>
+            )}
 
-                    {filteredItems.length === 0 && (
-                      <div className='list-group-item text-center py-4 text-light'>No items found for this slot.</div>
-                    )}
-
-                    {itemsToShow < filteredItems.length && (
-                      <div ref={observerTarget} className='list-group-item text-center py-3 border-0 bg-transparent'>
-                        <div className='spinner-border spinner-border-sm text-primary' role='status'>
-                          <span className='visually-hidden' aria-hidden='true'>
-                            Loading more...
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </>
-              )
-            })()}
+            {itemsToShow < filteredItems.length && (
+              <div ref={observerTarget} className='text-center py-3'>
+                <div className='spinner-border spinner-border-sm text-primary' role='status'>
+                  <span className='visually-hidden' aria-hidden='true'>
+                    Loading more...
+                  </span>
+                </div>
+              </div>
+            )}
           </>
         )}
       </Offcanvas.Body>
@@ -142,7 +141,7 @@ interface Props {
   setBonusFilter: string | null
   setSetBonusFilter: (filter: string | null) => void
   filteredSets: string[]
-  getContextInfo: (slot: string) => {
+  getContextInfo: (slot: GearSlot) => {
     currentConflicts: Record<string, EnchantmentConflict[]>
     currentEquipped: GearItem[]
     currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
@@ -151,6 +150,8 @@ interface Props {
   isMetal: (material: string | null | undefined) => boolean
   openSetBonusBrowser: (setName: string) => void
   observerTarget: RefObject<HTMLDivElement | null>
+  itemNameSearch: string
+  setItemNameSearch: (search: string) => void
 }
 
 export default ItemBrowserOffcanvas
