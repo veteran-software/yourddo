@@ -206,6 +206,7 @@ export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugme
   const augModule = dataModules['../../data/loot/runtime/augment.json']
   if (augModule && typeof augModule === 'object' && 'default' in augModule) {
     const augments = augModule.default as RawAugment[]
+
     augments.forEach((aug, index) => {
       const gearItem: GearItem = {
         id: `aug-${String(index)}`,
@@ -250,6 +251,7 @@ export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugme
 
       inferSetBonuses(gearItem)
       addItem(gearItem)
+
       allAugments.push(gearItem as unknown as GearAugment)
     })
   }
@@ -258,18 +260,23 @@ export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugme
   Object.entries(SLOT_MAP).forEach(([fileName, slots]) => {
     const path = `../../data/loot/runtime/${fileName}`
     const module = dataModules[path]
+
     if (module && typeof module === 'object' && 'default' in module && Array.isArray(module.default)) {
       const data = module.default as LootItem[]
+
       data.forEach((item: LootItem, index) => {
         // Special-case: Some items in collar.json are actually pet armors, not weapons
         let effectiveSlots = slots
+
         if (fileName === 'collar.json') {
+          // These collars are actually pet armors
           const armorNames = new Set<string>([
             'Allegience of the Wild Hunt',
             'Legendary Allegience of the Wild Hunt',
             'Kindred Spirit',
             'Legendary Kindred Spirit'
           ])
+
           if (armorNames.has(item.name)) {
             effectiveSlots = [GearSlot.ArtificerPetArmor, GearSlot.DruidPetArmor]
           } else {
@@ -285,6 +292,7 @@ export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugme
             minLevel: item.minLevel || '1',
             absoluteMinLevel: item.absoluteMinLevel || item.minLevel || '1'
           }
+
           inferSetBonuses(gearItem)
           addItem(gearItem)
         })

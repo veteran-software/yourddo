@@ -36,6 +36,7 @@ const SearchResultSlot = (props: Props) => {
           )}
         </div>
       </Accordion.Header>
+
       <Accordion.Body className='p-2 bg-dark'>
         <Stack gap={2}>
           {items.map((item) => {
@@ -72,11 +73,13 @@ const SearchResultSlot = (props: Props) => {
                     )}
                   </Card.Header>
                 )}
+
                 <Card.Body className='p-2'>
                   <div className='fw-bold small text-truncate text-dark'>{item.name}</div>
                   <div className='text-dark fw-medium' style={{ fontSize: '0.7rem' }}>
                     ML: {item.minLevel || '1'} | {item.type || 'Item'}
                   </div>
+
                   {item.setBonus && item.setBonus.length > 0 && (
                     <div className='mt-1 mb-1'>
                       {item.setBonus.map((sb) => (
@@ -96,7 +99,9 @@ const SearchResultSlot = (props: Props) => {
                       ))}
                     </div>
                   )}
+
                   {item.augments && item.augments.length > 0 && <AugmentSlotsList augments={item.augments} />}
+
                   {item.enchantments && item.enchantments.length > 0 && (
                     <div
                       className='mt-1 pt-1 border-top border-secondary-subtle overflow-hidden'

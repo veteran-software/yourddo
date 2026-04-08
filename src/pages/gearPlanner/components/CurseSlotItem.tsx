@@ -51,12 +51,14 @@ const CurseSlotItem = (props: Props) => {
 
           {allCurses.map((curse) => {
             const hasConflict = curse.enchantments?.some((ench) => {
-              const pot = checkPotentialConflict(ench, currentEquipped, slot, currentSlottedAugments)
-              return pot.isConflict && pot.isRedundant
+              const potential = checkPotentialConflict(ench, currentEquipped, slot, currentSlottedAugments)
+
+              return potential.isConflict && potential.isRedundant
             })
 
             const hasUpgrade = curse.enchantments?.some((ench) => {
               const pot = checkPotentialConflict(ench, currentEquipped, slot, currentSlottedAugments)
+
               return pot.isConflict && !pot.isRedundant
             })
 
@@ -72,12 +74,14 @@ const CurseSlotItem = (props: Props) => {
                 <span className='text-truncate'>
                   {curse.name} ({curse.type})
                 </span>
+
                 <span className='ms-2 flex-shrink-0'>
                   {hasConflict && (
                     <span className='badge bg-warning text-dark px-1 py-0 ms-1' style={{ fontSize: '0.55rem' }}>
                       Conflicting
                     </span>
                   )}
+
                   {hasUpgrade && (
                     <span className='badge bg-info px-1 py-0 ms-1' style={{ fontSize: '0.55rem' }}>
                       Upgrade

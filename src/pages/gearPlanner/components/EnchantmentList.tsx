@@ -6,6 +6,7 @@ const EnchantmentList = (props: Props) => {
   const { browsingSlot, conflicts, enchantments, equippedItems, itemId, slottedAugments, source } = props
 
   if (!enchantments) return null
+
   return (
     <>
       {enchantments.map((ench: LootEnchantment, idx) => {
@@ -14,6 +15,7 @@ const EnchantmentList = (props: Props) => {
         let isMax = false
         let effectiveItems: EnchantmentConflict['items'] = []
         let overriddenItems: EnchantmentConflict['items'] = []
+
         const potential: ReturnType<typeof checkPotentialConflict> =
           source === 'slot'
             ? { isConflict: false, currentMax: 0, isRedundant: false }
@@ -32,6 +34,7 @@ const EnchantmentList = (props: Props) => {
           const bonusToMatch = getBonus(ench.bonus)
           const conflict = itemConflicts?.find((c) => getBonus(c.bonus) === bonusToMatch)
           const itemInConflict = conflict?.items.find((i) => i.itemId === itemId)
+
           isOverridden = itemInConflict?.isEffective === false
           isMax = itemInConflict?.isEffective === true
           effectiveItems = conflict?.items.filter((i) => i.isEffective && i.itemId !== itemId) ?? []

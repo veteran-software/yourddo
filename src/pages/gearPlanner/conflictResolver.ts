@@ -16,6 +16,7 @@ export interface EnchantmentConflict {
 export const getSlotOwner = (slot: string): string => {
   if (ARTIFICER_PET_SLOTS.includes(slot as GearSlot)) return 'artificer_pet'
   if (DRUID_PET_SLOTS.includes(slot as GearSlot)) return 'druid_pet'
+
   return 'character'
 }
 
@@ -27,6 +28,7 @@ export type RobustString = string | number | undefined | null
  */
 export const normalizeString = (str: RobustString): string => {
   if (str == null) return ''
+
   return String(str).trim().toLowerCase()
 }
 
@@ -35,6 +37,7 @@ export const normalizeString = (str: RobustString): string => {
  */
 export const getBonus = (bonus: RobustString): string => {
   const normalized = normalizeString(bonus)
+
   return normalized === '' ? 'no type' : normalized
 }
 
@@ -75,6 +78,7 @@ export const resolveConflicts = (
 
   equippedItems.forEach((item) => {
     const owner = getSlotOwner(item.slot)
+
     if (item.enchantments) {
       item.enchantments.forEach((ench) => {
         allEnchantments.push({
@@ -113,6 +117,7 @@ export const resolveConflicts = (
 
   // Group by (owner, normalizedName, normalizedBonus)
   const grouped: Record<string, typeof allEnchantments> = {}
+
   allEnchantments.forEach((entry) => {
     const key = `${entry.owner}|${entry.normalizedName}|${entry.normalizedBonus}`
     if (!grouped[key]) grouped[key] = []
@@ -145,7 +150,9 @@ export const resolveConflicts = (
     }
 
     const normalizedName = normalizeString(name)
+
     if (!conflicts[normalizedName]) conflicts[normalizedName] = []
+
     conflicts[normalizedName].push(conflict)
   })
 

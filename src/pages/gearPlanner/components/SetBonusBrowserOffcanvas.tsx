@@ -41,6 +41,7 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
       <Offcanvas.Body className='bg-dark text-white p-3'>
         <Form.Group className='mb-3'>
           <Form.Label className='small text-info fw-bold'>Search Items</Form.Label>
+
           <Form.Control
             type='text'
             placeholder='Search items by name...'
@@ -82,6 +83,7 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                 const indexedItems = setBonusIndex[browsingSet ?? ''] || []
                 const min = activeSetup?.minLevel ?? 1
                 const max = activeSetup?.maxLevel ?? 34
+
                 const setItemResults = allItems.filter((item) => {
                   const itemLevel = Number(item.minLevel)
                   if (itemLevel < min || itemLevel > max) return false

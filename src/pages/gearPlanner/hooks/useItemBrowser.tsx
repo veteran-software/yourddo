@@ -59,6 +59,7 @@ const useItemBrowser = (props: Props) => {
   const renderCategorizedItems = (): ReactElement | null => {
     if (browsingSlot === GearSlot.MainHand) {
       const weaponCategories = Object.entries(WEAPON_TYPES)
+
       return (
         <Accordion defaultActiveKey='0' data-bs-theme='dark'>
           {weaponCategories.map(([category, types], idx) => {
@@ -88,6 +89,7 @@ const useItemBrowser = (props: Props) => {
                     <span>
                       {category} Weapons ({categoryItems.length})
                     </span>
+
                     {isThisCategoryEquipped && (
                       <span
                         className={`${isPartofSet ? 'text-info' : 'text-danger'} ms-2`}
@@ -135,6 +137,7 @@ const useItemBrowser = (props: Props) => {
               <Accordion.Header>
                 <div className='d-flex justify-content-between w-100 me-3'>
                   <span>Shields & Rune Arms ({shieldItems.length})</span>
+
                   {equippedInSlot && SHIELD_TYPES.includes(equippedInSlot.type) && (
                     <span
                       className={`${isPartofSet ? 'text-info' : 'text-danger'} ms-2`}
@@ -148,6 +151,7 @@ const useItemBrowser = (props: Props) => {
               <Accordion.Body className='p-2 bg-dark-subtle'>{renderSubCategories(shieldItems)}</Accordion.Body>
             </Accordion.Item>
           )}
+
           {weaponItems.length > 0 && (
             <Accordion.Item eventKey='weapons'>
               <Accordion.Header>
@@ -184,6 +188,7 @@ const useItemBrowser = (props: Props) => {
             Showing {Math.min(itemsToShow, items.length)} of {items.length} results
           </p>
         )}
+
         <div className='list-group shadow-sm'>
           {items.slice(0, itemsToShow).map((item) => (
             <BrowserItem
@@ -224,6 +229,7 @@ const useItemBrowser = (props: Props) => {
                   <span>
                     {typeName} ({items.length})
                   </span>
+
                   {isThisTypeEquipped && (
                     <span
                       className={`${isPartofSet ? 'text-info' : 'text-danger'} ms-2`}

@@ -3,12 +3,7 @@ import { Form, Offcanvas } from 'react-bootstrap'
 import { FaXmark } from 'react-icons/fa6'
 import type { EnchantmentConflict } from '../conflictResolver'
 import useItemBrowser from '../hooks/useItemBrowser.tsx'
-import {
-  type GearAugment,
-  type GearItem,
-  type GearSetup,
-  GearSlot
-} from '../types'
+import { type GearAugment, type GearItem, type GearSetup, GearSlot } from '../types'
 
 const ItemBrowserOffcanvas = (props: Props) => {
   const {
@@ -52,6 +47,7 @@ const ItemBrowserOffcanvas = (props: Props) => {
                 <span className='text-light small'>
                   Levels {activeSetup.minLevel}-{activeSetup.maxLevel}
                 </span>
+
                 <Form.Check
                   type='checkbox'
                   id='show-conflicts-browser'
