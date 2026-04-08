@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * Safe sorter for Cannith Crafting Phase 1 dataset.
+ * Safe sorter for Essence Crafting Phase 1 dataset.
  *
  * What it does:
- * - Loads src/data/cannithCrafting/cannithEnhancements.phase1.json
+ * - Loads src/data/essenceCrafting/essenceEnhancements.phase1.json
  * - Validates the structure (array of objects with a string "name")
  * - Performs a stable, case-insensitive sort by name
  * - Verifies that the multiset of items (content) is unchanged (no data loss)
@@ -14,7 +14,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-const FILE = path.join('src', 'data', 'cannithCrafting', 'cannithEnhancements.phase1.json')
+const FILE = path.join('src', 'data', 'essenceCrafting', 'essenceEnhancements.phase1.json')
 
 const args = new Set(process.argv.slice(2))
 const WRITE = args.has('--write')

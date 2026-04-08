@@ -84,7 +84,7 @@ const genId = (): string =>
   `cc-${Date.now().toString()}-${Math.random().toString(36).slice(2)}`
 
 // ----- Encoding -----
-export const encodeCannithPermalink = (args: {
+export const encodeEssencePermalink = (args: {
   items: Record<string, ItemState>
   activeKeys: string[]
   collapsedKeys: string[]
@@ -120,7 +120,9 @@ export const encodeCannithPermalink = (args: {
 }
 
 // ----- Decoding -----
-export const tryDecodeCannithPermalink = (cc: string): { ok: true; data: PermalinkStatePayload } | { ok: false } => {
+
+// Force reload
+export const tryDecodeEssencePermalink = (cc: string): { ok: true; data: PermalinkStatePayload } | { ok: false } => {
   try {
     const text = decompressFromEncodedURIComponent(cc)
     if (!text) return { ok: false }
@@ -253,10 +255,10 @@ export const removeCcFromUrl = async (
 
 export const buildPermalinkUrl = (encoded: string, location: LocationLike, win: Window = window): string => {
   if (typeof win === 'undefined') {
-    return `/cannith-crafting?cc=${encoded}`
+    return `/essence-crafting?cc=${encoded}`
   }
   const { origin, pathname, hash } = win.location
-  const currentPath = location.pathname || '/cannith-crafting'
+  const currentPath = location.pathname || '/essence-crafting'
   if (hash.startsWith('#/')) {
     const params = new URLSearchParams()
     params.set('cc', encoded)

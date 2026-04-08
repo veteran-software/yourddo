@@ -325,7 +325,7 @@ export interface Enhancement {
 
 export interface BasePriceModifier {
   randomLoot?: number
-  cannithCrafting?: number
+  essenceCrafting?: number
 }
 
 export interface Ring {

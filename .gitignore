@@ -26,5 +26,5 @@ dist-ssr
 coverage/
 .go/
 .go-cache/
-/src/data/cannithCrafting/runtime/
+/src/data/essenceCrafting/runtime/
 /src/data/loot/runtime/

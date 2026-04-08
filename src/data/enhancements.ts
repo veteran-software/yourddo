@@ -48,7 +48,7 @@ export const enhancements: Enhancement[] = [
     type: 'Prefix',
     basePriceModifier: {
       randomLoot: 3,
-      cannithCrafting: 4
+      essenceCrafting: 4
     }
   },
   {
@@ -58,7 +58,7 @@ export const enhancements: Enhancement[] = [
     type: 'Prefix',
     basePriceModifier: {
       randomLoot: 3,
-      cannithCrafting: 4
+      essenceCrafting: 4
     }
   },
   {
@@ -224,7 +224,7 @@ export const enhancements: Enhancement[] = [
     type: 'Prefix',
     basePriceModifier: {
       randomLoot: 3,
-      cannithCrafting: 4
+      essenceCrafting: 4
     },
     minLevelIncrease: {
       noMinimumLevel: 7,
@@ -409,7 +409,7 @@ export const enhancements: Enhancement[] = [
     type: 'Prefix',
     basePriceModifier: {
       randomLoot: 3,
-      cannithCrafting: 4
+      essenceCrafting: 4
     },
     minLevelIncrease: {
       noMinimumLevel: 7,
