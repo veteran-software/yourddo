@@ -15,7 +15,7 @@ const Home = () => (
     </p>
     <p>
       At the heart of YourDDO is a growing collection of crafting planners that cover every major crafting system in
-      Dungeons and Dragons Online. Whether you are working on Cannith Crafting, Sentient Weapon leveling, Augment Slot
+      Dungeons and Dragons Online. Whether you are working on Essence Crafting, Sentient Weapon leveling, Augment Slot
       planning, or any other system, YourDDO provides clear, intuitive tools that help you plan your projects and make
       the most of your in game resources. Our crafting planners are updated regularly to reflect the latest game patches
       and balance changes so you can trust that the information you are using is current and accurate.
