@@ -302,6 +302,8 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 	}
 	if val, ok := fields["type"]; ok {
 		data.Type = val
+	} else if _, ok := fields["capacity"]; ok {
+		data.Type = "Quiver"
 	}
 
 	if val, ok := fields["enchantments"]; ok {
@@ -369,6 +371,12 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 	}
 	if val, ok := fields["weight"]; ok {
 		data.Weight = val
+	}
+	if val, ok := fields["capacity"]; ok {
+		data.Capacity = val
+	}
+	if val, ok := fields["maxstacksize"]; ok {
+		data.MaxStackSize = val
 	}
 	if val, ok := fields["artifacttype"]; ok {
 		data.ArtifactType = val
@@ -1090,6 +1098,242 @@ func parseTemplateSnowpeaksPurchase(rawSPPValue string) api.DropSourceData {
 	return drop
 }
 
+func parseTemplateFeywildPurchase(rawValue string) api.DropSourceData {
+	// Template:FeywildPurchase
+	// Usage: {{FeywildPurchase}} or {{FeywildPurchase|True}}
+	// Renders a purchase at The Hut from Beyond with cost in Feywild crystals.
+	const prefix = "{{FeywildPurchase"
+	const suffix = "}}"
+
+	val := strings.TrimSpace(rawValue)
+	if !strings.HasPrefix(val, prefix) || !strings.HasSuffix(val, suffix) {
+		return api.DropSourceData{SourceType: "Unknown"}
+	}
+
+	// Extract parameters section (may be empty)
+	params := strings.TrimSuffix(strings.TrimPrefix(val, prefix), suffix)
+	params = strings.TrimSpace(params)
+	legendary := false
+	if strings.HasPrefix(params, "|") {
+		params = strings.TrimSpace(params[1:])
+	}
+	if params != "" {
+		p := splitParams(params)
+		if len(p) > 0 {
+			v := strings.ToLower(strings.TrimSpace(stripWikitext(p[0])))
+			legendary = v == "true" || v == "yes" || v == "1"
+		}
+	}
+
+	costName := "Chunk of Ferrocrystal"
+	if legendary {
+		costName = "Legendary " + costName
+	}
+	// Cost is fixed at 20x per wiki template examples
+	ingredients := []api.CraftingRequirement{
+		{Name: costName, Quantity: new(20)},
+	}
+
+	return api.DropSourceData{
+		SourceType:  "Feywild",
+		StoreName:   "The Hut from Beyond",
+		Ingredients: ingredients,
+	}
+}
+
+func parseTemplateIngotPurchase(rawValue string) []api.DropSourceData {
+	// Template:IngotPurchase
+	// Usage: {{IngotPurchase|Silver}} or {{IngotPurchase|Silver|True}} or {{IngotPurchase|All}}
+	// Vendor: Morten Edgewright
+	const prefix = "{{IngotPurchase"
+	const suffix = "}}"
+
+	val := strings.TrimSpace(rawValue)
+	if !strings.HasPrefix(val, prefix) || !strings.HasSuffix(val, suffix) {
+		return nil
+	}
+
+	params := strings.TrimSuffix(strings.TrimPrefix(val, prefix), suffix)
+	params = strings.TrimSpace(params)
+	if strings.HasPrefix(params, "|") {
+		params = params[1:]
+	}
+
+	var ingot string
+	isEpic := false
+	if params != "" {
+		p := splitParams(params)
+		if len(p) > 0 {
+			ingot = strings.TrimSpace(stripWikitext(p[0]))
+		}
+		if len(p) > 1 {
+			v := strings.ToLower(strings.TrimSpace(stripWikitext(p[1])))
+			isEpic = v == "true" || v == "yes" || v == "1"
+		}
+	}
+
+	var results []api.DropSourceData
+	ingots := []string{ingot}
+	if strings.EqualFold(ingot, "All") {
+		ingots = []string{"Arcane", "Ethereal", "Silver"}
+	}
+
+	for _, ing := range ingots {
+		costIngot := ing
+		if isEpic {
+			costIngot = "Epic " + costIngot
+		}
+		costIngot = costIngot + " Ingot"
+
+		results = append(results, api.DropSourceData{
+			SourceType: "Ingot Purchase",
+			StoreName:  "Morten Edgewright",
+			Ingredients: []api.CraftingRequirement{
+				{Name: costIngot, Quantity: new(1)},
+			},
+			IngotType:   ing,
+			IsEpicIngot: isEpic,
+		})
+	}
+
+	return results
+}
+
+func parseTemplateRayneCloudPurchase(rawValue string) api.DropSourceData {
+	// Template:RayneCloudPurchase
+	// Usage: {{RayneCloudPurchase}}
+	// Fixed-cost ingredient turn-in at Rayne Cloud in Sharn - Cliffside Docks District
+	const prefix = "{{RayneCloudPurchase"
+	const suffix = "}}"
+
+	val := strings.TrimSpace(rawValue)
+	if !strings.HasPrefix(val, prefix) || !strings.HasSuffix(val, suffix) {
+		return api.DropSourceData{SourceType: "Unknown"}
+	}
+
+	// Ingredients are fixed per template documentation
+	ingredients := []api.CraftingRequirement{
+		{Name: "Dampening Alloy", Quantity: new(1)},
+		{Name: "Energizing Alloy", Quantity: new(1)},
+		{Name: "Caustic Compound", Quantity: new(1)},
+		{Name: "Stabilizing Compound", Quantity: new(1)},
+	}
+
+	return api.DropSourceData{
+		SourceType:  "Rayne Cloud",
+		StoreName:   "Rayne Cloud",
+		Ingredients: ingredients,
+	}
+}
+
+func parseTemplateSaltmarshPurchase(rawValue string) api.DropSourceData {
+	// Template:SaltmarshPurchase
+	// Usage: {{SaltmarshPurchase}} or {{SaltmarshPurchase|True}}
+	// Renders a purchase at Captain Xendros with cost in Quartermaster's Chits.
+	const prefix = "{{SaltmarshPurchase"
+	const suffix = "}}"
+
+	val := strings.TrimSpace(rawValue)
+	if !strings.HasPrefix(val, prefix) || !strings.HasSuffix(val, suffix) {
+		return api.DropSourceData{SourceType: "Unknown"}
+	}
+
+	// Extract parameters section (may be empty)
+	params := strings.TrimSuffix(strings.TrimPrefix(val, prefix), suffix)
+	params = strings.TrimSpace(params)
+	legendary := false
+	if strings.HasPrefix(params, "|") {
+		params = strings.TrimSpace(params[1:])
+	}
+	if params != "" {
+		p := splitParams(params)
+		if len(p) > 0 {
+			v := strings.ToLower(strings.TrimSpace(stripWikitext(p[0])))
+			legendary = v == "true" || v == "yes" || v == "1"
+		}
+	}
+
+	costName := "Quartermaster's Chit"
+	if legendary {
+		costName = "Legendary " + costName
+	}
+	// Cost is fixed at 5x per wiki template examples
+	ingredients := []api.CraftingRequirement{
+		{Name: costName, Quantity: new(5)},
+	}
+
+	return api.DropSourceData{
+		SourceType:  "Saltmarsh",
+		StoreName:   "Captain Xendros",
+		Ingredients: ingredients,
+	}
+}
+
+func parseTemplateRavenloftPurchase(rawValue string) api.DropSourceData {
+	// Template:RavenloftPurchase
+	// Usage: {{RavenloftPurchase|Type|Cost|BTA}}
+	// Type values: Totem, Talisman, Ravenloft, Sentient
+	// Cost only applies to Totem/Talisman; BTA flag is ignored for now (binding not modeled here)
+	const prefix = "{{RavenloftPurchase"
+	const suffix = "}}"
+
+	val := strings.TrimSpace(rawValue)
+	if !strings.HasPrefix(val, prefix) || !strings.HasSuffix(val, suffix) {
+		return api.DropSourceData{SourceType: "Unknown"}
+	}
+
+	params := strings.TrimSuffix(strings.TrimPrefix(val, prefix), suffix)
+	params = strings.TrimSpace(params)
+	if strings.HasPrefix(params, "|") {
+		params = params[1:]
+	}
+
+	var (
+		typeParam string
+		costParam string
+	)
+	if params != "" {
+		p := splitParams(params)
+		if len(p) > 0 {
+			typeParam = strings.ToLower(strings.TrimSpace(stripWikitext(p[0])))
+		}
+		if len(p) > 1 {
+			costParam = strings.TrimSpace(stripWikitext(p[1]))
+		}
+	}
+
+	// Defaults
+	store := "Ravenloft"
+	var ingredients []api.CraftingRequirement
+
+	switch typeParam {
+	case "totem":
+		store = "Osah Lukresh"
+		if n, err := strconv.Atoi(costParam); err == nil && n > 0 {
+			ingredients = []api.CraftingRequirement{{Name: "Vistani Totem", Quantity: new(n)}}
+		}
+	case "talisman":
+		store = "Raam Lukresh"
+		if n, err := strconv.Atoi(costParam); err == nil && n > 0 {
+			ingredients = []api.CraftingRequirement{{Name: "Vistani Talisman", Quantity: new(n)}}
+		}
+	case "ravenloft":
+		store = "Tobar the Smith" // Free weapon once per life
+		// No ingredients
+	case "sentient":
+		store = "Tobar the Smith" // Free sentient jewel once per life (vendor attribution per wiki pages)
+		// No ingredients
+	default:
+		// Unknown type; keep generic store and no ingredients
+	}
+
+	return api.DropSourceData{
+		SourceType:  "Ravenloft",
+		StoreName:   store,
+		Ingredients: ingredients,
+	}
+}
+
 func parseTemplateRemnantPurchase(rawRPValue string) api.DropSourceData {
 	const prefix = "{{RemnantPurchase|"
 	const suffix = "}}"
@@ -1341,6 +1585,8 @@ func ParseMultiTemplateDropLocation(rawContent string) []api.DropSourceData {
 
 		// 3. Dispatch to the correct parser or trigger a fatal error
 		switch templateName {
+		case "Discontinued":
+			return []api.DropSourceData{{SourceType: "Discontinued"}}
 		case "DropLocation":
 			dropData = parseTemplateDropLocation(fullTemplate)
 		case "StorePurchase":
@@ -1418,6 +1664,21 @@ func ParseMultiTemplateDropLocation(rawContent string) []api.DropSourceData {
 			dropData = parseTemplateSoraKatraCrafting(fullTemplate)
 		case "TapestryPurchase":
 			dropData = parseTemplateTapestryPurchase(fullTemplate)
+		case "FeywildPurchase":
+			dropData = parseTemplateFeywildPurchase(fullTemplate)
+		case "RavenloftPurchase":
+			dropData = parseTemplateRavenloftPurchase(fullTemplate)
+		case "IngotPurchase":
+			ingotResults := parseTemplateIngotPurchase(fullTemplate)
+			if len(ingotResults) > 0 {
+				locations = append(locations, ingotResults...)
+			}
+		case "RayneCloudPurchase":
+			dropData = parseTemplateRayneCloudPurchase(fullTemplate)
+		case "SaltmarshPurchase":
+			dropData = parseTemplateSaltmarshPurchase(fullTemplate)
+		case "NightRevelsPurchase":
+			dropData = parseTemplateNightRevelsPurchase(fullTemplate)
 		default:
 			// FATAL ERROR for unknown templates
 			logrus.Fatalf("Found unexpected DropLocation template type: %s. Please update parsing logic. Raw string: %s", templateName, fullTemplate)
@@ -1432,6 +1693,54 @@ func ParseMultiTemplateDropLocation(rawContent string) []api.DropSourceData {
 	}
 
 	return locations
+}
+
+func parseTemplateNightRevelsPurchase(raw string) api.DropSourceData {
+	const prefix = "{{NightRevelsPurchase"
+	const suffix = "}}"
+
+	s := strings.TrimSpace(raw)
+	if !strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix) {
+		return api.DropSourceData{SourceType: "Unknown"}
+	}
+
+	inner := strings.TrimSpace(strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix))
+	if strings.HasPrefix(inner, "|") {
+		inner = strings.TrimPrefix(inner, "|")
+	}
+
+	drop := api.DropSourceData{SourceType: "NightRevelsPurchase"}
+
+	if inner != "" {
+		parts := strings.Split(inner, "|")
+		// Usage: {{NightRevelsPurchase|(Choco Count)|(Caramel Count)|(Almond Count)|(Cinn Count)|(Apple Count)|(Scale Count)|(Items)|(Wares)}}
+		if len(parts) >= 1 {
+			drop.NightRevelsChoco = strings.TrimSpace(parts[0])
+		}
+		if len(parts) >= 2 {
+			drop.NightRevelsCaramel = strings.TrimSpace(parts[1])
+		}
+		if len(parts) >= 3 {
+			drop.NightRevelsAlmond = strings.TrimSpace(parts[2])
+		}
+		if len(parts) >= 4 {
+			drop.NightRevelsCinn = strings.TrimSpace(parts[3])
+		}
+		if len(parts) >= 5 {
+			drop.NightRevelsApple = strings.TrimSpace(parts[4])
+		}
+		if len(parts) >= 6 {
+			drop.NightRevelsScale = strings.TrimSpace(parts[5])
+		}
+		if len(parts) >= 7 {
+			drop.NightRevelsItems = strings.TrimSpace(parts[6])
+		}
+		if len(parts) >= 8 {
+			drop.NightRevelsWares = strings.TrimSpace(parts[7])
+		}
+	}
+
+	return drop
 }
 
 func parseTemplateAnniversaryPurchase(rawAPValue string) api.DropSourceData {
