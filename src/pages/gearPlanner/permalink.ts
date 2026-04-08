@@ -47,10 +47,6 @@ type V1Payload = [
   ][]
 ]
 
-export interface GearPermalinkPayload {
-  setup: GearSetup
-}
-
 // ----- Encoding -----
 export const encodeGearPermalink = (setup: GearSetup): string => {
   const items: V1Payload[8] = []
@@ -114,7 +110,7 @@ export const tryDecodeGearPermalink = (
     ] = payload
 
     const setup: GearSetup = {
-      id: `pl-${Date.now()}`,
+      id: `pl-${Date.now().toString()}`,
       name,
       minLevel,
       maxLevel,
