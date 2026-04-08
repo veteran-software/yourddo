@@ -13,6 +13,11 @@ import (
 	"compendium-crawler-go/api"
 )
 
+const (
+	legendaryPrefix    = "Legendary "
+	maximumSpellPoints = "Maximum Spell Points"
+)
+
 var spellSchools = []string{
 	"Abjuration", "Breath Weapon", "Conjuration", "Divination", "Enchantment",
 	"Evocation", "Illusion", "Necromancy", "Transmutation",
@@ -156,10 +161,10 @@ var shockwaveTypeMap = map[string]struct {
 	NamePrefix    string
 	DamageElement string
 }{
-	"basic":              {"", "Bludgeoning"},                   // Default/Blank: Bludgeoning damage
-	"whelmling":          {"Whelming", "Bludgeoning"},           // Whelming: Bludgeoning damage
-	"legendary whelming": {"Legendary Whelming", "Bludgeoning"}, // Legendary Whelming: Bludgeoning damage
-	"overwhelming":       {"Overwhelming", "Sonic"},             // Overwhelming: Sonic damage
+	"basic":              {"", "Bludgeoning"},                           // Default/Blank: Bludgeoning damage
+	"whelmling":          {"Whelming", "Bludgeoning"},                   // Whelming: Bludgeoning damage
+	"legendary whelming": {legendaryPrefix + "Whelming", "Bludgeoning"}, // Legendary Whelming: Bludgeoning damage
+	"overwhelming":       {"Overwhelming", "Sonic"},                     // Overwhelming: Sonic damage
 }
 
 var damageEffectToElementMap = map[string]string{
@@ -211,18 +216,13 @@ var allSpellCritDamageGroups = []string{
 	"Sonic", "Healing", "Void",
 }
 
-var spellPowerToElementMap = map[string]string{
-	"Combustion":     "Fire",
-	"Corrosion":      "Acid",
-	"Devotion":       "Positive Energy",
-	"Glaciation":     "Cold",
-	"Impulse":        "Force",
-	"Magnetism":      "Electric",
-	"Nullification":  "Negative Energy",
-	"Radiance":       "Light",
-	"Reconstruction": "Repair",
-	"Resonance":      "Sonic",
-	"Healing":        "Healing", // Healing stands on its own for Crit Damage naming
+var abilityNameMap = map[string]string{
+	"STR": "Strength",
+	"DEX": "Dexterity",
+	"CON": "Constitution",
+	"INT": "Intelligence",
+	"WIS": "Wisdom",
+	"CHA": "Charisma",
 }
 
 var compoundSpellPowers = map[string][]string{
@@ -1234,8 +1234,7 @@ func parseTemplateSpellPoints(rawSPValue string) *api.Enchantment {
 	}
 
 	// --- CRITICAL NAME FORMATTING ---
-
-	name = "Maximum Spell Points"
+	name = maximumSpellPoints
 
 	// Add % suffix if Value is percent is set (regardless of HidePoints)
 	if strings.EqualFold(isPercent, "true") || isPercent == "1" {
@@ -2283,7 +2282,7 @@ func parseTemplateOffensiveEffect(rawOEValue string) *api.Enchantment {
 	} else {
 		// Default name format: [Difficulty] [Effect]
 		if strings.EqualFold(difficulty, "legendary") {
-			name = "Legendary " + effect
+			name = legendaryPrefix + effect
 		} else {
 			name = effect
 		}
@@ -5919,6 +5918,237 @@ func parseTemplateFavoredWeapon() *api.Enchantment {
 	}
 }
 
+// Template:TheArtbladesGift
+// No parameters. Documentation indicates it simply marks the item as "The Artblade's Gift" with explanatory text.
+func parseTemplateTheArtbladesGift() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "The Artblade's Gift",
+		Notes: new("You gain Legendary Concordant Opposition: Being struck in melee has a small chance to return some lost Hit Points and Spell Points to you. Offensive spells have a chance to grant 100 Temporary Spell Points. This has a one minute cooldown, which is shared with the effects that grant Legendary Concordant Opposition."),
+	}
+}
+
+// parseTemplateRadiance handles Template:Radiance
+func parseTemplateRadiance(raw string) *api.Enchantment {
+	const prefix = "{{Radiance|"
+	const suffix = "}}"
+
+	var inner string
+	if strings.HasPrefix(raw, prefix) && strings.HasSuffix(raw, suffix) {
+		inner = raw[len(prefix) : len(raw)-len(suffix)]
+	} else if raw == "{{Radiance}}" {
+		inner = ""
+	} else {
+		return nil
+	}
+
+	parts := splitParams(inner)
+	// Usage: {{Radiance|(type)|(title)}}
+
+	var radianceType = ""
+	var title = ""
+
+	if len(parts) >= 1 {
+		radianceType = strings.TrimSpace(parts[0])
+	}
+	if len(parts) >= 2 {
+		title = strings.TrimSpace(parts[1])
+	}
+
+	var name string
+	var notes string
+
+	if strings.EqualFold(radianceType, "Legendary") {
+		name = "Legendary Radiance"
+		notes = "Attacks and offensive spells have a chance to blind enemies with Light Damage."
+	} else {
+		name = "Radiance"
+		notes = "This weapon is imbued with a brilliant, radiant power that deals an additional 4d6 of Light Damage and Blinds the target on a successful critical hit."
+	}
+
+	if title != "" {
+		name = title
+	}
+
+	return &api.Enchantment{
+		Name:  name,
+		Notes: new(notes),
+	}
+}
+
+// parseTemplateDisruptionGuard handles Template:DisruptionGuard
+func parseTemplateDisruptionGuard(raw string) *api.Enchantment {
+	const prefix = "{{DisruptionGuard|"
+	const suffix = "}}"
+
+	var inner string
+	if strings.HasPrefix(raw, prefix) && strings.HasSuffix(raw, suffix) {
+		inner = raw[len(prefix) : len(raw)-len(suffix)]
+	} else if raw == "{{DisruptionGuard}}" {
+		inner = ""
+	} else {
+		return nil
+	}
+
+	parts := splitParams(inner)
+	// Usage: {{DisruptionGuard|(Title)}}
+
+	name := "Disruption Guard"
+	notes := "When the wearer of this item is successfully attacked in melee by undead, this power occasionally comes to the surface, annihilating enemy undead."
+
+	if len(parts) >= 1 {
+		title := strings.TrimSpace(parts[0])
+		if title != "" {
+			name = title
+		}
+	}
+
+	return &api.Enchantment{
+		Name:  name,
+		Notes: new(notes),
+	}
+}
+
+// Template:TheWarbladesWrath
+// No parameters. Documentation indicates it simply marks the item as "The Warblade's Wrath" with explanatory text.
+func parseTemplateTheWarbladesWrath() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "The Warblade's Wrath",
+		Notes: new("On an attack roll of 20 which is confirmed as a critical hit this power is released, dealing damage to the target and all enemies near it for 30d6+90 slashing damage. A successful Reflex DC: 130 reduces this by half."),
+	}
+}
+
+// Template:FrozenAether
+// No parameters. Documentation indicates it simply marks the item as "Frozen Aether" with explanatory text.
+func parseTemplateFrozenAether() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Frozen Aether",
+		Notes: new("This weapon can inflict ten stacks of Cold Damage over time, with one stack expiring at a time."),
+	}
+}
+
+// Template:Elasticity
+// No parameters. Documentation indicates it simply marks the item as "Elasticity" with critical multiplier increase.
+func parseTemplateElasticity() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Elasticity",
+		Notes: new("When rolling a 19 or 20 on a ranged attack, your critical multiplier is increased by +1."),
+	}
+}
+
+// parseTemplateWeaponMod handles Template:WeaponMod
+// It takes up to 10 ability abbreviations and returns a slice of Attack and Damage modifiers.
+func parseTemplateWeaponMod(raw string) []*api.Enchantment {
+	const prefix = "{{WeaponMod|"
+	const suffix = "}}"
+
+	if !strings.HasPrefix(raw, prefix) || !strings.HasSuffix(raw, suffix) {
+		return nil
+	}
+
+	inner := raw[len(prefix) : len(raw)-len(suffix)]
+	parts := splitParams(inner)
+
+	var enchantments []*api.Enchantment
+
+	for _, part := range parts {
+		abbr := strings.ToUpper(strings.TrimSpace(part))
+		if fullName, ok := abilityNameMap[abbr]; ok {
+			enchantments = append(enchantments, &api.Enchantment{
+				Name:  "Attack Modifier",
+				Notes: new(fullName),
+			})
+			enchantments = append(enchantments, &api.Enchantment{
+				Name:  "Damage Modifier",
+				Notes: new(fullName),
+			})
+		}
+	}
+
+	return enchantments
+}
+
+// parseTemplateElementalArrow handles Template:ElementalArrow
+func parseTemplateElementalArrow(rawEAValue string) *api.Enchantment {
+	const prefix = "{{ElementalArrow|"
+	const suffix = "}}"
+
+	if !strings.HasPrefix(rawEAValue, prefix) || !strings.HasSuffix(rawEAValue, suffix) {
+		return nil
+	}
+
+	paramList := rawEAValue[len(prefix) : len(rawEAValue)-len(suffix)]
+	parts := strings.Split(paramList, "|")
+
+	// Docs: (Element)|(Style)|(Title)
+
+	// 1. Element (Required, Index 0)
+	if len(parts) < 1 {
+		return nil
+	}
+	element := stripBrackets(parts[0])
+	if element == "" {
+		return nil
+	}
+
+	var style = "Basic" // Default style
+	var title = ""
+
+	// 2. Style (Optional, Index 1)
+	if len(parts) >= 2 {
+		val := stripBrackets(parts[1])
+		if val != "" {
+			style = val
+		}
+	}
+
+	// 3. Title (Optional, Index 2)
+	if len(parts) >= 3 {
+		title = stripBrackets(parts[2])
+	}
+
+	// Resolve amount (damage dice) based on style
+	var amount = ""
+	normalizedStyle := strings.ToLower(style)
+	switch normalizedStyle {
+	case "improved":
+		amount = "{{Dice||4|4||4}}"
+	case "greater":
+		amount = "{{Dice||6|4||6}}"
+	case "superior":
+		amount = "{{Dice||8|4||8}}"
+	case "sovereign":
+		amount = "{{Dice||10|4||10}}"
+	case "lesser":
+		amount = "{{Dice||2|4}}"
+	default:
+		amount = "{{Dice||3|4||3}}"
+	}
+
+	// Resolve the final name
+	var name string
+	if title != "" {
+		name = title
+	} else {
+		if normalizedStyle == "basic" || normalizedStyle == "" {
+			name = element + " Arrow"
+		} else {
+			name = cases.Title(language.English).String(style) + " " + element + " Arrow"
+		}
+	}
+
+	// Resolve the damage dice if it's a template
+	if amount != "" {
+		diceData := ParseTemplateDice(amount)
+		amount = diceData.Raw
+	}
+
+	return &api.Enchantment{
+		Name:    name,
+		Element: element,
+		Amount:  amount,
+	}
+}
+
 // parseTemplateElemental not super worried about this one as it's a damaging template, but it needs work for any work
 // going forward with damage typing
 func parseTemplateElemental(rawElValue string) *api.Enchantment {
@@ -6522,7 +6752,6 @@ func parseTemplateSpellCritDamage(rawSCDValue string) []*api.Enchantment {
 	}
 
 	var bonusType string
-	var _title string // Ignored for this template per requirement
 
 	// 3. Bonus Type (Optional, Index 2 - defaults to Equipment)
 	if len(parts) >= 3 {
@@ -6532,12 +6761,6 @@ func parseTemplateSpellCritDamage(rawSCDValue string) []*api.Enchantment {
 		}
 	} else {
 		bonusType = defaultBonusType
-	}
-
-	// 4. Title (Optional, Index 3) — present but intentionally ignored for this template
-	if len(parts) >= 4 {
-		_title = stripBrackets(parts[3])
-		_ = _title
 	}
 
 	var enchantments []*api.Enchantment
@@ -7077,7 +7300,7 @@ func parseTemplateVacuum(raw string) *api.Enchantment {
 	var name string
 	switch t {
 	case "legendary":
-		name = "Legendary Vacuum"
+		name = legendaryPrefix + "Vacuum"
 	case "", "basic":
 		name = "Vacuum"
 	default:
@@ -7152,7 +7375,7 @@ func parseTemplateBodyfeeder(raw string) *api.Enchantment {
 	name := "Bodyfeeder"
 	switch t {
 	case "legendary":
-		name = "Legendary Bodyfeeder"
+		name = legendaryPrefix + "Bodyfeeder"
 	case "slayer":
 		name = "Slayer Bodyfeeder"
 	case "", "basic":
@@ -7951,11 +8174,83 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 
 		// 3. Dispatch and classify
 		switch templateName {
+		case "Ammunition":
+			enchantmentData = parseTemplateAmmunition(fullTemplate)
+			isStandard = true
+		case "ArrowSpitting":
+			enchantmentData = parseTemplateArrowSpitting()
+			isStandard = true
+		case "MemoryofChainsBroken":
+			enchantmentData = parseTemplateMemoryofChainsBroken()
+			isStandard = true
+		case "SingleMindedness":
+			enchantmentData = parseTemplateSingleMindedness()
+			isStandard = true
+		case "DragonsEdge":
+			enchantmentData = parseTemplateDragonsEdge(fullTemplate)
+			isStandard = true
+		case "DisruptingWeapons":
+			enchantmentData = parseTemplateDisruptingWeapons()
+			isStandard = true
+		case "Coronach":
+			enchantmentData = parseTemplateCoronach()
+			isStandard = true
+		case "MissingParts":
+			enchantmentData = parseTemplateMissingParts()
+			isStandard = true
+		case "OccasionalOvercooling":
+			enchantmentData = parseTemplateOccasionalOvercooling()
+			isStandard = true
+		case "Avalanche":
+			enchantmentData = parseTemplateAvalanche(fullTemplate)
+			isStandard = true
+		case "BlockElements":
+			enchantmentData = parseTemplateBlockElements(fullTemplate)
+			isStandard = true
+		case "InspirationoftheInferno":
+			enchantmentData = parseTemplateInspirationoftheInferno()
+			isStandard = true
+		case "CasterLevel":
+			multiEnchantments = parseTemplateCasterLevel(fullTemplate)
+			isStandard = true
+		case "StonePaws":
+			enchantmentData = parseTemplateStonePaws()
+			isStandard = true
+		case "VulnerabilityGuard":
+			enchantmentData = parseTemplateVulnerabilityGuard()
+			isStandard = true
+		case "RockShattering":
+			enchantmentData = parseTemplateRockShattering()
+			isStandard = true
+		case "ShieldBash":
+			enchantmentData = parseTemplateShieldBash(fullTemplate)
+			isStandard = true
+		case "Thunderbane":
+			enchantmentData = parseTemplateThunderbane()
+			isStandard = true
+		case "KneeCracker":
+			enchantmentData = parseTemplateKneeCracker()
+			isStandard = true
+		case "DeadlySpiderVenom":
+			enchantmentData = parseTemplateDeadlySpiderVenom()
+			isStandard = true
+		case "ParagonWeapon":
+			enchantmentData = parseTemplateParagonWeapon()
+			isStandard = true
+		case "PickaCard":
+			enchantmentData = parseTemplatePickaCard()
+			isStandard = true
+		case "TouchedbyWildMagic":
+			enchantmentData = parseTemplateTouchedbyWildMagic(fullTemplate)
+			isStandard = true
 		case "ThaarakCorrosion":
 			enchantmentData = parseTemplateThaarakCorrosion(fullTemplate)
 			isStandard = true
 		case "SunBurst":
 			enchantmentData = parseTemplateSunBurst(fullTemplate)
+			isStandard = true
+		case "OrlassksPrison":
+			enchantmentData = parseTemplateOrlassksPrison()
 			isStandard = true
 		case "SoulEating":
 			enchantmentData = parseTemplateSoulEating(fullTemplate)
@@ -8022,6 +8317,12 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 			isStandard = true
 		case "BlindingFlash":
 			enchantmentData = parseTemplateBlindingFlash(fullTemplate)
+			isStandard = true
+		case "BlindingFear":
+			enchantmentData = parseTemplateBlindingFear()
+			isStandard = true
+		case "Blinding":
+			enchantmentData = parseTemplateBlinding()
 			isStandard = true
 		case "RadiantBlast":
 			enchantmentData = parseTemplateRadiantBlast(fullTemplate)
@@ -9030,6 +9331,15 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 		case "Elemental":
 			enchantmentData = parseTemplateElemental(fullTemplate)
 			isStandard = false
+		case "ElementalForm":
+			enchantmentData = parseTemplateElementalForm(fullTemplate)
+			isStandard = true
+		case "ElementalArrow":
+			enchantmentData = parseTemplateElementalArrow(fullTemplate)
+			isStandard = false
+		case "ElementalManipulation":
+			multiEnchantments = parseTemplateElementalManipulation()
+			isStandard = true
 		case "AlignmentDamage":
 			// Template:AlignmentDamage — alignment-based damage dice with optional negative level on wield.
 			enchantmentData = parseTemplateAlignmentDamage(fullTemplate)
@@ -9079,6 +9389,9 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 		case "WeaponPower":
 			multiEnchantments = parseTemplateWeaponPower(fullTemplate)
 			isStandard = true
+		case "WeaponMod":
+			multiEnchantments = parseTemplateWeaponMod(fullTemplate)
+			isStandard = true
 		case "Sparkscale":
 			// Template:Sparkscale — simple marker template that denotes the
 			// Sparkscale enchantment on the item. No parameters; emit name only.
@@ -9096,6 +9409,81 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 		case "FellingTheOak":
 			// Template:FellingTheOak — simple named effect with no parameters.
 			enchantmentData = parseTemplateFellingTheOak()
+			isStandard = true
+		case "Elasticity":
+			// Template:Elasticity — simple named effect with no parameters.
+			enchantmentData = parseTemplateElasticity()
+			isStandard = true
+		case "FrozenAether":
+			// Template:FrozenAether — simple named effect with no parameters.
+			enchantmentData = parseTemplateFrozenAether()
+			isStandard = true
+		case "TheWarbladesWrath":
+			// Template:TheWarbladesWrath — simple named effect with no parameters.
+			enchantmentData = parseTemplateTheWarbladesWrath()
+			isStandard = true
+		case "TheArtbladesGift":
+			// Template:TheArtbladesGift — simple named effect with no parameters.
+			enchantmentData = parseTemplateTheArtbladesGift()
+			isStandard = true
+		case "Radiance":
+			// Template:Radiance — handles type (Legendary) and title parameters.
+			enchantmentData = parseTemplateRadiance(fullTemplate)
+			isStandard = true
+		case "DisruptionGuard":
+			// Template:DisruptionGuard — handles title parameter.
+			enchantmentData = parseTemplateDisruptionGuard(fullTemplate)
+			isStandard = true
+		case "Earthgrab":
+			// Template:Earthgrab — calls on the earth to erupt and hold an enemy.
+			enchantmentData = parseTemplateEarthgrab()
+			isStandard = true
+		case "BoneBreaking":
+			// Template:BoneBreaking — Critical hits deal 1d6 Dexterity damage.
+			enchantmentData = parseTemplateBoneBreaking()
+			isStandard = true
+		case "LightsOut":
+			// Template:LightsOut — chance of blinding enemies with ash.
+			enchantmentData = parseTemplateLightsOut()
+			isStandard = true
+		case "TheFallingStar":
+			enchantmentData = parseTemplateTheFallingStar()
+			isStandard = true
+		case "ThrilloftheHunt":
+			enchantmentData = parseTemplateThrilloftheHunt()
+			isStandard = true
+		case "IriansMight":
+			enchantmentData = parseTemplateIriansMight()
+			isStandard = true
+		case "InflictBlight":
+			enchantmentData = parseTemplateInflictBlight()
+			isStandard = true
+		case "Rockslide":
+			enchantmentData = parseTemplateRockslide()
+			isStandard = true
+		case "ShieldedbyMoonlight":
+			enchantmentData = parseTemplateShieldedbyMoonlight()
+			isStandard = true
+		case "Enervation":
+			enchantmentData = parseTemplateEnervation()
+			isStandard = true
+		case "ForgedLightning":
+			enchantmentData = parseTemplateForgedLightning()
+			isStandard = true
+		case "Rebellion":
+			enchantmentData = parseTemplateRebellion()
+			isStandard = true
+		case "Negation":
+			enchantmentData = parseTemplateNegation(fullTemplate)
+			isStandard = true
+		case "BaneOfTheDepths":
+			enchantmentData = parseTemplateBaneOfTheDepths()
+			isStandard = true
+		case "TurbulentBurst":
+			enchantmentData = parseTemplateTurbulentBurst()
+			isStandard = true
+		case "PearlsOfThunder", "PealsOfThunder":
+			enchantmentData = parseTemplatePealsOfThunder()
 			isStandard = true
 		case "Venomscale":
 			// Template:Venomscale — adds Cold Iron bypass and 15d6 Acid on-hit damage.
@@ -10120,7 +10508,7 @@ func parseTemplateSlayLiving(raw string) *api.Enchantment {
 	note := "This weapon stores a dark and sinister power deep within. When the weapon is used, this power occasionally comes to the surface, attempting to instantly snuff out the life force of the enemy."
 
 	if strings.EqualFold(slayType, "Legendary") {
-		name = "Legendary Slay Living"
+		name = legendaryPrefix + "Slay Living"
 		note = "On hit, this has a chance of snuffing the life from your foes, slaying them instantly. Struck enemies must make a Fortitude DC: 100 save or be slain."
 	}
 
@@ -10700,7 +11088,7 @@ func parseTemplateDust(raw string) *api.Enchantment {
 	note := "UNKNOWN"
 
 	if strings.EqualFold(dustType, "Legendary") {
-		name = "Legendary Dust"
+		name = legendaryPrefix + name
 		note = "Attacks and offensive spells have a chance to reduce enemy Physical Resistance Rating and Positive Healing Amplification."
 	}
 
@@ -13798,22 +14186,23 @@ func parseTemplateSlaveLordsBlank(raw string) []*api.Enchantment {
 		namePrefix = "Legendary "
 	}
 
+	const applySlaversShardToItem = "Apply a Slaver's shard to this item."
 	return []*api.Enchantment{
 		{
 			Name:  namePrefix + "Slaver's Prefix Slot",
-			Notes: new("Apply a Slaver's shard to this item."),
+			Notes: new(applySlaversShardToItem),
 		},
 		{
 			Name:  namePrefix + "Slaver's Suffix Slot",
-			Notes: new("Apply a Slaver's shard to this item."),
+			Notes: new(applySlaversShardToItem),
 		},
 		{
 			Name:  namePrefix + "Slaver's Extra Slot",
-			Notes: new("Apply a Slaver's shard to this item."),
+			Notes: new(applySlaversShardToItem),
 		},
 		{
 			Name:  namePrefix + "Slaver's Bonus Slot",
-			Notes: new("Apply a Slaver's shard to this item."),
+			Notes: new(applySlaversShardToItem),
 		},
 		{
 			Name:  "Against the Slave Lords Set Bonus",
@@ -13821,7 +14210,7 @@ func parseTemplateSlaveLordsBlank(raw string) []*api.Enchantment {
 		},
 		{
 			Name:  namePrefix + "Slaver's Augment Slot",
-			Notes: new("Apply a Slaver's shard to this item."),
+			Notes: new(applySlaversShardToItem),
 		},
 	}
 }
@@ -18313,6 +18702,434 @@ func parseTemplateSirocco(raw string) *api.Enchantment {
 	}
 }
 
+// parseTemplateBoneBreaking handles Template:BoneBreaking
+func parseTemplateBoneBreaking() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Bone Breaking",
+		Notes: new("Critical hits by this weapon deal an extra 1d6 points of Dexterity damage by shattering the bones of its target."),
+	}
+}
+
+// parseTemplateEarthgrab handles Template:Earthgrab
+func parseTemplateEarthgrab() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Earthgrab",
+		Notes: new("When the wearer of this item is used, this power occasionally comes to the surface, calling on the earth to erupt from the ground and hold an enemy in place."),
+	}
+}
+
+// parseTemplateLightsOut handles Template:LightsOut
+func parseTemplateLightsOut() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Lights Out",
+		Notes: new("On hit, this has a chance of blinding your enemies with ash."),
+	}
+}
+
+// parseTemplateElementalForm handles Template:ElementalForm
+func parseTemplateElementalForm(raw string) *api.Enchantment {
+	const prefix = "{{ElementalForm|"
+	const suffix = "}}"
+
+	if !strings.HasPrefix(raw, prefix) || !strings.HasSuffix(raw, suffix) {
+		return nil
+	}
+
+	paramList := raw[len(prefix) : len(raw)-len(suffix)]
+	parts := strings.Split(paramList, "|")
+
+	// Docs: (Elemental Type)|(Type of form)|(Title)
+	// Switch is on {{lc:{{{2|}}}-{{{1|}}}}}
+
+	var elementalType string
+	if len(parts) > 0 {
+		elementalType = strings.TrimSpace(parts[0])
+	}
+	var typeOfForm string
+	if len(parts) > 1 {
+		typeOfForm = strings.TrimSpace(parts[1])
+	}
+	var title string
+	if len(parts) > 2 {
+		title = strings.TrimSpace(parts[2])
+	}
+
+	key := strings.ToLower(typeOfForm + "-" + elementalType)
+
+	var name string
+	var notes string
+
+	switch key {
+	case "greater-water":
+		name = "Greater Water Elemental Form"
+		notes = "If you are a Water Elemental (either from a Druid Form or from Sorcerer's Elemental Apotheosis), you benefit from 5 additional caster levels for your Cold spells, as well as 50 Exceptional Cold Spell Power and 5% Exceptional Cold Spell Crit damage."
+	default:
+		name = "Elemental Form"
+		notes = "UNKNOWN Entry, Update the Template"
+	}
+
+	if title != "" {
+		name = title
+	}
+
+	return &api.Enchantment{
+		Name:  name,
+		Notes: new(notes),
+	}
+}
+
+// parseTemplateTheFallingStar handles Template:TheFallingStar
+func parseTemplateTheFallingStar() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "The Falling Star",
+		Notes: new("On hit, this weapon has a chance to pull down a falling star upon your foes, dealing 90d6 Fire Damage and 30d6 Bludgeoning Damage to enemies caught within the blast. This blast is so powerful it has a chance to knowck nearby enemies down upon impact."),
+	}
+}
+
+// parseTemplateThrilloftheHunt handles Template:ThrilloftheHunt
+func parseTemplateThrilloftheHunt() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Thrill of the Hunt",
+		Notes: new("On Hit: You have a small chance to attempt to hold a monster in place. Even if the Hold is unsuccessful, their Will saves will be reduced by 5."),
+	}
+}
+
+// parseTemplateIriansMight handles Template:IriansMight
+func parseTemplateIriansMight() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Irian's Might",
+		Notes: new("If Quarterstaves are you favored weapon, whenever you Turn Undead, you become Favored by Irian, increasing your Fire and Light Spell Critical Damage by 5% (Quality Bonus) for 20 seconds."),
+	}
+}
+
+// parseTemplateInflictBlight handles Template:InflictBlight
+func parseTemplateInflictBlight() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Inflict Blight",
+		Notes: new("Rarely, this power will come to the surface, attempting to melt enemies struck with Acid, Negative, Poison, or Evil spells by dealing significant Acid damage over time."),
+	}
+}
+
+// parseTemplateRockslide handles Template:Rockslide
+func parseTemplateRockslide() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Rockslide",
+		Notes: new("On hit, there is a chance to do massive bludgeoning damage to your enemy."),
+	}
+}
+
+// parseTemplateShieldedbyMoonlight handles Template:ShieldedbyMoonlight
+func parseTemplateShieldedbyMoonlight() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Shielded by Moonlight",
+		Notes: new("Being struck in melee has a small chance to return some lost Hitpoints and Spellpoints to you. Offensive spells have a chance to grant 100 temporary spellpoints. This has a one minute cooldown."),
+	}
+}
+
+// parseTemplateEnervation handles Template:Enervation
+func parseTemplateEnervation() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Enervation",
+		Notes: new("This weapon stores a menacing, ravenous power deep within. When this weapon is used, this power occasionally comes to the surface, draining the life force of the enemy and giving negative levels."),
+	}
+}
+
+// parseTemplateVulnerabilityGuard handles Template:VulnerabilityGuard
+func parseTemplateVulnerabilityGuard() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Vulnerability Guard",
+		Notes: new("When the wearer is missed in combat, this power occasionally releases a degrading blast, adding three stacks of vulnerability to all enemies nearby."),
+	}
+}
+
+// parseTemplateRockShattering handles Template:RockShattering
+func parseTemplateRockShattering() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Rock Shattering",
+		Notes: new("When striking stone-like creatures (such as gargoyles and earth elementals) or creatures that have been turned to stone, there is a chance this weapon will instantly shatter and destroy the target."),
+	}
+}
+
+// parseTemplateShieldBash handles Template:ShieldBash
+func parseTemplateShieldBash(raw string) *api.Enchantment {
+	const prefix = "{{ShieldBash|"
+	const suffix = "}}"
+
+	if !strings.HasPrefix(raw, prefix) || !strings.HasSuffix(raw, suffix) {
+		return nil
+	}
+
+	paramList := raw[len(prefix) : len(raw)-len(suffix)]
+
+	// Respect nested templates when splitting by pipe
+	var parts []string
+	var cur strings.Builder
+	depth := 0
+	for _, r := range paramList {
+		if r == '{' {
+			depth++
+		} else if r == '}' {
+			if depth > 0 {
+				depth--
+			}
+		}
+		if r == '|' && depth == 0 {
+			parts = append(parts, strings.TrimSpace(cur.String()))
+			cur.Reset()
+		} else {
+			cur.WriteRune(r)
+		}
+	}
+	parts = append(parts, strings.TrimSpace(cur.String()))
+
+	// Docs: {{ShieldBash|(Type)|(Enhancement Amount)|(Chance increase for both)|(Title)|(Bonus Type)}}
+	// Possible Type Values: Chance, Damage, Improved, Both
+
+	if len(parts) < 1 {
+		return nil
+	}
+
+	typeName := strings.ToLower(parts[0])
+	enhancementAmount := ""
+	if len(parts) >= 2 {
+		enhancementAmount = stripBrackets(parts[1])
+	}
+	chanceIncreaseBoth := ""
+	if len(parts) >= 3 {
+		chanceIncreaseBoth = stripBrackets(parts[2])
+	}
+	title := ""
+	if len(parts) >= 4 {
+		title = stripBrackets(parts[3])
+	}
+	bonusType := "Enhancement"
+	if len(parts) >= 5 && parts[4] != "" {
+		bonusType = stripBrackets(parts[4])
+	}
+
+	var name string
+	var notes string
+
+	switch typeName {
+	case "chance":
+		name = bonusType + " Shield Bashing +" + enhancementAmount + "%"
+		if bonusType == "Enhancement" {
+			name = "Shield Bashing +" + enhancementAmount + "%"
+		}
+		notes = "+" + enhancementAmount + "% " + bonusType + " bonus to increased chance of Secondary Shield Bash."
+
+	case "damage":
+		name = "Bashing"
+		// If enhancementAmount contains {{Dice}}, parse it
+		notesValue := enhancementAmount
+		if strings.Contains(enhancementAmount, "{{Dice") {
+			diceData := ParseTemplateDice(enhancementAmount)
+			notesValue = diceData.Raw
+		}
+		notes = "This shield is exceptionally durable and dense, and does and additional " + notesValue + " damage when use to shield bash."
+
+	case "improved":
+		name = "Improved Bashing " + enhancementAmount
+		notes = "On Shield Bash: +5d4 Bludgeoning damage. On Melee Hit: +20% Chance to automatically hit your enemy with a Shield Bash attack."
+
+	case "both":
+		name = bonusType + " Shield Bashing +" + enhancementAmount + "%"
+		if bonusType == "Enhancement" {
+			name = "Shield Bashing +" + enhancementAmount + "%"
+		}
+		notes = "+" + enhancementAmount + "% " + bonusType + " bonus to increased chance of Secondary Shield Bash. +" + chanceIncreaseBoth + "% " + bonusType + " bonus to increased chance of Secondary Shield Bash."
+
+	default:
+		name = "Shield Bash"
+		notes = "UNKNOWN Entry, Update the Template"
+	}
+
+	if title != "" {
+		name = title
+	}
+
+	return &api.Enchantment{
+		Name:  name,
+		Notes: new(notes),
+	}
+}
+
+// parseTemplateForgedLightning handles Template:ForgedLightning
+func parseTemplateForgedLightning() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Forged Lightning",
+		Notes: new("On Hit: 2% Chance to do 300 to 500 damage in a blast radius."),
+	}
+}
+
+// parseTemplateThunderbane handles Template:Thunderbane
+func parseTemplateThunderbane() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Thunderbane",
+		Notes: new("This weapon was crafted in the great Thunderforge before Dragons came. Against constructs and the undead, this weapon's effective enhancement bonus is +8 better than its normal enhancement bonus. It deals an extra 7d6 points of damage against the foes."),
+	}
+}
+
+// parseTemplateKneeCracker handles Template:KneeCracker
+func parseTemplateKneeCracker() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Knee Cracker",
+		Notes: new("On Hit: 15% chance to slow 25% (No Save) for 5 sec (non-bosses only)."),
+	}
+}
+
+// parseTemplateRebellion handles Template:Rebellion
+func parseTemplateRebellion() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Rebellion",
+		Notes: new("Passive: All threat you generate from attacks and spells is reduced by 25%. On Critical Hit: This weapon will strike with exceptional accuracy, dealing an additional 13d6 Piercing damage."),
+	}
+}
+
+// parseTemplateCoronach handles Template:Coronach
+func parseTemplateCoronach() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Coronach",
+		Notes: new("While wearing this item, your melee and ranged weapons gain Critical Hit Effect: Critical hit with this weapon will fascinate an undead opponent. (Will DC: 20 negates)"),
+	}
+}
+
+// parseTemplateDisruptingWeapons handles Template:DisruptingWeapons
+func parseTemplateDisruptingWeapons() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Disrupting Weapons",
+		Notes: new("While wearing this item, your melee and ranged weapons gain Vorpal Effect: On an attack roll of 20 which is confirmed as a critical hit this weapon will completely destroy an undead. Powerful undead may resist the vorpal effect until sufficiently damaged."),
+	}
+}
+
+// parseTemplateDeadlySpiderVenom handles Template:DeadlySpiderVenom
+func parseTemplateDeadlySpiderVenom() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Deadly Spider Venom",
+		Notes: new("On an attack roll of 20 which is confirmed as a critical hit it will inflict the target with a poison that deals 10d6 poison damage every 2 seconds for 6 seconds. When the poison wears off, it also deals 3d6 Constitution damage to the target. A successful Fortitude DC: 34 save negates the Constitution damage."),
+	}
+}
+
+// parseTemplateNegation handles Template:Negation
+func parseTemplateNegation(raw string) *api.Enchantment {
+	const prefix = "{{Negation"
+	const suffix = "}}"
+
+	s := strings.TrimSpace(raw)
+	if !strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix) {
+		return nil
+	}
+
+	inner := strings.TrimSpace(strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix))
+	if strings.HasPrefix(inner, "|") {
+		inner = strings.TrimPrefix(inner, "|")
+	}
+
+	bonusType := strings.ToLower(strings.TrimSpace(inner))
+
+	if bonusType == "legendary" {
+		return &api.Enchantment{
+			Name:  "Legendary Negation",
+			Notes: new("Attacks and offensive spells have a chance to inflict 1d3 Negative Levels."),
+		}
+	}
+
+	return &api.Enchantment{
+		Name:  "Negation",
+		Notes: new("Attacks and offensive spells have a chance to inflict Negative Levels."),
+	}
+}
+
+// parseTemplateMissingParts handles Template:MissingParts
+func parseTemplateMissingParts() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Missing Parts",
+		Notes: new("Toven's Hammer appears to have been damaged during the fight. You think that you might be able to partially repair it if you had a elemental motion fixation device."),
+	}
+}
+
+// parseTemplateOccasionalOvercooling handles Template:OccasionalOvercooling
+func parseTemplateOccasionalOvercooling() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Occasional Overcooling",
+		Notes: new("Your shots from this Rune Arm have a 15% chance of freezing your target solid for six seconds. (Fortitude Save negates, DC is equal to your Rune Arm shots, +2 per Charge Tier the shot was fired at)."),
+	}
+}
+
+// parseTemplateInspirationoftheInferno handles Template:InspirationoftheInferno
+func parseTemplateInspirationoftheInferno() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Inspiration of the Inferno",
+		Notes: new("While this Fiddle is equipped, you will use it to perform your Bardic Music."),
+	}
+}
+
+// parseTemplateBaneOfTheDepths handles Template:BaneOfTheDepths
+func parseTemplateBaneOfTheDepths() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Bane of the Depths",
+		Notes: new("Your Negative, Cold, and Poison Spells automatically apply the effects of Bane to enemies struck."),
+	}
+}
+
+// parseTemplatePealsOfThunder handles Template:PealsOfThunder (and PearlsOfThunder typo)
+func parseTemplatePealsOfThunder() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Peals of Thunder",
+		Notes: new("Occasionally, this thunderous power is unleashed, applying a lasting effect that deals 2 to 8 sonic damage every two seconds for six seconds. If the effect is reapplied before it has a chance to wear off, the effect will stack and the duration will reset. The effect can be stacked up to 3 times."),
+	}
+}
+
+// parseTemplateTurbulentBurst handles Template:TurbulentBurst
+func parseTemplateTurbulentBurst() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Turbulent Burst",
+		Notes: new("This weapon is enchanted with wild, unpredictable energy. It will do 1d8 damage of a random energy type (fire/cold/electric/acid) on a successful hit and 3d8 damage of a random energy type on critical hits."),
+	}
+}
+
+// parseTemplateElementalManipulation handles Template:ElementalManipulation
+func parseTemplateElementalManipulation() []*api.Enchantment {
+	const amount = "90"
+	const bonusType = "Equipment"
+	elements := []string{"Acid", "Cold", "Electric", "Fire"}
+
+	var enchantments []*api.Enchantment
+	for _, elem := range elements {
+		enchantments = append(enchantments, &api.Enchantment{
+			Name:      "Spell Power: " + elem,
+			Amount:    amount,
+			BonusType: bonusType,
+			Notes:     new("This item provides a +" + amount + " " + bonusType + " bonus to your " + elem + " Spell Power."),
+		})
+	}
+	return enchantments
+}
+
+// parseTemplateParagonWeapon handles Template:ParagonWeapon
+func parseTemplateParagonWeapon() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Paragon Weapon",
+		Notes: new("Weapons and Shields with a Total Enhancement value of +6 or higher gain an additional +0.5[W] damage dice."),
+	}
+}
+
+// parseTemplatePickaCard handles Template:PickaCard
+func parseTemplatePickaCard() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Pick a Card",
+		Notes: new("See beyond your fate and destiny. This deck of Tarokka cards is beyond your comprehension."),
+	}
+}
+
+// parseTemplateTouchedbyWildMagic parses `{{TouchedbyWildMagic}}`.
+func parseTemplateTouchedbyWildMagic(raw string) *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Touched by Wild Magic",
+		Notes: new("See beyond your fate and destiny. This deck of Tarokka Cards is beyond your comprehension."),
+	}
+}
+
 // parseTemplateRibcracker parses `{{Ribcracker|(Magnitude)}}`.
 func parseTemplateRibcracker(raw string) *api.Enchantment {
 	const prefix = "{{Ribcracker"
@@ -18366,6 +19183,297 @@ func parseTemplateRibcracker(raw string) *api.Enchantment {
 	if nameSuffix != "" {
 		name += " " + nameSuffix
 	}
+
+	return &api.Enchantment{
+		Name:  name,
+		Notes: new(notes),
+	}
+}
+
+// parseTemplateBlinding handles Template:Blinding
+func parseTemplateBlinding() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Blinding",
+		Notes: new("This item can generate a flash of light that has a chance to blind opponents."),
+	}
+}
+
+// parseTemplateBlindingFear handles Template:BlindingFear
+func parseTemplateBlindingFear() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Blinding Fear",
+		Notes: new("On Hit: Blinds and Shakens foe for 6 seconds, 12 second cool down."),
+	}
+}
+
+// parseTemplateStonePaws handles Template:StonePaws
+func parseTemplateStonePaws() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Stone Paws",
+		Notes: new("In Animal Form, Gain +2[W] and DR 15/Adamantine."),
+	}
+}
+
+// parseTemplateCasterLevel handles Template:CasterLevel
+func parseTemplateCasterLevel(fullTemplate string) []*api.Enchantment {
+	// Documentation: {{CasterLevel|(Spell Types)|(Amount)|(Title)}}
+	// 1. Spell Types (Required, Index 0)
+	// 2. Amount (Required, Index 1)
+	// 3. Title (Optional, Index 2)
+	const prefix = "{{CasterLevel|"
+	const suffix = "}}"
+
+	if !strings.HasPrefix(fullTemplate, prefix) || !strings.HasSuffix(fullTemplate, suffix) {
+		return nil
+	}
+
+	paramList := fullTemplate[len(prefix) : len(fullTemplate)-len(suffix)]
+	parts := strings.Split(paramList, "|")
+	if len(parts) < 2 {
+		return nil
+	}
+
+	spellTypesRaw := stripBrackets(parts[0])
+	amount := strings.TrimSpace(parts[1])
+	if !strings.HasPrefix(amount, "+") && amount != "" {
+		amount = "+" + amount
+	}
+
+	title := ""
+	if len(parts) > 2 {
+		title = strings.TrimSpace(parts[2])
+	}
+
+	// Split spell types by "and", ",", or "/"
+	var rawTypes []string
+	if strings.Contains(spellTypesRaw, " and ") {
+		rawTypes = strings.Split(spellTypesRaw, " and ")
+	} else if strings.Contains(spellTypesRaw, ",") {
+		rawTypes = strings.Split(spellTypesRaw, ",")
+	} else if strings.Contains(spellTypesRaw, "/") {
+		rawTypes = strings.Split(spellTypesRaw, "/")
+	} else {
+		rawTypes = []string{spellTypesRaw}
+	}
+
+	var finalTypes []string
+	for _, t := range rawTypes {
+		t = strings.TrimSpace(t)
+		if t == "" {
+			continue
+		}
+
+		// Expand based on existing maps if possible
+		// We'll check for schools first
+		found := false
+		for _, school := range spellSchools {
+			if strings.EqualFold(t, school) {
+				finalTypes = append(finalTypes, school)
+				found = true
+				break
+			}
+		}
+		if found {
+			continue
+		}
+
+		// Check for subtypes/elements
+		if elements, ok := elementsMap[t]; ok && len(elements) > 0 {
+			finalTypes = append(finalTypes, elements...)
+		} else {
+			finalTypes = append(finalTypes, t)
+		}
+	}
+
+	var enchantments []*api.Enchantment
+	for _, t := range finalTypes {
+		name := fmt.Sprintf("Caster Level (%s): %s", t, amount)
+		if title != "" {
+			name = title
+		}
+
+		notes := fmt.Sprintf("Increases your caster level when casting %s spells by %s.", spellTypesRaw, strings.TrimPrefix(amount, "+"))
+
+		enchantments = append(enchantments, &api.Enchantment{
+			Name:  name,
+			Notes: new(notes),
+		})
+	}
+
+	return enchantments
+}
+
+// parseTemplateBlockElements handles Template:BlockElements
+func parseTemplateBlockElements(fullTemplate string) *api.Enchantment {
+	// Documentation: {{BlockElements|(Type)}}
+	// 1. Type (Optional, Default: empty)
+	const prefix = "{{BlockElements"
+	const suffix = "}}"
+
+	if !strings.HasPrefix(fullTemplate, prefix) || !strings.HasSuffix(fullTemplate, suffix) {
+		return nil
+	}
+
+	inner := fullTemplate[len(prefix) : len(fullTemplate)-len(suffix)]
+	if strings.HasPrefix(inner, "|") {
+		inner = inner[1:]
+	}
+
+	blockType := strings.ToLower(strings.TrimSpace(inner))
+
+	if blockType == "snow" {
+		return &api.Enchantment{
+			Name:  "Shield of Snow",
+			Notes: new("This snow provides a powerful defense against physical attacks. While actively blocking, you gain +50 Insight bonus to Magical Resistance Rating."),
+		}
+	}
+
+	return &api.Enchantment{
+		Name:  "Block Elements",
+		Notes: new("On Shield Block: Gain 15% damage absorption versus acid, cold, electric, fire, and sonic damage."),
+	}
+}
+
+// parseTemplateAvalanche handles Template:Avalanche
+func parseTemplateAvalanche(raw string) *api.Enchantment {
+	const prefix = "{{Avalanche"
+	const suffix = "}}"
+
+	s := strings.TrimSpace(raw)
+	if !strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix) {
+		return nil
+	}
+
+	inner := strings.TrimSpace(strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix))
+	if strings.HasPrefix(inner, "|") {
+		inner = strings.TrimPrefix(inner, "|")
+	}
+
+	bonusType := strings.ToLower(strings.TrimSpace(inner))
+	name := "Avalanche"
+	if bonusType == "legendary" {
+		name = "Legendary Avalanche"
+	}
+
+	return &api.Enchantment{
+		Name:  name,
+		Notes: new("This magical item contains the destructive power of an avalanche within, and when you are damaged below 50% HP, its power is unleashed in the form of a massive explosion of Cold damage."),
+	}
+}
+
+// parseTemplateMemoryofChainsBroken handles Template:MemoryofChainsBroken
+func parseTemplateMemoryofChainsBroken() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Memory of Chains Broken",
+		Notes: new("Your hits have a 5% chance to Paralyze enemies for 5 seconds."),
+	}
+}
+
+// parseTemplateOrlassksPrison handles Template:OrlassksPrison
+func parseTemplateOrlassksPrison() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Orlassk's Prison",
+		Notes: new("This shield radiates with the power of the Lord of Stone. A shield bash will turn the target to stone. This effect can trigger once every 90 seconds. A successful Fortitude DC: 65 save negates this effect."),
+	}
+}
+
+// parseTemplateSingleMindedness handles Template:SingleMindedness
+func parseTemplateSingleMindedness() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Single-Mindedness",
+		Notes: new("This item drives your magic towards chaos, and you cannot focus as well on the nuances of subtler spells, -2 DCs on your enchantment spells."),
+	}
+}
+
+// parseTemplateDragonsEdge handles Template:DragonsEdge
+func parseTemplateDragonsEdge(fullTemplate string) *api.Enchantment {
+	// Documentation: {{DragonsEdge|(Fort Bypass Amount)|(Bleeding Die Count)}}
+	const prefix = "{{DragonsEdge"
+	const suffix = "}}"
+
+	if !strings.HasPrefix(fullTemplate, prefix) || !strings.HasSuffix(fullTemplate, suffix) {
+		return nil
+	}
+
+	inner := fullTemplate[len(prefix) : len(fullTemplate)-len(suffix)]
+	if strings.HasPrefix(inner, "|") {
+		inner = inner[1:]
+	}
+
+	parts := strings.Split(inner, "|")
+	var fortBypass, bleedingDice string
+
+	if len(parts) >= 1 {
+		fortBypass = strings.TrimSpace(parts[0])
+	}
+	if len(parts) >= 2 {
+		bleedingDice = strings.TrimSpace(parts[1])
+	}
+
+	notes := fmt.Sprintf("Dragon's Edge: +%s%% Enhancement bonus to bypass enemy Fortification. On Crit: %sd8 Bleeding Damage to those that are vulnerable to it.", fortBypass, bleedingDice)
+
+	return &api.Enchantment{
+		Name:  "Dragon's Edge",
+		Notes: new(notes),
+	}
+}
+
+// parseTemplateArrowSpitting handles Template:ArrowSpitting
+func parseTemplateArrowSpitting() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "Arrow Spitting",
+		Notes: new("While this item is equipped and an enemy hits you, there is a chance that this item will produce a stack of 20 arrows of a random type. Where exactly the arrows come from remains a mystery."),
+	}
+}
+
+// parseTemplateAmmunition handles Template:Ammunition
+func parseTemplateAmmunition(fullTemplate string) *api.Enchantment {
+	// Documentation: {{Ammunition|(Damage Type)|(Die Count)|(Die Side)}}
+	const prefix = "{{Ammunition"
+	const suffix = "}}"
+
+	if !strings.HasPrefix(fullTemplate, prefix) || !strings.HasSuffix(fullTemplate, suffix) {
+		return nil
+	}
+
+	inner := fullTemplate[len(prefix) : len(fullTemplate)-len(suffix)]
+	if strings.HasPrefix(inner, "|") {
+		inner = inner[1:]
+	}
+
+	parts := strings.Split(inner, "|")
+	var damageType, dieCount, dieSide string
+
+	if len(parts) >= 1 {
+		damageType = strings.TrimSpace(parts[0])
+	}
+	if len(parts) >= 2 {
+		dieCount = strings.TrimSpace(parts[1])
+	}
+	if len(parts) >= 3 {
+		dieSide = strings.TrimSpace(parts[2])
+	}
+
+	dieString := fmt.Sprintf("%sd%s", dieCount, dieSide)
+
+	var typePrefix string
+	switch strings.ToLower(damageType) {
+	case "fire":
+		typePrefix = "Burning"
+	case "poison":
+		typePrefix = "Venomed"
+	case "acid":
+		typePrefix = "Corrosive"
+	case "cold":
+		typePrefix = "Freezing"
+	case "electric":
+		typePrefix = "Shocking"
+	default:
+		typePrefix = damageType
+	}
+
+	name := fmt.Sprintf("%s Ammunition - %s", typePrefix, dieString)
+	notes := fmt.Sprintf("On Ranged Attack: %s %s Damage", dieString, damageType)
 
 	return &api.Enchantment{
 		Name:  name,
