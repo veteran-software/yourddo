@@ -73,7 +73,7 @@ const ShoppingListDrawer = (props: Props): ReactElement => {
                       <tbody>
                         {totals.essence > 0 && (
                           <tr>
-                            <td className='ps-2'>Magic Essence</td>
+                            <td className='ps-2'>Magic Item Essence</td>
                             <td className='text-end'>{totals.essence}</td>
                           </tr>
                         )}
