@@ -6,7 +6,7 @@ Built with **React**, **TypeScript**, and **Vite**, YourDDO is designed for perf
 
 ## ✨ Features
 
-- 🛠 **Crafting Planners:** Comprehensive tools for Cannith Crafting, Green Steel (Heroic & Legendary), Dinosaur Bone Crafting, and more.
+- 🛠 **Crafting Planners:** Comprehensive tools for Essence Crafting, Green Steel (Heroic & Legendary), Dinosaur Bone Crafting, and more.
 - 💎 **Augment Management:** Easily plan and track your augment slots and set bonuses.
 - 📜 **Saga Tracker:** Keep track of your saga progress across different characters.
 - 🧩 **Puzzle Solvers:** Built-in solvers for common DDO puzzles like Shroud, Monastery of the Scorpion, and Mastermind.

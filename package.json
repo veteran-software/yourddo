@@ -6,15 +6,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "go run ./tools/cannithSplit/main.go ./tools/cannithSplit/transform.go ./tools/cannithSplit/types.go ./tools/cannithSplit/indexes.go src/data/cannithCrafting/cannithEnhancements.phase1.json src/data/cannithCrafting/runtime",
+    "prebuild": "go run ./tools/cannithSplit/main.go ./tools/cannithSplit/transform.go ./tools/cannithSplit/types.go ./tools/cannithSplit/indexes.go src/data/essenceCrafting/essenceEnhancements.phase1.json src/data/essenceCrafting/runtime",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-sitemap": "node scripts/generate-sitemap.js",
-    "sort:cannith": "node scripts/sortCannithPhase1.mjs",
-    "sort:cannith:write": "node scripts/sortCannithPhase1.mjs --write",
-    "normalize:cannith": "node scripts/normalizeCannithPhase1.mjs",
-    "normalize:cannith:write": "node scripts/normalizeCannithPhase1.mjs --write"
+    "sort:essence": "node scripts/sortCannithPhase1.mjs",
+    "sort:essence:write": "node scripts/sortCannithPhase1.mjs --write",
+    "normalize:essence": "node scripts/normalizeCannithPhase1.mjs",
+    "normalize:essence:write": "node scripts/normalizeCannithPhase1.mjs --write"
   },
   "dependencies": {
     "@dr.pogodin/react-helmet": "^3.1.1",
