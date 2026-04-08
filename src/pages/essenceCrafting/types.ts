@@ -1,9 +1,9 @@
-import cannithPhase1 from '../../data/cannithCrafting/cannithEnhancements.phase1.json'
+import essencePhase1 from '../../data/essenceCrafting/essenceEnhancements.phase1.json'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 
 export type CoreChoice = string | null
 
-// ----- Strict types for Cannith Phase 1 dataset -----
+// ----- Strict types for Essence Phase 1 dataset -----
 export interface Phase1CollectibleRow {
   name: string
   qty: number
@@ -31,7 +31,7 @@ export type Phase1MinLevelIncrease =
 
 export type TAffix = string[] | string | null
 
-export interface CannithPhase1Entry {
+export interface EssencePhase1Entry {
   name: string
   enchantments?: Phase1EnchantmentMeta[]
   bound?: Phase1Materials | null
@@ -47,7 +47,7 @@ export interface CannithPhase1Entry {
   stat?: (number | string)[]
 }
 
-export const DATASET = cannithPhase1 as unknown as CannithPhase1Entry[]
+export const DATASET = essencePhase1 as unknown as EssencePhase1Entry[]
 
 export interface ItemAugmentSlotState {
   id: string

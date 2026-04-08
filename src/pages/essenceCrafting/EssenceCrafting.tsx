@@ -32,18 +32,18 @@ import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
 import { toSingularName } from '../../utils/stringUtils.ts'
 import {
   buildPermalinkUrl,
-  encodeCannithPermalink,
+  encodeEssencePermalink,
   readCcFromUrl,
   removeCcFromUrl,
-  tryDecodeCannithPermalink
+  tryDecodeEssencePermalink
 } from './permalink.ts'
 import {
   type AffixKind,
   ALL_SLOT_KEYS,
   ALLOWED_AUGMENT_KEYS,
   AVAILABLE_AUGMENT_TYPES,
-  type CannithPhase1Entry,
   DATASET,
+  type EssencePhase1Entry,
   type ItemAugmentSlotState,
   type ItemState,
   type Phase1EnchantmentMeta
@@ -58,7 +58,7 @@ import {
   STORAGE_KEY
 } from './utils.ts'
 
-const CannithCrafting = () => {
+const EssenceCrafting = () => {
   // Router utilities (work for both BrowserRouter and HashRouter)
   const location = useLocation()
   const navigate = useNavigate()
@@ -111,9 +111,9 @@ const CannithCrafting = () => {
 
   // Build a lookup map for dataset entries by name for quick access when rendering scaled values
   const enhancementByName = useMemo(() => {
-    const enhancementMap = new Map<string, CannithPhase1Entry>()
+    const enhancementMap = new Map<string, EssencePhase1Entry>()
 
-    DATASET.forEach((entry: CannithPhase1Entry) => {
+    DATASET.forEach((entry: EssencePhase1Entry) => {
       enhancementMap.set(entry.name, entry)
     })
 
@@ -160,10 +160,10 @@ const CannithCrafting = () => {
   const didLoadRef = useRef(false)
 
   const loadInitialState = useCallback((): boolean => {
+    // Re-saved to force reload
     const { cc, source } = readCcFromUrl(location)
-
     if (cc) {
-      const v2 = tryDecodeCannithPermalink(cc)
+      const v2 = tryDecodeEssencePermalink(cc)
       if (v2.ok) {
         const data = v2.data
         setItems(sanitizeAugmentsOnItems(data))
@@ -203,7 +203,7 @@ const CannithCrafting = () => {
         didLoadRef.current = true
       }
     } catch (err) {
-      console.warn('CannithCrafting: failed to load session state – resetting to defaults.', err)
+      console.warn('EssenceCrafting: failed to load session state – resetting to defaults.', err)
     }
   }, [loadInitialState])
 
@@ -673,7 +673,7 @@ const CannithCrafting = () => {
       const rows: { name: string; qty: number }[] = []
 
       if (essenceQty != null && essenceQty > 0) {
-        rows.push({ name: toSingularName('Cannith Essences'), qty: essenceQty })
+        rows.push({ name: toSingularName('Magic Essences'), qty: essenceQty })
       }
 
       if (purifiedQty != null && purifiedQty > 0) {
@@ -923,7 +923,7 @@ const CannithCrafting = () => {
       effectiveMLBySlot.set(k, items[k].minLevelOverride ?? masterMinLevel)
     })
 
-    const ESSENCE_NAME = toSingularName('Cannith Essences')
+    const ESSENCE_NAME = toSingularName('Magic Essences')
     const PURIFIED_NAME = toSingularName('Purified Eberron Dragonshard Fragments')
 
     const processItemAffixes = (
@@ -1058,13 +1058,13 @@ const CannithCrafting = () => {
         <Card.Header className='py-3 position-relative'>
           <div className='d-flex flex-column align-items-center justify-content-center gap-3'>
             <div className='text-center w-100'>
-              <h4 className='mb-0'>Cannith Crafting</h4>
+              <h4 className='mb-0'>Essence Crafting</h4>
               <small>
                 <a
-                  href='https://github.com/veteran-software/yourddo/issues?q=state%3Aopen%20label%3A%22Cannith%20Crafting%22'
+                  href='https://github.com/veteran-software/yourddo/issues?q=state%3Aopen%20label%3A%22Essence%20Crafting%22'
                   target='_blank'
                   rel='noreferrer'
-                  title='Cannith Crafting Known Issues & Bug Reports'
+                  title='Essence Crafting Known Issues & Bug Reports'
                 >
                   Known Issues / Bug Reports <FaArrowUpRightFromSquare size={10} />
                 </a>
@@ -1281,7 +1281,7 @@ const CannithCrafting = () => {
           setShowPermalink(false)
         }}
         buildUrl={() =>
-          buildPermalinkUrl(encodeCannithPermalink({ items, activeKeys, collapsedKeys, masterMinLevel }), location)
+          buildPermalinkUrl(encodeEssencePermalink({ items, activeKeys, collapsedKeys, masterMinLevel }), location)
         }
       />
 
@@ -1300,4 +1300,4 @@ const CannithCrafting = () => {
   )
 }
 
-export default CannithCrafting
+export default EssenceCrafting
