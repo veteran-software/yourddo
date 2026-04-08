@@ -1,4 +1,6 @@
-import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
+import {
+  filterIngredientsMap
+} from '../../components/filters/helpers/filterUtils.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import {
   ACCESSORY_SLOT_KEYS,
@@ -87,7 +89,7 @@ export const allowedAugmentColorsForSlot = (slotKey: string): string[] => {
 
 export const STORAGE_KEY = 'essenceCraftingState'
 
-export const ML_OPTIONS: number[] = Array.from({ length: 32 }, (_, i) => i + 1)
+export const ML_OPTIONS: number[] = Array.from({ length: 34 }, (_, i) => i + 1)
 
 export const filterAugmentOptions = (
   options: Record<string, Ingredient[]>,
