@@ -571,7 +571,7 @@ const EssenceCrafting = () => {
       return false
     }
 
-    return Object.prototype.hasOwnProperty.call(COMBINED_SHARDS, name)
+    return Object.hasOwn(COMBINED_SHARDS, name)
   }
 
   // Detect if a selected dataset entry represents a combined shard based on its own metadata
