@@ -973,6 +973,8 @@ const useGearPlanner = (props: Props) => {
   return {
     activeSetup,
     addSetup,
+    allAugments,
+    allCurses,
     allItems,
     artificerEquipped,
     browsingSlot,
