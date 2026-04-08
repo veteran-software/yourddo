@@ -2,8 +2,16 @@ import React from 'react'
 import { Badge, Dropdown } from 'react-bootstrap'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import { getTroveOwners, normItem } from '../../../utils/troveUtils.ts'
-import { checkPotentialConflict, type EnchantmentConflict } from '../conflictResolver.ts'
-import { type GearAugment, type GearAugmentSlot, type GearItem, GearSlot } from '../types.ts'
+import {
+  checkPotentialConflict,
+  type EnchantmentConflict
+} from '../conflictResolver.ts'
+import {
+  type GearAugment,
+  type GearAugmentSlot,
+  type GearItem,
+  GearSlot
+} from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
 const AugmentSlotItem = (props: Props) => {
@@ -36,10 +44,16 @@ const AugmentSlotItem = (props: Props) => {
           variant='outline-dark'
           id={`aug-drop-${selectedItem.id}-${String(idx)}`}
           className='w-100 py-0 px-2 text-start d-flex justify-content-between align-items-center gear-planner-augment-toggle'
-          style={{ fontSize: '0.65rem', minHeight: '20px', backgroundColor: 'rgba(0,0,0,0.05)' }}
+          style={{
+            fontSize: '0.65rem',
+            minHeight: '20px',
+            backgroundColor: 'rgba(0,0,0,0.05)'
+          }}
         >
           <span className='text-truncate text-dark d-flex align-items-center'>
-            {slotted ? `${slotted.name} (ML:${String(slotted.minimumLevel)})` : 'Empty Slot'}
+            {slotted
+              ? `${slotted.name} (ML:${String(slotted.minimumLevel)})`
+              : 'Empty Slot'}
           </span>
         </Dropdown.Toggle>
 
@@ -59,18 +73,31 @@ const AugmentSlotItem = (props: Props) => {
 
           {applicable.sortedGroupNames.map((groupName) => (
             <React.Fragment key={groupName}>
-              <Dropdown.Header className='text-light fw-bold py-0 ps-1' style={{ fontSize: '0.6rem' }}>
+              <Dropdown.Header
+                className='text-light fw-bold py-0 ps-1'
+                style={{ fontSize: '0.6rem' }}
+              >
                 {groupName} Augments
               </Dropdown.Header>
 
               {applicable.groups[groupName].map((aug) => {
                 const hasConflict = aug.effectsAdded?.some((ench) => {
-                  const pot = checkPotentialConflict(ench, currentEquipped, slot, currentSlottedAugments)
+                  const pot = checkPotentialConflict(
+                    ench,
+                    currentEquipped,
+                    slot,
+                    currentSlottedAugments
+                  )
                   return pot.isConflict && pot.isRedundant
                 })
 
                 const hasUpgrade = aug.effectsAdded?.some((ench) => {
-                  const pot = checkPotentialConflict(ench, currentEquipped, slot, currentSlottedAugments)
+                  const pot = checkPotentialConflict(
+                    ench,
+                    currentEquipped,
+                    slot,
+                    currentSlottedAugments
+                  )
                   return pot.isConflict && !pot.isRedundant
                 })
 
@@ -88,7 +115,11 @@ const AugmentSlotItem = (props: Props) => {
                   >
                     <span className='text-truncate'>
                       {owners && (
-                        <Badge bg='primary' className='px-1 py-0 me-1' style={{ fontSize: '0.55rem' }}>
+                        <Badge
+                          bg='primary'
+                          className='px-1 py-0 me-1'
+                          style={{ fontSize: '0.55rem' }}
+                        >
                           {owners}
                         </Badge>
                       )}
@@ -96,12 +127,21 @@ const AugmentSlotItem = (props: Props) => {
                     </span>
                     <span className='ms-2 flex-shrink-0'>
                       {hasConflict && (
-                        <Badge bg='warning' text='dark' className='px-1 py-0 ms-1' style={{ fontSize: '0.55rem' }}>
+                        <Badge
+                          bg='warning'
+                          text='dark'
+                          className='px-1 py-0 ms-1'
+                          style={{ fontSize: '0.55rem' }}
+                        >
                           Conflicting
                         </Badge>
                       )}
                       {hasUpgrade && (
-                        <Badge bg='info' className='px-1 py-0 ms-1' style={{ fontSize: '0.55rem' }}>
+                        <Badge
+                          bg='info'
+                          className='px-1 py-0 ms-1'
+                          style={{ fontSize: '0.55rem' }}
+                        >
                           Upgrade
                         </Badge>
                       )}
@@ -157,12 +197,20 @@ interface Props {
   idx: number
   augSlot: GearAugmentSlot
   slotted: GearAugment | null | undefined
-  applicable: { groups: Record<string, GearAugment[]>; sortedGroupNames: string[] }
+  applicable: {
+    groups: Record<string, GearAugment[]>
+    sortedGroupNames: string[]
+  }
   slot: GearSlot
   currentConflicts: Record<string, EnchantmentConflict[]>
   currentEquipped: GearItem[]
   currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  setSlottedAugment: (itemId: string, slotIndex: number, augment: GearAugment | null, slot?: GearSlot) => void
+  setSlottedAugment: (
+    itemId: string,
+    slotIndex: number,
+    augment: GearAugment | null,
+    slot?: GearSlot
+  ) => void
   openSetBonusBrowser: (setName: string) => void
 }
 

@@ -18,9 +18,12 @@ const SearchResultSlot = (props: Props) => {
     troveData
   } = props
 
-  const { currentConflicts, currentEquipped, currentSlottedAugments } = getContextInfo(slot)
+  const { currentConflicts, currentEquipped, currentSlottedAugments } =
+    getContextInfo(slot)
   const equippedInSlot = currentEquipped.find((e) => e.slot === slot)
-  const isPartofSet = !browsingSet || equippedInSlot?.setBonus?.some((sb) => sb.name === browsingSet)
+  const isPartofSet =
+    !browsingSet ||
+    equippedInSlot?.setBonus?.some((sb) => sb.name === browsingSet)
 
   return (
     <Accordion.Item eventKey={slot} key={slot}>
@@ -30,7 +33,10 @@ const SearchResultSlot = (props: Props) => {
             {slot} ({items.length})
           </span>
           {equippedInSlot && (
-            <span className={`${isPartofSet ? 'text-info' : 'text-warning'} ms-2`} style={{ fontSize: '0.75rem' }}>
+            <span
+              className={`${isPartofSet ? 'text-info' : 'text-warning'} ms-2`}
+              style={{ fontSize: '0.75rem' }}
+            >
               {equippedInSlot.name}
             </span>
           )}
@@ -57,7 +63,11 @@ const SearchResultSlot = (props: Props) => {
                 {showHeader && (
                   <Card.Header className='py-0 px-2 bg-secondary-subtle d-flex align-items-center gap-1 overflow-hidden'>
                     {isEquipped && (
-                      <Badge bg='success' className='shadow-sm' style={{ fontSize: '0.55rem' }}>
+                      <Badge
+                        bg='success'
+                        className='shadow-sm'
+                        style={{ fontSize: '0.55rem' }}
+                      >
                         Equipped
                       </Badge>
                     )}
@@ -75,8 +85,13 @@ const SearchResultSlot = (props: Props) => {
                 )}
 
                 <Card.Body className='p-2'>
-                  <div className='fw-bold small text-truncate text-dark'>{item.name}</div>
-                  <div className='text-dark fw-medium' style={{ fontSize: '0.7rem' }}>
+                  <div className='fw-bold small text-truncate text-dark'>
+                    {item.name}
+                  </div>
+                  <div
+                    className='text-dark fw-medium'
+                    style={{ fontSize: '0.7rem' }}
+                  >
                     ML: {item.minLevel || '1'} | {item.type || 'Item'}
                   </div>
 
@@ -100,7 +115,9 @@ const SearchResultSlot = (props: Props) => {
                     </div>
                   )}
 
-                  {item.augments && item.augments.length > 0 && <AugmentSlotsList augments={item.augments} />}
+                  {item.augments && item.augments.length > 0 && (
+                    <AugmentSlotsList augments={item.augments} />
+                  )}
 
                   {item.enchantments && item.enchantments.length > 0 && (
                     <div

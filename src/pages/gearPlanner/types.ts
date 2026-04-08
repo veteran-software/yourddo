@@ -49,8 +49,14 @@ export const GEAR_SLOTS: GearSlot[] = [
   GearSlot.Ammunition
 ]
 
-export const ARTIFICER_PET_SLOTS: GearSlot[] = [GearSlot.ArtificerPetArmor, GearSlot.ArtificerPetWeapon]
-export const DRUID_PET_SLOTS: GearSlot[] = [GearSlot.DruidPetArmor, GearSlot.DruidPetWeapon]
+export const ARTIFICER_PET_SLOTS: GearSlot[] = [
+  GearSlot.ArtificerPetArmor,
+  GearSlot.ArtificerPetWeapon
+]
+export const DRUID_PET_SLOTS: GearSlot[] = [
+  GearSlot.DruidPetArmor,
+  GearSlot.DruidPetWeapon
+]
 
 export interface LootEnchantment {
   name: string
@@ -217,12 +223,31 @@ export const WEAPON_TYPES: Record<string, string[]> = {
     'Quarterstaff',
     'Sickle'
   ],
-  Throwing: ['Dart', 'Shuriken', 'Throwing Axe', 'Throwing Dagger', 'Throwing Hammer']
+  Throwing: [
+    'Dart',
+    'Shuriken',
+    'Throwing Axe',
+    'Throwing Dagger',
+    'Throwing Hammer'
+  ]
 }
 
-export const SHIELD_TYPES = ['Buckler', 'Large Shield', 'Orb', 'Rune Arm', 'Small Shield', 'Tower Shield']
+export const SHIELD_TYPES = [
+  'Buckler',
+  'Large Shield',
+  'Orb',
+  'Rune Arm',
+  'Small Shield',
+  'Tower Shield'
+]
 
-export const ARMOR_TYPES = ['Cloth Armor', 'Docent', 'Heavy Armor', 'Light Armor', 'Medium Armor']
+export const ARMOR_TYPES = [
+  'Cloth Armor',
+  'Docent',
+  'Heavy Armor',
+  'Light Armor',
+  'Medium Armor'
+]
 
 export interface ClassProficiencies {
   weapons: string[]
@@ -254,7 +279,13 @@ export const CLASS_PROFICIENCIES: Record<string, ClassProficiencies> = {
     shields: ['Buckler', 'Large Shield', 'Orb', 'Small Shield']
   },
   Bard: {
-    weapons: [...WEAPON_TYPES.Simple, 'Longsword', 'Rapier', 'Short Sword', 'Short Bow'],
+    weapons: [
+      ...WEAPON_TYPES.Simple,
+      'Longsword',
+      'Rapier',
+      'Short Sword',
+      'Short Bow'
+    ],
     armor: ['Cloth Armor', 'Light Armor'],
     shields: ['Buckler', 'Large Shield', 'Orb', 'Small Shield']
   },
@@ -264,7 +295,15 @@ export const CLASS_PROFICIENCIES: Record<string, ClassProficiencies> = {
     shields: ['Buckler', 'Large Shield', 'Orb', 'Small Shield']
   },
   Druid: {
-    weapons: ['Club', 'Dagger', 'Dart', 'Quarterstaff', 'Sickle', 'Unarmed', 'Scimitar'],
+    weapons: [
+      'Club',
+      'Dagger',
+      'Dart',
+      'Quarterstaff',
+      'Sickle',
+      'Unarmed',
+      'Scimitar'
+    ],
     armor: ['Cloth Armor', 'Light Armor', 'Medium Armor'],
     shields: ['Buckler', 'Large Shield', 'Orb', 'Small Shield']
   },
@@ -279,7 +318,13 @@ export const CLASS_PROFICIENCIES: Record<string, ClassProficiencies> = {
     shields: ['Buckler', 'Large Shield', 'Orb', 'Small Shield', 'Tower Shield']
   },
   Monk: {
-    weapons: [...WEAPON_TYPES.Simple, 'Handaxe', 'Handwraps', 'Kama', 'Shuriken'],
+    weapons: [
+      ...WEAPON_TYPES.Simple,
+      'Handaxe',
+      'Handwraps',
+      'Kama',
+      'Shuriken'
+    ],
     armor: ['Cloth Armor'],
     shields: []
   },
@@ -309,7 +354,15 @@ export const CLASS_PROFICIENCIES: Record<string, ClassProficiencies> = {
     shields: []
   },
   Wizard: {
-    weapons: ['Club', 'Scepter', 'Dagger', 'Quarterstaff', 'Heavy Crossbow', 'Light Crossbow', 'Throwing Dagger'],
+    weapons: [
+      'Club',
+      'Scepter',
+      'Dagger',
+      'Quarterstaff',
+      'Heavy Crossbow',
+      'Light Crossbow',
+      'Throwing Dagger'
+    ],
     armor: ['Cloth Armor'],
     shields: []
   }

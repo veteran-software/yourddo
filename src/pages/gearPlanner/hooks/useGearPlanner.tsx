@@ -57,7 +57,8 @@ import {
  * - State variables for tracking current slot browsing, conflict states, available items, display settings, and more.
  */
 const useGearPlanner = (props: Props) => {
-  const { enchantmentSearch, setBonusFilter, setBrowsingSet, showConflicts } = props
+  const { enchantmentSearch, setBonusFilter, setBrowsingSet, showConflicts } =
+    props
 
   const dispatch = useAppDispatch()
   const {
@@ -163,7 +164,11 @@ const useGearPlanner = (props: Props) => {
       }
     }
 
-    const anyOpen = showSidebar || showEnchantmentSearch || showSetBonusBrowser || browsingSlot !== null
+    const anyOpen =
+      showSidebar ||
+      showEnchantmentSearch ||
+      showSetBonusBrowser ||
+      browsingSlot !== null
 
     if (anyOpen) {
       document.addEventListener('mousedown', handleOutsideClick)
@@ -172,7 +177,13 @@ const useGearPlanner = (props: Props) => {
     return () => {
       document.removeEventListener('mousedown', handleOutsideClick)
     }
-  }, [showSidebar, showEnchantmentSearch, showSetBonusBrowser, browsingSlot, openSlotBrowser])
+  }, [
+    showSidebar,
+    showEnchantmentSearch,
+    showSetBonusBrowser,
+    browsingSlot,
+    openSlotBrowser
+  ])
 
   const activeSetup = setups.find((s) => s.id === activeSetupId) ?? setups[0]
 
@@ -195,18 +206,27 @@ const useGearPlanner = (props: Props) => {
     return metalMaterials.includes(material)
   }, [])
 
-  const isItemVisibleForClasses = useCallback((item: GearItem, setup: GearSetup) => {
-    const isArtificer = setup.classes.includes('Artificer')
-    const isDruid = setup.classes.includes('Druid')
+  const isItemVisibleForClasses = useCallback(
+    (item: GearItem, setup: GearSetup) => {
+      const isArtificer = setup.classes.includes('Artificer')
+      const isDruid = setup.classes.includes('Druid')
 
-    if (item.slot === GearSlot.ArtificerPetArmor || item.slot === GearSlot.ArtificerPetWeapon) {
-      return isArtificer
-    }
-    if (item.slot === GearSlot.DruidPetArmor || item.slot === GearSlot.DruidPetWeapon) {
-      return isDruid
-    }
-    return true
-  }, [])
+      if (
+        item.slot === GearSlot.ArtificerPetArmor ||
+        item.slot === GearSlot.ArtificerPetWeapon
+      ) {
+        return isArtificer
+      }
+      if (
+        item.slot === GearSlot.DruidPetArmor ||
+        item.slot === GearSlot.DruidPetWeapon
+      ) {
+        return isDruid
+      }
+      return true
+    },
+    []
+  )
 
   const itemToSetsMap = useMemo(() => {
     const map = new Map<string, string[]>()
@@ -226,17 +246,23 @@ const useGearPlanner = (props: Props) => {
 
   const characterEquipped = useMemo(() => {
     if (!activeSetup) return []
-    return Object.values(activeSetup.slots).filter((item): item is GearItem => item !== null)
+    return Object.values(activeSetup.slots).filter(
+      (item): item is GearItem => item !== null
+    )
   }, [activeSetup])
 
   const artificerEquipped = useMemo(() => {
     if (!activeSetup?.classes.includes('Artificer')) return []
-    return Object.values(artificerPet.slots).filter((item): item is GearItem => item !== null)
+    return Object.values(artificerPet.slots).filter(
+      (item): item is GearItem => item !== null
+    )
   }, [artificerPet.slots, activeSetup?.classes])
 
   const druidEquipped = useMemo(() => {
     if (!activeSetup?.classes.includes('Druid')) return []
-    return Object.values(druidPet.slots).filter((item): item is GearItem => item !== null)
+    return Object.values(druidPet.slots).filter(
+      (item): item is GearItem => item !== null
+    )
   }, [druidPet.slots, activeSetup?.classes])
 
   const characterConflicts = useMemo(
@@ -292,7 +318,12 @@ const useGearPlanner = (props: Props) => {
       const { currentEquipped, currentSlottedAugments } = getContextInfo(slot)
 
       return item.enchantments.some((ench) => {
-        const potential = checkPotentialConflict(ench, currentEquipped, slot, currentSlottedAugments)
+        const potential = checkPotentialConflict(
+          ench,
+          currentEquipped,
+          slot,
+          currentSlottedAugments
+        )
         return potential.isConflict && potential.isRedundant
       })
     },
@@ -300,7 +331,12 @@ const useGearPlanner = (props: Props) => {
   )
 
   const shouldShowItem = useCallback(
-    (item: GearItem, slot: GearSlot, setup: GearSetup, ignoreSetFilter = false) => {
+    (
+      item: GearItem,
+      slot: GearSlot,
+      setup: GearSetup,
+      ignoreSetFilter = false
+    ) => {
       // Conflict/Lesser enchantment filter
       if (!showConflicts && isItemConflicting(item, slot)) {
         return false
@@ -321,8 +357,15 @@ const useGearPlanner = (props: Props) => {
       if (!slotMatches(slot, item)) return false
 
       // Filters logic
-      const weaponFilterMatches = (targetSlot: GearSlot, i: GearItem, s: GearSetup) => {
-        if (targetSlot === GearSlot.MainHand || targetSlot === GearSlot.OffHand) {
+      const weaponFilterMatches = (
+        targetSlot: GearSlot,
+        i: GearItem,
+        s: GearSetup
+      ) => {
+        if (
+          targetSlot === GearSlot.MainHand ||
+          targetSlot === GearSlot.OffHand
+        ) {
           // If the item is a weapon, it must match a weapon filter
           const isWeapon =
             Object.values(WEAPON_TYPES).flat().includes(i.type) ||
@@ -338,7 +381,8 @@ const useGearPlanner = (props: Props) => {
               const nameLower = i.name.toLowerCase()
               return (
                 typeLower === weaponPart ||
-                (weaponPart === 'handwraps' && (i.type === 'Gloves' || typeLower === 'handwraps')) ||
+                (weaponPart === 'handwraps' &&
+                  (i.type === 'Gloves' || typeLower === 'handwraps')) ||
                 (i.type === 'Weapon' && nameLower.includes(weaponPart))
               )
             })
@@ -347,11 +391,16 @@ const useGearPlanner = (props: Props) => {
         return true
       }
 
-      const armorFilterMatches = (targetSlot: GearSlot, i: GearItem, s: GearSetup) => {
+      const armorFilterMatches = (
+        targetSlot: GearSlot,
+        i: GearItem,
+        s: GearSetup
+      ) => {
         if (targetSlot === GearSlot.Armor) {
           if (s.armorFilters.length > 0) {
             const isClothFilter = s.armorFilters.includes('Cloth Armor')
-            const matchesCloth = isClothFilter && (i.type === 'Robe' || i.type === 'Outfit')
+            const matchesCloth =
+              isClothFilter && (i.type === 'Robe' || i.type === 'Outfit')
             const matchesOther = s.armorFilters.includes(i.type)
             return matchesCloth || matchesOther
           } else {
@@ -362,7 +411,11 @@ const useGearPlanner = (props: Props) => {
         return true
       }
 
-      const otherFilterMatches = (targetSlot: GearSlot, i: GearItem, s: GearSetup) => {
+      const otherFilterMatches = (
+        targetSlot: GearSlot,
+        i: GearItem,
+        s: GearSetup
+      ) => {
         // Shield Filter
         if (targetSlot === GearSlot.OffHand) {
           if (s.shieldFilters.length > 0) {
@@ -387,7 +440,11 @@ const useGearPlanner = (props: Props) => {
         if (!ignoreSetFilter && setBonusFilter) {
           const indexedItems = setBonusIndex[setBonusFilter]
           const itemLvl = Number(i.minLevel) || 1
-          return indexedItems?.some((ii) => ii.name === i.name && ii.minLevel === itemLvl) ?? false
+          return (
+            indexedItems?.some(
+              (ii) => ii.name === i.name && ii.minLevel === itemLvl
+            ) ?? false
+          )
         }
         return true
       }
@@ -406,7 +463,14 @@ const useGearPlanner = (props: Props) => {
 
       return true
     },
-    [showConflicts, isItemConflicting, isMetal, setBonusFilter, setBonusIndex, itemNameSearch]
+    [
+      showConflicts,
+      isItemConflicting,
+      isMetal,
+      setBonusFilter,
+      setBonusIndex,
+      itemNameSearch
+    ]
   )
 
   const filteredSets = useMemo(() => {
@@ -420,12 +484,19 @@ const useGearPlanner = (props: Props) => {
 
     for (const i of allItems) {
       const level = Number(i.minLevel) || 1
-      if (level >= min && level <= max && isItemVisibleForClasses(i, activeSetup)) {
+      if (
+        level >= min &&
+        level <= max &&
+        isItemVisibleForClasses(i, activeSetup)
+      ) {
         const key = `${i.name}|${level.toString()}`
         visibleItemNames.add(key)
 
         // If we are browsing a slot, check if this item matches that slot (ignoring set filter)
-        if (browsingSlot && shouldShowItem(i, browsingSlot, activeSetup, true)) {
+        if (
+          browsingSlot &&
+          shouldShowItem(i, browsingSlot, activeSetup, true)
+        ) {
           const itemSets = itemToSetsMap.get(key)
           if (itemSets) {
             itemSets.forEach((s) => setsWithItemsInSlot.add(s))
@@ -441,7 +512,9 @@ const useGearPlanner = (props: Props) => {
         let hasVisibleInLevelRange = false
         for (const item of indexedItems) {
           if (item.minLevel >= min && item.minLevel <= max) {
-            if (visibleItemNames.has(`${item.name}|${item.minLevel.toString()}`)) {
+            if (
+              visibleItemNames.has(`${item.name}|${item.minLevel.toString()}`)
+            ) {
               hasVisibleInLevelRange = true
               break
             }
@@ -457,12 +530,24 @@ const useGearPlanner = (props: Props) => {
         return true
       })
       .sort((a, b) => a.localeCompare(b))
-  }, [setBonusIndex, activeSetup, allItems, isItemVisibleForClasses, browsingSlot, shouldShowItem, itemToSetsMap])
+  }, [
+    setBonusIndex,
+    activeSetup,
+    allItems,
+    isItemVisibleForClasses,
+    browsingSlot,
+    shouldShowItem,
+    itemToSetsMap
+  ])
 
   const filteredItems = useMemo(() => {
     if (!activeSetup || !browsingSlot) return []
     return allItems
-      .filter((i) => isItemVisibleForClasses(i, activeSetup) && shouldShowItem(i, browsingSlot, activeSetup))
+      .filter(
+        (i) =>
+          isItemVisibleForClasses(i, activeSetup) &&
+          shouldShowItem(i, browsingSlot, activeSetup)
+      )
       .sort((a, b) => {
         // Priority 1: Trove ownership
         const isOwnedA = troveData?.[normItem(a.name)] ? 1 : 0
@@ -477,7 +562,14 @@ const useGearPlanner = (props: Props) => {
         // Priority 3: Name (asc)
         return a.name.localeCompare(b.name)
       })
-  }, [activeSetup, browsingSlot, allItems, shouldShowItem, isItemVisibleForClasses, troveData])
+  }, [
+    activeSetup,
+    browsingSlot,
+    allItems,
+    shouldShowItem,
+    isItemVisibleForClasses,
+    troveData
+  ])
 
   const searchResultsBySlot = useMemo(() => {
     if (enchantmentSearch.length <= 2) return null
@@ -499,7 +591,11 @@ const useGearPlanner = (props: Props) => {
         if (normalizeString(setName).includes(searchLower)) {
           const indexedItems = setBonusIndex[setName]
           const itemLvl = Number(item.minLevel) || 1
-          if (indexedItems.some((ii) => ii.name === item.name && ii.minLevel === itemLvl)) {
+          if (
+            indexedItems.some(
+              (ii) => ii.name === item.name && ii.minLevel === itemLvl
+            )
+          ) {
             matchesSetName = true
             break
           }
@@ -508,7 +604,9 @@ const useGearPlanner = (props: Props) => {
 
       return (
         normalizeString(item.name).includes(searchLower) ||
-        item.enchantments?.some((ench) => normalizeString(ench.name).includes(searchLower)) ||
+        item.enchantments?.some((ench) =>
+          normalizeString(ench.name).includes(searchLower)
+        ) ||
         matchesSetName
       )
     }
@@ -534,7 +632,15 @@ const useGearPlanner = (props: Props) => {
         acc[item.slot].push(item)
         return acc
       }, {})
-  }, [enchantmentSearch, allItems, shouldShowItem, setBonusIndex, activeSetup, isItemVisibleForClasses, troveData])
+  }, [
+    enchantmentSearch,
+    allItems,
+    shouldShowItem,
+    setBonusIndex,
+    activeSetup,
+    isItemVisibleForClasses,
+    troveData
+  ])
 
   /**
    * Updates the proficiency filters for a given gear setup by comparing the proficiencies
@@ -556,16 +662,26 @@ const useGearPlanner = (props: Props) => {
    * The result is an updated gear setup with filters that correctly represent the combined
    * proficiencies of the newly assigned classes.
    */
-  const updateClassProficiencies = (setup: GearSetup, oldClasses: (string | null)[], newClasses: (string | null)[]) => {
+  const updateClassProficiencies = (
+    setup: GearSetup,
+    oldClasses: (string | null)[],
+    newClasses: (string | null)[]
+  ) => {
     // 1. Identify what filters are granted by OLD classes
     const oldWeaponProficiencies = new Set<string>()
     const oldArmorProficiencies = new Set<string>()
     const oldShieldProficiencies = new Set<string>()
     oldClasses.forEach((cls) => {
       if (cls && CLASS_PROFICIENCIES[cls]) {
-        CLASS_PROFICIENCIES[cls].weapons.forEach((w) => oldWeaponProficiencies.add(w))
-        CLASS_PROFICIENCIES[cls].armor.forEach((a) => oldArmorProficiencies.add(a))
-        CLASS_PROFICIENCIES[cls].shields.forEach((s) => oldShieldProficiencies.add(s))
+        CLASS_PROFICIENCIES[cls].weapons.forEach((w) =>
+          oldWeaponProficiencies.add(w)
+        )
+        CLASS_PROFICIENCIES[cls].armor.forEach((a) =>
+          oldArmorProficiencies.add(a)
+        )
+        CLASS_PROFICIENCIES[cls].shields.forEach((s) =>
+          oldShieldProficiencies.add(s)
+        )
       }
     })
 
@@ -575,20 +691,38 @@ const useGearPlanner = (props: Props) => {
     const newShieldProficiencies = new Set<string>()
     newClasses.forEach((cls) => {
       if (cls && CLASS_PROFICIENCIES[cls]) {
-        CLASS_PROFICIENCIES[cls].weapons.forEach((w) => newWeaponProficiencies.add(w))
-        CLASS_PROFICIENCIES[cls].armor.forEach((a) => newArmorProficiencies.add(a))
-        CLASS_PROFICIENCIES[cls].shields.forEach((s) => newShieldProficiencies.add(s))
+        CLASS_PROFICIENCIES[cls].weapons.forEach((w) =>
+          newWeaponProficiencies.add(w)
+        )
+        CLASS_PROFICIENCIES[cls].armor.forEach((a) =>
+          newArmorProficiencies.add(a)
+        )
+        CLASS_PROFICIENCIES[cls].shields.forEach((s) =>
+          newShieldProficiencies.add(s)
+        )
       }
     })
 
     // 3. Remove filters that were granted by old classes but NOT by new classes
-    const weaponsToRemove = new Set([...oldWeaponProficiencies].filter((w) => !newWeaponProficiencies.has(w)))
-    const armorToRemove = new Set([...oldArmorProficiencies].filter((a) => !newArmorProficiencies.has(a)))
-    const shieldsToRemove = new Set([...oldShieldProficiencies].filter((s) => !newShieldProficiencies.has(s)))
+    const weaponsToRemove = new Set(
+      [...oldWeaponProficiencies].filter((w) => !newWeaponProficiencies.has(w))
+    )
+    const armorToRemove = new Set(
+      [...oldArmorProficiencies].filter((a) => !newArmorProficiencies.has(a))
+    )
+    const shieldsToRemove = new Set(
+      [...oldShieldProficiencies].filter((s) => !newShieldProficiencies.has(s))
+    )
 
-    const updatedWeaponFilters = setup.weaponFilters.filter((w) => !weaponsToRemove.has(w))
-    const updatedArmorFilters = setup.armorFilters.filter((a) => !armorToRemove.has(a))
-    const updatedShieldFilters = setup.shieldFilters.filter((s) => !shieldsToRemove.has(s))
+    const updatedWeaponFilters = setup.weaponFilters.filter(
+      (w) => !weaponsToRemove.has(w)
+    )
+    const updatedArmorFilters = setup.armorFilters.filter(
+      (a) => !armorToRemove.has(a)
+    )
+    const updatedShieldFilters = setup.shieldFilters.filter(
+      (s) => !shieldsToRemove.has(s)
+    )
 
     // 4. Add filters granted by new classes
     newWeaponProficiencies.forEach((w) => {
@@ -612,10 +746,13 @@ const useGearPlanner = (props: Props) => {
     setup.shieldFilters = updatedShieldFilters
   }
 
-  const openSetBrowser = useCallback((setName: string) => {
-    setBrowsingSet(setName)
-    setShowSetBonusBrowser(true)
-  }, [setBrowsingSet])
+  const openSetBrowser = useCallback(
+    (setName: string) => {
+      setBrowsingSet(setName)
+      setShowSetBonusBrowser(true)
+    },
+    [setBrowsingSet]
+  )
 
   /**
    * A function variable that generates a new gear setup configuration with default properties,
@@ -690,7 +827,12 @@ const useGearPlanner = (props: Props) => {
    *
    * @returns {void}
    */
-  const setSlottedAugment = (itemId: string, slotIndex: number, augment: GearAugment | null, slot?: GearSlot): void => {
+  const setSlottedAugment = (
+    itemId: string,
+    slotIndex: number,
+    augment: GearAugment | null,
+    slot?: GearSlot
+  ): void => {
     dispatch(setAugmentAction({ itemId, slotIndex, augment, slot }))
   }
 
@@ -703,7 +845,11 @@ const useGearPlanner = (props: Props) => {
    *
    * Dispatches an action to update the curse status on the specified item and optional slot.
    */
-  const setSlottedCurse = (itemId: string, curse: Curse | null, slot?: GearSlot) => {
+  const setSlottedCurse = (
+    itemId: string,
+    curse: Curse | null,
+    slot?: GearSlot
+  ) => {
     dispatch(setCurseAction({ itemId, curse, slot }))
   }
 
@@ -745,7 +891,11 @@ const useGearPlanner = (props: Props) => {
 
     // Dinosaur Bone Slot and Lamordia slot mapping adjustments
     // We normalize the slotType here to match the augmentType used in allAugments.
-    if (slotType.startsWith('Isle of Dread:') || slotType.startsWith('Lamordia:') || slotType.startsWith('Dino Bone')) {
+    if (
+      slotType.startsWith('Isle of Dread:') ||
+      slotType.startsWith('Lamordia:') ||
+      slotType.startsWith('Dino Bone')
+    ) {
       // Normalize:
       // "Isle of Dread: Scale Slot (Accessory):" -> "Isle of Dread: Scale (Accessory)"
       // "Lamordia: Melancholic Slot (Weapon):" -> "Lamordia: Melancholic (Weapon)"
@@ -785,13 +935,16 @@ const useGearPlanner = (props: Props) => {
         const isOwnedB = troveData?.[normItem(b.name)] ? 1 : 0
         if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
 
-        if (b.minimumLevel !== a.minimumLevel) return b.minimumLevel - a.minimumLevel
+        if (b.minimumLevel !== a.minimumLevel)
+          return b.minimumLevel - a.minimumLevel
         return a.name.localeCompare(b.name)
       })
     })
 
     // Sort group names ascending
-    const sortedGroupNames = Object.keys(groups).sort((a, b) => a.localeCompare(b))
+    const sortedGroupNames = Object.keys(groups).sort((a, b) =>
+      a.localeCompare(b)
+    )
 
     return { groups, sortedGroupNames }
   }
@@ -832,7 +985,9 @@ const useGearPlanner = (props: Props) => {
 
     return (
       <Col key={slot} xs={12} sm={6} md={4} lg={3} className='mb-3 px-1'>
-        <Card className={`h-100 shadow-sm ${selectedItem ? 'border-primary' : ''} position-relative`}>
+        <Card
+          className={`h-100 shadow-sm ${selectedItem ? 'border-primary' : ''} position-relative`}
+        >
           <Card.Header
             className='py-1 px-2 bg-secondary-subtle text-secondary-emphasis small fw-bold d-flex justify-content-between align-items-center cursor-pointer'
             onClick={() => {
@@ -848,7 +1003,11 @@ const useGearPlanner = (props: Props) => {
                   const owners = getTroveOwners(troveEntry)
                   if (!owners) return null
                   return (
-                    <Badge bg='primary' className='shadow-sm' style={{ fontSize: '0.6rem' }}>
+                    <Badge
+                      bg='primary'
+                      className='shadow-sm'
+                      style={{ fontSize: '0.6rem' }}
+                    >
                       {owners}
                     </Badge>
                   )
@@ -863,9 +1022,15 @@ const useGearPlanner = (props: Props) => {
           >
             {selectedItem ? (
               <div className='text-center w-100 d-flex flex-column'>
-                <div className='fw-bold small text-dark mb-1'>{selectedItem.name}</div>
-                <div className='text-secondary mb-0' style={{ fontSize: '0.7rem' }}>
-                  ML: {selectedItem.minLevel || '1'} | {selectedItem.type || 'Item'}
+                <div className='fw-bold small text-dark mb-1'>
+                  {selectedItem.name}
+                </div>
+                <div
+                  className='text-secondary mb-0'
+                  style={{ fontSize: '0.7rem' }}
+                >
+                  ML: {selectedItem.minLevel || '1'} |{' '}
+                  {selectedItem.type || 'Item'}
                   {selectedItem.material && (
                     <>
                       &nbsp;|&nbsp;
@@ -873,7 +1038,8 @@ const useGearPlanner = (props: Props) => {
                         className={`mb-1 fw-bold ${isMetal(selectedItem.material) ? 'text-danger' : 'text-success'}`}
                         style={{ fontSize: '0.6rem' }}
                       >
-                        {selectedItem.material} {isMetal(selectedItem.material) && '(Metal)'}
+                        {selectedItem.material}{' '}
+                        {isMetal(selectedItem.material) && '(Metal)'}
                       </span>
                     </>
                   )}
@@ -897,28 +1063,34 @@ const useGearPlanner = (props: Props) => {
                   </div>
                 )}
 
-                {selectedItem.enchantments && selectedItem.enchantments.length > 0 && (
-                  <div
-                    className='text-start mt-1 pt-1 border-top gear-planner-slot-enchantments'
-                    style={{ fontSize: '0.65rem' }}
-                  >
-                    <EnchantmentList
-                      enchantments={selectedItem.enchantments}
-                      itemId={selectedItem.id}
-                      conflicts={currentConflicts}
-                      equippedItems={currentEquipped}
-                      source='slot'
-                      browsingSlot={slot}
-                      slottedAugments={currentSlottedAugments}
-                    />
-                  </div>
-                )}
+                {selectedItem.enchantments &&
+                  selectedItem.enchantments.length > 0 && (
+                    <div
+                      className='text-start mt-1 pt-1 border-top gear-planner-slot-enchantments'
+                      style={{ fontSize: '0.65rem' }}
+                    >
+                      <EnchantmentList
+                        enchantments={selectedItem.enchantments}
+                        itemId={selectedItem.id}
+                        conflicts={currentConflicts}
+                        equippedItems={currentEquipped}
+                        source='slot'
+                        browsingSlot={slot}
+                        slottedAugments={currentSlottedAugments}
+                      />
+                    </div>
+                  )}
                 {selectedItem.augments && selectedItem.augments.length > 0 && (
                   <div className='text-start mt-1 pt-1 border-top gear-planner-slot-augments'>
                     {selectedItem.augments.map((augSlot, idx) => {
-                      const slotted = currentSlottedAugments[selectedItem.id]?.[idx]
-                      const itemMinLevel = Number.parseInt(selectedItem.minLevel, 10) || 1
-                      const applicable = getApplicableAugments(augSlot.augmentType, itemMinLevel)
+                      const slotted =
+                        currentSlottedAugments[selectedItem.id]?.[idx]
+                      const itemMinLevel =
+                        Number.parseInt(selectedItem.minLevel, 10) || 1
+                      const applicable = getApplicableAugments(
+                        augSlot.augmentType,
+                        itemMinLevel
+                      )
 
                       return (
                         <AugmentSlotItem
@@ -940,10 +1112,18 @@ const useGearPlanner = (props: Props) => {
                   </div>
                 )}
                 {(() => {
-                  const ineligibleTypes = ['Augment', 'Cosmetic', 'Wand', 'Scroll', 'Quiver', 'Ammunition']
+                  const ineligibleTypes = [
+                    'Augment',
+                    'Cosmetic',
+                    'Wand',
+                    'Scroll',
+                    'Quiver',
+                    'Ammunition'
+                  ]
                   if (ineligibleTypes.includes(selectedItem.type)) return null
 
-                  const slottedCurse = activeSetup.slottedCurses[selectedItem.id]
+                  const slottedCurse =
+                    activeSetup.slottedCurses[selectedItem.id]
 
                   return (
                     <div className='text-start mt-1 pt-1 border-top gear-planner-slot-curses'>
@@ -962,7 +1142,9 @@ const useGearPlanner = (props: Props) => {
                 })()}
               </div>
             ) : (
-              <div className='text-center italic small text-secondary'>No Item Selected</div>
+              <div className='text-center italic small text-secondary'>
+                No Item Selected
+              </div>
             )}
           </Card.Body>
         </Card>

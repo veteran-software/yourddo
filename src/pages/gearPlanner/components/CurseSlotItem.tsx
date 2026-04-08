@@ -1,6 +1,14 @@
 import { Dropdown } from 'react-bootstrap'
-import { checkPotentialConflict, type EnchantmentConflict } from '../conflictResolver.ts'
-import { type Curse, type GearAugment, type GearItem, GearSlot } from '../types.ts'
+import {
+  checkPotentialConflict,
+  type EnchantmentConflict
+} from '../conflictResolver.ts'
+import {
+  type Curse,
+  type GearAugment,
+  type GearItem,
+  GearSlot
+} from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
 const CurseSlotItem = (props: Props) => {
@@ -28,7 +36,11 @@ const CurseSlotItem = (props: Props) => {
           variant='outline-dark'
           id={`curse-drop-${selectedItem.id}`}
           className='w-100 py-0 px-2 text-start d-flex justify-content-between align-items-center gear-planner-augment-toggle'
-          style={{ fontSize: '0.65rem', minHeight: '20px', backgroundColor: 'rgba(0,0,0,0.05)' }}
+          style={{
+            fontSize: '0.65rem',
+            minHeight: '20px',
+            backgroundColor: 'rgba(0,0,0,0.05)'
+          }}
         >
           <span className='text-truncate text-dark d-flex align-items-center'>
             {slotted ? `${slotted.name} (${slotted.type})` : 'No Curse'}
@@ -51,13 +63,23 @@ const CurseSlotItem = (props: Props) => {
 
           {allCurses.map((curse) => {
             const hasConflict = curse.enchantments?.some((ench) => {
-              const potential = checkPotentialConflict(ench, currentEquipped, slot, currentSlottedAugments)
+              const potential = checkPotentialConflict(
+                ench,
+                currentEquipped,
+                slot,
+                currentSlottedAugments
+              )
 
               return potential.isConflict && potential.isRedundant
             })
 
             const hasUpgrade = curse.enchantments?.some((ench) => {
-              const pot = checkPotentialConflict(ench, currentEquipped, slot, currentSlottedAugments)
+              const pot = checkPotentialConflict(
+                ench,
+                currentEquipped,
+                slot,
+                currentSlottedAugments
+              )
 
               return pot.isConflict && !pot.isRedundant
             })
@@ -77,13 +99,19 @@ const CurseSlotItem = (props: Props) => {
 
                 <span className='ms-2 flex-shrink-0'>
                   {hasConflict && (
-                    <span className='badge bg-warning text-dark px-1 py-0 ms-1' style={{ fontSize: '0.55rem' }}>
+                    <span
+                      className='badge bg-warning text-dark px-1 py-0 ms-1'
+                      style={{ fontSize: '0.55rem' }}
+                    >
                       Conflicting
                     </span>
                   )}
 
                   {hasUpgrade && (
-                    <span className='badge bg-info px-1 py-0 ms-1' style={{ fontSize: '0.55rem' }}>
+                    <span
+                      className='badge bg-info px-1 py-0 ms-1'
+                      style={{ fontSize: '0.55rem' }}
+                    >
                       Upgrade
                     </span>
                   )}

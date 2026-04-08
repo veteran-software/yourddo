@@ -13,7 +13,14 @@ import {
   Tab,
   Tabs
 } from 'react-bootstrap'
-import { FaChevronRight, FaGear, FaLayerGroup, FaLink, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6'
+import {
+  FaChevronRight,
+  FaGear,
+  FaLayerGroup,
+  FaLink,
+  FaMagnifyingGlass,
+  FaXmark
+} from 'react-icons/fa6'
 import { useLocation, useNavigate } from 'react-router-dom'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -23,8 +30,7 @@ import {
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
-import EnchantmentSearchOffcanvas
-  from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
 import SetBonusBrowserOffcanvas from './components/SetBonusBrowserOffcanvas.tsx'
@@ -74,7 +80,12 @@ const GearPlanner = () => {
   const [itemNameSearch, setItemNameSearch] = useState('')
   const observerTarget = useRef<HTMLDivElement>(null)
 
-  const gpHook = useGearPlanner({ enchantmentSearch, setBonusFilter, setBrowsingSet, showConflicts })
+  const gpHook = useGearPlanner({
+    enchantmentSearch,
+    setBonusFilter,
+    setBrowsingSet,
+    showConflicts
+  })
 
   // Handle permalink from URL
   useEffect(() => {
@@ -83,7 +94,12 @@ const GearPlanner = () => {
     const { gp, source } = readGpFromUrl(location)
 
     if (gp) {
-      const result = tryDecodeGearPermalink(gp, gpHook.allItems, gpHook.allAugments, gpHook.allCurses)
+      const result = tryDecodeGearPermalink(
+        gp,
+        gpHook.allItems,
+        gpHook.allAugments,
+        gpHook.allCurses
+      )
 
       if (result.ok) {
         const importedSetup = {
@@ -96,7 +112,15 @@ const GearPlanner = () => {
 
       void removeGpFromUrl(navigate, location, source)
     }
-  }, [dispatch, gpHook.allAugments, gpHook.allCurses, gpHook.allItems, gpHook.loading, location, navigate])
+  }, [
+    dispatch,
+    gpHook.allAugments,
+    gpHook.allCurses,
+    gpHook.allItems,
+    gpHook.loading,
+    location,
+    navigate
+  ])
 
   if (gpHook.loading) {
     return (
@@ -117,7 +141,11 @@ const GearPlanner = () => {
         <Card className='shadow'>
           <Card.Body className='text-center py-5'>
             <h4 className='text-muted'>No gear setups available.</h4>
-            <Button variant='primary' className='mt-3' onClick={gpHook.addSetup}>
+            <Button
+              variant='primary'
+              className='mt-3'
+              onClick={gpHook.addSetup}
+            >
               Create Default Setup
             </Button>
           </Card.Body>
@@ -136,7 +164,10 @@ const GearPlanner = () => {
         }}
         title='Toggle Settings Sidebar'
       >
-        <FaChevronRight className={showSidebar ? 'rotate-180' : ''} style={{ transition: 'transform 0.3s' }} />
+        <FaChevronRight
+          className={showSidebar ? 'rotate-180' : ''}
+          style={{ transition: 'transform 0.3s' }}
+        />
       </Button>
 
       <CharacterSettingsSidebar
@@ -179,7 +210,11 @@ const GearPlanner = () => {
                 </div>
               </Col>
 
-              <Col xs={12} md='auto' className='d-flex gap-2 justify-content-md-end'>
+              <Col
+                xs={12}
+                md='auto'
+                className='d-flex gap-2 justify-content-md-end'
+              >
                 <ButtonGroup>
                   <Button
                     variant='outline-light'
@@ -203,7 +238,11 @@ const GearPlanner = () => {
                     <FaGear /> Setup Settings
                   </Button>
 
-                  <Button variant='outline-light' size='sm' onClick={gpHook.addSetup}>
+                  <Button
+                    variant='outline-light'
+                    size='sm'
+                    onClick={gpHook.addSetup}
+                  >
                     Add Setup
                   </Button>
                 </ButtonGroup>
@@ -248,7 +287,9 @@ const GearPlanner = () => {
                   <div className='mt-3'>
                     <h5 className='mb-3 border-bottom pb-2'>Equipped Items</h5>
 
-                    <Row>{GEAR_SLOTS.map((slot) => gpHook.renderSlot(slot, setup))}</Row>
+                    <Row>
+                      {GEAR_SLOTS.map((slot) => gpHook.renderSlot(slot, setup))}
+                    </Row>
 
                     <SetBonusesSummary
                       equippedItems={gpHook.characterEquipped}
@@ -262,17 +303,24 @@ const GearPlanner = () => {
                       slottedCurses={gpHook.activeSetup.slottedCurses}
                     />
 
-                    {setup.classes?.includes('Artificer') && setup.classes?.includes('Druid') && (
-                      <div className='mt-3 p-2 bg-warning-subtle text-warning-emphasis border border-warning rounded small text-center fw-bold'>
-                        Note: Only one pet may be active at a time.
-                      </div>
-                    )}
+                    {setup.classes?.includes('Artificer') &&
+                      setup.classes?.includes('Druid') && (
+                        <div className='mt-3 p-2 bg-warning-subtle text-warning-emphasis border border-warning rounded small text-center fw-bold'>
+                          Note: Only one pet may be active at a time.
+                        </div>
+                      )}
 
                     {setup.classes?.includes('Artificer') && (
                       <div className='mt-4 p-3 border border-info rounded bg-dark-subtle'>
-                        <h5 className='mb-3 text-info border-bottom border-info pb-2'>Iron Defender (Artificer Pet)</h5>
+                        <h5 className='mb-3 text-info border-bottom border-info pb-2'>
+                          Iron Defender (Artificer Pet)
+                        </h5>
 
-                        <Row>{ARTIFICER_PET_SLOTS.map((slot) => gpHook.renderSlot(slot, setup))}</Row>
+                        <Row>
+                          {ARTIFICER_PET_SLOTS.map((slot) =>
+                            gpHook.renderSlot(slot, setup)
+                          )}
+                        </Row>
 
                         <SetBonusesSummary
                           equippedItems={gpHook.artificerEquipped}
@@ -294,7 +342,11 @@ const GearPlanner = () => {
                           Wolf Companion (Druid Pet)
                         </h5>
 
-                        <Row>{DRUID_PET_SLOTS.map((slot) => gpHook.renderSlot(slot, setup))}</Row>
+                        <Row>
+                          {DRUID_PET_SLOTS.map((slot) =>
+                            gpHook.renderSlot(slot, setup)
+                          )}
+                        </Row>
 
                         <SetBonusesSummary
                           equippedItems={gpHook.druidEquipped}
@@ -333,13 +385,20 @@ const GearPlanner = () => {
               <Row>
                 <Col md={6}>
                   <Form.Group className='mb-4'>
-                    <Form.Label className='fw-bold text-info'>Setup Name</Form.Label>
+                    <Form.Label className='fw-bold text-info'>
+                      Setup Name
+                    </Form.Label>
                     <Form.Control
                       type='text'
                       value={gpHook.activeSetup.name}
                       className='bg-light text-dark'
                       onChange={(e) => {
-                        dispatch(updateSetupAction({ id: gpHook.activeSetup.id, name: e.target.value }))
+                        dispatch(
+                          updateSetupAction({
+                            id: gpHook.activeSetup.id,
+                            name: e.target.value
+                          })
+                        )
                       }}
                     />
                   </Form.Group>
@@ -347,7 +406,9 @@ const GearPlanner = () => {
                   <Row className='mb-4'>
                     <Col xs={6}>
                       <Form.Group>
-                        <Form.Label className='fw-bold text-info'>Min Level</Form.Label>
+                        <Form.Label className='fw-bold text-info'>
+                          Min Level
+                        </Form.Label>
                         <Form.Control
                           type='number'
                           min={1}
@@ -355,7 +416,12 @@ const GearPlanner = () => {
                           value={gpHook.activeSetup.minLevel}
                           className='bg-light text-dark'
                           onChange={(e) => {
-                            dispatch(updateSetupAction({ id: gpHook.activeSetup.id, minLevel: Number(e.target.value) }))
+                            dispatch(
+                              updateSetupAction({
+                                id: gpHook.activeSetup.id,
+                                minLevel: Number(e.target.value)
+                              })
+                            )
                           }}
                         />
                       </Form.Group>
@@ -363,7 +429,9 @@ const GearPlanner = () => {
 
                     <Col xs={6}>
                       <Form.Group>
-                        <Form.Label className='fw-bold text-info'>Max Level</Form.Label>
+                        <Form.Label className='fw-bold text-info'>
+                          Max Level
+                        </Form.Label>
                         <Form.Control
                           type='number'
                           min={1}
@@ -371,7 +439,12 @@ const GearPlanner = () => {
                           value={gpHook.activeSetup.maxLevel}
                           className='bg-light text-dark'
                           onChange={(e) => {
-                            dispatch(updateSetupAction({ id: gpHook.activeSetup.id, maxLevel: Number(e.target.value) }))
+                            dispatch(
+                              updateSetupAction({
+                                id: gpHook.activeSetup.id,
+                                maxLevel: Number(e.target.value)
+                              })
+                            )
                           }}
                         />
                       </Form.Group>
@@ -379,7 +452,9 @@ const GearPlanner = () => {
                   </Row>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label className='fw-bold text-info'>Classes (Up to 3)</Form.Label>
+                    <Form.Label className='fw-bold text-info'>
+                      Classes (Up to 3)
+                    </Form.Label>
 
                     <Stack gap={2}>
                       {[0, 1, 2].map((idx) => (
@@ -397,15 +472,24 @@ const GearPlanner = () => {
                             }
 
                             // Helper to calculate proficiencies
-                            const tempSetup = { ...gpHook.activeSetup, classes: newClasses }
+                            const tempSetup = {
+                              ...gpHook.activeSetup,
+                              classes: newClasses
+                            }
 
-                            gpHook.updateClassProficiencies(tempSetup, gpHook.activeSetup.classes, newClasses)
+                            gpHook.updateClassProficiencies(
+                              tempSetup,
+                              gpHook.activeSetup.classes,
+                              newClasses
+                            )
 
                             setupUpdate.weaponFilters = tempSetup.weaponFilters
                             setupUpdate.armorFilters = tempSetup.armorFilters
                             setupUpdate.shieldFilters = tempSetup.shieldFilters
 
-                            dispatch(updateSetupAction(setupUpdate as GearSetup))
+                            dispatch(
+                              updateSetupAction(setupUpdate as GearSetup)
+                            )
                           }}
                         >
                           <option value=''>Select Class...</option>
@@ -423,9 +507,14 @@ const GearPlanner = () => {
 
                 <Col md={6}>
                   <Form.Group className='mb-3'>
-                    <Form.Label className='fw-bold text-info d-block'>Weapon Type Filters</Form.Label>
+                    <Form.Label className='fw-bold text-info d-block'>
+                      Weapon Type Filters
+                    </Form.Label>
 
-                    <Accordion data-bs-theme='dark' className='border border-secondary rounded overflow-hidden'>
+                    <Accordion
+                      data-bs-theme='dark'
+                      className='border border-secondary rounded overflow-hidden'
+                    >
                       {Object.entries(WEAPON_TYPES).map(([category, types]) => (
                         <WeaponCategory
                           key={category}
@@ -439,7 +528,9 @@ const GearPlanner = () => {
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label className='fw-bold text-info d-block'>Armor Type Filters</Form.Label>
+                    <Form.Label className='fw-bold text-info d-block'>
+                      Armor Type Filters
+                    </Form.Label>
 
                     <div className='p-2 border border-secondary rounded mb-3'>
                       <Row>
@@ -449,12 +540,21 @@ const GearPlanner = () => {
                               type='checkbox'
                               id={`armor-${type}`}
                               label={type}
-                              checked={gpHook.activeSetup.armorFilters.includes(type)}
+                              checked={gpHook.activeSetup.armorFilters.includes(
+                                type
+                              )}
                               onChange={(e) => {
                                 const updated = e.target.checked
                                   ? [...gpHook.activeSetup.armorFilters, type]
-                                  : gpHook.activeSetup.armorFilters.filter((t) => t !== type)
-                                dispatch(updateSetupAction({ id: gpHook.activeSetup.id, armorFilters: updated }))
+                                  : gpHook.activeSetup.armorFilters.filter(
+                                      (t) => t !== type
+                                    )
+                                dispatch(
+                                  updateSetupAction({
+                                    id: gpHook.activeSetup.id,
+                                    armorFilters: updated
+                                  })
+                                )
                               }}
                             />
                           </Col>
@@ -462,7 +562,9 @@ const GearPlanner = () => {
                       </Row>
                     </div>
 
-                    <Form.Label className='fw-bold text-info d-block'>Shield & Off-hand Type Filters</Form.Label>
+                    <Form.Label className='fw-bold text-info d-block'>
+                      Shield & Off-hand Type Filters
+                    </Form.Label>
 
                     <div className='p-2 border border-secondary rounded mb-3'>
                       <Row>
@@ -472,12 +574,21 @@ const GearPlanner = () => {
                               type='checkbox'
                               id={`shield-${type}`}
                               label={type}
-                              checked={gpHook.activeSetup.shieldFilters.includes(type)}
+                              checked={gpHook.activeSetup.shieldFilters.includes(
+                                type
+                              )}
                               onChange={(e) => {
                                 const updated = e.target.checked
                                   ? [...gpHook.activeSetup.shieldFilters, type]
-                                  : gpHook.activeSetup.shieldFilters.filter((t) => t !== type)
-                                dispatch(updateSetupAction({ id: gpHook.activeSetup.id, shieldFilters: updated }))
+                                  : gpHook.activeSetup.shieldFilters.filter(
+                                      (t) => t !== type
+                                    )
+                                dispatch(
+                                  updateSetupAction({
+                                    id: gpHook.activeSetup.id,
+                                    shieldFilters: updated
+                                  })
+                                )
                               }}
                             />
                           </Col>
@@ -485,7 +596,9 @@ const GearPlanner = () => {
                       </Row>
                     </div>
 
-                    <Form.Label className='fw-bold text-info d-block'>Character Settings</Form.Label>
+                    <Form.Label className='fw-bold text-info d-block'>
+                      Character Settings
+                    </Form.Label>
                     <div className='p-2 border border-secondary rounded'>
                       <Form.Check
                         type='checkbox'
@@ -495,13 +608,18 @@ const GearPlanner = () => {
                         disabled={!gpHook.activeSetup.classes.includes('Druid')}
                         onChange={(e) => {
                           dispatch(
-                            updateSetupAction({ id: gpHook.activeSetup.id, allowMetalWithDruid: e.target.checked })
+                            updateSetupAction({
+                              id: gpHook.activeSetup.id,
+                              allowMetalWithDruid: e.target.checked
+                            })
                           )
                         }}
                       />
                       {!gpHook.activeSetup.classes.includes('Druid') && (
                         <div className='text-muted small mt-0'>
-                          <small>Only applicable if Druid class is selected.</small>
+                          <small>
+                            Only applicable if Druid class is selected.
+                          </small>
                         </div>
                       )}
                     </div>
@@ -561,7 +679,9 @@ const GearPlanner = () => {
           onHide={() => {
             setShowPermalink(false)
           }}
-          buildUrl={() => buildPermalinkUrl(encodeGearPermalink(gpHook.activeSetup), location)}
+          buildUrl={() =>
+            buildPermalinkUrl(encodeGearPermalink(gpHook.activeSetup), location)
+          }
           title='Create a Gear Planner Permalink'
         />
       </Container>

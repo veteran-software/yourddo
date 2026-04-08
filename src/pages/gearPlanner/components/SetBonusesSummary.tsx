@@ -42,7 +42,10 @@ const SetBonusesSummary = (props: Props) => {
           <FaLayerGroup className='me-2' /> Active Set Bonuses
         </span>
 
-        <Badge bg='dark' className='text-info border border-info small fw-normal'>
+        <Badge
+          bg='dark'
+          className='text-info border border-info small fw-normal'
+        >
           Click set name to browse items
         </Badge>
       </h5>
@@ -76,7 +79,9 @@ const SetBonusesSummary = (props: Props) => {
                     ))}
 
                   {(!setDef ||
-                    setDef.enhancements?.filter((enh) => (enh.numPiecesEquipped ?? 0) <= count).length === 0) && (
+                    setDef.enhancements?.filter(
+                      (enh) => (enh.numPiecesEquipped ?? 0) <= count
+                    ).length === 0) && (
                     <div className='small text-muted ps-2 italic text-center py-2'>
                       Equip more pieces to see bonuses.
                     </div>

@@ -31,7 +31,9 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
       className='gear-planner-enchantment-search gear-planner-offcanvas'
     >
       <Offcanvas.Header closeButton className='bg-primary text-white py-2'>
-        <Offcanvas.Title className='fs-6'>Enchantment or Set Bonus Search</Offcanvas.Title>
+        <Offcanvas.Title className='fs-6'>
+          Enchantment or Set Bonus Search
+        </Offcanvas.Title>
       </Offcanvas.Header>
 
       <Offcanvas.Body className='p-3 bg-dark text-white'>
@@ -75,14 +77,28 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
           />
         </div>
 
-        <div className='mt-3 overflow-auto' style={{ maxHeight: 'calc(100vh - 150px)' }}>
+        <div
+          className='mt-3 overflow-auto'
+          style={{ maxHeight: 'calc(100vh - 150px)' }}
+        >
           {(() => {
             if (enchantmentSearch.length <= 2) {
-              return <div className='text-center py-4 text-secondary small'>Type at least 3 characters to search.</div>
+              return (
+                <div className='text-center py-4 text-secondary small'>
+                  Type at least 3 characters to search.
+                </div>
+              )
             }
 
-            if (!searchResultsBySlot || Object.keys(searchResultsBySlot).length === 0) {
-              return <div className='text-center py-4 text-secondary small'>No items found with that enchantment.</div>
+            if (
+              !searchResultsBySlot ||
+              Object.keys(searchResultsBySlot).length === 0
+            ) {
+              return (
+                <div className='text-center py-4 text-secondary small'>
+                  No items found with that enchantment.
+                </div>
+              )
             }
 
             return (

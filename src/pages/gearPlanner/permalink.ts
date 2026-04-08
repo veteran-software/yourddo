@@ -1,5 +1,14 @@
-import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
-import { type Curse, type GearAugment, type GearItem, type GearSetup, GearSlot } from './types.ts'
+import {
+  compressToEncodedURIComponent,
+  decompressFromEncodedURIComponent
+} from 'lz-string'
+import {
+  type Curse,
+  type GearAugment,
+  type GearItem,
+  type GearSetup,
+  GearSlot
+} from './types.ts'
 
 // ----- Types for compact v1 payload -----
 // We use a compact format to keep the URL short.
@@ -92,8 +101,17 @@ export const tryDecodeGearPermalink = (
     if (!text) return { ok: false }
     const payload = JSON.parse(text) as V1Payload
 
-    const [name, minLevel, maxLevel, classes, weaponFilters, armorFilters, shieldFilters, allowMetalWithDruid, items] =
-      payload
+    const [
+      name,
+      minLevel,
+      maxLevel,
+      classes,
+      weaponFilters,
+      armorFilters,
+      shieldFilters,
+      allowMetalWithDruid,
+      items
+    ] = payload
 
     const setup: GearSetup = {
       id: `pl-${Date.now()}`,
@@ -174,7 +192,10 @@ export const readGpFromUrl = (
 }
 
 export const removeGpFromUrl = async (
-  navigate: (to: { pathname?: string; search?: string }, opts: { replace: boolean }) => Promise<void> | void,
+  navigate: (
+    to: { pathname?: string; search?: string },
+    opts: { replace: boolean }
+  ) => Promise<void> | void,
   location: LocationLike,
   source: 'search' | 'hash' | null,
   win: Window = window
@@ -182,23 +203,36 @@ export const removeGpFromUrl = async (
   if (!source) return
 
   if (source === 'search') {
-    await navigate({ pathname: location.pathname, search: '' }, { replace: true })
+    await navigate(
+      { pathname: location.pathname, search: '' },
+      { replace: true }
+    )
     return
   }
 
-  if (typeof win === 'undefined' || typeof win.history.replaceState !== 'function') return
+  if (
+    typeof win === 'undefined' ||
+    typeof win.history.replaceState !== 'function'
+  )
+    return
 
   const { origin, pathname, hash, search } = win.location
   const hashBody = (hash || '').replace(/^#/, '')
   const [hashPath, hashQuery] = hashBody.split('?')
   const params = new URLSearchParams(hashQuery)
   params.delete('gp')
-  const newHash = params.toString() ? `#${hashPath}?${params.toString()}` : `#${hashPath}`
+  const newHash = params.toString()
+    ? `#${hashPath}?${params.toString()}`
+    : `#${hashPath}`
   const newUrl = `${origin}${pathname}${search}${newHash}`
   win.history.replaceState({}, '', newUrl)
 }
 
-export const buildPermalinkUrl = (encoded: string, location: LocationLike, win: Window = window): string => {
+export const buildPermalinkUrl = (
+  encoded: string,
+  location: LocationLike,
+  win: Window = window
+): string => {
   if (typeof win === 'undefined') {
     return `/gear-planner?gp=${encoded}`
   }

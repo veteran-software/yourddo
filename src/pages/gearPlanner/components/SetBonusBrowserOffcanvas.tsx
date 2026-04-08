@@ -2,7 +2,13 @@ import { Accordion, Form, Offcanvas } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
 import { normItem } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver'
-import { type GearAugment, type GearItem, type GearSetup, GearSlot, type SetBonusIndex } from '../types'
+import {
+  type GearAugment,
+  type GearItem,
+  type GearSetup,
+  GearSlot,
+  type SetBonusIndex
+} from '../types'
 import SearchResultSlot from './SearchResultSlot'
 
 const SetBonusBrowserOffcanvas = (props: Props) => {
@@ -40,7 +46,9 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
 
       <Offcanvas.Body className='bg-dark text-white p-3'>
         <Form.Group className='mb-3'>
-          <Form.Label className='small text-info fw-bold'>Search Items</Form.Label>
+          <Form.Label className='small text-info fw-bold'>
+            Search Items
+          </Form.Label>
 
           <Form.Control
             type='text'
@@ -55,7 +63,9 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
         </Form.Group>
 
         <Form.Group className='mb-3'>
-          <Form.Label className='small text-info fw-bold'>Select a Set</Form.Label>
+          <Form.Label className='small text-info fw-bold'>
+            Select a Set
+          </Form.Label>
 
           <Form.Select
             size='sm'
@@ -76,9 +86,14 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
 
         {browsingSet && (
           <div className='mt-4'>
-            <h6 className='text-info border-bottom border-info pb-2 mb-3'>Items in: {browsingSet}</h6>
+            <h6 className='text-info border-bottom border-info pb-2 mb-3'>
+              Items in: {browsingSet}
+            </h6>
 
-            <div className='overflow-auto' style={{ maxHeight: 'calc(100vh - 200px)' }}>
+            <div
+              className='overflow-auto'
+              style={{ maxHeight: 'calc(100vh - 200px)' }}
+            >
               {(() => {
                 const indexedItems = setBonusIndex[browsingSet ?? ''] || []
                 const min = activeSetup?.minLevel ?? 1
@@ -90,9 +105,12 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                   if (!isItemVisibleForClasses(item, activeSetup)) return false
                   if (itemNameSearch) {
                     const searchLower = itemNameSearch.toLowerCase().trim()
-                    if (!item.name.toLowerCase().includes(searchLower)) return false
+                    if (!item.name.toLowerCase().includes(searchLower))
+                      return false
                   }
-                  return indexedItems.some((ii) => ii.name === item.name && ii.minLevel === itemLevel)
+                  return indexedItems.some(
+                    (ii) => ii.name === item.name && ii.minLevel === itemLevel
+                  )
                 })
 
                 if (setItemResults.length === 0) {

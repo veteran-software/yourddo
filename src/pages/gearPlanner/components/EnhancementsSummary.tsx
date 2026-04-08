@@ -1,7 +1,11 @@
 import { useMemo } from 'react'
 import { Accordion, Badge, Col, Row } from 'react-bootstrap'
 import { FaListUl } from 'react-icons/fa6'
-import { getBonus, normalizeString, parseModifierValue } from '../conflictResolver.ts'
+import {
+  getBonus,
+  normalizeString,
+  parseModifierValue
+} from '../conflictResolver.ts'
 import { aggregateEnchantmentEntries, sortItemsByValue } from '../helpers.ts'
 import type { Curse, GearAugment, GearItem } from '../types.ts'
 
@@ -24,14 +28,23 @@ const EnchantmentsSummary = ({
           {
             maxValue: number
             maxValueStr: string
-            items: { itemName: string; slot: string; value: number; valueStr: string }[]
+            items: {
+              itemName: string
+              slot: string
+              value: number
+              valueStr: string
+            }[]
           }
         >
       }
     > = {}
 
     for (const item of equippedItems) {
-      const entries = aggregateEnchantmentEntries(item, slottedAugments[item.id], slottedCurses[item.id])
+      const entries = aggregateEnchantmentEntries(
+        item,
+        slottedAugments[item.id],
+        slottedCurses[item.id]
+      )
 
       for (const { ench, sourceName } of entries) {
         const normName = normalizeString(ench.name)
@@ -43,7 +56,11 @@ const EnchantmentsSummary = ({
           map[normName] = { originalName: ench.name, bonuses: {} }
         }
         if (!map[normName].bonuses[normBonus]) {
-          map[normName].bonuses[normBonus] = { maxValue: -Infinity, maxValueStr: '', items: [] }
+          map[normName].bonuses[normBonus] = {
+            maxValue: -Infinity,
+            maxValueStr: '',
+            items: []
+          }
         }
 
         const group = map[normName].bonuses[normBonus]
@@ -55,7 +72,12 @@ const EnchantmentsSummary = ({
           group.maxValueStr = valueStr
         }
 
-        group.items.push({ itemName: sourceName, slot: item.slot, value, valueStr })
+        group.items.push({
+          itemName: sourceName,
+          slot: item.slot,
+          value,
+          valueStr
+        })
       }
     }
 
@@ -73,7 +95,9 @@ const EnchantmentsSummary = ({
         .sort((a, b) => b.maxValue - a.maxValue)
 
       const isNumeric = bonuses.some((b) => b.maxValue !== 0)
-      const total = isNumeric ? bonuses.reduce((sum, b) => sum + b.maxValue, 0) : 0
+      const total = isNumeric
+        ? bonuses.reduce((sum, b) => sum + b.maxValue, 0)
+        : 0
 
       return {
         name: entry.originalName,
@@ -97,25 +121,40 @@ const EnchantmentsSummary = ({
       <Row className='g-2'>
         {aggregated.map((ench, idx) => (
           <Col key={`${ench.name}-${String(idx)}`} xs={12} md={6} lg={4}>
-            <Accordion data-bs-theme='dark' className='gear-planner-ench-summary-accordion'>
+            <Accordion
+              data-bs-theme='dark'
+              className='gear-planner-ench-summary-accordion'
+            >
               <Accordion.Item eventKey='0'>
                 <Accordion.Header className=''>
                   <div className='d-flex justify-content-between align-items-center w-100 me-3'>
-                    <span className='fw-bold text-info text-truncate me-2' style={{ fontSize: '0.8rem' }}>
+                    <span
+                      className='fw-bold text-info text-truncate me-2'
+                      style={{ fontSize: '0.8rem' }}
+                    >
                       {ench.name}
                     </span>
-                    {ench.isNumeric && <Badge bg='primary'>+{String(ench.total)}</Badge>}
+                    {ench.isNumeric && (
+                      <Badge bg='primary'>+{String(ench.total)}</Badge>
+                    )}
                   </div>
                 </Accordion.Header>
 
                 <Accordion.Body className='p-2 bg-dark'>
                   {ench.bonuses.map((bonus, bIdx) => (
-                    <div key={`${bonus.bonusType}-${String(bIdx)}`} className='mb-2 last-child-mb-0'>
+                    <div
+                      key={`${bonus.bonusType}-${String(bIdx)}`}
+                      className='mb-2 last-child-mb-0'
+                    >
                       <div className='d-flex justify-content-between align-items-center border-bottom border-secondary mb-1 pb-1'>
-                        <span className='small text-light italic text-capitalize'>{bonus.bonusType}</span>
+                        <span className='small text-light italic text-capitalize'>
+                          {bonus.bonusType}
+                        </span>
 
                         <span className='small fw-bold text-light'>
-                          {bonus.maxValue === 0 ? bonus.maxValueStr || 'Active' : `+${String(bonus.maxValue)}`}
+                          {bonus.maxValue === 0
+                            ? bonus.maxValueStr || 'Active'
+                            : `+${String(bonus.maxValue)}`}
                         </span>
                       </div>
 
@@ -123,13 +162,19 @@ const EnchantmentsSummary = ({
                         <div
                           key={`${item.itemName}-${String(iIdx)}`}
                           className={`ps-2 small d-flex justify-content-between align-items-center ${
-                            item.value === bonus.maxValue ? 'text-secondary' : 'text-muted text-decoration-line-through'
+                            item.value === bonus.maxValue
+                              ? 'text-secondary'
+                              : 'text-muted text-decoration-line-through'
                           }`}
                         >
-                          <span className='text-truncate me-1'>• {item.itemName}</span>
+                          <span className='text-truncate me-1'>
+                            • {item.itemName}
+                          </span>
 
                           <span className='flex-shrink-0'>
-                            {item.value === 0 ? item.valueStr : `+${String(item.value)}`}
+                            {item.value === 0
+                              ? item.valueStr
+                              : `+${String(item.value)}`}
                           </span>
                         </div>
                       ))}

@@ -1,4 +1,10 @@
-import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, type GearItem, GearSlot, type LootEnchantment } from './types'
+import {
+  ARTIFICER_PET_SLOTS,
+  DRUID_PET_SLOTS,
+  type GearItem,
+  GearSlot,
+  type LootEnchantment
+} from './types'
 
 export interface EnchantmentConflict {
   name: string
@@ -63,7 +69,10 @@ export const parseModifierValue = (modifier: RobustString): number => {
  */
 export const resolveConflicts = (
   equippedItems: GearItem[],
-  slottedAugments?: Record<string, Record<number, import('./types').GearAugment | null>>
+  slottedAugments?: Record<
+    string,
+    Record<number, import('./types').GearAugment | null>
+  >
 ): Record<string, EnchantmentConflict[]> => {
   const allEnchantments: {
     itemId: string
@@ -167,7 +176,10 @@ export const checkPotentialConflict = (
   enchantment: LootEnchantment,
   equippedItems: GearItem[],
   slot?: GearSlot,
-  slottedAugments?: Record<string, Record<number, import('./types').GearAugment | null>>
+  slottedAugments?: Record<
+    string,
+    Record<number, import('./types').GearAugment | null>
+  >
 ): { isConflict: boolean; currentMax: number; isRedundant: boolean } => {
   const parsedValue = parseModifierValue(enchantment.modifier)
   const normalizedTargetName = normalizeString(enchantment.name)
@@ -182,7 +194,10 @@ export const checkPotentialConflict = (
 
     // Check inherent enchantments
     item.enchantments?.forEach((ench) => {
-      if (normalizeString(ench.name) === normalizedTargetName && getBonus(ench.bonus) === normalizedTargetBonus) {
+      if (
+        normalizeString(ench.name) === normalizedTargetName &&
+        getBonus(ench.bonus) === normalizedTargetBonus
+      ) {
         foundMatch = true
         const val = parseModifierValue(ench.modifier)
         if (val > currentMax) currentMax = val
@@ -193,7 +208,10 @@ export const checkPotentialConflict = (
     if (slottedAugments?.[item.id]) {
       Object.values(slottedAugments[item.id]).forEach((aug) => {
         aug?.effectsAdded?.forEach((ench) => {
-          if (normalizeString(ench.name) === normalizedTargetName && getBonus(ench.bonus) === normalizedTargetBonus) {
+          if (
+            normalizeString(ench.name) === normalizedTargetName &&
+            getBonus(ench.bonus) === normalizedTargetBonus
+          ) {
             foundMatch = true
             const val = parseModifierValue(ench.modifier)
             if (val > currentMax) currentMax = val

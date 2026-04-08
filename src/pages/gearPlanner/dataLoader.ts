@@ -15,10 +15,7 @@ import {
 // Note: Vite requires a literal string here (no template strings/variables).
 // Path is relative to this file: src/pages/gearPlanner -> src/data/loot/runtime
 const dataModules = import.meta.glob(
-  [
-    '../../data/loot/runtime/*.json',
-    '../../data/deckOfManyCurses.json'
-  ],
+  ['../../data/loot/runtime/*.json', '../../data/deckOfManyCurses.json'],
   {
     eager: true
   }
@@ -28,7 +25,9 @@ export const loadCurses = (): Promise<Curse[]> => {
   const module = dataModules['../../data/deckOfManyCurses.json']
   if (module && typeof module === 'object' && 'default' in module) {
     const curses = module.default as Curse[]
-    return Promise.resolve([...curses].sort((a, b) => a.name.localeCompare(b.name)))
+    return Promise.resolve(
+      [...curses].sort((a, b) => a.name.localeCompare(b.name))
+    )
   }
   return Promise.resolve([])
 }
@@ -46,7 +45,11 @@ const SLOT_MAP: Record<string, GearSlot[]> = {
   'boots.json': [GearSlot.Feet],
   'bracers.json': [GearSlot.Wrists],
   'cloak.json': [GearSlot.Cloak],
-  'docent.json': [GearSlot.Armor, GearSlot.ArtificerPetArmor, GearSlot.DruidPetArmor],
+  'docent.json': [
+    GearSlot.Armor,
+    GearSlot.ArtificerPetArmor,
+    GearSlot.DruidPetArmor
+  ],
   'gloves.json': [GearSlot.Hands],
   'goggles.json': [GearSlot.Eyes],
   'heavyArmor.json': [GearSlot.Armor],
@@ -163,7 +166,10 @@ interface RawAugment {
   setBonus?: { name: string }[]
 }
 
-export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugment[] }> => {
+export const loadGearData = (): Promise<{
+  items: GearItem[]
+  augments: GearAugment[]
+}> => {
   const allItems: GearItem[] = []
   const allAugments: GearAugment[] = []
   const seenKeys = new Set<string>()
@@ -174,14 +180,17 @@ export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugme
 
     if (item.slot === GearSlot.MainHand) {
       const isWeapon =
-        Object.values(WEAPON_TYPES).flat().includes(item.type) || item.type === 'Handwraps' || item.type === 'Weapon'
+        Object.values(WEAPON_TYPES).flat().includes(item.type) ||
+        item.type === 'Handwraps' ||
+        item.type === 'Weapon'
       if (!isWeapon) return
     }
 
     if (item.slot === GearSlot.OffHand) {
       const isShieldOrRuneArm = SHIELD_TYPES.includes(item.type)
       const isOffhandWeapon =
-        Object.values(WEAPON_TYPES).flat().includes(item.type)  || item.type === 'Weapon'
+        Object.values(WEAPON_TYPES).flat().includes(item.type) ||
+        item.type === 'Weapon'
       if (!isShieldOrRuneArm && !isOffhandWeapon) return
     }
 
@@ -191,7 +200,10 @@ export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugme
     }
 
     if (item.slot === GearSlot.Armor) {
-      const isArmor = ARMOR_TYPES.includes(item.type) || item.type === 'Robe' || item.type === 'Outfit'
+      const isArmor =
+        ARMOR_TYPES.includes(item.type) ||
+        item.type === 'Robe' ||
+        item.type === 'Outfit'
       if (!isArmor) return
     }
 
@@ -261,7 +273,12 @@ export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugme
     const path = `../../data/loot/runtime/${fileName}`
     const module = dataModules[path]
 
-    if (module && typeof module === 'object' && 'default' in module && Array.isArray(module.default)) {
+    if (
+      module &&
+      typeof module === 'object' &&
+      'default' in module &&
+      Array.isArray(module.default)
+    ) {
       const data = module.default as LootItem[]
 
       data.forEach((item: LootItem, index) => {
@@ -278,9 +295,15 @@ export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugme
           ])
 
           if (armorNames.has(item.name)) {
-            effectiveSlots = [GearSlot.ArtificerPetArmor, GearSlot.DruidPetArmor]
+            effectiveSlots = [
+              GearSlot.ArtificerPetArmor,
+              GearSlot.DruidPetArmor
+            ]
           } else {
-            effectiveSlots = [GearSlot.ArtificerPetWeapon, GearSlot.DruidPetWeapon]
+            effectiveSlots = [
+              GearSlot.ArtificerPetWeapon,
+              GearSlot.DruidPetWeapon
+            ]
           }
         }
 
