@@ -30,8 +30,6 @@ const ItemBrowserOffcanvas = (props: Props) => {
 
   const { renderCategorizedItems } = useItemBrowser({ ...props })
 
-  const { renderCategorizedItems } = useItemBrowser({ ...props })
-
   return (
     <Offcanvas
       show={browsingSlot !== null}
