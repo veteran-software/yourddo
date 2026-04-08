@@ -361,12 +361,7 @@ const GearPlanner = () => {
 
       // Slot filter logic
       const slotMatches = (targetSlot: GearSlot, i: GearItem) => {
-        if (targetSlot === GearSlot.ArtificerPetArmor || targetSlot === GearSlot.DruidPetArmor) {
-          return i.slot === targetSlot && i.name.toLowerCase().includes('docent')
-        }
-        if (targetSlot === GearSlot.ArtificerPetWeapon || targetSlot === GearSlot.DruidPetWeapon) {
-          return i.slot === targetSlot && i.name.toLowerCase().includes('collar')
-        }
+        // Items are already pre-slotted during data load. Rely on slot alone.
         return i.slot === targetSlot
       }
 

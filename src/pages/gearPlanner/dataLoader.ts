@@ -261,7 +261,23 @@ export const loadGearData = (): Promise<{ items: GearItem[]; augments: GearAugme
     if (module && typeof module === 'object' && 'default' in module && Array.isArray(module.default)) {
       const data = module.default as LootItem[]
       data.forEach((item: LootItem, index) => {
-        slots.forEach((slot: GearSlot) => {
+        // Special-case: Some items in collar.json are actually pet armors, not weapons
+        let effectiveSlots = slots
+        if (fileName === 'collar.json') {
+          const armorNames = new Set<string>([
+            'Allegience of the Wild Hunt',
+            'Legendary Allegience of the Wild Hunt',
+            'Kindred Spirit',
+            'Legendary Kindred Spirit'
+          ])
+          if (armorNames.has(item.name)) {
+            effectiveSlots = [GearSlot.ArtificerPetArmor, GearSlot.DruidPetArmor]
+          } else {
+            effectiveSlots = [GearSlot.ArtificerPetWeapon, GearSlot.DruidPetWeapon]
+          }
+        }
+
+        effectiveSlots.forEach((slot: GearSlot) => {
           const gearItem: GearItem = {
             ...item,
             id: `${fileName}-${String(index)}-${slot}`,
