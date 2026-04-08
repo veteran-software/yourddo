@@ -1,6 +1,25 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Accordion, Badge, Button, Card, Col, Container, Form, Modal, Row, Stack, Tab, Tabs } from 'react-bootstrap'
-import { FaChevronRight, FaGear, FaLayerGroup, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6'
+import {
+  Accordion,
+  Badge,
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Modal,
+  Row,
+  Stack,
+  Tab,
+  Tabs
+} from 'react-bootstrap'
+import {
+  FaChevronRight,
+  FaGear,
+  FaLayerGroup,
+  FaMagnifyingGlass,
+  FaXmark
+} from 'react-icons/fa6'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import {
   addSetup as addSetupAction,
@@ -16,12 +35,18 @@ import AugmentSlotItem from './components/AugmentSlotItem.tsx'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
 import CurseSlotItem from './components/CurseSlotItem.tsx'
 import EnchantmentList from './components/EnchantmentList.tsx'
-import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas
+  from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
 import SetBonusBrowserOffcanvas from './components/SetBonusBrowserOffcanvas.tsx'
 import SetBonusesSummary from './components/SetBonusesSummary.tsx'
-import { checkPotentialConflict, getSlotOwner, normalizeString, resolveConflicts } from './conflictResolver'
+import {
+  checkPotentialConflict,
+  getSlotOwner,
+  normalizeString,
+  resolveConflicts
+} from './conflictResolver'
 import { loadCurses, loadGearData, loadSetBonusIndex } from './dataLoader'
 import {
   ARMOR_TYPES,
@@ -104,11 +129,13 @@ const GearPlanner = () => {
   const [browsingSet, setBrowsingSet] = useState<string | null>(null)
   const [setBonusFilter, setSetBonusFilter] = useState<string | null>(null)
   const [enchantmentSearch, setEnchantmentSearch] = useState('')
+  const [itemNameSearch, setItemNameSearch] = useState('')
   const observerTarget = useRef<HTMLDivElement>(null)
 
   const openSlotBrowser = useCallback((slot: GearSlot | null) => {
     setBrowsingSlot(slot)
     setItemsToShow(50)
+    setItemNameSearch('')
   }, [])
 
   const openSetBonusBrowser = useCallback((setName: string) => {
@@ -327,7 +354,7 @@ const GearPlanner = () => {
       }
 
       // Level filter
-      const itemLevel = Number.parseInt(item.minLevel, 10) || 0
+      const itemLevel = Number.parseInt(item.minLevel, 10) || 1
       if (itemLevel < setup.minLevel || itemLevel > setup.maxLevel) {
         return false
       }
@@ -347,56 +374,88 @@ const GearPlanner = () => {
 
       // Filters logic
       const weaponFilterMatches = (targetSlot: GearSlot, i: GearItem, s: GearSetup) => {
-        if ((targetSlot === GearSlot.MainHand || targetSlot === GearSlot.OffHand) && s.weaponFilters.length > 0) {
-          return s.weaponFilters.some((w) => {
-            const weaponPart = w.toLowerCase()
-            return (
-              i.name.toLowerCase().includes(weaponPart) ||
-              i.type.toLowerCase().includes(weaponPart) ||
-              (weaponPart === 'handwraps' && i.type === 'Gloves')
-            )
-          })
+        if (targetSlot === GearSlot.MainHand || targetSlot === GearSlot.OffHand) {
+          // If the item is a weapon, it must match a weapon filter
+          const isWeapon =
+            Object.values(WEAPON_TYPES).flat().includes(i.type) || (i.type === 'Gloves' && i.name.toLowerCase().includes('handwraps'))
+          if (isWeapon) {
+            if (s.weaponFilters.length === 0) {
+              // If no filters are checked, display all weapons
+              return true
+            }
+            return s.weaponFilters.some((w) => {
+              const weaponPart = w.toLowerCase()
+              const typeLower = i.type.toLowerCase()
+              const nameLower = i.name.toLowerCase()
+              return (
+                typeLower === weaponPart ||
+                (weaponPart === 'handwraps' && (i.type === 'Gloves' || typeLower === 'handwraps')) ||
+                (i.type === 'Weapon' && nameLower.includes(weaponPart))
+              )
+            })
+          }
         }
         return true
       }
 
       const armorFilterMatches = (targetSlot: GearSlot, i: GearItem, s: GearSetup) => {
-        if (targetSlot === GearSlot.Armor && s.armorFilters.length > 0) {
-          const isClothFilter = s.armorFilters.includes('Cloth Armor')
-          const matchesCloth = isClothFilter && (i.type === 'Robe' || i.type === 'Outfit')
-          const matchesOther = s.armorFilters.includes(i.type)
-          return matchesCloth || matchesOther
+        if (targetSlot === GearSlot.Armor) {
+          if (s.armorFilters.length > 0) {
+            const isClothFilter = s.armorFilters.includes('Cloth Armor')
+            const matchesCloth = isClothFilter && (i.type === 'Robe' || i.type === 'Outfit')
+            const matchesOther = s.armorFilters.includes(i.type)
+            return matchesCloth || matchesOther
+          } else {
+            // If no armor filters are checked, show all armor
+            return true
+          }
         }
         return true
       }
 
       const otherFilterMatches = (targetSlot: GearSlot, i: GearItem, s: GearSetup) => {
         // Shield Filter
-        if (targetSlot === GearSlot.OffHand && s.shieldFilters.length > 0) {
-          if (!s.shieldFilters.includes(i.type)) return false
+        if (targetSlot === GearSlot.OffHand) {
+          if (s.shieldFilters.length > 0) {
+            if (!s.shieldFilters.includes(i.type)) return false
+          } else if (i.type === 'Rune Arm' || SHIELD_TYPES.includes(i.type)) {
+            // If no shield filters are selected, show all shields and rune arms
+            return true
+          }
         }
 
         // Druid Metal Filter
         const isDruid = s.classes.includes('Druid')
         if (isDruid && !s.allowMetalWithDruid) {
-          if (isMetal(i.material)) return false
+          if (isMetal(i.material)) {
+            // Exceptions for Druids (Sickle and Scimitar are allowed even if metal in DDO usually, but here we follow material)
+            // The user has a toggle for this, so we respect it.
+            return false
+          }
         }
 
         // Set Bonus Filter
         if (!ignoreSetFilter && setBonusFilter) {
           const indexedItems = setBonusIndex[setBonusFilter]
-          return indexedItems?.some((ii) => ii.name === i.name && ii.minLevel === Number(i.minLevel)) ?? false
+          const itemLvl = Number(i.minLevel) || 1
+          return indexedItems?.some((ii) => ii.name === i.name && ii.minLevel === itemLvl) ?? false
         }
         return true
       }
 
-      return (
-        weaponFilterMatches(slot, item, setup) &&
-        armorFilterMatches(slot, item, setup) &&
-        otherFilterMatches(slot, item, setup)
-      )
+      if (!otherFilterMatches(slot, item, setup)) return false
+
+      // Item Name Search Filter
+      if (itemNameSearch) {
+        const searchLower = itemNameSearch.toLowerCase().trim()
+        if (!item.name.toLowerCase().includes(searchLower)) {
+          return false
+        }
+      }
+
+      return true
     },
-    [showConflicts, isItemConflicting, isMetal, setBonusFilter, setBonusIndex]
+    [showConflicts, isItemConflicting, isMetal, setBonusFilter, setBonusIndex, itemNameSearch]
   )
 
   const filteredSets = useMemo(() => {
@@ -409,7 +468,7 @@ const GearPlanner = () => {
     const setsWithItemsInSlot = new Set<string>()
 
     for (const i of allItems) {
-      const level = Number(i.minLevel)
+      const level = Number(i.minLevel) || 1
       if (level >= min && level <= max && isItemVisibleForClasses(i, activeSetup)) {
         const key = `${i.name}|${level.toString()}`
         visibleItemNames.add(key)
@@ -452,7 +511,7 @@ const GearPlanner = () => {
   const filteredItems = useMemo(() => {
     if (!activeSetup || !browsingSlot) return []
     return allItems
-      .filter((i) => shouldShowItem(i, browsingSlot, activeSetup))
+      .filter((i) => isItemVisibleForClasses(i, activeSetup) && shouldShowItem(i, browsingSlot, activeSetup))
       .sort((a, b) => {
         // Priority 1: Trove ownership
         const isOwnedA = troveData?.[normItem(a.name)] ? 1 : 0
@@ -460,14 +519,14 @@ const GearPlanner = () => {
         if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
 
         // Priority 2: Min Level (desc)
-        const levelA = Number.parseInt(a.minLevel, 10) || 0
-        const levelB = Number.parseInt(b.minLevel, 10) || 0
+        const levelA = Number.parseInt(a.minLevel, 10) || 1
+        const levelB = Number.parseInt(b.minLevel, 10) || 1
         if (levelB !== levelA) return levelB - levelA
 
         // Priority 3: Name (asc)
         return a.name.localeCompare(b.name)
       })
-  }, [activeSetup, browsingSlot, allItems, shouldShowItem, troveData])
+  }, [activeSetup, browsingSlot, allItems, shouldShowItem, isItemVisibleForClasses, troveData])
 
   const searchResultsBySlot = useMemo(() => {
     if (enchantmentSearch.length <= 2) return null
@@ -488,7 +547,8 @@ const GearPlanner = () => {
       for (const setName of Object.keys(setBonusIndex)) {
         if (normalizeString(setName).includes(searchLower)) {
           const indexedItems = setBonusIndex[setName]
-          if (indexedItems.some((ii) => ii.name === item.name && ii.minLevel === Number(item.minLevel))) {
+          const itemLvl = Number(item.minLevel) || 1
+          if (indexedItems.some((ii) => ii.name === item.name && ii.minLevel === itemLvl)) {
             matchesSetName = true
             break
           }
@@ -511,8 +571,8 @@ const GearPlanner = () => {
         if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
 
         // Priority 2: Min Level (desc)
-        const levelA = Number.parseInt(a.minLevel, 10) || 0
-        const levelB = Number.parseInt(b.minLevel, 10) || 0
+        const levelA = Number.parseInt(a.minLevel, 10) || 1
+        const levelB = Number.parseInt(b.minLevel, 10) || 1
         if (levelB !== levelA) return levelB - levelA
 
         // Priority 3: Name (asc)
@@ -638,7 +698,23 @@ const GearPlanner = () => {
       Moon: ['Moon']
     }
 
-    const allowedTypes = colorMap[slotType] || [slotType]
+    let allowedTypes = colorMap[slotType] || [slotType]
+
+    // Dinosaur Bone Slot and Lamordia slot mapping adjustments
+    // We normalize the slotType here to match the augmentType used in allAugments.
+    if (slotType.startsWith('Isle of Dread:') || slotType.startsWith('Lamordia:') || slotType.startsWith('Dino Bone')) {
+      // Normalize:
+      // "Isle of Dread: Scale Slot (Accessory):" -> "Isle of Dread: Scale (Accessory)"
+      // "Lamordia: Melancholic Slot (Weapon):" -> "Lamordia: Melancholic (Weapon)"
+      // "Dino Bone" -> "Isle of Dread:"
+      const normalized = slotType
+        .replace('Dino Bone', 'Isle of Dread:')
+        .replace(/\sSlot/g, '')
+        .replace(/:$/, '')
+        .replace(/:\s*\(/g, ' (') // Ensure "Isle of Dread: Scale Slot (Accessory):" -> "Isle of Dread: Scale (Accessory)"
+        .trim()
+      allowedTypes = [normalized]
+    }
 
     const filtered = allAugments.filter((aug) => {
       // For typed slots (Red, Blue, etc.), respect the mapping.
@@ -977,6 +1053,7 @@ const GearPlanner = () => {
                     <EnchantmentsSummary
                       equippedItems={characterEquipped}
                       slottedAugments={activeSetup.slottedAugments}
+                      slottedCurses={activeSetup.slottedCurses}
                     />
 
                     {setup.classes?.includes('Artificer') && setup.classes?.includes('Druid') && (
@@ -997,6 +1074,7 @@ const GearPlanner = () => {
                         <EnchantmentsSummary
                           equippedItems={artificerEquipped}
                           slottedAugments={artificerPet.slottedAugments}
+                          slottedCurses={artificerPet.slottedCurses}
                         />
                       </div>
                     )}
@@ -1012,7 +1090,11 @@ const GearPlanner = () => {
                           slottedAugments={druidPet.slottedAugments}
                           onSetClick={openSetBrowser}
                         />
-                        <EnchantmentsSummary equippedItems={druidEquipped} slottedAugments={druidPet.slottedAugments} />
+                        <EnchantmentsSummary
+                          equippedItems={druidEquipped}
+                          slottedAugments={druidPet.slottedAugments}
+                          slottedCurses={druidPet.slottedCurses}
+                        />
                       </div>
                     )}
                   </div>
@@ -1165,7 +1247,7 @@ const GearPlanner = () => {
                       </Row>
                     </div>
 
-                    <Form.Label className='fw-bold text-info d-block'>Shield Type Filters</Form.Label>
+                    <Form.Label className='fw-bold text-info d-block'>Shield & Off-hand Type Filters</Form.Label>
                     <div className='p-2 border border-secondary rounded mb-3'>
                       <Row>
                         {SHIELD_TYPES.map((type) => (
@@ -1251,6 +1333,8 @@ const GearPlanner = () => {
           selectItem={selectItem}
           openSetBonusBrowser={openSetBonusBrowser}
           troveData={troveData}
+          itemNameSearch={itemNameSearch}
+          setItemNameSearch={setItemNameSearch}
         />
 
         <ItemBrowserOffcanvas
@@ -1269,6 +1353,8 @@ const GearPlanner = () => {
           isMetal={isMetal}
           openSetBonusBrowser={openSetBonusBrowser}
           observerTarget={observerTarget}
+          itemNameSearch={itemNameSearch}
+          setItemNameSearch={setItemNameSearch}
         />
       </Container>
     </div>

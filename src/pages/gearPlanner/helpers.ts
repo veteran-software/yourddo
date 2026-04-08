@@ -1,14 +1,11 @@
-import {
-  type GearAugment,
-  type GearItem,
-  type LootEnchantment
-} from './types.ts'
+import { type Curse, type GearAugment, type GearItem, type LootEnchantment } from './types.ts'
 
 export const sortItemsByValue = (a: { value: number }, b: { value: number }) => b.value - a.value
 
 export const aggregateEnchantmentEntries = (
   item: GearItem,
-  itemAugs: Record<number, GearAugment | null> | undefined
+  itemAugs: Record<number, GearAugment | null> | undefined,
+  curse: Curse | null | undefined
 ) => {
   const entries: { ench: LootEnchantment; sourceName: string }[] = (item.enchantments ?? []).map((e) => ({
     ench: e,
@@ -22,6 +19,12 @@ export const aggregateEnchantmentEntries = (
           entries.push({ ench: e, sourceName: `${item.name} (${aug.name})` })
         }
       }
+    }
+  }
+
+  if (curse?.enchantments) {
+    for (const e of curse.enchantments) {
+      entries.push({ ench: e, sourceName: `${item.name} (${curse.name})` })
     }
   }
 

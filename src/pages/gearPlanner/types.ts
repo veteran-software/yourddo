@@ -183,8 +183,7 @@ export const WEAPON_TYPES: Record<string, string[]> = {
     'Kama',
     'Khopesh',
     'Repeating Heavy Crossbow',
-    'Repeating Light Crossbow',
-    'Shuriken'
+    'Repeating Light Crossbow'
   ],
   Martial: [
     'Battle Axe',
@@ -194,42 +193,34 @@ export const WEAPON_TYPES: Record<string, string[]> = {
     'Great Crossbow',
     'Great Sword',
     'Hand Axe',
-    'Handaxe',
     'Heavy Pick',
     'Kukri',
     'Light Hammer',
     'Light Pick',
     'Long Bow',
     'Long Sword',
-    'Longsword',
     'Maul',
     'Rapier',
     'Scimitar',
     'Short Bow',
     'Short Sword',
-    'Shortbow',
-    'Throwing Axe',
-    'Throwing Hammer',
-    'War Hammer'
+    'Warhammer'
   ],
   Simple: [
     'Club',
     'Dagger',
-    'Dart',
     'Heavy Crossbow',
     'Heavy Mace',
     'Light Crossbow',
     'Light Mace',
     'Morningstar',
     'Quarterstaff',
-    'Scepter',
-    'Sickle',
-    'Throwing Dagger',
-    'Unarmed'
-  ]
+    'Sickle'
+  ],
+  Throwing: ['Dart', 'Shuriken', 'Throwing Axe', 'Throwing Dagger', 'Throwing Hammer']
 }
 
-export const SHIELD_TYPES = ['Buckler', 'Large Shield', 'Orb', 'Small Shield', 'Tower Shield']
+export const SHIELD_TYPES = ['Buckler', 'Large Shield', 'Orb', 'Rune Arm', 'Small Shield', 'Tower Shield']
 
 export const ARMOR_TYPES = ['Cloth Armor', 'Docent', 'Heavy Armor', 'Light Armor', 'Medium Armor']
 
@@ -249,13 +240,13 @@ export const CLASS_PROFICIENCIES: Record<string, ClassProficiencies> = {
     weapons: [
       ...WEAPON_TYPES.Simple,
       'Light Hammer',
-      'War Hammer',
+      'Warhammer',
       'Great Crossbow',
       'Repeating Light Crossbow',
       'Repeating Heavy Crossbow'
     ],
     armor: ['Cloth Armor', 'Light Armor', 'Medium Armor'],
-    shields: ['Buckler', 'Large Shield', 'Orb', 'Small Shield']
+    shields: ['Buckler', 'Large Shield', 'Orb', 'Rune Arm', 'Small Shield']
   },
   Barbarian: {
     weapons: [...WEAPON_TYPES.Simple, ...WEAPON_TYPES.Martial],
@@ -263,7 +254,7 @@ export const CLASS_PROFICIENCIES: Record<string, ClassProficiencies> = {
     shields: ['Buckler', 'Large Shield', 'Orb', 'Small Shield']
   },
   Bard: {
-    weapons: [...WEAPON_TYPES.Simple, 'Longsword', 'Rapier', 'Short Sword', 'Shortbow'],
+    weapons: [...WEAPON_TYPES.Simple, 'Longsword', 'Rapier', 'Short Sword', 'Short Bow'],
     armor: ['Cloth Armor', 'Light Armor'],
     shields: ['Buckler', 'Large Shield', 'Orb', 'Small Shield']
   },

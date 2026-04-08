@@ -3,14 +3,16 @@ import { Accordion, Badge, Col, Row } from 'react-bootstrap'
 import { FaListUl } from 'react-icons/fa6'
 import { getBonus, normalizeString, parseModifierValue } from '../conflictResolver.ts'
 import { aggregateEnchantmentEntries, sortItemsByValue } from '../helpers.ts'
-import type { GearAugment, GearItem } from '../types.ts'
+import type { Curse, GearAugment, GearItem } from '../types.ts'
 
 const EnchantmentsSummary = ({
   equippedItems,
-  slottedAugments
+  slottedAugments,
+  slottedCurses
 }: {
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
+  slottedCurses: Record<string, Curse | null>
 }) => {
   const aggregated = useMemo(() => {
     const map: Record<
@@ -29,7 +31,7 @@ const EnchantmentsSummary = ({
     > = {}
 
     for (const item of equippedItems) {
-      const entries = aggregateEnchantmentEntries(item, slottedAugments[item.id])
+      const entries = aggregateEnchantmentEntries(item, slottedAugments[item.id], slottedCurses[item.id])
 
       for (const { ench, sourceName } of entries) {
         const normName = normalizeString(ench.name)
@@ -82,7 +84,7 @@ const EnchantmentsSummary = ({
     })
 
     return result.sort((a, b) => a.name.localeCompare(b.name))
-  }, [equippedItems, slottedAugments])
+  }, [equippedItems, slottedAugments, slottedCurses])
 
   if (aggregated.length === 0) return null
 
