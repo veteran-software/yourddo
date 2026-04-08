@@ -377,7 +377,8 @@ const GearPlanner = () => {
         if (targetSlot === GearSlot.MainHand || targetSlot === GearSlot.OffHand) {
           // If the item is a weapon, it must match a weapon filter
           const isWeapon =
-            Object.values(WEAPON_TYPES).flat().includes(i.type) || (i.type === 'Gloves' && i.name.toLowerCase().includes('handwraps'))
+            Object.values(WEAPON_TYPES).flat().includes(i.type) ||
+            (i.type === 'Gloves' && i.name.toLowerCase().includes('handwraps'))
           if (isWeapon) {
             if (s.weaponFilters.length === 0) {
               // If no filters are checked, display all weapons
@@ -443,6 +444,8 @@ const GearPlanner = () => {
         return true
       }
 
+      if (!weaponFilterMatches(slot, item, setup)) return false
+      if (!armorFilterMatches(slot, item, setup)) return false
       if (!otherFilterMatches(slot, item, setup)) return false
 
       // Item Name Search Filter

@@ -66,7 +66,7 @@ const CharacterSettingsSidebar = (props: Props) => {
         <div className='mb-3'>
           <div className='fw-bold text-info small mb-1'>Armor Filters</div>
           {activeSetup.armorFilters.length > 0 ? (
-            <div className='d-flex flex-wrap gap-1'>
+            <div className='d-flex flex-wrap gap-1 mb-3'>
               {activeSetup.armorFilters.map((a) => (
                 <Badge key={a} bg='dark' className='border border-secondary small'>
                   {a}
@@ -74,7 +74,22 @@ const CharacterSettingsSidebar = (props: Props) => {
               ))}
             </div>
           ) : (
-            <div className='small italic text-secondary'>No armor filters</div>
+            <div className='small italic text-secondary mb-3'>No armor filters</div>
+          )}
+        </div>
+
+        <div className='mb-3'>
+          <div className='fw-bold text-info small mb-1'>Shield/Off-hand Filters</div>
+          {activeSetup.shieldFilters.length > 0 ? (
+            <div className='d-flex flex-wrap gap-1'>
+              {activeSetup.shieldFilters.map((s) => (
+                <Badge key={s} bg='dark' className='border border-secondary small'>
+                  {s}
+                </Badge>
+              ))}
+            </div>
+          ) : (
+            <div className='small italic text-secondary'>No shield filters</div>
           )}
         </div>
       </Offcanvas.Body>

@@ -220,3 +220,8 @@
   /*font-size: 0.75rem !important;*/
   line-height: 1.2;
 }
+
+.dark-placeholder::placeholder {
+  color: #495057 !important;
+  opacity: 1; /* Override default lower opacity if any */
+}
