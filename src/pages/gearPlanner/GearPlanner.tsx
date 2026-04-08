@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Accordion,
   Button,
+  ButtonGroup,
   Card,
   Col,
   Container,
@@ -12,15 +13,12 @@ import {
   Tab,
   Tabs
 } from 'react-bootstrap'
-import {
-  FaChevronRight,
-  FaGear,
-  FaLayerGroup,
-  FaMagnifyingGlass,
-  FaXmark
-} from 'react-icons/fa6'
+import { FaChevronRight, FaGear, FaLayerGroup, FaLink, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6'
+import { useLocation, useNavigate } from 'react-router-dom'
+import PermalinkModal from '../../components/common/PermalinkModal.tsx'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import {
+  addSetup as addSetupAction,
   setActiveSetup as setActiveSetupAction,
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
@@ -33,6 +31,13 @@ import SetBonusBrowserOffcanvas from './components/SetBonusBrowserOffcanvas.tsx'
 import SetBonusesSummary from './components/SetBonusesSummary.tsx'
 import WeaponCategory from './components/WeaponCategory.tsx'
 import useGearPlanner from './hooks/useGearPlanner.tsx'
+import {
+  buildPermalinkUrl,
+  encodeGearPermalink,
+  readGpFromUrl,
+  removeGpFromUrl,
+  tryDecodeGearPermalink
+} from './permalink.ts'
 import {
   ARMOR_TYPES,
   ARTIFICER_PET_SLOTS,
@@ -67,6 +72,28 @@ const GearPlanner = () => {
   const observerTarget = useRef<HTMLDivElement>(null)
 
   const gpHook = useGearPlanner({ enchantmentSearch, setBonusFilter, setBrowsingSet, showConflicts })
+
+  // Handle permalink from URL
+  useEffect(() => {
+    if (gpHook.loading) return
+
+    const { gp, source } = readGpFromUrl(location)
+
+    if (gp) {
+      const result = tryDecodeGearPermalink(gp, gpHook.allItems, gpHook.allAugments, gpHook.allCurses)
+
+      if (result.ok) {
+        const importedSetup = {
+          ...result.data,
+          name: `${result.data.name} (Imported)`
+        }
+        dispatch(addSetupAction(importedSetup))
+        dispatch(setActiveSetupAction(importedSetup.id))
+      }
+
+      void removeGpFromUrl(navigate, location, source)
+    }
+  }, [dispatch, gpHook.allAugments, gpHook.allCurses, gpHook.allItems, gpHook.loading, location, navigate])
 
   if (gpHook.loading) {
     return (
