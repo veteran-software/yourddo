@@ -15,8 +15,9 @@ import (
 var coreTemplateNames = []string{
 	"{{Template:Item|", "{{Template:Shield|", "{{Template:Material|", "{{Template:Augment|", "{{Template:Weapon|",
 	"{{Template:Armor|", "{{Template:Consumable|", "{{Template:Cosmetic|", "{{Template:RuneArm|", "{{Template:SpellCaster|", "{{Template:VIPLoyalty|",
+	"{{Template:Quiver|",
 	"{{Template:Trick|", "{{Item|", "{{Shield|", "{{Material|", "{{Augment|", "{{Armor|", "{{VIPLoyalty|",
-	"{{Consumable|", "{{Cosmetic|", "{{RuneArm|", "{{Trick|", "{{Weapon|", "{{SpellCaster|",
+	"{{Consumable|", "{{Cosmetic|", "{{RuneArm|", "{{Trick|", "{{Weapon|", "{{SpellCaster|", "{{Quiver|",
 }
 
 func romanToInt(s string) int {
@@ -76,14 +77,17 @@ func ProcessContentMap(rawContentMap map[string]string) []api.ItemData {
 			logrus.Debugf("Skipping %s (Pre-Update item)\n", title)
 			continue
 		}
-		if strings.Contains(strings.ToLower(rawContent), "{{discontinued}}") {
+
+		if strings.Contains(strings.ToLower(rawContent), "{{discontinued}}") || strings.Contains(strings.ToLower(rawContent), "{{discontinued|") {
 			logrus.Debugf("Skipping %s (Discontinued item)\n", title)
 			continue
 		}
+
 		if strings.Contains(strings.ToLower(rawContent), "{{starter}}") {
 			logrus.Debugf("Skipping %s (Starter item)\n", title)
 			continue
 		}
+
 		cleanedContent := cleanup.CleanRawContent(rawContent)
 		fields, err := parseTemplateFields(cleanedContent)
 
@@ -95,8 +99,25 @@ func ProcessContentMap(rawContentMap map[string]string) []api.ItemData {
 		}
 
 		// Only convert to ItemData if parsing was successful and it looks like an item
-		if fields["type"] != "" || strings.Contains(strings.ToLower(cleanedContent), strings.ToLower("{{item|")) {
+		if fields["type"] != "" ||
+			strings.Contains(strings.ToLower(cleanedContent), "{{item|") ||
+			strings.Contains(strings.ToLower(cleanedContent), "{{quiver|") ||
+			strings.Contains(strings.ToLower(cleanedContent), "{{template:quiver|") {
 			item := ConvertItemToJSON(title, fields) // Calls the converter in parser/converter.go
+
+			// Check if the item is marked as discontinued via its drop locations
+			isDiscontinued := false
+			for _, loc := range item.DropLocations {
+				if loc.SourceType == "Discontinued" {
+					isDiscontinued = true
+					break
+				}
+			}
+			if isDiscontinued {
+				logrus.Debugf("Skipping %s (Discontinued via DropLocation)\n", title)
+				continue
+			}
+
 			processedItems = append(processedItems, item)
 		}
 	}

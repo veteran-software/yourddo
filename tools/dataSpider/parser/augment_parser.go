@@ -25,7 +25,7 @@ func ProcessAugmentMap(rawContentMap map[string]string) []api.AugmentItem {
 		if preUSuffixRegex.MatchString(title) {
 			continue
 		}
-		if strings.Contains(strings.ToLower(raw), "{{discontinued}}") {
+		if strings.Contains(strings.ToLower(raw), "{{discontinued}}") || strings.Contains(strings.ToLower(raw), "{{discontinued|") {
 			continue
 		}
 		if strings.Contains(strings.ToLower(raw), "{{starter}}") {
@@ -41,6 +41,22 @@ func ProcessAugmentMap(rawContentMap map[string]string) []api.AugmentItem {
 		// Many pages have type set; not required here.
 		if len(fields) > 0 {
 			out := ConvertAugmentToJSON(title, fields)
+
+			// Check if the augment is marked as discontinued via its drop locations
+			isDiscontinued := false
+			if val, ok := fields["droplocation"]; ok {
+				drops := ParseMultiTemplateDropLocation(val)
+				for _, d := range drops {
+					if d.SourceType == "Discontinued" {
+						isDiscontinued = true
+						break
+					}
+				}
+			}
+			if isDiscontinued {
+				continue
+			}
+
 			results = append(results, out)
 		}
 	}
