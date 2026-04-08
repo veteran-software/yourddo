@@ -7,14 +7,34 @@ import AugmentSlotsList from './AugmentSlotList.tsx'
 import EnchantmentList from './EnchantmentList.tsx'
 
 const SearchResultSlot = (props: Props) => {
-  const { getContextInfo, items, openSetBonusBrowser, selectItem, setShowEnchantmentSearch, slot, troveData } = props
+  const {
+    browsingSet,
+    getContextInfo,
+    items,
+    openSetBonusBrowser,
+    selectItem,
+    setShowEnchantmentSearch,
+    slot,
+    troveData
+  } = props
 
   const { currentConflicts, currentEquipped, currentSlottedAugments } = getContextInfo(slot)
+  const equippedInSlot = currentEquipped.find((e) => e.slot === slot)
+  const isPartofSet = !browsingSet || equippedInSlot?.setBonus?.some((sb) => sb.name === browsingSet)
 
   return (
     <Accordion.Item eventKey={slot} key={slot}>
       <Accordion.Header className='small fw-bold'>
-        {slot} ({items.length})
+        <div className='d-flex justify-content-between w-100 me-3'>
+          <span>
+            {slot} ({items.length})
+          </span>
+          {equippedInSlot && (
+            <span className={`${isPartofSet ? 'text-info' : 'text-warning'} ms-2`} style={{ fontSize: '0.75rem' }}>
+              {equippedInSlot.name}
+            </span>
+          )}
+        </div>
       </Accordion.Header>
       <Accordion.Body className='p-2 bg-dark'>
         <Stack gap={2}>
