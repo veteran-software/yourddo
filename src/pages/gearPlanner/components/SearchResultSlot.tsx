@@ -135,6 +135,7 @@ interface Props {
   setShowEnchantmentSearch: (show: boolean) => void
   openSetBonusBrowser: (setName: string) => void
   troveData: ItemRollup | null
+  browsingSet?: string | null
 }
 
 export default SearchResultSlot

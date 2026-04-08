@@ -2,13 +2,7 @@ import { Accordion, Form, Offcanvas } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
 import { normItem } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver'
-import {
-  type GearAugment,
-  type GearItem,
-  type GearSetup,
-  GearSlot,
-  type SetBonusIndex
-} from '../types'
+import { type GearAugment, type GearItem, type GearSetup, GearSlot, type SetBonusIndex } from '../types'
 import SearchResultSlot from './SearchResultSlot'
 
 const SetBonusBrowserOffcanvas = (props: Props) => {
@@ -25,7 +19,9 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
     setBrowsingSet,
     setShowSetBonusBrowser,
     showSetBonusBrowser,
-    troveData
+    troveData,
+    itemNameSearch,
+    setItemNameSearch
   } = props
 
   return (
@@ -43,6 +39,20 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
       </Offcanvas.Header>
 
       <Offcanvas.Body className='bg-dark text-white p-3'>
+        <Form.Group className='mb-3'>
+          <Form.Label className='small text-info fw-bold'>Search Items</Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Search items by name...'
+            size='sm'
+            className='bg-light text-dark fw-bold dark-placeholder'
+            value={itemNameSearch}
+            onChange={(e) => {
+              setItemNameSearch(e.target.value)
+            }}
+          />
+        </Form.Group>
+
         <Form.Group className='mb-3'>
           <Form.Label className='small text-info fw-bold'>Select a Set</Form.Label>
 
@@ -76,6 +86,10 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                   const itemLevel = Number(item.minLevel)
                   if (itemLevel < min || itemLevel > max) return false
                   if (!isItemVisibleForClasses(item, activeSetup)) return false
+                  if (itemNameSearch) {
+                    const searchLower = itemNameSearch.toLowerCase().trim()
+                    if (!item.name.toLowerCase().includes(searchLower)) return false
+                  }
                   return indexedItems.some((ii) => ii.name === item.name && ii.minLevel === itemLevel)
                 })
 
@@ -124,6 +138,7 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                         }}
                         openSetBonusBrowser={openSetBonusBrowser}
                         troveData={troveData}
+                        browsingSet={browsingSet}
                       />
                     ))}
                   </Accordion>
@@ -155,6 +170,8 @@ interface Props {
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   openSetBonusBrowser: (setName: string) => void
   troveData: ItemRollup | null
+  itemNameSearch: string
+  setItemNameSearch: (search: string) => void
 }
 
 export default SetBonusBrowserOffcanvas
