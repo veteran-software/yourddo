@@ -31,8 +31,12 @@ func main() {
 	aggregates := map[string][]string{
 		"Armor":    {"Docent", "Heavy Armor", "Medium Armor", "Light Armor", "Robe", "Outfit"},
 		"Clothing": {"Cloak", "Boots", "Gloves", "Helmet", "Belt"},
+		"Exotic":   {"Bastard Sword", "Dwarven War Axe", "Great Crossbow", "Handwraps", "Kama", "Khopesh", "Repeating Heavy Crossbow", "Repeating Light Crossbow"},
 		"Jewelry":  {"Goggles", "Ring", "Necklace", "Trinket", "Bracers"},
-		"Offhand":  {"Shield", "Baton", "Staff", "Wand", "Dagger"},
+		"Martial":  {"Battle Axe", "Falchion", "Great Axe", "Great Club", "Great Sword", "Hand Axe", "Heavy Pick", "Kukri", "Light Hammer", "Light Pick", "Long Bow", "Long Sword", "Maul", "Rapier", "Scimitar", "Short Bow", "Short Sword", "Warhammer"},
+		"Shield":   {"Buckler", "Large Shield", "Orb", "Small Shield", "Tower Shield"},
+		"Simple":   {"Club", "Dagger", "Light Crossbow", "Light Mace", "Heavy Crossbow", "Heavy Mace", "Morningstar", "Quarterstaff", "Sickle"},
+		"Throwing": {"Dart", "Shuriken", "Throwing Axe", "Throwing Dagger", "Throwing Hammer"},
 		// Add more aggregate categories as needed
 	}
 
