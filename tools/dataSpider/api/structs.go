@@ -251,6 +251,11 @@ type DropSourceData struct {
 	NightRevelsScale   string `json:"nightRevelsScale,omitempty"`
 	NightRevelsItems   string `json:"nightRevelsItems,omitempty"`
 	NightRevelsWares   string `json:"nightRevelsWares,omitempty"`
+
+	// NEW FIELDS from Template:ThreadsofFatePurchase
+	ThreadsOfFateCount  string `json:"threadsOfFateCount,omitempty"`
+	AdditionalItemName  string `json:"additionalItemName,omitempty"`
+	AdditionalItemCount string `json:"additionalItemCount,omitempty"`
 }
 
 type Enchantment struct {
@@ -329,13 +334,15 @@ type ItemData struct {
 	Image      string `json:"image"`
 	OptionsRaw string `json:"optionsRaw"`
 	IsCrafted  bool   `json:"isCrafted,omitempty"`
+	Grouping   string `json:"grouping,omitempty"`
+	Link       string `json:"link,omitempty"`
 	// Templates (Raw for subsequent parsing)
 	CraftingRequirements []CraftingRequirement `json:"craftingRequirements,omitempty"`
 	Enchantments         []Enchantment         `json:"enchantments"`
 	EnchantmentsRaw      string                `json:"-"`
 	Augments             []AugmentItem         `json:"augments,omitempty"`
 	AugmentsRaw          string                `json:"-"`
-	ItemSetsRaw          string                `json:"itemSetsRaw,omitempty"`
+	ItemSetsRaw          string                `json:"-"`
 	SetBonus             []SetBonusOut         `json:"setBonus,omitempty"`
 }
 
@@ -343,4 +350,14 @@ type CraftingRequirement struct {
 	Name     string   `json:"name"`
 	Quantity *int     `json:"quantity,omitempty"`
 	Location []string `json:"location,omitempty"`
+}
+
+type FiligreeSetBonus struct {
+	Threshold    int                     `json:"threshold"`
+	Enhancements []PartialEnhancementOut `json:"enhancements"`
+}
+
+type FiligreeSet struct {
+	Name    string             `json:"name"`
+	Bonuses []FiligreeSetBonus `json:"bonuses"`
 }

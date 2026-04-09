@@ -29,14 +29,16 @@ func main() {
 
 	// Define aggregate categories mapping
 	aggregates := map[string][]string{
-		"Armor":    {"Docent", "Heavy Armor", "Medium Armor", "Light Armor", "Robe", "Outfit"},
-		"Clothing": {"Cloak", "Boots", "Gloves", "Helmet", "Belt"},
-		"Exotic":   {"Bastard Sword", "Dwarven War Axe", "Great Crossbow", "Handwraps", "Kama", "Khopesh", "Repeating Heavy Crossbow", "Repeating Light Crossbow"},
-		"Jewelry":  {"Goggles", "Ring", "Necklace", "Trinket", "Bracers"},
-		"Martial":  {"Battle Axe", "Falchion", "Great Axe", "Great Club", "Great Sword", "Hand Axe", "Heavy Pick", "Kukri", "Light Hammer", "Light Pick", "Long Bow", "Long Sword", "Maul", "Rapier", "Scimitar", "Short Bow", "Short Sword", "Warhammer"},
-		"Shield":   {"Buckler", "Large Shield", "Orb", "Small Shield", "Tower Shield"},
-		"Simple":   {"Club", "Dagger", "Light Crossbow", "Light Mace", "Heavy Crossbow", "Heavy Mace", "Morningstar", "Quarterstaff", "Sickle"},
-		"Throwing": {"Dart", "Shuriken", "Throwing Axe", "Throwing Dagger", "Throwing Hammer"},
+		"Armor":     {"Docent", "Heavy Armor", "Medium Armor", "Light Armor", "Robe", "Outfit"},
+		"Clothing":  {"Cloak", "Boots", "Gloves", "Helmet", "Belt"},
+		"Exotic":    {"Bastard Sword", "Dwarven War Axe", "Great Crossbow", "Handwraps", "Kama", "Khopesh", "Repeating Heavy Crossbow", "Repeating Light Crossbow"},
+		"Jewelry":   {"Goggles", "Ring", "Necklace", "Trinket", "Bracers"},
+		"Martial":   {"Battle Axe", "Falchion", "Great Axe", "Great Club", "Great Sword", "Hand Axe", "Heavy Pick", "Kukri", "Light Hammer", "Light Pick", "Long Bow", "Long Sword", "Maul", "Rapier", "Scimitar", "Short Bow", "Short Sword", "Warhammer"},
+		"Quiver":    {"Quiver"},
+		"Shield":    {"Buckler", "Large Shield", "Orb", "Small Shield", "Tower Shield"},
+		"Simple":    {"Club", "Dagger", "Light Crossbow", "Light Mace", "Heavy Crossbow", "Heavy Mace", "Morningstar", "Quarterstaff", "Sickle"},
+		"Throwing":  {"Dart", "Shuriken", "Throwing Axe", "Throwing Dagger", "Throwing Hammer"},
+		"Filigrees": {"Filigrees", "Filigree Sets"},
 		// Add more aggregate categories as needed
 	}
 
@@ -54,14 +56,27 @@ func main() {
 
 func processCategory(categoryName string) {
 	logrus.Info(lineDivider)
-	logrus.Infof("Starting ETL for Category:%s...", categoryName)
+	logrus.Infof("Starting ETL for %s...", categoryName)
 	logrus.Info(lineDivider)
 
-	// 1. Fetch raw content from MediaWiki API
-	rawResults, err := api.FetchCategoryContent(categoryName)
-	if err != nil {
-		logrus.Errorf("Error during API fetch for %s: %v", categoryName, err)
-		return
+	var rawResults map[string]string
+	var err error
+
+	// Special case: Filigree Sets might be a specific page, not a category
+	if strings.EqualFold(categoryName, "Filigree Sets") {
+		content, err := api.FetchPageContent("Filigree_Item_Sets")
+		if err != nil {
+			logrus.Errorf("Error fetching page 'Filigree_Item_Sets': %v", err)
+			return
+		}
+		rawResults = map[string]string{"Filigree_Item_Sets": content}
+	} else {
+		// 1. Fetch raw content from MediaWiki API
+		rawResults, err = api.FetchCategoryContent(categoryName)
+		if err != nil {
+			logrus.Errorf("Error during API fetch for %s: %v", categoryName, err)
+			return
+		}
 	}
 
 	if len(rawResults) == 0 {
@@ -121,7 +136,10 @@ func processDataByCat(categoryName string, rawResults map[string]string) ([]byte
 
 	if lowerCat == "augment" || lowerCat == "augments" {
 		jsonData, err, done = processAugmentCat(categoryName, rawResults, nil, nil)
+	} else if lowerCat == "filigree sets" {
+		jsonData, err, done = processFiligreeSetCat(categoryName, rawResults, nil, nil)
 	} else {
+		logrus.Debugf("Processing %s as item category", categoryName)
 		jsonData, err, done = processItemCat(categoryName, rawResults, nil, nil)
 	}
 
@@ -158,6 +176,26 @@ func processAugmentCat(categoryName string, rawResults map[string]string, jsonDa
 	jsonData, err = json.Marshal(augmentItems)
 	if err != nil {
 		logrus.Errorf("Error marshalling Augment JSON for %s: %v", categoryName, err)
+		return nil, nil, true
+	}
+
+	return jsonData, err, false
+}
+
+func processFiligreeSetCat(categoryName string, rawResults map[string]string, jsonData []byte, err error) ([]byte, error, bool) {
+	var allSets []api.FiligreeSet
+	for _, content := range rawResults {
+		allSets = append(allSets, parser.ParseFiligreeSets(content)...)
+	}
+
+	// Sort output by name using natural order
+	sort.Slice(allSets, func(i, j int) bool {
+		return naturalLess(allSets[i].Name, allSets[j].Name)
+	})
+
+	jsonData, err = json.Marshal(allSets)
+	if err != nil {
+		logrus.Errorf("Error marshalling Filigree Set JSON: %v", err)
 		return nil, nil, true
 	}
 
