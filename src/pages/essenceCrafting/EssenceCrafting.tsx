@@ -17,12 +17,9 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown
-  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type {
-  ShoppingListTotals
-} from '../../components/common/ShoppingListDrawer.tsx'
+import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
@@ -692,6 +689,73 @@ const EssenceCrafting = () => {
       return { shardLevel, rows }
     },
     [enhancementByName]
+  )
+
+  const buildMinLevelMaterials = useCallback(
+    (level: number, bound: boolean): { shardLevel: number | null; rows: { name: string; qty: number }[] } | null => {
+      const rows: { name: string; qty: number }[] = []
+      const ESSENCE_NAME = toSingularName('Magic Item Essences')
+      const PURIFIED_NAME = toSingularName('Purified Eberron Dragonshard Fragments')
+
+      let shardLevel: number
+      let essenceQty: number
+
+      if (bound) {
+        // Shard level for Bound Min Level Shards:
+        // ML 1 = 1, ML 2 = 20, for each level over 2 add 10
+        if (level === 1) {
+          shardLevel = 1
+        } else {
+          shardLevel = 20 + (level - 2) * 10
+        }
+
+        // Essence quantity for Bound: 10 * ML
+        essenceQty = level * 10
+      } else {
+        // Shard level for Unbound Min Level Shards:
+        // ML 1 = 50, ML 2 = 70, for each level over 2 add 10
+        if (level === 1) {
+          shardLevel = 50
+        } else {
+          shardLevel = 70 + (level - 2) * 10
+        }
+
+        // Essence quantity for Unbound:
+        // ML 1 = 100, ML 2 = 140, for each level over 2 add 20
+        if (level === 1) {
+          essenceQty = 100
+        } else {
+          essenceQty = 140 + (level - 2) * 20
+        }
+      }
+
+      if (essenceQty > 0) {
+        rows.push({ name: ESSENCE_NAME, qty: essenceQty })
+      }
+
+      // Unbound Minimum Level shards require PEDs (ML 21+) from U79
+      if (!bound) {
+        let purifiedQty = 0
+        if (level >= 31) {
+          purifiedQty = 15
+        } else if (level >= 26) {
+          purifiedQty = 10
+        } else if (level >= 21) {
+          purifiedQty = 5
+        }
+
+        if (purifiedQty > 0) {
+          rows.push({ name: PURIFIED_NAME, qty: purifiedQty })
+        }
+      }
+
+      if (rows.length === 0) {
+        return null
+      }
+
+      return { shardLevel, rows }
+    },
+    []
   )
 
   // Extracted to avoid deeply nested functions in JSX
