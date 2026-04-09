@@ -30,8 +30,10 @@ import {
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
-import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas
+  from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
+import FiligreeModal from './components/FiligreeModal.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
 import SetBonusBrowserOffcanvas from './components/SetBonusBrowserOffcanvas.tsx'
 import SetBonusesSummary from './components/SetBonusesSummary.tsx'
@@ -50,7 +52,9 @@ import {
   DRUID_PET_SLOTS,
   GEAR_CLASSES,
   GEAR_SLOTS,
+  type GearItem,
   type GearSetup,
+  GearSlot,
   SHIELD_TYPES,
   WEAPON_TYPES
 } from './types'
@@ -74,6 +78,11 @@ const GearPlanner = () => {
   const [showPermalink, setShowPermalink] = useState(false)
   const [showEnchantmentSearch, setShowEnchantmentSearch] = useState(false)
   const [showSetBonusBrowser, setShowSetBonusBrowser] = useState(false)
+  const [showFiligreeModal, setShowFiligreeModal] = useState(false)
+  const [filigreeTarget, setFiligreeTarget] = useState<{
+    item: GearItem
+    slot: GearSlot
+  } | null>(null)
   const [browsingSet, setBrowsingSet] = useState<string | null>(null)
   const [setBonusFilter, setSetBonusFilter] = useState<string | null>(null)
   const [enchantmentSearch, setEnchantmentSearch] = useState('')
@@ -82,10 +91,23 @@ const GearPlanner = () => {
 
   const gpHook = useGearPlanner({
     enchantmentSearch,
+    itemNameSearch,
     setBonusFilter,
     setBrowsingSet,
     showConflicts
   })
+
+  useEffect(() => {
+    ;(window as any).openFiligreeModal = (item: GearItem, slot: GearSlot) => {
+      setFiligreeTarget({ item, slot })
+      ;(window as any).filigreeTarget = { item, slot }
+      setShowFiligreeModal(true)
+    }
+    return () => {
+      delete (window as any).openFiligreeModal
+      delete (window as any).filigreeTarget
+    }
+  }, [])
 
   // Handle permalink from URL
   useEffect(() => {
@@ -301,6 +323,7 @@ const GearPlanner = () => {
                       equippedItems={gpHook.characterEquipped}
                       slottedAugments={gpHook.activeSetup.slottedAugments}
                       slottedCurses={gpHook.activeSetup.slottedCurses}
+                      slottedFiligrees={gpHook.activeSetup.slottedFiligrees}
                     />
 
                     {setup.classes?.includes('Artificer') &&
@@ -332,6 +355,7 @@ const GearPlanner = () => {
                           equippedItems={gpHook.artificerEquipped}
                           slottedAugments={artificerPet.slottedAugments}
                           slottedCurses={artificerPet.slottedCurses}
+                          slottedFiligrees={artificerPet.slottedFiligrees}
                         />
                       </div>
                     )}
@@ -358,6 +382,7 @@ const GearPlanner = () => {
                           equippedItems={gpHook.druidEquipped}
                           slottedAugments={druidPet.slottedAugments}
                           slottedCurses={druidPet.slottedCurses}
+                          slottedFiligrees={druidPet.slottedFiligrees}
                         />
                       </div>
                     )}
@@ -658,10 +683,21 @@ const GearPlanner = () => {
           browsingSet={browsingSet}
           setBrowsingSet={setBrowsingSet}
           troveData={troveData}
-          itemNameSearch={itemNameSearch}
-          setItemNameSearch={setItemNameSearch}
           {...gpHook}
         />
+
+        {filigreeTarget && (
+          <FiligreeModal
+            show={showFiligreeModal}
+            onHide={() => { setShowFiligreeModal(false); }}
+            item={filigreeTarget.item}
+            slot={filigreeTarget.slot}
+            setup={gpHook.activeSetup}
+            allFiligrees={gpHook.allFiligrees}
+            setFiligree={gpHook.setSlottedFiligree}
+            setUnlockedFiligreeSlots={gpHook.setUnlockedFiligreeSlots}
+          />
+        )}
 
         <ItemBrowserOffcanvas
           showConflicts={showConflicts}
@@ -669,8 +705,6 @@ const GearPlanner = () => {
           setBonusFilter={setBonusFilter}
           setSetBonusFilter={setSetBonusFilter}
           observerTarget={observerTarget}
-          itemNameSearch={itemNameSearch}
-          setItemNameSearch={setItemNameSearch}
           {...gpHook}
         />
 
