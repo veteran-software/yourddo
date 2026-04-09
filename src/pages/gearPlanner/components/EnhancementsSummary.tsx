@@ -7,16 +7,18 @@ import {
   parseModifierValue
 } from '../conflictResolver.ts'
 import { aggregateEnchantmentEntries, sortItemsByValue } from '../helpers.ts'
-import type { Curse, GearAugment, GearItem } from '../types.ts'
+import type { Curse, GearAugment, GearItem, LootItem } from '../types.ts'
 
 const EnchantmentsSummary = ({
   equippedItems,
   slottedAugments,
-  slottedCurses
+  slottedCurses,
+  slottedFiligrees
 }: {
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
   slottedCurses: Record<string, Curse | null>
+  slottedFiligrees: Record<string, (LootItem | null)[]>
 }) => {
   const aggregated = useMemo(() => {
     const map: Record<
@@ -43,7 +45,8 @@ const EnchantmentsSummary = ({
       const entries = aggregateEnchantmentEntries(
         item,
         slottedAugments[item.id],
-        slottedCurses[item.id]
+        slottedCurses[item.id],
+        slottedFiligrees[item.id]
       )
 
       for (const { ench, sourceName } of entries) {
@@ -108,7 +111,7 @@ const EnchantmentsSummary = ({
     })
 
     return result.sort((a, b) => a.name.localeCompare(b.name))
-  }, [equippedItems, slottedAugments, slottedCurses])
+  }, [equippedItems, slottedAugments, slottedCurses, slottedFiligrees])
 
   if (aggregated.length === 0) return null
 

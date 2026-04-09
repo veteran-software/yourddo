@@ -103,6 +103,7 @@ const SLOT_MAP: Record<string, GearSlot[]> = {
   'throwingDagger.json': [GearSlot.MainHand],
   'throwingHammer.json': [GearSlot.MainHand],
   'warhammer.json': [GearSlot.MainHand, GearSlot.OffHand],
+  'filigrees.json': [GearSlot.Filigree],
   // Shields & Rune Arms
   'buckler.json': [GearSlot.OffHand],
   'largeShield.json': [GearSlot.OffHand],
@@ -169,14 +170,21 @@ interface RawAugment {
 export const loadGearData = (): Promise<{
   items: GearItem[]
   augments: GearAugment[]
+  filigrees: GearItem[]
 }> => {
   const allItems: GearItem[] = []
   const allAugments: GearAugment[] = []
+  const allFiligrees: GearItem[] = []
   const seenKeys = new Set<string>()
 
   const addItem = (item: GearItem) => {
     // Basic slot validation to avoid cluttering slots with irrelevant items
     const typeLower = item.type.toLowerCase()
+
+    if (item.slot === GearSlot.Filigree) {
+      allFiligrees.push(item)
+      return
+    }
 
     if (item.slot === GearSlot.MainHand) {
       const isWeapon =
@@ -242,7 +250,6 @@ export const loadGearData = (): Promise<{
         augments: [],
         setBonus: aug.setBonus?.map((sb) => ({ name: sb.name })),
         slot: GearSlot.Augment,
-        artifacttype: 'Augment',
         material: 'Stone',
         pageTitle: aug.name,
         restriction: '',
@@ -323,5 +330,9 @@ export const loadGearData = (): Promise<{
     }
   })
 
-  return Promise.resolve({ items: allItems, augments: allAugments })
+  return Promise.resolve({
+    items: allItems,
+    augments: allAugments,
+    filigrees: allFiligrees
+  })
 }

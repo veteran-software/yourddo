@@ -26,7 +26,8 @@ export const GearSlot = {
   ArtificerPetWeapon: 'Iron Defender Weapon',
   DruidPetArmor: 'Wolf Companion Armor',
   DruidPetWeapon: 'Wolf Companion Weapon',
-  Augment: 'Augment'
+  Augment: 'Augment',
+  Filigree: 'Filigree'
 } as const
 export type GearSlot = (typeof GearSlot)[keyof typeof GearSlot]
 
@@ -161,6 +162,8 @@ export interface GearSetup {
   slots: Record<GearSlot, GearItem | null>
   slottedAugments: Record<string, Record<number, GearAugment | null>> // itemId -> { slotIndex -> augment }
   slottedCurses: Record<string, Curse | null> // itemId -> curse
+  slottedFiligrees: Record<string, (LootItem | null)[]> // itemId -> filigrees
+  unlockedFiligreeSlots: Record<string, number> // itemId -> number of slots
 }
 
 export const GEAR_CLASSES = [
