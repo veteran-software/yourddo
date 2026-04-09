@@ -71,7 +71,7 @@ type PartialEnhancementOut struct {
 
 type PriceModifierOut struct {
 	RandomLoot      *int `json:"randomLoot,omitempty"`
-	CannithCrafting *int `json:"cannithCrafting,omitempty"`
+	EssenceCraftingSlots *int `json:"essenceCrafting,omitempty"`
 }
 
 type MinLevelIncreaseOut struct {

@@ -66,7 +66,7 @@ func main() {
 
 	// Output the index
 	outputPath := filepath.Join(projectRoot, "src", "data", "loot", "runtime", "setBonusIndex.json")
-	outputData, err := json.MarshalIndent(index, "", "  ")
+	outputData, err := json.Marshal(index)
 	if err != nil {
 		logrus.Fatalf("Failed to marshal index: %v", err)
 	}

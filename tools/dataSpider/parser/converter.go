@@ -371,6 +371,9 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 	}
 	if val, ok := fields["weight"]; ok {
 		data.Weight = val
+		if data.Weight != "" && !strings.Contains(strings.ToLower(data.Weight), "lbs") {
+			data.Weight += " lbs"
+		}
 	}
 	if val, ok := fields["capacity"]; ok {
 		data.Capacity = val
@@ -400,8 +403,13 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 		data.Replaced = val
 	}
 	if val, ok := fields["grouping"]; ok {
+		data.Grouping = val
+	}
 	if val, ok := fields["link"]; ok {
+		data.Link = val
+	}
 	if val, ok := fields["itemsets"]; ok {
+		data.ItemSetsRaw = val
 		data.SetBonus = append(data.SetBonus, extractSetBonusesFromText(val)...)
 	}
 	if val, ok := fields["icon"]; ok {
@@ -515,10 +523,10 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 			remaining = remaining[end:]
 		}
 
-		// Scan enchantments for CannithCraftingSlots as well
+		// Scan enchantments for EssenceCraftingSlots as well
 		remaining = val
 		for {
-			start := strings.Index(strings.ToLower(remaining), "{{cannithcraftingslots")
+			start := strings.Index(strings.ToLower(remaining), "{{essencecraftingslots")
 			if start == -1 {
 				break
 			}
@@ -543,7 +551,7 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 			}
 
 			tpl := remaining[start:end]
-			augList := parseTemplateCannithCraftingSlots(tpl)
+			augList := parseTemplateEssenceCraftingSlots(tpl)
 			for _, aug := range augList {
 				// Avoid duplicates if already added
 				found := false
@@ -588,29 +596,38 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 	return data
 }
 
-var itemSetRegex = regexp.MustCompile(`(?i)\{\{ItemSet(?:List)?\|([^}|]+)`)
 var itemSetRegex = regexp.MustCompile(`(?i)\{\{(?:Template:)?FiligreeSetList\|([^}]+)\}\}`)
 var itemSetListRegex = regexp.MustCompile(`(?i)\{\{ItemSet(?:List)?\|([^}]+)\}\}`)
 
 func extractSetBonusesFromText(text string) []api.SetBonusOut {
-	if len(matches) == 0 {
 	var sets []api.SetBonusOut
 	seen := make(map[string]bool)
 
+	// Process FiligreeSetList
 	matches := itemSetRegex.FindAllStringSubmatch(text, -1)
+	for _, m := range matches {
 		paramList := m[1]
+		parts := splitParams(paramList)
 		for _, p := range parts {
+			name := stripWikitext(p)
 			if name != "" && !seen[name] {
+				seen[name] = true
 				sets = append(sets, api.SetBonusOut{Name: name})
+			}
 		}
 	}
 
+	// Process ItemSetList
+	matches = itemSetListRegex.FindAllStringSubmatch(text, -1)
 	for _, m := range matches {
-		if name != "" && !seen[name] {
 		paramList := m[1]
+		parts := splitParams(paramList)
 		for _, p := range parts {
+			name := stripWikitext(p)
 			if name != "" && !seen[name] {
+				seen[name] = true
 				sets = append(sets, api.SetBonusOut{Name: name})
+			}
 		}
 	}
 
@@ -2728,24 +2745,24 @@ func parseTemplateEmptyAugments(raw string) []api.AugmentItem {
 	return out
 }
 
-func parseTemplateCannithCraftingSlots(raw string) []api.AugmentItem {
+func parseTemplateEssenceCraftingSlots(raw string) []api.AugmentItem {
 	s := strings.TrimSpace(raw)
 	if s == "" {
 		return nil
 	}
 	lower := strings.ToLower(s)
-	if !strings.HasPrefix(lower, "{{cannithcraftingslots") || !strings.HasSuffix(s, "}}") {
+	if !strings.HasPrefix(lower, "{{essencecraftingslots") || !strings.HasSuffix(s, "}}") {
 		return nil
 	}
 
 	out := []api.AugmentItem{
-		{AugmentType: "Cannith Crafting - Prefix Slot"},
-		{AugmentType: "Cannith Crafting - Suffix Slot"},
+		{AugmentType: "Essence Crafting - Prefix Slot"},
+		{AugmentType: "Essence Crafting - Suffix Slot"},
 	}
 
 	// Check if there is a parameter
 	// Locate the first top-level '|' after the template name
-	after := s[len("{{CannithCraftingSlots"):]
+	after := s[len("{{EssenceCraftingSlots"):]
 	i := 0
 	for i < len(after) && (after[i] == ' ' || after[i] == '\n' || after[i] == '\t' || after[i] == '\r') {
 		i++
@@ -2757,7 +2774,7 @@ func parseTemplateCannithCraftingSlots(raw string) []api.AugmentItem {
 		if len(parts) > 0 {
 			aboveTen := strings.TrimSpace(parts[0])
 			if strings.ToLower(aboveTen) == "true" {
-				out = append(out, api.AugmentItem{AugmentType: "Cannith Crafting - Mark of House Cannith Slot"})
+				out = append(out, api.AugmentItem{AugmentType: "Essence Crafting - Mark of House Cannith Slot"})
 			}
 		}
 	}
