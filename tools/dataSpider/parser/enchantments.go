@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -2867,6 +2868,86 @@ func parseTemplateDodge(rawDodgeValue string) *api.Enchantment {
 	}
 }
 
+func parseTemplateDodgeCap(rawDodgeCapValue string) *api.Enchantment {
+	const prefix = "{{DodgeCap|"
+	const suffix = "}}"
+	const defaultBonusType = "Enhancement" // Default from documentation
+	const baseName = "Maximum Dodge"
+
+	if !strings.HasPrefix(rawDodgeCapValue, prefix) || !strings.HasSuffix(rawDodgeCapValue, suffix) {
+		return nil
+	}
+
+	paramList := rawDodgeCapValue[len(prefix) : len(rawDodgeCapValue)-len(suffix)]
+	parts := strings.Split(paramList, "|")
+
+	// Usage: {{DodgeCap|(Enhancement Amount)|(Bonus Type)}}
+
+	// 1. Enhancement Amount (Required, Index 0)
+	if len(parts) < 1 {
+		return nil
+	}
+	amount := stripBrackets(parts[0])
+	if amount == "" {
+		return nil
+	}
+
+	var bonusType string
+
+	// 2. Bonus Type (Optional, Index 1 - defaults to Enhancement)
+	if len(parts) >= 2 {
+		value := stripBrackets(parts[1])
+		if value == "" {
+			bonusType = defaultBonusType
+		} else {
+			bonusType = value
+		}
+	} else {
+		bonusType = defaultBonusType // Default value
+	}
+
+	name := bonusType + " " + baseName + " +" + amount + "%"
+
+	return &api.Enchantment{
+		Name:      name,
+		Amount:    amount + "%",
+		BonusType: bonusType,
+		Notes:     new("Passive: +" + amount + "% " + bonusType + " bonus to Maximum Dodge."),
+	}
+}
+
+func parseTemplateTurnDice(rawTurnDiceValue string) *api.Enchantment {
+	const prefix = "{{TurnDice|"
+	const suffix = "}}"
+	const baseName = "Turn Undead Hit Dice"
+
+	if !strings.HasPrefix(rawTurnDiceValue, prefix) || !strings.HasSuffix(rawTurnDiceValue, suffix) {
+		return nil
+	}
+
+	paramList := rawTurnDiceValue[len(prefix) : len(rawTurnDiceValue)-len(suffix)]
+	parts := strings.Split(paramList, "|")
+
+	// Usage: {{TurnDice|(Count)}}
+
+	// 1. Count (Required, Index 0)
+	if len(parts) < 1 {
+		return nil
+	}
+	count := stripBrackets(parts[0])
+	if count == "" {
+		return nil
+	}
+
+	name := baseName + " +" + count
+
+	return &api.Enchantment{
+		Name:   name,
+		Amount: count,
+		Notes:  new("This will increase the total number of Hit Dice used in the Turn Undead calculation by " + count + ". However, these additional Dice will only take effect after the wielder rests."),
+	}
+}
+
 func parseTemplateDeadly(rawDeadlyValue string) *api.Enchantment {
 	const prefix = "{{Deadly|"
 	const suffix = "}}"
@@ -3004,7 +3085,7 @@ func parseTemplateReturning(rawRetValue string) *api.Enchantment {
 		name = baseName
 	} else {
 		// Otherwise, it's descriptive
-		name = fmt.Sprintf("%s (%s% Chance)", baseName, percent)
+		name = fmt.Sprintf("%s (%s%% Chance)", baseName, percent)
 	}
 
 	return &api.Enchantment{
@@ -4341,7 +4422,7 @@ func parseTemplateMagicalEfficiency(rawMEValue string) *api.Enchantment {
 	// The amount must be stored as a negative percentage (e.g., 5 -> -5%)
 	amount := ""
 	if num, err := strconv.Atoi(amountRaw); err == nil {
-		amount = fmt.Sprintf("-%d%", num)
+		amount = fmt.Sprintf("-%d%%", num)
 	} else {
 		// If conversion fails (e.g., amount is 'I', 'V'), use raw value with a negative prefix
 		amount = "-" + amountRaw + "%"
@@ -4417,7 +4498,7 @@ func parseTemplateDiversion(rawDivValue string) []*api.Enchantment {
 	if err != nil {
 		return nil
 	} // Amount must be convertible to number
-	amount := fmt.Sprintf("-%d%", amountNum)
+	amount := fmt.Sprintf("-%d%%", amountNum)
 
 	styleFlags, exists := diversionStyles[normalizedStyle]
 	if !exists {
@@ -4488,16 +4569,16 @@ func parseTemplateTendonSlice(rawTSValue string) *api.Enchantment {
 	case "percent":
 		name = "Tendon Slice " + amount + "%"
 		displayAmount = amount + "%"
-		notes = fmt.Sprintf("This effect gives a %s% chance to Hamstring the target for each attack that does damage.", amount)
+		notes = fmt.Sprintf("This effect gives a %s%% chance to Hamstring the target for each attack that does damage.", amount)
 	case "time":
 		name = "Tendon Slice " + amount
-		notes = fmt.Sprintf("On Hit: 6% chance to slow target's movement by 50%% for %s seconds.", amount)
+		notes = fmt.Sprintf("On Hit: 6%% chance to slow target's movement by 50%% for %s seconds.", amount)
 	default:
 		// Default: On Hit: {{#expr:{{{1}}}*2}}% chance to slow target's movement by 50% for 3 seconds.
 		val := 0
 		fmt.Sscanf(amount, "%d", &val)
 		name = "Tendon Slice " + amount
-		notes = fmt.Sprintf("On Hit: %d% chance to slow target's movement by 50%% for 3 seconds.", val*2)
+		notes = fmt.Sprintf("On Hit: %d%% chance to slow target's movement by 50%% for 3 seconds.", val*2)
 	}
 
 	return &api.Enchantment{
@@ -8106,6 +8187,62 @@ func parseTemplateDeception(raw string) []*api.Enchantment {
 
 // --- Main Enchantment Dispatcher ---
 
+func parseTemplateColorText(raw string) *api.Enchantment {
+	// {{ColorText|Color|Text}}
+	params := strings.TrimSuffix(strings.TrimPrefix(raw, "{{"), "}}")
+	parts := strings.Split(params, "|")
+	if len(parts) >= 3 {
+		return &api.Enchantment{
+			Name: parts[2],
+		}
+	}
+	return nil
+}
+
+func parseTemplateFiligreeItemEnchantment(raw string) *api.Enchantment {
+	// {{FiligreeItemEnchantment|Enchantment|Amount|VisibleText}}
+	params := strings.TrimSuffix(strings.TrimPrefix(raw, "{{"), "}}")
+	parts := strings.Split(params, "|")
+	if len(parts) < 2 {
+		return nil
+	}
+
+	name := strings.TrimSpace(parts[1])
+	amount := ""
+	if len(parts) >= 3 {
+		amount = strings.TrimSpace(parts[2])
+	}
+	// If 4th param exists, it might be the visible text, but we usually want the actual effect name
+	// In the example: {{FiligreeItemEnchantment|Armor Piercing||Fortification Bypass}}
+	// Enchantment is "Armor Piercing", Amount is empty, VisibleText is "Fortification Bypass"
+	// We'll prefer VisibleText if it's there as it's what the user sees.
+	if len(parts) >= 4 && strings.TrimSpace(parts[3]) != "" {
+		name = strings.TrimSpace(parts[3])
+	}
+
+	// Fix for "False Life (Enchantment)" etc.
+	if strings.HasSuffix(name, " (Enchantment)") {
+		name = strings.TrimSuffix(name, " (Enchantment)")
+	}
+
+	// Handle case where amount might be embedded in the name or vice versa
+	// Example: {{FiligreeItemEnchantment|Spell Points}} -> name "Spell Points", amount ""
+	// If it was meant to be "100 Spell Points", usually it's split.
+	// But let's check if the name starts with a number.
+	if amount == "" {
+		re := regexp.MustCompile(`^([+-]?\d+%?)\s+(.*)$`)
+		if m := re.FindStringSubmatch(name); len(m) >= 3 {
+			amount = m[1]
+			name = m[2]
+		}
+	}
+
+	return &api.Enchantment{
+		Name:   name,
+		Amount: amount,
+	}
+}
+
 // ParseEnchantments finds and parses all enchantment templates in the raw string.
 func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantment {
 	if strings.TrimSpace(rawEnchantments) == "" {
@@ -8218,6 +8355,12 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 			isStandard = true
 		case "VulnerabilityGuard":
 			enchantmentData = parseTemplateVulnerabilityGuard()
+			isStandard = true
+		case "FiligreeItemEnchantment":
+			enchantmentData = parseTemplateFiligreeItemEnchantment(fullTemplate)
+			isStandard = true
+		case "ColorText":
+			enchantmentData = parseTemplateColorText(fullTemplate)
 			isStandard = true
 		case "RockShattering":
 			enchantmentData = parseTemplateRockShattering()
@@ -8678,8 +8821,8 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 		case "EmptyAugments":
 			// EmptyAugments does not add enchantments; it's handled in the converter to add augment slots.
 			isStandard = true
-		case "CannithCraftingSlots":
-			// CannithCraftingSlots does not add enchantments; it's handled in the converter to add augment slots.
+		case "EssenceCraftingSlots":
+			// EssenceCraftingSlots does not add enchantments; it's handled in the converter to add augment slots.
 			isStandard = true
 		case "WhirlwindAbsorption":
 			enchantmentData = parseTemplateWhirlwindAbsorption(fullTemplate)
@@ -9150,6 +9293,12 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 		case "Dodge":
 			enchantmentData = parseTemplateDodge(fullTemplate)
 			isStandard = true
+		case "DodgeCap":
+			enchantmentData = parseTemplateDodgeCap(fullTemplate)
+			isStandard = true
+		case "TurnDice":
+			enchantmentData = parseTemplateTurnDice(fullTemplate)
+			isStandard = true
 		case "Deadly":
 			enchantmentData = parseTemplateDeadly(fullTemplate)
 			isStandard = true
@@ -9568,6 +9717,9 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 			isStandard = true
 		case "SneakAttackDice":
 			enchantmentData = parseTemplateSneakAttackDice(fullTemplate)
+			isStandard = true
+		case "ExtraSongs":
+			multiEnchantments = parseTemplateExtraSongs(fullTemplate)
 			isStandard = true
 		case "ExtraSmites":
 			multiEnchantments = parseTemplateExtraSmites(fullTemplate)
@@ -10768,6 +10920,53 @@ func parseTemplateOffensiveDamage(raw string) *api.Enchantment {
 		Name:  name,
 		Notes: new(note),
 	}
+}
+
+// Template: ExtraSongs
+// Usage: {{ExtraSongs|(Count)|(Hide Fast Regen)}}
+func parseTemplateExtraSongs(raw string) []*api.Enchantment {
+	const prefix = "{{ExtraSongs"
+	const suffix = "}}"
+	s := strings.TrimSpace(raw)
+	if !strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix) {
+		return nil
+	}
+
+	inner := strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix)
+	if strings.HasPrefix(inner, "|") {
+		inner = strings.TrimPrefix(inner, "|")
+	}
+
+	parts := splitParams(inner)
+	count := "1"
+	hideRegen := ""
+
+	if len(parts) >= 1 && strings.TrimSpace(parts[0]) != "" {
+		count = strings.TrimSpace(parts[0])
+	}
+	if len(parts) >= 2 {
+		hideRegen = strings.TrimSpace(parts[1])
+	}
+
+	var enchantments []*api.Enchantment
+
+	// 1. Extra Bard Song uses
+	enchantments = append(enchantments, &api.Enchantment{
+		Name:   "Extra Songs",
+		Amount: count,
+		Notes:  new("You have " + count + " additional Bard Song use per rest. You must rest to gain your initial charge."),
+	})
+
+	// 2. Regeneration aspect (default 10% faster)
+	if hideRegen == "" {
+		enchantments = append(enchantments, &api.Enchantment{
+			Name:   "Bard Song (Regeneration)",
+			Amount: "10%",
+			Notes:  new("This item makes your Bard Songs regenerate 10% faster."),
+		})
+	}
+
+	return enchantments
 }
 
 // Template: ExtraSmites
@@ -12574,7 +12773,7 @@ func parseTemplateFireShield(raw string) *api.Enchantment {
 		otherVersion = "Hot"
 	}
 
-	notes := fmt.Sprintf("When you are %s, there is a 10% chance that Fire Shield (%s) will be cast on you. If this effect activates while you have an active Fire Shield (%s) from another item source, they will nullify each other.", trigger, version, otherVersion)
+	notes := fmt.Sprintf("When you are %s, there is a 10%% chance that Fire Shield (%s) will be cast on you. If this effect activates while you have an active Fire Shield (%s) from another item source, they will nullify each other.", trigger, version, otherVersion)
 
 	return &api.Enchantment{
 		Name:  name,
@@ -14080,10 +14279,10 @@ func parseTemplateLifesealed(raw string) []*api.Enchantment {
 	// 2. Negative Energy Absorption
 	name := "Negative Energy Absorption"
 	if amount != "" {
-		name = fmt.Sprintf("Negative Energy Absorption %s%", amount)
+		name = fmt.Sprintf("Negative Energy Absorption %s%%", amount)
 	}
 
-	notes := fmt.Sprintf("You have a %s% %s bonus to Negative Energy Absorption.", amount, bonusType)
+	notes := fmt.Sprintf("You have a %s%% %s bonus to Negative Energy Absorption.", amount, bonusType)
 
 	results = append(results, &api.Enchantment{
 		Name:      name,
@@ -14703,7 +14902,7 @@ func parseTemplateVulnerability(raw string) *api.Enchantment {
 		vulnerableType = element + " Vulnerable"
 	}
 
-	notes := fmt.Sprintf("On Hit: Applies a stack of %s (%s% more damage for 3 seconds. This effect stacks up to 20 times, and loses one stack on expiration.). This effect may only occur on-hit once a second.", vulnerableType, percentage)
+	notes := fmt.Sprintf("On Hit: Applies a stack of %s (%s%% more damage for 3 seconds. This effect stacks up to 20 times, and loses one stack on expiration.). This effect may only occur on-hit once a second.", vulnerableType, percentage)
 
 	return &api.Enchantment{
 		Name:  name,
@@ -18329,7 +18528,7 @@ func parseTemplateBoneshatter(raw string) *api.Enchantment {
 		damageDice = "10d6"
 	}
 
-	notes := fmt.Sprintf("This weapon is powerful enough to shatter the bones of those it strikes. On an attack roll of 20 which is confirmed as a critical hit, the weapon breaks multiple bones in the target's body, causing significant impairment. Creatures with skeletons take %s damage and will have their movement and attacks slowed by 25% and their attack damage reduced by 25% when their bones are shattered.", damageDice)
+	notes := "This weapon is powerful enough to shatter the bones of those it strikes. On an attack roll of 20 which is confirmed as a critical hit, the weapon breaks multiple bones in the target's body, causing significant impairment. Creatures with skeletons take " + damageDice + " damage and will have their movement and attacks slowed by 25% and their attack damage reduced by 25% when their bones are shattered."
 
 	return &api.Enchantment{
 		Name:  name,
@@ -18366,7 +18565,7 @@ func parseTemplateStonePrison(raw string) *api.Enchantment {
 		dc = "100"
 	}
 
-	notes := fmt.Sprintf("This weapon is invested with the power of the earth. On an attack roll of 20 which is confirmed as a critical hit it will attempt to turn the target to stone, as the Flesh to Stone spell. A successful Fortitude DC: %s save negates the effect.", dc)
+	notes := "This weapon is invested with the power of the earth. On an attack roll of 20 which is confirmed as a critical hit it will attempt to turn the target to stone, as the Flesh to Stone spell. A successful Fortitude DC: " + dc + " save negates the effect."
 
 	return &api.Enchantment{
 		Name:  name,

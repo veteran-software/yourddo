@@ -15,9 +15,9 @@ import (
 var coreTemplateNames = []string{
 	"{{Template:Item|", "{{Template:Shield|", "{{Template:Material|", "{{Template:Augment|", "{{Template:Weapon|",
 	"{{Template:Armor|", "{{Template:Consumable|", "{{Template:Cosmetic|", "{{Template:RuneArm|", "{{Template:SpellCaster|", "{{Template:VIPLoyalty|",
-	"{{Template:Quiver|",
+	"{{Template:Quiver|", "{{Template:Filigree|",
 	"{{Template:Trick|", "{{Item|", "{{Shield|", "{{Material|", "{{Augment|", "{{Armor|", "{{VIPLoyalty|",
-	"{{Consumable|", "{{Cosmetic|", "{{RuneArm|", "{{Trick|", "{{Weapon|", "{{SpellCaster|", "{{Quiver|",
+	"{{Consumable|", "{{Cosmetic|", "{{RuneArm|", "{{Trick|", "{{Weapon|", "{{SpellCaster|", "{{Quiver|", "{{Filigree|",
 }
 
 func romanToInt(s string) int {
