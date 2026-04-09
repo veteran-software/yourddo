@@ -1,5 +1,5 @@
-import type { ReactElement } from 'react'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type {ReactElement} from 'react'
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {
   Accordion,
   Badge,
@@ -14,19 +14,19 @@ import {
   Stack,
   Table
 } from 'react-bootstrap'
-import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
-import { shallowEqual } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import {FaArrowUpRightFromSquare} from 'react-icons/fa6'
+import {shallowEqual} from 'react-redux'
+import {useLocation, useNavigate} from 'react-router-dom'
 import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
+import type {ShoppingListTotals} from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
-import { useAppSelector } from '../../redux/hooks.ts'
-import type { AugmentItem } from '../../types/augmentItem.ts'
-import type { Ingredient } from '../../types/ingredients.ts'
-import { findAugmentsForSlot } from '../../utils/augmentUtils.ts'
-import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
-import { toSingularName } from '../../utils/stringUtils.ts'
+import {useAppSelector} from '../../redux/hooks.ts'
+import type {AugmentItem} from '../../types/augmentItem.ts'
+import type {Ingredient} from '../../types/ingredients.ts'
+import {findAugmentsForSlot} from '../../utils/augmentUtils.ts'
+import {getOwnedIngredients} from '../../utils/jsxUtils.tsx'
+import {toSingularName} from '../../utils/stringUtils.ts'
 import {
   buildPermalinkUrl,
   encodeEssencePermalink,
@@ -291,6 +291,7 @@ const EssenceCrafting = () => {
   }
 
   const isCollapsed = (slotKey: string) => collapsedKeys.includes(slotKey)
+
   const toggleCollapsed = (slotKey: string) => {
     setCollapsedKeys((prev) => (prev.includes(slotKey) ? prev.filter((key) => key !== slotKey) : [...prev, slotKey]))
   }
