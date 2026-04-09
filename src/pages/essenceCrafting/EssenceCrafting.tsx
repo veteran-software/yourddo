@@ -1022,6 +1022,14 @@ const EssenceCrafting = () => {
           markCount += 1
         }
 
+        // Add materials for Minimum Level shard
+        const mlData = buildMinLevelMaterials(effectiveML, bound)
+        if (mlData) {
+          for (const r of mlData.rows) {
+            totalsMap.set(r.name, (totalsMap.get(r.name) ?? 0) + r.qty)
+          }
+        }
+
         processItemAffixes(item, effectiveML, bound, totalsMap)
       }
       return { totalsMap, markCount }
