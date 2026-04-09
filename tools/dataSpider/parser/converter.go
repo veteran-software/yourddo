@@ -399,6 +399,11 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 	if val, ok := fields["replaced"]; ok {
 		data.Replaced = val
 	}
+	if val, ok := fields["grouping"]; ok {
+	if val, ok := fields["link"]; ok {
+	if val, ok := fields["itemsets"]; ok {
+		data.SetBonus = append(data.SetBonus, extractSetBonusesFromText(val)...)
+	}
 	if val, ok := fields["icon"]; ok {
 		data.Icon = val
 	}
@@ -584,21 +589,31 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 }
 
 var itemSetRegex = regexp.MustCompile(`(?i)\{\{ItemSet(?:List)?\|([^}|]+)`)
+var itemSetRegex = regexp.MustCompile(`(?i)\{\{(?:Template:)?FiligreeSetList\|([^}]+)\}\}`)
+var itemSetListRegex = regexp.MustCompile(`(?i)\{\{ItemSet(?:List)?\|([^}]+)\}\}`)
 
 func extractSetBonusesFromText(text string) []api.SetBonusOut {
-	matches := itemSetRegex.FindAllStringSubmatch(text, -1)
 	if len(matches) == 0 {
-		return nil
-	}
 	var sets []api.SetBonusOut
 	seen := make(map[string]bool)
-	for _, m := range matches {
-		name := strings.TrimSpace(m[1])
-		if name != "" && !seen[name] {
-			seen[name] = true
-			sets = append(sets, api.SetBonusOut{Name: name})
+
+	matches := itemSetRegex.FindAllStringSubmatch(text, -1)
+		paramList := m[1]
+		for _, p := range parts {
+			if name != "" && !seen[name] {
+				sets = append(sets, api.SetBonusOut{Name: name})
 		}
 	}
+
+	for _, m := range matches {
+		if name != "" && !seen[name] {
+		paramList := m[1]
+		for _, p := range parts {
+			if name != "" && !seen[name] {
+				sets = append(sets, api.SetBonusOut{Name: name})
+		}
+	}
+
 	return sets
 }
 
@@ -1679,6 +1694,8 @@ func ParseMultiTemplateDropLocation(rawContent string) []api.DropSourceData {
 			dropData = parseTemplateSaltmarshPurchase(fullTemplate)
 		case "NightRevelsPurchase":
 			dropData = parseTemplateNightRevelsPurchase(fullTemplate)
+		case "ThreadsofFatePurchase":
+			dropData = parseTemplateThreadsofFatePurchase(fullTemplate)
 		default:
 			// FATAL ERROR for unknown templates
 			logrus.Fatalf("Found unexpected DropLocation template type: %s. Please update parsing logic. Raw string: %s", templateName, fullTemplate)
@@ -1942,6 +1959,47 @@ func parseTemplateVendorPurchase(rawVPValue string) api.DropSourceData {
 	}
 	if len(parts) >= 5 {
 		drop.VendorArea = stripWikitext(parts[4])
+	}
+
+	return drop
+}
+
+func parseTemplateThreadsofFatePurchase(rawContent string) api.DropSourceData {
+	// Support both {{ThreadsofFatePurchase|...}} and {{ThreadsofFatePurchase}}
+	name := "ThreadsofFatePurchase"
+	prefix := "{{" + name
+	suffix := "}}"
+
+	if !strings.HasPrefix(rawContent, prefix) || !strings.HasSuffix(rawContent, suffix) {
+		return api.DropSourceData{SourceType: "Unknown"}
+	}
+
+	drop := api.DropSourceData{SourceType: name}
+
+	// Handle case with no parameters: {{ThreadsofFatePurchase}}
+	if rawContent == prefix+suffix {
+		return drop
+	}
+
+	// Handle case with parameters: {{ThreadsofFatePurchase|...}}
+	if !strings.HasPrefix(rawContent, prefix+"|") {
+		return drop
+	}
+
+	paramList := rawContent[len(prefix)+1 : len(rawContent)-len(suffix)]
+	parts := splitParams(paramList)
+
+	// Usage: {{ThreadsofFatePurchase|(count)|(Additional Item)|(Additional Item Count)}}
+	if len(parts) >= 1 {
+		drop.ThreadsOfFateCount = strings.TrimSpace(parts[0])
+	}
+	if len(parts) >= 2 {
+		drop.AdditionalItemName = stripWikitext(parts[1])
+	}
+	if len(parts) >= 3 {
+		drop.AdditionalItemCount = strings.TrimSpace(parts[2])
+	} else if len(parts) == 2 {
+		drop.AdditionalItemCount = "1"
 	}
 
 	return drop
