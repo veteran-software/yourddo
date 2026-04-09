@@ -693,6 +693,44 @@ const EssenceCrafting = () => {
     [enhancementByName]
   )
 
+  const calculateBoundShardStats = (level: number) => {
+    let shardLevel: number
+    if (level === 1) {
+      shardLevel = 1
+    } else {
+      shardLevel = 20 + (level - 2) * 10
+    }
+    const essenceQty = level * 10
+    return { shardLevel, essenceQty }
+  }
+
+  const calculateUnboundShardStats = (level: number) => {
+    let shardLevel: number
+    if (level === 1) {
+      shardLevel = 50
+    } else {
+      shardLevel = 70 + (level - 2) * 10
+    }
+
+    let essenceQty: number
+    if (level === 1) {
+      essenceQty = 100
+    } else {
+      essenceQty = 140 + (level - 2) * 20
+    }
+
+    let purifiedQty = 0
+    if (level >= 31) {
+      purifiedQty = 15
+    } else if (level >= 26) {
+      purifiedQty = 10
+    } else if (level >= 21) {
+      purifiedQty = 5
+    }
+
+    return { shardLevel, essenceQty, purifiedQty }
+  }
+
   const buildMinLevelMaterials = useCallback(
     (level: number, bound: boolean): { shardLevel: number | null; rows: { name: string; qty: number }[] } | null => {
       const rows: { name: string; qty: number }[] = []
@@ -701,54 +739,25 @@ const EssenceCrafting = () => {
 
       let shardLevel: number
       let essenceQty: number
+      let purifiedQty = 0
 
       if (bound) {
-        // Shard level for Bound Min Level Shards:
-        // ML 1 = 1, ML 2 = 20, for each level over 2 add 10
-        if (level === 1) {
-          shardLevel = 1
-        } else {
-          shardLevel = 20 + (level - 2) * 10
-        }
-
-        // Essence quantity for Bound: 10 * ML
-        essenceQty = level * 10
+        const stats = calculateBoundShardStats(level)
+        shardLevel = stats.shardLevel
+        essenceQty = stats.essenceQty
       } else {
-        // Shard level for Unbound Min Level Shards:
-        // ML 1 = 50, ML 2 = 70, for each level over 2 add 10
-        if (level === 1) {
-          shardLevel = 50
-        } else {
-          shardLevel = 70 + (level - 2) * 10
-        }
-
-        // Essence quantity for Unbound:
-        // ML 1 = 100, ML 2 = 140, for each level over 2 add 20
-        if (level === 1) {
-          essenceQty = 100
-        } else {
-          essenceQty = 140 + (level - 2) * 20
-        }
+        const stats = calculateUnboundShardStats(level)
+        shardLevel = stats.shardLevel
+        essenceQty = stats.essenceQty
+        purifiedQty = stats.purifiedQty
       }
 
       if (essenceQty > 0) {
         rows.push({ name: ESSENCE_NAME, qty: essenceQty })
       }
 
-      // Unbound Minimum Level shards require PEDs (ML 21+) from U79
-      if (!bound) {
-        let purifiedQty = 0
-        if (level >= 31) {
-          purifiedQty = 15
-        } else if (level >= 26) {
-          purifiedQty = 10
-        } else if (level >= 21) {
-          purifiedQty = 5
-        }
-
-        if (purifiedQty > 0) {
-          rows.push({ name: PURIFIED_NAME, qty: purifiedQty })
-        }
+      if (purifiedQty > 0) {
+        rows.push({ name: PURIFIED_NAME, qty: purifiedQty })
       }
 
       if (rows.length === 0) {
