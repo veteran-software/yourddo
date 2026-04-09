@@ -1073,7 +1073,7 @@ const EssenceCrafting = () => {
     return {
       compute
     }
-  }, [items, masterMinLevel, activeKeys, isEnhancementAllowedAtML, buildMaterials])
+  }, [items, masterMinLevel, isEnhancementAllowedAtML, buildMaterials, activeKeys, buildMinLevelMaterials])
 
   // Extracted to reduce nesting/cognitive complexity
   const renderMinLevelOverride = (slotKey: string, item: ItemState): ReactElement => {
