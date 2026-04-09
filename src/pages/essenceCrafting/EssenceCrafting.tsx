@@ -813,10 +813,16 @@ const EssenceCrafting = () => {
   }
 
   // Renders a full-width stacked Accordion of requirement cards (default closed)
-  function renderMaterialsAccordion(slotKey: string, item: ItemState): ReactElement | null {
+  const renderMaterialsAccordion = (slotKey: string, item: ItemState): ReactElement | null => {
     const effectiveML: number = items[slotKey].minLevelOverride ?? masterMinLevel
 
-    const selections: { key: string; label: string; name: string | null }[] = [
+    const selections: { key: string; label: string; name: string | null; isMinLevel?: boolean }[] = [
+      {
+        key: 'minLevel',
+        label: 'Minimum Level',
+        name: `Minimum Level ${String(effectiveML)}`,
+        isMinLevel: true
+      },
       {
         key: 'prefix',
         label: 'Prefix',
@@ -848,7 +854,9 @@ const EssenceCrafting = () => {
         const combined = combinedByEntry || combinedByShortName
 
         let display: string | null
-        if (combinedByEntry) {
+        if (selection.isMinLevel) {
+          display = `Minimum Level ${String(effectiveML)} Shard`
+        } else if (combinedByEntry) {
           display = getCombinedDisplayFromEntry(selection.name ?? '', effectiveML)
         } else if (combinedByShortName) {
           display = getCombinedDisplay(selection.name ?? '', effectiveML)
@@ -860,18 +868,26 @@ const EssenceCrafting = () => {
           ...selection,
           isCombined: combined,
           // build both material sets; body will render both
-          boundData: buildMaterials(selection.name, true),
-          unboundData: buildMaterials(selection.name, false),
+          boundData: selection.isMinLevel
+            ? buildMinLevelMaterials(effectiveML, true)
+            : buildMaterials(selection.name, true),
+          unboundData: selection.isMinLevel
+            ? buildMinLevelMaterials(effectiveML, false)
+            : buildMaterials(selection.name, false),
           valueOnly: getEnhancementValueOnly(selection.name, effectiveML),
           display: display
         }
       })
       // Apply ML gating: hide Insightful effects when effective ML < 10
-      .filter((entry) => entry.name && isEnhancementAllowedAtML(entry.name, effectiveML)) as {
+      .filter(
+        (entry) =>
+          (entry.isMinLevel ?? entry.name) && (entry.isMinLevel ?? isEnhancementAllowedAtML(entry.name, effectiveML))
+      ) as {
       key: string
       label: string
       name: string
       isCombined: boolean
+      isMinLevel?: boolean
       boundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
       unboundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
       valueOnly: string | null
