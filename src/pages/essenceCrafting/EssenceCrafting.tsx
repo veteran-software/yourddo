@@ -433,6 +433,7 @@ const EssenceCrafting = () => {
       <Form.Group controlId={`${slotKey}-${affix}`}>
         <Form.Label>{label}</Form.Label>
         <Form.Select
+          size='sm'
           value={value}
           disabled={disabled}
           onChange={(event) => {
@@ -988,6 +989,7 @@ const EssenceCrafting = () => {
                 </small>
               </div>
             </Accordion.Header>
+
             <Accordion.Body className='p-0'>
               {renderUnifiedMaterials(accordionEntry.boundData, accordionEntry.unboundData)}
             </Accordion.Body>
@@ -1103,6 +1105,7 @@ const EssenceCrafting = () => {
     return (
       <>
         <Form.Select
+          size='sm'
           className={selectIsInvalid ? 'is-invalid' : undefined}
           value={item.minLevelOverride ?? 0}
           onChange={(event) => {
@@ -1190,6 +1193,7 @@ const EssenceCrafting = () => {
               <Form.Group className='mb-3' controlId='master-min-level'>
                 <Form.Label>Minimum Level</Form.Label>
                 <Form.Select
+                  size='sm'
                   value={masterMinLevel}
                   onChange={(event) => {
                     setMasterMinLevel(Number(event.target.value) || 1)
@@ -1214,7 +1218,7 @@ const EssenceCrafting = () => {
                       onClick={() => {
                         toggleSlot(slotDef.key)
                       }}
-                      className='d-flex justify-content-between align-items-center'
+                      className='d-flex justify-content-between align-items-center p-1 px-2'
                     >
                       <span>{slotDef.label}</span>
                       {active && (
