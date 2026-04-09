@@ -105,7 +105,13 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                   if (!isItemVisibleForClasses(item, activeSetup)) return false
                   if (itemNameSearch) {
                     const searchLower = itemNameSearch.toLowerCase().trim()
-                    if (!item.name.toLowerCase().includes(searchLower))
+                    if (
+                      !item.name.toLowerCase().includes(searchLower) &&
+                      !item.name
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]/g, '')
+                        .includes(searchLower.replace(/[^a-z0-9]/g, ''))
+                    )
                       return false
                   }
                   return indexedItems.some(
