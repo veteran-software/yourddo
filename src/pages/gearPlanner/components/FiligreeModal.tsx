@@ -130,8 +130,8 @@ const FiligreeModal = (props: Props) => {
       { threshold: 0.1 }
     )
 
+    const currentTarget = observerTarget.current
     const timeoutId = setTimeout(() => {
-      const currentTarget = observerTarget.current
       if (currentTarget) {
         observer.observe(currentTarget)
       }
@@ -139,12 +139,12 @@ const FiligreeModal = (props: Props) => {
 
     return () => {
       clearTimeout(timeoutId)
-      const currentTarget = observerTarget.current
       if (currentTarget) {
         observer.unobserve(currentTarget)
       }
       observer.disconnect()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSlotIndex])
 
   return (

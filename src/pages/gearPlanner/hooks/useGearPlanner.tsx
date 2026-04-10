@@ -240,13 +240,13 @@ const useGearPlanner = (props: Props) => {
   useEffect(() => {
     if (allItems.length === 0 || Object.keys(setBonusIndex).length === 0) return
 
-    const processData = async () => {
-      // Split processing into chunks of 1000 items to keep UI responsive
-      const chunkSize = 1000
+    const indexItemsBySlot = async (
+      items: GearItem[],
+      chunkSize: number
+    ): Promise<Map<GearSlot, GearItem[]>> => {
       const slotMap = new Map<GearSlot, GearItem[]>()
-
-      for (let i = 0; i < allItems.length; i += chunkSize) {
-        const chunk = allItems.slice(i, i + chunkSize)
+      for (let i = 0; i < items.length; i += chunkSize) {
+        const chunk = items.slice(i, i + chunkSize)
         for (const item of chunk) {
           const list = slotMap.get(item.slot)
           if (list) {
@@ -258,13 +258,17 @@ const useGearPlanner = (props: Props) => {
         // Yield to the main thread
         await new Promise((resolve) => setTimeout(resolve, 0))
       }
+      return slotMap
+    }
 
-      setAllItemsBySlot(slotMap)
-
+    const indexSetsByItem = async (
+      index: SetBonusIndex,
+      chunkSize: number
+    ): Promise<Map<string, string[]>> => {
       const setsMap = new Map<string, string[]>()
-      const setEntries = Object.entries(setBonusIndex)
-      for (let i = 0; i < setEntries.length; i += 100) {
-        const chunk = setEntries.slice(i, i + 100)
+      const setEntries = Object.entries(index)
+      for (let i = 0; i < setEntries.length; i += chunkSize) {
+        const chunk = setEntries.slice(i, i + chunkSize)
         for (const [setName, items] of chunk) {
           for (const item of items) {
             const key = `${item.name}|${String(item.minLevel)}`
@@ -278,8 +282,16 @@ const useGearPlanner = (props: Props) => {
         }
         await new Promise((resolve) => setTimeout(resolve, 0))
       }
+      return setsMap
+    }
 
+    const processData = async () => {
+      const slotMap = await indexItemsBySlot(allItems, 1000)
+      setAllItemsBySlot(slotMap)
+
+      const setsMap = await indexSetsByItem(setBonusIndex, 100)
       setItemToSetsMap(setsMap)
+
       setDataReady(true)
     }
 
@@ -523,65 +535,63 @@ const useGearPlanner = (props: Props) => {
     if (!activeSetup || !dataReady) return []
     const { minLevel: min, maxLevel: max } = activeSetup
 
-    // Pre-calculate visible item keys for current setup in level range
-    const visibleItemKeys = new Set<string>()
-
-    // Optimization: Only iterate over allItems if we really need to (global set visibility)
-    // But even then, let's limit it to items in the current level range and visible for classes.
-    // We can use allItemsBySlot to skip entire slots if they aren't relevant (e.g. Pet slots if no pet)
-    for (const [slot, items] of allItemsBySlot.entries()) {
-      if (!isItemVisibleForClasses({ slot } as GearItem, activeSetup)) continue
-      for (const i of items) {
-        const level = Number(i.minLevel) || 1
-        if (level >= min && level <= max) {
-          const key = `${i.name}|${level.toString()}`
-          visibleItemKeys.add(key)
-        }
-      }
-    }
-
-    const setsWithItemsInSlot = new Set<string>()
-    if (browsingSlot) {
-      const slotItems = allItemsBySlot.get(browsingSlot) ?? []
-      for (const i of slotItems) {
-        const level = Number(i.minLevel) || 1
-        if (
-          level >= min &&
-          level <= max &&
-          isItemVisibleForClasses(i, activeSetup) &&
-          shouldShowItem(i, browsingSlot, activeSetup, true)
-        ) {
-          const key = `${i.name}|${level.toString()}`
-          const itemSets = itemToSetsMap.get(key)
-          if (itemSets) {
-            itemSets.forEach((s) => setsWithItemsInSlot.add(s))
+    const getVisibleItemKeys = () => {
+      const keys = new Set<string>()
+      for (const [slot, items] of allItemsBySlot.entries()) {
+        if (!isItemVisibleForClasses({ slot } as GearItem, activeSetup)) continue
+        for (const i of items) {
+          const level = Number(i.minLevel) || 1
+          if (level >= min && level <= max) {
+            const key = `${i.name}|${level.toString()}`
+            keys.add(key)
           }
         }
       }
+      return keys
+    }
+
+    const getSetsWithItemsInSlot = () => {
+      const sets = new Set<string>()
+      if (browsingSlot) {
+        const slotItems = allItemsBySlot.get(browsingSlot) ?? []
+        for (const i of slotItems) {
+          const level = Number(i.minLevel) || 1
+          if (
+            level >= min &&
+            level <= max &&
+            isItemVisibleForClasses(i, activeSetup) &&
+            shouldShowItem(i, browsingSlot, activeSetup, true)
+          ) {
+            const key = `${i.name}|${level.toString()}`
+            const itemSets = itemToSetsMap.get(key)
+            if (itemSets) {
+              itemSets.forEach((s) => sets.add(s))
+            }
+          }
+        }
+      }
+      return sets
+    }
+
+    const visibleItemKeys = getVisibleItemKeys()
+    const setsWithItemsInSlot = getSetsWithItemsInSlot()
+
+    const isSetVisibleInRange = (setName: string) => {
+      const indexedItems = setBonusIndex[setName]
+      for (const item of indexedItems) {
+        if (item.minLevel >= min && item.minLevel <= max) {
+          if (visibleItemKeys.has(`${item.name}|${item.minLevel.toString()}`)) {
+            return true
+          }
+        }
+      }
+      return false
     }
 
     return Object.keys(setBonusIndex)
       .filter((setName) => {
-        // Global requirement: must have items in level range and visible for classes
-        const indexedItems = setBonusIndex[setName]
-        let hasVisibleInLevelRange = false
-        for (const item of indexedItems) {
-          if (item.minLevel >= min && item.minLevel <= max) {
-            if (
-              visibleItemKeys.has(`${item.name}|${item.minLevel.toString()}`)
-            ) {
-              hasVisibleInLevelRange = true
-              break
-            }
-          }
-        }
-        if (!hasVisibleInLevelRange) return false
-
-        // Slot-specific requirement: if browsing a slot, must have items in this slot
-        if (browsingSlot) {
-          return setsWithItemsInSlot.has(setName)
-        }
-
+        if (!isSetVisibleInRange(setName)) return false
+        if (browsingSlot && !setsWithItemsInSlot.has(setName)) return false
         return true
       })
       .sort((a, b) => a.localeCompare(b))
@@ -655,9 +665,9 @@ const useGearPlanner = (props: Props) => {
       { threshold: 0.1 }
     )
 
+    const currentTarget = observerTarget.current
     // Give the DOM a moment to render the spinner if it just appeared
     const timeoutId = setTimeout(() => {
-      const currentTarget = observerTarget.current
       if (currentTarget) {
         observer.observe(currentTarget)
       }
@@ -665,12 +675,12 @@ const useGearPlanner = (props: Props) => {
 
     return () => {
       clearTimeout(timeoutId)
-      const currentTarget = observerTarget.current
       if (currentTarget) {
         observer.unobserve(currentTarget)
       }
       observer.disconnect()
     }
+
   }, [loadMore, browsingSlot])
 
   const searchResultsBySlot = useMemo(() => {
