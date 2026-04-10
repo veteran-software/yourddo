@@ -811,7 +811,7 @@ func parseTemplateEnhancementBonus(rawBonusValue string, itemType string) []*api
 			BonusType: bonusType,
 		})
 		enchantments = append(enchantments, &api.Enchantment{
-			Name:      "Damage",
+			Name:      "Damage Rolls",
 			Amount:    amount,
 			BonusType: bonusType,
 		})
@@ -1128,6 +1128,7 @@ func parseTemplateAC(rawACValue string) *api.Enchantment {
 	var amount string
 	var name string
 	var bonusType string
+	var notes *string
 
 	// 2. Enhancement Amount (Required, Index 1)
 	if len(parts) >= 2 {
@@ -1149,36 +1150,53 @@ func parseTemplateAC(rawACValue string) *api.Enchantment {
 	}
 
 	normalizedSource := strings.ToLower(acSource)
-	normalizedBonus := strings.ToLower(bonusType)
 
-	// Define the required sets
-	targetSources := map[string]bool{
-		"natural armor": true,
-		"shield":        true,
-	}
-	targetBonusTypes := map[string]bool{
-		"artifact": true,
-		"insight":  true,
-		"profane":  true,
-		"primal":   true,
-	}
-
-	if targetSources[normalizedSource] && targetBonusTypes[normalizedBonus] {
-		// Prepend Bonus Type to the Source Name (e.g., "Insight Natural Armor")
-		// and keep the Bonus field clean.
-		name = fmt.Sprintf("%s %s", bonusType, acSource)
-	} else {
-		if normalizedSource == "rough hide" {
-			name = bonusType
+	// Determine BonusType (modifier) based on source and parameters
+	var calculatedBonusType string
+	switch normalizedSource {
+	case "deflection", "natural armor", "shield", "armor":
+		calculatedBonusType = bonusType
+	case "rough hide", "hardened exterior":
+		if len(parts) >= 3 && stripBrackets(parts[2]) != "" {
+			calculatedBonusType = stripBrackets(parts[2])
 		} else {
-			name = acSource
+			calculatedBonusType = "Primal"
 		}
+	case "heightened awareness":
+		if len(parts) >= 3 && stripBrackets(parts[2]) != "" {
+			calculatedBonusType = stripBrackets(parts[2])
+		} else {
+			calculatedBonusType = "Insight"
+		}
+	case "protection from evil":
+		if len(parts) >= 3 && stripBrackets(parts[2]) != "" {
+			calculatedBonusType = stripBrackets(parts[2])
+		} else {
+			calculatedBonusType = "Deflection"
+		}
+		notes = new("vs. Evil")
+	case "armor class":
+		calculatedBonusType = "" // armor class case doesn't specify a bonus type in the EnchCat
+	default:
+		calculatedBonusType = bonusType
 	}
+
+	// Format Name as Armor Class (<source>)
+	// Use title case for source in name
+	var sourceForName string
+	if normalizedSource == "armor class" {
+		sourceForName = "Base"
+	} else {
+		sourceForName = cases.Title(language.English).String(acSource)
+	}
+
+	name = fmt.Sprintf("Armor Class (%s)", sourceForName)
 
 	return &api.Enchantment{
-		Name:      "Armor Class",
+		Name:      name,
 		Amount:    amount,
-		BonusType: name,
+		BonusType: calculatedBonusType,
+		Notes:     notes,
 	}
 }
 
@@ -2952,7 +2970,7 @@ func parseTemplateDeadly(rawDeadlyValue string) *api.Enchantment {
 	const prefix = "{{Deadly|"
 	const suffix = "}}"
 	const defaultBonusType = "Competence" // Default from documentation
-	const baseName = "Damage"
+	const baseName = "Damage Rolls"
 
 	if !strings.HasPrefix(rawDeadlyValue, prefix) || !strings.HasSuffix(rawDeadlyValue, suffix) {
 		return nil
@@ -8068,7 +8086,7 @@ func parseTemplateSneakAttackDamage(raw string) *api.Enchantment {
 	}
 
 	return &api.Enchantment{
-		Name:      "Sneak Attack Damage",
+		Name:      "Sneak Attack Damage Rolls",
 		Amount:    amount,
 		BonusType: bonusType,
 	}
@@ -8161,21 +8179,21 @@ func parseTemplateDeception(raw string) []*api.Enchantment {
 		if enh == "" {
 			enh = "1"
 		}
-		out = append(out, &api.Enchantment{Name: "Sneak Attack", Amount: enh, BonusType: "Enhancement"})
-		out = append(out, &api.Enchantment{Name: "Sneak Attack Damage", Amount: timesTwo(enh), BonusType: "Enhancement"})
+		out = append(out, &api.Enchantment{Name: "Sneak Attack Rolls", Amount: enh, BonusType: "Enhancement"})
+		out = append(out, &api.Enchantment{Name: "Sneak Attack Damage Rolls", Amount: timesTwo(enh), BonusType: "Enhancement"})
 	case "custom":
 		if enh != "" {
-			out = append(out, &api.Enchantment{Name: "Sneak Attack", Amount: enh, BonusType: bt})
+			out = append(out, &api.Enchantment{Name: "Sneak Attack Rolls", Amount: enh, BonusType: bt})
 		}
 		if dmg != "" {
-			out = append(out, &api.Enchantment{Name: "Sneak Attack Damage", Amount: dmg, BonusType: bt})
+			out = append(out, &api.Enchantment{Name: "Sneak Attack Damage Rolls", Amount: dmg, BonusType: bt})
 		}
 	case "": // #default path when type omitted
 		fallthrough
 	default: // #default in the template when unrecognized value
 		if enh != "" {
-			out = append(out, &api.Enchantment{Name: "Sneak Attack", Amount: enh, BonusType: bt})
-			out = append(out, &api.Enchantment{Name: "Sneak Attack Damage", Amount: timesTwo(enh), BonusType: bt})
+			out = append(out, &api.Enchantment{Name: "Sneak Attack Rolls", Amount: enh, BonusType: bt})
+			out = append(out, &api.Enchantment{Name: "Sneak Attack Damage Rolls", Amount: timesTwo(enh), BonusType: bt})
 		}
 	}
 
@@ -8244,6 +8262,25 @@ func parseTemplateFiligreeItemEnchantment(raw string) *api.Enchantment {
 }
 
 // ParseEnchantments finds and parses all enchantment templates in the raw string.
+func parseTemplateSetItemEnchantment(raw string) *api.Enchantment {
+	// {{SetItemEnchantment|Enchantment Name|Modifier (optional)|Display Name (optional)}}
+	parts := strings.Split(raw, "|")
+	if len(parts) < 2 {
+		return nil
+	}
+	name := strings.TrimSpace(parts[1])
+	// Remove "(Enchantment)" suffix if present
+	name = strings.TrimSuffix(name, " (Enchantment)")
+
+	res := &api.Enchantment{
+		Name: name,
+	}
+	if len(parts) >= 3 && strings.TrimSpace(parts[2]) != "" {
+		res.Amount = strings.TrimSpace(parts[2])
+	}
+	return res
+}
+
 func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantment {
 	if strings.TrimSpace(rawEnchantments) == "" {
 		return nil
@@ -8356,6 +8393,12 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 		case "VulnerabilityGuard":
 			enchantmentData = parseTemplateVulnerabilityGuard()
 			isStandard = true
+		case "SetItemEnchantment":
+			enchantmentData = parseTemplateSetItemEnchantment(fullTemplate)
+			isStandard = true
+		case "ItemSetTitle":
+			// We skip this as it's just the title of the set
+			continue
 		case "FiligreeItemEnchantment":
 			enchantmentData = parseTemplateFiligreeItemEnchantment(fullTemplate)
 			isStandard = true
@@ -8821,8 +8864,8 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 		case "EmptyAugments":
 			// EmptyAugments does not add enchantments; it's handled in the converter to add augment slots.
 			isStandard = true
-		case "EssenceCraftingSlots":
-			// EssenceCraftingSlots does not add enchantments; it's handled in the converter to add augment slots.
+		case "CannithCraftingSlots":
+			// CannithCraftingSlots does not add enchantments; it's handled in the converter to add augment slots.
 			isStandard = true
 		case "WhirlwindAbsorption":
 			enchantmentData = parseTemplateWhirlwindAbsorption(fullTemplate)
@@ -9016,7 +9059,7 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 			dice := ParseTemplateDice(fullTemplate)
 			if dice.Raw != "" {
 				enchantmentData = &api.Enchantment{
-					Name:   "Damage",
+					Name:   "Damage Rolls",
 					Amount: dice.Raw,
 				}
 			}
@@ -11994,7 +12037,7 @@ func parseTemplateLitanyCombatBonus(raw string) []*api.Enchantment {
 			Notes:     new("The Litany of the Dead enhances the combat abilities of its owner. Grants a Profane bonus to attack bonus."),
 		},
 		{
-			Name:      "Damage",
+			Name:      "Damage Rolls",
 			Amount:    damageBonus,
 			BonusType: "Profane",
 			Notes:     new("The Litany of the Dead enhances the combat abilities of its owner. Grants a Profane bonus to damage."),
@@ -12481,7 +12524,7 @@ func parseTemplateSneakAttack(raw string) []*api.Enchantment {
 
 	// 1. Sneak Attack (Accuracy)
 	results = append(results, &api.Enchantment{
-		Name:      "Sneak Attack",
+		Name:      "Sneak Attack Rolls",
 		Amount:    enhancementAmount,
 		BonusType: bonusType,
 	})
@@ -12489,7 +12532,7 @@ func parseTemplateSneakAttack(raw string) []*api.Enchantment {
 	// 2. Sneak Attack Damage
 	if damageAmount != "" {
 		results = append(results, &api.Enchantment{
-			Name:      "Sneak Attack Damage",
+			Name:      "Sneak Attack Damage Rolls",
 			Amount:    damageAmount,
 			BonusType: bonusType,
 		})

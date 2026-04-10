@@ -348,7 +348,7 @@ func parseEffects(out *api.AugmentItem, fields map[string]string) {
 		if m := reSneak.FindStringSubmatch(desc); len(m) == 2 {
 			if val, err := strconv.Atoi(m[1]); err == nil {
 				effects = append(effects, api.PartialEnhancementOut{
-					Name:     "Sneak Attack",
+					Name:     "Sneak Attack Rolls",
 					Modifier: val,
 					Bonus:    "Enhancement",
 				})
@@ -357,7 +357,7 @@ func parseEffects(out *api.AugmentItem, fields map[string]string) {
 		if m := reSneakDmg.FindStringSubmatch(desc); len(m) == 2 {
 			if val, err := strconv.Atoi(m[1]); err == nil {
 				effects = append(effects, api.PartialEnhancementOut{
-					Name:     "Sneak Attack Damage",
+					Name:     "Sneak Attack Damage Rolls",
 					Modifier: val,
 					Bonus:    "Enhancement",
 				})

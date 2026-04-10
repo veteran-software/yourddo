@@ -342,7 +342,7 @@ type ItemData struct {
 	EnchantmentsRaw      string                `json:"-"`
 	Augments             []AugmentItem         `json:"augments,omitempty"`
 	AugmentsRaw          string                `json:"-"`
-	ItemSetsRaw          string                `json:"-"`
+	ItemSetsRaw          string                `json:"itemSetsRaw,omitempty"`
 	SetBonus             []SetBonusOut         `json:"setBonus,omitempty"`
 }
 
@@ -360,4 +360,14 @@ type FiligreeSetBonus struct {
 type FiligreeSet struct {
 	Name    string             `json:"name"`
 	Bonuses []FiligreeSetBonus `json:"bonuses"`
+}
+
+type ItemSetBonus struct {
+	Threshold    int                     `json:"threshold"`
+	Enhancements []PartialEnhancementOut `json:"enhancements"`
+}
+
+type ItemSet struct {
+	Name    string         `json:"name"`
+	Bonuses []ItemSetBonus `json:"bonuses"`
 }
