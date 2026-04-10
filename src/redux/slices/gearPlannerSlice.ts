@@ -72,6 +72,31 @@ const gearPlannerSlice = createSlice({
   name: 'gearPlanner',
   initialState,
   reducers: {
+    enforceSingleMinorArtifact: (
+      state,
+      action: PayloadAction<{
+        setupId: string
+        item: GearItem | null
+        slot: GearSlot
+      }>
+    ) => {
+      const { setupId, item, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === setupId)
+      if (setup && item && isMinorArtifact(item)) {
+        Object.keys(setup.slots).forEach((s) => {
+          const currentItem = setup.slots[s as GearSlot]
+          if (currentItem && isMinorArtifact(currentItem) && s !== slot) {
+            const otherSlot = s as GearSlot
+            const otherItem = setup.slots[otherSlot]
+            if (otherItem) {
+              setup.slottedFiligrees[otherItem.id] = []
+              setup.unlockedFiligreeSlots[otherItem.id] = 0
+            }
+            setup.slots[otherSlot] = null
+          }
+        })
+      }
+    },
     setActiveSetup: (state, action: PayloadAction<string>) => {
       state.activeSetupId = action.payload
     },
@@ -136,22 +161,10 @@ const gearPlannerSlice = createSlice({
           (s) => s.id === state.activeSetupId
         )
         if (setup) {
-          // If we're equipping a minor artifact, ensure only one is equipped
-          if (item && isMinorArtifact(item)) {
-            Object.keys(setup.slots).forEach((s) => {
-              const currentItem = setup.slots[s as GearSlot]
-              if (currentItem && isMinorArtifact(currentItem) && s !== slot) {
-                // Remove the other minor artifact
-                const otherSlot = s as GearSlot
-                const otherItem = setup.slots[otherSlot]
-                if (otherItem) {
-                  delete setup.slottedFiligrees[otherItem.id]
-                  delete setup.unlockedFiligreeSlots[otherItem.id]
-                }
-                setup.slots[otherSlot] = null
-              }
-            })
-          }
+          gearPlannerSlice.caseReducers.enforceSingleMinorArtifact(state, {
+            payload: { setupId: state.activeSetupId, item, slot },
+            type: 'gearPlanner/enforceSingleMinorArtifact'
+          })
 
           const oldItem = setup.slots[slot]
           if (oldItem) {
