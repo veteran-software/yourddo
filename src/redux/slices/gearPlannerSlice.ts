@@ -1,7 +1,17 @@
-import {createSlice, type PayloadAction} from '@reduxjs/toolkit'
-import {isMinorArtifact} from '../../pages/gearPlanner/helpers'
-import type {Curse, GearAugment, GearItem, GearSetup, LootItem} from '../../pages/gearPlanner/types'
-import {ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GearSlot} from '../../pages/gearPlanner/types'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { isMinorArtifact } from '../../pages/gearPlanner/helpers'
+import type {
+  Curse,
+  GearAugment,
+  GearItem,
+  GearSetup,
+  LootItem
+} from '../../pages/gearPlanner/types'
+import {
+  ARTIFICER_PET_SLOTS,
+  DRUID_PET_SLOTS,
+  GearSlot
+} from '../../pages/gearPlanner/types'
 
 interface PetState {
   slots: Record<string, GearItem | null>
@@ -9,6 +19,7 @@ interface PetState {
   slottedCurses: Record<string, Curse | null>
   slottedFiligrees: Record<string, (LootItem | null)[]>
   unlockedFiligreeSlots: Record<string, number>
+  slottedGemSetBonuses: Record<string, (string | null)[]>
 }
 
 interface GearPlannerState {
@@ -23,7 +34,8 @@ const initialPetState = (): PetState => ({
   slottedAugments: {},
   slottedCurses: {},
   slottedFiligrees: {},
-  unlockedFiligreeSlots: {}
+  unlockedFiligreeSlots: {},
+  slottedGemSetBonuses: {}
 })
 
 const initialState: GearPlannerState = {
@@ -42,7 +54,8 @@ const initialState: GearPlannerState = {
       slottedAugments: {},
       slottedCurses: {},
       slottedFiligrees: {},
-      unlockedFiligreeSlots: {}
+      unlockedFiligreeSlots: {},
+      slottedGemSetBonuses: {}
     }
   ],
   activeSetupId: 'default',
@@ -94,6 +107,7 @@ const gearPlannerSlice = createSlice({
       const setup = action.payload
       if (!setup.slottedFiligrees) setup.slottedFiligrees = {}
       if (!setup.unlockedFiligreeSlots) setup.unlockedFiligreeSlots = {}
+      if (!setup.slottedGemSetBonuses) setup.slottedGemSetBonuses = {}
       state.characterSetups.push(setup)
     },
     removeSetup: (state, action: PayloadAction<string>) => {
