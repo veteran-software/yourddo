@@ -40,6 +40,7 @@ import {
   type GearItem,
   type GearSetup,
   GearSlot,
+  type LootItem,
   type SetBonusIndex,
   SHIELD_TYPES,
   WEAPON_TYPES
@@ -846,72 +847,53 @@ const useGearPlanner = (props: Props) => {
    * @returns {void}
    */
   const selectItem = (slot: GearSlot, item: GearItem | null): void => {
-    if (slot === GearSlot.Filigree) {
-      if (item && activeSetup) {
-        // We need to know which item we are slotting into.
-        // We'll look for the global filigreeTarget if available, or fallback to MainHand
-        const target = (window as any).filigreeTarget || {
-          item: activeSetup.slots[GearSlot.MainHand],
-          slot: GearSlot.MainHand
-        }
-
-        const weapon = target.item
-        const weaponSlot = target.slot
-
-        if (weapon) {
-          // This should only be reachable from FiligreeModal, and now it checks duplicates internally.
-          // But for safety, let's keep it (or better, let's not use window.alert here)
-          const slotted = activeSetup.slottedFiligrees[weapon.id] || []
-          // We don't have browsingFiligreeSlotIndex here anymore, it's managed in the Modal.
-          // This code in useGearPlanner is actually mostly redundant now if FiligreeModal calls setSlottedFiligree directly.
-          // Let's see if we can simplify this.
-        }
-      }
-    } else {
-      if (activeSetup && !item) {
-        const oldItem = activeSetup.slots[slot]
-        if (oldItem && activeSetup.slottedFiligrees[oldItem.id]) {
-          const hasFiligrees = activeSetup.slottedFiligrees[oldItem.id].some(
-            (f) => f !== null
-          )
-          if (hasFiligrees) {
-            if (
-              window.confirm(
-                'This item has slotted filigrees. Removing it will clear all filigrees and unlocked slots. Are you sure?'
-              )
-            ) {
-              dispatch(equipItemAction({ slot, item }))
-              openSlotBrowser(null)
-            }
-            return
-          }
-        }
-      } else if (activeSetup && item) {
-        const oldItem = activeSetup.slots[slot]
-        if (
-          oldItem &&
-          oldItem.id !== item.id &&
-          activeSetup.slottedFiligrees[oldItem.id]
-        ) {
-          const hasFiligrees = activeSetup.slottedFiligrees[oldItem.id].some(
-            (f) => f !== null
-          )
-          if (hasFiligrees) {
-            if (
-              window.confirm(
-                'The item currently in this slot has slotted filigrees. Replacing it will clear all filigrees and unlocked slots for the old item. Are you sure?'
-              )
-            ) {
-              dispatch(equipItemAction({ slot, item }))
-              openSlotBrowser(null)
-            }
-            return
-          }
-        }
-      }
-      dispatch(equipItemAction({ slot, item }))
+    if (activeSetup) {
+      handleItemEquip(slot, item, activeSetup)
     }
     openSlotBrowser(null)
+  }
+
+  const handleItemEquip = (
+    slot: GearSlot,
+    item: GearItem | null,
+    setup: GearSetup
+  ) => {
+    if (!item) {
+      const oldItem = setup.slots[slot]
+      if (oldItem && hasActiveFiligrees(oldItem.id, setup)) {
+        if (
+          window.confirm(
+            'This item has slotted filigrees. Removing it will clear all filigrees and unlocked slots. Are you sure?'
+          )
+        ) {
+          dispatch(equipItemAction({ slot, item }))
+          openSlotBrowser(null)
+        }
+        return
+      }
+    } else {
+      const oldItem = setup.slots[slot]
+      if (
+        oldItem &&
+        oldItem.id !== item.id &&
+        hasActiveFiligrees(oldItem.id, setup)
+      ) {
+        if (
+          window.confirm(
+            'The item currently in this slot has slotted filigrees. Replacing it will clear all filigrees and unlocked slots for the old item. Are you sure?'
+          )
+        ) {
+          dispatch(equipItemAction({ slot, item }))
+          openSlotBrowser(null)
+        }
+        return
+      }
+    }
+    dispatch(equipItemAction({ slot, item }))
+  }
+
+  const hasActiveFiligrees = (itemId: string, setup: GearSetup) => {
+    return setup.slottedFiligrees?.[itemId]?.some((f) => f !== null)
   }
 
   /**
@@ -1222,7 +1204,7 @@ const useGearPlanner = (props: Props) => {
 
                   if (maxSlots > 0) {
                     const itemSlottedFiligrees =
-                      setup.slottedFiligrees[selectedItem.id] || []
+                      setup.slottedFiligrees?.[selectedItem.id] ?? []
                     const activeFiligrees = itemSlottedFiligrees.filter(
                       (f) => f !== null
                     )
@@ -1237,35 +1219,48 @@ const useGearPlanner = (props: Props) => {
                             fontSize: '0.7rem'
                           }}
                           onClick={() => {
-                            ;(window as any).openFiligreeModal?.(
+                            (window as unknown as {
+                              openFiligreeModal: (
+                                item: GearItem,
+                                slot: GearSlot
+                              ) => void
+                            }).openFiligreeModal(
                               selectedItem,
                               slot
                             )
                           }}
                         >
-                          {activeFiligrees.length > 0
-                            ? `Filigrees Slotted (${activeFiligrees.length})`
-                            : isMinorArtifact(selectedItem)
-                              ? 'Minor Artifact'
-                              : 'Sentience Accepted'}
+                          {(() => {
+                            if (activeFiligrees.length > 0) {
+                              return `Filigrees Slotted (${String(activeFiligrees.length)})`
+                            }
+
+                            if (isMinorArtifact(selectedItem)) {
+                              return 'Minor Artifact'
+                            }
+
+                            return 'Sentience Accepted'
+                          })()}
                         </div>
+
                         {activeFiligrees.length > 0 && (
                           <div
                             className='mt-1 ps-1 border-start border-2'
                             style={{ borderColor: '#ff8c00' }}
                           >
-                            {activeFiligrees.map((f, fIdx) => (
+                            {activeFiligrees.map((filigree, fIdx) => (
                               <div
-                                key={`${f.id}-${String(fIdx)}`}
+                                key={`${filigree.name}-${String(fIdx)}`}
                                 className='mb-1'
                               >
                                 <div
                                   className='fw-bold text-dark'
                                   style={{ fontSize: '0.65rem' }}
                                 >
-                                  {f.name}
+                                  {filigree.name}
                                 </div>
-                                {f.enchantments && (
+
+                                {filigree.enchantments && (
                                   <div
                                     className='text-secondary'
                                     style={{
@@ -1274,8 +1269,8 @@ const useGearPlanner = (props: Props) => {
                                     }}
                                   >
                                     <EnchantmentList
-                                      enchantments={f.enchantments}
-                                      itemId={selectedItem.id}
+                                      enchantments={filigree.enchantments}
+                                      itemId={(selectedItem).id}
                                       conflicts={currentConflicts}
                                       equippedItems={currentEquipped}
                                       source='slot'
@@ -1293,6 +1288,7 @@ const useGearPlanner = (props: Props) => {
                   }
                   return null
                 })()}
+
                 {(() => {
                   const ineligibleTypes = [
                     'Augment',
@@ -1362,7 +1358,11 @@ const useGearPlanner = (props: Props) => {
     setBonusIndex,
     setItemNameSearch: setInternalItemNameSearch,
     setSlottedFiligree,
-    setUnlockedFiligreeSlots: (itemId: string, numSlots: number, slot: GearSlot) => {
+    setUnlockedFiligreeSlots: (
+      itemId: string,
+      numSlots: number,
+      slot: GearSlot
+    ) => {
       dispatch(
         setUnlockedFiligreeSlotsAction({
           itemId,
