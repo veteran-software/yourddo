@@ -820,7 +820,9 @@ const useGearPlanner = (props: Props) => {
       allowMetalWithDruid: false,
       slots: {} as Record<GearSlot, GearItem | null>,
       slottedAugments: {},
-      slottedCurses: {}
+      slottedCurses: {},
+      slottedFiligrees: {},
+      unlockedFiligreeSlots: {}
     }
 
     dispatch(addSetupAction(newSetup))
