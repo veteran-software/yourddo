@@ -337,6 +337,45 @@ const gearPlannerSlice = createSlice({
       } else if (owner === 'druid_pet') {
         state.druidPet.unlockedFiligreeSlots[itemId] = numSlots
       }
+    },
+    setGemSetBonus: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        slotIndex: number
+        setName: string | null
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, slotIndex, setName, slot } = action.payload
+      let owner: SlotOwner = 'character'
+
+      if (slot) {
+        owner = getSlotOwner(slot)
+      }
+
+      const updateGemBonus = (petState: PetState) => {
+        if (!petState.slottedGemSetBonuses[itemId]) {
+          petState.slottedGemSetBonuses[itemId] = [null, null]
+        }
+        petState.slottedGemSetBonuses[itemId][slotIndex] = setName
+      }
+
+      if (owner === 'character') {
+        const setup = state.characterSetups.find(
+          (s) => s.id === state.activeSetupId
+        )
+        if (setup) {
+          if (!setup.slottedGemSetBonuses[itemId]) {
+            setup.slottedGemSetBonuses[itemId] = [null, null]
+          }
+          setup.slottedGemSetBonuses[itemId][slotIndex] = setName
+        }
+      } else if (owner === 'artificer_pet') {
+        updateGemBonus(state.artificerPet)
+      } else if (owner === 'druid_pet') {
+        updateGemBonus(state.druidPet)
+      }
     }
   }
 })
@@ -350,7 +389,8 @@ export const {
   setAugment,
   setCurse,
   setFiligree,
-  setUnlockedFiligreeSlots
+  setUnlockedFiligreeSlots,
+  setGemSetBonus
 } = gearPlannerSlice.actions
 
 export default gearPlannerSlice.reducer

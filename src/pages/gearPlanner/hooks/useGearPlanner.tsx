@@ -8,7 +8,7 @@ import {
   useRef,
   useState
 } from 'react'
-import { Badge, Card, Col } from 'react-bootstrap'
+import { Card, Col } from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
 import {
@@ -19,12 +19,16 @@ import {
   setAugment as setAugmentAction,
   setCurse as setCurseAction,
   setFiligree as setFiligreeAction,
+  setGemSetBonus as setGemSetBonusAction,
   setUnlockedFiligreeSlots as setUnlockedFiligreeSlotsAction
 } from '../../../redux/slices/gearPlannerSlice.ts'
-import { getTroveOwners, normItem } from '../../../utils/troveUtils.ts'
+import { normItem } from '../../../utils/troveUtils.ts'
 import AugmentSlotItem from '../components/AugmentSlotItem.tsx'
 import CurseSlotItem from '../components/CurseSlotItem.tsx'
 import EnchantmentList from '../components/EnchantmentList.tsx'
+import GemSetBonusSelector from '../components/GetSetBonusSelector.tsx'
+import ItemSetBonusDisplay from '../components/ItemSetBonusDisplay.tsx'
+import TroveBadge from '../components/TroveBadge.tsx'
 import {
   checkPotentialConflict,
   getSlotOwner,
@@ -823,6 +827,8 @@ const useGearPlanner = (props: Props) => {
       slottedCurses: {},
       slottedFiligrees: {},
       unlockedFiligreeSlots: {}
+      unlockedFiligreeSlots: {},
+      slottedGemSetBonuses: {}
     }
 
     dispatch(addSetupAction(newSetup))
@@ -941,6 +947,15 @@ const useGearPlanner = (props: Props) => {
     slot?: GearSlot
   ) => {
     dispatch(setFiligreeAction({ itemId, slotIndex, filigree, slot }))
+  }
+
+  const setSlottedGemSetBonus = (
+    itemId: string,
+    slotIndex: number,
+    setName: string | null,
+    slot?: GearSlot
+  ) => {
+    dispatch(setGemSetBonusAction({ itemId, slotIndex, setName, slot }))
   }
 
   /**
@@ -1115,6 +1130,14 @@ const useGearPlanner = (props: Props) => {
                 <div className='fw-bold small text-dark mb-1'>
                   {selectedItem.name}
                 </div>
+                {selectedItem.name.includes('Gem of Many Facets') && (
+                  <GemSetBonusSelector
+                    selectedItem={selectedItem}
+                    activeSetup={activeSetup}
+                    slot={slot}
+                    setSlottedGemSetBonus={setSlottedGemSetBonus}
+                  />
+                )}
                 <div
                   className='text-secondary mb-0'
                   style={{ fontSize: '0.7rem' }}
@@ -1134,24 +1157,12 @@ const useGearPlanner = (props: Props) => {
                     </>
                   )}
                 </div>
-                {selectedItem.setBonus && selectedItem.setBonus.length > 0 && (
-                  <div className='my-0'>
-                    {selectedItem.setBonus.map((sb) => (
-                      <Badge
-                        key={sb.name}
-                        bg='warning'
-                        text='dark'
-                        className='me-1 set-bonus-badge-clickable'
-                        style={{ fontSize: '0.65rem' }}
-                        onClick={() => {
-                          openSetBonusBrowser(sb.name)
-                        }}
-                      >
-                        Set: {sb.name}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
+
+                <ItemSetBonusDisplay
+                  selectedItem={selectedItem}
+                  activeSetup={activeSetup}
+                  openSetBonusBrowser={openSetBonusBrowser}
+                />
 
                 {selectedItem.enchantments &&
                   selectedItem.enchantments.length > 0 && (
