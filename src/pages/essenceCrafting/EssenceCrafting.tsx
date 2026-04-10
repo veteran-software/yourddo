@@ -1,5 +1,5 @@
-import type { ReactElement } from 'react'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type {ReactElement} from 'react'
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {
   Accordion,
   Badge,
@@ -14,22 +14,19 @@ import {
   Stack,
   Table
 } from 'react-bootstrap'
-import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
-import { shallowEqual } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown
-  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import {FaArrowUpRightFromSquare} from 'react-icons/fa6'
+import {shallowEqual} from 'react-redux'
+import {useLocation, useNavigate} from 'react-router-dom'
+import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type {
-  ShoppingListTotals
-} from '../../components/common/ShoppingListDrawer.tsx'
+import type {ShoppingListTotals} from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
-import { useAppSelector } from '../../redux/hooks.ts'
-import type { AugmentItem } from '../../types/augmentItem.ts'
-import type { Ingredient } from '../../types/ingredients.ts'
-import { findAugmentsForSlot } from '../../utils/augmentUtils.ts'
-import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
-import { toSingularName } from '../../utils/stringUtils.ts'
+import {useAppSelector} from '../../redux/hooks.ts'
+import type {AugmentItem} from '../../types/augmentItem.ts'
+import type {Ingredient} from '../../types/ingredients.ts'
+import {findAugmentsForSlot} from '../../utils/augmentUtils.ts'
+import {getOwnedIngredients} from '../../utils/jsxUtils.tsx'
+import {toSingularName} from '../../utils/stringUtils.ts'
 import {
   buildPermalinkUrl,
   encodeEssencePermalink,
@@ -294,6 +291,7 @@ const EssenceCrafting = () => {
   }
 
   const isCollapsed = (slotKey: string) => collapsedKeys.includes(slotKey)
+
   const toggleCollapsed = (slotKey: string) => {
     setCollapsedKeys((prev) => (prev.includes(slotKey) ? prev.filter((key) => key !== slotKey) : [...prev, slotKey]))
   }
@@ -435,6 +433,7 @@ const EssenceCrafting = () => {
       <Form.Group controlId={`${slotKey}-${affix}`}>
         <Form.Label>{label}</Form.Label>
         <Form.Select
+          size='sm'
           value={value}
           disabled={disabled}
           onChange={(event) => {
@@ -694,6 +693,82 @@ const EssenceCrafting = () => {
     [enhancementByName]
   )
 
+  const calculateBoundShardStats = (level: number) => {
+    let shardLevel: number
+    if (level === 1) {
+      shardLevel = 1
+    } else {
+      shardLevel = 20 + (level - 2) * 10
+    }
+    const essenceQty = level * 10
+    return { shardLevel, essenceQty }
+  }
+
+  const calculateUnboundShardStats = (level: number) => {
+    let shardLevel: number
+    if (level === 1) {
+      shardLevel = 50
+    } else {
+      shardLevel = 70 + (level - 2) * 10
+    }
+
+    let essenceQty: number
+    if (level === 1) {
+      essenceQty = 100
+    } else {
+      essenceQty = 140 + (level - 2) * 20
+    }
+
+    let purifiedQty = 0
+    if (level >= 31) {
+      purifiedQty = 15
+    } else if (level >= 26) {
+      purifiedQty = 10
+    } else if (level >= 21) {
+      purifiedQty = 5
+    }
+
+    return { shardLevel, essenceQty, purifiedQty }
+  }
+
+  const buildMinLevelMaterials = useCallback(
+    (level: number, bound: boolean): { shardLevel: number | null; rows: { name: string; qty: number }[] } | null => {
+      const rows: { name: string; qty: number }[] = []
+      const ESSENCE_NAME = toSingularName('Magic Item Essences')
+      const PURIFIED_NAME = toSingularName('Purified Eberron Dragonshard Fragments')
+
+      let shardLevel: number
+      let essenceQty: number
+      let purifiedQty = 0
+
+      if (bound) {
+        const stats = calculateBoundShardStats(level)
+        shardLevel = stats.shardLevel
+        essenceQty = stats.essenceQty
+      } else {
+        const stats = calculateUnboundShardStats(level)
+        shardLevel = stats.shardLevel
+        essenceQty = stats.essenceQty
+        purifiedQty = stats.purifiedQty
+      }
+
+      if (essenceQty > 0) {
+        rows.push({ name: ESSENCE_NAME, qty: essenceQty })
+      }
+
+      if (purifiedQty > 0) {
+        rows.push({ name: PURIFIED_NAME, qty: purifiedQty })
+      }
+
+      if (rows.length === 0) {
+        return null
+      }
+
+      return { shardLevel, rows }
+    },
+    []
+  )
+
   // Extracted to avoid deeply nested functions in JSX
   const renderAugmentSlot = (slotKey: string, augmentSlot: ItemAugmentSlotState): ReactElement => {
     const groupedByDisplay = findAugmentsForSlot(augmentSlot.slotType)
@@ -749,10 +824,16 @@ const EssenceCrafting = () => {
   }
 
   // Renders a full-width stacked Accordion of requirement cards (default closed)
-  function renderMaterialsAccordion(slotKey: string, item: ItemState): ReactElement | null {
+  const renderMaterialsAccordion = (slotKey: string, item: ItemState): ReactElement | null => {
     const effectiveML: number = items[slotKey].minLevelOverride ?? masterMinLevel
 
-    const selections: { key: string; label: string; name: string | null }[] = [
+    const selections: { key: string; label: string; name: string | null; isMinLevel?: boolean }[] = [
+      {
+        key: 'minLevel',
+        label: 'Minimum Level',
+        name: `Minimum Level ${String(effectiveML)}`,
+        isMinLevel: true
+      },
       {
         key: 'prefix',
         label: 'Prefix',
@@ -784,7 +865,9 @@ const EssenceCrafting = () => {
         const combined = combinedByEntry || combinedByShortName
 
         let display: string | null
-        if (combinedByEntry) {
+        if (selection.isMinLevel) {
+          display = `Minimum Level ${String(effectiveML)} Shard`
+        } else if (combinedByEntry) {
           display = getCombinedDisplayFromEntry(selection.name ?? '', effectiveML)
         } else if (combinedByShortName) {
           display = getCombinedDisplay(selection.name ?? '', effectiveML)
@@ -796,18 +879,26 @@ const EssenceCrafting = () => {
           ...selection,
           isCombined: combined,
           // build both material sets; body will render both
-          boundData: buildMaterials(selection.name, true),
-          unboundData: buildMaterials(selection.name, false),
+          boundData: selection.isMinLevel
+            ? buildMinLevelMaterials(effectiveML, true)
+            : buildMaterials(selection.name, true),
+          unboundData: selection.isMinLevel
+            ? buildMinLevelMaterials(effectiveML, false)
+            : buildMaterials(selection.name, false),
           valueOnly: getEnhancementValueOnly(selection.name, effectiveML),
           display: display
         }
       })
       // Apply ML gating: hide Insightful effects when effective ML < 10
-      .filter((entry) => entry.name && isEnhancementAllowedAtML(entry.name, effectiveML)) as {
+      .filter(
+        (entry) =>
+          (entry.isMinLevel ?? entry.name) && (entry.isMinLevel ?? isEnhancementAllowedAtML(entry.name, effectiveML))
+      ) as {
       key: string
       label: string
       name: string
       isCombined: boolean
+      isMinLevel?: boolean
       boundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
       unboundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
       valueOnly: string | null
@@ -907,6 +998,7 @@ const EssenceCrafting = () => {
                 </small>
               </div>
             </Accordion.Header>
+
             <Accordion.Body className='p-0'>
               {renderUnifiedMaterials(accordionEntry.boundData, accordionEntry.unboundData)}
             </Accordion.Body>
@@ -958,6 +1050,14 @@ const EssenceCrafting = () => {
           markCount += 1
         }
 
+        // Add materials for Minimum Level shard
+        const mlData = buildMinLevelMaterials(effectiveML, bound)
+        if (mlData) {
+          for (const r of mlData.rows) {
+            totalsMap.set(r.name, (totalsMap.get(r.name) ?? 0) + r.qty)
+          }
+        }
+
         processItemAffixes(item, effectiveML, bound, totalsMap)
       }
       return { totalsMap, markCount }
@@ -985,7 +1085,7 @@ const EssenceCrafting = () => {
     return {
       compute
     }
-  }, [items, masterMinLevel, activeKeys, isEnhancementAllowedAtML, buildMaterials])
+  }, [items, masterMinLevel, isEnhancementAllowedAtML, buildMaterials, activeKeys, buildMinLevelMaterials])
 
   // Extracted to reduce nesting/cognitive complexity
   const renderMinLevelOverride = (slotKey: string, item: ItemState): ReactElement => {
@@ -1014,6 +1114,7 @@ const EssenceCrafting = () => {
     return (
       <>
         <Form.Select
+          size='sm'
           className={selectIsInvalid ? 'is-invalid' : undefined}
           value={item.minLevelOverride ?? 0}
           onChange={(event) => {
@@ -1101,6 +1202,7 @@ const EssenceCrafting = () => {
               <Form.Group className='mb-3' controlId='master-min-level'>
                 <Form.Label>Minimum Level</Form.Label>
                 <Form.Select
+                  size='sm'
                   value={masterMinLevel}
                   onChange={(event) => {
                     setMasterMinLevel(Number(event.target.value) || 1)
@@ -1125,7 +1227,7 @@ const EssenceCrafting = () => {
                       onClick={() => {
                         toggleSlot(slotDef.key)
                       }}
-                      className='d-flex justify-content-between align-items-center'
+                      className='d-flex justify-content-between align-items-center p-1 px-2'
                     >
                       <span>{slotDef.label}</span>
                       {active && (
