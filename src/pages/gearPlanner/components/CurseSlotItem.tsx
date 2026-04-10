@@ -27,7 +27,7 @@ const CurseSlotItem = (props: Props) => {
     <div className='mx-n2 px-2 py-1 mb-1 bg-white last-child-mb-0'>
       <div className='d-flex align-items-center gap-1 mb-1'>
         <span className='text-dark fw-bold' style={{ fontSize: '0.6rem' }}>
-          Curse Slot
+          Deck of Many Curses
         </span>
       </div>
 

@@ -115,7 +115,7 @@ const EnchantmentList = (props: Props) => {
                       bg='warning'
                       text='dark'
                       className='px-1 py-0'
-                      style={{ fontSize: '0.6rem' }}
+                      style={{ fontSize: '0.65rem' }}
                     >
                       <small>Overrides {overriddenSlotNames}</small>
                     </Badge>
@@ -126,7 +126,7 @@ const EnchantmentList = (props: Props) => {
                       bg='warning'
                       text='dark'
                       className='px-1 py-0'
-                      style={{ fontSize: '0.6rem' }}
+                      style={{ fontSize: '0.65rem' }}
                     >
                       <small>Redundant ({effectiveSlotNames})</small>
                     </Badge>
@@ -136,7 +136,7 @@ const EnchantmentList = (props: Props) => {
                     <Badge
                       bg='danger'
                       className='px-1 py-0'
-                      style={{ fontSize: '0.6rem' }}
+                      style={{ fontSize: '0.65rem' }}
                     >
                       <small>Overridden by {effectiveSlotNames}</small>
                     </Badge>
@@ -149,7 +149,7 @@ const EnchantmentList = (props: Props) => {
                       bg='warning'
                       text='dark'
                       className='px-1 py-0'
-                      style={{ fontSize: '0.6rem' }}
+                      style={{ fontSize: '0.65rem' }}
                     >
                       <small>Conflicts: {potential.currentMax}</small>
                     </Badge>
@@ -159,7 +159,7 @@ const EnchantmentList = (props: Props) => {
                     <Badge
                       bg='info'
                       className='px-1 py-0'
-                      style={{ fontSize: '0.6rem' }}
+                      style={{ fontSize: '0.65rem' }}
                     >
                       <small>Upgrades: {potential.currentMax}</small>
                     </Badge>
