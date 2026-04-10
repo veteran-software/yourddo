@@ -1,14 +1,5 @@
-import {
-  compressToEncodedURIComponent,
-  decompressFromEncodedURIComponent
-} from 'lz-string'
-import {
-  type Curse,
-  type GearAugment,
-  type GearItem,
-  type GearSetup,
-  GearSlot
-} from './types.ts'
+import {compressToEncodedURIComponent, decompressFromEncodedURIComponent} from 'lz-string'
+import {type Curse, type GearAugment, type GearItem, type GearSetup, GearSlot} from './types.ts'
 
 // ----- Types for compact v1 payload -----
 // We use a compact format to keep the URL short.
@@ -170,12 +161,15 @@ export const readGpFromUrl = (
   try {
     const routerParams = new URLSearchParams(location.search)
     const gpFromRouter = routerParams.get('gp')
+
     if (gpFromRouter) return { gp: gpFromRouter, source: 'search' }
 
     const hash = win.location.hash
+
     if (hash.startsWith('#')) {
       const hashBody = hash.slice(1)
       const qm = hashBody.indexOf('?')
+
       if (qm >= 0) {
         const query = hashBody.slice(qm + 1)
         const hashParams = new URLSearchParams(query)
@@ -186,6 +180,7 @@ export const readGpFromUrl = (
   } catch {
     // ignore
   }
+
   return { gp: null, source: null }
 }
 
@@ -205,23 +200,23 @@ export const removeGpFromUrl = async (
       { pathname: location.pathname, search: '' },
       { replace: true }
     )
+
     return
   }
 
-  if (
-    typeof win === 'undefined' ||
-    typeof win.history.replaceState !== 'function'
-  )
-    return
+  if (win == undefined || typeof win.history.replaceState !== 'function') return
 
   const { origin, pathname, hash, search } = win.location
   const hashBody = (hash || '').replace(/^#/, '')
   const [hashPath, hashQuery] = hashBody.split('?')
   const params = new URLSearchParams(hashQuery)
+
   params.delete('gp')
+
   const newHash = params.toString()
     ? `#${hashPath}?${params.toString()}`
     : `#${hashPath}`
+
   const newUrl = `${origin}${pathname}${search}${newHash}`
   win.history.replaceState({}, '', newUrl)
 }
@@ -231,17 +226,21 @@ export const buildPermalinkUrl = (
   location: LocationLike,
   win: Window = globalThis as unknown as Window
 ): string => {
-  if (typeof win === 'undefined') {
+  if (win == undefined) {
     return `/gear-planner?gp=${encoded}`
   }
+
   const { origin, pathname, hash } = win.location
   const currentPath = location.pathname || '/gear-planner'
+
   if (hash.startsWith('#/')) {
     const params = new URLSearchParams()
     params.set('gp', encoded)
     return `${origin}${pathname}#${currentPath}?${params.toString()}`
   }
   const url = new URL(origin + currentPath)
+
   url.searchParams.set('gp', encoded)
+
   return url.toString()
 }

@@ -166,7 +166,7 @@ const FiligreeModal = (props: Props) => {
             if (!isUnlocked) {
               if (idx === currentUnlockedSlots && idx < maxSlots) {
                 return (
-                  <Col key={String(idx)} xs={6} md={4} lg={2.4}>
+                  <Col key={`slot-unlock-${String(idx)}`} xs={6} md={4} lg={2.4}>
                     <div className='d-flex gap-1 h-100'>
                       <Button
                         variant='outline-secondary'
@@ -206,11 +206,10 @@ const FiligreeModal = (props: Props) => {
             }
 
             return (
-              <Col key={String(idx)} xs={6} md={4} lg={2.4}>
-                <div
-                  role='button'
-                  tabIndex={0}
-                  className={`p-2 border rounded text-center cursor-pointer position-relative d-flex flex-column align-items-center justify-content-center transition-all ${
+              <Col key={`slot-active-${String(idx)}`} xs={6} md={4} lg={2.4}>
+                <button
+                  type='button'
+                  className={`p-2 border rounded text-center cursor-pointer position-relative d-flex flex-column align-items-center justify-content-center transition-all w-100 ${
                     isActive
                       ? 'border-primary bg-primary bg-opacity-25'
                       : 'border-secondary bg-dark-subtle hover-bg-secondary'
@@ -218,12 +217,6 @@ const FiligreeModal = (props: Props) => {
                   style={{ height: '70px', cursor: 'pointer' }}
                   onClick={() => {
                     handleSlotClick(idx)
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      handleSlotClick(idx)
-                    }
                   }}
                 >
                   {fili ? (
@@ -255,7 +248,7 @@ const FiligreeModal = (props: Props) => {
                       <FaPlus className='me-1' /> Slot {idx + 1}
                     </div>
                   )}
-                </div>
+                </button>
               </Col>
             )
           })}
@@ -369,9 +362,9 @@ const FiligreeModal = (props: Props) => {
                           )}
                         </div>
 
-                        {f.enchantments?.map((ench, eIdx) => (
+                        {f.enchantments?.map((ench) => (
                           <div
-                            key={String(eIdx)}
+                            key={`${f.id}-${ench.name}-${String(ench.modifier)}`}
                             className='text-muted small'
                             style={{ fontSize: '0.75rem' }}
                           >
