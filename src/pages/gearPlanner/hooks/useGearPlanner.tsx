@@ -826,7 +826,6 @@ const useGearPlanner = (props: Props) => {
       slottedAugments: {},
       slottedCurses: {},
       slottedFiligrees: {},
-      unlockedFiligreeSlots: {}
       unlockedFiligreeSlots: {},
       slottedGemSetBonuses: {}
     }
@@ -1008,7 +1007,7 @@ const useGearPlanner = (props: Props) => {
       const normalized = slotType
         .replaceAll('Dino Bone', 'Isle of Dread:')
         .replaceAll(/\sSlot/g, '')
-        .replaceAll(/:$/, '')
+        .replace(/:$/, '')
         .replaceAll(/:\s*\(/g, ' (') // Ensure "Isle of Dread: Scale Slot (Accessory):" -> "Isle of Dread: Scale (Accessory)"
         .trim()
       allowedTypes = [normalized]
@@ -1027,6 +1026,7 @@ const useGearPlanner = (props: Props) => {
 
     // Group by augmentType
     const groups: Record<string, GearAugment[]> = {}
+
     filtered.forEach((aug) => {
       if (!groups[aug.augmentType]) groups[aug.augmentType] = []
       groups[aug.augmentType].push(aug)
@@ -1038,10 +1038,15 @@ const useGearPlanner = (props: Props) => {
         // Priority 1: Trove ownership
         const isOwnedA = troveData?.[normItem(a.name)] ? 1 : 0
         const isOwnedB = troveData?.[normItem(b.name)] ? 1 : 0
-        if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
 
-        if (b.minimumLevel !== a.minimumLevel)
+        if (isOwnedA !== isOwnedB) {
+          return isOwnedB - isOwnedA
+        }
+
+        if (b.minimumLevel !== a.minimumLevel) {
           return b.minimumLevel - a.minimumLevel
+        }
+
         return a.name.localeCompare(b.name)
       })
     })
@@ -1101,22 +1106,12 @@ const useGearPlanner = (props: Props) => {
           >
             <div className='d-flex align-items-center gap-2'>
               <span>{slot}</span>
-              {selectedItem &&
-                (() => {
-                  const troveEntry = troveData?.[normItem(selectedItem.name)]
-                  if (!troveEntry) return null
-                  const owners = getTroveOwners(troveEntry)
-                  if (!owners) return null
-                  return (
-                    <Badge
-                      bg='primary'
-                      className='shadow-sm'
-                      style={{ fontSize: '0.6rem' }}
-                    >
-                      {owners}
-                    </Badge>
-                  )
-                })()}
+              {selectedItem && (
+                <TroveBadge
+                  itemName={selectedItem.name}
+                  troveData={troveData}
+                />
+              )}
             </div>
             <FaMagnifyingGlass className='text-muted' size={12} />
           </Card.Header>

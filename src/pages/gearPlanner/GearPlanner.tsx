@@ -30,8 +30,7 @@ import {
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
-import EnchantmentSearchOffcanvas
-  from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import FiligreeModal from './components/FiligreeModal.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
@@ -258,7 +257,7 @@ const GearPlanner = () => {
                       setShowSettings(true)
                     }}
                   >
-                    <FaGear /> Setup Settings
+                    <FaGear /> Settings
                   </Button>
 
                   <Button
@@ -410,7 +409,7 @@ const GearPlanner = () => {
           size='xl'
         >
           <Modal.Header closeButton className='bg-primary text-white'>
-            <Modal.Title>Gear Setup Settings</Modal.Title>
+            <Modal.Title>Gear Set Settings</Modal.Title>
           </Modal.Header>
 
           <Modal.Body className='bg-dark text-white p-4'>
@@ -421,6 +420,7 @@ const GearPlanner = () => {
                     <Form.Label className='fw-bold text-info'>
                       Setup Name
                     </Form.Label>
+
                     <Form.Control
                       type='text'
                       value={gpHook.activeSetup.name}
@@ -442,6 +442,7 @@ const GearPlanner = () => {
                         <Form.Label className='fw-bold text-info'>
                           Min Level
                         </Form.Label>
+
                         <Form.Control
                           type='number'
                           min={1}
@@ -465,6 +466,7 @@ const GearPlanner = () => {
                         <Form.Label className='fw-bold text-info'>
                           Max Level
                         </Form.Label>
+
                         <Form.Control
                           type='number'
                           min={1}
@@ -632,6 +634,7 @@ const GearPlanner = () => {
                     <Form.Label className='fw-bold text-info d-block'>
                       Character Settings
                     </Form.Label>
+
                     <div className='p-2 border border-secondary rounded'>
                       <Form.Check
                         type='checkbox'
@@ -648,6 +651,7 @@ const GearPlanner = () => {
                           )
                         }}
                       />
+
                       {!gpHook.activeSetup.classes.includes('Druid') && (
                         <div className='text-muted small mt-0'>
                           <small>
@@ -697,7 +701,9 @@ const GearPlanner = () => {
         {filigreeTarget && (
           <FiligreeModal
             show={showFiligreeModal}
-            onHide={() => { setShowFiligreeModal(false); }}
+            onHide={() => {
+              setShowFiligreeModal(false)
+            }}
             item={filigreeTarget.item}
             slot={filigreeTarget.slot}
             setup={gpHook.activeSetup}

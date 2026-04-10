@@ -1,10 +1,11 @@
-import { Badge } from 'react-bootstrap'
 import { useAppSelector } from '../../../redux/hooks.ts'
-import { getTroveOwners, normItem } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import { type GearAugment, type GearItem, GearSlot } from '../types.ts'
 import AugmentSlotsList from './AugmentSlotList.tsx'
 import EnchantmentList from './EnchantmentList.tsx'
+import GenericBadge from './GenericBadge.tsx'
+import SetBonusBadge from './SetBonusBadge.tsx'
+import TroveBadge from './TroveBadge.tsx'
 
 const BrowserItem = (props: Props) => {
   const {
@@ -20,9 +21,6 @@ const BrowserItem = (props: Props) => {
 
   const { troveData } = useAppSelector((state) => state.app)
 
-  const troveEntry = troveData?.[normItem(item.name)]
-  const owners = troveEntry ? getTroveOwners(troveEntry) : ''
-
   return (
     <button
       key={item.id}
@@ -35,49 +33,27 @@ const BrowserItem = (props: Props) => {
         <div className='d-flex justify-content-between align-items-center mb-1'>
           <div className='fw-bold text-white fs-6'>
             {currentEquipped.some((e) => e.id === item.id) && (
-              <Badge
-                bg='success'
-                className='me-2'
-                style={{ fontSize: '0.6rem' }}
-              >
-                Equipped
-              </Badge>
+              <GenericBadge badgeText='Equipped' />
             )}
 
             {item.name}
 
-            {owners && (
-              <Badge
-                bg='primary'
-                className='me-2'
-                style={{ fontSize: '0.6rem' }}
-              >
-                {owners}
-              </Badge>
+            {troveData && (
+              <TroveBadge itemName={item.name} troveData={troveData} />
             )}
           </div>
 
-          <Badge bg='info' pill>
-            Select
-          </Badge>
+          <GenericBadge badgeText='Select' fontSize='0.75rem' />
         </div>
 
         {item.setBonus && item.setBonus.length > 0 && (
           <div className='mt-1 mb-1'>
             {item.setBonus.map((sb) => (
-              <Badge
+              <SetBonusBadge
                 key={sb.name}
-                bg='warning'
-                text='dark'
-                className='me-1 set-bonus-badge-clickable'
-                style={{ fontSize: '0.65rem' }}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  openSetBonusBrowser(sb.name)
-                }}
-              >
-                Set: {sb.name}
-              </Badge>
+                openSetBonusBrowser={openSetBonusBrowser}
+                setName={sb.name}
+              />
             ))}
           </div>
         )}

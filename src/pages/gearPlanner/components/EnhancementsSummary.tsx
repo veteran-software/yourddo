@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Accordion, Badge, Col, Row } from 'react-bootstrap'
+import { Accordion, Col, Row } from 'react-bootstrap'
 import { FaListUl } from 'react-icons/fa6'
 import {
   getBonus,
@@ -8,6 +8,7 @@ import {
 } from '../conflictResolver.ts'
 import { aggregateEnchantmentEntries, sortItemsByValue } from '../helpers.ts'
 import type { Curse, GearAugment, GearItem, LootItem } from '../types.ts'
+import GenericBadge from './GenericBadge.tsx'
 
 const EnchantmentsSummary = ({
   equippedItems,
@@ -138,7 +139,10 @@ const EnchantmentsSummary = ({
                       {ench.name}
                     </span>
                     {ench.isNumeric && (
-                      <Badge bg='primary'>+{String(ench.total)}</Badge>
+                      <GenericBadge
+                        badgeText={`+${String(ench.total)}`}
+                        fontSize='0.75rem'
+                      />
                     )}
                   </div>
                 </Accordion.Header>

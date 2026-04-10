@@ -1,10 +1,13 @@
-import { Accordion, Badge, Card, Stack } from 'react-bootstrap'
+import { Accordion, Card, Stack } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
 import { getTroveOwners, normItem } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import { type GearAugment, type GearItem, GearSlot } from '../types.ts'
 import AugmentSlotsList from './AugmentSlotList.tsx'
 import EnchantmentList from './EnchantmentList.tsx'
+import GenericBadge from './GenericBadge.tsx'
+import SetBonusBadge from './SetBonusBadge.tsx'
+import TroveBadge from './TroveBadge.tsx'
 
 const SearchResultSlot = (props: Props) => {
   const {
@@ -62,24 +65,10 @@ const SearchResultSlot = (props: Props) => {
               >
                 {showHeader && (
                   <Card.Header className='py-0 px-2 bg-secondary-subtle d-flex align-items-center gap-1 overflow-hidden'>
-                    {isEquipped && (
-                      <Badge
-                        bg='success'
-                        className='shadow-sm'
-                        style={{ fontSize: '0.55rem' }}
-                      >
-                        Equipped
-                      </Badge>
-                    )}
-                    {owners && (
-                      <Badge
-                        bg='primary'
-                        className='shadow-sm text-truncate'
-                        style={{ fontSize: '0.55rem', maxWidth: '200px' }}
-                        title={owners}
-                      >
-                        {owners}
-                      </Badge>
+                    {isEquipped && <GenericBadge badgeText='Equipped' />}
+
+                    {troveData && (
+                      <TroveBadge itemName={item.name} troveData={troveData} />
                     )}
                   </Card.Header>
                 )}
@@ -98,19 +87,11 @@ const SearchResultSlot = (props: Props) => {
                   {item.setBonus && item.setBonus.length > 0 && (
                     <div className='mt-1 mb-1'>
                       {item.setBonus.map((sb) => (
-                        <Badge
-                          key={sb.name}
-                          bg='warning'
-                          text='dark'
-                          className='me-1 set-bonus-badge-clickable'
-                          style={{ fontSize: '0.6rem' }}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            openSetBonusBrowser(sb.name)
-                          }}
-                        >
-                          Set: {sb.name}
-                        </Badge>
+                        <SetBonusBadge
+                          key={`${item.id}-${sb.name}`}
+                          setName={sb.name}
+                          openSetBonusBrowser={openSetBonusBrowser}
+                        />
                       ))}
                     </div>
                   )}

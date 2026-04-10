@@ -1,7 +1,6 @@
 import React from 'react'
-import { Badge, Dropdown } from 'react-bootstrap'
+import { Dropdown } from 'react-bootstrap'
 import { useAppSelector } from '../../../redux/hooks.ts'
-import { getTroveOwners, normItem } from '../../../utils/troveUtils.ts'
 import {
   checkPotentialConflict,
   type EnchantmentConflict
@@ -13,6 +12,9 @@ import {
   GearSlot
 } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
+import GenericBadge from './GenericBadge.tsx'
+import SetBonusBadge from './SetBonusBadge.tsx'
+import TroveBadge from './TroveBadge.tsx'
 
 const AugmentSlotItem = (props: Props) => {
   const {
@@ -101,9 +103,6 @@ const AugmentSlotItem = (props: Props) => {
                   return pot.isConflict && !pot.isRedundant
                 })
 
-                const troveEntry = troveData?.[normItem(aug.name)]
-                const owners = troveEntry ? getTroveOwners(troveEntry) : ''
-
                 return (
                   <Dropdown.Item
                     key={`${aug.name}-${String(aug.minimumLevel)}`}
@@ -114,37 +113,16 @@ const AugmentSlotItem = (props: Props) => {
                     className='d-flex align-items-center justify-content-between'
                   >
                     <span className='text-truncate'>
-                      {owners && (
-                        <Badge
-                          bg='primary'
-                          className='px-1 py-0 me-1'
-                          style={{ fontSize: '0.55rem' }}
-                        >
-                          {owners}
-                        </Badge>
+                      {troveData && (
+                        <TroveBadge itemName={aug.name} troveData={troveData} />
                       )}
                       {aug.name} (ML:{aug.minimumLevel})
                     </span>
+
                     <span className='ms-2 flex-shrink-0'>
-                      {hasConflict && (
-                        <Badge
-                          bg='warning'
-                          text='dark'
-                          className='px-1 py-0 ms-1'
-                          style={{ fontSize: '0.55rem' }}
-                        >
-                          Conflicting
-                        </Badge>
-                      )}
-                      {hasUpgrade && (
-                        <Badge
-                          bg='info'
-                          className='px-1 py-0 ms-1'
-                          style={{ fontSize: '0.55rem' }}
-                        >
-                          Upgrade
-                        </Badge>
-                      )}
+                      {hasConflict && <GenericBadge badgeText='Conflicting' />}
+
+                      {hasUpgrade && <GenericBadge badgeText='Upgrade' />}
                     </span>
                   </Dropdown.Item>
                 )
@@ -156,19 +134,12 @@ const AugmentSlotItem = (props: Props) => {
 
       {slotted?.setBonus && slotted.setBonus.length > 0 && (
         <div className='mt-1 ps-2 mb-1'>
-          {slotted.setBonus.map((sb) => (
-            <Badge
-              key={sb.name}
-              bg='warning'
-              text='dark'
-              className='me-1 set-bonus-badge-clickable'
-              style={{ fontSize: '0.6rem' }}
-              onClick={() => {
-                openSetBonusBrowser(sb.name)
-              }}
-            >
-              Set: {sb.name}
-            </Badge>
+          {slotted.setBonus.map((sb, idx) => (
+            <SetBonusBadge
+              key={`${sb.name}-${String(idx)}`}
+              setName={sb.name}
+              openSetBonusBrowser={openSetBonusBrowser}
+            />
           ))}
         </div>
       )}

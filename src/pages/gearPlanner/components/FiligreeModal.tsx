@@ -1,18 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import {
-  Badge,
-  Button,
-  Col,
-  Form,
-  ListGroup,
-  Modal,
-  Row
-} from 'react-bootstrap'
+import { Button, Col, Form, ListGroup, Modal, Row } from 'react-bootstrap'
 import { FaMagnifyingGlass, FaMinus, FaPlus, FaTrash } from 'react-icons/fa6'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import { getTroveOwners, normItem } from '../../../utils/troveUtils.ts'
 import { getMaxFiligreeSlots } from '../helpers'
 import type { GearItem, GearSetup, GearSlot, LootItem } from '../types'
+import GenericBadge from './GenericBadge.tsx'
+import SetBonusBadge from './SetBonusBadge.tsx'
 
 const FiligreeModal = (props: Props) => {
   const {
@@ -166,7 +160,12 @@ const FiligreeModal = (props: Props) => {
             if (!isUnlocked) {
               if (idx === currentUnlockedSlots && idx < maxSlots) {
                 return (
-                  <Col key={`slot-unlock-${String(idx)}`} xs={6} md={4} lg={2.4}>
+                  <Col
+                    key={`slot-unlock-${String(idx)}`}
+                    xs={6}
+                    md={4}
+                    lg={2.4}
+                  >
                     <div className='d-flex gap-1 h-100'>
                       <Button
                         variant='outline-secondary'
@@ -350,15 +349,10 @@ const FiligreeModal = (props: Props) => {
                           </div>
 
                           {owners && (
-                            <Badge
-                              bg='primary'
-                              style={{
-                                fontSize: '0.6rem',
-                                border: '1px solid rgba(255, 255, 255, 0.4)'
-                              }}
-                            >
-                              {owners}
-                            </Badge>
+                            <GenericBadge
+                              badgeText={owners}
+                              fontSize='0.7rem'
+                            />
                           )}
                         </div>
 
@@ -374,14 +368,7 @@ const FiligreeModal = (props: Props) => {
                       </div>
 
                       {f.setBonus?.[0] && (
-                        <Badge
-                          bg='warning'
-                          text='dark'
-                          className='ms-2'
-                          style={{ fontSize: '0.65rem' }}
-                        >
-                          {f.setBonus[0].name}
-                        </Badge>
+                        <SetBonusBadge setName={f.setBonus[0].name} />
                       )}
                     </ListGroup.Item>
                   )

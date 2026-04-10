@@ -120,6 +120,7 @@ const EnchantmentList = (props: Props) => {
                       <small>Overrides {overriddenSlotNames}</small>
                     </Badge>
                   )}
+
                   {isRedundant && (
                     <Badge
                       bg='warning'
@@ -130,6 +131,7 @@ const EnchantmentList = (props: Props) => {
                       <small>Redundant ({effectiveSlotNames})</small>
                     </Badge>
                   )}
+
                   {isOverridden && (
                     <Badge
                       bg='danger'
@@ -152,6 +154,7 @@ const EnchantmentList = (props: Props) => {
                       <small>Conflicts: {potential.currentMax}</small>
                     </Badge>
                   )}
+
                   {potential.isConflict && !potential.isRedundant && (
                     <Badge
                       bg='info'

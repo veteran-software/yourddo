@@ -1,5 +1,6 @@
-import { Badge, Offcanvas, Stack } from 'react-bootstrap'
+import { Offcanvas, Stack } from 'react-bootstrap'
 import type { GearSetup } from '../types'
+import GenericBadge from './GenericBadge.tsx'
 
 const CharacterSettingsSidebar = (props: Props) => {
   const { activeSetup, setShowSidebar, showSidebar } = props
@@ -32,18 +33,16 @@ const CharacterSettingsSidebar = (props: Props) => {
 
         <div className='mb-3'>
           <div className='fw-bold text-info small mb-1'>Classes</div>
+
           {activeSetup.classes.some((c) => c !== null) ? (
             <Stack gap={1} className='mb-3'>
               {activeSetup.classes.map(
                 (cls, idx) =>
                   cls && (
-                    <Badge
+                    <GenericBadge
                       key={`${cls}-${String(idx)}`}
-                      bg='secondary'
-                      className='w-fit text-start py-1 px-2'
-                    >
-                      {cls}
-                    </Badge>
+                      badgeText={cls}
+                    />
                   )
               )}
             </Stack>
@@ -56,16 +55,15 @@ const CharacterSettingsSidebar = (props: Props) => {
 
         <div className='mb-3'>
           <div className='fw-bold text-info small mb-1'>Weapon Filters</div>
+
           {activeSetup.weaponFilters.length > 0 ? (
             <div className='d-flex flex-wrap gap-1 mb-3'>
-              {activeSetup.weaponFilters.map((w) => (
-                <Badge
-                  key={w}
-                  bg='dark'
-                  className='border border-secondary small'
-                >
-                  {w}
-                </Badge>
+              {activeSetup.weaponFilters.map((weapon) => (
+                <GenericBadge
+                  key={weapon}
+                  badgeText={weapon}
+                  fontSize='0.7rem'
+                />
               ))}
             </div>
           ) : (
@@ -79,14 +77,8 @@ const CharacterSettingsSidebar = (props: Props) => {
           <div className='fw-bold text-info small mb-1'>Armor Filters</div>
           {activeSetup.armorFilters.length > 0 ? (
             <div className='d-flex flex-wrap gap-1 mb-3'>
-              {activeSetup.armorFilters.map((a) => (
-                <Badge
-                  key={a}
-                  bg='dark'
-                  className='border border-secondary small'
-                >
-                  {a}
-                </Badge>
+              {activeSetup.armorFilters.map((armor) => (
+                <GenericBadge key={armor} badgeText={armor} fontSize='0.7rem' />
               ))}
             </div>
           ) : (
@@ -102,14 +94,12 @@ const CharacterSettingsSidebar = (props: Props) => {
           </div>
           {activeSetup.shieldFilters.length > 0 ? (
             <div className='d-flex flex-wrap gap-1'>
-              {activeSetup.shieldFilters.map((s) => (
-                <Badge
-                  key={s}
-                  bg='dark'
-                  className='border border-secondary small'
-                >
-                  {s}
-                </Badge>
+              {activeSetup.shieldFilters.map((shield) => (
+                <GenericBadge
+                  key={shield}
+                  badgeText={shield}
+                  fontSize='0.7rem'
+                />
               ))}
             </div>
           ) : (
