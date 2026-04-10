@@ -6,7 +6,11 @@ import {
   normalizeString,
   parseModifierValue
 } from '../conflictResolver.ts'
-import { aggregateEnchantmentEntries, sortItemsByValue } from '../helpers.ts'
+import {
+  aggregateEnchantmentEntries,
+  getActiveSetEnhancements,
+  sortItemsByValue
+} from '../helpers.ts'
 import type { Curse, GearAugment, GearItem, LootItem } from '../types.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
 
@@ -14,12 +18,14 @@ const EnchantmentsSummary = ({
   equippedItems,
   slottedAugments,
   slottedCurses,
-  slottedFiligrees
+  slottedFiligrees,
+  slottedGemSetBonuses
 }: {
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
   slottedCurses: Record<string, Curse | null>
   slottedFiligrees: Record<string, (LootItem | null)[]> | undefined
+  slottedGemSetBonuses?: Record<string, (string | null)[]>
 }) => {
   const aggregated = useMemo(() => {
     const map: Record<
@@ -41,6 +47,12 @@ const EnchantmentsSummary = ({
         >
       }
     > = {}
+
+    const activeSetEnhancements = getActiveSetEnhancements(
+      equippedItems,
+      slottedAugments,
+      slottedGemSetBonuses
+    )
 
     for (const item of equippedItems) {
       const entries = aggregateEnchantmentEntries(
@@ -85,6 +97,40 @@ const EnchantmentsSummary = ({
       }
     }
 
+    for (const { ench, sourceName } of activeSetEnhancements) {
+      const normName = normalizeString(ench.name)
+      const normBonus = getBonus(ench.bonus)
+      const value = parseModifierValue(ench.modifier)
+      const valueStr = ench.modifier?.toString() ?? ''
+
+      if (!map[normName]) {
+        map[normName] = { originalName: ench.name, bonuses: {} }
+      }
+      if (!map[normName].bonuses[normBonus]) {
+        map[normName].bonuses[normBonus] = {
+          maxValue: -Infinity,
+          maxValueStr: '',
+          items: []
+        }
+      }
+
+      const group = map[normName].bonuses[normBonus]
+      if (value > group.maxValue) {
+        group.maxValue = value
+        group.maxValueStr = valueStr
+      } else if (group.maxValue === -Infinity) {
+        group.maxValue = 0
+        group.maxValueStr = valueStr
+      }
+
+      group.items.push({
+        itemName: sourceName,
+        slot: 'Set Bonus',
+        value,
+        valueStr
+      })
+    }
+
     const result = Object.values(map).map((entry) => {
       const bonuses = Object.entries(entry.bonuses)
         .map(([bonusType, data]) => {
@@ -112,7 +158,13 @@ const EnchantmentsSummary = ({
     })
 
     return result.sort((a, b) => a.name.localeCompare(b.name))
-  }, [equippedItems, slottedAugments, slottedCurses, slottedFiligrees])
+  }, [
+    equippedItems,
+    slottedAugments,
+    slottedCurses,
+    slottedFiligrees,
+    slottedGemSetBonuses
+  ])
 
   if (aggregated.length === 0) return null
 

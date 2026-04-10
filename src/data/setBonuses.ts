@@ -1,6 +1,36 @@
 import type { SetBonus } from '../types/crafting.ts'
+import itemSetsData from './loot/itemSets.json'
+
+interface ItemSetJson {
+  name: string
+  bonuses: {
+    threshold: number
+    enhancements:
+      | {
+          name?: string
+          modifier?: string
+          bonus?: string
+          notes?: string
+        }[]
+      | null
+  }[]
+}
+
+const itemSets = (itemSetsData as ItemSetJson[]).map((set) => ({
+  name: set.name,
+  enhancements: set.bonuses.flatMap((bonus) =>
+    (bonus.enhancements ?? []).map((enh) => ({
+      name: enh.name || 'Unnamed Enhancement',
+      modifier: enh.modifier,
+      bonus: enh.bonus,
+      notes: enh.notes,
+      numPiecesEquipped: bonus.threshold
+    }))
+  )
+}))
 
 export const setBonuses: SetBonus[] = [
+  ...itemSets,
   {
     name: "The Legendary Dread Isle's Curse",
     numPiecesEquipped: 5,

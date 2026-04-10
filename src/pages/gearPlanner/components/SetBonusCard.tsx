@@ -1,12 +1,18 @@
 import { memo, useMemo } from 'react'
 import { Card, Col } from 'react-bootstrap'
 import { findSetBonus } from '../../../data/setBonuses.ts'
+import { getActiveEnhancementsForSet } from '../helpers.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
 
 const SetBonusCard = memo((props: Props) => {
   const { count, onSetClick, setName } = props
 
   const setDef = useMemo(() => findSetBonus(setName), [setName])
+
+  const activeEnhancements = useMemo(
+    () => getActiveEnhancementsForSet(setDef, count),
+    [setDef, count]
+  )
 
   return (
     <Col md={6} lg={4} key={setName} className='mb-2'>
@@ -23,21 +29,18 @@ const SetBonusCard = memo((props: Props) => {
             />
           </div>
 
-          {setDef?.enhancements
-            ?.filter((enh) => (enh.numPiecesEquipped ?? 0) <= count)
-            .map((enh, idx) => (
-              <div
-                key={`${enh.name}-${String(idx)}`}
-                className='small text-secondary ps-2 border-start border-secondary mb-1'
-              >
-                • {enh.name} ({enh.numPiecesEquipped} pieces)
-              </div>
-            ))}
+          {activeEnhancements.map((enh, idx) => (
+            <div
+              key={`${enh.name}-${String(idx)}`}
+              className='small text-secondary ps-2 border-start border-secondary mb-1'
+            >
+              • {enh.name}
+              {enh.modifier ? `: ${enh.modifier}` : ''} (
+              {enh.numPiecesEquipped ?? setDef?.numPiecesEquipped} pieces)
+            </div>
+          ))}
 
-          {(!setDef ||
-            setDef.enhancements?.filter(
-              (enh) => (enh.numPiecesEquipped ?? 0) <= count
-            ).length === 0) && (
+          {activeEnhancements.length === 0 && (
             <div className='small text-muted ps-2 italic text-center py-2'>
               Equip more pieces to see bonuses.
             </div>

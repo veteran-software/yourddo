@@ -1,3 +1,5 @@
+import { findSetBonus } from '../../data/setBonuses.ts'
+import type { SetBonus } from '../../types/crafting.ts'
 import {
   type Curse,
   type GearAugment,
@@ -40,7 +42,8 @@ export const aggregateEnchantmentEntries = (
   item: GearItem,
   itemAugs: Record<number, GearAugment | null> | undefined,
   curse: Curse | null | undefined,
-  filigrees: (LootItem | null)[] | undefined
+  filigrees: (LootItem | null)[] | undefined,
+  activeSetEnhancements?: { ench: LootEnchantment; sourceName: string }[]
 ) => {
   const entries: { ench: LootEnchantment; sourceName: string }[] = (
     item.enchantments ?? []
@@ -52,6 +55,85 @@ export const aggregateEnchantmentEntries = (
   addAugmentEntries(entries, item.name, itemAugs)
   addCurseEntries(entries, item.name, curse)
   addFiligreeEntries(entries, item.name, filigrees)
+
+  if (activeSetEnhancements) {
+    entries.push(...activeSetEnhancements)
+  }
+
+  return entries
+}
+
+export const getActiveEnhancementsForSet = (
+  setDef: SetBonus | undefined,
+  count: number
+) => {
+  if (!setDef?.enhancements) return []
+
+  const thresholds = Array.from(
+    new Set(
+      setDef.enhancements
+        .map((enh) => enh.numPiecesEquipped ?? setDef.numPiecesEquipped ?? 0)
+        .filter((t) => t > 0 && t <= count)
+    )
+  ).sort((a, b) => b - a)
+
+  if (thresholds.length === 0) return []
+
+  const highestThreshold = thresholds[0]
+  return setDef.enhancements.filter(
+    (enh) =>
+      (enh.numPiecesEquipped ?? setDef.numPiecesEquipped ?? 0) ===
+      highestThreshold
+  )
+}
+
+export const getActiveSetEnhancements = (
+  equippedItems: GearItem[],
+  slottedAugments: Record<string, Record<number, GearAugment | null>>,
+  slottedGemSetBonuses?: Record<string, (string | null)[]>
+) => {
+  const counts: Record<string, number> = {}
+
+  // Count from items
+  equippedItems.forEach((item) => {
+    if (item.name.includes('Gem of Many Facets')) {
+      const gemBonuses = slottedGemSetBonuses?.[item.id] ?? []
+      gemBonuses.forEach((setName) => {
+        if (setName) {
+          counts[setName] = (counts[setName] || 0) + 1
+        }
+      })
+    } else {
+      item.setBonus?.forEach((sb) => {
+        counts[sb.name] = (counts[sb.name] || 0) + 1
+      })
+    }
+  })
+
+  // Count from augments
+  for (const itemAugments of Object.values(slottedAugments)) {
+    for (const aug of Object.values(itemAugments)) {
+      if (aug?.setBonus) {
+        for (const sb of aug.setBonus) {
+          counts[sb.name] = (counts[sb.name] ?? 0) + 1
+        }
+      }
+    }
+  }
+
+  const entries: { ench: LootEnchantment; sourceName: string }[] = []
+  for (const [setName, count] of Object.entries(counts)) {
+    if (count > 0) {
+      const setDef = findSetBonus(setName)
+      const activeEnh = getActiveEnhancementsForSet(setDef, count)
+      activeEnh.forEach((enh) => {
+        entries.push({
+          ench: enh,
+          sourceName: `Set Bonus: ${setName}`
+        })
+      })
+    }
+  }
 
   return entries
 }

@@ -30,8 +30,7 @@ import {
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
-import EnchantmentSearchOffcanvas
-  from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import FiligreeModal from './components/FiligreeModal.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
@@ -93,7 +92,7 @@ const GearPlanner = () => {
     showSidebar,
     setShowSidebar,
     setShowEnchantmentSearch,
-    setShowSetBonusBrowser,
+    setShowSetBonusBrowser
   } = gpHook
 
   const [showSettings, setShowSettings] = useState(false)
@@ -154,7 +153,9 @@ const GearPlanner = () => {
           <span className='visually-hidden'>Loading Gear Data...</span>
         </div>
         <p className='mt-2' aria-hidden='true'>
-          {gpHook.loading ? 'Loading Gear Data...' : 'Preparing Item Browser...'}
+          {gpHook.loading
+            ? 'Loading Gear Data...'
+            : 'Preparing Item Browser...'}
         </p>
       </Container>
     )
@@ -330,6 +331,9 @@ const GearPlanner = () => {
                       slottedAugments={gpHook.activeSetup.slottedAugments}
                       slottedCurses={gpHook.activeSetup.slottedCurses}
                       slottedFiligrees={gpHook.activeSetup.slottedFiligrees}
+                      slottedGemSetBonuses={
+                        gpHook.activeSetup.slottedGemSetBonuses
+                      }
                     />
 
                     {setup.classes?.includes('Artificer') &&
@@ -365,6 +369,9 @@ const GearPlanner = () => {
                           slottedAugments={artificerPet.slottedAugments}
                           slottedCurses={artificerPet.slottedCurses}
                           slottedFiligrees={artificerPet.slottedFiligrees}
+                          slottedGemSetBonuses={
+                            artificerPet.slottedGemSetBonuses
+                          }
                         />
                       </div>
                     )}
@@ -393,6 +400,7 @@ const GearPlanner = () => {
                           slottedAugments={druidPet.slottedAugments}
                           slottedCurses={druidPet.slottedCurses}
                           slottedFiligrees={druidPet.slottedFiligrees}
+                          slottedGemSetBonuses={druidPet.slottedGemSetBonuses}
                         />
                       </div>
                     )}
@@ -690,10 +698,7 @@ const GearPlanner = () => {
           {...gpHook}
         />
 
-        <SetBonusBrowserOffcanvas
-          troveData={troveData}
-          {...gpHook}
-        />
+        <SetBonusBrowserOffcanvas troveData={troveData} {...gpHook} />
 
         {filigreeTarget && (
           <FiligreeModal
