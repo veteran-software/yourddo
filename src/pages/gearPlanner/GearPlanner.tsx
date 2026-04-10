@@ -86,7 +86,7 @@ const GearPlanner = () => {
   const [browsingSet, setBrowsingSet] = useState<string | null>(null)
   const [setBonusFilter, setSetBonusFilter] = useState<string | null>(null)
   const [enchantmentSearch, setEnchantmentSearch] = useState('')
-  const [itemNameSearch, setItemNameSearch] = useState('')
+  const [itemNameSearch] = useState('')
   const observerTarget = useRef<HTMLDivElement>(null)
 
   const gpHook = useGearPlanner({

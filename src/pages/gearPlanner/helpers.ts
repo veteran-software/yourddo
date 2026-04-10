@@ -15,7 +15,7 @@ export const isWeapon = (item: LootItem) => {
 }
 
 export const isMinorArtifact = (item: LootItem) => {
-  return item.artifacttype?.trim().length > 0
+  return (item.artifacttype?.trim().length ?? 0) > 0
 }
 
 export const getMaxFiligreeSlots = (item: LootItem) => {
