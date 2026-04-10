@@ -49,35 +49,53 @@ export const aggregateEnchantmentEntries = (
     sourceName: item.name
   }))
 
-  if (itemAugs) {
-    for (const aug of Object.values(itemAugs)) {
-      if (aug?.effectsAdded) {
-        for (const e of aug.effectsAdded) {
-          entries.push({ ench: e, sourceName: `${item.name} (${aug.name})` })
-        }
-      }
-    }
-  }
-
-  if (curse?.enchantments) {
-    for (const e of curse.enchantments) {
-      entries.push({ ench: e, sourceName: `${item.name} (${curse.name})` })
-    }
-  }
-
-  if (filigrees) {
-    for (const fili of filigrees) {
-      if (fili?.enchantments) {
-        for (const e of fili.enchantments) {
-          // Filigrees stack with all other sources
-          entries.push({
-            ench: { ...e, bonus: 'Filigree' },
-            sourceName: `${item.name} (Filigree: ${fili.name})`
-          })
-        }
-      }
-    }
-  }
+  addAugmentEntries(entries, item.name, itemAugs)
+  addCurseEntries(entries, item.name, curse)
+  addFiligreeEntries(entries, item.name, filigrees)
 
   return entries
+}
+
+const addAugmentEntries = (
+  entries: { ench: LootEnchantment; sourceName: string }[],
+  itemName: string,
+  itemAugs: Record<number, GearAugment | null> | undefined
+) => {
+  if (!itemAugs) return
+  for (const aug of Object.values(itemAugs)) {
+    if (aug?.effectsAdded) {
+      for (const e of aug.effectsAdded) {
+        entries.push({ ench: e, sourceName: `${itemName} (${aug.name})` })
+      }
+    }
+  }
+}
+
+const addCurseEntries = (
+  entries: { ench: LootEnchantment; sourceName: string }[],
+  itemName: string,
+  curse: Curse | null | undefined
+) => {
+  if (!curse?.enchantments) return
+  for (const e of curse.enchantments) {
+    entries.push({ ench: e, sourceName: `${itemName} (${curse.name})` })
+  }
+}
+
+const addFiligreeEntries = (
+  entries: { ench: LootEnchantment; sourceName: string }[],
+  itemName: string,
+  filigrees: (LootItem | null)[] | undefined
+) => {
+  if (!filigrees) return
+  for (const fili of filigrees) {
+    if (fili?.enchantments) {
+      for (const e of fili.enchantments) {
+        entries.push({
+          ench: { ...e, bonus: 'Filigree' },
+          sourceName: `${itemName} (Filigree: ${fili.name})`
+        })
+      }
+    }
+  }
 }

@@ -18,7 +18,7 @@ const EnchantmentsSummary = ({
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
   slottedCurses: Record<string, Curse | null>
-  slottedFiligrees: Record<string, (LootItem | null)[]>
+  slottedFiligrees: Record<string, (LootItem | null)[]> | undefined
 }) => {
   const aggregated = useMemo(() => {
     const map: Record<
@@ -46,7 +46,7 @@ const EnchantmentsSummary = ({
         item,
         slottedAugments[item.id],
         slottedCurses[item.id],
-        slottedFiligrees[item.id]
+        slottedFiligrees?.[item.id]
       )
 
       for (const { ench, sourceName } of entries) {
