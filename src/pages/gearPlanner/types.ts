@@ -119,7 +119,7 @@ export interface LootItem {
   durability: string
   weight: string
   baseValue?: LootBaseValue
-  artifacttype: string
+  artifacttype?: string
   dropLocations: LootDropLocation[]
   update: string
   details: string
