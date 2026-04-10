@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Accordion,
   Button,
@@ -30,7 +30,8 @@ import {
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
-import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas
+  from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import FiligreeModal from './components/FiligreeModal.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
@@ -86,7 +87,6 @@ const GearPlanner = () => {
   const [setBonusFilter, setSetBonusFilter] = useState<string | null>(null)
   const [enchantmentSearch, setEnchantmentSearch] = useState('')
   const [itemNameSearch] = useState('')
-  const observerTarget = useRef<HTMLDivElement>(null)
 
   const gpHook = useGearPlanner({
     enchantmentSearch,
@@ -718,7 +718,6 @@ const GearPlanner = () => {
           setShowConflicts={setShowConflicts}
           setBonusFilter={setBonusFilter}
           setSetBonusFilter={setSetBonusFilter}
-          observerTarget={observerTarget}
           {...gpHook}
         />
 

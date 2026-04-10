@@ -120,29 +120,6 @@ const useGearPlanner = (props: Props) => {
     setItemsToShow((prev) => prev + 50)
   }, [])
 
-  useEffect(() => {
-    if (!browsingSlot) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMore()
-        }
-      },
-      { threshold: 0.1 }
-    )
-
-    const currentTarget = observerTarget.current
-    if (currentTarget) {
-      observer.observe(currentTarget)
-    }
-
-    return () => {
-      if (currentTarget) {
-        observer.unobserve(currentTarget)
-      }
-    }
-  }, [loadMore, browsingSlot, itemsToShow])
 
   useEffect(() => {
     const run = async () => {
@@ -608,6 +585,36 @@ const useGearPlanner = (props: Props) => {
     itemNameSearch,
     internalItemNameSearch
   ])
+
+  useEffect(() => {
+    if (!browsingSlot) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    // Give the DOM a moment to render the spinner if it just appeared
+    const timeoutId = setTimeout(() => {
+      const currentTarget = observerTarget.current
+      if (currentTarget) {
+        observer.observe(currentTarget)
+      }
+    }, 100)
+
+    return () => {
+      clearTimeout(timeoutId)
+      const currentTarget = observerTarget.current
+      if (currentTarget) {
+        observer.unobserve(currentTarget)
+      }
+      observer.disconnect()
+    }
+  }, [loadMore, browsingSlot])
 
   const searchResultsBySlot = useMemo(() => {
     if (enchantmentSearch.length <= 2) return null
@@ -1379,7 +1386,8 @@ const useGearPlanner = (props: Props) => {
       )
     },
     allFiligrees,
-    updateClassProficiencies
+    updateClassProficiencies,
+    observerTarget
   }
 }
 

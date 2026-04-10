@@ -119,7 +119,7 @@ const FiligreeModal = (props: Props) => {
   const filteredFiligrees = allFiltered.slice(0, displayLimit)
 
   useEffect(() => {
-    if (!observerTarget.current || activeSlotIndex === null) return
+    if (activeSlotIndex === null) return
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -130,12 +130,22 @@ const FiligreeModal = (props: Props) => {
       { threshold: 0.1 }
     )
 
-    observer.observe(observerTarget.current)
+    const timeoutId = setTimeout(() => {
+      const currentTarget = observerTarget.current
+      if (currentTarget) {
+        observer.observe(currentTarget)
+      }
+    }, 100)
 
     return () => {
+      clearTimeout(timeoutId)
+      const currentTarget = observerTarget.current
+      if (currentTarget) {
+        observer.unobserve(currentTarget)
+      }
       observer.disconnect()
     }
-  }, [activeSlotIndex, displayLimit, allFiltered.length])
+  }, [activeSlotIndex])
 
   return (
     <Modal show={show} onHide={onHide} size='lg' centered scrollable>

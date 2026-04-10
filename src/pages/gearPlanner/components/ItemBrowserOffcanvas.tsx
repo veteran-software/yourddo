@@ -116,7 +116,11 @@ const ItemBrowserOffcanvas = (props: Props) => {
             )}
 
             {itemsToShow < filteredItems.length && (
-              <div ref={observerTarget} className='text-center py-3'>
+              <div
+                ref={observerTarget}
+                className='text-center py-3'
+                style={{ minHeight: '50px' }}
+              >
                 <div
                   className='spinner-border spinner-border-sm text-primary'
                   role='status'
