@@ -62,7 +62,7 @@ export const DRUID_PET_SLOTS: GearSlot[] = [
 export interface LootEnchantment {
   name: string
   modifier?: string | number
-  bonus?: string
+  bonus?: string | number
   notes?: string
 }
 

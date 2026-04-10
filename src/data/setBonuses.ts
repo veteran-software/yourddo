@@ -20,7 +20,7 @@ const itemSets = (itemSetsData as ItemSetJson[]).map((set) => ({
   name: set.name,
   enhancements: set.bonuses.flatMap((bonus) =>
     (bonus.enhancements ?? []).map((enh) => ({
-      name: enh.name || 'Unnamed Enhancement',
+      name: enh.name ?? 'Unnamed Enhancement',
       modifier: enh.modifier,
       bonus: enh.bonus,
       notes: enh.notes,

@@ -8,7 +8,7 @@ import {
 
 export interface EnchantmentConflict {
   name: string
-  bonus: string
+  bonus: string | number
   items: {
     itemId: string
     itemName: string

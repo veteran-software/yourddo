@@ -28,7 +28,7 @@ const EnchantmentsSummary = ({
   slottedGemSetBonuses?: Record<string, (string | null)[]>
 }) => {
   const aggregated = useMemo(() => {
-    const map: Record<
+    type AggregationMap = Record<
       string,
       {
         originalName: string
@@ -46,58 +46,18 @@ const EnchantmentsSummary = ({
           }
         >
       }
-    > = {}
+    >
+    const map: AggregationMap = {}
 
-    const activeSetEnhancements = getActiveSetEnhancements(
-      equippedItems,
-      slottedAugments,
-      slottedGemSetBonuses
-    )
-
-    for (const item of equippedItems) {
-      const entries = aggregateEnchantmentEntries(
-        item,
-        slottedAugments[item.id],
-        slottedCurses[item.id],
-        slottedFiligrees?.[item.id]
-      )
-
-      for (const { ench, sourceName } of entries) {
-        const normName = normalizeString(ench.name)
-        const normBonus = getBonus(ench.bonus)
-        const value = parseModifierValue(ench.modifier)
-        const valueStr = ench.modifier?.toString() ?? ''
-
-        if (!map[normName]) {
-          map[normName] = { originalName: ench.name, bonuses: {} }
-        }
-        if (!map[normName].bonuses[normBonus]) {
-          map[normName].bonuses[normBonus] = {
-            maxValue: -Infinity,
-            maxValueStr: '',
-            items: []
-          }
-        }
-
-        const group = map[normName].bonuses[normBonus]
-        if (value > group.maxValue) {
-          group.maxValue = value
-          group.maxValueStr = valueStr
-        } else if (group.maxValue === -Infinity) {
-          group.maxValue = 0
-          group.maxValueStr = valueStr
-        }
-
-        group.items.push({
-          itemName: sourceName,
-          slot: item.slot,
-          value,
-          valueStr
-        })
-      }
-    }
-
-    for (const { ench, sourceName } of activeSetEnhancements) {
+    const addEntryToMap = (
+      ench: {
+        name: string
+        bonus?: string | number
+        modifier?: string | number
+      },
+      sourceName: string,
+      slot: string
+    ) => {
       const normName = normalizeString(ench.name)
       const normBonus = getBonus(ench.bonus)
       const value = parseModifierValue(ench.modifier)
@@ -125,10 +85,33 @@ const EnchantmentsSummary = ({
 
       group.items.push({
         itemName: sourceName,
-        slot: 'Set Bonus',
+        slot,
         value,
         valueStr
       })
+    }
+
+    const activeSetEnhancements = getActiveSetEnhancements(
+      equippedItems,
+      slottedAugments,
+      slottedGemSetBonuses
+    )
+
+    for (const item of equippedItems) {
+      const entries = aggregateEnchantmentEntries(
+        item,
+        slottedAugments[item.id],
+        slottedCurses[item.id],
+        slottedFiligrees?.[item.id]
+      )
+
+      for (const { ench, sourceName } of entries) {
+        addEntryToMap(ench, sourceName, item.slot)
+      }
+    }
+
+    for (const { ench, sourceName } of activeSetEnhancements) {
+      addEntryToMap(ench, sourceName, 'Set Bonus')
     }
 
     const result = Object.values(map).map((entry) => {

@@ -35,7 +35,7 @@ const SetBonusCard = memo((props: Props) => {
               className='small text-secondary ps-2 border-start border-secondary mb-1'
             >
               • {enh.name}
-              {enh.modifier ? `: ${enh.modifier}` : ''} (
+              {enh.modifier ? `: ${String(enh.modifier)}` : ''} (
               {enh.numPiecesEquipped ?? setDef?.numPiecesEquipped} pieces)
             </div>
           ))}

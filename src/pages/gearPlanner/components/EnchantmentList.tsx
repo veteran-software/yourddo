@@ -45,9 +45,9 @@ const EnchantmentList = (props: Props) => {
               )
 
         const modifierText = ench.modifier ? `+${String(ench.modifier)}` : ''
-        const bonusText = ench.bonus ? `(${ench.bonus})` : ''
+        const bonusText = ench.bonus ? `(${String(ench.bonus)})` : ''
         const enchModifierText = ench.modifier
-          ? ` (+${String(ench.modifier)} ${ench.bonus ?? ''})`
+          ? ` (+${String(ench.modifier)} ${String(ench.bonus ?? '')})`
           : ''
         const enchText =
           source === 'slot'
