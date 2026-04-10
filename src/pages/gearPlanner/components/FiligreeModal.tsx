@@ -208,6 +208,8 @@ const FiligreeModal = (props: Props) => {
             return (
               <Col key={idx} xs={6} md={4} lg={2.4}>
                 <div
+                  role='button'
+                  tabIndex={0}
                   className={`p-2 border rounded text-center cursor-pointer position-relative d-flex flex-column align-items-center justify-content-center transition-all ${
                     isActive
                       ? 'border-primary bg-primary bg-opacity-25'
@@ -216,6 +218,12 @@ const FiligreeModal = (props: Props) => {
                   style={{ height: '70px', cursor: 'pointer' }}
                   onClick={() => {
                     handleSlotClick(idx)
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      handleSlotClick(idx)
+                    }
                   }}
                 >
                   {fili ? (
@@ -328,6 +336,14 @@ const FiligreeModal = (props: Props) => {
                       onClick={() => {
                         if (!isSlotted) {
                           handleSelectFiligree(f)
+                        }
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          if (!isSlotted) {
+                            e.preventDefault()
+                            handleSelectFiligree(f)
+                          }
                         }
                       }}
                     >
