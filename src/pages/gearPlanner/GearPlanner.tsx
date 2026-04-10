@@ -73,17 +73,11 @@ const GearPlanner = () => {
   const { troveData } = useAppSelector((state) => state.app)
 
   const [showConflicts, setShowConflicts] = useState(false)
-  const [showSettings, setShowSettings] = useState(false)
-  const [showSidebar, setShowSidebar] = useState(false)
   const [showPermalink, setShowPermalink] = useState(false)
-  const [showEnchantmentSearch, setShowEnchantmentSearch] = useState(false)
-  const [showSetBonusBrowser, setShowSetBonusBrowser] = useState(false)
-  const [showFiligreeModal, setShowFiligreeModal] = useState(false)
   const [filigreeTarget, setFiligreeTarget] = useState<{
     item: GearItem
     slot: GearSlot
   } | null>(null)
-  const [browsingSet, setBrowsingSet] = useState<string | null>(null)
   const [setBonusFilter, setSetBonusFilter] = useState<string | null>(null)
   const [enchantmentSearch, setEnchantmentSearch] = useState('')
   const [itemNameSearch] = useState('')
@@ -92,9 +86,18 @@ const GearPlanner = () => {
     enchantmentSearch,
     itemNameSearch,
     setBonusFilter,
-    setBrowsingSet,
     showConflicts
   })
+
+  const {
+    showSidebar,
+    setShowSidebar,
+    setShowEnchantmentSearch,
+    setShowSetBonusBrowser,
+  } = gpHook
+
+  const [showSettings, setShowSettings] = useState(false)
+  const [showFiligreeModal, setShowFiligreeModal] = useState(false)
 
   useEffect(() => {
     const win = globalThis as unknown as Window
@@ -319,7 +322,7 @@ const GearPlanner = () => {
                       slottedGemSetBonuses={
                         gpHook.activeSetup.slottedGemSetBonuses
                       }
-                      onSetClick={gpHook.openSetBrowser}
+                      onSetClick={gpHook.openSetBonusBrowser}
                     />
 
                     <EnchantmentsSummary
@@ -354,7 +357,7 @@ const GearPlanner = () => {
                           slottedGemSetBonuses={
                             artificerPet.slottedGemSetBonuses
                           }
-                          onSetClick={gpHook.openSetBrowser}
+                          onSetClick={gpHook.openSetBonusBrowser}
                         />
 
                         <EnchantmentsSummary
@@ -382,7 +385,7 @@ const GearPlanner = () => {
                           equippedItems={gpHook.druidEquipped}
                           slottedAugments={druidPet.slottedAugments}
                           slottedGemSetBonuses={druidPet.slottedGemSetBonuses}
-                          onSetClick={gpHook.openSetBrowser}
+                          onSetClick={gpHook.openSetBonusBrowser}
                         />
 
                         <EnchantmentsSummary
@@ -679,8 +682,6 @@ const GearPlanner = () => {
         </Modal>
 
         <EnchantmentSearchOffcanvas
-          showEnchantmentSearch={showEnchantmentSearch}
-          setShowEnchantmentSearch={setShowEnchantmentSearch}
           enchantmentSearch={enchantmentSearch}
           setEnchantmentSearch={setEnchantmentSearch}
           showConflicts={showConflicts}
@@ -690,10 +691,6 @@ const GearPlanner = () => {
         />
 
         <SetBonusBrowserOffcanvas
-          showSetBonusBrowser={showSetBonusBrowser}
-          setShowSetBonusBrowser={setShowSetBonusBrowser}
-          browsingSet={browsingSet}
-          setBrowsingSet={setBrowsingSet}
           troveData={troveData}
           {...gpHook}
         />

@@ -1,7 +1,5 @@
 import {
-  type Dispatch,
   type JSX,
-  type SetStateAction,
   useCallback,
   useEffect,
   useMemo,
@@ -57,7 +55,6 @@ import {
  * @param {Object} props - The props provided to the gear planner hook.
  * @param {function} props.enchantmentSearch - A callback function for initiating an enchantment search.
  * @param {function} props.setBonusFilter - A function to filter available set bonuses based on specific criteria.
- * @param {function} props.setBrowsingSet - A function used to update the currently selected set being browsed.
  * @param {boolean} props.showConflicts - A flag indicating whether to display conflicting items.
  *
  * @returns {Object} An object containing state and utility functions related to the gear planner, including:
@@ -69,7 +66,6 @@ const useGearPlanner = (props: Props) => {
     enchantmentSearch,
     itemNameSearch,
     setBonusFilter,
-    setBrowsingSet,
     showConflicts
   } = props
 
@@ -110,6 +106,7 @@ const useGearPlanner = (props: Props) => {
   const [showSidebar, setShowSidebar] = useState(false)
   const [showEnchantmentSearch, setShowEnchantmentSearch] = useState(false)
   const [showSetBonusBrowser, setShowSetBonusBrowser] = useState(false)
+  const [browsingSet, setBrowsingSet] = useState<string | null>(null)
   const observerTarget = useRef<HTMLDivElement>(null)
 
   const openSlotBrowser = useCallback((slot: GearSlot | null) => {
@@ -161,7 +158,10 @@ const useGearPlanner = (props: Props) => {
         if (
           !target.closest('.btn') &&
           !target.closest('.gear-planner-sidebar-toggle') &&
-          !target.closest('.card-header')
+          !target.closest('.card-header') &&
+          !target.closest('.badge') &&
+          !target.closest('.set-bonus-badge-clickable') &&
+          !target.closest('.gear-planner-set-card')
         ) {
           setShowSidebar(false)
           setShowEnchantmentSearch(false)
@@ -591,8 +591,9 @@ const useGearPlanner = (props: Props) => {
     return Object.keys(setBonusIndex)
       .filter((setName) => {
         if (!isSetVisibleInRange(setName)) return false
-        if (browsingSlot && !setsWithItemsInSlot.has(setName)) return false
-        return true
+
+        return !(browsingSlot && !setsWithItemsInSlot.has(setName));
+
       })
       .sort((a, b) => a.localeCompare(b))
   }, [
@@ -858,13 +859,6 @@ const useGearPlanner = (props: Props) => {
     setup.shieldFilters = updatedShieldFilters
   }
 
-  const openSetBrowser = useCallback(
-    (setName: string) => {
-      setBrowsingSet(setName)
-      setShowSetBonusBrowser(true)
-    },
-    [setBrowsingSet]
-  )
 
   /**
    * A function variable that generates a new gear setup configuration with default properties,
@@ -1419,6 +1413,14 @@ const useGearPlanner = (props: Props) => {
     allItems,
     artificerEquipped,
     browsingSlot,
+    browsingSet,
+    setBrowsingSet,
+    showSidebar,
+    setShowSidebar,
+    showEnchantmentSearch,
+    setShowEnchantmentSearch,
+    showSetBonusBrowser,
+    setShowSetBonusBrowser,
     characterEquipped,
     deleteSetup,
     druidEquipped,
@@ -1431,7 +1433,6 @@ const useGearPlanner = (props: Props) => {
     itemsToShow,
     loading,
     openSetBonusBrowser,
-    openSetBrowser,
     openSlotBrowser,
     renderSlot,
     searchResultsBySlot,
@@ -1466,14 +1467,12 @@ const useGearPlanner = (props: Props) => {
  *
  * @property {string} enchantmentSearch - A string representing the search query for enchantments.
  * @property {string | null} setBonusFilter - A string representing the currently applied set bonus filter, or null if no filter is applied.
- * @property {Dispatch<SetStateAction<string | null>>} setBrowsingSet - A state setter function used to update the currently selected browsing set.
  * @property {boolean} showConflicts - A boolean indicating whether conflicts in the current selection should be displayed.
  */
 interface Props {
   enchantmentSearch: string
   itemNameSearch: string
   setBonusFilter: string | null
-  setBrowsingSet: Dispatch<SetStateAction<string | null>>
   showConflicts: boolean
 }
 
