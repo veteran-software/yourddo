@@ -675,9 +675,9 @@
     "name": "Curse of Minor Masterworks",
     "enchantments": [
       {
-        "name": "The power of some effects on this item has been increased as if it were one level higher.",
-        "modifier": "",
-        "bonus": ""
+        "name": "Essence Crafting Effect Level",
+        "modifier": "1",
+        "bonus": "Fortune"
       }
     ],
     "type": "Uncommon"
@@ -686,9 +686,9 @@
     "name": "Curse of Major Masterworks",
     "enchantments": [
       {
-        "name": "The power of some effects on this item has been increased as if it were two levels higher.",
-        "modifier": "",
-        "bonus": ""
+        "name": "Essence Crafting Effect Level",
+        "modifier": "2",
+        "bonus": "Fortune"
       }
     ],
     "type": "Rare"
