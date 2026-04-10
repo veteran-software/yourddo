@@ -1,17 +1,7 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import { isMinorArtifact } from '../../pages/gearPlanner/helpers'
-import type {
-  Curse,
-  GearAugment,
-  GearItem,
-  GearSetup,
-  LootItem
-} from '../../pages/gearPlanner/types'
-import {
-  ARTIFICER_PET_SLOTS,
-  DRUID_PET_SLOTS,
-  GearSlot
-} from '../../pages/gearPlanner/types'
+import {createSlice, type PayloadAction} from '@reduxjs/toolkit'
+import {isMinorArtifact} from '../../pages/gearPlanner/helpers'
+import type {Curse, GearAugment, GearItem, GearSetup, LootItem} from '../../pages/gearPlanner/types'
+import {ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GearSlot} from '../../pages/gearPlanner/types'
 
 interface PetState {
   slots: Record<string, GearItem | null>
@@ -171,23 +161,23 @@ const gearPlannerSlice = createSlice({
 
           const oldItem = setup.slots[slot]
           if (oldItem) {
-            delete setup.slottedFiligrees[oldItem.id]
-            delete setup.unlockedFiligreeSlots[oldItem.id]
+            setup.slottedFiligrees[oldItem.id] = []
+            setup.unlockedFiligreeSlots[oldItem.id] = 0
           }
           setup.slots[slot] = item
         }
       } else if (owner === 'artificer_pet') {
         const oldItem = state.artificerPet.slots[slot]
         if (oldItem) {
-          delete state.artificerPet.slottedFiligrees[oldItem.id]
-          delete state.artificerPet.unlockedFiligreeSlots[oldItem.id]
+          state.artificerPet.slottedFiligrees[oldItem.id] = []
+          state.artificerPet.unlockedFiligreeSlots[oldItem.id] = 0
         }
         state.artificerPet.slots[slot] = item
       } else if (owner === 'druid_pet') {
         const oldItem = state.druidPet.slots[slot]
         if (oldItem) {
-          delete state.druidPet.slottedFiligrees[oldItem.id]
-          delete state.druidPet.unlockedFiligreeSlots[oldItem.id]
+          state.druidPet.slottedFiligrees[oldItem.id] = []
+          state.druidPet.unlockedFiligreeSlots[oldItem.id] = 0
         }
         state.druidPet.slots[slot] = item
       }
@@ -281,7 +271,9 @@ const gearPlannerSlice = createSlice({
 
       const updateFiligree = (petState: PetState) => {
         if (!petState.slottedFiligrees[itemId]) {
-          petState.slottedFiligrees[itemId] = new Array(10).fill(null)
+          petState.slottedFiligrees[itemId] = new Array(10).fill(
+            null
+          ) as LootItem[]
         }
         petState.slottedFiligrees[itemId][slotIndex] = filigree
       }
@@ -292,7 +284,9 @@ const gearPlannerSlice = createSlice({
         )
         if (setup) {
           if (!setup.slottedFiligrees[itemId]) {
-            setup.slottedFiligrees[itemId] = new Array(10).fill(null)
+            setup.slottedFiligrees[itemId] = new Array(10).fill(
+              null
+            ) as LootItem[]
           }
           setup.slottedFiligrees[itemId][slotIndex] = filigree
         }
