@@ -121,7 +121,9 @@ export const tryDecodeGearPermalink = (
       allowMetalWithDruid: Boolean(allowMetalWithDruid),
       slots: {} as Record<GearSlot, GearItem | null>,
       slottedAugments: {},
-      slottedCurses: {}
+      slottedCurses: {},
+      slottedFiligrees: {},
+      unlockedFiligreeSlots: {}
     }
 
     items.forEach(([slot, itemName, augments, curseName]) => {

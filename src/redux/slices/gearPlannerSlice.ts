@@ -101,7 +101,10 @@ const gearPlannerSlice = createSlice({
       state.activeSetupId = action.payload
     },
     addSetup: (state, action: PayloadAction<GearSetup>) => {
-      state.characterSetups.push(action.payload)
+      const setup = action.payload
+      if (!setup.slottedFiligrees) setup.slottedFiligrees = {}
+      if (!setup.unlockedFiligreeSlots) setup.unlockedFiligreeSlots = {}
+      state.characterSetups.push(setup)
     },
     removeSetup: (state, action: PayloadAction<string>) => {
       state.characterSetups = state.characterSetups.filter(
