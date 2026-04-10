@@ -144,14 +144,14 @@ const GearPlanner = () => {
     navigate
   ])
 
-  if (gpHook.loading) {
+  if (gpHook.loading || !gpHook.dataReady) {
     return (
       <Container className='py-4 text-center'>
         <div className='spinner-border text-primary' role='status'>
           <span className='visually-hidden'>Loading Gear Data...</span>
         </div>
         <p className='mt-2' aria-hidden='true'>
-          Loading Gear Data...
+          {gpHook.loading ? 'Loading Gear Data...' : 'Preparing Item Browser...'}
         </p>
       </Container>
     )
