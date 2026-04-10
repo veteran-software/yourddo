@@ -1,14 +1,8 @@
-import { Accordion, Form, Offcanvas } from 'react-bootstrap'
-import type { ItemRollup } from '../../../components/trove/types'
-import { normItem } from '../../../utils/troveUtils.ts'
-import type { EnchantmentConflict } from '../conflictResolver'
-import {
-  type GearAugment,
-  type GearItem,
-  type GearSetup,
-  GearSlot,
-  type SetBonusIndex
-} from '../types'
+import {Accordion, Form, Offcanvas} from 'react-bootstrap'
+import type {ItemRollup} from '../../../components/trove/types'
+import {normItem} from '../../../utils/troveUtils.ts'
+import type {EnchantmentConflict} from '../conflictResolver'
+import {type GearAugment, type GearItem, type GearSetup, GearSlot, type SetBonusIndex} from '../types'
 import SearchResultSlot from './SearchResultSlot'
 
 const SetBonusBrowserOffcanvas = (props: Props) => {
@@ -109,8 +103,8 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                       !item.name.toLowerCase().includes(searchLower) &&
                       !item.name
                         .toLowerCase()
-                        .replace(/[^a-z0-9]/g, '')
-                        .includes(searchLower.replace(/[^a-z0-9]/g, ''))
+                        .replaceAll(/[^a-z0-9]/g, '')
+                        .includes(searchLower.replaceAll(/[^a-z0-9]/g, ''))
                     )
                       return false
                   }
