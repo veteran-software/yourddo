@@ -1213,11 +1213,11 @@ const useGearPlanner = (props: Props) => {
 
                     return (
                       <div className='text-start mt-1 pt-1 border-top'>
-                        <div
-                          className='fw-bold'
+                        <button
+                          type='button'
+                          className='fw-bold border-0 bg-transparent p-0 text-start w-100'
                           style={{
                             color: '#ff8c00',
-                            cursor: 'pointer',
                             fontSize: '0.7rem'
                           }}
                           onClick={() => {
@@ -1242,7 +1242,7 @@ const useGearPlanner = (props: Props) => {
 
                             return 'Sentience Accepted'
                           })()}
-                        </div>
+                        </button>
 
                         {activeFiligrees.length > 0 && (
                           <div
