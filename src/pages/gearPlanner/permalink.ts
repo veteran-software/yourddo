@@ -165,7 +165,7 @@ export interface LocationLike {
 
 export const readGpFromUrl = (
   location: LocationLike,
-  win: Window = window
+  win: Window = globalThis as unknown as Window
 ): { gp: string | null; source: 'search' | 'hash' | null } => {
   try {
     const routerParams = new URLSearchParams(location.search)
@@ -196,7 +196,7 @@ export const removeGpFromUrl = async (
   ) => Promise<void> | void,
   location: LocationLike,
   source: 'search' | 'hash' | null,
-  win: Window = window
+  win: Window = globalThis as unknown as Window
 ): Promise<void> => {
   if (!source) return
 
@@ -229,7 +229,7 @@ export const removeGpFromUrl = async (
 export const buildPermalinkUrl = (
   encoded: string,
   location: LocationLike,
-  win: Window = window
+  win: Window = globalThis as unknown as Window
 ): string => {
   if (typeof win === 'undefined') {
     return `/gear-planner?gp=${encoded}`

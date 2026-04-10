@@ -864,7 +864,7 @@ const useGearPlanner = (props: Props) => {
       const oldItem = setup.slots[slot]
       if (oldItem && hasActiveFiligrees(oldItem.id, setup)) {
         if (
-          window.confirm(
+          globalThis.confirm(
             'This item has slotted filigrees. Removing it will clear all filigrees and unlocked slots. Are you sure?'
           )
         ) {
@@ -881,7 +881,7 @@ const useGearPlanner = (props: Props) => {
         hasActiveFiligrees(oldItem.id, setup)
       ) {
         if (
-          window.confirm(
+          globalThis.confirm(
             'The item currently in this slot has slotted filigrees. Replacing it will clear all filigrees and unlocked slots for the old item. Are you sure?'
           )
         ) {
@@ -1221,7 +1221,7 @@ const useGearPlanner = (props: Props) => {
                             fontSize: '0.7rem'
                           }}
                           onClick={() => {
-                            (window as unknown as {
+                            (globalThis as unknown as {
                               openFiligreeModal: (
                                 item: GearItem,
                                 slot: GearSlot

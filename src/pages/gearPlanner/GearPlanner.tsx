@@ -98,14 +98,15 @@ const GearPlanner = () => {
   })
 
   useEffect(() => {
-    window.openFiligreeModal = (item: GearItem, slot: GearSlot) => {
+    const win = globalThis as unknown as Window
+    win.openFiligreeModal = (item: GearItem, slot: GearSlot) => {
       setFiligreeTarget({ item, slot })
-      window.filigreeTarget = { item, slot }
+      win.filigreeTarget = { item, slot }
       setShowFiligreeModal(true)
     }
     return () => {
-      delete window.openFiligreeModal
-      delete window.filigreeTarget
+      delete win.openFiligreeModal
+      delete win.filigreeTarget
     }
   }, [])
 
