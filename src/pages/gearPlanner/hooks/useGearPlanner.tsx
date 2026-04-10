@@ -860,20 +860,7 @@ const useGearPlanner = (props: Props) => {
     item: GearItem | null,
     setup: GearSetup
   ) => {
-    if (!item) {
-      const oldItem = setup.slots[slot]
-      if (oldItem && hasActiveFiligrees(oldItem.id, setup)) {
-        if (
-          globalThis.confirm(
-            'This item has slotted filigrees. Removing it will clear all filigrees and unlocked slots. Are you sure?'
-          )
-        ) {
-          dispatch(equipItemAction({ slot, item }))
-          openSlotBrowser(null)
-        }
-        return
-      }
-    } else {
+    if (item) {
       const oldItem = setup.slots[slot]
       if (
         oldItem &&
@@ -883,6 +870,19 @@ const useGearPlanner = (props: Props) => {
         if (
           globalThis.confirm(
             'The item currently in this slot has slotted filigrees. Replacing it will clear all filigrees and unlocked slots for the old item. Are you sure?'
+          )
+        ) {
+          dispatch(equipItemAction({ slot, item }))
+          openSlotBrowser(null)
+        }
+        return
+      }
+    } else {
+      const oldItem = setup.slots[slot]
+      if (oldItem && hasActiveFiligrees(oldItem.id, setup)) {
+        if (
+          globalThis.confirm(
+            'This item has slotted filigrees. Removing it will clear all filigrees and unlocked slots. Are you sure?'
           )
         ) {
           dispatch(equipItemAction({ slot, item }))
@@ -991,10 +991,10 @@ const useGearPlanner = (props: Props) => {
       // "Lamordia: Melancholic Slot (Weapon):" -> "Lamordia: Melancholic (Weapon)"
       // "Dino Bone" -> "Isle of Dread:"
       const normalized = slotType
-        .replace('Dino Bone', 'Isle of Dread:')
-        .replace(/\sSlot/g, '')
-        .replace(/:$/, '')
-        .replace(/:\s*\(/g, ' (') // Ensure "Isle of Dread: Scale Slot (Accessory):" -> "Isle of Dread: Scale (Accessory)"
+        .replaceAll('Dino Bone', 'Isle of Dread:')
+        .replaceAll(/\sSlot/g, '')
+        .replaceAll(/:$/, '')
+        .replaceAll(/:\s*\(/g, ' (') // Ensure "Isle of Dread: Scale Slot (Accessory):" -> "Isle of Dread: Scale (Accessory)"
         .trim()
       allowedTypes = [normalized]
     }
@@ -1221,15 +1221,14 @@ const useGearPlanner = (props: Props) => {
                             fontSize: '0.7rem'
                           }}
                           onClick={() => {
-                            (globalThis as unknown as {
-                              openFiligreeModal: (
-                                item: GearItem,
-                                slot: GearSlot
-                              ) => void
-                            }).openFiligreeModal(
-                              selectedItem,
-                              slot
-                            )
+                            ;(
+                              globalThis as unknown as {
+                                openFiligreeModal: (
+                                  item: GearItem,
+                                  slot: GearSlot
+                                ) => void
+                              }
+                            ).openFiligreeModal(selectedItem, slot)
                           }}
                         >
                           {(() => {
@@ -1272,7 +1271,7 @@ const useGearPlanner = (props: Props) => {
                                   >
                                     <EnchantmentList
                                       enchantments={filigree.enchantments}
-                                      itemId={(selectedItem).id}
+                                      itemId={selectedItem.id}
                                       conflicts={currentConflicts}
                                       equippedItems={currentEquipped}
                                       source='slot'
