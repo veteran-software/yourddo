@@ -11,9 +11,9 @@ import {
   type GearItem,
   GearSlot
 } from '../types.ts'
+import GenericBadge from './badges/GenericBadge.tsx'
+import SetBonusBadge from './badges/SetBonusBadge.tsx'
 import EnchantmentList from './EnchantmentList.tsx'
-import GenericBadge from './GenericBadge.tsx'
-import SetBonusBadge from './SetBonusBadge.tsx'
 import TroveBadge from './TroveBadge.tsx'
 
 const AugmentSlotItem = (props: Props) => {

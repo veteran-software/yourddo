@@ -8,7 +8,7 @@ import {
 } from '../conflictResolver.ts'
 import { aggregateEnchantmentEntries, sortItemsByValue } from '../helpers.ts'
 import type { Curse, GearAugment, GearItem, LootItem } from '../types.ts'
-import GenericBadge from './GenericBadge.tsx'
+import GenericBadge from './badges/GenericBadge.tsx'
 
 const EnchantmentsSummary = ({
   equippedItems,

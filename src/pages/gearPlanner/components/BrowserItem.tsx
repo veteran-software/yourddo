@@ -2,9 +2,9 @@ import { useAppSelector } from '../../../redux/hooks.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import { type GearAugment, type GearItem, GearSlot } from '../types.ts'
 import AugmentSlotsList from './AugmentSlotList.tsx'
+import GenericBadge from './badges/GenericBadge.tsx'
+import SetBonusBadge from './badges/SetBonusBadge.tsx'
 import EnchantmentList from './EnchantmentList.tsx'
-import GenericBadge from './GenericBadge.tsx'
-import SetBonusBadge from './SetBonusBadge.tsx'
 import TroveBadge from './TroveBadge.tsx'
 
 const BrowserItem = (props: Props) => {

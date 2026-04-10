@@ -1,5 +1,5 @@
 import type { GearItem, GearSetup } from '../types.ts'
-import SetBonusBadge from './SetBonusBadge.tsx'
+import SetBonusBadge from './badges/SetBonusBadge.tsx'
 
 const ItemSetBonusDisplay = (props: Props) => {
   const { activeSetup, openSetBonusBrowser, selectedItem } = props

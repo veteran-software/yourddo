@@ -5,8 +5,8 @@ import { useAppSelector } from '../../../redux/hooks.ts'
 import { getTroveOwners, normItem } from '../../../utils/troveUtils.ts'
 import { getMaxFiligreeSlots } from '../helpers'
 import type { GearItem, GearSetup, GearSlot, LootItem } from '../types'
-import GenericBadge from './GenericBadge.tsx'
-import SetBonusBadge from './SetBonusBadge.tsx'
+import GenericBadge from './badges/GenericBadge.tsx'
+import SetBonusBadge from './badges/SetBonusBadge.tsx'
 
 const FiligreeModal = (props: Props) => {
   const {

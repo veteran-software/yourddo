@@ -1,6 +1,6 @@
 import { Offcanvas, Stack } from 'react-bootstrap'
 import type { GearSetup } from '../types'
-import GenericBadge from './GenericBadge.tsx'
+import GenericBadge from './badges/GenericBadge.tsx'
 
 const CharacterSettingsSidebar = (props: Props) => {
   const { activeSetup, setShowSidebar, showSidebar } = props
