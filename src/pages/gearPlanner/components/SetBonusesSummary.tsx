@@ -3,18 +3,29 @@ import { Badge, Card, Col, Row } from 'react-bootstrap'
 import { FaLayerGroup } from 'react-icons/fa6'
 import { findSetBonus } from '../../../data/setBonuses.ts'
 import type { GearAugment, GearItem } from '../types.ts'
+import GenericBadge from './GenericBadge.tsx'
 
 const SetBonusesSummary = (props: Props) => {
-  const { equippedItems, onSetClick, slottedAugments } = props
+  const { equippedItems, onSetClick, slottedAugments, slottedGemSetBonuses } =
+    props
 
   const activeSets = useMemo(() => {
     const counts: Record<string, number> = {}
 
     // Count from items
     equippedItems.forEach((item) => {
-      item.setBonus?.forEach((sb) => {
-        counts[sb.name] = (counts[sb.name] || 0) + 1
-      })
+      if (item.name.includes('Gem of Many Facets')) {
+        const gemBonuses = slottedGemSetBonuses?.[item.id] ?? []
+        gemBonuses.forEach((setName) => {
+          if (setName) {
+            counts[setName] = (counts[setName] || 0) + 1
+          }
+        })
+      } else {
+        item.setBonus?.forEach((sb) => {
+          counts[sb.name] = (counts[sb.name] || 0) + 1
+        })
+      }
     })
 
     // Count from augments
@@ -31,7 +42,7 @@ const SetBonusesSummary = (props: Props) => {
     return Object.entries(counts)
       .filter(([, count]) => count > 0)
       .sort((a, b) => b[1] - a[1])
-  }, [equippedItems, slottedAugments])
+  }, [equippedItems, slottedAugments, slottedGemSetBonuses])
 
   if (activeSets.length === 0) return null
 
@@ -62,9 +73,10 @@ const SetBonusesSummary = (props: Props) => {
                 <Card.Body className='p-2'>
                   <div className='d-flex justify-content-between align-items-center mb-1'>
                     <span className='fw-bold text-info'>{setName}</span>
-                    <Badge bg='primary'>
-                      {count} Piece{count > 1 ? 's' : ''}
-                    </Badge>
+                    <GenericBadge
+                      badgeText={`${String(count)} Piece${count > 1 ? 's' : ''}`}
+                      fontSize='0.75rem'
+                    />
                   </div>
 
                   {setDef?.enhancements
@@ -99,6 +111,7 @@ const SetBonusesSummary = (props: Props) => {
 interface Props {
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
+  slottedGemSetBonuses?: Record<string, (string | null)[]>
   onSetClick?: (setName: string) => void
 }
 

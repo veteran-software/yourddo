@@ -317,6 +317,9 @@ const GearPlanner = () => {
                     <SetBonusesSummary
                       equippedItems={gpHook.characterEquipped}
                       slottedAugments={gpHook.activeSetup.slottedAugments}
+                      slottedGemSetBonuses={
+                        gpHook.activeSetup.slottedGemSetBonuses
+                      }
                       onSetClick={gpHook.openSetBrowser}
                     />
 
@@ -349,6 +352,9 @@ const GearPlanner = () => {
                         <SetBonusesSummary
                           equippedItems={gpHook.artificerEquipped}
                           slottedAugments={artificerPet.slottedAugments}
+                          slottedGemSetBonuses={
+                            artificerPet.slottedGemSetBonuses
+                          }
                           onSetClick={gpHook.openSetBrowser}
                         />
 
@@ -376,6 +382,7 @@ const GearPlanner = () => {
                         <SetBonusesSummary
                           equippedItems={gpHook.druidEquipped}
                           slottedAugments={druidPet.slottedAugments}
+                          slottedGemSetBonuses={druidPet.slottedGemSetBonuses}
                           onSetClick={gpHook.openSetBrowser}
                         />
 
