@@ -260,5 +260,9 @@ export const setBonuses: SetBonus[] = [
   }
 ]
 
+const setBonusMap = new Map<string, SetBonus>(
+  setBonuses.map((sb) => [sb.name, sb])
+)
+
 export const findSetBonus = (name: string): SetBonus =>
-  setBonuses.find((setBonus) => setBonus.name === name) ?? { name: 'Unknown Set Bonus' }
+  setBonusMap.get(name) ?? { name: 'Unknown Set Bonus' }
