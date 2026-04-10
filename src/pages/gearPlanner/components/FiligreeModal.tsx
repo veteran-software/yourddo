@@ -14,36 +14,18 @@ import { getTroveOwners, normItem } from '../../../utils/troveUtils.ts'
 import { getMaxFiligreeSlots } from '../helpers'
 import type { GearItem, GearSetup, GearSlot, LootItem } from '../types'
 
-interface FiligreeModalProps {
-  show: boolean
-  onHide: () => void
-  item: GearItem
-  slot: GearSlot
-  setup: GearSetup
-  allFiligrees: GearItem[]
-  setFiligree: (
-    itemId: string,
-    slotIndex: number,
-    filigree: LootItem | null,
-    slot: GearSlot
-  ) => void
-  setUnlockedFiligreeSlots: (
-    itemId: string,
-    numSlots: number,
-    slot: GearSlot
-  ) => void
-}
+const FiligreeModal = (props: Props) => {
+  const {
+    allFiligrees,
+    item,
+    onHide,
+    setFiligree,
+    setUnlockedFiligreeSlots,
+    setup,
+    show,
+    slot
+  } = props
 
-const FiligreeModal = ({
-  show,
-  onHide,
-  item,
-  slot,
-  setup,
-  allFiligrees,
-  setFiligree,
-  setUnlockedFiligreeSlots
-}: FiligreeModalProps) => {
   const [activeSlotIndex, setActiveSlotIndex] = useState<number | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [showOnlyOwned, setShowOnlyOwned] = useState(false)
@@ -53,10 +35,10 @@ const FiligreeModal = ({
   const { troveData } = useAppSelector((state) => state.app)
 
   const maxSlots = getMaxFiligreeSlots(item)
-  const isArtifact = item.artifacttype?.trim().length > 0
-  const currentUnlockedSlots = setup.unlockedFiligreeSlots[item.id] || 1
+  const isArtifact = (item.artifacttype?.trim().length ?? 0) > 0
+  const currentUnlockedSlots = setup.unlockedFiligreeSlots[item.id] ?? 1
   const slotted =
-    setup.slottedFiligrees[item.id] || new Array(maxSlots).fill(null)
+    setup.slottedFiligrees[item.id] ?? new Array(maxSlots).fill(null)
 
   const handleSlotClick = (index: number) => {
     setActiveSlotIndex(index === activeSlotIndex ? null : index)
@@ -92,26 +74,6 @@ const FiligreeModal = ({
 
   const handleSelectFiligree = (fili: GearItem) => {
     if (activeSlotIndex !== null) {
-      // Helper to normalize filigree name for duplication check (ignores (Rare) suffix)
-      const normalizeName = (name: string) =>
-        name.replace(/\s*\(Rare\)\s*$/i, '').trim()
-      const normalizedNewName = normalizeName(fili.name)
-
-      // Check for duplicate filigree by name in the same item
-      const isDuplicate = slotted.some(
-        (s, idx) =>
-          s &&
-          normalizeName(s.name) === normalizedNewName &&
-          idx !== activeSlotIndex
-      )
-
-      if (isDuplicate) {
-        window.alert(
-          `You already have a version of ${normalizedNewName} slotted in this Sentient Gem.`
-        )
-        return
-      }
-
       setFiligree(item.id, activeSlotIndex, fili, slot)
       setActiveSlotIndex(null)
       setSearchTerm('')
@@ -119,9 +81,23 @@ const FiligreeModal = ({
     }
   }
 
-  useEffect(() => {
-    setDisplayLimit(50)
-  }, [searchTerm, showOnlyOwned])
+  const normalizeName = (name: string) => {
+    const rareSuffix = ' (Rare)'
+    if (name.endsWith(rareSuffix)) {
+      return name.slice(0, -rareSuffix.length).trim()
+    }
+    return name.trim()
+  }
+
+  const isFiligreeSlotted = (fili: GearItem) => {
+    const normalizedNewName = normalizeName(fili.name)
+    return slotted.some(
+      (s, idx) =>
+        s &&
+        normalizeName(s.name) === normalizedNewName &&
+        idx !== activeSlotIndex
+    )
+  }
 
   const allFiltered = allFiligrees.filter((f) => {
     const matchesSearch = f.name
@@ -131,9 +107,15 @@ const FiligreeModal = ({
 
     if (showOnlyOwned) {
       const normalizedName = normItem(f.name)
+
       const troveEntry =
-        troveData?.[normalizedName] ||
-        troveData?.[normalizedName.replace(/\s*\(rare\)\s*$/i, '').trim()]
+        troveData?.[normalizedName] ??
+        troveData?.[
+          normalizedName.endsWith(' (rare)')
+            ? normalizedName.slice(0, -' (rare)'.length).trim()
+            : normalizedName.trim()
+        ]
+
       return !!troveEntry
     }
 
@@ -168,6 +150,7 @@ const FiligreeModal = ({
           {isArtifact ? 'Minor Artifact' : 'Sentient Gem'} - {item.name}
         </Modal.Title>
       </Modal.Header>
+
       <Modal.Body className='bg-dark text-light' style={{ minHeight: '400px' }}>
         <p className='text-info mb-4'>
           Select a slot to add or change a filigree. You can unlock up to{' '}
@@ -198,6 +181,7 @@ const FiligreeModal = ({
                         <FaPlus size={14} className='mb-1' />
                         <span style={{ fontSize: '0.7rem' }}>Unlock</span>
                       </Button>
+
                       {currentUnlockedSlots > 1 && (
                         <Button
                           variant='outline-danger'
@@ -217,6 +201,7 @@ const FiligreeModal = ({
                   </Col>
                 )
               }
+
               return null
             }
 
@@ -242,6 +227,7 @@ const FiligreeModal = ({
                       >
                         {fili.name}
                       </div>
+
                       <Button
                         variant='link'
                         className='p-0 text-danger position-absolute top-0 end-0 me-1 mt-0'
@@ -280,6 +266,7 @@ const FiligreeModal = ({
                   checked={showOnlyOwned}
                   onChange={(e) => {
                     setShowOnlyOwned(e.target.checked)
+                    setDisplayLimit(50)
                   }}
                 />
               </Col>
@@ -304,6 +291,7 @@ const FiligreeModal = ({
                     value={searchTerm}
                     onChange={(e) => {
                       setSearchTerm(e.target.value)
+                      setDisplayLimit(50)
                     }}
                   />
                 </Form.Group>
@@ -318,19 +306,29 @@ const FiligreeModal = ({
                 filteredFiligrees.map((f) => {
                   const normalizedName = normItem(f.name)
                   const troveEntry =
-                    troveData?.[normalizedName] ||
+                    troveData?.[normalizedName] ??
                     troveData?.[
-                      normalizedName.replace(/\s*\(rare\)\s*$/i, '').trim()
+                      normalizedName.endsWith(' (rare)')
+                        ? normalizedName.slice(0, -' (rare)'.length).trim()
+                        : normalizedName.trim()
                     ]
                   const owners = troveEntry ? getTroveOwners(troveEntry) : ''
+                  const isSlotted = isFiligreeSlotted(f)
 
                   return (
                     <ListGroup.Item
                       key={f.id}
-                      action
-                      className='bg-dark text-light border-secondary d-flex justify-content-between align-items-center py-2'
+                      action={!isSlotted}
+                      className={`bg-dark text-light border-secondary d-flex justify-content-between align-items-center py-2 ${
+                        isSlotted ? 'opacity-25' : ''
+                      }`}
+                      style={{
+                        cursor: isSlotted ? 'not-allowed' : 'pointer'
+                      }}
                       onClick={() => {
-                        handleSelectFiligree(f)
+                        if (!isSlotted) {
+                          handleSelectFiligree(f)
+                        }
                       }}
                     >
                       <div className='flex-grow-1 min-w-0'>
@@ -341,6 +339,7 @@ const FiligreeModal = ({
                           >
                             {f.name}
                           </div>
+
                           {owners && (
                             <Badge
                               bg='primary'
@@ -353,6 +352,7 @@ const FiligreeModal = ({
                             </Badge>
                           )}
                         </div>
+
                         {f.enchantments?.map((ench, eIdx) => (
                           <div
                             key={eIdx}
@@ -363,6 +363,7 @@ const FiligreeModal = ({
                           </div>
                         ))}
                       </div>
+
                       {f.setBonus?.[0] && (
                         <Badge
                           bg='warning'
@@ -381,6 +382,7 @@ const FiligreeModal = ({
                   No filigrees found.
                 </div>
               )}
+
               {displayLimit < allFiltered.length && (
                 <div
                   ref={observerTarget}
@@ -399,6 +401,7 @@ const FiligreeModal = ({
           </div>
         )}
       </Modal.Body>
+
       <Modal.Footer className='bg-dark border-secondary'>
         <Button variant='secondary' onClick={onHide}>
           Close
@@ -406,6 +409,26 @@ const FiligreeModal = ({
       </Modal.Footer>
     </Modal>
   )
+}
+
+interface Props {
+  show: boolean
+  onHide: () => void
+  item: GearItem
+  slot: GearSlot
+  setup: GearSetup
+  allFiligrees: GearItem[]
+  setFiligree: (
+    itemId: string,
+    slotIndex: number,
+    filigree: LootItem | null,
+    slot: GearSlot
+  ) => void
+  setUnlockedFiligreeSlots: (
+    itemId: string,
+    numSlots: number,
+    slot: GearSlot
+  ) => void
 }
 
 export default FiligreeModal

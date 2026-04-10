@@ -6,7 +6,6 @@ import { GearSlot } from '../types.ts'
 interface SentientGemSectionProps {
   weapon: GearItem
   setup: GearSetup
-  allFiligrees: GearItem[]
   setFiligree: (
     itemId: string,
     slotIndex: number,
@@ -22,7 +21,6 @@ interface SentientGemSectionProps {
 const SentientGemSection = ({
   weapon,
   setup,
-  allFiligrees,
   setFiligree,
   openSlotBrowser,
   browsingSlot,
@@ -32,7 +30,7 @@ const SentientGemSection = ({
   const minLevel = Number.parseInt(weapon.minLevel, 10) || 1
   if (minLevel < 20) return null
 
-  const slotted = setup.slottedFiligrees[weapon.id] || new Array(10).fill(null)
+  const slotted = setup.slottedFiligrees[weapon.id] ?? new Array(10).fill(null)
 
   const handleSlotClick = (index: number) => {
     setBrowsingFiligreeSlotIndex(index)
@@ -42,12 +40,6 @@ const SentientGemSection = ({
   const handleRemove = (e: React.MouseEvent, index: number) => {
     e.stopPropagation()
     setFiligree(weapon.id, index, null, weapon.slot)
-  }
-
-  const isDuplicate = (filigree: LootItem, currentIndex: number) => {
-    return slotted.some(
-      (f, i) => f && i !== currentIndex && f.name === filigree.name
-    )
   }
 
   return (
