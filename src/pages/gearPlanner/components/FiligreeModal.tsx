@@ -166,7 +166,7 @@ const FiligreeModal = (props: Props) => {
             if (!isUnlocked) {
               if (idx === currentUnlockedSlots && idx < maxSlots) {
                 return (
-                  <Col key={idx} xs={6} md={4} lg={2.4}>
+                  <Col key={String(idx)} xs={6} md={4} lg={2.4}>
                     <div className='d-flex gap-1 h-100'>
                       <Button
                         variant='outline-secondary'
@@ -206,7 +206,7 @@ const FiligreeModal = (props: Props) => {
             }
 
             return (
-              <Col key={idx} xs={6} md={4} lg={2.4}>
+              <Col key={String(idx)} xs={6} md={4} lg={2.4}>
                 <div
                   role='button'
                   tabIndex={0}
@@ -371,7 +371,7 @@ const FiligreeModal = (props: Props) => {
 
                         {f.enchantments?.map((ench, eIdx) => (
                           <div
-                            key={eIdx}
+                            key={String(eIdx)}
                             className='text-muted small'
                             style={{ fontSize: '0.75rem' }}
                           >
