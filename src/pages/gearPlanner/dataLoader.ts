@@ -191,6 +191,7 @@ export const loadGearData = (): Promise<{
 
     if (item.slot === GearSlot.Filigree) {
       allFiligrees.push(item)
+
       return
     }
 
@@ -199,7 +200,10 @@ export const loadGearData = (): Promise<{
         Object.values(WEAPON_TYPES).flat().includes(item.type) ||
         item.type === 'Handwraps' ||
         item.type === 'Weapon'
-      if (!isWeapon) return
+
+      if (!isWeapon) {
+        return
+      }
     }
 
     if (item.slot === GearSlot.OffHand) {
@@ -207,12 +211,18 @@ export const loadGearData = (): Promise<{
       const isOffhandWeapon =
         Object.values(WEAPON_TYPES).flat().includes(item.type) ||
         item.type === 'Weapon'
-      if (!isShieldOrRuneArm && !isOffhandWeapon) return
+
+      if (!isShieldOrRuneArm && !isOffhandWeapon) {
+        return
+      }
     }
 
     if (item.slot === GearSlot.Quiver) {
       const allowedQuiverTypes = ['quiver', '', 'bound', 'gear']
-      if (!allowedQuiverTypes.includes(typeLower)) return
+
+      if (!allowedQuiverTypes.includes(typeLower)) {
+        return
+      }
     }
 
     if (item.slot === GearSlot.Armor) {
@@ -220,7 +230,10 @@ export const loadGearData = (): Promise<{
         ARMOR_TYPES.includes(item.type) ||
         item.type === 'Robe' ||
         item.type === 'Outfit'
-      if (!isArmor) return
+
+      if (!isArmor) {
+        return
+      }
     }
 
     const key = `${item.name}|${item.minLevel}|${item.slot}`

@@ -21,7 +21,6 @@ export const GearSlot = {
   MainHand: 'Main Hand',
   OffHand: 'Off Hand',
   Quiver: 'Quiver',
-  Ammunition: 'Ammunition',
   ArtificerPetArmor: 'Iron Defender Armor',
   ArtificerPetWeapon: 'Iron Defender Weapon',
   DruidPetArmor: 'Wolf Companion Armor',
@@ -46,8 +45,7 @@ export const GEAR_SLOTS: GearSlot[] = [
   GearSlot.Trinket,
   GearSlot.MainHand,
   GearSlot.OffHand,
-  GearSlot.Quiver,
-  GearSlot.Ammunition
+  GearSlot.Quiver
 ]
 
 export const ARTIFICER_PET_SLOTS: GearSlot[] = [

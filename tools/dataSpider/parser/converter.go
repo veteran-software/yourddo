@@ -2756,13 +2756,13 @@ func parseTemplateCannithCraftingSlots(raw string) []api.AugmentItem {
 	}
 
 	out := []api.AugmentItem{
-		{AugmentType: "Cannith Crafting - Prefix Slot"},
-		{AugmentType: "Cannith Crafting - Suffix Slot"},
+		{AugmentType: "Essence Crafting - Prefix Slot"},
+		{AugmentType: "Essence Crafting - Suffix Slot"},
 	}
 
 	// Check if there is a parameter
 	// Locate the first top-level '|' after the template name
-	after := s[len("{{CannithCraftingSlots"):]
+	after := s[len("{{EssenceCraftingSlots"):]
 	i := 0
 	for i < len(after) && (after[i] == ' ' || after[i] == '\n' || after[i] == '\t' || after[i] == '\r') {
 		i++
@@ -2774,7 +2774,7 @@ func parseTemplateCannithCraftingSlots(raw string) []api.AugmentItem {
 		if len(parts) > 0 {
 			aboveTen := strings.TrimSpace(parts[0])
 			if strings.ToLower(aboveTen) == "true" {
-				out = append(out, api.AugmentItem{AugmentType: "Cannith Crafting - Mark of House Cannith Slot"})
+				out = append(out, api.AugmentItem{AugmentType: "Essence Crafting - Mark of House Cannith Slot"})
 			}
 		}
 	}

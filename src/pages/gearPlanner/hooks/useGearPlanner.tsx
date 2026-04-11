@@ -1482,8 +1482,7 @@ const useGearPlanner = (props: Props) => {
                     'Augment',
                     'Cosmetic',
                     'Wand',
-                    'Scroll',
-                    'Ammunition'
+                    'Scroll'
                   ]
                   if (
                     ineligibleTypes.includes(selectedItem.type) ||

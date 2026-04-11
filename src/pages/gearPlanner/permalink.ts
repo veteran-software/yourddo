@@ -55,6 +55,7 @@ export const encodeGearPermalink = (setup: GearSetup): string => {
     if (item) {
       const augments: [number, string][] = []
       const itemAugs = setup.slottedAugments[item.id]
+
       if (itemAugs) {
         Object.entries(itemAugs).forEach(([idx, aug]) => {
           if (aug) {
@@ -94,7 +95,11 @@ export const tryDecodeGearPermalink = (
 ): { ok: true; data: GearSetup } | { ok: false } => {
   try {
     const text = decompressFromEncodedURIComponent(gp)
-    if (!text) return { ok: false }
+
+    if (!text) {
+      return { ok: false }
+    }
+
     const payload = JSON.parse(text) as V1Payload
 
     const [
@@ -130,6 +135,9 @@ export const tryDecodeGearPermalink = (
     items.forEach(([slot, itemName, augments, curseName]) => {
       // Find the item in allItems by name and slot to ensure we get the correct ID
       const gearSlot = slot as GearSlot
+      if (!Object.values(GearSlot).includes(gearSlot)) {
+        return
+      }
       const item =
         allItems.find((i) => i.name === itemName && i.slot === gearSlot) ??
         allItems.find((i) => i.name === itemName)
@@ -139,6 +147,7 @@ export const tryDecodeGearPermalink = (
 
         if (augments.length > 0) {
           setup.slottedAugments[item.id] = {}
+
           augments.forEach(([idx, augName]) => {
             const augment = allAugments.find((a) => a.name === augName)
             if (augment) {
@@ -149,6 +158,7 @@ export const tryDecodeGearPermalink = (
 
         if (curseName && item.slot !== GearSlot.Quiver) {
           const curse = allCurses.find((c) => c.name === curseName)
+
           if (curse) {
             setup.slottedCurses[item.id] = curse
           }
@@ -188,7 +198,10 @@ export const readGpFromUrl = (
         const query = hashBody.slice(qm + 1)
         const hashParams = new URLSearchParams(query)
         const gpFromHash = hashParams.get('gp')
-        if (gpFromHash) return { gp: gpFromHash, source: 'hash' }
+
+        if (gpFromHash) {
+          return { gp: gpFromHash, source: 'hash' }
+        }
       }
     }
   } catch {

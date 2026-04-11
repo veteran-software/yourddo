@@ -173,6 +173,7 @@ const GearPlanner = () => {
         <Card className='shadow'>
           <Card.Body className='text-center py-5'>
             <h4 className='text-muted'>No gear setups available.</h4>
+
             <Button
               variant='primary'
               className='mt-3'

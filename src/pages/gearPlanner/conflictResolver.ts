@@ -20,8 +20,13 @@ export interface EnchantmentConflict {
 }
 
 export const getSlotOwner = (slot: string): string => {
-  if (ARTIFICER_PET_SLOTS.includes(slot as GearSlot)) return 'artificer_pet'
-  if (DRUID_PET_SLOTS.includes(slot as GearSlot)) return 'druid_pet'
+  if (ARTIFICER_PET_SLOTS.includes(slot as GearSlot)) {
+    return 'artificer_pet'
+  }
+
+  if (DRUID_PET_SLOTS.includes(slot as GearSlot)) {
+    return 'druid_pet'
+  }
 
   return 'character'
 }
@@ -33,7 +38,9 @@ export type RobustString = string | number | undefined | null
  * Handles non-string inputs gracefully.
  */
 export const normalizeString = (str: RobustString): string => {
-  if (str == null) return ''
+  if (str == null) {
+    return ''
+  }
 
   return String(str).trim().toLowerCase()
 }
@@ -51,8 +58,13 @@ export const getBonus = (bonus: RobustString): string => {
  * Parses a numeric value from a modifier string like "3", "+14%", or "2[W]".
  */
 export const parseModifierValue = (modifier: RobustString): number => {
-  if (modifier == null) return 0
-  if (typeof modifier === 'number') return modifier
+  if (modifier == null) {
+    return 0
+  }
+
+  if (typeof modifier === 'number') {
+    return modifier
+  }
 
   // Remove +, %, [W], etc.
   const numericStr = modifier.replaceAll(/[+%[\]W]/g, '')
@@ -129,7 +141,11 @@ export const resolveConflicts = (
 
   allEnchantments.forEach((entry) => {
     const key = `${entry.owner}|${entry.normalizedName}|${entry.normalizedBonus}`
-    if (!grouped[key]) grouped[key] = []
+
+    if (!grouped[key]) {
+      grouped[key] = []
+    }
+
     grouped[key].push(entry)
   })
 
@@ -160,7 +176,9 @@ export const resolveConflicts = (
 
     const normalizedName = normalizeString(name)
 
-    if (!conflicts[normalizedName]) conflicts[normalizedName] = []
+    if (!conflicts[normalizedName]) {
+      conflicts[normalizedName] = []
+    }
 
     conflicts[normalizedName].push(conflict)
   })
@@ -190,7 +208,9 @@ export const checkPotentialConflict = (
   let foundMatch = false
 
   equippedItems.forEach((item) => {
-    if (getSlotOwner(item.slot) !== targetOwner) return
+    if (getSlotOwner(item.slot) !== targetOwner) {
+      return
+    }
 
     // Check inherent enchantments
     item.enchantments?.forEach((ench) => {
@@ -200,7 +220,10 @@ export const checkPotentialConflict = (
       ) {
         foundMatch = true
         const val = parseModifierValue(ench.modifier)
-        if (val > currentMax) currentMax = val
+
+        if (val > currentMax) {
+          currentMax = val
+        }
       }
     })
 
@@ -213,8 +236,12 @@ export const checkPotentialConflict = (
             getBonus(ench.bonus) === normalizedTargetBonus
           ) {
             foundMatch = true
+
             const val = parseModifierValue(ench.modifier)
-            if (val > currentMax) currentMax = val
+
+            if (val > currentMax) {
+              currentMax = val
+            }
           }
         })
       })

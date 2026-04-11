@@ -8864,8 +8864,8 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 		case "EmptyAugments":
 			// EmptyAugments does not add enchantments; it's handled in the converter to add augment slots.
 			isStandard = true
-		case "CannithCraftingSlots":
-			// CannithCraftingSlots does not add enchantments; it's handled in the converter to add augment slots.
+		case "EssenceCraftingSlots":
+			// EssenceCraftingSlots does not add enchantments; it's handled in the converter to add augment slots.
 			isStandard = true
 		case "WhirlwindAbsorption":
 			enchantmentData = parseTemplateWhirlwindAbsorption(fullTemplate)

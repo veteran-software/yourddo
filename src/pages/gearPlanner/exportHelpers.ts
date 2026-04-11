@@ -29,12 +29,12 @@ const formatEnchantment = (ench: {
   if (
     ench.modifier !== undefined &&
     ench.modifier != null &&
-    // eslint-disable-next-line
-    (ench.modifier as any) != ''
+    String(ench.modifier) != ''
   ) {
     let mod = ench.modifier.toString().trim()
     if (!mod.startsWith('+') && !mod.startsWith('-')) {
       const num = Number.parseFloat(mod)
+
       if (!Number.isNaN(num) && num > 0) {
         mod = `+${mod}`
       } else if (num === 0) {
@@ -43,10 +43,18 @@ const formatEnchantment = (ench: {
         // It's a string modifier like "Small" or "Large", usually don't add + unless it's numeric-ish
       }
     }
+
     parts.push(mod)
   }
-  if (ench.bonus) parts.push(`(${ench.bonus.toString()})`)
-  if (ench.notes) parts.push(`- ${ench.notes}`)
+
+  if (ench.bonus) {
+    parts.push(`(${ench.bonus.toString()})`)
+  }
+
+  if (ench.notes) {
+    parts.push(`- ${ench.notes}`)
+  }
+
   return parts.join(' ')
 }
 
@@ -66,6 +74,7 @@ export const generateBBCodeExport = (
   if (permalinkUrl) {
     lines.push(`[center][url=${permalinkUrl}]View on YourDDO[/url][/center]`)
   }
+
   lines.push('')
 
   const renderSlotHeader = (slot: GearSlot, item: GearItem) => {
@@ -94,6 +103,7 @@ export const generateBBCodeExport = (
       Object.entries(itemAugs).forEach(([, aug]) => {
         if (aug) {
           lines.push(`[*] ${aug.name} (ML: ${String(aug.minimumLevel)})`)
+
           aug.effectsAdded?.forEach((ench) => {
             lines.push(`[list][*] ${formatEnchantment(ench)}[/list]`)
           })
@@ -132,6 +142,7 @@ export const generateBBCodeExport = (
       filigrees.forEach((fili) => {
         if (fili) {
           lines.push(`[*] ${fili.name}`)
+
           fili.enchantments?.forEach((ench) => {
             lines.push(`[list][*] ${formatEnchantment(ench)}[/list]`)
           })
@@ -221,11 +232,13 @@ export const generateBBCodeExport = (
   if (activeSetEnhancements.length > 0) {
     lines.push(`[b][size=4]Active Set Bonuses[/size][/b]`)
     lines.push(`[list]`)
+
     activeSetEnhancements.forEach((entry) => {
       lines.push(
         `[*] [b]${entry.sourceName.replace('Set Bonus: ', '')}:[/b] ${formatEnchantment(entry.ench)}`
       )
     })
+
     lines.push(`[/list]`)
     lines.push('')
   }
@@ -249,6 +262,7 @@ export const generateDiscordMarkdownExport = (
   if (permalinkUrl) {
     lines.push(`[View on YourDDO](${permalinkUrl})`)
   }
+
   lines.push('')
 
   const renderSlotHeader = (slot: GearSlot, item: GearItem) => {
@@ -269,13 +283,16 @@ export const generateDiscordMarkdownExport = (
   ) => {
     if (itemAugs && Object.values(itemAugs).some((a) => a !== null)) {
       lines.push(`- **Augments:**`)
+
       Object.entries(itemAugs).forEach(([idx, aug]) => {
         if (aug) {
           const slotIndex = Number.parseInt(idx)
           const slotType = item.augments?.[slotIndex]?.augmentType ?? 'Augment'
+
           lines.push(
             `  - **${slotType}**: ${aug.name} (ML: ${String(aug.minimumLevel)})`
           )
+
           aug.effectsAdded?.forEach((ench) => {
             lines.push(`    - ${formatEnchantment(ench)}`)
           })
@@ -287,6 +304,7 @@ export const generateDiscordMarkdownExport = (
   const renderSlotCurse = (curse: Curse | null | undefined) => {
     if (curse) {
       lines.push(`- **Curse:** ${curse.name}`)
+
       curse.enchantments.forEach((ench) => {
         lines.push(`  - ${formatEnchantment(ench)}`)
       })
@@ -300,9 +318,11 @@ export const generateDiscordMarkdownExport = (
       filigrees.some((f) => f !== null)
     ) {
       lines.push(`- **Filigrees:**`)
+
       filigrees.forEach((fili) => {
         if (fili) {
           lines.push(`  - ${fili.name}`)
+
           fili.enchantments?.forEach((ench) => {
             lines.push(`    - ${formatEnchantment(ench)}`)
           })
@@ -314,6 +334,7 @@ export const generateDiscordMarkdownExport = (
   const renderSlotGemSets = (gemSets: (string | null)[] | undefined) => {
     if (gemSets && gemSets.length > 0) {
       const activeGemSets = gemSets.filter(Boolean)
+
       if (activeGemSets.length > 0) {
         lines.push(`- **Gem Set Bonuses:** ${activeGemSets.join(', ')}`)
       }
@@ -364,15 +385,18 @@ export const generateDiscordMarkdownExport = (
   }
 
   lines.push(`### Equipped Gear`)
+
   renderSlotsInternal(GEAR_SLOTS)
 
   if (setup.classes.includes('Artificer')) {
     lines.push(`### Iron Defender Gear`)
+
     renderSlotsInternal(ARTIFICER_PET_SLOTS, true, artificerPet)
   }
 
   if (setup.classes.includes('Druid')) {
     lines.push(`### Wolf Companion Gear`)
+
     renderSlotsInternal(DRUID_PET_SLOTS, true, druidPet)
   }
 
@@ -414,17 +438,20 @@ export const generateDiscordMarkdownExport = (
 
   if (activeSetEnhancements.length > 0) {
     lines.push(`### Active Set Bonuses`)
+
     activeSetEnhancements.forEach((entry) => {
       lines.push(
         `- **${entry.sourceName.replace('Set Bonus: ', '')}:** ${formatEnchantment(entry.ench)}`
       )
     })
+
     lines.push('')
   }
 
   const fullContent = lines.join('\n')
   if (fullContent.length > 2000) {
     const warning = `\n> **Note:** This export is ${String(fullContent.length)} characters long, which exceeds Discord's 2000-character limit. You may need to paste it in multiple messages.`
+
     return fullContent + warning
   }
 
