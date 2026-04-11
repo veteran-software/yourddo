@@ -6,6 +6,7 @@ import {
   Card,
   Col,
   Container,
+  Dropdown,
   Form,
   Modal,
   Row,
@@ -15,6 +16,7 @@ import {
 } from 'react-bootstrap'
 import {
   FaChevronRight,
+  FaFileExport,
   FaGear,
   FaLayerGroup,
   FaLink,
@@ -37,6 +39,10 @@ import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
 import SetBonusBrowserOffcanvas from './components/SetBonusBrowserOffcanvas.tsx'
 import SetBonusesSummary from './components/SetBonusesSummary.tsx'
 import WeaponCategory from './components/WeaponCategory.tsx'
+import {
+  generateBBCodeExport,
+  generateDiscordMarkdownExport
+} from './exportHelpers'
 import useGearPlanner from './hooks/useGearPlanner.tsx'
 import {
   buildPermalinkUrl,
@@ -241,11 +247,75 @@ const GearPlanner = () => {
                 md='auto'
                 className='d-flex gap-2 justify-content-md-end'
               >
-                <ButtonGroup>
+                <ButtonGroup className='w-100 w-md-auto mt-2 mt-md-0 flex-wrap flex-md-nowrap justify-content-center justify-content-md-end'>
+                  <Dropdown
+                    as={ButtonGroup}
+                    className='flex-grow-1 flex-md-grow-0'
+                  >
+                    <Dropdown.Toggle
+                      variant='outline-light'
+                      size='sm'
+                      className='d-flex align-items-center justify-content-center gap-2 h-100'
+                      id='export-dropdown'
+                    >
+                      <FaFileExport /> Export
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu variant='dark'>
+                      <Dropdown.Item
+                        onClick={() => {
+                          const encoded = encodeGearPermalink(
+                            gpHook.activeSetup
+                          )
+                          const permalinkUrl = buildPermalinkUrl(
+                            encoded,
+                            location
+                          )
+                          const content = generateBBCodeExport(
+                            gpHook.activeSetup,
+                            artificerPet,
+                            druidPet,
+                            permalinkUrl
+                          )
+                          navigator.clipboard
+                            .writeText(content)
+                            .catch(console.error)
+                          alert('Forum BBCode copied to clipboard!')
+                        }}
+                      >
+                        Forum Export
+                      </Dropdown.Item>
+
+                      <Dropdown.Item
+                        onClick={() => {
+                          const encoded = encodeGearPermalink(
+                            gpHook.activeSetup
+                          )
+                          const permalinkUrl = buildPermalinkUrl(
+                            encoded,
+                            location
+                          )
+                          const content = generateDiscordMarkdownExport(
+                            gpHook.activeSetup,
+                            artificerPet,
+                            druidPet,
+                            permalinkUrl
+                          )
+                          navigator.clipboard
+                            .writeText(content)
+                            .catch(console.error)
+                          alert('Discord Markdown copied to clipboard!')
+                        }}
+                      >
+                        Discord Export
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+
                   <Button
                     variant='outline-light'
                     size='sm'
-                    className='d-flex align-items-center gap-2'
+                    className='d-flex align-items-center justify-content-center gap-2 flex-grow-1 flex-md-grow-0'
                     onClick={() => {
                       setShowPermalink(true)
                     }}
@@ -256,7 +326,7 @@ const GearPlanner = () => {
                   <Button
                     variant='outline-light'
                     size='sm'
-                    className='d-flex align-items-center gap-2'
+                    className='d-flex align-items-center justify-content-center gap-2 flex-grow-1 flex-md-grow-0'
                     onClick={() => {
                       setShowSettings(true)
                     }}
@@ -267,6 +337,7 @@ const GearPlanner = () => {
                   <Button
                     variant='outline-light'
                     size='sm'
+                    className='flex-grow-1 flex-md-grow-0'
                     onClick={gpHook.addSetup}
                   >
                     Add Setup
@@ -320,6 +391,7 @@ const GearPlanner = () => {
                     <SetBonusesSummary
                       equippedItems={gpHook.characterEquipped}
                       slottedAugments={gpHook.activeSetup.slottedAugments}
+                      slottedFiligrees={gpHook.activeSetup.slottedFiligrees}
                       slottedGemSetBonuses={
                         gpHook.activeSetup.slottedGemSetBonuses
                       }
@@ -358,6 +430,7 @@ const GearPlanner = () => {
                         <SetBonusesSummary
                           equippedItems={gpHook.artificerEquipped}
                           slottedAugments={artificerPet.slottedAugments}
+                          slottedFiligrees={artificerPet.slottedFiligrees}
                           slottedGemSetBonuses={
                             artificerPet.slottedGemSetBonuses
                           }
@@ -391,6 +464,7 @@ const GearPlanner = () => {
                         <SetBonusesSummary
                           equippedItems={gpHook.druidEquipped}
                           slottedAugments={druidPet.slottedAugments}
+                          slottedFiligrees={druidPet.slottedFiligrees}
                           slottedGemSetBonuses={druidPet.slottedGemSetBonuses}
                           onSetClick={gpHook.openSetBonusBrowser}
                         />
@@ -695,6 +769,10 @@ const GearPlanner = () => {
           showConflicts={showConflicts}
           setShowConflicts={setShowConflicts}
           troveData={troveData}
+          currentSlottedFiligrees={
+            gpHook.getContextInfo(gpHook.browsingSlot ?? '')
+              .currentSlottedFiligrees
+          }
           {...gpHook}
         />
 

@@ -141,6 +141,7 @@ export interface GearItem extends LootItem {
   augmentType?: string
   minimumLevel?: number
   effectsAdded?: LootEnchantment[]
+  grouping?: string
 }
 
 export interface Curse {
@@ -162,7 +163,7 @@ export interface GearSetup {
   slots: Record<GearSlot, GearItem | null>
   slottedAugments: Record<string, Record<number, GearAugment | null>> // itemId -> { slotIndex -> augment }
   slottedCurses: Record<string, Curse | null> // itemId -> curse
-  slottedFiligrees: Record<string, (LootItem | null)[]> // itemId -> filigrees
+  slottedFiligrees: Record<string, (GearItem | null)[]> // itemId -> filigrees
   unlockedFiligreeSlots: Record<string, number> // itemId -> number of slots
   slottedGemSetBonuses: Record<string, (string | null)[]> // itemId -> [bonus1, bonus2]
 }

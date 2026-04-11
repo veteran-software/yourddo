@@ -1,5 +1,6 @@
 import type { SetBonus } from '../types/crafting.ts'
 import itemSetsData from './loot/itemSets.json'
+import filigreeSetsData from './loot/runtime/filigreeSets.json'
 
 interface ItemSetJson {
   name: string
@@ -8,7 +9,7 @@ interface ItemSetJson {
     enhancements:
       | {
           name?: string
-          modifier?: string
+          modifier?: string | number
           bonus?: string
           notes?: string
         }[]
@@ -29,8 +30,22 @@ const itemSets = (itemSetsData as ItemSetJson[]).map((set) => ({
   )
 }))
 
+const filigreeSets = (filigreeSetsData as ItemSetJson[]).map((set) => ({
+  name: set.name,
+  enhancements: set.bonuses.flatMap((bonus) =>
+    (bonus.enhancements ?? []).map((enh) => ({
+      name: enh.name ?? 'Unnamed Enhancement',
+      modifier: enh.modifier,
+      bonus: `Filigree Set: ${set.name}`,
+      notes: enh.notes,
+      numPiecesEquipped: bonus.threshold
+    }))
+  )
+}))
+
 export const setBonuses: SetBonus[] = [
   ...itemSets,
+  ...filigreeSets,
   {
     name: "The Legendary Dread Isle's Curse",
     numPiecesEquipped: 5,

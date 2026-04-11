@@ -40,6 +40,14 @@ export const loadSetBonusIndex = (): Promise<SetBonusIndex> => {
   return Promise.resolve({})
 }
 
+export const loadFiligreeSets = (): Promise<{ name: string }[]> => {
+  const module = dataModules['../../data/loot/runtime/filigreeSets.json']
+  if (module && typeof module === 'object' && 'default' in module) {
+    return Promise.resolve(module.default as { name: string }[])
+  }
+  return Promise.resolve([])
+}
+
 const SLOT_MAP: Record<string, GearSlot[]> = {
   'belt.json': [GearSlot.Waist],
   'boots.json': [GearSlot.Feet],

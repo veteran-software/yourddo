@@ -11,7 +11,7 @@ import {
   getActiveSetEnhancements,
   sortItemsByValue
 } from '../helpers.ts'
-import type { Curse, GearAugment, GearItem, LootItem } from '../types.ts'
+import type { Curse, GearAugment, GearItem } from '../types.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
 
 const EnchantmentsSummary = ({
@@ -24,7 +24,7 @@ const EnchantmentsSummary = ({
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
   slottedCurses: Record<string, Curse | null>
-  slottedFiligrees: Record<string, (LootItem | null)[]> | undefined
+  slottedFiligrees: Record<string, (GearItem | null)[]> | undefined
   slottedGemSetBonuses?: Record<string, (string | null)[]>
 }) => {
   const aggregated = useMemo(() => {
@@ -94,6 +94,7 @@ const EnchantmentsSummary = ({
     const activeSetEnhancements = getActiveSetEnhancements(
       equippedItems,
       slottedAugments,
+      slottedFiligrees,
       slottedGemSetBonuses
     )
 

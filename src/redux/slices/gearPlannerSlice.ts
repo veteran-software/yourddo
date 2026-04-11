@@ -17,7 +17,7 @@ interface PetState {
   slots: Record<string, GearItem | null>
   slottedAugments: Record<string, Record<number, GearAugment | null>>
   slottedCurses: Record<string, Curse | null>
-  slottedFiligrees: Record<string, (LootItem | null)[]>
+  slottedFiligrees: Record<string, (GearItem | null)[]>
   unlockedFiligreeSlots: Record<string, number>
   slottedGemSetBonuses: Record<string, (string | null)[]>
 }
@@ -287,9 +287,10 @@ const gearPlannerSlice = createSlice({
         if (!petState.slottedFiligrees[itemId]) {
           petState.slottedFiligrees[itemId] = new Array(10).fill(
             null
-          ) as LootItem[]
+          ) as GearItem[]
         }
-        petState.slottedFiligrees[itemId][slotIndex] = filigree
+        petState.slottedFiligrees[itemId][slotIndex] =
+          filigree as GearItem | null
       }
 
       if (owner === 'character') {
@@ -300,9 +301,10 @@ const gearPlannerSlice = createSlice({
           if (!setup.slottedFiligrees[itemId]) {
             setup.slottedFiligrees[itemId] = new Array(10).fill(
               null
-            ) as LootItem[]
+            ) as GearItem[]
           }
-          setup.slottedFiligrees[itemId][slotIndex] = filigree
+          setup.slottedFiligrees[itemId][slotIndex] =
+            filigree as GearItem | null
         }
       } else if (owner === 'artificer_pet') {
         updateFiligree(state.artificerPet)

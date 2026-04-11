@@ -5,13 +5,19 @@ import type { GearAugment, GearItem } from '../types.ts'
 import SetBonusCard from './SetBonusCard.tsx'
 
 const SetBonusesSummary = (props: Props) => {
-  const { equippedItems, onSetClick, slottedAugments, slottedGemSetBonuses } =
-    props
+  const {
+    equippedItems,
+    onSetClick,
+    slottedAugments,
+    slottedFiligrees,
+    slottedGemSetBonuses
+  } = props
 
-  const activeSets = useMemo(() => {
-    const counts: Record<string, number> = {}
-
-    // Count from items
+  const getCountsFromItems = (
+    equippedItems: GearItem[],
+    slottedGemSetBonuses: Record<string, (string | null)[]> | undefined,
+    counts: Record<string, number>
+  ) => {
     equippedItems.forEach((item) => {
       if (item.name.includes('Gem of Many Facets')) {
         const gemBonuses = slottedGemSetBonuses?.[item.id] ?? []
@@ -26,8 +32,12 @@ const SetBonusesSummary = (props: Props) => {
         })
       }
     })
+  }
 
-    // Count from augments
+  const getCountsFromAugments = (
+    slottedAugments: Record<string, Record<number, GearAugment | null>>,
+    counts: Record<string, number>
+  ) => {
     for (const itemAugments of Object.values(slottedAugments)) {
       for (const aug of Object.values(itemAugments)) {
         if (aug?.setBonus) {
@@ -37,11 +47,53 @@ const SetBonusesSummary = (props: Props) => {
         }
       }
     }
+  }
+
+  const updateFiligreeSetCounts = (
+    fili: GearItem | null,
+    filigreeNamesPerSet: Record<string, Set<string>>
+  ) => {
+    if (!fili?.setBonus) return
+    for (const sb of fili.setBonus) {
+      const setName = sb.name
+      if (!filigreeNamesPerSet[setName]) {
+        filigreeNamesPerSet[setName] = new Set()
+      }
+      if (fili.name) {
+        filigreeNamesPerSet[setName].add(fili.name)
+      }
+    }
+  }
+
+  const getCountsFromFiligrees = (
+    slottedFiligrees: Record<string, (GearItem | null)[]> | undefined,
+    counts: Record<string, number>
+  ) => {
+    if (!slottedFiligrees) return
+    const filigreeNamesPerSet: Record<string, Set<string>> = {}
+    for (const itemFiligrees of Object.values(slottedFiligrees)) {
+      for (const fili of itemFiligrees) {
+        updateFiligreeSetCounts(fili, filigreeNamesPerSet)
+      }
+    }
+
+    for (const [setName, names] of Object.entries(filigreeNamesPerSet)) {
+      counts[setName] = (counts[setName] ?? 0) + names.size
+    }
+  }
+
+  const activeSets = useMemo(() => {
+    const counts: Record<string, number> = {}
+
+    getCountsFromItems(equippedItems, slottedGemSetBonuses, counts)
+    getCountsFromAugments(slottedAugments, counts)
+    getCountsFromFiligrees(slottedFiligrees, counts)
 
     return Object.entries(counts)
       .filter(([, count]) => count > 0)
       .sort((a, b) => b[1] - a[1])
-  }, [equippedItems, slottedAugments, slottedGemSetBonuses])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [equippedItems, slottedAugments, slottedFiligrees, slottedGemSetBonuses])
 
   if (activeSets.length === 0) return null
 
@@ -77,6 +129,7 @@ const SetBonusesSummary = (props: Props) => {
 interface Props {
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
+  slottedFiligrees?: Record<string, (GearItem | null)[]>
   slottedGemSetBonuses?: Record<string, (string | null)[]>
   onSetClick?: (setName: string) => void
 }

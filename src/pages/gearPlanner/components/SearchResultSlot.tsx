@@ -12,7 +12,10 @@ import TroveBadge from './TroveBadge.tsx'
 const SearchResultSlot = (props: Props) => {
   const {
     browsingSet,
-    getContextInfo,
+    currentConflicts,
+    currentEquipped,
+    currentSlottedAugments,
+    currentSlottedFiligrees,
     items,
     openSetBonusBrowser,
     selectItem,
@@ -21,8 +24,6 @@ const SearchResultSlot = (props: Props) => {
     troveData
   } = props
 
-  const { currentConflicts, currentEquipped, currentSlottedAugments } =
-    getContextInfo(slot)
   const equippedInSlot = currentEquipped.find((e) => e.slot === slot)
   const isPartofSet =
     !browsingSet ||
@@ -49,7 +50,28 @@ const SearchResultSlot = (props: Props) => {
       <Accordion.Body className='p-2 bg-dark'>
         <Stack gap={2}>
           {items.map((item) => {
-            const isEquipped = currentEquipped.some((e) => e.id === item.id)
+            const isEquippedInSlot = currentEquipped.some(
+              (e) => e.id === item.id
+            )
+            let slottedHostName = ''
+            let hostItemForModal: GearItem | undefined = undefined
+            if (currentSlottedFiligrees) {
+              for (const [itemId, filis] of Object.entries(
+                currentSlottedFiligrees
+              )) {
+                if (filis?.some((f) => f?.id === item.id)) {
+                  const hostItem = currentEquipped.find((e) => e.id === itemId)
+                  if (hostItem) {
+                    slottedHostName = hostItem.name
+                    hostItemForModal = hostItem
+                    break
+                  }
+                }
+              }
+            }
+
+            const isEquipped = isEquippedInSlot || !!slottedHostName
+
             const troveEntry = troveData?.[normItem(item.name)]
             const owners = troveEntry ? getTroveOwners(troveEntry) : ''
             const showHeader = isEquipped || owners
@@ -57,15 +79,43 @@ const SearchResultSlot = (props: Props) => {
             return (
               <Card
                 key={item.id}
-                className='shadow-sm cursor-pointer border-secondary bg-white text-dark position-relative'
+                className={`shadow-sm border-secondary bg-white text-dark position-relative ${
+                  item.slot === 'Filigree' ? '' : 'cursor-pointer'
+                }`}
                 onClick={() => {
+                  if (item.slot === 'Filigree') return
                   selectItem(item.slot, item)
                   setShowEnchantmentSearch(false)
                 }}
               >
                 {showHeader && (
                   <Card.Header className='py-0 px-2 bg-secondary-subtle d-flex align-items-center gap-1 overflow-hidden'>
-                    {isEquipped && <GenericBadge badgeText='Equipped' />}
+                    {isEquipped && (
+                      <GenericBadge
+                        badgeText={
+                          slottedHostName
+                            ? `Slotted (${slottedHostName})`
+                            : 'Equipped'
+                        }
+                        onClick={
+                          slottedHostName && hostItemForModal
+                            ? () => {
+                                ;(
+                                  globalThis as unknown as {
+                                    openFiligreeModal: (
+                                      item: GearItem,
+                                      slot: GearSlot
+                                    ) => void
+                                  }
+                                ).openFiligreeModal(
+                                  hostItemForModal,
+                                  hostItemForModal?.slot
+                                )
+                              }
+                            : undefined
+                        }
+                      />
+                    )}
 
                     {troveData && (
                       <TroveBadge itemName={item.name} troveData={troveData} />
@@ -129,11 +179,10 @@ const SearchResultSlot = (props: Props) => {
 interface Props {
   slot: string
   items: GearItem[]
-  getContextInfo: (slot: string) => {
-    currentConflicts: Record<string, EnchantmentConflict[]>
-    currentEquipped: GearItem[]
-    currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  }
+  currentConflicts: Record<string, EnchantmentConflict[]>
+  currentEquipped: GearItem[]
+  currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
+  currentSlottedFiligrees: Record<string, (GearItem | null)[]>
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   setShowEnchantmentSearch: (show: boolean) => void
   openSetBonusBrowser: (setName: string) => void

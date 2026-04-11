@@ -365,7 +365,33 @@
     "bonuses": [
       {
         "threshold": 3,
-        "enhancements": null
+        "enhancements": [
+          {
+            "name": "Tactical DC: Trip",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Improved Trip",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Sunder",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Improved Sunder",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Stunning",
+            "modifier": "3",
+            "bonus": "Artifact"
+          }
+        ]
       }
     ]
   },
@@ -510,12 +536,109 @@
         "threshold": 3,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Spell Critical Chance",
-            "modifier": "+2%"
+            "name": "Universal Spell Power",
+            "modifier": "20",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Imbue Dice",
-            "modifier": "+1"
+            "name": "Spell Critical Chance: Acid",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Cold",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Electric",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Fire",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Force",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Piercing",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Slashing",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Bludgeoning",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Light",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Chaos",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Evil",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Good",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Lawful",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Negative Energy",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Poison",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Positive Energy",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Sonic",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Repair",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Rust",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Imbue Dice",
+            "modifier": "1",
+            "bonus": "Artifact"
           }
         ]
       },
@@ -523,8 +646,214 @@
         "threshold": 4,
         "enhancements": [
           {
-            "name": "Legendary Bonus to Spell Critical Damage",
-            "modifier": "+5%"
+            "name": "Universal Spell Power",
+            "modifier": "20",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Acid",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Cold",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Electric",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Fire",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Force",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Piercing",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Slashing",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Bludgeoning",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Light",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Chaos",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Evil",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Good",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Lawful",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Negative Energy",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Poison",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Positive Energy",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Sonic",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Repair",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Rust",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Imbue Dice",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Acid",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Cold",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Electric",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Fire",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Force",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Piercing",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Slashing",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Bludgeoning",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Light",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Chaos",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Evil",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Good",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Lawful",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Negative Energy",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Poison",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Positive Energy",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Sonic",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Repair",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Rust",
+            "modifier": "5%",
+            "bonus": "Legendary"
           }
         ]
       }
@@ -627,16 +956,74 @@
         "threshold": 3,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Spell Penetration",
-            "modifier": "+3"
+            "name": "Spell DC: Abjuration",
+            "modifier": "1",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Magical Resistance Rating Cap",
-            "modifier": "+10"
+            "name": "Spell DC: Breath Weapon",
+            "modifier": "1",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Saving Throws",
-            "modifier": "+1"
+            "name": "Spell DC: Conjuration",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Divination",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Enchantment",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Evocation",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Illusion",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Necromancy",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Transmutation",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Penetration",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Magical Resistance Rating Cap",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Fortitude Saving Throws",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Reflex Saving Throws",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Will Saving Throws",
+            "modifier": "1",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -766,7 +1153,80 @@
     "bonuses": [
       {
         "threshold": 2,
-        "enhancements": null
+        "enhancements": [
+          {
+            "name": "Strength (Summoned Monsters)",
+            "modifier": "4"
+          },
+          {
+            "name": "Dexterity (Summoned Monsters)",
+            "modifier": "4"
+          },
+          {
+            "name": "Constitution (Summoned Monsters)",
+            "modifier": "4"
+          },
+          {
+            "name": "Intelligence (Summoned Monsters)",
+            "modifier": "4"
+          },
+          {
+            "name": "Wisdom (Summoned Monsters)",
+            "modifier": "4"
+          },
+          {
+            "name": "Charisma (Summoned Monsters)",
+            "modifier": "4"
+          },
+          {
+            "name": "Strength (Charmed Monsters)",
+            "modifier": "4"
+          },
+          {
+            "name": "Dexterity (Charmed Monsters)",
+            "modifier": "4"
+          },
+          {
+            "name": "Constitution (Charmed Monsters)",
+            "modifier": "4"
+          },
+          {
+            "name": "Intelligence (Charmed Monsters)",
+            "modifier": "4"
+          },
+          {
+            "name": "Wisdom (Charmed Monsters)",
+            "modifier": "4"
+          },
+          {
+            "name": "Charisma (Charmed Monsters)",
+            "modifier": "4"
+          },
+          {
+            "name": "Strength (Hirelings)",
+            "modifier": "4"
+          },
+          {
+            "name": "Dexterity (Hirelings)",
+            "modifier": "4"
+          },
+          {
+            "name": "Constitution (Hirelings)",
+            "modifier": "4"
+          },
+          {
+            "name": "Intelligence (Hirelings)",
+            "modifier": "4"
+          },
+          {
+            "name": "Wisdom (Hirelings)",
+            "modifier": "4"
+          },
+          {
+            "name": "Charisma (Hirelings)",
+            "modifier": "4"
+          }
+        ]
       }
     ]
   },
@@ -2424,7 +2884,80 @@
     "bonuses": [
       {
         "threshold": 2,
-        "enhancements": null
+        "enhancements": [
+          {
+            "name": "Strength (Summoned Monsters)",
+            "modifier": "8"
+          },
+          {
+            "name": "Dexterity (Summoned Monsters)",
+            "modifier": "8"
+          },
+          {
+            "name": "Constitution (Summoned Monsters)",
+            "modifier": "8"
+          },
+          {
+            "name": "Intelligence (Summoned Monsters)",
+            "modifier": "8"
+          },
+          {
+            "name": "Wisdom (Summoned Monsters)",
+            "modifier": "8"
+          },
+          {
+            "name": "Charisma (Summoned Monsters)",
+            "modifier": "8"
+          },
+          {
+            "name": "Strength (Charmed Monsters)",
+            "modifier": "8"
+          },
+          {
+            "name": "Dexterity (Charmed Monsters)",
+            "modifier": "8"
+          },
+          {
+            "name": "Constitution (Charmed Monsters)",
+            "modifier": "8"
+          },
+          {
+            "name": "Intelligence (Charmed Monsters)",
+            "modifier": "8"
+          },
+          {
+            "name": "Wisdom (Charmed Monsters)",
+            "modifier": "8"
+          },
+          {
+            "name": "Charisma (Charmed Monsters)",
+            "modifier": "8"
+          },
+          {
+            "name": "Strength (Hirelings)",
+            "modifier": "8"
+          },
+          {
+            "name": "Dexterity (Hirelings)",
+            "modifier": "8"
+          },
+          {
+            "name": "Constitution (Hirelings)",
+            "modifier": "8"
+          },
+          {
+            "name": "Intelligence (Hirelings)",
+            "modifier": "8"
+          },
+          {
+            "name": "Wisdom (Hirelings)",
+            "modifier": "8"
+          },
+          {
+            "name": "Charisma (Hirelings)",
+            "modifier": "8"
+          }
+        ]
       }
     ]
   },
@@ -4053,14 +4586,61 @@
     "bonuses": [
       {
         "threshold": 3,
-        "enhancements": null
+        "enhancements": [
+          {
+            "name": "Physical Resistance Rating",
+            "modifier": "10",
+            "bonus": "Profane"
+          }
+        ]
       },
       {
         "threshold": 4,
         "enhancements": [
           {
-            "name": "Profane Bonus to Attack and Damage",
-            "modifier": "+1"
+            "name": "Physical Resistance Rating",
+            "modifier": "10",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Strength",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Dexterity",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Constitution",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Intelligence",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Wisdom",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Charisma",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Attack Rolls",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Damage Rolls",
+            "modifier": "1",
+            "bonus": "Profane"
           }
         ]
       },
@@ -4068,12 +4648,109 @@
         "threshold": 5,
         "enhancements": [
           {
-            "name": "Profane Bonus to Universal Spell Power",
-            "modifier": "+10"
+            "name": "Physical Resistance Rating",
+            "modifier": "10",
+            "bonus": "Profane"
           },
           {
-            "name": "Profane Bonus to Spell DCs",
-            "modifier": "+1"
+            "name": "Strength",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Dexterity",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Constitution",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Intelligence",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Wisdom",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Charisma",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Attack Rolls",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Damage Rolls",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "5",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "5",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Universal Spell Power",
+            "modifier": "10",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Abjuration",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Breath Weapon",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Conjuration",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Divination",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Enchantment",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Evocation",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Illusion",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Necromancy",
+            "modifier": "1",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Transmutation",
+            "modifier": "1",
+            "bonus": "Profane"
           }
         ]
       }
@@ -4086,8 +4763,39 @@
         "threshold": 2,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Critical Multiplier on a roll of 19-20",
-            "modifier": "+1"
+            "name": "Strength",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Dexterity",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Constitution",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Intelligence",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Wisdom",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Charisma",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Critical Damage Multiplier (19-20)",
+            "modifier": "1",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -4368,7 +5076,13 @@
     "bonuses": [
       {
         "threshold": 3,
-        "enhancements": null
+        "enhancements": [
+          {
+            "name": "Imbue Dice",
+            "modifier": "3",
+            "bonus": "Artifact"
+          }
+        ]
       }
     ]
   },
@@ -4450,7 +5164,9 @@
         "threshold": 2,
         "enhancements": [
           {
-            "name": "}"
+            "name": "Critical Damage Multipliler (19-20)",
+            "modifier": "1",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -4746,7 +5462,13 @@
     "bonuses": [
       {
         "threshold": 3,
-        "enhancements": null
+        "enhancements": [
+          {
+            "name": "Maximum Hit Points",
+            "modifier": "10%",
+            "bonus": "Legendary"
+          }
+        ]
       }
     ]
   },
@@ -4757,12 +5479,109 @@
         "threshold": 3,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Spell Critical Chance",
-            "modifier": "+6%"
+            "name": "Universal Spell Power",
+            "modifier": "25",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Imbue Dice",
-            "modifier": "+3"
+            "name": "Spell Critical Chance: Acid",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Cold",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Electric",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Fire",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Force",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Piercing",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Slashing",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Bludgeoning",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Light",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Chaos",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Evil",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Good",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Lawful",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Negative Energy",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Poison",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Positive Energy",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Sonic",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Repair",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Rust",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Imbue Dice",
+            "modifier": "3",
+            "bonus": "Artifact"
           }
         ]
       },
@@ -4770,8 +5589,214 @@
         "threshold": 4,
         "enhancements": [
           {
-            "name": "Legendary Bonus to Spell Critical Damage",
-            "modifier": "+15%"
+            "name": "Universal Spell Power",
+            "modifier": "25",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Acid",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Cold",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Electric",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Fire",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Force",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Piercing",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Slashing",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Bludgeoning",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Light",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Chaos",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Evil",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Good",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Lawful",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Negative Energy",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Poison",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Positive Energy",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Sonic",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Repair",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Rust",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Imbue Dice",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Acid",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Cold",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Electric",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Fire",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Force",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Piercing",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Slashing",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Bludgeoning",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Light",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Chaos",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Evil",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Good",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Lawful",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Negative Energy",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Poison",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Positive Energy",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Sonic",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Repair",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Rust",
+            "modifier": "15%",
+            "bonus": "Legendary"
           }
         ]
       }
@@ -4784,16 +5809,74 @@
         "threshold": 3,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Spell Penetration",
-            "modifier": "+10"
+            "name": "Spell DC: Abjuration",
+            "modifier": "3",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Magical Resistance Rating Cap",
-            "modifier": "+30"
+            "name": "Spell DC: Breath Weapon",
+            "modifier": "3",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Saving Throws",
-            "modifier": "+3"
+            "name": "Spell DC: Conjuration",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Divination",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Enchantment",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Evocation",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Illusion",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Necromancy",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Transmutation",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Penetration",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Magical Resistance Rating Cap",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Fortitude Saving Throws",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Reflex Saving Throws",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Will Saving Throws",
+            "modifier": "3",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -4806,19 +5889,76 @@
         "threshold": 2,
         "enhancements": [
           {
-            "name": "}"
+            "name": "Strength (Summoned Monsters)",
+            "modifier": "12"
           },
           {
-            "name": "=== Paws and Peril ==="
+            "name": "Dexterity (Summoned Monsters)",
+            "modifier": "12"
           },
           {
-            "notes": "These sets were released on items as part of Update 65. These only appear on augments you can create in the [[Cauldron of Cadence]]."
+            "name": "Constitution (Summoned Monsters)",
+            "modifier": "12"
           },
           {
-            "notes": "{| class=\"compendiumtable compendiumtablenonsortable fullwidth\""
+            "name": "Intelligence (Summoned Monsters)",
+            "modifier": "12"
           },
           {
-            "notes": "! style=\"width: 25%;\"| Set name || style=\"width: 50%;\"| Description"
+            "name": "Wisdom (Summoned Monsters)",
+            "modifier": "12"
+          },
+          {
+            "name": "Charisma (Summoned Monsters)",
+            "modifier": "12"
+          },
+          {
+            "name": "Strength (Charmed Monsters)",
+            "modifier": "12"
+          },
+          {
+            "name": "Dexterity (Charmed Monsters)",
+            "modifier": "12"
+          },
+          {
+            "name": "Constitution (Charmed Monsters)",
+            "modifier": "12"
+          },
+          {
+            "name": "Intelligence (Charmed Monsters)",
+            "modifier": "12"
+          },
+          {
+            "name": "Wisdom (Charmed Monsters)",
+            "modifier": "12"
+          },
+          {
+            "name": "Charisma (Charmed Monsters)",
+            "modifier": "12"
+          },
+          {
+            "name": "Strength (Hirelings)",
+            "modifier": "12"
+          },
+          {
+            "name": "Dexterity (Hirelings)",
+            "modifier": "12"
+          },
+          {
+            "name": "Constitution (Hirelings)",
+            "modifier": "12"
+          },
+          {
+            "name": "Intelligence (Hirelings)",
+            "modifier": "12"
+          },
+          {
+            "name": "Wisdom (Hirelings)",
+            "modifier": "12"
+          },
+          {
+            "name": "Charisma (Hirelings)",
+            "modifier": "12"
           }
         ]
       }
@@ -5688,14 +6828,61 @@
     "bonuses": [
       {
         "threshold": 3,
-        "enhancements": null
+        "enhancements": [
+          {
+            "name": "Physical Resistance Rating",
+            "modifier": "30",
+            "bonus": "Profane"
+          }
+        ]
       },
       {
         "threshold": 4,
         "enhancements": [
           {
-            "name": "Profane Bonus to Attack and Damage",
-            "modifier": "+4"
+            "name": "Physical Resistance Rating",
+            "modifier": "30",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Strength",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Dexterity",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Constitution",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Intelligence",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Wisdom",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Charisma",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Attack Rolls",
+            "modifier": "4",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Damage Rolls",
+            "modifier": "4",
+            "bonus": "Profane"
           }
         ]
       },
@@ -5703,12 +6890,109 @@
         "threshold": 5,
         "enhancements": [
           {
-            "name": "Profane Bonus to Universal Spell Power",
-            "modifier": "+25"
+            "name": "Physical Resistance Rating",
+            "modifier": "30",
+            "bonus": "Profane"
           },
           {
-            "name": "Profane Bonus to Spell DCs",
-            "modifier": "+3"
+            "name": "Strength",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Dexterity",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Constitution",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Intelligence",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Wisdom",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Charisma",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Attack Rolls",
+            "modifier": "4",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Damage Rolls",
+            "modifier": "4",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "15",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "15",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Universal Spell Power",
+            "modifier": "25",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Abjuration",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Breath Weapon",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Conjuration",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Divination",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Enchantment",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Evocation",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Illusion",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Necromancy",
+            "modifier": "3",
+            "bonus": "Profane"
+          },
+          {
+            "name": "Spell DC: Transmutation",
+            "modifier": "3",
+            "bonus": "Profane"
           }
         ]
       }
@@ -5721,8 +7005,39 @@
         "threshold": 2,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Critical Multiplier on a roll of 19-20",
-            "modifier": "+1"
+            "name": "Strength",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Dexterity",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Constitution",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Intelligence",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Wisdom",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Charisma",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Critical Damage Multiplier (19-20)",
+            "modifier": "1",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -6451,12 +7766,24 @@
         "threshold": 3,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Doublestrike and Doubleshot",
-            "modifier": "+15%"
+            "name": "Fortification Bypass Chance",
+            "modifier": "30%",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Physical Resistance Rating",
-            "modifier": "+30"
+            "name": "Doublestrike Chance",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Doubleshot Chance",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Physical Resistance Rating",
+            "modifier": "30",
+            "bonus": "Artifact"
           }
         ]
       },
@@ -6464,23 +7791,39 @@
         "threshold": 4,
         "enhancements": [
           {
-            "name": "Legendary Bonus to Damage vs. Helpless opponents",
-            "modifier": "+15%"
+            "name": "Fortification Bypass Chance",
+            "modifier": "30%",
+            "bonus": "Artifact"
           },
           {
-            "name": "|}"
+            "name": "Doublestrike Chance",
+            "modifier": "15%",
+            "bonus": "Artifact"
           },
           {
-            "name": "=== Magic of Myth Drannor ==="
+            "name": "Doubleshot Chance",
+            "modifier": "15%",
+            "bonus": "Artifact"
           },
           {
-            "notes": "These sets were released on items as part of the Update 69 Raid release."
+            "name": "Physical Resistance Rating",
+            "modifier": "30",
+            "bonus": "Artifact"
           },
           {
-            "notes": "{| class=\"compendiumtable compendiumtablenonsortable fullwidth\""
+            "name": "Melee Power",
+            "modifier": "15",
+            "bonus": "Artifact"
           },
           {
-            "notes": "! style=\"width: 25%;\"| Set name || style=\"width: 50%;\"| Description"
+            "name": "Ranged Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Damage vs. Helpless opponents",
+            "modifier": "+15%",
+            "bonus": "Legendary"
           }
         ]
       }
@@ -6708,12 +8051,24 @@
         "threshold": 2,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Fire Spell Power",
-            "modifier": "+30"
+            "name": "Melee Power",
+            "modifier": "15",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Helplessness Damage",
-            "modifier": "+15%"
+            "name": "Ranged Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Power: Fire",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Damage vs Helpless Opponents",
+            "modifier": "15%",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -6726,12 +8081,24 @@
         "threshold": 2,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Acid Spell Power",
-            "modifier": "+30"
+            "name": "Melee Power",
+            "modifier": "15",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact bonus to Physical Resistance Rating",
-            "modifier": "+30"
+            "name": "Ranged Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Power: Acid",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Physical Resistance Rating",
+            "modifier": "30",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -6744,12 +8111,34 @@
         "threshold": 2,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Cold Spell Power",
-            "modifier": "+30"
+            "name": "Melee Power",
+            "modifier": "15",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Threat Reduction from all sources",
-            "modifier": "-20%"
+            "name": "Ranged Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Power: Cold",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Threat Generation",
+            "modifier": "-20%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Threat Generation",
+            "modifier": "-20%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Threat Generation",
+            "modifier": "-20%",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -7808,12 +9197,24 @@
         "threshold": 3,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Doublestrike and Doubleshot",
-            "modifier": "+5%"
+            "name": "Fortification Bypass Chance",
+            "modifier": "10%",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Physical Resistance Rating",
-            "modifier": "+10"
+            "name": "Doublestrike Chance",
+            "modifier": "10%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Doubleshot Chance",
+            "modifier": "10%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Physical Resistance Rating",
+            "modifier": "10",
+            "bonus": "Artifact"
           }
         ]
       },
@@ -7821,8 +9222,39 @@
         "threshold": 4,
         "enhancements": [
           {
-            "name": "Legendary Bonus to Damage vs. Helpless opponents",
-            "modifier": "+5%"
+            "name": "Fortification Bypass Chance",
+            "modifier": "10%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Doublestrike Chance",
+            "modifier": "10%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Doubleshot Chance",
+            "modifier": "10%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Physical Resistance Rating",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Damage vs. Helpless opponents",
+            "modifier": "+5%",
+            "bonus": "Legendary"
           }
         ]
       }
@@ -8422,19 +9854,9 @@
         "threshold": 3,
         "enhancements": [
           {
-            "name": "}"
-          },
-          {
-            "name": "=== Slice of Life ==="
-          },
-          {
-            "notes": "These sets were released on items as part of Update 67."
-          },
-          {
-            "notes": "{| class=\"compendiumtable compendiumtablenonsortable fullwidth\""
-          },
-          {
-            "notes": "! style=\"width: 25%;\"| Set name || style=\"width: 50%;\"| Description"
+            "name": "Assassinate DCs",
+            "modifier": "3",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -8447,12 +9869,24 @@
         "threshold": 2,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Fire Spell Power",
-            "modifier": "+10"
+            "name": "Melee Power",
+            "modifier": "5",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Helplessness Damage",
-            "modifier": "+5%"
+            "name": "Ranged Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Power: Fire",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Damage vs Helpless Opponents",
+            "modifier": "5%",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -8465,12 +9899,24 @@
         "threshold": 2,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Acid Spell Power",
-            "modifier": "+10"
+            "name": "Melee Power",
+            "modifier": "5",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact bonus to Physical Resistance Rating",
-            "modifier": "+10"
+            "name": "Ranged Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Power: Acid",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Physical Resistance Rating",
+            "modifier": "10",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -8483,12 +9929,54 @@
         "threshold": 2,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Electric Spell Power",
-            "modifier": "+10"
+            "name": "Melee Power",
+            "modifier": "5",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Magical Resistance Rating",
-            "modifier": "+10"
+            "name": "Ranged Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Power: Electric",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Magical Resistance Rating",
+            "modifier": "10",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Legendary Temple's Tempest",
+    "bonuses": [
+      {
+        "threshold": 2,
+        "enhancements": [
+          {
+            "name": "Melee Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Power: Electric",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Magical Resistance Rating",
+            "modifier": "30",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -8501,12 +9989,34 @@
         "threshold": 2,
         "enhancements": [
           {
-            "name": "Artifact Bonus to Cold Spell Power",
-            "modifier": "+10"
+            "name": "Melee Power",
+            "modifier": "5",
+            "bonus": "Artifact"
           },
           {
-            "name": "Artifact Bonus to Threat Reduction from all sources",
-            "modifier": "-10%"
+            "name": "Ranged Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Power: Cold",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Threat Generation",
+            "modifier": "-10%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Threat Generation",
+            "modifier": "-10%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Threat Generation",
+            "modifier": "-10%",
+            "bonus": "Artifact"
           }
         ]
       }
@@ -10401,6 +11911,1736 @@
             "name": "Spell Critical Chance: Acid",
             "modifier": "6%",
             "bonus": "Exceptional"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Heart of Blades",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Healing Amplification",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Repair Amplification",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Power: Repair",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Strikethrough Chance",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Vol's Influence",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Universal Spell Power",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Acid",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Cold",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Electric",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Fire",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Force",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Piercing",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Slashing",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Bludgeoning",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Light",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Chaos",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Evil",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Good",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Lawful",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Negative Energy",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Poison",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Positive Energy",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Sonic",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Repair",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Rust",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Acid",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Cold",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Electric",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Fire",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Force",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Piercing",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Slashing",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Bludgeoning",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Light",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Chaos",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Evil",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Good",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Lawful",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Negative Energy",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Poison",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Positive Energy",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Sonic",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Repair",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Rust",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell DC: Abjuration",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Breath Weapon",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Conjuration",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Divination",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Enchantment",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Evocation",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Illusion",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Necromancy",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Transmutation",
+            "modifier": "1",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "The Fury's Rage",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Physical Resistance Rating",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Threat Generation",
+            "modifier": "50%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Damage vs Helpless Opponents",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Delight of the Devourer",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Universal Spell Power",
+            "modifier": "20",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Acid",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Cold",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Electric",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Fire",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Force",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Piercing",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Slashing",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Bludgeoning",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Light",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Chaos",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Evil",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Good",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Lawful",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Negative Energy",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Poison",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Positive Energy",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Sonic",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Repair",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Rust",
+            "modifier": "2%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Acid",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Cold",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Electric",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Fire",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Force",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Piercing",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Slashing",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Bludgeoning",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Light",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Chaos",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Evil",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Good",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Lawful",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Negative Energy",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Poison",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Positive Energy",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Sonic",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Repair",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Rust",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Damage vs Helpless Opponents",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Minion of the Mockery",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Melee Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Assassinate DCs",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Dodge Chance",
+            "modifier": "3%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Sneak Attack Damage Rolls",
+            "modifier": "1",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "The Keeper's Coffin",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Spell DC: Abjuration",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Breath Weapon",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Conjuration",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Divination",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Enchantment",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Evocation",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Illusion",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Necromancy",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Transmutation",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Penetration",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Healing Amplification",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Negative Amplification",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Strength",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Dexterity",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Constitution",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Intelligence",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Wisdom",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Charisma",
+            "modifier": "1",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "The Shadow's Emptiness",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Doublestrike Chance",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Doubleshot Chance",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Imbue Dice",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Universal Spell Power",
+            "modifier": "20",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Magical Resistance Rating",
+            "modifier": "10",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "The Traveler's Guidance",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Fortitude Saving Throws",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Reflex Saving Throws",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Will Saving Throws",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Trip",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Improved Trip",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Sunder",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Improved Sunder",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Stunning",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Damage vs Helpless Opponents",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Armaments of the Archons",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Physical Resistance Rating",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Magical Resistance Rating",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Armor Class",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Maximum Hit Points",
+            "modifier": "5%",
+            "bonus": "Legendary"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Devils' Infernal Dance",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Strength",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Dexterity",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Constitution",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Intelligence",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Wisdom",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Charisma",
+            "modifier": "1",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Doublestrike Chance",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Doubleshot Chance",
+            "modifier": "5%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Fortification Bypass Chance",
+            "modifier": "10%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "5",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Legendary Heart of Blades",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Healing Amplification",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Repair Amplification",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Power: Repair",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Strikethrough Chance",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Legendary Vol's Influence",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Universal Spell Power",
+            "modifier": "25",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Acid",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Cold",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Electric",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Fire",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Force",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Piercing",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Slashing",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Bludgeoning",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Light",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Chaos",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Evil",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Good",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Lawful",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Negative Energy",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Poison",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Positive Energy",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Sonic",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Repair",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Rust",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Acid",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Cold",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Electric",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Fire",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Force",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Piercing",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Slashing",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Bludgeoning",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Light",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Chaos",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Evil",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Good",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Lawful",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Negative Energy",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Poison",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Positive Energy",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Sonic",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Repair",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell Critical Damage: Rust",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          },
+          {
+            "name": "Spell DC: Abjuration",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Breath Weapon",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Conjuration",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Divination",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Enchantment",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Evocation",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Illusion",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Necromancy",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Transmutation",
+            "modifier": "3",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Legendary The Fury's Rage",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Physical Resistance Rating",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Threat Generation",
+            "modifier": "100%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Damage vs Helpless Opponents",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Legendary Delight of the Devourer",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Universal Spell Power",
+            "modifier": "25",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Acid",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Cold",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Electric",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Fire",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Force",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Piercing",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Slashing",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Bludgeoning",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Light",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Chaos",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Evil",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Good",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Lawful",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Negative Energy",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Poison",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Positive Energy",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Sonic",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Repair",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Chance: Rust",
+            "modifier": "6%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Acid",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Cold",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Electric",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Fire",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Force",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Piercing",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Slashing",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Bludgeoning",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Light",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Chaos",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Evil",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Good",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Lawful",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Negative Energy",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Poison",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Positive Energy",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Sonic",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Repair",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Critical Damage: Rust",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Damage vs Helpless Opponents",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Legendary Minion of the Mockery",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Melee Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Assassinate DCs",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Dodge Chance",
+            "modifier": "10%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Sneak Attack Damage Rolls",
+            "modifier": "3",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Legendary The Keeper's Coffin",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Spell DC: Abjuration",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Breath Weapon",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Conjuration",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Divination",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Enchantment",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Evocation",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Illusion",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Necromancy",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell DC: Transmutation",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Spell Penetration",
+            "modifier": "10",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Healing Amplification",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Negative Amplification",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Strength",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Dexterity",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Constitution",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Intelligence",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Wisdom",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Charisma",
+            "modifier": "3",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Legendary The Shadow's Emptiness",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Doublestrike Chance",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Doubleshot Chance",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Imbue Dice",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Universal Spell Power",
+            "modifier": "25",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Magical Resistance Rating",
+            "modifier": "30",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Legendary The Traveler's Guidance",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Fortitude Saving Throws",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Reflex Saving Throws",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Will Saving Throws",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Trip",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Improved Trip",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Sunder",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Improved Sunder",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Tactical DC: Stunning",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Damage vs Helpless Opponents",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Legendary Armaments of the Archons",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Physical Resistance Rating",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Magical Resistance Rating",
+            "modifier": "30",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Armor Class",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Maximum Hit Points",
+            "modifier": "15%",
+            "bonus": "Legendary"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Legendary Devils' Infernal Dance",
+    "bonuses": [
+      {
+        "threshold": 3,
+        "enhancements": [
+          {
+            "name": "Strength",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Dexterity",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Constitution",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Intelligence",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Wisdom",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Charisma",
+            "modifier": "3",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Doublestrike Chance",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Doubleshot Chance",
+            "modifier": "15%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Fortification Bypass Chance",
+            "modifier": "30%",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Melee Power",
+            "modifier": "15",
+            "bonus": "Artifact"
+          },
+          {
+            "name": "Ranged Power",
+            "modifier": "15",
+            "bonus": "Artifact"
           }
         ]
       }

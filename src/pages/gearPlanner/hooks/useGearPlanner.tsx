@@ -33,7 +33,12 @@ import {
   normalizeString,
   resolveConflicts
 } from '../conflictResolver.ts'
-import { loadCurses, loadGearData, loadSetBonusIndex } from '../dataLoader.ts'
+import {
+  loadCurses,
+  loadFiligreeSets,
+  loadGearData,
+  loadSetBonusIndex
+} from '../dataLoader.ts'
 import { getMaxFiligreeSlots, isMinorArtifact } from '../helpers'
 import {
   CLASS_PROFICIENCIES,
@@ -62,12 +67,8 @@ import {
  * - State variables for tracking current slot browsing, conflict states, available items, display settings, and more.
  */
 const useGearPlanner = (props: Props) => {
-  const {
-    enchantmentSearch,
-    itemNameSearch,
-    setBonusFilter,
-    showConflicts
-  } = props
+  const { enchantmentSearch, itemNameSearch, setBonusFilter, showConflicts } =
+    props
 
   const dispatch = useAppDispatch()
   const {
@@ -83,7 +84,10 @@ const useGearPlanner = (props: Props) => {
   const [allAugments, setAllAugments] = useState<GearAugment[]>([])
   const [allCurses, setAllCurses] = useState<Curse[]>([])
   const [allFiligrees, setAllFiligrees] = useState<GearItem[]>([])
-  const [setBonusIndex, setSetBonusIndex] = useState<SetBonusIndex>({})
+  const [allFiligreeSetNames, setAllFiligreeSetNames] = useState<string[]>([])
+  const [itemSetBonusIndex, setItemSetBonusIndex] = useState<SetBonusIndex>({})
+  const [filigreeSetBonusIndex, setFiligreeSetBonusIndex] =
+    useState<SetBonusIndex>({})
   const [loading, setLoading] = useState(true)
   const [dataReady, setDataReady] = useState(false)
 
@@ -127,7 +131,6 @@ const useGearPlanner = (props: Props) => {
     setItemsToShow((prev) => prev + 50)
   }, [])
 
-
   useEffect(() => {
     const run = async () => {
       try {
@@ -135,10 +138,70 @@ const useGearPlanner = (props: Props) => {
         setAllItems(items)
         setAllAugments(augments)
         setAllFiligrees(filigrees)
+
         const sbi = await loadSetBonusIndex()
-        setSetBonusIndex(sbi)
-        const curses = await loadCurses()
+        setItemSetBonusIndex(sbi)
+
+        const curses: Curse[] = await loadCurses()
         setAllCurses(curses)
+
+        const filigreeSetsData = await loadFiligreeSets()
+        const filigreeSetNames = filigreeSetsData
+          .map((s) => s.name)
+          .sort((a, b) => a.localeCompare(b))
+        setAllFiligreeSetNames(filigreeSetNames)
+
+        // Augment filigreeSetBonusIndex
+        const filigreeSetBonusIndex: SetBonusIndex = {}
+
+        const isFiligreeAlreadyPresent = (
+          setName: string,
+          filigreeName: string
+        ) => {
+          const setEntries = filigreeSetBonusIndex[setName]
+          if (!setEntries) return false
+          for (const entry of setEntries) {
+            if (entry.name === filigreeName) return true
+          }
+          return false
+        }
+
+        const updateFiligreeSetBonusIndexInternal = (
+          filigree: GearItem,
+          setName: string
+        ) => {
+          filigreeSetBonusIndex[setName] ??= []
+
+          if (
+            !isFiligreeAlreadyPresent(
+              setName,
+              filigree.name
+            )
+          ) {
+            filigreeSetBonusIndex[setName].push({
+              name: filigree.name,
+              minLevel: parseInt(filigree.minLevel) || 1
+            })
+          }
+        }
+
+        filigrees.forEach((filigree: GearItem) => {
+          const allSets = new Set<string>()
+
+          // From setBonus
+          if (filigree.setBonus) {
+            for (const sb of filigree.setBonus) {
+              allSets.add(sb.name)
+            }
+          }
+
+          if (allSets.size > 0) {
+            for (const setName of allSets) {
+              updateFiligreeSetBonusIndexInternal(filigree, setName)
+            }
+          }
+        })
+        setFiligreeSetBonusIndex(filigreeSetBonusIndex)
       } catch (err) {
         console.error('Error loading gear data:', err)
       } finally {
@@ -235,18 +298,24 @@ const useGearPlanner = (props: Props) => {
     []
   )
 
-
   // Process data into slot-based buckets asynchronously to avoid page-load lag
   useEffect(() => {
-    if (allItems.length === 0 || Object.keys(setBonusIndex).length === 0) return
+    if (
+      allItems.length === 0 ||
+      (Object.keys(itemSetBonusIndex).length === 0 &&
+        Object.keys(filigreeSetBonusIndex).length === 0)
+    )
+      return
 
     const indexItemsBySlot = async (
       items: GearItem[],
+      filigrees: GearItem[],
       chunkSize: number
     ): Promise<Map<GearSlot, GearItem[]>> => {
       const slotMap = new Map<GearSlot, GearItem[]>()
-      for (let i = 0; i < items.length; i += chunkSize) {
-        const chunk = items.slice(i, i + chunkSize)
+      const allItemsToProcess = [...items, ...filigrees]
+      for (let i = 0; i < allItemsToProcess.length; i += chunkSize) {
+        const chunk = allItemsToProcess.slice(i, i + chunkSize)
         for (const item of chunk) {
           const list = slotMap.get(item.slot)
           if (list) {
@@ -286,17 +355,18 @@ const useGearPlanner = (props: Props) => {
     }
 
     const processData = async () => {
-      const slotMap = await indexItemsBySlot(allItems, 1000)
+      const slotMap = await indexItemsBySlot(allItems, allFiligrees, 1000)
       setAllItemsBySlot(slotMap)
 
-      const setsMap = await indexSetsByItem(setBonusIndex, 100)
+      const combinedIndex = { ...itemSetBonusIndex, ...filigreeSetBonusIndex }
+      const setsMap = await indexSetsByItem(combinedIndex, 100)
       setItemToSetsMap(setsMap)
 
       setDataReady(true)
     }
 
     void processData()
-  }, [allItems, setBonusIndex])
+  }, [allItems, allFiligrees, itemSetBonusIndex, filigreeSetBonusIndex])
 
   const characterEquipped = useMemo(() => {
     if (!activeSetup) return []
@@ -340,18 +410,26 @@ const useGearPlanner = (props: Props) => {
       let currentConflicts = characterConflicts
       let currentEquipped = characterEquipped
       let currentSlottedAugments = activeSetup?.slottedAugments
+      let currentSlottedFiligrees = activeSetup?.slottedFiligrees
 
       if (owner === 'artificer_pet') {
         currentConflicts = artificerConflicts
         currentEquipped = artificerEquipped
         currentSlottedAugments = artificerPet.slottedAugments
+        currentSlottedFiligrees = artificerPet.slottedFiligrees
       } else if (owner === 'druid_pet') {
         currentConflicts = druidConflicts
         currentEquipped = druidEquipped
         currentSlottedAugments = druidPet.slottedAugments
+        currentSlottedFiligrees = druidPet.slottedFiligrees
       }
 
-      return { currentConflicts, currentEquipped, currentSlottedAugments }
+      return {
+        currentConflicts,
+        currentEquipped,
+        currentSlottedAugments,
+        currentSlottedFiligrees
+      }
     },
     [
       characterConflicts,
@@ -361,8 +439,11 @@ const useGearPlanner = (props: Props) => {
       artificerEquipped,
       druidEquipped,
       activeSetup?.slottedAugments,
+      activeSetup?.slottedFiligrees,
       artificerPet.slottedAugments,
-      druidPet.slottedAugments
+      artificerPet.slottedFiligrees,
+      druidPet.slottedAugments,
+      druidPet.slottedFiligrees
     ]
   )
 
@@ -397,9 +478,11 @@ const useGearPlanner = (props: Props) => {
       }
 
       // Level filter
-      const itemLevel = Number.parseInt(item.minLevel, 10) || 1
-      if (itemLevel < setup.minLevel || itemLevel > setup.maxLevel) {
-        return false
+      if (slot !== GearSlot.Filigree) {
+        const itemLevel = Number.parseInt(item.minLevel, 10) || 1
+        if (itemLevel < setup.minLevel || itemLevel > setup.maxLevel) {
+          return false
+        }
       }
 
       // Slot filter logic
@@ -496,7 +579,11 @@ const useGearPlanner = (props: Props) => {
 
         // Set Bonus Filter
         if (!ignoreSetFilter && setBonusFilter) {
-          const indexedItems = setBonusIndex[setBonusFilter]
+          const combinedIndex = {
+            ...itemSetBonusIndex,
+            ...filigreeSetBonusIndex
+          }
+          const indexedItems = combinedIndex[setBonusFilter]
           const itemLvl = Number(i.minLevel) || 1
           return (
             indexedItems?.some(
@@ -526,19 +613,47 @@ const useGearPlanner = (props: Props) => {
       isItemConflicting,
       isMetal,
       setBonusFilter,
-      setBonusIndex,
+      itemSetBonusIndex,
+      filigreeSetBonusIndex,
       itemNameSearch
     ]
   )
 
-  const filteredSets = useMemo(() => {
+  const isSetVisibleInRange = useCallback(
+    (
+      setName: string,
+      index: SetBonusIndex,
+      visibleItemKeys: Set<string>,
+      isFiligreeSet = false
+    ) => {
+      const indexedItems = index[setName]
+      if (!activeSetup) return false
+      const { minLevel: min, maxLevel: max } = activeSetup
+
+      for (const item of indexedItems) {
+        if (isFiligreeSet) {
+          return true
+        }
+        if (item.minLevel >= min && item.minLevel <= max) {
+          if (visibleItemKeys.has(`${item.name}|${item.minLevel.toString()}`)) {
+            return true
+          }
+        }
+      }
+      return false
+    },
+    [activeSetup]
+  )
+
+  const filteredItemSets = useMemo(() => {
     if (!activeSetup || !dataReady) return []
     const { minLevel: min, maxLevel: max } = activeSetup
 
     const getVisibleItemKeys = () => {
       const keys = new Set<string>()
       for (const [slot, items] of allItemsBySlot.entries()) {
-        if (!isItemVisibleForClasses({ slot } as GearItem, activeSetup)) continue
+        if (!isItemVisibleForClasses({ slot } as GearItem, activeSetup))
+          continue
         for (const i of items) {
           const level = Number(i.minLevel) || 1
           if (level >= min && level <= max) {
@@ -576,36 +691,31 @@ const useGearPlanner = (props: Props) => {
     const visibleItemKeys = getVisibleItemKeys()
     const setsWithItemsInSlot = getSetsWithItemsInSlot()
 
-    const isSetVisibleInRange = (setName: string) => {
-      const indexedItems = setBonusIndex[setName]
-      for (const item of indexedItems) {
-        if (item.minLevel >= min && item.minLevel <= max) {
-          if (visibleItemKeys.has(`${item.name}|${item.minLevel.toString()}`)) {
-            return true
-          }
-        }
-      }
-      return false
-    }
-
-    return Object.keys(setBonusIndex)
+    return Object.keys(itemSetBonusIndex)
       .filter((setName) => {
-        if (!isSetVisibleInRange(setName)) return false
+        if (!isSetVisibleInRange(setName, itemSetBonusIndex, visibleItemKeys))
+          return false
 
-        return !(browsingSlot && !setsWithItemsInSlot.has(setName));
-
+        return !(browsingSlot && !setsWithItemsInSlot.has(setName))
       })
       .sort((a, b) => a.localeCompare(b))
   }, [
-    setBonusIndex,
+    itemSetBonusIndex,
     activeSetup,
     dataReady,
     allItemsBySlot,
     isItemVisibleForClasses,
     browsingSlot,
     shouldShowItem,
-    itemToSetsMap
+    itemToSetsMap,
+    isSetVisibleInRange
   ])
+
+  const filteredFiligreeSets = useMemo(() => {
+    if (!activeSetup || !dataReady) return []
+
+    return allFiligreeSetNames
+  }, [allFiligreeSetNames, activeSetup, dataReady])
 
   const filteredItems = useMemo(() => {
     if (!activeSetup || !browsingSlot) return []
@@ -681,7 +791,6 @@ const useGearPlanner = (props: Props) => {
       }
       observer.disconnect()
     }
-
   }, [loadMore, browsingSlot])
 
   const searchResultsBySlot = useMemo(() => {
@@ -700,13 +809,17 @@ const useGearPlanner = (props: Props) => {
       if (!shouldShowItem(item, item.slot, activeSetup, true)) return false
 
       let matchesSetName = false
-      for (const setName of Object.keys(setBonusIndex)) {
+      const combinedIndex = { ...itemSetBonusIndex, ...filigreeSetBonusIndex }
+      for (const setName of Object.keys(combinedIndex)) {
         if (normalizeString(setName).includes(searchLower)) {
-          const indexedItems = setBonusIndex[setName]
+          const indexedItems = combinedIndex[setName]
+          const isFiligreeSet = !!filigreeSetBonusIndex[setName]
           const itemLvl = Number(item.minLevel) || 1
           if (
             indexedItems.some(
-              (ii) => ii.name === item.name && ii.minLevel === itemLvl
+              (ii) =>
+                ii.name === item.name &&
+                (isFiligreeSet || ii.minLevel === itemLvl)
             )
           ) {
             matchesSetName = true
@@ -749,7 +862,8 @@ const useGearPlanner = (props: Props) => {
     enchantmentSearch,
     allItems,
     shouldShowItem,
-    setBonusIndex,
+    itemSetBonusIndex,
+    filigreeSetBonusIndex,
     activeSetup,
     isItemVisibleForClasses,
     troveData
@@ -858,7 +972,6 @@ const useGearPlanner = (props: Props) => {
     setup.armorFilters = updatedArmorFilters
     setup.shieldFilters = updatedShieldFilters
   }
-
 
   /**
    * A function variable that generates a new gear setup configuration with default properties,
@@ -1410,8 +1523,12 @@ const useGearPlanner = (props: Props) => {
     addSetup,
     allAugments,
     allCurses,
-    allItems,
     artificerEquipped,
+    allFiligrees,
+    allItems: useMemo(
+      () => [...allItems, ...allFiligrees],
+      [allItems, allFiligrees]
+    ),
     browsingSlot,
     browsingSet,
     setBrowsingSet,
@@ -1425,7 +1542,9 @@ const useGearPlanner = (props: Props) => {
     deleteSetup,
     druidEquipped,
     filteredItems,
-    filteredSets,
+    filteredItemSets,
+    filteredFiligreeSets,
+    allFiligreeSetNames,
     getContextInfo,
     isItemVisibleForClasses,
     isMetal,
@@ -1437,7 +1556,10 @@ const useGearPlanner = (props: Props) => {
     renderSlot,
     searchResultsBySlot,
     selectItem,
-    setBonusIndex,
+    setBonusIndex: useMemo(
+      () => ({ ...itemSetBonusIndex, ...filigreeSetBonusIndex }),
+      [itemSetBonusIndex, filigreeSetBonusIndex]
+    ),
     setItemNameSearch: setInternalItemNameSearch,
     setSlottedFiligree,
     setUnlockedFiligreeSlots: (
@@ -1453,7 +1575,6 @@ const useGearPlanner = (props: Props) => {
         })
       )
     },
-    allFiligrees,
     updateClassProficiencies,
     observerTarget,
     dataReady

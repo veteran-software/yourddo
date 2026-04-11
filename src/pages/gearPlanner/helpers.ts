@@ -42,7 +42,7 @@ export const aggregateEnchantmentEntries = (
   item: GearItem,
   itemAugs: Record<number, GearAugment | null> | undefined,
   curse: Curse | null | undefined,
-  filigrees: (LootItem | null)[] | undefined,
+  filigrees: (GearItem | null)[] | undefined,
   activeSetEnhancements?: { ench: LootEnchantment; sourceName: string }[]
 ) => {
   const entries: { ench: LootEnchantment; sourceName: string }[] = (
@@ -69,32 +69,16 @@ export const getActiveEnhancementsForSet = (
 ) => {
   if (!setDef?.enhancements) return []
 
-  const thresholds = Array.from(
-    new Set(
-      setDef.enhancements
-        .map((enh) => enh.numPiecesEquipped ?? setDef.numPiecesEquipped ?? 0)
-        .filter((t) => t > 0 && t <= count)
-    )
-  ).sort((a, b) => b - a)
-
-  if (thresholds.length === 0) return []
-
-  const highestThreshold = thresholds[0]
   return setDef.enhancements.filter(
-    (enh) =>
-      (enh.numPiecesEquipped ?? setDef.numPiecesEquipped ?? 0) ===
-      highestThreshold
+    (enh) => (enh.numPiecesEquipped ?? setDef.numPiecesEquipped ?? 0) <= count
   )
 }
 
-export const getActiveSetEnhancements = (
+const getItemCounts = (
   equippedItems: GearItem[],
-  slottedAugments: Record<string, Record<number, GearAugment | null>>,
-  slottedGemSetBonuses?: Record<string, (string | null)[]>
+  slottedGemSetBonuses: Record<string, (string | null)[]> | undefined,
+  counts: Record<string, number>
 ) => {
-  const counts: Record<string, number> = {}
-
-  // Count from items
   equippedItems.forEach((item) => {
     if (item.name.includes('Gem of Many Facets')) {
       const gemBonuses = slottedGemSetBonuses?.[item.id] ?? []
@@ -109,8 +93,12 @@ export const getActiveSetEnhancements = (
       })
     }
   })
+}
 
-  // Count from augments
+const getAugmentCounts = (
+  slottedAugments: Record<string, Record<number, GearAugment | null>>,
+  counts: Record<string, number>
+) => {
   for (const itemAugments of Object.values(slottedAugments)) {
     for (const aug of Object.values(itemAugments)) {
       if (aug?.setBonus) {
@@ -120,6 +108,59 @@ export const getActiveSetEnhancements = (
       }
     }
   }
+}
+
+const getFiligreeCounts = (
+  slottedFiligrees: Record<string, (GearItem | null)[]> | undefined,
+  counts: Record<string, number>
+) => {
+  if (!slottedFiligrees) return
+  const filigreeNamesPerSet: Record<string, Set<string>> = {}
+  for (const itemFiligrees of Object.values(slottedFiligrees)) {
+    for (const fili of itemFiligrees) {
+      if (fili?.grouping && typeof fili.grouping === 'string') {
+        processFiligreeGrouping(fili, filigreeNamesPerSet)
+      }
+    }
+  }
+
+  for (const [setName, names] of Object.entries(filigreeNamesPerSet)) {
+    counts[setName] = (counts[setName] ?? 0) + names.size
+  }
+}
+
+const processFiligreeGrouping = (
+  fili: GearItem,
+  filigreeNamesPerSet: Record<string, Set<string>>
+) => {
+  const groupingStr = fili.grouping
+  if (typeof groupingStr !== 'string') return
+
+  const setNames = groupingStr
+    .split('/')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0)
+  for (const setName of setNames) {
+    if (!filigreeNamesPerSet[setName]) {
+      filigreeNamesPerSet[setName] = new Set<string>()
+    }
+    if (fili.name) {
+      filigreeNamesPerSet[setName].add(fili.name)
+    }
+  }
+}
+
+export const getActiveSetEnhancements = (
+  equippedItems: GearItem[],
+  slottedAugments: Record<string, Record<number, GearAugment | null>>,
+  slottedFiligrees?: Record<string, (GearItem | null)[]>,
+  slottedGemSetBonuses?: Record<string, (string | null)[]>
+) => {
+  const counts: Record<string, number> = {}
+
+  getItemCounts(equippedItems, slottedGemSetBonuses, counts)
+  getAugmentCounts(slottedAugments, counts)
+  getFiligreeCounts(slottedFiligrees, counts)
 
   const entries: { ench: LootEnchantment; sourceName: string }[] = []
   for (const [setName, count] of Object.entries(counts)) {
@@ -167,7 +208,7 @@ const addCurseEntries = (
 const addFiligreeEntries = (
   entries: { ench: LootEnchantment; sourceName: string }[],
   itemName: string,
-  filigrees: (LootItem | null)[] | undefined
+  filigrees: (GearItem | null)[] | undefined
 ) => {
   if (!filigrees) return
   for (const fili of filigrees) {

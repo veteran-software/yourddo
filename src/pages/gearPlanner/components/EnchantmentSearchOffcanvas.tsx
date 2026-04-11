@@ -7,6 +7,7 @@ import SearchResultSlot from './SearchResultSlot'
 
 const EnchantmentSearchOffcanvas = (props: Props) => {
   const {
+    currentSlottedFiligrees,
     enchantmentSearch,
     getContextInfo,
     openSetBonusBrowser,
@@ -108,7 +109,12 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
                     key={slot}
                     slot={slot}
                     items={items}
-                    getContextInfo={getContextInfo}
+                    currentSlottedFiligrees={currentSlottedFiligrees}
+                    currentConflicts={getContextInfo(slot).currentConflicts}
+                    currentEquipped={getContextInfo(slot).currentEquipped}
+                    currentSlottedAugments={
+                      getContextInfo(slot).currentSlottedAugments
+                    }
                     selectItem={selectItem}
                     setShowEnchantmentSearch={setShowEnchantmentSearch}
                     openSetBonusBrowser={openSetBonusBrowser}
@@ -132,6 +138,7 @@ interface Props {
   showConflicts: boolean
   setShowConflicts: (show: boolean) => void
   searchResultsBySlot: Record<string, GearItem[]> | null
+  currentSlottedFiligrees: Record<string, (GearItem | null)[]>
   getContextInfo: (slot: string) => {
     currentConflicts: Record<string, EnchantmentConflict[]>
     currentEquipped: GearItem[]

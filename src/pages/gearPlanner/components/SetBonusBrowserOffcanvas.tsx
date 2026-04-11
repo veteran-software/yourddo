@@ -1,8 +1,15 @@
-import {Accordion, Form, Offcanvas} from 'react-bootstrap'
-import type {ItemRollup} from '../../../components/trove/types'
-import {normItem} from '../../../utils/troveUtils.ts'
-import type {EnchantmentConflict} from '../conflictResolver'
-import {type GearAugment, type GearItem, type GearSetup, GearSlot, type SetBonusIndex} from '../types'
+import { Accordion, Col, Form, Offcanvas, Row } from 'react-bootstrap'
+import type { ItemRollup } from '../../../components/trove/types'
+import { normItem } from '../../../utils/troveUtils.ts'
+import type { EnchantmentConflict } from '../conflictResolver'
+import {
+  type GearAugment,
+  type GearItem,
+  type GearSetup,
+  GearSlot,
+  type LootItem,
+  type SetBonusIndex
+} from '../types'
 import SearchResultSlot from './SearchResultSlot'
 
 const SetBonusBrowserOffcanvas = (props: Props) => {
@@ -10,7 +17,8 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
     activeSetup,
     allItems,
     browsingSet,
-    filteredSets,
+    filteredItemSets,
+    allFiligreeSetNames,
     getContextInfo,
     isItemVisibleForClasses,
     openSetBonusBrowser,
@@ -56,27 +64,63 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
           />
         </Form.Group>
 
-        <Form.Group className='mb-3'>
-          <Form.Label className='small text-info fw-bold'>
-            Select a Set
-          </Form.Label>
+        <Row>
+          <Col xs={12} md={6}>
+            <Form.Group className='mb-3'>
+              <Form.Label className='small text-info fw-bold'>
+                Select an Item Set
+              </Form.Label>
 
-          <Form.Select
-            size='sm'
-            className='bg-light text-dark'
-            value={browsingSet ?? ''}
-            onChange={(e) => {
-              setBrowsingSet(e.target.value || null)
-            }}
-          >
-            <option value=''>Choose a set...</option>
-            {filteredSets.map((setName) => (
-              <option key={setName} value={setName}>
-                {setName}
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
+              <Form.Select
+                size='sm'
+                className='bg-light text-dark'
+                value={
+                  filteredItemSets.includes(browsingSet ?? '')
+                    ? (browsingSet ?? '')
+                    : ''
+                }
+                onChange={(e) => {
+                  setBrowsingSet(e.target.value || null)
+                }}
+              >
+                <option value=''>Choose a set...</option>
+                {filteredItemSets.map((setName) => (
+                  <option key={setName} value={setName}>
+                    {setName}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+
+          <Col xs={12} md={6}>
+            <Form.Group className='mb-3'>
+              <Form.Label className='small text-info fw-bold'>
+                Select a Filigree Set
+              </Form.Label>
+
+              <Form.Select
+                size='sm'
+                className='bg-light text-dark'
+                value={
+                  allFiligreeSetNames.includes(browsingSet ?? '')
+                    ? (browsingSet ?? '')
+                    : ''
+                }
+                onChange={(e) => {
+                  setBrowsingSet(e.target.value || null)
+                }}
+              >
+                <option value=''>Choose a set...</option>
+                {allFiligreeSetNames.map((setName) => (
+                  <option key={setName} value={setName}>
+                    {setName}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+        </Row>
 
         {browsingSet && (
           <div className='mt-4'>
@@ -94,7 +138,7 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                 const max = activeSetup?.maxLevel ?? 34
 
                 const setItemResults = allItems.filter((item) => {
-                  const itemLevel = Number(item.minLevel)
+                  const itemLevel = Number(item.minLevel) || 1
                   if (itemLevel < min || itemLevel > max) return false
                   if (!isItemVisibleForClasses(item, activeSetup)) return false
                   if (itemNameSearch) {
@@ -109,7 +153,10 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                       return false
                   }
                   return indexedItems.some(
-                    (ii) => ii.name === item.name && ii.minLevel === itemLevel
+                    (ii) =>
+                      ii.name === item.name &&
+                      (item.slot === GearSlot.Filigree ||
+                        ii.minLevel === itemLevel)
                   )
                 })
 
@@ -146,21 +193,38 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
 
                 return (
                   <Accordion data-bs-theme='dark'>
-                    {Object.entries(grouped).map(([slot, items]) => (
-                      <SearchResultSlot
-                        key={slot}
-                        slot={slot}
-                        items={items}
-                        getContextInfo={getContextInfo}
-                        selectItem={selectItem}
-                        setShowEnchantmentSearch={() => {
-                          /* Don't close for set bonus browser */
-                        }}
-                        openSetBonusBrowser={openSetBonusBrowser}
-                        troveData={troveData}
-                        browsingSet={browsingSet}
-                      />
-                    ))}
+                    {Object.entries(grouped).map(([slot, items]) => {
+                      const {
+                        currentConflicts,
+                        currentEquipped,
+                        currentSlottedAugments,
+                        currentSlottedFiligrees
+                      } = getContextInfo(slot)
+
+                      return (
+                        <SearchResultSlot
+                          key={slot}
+                          slot={slot}
+                          items={items}
+                          currentConflicts={currentConflicts}
+                          currentEquipped={currentEquipped}
+                          currentSlottedAugments={currentSlottedAugments}
+                          currentSlottedFiligrees={
+                            currentSlottedFiligrees as Record<
+                              string,
+                              (GearItem | null)[]
+                            >
+                          }
+                          selectItem={selectItem}
+                          setShowEnchantmentSearch={() => {
+                            /* Don't close for set bonus browser */
+                          }}
+                          openSetBonusBrowser={openSetBonusBrowser}
+                          troveData={troveData}
+                          browsingSet={browsingSet}
+                        />
+                      )
+                    })}
                   </Accordion>
                 )
               })()}
@@ -177,7 +241,8 @@ interface Props {
   setShowSetBonusBrowser: (show: boolean) => void
   browsingSet: string | null
   setBrowsingSet: (set: string | null) => void
-  filteredSets: string[]
+  filteredItemSets: string[]
+  allFiligreeSetNames: string[]
   setBonusIndex: SetBonusIndex
   activeSetup: GearSetup
   allItems: GearItem[]
@@ -186,6 +251,7 @@ interface Props {
     currentConflicts: Record<string, EnchantmentConflict[]>
     currentEquipped: GearItem[]
     currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
+    currentSlottedFiligrees: Record<string, (LootItem | null)[]>
   }
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   openSetBonusBrowser: (setName: string) => void

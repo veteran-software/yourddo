@@ -15,7 +15,7 @@ const ItemBrowserOffcanvas = (props: Props) => {
     activeSetup,
     browsingSlot,
     filteredItems,
-    filteredSets,
+    filteredItemSets,
     itemsToShow,
     observerTarget,
     openSlotBrowser,
@@ -88,7 +88,7 @@ const ItemBrowserOffcanvas = (props: Props) => {
                   }}
                 >
                   <option value=''>All Set Bonuses (Filter...)</option>
-                  {filteredSets.map((setName) => (
+                  {filteredItemSets.map((setName) => (
                     <option key={setName} value={setName}>
                       {setName}
                     </option>
@@ -148,7 +148,7 @@ interface Props {
   setShowConflicts: (show: boolean) => void
   setBonusFilter: string | null
   setSetBonusFilter: (filter: string | null) => void
-  filteredSets: string[]
+  filteredItemSets: string[]
   getContextInfo: (slot: GearSlot) => {
     currentConflicts: Record<string, EnchantmentConflict[]>
     currentEquipped: GearItem[]
