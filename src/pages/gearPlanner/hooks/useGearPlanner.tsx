@@ -1483,10 +1483,14 @@ const useGearPlanner = (props: Props) => {
                     'Cosmetic',
                     'Wand',
                     'Scroll',
-                    'Quiver',
                     'Ammunition'
                   ]
-                  if (ineligibleTypes.includes(selectedItem.type)) return null
+                  if (
+                    ineligibleTypes.includes(selectedItem.type) ||
+                    selectedItem.slot === GearSlot.Quiver
+                  ) {
+                    return null
+                  }
 
                   const slottedCurse =
                     activeSetup.slottedCurses[selectedItem.id]

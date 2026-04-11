@@ -147,7 +147,7 @@ export const tryDecodeGearPermalink = (
           })
         }
 
-        if (curseName) {
+        if (curseName && item.slot !== GearSlot.Quiver) {
           const curse = allCurses.find((c) => c.name === curseName)
           if (curse) {
             setup.slottedCurses[item.id] = curse
