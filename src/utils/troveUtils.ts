@@ -233,7 +233,12 @@ export const buildItemRollupFromCsvFile = (file: File): Promise<BuildResult> =>
           errors.push(...result.errors)
         }
 
-        upsert(data, result.data, warn)
+        // When using workers, result.data is an array of one row object.
+        // When not using workers, result.data is typically a single row object.
+        const row = (Array.isArray(result.data) ? result.data[0] : result.data) as TroveCsvRow
+        if (row) {
+          upsert(data, row, warn)
+        }
       },
       complete() {
         resolve({
