@@ -140,10 +140,12 @@ const updateBinding = (
  * @return {void} Does not return a value. Mutates the provided rollup object directly.
  */
 const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void): void => {
-  let character = row.Character.trim()
-  const location = row.Location.trim()
-  const itemName = row.Name.trim()
-  const binding = row.Binding.trim()
+  if (row == null) return
+
+  let character = row.Character?.trim()
+  const location = row.Location?.trim()
+  const itemName = row.Name?.trim()
+  const binding = row.Binding?.trim()
 
   const qty = parseQuantity(row, itemName, warn)
 
@@ -227,7 +229,7 @@ export const buildItemRollupFromCsvFile = (file: File): Promise<BuildResult> =>
       worker: true,
       step(result) {
         if (result.errors.length) errors.push(...result.errors)
-        upsert(data, result.data, warn)
+        if (result.data) upsert(data, result.data, warn)
       },
       complete() {
         resolve({
