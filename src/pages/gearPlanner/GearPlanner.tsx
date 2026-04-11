@@ -77,7 +77,7 @@ const GearPlanner = () => {
   } = useAppSelector((state) => state.gearPlanner)
   const { troveData } = useAppSelector((state) => state.app)
 
-  const [showConflicts, setShowConflicts] = useState(false)
+  const [showConflicts, setShowConflicts] = useState(true)
   const [showPermalink, setShowPermalink] = useState(false)
   const [filigreeTarget, setFiligreeTarget] = useState<{
     item: GearItem
