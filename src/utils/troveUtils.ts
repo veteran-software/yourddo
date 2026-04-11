@@ -227,7 +227,7 @@ export const buildItemRollupFromCsvFile = (file: File): Promise<BuildResult> =>
       header: true,
       skipEmptyLines: true,
       dynamicTyping: { Quantity: true },
-      worker: true,
+      worker: false,
       step(result) {
         if (result.errors.length) {
           errors.push(...result.errors)
