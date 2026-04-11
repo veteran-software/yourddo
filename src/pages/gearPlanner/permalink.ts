@@ -1,5 +1,14 @@
-import {compressToEncodedURIComponent, decompressFromEncodedURIComponent} from 'lz-string'
-import {type Curse, type GearAugment, type GearItem, type GearSetup, GearSlot} from './types.ts'
+import {
+  compressToEncodedURIComponent,
+  decompressFromEncodedURIComponent
+} from 'lz-string'
+import {
+  type Curse,
+  type GearAugment,
+  type GearItem,
+  type GearSetup,
+  GearSlot
+} from './types.ts'
 
 // ----- Types for compact v1 payload -----
 // We use a compact format to keep the URL short.
@@ -119,9 +128,13 @@ export const tryDecodeGearPermalink = (
     }
 
     items.forEach(([slot, itemName, augments, curseName]) => {
-      const item = allItems.find((i) => i.name === itemName)
+      // Find the item in allItems by name and slot to ensure we get the correct ID
+      const gearSlot = slot as GearSlot
+      const item =
+        allItems.find((i) => i.name === itemName && i.slot === gearSlot) ??
+        allItems.find((i) => i.name === itemName)
+
       if (item) {
-        const gearSlot = slot as GearSlot
         setup.slots[gearSlot] = item
 
         if (augments.length > 0) {

@@ -75,9 +75,11 @@ export const generateBBCodeExport = (
   const renderSlotEnchantments = (item: GearItem) => {
     if (item.enchantments && item.enchantments.length > 0) {
       lines.push(`[list]`)
+
       item.enchantments.forEach((ench) => {
         lines.push(`[*] ${formatEnchantment(ench)}`)
       })
+
       lines.push(`[/list]`)
     }
   }
@@ -88,6 +90,7 @@ export const generateBBCodeExport = (
     if (itemAugs && Object.values(itemAugs).some((a) => a !== null)) {
       lines.push(`[indent][b][color=orange]Augments:[/color][/b][/indent]`)
       lines.push(`[list]`)
+
       Object.entries(itemAugs).forEach(([, aug]) => {
         if (aug) {
           lines.push(`[*] ${aug.name} (ML: ${String(aug.minimumLevel)})`)
@@ -96,6 +99,7 @@ export const generateBBCodeExport = (
           })
         }
       })
+
       lines.push(`[/list]`)
     }
   }
@@ -105,10 +109,13 @@ export const generateBBCodeExport = (
       lines.push(
         `[indent][b][color=purple]Curse:[/color][/b] ${curse.name}[/indent]`
       )
+
       lines.push(`[list]`)
+
       curse.enchantments.forEach((ench) => {
         lines.push(`[*] ${formatEnchantment(ench)}`)
       })
+
       lines.push(`[/list]`)
     }
   }
@@ -121,6 +128,7 @@ export const generateBBCodeExport = (
     ) {
       lines.push(`[indent][b][color=yellow]Filigrees:[/color][/b][/indent]`)
       lines.push(`[list]`)
+
       filigrees.forEach((fili) => {
         if (fili) {
           lines.push(`[*] ${fili.name}`)
@@ -129,6 +137,7 @@ export const generateBBCodeExport = (
           })
         }
       })
+
       lines.push(`[/list]`)
     }
   }
@@ -255,15 +264,20 @@ export const generateDiscordMarkdownExport = (
   }
 
   const renderSlotAugments = (
+    item: GearItem,
     itemAugs: Record<number, GearAugment | null> | undefined
   ) => {
     if (itemAugs && Object.values(itemAugs).some((a) => a !== null)) {
-      lines.push(`  - **Augments:**`)
-      Object.entries(itemAugs).forEach(([, aug]) => {
+      lines.push(`- **Augments:**`)
+      Object.entries(itemAugs).forEach(([idx, aug]) => {
         if (aug) {
-          lines.push(`    - ${aug.name} (ML: ${String(aug.minimumLevel)})`)
+          const slotIndex = Number.parseInt(idx)
+          const slotType = item.augments?.[slotIndex]?.augmentType ?? 'Augment'
+          lines.push(
+            `  - **${slotType}**: ${aug.name} (ML: ${String(aug.minimumLevel)})`
+          )
           aug.effectsAdded?.forEach((ench) => {
-            lines.push(`      - ${formatEnchantment(ench)}`)
+            lines.push(`    - ${formatEnchantment(ench)}`)
           })
         }
       })
@@ -272,9 +286,9 @@ export const generateDiscordMarkdownExport = (
 
   const renderSlotCurse = (curse: Curse | null | undefined) => {
     if (curse) {
-      lines.push(`  - **Curse:** ${curse.name}`)
+      lines.push(`- **Curse:** ${curse.name}`)
       curse.enchantments.forEach((ench) => {
-        lines.push(`    - ${formatEnchantment(ench)}`)
+        lines.push(`  - ${formatEnchantment(ench)}`)
       })
     }
   }
@@ -285,12 +299,12 @@ export const generateDiscordMarkdownExport = (
       filigrees.length > 0 &&
       filigrees.some((f) => f !== null)
     ) {
-      lines.push(`  - **Filigrees:**`)
+      lines.push(`- **Filigrees:**`)
       filigrees.forEach((fili) => {
         if (fili) {
-          lines.push(`    - ${fili.name}`)
+          lines.push(`  - ${fili.name}`)
           fili.enchantments?.forEach((ench) => {
-            lines.push(`      - ${formatEnchantment(ench)}`)
+            lines.push(`    - ${formatEnchantment(ench)}`)
           })
         }
       })
@@ -301,7 +315,7 @@ export const generateDiscordMarkdownExport = (
     if (gemSets && gemSets.length > 0) {
       const activeGemSets = gemSets.filter(Boolean)
       if (activeGemSets.length > 0) {
-        lines.push(`  - **Gem Set Bonuses:** ${activeGemSets.join(', ')}`)
+        lines.push(`- **Gem Set Bonuses:** ${activeGemSets.join(', ')}`)
       }
     }
   }
@@ -325,7 +339,7 @@ export const generateDiscordMarkdownExport = (
         isPetSlot && petState
           ? petState.slottedAugments[item.id]
           : setup.slottedAugments[item.id]
-      renderSlotAugments(itemAugs)
+      renderSlotAugments(item, itemAugs)
 
       const curse =
         isPetSlot && petState
@@ -365,11 +379,37 @@ export const generateDiscordMarkdownExport = (
   const equippedItems = Object.values(setup.slots).filter(
     (i): i is GearItem => i !== null
   )
+
+  const petItems = [
+    ...(artificerPet ? Object.values(artificerPet.slots) : []),
+    ...(druidPet ? Object.values(druidPet.slots) : [])
+  ].filter((i): i is GearItem => i !== null)
+
+  const allItems = [...equippedItems, ...petItems]
+
+  const allAugments = {
+    ...setup.slottedAugments,
+    ...(artificerPet?.slottedAugments ?? {}),
+    ...(druidPet?.slottedAugments ?? {})
+  }
+
+  const allFiligrees = {
+    ...setup.slottedFiligrees,
+    ...(artificerPet?.slottedFiligrees ?? {}),
+    ...(druidPet?.slottedFiligrees ?? {})
+  }
+
+  const allGemSets = {
+    ...setup.slottedGemSetBonuses,
+    ...(artificerPet?.slottedGemSetBonuses ?? {}),
+    ...(druidPet?.slottedGemSetBonuses ?? {})
+  }
+
   const activeSetEnhancements = getActiveSetEnhancements(
-    equippedItems,
-    setup.slottedAugments,
-    setup.slottedFiligrees,
-    setup.slottedGemSetBonuses
+    allItems,
+    allAugments,
+    allFiligrees,
+    allGemSets
   )
 
   if (activeSetEnhancements.length > 0) {
@@ -382,5 +422,11 @@ export const generateDiscordMarkdownExport = (
     lines.push('')
   }
 
-  return lines.join('\n')
+  const fullContent = lines.join('\n')
+  if (fullContent.length > 2000) {
+    const warning = `\n> **Note:** This export is ${String(fullContent.length)} characters long, which exceeds Discord's 2000-character limit. You may need to paste it in multiple messages.`
+    return fullContent + warning
+  }
+
+  return fullContent
 }
