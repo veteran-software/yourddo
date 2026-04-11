@@ -1,6 +1,10 @@
 import type { ParseError } from 'papaparse'
 import Papa from 'papaparse'
-import type { ItemRollup, Location, TroveCsvRow } from '../components/trove/types.ts'
+import type {
+  ItemRollup,
+  Location,
+  TroveCsvRow
+} from '../components/trove/types.ts'
 import { toSingularName } from './stringUtils.ts'
 
 /**
@@ -37,6 +41,49 @@ const isLocation = (x: string): x is Location => LOCATIONS.has(x as Location)
  * @returns {string} The normalized string.
  */
 export const normItem = (s: string): string => s.trim().toLowerCase()
+
+/**
+ * Returns a comma-separated list of character names (or location names for shared items)
+ * that own the specified item rollup entry.
+ *
+ * @param {ItemRollup[string]} troveEntry - The rollup entry for a specific item.
+ * @returns {string} A comma-separated list of owners.
+ */
+export const getTroveOwners = (troveEntry: ItemRollup[string]): string => {
+  const formatLocation = (loc: string): string => {
+    switch (loc) {
+      case 'SharedBank':
+        return 'Shared Bank'
+      case 'SharedCrafting':
+        return 'Shared Crafting'
+      case 'Reincarnation Cache':
+        return 'Reincarnation Cache'
+      case 'Bank':
+        return 'Bank'
+      case 'Inventory':
+        return 'Inventory'
+      default:
+        return loc
+    }
+  }
+
+  return troveEntry.byCharacter
+    .map((c) => {
+      const charName = c.character.trim()
+      // Use regex to match placeholder character names: empty string, or any type of dash (hyphen, en-dash, em-dash)
+      if (/^[-—–]?$/.test(charName)) {
+        const locations = Object.entries(c.locations)
+          .filter(([, qty]) => qty > 0)
+          .map(([loc]) => formatLocation(loc))
+          .join(', ')
+        return locations || charName
+      }
+
+      return charName
+    })
+    .filter((v) => v !== '')
+    .join(', ')
+}
 
 /**
  * Parses the quantity from the CSV row, defaulting to 0 if the value is invalid or missing.
@@ -100,9 +147,9 @@ const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void)
 
   const qty = parseQuantity(row, itemName, warn)
 
-  // If the row is from a shared location, an empty Character should not cause a skip.
-  // Bucket such entries under a placeholder '-' character key so they are still tallied.
-  if (!character && isLocation(location) && (location === 'SharedCrafting' || location === 'SharedBank')) {
+  // If the row is from a shared location, an empty Character or a dash character should be normalized.
+  // Bucket such entries under a placeholder '-' character key so they are still tallied consistently.
+  if ((!character || /^[-—–]$/.test(character)) && isLocation(location) && (location === 'SharedCrafting' || location === 'SharedBank')) {
     character = '-'
   }
 
@@ -110,8 +157,10 @@ const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void)
     if (location || itemName || character || row.Quantity != null) {
       warn(`Missing item/character/location — skipped row: ${JSON.stringify(row)}`)
     }
+
     return
   }
+
   if (!isLocation(location)) {
     warn(`Unknown location : ${location} — skipped (${character}/${itemName}).`)
     return
@@ -177,10 +226,18 @@ export const buildItemRollupFromCsvFile = (file: File): Promise<BuildResult> =>
       header: true,
       skipEmptyLines: true,
       dynamicTyping: { Quantity: true },
-      worker: true,
+      worker: false,
       step(result) {
-        if (result.errors.length) errors.push(...result.errors)
-        upsert(data, result.data, warn)
+        if (result.errors.length) {
+          errors.push(...result.errors)
+        }
+
+        // When using workers, result.data is an array of one row object.
+        // When not using workers, result.data is typically a single row object.
+        const row = (Array.isArray(result.data) ? result.data[0] : result.data) as TroveCsvRow
+        if (row) {
+          upsert(data, row, warn)
+        }
       },
       complete() {
         resolve({

@@ -44,7 +44,8 @@ const CraftedIngredientDisplay = (props: Props) => {
     const remainingCount = effects.length - MAX_VISIBLE_EFFECTS
 
     const effectToString = (effect: Enhancement) => {
-      const nestedBonus = effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''
+      const nestedBonus =
+        effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${String(effect.bonus)})` : ''
 
       return `${effect.name}${nestedBonus}`
     }

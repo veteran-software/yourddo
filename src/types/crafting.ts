@@ -4,7 +4,7 @@ import type { Ingredient } from './ingredients.ts'
 export interface CraftingIngredient extends Ingredient {
   accessoryEffectsAdded?: Enhancement[]
   accessoryEffectsRemoved?: Enhancement[]
-  augments?: Augment[]
+  augments?: (Augment | string)[]
   craftedIn?: string
   effectsAdded?: Enhancement[]
   effectsRemoved?: Enhancement[]

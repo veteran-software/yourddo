@@ -3,9 +3,12 @@ import { Card, Col, Container, Row, Stack } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { titleCase } from 'title-case'
-import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown
+  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import FilterableDropdown from '../../components/common/FilterableDropdown.tsx'
-import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
+import {
+  filterIngredientsMap
+} from '../../components/filters/helpers/filterUtils.ts'
 import augmentMaster from '../../data/augments/augmentMaster.ts'
 import {
   craftedHeroicViktraniumWeapons,
@@ -33,10 +36,14 @@ import {
   setSelectedWickedCraftedItem
 } from '../../redux/slices/viktraniumSlice.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
-import type { Augment, CraftingIngredient } from '../../types/crafting.ts'
+import type { CraftingIngredient } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
-import { camelCaseToTitleCase, getCumulativeIngredients } from '../../utils/utils.ts'
-import CumulativeIngredientsCard from '../dinosaurBoneCrafting/components/CumulativeIngredientsCard.tsx'
+import {
+  camelCaseToTitleCase,
+  getCumulativeIngredients
+} from '../../utils/utils.ts'
+import CumulativeIngredientsCard
+  from '../dinosaurBoneCrafting/components/CumulativeIngredientsCard.tsx'
 import ItemDisplay from '../dinosaurBoneCrafting/components/ItemDisplay.tsx'
 
 const ViktraniumExperiment = () => {
@@ -96,8 +103,8 @@ const ViktraniumExperiment = () => {
       selectedLegendaryCraftedItem ??
       selectedWickedCraftedItem
     if (selectedItem?.augments === undefined) return []
-
-    const aug: Augment = selectedItem.augments[0]
+    const aug = selectedItem.augments[0]
+    if (!aug) return []
     return Object.entries(aug)
       .filter(([key, value]) => {
         return value === null || key.startsWith('lamordia')
@@ -184,7 +191,7 @@ const ViktraniumExperiment = () => {
     )
   }, [augmentOptions, augmentFilters])
 
-  const handleSelectAugment = (slot: string, augment: Ingredient) => {
+  const handleSelectAugment = (slot: string, augment: AugmentItem) => {
     dispatch(
       setSelectedAugment({
         slot,
@@ -201,8 +208,6 @@ const ViktraniumExperiment = () => {
       })
     )
   }
-
-  console.log(craftedWickedViktraniumWeapons)
 
   return (
     <Container className='px-0'>

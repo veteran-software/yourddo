@@ -24,4 +24,7 @@ dist-ssr
 *.sw?
 .yarn/
 coverage/
-/src/data/essenceCrafting/runtime/*
+.go/
+.go-cache/
+/src/data/essenceCrafting/runtime/
+/src/data/loot/runtime/
