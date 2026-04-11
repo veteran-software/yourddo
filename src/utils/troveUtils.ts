@@ -140,7 +140,6 @@ const updateBinding = (
  * @return {void} Does not return a value. Mutates the provided rollup object directly.
  */
 const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void): void => {
-  console.log('upsert', row)
   let character = row.Character.trim()
   const location = row.Location.trim()
   const itemName = row.Name.trim()
