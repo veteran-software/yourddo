@@ -140,12 +140,11 @@ const updateBinding = (
  * @return {void} Does not return a value. Mutates the provided rollup object directly.
  */
 const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void): void => {
-  if (row == null) return
-
-  let character = row.Character?.trim()
-  const location = row.Location?.trim()
-  const itemName = row.Name?.trim()
-  const binding = row.Binding?.trim()
+  console.log('upsert', row)
+  let character = row.Character.trim()
+  const location = row.Location.trim()
+  const itemName = row.Name.trim()
+  const binding = row.Binding.trim()
 
   const qty = parseQuantity(row, itemName, warn)
 
@@ -159,8 +158,10 @@ const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void)
     if (location || itemName || character || row.Quantity != null) {
       warn(`Missing item/character/location — skipped row: ${JSON.stringify(row)}`)
     }
+
     return
   }
+
   if (!isLocation(location)) {
     warn(`Unknown location : ${location} — skipped (${character}/${itemName}).`)
     return
@@ -228,8 +229,11 @@ export const buildItemRollupFromCsvFile = (file: File): Promise<BuildResult> =>
       dynamicTyping: { Quantity: true },
       worker: true,
       step(result) {
-        if (result.errors.length) errors.push(...result.errors)
-        if (result.data) upsert(data, result.data, warn)
+        if (result.errors.length) {
+          errors.push(...result.errors)
+        }
+
+        upsert(data, result.data, warn)
       },
       complete() {
         resolve({
