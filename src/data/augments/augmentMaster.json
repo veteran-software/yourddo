@@ -20517,6 +20517,11 @@
         "name": "Spell Critical Chance: Bludgeoning",
         "modifier": 23,
         "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Untyped",
+        "modifier": 23,
+        "bonus": "Equipment"
       }
     ],
     "requirements": [
