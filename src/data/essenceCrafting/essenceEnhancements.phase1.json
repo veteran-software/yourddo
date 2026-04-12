@@ -3,7 +3,7 @@
     "name": "Aberration Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Aberrations",
+        "name": "Weapon Bane Damage (Aberration)",
         "statModified": "Weapon Bane Damage (Aberration)",
         "bonus": "Enhancement"
       }
@@ -195,7 +195,7 @@
     "name": "Acid Absorption",
     "enchantments": [
       {
-        "name": "Acid Absorption",
+        "name": "Elemental Absorption: Acid",
         "bonus": "Enhancement"
       }
     ],
@@ -249,7 +249,7 @@
     "name": "Acid Effect",
     "enchantments": [
       {
-        "name": "Acid damage",
+        "name": "Weapon Damage (Acid)",
         "bonus": "Enhancement"
       }
     ],
@@ -386,7 +386,7 @@
     ]
   },
   {
-    "name": "Acid Resistance",
+    "name": "Elemental Resistance: Acid",
     "enchantments": [
       {
         "name": "Acid Resistance",
@@ -697,7 +697,7 @@
     "name": "Balance",
     "enchantments": [
       {
-        "name": "Balance Skill",
+        "name": "Skill: Balance",
         "bonus": "Competence"
       }
     ],
@@ -837,9 +837,8 @@
     "name": "Blindness Immunity",
     "enchantments": [
       {
-        "name": "Immunity to Blindness Effects",
-        "statModified": "Blindness Immunity",
-        "bonus": "Enhancement"
+        "name": "Immunity: Blindness",
+        "statModified": "Immunity: Blindness"
       }
     ],
     "bound": {
@@ -975,7 +974,7 @@
     "name": "Bluff",
     "enchantments": [
       {
-        "name": "Bluff Skill",
+        "name": "Skill: Bluff",
         "bonus": "Competence"
       }
     ],
@@ -1336,7 +1335,7 @@
     "name": "Cold Absorption",
     "enchantments": [
       {
-        "name": "Cold absorption",
+        "name": "Cold Absorption",
         "bonus": "Enhancement"
       }
     ],
@@ -1530,7 +1529,7 @@
     "name": "Cold Resistance",
     "enchantments": [
       {
-        "name": "Cold Resistance",
+        "name": "Elemental Resistance: Cold",
         "bonus": "Enhancement"
       }
     ],
@@ -1707,7 +1706,7 @@
     "name": "Concentration",
     "enchantments": [
       {
-        "name": "Concentration Skill",
+        "name": "Skill: Concentration",
         "bonus": "Competence"
       }
     ],
@@ -2056,7 +2055,7 @@
     "name": "Deadly",
     "enchantments": [
       {
-        "name": "Damage",
+        "name": "Damage Rolls",
         "bonus": "Competence"
       }
     ],
@@ -2109,8 +2108,7 @@
     "name": "Deathblock",
     "enchantments": [
       {
-        "name": "Deathblock",
-        "bonus": "Enhancement"
+        "name": "Deathblock"
       }
     ],
     "bound": {
@@ -2341,8 +2339,8 @@
     "name": "Diplomacy",
     "enchantments": [
       {
-        "name": "Diplomacy Skill",
-        "statModified": "Diplomacy",
+        "name": "Skill: Diplomacy",
+        "statModified": "Skill: Diplomacy",
         "bonus": "Competence"
       }
     ],
@@ -2396,7 +2394,7 @@
     "name": "Disable Device",
     "enchantments": [
       {
-        "name": "Disable Device Skill",
+        "name": "Skill: Disable Device",
         "bonus": "Competence"
       }
     ],
@@ -2450,7 +2448,7 @@
     "name": "Disease Ward",
     "enchantments": [
       {
-        "name": "Disease Immunity (Natural)",
+        "name": "Immunity: Disease (Natural)",
         "bonus": "Resistance"
       },
       {
@@ -2891,7 +2889,7 @@
     "name": "Efficient Metamagic - Empower II",
     "enchantments": [
       {
-        "name": "Metamagic Cost Reduction (Empower)",
+        "name": "Empower Spell (Cost Reduction)",
         "bonus": "Enhancement"
       }
     ],
@@ -2942,7 +2940,7 @@
     "name": "Efficient Metamagic: Empower Healing I",
     "enchantments": [
       {
-        "name": "Metamagic Cost Reduction (Empower Healing)",
+        "name": "Empower Healing Spell (Cost Reduction)",
         "bonus": "Enhancement"
       }
     ],
@@ -2993,7 +2991,7 @@
     "name": "Efficient Metamagic: Enlarge I",
     "enchantments": [
       {
-        "name": "Metamagic Cost Reduction (Enlarge)",
+        "name": "Enlarge Spell (Cost Reduction)",
         "bonus": "Enhancement"
       }
     ],
@@ -3044,7 +3042,7 @@
     "name": "Efficient Metamagic: Extend I",
     "enchantments": [
       {
-        "name": "Metamagic Cost Reduction (Extend)",
+        "name": "Extend Spell (Cost Reduction)",
         "bonus": "Enhancement"
       }
     ],
@@ -3095,7 +3093,7 @@
     "name": "Efficient Metamagic: Maximize I",
     "enchantments": [
       {
-        "name": "Metamagic Cost Reduction (Maximize)",
+        "name": "Maximize Spell (Cost Reduction)",
         "bonus": "Enhancement"
       }
     ],
@@ -3232,7 +3230,7 @@
     "name": "Electric Resistance",
     "enchantments": [
       {
-        "name": "Electric Resistance",
+        "name": "Elemental Resistance: Electric",
         "bonus": "Enhancement"
       }
     ],
@@ -3286,7 +3284,7 @@
     "name": "Electricity Absorption",
     "enchantments": [
       {
-        "name": "Electric Absorption",
+        "name": "Elemental Absorption: Electric",
         "bonus": "Enhancement"
       }
     ],
@@ -3340,7 +3338,7 @@
     "name": "Electricity Lore",
     "enchantments": [
       {
-        "name": "Spell Critical Chance: Electrical",
+        "name": "Spell Critical Chance: Electric",
         "bonus": "Equipment"
       }
     ],
@@ -3666,7 +3664,7 @@
     "name": "Eternal Faith",
     "enchantments": [
       {
-        "name": "Turn Undead Additional Hit Dice",
+        "name": "Turn Undead Maximum Hit Dice",
         "bonus": "Enhancement"
       }
     ],
@@ -3717,8 +3715,13 @@
     "name": "Everbright",
     "enchantments": [
       {
-        "name": "Weapon never takes damage from Ooze or Rust",
-        "statModified": ["Weapon Damage Negation (Ooze)", "Weapon Damage Negation (Rust)"],
+        "name": "Weapon Damage Negation (Ooze)",
+        "statModified": "Weapon Damage Negation (Ooze)",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Weapon Damage Negation (Rust)",
+        "statModified": "Weapon Damage Negation (Rust)",
         "bonus": "Enhancement"
       },
       {
@@ -3774,7 +3777,7 @@
     "name": "Evil Effect",
     "enchantments": [
       {
-        "name": "Evil damage",
+        "name": "Weapon Damage (Evil)",
         "statModified": "Weapon Damage (Evil)",
         "bonus": "Enhancement"
       }
@@ -3861,7 +3864,7 @@
     "name": "Evil Outsider Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Evil Outsiders",
+        "name": "Weapon Bane Damage (Evil Outsider)",
         "statModified": "Weapon Bane Damage (Evil Outsider)",
         "bonus": "Enhancement"
       }
@@ -3948,7 +3951,7 @@
     "name": "Evocation Focus",
     "enchantments": [
       {
-        "name": "Equipment bonus to DC of Evocation Spells",
+        "name": "Spell DC: Evocation",
         "statModified": "Spell DC: Evocation",
         "bonus": "Equipment"
       }
@@ -4000,7 +4003,7 @@
     "name": "False Life",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Maximum Hit Points",
+        "name": "Maximum Hit Points",
         "statModified": "Maximum Hit Points",
         "bonus": "Enhancement"
       }
@@ -4107,8 +4110,8 @@
     "name": "Feather Fall",
     "enchantments": [
       {
-        "name": "Causes your character to fall slowly",
-        "statModified": "Feather Fall",
+        "name": "Feather Falling",
+        "statModified": "Feather Falling",
         "bonus": "Enhancement"
       }
     ],
@@ -4159,7 +4162,7 @@
     "name": "Fire Absorption",
     "enchantments": [
       {
-        "name": "% Enhancement bonus to Fire absorption",
+        "name": "Elemental Absorption (Fire)",
         "statModified": "Elemental Absorption (Fire)",
         "bonus": "Enhancement"
       }
@@ -4214,7 +4217,7 @@
     "name": "Fire Effect",
     "enchantments": [
       {
-        "name": "Fire damage",
+        "name": "Weapon Damage (Fire)",
         "statModified": "Weapon Damage (Fire)",
         "bonus": "Enhancement"
       }
@@ -4301,7 +4304,7 @@
     "name": "Fire Lore",
     "enchantments": [
       {
-        "name": "Equipment bonus to Fire Spells chance to Critical Hit",
+        "name": "Spell Critical Chance: Fire",
         "statModified": "Spell Critical Chance: Fire",
         "bonus": "Equipment"
       }
@@ -4356,7 +4359,7 @@
     "name": "Fire Resistance",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Resist Fire",
+        "name": "Fire Resistance",
         "statModified": "Fire Resistance",
         "bonus": "Enhancement"
       }
@@ -4411,7 +4414,7 @@
     "name": "Force Effect",
     "enchantments": [
       {
-        "name": "Force damage",
+        "name": "Weapon Damage (Force)",
         "statModified": "Weapon Damage (Force)",
         "bonus": "Enhancement"
       }
@@ -4498,8 +4501,28 @@
     "name": "Force Lore",
     "enchantments": [
       {
-        "name": "Equipment bonus to Force Spells chance to Critical Hit",
+        "name": "Spell Critical Chance: Force",
         "statModified": "Spell Critical Chance: Force",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Piercing",
+        "statModified": "Spell Critical Chance: Piercing",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Slashing",
+        "statModified": "Spell Critical Chance: Slashing",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Bludgeoning",
+        "statModified": "Spell Critical Chance: Bludgeoning",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Untyped",
+        "statModified": "Spell Critical Chance: Untyped",
         "bonus": "Equipment"
       }
     ],
@@ -4553,7 +4576,7 @@
     "name": "Fortification",
     "enchantments": [
       {
-        "name": "Enhancement bonus to the reduced chance of taking Critical Hit damage on a Critical Hit",
+        "name": "Fortification",
         "statModified": "Fortification",
         "bonus": "Enhancement"
       }
@@ -4608,8 +4631,8 @@
     "name": "Fortitude Save",
     "enchantments": [
       {
-        "name": "Resistance bonus to Fortitude Saves",
-        "statModified": "Fortitude Save",
+        "name": "Fortitude Saving Throws",
+        "statModified": "Fortitude Saving Throws",
         "bonus": "Resistance"
       }
     ],
@@ -4662,7 +4685,7 @@
     "name": "Ghost Touch",
     "enchantments": [
       {
-        "name": "Bypass Incorporeal creatures 50% chance to avoid damage",
+        "name": "Ghost Touch",
         "statModified": "Ghost Touch",
         "bonus": "Enhancement"
       }
@@ -4714,7 +4737,7 @@
     "name": "Giant Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Giants",
+        "name": "Weapon Bane Damage (Giant)",
         "statModified": "Weapon Bane Damage (Giant)",
         "bonus": "Enhancement"
       }
@@ -4801,7 +4824,7 @@
     "name": "Glaciation",
     "enchantments": [
       {
-        "name": "Passive: Equipment bonus to Cold Spell Power",
+        "name": "Spell Power: Cold",
         "statModified": "Spell Power: Cold",
         "bonus": "Equipment"
       }
@@ -4856,7 +4879,7 @@
     "name": "Gnoll Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Gnolls",
+        "name": "Weapon Bane Damage (Gnoll)",
         "statModified": "Weapon Bane Damage (Gnoll)",
         "bonus": "Enhancement"
       }
@@ -4943,7 +4966,7 @@
     "name": "Goblinoid Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Goblinoids",
+        "name": "Weapon Bane Damage (Goblinoid)",
         "statModified": "Weapon Bane Damage (Goblinoid)",
         "bonus": "Enhancement"
       }
@@ -5030,7 +5053,7 @@
     "name": "Good Effect",
     "enchantments": [
       {
-        "name": "Good damage",
+        "name": "Weapon Damage (Good)",
         "statModified": "Weapon Damage (Good)",
         "bonus": "Enhancement"
       }
@@ -5117,8 +5140,8 @@
     "name": "Haggle",
     "enchantments": [
       {
-        "name": "Competence bonus to Haggle",
-        "statModified": "Haggle",
+        "name": "Skill: Haggle",
+        "statModified": "Skill: Haggle",
         "bonus": "Competence"
       }
     ],
@@ -5172,7 +5195,7 @@
     "name": "Halfling Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Halflings",
+        "name": "Weapon Bane Damage (Halfling)",
         "statModified": "Weapon Bane Damage (Halfling)",
         "bonus": "Enhancement"
       }
@@ -5259,8 +5282,8 @@
     "name": "Heal",
     "enchantments": [
       {
-        "name": "Competence bonus to Heal",
-        "statModified": "Heal",
+        "name": "Skill: Heal",
+        "statModified": "Skill: Heal",
         "bonus": "Competence"
       }
     ],
@@ -5314,7 +5337,7 @@
     "name": "Healing Amplification",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Healing Amplification",
+        "name": "Healing Amplification",
         "statModified": "Healing Amplification",
         "bonus": "Enhancement"
       }
@@ -5369,8 +5392,8 @@
     "name": "Hide",
     "enchantments": [
       {
-        "name": "Competence bonus to Hide",
-        "statModified": "Hide",
+        "name": "Skill: Hide",
+        "statModified": "Skill: Hide",
         "bonus": "Competence"
       }
     ],
@@ -5424,7 +5447,7 @@
     "name": "Human Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Humans",
+        "name": "Weapon Bane Damage (Human)",
         "statModified": "Weapon Bane Damage (Human)",
         "bonus": "Enhancement"
       }
@@ -5511,7 +5534,7 @@
     "name": "Illusion Focus",
     "enchantments": [
       {
-        "name": "Equipment bonus to DC of Illusion Spells",
+        "name": "Spell DC: Illusion",
         "statModified": "Spell DC: Illusion",
         "bonus": "Equipment"
       }
@@ -5563,7 +5586,7 @@
     "name": "Illusion Resistance",
     "enchantments": [
       {
-        "name": "Resistance bonus saves versus Illusions",
+        "name": "Spell Saves (Illusion)",
         "statModified": "Spell Saves (Illusion)",
         "bonus": "Resistance"
       }
@@ -5617,8 +5640,28 @@
     "name": "Impulse",
     "enchantments": [
       {
-        "name": "Passive: Equipment bonus to Force Spell Power",
+        "name": "Spell Power: Force",
         "statModified": "Spell Power: Force",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Piercing",
+        "statModified": "Spell Power: Piercing",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Slashing",
+        "statModified": "Spell Power: Slashing",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Bludgeoning",
+        "statModified": "Spell Power: Bludgeoning",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Untyped",
+        "statModified": "Spell Power: Untyped",
         "bonus": "Equipment"
       }
     ],
@@ -5672,7 +5715,7 @@
     "name": "Incite",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Increased Threat Generation from Melee Damage",
+        "name": "Threat Generation (Melee)",
         "statModified": "Threat Generation (Melee)",
         "bonus": "Enhancement"
       }
@@ -5727,7 +5770,7 @@
     "name": "Incorporeal Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Incorporeals",
+        "name": "Weapon Bane Damage (Incorporeal)",
         "statModified": "Weapon Bane Damage (Incorporeal)",
         "bonus": "Enhancement"
       }
@@ -5841,7 +5884,7 @@
     "name": "Insightful Abjuration Focus",
     "enchantments": [
       {
-        "name": "Insight bonus to DC of Abjuration Spells",
+        "name": "Spell DC: Abjuration",
         "statModified": "Spell DC: Abjuration",
         "bonus": "Insight"
       }
@@ -5893,7 +5936,7 @@
     "name": "Insightful Accuracy",
     "enchantments": [
       {
-        "name": "Insight bonus to Attack Rolls",
+        "name": "Attack Rolls",
         "statModified": "Attack Rolls",
         "bonus": "Insight"
       }
@@ -5945,8 +5988,8 @@
     "name": "Insightful Acid Resistance",
     "enchantments": [
       {
-        "name": "Insight bonus to Resist Acid",
-        "statModified": "Acid Resistance",
+        "name": "Elemental Resistance: Acid",
+        "statModified": "Elemental Resistance: Acid",
         "bonus": "Insight"
       }
     ],
@@ -6000,8 +6043,8 @@
     "name": "Insightful Assassinate",
     "enchantments": [
       {
-        "name": "Insight bonus to character's Assassinate attempts",
-        "statModified": "Assassinate",
+        "name": "Assassinate DC",
+        "statModified": "Assassinate DC",
         "bonus": "Insight"
       }
     ],
@@ -6052,8 +6095,8 @@
     "name": "Insightful Balance",
     "enchantments": [
       {
-        "name": "Insight bonus to Balance",
-        "statModified": "Balance",
+        "name": "Skill: Balance",
+        "statModified": "Skill: Balance",
         "bonus": "Insight"
       }
     ],
@@ -6104,8 +6147,8 @@
     "name": "Insightful Bluff",
     "enchantments": [
       {
-        "name": "Insight bonus to Bluff",
-        "statModified": "Bluff",
+        "name": "Skill: Bluff",
+        "statModified": "Skill: Bluff",
         "bonus": "Insight"
       }
     ],
@@ -6156,7 +6199,7 @@
     "name": "Insightful Charisma",
     "enchantments": [
       {
-        "name": "Insight bonus to Charisma",
+        "name": "Charisma",
         "statModified": "Charisma",
         "bonus": "Insight"
       }
@@ -6208,8 +6251,8 @@
     "name": "Insightful Cold Resistance",
     "enchantments": [
       {
-        "name": "Insight bonus to Resist Cold",
-        "statModified": "Cold Resistance",
+        "name": "Elemental Resistance: Cold",
+        "statModified": "Elemental Resistance: Cold",
         "bonus": "Insight"
       }
     ],
@@ -6263,8 +6306,28 @@
     "name": "Insightful Combat Mastery",
     "enchantments": [
       {
-        "name": "Insight bonus to character's Trip, Improved Trip, Sunder, Improved Sunder, Stunning Blow, and Stunning Fist attempts",
-        "statModified": ["Tactical DC: Trip", "Tactical DC: Improved Trip", "Tactical DC: Sunder", "Tactical DC: Improved Sunder", "Tactical DC: Stunning"],
+        "name": "Tactical DC: Trip",
+        "statModified": "Tactical DC: Trip",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Tactical DC: Improved Trip",
+        "statModified": "Tactical DC: Improved Trip",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Tactical DC: Sunder",
+        "statModified": "Tactical DC: Sunder",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Tactical DC: Improved Sunder",
+        "statModified": "Tactical DC: Improved Sunder",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Tactical DC: Stunning",
+        "statModified": "Tactical DC: Stunning",
         "bonus": "Insight"
       }
     ],
@@ -6315,7 +6378,7 @@
     "name": "Insightful Combustion",
     "enchantments": [
       {
-        "name": "Passive: Insight bonus to Fire Spell Power",
+        "name": "Spell Power: Fire",
         "statModified": "Spell Power: Fire",
         "bonus": "Insight"
       }
@@ -6370,8 +6433,8 @@
     "name": "Insightful Concentration",
     "enchantments": [
       {
-        "name": "Insight bonus to Concentration",
-        "statModified": "Concentration",
+        "name": "Skill: Concentration",
+        "statModified": "Skill: Concentration",
         "bonus": "Insight"
       }
     ],
@@ -6422,7 +6485,7 @@
     "name": "Insightful Conjuration Focus",
     "enchantments": [
       {
-        "name": "Insight bonus to DC of Conjuration Spells",
+        "name": "Spell DC: Conjuration",
         "statModified": "Spell DC: Conjuration",
         "bonus": "Insight"
       }
@@ -6474,7 +6537,7 @@
     "name": "Insightful Constitution",
     "enchantments": [
       {
-        "name": "Insight bonus to Constitution",
+        "name": "Constitution",
         "statModified": "Constitution",
         "bonus": "Insight"
       }
@@ -6526,7 +6589,7 @@
     "name": "Insightful Corrosion",
     "enchantments": [
       {
-        "name": "Passive: Insight bonus to Acid Spell Power",
+        "name": "Spell Power: Acid",
         "statModified": "Spell Power: Acid",
         "bonus": "Insight"
       }
@@ -6581,7 +6644,7 @@
     "name": "Insightful Deadly",
     "enchantments": [
       {
-        "name": "Insight bonus to Weapon Damage (+[W])",
+        "name": "Attack Rolls",
         "statModified": "Attack Rolls",
         "bonus": "Insight"
       }
@@ -6631,7 +6694,7 @@
     "name": "Insightful Devotion",
     "enchantments": [
       {
-        "name": "Passive: Insight bonus to Positive Spell Power",
+        "name": "Spell Power: Positive Energy",
         "statModified": "Spell Power: Positive Energy",
         "bonus": "Insight"
       }
@@ -6686,7 +6749,7 @@
     "name": "Insightful Dexterity",
     "enchantments": [
       {
-        "name": "Insight bonus to Dexterity",
+        "name": "Dexterity",
         "statModified": "Dexterity",
         "bonus": "Insight"
       }
@@ -6738,8 +6801,8 @@
     "name": "Insightful Diplomacy",
     "enchantments": [
       {
-        "name": "Insight bonus to Diplomacy",
-        "statModified": "Diplomacy",
+        "name": "Skill: Diplomacy",
+        "statModified": "Skill: Diplomacy",
         "bonus": "Insight"
       }
     ],
@@ -6790,8 +6853,8 @@
     "name": "Insightful Disable Device",
     "enchantments": [
       {
-        "name": "Insight bonus to Disable Device",
-        "statModified": "Disable Device",
+        "name": "Skill: Disable Device",
+        "statModified": "Skill: Disable Device",
         "bonus": "Insight"
       }
     ],
@@ -6842,13 +6905,13 @@
     "name": "Insightful Disease Ward",
     "enchantments": [
       {
-        "name": "Grants Immunity to Natural Diseases.",
-        "statModified": "Natural Disease immunity",
+        "name": "Immunity: Disease (Natural)",
+        "statModified": "Immunity: Disease (Natural)",
         "bonus": "Resistance"
       },
       {
-        "name": "Insight bonus to Saving Throws against Magical Diseases",
-        "statModified": "Fortitude Save (Disease)",
+        "name": "Fortitude (Disease) Saving Throws",
+        "statModified": "Fortitude (Disease) Saving Throws",
         "bonus": "Insight"
       }
     ],
@@ -6899,7 +6962,7 @@
     "name": "Insightful Diversion",
     "enchantments": [
       {
-        "name": "Insight bonus to Decreased Threat Generation from Melee Damage",
+        "name": "Threat Reduction (Melee)",
         "statModified": "Threat Reduction (Melee)",
         "bonus": "Insight"
       }
@@ -6951,7 +7014,7 @@
     "name": "Insightful Dodge Bonus",
     "enchantments": [
       {
-        "name": "% Insight bonus to Dodge",
+        "name": "Dodge Chance",
         "statModified": "Dodge Chance",
         "bonus": "Insight"
       }
@@ -7003,8 +7066,8 @@
     "name": "Insightful Electric Resistance",
     "enchantments": [
       {
-        "name": "Insight bonus to Resist Electric",
-        "statModified": "Electric Resistance",
+        "name": "Elemental Resistance: Electric",
+        "statModified": "Elemental Resistance: Electric",
         "bonus": "Insight"
       }
     ],
@@ -7058,7 +7121,7 @@
     "name": "Insightful Enchantment Focus",
     "enchantments": [
       {
-        "name": "Insight bonus to DC of Enchantment Spells",
+        "name": "Spell DC: Enchantment",
         "statModified": "Spell DC: Enchantment",
         "bonus": "Insight"
       }
@@ -7110,7 +7173,7 @@
     "name": "Insightful Enchantment Resistance",
     "enchantments": [
       {
-        "name": "Insight bonus to Saves against Enchantments",
+        "name": "Spell Saves (Enchantment)",
         "statModified": "Spell Saves (Enchantment)",
         "bonus": "Insight"
       }
@@ -7162,7 +7225,7 @@
     "name": "Insightful Evocation Focus",
     "enchantments": [
       {
-        "name": "Insight bonus to DC of Evocation Spells",
+        "name": "Spell DC: Evocation",
         "statModified": "Spell DC: Evocation",
         "bonus": "Insight"
       }
@@ -7214,8 +7277,8 @@
     "name": "Insightful Fire Resistance",
     "enchantments": [
       {
-        "name": "Insight bonus to Resist Fire",
-        "statModified": "Fire Resistance",
+        "name": "Elemental Resistance: Fire",
+        "statModified": "Elemental Resistance: Fire",
         "bonus": "Insight"
       }
     ],
@@ -7269,7 +7332,7 @@
     "name": "Insightful Fortification",
     "enchantments": [
       {
-        "name": "Insight bonus to the reduced chance of taking Critical Hit damage on a Critical Hit",
+        "name": "Fortification",
         "statModified": "Fortification",
         "bonus": "Insight"
       }
@@ -7324,7 +7387,7 @@
     "name": "Insightful Glaciation",
     "enchantments": [
       {
-        "name": "Passive: Insight bonus to Cold Spell Power",
+        "name": "Spell Power: Cold",
         "statModified": "Spell Power: Cold",
         "bonus": "Insight"
       }
@@ -7379,8 +7442,8 @@
     "name": "Insightful Haggle",
     "enchantments": [
       {
-        "name": "Insight bonus to Haggle",
-        "statModified": "Haggle",
+        "name": "Skill: Haggle",
+        "statModified": "Skill: Haggle",
         "bonus": "Insight"
       }
     ],
@@ -7431,8 +7494,8 @@
     "name": "Insightful Heal",
     "enchantments": [
       {
-        "name": "Insight bonus to Heal",
-        "statModified": "Heal",
+        "name": "Skill: Heal",
+        "statModified": "Skill: Heal",
         "bonus": "Insight"
       }
     ],
@@ -7483,8 +7546,8 @@
     "name": "Insightful Hide",
     "enchantments": [
       {
-        "name": "Insight bonus to Hide",
-        "statModified": "Hide",
+        "name": "Skill: Hide",
+        "statModified": "Skill: Hide",
         "bonus": "Insight"
       }
     ],
@@ -7535,7 +7598,7 @@
     "name": "Insightful Illusion Focus",
     "enchantments": [
       {
-        "name": "Insight bonus to DC of Illusion Spells",
+        "name": "Spell DC: Illusion",
         "statModified": "Spell DC: Illusion",
         "bonus": "Insight"
       }
@@ -7587,7 +7650,7 @@
     "name": "Insightful Illusion Resistance",
     "enchantments": [
       {
-        "name": "Insight bonus to Saves against Illusions",
+        "name": "Spell Saves (Illusion)",
         "statModified": "Spell Saves (Illusion)",
         "bonus": "Insight"
       }
@@ -7639,8 +7702,28 @@
     "name": "Insightful Impulse",
     "enchantments": [
       {
-        "name": "Passive: Insight bonus to Force Spell Power",
+        "name": "Spell Power: Force",
         "statModified": "Spell Power: Force",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Spell Power: Piercing",
+        "statModified": "Spell Power: Piercing",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Spell Power: Slashing",
+        "statModified": "Spell Power: Slashing",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Spell Power: Bludgeoning",
+        "statModified": "Spell Power: Bludgeoning",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Spell Power: Untyped",
+        "statModified": "Spell Power: Untyped",
         "bonus": "Insight"
       }
     ],
@@ -7694,7 +7777,7 @@
     "name": "Insightful Incite",
     "enchantments": [
       {
-        "name": "Insight bonus to Increased Threat Generation from Melee Damage",
+        "name": "Threat Generation (Melee)",
         "statModified": "Threat Generation (Melee)",
         "bonus": "Insight"
       }
@@ -7747,6 +7830,13 @@
   },
   {
     "name": "Insightful Intelligence",
+    "enchantments": [
+      {
+        "name": "Intelligence",
+        "statModified": "Intelligence",
+        "bonus": "Insight"
+      }
+    ],
     "bound": {
       "level": 275,
       "essence": 275,
@@ -7794,8 +7884,8 @@
     "name": "Insightful Intimidate",
     "enchantments": [
       {
-        "name": "Insight bonus to Intimidate",
-        "statModified": "Intimidate",
+        "name": "Skill: Intimidate",
+        "statModified": "Skill: Intimidate",
         "bonus": "Insight"
       }
     ],
@@ -7846,8 +7936,8 @@
     "name": "Insightful Jump",
     "enchantments": [
       {
-        "name": "Insight bonus to Jump",
-        "statModified": "Jump",
+        "name": "Skill: Jump",
+        "statModified": "Skill: Jump",
         "bonus": "Insight"
       }
     ],
@@ -7898,8 +7988,28 @@
     "name": "Insightful Light Resistance",
     "enchantments": [
       {
-        "name": "Insight bonus to Resist Light",
-        "statModified": "Light Resistance",
+        "name": "Elemental Resistance: Light",
+        "statModified": "Elemental Resistance: Light",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Elemental Resistance: Chaos",
+        "statModified": "Elemental Resistance: Chaos",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Elemental Resistance: Evil",
+        "statModified": "Elemental Resistance: Evil",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Elemental Resistance: Good",
+        "statModified": "Elemental Resistance: Good",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Elemental Resistance: Lawful",
+        "statModified": "Elemental Resistance: Lawful",
         "bonus": "Insight"
       }
     ],
@@ -7953,8 +8063,8 @@
     "name": "Insightful Listen",
     "enchantments": [
       {
-        "name": "Insight bonus to Listen",
-        "statModified": "Listen",
+        "name": "Skill: Listen",
+        "statModified": "Skill: Listen",
         "bonus": "Insight"
       }
     ],
@@ -8005,7 +8115,7 @@
     "name": "Insightful Magical Sheltering",
     "enchantments": [
       {
-        "name": "Insight bonus to Magical Resistance Rating",
+        "name": "Magical Resistance Rating",
         "statModified": "Magical Resistance Rating",
         "bonus": "Insight"
       }
@@ -8060,8 +8170,8 @@
     "name": "Insightful Magnetism",
     "enchantments": [
       {
-        "name": "Passive: Insight bonus to Electric Spell Power",
-        "statModified": "Electric Spell Power",
+        "name": "Spell Power: Electric",
+        "statModified": "Spell Power: Electric",
         "bonus": "Insight"
       }
     ],
@@ -8115,8 +8225,8 @@
     "name": "Insightful Move Silently",
     "enchantments": [
       {
-        "name": "Insight bonus to Move Silently",
-        "statModified": "Move Silently",
+        "name": "Skill: Move Silently",
+        "statModified": "Skill: Move Silently",
         "bonus": "Insight"
       }
     ],
@@ -8167,7 +8277,7 @@
     "name": "Insightful Necromancy Focus",
     "enchantments": [
       {
-        "name": "Insight bonus to DC of Necromancy Spells",
+        "name": "Spell DC: Necromancy",
         "statModified": "Spell DC: Necromancy",
         "bonus": "Insight"
       }
@@ -8219,8 +8329,8 @@
     "name": "Insightful Negative Resistance",
     "enchantments": [
       {
-        "name": "Insight bonus to Resist Negative",
-        "statModified": "Negative Resistance",
+        "name": "Elemental Resistance: Negative Energy",
+        "statModified": "Elemental Resistance: Negative Energy",
         "bonus": "Insight"
       }
     ],
@@ -8274,8 +8384,13 @@
     "name": "Insightful Nullification",
     "enchantments": [
       {
-        "name": "Passive: Insight bonus to Negative Spell Power",
+        "name": "Spell Power: Negative Energy",
         "statModified": "Spell Power: Negative Energy",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Spell Power: Poison",
+        "statModified": "Spell Power: Poison",
         "bonus": "Insight"
       }
     ],
@@ -8329,8 +8444,8 @@
     "name": "Insightful Open Lock",
     "enchantments": [
       {
-        "name": "Insight bonus to Open Lock",
-        "statModified": "Open Lock",
+        "name": "Skill: Open Lock",
+        "statModified": "Skill: Open Lock",
         "bonus": "Insight"
       }
     ],
@@ -8381,8 +8496,8 @@
     "name": "Insightful Perform",
     "enchantments": [
       {
-        "name": "Insight bonus to Perform",
-        "statModified": "Perform",
+        "name": "Skill: Perform",
+        "statModified": "Skill: Perform",
         "bonus": "Insight"
       }
     ],
@@ -8433,7 +8548,7 @@
     "name": "Insightful Physical Sheltering",
     "enchantments": [
       {
-        "name": "Insight bonus to Physical Resistance Rating",
+        "name": "Physical Resistance Rating",
         "statModified": "Physical Resistance Rating",
         "bonus": "Insight"
       }
@@ -8488,8 +8603,8 @@
     "name": "Insightful Poison Resistance",
     "enchantments": [
       {
-        "name": "Insight bonus to Resist Poison",
-        "statModified": "Poison Resistance",
+        "name": "Elemental Resistance: Poison",
+        "statModified": "Elemental Resistance: Poison",
         "bonus": "Insight"
       }
     ],
@@ -8543,13 +8658,13 @@
     "name": "Insightful Poison Ward",
     "enchantments": [
       {
-        "name": "Grants Immunity to Natural poisons.",
-        "statModified": "Natural Poison immunity",
+        "name": "Immunity: Poison (Natural)",
+        "statModified": "Immunity: Poison (Natural)",
         "bonus": "Resistance"
       },
       {
-        "name": "Insight bonus to Saving Throws against Magical Poisons",
-        "statModified": "Fortitude Save (Poison)",
+        "name": "Fortitude (Poison) Saving Throws",
+        "statModified": "Fortitude (Poison) Saving Throws",
         "bonus": "Insight"
       }
     ],
@@ -8600,8 +8715,28 @@
     "name": "Insightful Radiance",
     "enchantments": [
       {
-        "name": "Passive: Insight bonus to Light Spell Power",
+        "name": "Spell Power: Light",
         "statModified": "Spell Power: Light",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Spell Power: Chaos",
+        "statModified": "Spell Power: Chaos",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Spell Power: Evil",
+        "statModified": "Spell Power: Evil",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Spell Power: Good",
+        "statModified": "Spell Power: Good",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Spell Power: Lawful",
+        "statModified": "Spell Power: Lawful",
         "bonus": "Insight"
       }
     ],
@@ -8655,12 +8790,12 @@
     "name": "Insightful Reconstruction",
     "enchantments": [
       {
-        "name": "Passive: Insight bonus to Repair Spell Power",
+        "name": "Spell Power: Repair",
         "statModified": "Spell Power: Repair",
         "bonus": "Insight"
       },
       {
-        "name": "Passive: Insight bonus to Rust Spell Power",
+        "name": "Spell Power: Rust",
         "statModified": "Spell Power: Rust",
         "bonus": "Insight"
       }
@@ -8715,8 +8850,8 @@
     "name": "Insightful Repair",
     "enchantments": [
       {
-        "name": "Insight bonus to Repair",
-        "statModified": "Repair",
+        "name": "Skill: Repair",
+        "statModified": "Skill: Repair",
         "bonus": "Insight"
       }
     ],
@@ -8767,7 +8902,7 @@
     "name": "Insightful Resonance",
     "enchantments": [
       {
-        "name": "Passive: Insight bonus to Sonic Spell Power",
+        "name": "Spell Power: Sonic",
         "statModified": "Spell Power: Sonic",
         "bonus": "Insight"
       }
@@ -8822,8 +8957,8 @@
     "name": "Insightful Search",
     "enchantments": [
       {
-        "name": "Insight bonus to Search",
-        "statModified": "Search",
+        "name": "Skill: Search",
+        "statModified": "Skill: Search",
         "bonus": "Insight"
       }
     ],
@@ -8874,8 +9009,13 @@
     "name": "Insightful Seeker",
     "enchantments": [
       {
-        "name": "Insight bonus to Confirm Critical Hits &amp; Critical Hit Damage",
-        "statModified": ["Confirm Critical Hits", "Critical Hit Damage"],
+        "name": "Critical Confirmation",
+        "statModified": "Critical Confirmation",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Critical Damage",
+        "statModified": "Critical Damage",
         "bonus": "Insight"
       }
     ],
@@ -8926,8 +9066,13 @@
     "name": "Insightful Shatter",
     "enchantments": [
       {
-        "name": "Insight bonus to DC of character's Sunder attempts",
+        "name": "Tactical DC: Sunder",
         "statModified": "Tactical DC: Sunder",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Tactical DC: Improved Sunder",
+        "statModified": "Tactical DC: Improved Sunder",
         "bonus": "Insight"
       }
     ],
@@ -8978,8 +9123,8 @@
     "name": "Insightful Sonic Resistance",
     "enchantments": [
       {
-        "name": "Insight bonus to Resist Sonic",
-        "statModified": "Sonic Resistance",
+        "name": "Elemental Resistance: Sonic",
+        "statModified": "Elemental Resistance: Sonic",
         "bonus": "Insight"
       }
     ],
@@ -9033,8 +9178,8 @@
     "name": "Insightful Spell Penetration",
     "enchantments": [
       {
-        "name": "Insight bonus to Penetrate Spell Resistance",
-        "statModified": " Penetrate Spell Resistance",
+        "name": "Spell Penetration",
+        "statModified": "Spell Penetration",
         "bonus": "Insight"
       }
     ],
@@ -9085,7 +9230,7 @@
     "name": "Insightful Spell Resistance",
     "enchantments": [
       {
-        "name": "Insight bonus to Spell Resistance",
+        "name": "Spell Resistance",
         "statModified": "Spell Resistance",
         "bonus": "Insight"
       }
@@ -9140,7 +9285,7 @@
     "name": "Insightful Spell Saves",
     "enchantments": [
       {
-        "name": "Insight bonus to Saves against Spells",
+        "name": "Spell Saves",
         "statModified": "Spell Saves",
         "bonus": "Insight"
       }
@@ -9192,8 +9337,8 @@
     "name": "Insightful Spellsight",
     "enchantments": [
       {
-        "name": "Insight bonus to Spellsight",
-        "statModified": "Spellsight",
+        "name": "Skill: Spellcraft",
+        "statModified": "Skill: Spellcraft",
         "bonus": "Insight"
       }
     ],
@@ -9244,8 +9389,8 @@
     "name": "Insightful Spot",
     "enchantments": [
       {
-        "name": "Insight bonus to Spot",
-        "statModified": "Spot",
+        "name": "Skill: Spot",
+        "statModified": "Skill: Spot",
         "bonus": "Insight"
       }
     ],
@@ -9296,7 +9441,7 @@
     "name": "Insightful Strength",
     "enchantments": [
       {
-        "name": "Insight bonus to Strength",
+        "name": "Strength",
         "statModified": "Strength",
         "bonus": "Insight"
       }
@@ -9348,8 +9493,8 @@
     "name": "Insightful Stunning",
     "enchantments": [
       {
-        "name": "Insight bonus to DC of character's Stunning Blow and Stunning Fist attempts",
-        "statModified": ["Tactical DC: Stunning"],
+        "name": "Tactical DC: Stunning",
+        "statModified": "Tactical DC: Stunning",
         "bonus": "Insight"
       }
     ],
@@ -9400,8 +9545,8 @@
     "name": "Insightful Swim",
     "enchantments": [
       {
-        "name": "Insight bonus to Swim",
-        "statModified": "Swim",
+        "name": "Skill: Swim",
+        "statModified": "Skill: Swim",
         "bonus": "Insight"
       }
     ],
@@ -9504,7 +9649,7 @@
     "name": "Insightful Transmutation Focus",
     "enchantments": [
       {
-        "name": "Insight bonus to DC of Transmutation Spells",
+        "name": "Spell DC: Transmutation",
         "statModified": "Spell DC: Transmutation",
         "bonus": "Insight"
       }
@@ -9556,8 +9701,8 @@
     "name": "Insightful Tumble",
     "enchantments": [
       {
-        "name": "Insight bonus to Tumble",
-        "statModified": "Tumble",
+        "name": "Skill: Tumble",
+        "statModified": "Skill: Tumble",
         "bonus": "Insight"
       }
     ],
@@ -9608,8 +9753,13 @@
     "name": "Insightful Vertigo",
     "enchantments": [
       {
-        "name": "Insight bonus to DC of character's Trip and Improved Trip attampts",
-        "statModified": ["Tactical DC: Trip", "Tactical DC: Improved Trip"],
+        "name": "Tactical DC: Trip",
+        "statModified": "Tactical DC: Trip",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Tactical DC: Improved Trip",
+        "statModified": "Tactical DC: Improved Trip",
         "bonus": "Insight"
       }
     ],
@@ -9660,7 +9810,7 @@
     "name": "Insightful Wisdom",
     "enchantments": [
       {
-        "name": "Insight bonus to Wisdom",
+        "name": "Wisdom",
         "statModified": "Wisdom",
         "bonus": "Insight"
       }
@@ -9712,7 +9862,7 @@
     "name": "Insightful Wizardry",
     "enchantments": [
       {
-        "name": "Insight bonus to Maximum Spell Points",
+        "name": "Maximum Spell Points",
         "statModified": "Maximum Spell Points",
         "bonus": "Enhancement"
       }
@@ -9767,7 +9917,7 @@
     "name": "Intelligence",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Intelligence",
+        "name": "Intelligence",
         "statModified": "Intelligence",
         "bonus": "Enhancement"
       }
@@ -9873,8 +10023,8 @@
     "name": "Intimidate",
     "enchantments": [
       {
-        "name": "Competence bonus to Intimidate",
-        "statModified": "Intimidate",
+        "name": "Skill: Intimidate",
+        "statModified": "Skill: Intimidate",
         "bonus": "Competence"
       }
     ],
@@ -9928,8 +10078,8 @@
     "name": "Invulnerability",
     "enchantments": [
       {
-        "name": "Grants DR 5/Magic to the wearer",
-        "statModified": "Damage Reduction",
+        "name": "Damage Reduction 5/Magic",
+        "statModified": "Damage Reduction 5/Magic",
         "bonus": "Enhancement"
       }
     ],
@@ -9980,8 +10130,8 @@
     "name": "Jump",
     "enchantments": [
       {
-        "name": "Competence bonus to Jump",
-        "statModified": "Jump",
+        "name": "Skill: Jump",
+        "statModified": "Skill: Jump",
         "bonus": "Competence"
       }
     ],
@@ -10035,7 +10185,7 @@
     "name": "Keen",
     "enchantments": [
       {
-        "name": "Increase Critical Threat Range of Weapon",
+        "name": "Weapon Critical Range",
         "statModified": "Weapon Critical Range",
         "bonus": "Enhancement"
       }
@@ -10087,7 +10237,7 @@
     "name": "Law Effect",
     "enchantments": [
       {
-        "name": "Law damage",
+        "name": "Weapon Damage (Law)",
         "statModified": "Weapon Damage (Law)",
         "bonus": "Enhancement"
       }
@@ -10174,7 +10324,7 @@
     "name": "Lawful Outsider Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Lawful Outsiders",
+        "name": "Weapon Bane Damage (Lawful Outsider)",
         "statModified": "Weapon Bane Damage (Lawful Outsider)",
         "bonus": "Enhancement"
       }
@@ -10261,8 +10411,8 @@
     "name": "Lesser Arcane Spell Dexterity",
     "enchantments": [
       {
-        "name": "Reduce Arcane Spell Failure by 5%",
-        "statModified": "Arcane Spell Failure",
+        "name": "Arcane Spell Failure Reduction",
+        "statModified": "Arcane Spell Failure Reduction",
         "bonus": "Enhancement"
       }
     ],
@@ -10313,7 +10463,7 @@
     "name": "Light Effect",
     "enchantments": [
       {
-        "name": "Light damage",
+        "name": "Weapon Damage (Light)",
         "statModified": "Weapon Damage (Light)",
         "bonus": "Enhancement"
       }
@@ -10400,8 +10550,28 @@
     "name": "Light Lore",
     "enchantments": [
       {
-        "name": "Equipment bonus to Light Spells chance to Critical Hit",
+        "name": "Spell Critical Chance: Light",
         "statModified": "Spell Critical Chance: Light",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Chaos",
+        "statModified": "Spell Critical Chance: Chaos",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Evil",
+        "statModified": "Spell Critical Chance: Evil",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Good",
+        "statModified": "Spell Critical Chance: Good",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Lawful",
+        "statModified": "Spell Critical Chance: Lawful",
         "bonus": "Equipment"
       }
     ],
@@ -10455,8 +10625,8 @@
     "name": "Light Resistance",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Resist Light",
-        "statModified": "Light Resistance",
+        "name": "Elemental Resistance: Light",
+        "statModified": "Elemental Resistance: Light",
         "bonus": "Enhancement"
       }
     ],
@@ -10510,8 +10680,8 @@
     "name": "Listen",
     "enchantments": [
       {
-        "name": "Competence bonus to Listen",
-        "statModified": "Listen",
+        "name": "Skill: Listen",
+        "statModified": "Skill: Listen",
         "bonus": "Competence"
       }
     ],
@@ -10565,7 +10735,7 @@
     "name": "Magnetism",
     "enchantments": [
       {
-        "name": "Passive: Equipment bonus to Electric Spell Power",
+        "name": "Spell Power: Electric",
         "statModified": "Spell Power: Electric",
         "bonus": "Equipment"
       }
@@ -10620,7 +10790,7 @@
     "name": "Melee Alacrity",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Melee Attack Speed",
+        "name": "Melee Attack Speed",
         "statModified": "Melee Attack Speed",
         "bonus": "Enhancement"
       }
@@ -10671,14 +10841,28 @@
     "name": "Metalline",
     "enchantments": [
       {
-        "name": "Bypass metal based Damage Reduction (Adamantine, Alchemical Silver, Byeshk, Cold Iron, Mithril)",
-        "statModified": [
-          "Damage Reduction Bypass (Adamantine)",
-          "Damage Reduction Bypass (Alchemical Silver)",
-          "Damage Reduction Bypass (Byeshk)",
-          "Damage Reduction Bypass (Cold Iron)",
-          "Damage Reduction Bypass (Mithril)"
-        ],
+        "name": "Damage Reduction Bypass (Adamantine)",
+        "statModified": "Damage Reduction Bypass (Adamantine)",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Damage Reduction Bypass (Alchemical Silver)",
+        "statModified": "Damage Reduction Bypass (Alchemical Silver)",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Damage Reduction Bypass (Byeshk)",
+        "statModified": "Damage Reduction Bypass (Byeshk)",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Damage Reduction Bypass (Cold Iron)",
+        "statModified": "Damage Reduction Bypass (Cold Iron)",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Damage Reduction Bypass (Mithril)",
+        "statModified": "Damage Reduction Bypass (Mithril)",
         "bonus": "Enhancement"
       }
     ],
@@ -10729,7 +10913,7 @@
     "name": "Monstrous Humanoid Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Monstrous Humanoids",
+        "name": "Weapon Bane Damage (Monstrous Humanoids)",
         "statModified": "Weapon Bane Damage (Monstrous Humanoids)",
         "bonus": "Enhancement"
       }
@@ -10816,8 +11000,8 @@
     "name": "Move Silently",
     "enchantments": [
       {
-        "name": "Competence bonus to Move Silently",
-        "statModified": "Move Silently",
+        "name": "Skill: Move Silently",
+        "statModified": "Skill: Move Silently",
         "bonus": "Competence"
       }
     ],
@@ -10871,7 +11055,7 @@
     "name": "Natural Armor",
     "enchantments": [
       {
-        "name": "Natural Armor bonus to Armor Class",
+        "name": "Armor Class",
         "statModified": "Armor Class",
         "bonus": "Natural Armor"
       }
@@ -10925,7 +11109,7 @@
     "name": "Necromancy Focus",
     "enchantments": [
       {
-        "name": "Equipment bonus to DC of Necromancy Spells",
+        "name": "Spell DC: Necromancy",
         "statModified": "Spell DC: Necromancy",
         "bonus": "Equipment"
       }
@@ -10977,8 +11161,8 @@
     "name": "Negative Amplification",
     "enchantments": [
       {
-        "name": "Profane bonus to your vulnerability to Negative spells and effects",
-        "statModified": "Negative Energy Amplification",
+        "name": "Negative Amplification",
+        "statModified": "Negative Amplification",
         "bonus": "Profane"
       }
     ],
@@ -11032,7 +11216,7 @@
     "name": "Negative Effect",
     "enchantments": [
       {
-        "name": "Negative Energy damage",
+        "name": "Weapon Damage (Negative)",
         "statModified": "Weapon Damage (Negative)",
         "bonus": "Enhancement"
       }
@@ -11119,8 +11303,13 @@
     "name": "Negative Lore",
     "enchantments": [
       {
-        "name": "Equipment bonus to Negative Spells chance to Critical Hit",
+        "name": "Spell Critical Chance: Negative Energy",
         "statModified": "Spell Critical Chance: Negative Energy",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Poison",
+        "statModified": "Spell Critical Chance: Poison",
         "bonus": "Equipment"
       }
     ],
@@ -11174,8 +11363,8 @@
     "name": "Negative Resistance",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Resist Negative",
-        "statModified": "Negative Resistance",
+        "name": "Elemental Resistance: Negative Energy",
+        "statModified": "Elemental Resistance: Negative Energy",
         "bonus": "Enhancement"
       }
     ],
@@ -11229,8 +11418,13 @@
     "name": "Nullification",
     "enchantments": [
       {
-        "name": "Passive: Equipment bonus to Negative Spell Power",
+        "name": "Spell Power: Negative Energy",
         "statModified": "Spell Power: Negative Energy",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Poison",
+        "statModified": "Spell Power: Poison",
         "bonus": "Equipment"
       }
     ],
@@ -11284,7 +11478,7 @@
     "name": "Ooze Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Oozes",
+        "name": "Weapon Bane Damage (Ooze)",
         "statModified": "Weapon Bane Damage (Ooze)",
         "bonus": "Enhancement"
       }
@@ -11371,8 +11565,8 @@
     "name": "Open Lock",
     "enchantments": [
       {
-        "name": "Competence bonus to Open Lock",
-        "statModified": "Open Lock",
+        "name": "Skill: Open Lock",
+        "statModified": "Skill: Open Lock",
         "bonus": "Competence"
       }
     ],
@@ -11426,7 +11620,7 @@
     "name": "Orc Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Orcs",
+        "name": "Weapon Bane Damage (Orc)",
         "statModified": "Weapon Bane Damage (Orc)",
         "bonus": "Enhancement"
       }
@@ -11513,8 +11707,23 @@
     "name": "Parrying",
     "enchantments": [
       {
-        "name": "Insight bonus to Armor Class and Saving Throws",
-        "statModified": ["Armor Class", "Fortitude Save", "Reflex Save", "Will Save"],
+        "name": "Armor Class",
+        "statModified": "Armor Class",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Fortitude Saving Throws",
+        "statModified": "Fortitude Saving Throws",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Reflex Saving Throws",
+        "statModified": "Reflex Saving Throws",
+        "bonus": "Insight"
+      },
+      {
+        "name": "Will Saving Throws",
+        "statModified": "Will Saving Throws",
         "bonus": "Insight"
       }
     ],
@@ -11565,8 +11774,8 @@
     "name": "Perform",
     "enchantments": [
       {
-        "name": "Competence bonus to Perform",
-        "statModified": "Perform",
+        "name": "Skill: Perform",
+        "statModified": "Skill: Perform",
         "bonus": "Competence"
       }
     ],
@@ -11620,8 +11829,33 @@
     "name": "Persuasion",
     "enchantments": [
       {
-        "name": "+3 Competence bonus to all Charisma based skills",
-        "statModified": ["Bluff", "Diplomacy", "Haggle", "Intimidate", "Perform", "Use Magic Device"],
+        "name": "Skill: Bluff",
+        "statModified": "Skill: Bluff",
+        "bonus": "Competence"
+      },
+      {
+        "name": "Skill: Diplomacy",
+        "statModified": "Skill: Diplomacy",
+        "bonus": "Competence"
+      },
+      {
+        "name": "Skill: Haggle",
+        "statModified": "Skill: Haggle",
+        "bonus": "Competence"
+      },
+      {
+        "name": "Skill: Intimidate",
+        "statModified": "Skill: Intimidate",
+        "bonus": "Competence"
+      },
+      {
+        "name": "Skill: Perform",
+        "statModified": "Skill: Perform",
+        "bonus": "Competence"
+      },
+      {
+        "name": "Skill: Use Magic Device",
+        "statModified": "Skill: Use Magic Device",
         "bonus": "Competence"
       }
     ],
@@ -11666,13 +11900,12 @@
     "extra": [],
     "group": "Static",
     "minLevelIncrease": 4,
-    "stat": ["+3 Competence Bonus to all Charisma based skills (including Use Magic Device)"]
   },
   {
     "name": "Piercing Effect",
     "enchantments": [
       {
-        "name": "Piercing damage",
+        "name": "Weapon Damage (Piercing)",
         "statModified": "Weapon Damage (Piercing)",
         "bonus": "Enhancement"
       }
@@ -11759,7 +11992,7 @@
     "name": "Plant Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Plants",
+        "name": "Weapon Bane Damage (Plant)",
         "statModified": "Weapon Bane Damage (Plant)",
         "bonus": "Enhancement"
       }
@@ -11846,7 +12079,7 @@
     "name": "Poison Effect",
     "enchantments": [
       {
-        "name": "Poison damage",
+        "name": "Weapon Damage (Poison)",
         "statModified": "Weapon Damage (Poison)",
         "bonus": "Enhancement"
       }
@@ -11933,8 +12166,8 @@
     "name": "Poison Resistance",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Resist Poison",
-        "statModified": "Poison Resistance",
+        "name": "Elemental Resistance: Poison",
+        "statModified": "Elemental Resistance: Poison",
         "bonus": "Enhancement"
       }
     ],
@@ -11988,13 +12221,13 @@
     "name": "Poison Ward",
     "enchantments": [
       {
-        "name": "Grants Immunity to Natural poisons.",
-        "statModified": "Natural Poison immunity",
+        "name": "Immunity: Poison (Natural)",
+        "statModified": "Immunity: Poison (Natural)",
         "bonus": "Resistance"
       },
       {
-        "name": "Enhancement bonus to Saving Throws against Magical Poisons",
-        "statModified": "Fortitude Save (Poison)",
+        "name": "Fortitude (Poison) Saving Throws",
+        "statModified": "Fortitude (Poison) Saving Throws",
         "bonus": "Enhancement"
       }
     ],
@@ -12047,7 +12280,7 @@
     "name": "Positive Lore",
     "enchantments": [
       {
-        "name": "Equipment bonus to Positive Spells chance to Critical Hit",
+        "name": "Spell Critical Chance: Positive Energy",
         "statModified": "Spell Critical Chance: Positive Energy",
         "bonus": "Equipment"
       }
@@ -12102,8 +12335,103 @@
     "name": "Potency",
     "enchantments": [
       {
-        "name": "Passive: Equipment bonus to each Spell Power",
-        "statModified": "Spell Power: Universal",
+        "name": "Spell Power: Acid",
+        "statModified": "Spell Power: Acid",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Bludgeoning",
+        "statModified": "Spell Power: Bludgeoning",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Chaos",
+        "statModified": "Spell Power: Chaos",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Cold",
+        "statModified": "Spell Power: Cold",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Electric",
+        "statModified": "Spell Power: Electric",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Evil",
+        "statModified": "Spell Power: Evil",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Fire",
+        "statModified": "Spell Power: Fire",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Force",
+        "statModified": "Spell Power: Force",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Good",
+        "statModified": "Spell Power: Good",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Lawful",
+        "statModified": "Spell Power: Lawful",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Light",
+        "statModified": "Spell Power: Light",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Negative Energy",
+        "statModified": "Spell Power: Negative Energy",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Piercing",
+        "statModified": "Spell Power: Piercing",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Poison",
+        "statModified": "Spell Power: Poison",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Positive Energy",
+        "statModified": "Spell Power: Positive Energy",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Repair",
+        "statModified": "Spell Power: Repair",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Rust",
+        "statModified": "Spell Power: Rust",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Slashing",
+        "statModified": "Spell Power: Slashing",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Sonic",
+        "statModified": "Spell Power: Sonic",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Untyped",
+        "statModified": "Spell Power: Untyped",
         "bonus": "Equipment"
       }
     ],
@@ -12157,7 +12485,7 @@
     "name": "Protection",
     "enchantments": [
       {
-        "name": "Deflection bonus to Armor Class",
+        "name": "Armor Class",
         "statModified": "Armor Class",
         "bonus": "Deflection"
       }
@@ -12211,8 +12539,28 @@
     "name": "Radiance",
     "enchantments": [
       {
-        "name": "Passive: Equipment bonus to Light Spell Power",
+        "name": "Spell Power: Light",
         "statModified": "Spell Power: Light",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Chaos",
+        "statModified": "Spell Power: Chaos",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Evil",
+        "statModified": "Spell Power: Evil",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Good",
+        "statModified": "Spell Power: Good",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Power: Lawful",
+        "statModified": "Spell Power: Lawful",
         "bonus": "Equipment"
       }
     ],
@@ -12266,7 +12614,7 @@
     "name": "Ranged Alacrity",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Ranged Attack Speed",
+        "name": "Ranged Attack Speed",
         "statModified": "Ranged Attack Speed",
         "bonus": "Enhancement"
       }
@@ -12317,12 +12665,12 @@
     "name": "Reconstruction",
     "enchantments": [
       {
-        "name": "Passive: Equipment bonus to Repair Spell Power",
+        "name": "Spell Power: Repair",
         "statModified": "Spell Power: Repair",
         "bonus": "Equipment"
       },
       {
-        "name": "Passive: Equipment bonus to Rust Spell Power",
+        "name": "Spell Power: Rust",
         "statModified": "Spell Power: Rust",
         "bonus": "Equipment"
       }
@@ -12377,8 +12725,8 @@
     "name": "Reflex Save",
     "enchantments": [
       {
-        "name": "Resistance bonus to Reflex Saves",
-        "statModified": "Reflex Save",
+        "name": "Reflex Saving Throws",
+        "statModified": "Reflex Saving Throws",
         "bonus": "Resistance"
       }
     ],
@@ -12431,7 +12779,7 @@
     "name": "Regeneration",
     "enchantments": [
       {
-        "name": "Regenerate 1 Hit Point per minute using positive energy",
+        "name": "Hit Point Regeneration",
         "statModified": "Hit Point Regeneration",
         "bonus": "Enhancement"
       }
@@ -12477,14 +12825,19 @@
     "extra": [],
     "group": "Static",
     "minLevelIncrease": 6,
-    "stat": ["Regenerate 1 Hit Point per minute using positive energy"]
+    "stat": ["1 Hit Point per minute using positive energy"]
   },
   {
     "name": "Repair",
     "enchantments": [
       {
-        "name": "Competence bonus to Repair",
-        "statModified": "Repair",
+        "name": "Skill: Repair",
+        "statModified": "Skill: Repair",
+        "bonus": "Competence"
+      },
+      {
+        "name": "Skill: Rust",
+        "statModified": "Skill: Rust",
         "bonus": "Competence"
       }
     ],
@@ -12538,7 +12891,7 @@
     "name": "Repair Amplification",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Repair Amplification",
+        "name": "Repair Amplification",
         "statModified": "Repair Amplification",
         "bonus": "Enhancement"
       }
@@ -12593,12 +12946,12 @@
     "name": "Repair Lore",
     "enchantments": [
       {
-        "name": "Equipment bonus to Repair Spells chance to Critical Hit",
+        "name": "Spell Critical Chance: Repair",
         "statModified": "Spell Critical Chance: Repair",
         "bonus": "Equipment"
       },
       {
-        "name": "Equipment bonus to Rust Spells chance to Critical Hit",
+        "name": "Spell Critical Chance: Rust",
         "statModified": "Spell Critical Chance: Rust",
         "bonus": "Equipment"
       }
@@ -12653,7 +13006,7 @@
     "name": "Reptilian Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Reptilians",
+        "name": "Weapon Bane Damage (Reptilian)",
         "statModified": "Weapon Bane Damage (Reptilian)",
         "bonus": "Enhancement"
       }
@@ -12740,8 +13093,18 @@
     "name": "Resistance",
     "enchantments": [
       {
-        "name": "Resistance bonus to Saves",
-        "statModified": ["Will Save", "Reflex Save", "Fortitude Save"],
+        "name": "Fortitude Saving Throws",
+        "statModified": "Fortitude Saving Throws",
+        "bonus": "Resistance"
+      },
+      {
+        "name": "Reflex Saving Throws",
+        "statModified": "Reflex Saving Throws",
+        "bonus": "Resistance"
+      },
+      {
+        "name": "Will Saving Throws",
+        "statModified": "Will Saving Throws",
         "bonus": "Resistance"
       }
     ],
@@ -12794,7 +13157,7 @@
     "name": "Resonance",
     "enchantments": [
       {
-        "name": "Passive: Equipment bonus to Sonic Spell Power",
+        "name": "Spell Power: Sonic",
         "statModified": "Spell Power: Sonic",
         "bonus": "Equipment"
       }
@@ -12882,7 +13245,7 @@
     "name": "Sacred",
     "enchantments": [
       {
-        "name": "Increase effective Turn Undead level by 2",
+        "name": "Turn Undead Level",
         "statModified": "Turn Undead Level",
         "bonus": "Enhancement"
       }
@@ -12928,14 +13291,14 @@
     "extra": [],
     "group": "Static",
     "minLevelIncrease": 2,
-    "stat": ["Increase effective Turn Undead level by 2"]
+    "stat": [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
   },
   {
     "name": "Search",
     "enchantments": [
       {
-        "name": "Competence bonus to Search",
-        "statModified": "Search",
+        "name": "Skill: Search",
+        "statModified": "Skill: Search",
         "bonus": "Competence"
       }
     ],
@@ -12989,8 +13352,13 @@
     "name": "Seeker",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Confirm Critical Hits &amp; Critical Hit Damage",
-        "statModified": ["Confirm Critical Hits", "Critical Hit Damage"],
+        "name": "Critical Accuracy",
+        "statModified": "Critical Accuracy",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Critical Damage",
+        "statModified": "Critical Damage",
         "bonus": "Enhancement"
       }
     ],
@@ -13043,8 +13411,13 @@
     "name": "Shatter",
     "enchantments": [
       {
-        "name": "Enhancement bonus to DC of character's Sunder attempts",
+        "name": "Tactical DC: Sunder",
         "statModified": "Tactical DC: Sunder",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Tactical DC: Improved Sunder",
+        "statModified": "Tactical DC: Improved Sunder",
         "bonus": "Enhancement"
       }
     ],
@@ -13098,8 +13471,13 @@
     "name": "Sheltering",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Physical and Magical Resistance Rating",
-        "statModified": ["Physical Resistance Rating", "Magical Resistance Rating"],
+        "name": "Physical Resistance Rating",
+        "statModified": "Physical Resistance Rating",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Magical Resistance Rating",
+        "statModified": "Magical Resistance Rating",
         "bonus": "Enhancement"
       }
     ],
@@ -13208,7 +13586,7 @@
     "name": "Shield Spikes",
     "enchantments": [
       {
-        "name": "Piercing damage",
+        "name": "Weapon Damage (Piercing)",
         "statModified": "Weapon Damage (Piercing)",
         "bonus": "Enhancement"
       }
@@ -13295,8 +13673,8 @@
     "name": "Silver Flame",
     "enchantments": [
       {
-        "name": "Increase total Hit Die of Turn Undead by 6",
-        "statModified": "Turn Undead Hit Die",
+        "name": "Turn Undead Hit Dice",
+        "statModified": "Turn Undead Hit Dice",
         "bonusType": "Enhancement"
       }
     ],
@@ -13341,7 +13719,7 @@
     "extra": [],
     "group": "Static",
     "minLevelIncrease": 6,
-    "stat": ["Increase total Hit Die of Turn Undead by 6"]
+    "stat": [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
   },
   {
     "name": "Silver Flame's [Combined] (Seeker & Deception)",
@@ -13378,7 +13756,7 @@
     "name": "Slashing Effect",
     "enchantments": [
       {
-        "name": "Slashing damage",
+        "name": "Weapon Damage (Slashing)",
         "statModified": "Weapon Damage (Slashing)",
         "bonus": "Enhancement"
       }
@@ -13465,8 +13843,8 @@
     "name": "Songblade",
     "enchantments": [
       {
-        "name": "+2 Enhancement Bonus to the Perform skill",
-        "statModified": "Perform",
+        "name": "Skill: Perform",
+        "statModified": "Skill: Perform",
         "bonus": "Enhancement"
       }
     ],
@@ -13511,14 +13889,13 @@
     "extra": [],
     "group": "Static",
     "minLevelIncrease": 2,
-    "stat": ["+2 Enhancement Bonus to the Perform skill"]
   },
   {
     "name": "Sonic Absorption",
     "enchantments": [
       {
-        "name": "% Enhancement bonus to Sonic absorption",
-        "statModified": "Elemental Absorption (Sonic)",
+        "name": "Elemental Absorption: Sonic",
+        "statModified": "Elemental Absorption: Sonic",
         "bonus": "Enhancement"
       }
     ],
@@ -13572,7 +13949,7 @@
     "name": "Sonic Effect",
     "enchantments": [
       {
-        "name": "Sonic damage",
+        "name": "Weapon Damage (Sonic)",
         "statModified": "Weapon Damage (Sonic)",
         "bonus": "Enhancement"
       }
@@ -13659,7 +14036,7 @@
     "name": "Sonic Lore",
     "enchantments": [
       {
-        "name": "Equipment bonus to Sonic Spells chance to Critical Hit",
+        "name": "Spell Critical Chance: Sonic",
         "statModified": "Spell Critical Chance: Sonic",
         "bonus": "Equipment"
       }
@@ -13714,8 +14091,8 @@
     "name": "Sonic Resistance",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Resist Sonic",
-        "statModified": "Sonic Resistance",
+        "name": "Elemental Resistance: Sonic",
+        "statModified": "Elemental Resistance: Sonic",
         "bonus": "Enhancement"
       }
     ],
@@ -13769,8 +14146,48 @@
     "name": "Spell Focus Mastery",
     "enchantments": [
       {
-        "name": "Equipment bonus to DC of all Spells",
-        "statModified": "Spell DC",
+        "name": "Spell DC: Abjuration",
+        "statModified": "Spell DC: Abjuration",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell DC: Breath Weapon",
+        "statModified": "Spell DC: Breath Weapon",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell DC: Conjuration",
+        "statModified": "Spell DC: Conjuration",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell DC: Divination",
+        "statModified": "Spell DC: Divination",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell DC: Enchantment",
+        "statModified": "Spell DC: Enchantment",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell DC: Evocation",
+        "statModified": "Spell DC: Evocation",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell DC: Illusion",
+        "statModified": "Spell DC: Illusion",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell DC: Necromancy",
+        "statModified": "Spell DC: Necromancy",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell DC: Transmutation",
+        "statModified": "Spell DC: Transmutation",
         "bonus": "Equipment"
       }
     ],
@@ -13821,8 +14238,103 @@
     "name": "Spell Lore",
     "enchantments": [
       {
-        "name": "Equipment bonus to all Spells chance to Critical Hit",
-        "statModified": "Spell Critical Chance",
+        "name": "Spell Critical Chance: Acid",
+        "statModified": "Spell Critical Chance: Acid",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Bludgeoning",
+        "statModified": "Spell Critical Chance: Bludgeoning",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Chaos",
+        "statModified": "Spell Critical Chance: Chaos",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Cold",
+        "statModified": "Spell Critical Chance: Cold",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Electric",
+        "statModified": "Spell Critical Chance: Electric",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Evil",
+        "statModified": "Spell Critical Chance: Evil",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Fire",
+        "statModified": "Spell Critical Chance: Fire",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Force",
+        "statModified": "Spell Critical Chance: Force",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Good",
+        "statModified": "Spell Critical Chance: Good",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Lawful",
+        "statModified": "Spell Critical Chance: Lawful",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Light",
+        "statModified": "Spell Critical Chance: Light",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Negative Energy",
+        "statModified": "Spell Critical Chance: Negative Energy",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Piercing",
+        "statModified": "Spell Critical Chance: Piercing",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Poison",
+        "statModified": "Spell Critical Chance: Poison",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Positive Energy",
+        "statModified": "Spell Critical Chance: Positive Energy",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Repair",
+        "statModified": "Spell Critical Chance: Repair",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Rust",
+        "statModified": "Spell Critical Chance: Rust",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Slashing",
+        "statModified": "Spell Critical Chance: Slashing",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Sonic",
+        "statModified": "Spell Critical Chance: Sonic",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Untyped",
+        "statModified": "Spell Critical Chance: Untyped",
         "bonus": "Equipment"
       }
     ],
@@ -13875,8 +14387,8 @@
     "name": "Spell Penetration",
     "enchantments": [
       {
-        "name": "Equipment bonus to Penetrate Spell Resistance",
-        "statModified": " Penetrate Spell Resistance",
+        "name": "Spell Penetration",
+        "statModified": "Spell Penetration",
         "bonus": "Equipment"
       }
     ],
@@ -13927,7 +14439,7 @@
     "name": "Spell Resistance",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Spell Resistance",
+        "name": "Spell Resistance",
         "statModified": "Spell Resistance",
         "bonus": "Enhancement"
       }
@@ -13982,7 +14494,7 @@
     "name": "Spell Saves",
     "enchantments": [
       {
-        "name": "Resistance bonus saves versus Spells",
+        "name": "Spell Saves",
         "statModified": "Spell Saves",
         "bonus": "Resistance"
       }
@@ -14036,8 +14548,8 @@
     "name": "Spellsight",
     "enchantments": [
       {
-        "name": "Competence bonus to Spellsight",
-        "statModified": "Spellsight",
+        "name": "Skill: Spellcraft",
+        "statModified": "Skill: Spellcraft",
         "bonus": "Competence"
       }
     ],
@@ -14091,8 +14603,8 @@
     "name": "Spot",
     "enchantments": [
       {
-        "name": "Competence bonus to Spot",
-        "statModified": "Spot",
+        "name": "Skill: Spot",
+        "statModified": "Skill: Spot",
         "bonus": "Competence"
       }
     ],
@@ -14146,7 +14658,7 @@
     "name": "Strength",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Strength",
+        "name": "Strength",
         "statModified": "Strength",
         "bonus": "Enhancement"
       }
@@ -14252,7 +14764,7 @@
     "name": "Striding",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Movement Speed",
+        "name": "Movement Speed",
         "statModified": "Movement Speed",
         "bonus": "Enhancement"
       }
@@ -14303,8 +14815,8 @@
     "name": "Stunning",
     "enchantments": [
       {
-        "name": "Enhancement bonus to DC of character's Stunning Blow and Stunning Fist attempts",
-        "statModified": ["Tactical DC: Stunning"],
+        "name": "Tactical DC: Stunning",
+        "statModified": "Tactical DC: Stunning",
         "bonus": "Enhancement"
       }
     ],
@@ -14358,8 +14870,8 @@
     "name": "Swim",
     "enchantments": [
       {
-        "name": "Competence bonus to Swim",
-        "statModified": "Swim",
+        "name": "Skill: Swim",
+        "statModified": "Skill: Swim",
         "bonus": "Competence"
       }
     ],
@@ -14467,7 +14979,7 @@
     "name": "Transmutation Focus",
     "enchantments": [
       {
-        "name": "Equipment bonus to DC of Transmutation Spells",
+        "name": "Spell DC: Transmutation",
         "statModified": "Spell DC: Transmutation",
         "bonus": "Equipment"
       }
@@ -14519,7 +15031,7 @@
     "name": "True Seeing",
     "enchantments": [
       {
-        "name": "Gain the benefit of the True Seeing spell",
+        "name": "True Seeing",
         "statModified": "True Seeing",
         "bonus": "Enhancement"
       }
@@ -14571,8 +15083,8 @@
     "name": "Tumble",
     "enchantments": [
       {
-        "name": "Competence bonus to Tumble",
-        "statModified": "Tumble",
+        "name": "Skill: Tumble",
+        "statModified": "Skill: Tumble",
         "bonus": "Competence"
       }
     ],
@@ -14626,8 +15138,8 @@
     "name": "Twilight",
     "enchantments": [
       {
-        "name": "Reduces Arcane Spell Failure by 10%",
-        "statModified": "Arcane Spell Failure",
+        "name": "Arcane Spell Failure Reduction",
+        "statModified": "Arcane Spell Failure Reduction",
         "bonus": "Enhancement"
       }
     ],
@@ -14672,7 +15184,7 @@
     "extra": [],
     "group": "Static",
     "minLevelIncrease": 6,
-    "stat": ["Reduces Arcane Spell Failure by 10%"]
+    "stat": ["10%"]
   },
   {
     "name": "Unbalancing",
@@ -14730,7 +15242,7 @@
     "name": "Undead Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Undead",
+        "name": "Weapon Bane Damage (Undead)",
         "statModified": "Weapon Bane Damage (Undead)",
         "bonus": "Enhancement"
       }
@@ -14869,12 +15381,18 @@
     "name": "Unnatural Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Aberrations, Monstrous Humanoids, and Undead",
-        "statModified": [
-          "Weapon Bane Damage (Aberration)",
-          "Weapon Bane Damage (Monstrous Humanoid)",
-          "Weapon Bane Damage (Undead)"
-        ],
+        "name": "Weapon Bane Damage (Aberration)",
+        "statModified": "Weapon Bane Damage (Aberration)",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Weapon Bane Damage (Monstrous Humanoid)",
+        "statModified": "Weapon Bane Damage (Monstrous Humanoid)",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Weapon Bane Damage (Undead)",
+        "statModified": "Weapon Bane Damage (Undead)",
         "bonus": "Enhancement"
       }
     ],
@@ -15095,7 +15613,7 @@
     "name": "Vermin Bane",
     "enchantments": [
       {
-        "name": "Bane damage versus Vermin",
+        "name": "Weapon Bane Damage (Vermin)",
         "statModified": "Weapon Bane Damage (Vermin)",
         "bonus": "Enhancement"
       }
@@ -15182,8 +15700,13 @@
     "name": "Vertigo",
     "enchantments": [
       {
-        "name": "Enhancement bonus to DC of character's Trip and Improved Trip attempts",
-        "statModified": ["Tactical DC: Trip", "Tactical DC: Improved Trip"],
+        "name": "Tactical DC: Trip",
+        "statModified": "Tactical DC: Trip",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Tactical DC: Improved Trip",
+        "statModified": "Tactical DC: Improved Trip",
         "bonus": "Enhancement"
       }
     ],
@@ -15237,7 +15760,7 @@
     "name": "Vitality",
     "enchantments": [
       {
-        "name": "Vitality bonus to Maximum Hit Points",
+        "name": "Maximum Hit Points",
         "statModified": "Maximum Hit Points",
         "bonus": "Vitality"
       }
@@ -15356,8 +15879,8 @@
     "name": "Will Save",
     "enchantments": [
       {
-        "name": "Resistance bonus to Will Saves",
-        "statModified": "Will Save",
+        "name": "Will Saving Throws",
+        "statModified": "Will Saving Throws",
         "bonus": "Resistance"
       }
     ],
@@ -15410,7 +15933,7 @@
     "name": "Wisdom",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Wisdom",
+        "name": "Wisdom",
         "statModified": "Wisdom",
         "bonus": "Enhancement"
       }
@@ -15516,8 +16039,8 @@
     "name": "Wizardry",
     "enchantments": [
       {
-        "name": "Enhancement bonus to Maximum Spell Points",
-        "statModified": "Maximum Spell POints",
+        "name": "Maximum Spell Points",
+        "statModified": "Maximum Spell Points",
         "bonus": "Enhancement"
       }
     ],
