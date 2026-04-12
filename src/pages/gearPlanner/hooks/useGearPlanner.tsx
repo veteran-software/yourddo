@@ -829,7 +829,7 @@ const useGearPlanner = (props: Props) => {
     ] as GearSlot[]
 
     if (!excludedSlots.includes(browsingSlot)) {
-      const getEssenceCraftedName = (slot: GearSlot) => {
+      const getEssenceCraftedName = (slot: GearSlot, type?: string) => {
         switch (slot) {
           case GearSlot.Head:
             return 'Essence Crafted Helmet'
@@ -856,26 +856,57 @@ const useGearPlanner = (props: Props) => {
             return 'Essence Crafted Armor'
           case GearSlot.MainHand:
           case GearSlot.OffHand:
-            return 'Essence Crafted Weapon/Shield'
+            return type ? `Essence Crafted ${type}` : 'Essence Crafted Weapon'
           default:
             return 'Essence Crafted Item'
         }
       }
 
-      slotItems.unshift({
-        id: `essence-crafted-${browsingSlot}`,
-        name: getEssenceCraftedName(browsingSlot),
-        type: 'Crafted',
-        minLevel: '1',
-        enchantments: [],
-        slot: browsingSlot,
-        material: 'Other'
-      } as unknown as GearItem)
+      if (browsingSlot === GearSlot.MainHand || browsingSlot === GearSlot.OffHand) {
+        const weaponTypes = Object.values(WEAPON_TYPES).flat()
+        weaponTypes.forEach((type) => {
+          slotItems.unshift({
+            id: `essence-crafted-${browsingSlot}-${type.toLowerCase().replace(/ /g, '-')}`,
+            name: getEssenceCraftedName(browsingSlot, type),
+            type: type,
+            isEssenceCrafted: true, // Specific flag for essence crafted items
+            minLevel: '1',
+            enchantments: [],
+            slot: browsingSlot,
+            material: 'Other'
+          } as unknown as GearItem)
+        })
+
+        if (browsingSlot === GearSlot.OffHand) {
+          SHIELD_TYPES.forEach((type) => {
+            slotItems.unshift({
+              id: `essence-crafted-${browsingSlot}-${type.toLowerCase().replace(/ /g, '-')}`,
+              name: getEssenceCraftedName(browsingSlot, type),
+              type: type,
+              isEssenceCrafted: true,
+              minLevel: '1',
+              enchantments: [],
+              slot: browsingSlot,
+              material: 'Other'
+            } as unknown as GearItem)
+          })
+        }
+      } else {
+        slotItems.unshift({
+          id: `essence-crafted-${browsingSlot}`,
+          name: getEssenceCraftedName(browsingSlot),
+          type: 'Crafted',
+          minLevel: '1',
+          enchantments: [],
+          slot: browsingSlot,
+          material: 'Other'
+        } as unknown as GearItem)
+      }
     }
 
     return slotItems
       .filter((i) => {
-        if (i.type === 'Crafted' && i.id.startsWith('essence-crafted-'))
+        if (i.id.startsWith('essence-crafted-'))
           return true // Always show
         const matchesVisibility =
           isItemVisibleForClasses(i, activeSetup) &&
@@ -891,10 +922,8 @@ const useGearPlanner = (props: Props) => {
       })
       .sort((a, b) => {
         // Priority 0: Essence Crafted always first
-        const isEssenceA =
-          a.type === 'Crafted' && a.id.startsWith('essence-crafted-')
-        const isEssenceB =
-          b.type === 'Crafted' && b.id.startsWith('essence-crafted-')
+        const isEssenceA = a.id.startsWith('essence-crafted-')
+        const isEssenceB = b.id.startsWith('essence-crafted-')
         if (isEssenceA && !isEssenceB) return -1
         if (!isEssenceA && isEssenceB) return 1
 
@@ -1614,8 +1643,8 @@ const useGearPlanner = (props: Props) => {
                   />
                 )}
 
-                {selectedItem.type === 'Crafted' &&
-                  selectedItem.id.startsWith('essence-crafted-') && (
+                {(selectedItem.id.startsWith('essence-crafted-') ||
+                  selectedItem.isEssenceCrafted) && (
                   <div className='mt-2 border-top pt-2 w-100'>
                     <EssenceCraftingSelector
                       selectedItem={selectedItem}

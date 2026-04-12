@@ -141,6 +141,7 @@ export interface GearItem extends LootItem {
   minimumLevel?: number
   effectsAdded?: LootEnchantment[]
   grouping?: string
+  isEssenceCrafted?: boolean
 }
 
 export interface Curse {

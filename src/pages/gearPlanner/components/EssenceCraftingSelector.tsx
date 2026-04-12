@@ -1,5 +1,11 @@
 import { useCallback, useMemo } from 'react'
 import { Dropdown } from 'react-bootstrap'
+import { shields } from '../../../data/basics/armor.ts'
+import {
+  meleeWeapons,
+  rangedWeapons,
+  throwingWeapons
+} from '../../../data/basics/weapons.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import type { EssenceEnchantment } from '../dataLoader.ts'
 import {
@@ -72,7 +78,44 @@ const EssenceCraftingSelector = (props: Props) => {
     }
   }, [])
 
-  const allowedSlotIds = useMemo(() => slotIdMap[slot] || [], [slotIdMap, slot])
+  const allowedSlotIds = useMemo(() => {
+    const ids = slotIdMap[slot] || []
+    if (slot !== GearSlot.MainHand && slot !== GearSlot.OffHand) {
+      return ids
+    }
+
+    const weaponType = selectedItem.type
+    const filteredIds: string[] = []
+
+    if (meleeWeapons.has(weaponType)) {
+      filteredIds.push('weapon-melee')
+    }
+    if (rangedWeapons.has(weaponType) || throwingWeapons.has(weaponType)) {
+      filteredIds.push('weapon-ranged')
+    }
+    if (shields.has(weaponType) || weaponType === 'Orb') {
+      filteredIds.push('shield')
+    }
+    if (weaponType === 'Orb') {
+      filteredIds.push('orb')
+    }
+    if (weaponType === 'Rune Arm') {
+      filteredIds.push('runearm')
+    }
+
+    // Fallback for generic Crafted items if any
+    if (ids.includes('shield') && !filteredIds.includes('shield')) {
+      filteredIds.push('shield')
+    }
+    if (ids.includes('orb') && !filteredIds.includes('orb')) {
+      filteredIds.push('orb')
+    }
+    if (ids.includes('runearm') && !filteredIds.includes('runearm')) {
+      filteredIds.push('runearm')
+    }
+
+    return filteredIds
+  }, [slotIdMap, slot, selectedItem.type])
 
   const prefixOptions = useMemo(
     () =>

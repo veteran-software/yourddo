@@ -42,6 +42,10 @@ const useItemBrowser = (props: Props) => {
   }
 
   const isItemMatchForTypes = (item: GearItem, types: string[]) => {
+    if (item.id.startsWith('essence-crafted-')) {
+      return types.includes(item.type)
+    }
+
     const typeLower = item.type.toLowerCase()
     const nameLower = item.name.toLowerCase()
 
@@ -129,11 +133,21 @@ const useItemBrowser = (props: Props) => {
     }
 
     if (browsingSlot === GearSlot.OffHand) {
-      const shieldItems = filteredItems.filter((i) =>
-        SHIELD_TYPES.includes(i.type)
+      const craftedItems = filteredItems.filter(
+        (i) =>
+          i.id.startsWith('essence-crafted-') &&
+          (i.type === 'Crafted' || i.type === 'Armor')
+      )
+      const shieldItems = filteredItems.filter(
+        (i) =>
+          (i.id.startsWith('essence-crafted-') &&
+            SHIELD_TYPES.includes(i.type)) ||
+          (!i.id.startsWith('essence-crafted-') &&
+            SHIELD_TYPES.includes(i.type))
       )
       const weaponItems = filteredItems.filter(
-        (i) => !SHIELD_TYPES.includes(i.type)
+        (i) =>
+          !i.id.startsWith('essence-crafted-') && !SHIELD_TYPES.includes(i.type)
       )
 
       const { currentEquipped } = getContextInfo(browsingSlot)
@@ -162,6 +176,19 @@ const useItemBrowser = (props: Props) => {
 
       return (
         <Accordion defaultActiveKey='0' data-bs-theme='dark'>
+          {craftedItems.length > 0 && (
+            <Accordion.Item eventKey='crafted'>
+              <Accordion.Header>
+                <div className='d-flex justify-content-between w-100 me-3'>
+                  <span>Essence Crafting ({craftedItems.length})</span>
+                </div>
+              </Accordion.Header>
+              <Accordion.Body className='p-2 bg-dark-subtle'>
+                {renderItems(craftedItems, false, false)}
+              </Accordion.Body>
+            </Accordion.Item>
+          )}
+
           {shieldItems.length > 0 && (
             <Accordion.Item eventKey='shields'>
               <Accordion.Header>

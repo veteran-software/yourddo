@@ -106,6 +106,7 @@ const NearlyFinishedSelector = ({
           })}
         </Dropdown.Menu>
       </Dropdown>
+
       {selectedEnchantment && (
         <div
           className='mt-1 text-secondary'

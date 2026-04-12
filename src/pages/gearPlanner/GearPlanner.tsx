@@ -149,6 +149,7 @@ const GearPlanner = () => {
     gpHook.allAugments,
     gpHook.allCurses,
     gpHook.allItems,
+    gpHook.essenceEnchantments,
     gpHook.loading,
     location,
     navigate
@@ -276,6 +277,7 @@ const GearPlanner = () => {
                           )
                           const content = generateBBCodeExport(
                             gpHook.activeSetup,
+                            gpHook.essenceEnchantments,
                             artificerPet,
                             druidPet,
                             permalinkUrl
@@ -300,6 +302,7 @@ const GearPlanner = () => {
                           )
                           const content = generateDiscordMarkdownExport(
                             gpHook.activeSetup,
+                            gpHook.essenceEnchantments,
                             artificerPet,
                             druidPet,
                             permalinkUrl

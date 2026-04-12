@@ -7,7 +7,8 @@ import {
   type GearAugment,
   type GearItem,
   type GearSetup,
-  GearSlot
+  GearSlot,
+  type LootEnchantment
 } from './types.ts'
 
 // ----- Types for compact v1 payload -----
@@ -26,7 +27,10 @@ import {
 //     slot: string,
 //     itemName: string,
 //     augments: [slotIndex: number, augmentName: string][],
-//     curseName: string | null
+//     curseName: string | null,
+//     essenceCrafting: [slotName: string, enchantmentId: string][] | null,
+//     nearlyFinished: LootEnchantment | null,
+//     ritualTable: LootEnchantment | null
 //   ][]
 // ]
 
@@ -43,7 +47,10 @@ type V1Payload = [
     string, // slot (GearSlot)
     string, // itemName
     [number, string][], // augments: [slotIndex, augmentName]
-    string | null // curseName
+    string | null, // curseName
+    [string, string][] | null, // essenceCrafting: [slotName, enchantmentId]
+    LootEnchantment | null, // nearlyFinished
+    LootEnchantment | null // ritualTable
   ][]
 ]
 
@@ -67,7 +74,25 @@ export const encodeGearPermalink = (setup: GearSetup): string => {
       const curse = setup.slottedCurses[item.id]
       const curseName = curse ? curse.name : null
 
-      items.push([slot, item.name, augments, curseName])
+      const essenceEnch = setup.slottedEssenceEnchantments[item.id]
+      const essenceEnchPayload: [string, string][] | null = essenceEnch
+        ? Object.entries(essenceEnch)
+            .filter((entry): entry is [string, string] => entry[1] !== null)
+            .map(([slotName, id]) => [slotName, id])
+        : null
+
+      const nearlyFinished = setup.slottedNearlyFinished?.[item.id] ?? null
+      const ritualTable = setup.slottedRitualTable?.[item.id] ?? null
+
+      items.push([
+        slot,
+        item.name,
+        augments,
+        curseName,
+        essenceEnchPayload,
+        nearlyFinished,
+        ritualTable
+      ])
     }
   })
 
@@ -135,43 +160,89 @@ export const tryDecodeGearPermalink = (
       slottedRitualTable: {}
     }
 
-    items.forEach(([slot, itemName, augments, curseName]) => {
-      // Find the item in allItems by name and slot to ensure we get the correct ID
-      const gearSlot = slot as GearSlot
-      if (!Object.values(GearSlot).includes(gearSlot)) {
-        return
-      }
-      const item =
-        allItems.find((i) => i.name === itemName && i.slot === gearSlot) ??
-        allItems.find((i) => i.name === itemName)
-
-      if (item) {
-        setup.slots[gearSlot] = item
-
-        if (augments.length > 0) {
-          setup.slottedAugments[item.id] = {}
-
-          augments.forEach(([idx, augName]) => {
-            const augment = allAugments.find((a) => a.name === augName)
-            if (augment) {
-              setup.slottedAugments[item.id][idx] = augment
-            }
-          })
-        }
-
-        if (curseName && item.slot !== GearSlot.Quiver) {
-          const curse = allCurses.find((c) => c.name === curseName)
-
-          if (curse) {
-            setup.slottedCurses[item.id] = curse
-          }
-        }
-      }
+    items.forEach((itemPayload) => {
+      decodeItemPayload(itemPayload, allItems, allAugments, allCurses, setup)
     })
 
     return { ok: true, data: setup }
   } catch {
     return { ok: false }
+  }
+}
+
+const decodeItemPayload = (
+  itemPayload: V1Payload[8][number],
+  allItems: GearItem[],
+  allAugments: GearAugment[],
+  allCurses: Curse[],
+  setup: GearSetup
+) => {
+  const [
+    slot,
+    itemName,
+    augments,
+    curseName,
+    essenceCrafting,
+    nearlyFinished,
+    ritualTable
+  ] = itemPayload
+
+  // Find the item in allItems by name and slot to ensure we get the correct ID
+  const gearSlot = slot as GearSlot
+  if (!Object.values(GearSlot).includes(gearSlot)) {
+    return
+  }
+  const item =
+    allItems.find((i) => i.name === itemName && i.slot === gearSlot) ??
+    allItems.find((i) => i.name === itemName)
+
+  if (item) {
+    setup.slots[gearSlot] = item
+    decodeItemAugments(item, augments, allAugments, setup)
+    decodeItemCurse(item, curseName, allCurses, setup)
+    decodeItemEssenceCrafting(item, essenceCrafting, setup)
+    if (nearlyFinished) setup.slottedNearlyFinished[item.id] = nearlyFinished
+    if (ritualTable) setup.slottedRitualTable[item.id] = ritualTable
+  }
+}
+
+const decodeItemAugments = (
+  item: GearItem,
+  augments: [number, string][],
+  allAugments: GearAugment[],
+  setup: GearSetup
+) => {
+  if (augments.length > 0) {
+    setup.slottedAugments[item.id] = {}
+    augments.forEach(([idx, augName]) => {
+      const augment = allAugments.find((a) => a.name === augName)
+      if (augment) setup.slottedAugments[item.id][idx] = augment
+    })
+  }
+}
+
+const decodeItemCurse = (
+  item: GearItem,
+  curseName: string | null,
+  allCurses: Curse[],
+  setup: GearSetup
+) => {
+  if (curseName && item.slot !== GearSlot.Quiver) {
+    const curse = allCurses.find((c) => c.name === curseName)
+    if (curse) setup.slottedCurses[item.id] = curse
+  }
+}
+
+const decodeItemEssenceCrafting = (
+  item: GearItem,
+  essenceCrafting: [string, string][] | null,
+  setup: GearSetup
+) => {
+  if (essenceCrafting && essenceCrafting.length > 0) {
+    setup.slottedEssenceEnchantments[item.id] = {}
+    essenceCrafting.forEach(([slotName, enchId]) => {
+      setup.slottedEssenceEnchantments[item.id][slotName] = enchId
+    })
   }
 }
 
