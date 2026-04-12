@@ -128,7 +128,7 @@ export const resolveConflicts = (
     if (nearlyFinished) {
       const enchWithModifier = {
         ...nearlyFinished,
-        modifier: nearlyFinished.modifier || 'Enhancement'
+        modifier: nearlyFinished.modifier ?? 'Enhancement'
       }
       allEnchantments.push({
         itemId: item.id,
@@ -146,7 +146,7 @@ export const resolveConflicts = (
     if (ritualTable) {
       const enchWithModifier = {
         ...ritualTable,
-        modifier: ritualTable.modifier || 'Enhancement'
+        modifier: ritualTable.modifier ?? 'Enhancement'
       }
       allEnchantments.push({
         itemId: item.id,
@@ -231,6 +231,91 @@ export const resolveConflicts = (
   return conflicts
 }
 
+const findMatchingInherent = (
+  item: GearItem,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string
+) => {
+  let max = -Infinity
+  item.enchantments
+    ?.filter(
+      (e) =>
+        e.name !== 'Nearly Finished' &&
+        e.name !== 'Sealed in Fire' &&
+        e.name !== 'Sealed in Undeath'
+    )
+    .forEach((ench) => {
+      if (
+        normalizeString(ench.name) === normalizedTargetName &&
+        getBonus(ench.bonus) === normalizedTargetBonus
+      ) {
+        const val = parseModifierValue(ench.modifier)
+        if (val > max) max = val
+      }
+    })
+  return max
+}
+
+const findMatchingNearlyFinished = (
+  itemId: string,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  slottedNearlyFinished?: Record<string, LootEnchantment | null>
+) => {
+  const nearlyFinished = slottedNearlyFinished?.[itemId]
+  if (
+    nearlyFinished &&
+    normalizeString(nearlyFinished.name) === normalizedTargetName &&
+    getBonus(nearlyFinished.bonus) === normalizedTargetBonus
+  ) {
+    return parseModifierValue(nearlyFinished.modifier ?? 'Enhancement')
+  }
+  return -Infinity
+}
+
+const findMatchingRitualTable = (
+  itemId: string,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  slottedRitualTable?: Record<string, LootEnchantment | null>
+) => {
+  const ritualTable = slottedRitualTable?.[itemId]
+  if (
+    ritualTable &&
+    normalizeString(ritualTable.name) === normalizedTargetName &&
+    getBonus(ritualTable.bonus) === normalizedTargetBonus
+  ) {
+    return parseModifierValue(ritualTable.modifier ?? 'Enhancement')
+  }
+  return -Infinity
+}
+
+const findMatchingAugments = (
+  itemId: string,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  slottedAugments?: Record<
+    string,
+    Record<number, import('./types').GearAugment | null>
+  >
+) => {
+  let max = -Infinity
+  if (slottedAugments?.[itemId]) {
+    Object.values(slottedAugments[itemId]).forEach((aug) => {
+      aug?.effectsAdded?.forEach((ench) => {
+        if (
+          normalizeString(ench.name) === normalizedTargetName &&
+          getBonus(ench.bonus) === normalizedTargetBonus
+        ) {
+          const val = parseModifierValue(ench.modifier)
+          if (val > max) max = val
+        }
+      })
+    })
+  }
+  return max
+}
+
 /**
  * Checks if a specific enchantment on an item would conflict with currently equipped items.
  * A potential conflict is only checked against items from the same owner.
@@ -259,78 +344,36 @@ export const checkPotentialConflict = (
       return
     }
 
-    // Check inherent enchantments
-    item.enchantments
-      ?.filter(
-        (e) =>
-          e.name !== 'Nearly Finished' &&
-          e.name !== 'Sealed in Fire' &&
-          e.name !== 'Sealed in Undeath'
-      )
-      .forEach((ench) => {
-        if (
-          normalizeString(ench.name) === normalizedTargetName &&
-          getBonus(ench.bonus) === normalizedTargetBonus
-        ) {
-          foundMatch = true
-          const val = parseModifierValue(ench.modifier)
+    const inherentMax = findMatchingInherent(
+      item,
+      normalizedTargetName,
+      normalizedTargetBonus
+    )
+    const nfMax = findMatchingNearlyFinished(
+      item.id,
+      normalizedTargetName,
+      normalizedTargetBonus,
+      slottedNearlyFinished
+    )
+    const rtMax = findMatchingRitualTable(
+      item.id,
+      normalizedTargetName,
+      normalizedTargetBonus,
+      slottedRitualTable
+    )
+    const augMax = findMatchingAugments(
+      item.id,
+      normalizedTargetName,
+      normalizedTargetBonus,
+      slottedAugments
+    )
 
-          if (val > currentMax) {
-            currentMax = val
-          }
-        }
-      })
-
-    // Check nearly finished
-    const nearlyFinished = slottedNearlyFinished?.[item.id]
-    if (nearlyFinished) {
-      if (
-        normalizeString(nearlyFinished.name) === normalizedTargetName &&
-        getBonus(nearlyFinished.bonus) === normalizedTargetBonus
-      ) {
-        foundMatch = true
-        const val = parseModifierValue(nearlyFinished.modifier ?? 'Enhancement')
-
-        if (val > currentMax) {
-          currentMax = val
-        }
+    const itemMax = Math.max(inherentMax, nfMax, rtMax, augMax)
+    if (itemMax !== -Infinity) {
+      foundMatch = true
+      if (itemMax > currentMax) {
+        currentMax = itemMax
       }
-    }
-
-    // Check ritual table
-    const ritualTable = slottedRitualTable?.[item.id]
-    if (ritualTable) {
-      if (
-        normalizeString(ritualTable.name) === normalizedTargetName &&
-        getBonus(ritualTable.bonus) === normalizedTargetBonus
-      ) {
-        foundMatch = true
-        const val = parseModifierValue(ritualTable.modifier ?? 'Enhancement')
-
-        if (val > currentMax) {
-          currentMax = val
-        }
-      }
-    }
-
-    // Check slotted augments
-    if (slottedAugments?.[item.id]) {
-      Object.values(slottedAugments[item.id]).forEach((aug) => {
-        aug?.effectsAdded?.forEach((ench) => {
-          if (
-            normalizeString(ench.name) === normalizedTargetName &&
-            getBonus(ench.bonus) === normalizedTargetBonus
-          ) {
-            foundMatch = true
-
-            const val = parseModifierValue(ench.modifier)
-
-            if (val > currentMax) {
-              currentMax = val
-            }
-          }
-        })
-      })
     }
   })
 
@@ -341,10 +384,6 @@ export const checkPotentialConflict = (
   return {
     isConflict: true,
     currentMax,
-    // Redundant ONLY if the exact same value already exists.
-    // If our value is higher than currentMax, it's not redundant (it's an upgrade).
-    // If our value is lower than currentMax, it's not redundant in the context of "exact match"
-    // although it is ineffective. The UI will show "Conflicts: <currentMax>".
     isRedundant: parsedValue === currentMax
   }
 }

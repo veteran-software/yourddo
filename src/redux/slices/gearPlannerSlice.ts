@@ -1,16 +1,15 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { isMinorArtifact } from '../../pages/gearPlanner/helpers'
-import type {
-  Curse,
-  GearAugment,
-  GearItem,
-  GearSetup,
-  LootItem
-} from '../../pages/gearPlanner/types'
 import {
   ARTIFICER_PET_SLOTS,
+  type Curse,
   DRUID_PET_SLOTS,
-  GearSlot
+  type GearAugment,
+  type GearItem,
+  type GearSetup,
+  GearSlot,
+  type LootEnchantment,
+  type LootItem
 } from '../../pages/gearPlanner/types'
 
 interface PetState {

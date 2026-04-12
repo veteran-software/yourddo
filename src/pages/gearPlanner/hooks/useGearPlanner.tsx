@@ -57,6 +57,7 @@ import {
   type GearItem,
   type GearSetup,
   GearSlot,
+  type LootEnchantment,
   type LootItem,
   type SetBonusIndex,
   SHIELD_TYPES,
@@ -1174,7 +1175,9 @@ const useGearPlanner = (props: Props) => {
       slottedFiligrees: {},
       unlockedFiligreeSlots: {},
       slottedGemSetBonuses: {},
-      slottedEssenceEnchantments: {}
+      slottedEssenceEnchantments: {},
+      slottedNearlyFinished: {},
+      slottedRitualTable: {}
     }
 
     dispatch(addSetupAction(newSetup))
@@ -1586,7 +1589,7 @@ const useGearPlanner = (props: Props) => {
                     item={selectedItem}
                     slot={slot}
                     selectedEnchantment={
-                      currentSlottedNearlyFinished[selectedItem.id] || null
+                      currentSlottedNearlyFinished[selectedItem.id] ?? null
                     }
                     onSelect={(ench) =>
                       { setNearlyFinishedEnchantment(selectedItem.id, ench, slot); }
@@ -1602,7 +1605,7 @@ const useGearPlanner = (props: Props) => {
                     item={selectedItem}
                     slot={slot}
                     selectedEnchantment={
-                      currentSlottedRitualTable[selectedItem.id] || null
+                      currentSlottedRitualTable[selectedItem.id] ?? null
                     }
                     onSelect={(ench) =>
                       { setRitualTableEnchantment(selectedItem.id, ench, slot); }

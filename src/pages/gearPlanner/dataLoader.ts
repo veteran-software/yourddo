@@ -314,25 +314,16 @@ export const loadGearData = (): Promise<{
   const allFiligrees: GearItem[] = []
   const seenKeys = new Set<string>()
 
-  const addItem = (item: GearItem) => {
-    // Basic slot validation to avoid cluttering slots with irrelevant items
+  const isWeaponType = (item: GearItem) =>
+    Object.values(WEAPON_TYPES).flat().includes(item.type) ||
+    item.type === 'Handwraps' ||
+    item.type === 'Weapon'
+
+  const isValidSlotItem = (item: GearItem) => {
     const typeLower = item.type.toLowerCase()
 
-    if (item.slot === GearSlot.Filigree) {
-      allFiligrees.push(item)
-
-      return
-    }
-
-    if (item.slot === GearSlot.MainHand) {
-      const isWeapon =
-        Object.values(WEAPON_TYPES).flat().includes(item.type) ||
-        item.type === 'Handwraps' ||
-        item.type === 'Weapon'
-
-      if (!isWeapon) {
-        return
-      }
+    if (item.slot === GearSlot.MainHand && !isWeaponType(item)) {
+      return false
     }
 
     if (item.slot === GearSlot.OffHand) {
@@ -340,18 +331,12 @@ export const loadGearData = (): Promise<{
       const isOffhandWeapon =
         Object.values(WEAPON_TYPES).flat().includes(item.type) ||
         item.type === 'Weapon'
-
-      if (!isShieldOrRuneArm && !isOffhandWeapon) {
-        return
-      }
+      if (!isShieldOrRuneArm && !isOffhandWeapon) return false
     }
 
     if (item.slot === GearSlot.Quiver) {
       const allowedQuiverTypes = ['quiver', '', 'bound', 'gear']
-
-      if (!allowedQuiverTypes.includes(typeLower)) {
-        return
-      }
+      if (!allowedQuiverTypes.includes(typeLower)) return false
     }
 
     if (item.slot === GearSlot.Armor) {
@@ -359,13 +344,21 @@ export const loadGearData = (): Promise<{
         ARMOR_TYPES.includes(item.type) ||
         item.type === 'Robe' ||
         item.type === 'Outfit'
-
-      if (!isArmor) {
-        return
-      }
+      if (!isArmor) return false
     }
 
-    if (item.pageTitle && item.pageTitle.includes('(Upgraded)')) {
+    return true
+  }
+
+  const addItem = (item: GearItem) => {
+    if (item.slot === GearSlot.Filigree) {
+      allFiligrees.push(item)
+      return
+    }
+
+    if (!isValidSlotItem(item)) return
+
+    if (item.pageTitle?.includes('(Upgraded)')) {
       return
     }
 

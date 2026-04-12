@@ -26,11 +26,12 @@ const RitualTableSelector = ({
     (e) => e.name === 'Sealed in Undeath'
   )
 
-  const requirementName = isWeapon
-    ? 'Sealed in Fire Weapon'
-    : isAccessory
-      ? 'Sealed in Undeath Accessory'
-      : null
+  let requirementName: string | null = null
+  if (isWeapon) {
+    requirementName = 'Sealed in Fire Weapon'
+  } else if (isAccessory) {
+    requirementName = 'Sealed in Undeath Accessory'
+  }
 
   if (!requirementName) return null
 

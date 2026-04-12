@@ -26,6 +26,7 @@ interface NearlyFinishedSelectorProps {
 
 const NearlyFinishedSelector = ({
   item,
+  slot,
   selectedEnchantment,
   onSelect,
   troveData

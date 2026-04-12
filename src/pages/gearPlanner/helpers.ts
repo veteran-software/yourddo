@@ -70,7 +70,7 @@ export const aggregateEnchantmentEntries = (
     entries.push({
       ench: {
         ...nearlyFinished,
-        modifier: nearlyFinished.modifier || 'Enhancement'
+        modifier: nearlyFinished.modifier ?? 'Enhancement'
       },
       sourceName: item.name
     })
@@ -79,7 +79,7 @@ export const aggregateEnchantmentEntries = (
   const ritualTable = slottedRitualTable?.[item.id]
   if (ritualTable) {
     entries.push({
-      ench: { ...ritualTable, modifier: ritualTable.modifier || 'Enhancement' },
+      ench: { ...ritualTable, modifier: ritualTable.modifier ?? 'Enhancement' },
       sourceName: item.name
     })
   }
