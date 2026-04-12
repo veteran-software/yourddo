@@ -16,6 +16,7 @@ import {
   setActiveSetup as setActiveSetupAction,
   setAugment as setAugmentAction,
   setCurse as setCurseAction,
+  setEssenceEnchantment as setEssenceEnchantmentAction,
   setFiligree as setFiligreeAction,
   setGemSetBonus as setGemSetBonusAction,
   setUnlockedFiligreeSlots as setUnlockedFiligreeSlotsAction
@@ -24,6 +25,7 @@ import { normItem } from '../../../utils/troveUtils.ts'
 import AugmentSlotItem from '../components/AugmentSlotItem.tsx'
 import CurseSlotItem from '../components/CurseSlotItem.tsx'
 import EnchantmentList from '../components/EnchantmentList.tsx'
+import EssenceCraftingSelector from '../components/EssenceCraftingSelector.tsx'
 import GemSetBonusSelector from '../components/GetSetBonusSelector.tsx'
 import ItemSetBonusDisplay from '../components/ItemSetBonusDisplay.tsx'
 import TroveBadge from '../components/TroveBadge.tsx'
@@ -34,7 +36,9 @@ import {
   resolveConflicts
 } from '../conflictResolver.ts'
 import {
+  type EssenceEnchantment,
   loadCurses,
+  loadEssenceEnchantments,
   loadFiligreeSets,
   loadGearData,
   loadSetBonusIndex
@@ -1008,7 +1012,8 @@ const useGearPlanner = (props: Props) => {
       slottedCurses: {},
       slottedFiligrees: {},
       unlockedFiligreeSlots: {},
-      slottedGemSetBonuses: {}
+      slottedGemSetBonuses: {},
+      slottedEssenceEnchantments: {}
     }
 
     dispatch(addSetupAction(newSetup))
@@ -1136,6 +1141,17 @@ const useGearPlanner = (props: Props) => {
     slot?: GearSlot
   ) => {
     dispatch(setGemSetBonusAction({ itemId, slotIndex, setName, slot }))
+  }
+
+  const setEssenceEnchantment = (
+    itemId: string,
+    slotName: string,
+    enchantmentId: string | null,
+    slot?: GearSlot
+  ) => {
+    dispatch(
+      setEssenceEnchantmentAction({ itemId, slotName, enchantmentId, slot })
+    )
   }
 
   /**
@@ -1580,7 +1596,23 @@ const useGearPlanner = (props: Props) => {
     },
     updateClassProficiencies,
     observerTarget,
-    dataReady
+    dataReady,
+    essenceEnchantments,
+    setEssenceEnchantment: (
+      itemId: string,
+      slotName: string,
+      enchantmentId: string | null,
+      slot: GearSlot
+    ) => {
+      dispatch(
+        setEssenceEnchantmentAction({
+          itemId,
+          slotName,
+          enchantmentId,
+          slot
+        })
+      )
+    }
   }
 }
 

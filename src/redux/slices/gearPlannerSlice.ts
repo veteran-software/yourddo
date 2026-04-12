@@ -20,6 +20,7 @@ interface PetState {
   slottedFiligrees: Record<string, (GearItem | null)[]>
   unlockedFiligreeSlots: Record<string, number>
   slottedGemSetBonuses: Record<string, (string | null)[]>
+  slottedEssenceEnchantments: Record<string, Record<string, string | null>>
 }
 
 interface GearPlannerState {
@@ -35,7 +36,8 @@ const initialPetState = (): PetState => ({
   slottedCurses: {},
   slottedFiligrees: {},
   unlockedFiligreeSlots: {},
-  slottedGemSetBonuses: {}
+  slottedGemSetBonuses: {},
+  slottedEssenceEnchantments: {}
 })
 
 const initialState: GearPlannerState = {
@@ -55,7 +57,8 @@ const initialState: GearPlannerState = {
       slottedCurses: {},
       slottedFiligrees: {},
       unlockedFiligreeSlots: {},
-      slottedGemSetBonuses: {}
+      slottedGemSetBonuses: {},
+      slottedEssenceEnchantments: {}
     }
   ],
   activeSetupId: 'default',
@@ -108,6 +111,7 @@ const gearPlannerSlice = createSlice({
       if (!setup.slottedFiligrees) setup.slottedFiligrees = {}
       if (!setup.unlockedFiligreeSlots) setup.unlockedFiligreeSlots = {}
       if (!setup.slottedGemSetBonuses) setup.slottedGemSetBonuses = {}
+      if (!setup.slottedEssenceEnchantments) setup.slottedEssenceEnchantments = {}
       state.characterSetups.push(setup)
     },
     removeSetup: (state, action: PayloadAction<string>) => {
@@ -378,6 +382,45 @@ const gearPlannerSlice = createSlice({
       } else if (owner === 'druid_pet') {
         updateGemBonus(state.druidPet)
       }
+    },
+    setEssenceEnchantment: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        slotName: string
+        enchantmentId: string | null
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, slotName, enchantmentId, slot } = action.payload
+      let owner: SlotOwner = 'character'
+
+      if (slot) {
+        owner = getSlotOwner(slot)
+      }
+
+      const updateEssence = (petState: PetState) => {
+        if (!petState.slottedEssenceEnchantments[itemId]) {
+          petState.slottedEssenceEnchantments[itemId] = {}
+        }
+        petState.slottedEssenceEnchantments[itemId][slotName] = enchantmentId
+      }
+
+      if (owner === 'character') {
+        const setup = state.characterSetups.find(
+          (s) => s.id === state.activeSetupId
+        )
+        if (setup) {
+          if (!setup.slottedEssenceEnchantments[itemId]) {
+            setup.slottedEssenceEnchantments[itemId] = {}
+          }
+          setup.slottedEssenceEnchantments[itemId][slotName] = enchantmentId
+        }
+      } else if (owner === 'artificer_pet') {
+        updateEssence(state.artificerPet)
+      } else if (owner === 'druid_pet') {
+        updateEssence(state.druidPet)
+      }
     }
   }
 })
@@ -392,7 +435,8 @@ export const {
   setCurse,
   setFiligree,
   setUnlockedFiligreeSlots,
-  setGemSetBonus
+  setGemSetBonus,
+  setEssenceEnchantment
 } = gearPlannerSlice.actions
 
 export default gearPlannerSlice.reducer
