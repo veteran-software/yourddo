@@ -129,7 +129,8 @@ export const tryDecodeGearPermalink = (
       slottedCurses: {},
       slottedFiligrees: {},
       unlockedFiligreeSlots: {},
-      slottedGemSetBonuses: {}
+      slottedGemSetBonuses: {},
+      slottedEssenceEnchantments: {}
     }
 
     items.forEach(([slot, itemName, augments, curseName]) => {
