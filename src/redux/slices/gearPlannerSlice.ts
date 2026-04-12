@@ -443,7 +443,7 @@ const gearPlannerSlice = createSlice({
           (i) => i?.id === itemId
         )
         if (currentItem) {
-          currentItem.minLevel = minLevel
+          currentItem.minLevel = String(minLevel)
         }
       }
 
@@ -456,7 +456,7 @@ const gearPlannerSlice = createSlice({
             (i) => i?.id === itemId
           )
           if (currentItem) {
-            currentItem.minLevel = minLevel
+            currentItem.minLevel = String(minLevel)
           }
         }
       } else if (owner === 'artificer_pet') {

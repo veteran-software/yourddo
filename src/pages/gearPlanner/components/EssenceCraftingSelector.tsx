@@ -53,24 +53,26 @@ const EssenceCraftingSelector = (props: Props) => {
     [minLevel]
   )
 
-  const slotIdMap: Record<string, string[]> = {
-    [GearSlot.Armor]: ['armor', 'robe', 'docent'],
-    [GearSlot.Head]: ['helm'],
-    [GearSlot.Hands]: ['gloves'],
-    [GearSlot.Cloak]: ['cloak'],
-    [GearSlot.Waist]: ['belt'],
-    [GearSlot.Feet]: ['boots'],
-    [GearSlot.Wrists]: ['bracers'],
-    [GearSlot.Eyes]: ['goggles'],
-    [GearSlot.Neck]: ['necklace'],
-    [GearSlot.FirstFinger]: ['ring'],
-    [GearSlot.SecondFinger]: ['ring'],
-    [GearSlot.Trinket]: ['trinket'],
-    [GearSlot.MainHand]: ['weapon-melee', 'weapon-ranged'],
-    [GearSlot.OffHand]: ['weapon-melee', 'shield', 'orb', 'runearm']
-  }
+  const slotIdMap: Record<string, string[]> = useMemo(() => {
+    return {
+      [GearSlot.Armor]: ['armor', 'robe', 'docent'],
+      [GearSlot.Head]: ['helm'],
+      [GearSlot.Hands]: ['gloves'],
+      [GearSlot.Cloak]: ['cloak'],
+      [GearSlot.Waist]: ['belt'],
+      [GearSlot.Feet]: ['boots'],
+      [GearSlot.Wrists]: ['bracers'],
+      [GearSlot.Eyes]: ['goggles'],
+      [GearSlot.Neck]: ['necklace'],
+      [GearSlot.FirstFinger]: ['ring'],
+      [GearSlot.SecondFinger]: ['ring'],
+      [GearSlot.Trinket]: ['trinket'],
+      [GearSlot.MainHand]: ['weapon-melee', 'weapon-ranged'],
+      [GearSlot.OffHand]: ['weapon-melee', 'shield', 'orb', 'runearm']
+    }
+  }, [])
 
-  const allowedSlotIds = slotIdMap[slot] || []
+  const allowedSlotIds = useMemo(() => slotIdMap[slot] || [], [slotIdMap, slot])
 
   const prefixOptions = useMemo(
     () =>

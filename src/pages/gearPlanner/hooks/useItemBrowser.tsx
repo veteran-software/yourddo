@@ -118,7 +118,7 @@ const useItemBrowser = (props: Props) => {
                 <Accordion.Body className='ps-2 pe-0 py-0 bg-dark-subtle'>
                   <LazyAccordionBody
                     items={categoryItems}
-                    renderItems={(items) => renderTypeGroups(typeGroups)}
+                    renderItems={() => renderTypeGroups(typeGroups)}
                   />
                 </Accordion.Body>
               </Accordion.Item>
@@ -155,7 +155,7 @@ const useItemBrowser = (props: Props) => {
         return (
           <LazyAccordionBody
             items={items}
-            renderItems={(items) => renderTypeGroups(typeGroups)}
+            renderItems={() => renderTypeGroups(typeGroups)}
           />
         )
       }

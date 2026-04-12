@@ -764,10 +764,11 @@ const useGearPlanner = (props: Props) => {
 
     // Inject Essence Crafted item if not a special slot
     const excludedSlots = [
-      GearSlot.RuneArm,
       GearSlot.Quiver,
-      GearSlot.PetCollar
-    ]
+      GearSlot.ArtificerPetWeapon,
+      GearSlot.DruidPetWeapon
+    ] as GearSlot[]
+
     if (!excludedSlots.includes(browsingSlot)) {
       const getEssenceCraftedName = (slot: GearSlot) => {
         switch (slot) {
