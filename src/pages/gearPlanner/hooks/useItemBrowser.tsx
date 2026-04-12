@@ -116,7 +116,10 @@ const useItemBrowser = (props: Props) => {
                 </Accordion.Header>
 
                 <Accordion.Body className='ps-2 pe-0 py-0 bg-dark-subtle'>
-                  {renderTypeGroups(typeGroups)}
+                  <LazyAccordionBody
+                    items={categoryItems}
+                    renderItems={(items) => renderTypeGroups(typeGroups)}
+                  />
                 </Accordion.Body>
               </Accordion.Item>
             )
@@ -149,7 +152,12 @@ const useItemBrowser = (props: Props) => {
           typeGroups[type].push(item)
         })
 
-        return renderTypeGroups(typeGroups)
+        return (
+          <LazyAccordionBody
+            items={items}
+            renderItems={(items) => renderTypeGroups(typeGroups)}
+          />
+        )
       }
 
       return (
@@ -207,23 +215,26 @@ const useItemBrowser = (props: Props) => {
 
   const renderItems = (
     items: GearItem[],
-    showCount = true
+    showCount = true,
+    useLimit = true
   ): ReactElement | null => {
     if (!browsingSlot) return null
     const { currentConflicts, currentEquipped, currentSlottedAugments } =
       getContextInfo(browsingSlot)
 
+    const itemsToDisplay = useLimit ? items.slice(0, itemsToShow) : items
+
     return (
       <>
         {showCount && (
           <p className='text-light small mb-2'>
-            Showing {Math.min(itemsToShow, items.length)} of {items.length}{' '}
-            results
+            Showing {Math.min(itemsToDisplay.length, items.length)} of{' '}
+            {items.length} results
           </p>
         )}
 
         <div className='list-group shadow-sm'>
-          {items.slice(0, itemsToShow).map((item) => (
+          {itemsToDisplay.map((item) => (
             <BrowserItem
               key={item.id}
               item={item}
@@ -286,7 +297,10 @@ const useItemBrowser = (props: Props) => {
               </Accordion.Header>
 
               <Accordion.Body className='p-2 bg-dark'>
-                <LazyAccordionBody items={items} renderItems={renderItems} />
+                <LazyAccordionBody
+                  items={items}
+                  renderItems={(items) => renderItems(items, false, false)}
+                />
               </Accordion.Body>
             </Accordion.Item>
           )

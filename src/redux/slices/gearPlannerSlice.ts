@@ -111,7 +111,8 @@ const gearPlannerSlice = createSlice({
       if (!setup.slottedFiligrees) setup.slottedFiligrees = {}
       if (!setup.unlockedFiligreeSlots) setup.unlockedFiligreeSlots = {}
       if (!setup.slottedGemSetBonuses) setup.slottedGemSetBonuses = {}
-      if (!setup.slottedEssenceEnchantments) setup.slottedEssenceEnchantments = {}
+      if (!setup.slottedEssenceEnchantments)
+        setup.slottedEssenceEnchantments = {}
       state.characterSetups.push(setup)
     },
     removeSetup: (state, action: PayloadAction<string>) => {
@@ -421,6 +422,90 @@ const gearPlannerSlice = createSlice({
       } else if (owner === 'druid_pet') {
         updateEssence(state.druidPet)
       }
+    },
+    setItemMinLevel: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        minLevel: number
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, minLevel, slot } = action.payload
+      let owner: SlotOwner = 'character'
+
+      if (slot) {
+        owner = getSlotOwner(slot)
+      }
+
+      const updateMinLevel = (petState: PetState) => {
+        const currentItem = Object.values(petState.slots).find(
+          (i) => i?.id === itemId
+        )
+        if (currentItem) {
+          currentItem.minLevel = minLevel
+        }
+      }
+
+      if (owner === 'character') {
+        const setup = state.characterSetups.find(
+          (s) => s.id === state.activeSetupId
+        )
+        if (setup) {
+          const currentItem = Object.values(setup.slots).find(
+            (i) => i?.id === itemId
+          )
+          if (currentItem) {
+            currentItem.minLevel = minLevel
+          }
+        }
+      } else if (owner === 'artificer_pet') {
+        updateMinLevel(state.artificerPet)
+      } else if (owner === 'druid_pet') {
+        updateMinLevel(state.druidPet)
+      }
+    },
+    setItemMaterial: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        material: string
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, material, slot } = action.payload
+      let owner: SlotOwner = 'character'
+
+      if (slot) {
+        owner = getSlotOwner(slot)
+      }
+
+      const updateMaterial = (petState: PetState) => {
+        const currentItem = Object.values(petState.slots).find(
+          (i) => i?.id === itemId
+        )
+        if (currentItem) {
+          currentItem.material = material
+        }
+      }
+
+      if (owner === 'character') {
+        const setup = state.characterSetups.find(
+          (s) => s.id === state.activeSetupId
+        )
+        if (setup) {
+          const currentItem = Object.values(setup.slots).find(
+            (i) => i?.id === itemId
+          )
+          if (currentItem) {
+            currentItem.material = material
+          }
+        }
+      } else if (owner === 'artificer_pet') {
+        updateMaterial(state.artificerPet)
+      } else if (owner === 'druid_pet') {
+        updateMaterial(state.druidPet)
+      }
     }
   }
 })
@@ -436,7 +521,9 @@ export const {
   setFiligree,
   setUnlockedFiligreeSlots,
   setGemSetBonus,
-  setEssenceEnchantment
+  setEssenceEnchantment,
+  setItemMinLevel,
+  setItemMaterial
 } = gearPlannerSlice.actions
 
 export default gearPlannerSlice.reducer

@@ -30,19 +30,18 @@ const BrowserItem = (props: Props) => {
       }}
     >
       <div className='w-100'>
+        <div className='d-flex align-items-center gap-1 mb-0 small'>
+          {currentEquipped.some((e) => e.id === item.id) && (
+            <GenericBadge badgeText='Equipped' />
+          )}
+
+          {troveData && (
+            <TroveBadge itemName={item.name} troveData={troveData} />
+          )}
+        </div>
+
         <div className='d-flex justify-content-between align-items-center mb-1'>
-          <div className='fw-bold text-white fs-6'>
-            {currentEquipped.some((e) => e.id === item.id) && (
-              <GenericBadge badgeText='Equipped' />
-            )}
-
-            {item.name}
-
-            {troveData && (
-              <TroveBadge itemName={item.name} troveData={troveData} />
-            )}
-          </div>
-
+          <div className='fw-bold text-white fs-6'>{item.name}</div>
           <GenericBadge badgeText='Select' fontSize='0.75rem' />
         </div>
 

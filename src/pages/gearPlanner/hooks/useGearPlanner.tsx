@@ -19,6 +19,8 @@ import {
   setEssenceEnchantment as setEssenceEnchantmentAction,
   setFiligree as setFiligreeAction,
   setGemSetBonus as setGemSetBonusAction,
+  setItemMaterial as setItemMaterialAction,
+  setItemMinLevel as setItemMinLevelAction,
   setUnlockedFiligreeSlots as setUnlockedFiligreeSlotsAction
 } from '../../../redux/slices/gearPlannerSlice.ts'
 import { getTroveKey } from '../../../utils/troveUtils.ts'
@@ -280,7 +282,11 @@ const useGearPlanner = (props: Props) => {
       'Cold Iron',
       'Byeshk',
       'Bronze',
-      'Copper'
+      'Copper',
+      'Dwarven Iron',
+      'Magesteel',
+      'Planeforged Steel',
+      'Spiritforged Iron'
     ]
 
     return metalMaterials.includes(material)
@@ -754,10 +760,63 @@ const useGearPlanner = (props: Props) => {
       .toLowerCase()
       .trim()
 
-    const slotItems = allItemsBySlot.get(browsingSlot) ?? []
+    const slotItems = [...(allItemsBySlot.get(browsingSlot) ?? [])]
+
+    // Inject Essence Crafted item if not a special slot
+    const excludedSlots = [
+      GearSlot.RuneArm,
+      GearSlot.Quiver,
+      GearSlot.PetCollar
+    ]
+    if (!excludedSlots.includes(browsingSlot)) {
+      const getEssenceCraftedName = (slot: GearSlot) => {
+        switch (slot) {
+          case GearSlot.Head:
+            return 'Essence Crafted Helmet'
+          case GearSlot.Hands:
+            return 'Essence Crafted Gloves'
+          case GearSlot.Feet:
+            return 'Essence Crafted Boots'
+          case GearSlot.Wrists:
+            return 'Essence Crafted Bracers'
+          case GearSlot.Eyes:
+            return 'Essence Crafted Goggles'
+          case GearSlot.Neck:
+            return 'Essence Crafted Necklace'
+          case GearSlot.Waist:
+            return 'Essence Crafted Belt'
+          case GearSlot.Cloak:
+            return 'Essence Crafted Cloak'
+          case GearSlot.FirstFinger:
+          case GearSlot.SecondFinger:
+            return 'Essence Crafted Ring'
+          case GearSlot.Trinket:
+            return 'Essence Crafted Trinket'
+          case GearSlot.Armor:
+            return 'Essence Crafted Armor'
+          case GearSlot.MainHand:
+          case GearSlot.OffHand:
+            return 'Essence Crafted Weapon/Shield'
+          default:
+            return 'Essence Crafted Item'
+        }
+      }
+
+      slotItems.unshift({
+        id: `essence-crafted-${browsingSlot}`,
+        name: getEssenceCraftedName(browsingSlot),
+        type: 'Crafted',
+        minLevel: '1',
+        enchantments: [],
+        slot: browsingSlot,
+        material: 'Other'
+      } as unknown as GearItem)
+    }
 
     return slotItems
       .filter((i) => {
+        if (i.type === 'Crafted' && i.id.startsWith('essence-crafted-'))
+          return true // Always show
         const matchesVisibility =
           isItemVisibleForClasses(i, activeSetup) &&
           shouldShowItem(i, browsingSlot, activeSetup)
@@ -771,6 +830,14 @@ const useGearPlanner = (props: Props) => {
         return true
       })
       .sort((a, b) => {
+        // Priority 0: Essence Crafted always first
+        const isEssenceA =
+          a.type === 'Crafted' && a.id.startsWith('essence-crafted-')
+        const isEssenceB =
+          b.type === 'Crafted' && b.id.startsWith('essence-crafted-')
+        if (isEssenceA && !isEssenceB) return -1
+        if (!isEssenceA && isEssenceB) return 1
+
         // Priority 1: Trove ownership
         const isOwnedA = troveData?.[getTroveKey(a.name)] ? 1 : 0
         const isOwnedB = troveData?.[getTroveKey(b.name)] ? 1 : 0
@@ -804,7 +871,7 @@ const useGearPlanner = (props: Props) => {
           loadMore()
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: '100px' }
     )
 
     const currentTarget = observerTarget.current
@@ -1189,6 +1256,18 @@ const useGearPlanner = (props: Props) => {
     )
   }
 
+  const setItemMinLevel = (itemId: string, minLevel: number, slot?: GearSlot) => {
+    dispatch(setItemMinLevelAction({ itemId, minLevel, slot }))
+  }
+
+  const setItemMaterial = (
+    itemId: string,
+    material: string,
+    slot?: GearSlot
+  ) => {
+    dispatch(setItemMaterialAction({ itemId, material, slot }))
+  }
+
   /**
    * Determines applicable augments for a given slot type and item minimum level.
    *
@@ -1410,23 +1489,45 @@ const useGearPlanner = (props: Props) => {
                       />
                     </div>
                   )}
-                {selectedItem.type === 'Rune Arm' &&
+
+                {selectedItem.type === 'Crafted' &&
+                  selectedItem.id.startsWith('essence-crafted-') && (
+                  <div className='mt-2 border-top pt-2 w-100'>
+                    <EssenceCraftingSelector
+                      selectedItem={selectedItem}
+                      activeSetup={activeSetup}
+                      essenceEnchantments={essenceEnchantments}
+                      setEssenceEnchantment={setEssenceEnchantment}
+                      setItemMinLevel={setItemMinLevel}
+                      setItemMaterial={setItemMaterial}
+                      slot={slot}
+                      currentConflicts={currentConflicts}
+                      currentEquipped={currentEquipped}
+                      currentSlottedAugments={currentSlottedAugments}
+                    />
+                  </div>
+                )}
+
+                {(selectedItem.type === 'Rune Arm' &&
                   selectedItem.enchantments?.some(
                     (e) => e.name === 'Craftable Rune Arm'
-                  ) && (
+                  )) ||
+                  selectedItem.name.includes('Gem of Many Facets') ? (
                     <div className='text-start mt-1 pt-1 border-top gear-planner-slot-essence-crafting'>
                       <EssenceCraftingSelector
                         selectedItem={selectedItem}
                         activeSetup={activeSetup}
                         essenceEnchantments={essenceEnchantments}
                         setEssenceEnchantment={setEssenceEnchantment}
+                        setItemMinLevel={setItemMinLevel}
+                        setItemMaterial={setItemMaterial}
                         slot={slot}
                         currentConflicts={currentConflicts}
                         currentEquipped={currentEquipped}
                         currentSlottedAugments={currentSlottedAugments}
                       />
                     </div>
-                  )}
+                  ) : null}
                 {selectedItem.augments && selectedItem.augments.length > 0 && (
                   <div className='text-start mt-1 pt-1 border-top gear-planner-slot-augments'>
                     {selectedItem.augments.map((augSlot, idx) => {
@@ -1621,6 +1722,7 @@ const useGearPlanner = (props: Props) => {
     getContextInfo,
     isItemVisibleForClasses,
     isMetal,
+    setItemMaterial,
     itemNameSearch: itemNameSearch || internalItemNameSearch,
     itemsToShow,
     loading,
@@ -1663,6 +1765,15 @@ const useGearPlanner = (props: Props) => {
           itemId,
           slotName,
           enchantmentId,
+          slot
+        })
+      )
+    },
+    setItemMinLevel: (itemId: string, minLevel: number, slot: GearSlot) => {
+      dispatch(
+        setItemMinLevelAction({
+          itemId,
+          minLevel,
           slot
         })
       )

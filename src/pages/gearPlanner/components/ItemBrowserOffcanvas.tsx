@@ -40,7 +40,6 @@ const ItemBrowserOffcanvas = (props: Props) => {
         openSlotBrowser(null)
       }}
       placement='end'
-      scroll
       className='gear-planner-item-browser gear-planner-offcanvas'
     >
       <Offcanvas.Header closeButton className='bg-primary text-white'>

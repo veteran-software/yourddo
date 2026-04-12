@@ -17,10 +17,14 @@ const EssenceCraftingSelector = (props: Props) => {
     selectedItem,
     essenceEnchantments,
     setEssenceEnchantment,
+    setItemMinLevel,
+    setItemMaterial,
     slot
   } = props
 
   const minLevel = parseInt(selectedItem.minLevel) || 1
+
+  const isGemOfManyFacets = selectedItem.name.includes('Gem of Many Facets')
 
   const getFormattedName = useCallback(
     (opt: EssenceEnchantment) => {
@@ -49,41 +53,66 @@ const EssenceCraftingSelector = (props: Props) => {
     [minLevel]
   )
 
+  const slotIdMap: Record<string, string[]> = {
+    [GearSlot.Armor]: ['armor', 'robe', 'docent'],
+    [GearSlot.Head]: ['helm'],
+    [GearSlot.Hands]: ['gloves'],
+    [GearSlot.Cloak]: ['cloak'],
+    [GearSlot.Waist]: ['belt'],
+    [GearSlot.Feet]: ['boots'],
+    [GearSlot.Wrists]: ['bracers'],
+    [GearSlot.Eyes]: ['goggles'],
+    [GearSlot.Neck]: ['necklace'],
+    [GearSlot.FirstFinger]: ['ring'],
+    [GearSlot.SecondFinger]: ['ring'],
+    [GearSlot.Trinket]: ['trinket'],
+    [GearSlot.MainHand]: ['weapon-melee', 'weapon-ranged'],
+    [GearSlot.OffHand]: ['weapon-melee', 'shield', 'orb', 'runearm']
+  }
+
+  const allowedSlotIds = slotIdMap[slot] || []
+
   const prefixOptions = useMemo(
     () =>
       essenceEnchantments
-        .filter((e) => e.affixType === 'prefix' && e.slotId === 'runearm')
+        .filter(
+          (e) => e.affixType === 'prefix' && allowedSlotIds.includes(e.slotId)
+        )
         .sort((a, b) =>
           getFormattedName(a).localeCompare(getFormattedName(b), 'en', {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, getFormattedName]
+    [essenceEnchantments, getFormattedName, allowedSlotIds]
   )
 
   const suffixOptions = useMemo(
     () =>
       essenceEnchantments
-        .filter((e) => e.affixType === 'suffix' && e.slotId === 'runearm')
+        .filter(
+          (e) => e.affixType === 'suffix' && allowedSlotIds.includes(e.slotId)
+        )
         .sort((a, b) =>
           getFormattedName(a).localeCompare(getFormattedName(b), 'en', {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, getFormattedName]
+    [essenceEnchantments, getFormattedName, allowedSlotIds]
   )
 
   // Assuming 'extra' for Mark of House Cannith
   const extraOptions = useMemo(
     () =>
       essenceEnchantments
-        .filter((e) => e.affixType === 'extra' && e.slotId === 'runearm')
+        .filter(
+          (e) => e.affixType === 'extra' && allowedSlotIds.includes(e.slotId)
+        )
         .sort((a, b) =>
           getFormattedName(a).localeCompare(getFormattedName(b), 'en', {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, getFormattedName]
+    [essenceEnchantments, getFormattedName, allowedSlotIds]
   )
 
   const renderDropdown = (
@@ -191,14 +220,131 @@ const EssenceCraftingSelector = (props: Props) => {
     )
   }
 
+  const materials = [
+    'Adamantine',
+    'Blueshine',
+    'Byeshk',
+    'Cloth',
+    'Cold Iron',
+    'Dwarven Iron',
+    'Flametouched Iron',
+    'Gem',
+    'Glass',
+    'Leather',
+    'Magesteel',
+    'Mithral',
+    'Planeforged Steel',
+    'Silver',
+    'Spiritcraft Leather',
+    'Spiritforged Iron',
+    'Stone',
+    'Wood'
+  ]
+
   return (
     <div className='text-start'>
       <div className='text-primary mb-1' style={{ fontSize: '0.65rem' }}>
         Essence Crafting
       </div>
+
+      {!isGemOfManyFacets && (
+        <div className='d-flex gap-2 mb-1'>
+          <div className='flex-grow-1'>
+            <div className='text-dark mb-0' style={{ fontSize: '0.6rem' }}>
+              Min Level (1-36)
+            </div>
+            <Dropdown className='w-100 mb-2'>
+              <Dropdown.Toggle
+                variant='outline-dark'
+                id={`essence-min-level-${selectedItem.id}`}
+                className='w-100 py-0 px-2 text-start d-flex justify-content-between align-items-center gear-planner-augment-toggle'
+                style={{
+                  fontSize: '0.65rem',
+                  minHeight: '20px',
+                  backgroundColor: 'rgba(0,0,0,0.05)'
+                }}
+              >
+                <span className='text-truncate text-dark'>
+                  {selectedItem.minLevel}
+                </span>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu
+                style={{
+                  fontSize: '0.65rem',
+                  maxHeight: '200px',
+                  overflowY: 'auto'
+                }}
+              >
+                {Array.from({ length: 36 }, (_, i) => i + 1).map((lvl) => (
+                  <Dropdown.Item
+                    key={lvl}
+                    onClick={() => {
+                      setItemMinLevel(selectedItem.id, lvl, slot)
+                    }}
+                  >
+                    {lvl}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+
+          <div className='flex-grow-1'>
+            <div className='text-dark mb-0' style={{ fontSize: '0.6rem' }}>
+              Material
+            </div>
+            <Dropdown className='w-100 mb-2'>
+              <Dropdown.Toggle
+                variant='outline-dark'
+                id={`essence-material-${selectedItem.id}`}
+                className='w-100 py-0 px-2 text-start d-flex justify-content-between align-items-center gear-planner-augment-toggle'
+                style={{
+                  fontSize: '0.65rem',
+                  minHeight: '20px',
+                  backgroundColor: 'rgba(0,0,0,0.05)'
+                }}
+              >
+                <span className='text-truncate text-dark'>
+                  {selectedItem.material || '-- Select --'}
+                </span>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu
+                style={{
+                  fontSize: '0.65rem',
+                  maxHeight: '200px',
+                  overflowY: 'auto'
+                }}
+              >
+                <Dropdown.Item
+                  onClick={() => {
+                    setItemMaterial(selectedItem.id, '', slot)
+                  }}
+                >
+                  -- None --
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                {materials.map((mat) => (
+                  <Dropdown.Item
+                    key={mat}
+                    onClick={() => {
+                      setItemMaterial(selectedItem.id, mat, slot)
+                    }}
+                  >
+                    {mat}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+        </div>
+      )}
+
       {renderDropdown('Prefix Slot', 'prefix', prefixOptions)}
       {renderDropdown('Suffix Slot', 'suffix', suffixOptions)}
       {minLevel >= 10 &&
+        extraOptions.length > 0 &&
         renderDropdown('Mark of House Cannith Slot', 'extra', extraOptions)}
     </div>
   )
@@ -214,6 +360,8 @@ interface Props {
     enchantmentId: string | null,
     slot: GearSlot
   ) => void
+  setItemMinLevel: (itemId: string, minLevel: number, slot: GearSlot) => void
+  setItemMaterial: (itemId: string, material: string, slot: GearSlot) => void
   slot: GearSlot
   currentConflicts: Record<string, EnchantmentConflict[]>
   currentEquipped: GearItem[]
