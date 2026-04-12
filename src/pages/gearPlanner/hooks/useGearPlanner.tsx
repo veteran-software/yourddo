@@ -1330,6 +1330,12 @@ const useGearPlanner = (props: Props) => {
                     setSlottedGemSetBonus={setSlottedGemSetBonus}
                   />
                 )}
+                <ItemSetBonusDisplay
+                  selectedItem={selectedItem}
+                  activeSetup={activeSetup}
+                  openSetBonusBrowser={openSetBonusBrowser}
+                />
+
                 <div
                   className='text-secondary mb-0'
                   style={{ fontSize: '0.7rem' }}
@@ -1350,12 +1356,6 @@ const useGearPlanner = (props: Props) => {
                   )}
                 </div>
 
-                <ItemSetBonusDisplay
-                  selectedItem={selectedItem}
-                  activeSetup={activeSetup}
-                  openSetBonusBrowser={openSetBonusBrowser}
-                />
-
                 {selectedItem.enchantments &&
                   selectedItem.enchantments.length > 0 && (
                     <div
@@ -1363,13 +1363,32 @@ const useGearPlanner = (props: Props) => {
                       style={{ fontSize: '0.65rem' }}
                     >
                       <EnchantmentList
-                        enchantments={selectedItem.enchantments}
+                        enchantments={selectedItem.enchantments.filter(
+                          (e) => e.name !== 'Craftable Rune Arm'
+                        )}
                         itemId={selectedItem.id}
                         conflicts={currentConflicts}
                         equippedItems={currentEquipped}
                         source='slot'
                         browsingSlot={slot}
                         slottedAugments={currentSlottedAugments}
+                      />
+                    </div>
+                  )}
+                {selectedItem.type === 'Rune Arm' &&
+                  selectedItem.enchantments?.some(
+                    (e) => e.name === 'Craftable Rune Arm'
+                  ) && (
+                    <div className='text-start mt-1 pt-1 border-top gear-planner-slot-essence-crafting'>
+                      <EssenceCraftingSelector
+                        selectedItem={selectedItem}
+                        activeSetup={activeSetup}
+                        essenceEnchantments={essenceEnchantments}
+                        setEssenceEnchantment={setEssenceEnchantment}
+                        slot={slot}
+                        currentConflicts={currentConflicts}
+                        currentEquipped={currentEquipped}
+                        currentSlottedAugments={currentSlottedAugments}
                       />
                     </div>
                   )}
