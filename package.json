@@ -70,5 +70,9 @@
     "vite": "^8.0.8",
     "vite-plugin-compression": "^0.5.1"
   },
-  "packageManager": "yarn@4.13.0"
+  "packageManager": "yarn@4.13.0",
+  "resolutions": {
+    "eslint-plugin-react/minimatch": "3.1.5",
+    "glob/minimatch": "9.0.7"
+  }
 }
