@@ -21,14 +21,6 @@ export interface Phase1EnchantmentMeta {
   bonus?: string
 }
 
-export type Phase1MinLevelIncrease =
-  | number
-  | {
-      noMinimumLevel?: number
-      minimumLevel?: number
-    }
-  | null
-
 export type TAffix = string[] | string | null
 
 export interface EssencePhase1Entry {
@@ -43,7 +35,6 @@ export interface EssencePhase1Entry {
   suffix?: TAffix
   extra?: TAffix
   group?: string | null
-  minLevelIncrease?: Phase1MinLevelIncrease
   stat?: (number | string)[]
 }
 

@@ -882,7 +882,7 @@
     "extra": [],
     "group": "Static",
     "minLevelIncrease": 4,
-    "stat": ["Immunity to Blindness Effects"]
+    "stat": []
   },
   {
     "name": "Bludgeon Effect",
@@ -11900,6 +11900,7 @@
     "extra": [],
     "group": "Static",
     "minLevelIncrease": 4,
+    "stat": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
   },
   {
     "name": "Piercing Effect",
@@ -13889,6 +13890,7 @@
     "extra": [],
     "group": "Static",
     "minLevelIncrease": 2,
+    "stat": [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
   },
   {
     "name": "Sonic Absorption",

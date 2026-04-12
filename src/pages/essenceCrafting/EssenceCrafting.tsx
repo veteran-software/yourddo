@@ -1,5 +1,5 @@
-import type {ReactElement} from 'react'
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import type { ReactElement } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Accordion,
   Badge,
@@ -14,19 +14,22 @@ import {
   Stack,
   Table
 } from 'react-bootstrap'
-import {FaArrowUpRightFromSquare} from 'react-icons/fa6'
-import {shallowEqual} from 'react-redux'
-import {useLocation, useNavigate} from 'react-router-dom'
-import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
+import { shallowEqual } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import AugmentSlotFilterableDropdown
+  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type {ShoppingListTotals} from '../../components/common/ShoppingListDrawer.tsx'
+import type {
+  ShoppingListTotals
+} from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
-import {useAppSelector} from '../../redux/hooks.ts'
-import type {AugmentItem} from '../../types/augmentItem.ts'
-import type {Ingredient} from '../../types/ingredients.ts'
-import {findAugmentsForSlot} from '../../utils/augmentUtils.ts'
-import {getOwnedIngredients} from '../../utils/jsxUtils.tsx'
-import {toSingularName} from '../../utils/stringUtils.ts'
+import { useAppSelector } from '../../redux/hooks.ts'
+import type { AugmentItem } from '../../types/augmentItem.ts'
+import type { Ingredient } from '../../types/ingredients.ts'
+import { findAugmentsForSlot } from '../../utils/augmentUtils.ts'
+import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
+import { toSingularName } from '../../utils/stringUtils.ts'
 import {
   buildPermalinkUrl,
   encodeEssencePermalink,
@@ -490,33 +493,6 @@ const EssenceCrafting = () => {
     return `${name} ${value}`
   }
 
-  // Returns the numeric ML increase for a given enhancement selection
-  const getEnhancementMinIncrease = (name: string | null): number => {
-    if (!name) {
-      return 0
-    }
-
-    const entry = enhancementByName.get(name)
-
-    if (!entry) {
-      return 0
-    }
-
-    const inc = entry.minLevelIncrease
-
-    if (typeof inc === 'number') {
-      return inc
-    }
-
-    if (inc && typeof inc === 'object') {
-      // If dataset uses an object form, try to infer an increase relative to base ML.
-      // Prefer explicit minimumLevel over noMinimumLevel as a conservative requirement.
-      const min = Number(inc.minimumLevel ?? inc.noMinimumLevel)
-      return Number.isFinite(min) ? Math.max(0, min - 1) : 0
-    }
-
-    return 0
-  }
 
   // Helper to compute only the value portion (e.g., "+3" or "1d10" or description) for headers
   const getEnhancementValueOnly = (name: string | null, effectiveML: number): string | null => {
@@ -1092,24 +1068,7 @@ const EssenceCrafting = () => {
     const augmentFloor = computeAugmentMinLevelFloor(item)
     const effectiveML = item.minLevelOverride ?? masterMinLevel
 
-    // Collect ML increase messages for selected affixes
-    const incPairs: { name: string; inc: number }[] = []
-    const pushIncreaseIfAny = (effectName: string | null) => {
-      if (!effectName) {
-        return
-      }
-
-      const inc: number = getEnhancementMinIncrease(effectName)
-      if (inc > 0) {
-        incPairs.push({ name: effectName, inc })
-      }
-    }
-
-    pushIncreaseIfAny(item.prefix)
-    pushIncreaseIfAny(item.suffix)
-    pushIncreaseIfAny(item.hasCannithMark ? item.extra : null)
-
-    const selectIsInvalid = incPairs.length > 0 || effectiveML < augmentFloor
+    const selectIsInvalid = effectiveML < augmentFloor
 
     return (
       <>
@@ -1133,16 +1092,6 @@ const EssenceCrafting = () => {
             </option>
           ))}
         </Form.Select>
-
-        {incPairs.length > 0 && (
-          <div className='invalid-feedback d-block mt-1'>
-            {incPairs.map((pair: { name: string; inc: number }) => (
-              <div
-                key={pair.name}
-              >{`Adding the ${pair.name} effect will raise the minimum level of this item by ${String(pair.inc)}.`}</div>
-            ))}
-          </div>
-        )}
 
         {effectiveML < augmentFloor && (
           <div className='invalid-feedback d-block mt-1'>
