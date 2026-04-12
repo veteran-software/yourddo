@@ -22,7 +22,9 @@ const EnchantmentsSummary = ({
   slottedFiligrees,
   slottedGemSetBonuses,
   slottedEssenceEnchantments,
-  essenceEnchantments
+  essenceEnchantments,
+  slottedNearlyFinished,
+  slottedRitualTable
 }: {
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
@@ -31,6 +33,14 @@ const EnchantmentsSummary = ({
   slottedGemSetBonuses?: Record<string, (string | null)[]>
   slottedEssenceEnchantments?: Record<string, Record<string, string | null>>
   essenceEnchantments?: EssenceEnchantment[]
+  slottedNearlyFinished?: Record<
+    string,
+    import('../types.ts').LootEnchantment | null
+  >
+  slottedRitualTable?: Record<
+    string,
+    import('../types.ts').LootEnchantment | null
+  >
 }) => {
   const aggregated = useMemo(() => {
     type AggregationMap = Record<
@@ -110,7 +120,10 @@ const EnchantmentsSummary = ({
         slottedCurses[item.id],
         slottedFiligrees?.[item.id],
         slottedEssenceEnchantments,
-        essenceEnchantments
+        essenceEnchantments,
+        undefined,
+        slottedNearlyFinished,
+        slottedRitualTable
       )
 
       for (const { ench, sourceName } of entries) {
@@ -156,7 +169,9 @@ const EnchantmentsSummary = ({
     slottedFiligrees,
     slottedGemSetBonuses,
     slottedEssenceEnchantments,
-    essenceEnchantments
+    essenceEnchantments,
+    slottedNearlyFinished,
+    slottedRitualTable
   ])
 
   if (aggregated.length === 0) return null

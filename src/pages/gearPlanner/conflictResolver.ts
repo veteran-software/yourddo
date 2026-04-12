@@ -84,7 +84,9 @@ export const resolveConflicts = (
   slottedAugments?: Record<
     string,
     Record<number, import('./types').GearAugment | null>
-  >
+  >,
+  slottedNearlyFinished?: Record<string, LootEnchantment | null>,
+  slottedRitualTable?: Record<string, LootEnchantment | null>
 ): Record<string, EnchantmentConflict[]> => {
   const allEnchantments: {
     itemId: string
@@ -101,17 +103,60 @@ export const resolveConflicts = (
     const owner = getSlotOwner(item.slot)
 
     if (item.enchantments) {
-      item.enchantments.forEach((ench) => {
-        allEnchantments.push({
-          itemId: item.id,
-          itemName: item.name,
-          slot: item.slot,
-          enchantment: ench,
-          parsedValue: parseModifierValue(ench.modifier),
-          owner,
-          normalizedName: normalizeString(ench.name),
-          normalizedBonus: getBonus(ench.bonus)
+      item.enchantments
+        .filter(
+          (e) =>
+            e.name !== 'Nearly Finished' &&
+            e.name !== 'Sealed in Fire' &&
+            e.name !== 'Sealed in Undeath'
+        )
+        .forEach((ench) => {
+          allEnchantments.push({
+            itemId: item.id,
+            itemName: item.name,
+            slot: item.slot,
+            enchantment: ench,
+            parsedValue: parseModifierValue(ench.modifier),
+            owner,
+            normalizedName: normalizeString(ench.name),
+            normalizedBonus: getBonus(ench.bonus)
+          })
         })
+    }
+
+    const nearlyFinished = slottedNearlyFinished?.[item.id]
+    if (nearlyFinished) {
+      const enchWithModifier = {
+        ...nearlyFinished,
+        modifier: nearlyFinished.modifier || 'Enhancement'
+      }
+      allEnchantments.push({
+        itemId: item.id,
+        itemName: item.name,
+        slot: item.slot,
+        enchantment: enchWithModifier,
+        parsedValue: parseModifierValue(enchWithModifier.modifier),
+        owner,
+        normalizedName: normalizeString(enchWithModifier.name),
+        normalizedBonus: getBonus(enchWithModifier.bonus)
+      })
+    }
+
+    const ritualTable = slottedRitualTable?.[item.id]
+    if (ritualTable) {
+      const enchWithModifier = {
+        ...ritualTable,
+        modifier: ritualTable.modifier || 'Enhancement'
+      }
+      allEnchantments.push({
+        itemId: item.id,
+        itemName: item.name,
+        slot: item.slot,
+        enchantment: enchWithModifier,
+        parsedValue: parseModifierValue(enchWithModifier.modifier),
+        owner,
+        normalizedName: normalizeString(enchWithModifier.name),
+        normalizedBonus: getBonus(enchWithModifier.bonus)
       })
     }
 
@@ -197,7 +242,9 @@ export const checkPotentialConflict = (
   slottedAugments?: Record<
     string,
     Record<number, import('./types').GearAugment | null>
-  >
+  >,
+  slottedNearlyFinished?: Record<string, LootEnchantment | null>,
+  slottedRitualTable?: Record<string, LootEnchantment | null>
 ): { isConflict: boolean; currentMax: number; isRedundant: boolean } => {
   const parsedValue = parseModifierValue(enchantment.modifier)
   const normalizedTargetName = normalizeString(enchantment.name)
@@ -207,25 +254,64 @@ export const checkPotentialConflict = (
   let currentMax = -Infinity
   let foundMatch = false
 
-  equippedItems.forEach((item) => {
+  equippedItems?.forEach((item) => {
     if (getSlotOwner(item.slot) !== targetOwner) {
       return
     }
 
     // Check inherent enchantments
-    item.enchantments?.forEach((ench) => {
+    item.enchantments
+      ?.filter(
+        (e) =>
+          e.name !== 'Nearly Finished' &&
+          e.name !== 'Sealed in Fire' &&
+          e.name !== 'Sealed in Undeath'
+      )
+      .forEach((ench) => {
+        if (
+          normalizeString(ench.name) === normalizedTargetName &&
+          getBonus(ench.bonus) === normalizedTargetBonus
+        ) {
+          foundMatch = true
+          const val = parseModifierValue(ench.modifier)
+
+          if (val > currentMax) {
+            currentMax = val
+          }
+        }
+      })
+
+    // Check nearly finished
+    const nearlyFinished = slottedNearlyFinished?.[item.id]
+    if (nearlyFinished) {
       if (
-        normalizeString(ench.name) === normalizedTargetName &&
-        getBonus(ench.bonus) === normalizedTargetBonus
+        normalizeString(nearlyFinished.name) === normalizedTargetName &&
+        getBonus(nearlyFinished.bonus) === normalizedTargetBonus
       ) {
         foundMatch = true
-        const val = parseModifierValue(ench.modifier)
+        const val = parseModifierValue(nearlyFinished.modifier ?? 'Enhancement')
 
         if (val > currentMax) {
           currentMax = val
         }
       }
-    })
+    }
+
+    // Check ritual table
+    const ritualTable = slottedRitualTable?.[item.id]
+    if (ritualTable) {
+      if (
+        normalizeString(ritualTable.name) === normalizedTargetName &&
+        getBonus(ritualTable.bonus) === normalizedTargetBonus
+      ) {
+        foundMatch = true
+        const val = parseModifierValue(ritualTable.modifier ?? 'Enhancement')
+
+        if (val > currentMax) {
+          currentMax = val
+        }
+      }
+    }
 
     // Check slotted augments
     if (slottedAugments?.[item.id]) {

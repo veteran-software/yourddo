@@ -21,6 +21,8 @@ import {
   setGemSetBonus as setGemSetBonusAction,
   setItemMaterial as setItemMaterialAction,
   setItemMinLevel as setItemMinLevelAction,
+  setNearlyFinishedEnchantment as setNearlyFinishedEnchantmentAction,
+  setRitualTableEnchantment as setRitualTableEnchantmentAction,
   setUnlockedFiligreeSlots as setUnlockedFiligreeSlotsAction
 } from '../../../redux/slices/gearPlannerSlice.ts'
 import { getTroveKey } from '../../../utils/troveUtils.ts'
@@ -30,6 +32,8 @@ import EnchantmentList from '../components/EnchantmentList.tsx'
 import EssenceCraftingSelector from '../components/EssenceCraftingSelector.tsx'
 import GemSetBonusSelector from '../components/GetSetBonusSelector.tsx'
 import ItemSetBonusDisplay from '../components/ItemSetBonusDisplay.tsx'
+import NearlyFinishedSelector from '../components/NearlyFinishedSelector.tsx'
+import RitualTableSelector from '../components/RitualTableSelector.tsx'
 import TroveBadge from '../components/TroveBadge.tsx'
 import {
   checkPotentialConflict,
@@ -406,18 +410,51 @@ const useGearPlanner = (props: Props) => {
   }, [druidPet.slots, activeSetup?.classes])
 
   const characterConflicts = useMemo(
-    () => resolveConflicts(characterEquipped, activeSetup?.slottedAugments),
-    [characterEquipped, activeSetup?.slottedAugments]
+    () =>
+      resolveConflicts(
+        characterEquipped,
+        activeSetup?.slottedAugments,
+        activeSetup?.slottedNearlyFinished,
+        activeSetup?.slottedRitualTable
+      ),
+    [
+      characterEquipped,
+      activeSetup?.slottedAugments,
+      activeSetup?.slottedNearlyFinished,
+      activeSetup?.slottedRitualTable
+    ]
   )
 
   const artificerConflicts = useMemo(
-    () => resolveConflicts(artificerEquipped, artificerPet.slottedAugments),
-    [artificerEquipped, artificerPet.slottedAugments]
+    () =>
+      resolveConflicts(
+        artificerEquipped,
+        artificerPet.slottedAugments,
+        artificerPet.slottedNearlyFinished,
+        artificerPet.slottedRitualTable
+      ),
+    [
+      artificerEquipped,
+      artificerPet.slottedAugments,
+      artificerPet.slottedNearlyFinished,
+      artificerPet.slottedRitualTable
+    ]
   )
 
   const druidConflicts = useMemo(
-    () => resolveConflicts(druidEquipped, druidPet.slottedAugments),
-    [druidEquipped, druidPet.slottedAugments]
+    () =>
+      resolveConflicts(
+        druidEquipped,
+        druidPet.slottedAugments,
+        druidPet.slottedNearlyFinished,
+        druidPet.slottedRitualTable
+      ),
+    [
+      druidEquipped,
+      druidPet.slottedAugments,
+      druidPet.slottedNearlyFinished,
+      druidPet.slottedRitualTable
+    ]
   )
 
   const getContextInfo = useCallback(
@@ -427,24 +464,32 @@ const useGearPlanner = (props: Props) => {
       let currentEquipped = characterEquipped
       let currentSlottedAugments = activeSetup?.slottedAugments
       let currentSlottedFiligrees = activeSetup?.slottedFiligrees
+      let currentSlottedNearlyFinished = activeSetup?.slottedNearlyFinished
+      let currentSlottedRitualTable = activeSetup?.slottedRitualTable
 
       if (owner === 'artificer_pet') {
         currentConflicts = artificerConflicts
         currentEquipped = artificerEquipped
         currentSlottedAugments = artificerPet.slottedAugments
         currentSlottedFiligrees = artificerPet.slottedFiligrees
+        currentSlottedNearlyFinished = artificerPet.slottedNearlyFinished
+        currentSlottedRitualTable = artificerPet.slottedRitualTable
       } else if (owner === 'druid_pet') {
         currentConflicts = druidConflicts
         currentEquipped = druidEquipped
         currentSlottedAugments = druidPet.slottedAugments
         currentSlottedFiligrees = druidPet.slottedFiligrees
+        currentSlottedNearlyFinished = druidPet.slottedNearlyFinished
+        currentSlottedRitualTable = druidPet.slottedRitualTable
       }
 
       return {
         currentConflicts,
         currentEquipped,
         currentSlottedAugments,
-        currentSlottedFiligrees
+        currentSlottedFiligrees,
+        currentSlottedNearlyFinished,
+        currentSlottedRitualTable
       }
     },
     [
@@ -456,24 +501,37 @@ const useGearPlanner = (props: Props) => {
       druidEquipped,
       activeSetup?.slottedAugments,
       activeSetup?.slottedFiligrees,
+      activeSetup?.slottedNearlyFinished,
+      activeSetup?.slottedRitualTable,
       artificerPet.slottedAugments,
       artificerPet.slottedFiligrees,
+      artificerPet.slottedNearlyFinished,
+      artificerPet.slottedRitualTable,
       druidPet.slottedAugments,
-      druidPet.slottedFiligrees
+      druidPet.slottedFiligrees,
+      druidPet.slottedNearlyFinished,
+      druidPet.slottedRitualTable
     ]
   )
 
   const isItemConflicting = useCallback(
     (item: GearItem, slot: GearSlot) => {
       if (!item.enchantments) return false
-      const { currentEquipped, currentSlottedAugments } = getContextInfo(slot)
+      const {
+        currentEquipped,
+        currentSlottedAugments,
+        currentSlottedNearlyFinished,
+        currentSlottedRitualTable
+      } = getContextInfo(slot)
 
       return item.enchantments.some((ench) => {
         const potential = checkPotentialConflict(
           ench,
           currentEquipped,
           slot,
-          currentSlottedAugments
+          currentSlottedAugments,
+          currentSlottedNearlyFinished,
+          currentSlottedRitualTable
         )
         return potential.isConflict && potential.isRedundant
       })
@@ -1269,6 +1327,22 @@ const useGearPlanner = (props: Props) => {
     dispatch(setItemMaterialAction({ itemId, material, slot }))
   }
 
+  const setNearlyFinishedEnchantment = (
+    itemId: string,
+    enchantment: LootEnchantment | null,
+    slot?: GearSlot
+  ) => {
+    dispatch(setNearlyFinishedEnchantmentAction({ itemId, enchantment, slot }))
+  }
+
+  const setRitualTableEnchantment = (
+    itemId: string,
+    enchantment: LootEnchantment | null,
+    slot?: GearSlot
+  ) => {
+    dispatch(setRitualTableEnchantmentAction({ itemId, enchantment, slot }))
+  }
+
   /**
    * Determines applicable augments for a given slot type and item minimum level.
    *
@@ -1387,22 +1461,30 @@ const useGearPlanner = (props: Props) => {
     let currentConflicts = characterConflicts
     let currentEquipped = characterEquipped
     let currentSlottedAugments = activeSetup.slottedAugments
+    let currentSlottedNearlyFinished = activeSetup.slottedNearlyFinished
+    let currentSlottedRitualTable = activeSetup.slottedRitualTable
 
     if (owner === 'character') {
       selectedItem = setup.slots[slot]
       currentConflicts = characterConflicts
       currentEquipped = characterEquipped
       currentSlottedAugments = activeSetup.slottedAugments
+      currentSlottedNearlyFinished = activeSetup.slottedNearlyFinished
+      currentSlottedRitualTable = activeSetup.slottedRitualTable
     } else if (owner === 'artificer_pet') {
       selectedItem = artificerPet.slots[slot]
       currentConflicts = artificerConflicts
       currentEquipped = artificerEquipped
       currentSlottedAugments = artificerPet.slottedAugments
+      currentSlottedNearlyFinished = artificerPet.slottedNearlyFinished
+      currentSlottedRitualTable = artificerPet.slottedRitualTable
     } else if (owner === 'druid_pet') {
       selectedItem = druidPet.slots[slot]
       currentConflicts = druidConflicts
       currentEquipped = druidEquipped
       currentSlottedAugments = druidPet.slottedAugments
+      currentSlottedNearlyFinished = druidPet.slottedNearlyFinished
+      currentSlottedRitualTable = druidPet.slottedRitualTable
     }
 
     return (
@@ -1479,7 +1561,11 @@ const useGearPlanner = (props: Props) => {
                     >
                       <EnchantmentList
                         enchantments={selectedItem.enchantments.filter(
-                          (e) => e.name !== 'Craftable Rune Arm'
+                          (e) =>
+                            e.name !== 'Craftable Rune Arm' &&
+                            e.name !== 'Nearly Finished' &&
+                            e.name !== 'Sealed in Fire' &&
+                            e.name !== 'Sealed in Undeath'
                         )}
                         itemId={selectedItem.id}
                         conflicts={currentConflicts}
@@ -1487,9 +1573,43 @@ const useGearPlanner = (props: Props) => {
                         source='slot'
                         browsingSlot={slot}
                         slottedAugments={currentSlottedAugments}
+                        slottedNearlyFinished={currentSlottedNearlyFinished}
+                        slottedRitualTable={currentSlottedRitualTable}
                       />
                     </div>
                   )}
+
+                {selectedItem.enchantments?.some(
+                  (e) => e.name === 'Nearly Finished'
+                ) && (
+                  <NearlyFinishedSelector
+                    item={selectedItem}
+                    slot={slot}
+                    selectedEnchantment={
+                      currentSlottedNearlyFinished[selectedItem.id] || null
+                    }
+                    onSelect={(ench) =>
+                      { setNearlyFinishedEnchantment(selectedItem.id, ench, slot); }
+                    }
+                    troveData={troveData}
+                  />
+                )}
+
+                {selectedItem.enchantments?.some(
+                  (e) => e.name === 'Sealed in Fire' || e.name === 'Sealed in Undeath'
+                ) && (
+                  <RitualTableSelector
+                    item={selectedItem}
+                    slot={slot}
+                    selectedEnchantment={
+                      currentSlottedRitualTable[selectedItem.id] || null
+                    }
+                    onSelect={(ench) =>
+                      { setRitualTableEnchantment(selectedItem.id, ench, slot); }
+                    }
+                    troveData={troveData}
+                  />
+                )}
 
                 {selectedItem.type === 'Crafted' &&
                   selectedItem.id.startsWith('essence-crafted-') && (
@@ -1636,6 +1756,9 @@ const useGearPlanner = (props: Props) => {
                                       source='slot'
                                       browsingSlot={slot}
                                       slottedAugments={currentSlottedAugments}
+                                      slottedNearlyFinished={
+                                        currentSlottedNearlyFinished
+                                      }
                                     />
                                   </div>
                                 )}

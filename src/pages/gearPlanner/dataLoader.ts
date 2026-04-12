@@ -365,6 +365,10 @@ export const loadGearData = (): Promise<{
       }
     }
 
+    if (item.pageTitle && item.pageTitle.includes('(Upgraded)')) {
+      return
+    }
+
     const key = `${item.name}|${item.minLevel}|${item.slot}`
     if (!seenKeys.has(key)) {
       allItems.push(item)

@@ -4136,7 +4136,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Strength +15',
+        name: 'Strength',
         modifier: 15,
         bonus: 'Enhancement'
       }
@@ -4161,7 +4161,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Dexterity +15',
+        name: 'Dexterity',
         modifier: 15,
         bonus: 'Enhancement'
       }
@@ -4186,7 +4186,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Constitution +15',
+        name: 'Constitution',
         modifier: 15,
         bonus: 'Enhancement'
       }
@@ -4211,7 +4211,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Intelligence +15',
+        name: 'Intelligence',
         modifier: 15,
         bonus: 'Enhancement'
       }
@@ -4236,7 +4236,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Wisdom +15',
+        name: 'Wisdom',
         modifier: 15,
         bonus: 'Enhancement'
       }
@@ -4261,7 +4261,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Charisma +15',
+        name: 'Charisma',
         modifier: 15,
         bonus: 'Enhancement'
       }
@@ -4285,7 +4285,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Strength +7',
+        name: 'Strength',
         modifier: 7,
         bonus: 'Insight'
       }
@@ -4310,7 +4310,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Dexterity +7',
+        name: 'Dexterity',
         modifier: 7,
         bonus: 'Insight'
       }
@@ -4335,7 +4335,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Constitution +7',
+        name: 'Constitution',
         modifier: 7,
         bonus: 'Insight'
       }
@@ -4360,7 +4360,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Intelligence +7',
+        name: 'Intelligence',
         modifier: 7,
         bonus: 'Insight'
       }
@@ -4384,7 +4384,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Wisdom +7',
+        name: 'Wisdom',
         modifier: 7,
         bonus: 'Insight'
       }
@@ -4408,7 +4408,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Charisma +7',
+        name: 'Charisma',
         modifier: 7,
         bonus: 'Insight'
       }
@@ -4432,7 +4432,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Strength +3',
+        name: 'Strength',
         modifier: 3,
         bonus: 'Quality'
       }
@@ -4457,7 +4457,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Dexterity +3',
+        name: 'Dexterity',
         modifier: 3,
         bonus: 'Quality'
       }
@@ -4482,7 +4482,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Constitution +3',
+        name: 'Constitution',
         modifier: 3,
         bonus: 'Quality'
       }
@@ -4507,7 +4507,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Intelligence +3',
+        name: 'Intelligence',
         modifier: 3,
         bonus: 'Quality'
       }
@@ -4531,7 +4531,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Wisdom +3',
+        name: 'Wisdom',
         modifier: 3,
         bonus: 'Quality'
       }
@@ -4555,7 +4555,7 @@ export const ritualTable: CraftingIngredient[] = [
     quantity: 1,
     effectsAdded: [
       {
-        name: 'Charisma +3',
+        name: 'Charisma',
         modifier: 3,
         bonus: 'Quality'
       }

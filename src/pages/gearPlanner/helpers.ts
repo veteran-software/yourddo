@@ -46,16 +46,43 @@ export const aggregateEnchantmentEntries = (
   filigrees: (GearItem | null)[] | undefined,
   slottedEssenceEnchantments?: Record<string, Record<string, string | null>>,
   essenceEnchantments?: EssenceEnchantment[],
-  activeSetEnhancements?: { ench: LootEnchantment; sourceName: string }[]
+  activeSetEnhancements?: { ench: LootEnchantment; sourceName: string }[],
+  slottedNearlyFinished?: Record<string, LootEnchantment | null>,
+  slottedRitualTable?: Record<string, LootEnchantment | null>
 ) => {
   const entries: { ench: LootEnchantment; sourceName: string }[] = (
     item.enchantments ?? []
   )
-    .filter((e) => e.name !== 'Craftable Rune Arm')
+    .filter(
+      (e) =>
+        e.name !== 'Craftable Rune Arm' &&
+        e.name !== 'Nearly Finished' &&
+        e.name !== 'Sealed in Fire' &&
+        e.name !== 'Sealed in Undeath'
+    )
     .map((e) => ({
       ench: e,
       sourceName: item.name
     }))
+
+  const nearlyFinished = slottedNearlyFinished?.[item.id]
+  if (nearlyFinished) {
+    entries.push({
+      ench: {
+        ...nearlyFinished,
+        modifier: nearlyFinished.modifier || 'Enhancement'
+      },
+      sourceName: item.name
+    })
+  }
+
+  const ritualTable = slottedRitualTable?.[item.id]
+  if (ritualTable) {
+    entries.push({
+      ench: { ...ritualTable, modifier: ritualTable.modifier || 'Enhancement' },
+      sourceName: item.name
+    })
+  }
 
   addAugmentEntries(entries, item.name, itemAugs)
   addCurseEntries(entries, item.name, curse)

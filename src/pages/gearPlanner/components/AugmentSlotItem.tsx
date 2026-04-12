@@ -42,23 +42,26 @@ const AugmentSlotItem = (props: Props) => {
 
   return (
     <div key={idx} className='mx-n2 px-2 py-1 mb-1 bg-white last-child-mb-0'>
-      <div className='d-flex align-items-center justify-content-between mb-1'>
-        <span className='text-dark fw-bold' style={{ fontSize: '0.6rem' }}>
+      <div className='d-flex align-items-center justify-content-between mb-0 mt-n1'>
+        <span
+          className='text-dark fw-bold d-flex flex-row justify-content-between w-100'
+          style={{ fontSize: '0.6rem' }}
+        >
           {augSlot.name ?? `${augSlot.augmentType} Slot`}
+          {troveData && Object.keys(troveData).length > 0 && (
+            <Form.Check
+              type='checkbox'
+              id={`show-owned-only-aug-${selectedItem.id}-${String(idx)}`}
+              label='Owned only'
+              checked={showOwnedOnly}
+              onChange={(e) => {
+                setShowOwnedOnly(e.target.checked)
+              }}
+              className='small text-warning pb-0 mb-0'
+              style={{ fontSize: '0.55rem' }}
+            />
+          )}
         </span>
-        {troveData && Object.keys(troveData).length > 0 && (
-          <Form.Check
-            type='checkbox'
-            id={`show-owned-only-aug-${selectedItem.id}-${String(idx)}`}
-            label='Owned only'
-            checked={showOwnedOnly}
-            onChange={(e) => {
-              setShowOwnedOnly(e.target.checked)
-            }}
-            className='small text-warning'
-            style={{ fontSize: '0.55rem' }}
-          />
-        )}
       </div>
 
       <Dropdown className='w-100 flex-shrink-0'>

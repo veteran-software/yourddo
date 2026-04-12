@@ -21,6 +21,8 @@ interface PetState {
   unlockedFiligreeSlots: Record<string, number>
   slottedGemSetBonuses: Record<string, (string | null)[]>
   slottedEssenceEnchantments: Record<string, Record<string, string | null>>
+  slottedNearlyFinished: Record<string, LootEnchantment | null>
+  slottedRitualTable: Record<string, LootEnchantment | null>
 }
 
 interface GearPlannerState {
@@ -37,7 +39,9 @@ const initialPetState = (): PetState => ({
   slottedFiligrees: {},
   unlockedFiligreeSlots: {},
   slottedGemSetBonuses: {},
-  slottedEssenceEnchantments: {}
+  slottedEssenceEnchantments: {},
+  slottedNearlyFinished: {},
+  slottedRitualTable: {}
 })
 
 const initialState: GearPlannerState = {
@@ -58,7 +62,9 @@ const initialState: GearPlannerState = {
       slottedFiligrees: {},
       unlockedFiligreeSlots: {},
       slottedGemSetBonuses: {},
-      slottedEssenceEnchantments: {}
+      slottedEssenceEnchantments: {},
+      slottedNearlyFinished: {},
+      slottedRitualTable: {}
     }
   ],
   activeSetupId: 'default',
@@ -113,6 +119,8 @@ const gearPlannerSlice = createSlice({
       if (!setup.slottedGemSetBonuses) setup.slottedGemSetBonuses = {}
       if (!setup.slottedEssenceEnchantments)
         setup.slottedEssenceEnchantments = {}
+      if (!setup.slottedNearlyFinished) setup.slottedNearlyFinished = {}
+      if (!setup.slottedRitualTable) setup.slottedRitualTable = {}
       state.characterSetups.push(setup)
     },
     removeSetup: (state, action: PayloadAction<string>) => {
@@ -423,6 +431,70 @@ const gearPlannerSlice = createSlice({
         updateEssence(state.druidPet)
       }
     },
+    setNearlyFinishedEnchantment: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        enchantment: LootEnchantment | null
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, enchantment, slot } = action.payload
+      let owner: SlotOwner = 'character'
+
+      if (slot) {
+        owner = getSlotOwner(slot)
+      }
+
+      const updateNearlyFinished = (petState: PetState) => {
+        petState.slottedNearlyFinished[itemId] = enchantment
+      }
+
+      if (owner === 'character') {
+        const setup = state.characterSetups.find(
+          (s) => s.id === state.activeSetupId
+        )
+        if (setup) {
+          setup.slottedNearlyFinished[itemId] = enchantment
+        }
+      } else if (owner === 'artificer_pet') {
+        updateNearlyFinished(state.artificerPet)
+      } else if (owner === 'druid_pet') {
+        updateNearlyFinished(state.druidPet)
+      }
+    },
+    setRitualTableEnchantment: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        enchantment: LootEnchantment | null
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, enchantment, slot } = action.payload
+      let owner: SlotOwner = 'character'
+
+      if (slot) {
+        owner = getSlotOwner(slot)
+      }
+
+      const updateRitualTable = (petState: PetState) => {
+        petState.slottedRitualTable[itemId] = enchantment
+      }
+
+      if (owner === 'character') {
+        const setup = state.characterSetups.find(
+          (s) => s.id === state.activeSetupId
+        )
+        if (setup) {
+          setup.slottedRitualTable[itemId] = enchantment
+        }
+      } else if (owner === 'artificer_pet') {
+        updateRitualTable(state.artificerPet)
+      } else if (owner === 'druid_pet') {
+        updateRitualTable(state.druidPet)
+      }
+    },
     setItemMinLevel: (
       state,
       action: PayloadAction<{
@@ -522,6 +594,8 @@ export const {
   setUnlockedFiligreeSlots,
   setGemSetBonus,
   setEssenceEnchantment,
+  setNearlyFinishedEnchantment,
+  setRitualTableEnchantment,
   setItemMinLevel,
   setItemMaterial
 } = gearPlannerSlice.actions
