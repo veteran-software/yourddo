@@ -32,8 +32,7 @@ import {
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
-import EnchantmentSearchOffcanvas
-  from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import FiligreeModal from './components/FiligreeModal.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
@@ -79,6 +78,7 @@ const GearPlanner = () => {
   const { troveData } = useAppSelector((state) => state.app)
 
   const [showConflicts, setShowConflicts] = useState(true)
+  const [showOwnedOnly, setShowOwnedOnly] = useState(false)
   const [showPermalink, setShowPermalink] = useState(false)
   const [filigreeTarget, setFiligreeTarget] = useState<{
     item: GearItem
@@ -92,7 +92,8 @@ const GearPlanner = () => {
     enchantmentSearch,
     itemNameSearch,
     setBonusFilter,
-    showConflicts
+    showConflicts,
+    showOwnedOnly
   })
 
   const {
@@ -782,6 +783,8 @@ const GearPlanner = () => {
           setEnchantmentSearch={setEnchantmentSearch}
           showConflicts={showConflicts}
           setShowConflicts={setShowConflicts}
+          showOwnedOnly={showOwnedOnly}
+          setShowOwnedOnly={setShowOwnedOnly}
           troveData={troveData}
           currentSlottedFiligrees={
             gpHook.getContextInfo(gpHook.browsingSlot ?? '')
@@ -790,7 +793,12 @@ const GearPlanner = () => {
           {...gpHook}
         />
 
-        <SetBonusBrowserOffcanvas troveData={troveData} {...gpHook} />
+        <SetBonusBrowserOffcanvas
+          showOwnedOnly={showOwnedOnly}
+          setShowOwnedOnly={setShowOwnedOnly}
+          troveData={troveData}
+          {...gpHook}
+        />
 
         {filigreeTarget && (
           <FiligreeModal
@@ -810,8 +818,11 @@ const GearPlanner = () => {
         <ItemBrowserOffcanvas
           showConflicts={showConflicts}
           setShowConflicts={setShowConflicts}
+          showOwnedOnly={showOwnedOnly}
+          setShowOwnedOnly={setShowOwnedOnly}
           setBonusFilter={setBonusFilter}
           setSetBonusFilter={setSetBonusFilter}
+          troveData={troveData}
           {...gpHook}
         />
 

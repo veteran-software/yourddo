@@ -16,8 +16,10 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
     setEnchantmentSearch,
     setShowConflicts,
     setShowEnchantmentSearch,
+    setShowOwnedOnly,
     showConflicts,
     showEnchantmentSearch,
+    showOwnedOnly,
     troveData
   } = props
 
@@ -65,7 +67,7 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
           )}
         </div>
 
-        <div className='mb-3'>
+        <div className='mb-3 d-flex flex-wrap gap-2'>
           <Form.Check
             type='checkbox'
             id='show-conflicts-search'
@@ -76,6 +78,19 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
             }}
             className='small text-info'
           />
+
+          {troveData && Object.keys(troveData).length > 0 && (
+            <Form.Check
+              type='checkbox'
+              id='show-owned-only-search'
+              label='Show owned items only'
+              checked={showOwnedOnly}
+              onChange={(e) => {
+                setShowOwnedOnly(e.target.checked)
+              }}
+              className='small text-warning'
+            />
+          )}
         </div>
 
         <div
@@ -137,6 +152,8 @@ interface Props {
   setEnchantmentSearch: (search: string) => void
   showConflicts: boolean
   setShowConflicts: (show: boolean) => void
+  showOwnedOnly: boolean
+  setShowOwnedOnly: (show: boolean) => void
   searchResultsBySlot: Record<string, GearItem[]> | null
   currentSlottedFiligrees: Record<string, (GearItem | null)[]>
   getContextInfo: (slot: string) => {

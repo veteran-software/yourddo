@@ -1,6 +1,7 @@
 import { type RefObject } from 'react'
 import { Form, Offcanvas } from 'react-bootstrap'
 import { FaXmark } from 'react-icons/fa6'
+import type { ItemRollup } from '../../../components/trove/types.ts'
 import type { EnchantmentConflict } from '../conflictResolver'
 import useItemBrowser from '../hooks/useItemBrowser.tsx'
 import {
@@ -12,7 +13,6 @@ import {
 
 const ItemBrowserOffcanvas = (props: Props) => {
   const {
-    activeSetup,
     browsingSlot,
     filteredItems,
     filteredItemSets,
@@ -23,9 +23,12 @@ const ItemBrowserOffcanvas = (props: Props) => {
     setBonusFilter,
     setSetBonusFilter,
     setShowConflicts,
+    setShowOwnedOnly,
     showConflicts,
+    showOwnedOnly,
     itemNameSearch,
-    setItemNameSearch
+    setItemNameSearch,
+    troveData
   } = props
 
   const { renderCategorizedItems } = useItemBrowser({ ...props })
@@ -48,21 +51,32 @@ const ItemBrowserOffcanvas = (props: Props) => {
         {browsingSlot && (
           <>
             <div className='mb-3'>
-              <div className='d-flex justify-content-between align-items-center mb-2'>
-                <span className='text-light small'>
-                  Levels {activeSetup.minLevel}-{activeSetup.maxLevel}
-                </span>
+              <div className='d-flex flex-column gap-1 mb-2'>
+                <div className='d-flex justify-content-between align-items-center'>
+                  <Form.Check
+                    type='checkbox'
+                    id='show-conflicts-browser'
+                    label='Show conflicting'
+                    checked={showConflicts}
+                    onChange={(e) => {
+                      setShowConflicts(e.target.checked)
+                    }}
+                    className='small text-info'
+                  />
 
-                <Form.Check
-                  type='checkbox'
-                  id='show-conflicts-browser'
-                  label='Show conflicting'
-                  checked={showConflicts}
-                  onChange={(e) => {
-                    setShowConflicts(e.target.checked)
-                  }}
-                  className='small text-info'
-                />
+                  {troveData && Object.keys(troveData).length > 0 && (
+                    <Form.Check
+                      type='checkbox'
+                      id='show-owned-only-browser'
+                      label='Show owned items only'
+                      checked={showOwnedOnly}
+                      onChange={(e) => {
+                        setShowOwnedOnly(e.target.checked)
+                      }}
+                      className='small text-warning'
+                    />
+                  )}
+                </div>
               </div>
 
               <Form.Group className='mb-3'>
@@ -146,6 +160,8 @@ interface Props {
   activeSetup: GearSetup
   showConflicts: boolean
   setShowConflicts: (show: boolean) => void
+  showOwnedOnly: boolean
+  setShowOwnedOnly: (show: boolean) => void
   setBonusFilter: string | null
   setSetBonusFilter: (filter: string | null) => void
   filteredItemSets: string[]
@@ -160,6 +176,7 @@ interface Props {
   observerTarget: RefObject<HTMLDivElement | null>
   itemNameSearch: string
   setItemNameSearch: (search: string) => void
+  troveData: ItemRollup | null
 }
 
 export default ItemBrowserOffcanvas

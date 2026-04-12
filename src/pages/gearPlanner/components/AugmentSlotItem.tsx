@@ -1,6 +1,7 @@
 import React from 'react'
-import { Dropdown } from 'react-bootstrap'
+import { Dropdown, Form } from 'react-bootstrap'
 import { useAppSelector } from '../../../redux/hooks.ts'
+import { getTroveKey } from '../../../utils/troveUtils.ts'
 import {
   checkPotentialConflict,
   type EnchantmentConflict
@@ -32,13 +33,32 @@ const AugmentSlotItem = (props: Props) => {
   } = props
 
   const { troveData } = useAppSelector((state) => state.app)
+  const [showOwnedOnly, setShowOwnedOnly] = React.useState(false)
+
+  const filterApplicable = (group: GearAugment[]) => {
+    if (!showOwnedOnly || !troveData) return group
+    return group.filter((aug) => !!troveData[getTroveKey(aug.name)])
+  }
 
   return (
     <div key={idx} className='mx-n2 px-2 py-1 mb-1 bg-white last-child-mb-0'>
-      <div className='d-flex align-items-center gap-1 mb-1'>
+      <div className='d-flex align-items-center justify-content-between mb-1'>
         <span className='text-dark fw-bold' style={{ fontSize: '0.6rem' }}>
           {augSlot.name ?? `${augSlot.augmentType} Slot`}
         </span>
+        {troveData && Object.keys(troveData).length > 0 && (
+          <Form.Check
+            type='checkbox'
+            id={`show-owned-only-aug-${selectedItem.id}-${String(idx)}`}
+            label='Owned only'
+            checked={showOwnedOnly}
+            onChange={(e) => {
+              setShowOwnedOnly(e.target.checked)
+            }}
+            className='small text-warning'
+            style={{ fontSize: '0.55rem' }}
+          />
+        )}
       </div>
 
       <Dropdown className='w-100 flex-shrink-0'>
@@ -82,7 +102,7 @@ const AugmentSlotItem = (props: Props) => {
                 {groupName} Augments
               </Dropdown.Header>
 
-              {applicable.groups[groupName].map((aug) => {
+              {filterApplicable(applicable.groups[groupName]).map((aug) => {
                 const hasConflict = aug.effectsAdded?.some((ench) => {
                   const pot = checkPotentialConflict(
                     ench,

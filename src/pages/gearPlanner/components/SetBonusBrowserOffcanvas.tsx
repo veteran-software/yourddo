@@ -27,6 +27,8 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
     setBrowsingSet,
     setShowSetBonusBrowser,
     showSetBonusBrowser,
+    showOwnedOnly,
+    setShowOwnedOnly,
     troveData,
     itemNameSearch,
     setItemNameSearch
@@ -48,9 +50,23 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
 
       <Offcanvas.Body className='bg-dark text-white p-3'>
         <Form.Group className='mb-3'>
-          <Form.Label className='small text-info fw-bold'>
-            Search Items
-          </Form.Label>
+          <div className='d-flex justify-content-between align-items-center mb-1'>
+            <Form.Label className='small text-info fw-bold mb-0'>
+              Search Items
+            </Form.Label>
+            {troveData && Object.keys(troveData).length > 0 && (
+              <Form.Check
+                type='checkbox'
+                id='show-owned-only-set-browser'
+                label='Show owned items only'
+                checked={showOwnedOnly}
+                onChange={(e) => {
+                  setShowOwnedOnly(e.target.checked)
+                }}
+                className='small text-warning'
+              />
+            )}
+          </div>
 
           <Form.Control
             type='text'
@@ -141,6 +157,14 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                   const itemLevel = Number(item.minLevel) || 1
                   if (itemLevel < min || itemLevel > max) return false
                   if (!isItemVisibleForClasses(item, activeSetup)) return false
+
+                  // Owned Only filter
+                  if (showOwnedOnly && troveData) {
+                    if (!troveData[getTroveKey(item.name)]) {
+                      return false
+                    }
+                  }
+
                   if (itemNameSearch) {
                     const searchLower = itemNameSearch.toLowerCase().trim()
                     if (
@@ -255,6 +279,8 @@ interface Props {
   }
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   openSetBonusBrowser: (setName: string) => void
+  showOwnedOnly: boolean
+  setShowOwnedOnly: (show: boolean) => void
   troveData: ItemRollup | null
   itemNameSearch: string
   setItemNameSearch: (search: string) => void

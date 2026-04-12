@@ -71,8 +71,13 @@ import {
  * - State variables for tracking current slot browsing, conflict states, available items, display settings, and more.
  */
 const useGearPlanner = (props: Props) => {
-  const { enchantmentSearch, itemNameSearch, setBonusFilter, showConflicts } =
-    props
+  const {
+    enchantmentSearch,
+    itemNameSearch,
+    setBonusFilter,
+    showConflicts,
+    showOwnedOnly
+  } = props
 
   const dispatch = useAppDispatch()
   const {
@@ -470,6 +475,134 @@ const useGearPlanner = (props: Props) => {
     [getContextInfo]
   )
 
+  const weaponFilterMatches = useCallback(
+    (targetSlot: GearSlot, item: GearItem, setup: GearSetup) => {
+      if (targetSlot === GearSlot.MainHand || targetSlot === GearSlot.OffHand) {
+        // If the item is a weapon, it must match a weapon filter
+        const isWeapon =
+          Object.values(WEAPON_TYPES).flat().includes(item.type) ||
+          (item.type === 'Gloves' &&
+            item.name.toLowerCase().includes('handwraps'))
+        if (isWeapon) {
+          if (setup.weaponFilters.length === 0) {
+            // If no filters are checked, display all weapons
+            return true
+          }
+          return setup.weaponFilters.some((w) => {
+            const weaponPart = w.toLowerCase()
+            const typeLower = item.type.toLowerCase()
+            const nameLower = item.name.toLowerCase()
+            return (
+              typeLower === weaponPart ||
+              (weaponPart === 'handwraps' &&
+                (item.type === 'Gloves' || typeLower === 'handwraps')) ||
+              (item.type === 'Weapon' && nameLower.includes(weaponPart))
+            )
+          })
+        }
+      }
+      return true
+    },
+    []
+  )
+
+  const armorFilterMatches = useCallback(
+    (targetSlot: GearSlot, i: GearItem, s: GearSetup) => {
+      if (targetSlot === GearSlot.Armor) {
+        if (s.armorFilters.length > 0) {
+          const isClothFilter = s.armorFilters.includes('Cloth Armor')
+          const matchesCloth =
+            isClothFilter && (i.type === 'Robe' || i.type === 'Outfit')
+          const matchesOther = s.armorFilters.includes(i.type)
+          return matchesCloth || matchesOther
+        } else {
+          // If no armor filters are checked, show all armor
+          return true
+        }
+      }
+      return true
+    },
+    []
+  )
+
+  const otherFilterMatches = useCallback(
+    (
+      targetSlot: GearSlot,
+      i: GearItem,
+      s: GearSetup,
+      ignoreSetFilter: boolean
+    ) => {
+      // Shield Filter
+      if (targetSlot === GearSlot.OffHand) {
+        if (s.shieldFilters.length > 0) {
+          if (!s.shieldFilters.includes(i.type)) return false
+        } else if (i.type === 'Rune Arm' || SHIELD_TYPES.includes(i.type)) {
+          // If no shield filters are selected, show all shields and rune arms
+          return true
+        }
+      }
+
+      // Druid Metal Filter
+      const isDruid = s.classes.includes('Druid')
+      if (isDruid && !s.allowMetalWithDruid) {
+        if (isMetal(i.material)) {
+          // Exceptions for Druids (Sickle and Scimitar are allowed even if metal in DDO usually, but here we follow material)
+          // The user has a toggle for this, so we respect it.
+          return false
+        }
+      }
+
+      // Set Bonus Filter
+      if (!ignoreSetFilter && setBonusFilter) {
+        const combinedIndex = {
+          ...itemSetBonusIndex,
+          ...filigreeSetBonusIndex
+        }
+        const indexedItems = combinedIndex[setBonusFilter]
+        const itemLvl = Number(i.minLevel) || 1
+        return (
+          indexedItems?.some(
+            (ii) => ii.name === i.name && ii.minLevel === itemLvl
+          ) ?? false
+        )
+      }
+      return true
+    },
+    [setBonusFilter, itemSetBonusIndex, filigreeSetBonusIndex, isMetal]
+  )
+
+  const levelMatches = useCallback(
+    (item: GearItem, slot: GearSlot, setup: GearSetup) => {
+      if (slot !== GearSlot.Filigree) {
+        const itemLevel = Number.parseInt(item.minLevel, 10) || 1
+        return itemLevel >= setup.minLevel && itemLevel <= setup.maxLevel
+      }
+      return true
+    },
+    []
+  )
+
+  const ownedOnlyMatches = useCallback(
+    (item: GearItem) => {
+      if (showOwnedOnly && troveData) {
+        return !!troveData[getTroveKey(item.name)]
+      }
+      return true
+    },
+    [showOwnedOnly, troveData]
+  )
+
+  const nameSearchMatches = useCallback(
+    (item: GearItem) => {
+      if (itemNameSearch) {
+        const searchLower = itemNameSearch.toLowerCase().trim()
+        return item.name.toLowerCase().includes(searchLower)
+      }
+      return true
+    },
+    [itemNameSearch]
+  )
+
   const shouldShowItem = useCallback(
     (
       item: GearItem,
@@ -483,144 +616,37 @@ const useGearPlanner = (props: Props) => {
       }
 
       // Level filter
-      if (slot !== GearSlot.Filigree) {
-        const itemLevel = Number.parseInt(item.minLevel, 10) || 1
-        if (itemLevel < setup.minLevel || itemLevel > setup.maxLevel) {
-          return false
-        }
+      if (!levelMatches(item, slot, setup)) {
+        return false
+      }
+
+      // Owned Only filter
+      if (!ownedOnlyMatches(item)) {
+        return false
       }
 
       // Slot filter logic
-      const slotMatches = (targetSlot: GearSlot, i: GearItem) => {
-        // Filigrees are special
-        if (targetSlot === GearSlot.Filigree) {
-          return i.slot === GearSlot.Filigree
-        }
-        // Items are already pre-slotted during data load. Rely on slot alone.
-        return i.slot === targetSlot
-      }
-
-      if (!slotMatches(slot, item)) return false
-
-      // Filters logic
-      const weaponFilterMatches = (
-        targetSlot: GearSlot,
-        i: GearItem,
-        s: GearSetup
-      ) => {
-        if (
-          targetSlot === GearSlot.MainHand ||
-          targetSlot === GearSlot.OffHand
-        ) {
-          // If the item is a weapon, it must match a weapon filter
-          const isWeapon =
-            Object.values(WEAPON_TYPES).flat().includes(i.type) ||
-            (i.type === 'Gloves' && i.name.toLowerCase().includes('handwraps'))
-          if (isWeapon) {
-            if (s.weaponFilters.length === 0) {
-              // If no filters are checked, display all weapons
-              return true
-            }
-            return s.weaponFilters.some((w) => {
-              const weaponPart = w.toLowerCase()
-              const typeLower = i.type.toLowerCase()
-              const nameLower = i.name.toLowerCase()
-              return (
-                typeLower === weaponPart ||
-                (weaponPart === 'handwraps' &&
-                  (i.type === 'Gloves' || typeLower === 'handwraps')) ||
-                (i.type === 'Weapon' && nameLower.includes(weaponPart))
-              )
-            })
-          }
-        }
-        return true
-      }
-
-      const armorFilterMatches = (
-        targetSlot: GearSlot,
-        i: GearItem,
-        s: GearSetup
-      ) => {
-        if (targetSlot === GearSlot.Armor) {
-          if (s.armorFilters.length > 0) {
-            const isClothFilter = s.armorFilters.includes('Cloth Armor')
-            const matchesCloth =
-              isClothFilter && (i.type === 'Robe' || i.type === 'Outfit')
-            const matchesOther = s.armorFilters.includes(i.type)
-            return matchesCloth || matchesOther
-          } else {
-            // If no armor filters are checked, show all armor
-            return true
-          }
-        }
-        return true
-      }
-
-      const otherFilterMatches = (
-        targetSlot: GearSlot,
-        i: GearItem,
-        s: GearSetup
-      ) => {
-        // Shield Filter
-        if (targetSlot === GearSlot.OffHand) {
-          if (s.shieldFilters.length > 0) {
-            if (!s.shieldFilters.includes(i.type)) return false
-          } else if (i.type === 'Rune Arm' || SHIELD_TYPES.includes(i.type)) {
-            // If no shield filters are selected, show all shields and rune arms
-            return true
-          }
-        }
-
-        // Druid Metal Filter
-        const isDruid = s.classes.includes('Druid')
-        if (isDruid && !s.allowMetalWithDruid) {
-          if (isMetal(i.material)) {
-            // Exceptions for Druids (Sickle and Scimitar are allowed even if metal in DDO usually, but here we follow material)
-            // The user has a toggle for this, so we respect it.
-            return false
-          }
-        }
-
-        // Set Bonus Filter
-        if (!ignoreSetFilter && setBonusFilter) {
-          const combinedIndex = {
-            ...itemSetBonusIndex,
-            ...filigreeSetBonusIndex
-          }
-          const indexedItems = combinedIndex[setBonusFilter]
-          const itemLvl = Number(i.minLevel) || 1
-          return (
-            indexedItems?.some(
-              (ii) => ii.name === i.name && ii.minLevel === itemLvl
-            ) ?? false
-          )
-        }
-        return true
+      // Items are already pre-slotted during the data load. Rely on slot alone.
+      if (item.slot !== slot) {
+        return false
       }
 
       if (!weaponFilterMatches(slot, item, setup)) return false
       if (!armorFilterMatches(slot, item, setup)) return false
-      if (!otherFilterMatches(slot, item, setup)) return false
+      if (!otherFilterMatches(slot, item, setup, ignoreSetFilter)) return false
 
       // Item Name Search Filter
-      if (itemNameSearch) {
-        const searchLower = itemNameSearch.toLowerCase().trim()
-        if (!item.name.toLowerCase().includes(searchLower)) {
-          return false
-        }
-      }
-
-      return true
+      return nameSearchMatches(item)
     },
     [
       showConflicts,
       isItemConflicting,
-      isMetal,
-      setBonusFilter,
-      itemSetBonusIndex,
-      filigreeSetBonusIndex,
-      itemNameSearch
+      levelMatches,
+      ownedOnlyMatches,
+      weaponFilterMatches,
+      armorFilterMatches,
+      otherFilterMatches,
+      nameSearchMatches
     ]
   )
 
@@ -806,6 +832,13 @@ const useGearPlanner = (props: Props) => {
     const itemMatchesSearch = (item: GearItem) => {
       if (!activeSetup) return false
 
+      // Owned Only filter
+      if (showOwnedOnly && troveData) {
+        if (!troveData[getTroveKey(item.name)]) {
+          return false
+        }
+      }
+
       // Basic visibility check
       if (!isItemVisibleForClasses(item, activeSetup)) return false
 
@@ -871,7 +904,8 @@ const useGearPlanner = (props: Props) => {
     filigreeSetBonusIndex,
     activeSetup,
     isItemVisibleForClasses,
-    troveData
+    troveData,
+    showOwnedOnly
   ])
 
   /**
@@ -1650,6 +1684,7 @@ interface Props {
   itemNameSearch: string
   setBonusFilter: string | null
   showConflicts: boolean
+  showOwnedOnly: boolean
 }
 
 export default useGearPlanner
