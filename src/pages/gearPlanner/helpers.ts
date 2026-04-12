@@ -235,6 +235,33 @@ const addFiligreeEntries = (
   }
 }
 
+function iterateEnchentments(
+  opt: EssenceEnchantment,
+  minLevel: number,
+  entries: { ench: LootEnchantment; sourceName: string }[],
+  item: GearItem
+) {
+
+    const scalingValue = opt.scalingStats
+      ? opt.scalingStats[
+          Math.max(0, Math.min(opt.scalingStats.length - 1, minLevel - 1))
+        ]
+      : null
+
+    for (const name of displayNames) {
+      entries.push({
+        ench: {
+          ...effect,
+          name: name.trim(),
+          modifier: scalingValue ?? undefined,
+          bonus: opt.bonus ?? effect.bonus
+        },
+        sourceName: `${item.name} (Essence: ${opt.shardName ?? 'UNKNOWN'})`
+      })
+    }
+  }
+}
+
 const addEssenceCraftingEntries = (
   entries: { ench: LootEnchantment; sourceName: string }[],
   item: GearItem,
@@ -250,30 +277,7 @@ const addEssenceCraftingEntries = (
       const opt = essenceEnchantments.find((e) => e.id === enchantmentId)
 
       if (opt) {
-        for (const effect of opt.enchantments) {
-          const rawDisplayName = effect.statModified || effect.name
-          const displayNames = Array.isArray(rawDisplayName)
-            ? rawDisplayName
-            : [rawDisplayName]
-
-          const scalingValue = opt.scalingStats
-            ? opt.scalingStats[
-                Math.max(0, Math.min(opt.scalingStats.length - 1, minLevel - 1))
-              ]
-            : null
-
-          for (const name of displayNames) {
-            entries.push({
-              ench: {
-                ...effect,
-                name: name.trim(),
-                modifier: scalingValue ?? undefined,
-                bonus: opt.bonus ?? effect.bonus
-              },
-              sourceName: `${item.name} (Essence: ${opt.shardName ?? 'UNKNOWN'})`
-            })
-          }
-        }
+        iterateEnchentments(opt, minLevel, entries, item)
       }
     }
   }
