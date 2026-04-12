@@ -112,8 +112,14 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
         statModified?: string
         bonus?: string
         shardName?: string
+        allEnchantments?: {
+          name: string
+          statModified?: string
+          bonus?: string
+        }[]
       }
     >()
+
     phase1Data.forEach((d) => {
       if (d.stat) {
         const info = {
@@ -137,7 +143,7 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
           (e) => e.effectId === entry.effectId
         )
         const phase1Info =
-          phase1Map.get(entry.effectId.toLowerCase()) ||
+          phase1Map.get(entry.effectId.toLowerCase()) ??
           phase1Map.get(entry.enchantmentName.toLowerCase())
 
         const scalingStats = phase1Info?.stat
