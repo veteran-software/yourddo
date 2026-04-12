@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import type { EssenceEnchantment } from '../dataLoader.ts'
@@ -6,7 +6,8 @@ import {
   type GearAugment,
   type GearItem,
   type GearSetup,
-  GearSlot
+  GearSlot,
+  type LootEnchantment
 } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
@@ -21,25 +22,32 @@ const EssenceCraftingSelector = (props: Props) => {
 
   const minLevel = parseInt(selectedItem.minLevel) || 1
 
-  const getFormattedName = (opt: EssenceEnchantment) => {
-    const rawDisplayName =
-      opt.shardName || opt.statModified || opt.enchantmentName
-    const displayName = Array.isArray(rawDisplayName)
-      ? rawDisplayName.join(', ')
-      : rawDisplayName
+  const getFormattedName = useCallback(
+    (opt: EssenceEnchantment) => {
+      const rawDisplayName =
+        opt.shardName ?? opt.statModified ?? opt.enchantmentName
+      const displayName = Array.isArray(rawDisplayName)
+        ? rawDisplayName.join(', ')
+        : rawDisplayName
 
-    if (!opt.scalingStats || opt.scalingStats.length === 0) {
-      return displayName
-    }
+      if (!opt.scalingStats || opt.scalingStats.length === 0) {
+        return displayName
+      }
 
-    const idx = Math.max(0, Math.min(opt.scalingStats.length - 1, minLevel - 1))
-    const value = opt.scalingStats[idx]
+      const idx = Math.max(
+        0,
+        Math.min(opt.scalingStats.length - 1, minLevel - 1)
+      )
+      const value = opt.scalingStats[idx]
 
-    const modifierValue = typeof value === 'number' ? `+${value}` : value
-    const bonusText = opt.bonus ? ` (${opt.bonus})` : ''
+      const modifierValue =
+        typeof value === 'number' ? `+${String(value)}` : value
+      const bonusText = opt.bonus ? ` (${opt.bonus})` : ''
 
-    return `${displayName} ${modifierValue}${bonusText}`
-  }
+      return `${displayName} ${modifierValue}${bonusText}`
+    },
+    [minLevel]
+  )
 
   const prefixOptions = useMemo(
     () =>
@@ -50,7 +58,7 @@ const EssenceCraftingSelector = (props: Props) => {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, minLevel]
+    [essenceEnchantments, getFormattedName]
   )
 
   const suffixOptions = useMemo(
@@ -62,7 +70,7 @@ const EssenceCraftingSelector = (props: Props) => {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, minLevel]
+    [essenceEnchantments, getFormattedName]
   )
 
   // Assuming 'extra' for Mark of House Cannith
@@ -75,7 +83,7 @@ const EssenceCraftingSelector = (props: Props) => {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, minLevel]
+    [essenceEnchantments, getFormattedName]
   )
 
   const renderDropdown = (
@@ -146,26 +154,30 @@ const EssenceCraftingSelector = (props: Props) => {
             style={{ fontSize: '0.6rem', lineHeight: '1.1' }}
           >
             <EnchantmentList
-              enchantments={currentSelection.enchantments.flatMap((e) => {
-                const rawName = e.statModified || e.name
-                const names = Array.isArray(rawName) ? rawName : [rawName]
+              enchantments={currentSelection.enchantments.flatMap(
+                (e: LootEnchantment) => {
+                  const rawName: string = e.statModified ?? e.name
+                  const names: string[] = Array.isArray(rawName)
+                    ? rawName
+                    : [rawName]
 
-                const idx = Math.max(
-                  0,
-                  Math.min(
-                    (currentSelection.scalingStats?.length || 1) - 1,
-                    minLevel - 1
+                  const idx = Math.max(
+                    0,
+                    Math.min(
+                      (currentSelection.scalingStats?.length ?? 1) - 1,
+                      minLevel - 1
+                    )
                   )
-                )
-                const value = currentSelection.scalingStats?.[idx]
+                  const value = currentSelection.scalingStats?.[idx]
 
-                return names.map((name) => ({
-                  ...e,
-                  name: name.trim(),
-                  modifier: value ?? undefined,
-                  bonus: currentSelection.bonus ?? e.bonus
-                }))
-              })}
+                  return names.map((name) => ({
+                    ...e,
+                    name: name.trim(),
+                    modifier: value ?? undefined,
+                    bonus: currentSelection.bonus ?? e.bonus
+                  }))
+                }
+              )}
               itemId={selectedItem.id}
               conflicts={props.currentConflicts}
               equippedItems={props.currentEquipped}
