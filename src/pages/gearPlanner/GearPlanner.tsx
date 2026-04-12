@@ -32,7 +32,8 @@ import {
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
-import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas
+  from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import FiligreeModal from './components/FiligreeModal.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
@@ -407,6 +408,10 @@ const GearPlanner = () => {
                       slottedGemSetBonuses={
                         gpHook.activeSetup.slottedGemSetBonuses
                       }
+                      slottedEssenceEnchantments={
+                        gpHook.activeSetup.slottedEssenceEnchantments
+                      }
+                      essenceEnchantments={gpHook.essenceEnchantments}
                     />
 
                     {setup.classes?.includes('Artificer') &&
@@ -446,6 +451,10 @@ const GearPlanner = () => {
                           slottedGemSetBonuses={
                             artificerPet.slottedGemSetBonuses
                           }
+                          slottedEssenceEnchantments={
+                            artificerPet.slottedEssenceEnchantments
+                          }
+                          essenceEnchantments={gpHook.essenceEnchantments}
                         />
                       </div>
                     )}
@@ -476,6 +485,10 @@ const GearPlanner = () => {
                           slottedCurses={druidPet.slottedCurses}
                           slottedFiligrees={druidPet.slottedFiligrees}
                           slottedGemSetBonuses={druidPet.slottedGemSetBonuses}
+                          slottedEssenceEnchantments={
+                            druidPet.slottedEssenceEnchantments
+                          }
+                          essenceEnchantments={gpHook.essenceEnchantments}
                         />
                       </div>
                     )}
