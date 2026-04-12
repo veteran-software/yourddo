@@ -1,6 +1,6 @@
 import { Accordion, Card, Stack } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
-import { getTroveOwners, normItem } from '../../../utils/troveUtils.ts'
+import { getTroveKey, getTroveOwners } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import { type GearAugment, type GearItem, GearSlot } from '../types.ts'
 import AugmentSlotsList from './AugmentSlotList.tsx'
@@ -72,7 +72,7 @@ const SearchResultSlot = (props: Props) => {
 
             const isEquipped = isEquippedInSlot || !!slottedHostName
 
-            const troveEntry = troveData?.[normItem(item.name)]
+            const troveEntry = troveData?.[getTroveKey(item.name)]
             const owners = troveEntry ? getTroveOwners(troveEntry) : ''
             const showHeader = isEquipped || owners
 

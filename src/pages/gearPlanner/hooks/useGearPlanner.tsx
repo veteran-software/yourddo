@@ -21,7 +21,7 @@ import {
   setGemSetBonus as setGemSetBonusAction,
   setUnlockedFiligreeSlots as setUnlockedFiligreeSlotsAction
 } from '../../../redux/slices/gearPlannerSlice.ts'
-import { normItem } from '../../../utils/troveUtils.ts'
+import { getTroveKey } from '../../../utils/troveUtils.ts'
 import AugmentSlotItem from '../components/AugmentSlotItem.tsx'
 import CurseSlotItem from '../components/CurseSlotItem.tsx'
 import EnchantmentList from '../components/EnchantmentList.tsx'
@@ -182,12 +182,7 @@ const useGearPlanner = (props: Props) => {
         ) => {
           filigreeSetBonusIndex[setName] ??= []
 
-          if (
-            !isFiligreeAlreadyPresent(
-              setName,
-              filigree.name
-            )
-          ) {
+          if (!isFiligreeAlreadyPresent(setName, filigree.name)) {
             filigreeSetBonusIndex[setName].push({
               name: filigree.name,
               minLevel: parseInt(filigree.minLevel) || 1
@@ -751,8 +746,8 @@ const useGearPlanner = (props: Props) => {
       })
       .sort((a, b) => {
         // Priority 1: Trove ownership
-        const isOwnedA = troveData?.[normItem(a.name)] ? 1 : 0
-        const isOwnedB = troveData?.[normItem(b.name)] ? 1 : 0
+        const isOwnedA = troveData?.[getTroveKey(a.name)] ? 1 : 0
+        const isOwnedB = troveData?.[getTroveKey(b.name)] ? 1 : 0
         if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
 
         // Priority 2: Min Level (desc)
@@ -851,8 +846,8 @@ const useGearPlanner = (props: Props) => {
       .filter(itemMatchesSearch)
       .sort((a, b) => {
         // Priority 1: Trove ownership
-        const isOwnedA = troveData?.[normItem(a.name)] ? 1 : 0
-        const isOwnedB = troveData?.[normItem(b.name)] ? 1 : 0
+        const isOwnedA = troveData?.[getTroveKey(a.name)] ? 1 : 0
+        const isOwnedB = troveData?.[getTroveKey(b.name)] ? 1 : 0
         if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
 
         // Priority 2: Min Level (desc)
@@ -1239,8 +1234,8 @@ const useGearPlanner = (props: Props) => {
     Object.values(groups).forEach((group) => {
       group.sort((a, b) => {
         // Priority 1: Trove ownership
-        const isOwnedA = troveData?.[normItem(a.name)] ? 1 : 0
-        const isOwnedB = troveData?.[normItem(b.name)] ? 1 : 0
+        const isOwnedA = troveData?.[getTroveKey(a.name)] ? 1 : 0
+        const isOwnedB = troveData?.[getTroveKey(b.name)] ? 1 : 0
 
         if (isOwnedA !== isOwnedB) {
           return isOwnedB - isOwnedA

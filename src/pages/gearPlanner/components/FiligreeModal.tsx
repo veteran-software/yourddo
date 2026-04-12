@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Button, Col, Form, ListGroup, Modal, Row } from 'react-bootstrap'
 import { FaMagnifyingGlass, FaMinus, FaPlus, FaTrash } from 'react-icons/fa6'
 import { useAppSelector } from '../../../redux/hooks.ts'
-import { getTroveOwners, normItem } from '../../../utils/troveUtils.ts'
+import { getTroveKey, getTroveOwners } from '../../../utils/troveUtils.ts'
 import { getMaxFiligreeSlots } from '../helpers'
 import type { GearItem, GearSetup, GearSlot, LootItem } from '../types'
 import GenericBadge from './badges/GenericBadge.tsx'
@@ -100,14 +100,14 @@ const FiligreeModal = (props: Props) => {
     if (!matchesSearch) return false
 
     if (showOnlyOwned) {
-      const normalizedName = normItem(f.name)
+      const normalizedName = getTroveKey(f.name)
 
       const troveEntry =
         troveData?.[normalizedName] ??
         troveData?.[
           normalizedName.endsWith(' (rare)')
-            ? normalizedName.slice(0, -' (rare)'.length).trim()
-            : normalizedName.trim()
+            ? getTroveKey(normalizedName.slice(0, -' (rare)'.length))
+            : normalizedName
         ]
 
       return !!troveEntry
@@ -314,13 +314,15 @@ const FiligreeModal = (props: Props) => {
             >
               {filteredFiligrees.length > 0 ? (
                 filteredFiligrees.map((f) => {
-                  const normalizedName = normItem(f.name)
+                  const normalizedName = getTroveKey(f.name)
                   const troveEntry =
                     troveData?.[normalizedName] ??
                     troveData?.[
                       normalizedName.endsWith(' (rare)')
-                        ? normalizedName.slice(0, -' (rare)'.length).trim()
-                        : normalizedName.trim()
+                        ? getTroveKey(
+                            normalizedName.slice(0, -' (rare)'.length)
+                          )
+                        : normalizedName
                     ]
                   const owners = troveEntry ? getTroveOwners(troveEntry) : ''
                   const isSlotted = isFiligreeSlotted(f)

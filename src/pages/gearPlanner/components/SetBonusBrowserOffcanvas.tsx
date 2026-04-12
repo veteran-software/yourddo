@@ -1,6 +1,6 @@
 import { Accordion, Col, Form, Offcanvas, Row } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
-import { normItem } from '../../../utils/troveUtils.ts'
+import { getTroveKey } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver'
 import {
   type GearAugment,
@@ -173,8 +173,8 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                 setItemResults
                   .toSorted((a, b) => {
                     // Priority 1: Trove ownership
-                    const isOwnedA = troveData?.[normItem(a.name)] ? 1 : 0
-                    const isOwnedB = troveData?.[normItem(b.name)] ? 1 : 0
+                    const isOwnedA = troveData?.[getTroveKey(a.name)] ? 1 : 0
+                    const isOwnedB = troveData?.[getTroveKey(b.name)] ? 1 : 0
                     if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
 
                     // Priority 2: Min Level (desc)

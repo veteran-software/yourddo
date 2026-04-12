@@ -5,7 +5,6 @@ import type {
   Location,
   TroveCsvRow
 } from '../components/trove/types.ts'
-import { toSingularName } from './stringUtils.ts'
 
 /**
  * A Set containing predefined location identifiers used within the application.
@@ -20,7 +19,13 @@ import { toSingularName } from './stringUtils.ts'
  *
  * This Set ensures unique and predefined location values for consistent usage.
  */
-const LOCATIONS = new Set<Location>(['SharedBank', 'SharedCrafting', 'Inventory', 'Bank', 'Reincarnation Cache'])
+const LOCATIONS = new Set<Location>([
+  'SharedBank',
+  'SharedCrafting',
+  'Inventory',
+  'Bank',
+  'Reincarnation Cache'
+])
 
 /**
  * Determines whether the provided string is a valid location.
@@ -32,6 +37,8 @@ const LOCATIONS = new Set<Location>(['SharedBank', 'SharedCrafting', 'Inventory'
  * @returns {boolean} True if the provided string is a valid location; otherwise false.
  */
 const isLocation = (x: string): x is Location => LOCATIONS.has(x as Location)
+
+export const getTroveKey = (s: string): string => normItem(s)
 
 /**
  * Normalizes a string by trimming any leading or trailing whitespace
@@ -93,7 +100,11 @@ export const getTroveOwners = (troveEntry: ItemRollup[string]): string => {
  * @param {function(string): void} warn - A callback function used to log warnings for invalid data.
  * @returns {number} The parsed quantity, or 0 if parsing fails.
  */
-const parseQuantity = (row: TroveCsvRow, itemName: string, warn: (m: string) => void): number => {
+const parseQuantity = (
+  row: TroveCsvRow,
+  itemName: string,
+  warn: (m: string) => void
+): number => {
   if (typeof row.Quantity === 'number') {
     return row.Quantity
   }
@@ -103,7 +114,9 @@ const parseQuantity = (row: TroveCsvRow, itemName: string, warn: (m: string) => 
       return parsed
     }
 
-    warn(`Non-numeric quantity "${row.Quantity}" for item "${itemName}" — defaulted to 0.`)
+    warn(
+      `Non-numeric quantity "${row.Quantity}" for item "${itemName}" — defaulted to 0.`
+    )
   }
 
   return 0
@@ -124,7 +137,9 @@ const updateBinding = (
   warn: (m: string) => void
 ): void => {
   if (binding && entry.binding && binding !== entry.binding) {
-    warn(`Binding mismatch for item ${itemName}: ${binding} vs ${entry.binding}`)
+    warn(
+      `Binding mismatch for item ${itemName}: ${binding} vs ${entry.binding}`
+    )
   } else if (binding && !entry.binding) {
     entry.binding = binding
   }
@@ -139,7 +154,11 @@ const updateBinding = (
  * @param {function(string): void} warn - A callback function used to log warnings for invalid or skipped data.
  * @return {void} Does not return a value. Mutates the provided rollup object directly.
  */
-const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void): void => {
+const upsert = (
+  rollup: ItemRollup,
+  row: TroveCsvRow,
+  warn: (m: string) => void
+): void => {
   let character = row.Character.trim()
   const location = row.Location.trim()
   const itemName = row.Name.trim()
@@ -149,13 +168,19 @@ const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void)
 
   // If the row is from a shared location, an empty Character or a dash character should be normalized.
   // Bucket such entries under a placeholder '-' character key so they are still tallied consistently.
-  if ((!character || /^[-—–]$/.test(character)) && isLocation(location) && (location === 'SharedCrafting' || location === 'SharedBank')) {
+  if (
+    (!character || /^[-—–]$/.test(character)) &&
+    isLocation(location) &&
+    (location === 'SharedCrafting' || location === 'SharedBank')
+  ) {
     character = '-'
   }
 
   if (!character || !location || !itemName) {
     if (location || itemName || character || row.Quantity != null) {
-      warn(`Missing item/character/location — skipped row: ${JSON.stringify(row)}`)
+      warn(
+        `Missing item/character/location — skipped row: ${JSON.stringify(row)}`
+      )
     }
 
     return
@@ -166,8 +191,8 @@ const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void)
     return
   }
 
-  // Normalize the item key in singular form so lookups (which are also singular) match reliably
-  const iKey = normItem(toSingularName(itemName))
+  // Normalize the item key so lookups (which are also normalized) match reliably
+  const iKey = getTroveKey(itemName)
 
   // Initialize the entry if missing; do not overwrite existing aggregates.
   if (rollup[iKey]) {
@@ -177,7 +202,9 @@ const upsert = (rollup: ItemRollup, row: TroveCsvRow, warn: (m: string) => void)
   }
 
   // Find existing character entry; if none, create it
-  const existing = rollup[iKey].byCharacter.find((e) => e.character === character)
+  const existing = rollup[iKey].byCharacter.find(
+    (e) => e.character === character
+  )
   if (existing) {
     existing.locations[location] = (existing.locations[location] ?? 0) + qty
   } else {
@@ -234,7 +261,9 @@ export const buildItemRollupFromCsvFile = (file: File): Promise<BuildResult> =>
 
         // When using workers, result.data is an array of one row object.
         // When not using workers, result.data is typically a single row object.
-        const row = (Array.isArray(result.data) ? result.data[0] : result.data) as TroveCsvRow
+        const row = (
+          Array.isArray(result.data) ? result.data[0] : result.data
+        ) as TroveCsvRow
         if (row) {
           upsert(data, row, warn)
         }
@@ -303,10 +332,12 @@ export const getStoredTroveData = (): ItemRollup | null => {
     if (!Array.isArray(entry.byCharacter)) {
       const map: LegacyByCharacterMap = entry.byCharacter
 
-      ;(entry as ArrayEntry).byCharacter = Object.entries(map).map(([character, locations]) => ({
-        character,
-        locations
-      }))
+      ;(entry as ArrayEntry).byCharacter = Object.entries(map).map(
+        ([character, locations]) => ({
+          character,
+          locations
+        })
+      )
     }
   })
   return parsed as unknown as ItemRollup
