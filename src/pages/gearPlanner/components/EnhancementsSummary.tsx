@@ -6,6 +6,7 @@ import {
   normalizeString,
   parseModifierValue
 } from '../conflictResolver.ts'
+import type { EssenceEnchantment } from '../dataLoader.ts'
 import {
   aggregateEnchantmentEntries,
   getActiveSetEnhancements,
@@ -19,13 +20,17 @@ const EnchantmentsSummary = ({
   slottedAugments,
   slottedCurses,
   slottedFiligrees,
-  slottedGemSetBonuses
+  slottedGemSetBonuses,
+  slottedEssenceEnchantments,
+  essenceEnchantments
 }: {
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
   slottedCurses: Record<string, Curse | null>
   slottedFiligrees: Record<string, (GearItem | null)[]> | undefined
   slottedGemSetBonuses?: Record<string, (string | null)[]>
+  slottedEssenceEnchantments?: Record<string, Record<string, string | null>>
+  essenceEnchantments?: EssenceEnchantment[]
 }) => {
   const aggregated = useMemo(() => {
     type AggregationMap = Record<
@@ -103,7 +108,9 @@ const EnchantmentsSummary = ({
         item,
         slottedAugments[item.id],
         slottedCurses[item.id],
-        slottedFiligrees?.[item.id]
+        slottedFiligrees?.[item.id],
+        slottedEssenceEnchantments,
+        essenceEnchantments
       )
 
       for (const { ench, sourceName } of entries) {
@@ -147,7 +154,9 @@ const EnchantmentsSummary = ({
     slottedAugments,
     slottedCurses,
     slottedFiligrees,
-    slottedGemSetBonuses
+    slottedGemSetBonuses,
+    slottedEssenceEnchantments,
+    essenceEnchantments
   ])
 
   if (aggregated.length === 0) return null

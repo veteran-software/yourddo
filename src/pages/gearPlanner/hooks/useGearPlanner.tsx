@@ -89,6 +89,9 @@ const useGearPlanner = (props: Props) => {
   const [allCurses, setAllCurses] = useState<Curse[]>([])
   const [allFiligrees, setAllFiligrees] = useState<GearItem[]>([])
   const [allFiligreeSetNames, setAllFiligreeSetNames] = useState<string[]>([])
+  const [essenceEnchantments, setEssenceEnchantments] = useState<
+    EssenceEnchantment[]
+  >([])
   const [itemSetBonusIndex, setItemSetBonusIndex] = useState<SetBonusIndex>({})
   const [filigreeSetBonusIndex, setFiligreeSetBonusIndex] =
     useState<SetBonusIndex>({})
@@ -154,6 +157,9 @@ const useGearPlanner = (props: Props) => {
           .map((s) => s.name)
           .sort((a, b) => a.localeCompare(b))
         setAllFiligreeSetNames(filigreeSetNames)
+
+        const essenceEnchants = await loadEssenceEnchantments()
+        setEssenceEnchantments(essenceEnchants)
 
         // Augment filigreeSetBonusIndex
         const filigreeSetBonusIndex: SetBonusIndex = {}

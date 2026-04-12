@@ -1,5 +1,6 @@
 import { findSetBonus } from '../../data/setBonuses.ts'
 import type { SetBonus } from '../../types/crafting.ts'
+import type { EssenceEnchantment } from './dataLoader.ts'
 import {
   type Curse,
   type GearAugment,
@@ -43,18 +44,28 @@ export const aggregateEnchantmentEntries = (
   itemAugs: Record<number, GearAugment | null> | undefined,
   curse: Curse | null | undefined,
   filigrees: (GearItem | null)[] | undefined,
+  slottedEssenceEnchantments?: Record<string, Record<string, string | null>>,
+  essenceEnchantments?: EssenceEnchantment[],
   activeSetEnhancements?: { ench: LootEnchantment; sourceName: string }[]
 ) => {
   const entries: { ench: LootEnchantment; sourceName: string }[] = (
     item.enchantments ?? []
-  ).map((e) => ({
-    ench: e,
-    sourceName: item.name
-  }))
+  )
+    .filter((e) => e.name !== 'Craftable Rune Arm')
+    .map((e) => ({
+      ench: e,
+      sourceName: item.name
+    }))
 
   addAugmentEntries(entries, item.name, itemAugs)
   addCurseEntries(entries, item.name, curse)
   addFiligreeEntries(entries, item.name, filigrees)
+  addEssenceCraftingEntries(
+    entries,
+    item,
+    slottedEssenceEnchantments?.[item.id],
+    essenceEnchantments
+  )
 
   if (activeSetEnhancements) {
     entries.push(...activeSetEnhancements)
@@ -211,6 +222,7 @@ const addFiligreeEntries = (
   filigrees: (GearItem | null)[] | undefined
 ) => {
   if (!filigrees) return
+
   for (const fili of filigrees) {
     if (fili?.enchantments) {
       for (const e of fili.enchantments) {
@@ -218,6 +230,50 @@ const addFiligreeEntries = (
           ench: { ...e, bonus: 'Filigree' },
           sourceName: `${itemName} (Filigree: ${fili.name})`
         })
+      }
+    }
+  }
+}
+
+const addEssenceCraftingEntries = (
+  entries: { ench: LootEnchantment; sourceName: string }[],
+  item: GearItem,
+  itemEssenceEnchantments: Record<string, string | null> | undefined,
+  essenceEnchantments?: EssenceEnchantment[]
+) => {
+  if (!itemEssenceEnchantments || !essenceEnchantments) return
+
+  const minLevel = Number.parseInt(item.minLevel, 10) || 1
+
+  for (const enchantmentId of Object.values(itemEssenceEnchantments)) {
+    if (enchantmentId) {
+      const opt = essenceEnchantments.find((e) => e.id === enchantmentId)
+
+      if (opt) {
+        for (const effect of opt.enchantments) {
+          const rawDisplayName = effect.statModified || effect.name
+          const displayNames = Array.isArray(rawDisplayName)
+            ? rawDisplayName
+            : [rawDisplayName]
+
+          const scalingValue = opt.scalingStats
+            ? opt.scalingStats[
+                Math.max(0, Math.min(opt.scalingStats.length - 1, minLevel - 1))
+              ]
+            : null
+
+          for (const name of displayNames) {
+            entries.push({
+              ench: {
+                ...effect,
+                name: name.trim(),
+                modifier: scalingValue ?? undefined,
+                bonus: opt.bonus ?? effect.bonus
+              },
+              sourceName: `${item.name} (Essence: ${opt.shardName ?? 'UNKNOWN'})`
+            })
+          }
+        }
       }
     }
   }
