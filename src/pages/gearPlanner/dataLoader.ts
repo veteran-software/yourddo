@@ -120,6 +120,17 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
       }
     >()
 
+    const normalizeEffectName = (name: string): string => {
+      return name
+        .toLowerCase()
+        .replace(/'s/g, '-s') // match "champion-s"
+        .replace(/&/g, ' ')
+        .replace(/[^a-z0-9]/g, ' ')
+        .split(' ')
+        .filter((s) => s.length > 0)
+        .join('-')
+    }
+
     phase1Data.forEach((d) => {
       if (d.stat) {
         const info = {
@@ -130,9 +141,7 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
           allEnchantments: d.enchantments
         }
         phase1Map.set(d.name.toLowerCase(), info)
-        // Also map by name with spaces removed/normalized if needed,
-        // but typically effectId is the lowercase-hyphenated version of name.
-        phase1Map.set(d.name.toLowerCase().replace(/ /g, '-'), info)
+        phase1Map.set(normalizeEffectName(d.name), info)
       }
     })
 
