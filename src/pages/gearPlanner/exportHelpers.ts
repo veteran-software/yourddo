@@ -20,6 +20,7 @@ interface PetState {
   slottedGemSetBonuses: Record<string, (string | null)[]>
   slottedNearlyFinished: Record<string, LootEnchantment | null>
   slottedRitualTable: Record<string, LootEnchantment | null>
+  slottedLostPurpose: Record<string, LootEnchantment | null>
   slottedEssenceEnchantments: Record<string, Record<string, string | null>>
 }
 
@@ -540,11 +541,12 @@ export const generateDiscordMarkdownExport = (
     ...(druidPet?.slottedGemSetBonuses ?? {})
   }
 
+  const allLostPurpose = {
+    ...(artificerPet?.slottedLostPurpose ?? {}),
   const activeSetEnhancements = getActiveSetEnhancements(
     allItems,
     allAugments,
     allFiligrees,
-    allGemSets
   )
 
   if (activeSetEnhancements.length > 0) {

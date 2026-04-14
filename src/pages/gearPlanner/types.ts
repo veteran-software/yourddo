@@ -170,6 +170,7 @@ export interface GearSetup {
   slottedEssenceEnchantments: Record<string, Record<string, string | null>> // itemId -> { slotName -> enchantmentId }
   slottedNearlyFinished: Record<string, LootEnchantment | null> // itemId -> selected enchantment
   slottedRitualTable: Record<string, LootEnchantment | null> // itemId -> selected enchantment
+  slottedLostPurpose: Record<string, LootEnchantment | null> // itemId -> selected enchantment
 }
 
 export const GEAR_CLASSES = [
