@@ -30,7 +30,11 @@ import {
 //     curseName: string | null,
 //     essenceCrafting: [slotName: string, enchantmentId: string][] | null,
 //     nearlyFinished: LootEnchantment | null,
-//     ritualTable: LootEnchantment | null
+//     ritualTable: LootEnchantment | null,
+//     lostPurpose: LootEnchantment | null,
+//     slottedFiligrees: (string | null)[] | null,
+//     unlockedFiligreeSlots: number | null,
+//     slottedGemSetBonuses: (string | null)[] | null
 //   ][]
 // ]
 
@@ -50,7 +54,11 @@ type V1Payload = [
     string | null, // curseName
     [string, string][] | null, // essenceCrafting: [slotName, enchantmentId]
     LootEnchantment | null, // nearlyFinished
-    LootEnchantment | null // ritualTable
+    LootEnchantment | null, // ritualTable
+    LootEnchantment | null, // lostPurpose
+    (string | null)[] | null, // slottedFiligrees (item names)
+    number | null, // unlockedFiligreeSlots
+    (string | null)[] | null // slottedGemSetBonuses
   ][]
 ]
 
@@ -83,6 +91,15 @@ export const encodeGearPermalink = (setup: GearSetup): string => {
 
       const nearlyFinished = setup.slottedNearlyFinished?.[item.id] ?? null
       const ritualTable = setup.slottedRitualTable?.[item.id] ?? null
+      const lostPurpose = setup.slottedLostPurpose?.[item.id] ?? null
+
+      const filigrees = setup.slottedFiligrees[item.id]
+      const filigreeNames = filigrees
+        ? filigrees.map((f) => (f ? f.name : null))
+        : null
+
+      const unlockedFiligreeSlots = setup.unlockedFiligreeSlots[item.id] ?? null
+      const slottedGemSetBonuses = setup.slottedGemSetBonuses[item.id] ?? null
 
       items.push([
         slot,
@@ -91,7 +108,11 @@ export const encodeGearPermalink = (setup: GearSetup): string => {
         curseName,
         essenceEnchPayload,
         nearlyFinished,
-        ritualTable
+        ritualTable,
+        lostPurpose,
+        filigreeNames,
+        unlockedFiligreeSlots,
+        slottedGemSetBonuses
       ])
     }
   })
@@ -157,7 +178,8 @@ export const tryDecodeGearPermalink = (
       slottedGemSetBonuses: {},
       slottedEssenceEnchantments: {},
       slottedNearlyFinished: {},
-      slottedRitualTable: {}
+      slottedRitualTable: {},
+      slottedLostPurpose: {}
     }
 
     items.forEach((itemPayload) => {
@@ -184,7 +206,11 @@ const decodeItemPayload = (
     curseName,
     essenceCrafting,
     nearlyFinished,
-    ritualTable
+    ritualTable,
+    lostPurpose,
+    filigrees,
+    unlockedFiligreeSlots,
+    slottedGemSetBonuses
   ] = itemPayload
 
   // Find the item in allItems by name and slot to ensure we get the correct ID
@@ -203,6 +229,20 @@ const decodeItemPayload = (
     decodeItemEssenceCrafting(item, essenceCrafting, setup)
     if (nearlyFinished) setup.slottedNearlyFinished[item.id] = nearlyFinished
     if (ritualTable) setup.slottedRitualTable[item.id] = ritualTable
+    if (lostPurpose) setup.slottedLostPurpose[item.id] = lostPurpose
+
+    if (filigrees) {
+      setup.slottedFiligrees[item.id] = filigrees.map((fName) => {
+        if (!fName) return null
+        return allItems.find((i) => i.name === fName) || null
+      })
+    }
+    if (unlockedFiligreeSlots !== null && unlockedFiligreeSlots !== undefined) {
+      setup.unlockedFiligreeSlots[item.id] = unlockedFiligreeSlots
+    }
+    if (slottedGemSetBonuses) {
+      setup.slottedGemSetBonuses[item.id] = slottedGemSetBonuses
+    }
   }
 }
 
