@@ -1,47 +1,36 @@
+import eslintReact from '@eslint-react/eslint-plugin'
 import js from '@eslint/js'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
 import * as sonarjs from 'eslint-plugin-sonarjs'
+import { defineConfig } from 'eslint/config'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
-export default tseslint.config(
-  { ignores: ['dist', '**/*.css', '**/*.svg'] },
+export default defineConfig([
+  { ignores: ['./dist/*', '**/*.css', '**/*.svg', './eslint.config.js'] },
+  js.configs.recommended,
+  ...tseslint.configs.strictTypeChecked,
+  ...tseslint.configs.stylisticTypeChecked,
   {
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.strictTypeChecked,
-      ...tseslint.configs.stylisticTypeChecked,
-      sonarjs.configs.recommended
-    ],
-    files: ['**/*.{ts,tsx}'],
+    files: ['scripts/**/*'],
+    ...tseslint.configs.disableTypeChecked
+  },
+  eslintReact.configs['recommended-typescript'],
+  sonarjs.configs.recommended,
+  {
+    files: ['scripts/**/*'],
+    languageOptions: {
+      globals: globals.node
+    }
+  },
+  {
     languageOptions: {
       ecmaVersion: 'latest',
       globals: globals.browser,
+      parser: tseslint.parser,
       parserOptions: {
-        sourceType: 'module',
-        ecmaVersion: 'latest',
         projectService: true,
         tsconfigRootDir: import.meta.dirname
       }
-    },
-    plugins: {
-      react,
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh
-    },
-    rules: {
-      ...reactHooks.configs.recommended.rules,
-      ...react.configs.recommended.rules,
-      ...react.configs['jsx-runtime'].rules,
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-      '@typescript-eslint/no-unnecessary-condition': 'off'
-    },
-    settings: {
-      react: {
-        version: '19.2.4'
-      }
     }
   }
-)
+])
