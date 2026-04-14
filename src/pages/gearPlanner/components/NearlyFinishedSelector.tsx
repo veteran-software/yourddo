@@ -1,10 +1,8 @@
 import { Dropdown } from 'react-bootstrap'
-import type { ItemRollup } from '../../../components/trove/types.ts'
 import nearlyFinishedRecipes from '../../../data/nearlyFinished/recipes.json'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 import type { GearItem, GearSlot, LootEnchantment } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
-import TroveBadge from './TroveBadge.tsx'
 
 interface Choice {
   name: string
@@ -16,21 +14,12 @@ interface Recipe {
   choices: Choice[]
 }
 
-interface NearlyFinishedSelectorProps {
-  item: GearItem
-  slot: GearSlot
-  selectedEnchantment: LootEnchantment | null
-  onSelect: (enchantment: LootEnchantment | null) => void
-  troveData: ItemRollup | null
-}
-
 const NearlyFinishedSelector = ({
   item,
   slot,
   selectedEnchantment,
-  onSelect,
-  troveData
-}: NearlyFinishedSelectorProps) => {
+  onSelect
+}: Props) => {
   const recipes =
     (
       nearlyFinishedRecipes as unknown as {
@@ -98,9 +87,6 @@ const NearlyFinishedSelector = ({
                 className='d-flex justify-content-between align-items-center'
               >
                 <span>{choice.name}</span>
-                {troveData && (
-                  <TroveBadge troveData={troveData} itemName={item.name} />
-                )}
               </Dropdown.Item>
             )
           })}
@@ -124,6 +110,13 @@ const NearlyFinishedSelector = ({
       )}
     </div>
   )
+}
+
+interface Props {
+  item: GearItem
+  slot: GearSlot
+  selectedEnchantment: LootEnchantment | null
+  onSelect: (enchantment: LootEnchantment | null) => void
 }
 
 export default NearlyFinishedSelector
