@@ -1,5 +1,5 @@
-import type {ReactElement} from 'react'
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import type { ReactElement } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Accordion,
   Badge,
@@ -14,19 +14,22 @@ import {
   Stack,
   Table
 } from 'react-bootstrap'
-import {FaArrowUpRightFromSquare} from 'react-icons/fa6'
-import {shallowEqual} from 'react-redux'
-import {useLocation, useNavigate} from 'react-router-dom'
-import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
+import { shallowEqual } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import AugmentSlotFilterableDropdown
+  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type {ShoppingListTotals} from '../../components/common/ShoppingListDrawer.tsx'
+import type {
+  ShoppingListTotals
+} from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
-import {useAppSelector} from '../../redux/hooks.ts'
-import type {AugmentItem} from '../../types/augmentItem.ts'
-import type {Ingredient} from '../../types/ingredients.ts'
-import {findAugmentsForSlot} from '../../utils/augmentUtils.ts'
-import {getOwnedIngredients} from '../../utils/jsxUtils.tsx'
-import {toSingularName} from '../../utils/stringUtils.ts'
+import { useAppSelector } from '../../redux/hooks.ts'
+import type { AugmentItem } from '../../types/augmentItem.ts'
+import type { Ingredient } from '../../types/ingredients.ts'
+import { findAugmentsForSlot } from '../../utils/augmentUtils.ts'
+import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
+import { toSingularName } from '../../utils/stringUtils.ts'
 import {
   buildPermalinkUrl,
   encodeEssencePermalink,
@@ -132,7 +135,8 @@ const EssenceCrafting = () => {
       const isParrying = nameLower.includes('parrying')
       const enchantmentSuggestsInsight = Array.isArray(entry?.enchantments)
         ? entry.enchantments.some(
-            (enchantMeta: Phase1EnchantmentMeta) => (enchantMeta.bonus ?? '').toLowerCase() === 'insight'
+            (enchantMeta: Phase1EnchantmentMeta) =>
+              (enchantMeta.bonus ?? '').toLowerCase() === 'insight'
           )
         : false
 
@@ -141,16 +145,32 @@ const EssenceCrafting = () => {
     [enhancementByName]
   )
 
-  // Rule: Insightful effects (including Parrying) cannot be applied if effective ML < 10
+  // Rule: Insightful effects (including Parrying) cannot be applied if effective ML < 10.
+  // Also, any enchantment with a value of -1 at the current level is not craftable.
   const isEnhancementAllowedAtML = useCallback(
     (name: string | null, effectiveML: number): boolean => {
       if (!name) {
         return true
       }
 
+      const entry = enhancementByName.get(name)
+      if (entry) {
+        const stats = Array.isArray(entry.stat) ? entry.stat : []
+        if (stats.length > 0) {
+          const idx = Math.max(
+            0,
+            Math.min(stats.length - 1, (effectiveML || 1) - 1)
+          )
+          const value = stats[idx]
+          if (value == null || value === -1) {
+            return false
+          }
+        }
+      }
+
       return !(isInsightfulEnhancement(name) && (effectiveML || 1) < 10)
     },
-    [isInsightfulEnhancement]
+    [enhancementByName, isInsightfulEnhancement]
   )
 
   // Load from permalink (if present) or sessionStorage once
@@ -166,8 +186,12 @@ const EssenceCrafting = () => {
         setItems(sanitizeAugmentsOnItems(data))
         setActiveKeys(data.activeKeys)
         setMasterMinLevel(data.masterMinLevel ?? 1)
-        setCollapsedKeys(Array.isArray(data.collapsedKeys) ? data.collapsedKeys : [])
-        Promise.resolve(removeCcFromUrl(navigate, location, source)).catch(console.error)
+        setCollapsedKeys(
+          Array.isArray(data.collapsedKeys) ? data.collapsedKeys : []
+        )
+        Promise.resolve(removeCcFromUrl(navigate, location, source)).catch(
+          console.error
+        )
         return true
       }
     }
@@ -185,9 +209,17 @@ const EssenceCrafting = () => {
 
     setItems(sanitizeAugmentsOnItems(parsed))
     setActiveKeys(parsed.activeKeys)
-    setMasterMinLevel(typeof parsed.masterMinLevel === 'number' ? parsed.masterMinLevel : 1)
-    setMasterBindingBound(typeof parsed.masterBindingBound === 'boolean' ? parsed.masterBindingBound : true)
-    setCollapsedKeys(Array.isArray(parsed.collapsedKeys) ? parsed.collapsedKeys : [])
+    setMasterMinLevel(
+      typeof parsed.masterMinLevel === 'number' ? parsed.masterMinLevel : 1
+    )
+    setMasterBindingBound(
+      typeof parsed.masterBindingBound === 'boolean'
+        ? parsed.masterBindingBound
+        : true
+    )
+    setCollapsedKeys(
+      Array.isArray(parsed.collapsedKeys) ? parsed.collapsedKeys : []
+    )
 
     return true
   }, [location, navigate])
@@ -200,7 +232,10 @@ const EssenceCrafting = () => {
         didLoadRef.current = true
       }
     } catch (err) {
-      console.warn('EssenceCrafting: failed to load session state – resetting to defaults.', err)
+      console.warn(
+        'EssenceCrafting: failed to load session state – resetting to defaults.',
+        err
+      )
     }
   }, [loadInitialState])
 
@@ -223,7 +258,13 @@ const EssenceCrafting = () => {
     const nextItems: Record<string, ItemState> = {}
     let changed = false
 
-    changed = iterateItemsOnLevelChange(items, masterMinLevel, nextItems, isEnhancementAllowedAtML, changed)
+    changed = iterateItemsOnLevelChange(
+      items,
+      masterMinLevel,
+      nextItems,
+      isEnhancementAllowedAtML,
+      changed
+    )
     if (changed) {
       setItems(nextItems)
     }
@@ -260,7 +301,9 @@ const EssenceCrafting = () => {
     if (wasActive) {
       // Remove from active and clear collapsed state for this slot
       setActiveKeys((prev) => prev.filter((key) => key !== slotKey))
-      setCollapsedKeys((prevCollapsedKeys) => prevCollapsedKeys.filter((key) => key !== slotKey))
+      setCollapsedKeys((prevCollapsedKeys) =>
+        prevCollapsedKeys.filter((key) => key !== slotKey)
+      )
 
       // Deselecting: remove this item's state entirely to clear all data
       setItems((prev) => {
@@ -293,10 +336,17 @@ const EssenceCrafting = () => {
   const isCollapsed = (slotKey: string) => collapsedKeys.includes(slotKey)
 
   const toggleCollapsed = (slotKey: string) => {
-    setCollapsedKeys((prev) => (prev.includes(slotKey) ? prev.filter((key) => key !== slotKey) : [...prev, slotKey]))
+    setCollapsedKeys((prev) =>
+      prev.includes(slotKey)
+        ? prev.filter((key) => key !== slotKey)
+        : [...prev, slotKey]
+    )
   }
 
-  const updateItem = (slotKey: string, updater: (item: ItemState) => ItemState) => {
+  const updateItem = (
+    slotKey: string,
+    updater: (item: ItemState) => ItemState
+  ) => {
     setItems((prev) => ({ ...prev, [slotKey]: updater(prev[slotKey]) }))
   }
 
@@ -316,13 +366,23 @@ const EssenceCrafting = () => {
 
     updateItem(slotKey, (item: ItemState) => {
       // Disallow adding duplicate color slot types on the same item
-      if (item.augmentSlots.some((augmentSlot) => augmentSlot.slotType === augmentType)) {
+      if (
+        item.augmentSlots.some(
+          (augmentSlot) => augmentSlot.slotType === augmentType
+        )
+      ) {
         return item
       }
 
       const nextAugmentSlots = [
         ...item.augmentSlots,
-        { id, slotType: augmentType, selectedAugment: null, filters: [], filterMode: 'OR' as const }
+        {
+          id,
+          slotType: augmentType,
+          selectedAugment: null,
+          filters: [],
+          filterMode: 'OR' as const
+        }
       ]
 
       // Auto-raise item ML override if the new augment color imposes a higher floor
@@ -330,7 +390,8 @@ const EssenceCrafting = () => {
         let minLevelFloor = 1
 
         for (const augmentSlot of nextAugmentSlots) {
-          const requiredFloor: number = AUGMENT_COLOR_FLOOR[augmentSlot.slotType]
+          const requiredFloor: number =
+            AUGMENT_COLOR_FLOOR[augmentSlot.slotType]
 
           minLevelFloor = Math.max(minLevelFloor, requiredFloor)
         }
@@ -339,7 +400,10 @@ const EssenceCrafting = () => {
       })()
 
       const effectiveBefore = item.minLevelOverride ?? masterMinLevel
-      const nextMinLevelOverride = effectiveBefore < nextFloor ? nextFloor : (item.minLevelOverride ?? null)
+      const nextMinLevelOverride =
+        effectiveBefore < nextFloor
+          ? nextFloor
+          : (item.minLevelOverride ?? null)
 
       return {
         ...item,
@@ -353,23 +417,43 @@ const EssenceCrafting = () => {
   const removeAugmentSlot = (slotKey: string, id: string) => {
     updateItem(slotKey, (item) => ({
       ...item,
-      augmentSlots: item.augmentSlots.filter((augmentSlot) => augmentSlot.id !== id)
+      augmentSlots: item.augmentSlots.filter(
+        (augmentSlot) => augmentSlot.id !== id
+      )
     }))
   }
 
-  const coreSelect = (slotKey: string, which: 'prefix' | 'suffix' | 'extra', value: string) => {
-    updateItem(slotKey, (item) => ({ ...item, [which]: value === 'None' ? null : value }))
+  const coreSelect = (
+    slotKey: string,
+    which: 'prefix' | 'suffix' | 'extra',
+    value: string
+  ) => {
+    updateItem(slotKey, (item) => ({
+      ...item,
+      [which]: value === 'None' ? null : value
+    }))
   }
 
   const setHasMark = (slotKey: string, checked: boolean) => {
-    updateItem(slotKey, (item) => ({ ...item, hasCannithMark: checked, extra: checked ? item.extra : null }))
+    updateItem(slotKey, (item) => ({
+      ...item,
+      hasCannithMark: checked,
+      extra: checked ? item.extra : null
+    }))
   }
 
-  const handleSelectAugment = (slotKey: string, augmentSlotId: string, _slotType: string, aug: Ingredient) => {
+  const handleSelectAugment = (
+    slotKey: string,
+    augmentSlotId: string,
+    _slotType: string,
+    aug: Ingredient
+  ) => {
     updateItem(slotKey, (item) => ({
       ...item,
       augmentSlots: item.augmentSlots.map((augmentSlot) =>
-        augmentSlot.id === augmentSlotId ? { ...augmentSlot, selectedAugment: aug as AugmentItem } : augmentSlot
+        augmentSlot.id === augmentSlotId
+          ? { ...augmentSlot, selectedAugment: aug as AugmentItem }
+          : augmentSlot
       )
     }))
   }
@@ -377,31 +461,50 @@ const EssenceCrafting = () => {
   const handleResetAugment = (slotKey: string, augmentSlotId: string) => {
     updateItem(slotKey, (item: ItemState) => ({
       ...item,
-      augmentSlots: item.augmentSlots.map((augmentSlot: ItemAugmentSlotState) =>
-        augmentSlot.id === augmentSlotId ? { ...augmentSlot, selectedAugment: null } : augmentSlot
+      augmentSlots: item.augmentSlots.map(
+        (augmentSlot: ItemAugmentSlotState) =>
+          augmentSlot.id === augmentSlotId
+            ? { ...augmentSlot, selectedAugment: null }
+            : augmentSlot
       )
     }))
   }
 
-  const handleFilterModeChange = (slotKey: string, augmentId: string, mode: 'OR' | 'AND') => {
+  const handleFilterModeChange = (
+    slotKey: string,
+    augmentId: string,
+    mode: 'OR' | 'AND'
+  ) => {
     updateItem(slotKey, (currentItem) => ({
       ...currentItem,
-      augmentSlots: currentItem.augmentSlots.map((s) => (s.id === augmentId ? { ...s, filterMode: mode } : s))
+      augmentSlots: currentItem.augmentSlots.map((s) =>
+        s.id === augmentId ? { ...s, filterMode: mode } : s
+      )
     }))
   }
 
-  const handleFiltersChange = (slotKey: string, augmentId: string, filters: string[]) => {
+  const handleFiltersChange = (
+    slotKey: string,
+    augmentId: string,
+    filters: string[]
+  ) => {
     updateItem(slotKey, (currentItem) => ({
       ...currentItem,
-      augmentSlots: currentItem.augmentSlots.map((s) => (s.id === augmentId ? { ...s, filters } : s))
+      augmentSlots: currentItem.augmentSlots.map((s) =>
+        s.id === augmentId ? { ...s, filters } : s
+      )
     }))
   }
 
-  const slotLabel = (key: string) => ALL_SLOT_KEYS.find((slotDef) => slotDef.key === key)?.label ?? key
+  const slotLabel = (key: string) =>
+    ALL_SLOT_KEYS.find((slotDef) => slotDef.key === key)?.label ?? key
 
   // Memoize computed options per render based on current active slots
   const affixOptionsBySlot = useMemo(() => {
-    const optionsBySlot: Record<string, { prefix: string[]; suffix: string[]; extra: string[] }> = {}
+    const optionsBySlot: Record<
+      string,
+      { prefix: string[]; suffix: string[]; extra: string[] }
+    > = {}
 
     ALL_SLOT_KEYS.forEach((slotDef) => {
       const slotKeyForOptions = slotDef.key
@@ -425,9 +528,14 @@ const EssenceCrafting = () => {
   ): ReactElement => {
     const effectiveML = item.minLevelOverride ?? masterMinLevel
     const baseOptions = affixOptionsBySlot[slotKey][affix]
-    const filteredOptions = baseOptions.filter((opt) => isEnhancementAllowedAtML(opt, effectiveML))
+    const filteredOptions = baseOptions.filter((opt) =>
+      isEnhancementAllowedAtML(opt, effectiveML)
+    )
     const currentValue = item[affix]
-    const value = currentValue && filteredOptions.includes(currentValue) ? currentValue : 'None'
+    const value =
+      currentValue && filteredOptions.includes(currentValue)
+        ? currentValue
+        : 'None'
 
     return (
       <Form.Group controlId={`${slotKey}-${affix}`}>
@@ -454,7 +562,10 @@ const EssenceCrafting = () => {
   }
 
   // Helper to compute a human-readable display for a selected enhancement at a given effective ML
-  const getEnhancementDisplay = (name: string | null, effectiveML: number): string | null => {
+  const getEnhancementDisplay = (
+    name: string | null,
+    effectiveML: number
+  ): string | null => {
     if (!name) {
       return null
     }
@@ -475,7 +586,8 @@ const EssenceCrafting = () => {
     const idx = Math.max(0, Math.min(stats.length - 1, (effectiveML || 1) - 1))
     const value = stats[idx]
 
-    const isStatic = (entry.group ?? '').toLowerCase() === 'static' || stats.length === 1
+    const isStatic =
+      (entry.group ?? '').toLowerCase() === 'static' || stats.length === 1
 
     // Format logic:
     // - numeric values: show as +N
@@ -490,36 +602,11 @@ const EssenceCrafting = () => {
     return `${name} ${value}`
   }
 
-  // Returns the numeric ML increase for a given enhancement selection
-  const getEnhancementMinIncrease = (name: string | null): number => {
-    if (!name) {
-      return 0
-    }
-
-    const entry = enhancementByName.get(name)
-
-    if (!entry) {
-      return 0
-    }
-
-    const inc = entry.minLevelIncrease
-
-    if (typeof inc === 'number') {
-      return inc
-    }
-
-    if (inc && typeof inc === 'object') {
-      // If dataset uses an object form, try to infer an increase relative to base ML.
-      // Prefer explicit minimumLevel over noMinimumLevel as a conservative requirement.
-      const min = Number(inc.minimumLevel ?? inc.noMinimumLevel)
-      return Number.isFinite(min) ? Math.max(0, min - 1) : 0
-    }
-
-    return 0
-  }
-
   // Helper to compute only the value portion (e.g., "+3" or "1d10" or description) for headers
-  const getEnhancementValueOnly = (name: string | null, effectiveML: number): string | null => {
+  const getEnhancementValueOnly = (
+    name: string | null,
+    effectiveML: number
+  ): string | null => {
     if (!name) {
       return null
     }
@@ -538,7 +625,8 @@ const EssenceCrafting = () => {
 
     const idx = Math.max(0, Math.min(stats.length - 1, (effectiveML || 1) - 1))
     const value = stats[idx]
-    const isStatic = (entry.group ?? '').toLowerCase() === 'static' || stats.length === 1
+    const isStatic =
+      (entry.group ?? '').toLowerCase() === 'static' || stats.length === 1
 
     if (isStatic) {
       if (typeof value === 'number') {
@@ -565,7 +653,9 @@ const EssenceCrafting = () => {
     // Note: "Sabotaging", "Silver Flame's", and "Watchful" can be added here once their effect pairs are defined
   }
 
-  const isCombinedShard = (name: string | null): name is keyof typeof COMBINED_SHARDS => {
+  const isCombinedShard = (
+    name: string | null
+  ): name is keyof typeof COMBINED_SHARDS => {
     if (!name) {
       return false
     }
@@ -591,10 +681,17 @@ const EssenceCrafting = () => {
 
   // Build a combined header string using the component effect names found in the selected entry's `enchantments` array.
   // For each component name, we pull the ML-scaled stat from the single-effect dataset entry via getEnhancementDisplay.
-  const getCombinedDisplayFromEntry = (name: string, effectiveML: number): string => {
+  const getCombinedDisplayFromEntry = (
+    name: string,
+    effectiveML: number
+  ): string => {
     const entry = enhancementByName.get(name)
 
-    if (!entry || !Array.isArray(entry.enchantments) || entry.enchantments.length === 0) {
+    if (
+      !entry ||
+      !Array.isArray(entry.enchantments) ||
+      entry.enchantments.length === 0
+    ) {
       return name
     }
 
@@ -607,7 +704,10 @@ const EssenceCrafting = () => {
     const parts: string[] = []
 
     for (const compName of componentNames) {
-      const enhancementDisplay: string | null = getEnhancementDisplay(compName, effectiveML)
+      const enhancementDisplay: string | null = getEnhancementDisplay(
+        compName,
+        effectiveML
+      )
       if (enhancementDisplay) {
         parts.push(enhancementDisplay)
       }
@@ -661,27 +761,43 @@ const EssenceCrafting = () => {
         return null
       }
 
-      const shardLevel: number | null = typeof materialsForBinding.level === 'number' ? materialsForBinding.level : null
+      const shardLevel: number | null =
+        typeof materialsForBinding.level === 'number'
+          ? materialsForBinding.level
+          : null
       const essenceQty: number | null =
-        typeof materialsForBinding.essence === 'number' ? materialsForBinding.essence : null
+        typeof materialsForBinding.essence === 'number'
+          ? materialsForBinding.essence
+          : null
       const purifiedQty: number | null = materialsForBinding.purified ?? null
-      const collectibles: { name: string; qty: number }[] = Array.isArray(materialsForBinding.collectible)
+      const collectibles: { name: string; qty: number }[] = Array.isArray(
+        materialsForBinding.collectible
+      )
         ? materialsForBinding.collectible
         : []
 
       const rows: { name: string; qty: number }[] = []
 
       if (essenceQty != null && essenceQty > 0) {
-        rows.push({ name: toSingularName('Magic Item Essences'), qty: essenceQty })
+        rows.push({
+          name: toSingularName('Magic Item Essences'),
+          qty: essenceQty
+        })
       }
 
       if (purifiedQty != null && purifiedQty > 0) {
-        rows.push({ name: toSingularName('Purified Eberron Dragonshard Fragments'), qty: purifiedQty })
+        rows.push({
+          name: toSingularName('Purified Eberron Dragonshard Fragments'),
+          qty: purifiedQty
+        })
       }
 
       collectibles.forEach((collectible) => {
         if (collectible.qty > 0 && collectible.name)
-          rows.push({ name: toSingularName(collectible.name), qty: collectible.qty })
+          rows.push({
+            name: toSingularName(collectible.name),
+            qty: collectible.qty
+          })
       })
 
       if (rows.length === 0) {
@@ -732,10 +848,18 @@ const EssenceCrafting = () => {
   }
 
   const buildMinLevelMaterials = useCallback(
-    (level: number, bound: boolean): { shardLevel: number | null; rows: { name: string; qty: number }[] } | null => {
+    (
+      level: number,
+      bound: boolean
+    ): {
+      shardLevel: number | null
+      rows: { name: string; qty: number }[]
+    } | null => {
       const rows: { name: string; qty: number }[] = []
       const ESSENCE_NAME = toSingularName('Magic Item Essences')
-      const PURIFIED_NAME = toSingularName('Purified Eberron Dragonshard Fragments')
+      const PURIFIED_NAME = toSingularName(
+        'Purified Eberron Dragonshard Fragments'
+      )
 
       let shardLevel: number
       let essenceQty: number
@@ -770,11 +894,23 @@ const EssenceCrafting = () => {
   )
 
   // Extracted to avoid deeply nested functions in JSX
-  const renderAugmentSlot = (slotKey: string, augmentSlot: ItemAugmentSlotState): ReactElement => {
+  const renderAugmentSlot = (
+    slotKey: string,
+    augmentSlot: ItemAugmentSlotState
+  ): ReactElement => {
     const groupedByDisplay = findAugmentsForSlot(augmentSlot.slotType)
-    const flatForSlot = Object.values(groupedByDisplay).flat() as unknown as Ingredient[]
-    const augmentOptions = { [augmentSlot.slotType]: flatForSlot } as Record<string, Ingredient[]>
-    const filteredAugmentOptions = filterAugmentOptions(augmentOptions, augmentSlot.filters, augmentSlot.filterMode)
+    const flatForSlot = Object.values(
+      groupedByDisplay
+    ).flat() as unknown as Ingredient[]
+    const augmentOptions = { [augmentSlot.slotType]: flatForSlot } as Record<
+      string,
+      Ingredient[]
+    >
+    const filteredAugmentOptions = filterAugmentOptions(
+      augmentOptions,
+      augmentSlot.filters,
+      augmentSlot.filterMode
+    )
     const selectedAugments: Record<string, AugmentItem | null> = {
       [augmentSlot.slotType]: augmentSlot.selectedAugment
     }
@@ -792,7 +928,12 @@ const EssenceCrafting = () => {
                 augmentFilters={augmentSlot.filters}
                 augmentFilterMode={augmentSlot.filterMode}
                 handleSelectAugment={(_slot, aug) => {
-                  handleSelectAugment(slotKey, augmentSlot.id, augmentSlot.slotType, aug)
+                  handleSelectAugment(
+                    slotKey,
+                    augmentSlot.id,
+                    augmentSlot.slotType,
+                    aug
+                  )
                 }}
                 handleResetAugment={() => {
                   handleResetAugment(slotKey, augmentSlot.id)
@@ -824,10 +965,19 @@ const EssenceCrafting = () => {
   }
 
   // Renders a full-width stacked Accordion of requirement cards (default closed)
-  const renderMaterialsAccordion = (slotKey: string, item: ItemState): ReactElement | null => {
-    const effectiveML: number = items[slotKey].minLevelOverride ?? masterMinLevel
+  const renderMaterialsAccordion = (
+    slotKey: string,
+    item: ItemState
+  ): ReactElement | null => {
+    const effectiveML: number =
+      items[slotKey].minLevelOverride ?? masterMinLevel
 
-    const selections: { key: string; label: string; name: string | null; isMinLevel?: boolean }[] = [
+    const selections: {
+      key: string
+      label: string
+      name: string | null
+      isMinLevel?: boolean
+    }[] = [
       {
         key: 'minLevel',
         label: 'Minimum Level',
@@ -838,19 +988,30 @@ const EssenceCrafting = () => {
         key: 'prefix',
         label: 'Prefix',
         name:
-          item.prefix && affixOptionsBySlot[slotKey].prefix.includes(item.prefix) && item.prefix ? item.prefix : null
+          item.prefix &&
+          affixOptionsBySlot[slotKey].prefix.includes(item.prefix) &&
+          item.prefix
+            ? item.prefix
+            : null
       },
       {
         key: 'suffix',
         label: 'Suffix',
         name:
-          item.suffix && affixOptionsBySlot[slotKey].suffix.includes(item.suffix) && item.suffix ? item.suffix : null
+          item.suffix &&
+          affixOptionsBySlot[slotKey].suffix.includes(item.suffix) &&
+          item.suffix
+            ? item.suffix
+            : null
       },
       {
         key: 'extra',
         label: 'Extra',
         name:
-          item.hasCannithMark && item.extra && affixOptionsBySlot[slotKey].extra.includes(item.extra) && item.extra
+          item.hasCannithMark &&
+          item.extra &&
+          affixOptionsBySlot[slotKey].extra.includes(item.extra) &&
+          item.extra
             ? item.extra
             : null
       }
@@ -868,7 +1029,10 @@ const EssenceCrafting = () => {
         if (selection.isMinLevel) {
           display = `Minimum Level ${String(effectiveML)} Shard`
         } else if (combinedByEntry) {
-          display = getCombinedDisplayFromEntry(selection.name ?? '', effectiveML)
+          display = getCombinedDisplayFromEntry(
+            selection.name ?? '',
+            effectiveML
+          )
         } else if (combinedByShortName) {
           display = getCombinedDisplay(selection.name ?? '', effectiveML)
         } else {
@@ -892,15 +1056,23 @@ const EssenceCrafting = () => {
       // Apply ML gating: hide Insightful effects when effective ML < 10
       .filter(
         (entry) =>
-          (entry.isMinLevel ?? entry.name) && (entry.isMinLevel ?? isEnhancementAllowedAtML(entry.name, effectiveML))
+          (entry.isMinLevel ?? entry.name) &&
+          (entry.isMinLevel ??
+            isEnhancementAllowedAtML(entry.name, effectiveML))
       ) as {
       key: string
       label: string
       name: string
       isCombined: boolean
       isMinLevel?: boolean
-      boundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
-      unboundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
+      boundData: {
+        shardLevel: number | null
+        rows: { name: string; qty: number }[]
+      } | null
+      unboundData: {
+        shardLevel: number | null
+        rows: { name: string; qty: number }[]
+      } | null
       valueOnly: string | null
       display: string | null
     }[]
@@ -911,20 +1083,36 @@ const EssenceCrafting = () => {
 
     // Build unified material rows combining Bound and Unbound into a single table with two quantity columns
     const renderUnifiedMaterials = (
-      boundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null,
-      unboundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
+      boundData: {
+        shardLevel: number | null
+        rows: { name: string; qty: number }[]
+      } | null,
+      unboundData: {
+        shardLevel: number | null
+        rows: { name: string; qty: number }[]
+      } | null
     ): ReactElement => {
       // If neither exists, show a compact empty state
       if (!boundData && !unboundData) {
-        return <div className='p-2 text-muted'>No Bound or Unbound version exists for this shard.</div>
+        return (
+          <div className='p-2 text-muted'>
+            No Bound or Unbound version exists for this shard.
+          </div>
+        )
       }
 
-      const boundMap = new Map<string, number>((boundData?.rows ?? []).map((r) => [r.name, r.qty]))
-      const unboundMap = new Map<string, number>((unboundData?.rows ?? []).map((r) => [r.name, r.qty]))
+      const boundMap = new Map<string, number>(
+        (boundData?.rows ?? []).map((r) => [r.name, r.qty])
+      )
+      const unboundMap = new Map<string, number>(
+        (unboundData?.rows ?? []).map((r) => [r.name, r.qty])
+      )
 
       // Build unified rows and sort so any N/A entries (missing Bound or Unbound) are pushed to the bottom.
       // Within each group (complete vs. N/A), keep alphabetical order by ingredient name.
-      const unifiedRows = Array.from(new Set<string>([...boundMap.keys(), ...unboundMap.keys()]))
+      const unifiedRows = Array.from(
+        new Set<string>([...boundMap.keys(), ...unboundMap.keys()])
+      )
         .map((name) => {
           const bQty = boundMap.get(name)
           const uQty = unboundMap.get(name)
@@ -934,7 +1122,9 @@ const EssenceCrafting = () => {
         })
         .sort((left, right) => {
           if (left.hasNA !== right.hasNA) return left.hasNA ? 1 : -1
-          return left.name.localeCompare(right.name, 'en', { sensitivity: 'base' })
+          return left.name.localeCompare(right.name, 'en', {
+            sensitivity: 'base'
+          })
         })
 
       return (
@@ -953,20 +1143,30 @@ const EssenceCrafting = () => {
           </thead>
           <tbody>
             {unifiedRows.map(({ name, bQty, uQty }) => (
-              <tr key={`${name}-${String(bQty ?? 'na')}-${String(uQty ?? 'na')}`}>
+              <tr
+                key={`${name}-${String(bQty ?? 'na')}-${String(uQty ?? 'na')}`}
+              >
                 <td className='text-truncate' title={name}>
                   {name}
                 </td>
                 <td className='text-end'>
                   {typeof bQty === 'number' ? (
-                    getOwnedIngredients({ name } as unknown as Ingredient, bQty, troveData)
+                    getOwnedIngredients(
+                      { name } as unknown as Ingredient,
+                      bQty,
+                      troveData
+                    )
                   ) : (
                     <span className='text-muted'>N/A</span>
                   )}
                 </td>
                 <td className='text-end'>
                   {typeof uQty === 'number' ? (
-                    getOwnedIngredients({ name } as unknown as Ingredient, uQty, troveData)
+                    getOwnedIngredients(
+                      { name } as unknown as Ingredient,
+                      uQty,
+                      troveData
+                    )
                   ) : (
                     <span className='text-muted'>N/A</span>
                   )}
@@ -981,7 +1181,10 @@ const EssenceCrafting = () => {
     return (
       <Accordion defaultActiveKey={[]} alwaysOpen className='mt-2'>
         {itemsToRender.map((accordionEntry) => (
-          <Accordion.Item eventKey={accordionEntry.key} key={accordionEntry.key}>
+          <Accordion.Item
+            eventKey={accordionEntry.key}
+            key={accordionEntry.key}
+          >
             <Accordion.Header>
               <div className='d-flex w-100 align-items-center justify-content-between gap-2'>
                 <strong>{accordionEntry.display ?? ''}</strong>
@@ -991,8 +1194,10 @@ const EssenceCrafting = () => {
                     const unboundLv = accordionEntry.unboundData?.shardLevel
                     if (boundLv != null && unboundLv != null)
                       return `Shard Level (Bound ${String(boundLv)} / Unbound ${String(unboundLv)})`
-                    if (boundLv != null) return `Shard Level (Bound ${String(boundLv)})`
-                    if (unboundLv != null) return `Shard Level (Unbound ${String(unboundLv)})`
+                    if (boundLv != null)
+                      return `Shard Level (Bound ${String(boundLv)})`
+                    if (unboundLv != null)
+                      return `Shard Level (Unbound ${String(unboundLv)})`
                     return ''
                   })()}
                 </small>
@@ -1000,7 +1205,10 @@ const EssenceCrafting = () => {
             </Accordion.Header>
 
             <Accordion.Body className='p-0'>
-              {renderUnifiedMaterials(accordionEntry.boundData, accordionEntry.unboundData)}
+              {renderUnifiedMaterials(
+                accordionEntry.boundData,
+                accordionEntry.unboundData
+              )}
             </Accordion.Body>
           </Accordion.Item>
         ))}
@@ -1016,7 +1224,9 @@ const EssenceCrafting = () => {
     })
 
     const ESSENCE_NAME = toSingularName('Magic Item Essences')
-    const PURIFIED_NAME = toSingularName('Purified Eberron Dragonshard Fragments')
+    const PURIFIED_NAME = toSingularName(
+      'Purified Eberron Dragonshard Fragments'
+    )
 
     const processItemAffixes = (
       item: ItemState,
@@ -1024,7 +1234,11 @@ const EssenceCrafting = () => {
       bound: boolean,
       totalsMap: Map<string, number>
     ) => {
-      const affixes = [item.prefix, item.suffix, item.hasCannithMark ? item.extra : null]
+      const affixes = [
+        item.prefix,
+        item.suffix,
+        item.hasCannithMark ? item.extra : null
+      ]
       for (const name of affixes) {
         if (!name || !isEnhancementAllowedAtML(name, effectiveML)) continue
         const data = buildMaterials(name, bound)
@@ -1036,11 +1250,15 @@ const EssenceCrafting = () => {
       }
     }
 
-    const getTotalsForItems = (bound: boolean): { totalsMap: Map<string, number>; markCount: number } => {
+    const getTotalsForItems = (
+      bound: boolean
+    ): { totalsMap: Map<string, number>; markCount: number } => {
       const totalsMap = new Map<string, number>()
       let markCount = 0
 
-      const orderedActiveKeys = ALL_SLOT_KEYS.map((s) => s.key).filter((k) => activeKeys.includes(k))
+      const orderedActiveKeys = ALL_SLOT_KEYS.map((s) => s.key).filter((k) =>
+        activeKeys.includes(k)
+      )
       for (const slotKey of orderedActiveKeys) {
         const item = items[slotKey]
         if (!item) continue
@@ -1073,7 +1291,9 @@ const EssenceCrafting = () => {
 
       const rows = Array.from(totalsMap.entries())
         .map(([name, qty]) => ({ name, qty }))
-        .sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }))
+        .sort((a, b) =>
+          a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })
+        )
 
       return {
         essence: totalsMap.get(ESSENCE_NAME) ?? 0,
@@ -1085,31 +1305,24 @@ const EssenceCrafting = () => {
     return {
       compute
     }
-  }, [items, masterMinLevel, isEnhancementAllowedAtML, buildMaterials, activeKeys, buildMinLevelMaterials])
+  }, [
+    items,
+    masterMinLevel,
+    isEnhancementAllowedAtML,
+    buildMaterials,
+    activeKeys,
+    buildMinLevelMaterials
+  ])
 
   // Extracted to reduce nesting/cognitive complexity
-  const renderMinLevelOverride = (slotKey: string, item: ItemState): ReactElement => {
+  const renderMinLevelOverride = (
+    slotKey: string,
+    item: ItemState
+  ): ReactElement => {
     const augmentFloor = computeAugmentMinLevelFloor(item)
     const effectiveML = item.minLevelOverride ?? masterMinLevel
 
-    // Collect ML increase messages for selected affixes
-    const incPairs: { name: string; inc: number }[] = []
-    const pushIncreaseIfAny = (effectName: string | null) => {
-      if (!effectName) {
-        return
-      }
-
-      const inc: number = getEnhancementMinIncrease(effectName)
-      if (inc > 0) {
-        incPairs.push({ name: effectName, inc })
-      }
-    }
-
-    pushIncreaseIfAny(item.prefix)
-    pushIncreaseIfAny(item.suffix)
-    pushIncreaseIfAny(item.hasCannithMark ? item.extra : null)
-
-    const selectIsInvalid = incPairs.length > 0 || effectiveML < augmentFloor
+    const selectIsInvalid = effectiveML < augmentFloor
 
     return (
       <>
@@ -1134,16 +1347,6 @@ const EssenceCrafting = () => {
           ))}
         </Form.Select>
 
-        {incPairs.length > 0 && (
-          <div className='invalid-feedback d-block mt-1'>
-            {incPairs.map((pair: { name: string; inc: number }) => (
-              <div
-                key={pair.name}
-              >{`Adding the ${pair.name} effect will raise the minimum level of this item by ${String(pair.inc)}.`}</div>
-            ))}
-          </div>
-        )}
-
         {effectiveML < augmentFloor && (
           <div className='invalid-feedback d-block mt-1'>
             {`Augments on this item require minimum level ${String(augmentFloor)} or higher.`}
@@ -1167,7 +1370,8 @@ const EssenceCrafting = () => {
                   rel='noreferrer'
                   title='Essence Crafting Known Issues & Bug Reports'
                 >
-                  Known Issues / Bug Reports <FaArrowUpRightFromSquare size={10} />
+                  Known Issues / Bug Reports{' '}
+                  <FaArrowUpRightFromSquare size={10} />
                 </a>
               </small>
             </div>
@@ -1216,34 +1420,40 @@ const EssenceCrafting = () => {
 
               <h6 className='mb-2'>Item Slots</h6>
               <ListGroup>
-                {ALL_SLOT_KEYS.map((slotDef: { key: string; label: string }) => {
-                  const active = activeKeys.includes(slotDef.key)
+                {ALL_SLOT_KEYS.map(
+                  (slotDef: { key: string; label: string }) => {
+                    const active = activeKeys.includes(slotDef.key)
 
-                  return (
-                    <ListGroup.Item
-                      key={slotDef.key}
-                      action
-                      active={active}
-                      onClick={() => {
-                        toggleSlot(slotDef.key)
-                      }}
-                      className='d-flex justify-content-between align-items-center p-1 px-2'
-                    >
-                      <span>{slotDef.label}</span>
-                      {active && (
-                        <Badge bg='light' text='dark'>
-                          Added
-                        </Badge>
-                      )}
-                    </ListGroup.Item>
-                  )
-                })}
+                    return (
+                      <ListGroup.Item
+                        key={slotDef.key}
+                        action
+                        active={active}
+                        onClick={() => {
+                          toggleSlot(slotDef.key)
+                        }}
+                        className='d-flex justify-content-between align-items-center p-1 px-2'
+                      >
+                        <span>{slotDef.label}</span>
+                        {active && (
+                          <Badge bg='light' text='dark'>
+                            Added
+                          </Badge>
+                        )}
+                      </ListGroup.Item>
+                    )
+                  }
+                )}
               </ListGroup>
             </Col>
 
             <Col lg={9}>
               <Stack gap={3}>
-                {activeKeys.length === 0 && <p className='text-muted'>Select a slot on the left to begin crafting.</p>}
+                {activeKeys.length === 0 && (
+                  <p className='text-muted'>
+                    Select a slot on the left to begin crafting.
+                  </p>
+                )}
 
                 {/* Maintain the same order as the sidebar list */}
                 {ALL_SLOT_KEYS.map((slotDef) => slotDef.key)
@@ -1263,9 +1473,13 @@ const EssenceCrafting = () => {
                               onClick={() => {
                                 toggleCollapsed(slotKey)
                               }}
-                              title={isCollapsed(slotKey) ? 'Expand' : 'Collapse'}
+                              title={
+                                isCollapsed(slotKey) ? 'Expand' : 'Collapse'
+                              }
                             >
-                              <span style={{ display: 'inline-block', width: 16 }}>
+                              <span
+                                style={{ display: 'inline-block', width: 16 }}
+                              >
                                 {isCollapsed(slotKey) ? '▸' : '▾'}
                               </span>
                             </Button>
@@ -1274,7 +1488,10 @@ const EssenceCrafting = () => {
                           </div>
 
                           <div className='d-flex align-items-center gap-2'>
-                            <Badge bg='secondary' title='Effective Minimum Level'>
+                            <Badge
+                              bg='secondary'
+                              title='Effective Minimum Level'
+                            >
                               {`ML ${String(items[slotKey].minLevelOverride ?? masterMinLevel)}`}
                             </Badge>
                           </div>
@@ -1284,12 +1501,34 @@ const EssenceCrafting = () => {
                           <div id={`cc-body-${slotKey}`}>
                             <Card.Body>
                               <Row className='g-3'>
-                                <Col md={4}>{renderAffixSelect(slotKey, item, 'prefix', 'Prefix', false)}</Col>
-
-                                <Col md={4}>{renderAffixSelect(slotKey, item, 'suffix', 'Suffix', false)}</Col>
+                                <Col md={4}>
+                                  {renderAffixSelect(
+                                    slotKey,
+                                    item,
+                                    'prefix',
+                                    'Prefix',
+                                    false
+                                  )}
+                                </Col>
 
                                 <Col md={4}>
-                                  {renderAffixSelect(slotKey, item, 'extra', 'Extra', !item.hasCannithMark)}
+                                  {renderAffixSelect(
+                                    slotKey,
+                                    item,
+                                    'suffix',
+                                    'Suffix',
+                                    false
+                                  )}
+                                </Col>
+
+                                <Col md={4}>
+                                  {renderAffixSelect(
+                                    slotKey,
+                                    item,
+                                    'extra',
+                                    'Extra',
+                                    !item.hasCannithMark
+                                  )}
                                   <Form.Check
                                     type='switch'
                                     label='Mark of House Cannith'
@@ -1307,7 +1546,9 @@ const EssenceCrafting = () => {
                               <Row className='g-3 mt-2'>
                                 <Col md={4}>
                                   <Form.Group controlId={`${slotKey}-ml`}>
-                                    <Form.Label>Min Level (Override)</Form.Label>
+                                    <Form.Label>
+                                      Min Level (Override)
+                                    </Form.Label>
                                     {renderMinLevelOverride(slotKey, item)}
                                   </Form.Group>
                                 </Col>
@@ -1315,14 +1556,27 @@ const EssenceCrafting = () => {
 
                               <hr />
 
-                              <Stack direction='horizontal' gap={2} className='flex-wrap'>
+                              <Stack
+                                direction='horizontal'
+                                gap={2}
+                                className='flex-wrap'
+                              >
                                 {(() => {
-                                  const used = new Set(item.augmentSlots.map((augmentSlot) => augmentSlot.slotType))
-                                  const allowedForThisItem = new Set(allowedAugmentColorsForSlot(slotKey))
-                                  const remaining = AVAILABLE_AUGMENT_TYPES.filter(
-                                    (colorOption) =>
-                                      allowedForThisItem.has(colorOption.key) && !used.has(colorOption.key)
+                                  const used = new Set(
+                                    item.augmentSlots.map(
+                                      (augmentSlot) => augmentSlot.slotType
+                                    )
                                   )
+                                  const allowedForThisItem = new Set(
+                                    allowedAugmentColorsForSlot(slotKey)
+                                  )
+                                  const remaining =
+                                    AVAILABLE_AUGMENT_TYPES.filter(
+                                      (colorOption) =>
+                                        allowedForThisItem.has(
+                                          colorOption.key
+                                        ) && !used.has(colorOption.key)
+                                    )
 
                                   const noneLeft = remaining.length === 0
 
@@ -1346,7 +1600,10 @@ const EssenceCrafting = () => {
                                           : 'Add Augment Slot...'}
                                       </option>
                                       {remaining.map((colorOption) => (
-                                        <option key={colorOption.key} value={colorOption.key}>
+                                        <option
+                                          key={colorOption.key}
+                                          value={colorOption.key}
+                                        >
                                           {colorOption.label}
                                         </option>
                                       ))}
@@ -1357,11 +1614,14 @@ const EssenceCrafting = () => {
 
                               {item.augmentSlots.length === 0 ? (
                                 <p className='text-muted mb-0 mt-2 mt-sm-2'>
-                                  No augment slots added. Use the selector above to add one.
+                                  No augment slots added. Use the selector above
+                                  to add one.
                                 </p>
                               ) : (
                                 <div className='d-flex flex-column gap-2 gap-sm-3 mt-2 mt-sm-3'>
-                                  {item.augmentSlots.map((augmentSlot) => renderAugmentSlot(slotKey, augmentSlot))}
+                                  {item.augmentSlots.map((augmentSlot) =>
+                                    renderAugmentSlot(slotKey, augmentSlot)
+                                  )}
                                 </div>
                               )}
                             </Card.Body>
@@ -1383,7 +1643,15 @@ const EssenceCrafting = () => {
           setShowPermalink(false)
         }}
         buildUrl={() =>
-          buildPermalinkUrl(encodeEssencePermalink({ items, activeKeys, collapsedKeys, masterMinLevel }), location)
+          buildPermalinkUrl(
+            encodeEssencePermalink({
+              items,
+              activeKeys,
+              collapsedKeys,
+              masterMinLevel
+            }),
+            location
+          )
         }
       />
 

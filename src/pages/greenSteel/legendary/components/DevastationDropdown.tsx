@@ -33,7 +33,8 @@ const DevastationDropdown = () => {
   )
 
   const dropdownItemText = (effect: Enhancement) => {
-    const modAndBonus: string = effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''
+    const modAndBonus: string =
+      effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${String(effect.bonus)})` : ''
 
     return `${effect.name}${modAndBonus}`
   }

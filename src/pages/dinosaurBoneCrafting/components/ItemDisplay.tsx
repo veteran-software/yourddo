@@ -10,7 +10,7 @@ import type { CraftingIngredient } from '../../../types/crafting.ts'
 import type { Ingredient } from '../../../types/ingredients.ts'
 import { ICON_BASE } from '../../../utils/constants.ts'
 import { getOwnedIngredients } from '../../../utils/jsxUtils.tsx'
-import { formatIngredientName } from '../../../utils/utils.ts'
+import { formatDropLocation, formatIngredientName } from '../../../utils/utils.ts'
 
 const ItemDisplay = (props: Props) => {
   const { selectedItem } = props
@@ -73,8 +73,12 @@ const ItemDisplay = (props: Props) => {
 
               <Card.Body className='p-0'>
                 <ListGroup variant='flush'>
-                  {selectedItem.foundIn.map((location: string, idx: number) => (
-                    <ListGroup.Item key={`${location}-${String(idx)}`}>{location}</ListGroup.Item>
+                  {selectedItem.foundIn.map((location, idx: number) => (
+                    <ListGroup.Item
+                      key={`${typeof location === 'string' ? location : JSON.stringify(location)}-${String(idx)}`}
+                    >
+                      {formatDropLocation(location)}
+                    </ListGroup.Item>
                   ))}
                 </ListGroup>
               </Card.Body>
@@ -96,7 +100,9 @@ const ItemDisplay = (props: Props) => {
                       <ListGroup.Item key={`${effect.name}-${String(idx)}`}>
                         <small>
                           {effect.name}
-                          {effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''}
+                          {effect.modifier && effect.bonus
+                            ? ` (+${String(effect.modifier)} ${String(effect.bonus)})`
+                            : ''}
                         </small>
                         {effect.notes && (
                           <>

@@ -41,7 +41,11 @@ export const getAffixOptions = (slotKey: string, affix: AffixKind): string[] => 
     }
 
     // if any token matches our slot tokens, include this enhancement
-    const matches = allowed.some((token) => dataTokensForSlot.includes(token))
+    const matches = allowed.some((token) =>
+      dataTokensForSlot.some(
+        (slotToken) => slotToken.toLowerCase() === token.trim().toLowerCase()
+      )
+    )
     if (matches) {
       if (entry.name) {
         options.add(entry.name)
@@ -52,9 +56,11 @@ export const getAffixOptions = (slotKey: string, affix: AffixKind): string[] => 
   return Array.from(options).sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }))
 }
 
-export const isHandHeld = (slotKey: string) => ['mainHand', 'offHand', 'shield', 'orb', 'runeArm'].includes(slotKey)
+export const isHandHeld = (slotKey: string) =>
+  ['mainHand', 'offHand', 'shield', 'orb', 'runeArm', 'artificerPetWeapon', 'druidPetWeapon'].includes(slotKey)
 export const isShield = (slotKey: string) => slotKey === 'shield'
-export const isArmor = (slotKey: string) => slotKey === 'armor'
+export const isArmor = (slotKey: string) =>
+  ['armor', 'artificerPetArmor', 'druidPetArmor'].includes(slotKey)
 export const isOffHandNonWeapon = (slotKey: string) =>
   slotKey === 'orb' || slotKey === 'runeArm' || slotKey === 'shield'
 

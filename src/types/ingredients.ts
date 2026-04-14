@@ -1,3 +1,4 @@
+import type { LootDropLocation } from '../pages/gearPlanner/types.ts'
 import type { Binding, Cost, Enhancement } from './core.ts'
 
 export interface Ingredient {
@@ -7,16 +8,35 @@ export interface Ingredient {
   binding?: Binding
   description?: string
   enhancements?: Enhancement[]
-  foundIn?: string[]
+  enchantments?: Enhancement[] | null
+  foundIn?: (string | LootDropLocation)[] | null
   image?: string
   inventoryMaxStack?: number
-  minimumLevel?: number
+  absoluteMinLevel?: number | string
+  minimumLevel?: number | string
+  minLevel?: number | string
   name: string
   notes?: string
   type?: string
   subType?: string
-  weight?: number
-  update?: number
+  weight?: number | string
+  update?: number | string
+  material?: string
+  hardness?: number | string
+  durability?: number | string
+  artifacttype?: string
+  pageTitle?: string
+  icon?: string
+  optionsRaw?: string
+  enchantmentsRaw?: string
+  augmentsRaw?: string
+  itemSetsRaw?: string
+  dropLocationRaw?: string
+  details?: string
+  upgradeable?: string
+  upgradedFrom?: string
+  bug?: string
+  replaced?: string
 }
 
 export type TAugmentType =

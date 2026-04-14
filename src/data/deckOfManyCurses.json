@@ -1,0 +1,1269 @@
+[
+  {
+    "name": "Curse of Minor Strength",
+    "enchantments": [
+      {
+        "name": "Strength",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Strength",
+    "enchantments": [
+      {
+        "name": "Strength",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Dexterity",
+    "enchantments": [
+      {
+        "name": "Dexterity",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Dexterity",
+    "enchantments": [
+      {
+        "name": "Dexterity",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Constitution",
+    "enchantments": [
+      {
+        "name": "Constitution",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Constitution",
+    "enchantments": [
+      {
+        "name": "Constitution",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Intelligence",
+    "enchantments": [
+      {
+        "name": "Intelligence",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Intelligence",
+    "enchantments": [
+      {
+        "name": "Intelligence",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Wisdom",
+    "enchantments": [
+      {
+        "name": "Wisdom",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Wisdom",
+    "enchantments": [
+      {
+        "name": "Wisdom",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Charisma",
+    "enchantments": [
+      {
+        "name": "Charisma",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Charisma",
+    "enchantments": [
+      {
+        "name": "Charisma",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Fortitude",
+    "enchantments": [
+      {
+        "name": "Fortitude Saving Throws",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Fortitude",
+    "enchantments": [
+      {
+        "name": "Fortitude Saving Throws",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Reflexes",
+    "enchantments": [
+      {
+        "name": "Reflex Saving Throws",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Reflexes",
+    "enchantments": [
+      {
+        "name": "Reflex Saving Throws",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Will",
+    "enchantments": [
+      {
+        "name": "Will Saving Throws",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Will",
+    "enchantments": [
+      {
+        "name": "Will Saving Throws",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Sheltering",
+    "enchantments": [
+      {
+        "name": "Physical Resistance Rating",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Sheltering",
+    "enchantments": [
+      {
+        "name": "Physical Resistance Rating",
+        "modifier": "5",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Warding",
+    "enchantments": [
+      {
+        "name": "Magical Resistance Rating",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Warding",
+    "enchantments": [
+      {
+        "name": "Magical Resistance Rating",
+        "modifier": "5",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Prowess",
+    "enchantments": [
+      {
+        "name": "Attack Rolls",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Damage",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Prowess",
+    "enchantments": [
+      {
+        "name": "Attack Rolls",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Damage",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Archery",
+    "enchantments": [
+      {
+        "name": "Ranged Power",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Archery",
+    "enchantments": [
+      {
+        "name": "Ranged Power",
+        "modifier": "5",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of the Minor Combatant",
+    "enchantments": [
+      {
+        "name": "Melee Power",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of the Major Combatant",
+    "enchantments": [
+      {
+        "name": "Melee Power",
+        "modifier": "5",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of the Minor Tactician",
+    "enchantments": [
+      {
+        "name": "Tactical DC: Trip",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Tactical DC: Improved Trip",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Tactical DC: Sunder",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Tactical DC: Improved Sunder",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Tactical DC: Stunning",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of the Major Tactician",
+    "enchantments": [
+      {
+        "name": "Tactical DC: Trip",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Tactical DC: Improved Trip",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Tactical DC: Sunder",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Tactical DC: Improved Sunder",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Tactical DC: Stunning",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of the Minor Assassin",
+    "enchantments": [
+      {
+        "name": "Assassinate DC",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of the Major Assassin",
+    "enchantments": [
+      {
+        "name": "Assassinate DC",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Betrayal",
+    "enchantments": [
+      {
+        "name": "Sneak Attack Dice",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Betrayal",
+    "enchantments": [
+      {
+        "name": "Sneak Attack Dice",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Imbuement",
+    "enchantments": [
+      {
+        "name": "Imbue Dice",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Major Imbuement",
+    "enchantments": [
+      {
+        "name": "Imbue Dice",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of Minor Spellwork",
+    "enchantments": [
+      {
+        "name": "Spell Power: Universal",
+        "modifier": "4",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Spellwork",
+    "enchantments": [
+      {
+        "name": "Spell Power: Universal",
+        "modifier": "10",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Breath",
+    "enchantments": [
+      {
+        "name": "Breath Weapon DC",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Breath",
+    "enchantments": [
+      {
+        "name": "Breath Weapon DC",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Technica",
+    "enchantments": [
+      {
+        "name": "Rune Arm Focus",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Technica",
+    "enchantments": [
+      {
+        "name": "Rune Arm Focus",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Perception",
+    "enchantments": [
+      {
+        "name": "Skill: Search",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Skill: Spot",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Perception",
+    "enchantments": [
+      {
+        "name": "Skill: Search",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Skill: Spot",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Mechanics",
+    "enchantments": [
+      {
+        "name": "Skill: Open Lock",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Skill: Disable Device",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Mechanics",
+    "enchantments": [
+      {
+        "name": "Skill: Open Lock",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Skill: Disable Device",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Obscurity",
+    "enchantments": [
+      {
+        "name": "Skill: Hide",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Skill: Move Silently",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Obscurity",
+    "enchantments": [
+      {
+        "name": "Skill: Hide",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Skill: Move Silently",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Arcana",
+    "enchantments": [
+      {
+        "name": "Skill: Spellcraft",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Skill: Concentration",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Arcana",
+    "enchantments": [
+      {
+        "name": "Skill: Spellcraft",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Skill: Concentration",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Renewal",
+    "enchantments": [
+      {
+        "name": "Skill: Heal",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Skill: Repair",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of Major Renewal",
+    "enchantments": [
+      {
+        "name": "Skill: Heal",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Skill: Repair",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Minor Masterworks",
+    "enchantments": [
+      {
+        "name": "Essence Crafting Effect Level",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Major Masterworks",
+    "enchantments": [
+      {
+        "name": "Essence Crafting Effect Level",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of the Power of Body",
+    "enchantments": [
+      {
+        "name": "Strength",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Dexterity",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Constitution",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of the Power of Mind",
+    "enchantments": [
+      {
+        "name": "Intelligence",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Wisdom",
+        "modifier": "1",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Charisma",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of the Abjurer",
+    "enchantments": [
+      {
+        "name": "Spell DC: Abjuration",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of the Conjurer",
+    "enchantments": [
+      {
+        "name": "Spell DC: Conjuration",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of the Enchanter",
+    "enchantments": [
+      {
+        "name": "Spell DC: Enchantment",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of the Evoker",
+    "enchantments": [
+      {
+        "name": "Spell DC: Evocation",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of the Illusionist",
+    "enchantments": [
+      {
+        "name": "Spell DC: Illusion",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of the Necromancer",
+    "enchantments": [
+      {
+        "name": "Spell DC: Necromancy",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of the Transmuter",
+    "enchantments": [
+      {
+        "name": "Spell DC: Transmutation",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Common"
+  },
+  {
+    "name": "Curse of the Caustic One",
+    "enchantments": [
+      {
+        "name": "Spell Power: Acid",
+        "modifier": "5",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Acid Absorption",
+        "modifier": "1%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Acid Resistance",
+        "modifier": "3",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of the Voltaic Way",
+    "enchantments": [
+      {
+        "name": "Spell Power: Electric",
+        "modifier": "5",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Electric Absorption",
+        "modifier": "1%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Electric Resistance",
+        "modifier": "3",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of the Icebreaker",
+    "enchantments": [
+      {
+        "name": "Spell Power: Cold",
+        "modifier": "5",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Cold Absorption",
+        "modifier": "1%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Cold Resistance",
+        "modifier": "3",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of the Flametouched",
+    "enchantments": [
+      {
+        "name": "Spell Power: Fire",
+        "modifier": "5",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Fire Absorption",
+        "modifier": "1%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Fire Resistance",
+        "modifier": "3",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Uncontrollable Energy",
+    "enchantments": [
+      {
+        "name": "Spell Crit Damage",
+        "modifier": "2%",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of the Pact",
+    "enchantments": [
+      {
+        "name": "Pact Dice",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Uncommon"
+  },
+  {
+    "name": "Curse of Divine Fortune",
+    "enchantments": [
+      {
+        "name": "If the item is a weapon, it is always considered a Favored Weapon.",
+        "modifier": "",
+        "bonus": ""
+      },
+      {
+        "name": "Physical Resistance Rating",
+        "modifier": "4",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Acid Absorption",
+        "modifier": "1%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Cold Absorption",
+        "modifier": "1%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Electric Absorption",
+        "modifier": "1%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Saves vs. Spells",
+        "modifier": "1",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of the Sentient's Meal",
+    "enchantments": [
+      {
+        "name": "Sentient XP",
+        "modifier": "10000",
+        "bonus": ""
+      },
+      {
+        "name": "Sale Value (Platinum)",
+        "modifier": "100000",
+        "bonus": ""
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of Cruelty",
+    "enchantments": [
+      {
+        "name": "Damage vs. Helpless targets",
+        "modifier": "2%",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of Intangibility",
+    "enchantments": [
+      {
+        "name": "Dodge Cap",
+        "modifier": "2%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Maximum Dexterity Bonus (Armor only)",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of the Mechanical Marvel",
+    "enchantments": [
+      {
+        "name": "Rune Arm Charge Rate",
+        "modifier": "3%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Rune Arm Cooldown Rate",
+        "modifier": "-3%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Repair Amplification",
+        "modifier": "3",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of the Unstoppable One",
+    "enchantments": [
+      {
+        "name": "Maximum Hit Points",
+        "modifier": "2%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Armor Class",
+        "modifier": "3%",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of Unparalleled Might",
+    "enchantments": [
+      {
+        "name": "While under the effects of any Action Boost, you gain a +6 Fortune Bonus to Strength.",
+        "modifier": "",
+        "bonus": ""
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of Weapon's Touch",
+    "enchantments": [
+      {
+        "name": "Strikethrough Chance",
+        "modifier": "5%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Offhand Strike Chance",
+        "modifier": "2%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Doublestrike Chance",
+        "modifier": "2%",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Doubleshot Chance",
+        "modifier": "2%",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of Charming Presence",
+    "enchantments": [
+      {
+        "name": "Skill: Bluff",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Misc"
+  },
+  {
+    "name": "Curse of the Anger's Heart",
+    "enchantments": [
+      {
+        "name": "Skill: Intimidate",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Misc"
+  },
+  {
+    "name": "Curse of the Unending Song",
+    "enchantments": [
+      {
+        "name": "Skill: Perform",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Bard Song",
+        "modifier": "1",
+        "bonus": ""
+      }
+    ],
+    "type": "Misc"
+  },
+  {
+    "name": "Curse of the Depths",
+    "enchantments": [
+      {
+        "name": "Skill: Swim",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Water Breathing",
+        "modifier": "",
+        "bonus": ""
+      }
+    ],
+    "type": "Misc"
+  },
+  {
+    "name": "Curse of the Visionary",
+    "enchantments": [
+      {
+        "name": "Skill: Spot",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "True Seeing",
+        "modifier": "",
+        "bonus": ""
+      }
+    ],
+    "type": "Misc"
+  },
+  {
+    "name": "Curse of the Shadowtouched",
+    "enchantments": [
+      {
+        "name": "Deathblock",
+        "modifier": "",
+        "bonus": ""
+      }
+    ],
+    "type": "Misc"
+  },
+  {
+    "name": "Curse of Butterflies",
+    "enchantments": [
+      {
+        "name": "Feather Falling",
+        "modifier": "",
+        "bonus": ""
+      },
+      {
+        "name": "Cosmetic Butterflies",
+        "modifier": "",
+        "bonus": ""
+      }
+    ],
+    "type": "Misc"
+  },
+  {
+    "name": "Curse of the Forest's Embrace",
+    "enchantments": [
+      {
+        "name": "Fear Immunity",
+        "modifier": "",
+        "bonus": ""
+      },
+      {
+        "name": "Cosmetic Fireflies",
+        "modifier": "",
+        "bonus": ""
+      }
+    ],
+    "type": "Misc"
+  },
+  {
+    "name": "Curse of the Commander",
+    "enchantments": [
+      {
+        "name": "Your pets and summoned creatures gain a +1 Fortune Bonus to all Ability Scores.",
+        "modifier": "",
+        "bonus": ""
+      }
+    ],
+    "type": "Misc"
+  },
+  {
+    "name": "Curse of the Unbreakable",
+    "enchantments": [
+      {
+        "name": "This item is now immune to item damage.",
+        "modifier": "",
+        "bonus": ""
+      }
+    ],
+    "type": "Misc"
+  },
+  {
+    "name": "Curse of Future Sight",
+    "enchantments": [
+      {
+        "name": "Dodge Bypass",
+        "modifier": "5%",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of the Winding Dirge",
+    "enchantments": [
+      {
+        "name": "Your Inspire Courage grants you and your allies an additional +1 Fortune bonus to Attack, Damage, Saves versus Fear, and an additional +3 Fortune bonus to Universal Spell Power",
+        "modifier": "",
+        "bonus": ""
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of the Merciless",
+    "enchantments": [
+      {
+        "name": "Critical Confirmation Rolls",
+        "modifier": "2",
+        "bonus": "Fortune"
+      },
+      {
+        "name": "Critical Damage Rolls",
+        "modifier": "2",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of the Unfeeling",
+    "enchantments": [
+      {
+        "name": "Magical Resistance Rating Cap",
+        "modifier": "2%",
+        "bonus": "Fortune"
+      }
+    ],
+    "type": "Rare"
+  },
+  {
+    "name": "Curse of Ghostly Haunting",
+    "enchantments": [
+      {
+        "name": "Ghost Touch",
+        "modifier": "",
+        "bonus": ""
+      }
+    ],
+    "type": "Rare"
+  }
+]

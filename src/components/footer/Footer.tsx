@@ -123,7 +123,7 @@ const Footer = () => {
     }
   }, [gameWorlds, iterateResults, statusTrigger])
 
-  function updateLamanniaStatus(ddoLam: DatacenterStruct | undefined) {
+  const updateLamanniaStatus = (ddoLam: DatacenterStruct | undefined) => {
     if (ddoLam) {
       setTimeout(() => {
         setGameWorldsLam([ddoLam.Datacenter.datacenter.Datacenter.Worlds.World as World])

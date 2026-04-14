@@ -4,8 +4,7 @@ import OverlayWrapper from '../components/common/OwnedIngredientsOverlay.tsx'
 import type { ItemRollup, Location } from '../components/trove/types.ts'
 import type { Ingredient } from '../types/ingredients.ts'
 import { formatNumber } from './objectUtils.ts'
-import { toSingularName } from './stringUtils.ts'
-import { normItem } from './troveUtils.ts'
+import { getTroveKey } from './troveUtils.ts'
 
 // ----- Extracted helpers to reduce cognitive complexity in getOwnedIngredients -----
 export interface CharacterEntry {
@@ -13,7 +12,10 @@ export interface CharacterEntry {
   locations: Record<Location, number>
 }
 
-export const renderBindingNode = (ingredient: Ingredient | undefined, troveBinding?: string): React.JSX.Element => {
+export const renderBindingNode = (
+  ingredient: Ingredient | undefined,
+  troveBinding?: string
+): React.JSX.Element => {
   // Prefer explicit binding on the ingredient if present
   if (ingredient?.binding?.type === 'Unbound') {
     return (
@@ -67,11 +69,16 @@ export const renderBindingNode = (ingredient: Ingredient | undefined, troveBindi
 export const normalizeEntries = (byCharacter: unknown): CharacterEntry[] => {
   if (Array.isArray(byCharacter)) return byCharacter as CharacterEntry[]
   const map = (byCharacter as Record<string, Record<Location, number>>) ?? {}
-  return Object.entries(map).map(([character, locations]) => ({ character, locations }))
+  return Object.entries(map).map(([character, locations]) => ({
+    character,
+    locations
+  }))
 }
 
 const computeTotalOwned = (entries: CharacterEntry[]): number =>
-  entries.flatMap((e) => Object.values(e.locations)).reduce((sum, qty) => sum + qty, 0)
+  entries
+    .flatMap((e) => Object.values(e.locations))
+    .reduce((sum, qty) => sum + qty, 0)
 
 const qtyColorClass = (owned: number, required: number): string => {
   if (owned <= 0) return 'text-danger'
@@ -84,7 +91,14 @@ const buildPopover = (
   ingredient: Ingredient,
   entries: CharacterEntry[],
   troveBinding?: string
-): React.JSX.Element => <OverlayWrapper id={id} ingredient={ingredient} entries={entries} troveBinding={troveBinding} />
+): React.JSX.Element => (
+  <OverlayWrapper
+    id={id}
+    ingredient={ingredient}
+    entries={entries}
+    troveBinding={troveBinding}
+  />
+)
 
 export const getOwnedIngredients = (
   ingredient: Ingredient | undefined,
@@ -92,11 +106,19 @@ export const getOwnedIngredients = (
   troveData: ItemRollup | null
 ): React.JSX.Element => {
   if (ingredient && troveData) {
-    const ingredientKey = normItem(toSingularName(ingredient.name))
-    const requiredNum = typeof quantityRequired === 'number' ? quantityRequired : Number(quantityRequired)
+    const ingredientKey = getTroveKey(ingredient.name)
+    const requiredNum =
+      typeof quantityRequired === 'number'
+        ? quantityRequired
+        : Number(quantityRequired)
     const troveItem = troveData[ingredientKey]
     const entries = troveItem ? normalizeEntries(troveItem.byCharacter) : []
-    const popover = buildPopover(ingredientKey, ingredient, entries, troveItem?.binding)
+    const popover = buildPopover(
+      ingredientKey,
+      ingredient,
+      entries,
+      troveItem?.binding
+    )
 
     if (troveItem) {
       const totalOwned = computeTotalOwned(entries)
@@ -110,7 +132,12 @@ export const getOwnedIngredients = (
             overlay={popover}
             rootClose
           >
-            <Stack direction='horizontal' gap={2} className={color} style={{ cursor: 'pointer' }}>
+            <Stack
+              direction='horizontal'
+              gap={2}
+              className={color}
+              style={{ cursor: 'pointer' }}
+            >
               {formatNumber(totalOwned)}/{formatNumber(requiredNum)}
             </Stack>
           </OverlayTrigger>
@@ -128,7 +155,12 @@ export const getOwnedIngredients = (
           overlay={popover}
           rootClose
         >
-          <Stack direction='horizontal' gap={2} className='text-danger' style={{ cursor: 'pointer' }}>
+          <Stack
+            direction='horizontal'
+            gap={2}
+            className='text-danger'
+            style={{ cursor: 'pointer' }}
+          >
             {formatNumber(0)}/{formatNumber(requiredNum)}
           </Stack>
         </OverlayTrigger>
@@ -137,6 +169,13 @@ export const getOwnedIngredients = (
   }
 
   // No trove data: still format the required quantity for locale friendliness
-  const quantityRequiredNum = typeof quantityRequired === 'number' ? quantityRequired : Number(quantityRequired)
-  return <Container className='d-flex justify-content-end pe-1'>{formatNumber(quantityRequiredNum)}</Container>
+  const quantityRequiredNum =
+    typeof quantityRequired === 'number'
+      ? quantityRequired
+      : Number(quantityRequired)
+  return (
+    <Container className='d-flex justify-content-end pe-1'>
+      {formatNumber(quantityRequiredNum)}
+    </Container>
+  )
 }

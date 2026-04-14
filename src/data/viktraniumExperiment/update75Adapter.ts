@@ -2,7 +2,11 @@ import type { Binding, Enhancement } from '../../types/core.ts'
 import type { Augment, CraftingIngredient } from '../../types/crafting.ts'
 import { clothing, jewelry } from '../basics/accessories.ts'
 import { shields } from '../basics/armor.ts'
-import { meleeWeapons, rangedWeapons, throwingWeapons } from '../basics/weapons.ts'
+import {
+  meleeWeapons,
+  rangedWeapons,
+  throwingWeapons
+} from '../basics/weapons.ts'
 import rawItems from '../loot/update75.json'
 
 interface U75Item {

@@ -6619,7 +6619,7 @@
   },
   {
     "name": "Dolorous Silencer (ML:8)",
-    "description": "Slotted Effect: +1d6 Profane bonuse to Sneak Attack Dice.",
+    "description": "Slotted Effect: +1d6 Profane bonus to Sneak Attack Dice.",
     "minimumLevel": 8,
     "image": "dolorousAugment",
     "binding": {
@@ -20517,6 +20517,11 @@
         "name": "Spell Critical Chance: Bludgeoning",
         "modifier": 23,
         "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Untyped",
+        "modifier": 23,
+        "bonus": "Equipment"
       }
     ],
     "requirements": [
@@ -30588,7 +30593,7 @@
     "augmentType": "Sun",
     "effectsAdded": [
       {
-        "name": "Run Arm Focus",
+        "name": "Rune Arm Focus",
         "modifier": 1,
         "bonus": "Artifact"
       }
@@ -30602,7 +30607,7 @@
     "augmentType": "Sun",
     "effectsAdded": [
       {
-        "name": "Run Arm Focus",
+        "name": "Rune Arm Focus",
         "modifier": 3,
         "bonus": "Artifact"
       }
