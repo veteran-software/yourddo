@@ -32,7 +32,8 @@ import {
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
-import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas
+  from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import FiligreeModal from './components/FiligreeModal.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
@@ -403,6 +404,7 @@ const GearPlanner = () => {
                       slottedGemSetBonuses={
                         gpHook.activeSetup.slottedGemSetBonuses
                       }
+                      slottedLostPurpose={gpHook.activeSetup.slottedLostPurpose}
                       onSetClick={gpHook.openSetBonusBrowser}
                     />
 
@@ -451,6 +453,7 @@ const GearPlanner = () => {
                           slottedGemSetBonuses={
                             artificerPet.slottedGemSetBonuses
                           }
+                          slottedLostPurpose={artificerPet.slottedLostPurpose}
                           onSetClick={gpHook.openSetBonusBrowser}
                         />
 
@@ -492,6 +495,7 @@ const GearPlanner = () => {
                           slottedAugments={druidPet.slottedAugments}
                           slottedFiligrees={druidPet.slottedFiligrees}
                           slottedGemSetBonuses={druidPet.slottedGemSetBonuses}
+                          slottedLostPurpose={druidPet.slottedLostPurpose}
                           onSetClick={gpHook.openSetBonusBrowser}
                         />
 

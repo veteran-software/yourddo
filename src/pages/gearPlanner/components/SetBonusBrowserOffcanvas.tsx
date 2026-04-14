@@ -1,5 +1,6 @@
 import { Accordion, Col, Form, Offcanvas, Row } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
+import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
 import { getTroveKey } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver'
 import {
@@ -153,6 +154,11 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                 const min = activeSetup?.minLevel ?? 1
                 const max = activeSetup?.maxLevel ?? 34
 
+                // Check if this is a Lost Purpose set
+                const isLostPurposeSet = lostPurposeRecipes.some(
+                  (r) => r.setBonus?.[0]?.name === browsingSet
+                )
+
                 const setItemResults = allItems.filter((item) => {
                   const itemLevel = Number(item.minLevel) || 1
                   if (itemLevel < min || itemLevel > max) return false
@@ -176,12 +182,25 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                     )
                       return false
                   }
-                  return indexedItems.some(
+
+                  // Normal set bonus check
+                  const isInIndex = indexedItems.some(
                     (ii) =>
                       ii.name === item.name &&
                       (item.slot === GearSlot.Filigree ||
                         ii.minLevel === itemLevel)
                   )
+
+                  if (isInIndex) return true
+
+                  // Lost Purpose check
+                  if (isLostPurposeSet) {
+                    return item.enchantments?.some(
+                      (ench) => ench.name === 'Lost Purpose'
+                    )
+                  }
+
+                  return false
                 })
 
                 if (setItemResults.length === 0) {

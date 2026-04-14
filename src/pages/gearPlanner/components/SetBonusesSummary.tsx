@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Badge, Row } from 'react-bootstrap'
 import { FaLayerGroup } from 'react-icons/fa6'
-import type { GearAugment, GearItem } from '../types.ts'
+import type { GearAugment, GearItem, LootEnchantment } from '../types.ts'
 import SetBonusCard from './SetBonusCard.tsx'
 
 const SetBonusesSummary = (props: Props) => {
@@ -10,7 +10,8 @@ const SetBonusesSummary = (props: Props) => {
     onSetClick,
     slottedAugments,
     slottedFiligrees,
-    slottedGemSetBonuses
+    slottedGemSetBonuses,
+    slottedLostPurpose
   } = props
 
   const getCountsFromItems = (
@@ -82,18 +83,37 @@ const SetBonusesSummary = (props: Props) => {
     }
   }
 
+  const getCountsFromLostPurpose = (
+    slottedLostPurpose: Record<string, LootEnchantment | null> | undefined,
+    counts: Record<string, number>
+  ) => {
+    if (!slottedLostPurpose) return
+    for (const ench of Object.values(slottedLostPurpose)) {
+      if (ench?.name) {
+        counts[ench.name] = (counts[ench.name] ?? 0) + 1
+      }
+    }
+  }
+
   const activeSets = useMemo(() => {
     const counts: Record<string, number> = {}
 
     getCountsFromItems(equippedItems, slottedGemSetBonuses, counts)
     getCountsFromAugments(slottedAugments, counts)
     getCountsFromFiligrees(slottedFiligrees, counts)
+    getCountsFromLostPurpose(slottedLostPurpose, counts)
 
     return Object.entries(counts)
       .filter(([, count]) => count > 0)
       .sort((a, b) => b[1] - a[1])
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [equippedItems, slottedAugments, slottedFiligrees, slottedGemSetBonuses])
+  }, [
+    equippedItems,
+    slottedAugments,
+    slottedFiligrees,
+    slottedGemSetBonuses,
+    slottedLostPurpose
+  ])
 
   if (activeSets.length === 0) return null
 
@@ -131,6 +151,7 @@ interface Props {
   slottedAugments: Record<string, Record<number, GearAugment | null>>
   slottedFiligrees?: Record<string, (GearItem | null)[]>
   slottedGemSetBonuses?: Record<string, (string | null)[]>
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
   onSetClick?: (setName: string) => void
 }
 

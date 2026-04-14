@@ -124,7 +124,8 @@ export const getActiveEnhancementsForSet = (
 const getItemCounts = (
   equippedItems: GearItem[],
   slottedGemSetBonuses: Record<string, (string | null)[]> | undefined,
-  counts: Record<string, number>
+  counts: Record<string, number>,
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
 ) => {
   equippedItems.forEach((item) => {
     if (item.name.includes('Gem of Many Facets')) {
@@ -138,6 +139,11 @@ const getItemCounts = (
       item.setBonus?.forEach((sb) => {
         counts[sb.name] = (counts[sb.name] || 0) + 1
       })
+    }
+
+    const lp = slottedLostPurpose?.[item.id]
+    if (lp?.name) {
+      counts[lp.name] = (counts[lp.name] || 0) + 1
     }
   })
 }
@@ -201,11 +207,12 @@ export const getActiveSetEnhancements = (
   equippedItems: GearItem[],
   slottedAugments: Record<string, Record<number, GearAugment | null>>,
   slottedFiligrees?: Record<string, (GearItem | null)[]>,
-  slottedGemSetBonuses?: Record<string, (string | null)[]>
+  slottedGemSetBonuses?: Record<string, (string | null)[]>,
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
 ) => {
   const counts: Record<string, number> = {}
 
-  getItemCounts(equippedItems, slottedGemSetBonuses, counts)
+  getItemCounts(equippedItems, slottedGemSetBonuses, counts, slottedLostPurpose)
   getAugmentCounts(slottedAugments, counts)
   getFiligreeCounts(slottedFiligrees, counts)
 
