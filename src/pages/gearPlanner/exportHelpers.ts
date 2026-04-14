@@ -11,6 +11,28 @@ import type {
 } from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
 
+const renderSlots = (
+  slots: readonly GearSlot[],
+  allEssenceEnchantments: EssenceEnchantment[],
+  setup: GearSetup,
+  renderSlot: (
+    slot: GearSlot,
+    item: GearItem,
+    allEssenceEnchantments: EssenceEnchantment[],
+    isPetSlot?: boolean,
+    petState?: PetState
+  ) => void,
+  isPetSlot = false,
+  petState?: PetState
+) => {
+  slots.forEach((slot) => {
+    const item = isPetSlot && petState ? petState.slots[slot] : setup.slots[slot]
+    if (item) {
+      renderSlot(slot, item, allEssenceEnchantments, isPetSlot, petState)
+    }
+  })
+}
+
 interface PetState {
   slots: Record<string, GearItem | null>
   slottedAugments: Record<string, Record<number, GearAugment | null>>
@@ -91,7 +113,8 @@ export const generateBBCodeExport = (
   const renderSlotEnchantments = (
     item: GearItem,
     nearlyFinished?: LootEnchantment,
-    ritualTable?: LootEnchantment
+    ritualTable?: LootEnchantment,
+    lostPurpose?: LootEnchantment
   ) => {
     if (item.enchantments && item.enchantments.length > 0) {
       lines.push(`[list]`)
@@ -103,6 +126,7 @@ export const generateBBCodeExport = (
           (ench.name === 'Sealed in Fire' || ench.name === 'Sealed in Undeath')
         )
           return
+        if (lostPurpose && ench.name === 'Lost Purpose') return
 
         lines.push(`[*] ${formatEnchantment(ench)}`)
       })
@@ -196,79 +220,85 @@ export const generateBBCodeExport = (
     }
   }
 
-  const renderSlotsInternal = (
-    slots: readonly GearSlot[],
+  const renderSlot = (
+    slot: GearSlot,
+    item: GearItem,
     allEssenceEnchantments: EssenceEnchantment[],
     isPetSlot = false,
     petState?: PetState
   ) => {
-    slots.forEach((slot) => {
-      const item =
-        isPetSlot && petState ? petState.slots[slot] : setup.slots[slot]
-      if (!item) {
-        // Don't show empty slots to keep it clean
-        return
-      }
+    const nearlyFinished =
+      isPetSlot && petState
+        ? petState.slottedNearlyFinished?.[item.id]
+        : setup.slottedNearlyFinished[item.id]
 
-      const nearlyFinished =
-        isPetSlot && petState
-          ? petState.slottedNearlyFinished?.[item.id]
-          : setup.slottedNearlyFinished[item.id]
+    const ritualTable =
+      isPetSlot && petState
+        ? petState.slottedRitualTable?.[item.id]
+        : setup.slottedRitualTable[item.id]
 
-      const ritualTable =
-        isPetSlot && petState
-          ? petState.slottedRitualTable?.[item.id]
-          : setup.slottedRitualTable[item.id]
+    const lostPurpose =
+      isPetSlot && petState
+        ? petState.slottedLostPurpose?.[item.id]
+        : setup.slottedLostPurpose[item.id]
 
-      renderSlotHeader(slot, item)
-      renderSlotEnchantments(
-        item,
-        nearlyFinished ?? undefined,
-        ritualTable ?? undefined
+    renderSlotHeader(slot, item)
+    renderSlotEnchantments(
+      item,
+      nearlyFinished ?? undefined,
+      ritualTable ?? undefined,
+      lostPurpose ?? undefined
+    )
+    if (nearlyFinished) {
+      lines.push(
+        `[indent][b][color=orange]Nearly Finished:[/color][/b] ${formatEnchantment(nearlyFinished)}[/indent]`
       )
-      if (nearlyFinished) {
-        lines.push(
-          `[indent][b][color=orange]Nearly Finished:[/color][/b] ${formatEnchantment(nearlyFinished)}[/indent]`
-        )
-      }
+    }
 
-      if (ritualTable) {
-        lines.push(
-          `[indent][b][color=green]Ritual Table Upgrade:[/color][/b] ${formatEnchantment(ritualTable)}[/indent]`
-        )
-      }
+    if (ritualTable) {
+      lines.push(
+        `[indent][b][color=green]Ritual Table Upgrade:[/color][/b] ${formatEnchantment(ritualTable)}[/indent]`
+      )
+    }
 
-      const essenceCrafting =
-        isPetSlot && petState
-          ? petState.slottedEssenceEnchantments?.[item.id]
-          : setup.slottedEssenceEnchantments[item.id]
-      renderSlotEssenceCrafting(item, essenceCrafting, allEssenceEnchantments)
+    if (lostPurpose) {
+      lines.push(
+        `[indent][b][color=purple]Lost Purpose Upgrade:[/color][/b] ${formatEnchantment(lostPurpose)}[/indent]`
+      )
+    }
 
-      const filigrees =
-        isPetSlot && petState
-          ? petState.slottedFiligrees[item.id]
-          : setup.slottedFiligrees[item.id]
-      renderSlotFiligrees(filigrees)
+    const essenceCrafting =
+      isPetSlot && petState
+        ? petState.slottedEssenceEnchantments?.[item.id]
+        : setup.slottedEssenceEnchantments[item.id]
+    renderSlotEssenceCrafting(item, essenceCrafting, allEssenceEnchantments)
 
-      const gemSets =
-        isPetSlot && petState
-          ? petState.slottedGemSetBonuses[item.id]
-          : setup.slottedGemSetBonuses[item.id]
-      renderSlotGemSets(gemSets)
+    const filigrees =
+      isPetSlot && petState
+        ? petState.slottedFiligrees[item.id]
+        : setup.slottedFiligrees[item.id]
+    renderSlotFiligrees(filigrees)
 
-      lines.push('[center]---[/center]')
-      lines.push('')
-    })
+    const gemSets =
+      isPetSlot && petState
+        ? petState.slottedGemSetBonuses[item.id]
+        : setup.slottedGemSetBonuses[item.id]
+    renderSlotGemSets(gemSets)
+
+    lines.push('[center]---[/center]')
+    lines.push('')
   }
 
   lines.push(`[b][size=4]Equipped Gear[/size][/b]`)
-  renderSlotsInternal(GEAR_SLOTS, allEssenceEnchantments)
+  renderSlots(GEAR_SLOTS, allEssenceEnchantments, setup, renderSlot)
 
   if (setup.classes.includes('Artificer')) {
     lines.push(`[b][size=4]Iron Defender Gear[/size][/b]`)
-    renderSlotsInternal(
+    renderSlots(
       ARTIFICER_PET_SLOTS,
       allEssenceEnchantments,
+      setup,
+      renderSlot,
       true,
       artificerPet
     )
@@ -276,7 +306,14 @@ export const generateBBCodeExport = (
 
   if (setup.classes.includes('Druid')) {
     lines.push(`[b][size=4]Wolf Companion Gear[/size][/b]`)
-    renderSlotsInternal(DRUID_PET_SLOTS, allEssenceEnchantments, true, druidPet)
+    renderSlots(
+      DRUID_PET_SLOTS,
+      allEssenceEnchantments,
+      setup,
+      renderSlot,
+      true,
+      druidPet
+    )
   }
 
   const equippedItems = Object.values(setup.slots).filter(
@@ -286,7 +323,8 @@ export const generateBBCodeExport = (
     equippedItems,
     setup.slottedAugments,
     setup.slottedFiligrees,
-    setup.slottedGemSetBonuses
+    setup.slottedGemSetBonuses,
+    setup.slottedLostPurpose
   )
 
   if (activeSetEnhancements.length > 0) {
@@ -333,7 +371,8 @@ export const generateDiscordMarkdownExport = (
   const renderSlotEnchantments = (
     item: GearItem,
     nearlyFinished?: LootEnchantment,
-    ritualTable?: LootEnchantment
+    ritualTable?: LootEnchantment,
+    lostPurpose?: LootEnchantment
   ) => {
     if (item.enchantments && item.enchantments.length > 0) {
       item.enchantments.forEach((ench) => {
@@ -343,6 +382,7 @@ export const generateDiscordMarkdownExport = (
           (ench.name === 'Sealed in Fire' || ench.name === 'Sealed in Undeath')
         )
           return
+        if (lostPurpose && ench.name === 'Lost Purpose') return
 
         lines.push(`- ${formatEnchantment(ench)}`)
       })
@@ -428,79 +468,86 @@ export const generateDiscordMarkdownExport = (
     }
   }
 
-  const renderSlotsInternal = (
-    slots: readonly GearSlot[],
+  const renderSlot = (
+    slot: GearSlot,
+    item: GearItem,
     allEssenceEnchantments: EssenceEnchantment[],
     isPetSlot = false,
     petState?: PetState
   ) => {
-    slots.forEach((slot) => {
-      const item =
-        isPetSlot && petState ? petState.slots[slot] : setup.slots[slot]
-      if (!item) {
-        return
-      }
+    const nearlyFinished =
+      isPetSlot && petState
+        ? petState.slottedNearlyFinished?.[item.id]
+        : setup.slottedNearlyFinished[item.id]
 
-      const nearlyFinished =
-        isPetSlot && petState
-          ? petState.slottedNearlyFinished?.[item.id]
-          : setup.slottedNearlyFinished[item.id]
+    const ritualTable =
+      isPetSlot && petState
+        ? petState.slottedRitualTable?.[item.id]
+        : setup.slottedRitualTable[item.id]
 
-      const ritualTable =
-        isPetSlot && petState
-          ? petState.slottedRitualTable?.[item.id]
-          : setup.slottedRitualTable[item.id]
+    const lostPurpose =
+      isPetSlot && petState
+        ? petState.slottedLostPurpose?.[item.id]
+        : setup.slottedLostPurpose[item.id]
 
-      renderSlotHeader(slot, item)
-      renderSlotEnchantments(
-        item,
-        nearlyFinished ?? undefined,
-        ritualTable ?? undefined
+    renderSlotHeader(slot, item)
+    renderSlotEnchantments(
+      item,
+      nearlyFinished ?? undefined,
+      ritualTable ?? undefined,
+      lostPurpose ?? undefined
+    )
+    if (nearlyFinished) {
+      lines.push(
+        `- **Nearly Finished:** ${formatEnchantment(nearlyFinished)}`
       )
-      if (nearlyFinished) {
-        lines.push(
-          `- **Nearly Finished:** ${formatEnchantment(nearlyFinished)}`
-        )
-      }
+    }
 
-      if (ritualTable) {
-        lines.push(
-          `- **Ritual Table Upgrade:** ${formatEnchantment(ritualTable)}`
-        )
-      }
+    if (ritualTable) {
+      lines.push(
+        `- **Ritual Table Upgrade:** ${formatEnchantment(ritualTable)}`
+      )
+    }
 
-      const essenceCrafting =
-        isPetSlot && petState
-          ? petState.slottedEssenceEnchantments?.[item.id]
-          : setup.slottedEssenceEnchantments[item.id]
-      renderSlotEssenceCrafting(item, essenceCrafting, allEssenceEnchantments)
+    if (lostPurpose) {
+      lines.push(
+        `- **Lost Purpose Upgrade:** ${formatEnchantment(lostPurpose)}`
+      )
+    }
 
-      const filigrees =
-        isPetSlot && petState
-          ? petState.slottedFiligrees[item.id]
-          : setup.slottedFiligrees[item.id]
-      renderSlotFiligrees(filigrees)
+    const essenceCrafting =
+      isPetSlot && petState
+        ? petState.slottedEssenceEnchantments?.[item.id]
+        : setup.slottedEssenceEnchantments[item.id]
+    renderSlotEssenceCrafting(item, essenceCrafting, allEssenceEnchantments)
 
-      const gemSets =
-        isPetSlot && petState
-          ? petState.slottedGemSetBonuses[item.id]
-          : setup.slottedGemSetBonuses[item.id]
-      renderSlotGemSets(gemSets)
+    const filigrees =
+      isPetSlot && petState
+        ? petState.slottedFiligrees[item.id]
+        : setup.slottedFiligrees[item.id]
+    renderSlotFiligrees(filigrees)
 
-      lines.push('')
-    })
+    const gemSets =
+      isPetSlot && petState
+        ? petState.slottedGemSetBonuses[item.id]
+        : setup.slottedGemSetBonuses[item.id]
+    renderSlotGemSets(gemSets)
+
+    lines.push('')
   }
 
   lines.push(`### Equipped Gear`)
 
-  renderSlotsInternal(GEAR_SLOTS, allEssenceEnchantments)
+  renderSlots(GEAR_SLOTS, allEssenceEnchantments, setup, renderSlot)
 
   if (setup.classes.includes('Artificer')) {
     lines.push(`### Iron Defender Gear`)
 
-    renderSlotsInternal(
+    renderSlots(
       ARTIFICER_PET_SLOTS,
       allEssenceEnchantments,
+      setup,
+      renderSlot,
       true,
       artificerPet
     )
@@ -509,7 +556,14 @@ export const generateDiscordMarkdownExport = (
   if (setup.classes.includes('Druid')) {
     lines.push(`### Wolf Companion Gear`)
 
-    renderSlotsInternal(DRUID_PET_SLOTS, allEssenceEnchantments, true, druidPet)
+    renderSlots(
+      DRUID_PET_SLOTS,
+      allEssenceEnchantments,
+      setup,
+      renderSlot,
+      true,
+      druidPet
+    )
   }
 
   const equippedItems = Object.values(setup.slots).filter(
@@ -542,11 +596,17 @@ export const generateDiscordMarkdownExport = (
   }
 
   const allLostPurpose = {
+    ...setup.slottedLostPurpose,
     ...(artificerPet?.slottedLostPurpose ?? {}),
+    ...(druidPet?.slottedLostPurpose ?? {})
+  }
+
   const activeSetEnhancements = getActiveSetEnhancements(
     allItems,
     allAugments,
     allFiligrees,
+    allGemSets,
+    allLostPurpose
   )
 
   if (activeSetEnhancements.length > 0) {
