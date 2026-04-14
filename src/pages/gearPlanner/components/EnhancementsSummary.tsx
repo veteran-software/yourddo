@@ -24,7 +24,8 @@ const EnchantmentsSummary = ({
   slottedEssenceEnchantments,
   essenceEnchantments,
   slottedNearlyFinished,
-  slottedRitualTable
+  slottedRitualTable,
+  slottedLostPurpose
 }: {
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
@@ -38,6 +39,10 @@ const EnchantmentsSummary = ({
     import('../types.ts').LootEnchantment | null
   >
   slottedRitualTable?: Record<
+    string,
+    import('../types.ts').LootEnchantment | null
+  >
+  slottedLostPurpose?: Record<
     string,
     import('../types.ts').LootEnchantment | null
   >
@@ -110,7 +115,8 @@ const EnchantmentsSummary = ({
       equippedItems,
       slottedAugments,
       slottedFiligrees,
-      slottedGemSetBonuses
+      slottedGemSetBonuses,
+      slottedLostPurpose
     )
 
     for (const item of equippedItems) {
@@ -123,7 +129,8 @@ const EnchantmentsSummary = ({
         essenceEnchantments,
         undefined,
         slottedNearlyFinished,
-        slottedRitualTable
+        slottedRitualTable,
+        slottedLostPurpose
       )
 
       for (const { ench, sourceName } of entries) {
@@ -171,7 +178,8 @@ const EnchantmentsSummary = ({
     slottedEssenceEnchantments,
     essenceEnchantments,
     slottedNearlyFinished,
-    slottedRitualTable
+    slottedRitualTable,
+    slottedLostPurpose
   ])
 
   if (aggregated.length === 0) return null

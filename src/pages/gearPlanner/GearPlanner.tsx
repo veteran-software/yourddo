@@ -422,6 +422,7 @@ const GearPlanner = () => {
                         gpHook.activeSetup.slottedNearlyFinished
                       }
                       slottedRitualTable={gpHook.activeSetup.slottedRitualTable}
+                      slottedLostPurpose={gpHook.activeSetup.slottedLostPurpose}
                     />
 
                     {setup.classes?.includes('Artificer') &&
@@ -469,6 +470,7 @@ const GearPlanner = () => {
                             artificerPet.slottedNearlyFinished
                           }
                           slottedRitualTable={artificerPet.slottedRitualTable}
+                          slottedLostPurpose={artificerPet.slottedLostPurpose}
                         />
                       </div>
                     )}
@@ -505,6 +507,7 @@ const GearPlanner = () => {
                           essenceEnchantments={gpHook.essenceEnchantments}
                           slottedNearlyFinished={druidPet.slottedNearlyFinished}
                           slottedRitualTable={druidPet.slottedRitualTable}
+                          slottedLostPurpose={druidPet.slottedLostPurpose}
                         />
                       </div>
                     )}

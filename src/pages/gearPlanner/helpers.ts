@@ -48,7 +48,8 @@ export const aggregateEnchantmentEntries = (
   essenceEnchantments?: EssenceEnchantment[],
   activeSetEnhancements?: { ench: LootEnchantment; sourceName: string }[],
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
-  slottedRitualTable?: Record<string, LootEnchantment | null>
+  slottedRitualTable?: Record<string, LootEnchantment | null>,
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
 ) => {
   const entries: { ench: LootEnchantment; sourceName: string }[] = (
     item.enchantments ?? []
@@ -80,6 +81,14 @@ export const aggregateEnchantmentEntries = (
   if (ritualTable) {
     entries.push({
       ench: { ...ritualTable, modifier: ritualTable.modifier ?? 'Enhancement' },
+      sourceName: item.name
+    })
+  }
+
+  const lostPurpose = slottedLostPurpose?.[item.id]
+  if (lostPurpose) {
+    entries.push({
+      ench: { ...lostPurpose, modifier: lostPurpose.modifier ?? 'Enhancement' },
       sourceName: item.name
     })
   }
@@ -262,12 +271,12 @@ const addFiligreeEntries = (
   }
 }
 
-function iterateEnchentments(
+const iterateEnchentments = (
   opt: EssenceEnchantment,
   minLevel: number,
   entries: { ench: LootEnchantment; sourceName: string }[],
   item: GearItem
-) {
+) => {
   for (const effect of opt.enchantments) {
     const rawDisplayName = effect.statModified ?? effect.name
     const displayNames: string[] = Array.isArray(rawDisplayName)
