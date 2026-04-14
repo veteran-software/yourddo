@@ -67,7 +67,11 @@ const CurseSlotItem = (props: Props) => {
                 ench,
                 currentEquipped,
                 slot,
-                currentSlottedAugments
+                currentSlottedAugments,
+                undefined,
+                undefined,
+                undefined,
+                selectedItem.id
               )
 
               return potential.isConflict && potential.isRedundant
@@ -78,7 +82,11 @@ const CurseSlotItem = (props: Props) => {
                 ench,
                 currentEquipped,
                 slot,
-                currentSlottedAugments
+                currentSlottedAugments,
+                undefined,
+                undefined,
+                undefined,
+                selectedItem.id
               )
 
               return pot.isConflict && !pot.isRedundant

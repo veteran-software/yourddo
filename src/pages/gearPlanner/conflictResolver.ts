@@ -86,7 +86,8 @@ export const resolveConflicts = (
     Record<number, import('./types').GearAugment | null>
   >,
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
-  slottedRitualTable?: Record<string, LootEnchantment | null>
+  slottedRitualTable?: Record<string, LootEnchantment | null>,
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
 ): Record<string, EnchantmentConflict[]> => {
   const allEnchantments: {
     itemId: string
@@ -107,6 +108,8 @@ export const resolveConflicts = (
         .filter(
           (e) =>
             e.name !== 'Nearly Finished' &&
+            e.name !== 'Lost Purpose' &&
+            e.name !== 'Ritual Table' &&
             e.name !== 'Sealed in Fire' &&
             e.name !== 'Sealed in Undeath'
         )
@@ -147,6 +150,24 @@ export const resolveConflicts = (
       const enchWithModifier = {
         ...ritualTable,
         modifier: ritualTable.modifier ?? 'Enhancement'
+      }
+      allEnchantments.push({
+        itemId: item.id,
+        itemName: item.name,
+        slot: item.slot,
+        enchantment: enchWithModifier,
+        parsedValue: parseModifierValue(enchWithModifier.modifier),
+        owner,
+        normalizedName: normalizeString(enchWithModifier.name),
+        normalizedBonus: getBonus(enchWithModifier.bonus)
+      })
+    }
+
+    const lostPurpose = slottedLostPurpose?.[item.id]
+    if (lostPurpose) {
+      const enchWithModifier = {
+        ...lostPurpose,
+        modifier: lostPurpose.modifier ?? 'Enhancement'
       }
       allEnchantments.push({
         itemId: item.id,
@@ -290,6 +311,23 @@ const findMatchingRitualTable = (
   return -Infinity
 }
 
+const findMatchingLostPurpose = (
+  itemId: string,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
+) => {
+  const lostPurpose = slottedLostPurpose?.[itemId]
+  if (
+    lostPurpose &&
+    normalizeString(lostPurpose.name) === normalizedTargetName &&
+    getBonus(lostPurpose.bonus) === normalizedTargetBonus
+  ) {
+    return parseModifierValue(lostPurpose.modifier ?? 'Enhancement')
+  }
+  return -Infinity
+}
+
 const findMatchingAugments = (
   itemId: string,
   normalizedTargetName: string,
@@ -329,10 +367,22 @@ export const checkPotentialConflict = (
     Record<number, import('./types').GearAugment | null>
   >,
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
-  slottedRitualTable?: Record<string, LootEnchantment | null>
+  slottedRitualTable?: Record<string, LootEnchantment | null>,
+  slottedLostPurpose?: Record<string, LootEnchantment | null>,
+  ignoreItemId?: string
 ): { isConflict: boolean; currentMax: number; isRedundant: boolean } => {
   const parsedValue = parseModifierValue(enchantment.modifier)
   const normalizedTargetName = normalizeString(enchantment.name)
+
+  // Skip conflict check for upgrade placeholder enchantments
+  if (
+    normalizedTargetName === 'nearly finished' ||
+    normalizedTargetName === 'lost purpose' ||
+    normalizedTargetName === 'ritual table'
+  ) {
+    return { isConflict: false, currentMax: 0, isRedundant: false }
+  }
+
   const normalizedTargetBonus = getBonus(enchantment.bonus)
   const targetOwner = slot ? getSlotOwner(slot) : 'character'
 
@@ -340,7 +390,15 @@ export const checkPotentialConflict = (
   let foundMatch = false
 
   equippedItems?.forEach((item) => {
-    if (getSlotOwner(item.slot) !== targetOwner) {
+    if (getSlotOwner(item.slot) !== targetOwner || item.id === ignoreItemId) {
+      return
+    }
+
+    if (
+      normalizedTargetName === 'nearly finished' ||
+      normalizedTargetName === 'lost purpose' ||
+      normalizedTargetName === 'ritual table'
+    ) {
       return
     }
 
@@ -367,8 +425,14 @@ export const checkPotentialConflict = (
       normalizedTargetBonus,
       slottedAugments
     )
+    const lpMax = findMatchingLostPurpose(
+      item.id,
+      normalizedTargetName,
+      normalizedTargetBonus,
+      slottedLostPurpose
+    )
 
-    const itemMax = Math.max(inherentMax, nfMax, rtMax, augMax)
+    const itemMax = Math.max(inherentMax, nfMax, rtMax, augMax, lpMax)
     if (itemMax !== -Infinity) {
       foundMatch = true
       if (itemMax > currentMax) {

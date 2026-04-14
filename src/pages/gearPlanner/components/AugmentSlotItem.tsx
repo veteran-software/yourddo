@@ -111,7 +111,11 @@ const AugmentSlotItem = (props: Props) => {
                     ench,
                     currentEquipped,
                     slot,
-                    currentSlottedAugments
+                    currentSlottedAugments,
+                    undefined,
+                    undefined,
+                    undefined,
+                    selectedItem.id
                   )
                   return pot.isConflict && pot.isRedundant
                 })
@@ -121,7 +125,11 @@ const AugmentSlotItem = (props: Props) => {
                     ench,
                     currentEquipped,
                     slot,
-                    currentSlottedAugments
+                    currentSlottedAugments,
+                    undefined,
+                    undefined,
+                    undefined,
+                    selectedItem.id
                   )
                   return pot.isConflict && !pot.isRedundant
                 })

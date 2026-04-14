@@ -22,6 +22,7 @@ const EnchantmentList = (props: Props) => {
     slottedAugments,
     slottedNearlyFinished,
     slottedRitualTable,
+    slottedLostPurpose,
     source
   } = props
 
@@ -45,7 +46,9 @@ const EnchantmentList = (props: Props) => {
                 browsingSlot ?? undefined,
                 slottedAugments,
                 slottedNearlyFinished,
-                slottedRitualTable
+                slottedRitualTable,
+                slottedLostPurpose,
+                itemId
               )
 
         const modifierText = ench.modifier ? `+${String(ench.modifier)}` : ''
@@ -191,6 +194,7 @@ interface Props {
   slottedAugments?: Record<string, Record<number, GearAugment | null>>
   slottedNearlyFinished?: Record<string, LootEnchantment | null>
   slottedRitualTable?: Record<string, LootEnchantment | null>
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
 }
 
 export default EnchantmentList
