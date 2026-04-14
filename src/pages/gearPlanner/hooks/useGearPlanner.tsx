@@ -1241,57 +1241,66 @@ const useGearPlanner = (props: Props) => {
     openSlotBrowser(null)
   }
 
+  const checkMinorArtifactConflict = (
+    slot: GearSlot,
+    item: GearItem,
+    setup: GearSetup
+  ): boolean => {
+    if (!isMinorArtifact(item)) return false
+
+    const otherArtifactSlot = (
+      Object.keys(setup.slots) as GearSlot[]
+    ).find(
+      (s) =>
+        s !== slot &&
+        setup.slots[s] &&
+        isMinorArtifact(setup.slots[s])
+    )
+
+    if (otherArtifactSlot && !pendingMinorArtifact) {
+      setPendingMinorArtifact({ slot, item })
+      return true
+    }
+    return false
+  }
+
+  const confirmFiligreeClear = (
+    itemId: string,
+    setup: GearSetup,
+    message: string
+  ): boolean => {
+    if (hasActiveFiligrees(itemId, setup)) {
+      return globalThis.confirm(message)
+    }
+    return true
+  }
+
   const handleItemEquip = (
     slot: GearSlot,
     item: GearItem | null,
     setup: GearSetup
   ) => {
     if (item) {
-      // Minor artifact check: can only wear one at a time.
-      if (isMinorArtifact(item)) {
-        const otherArtifactSlot = (
-          Object.keys(setup.slots) as GearSlot[]
-        ).find(
-          (s) =>
-            s !== slot &&
-            setup.slots[s] &&
-            isMinorArtifact(setup.slots[s])
-        )
+      if (checkMinorArtifactConflict(slot, item, setup)) {
+        return
+      }
 
-        if (otherArtifactSlot && !pendingMinorArtifact) {
-          setPendingMinorArtifact({ slot, item })
+      const oldItem = setup.slots[slot]
+      if (oldItem && oldItem.id !== item.id) {
+        const msg =
+          'The item currently in this slot has slotted filigrees. Replacing it will clear all filigrees and unlocked slots for the old item. Are you sure?'
+        if (!confirmFiligreeClear(oldItem.id, setup, msg)) {
           return
         }
       }
-
-      const oldItem = setup.slots[slot]
-      if (
-        oldItem &&
-        oldItem.id !== item.id &&
-        hasActiveFiligrees(oldItem.id, setup)
-      ) {
-        if (
-          globalThis.confirm(
-            'The item currently in this slot has slotted filigrees. Replacing it will clear all filigrees and unlocked slots for the old item. Are you sure?'
-          )
-        ) {
-          dispatch(equipItemAction({ slot, item }))
-          openSlotBrowser(null)
-        }
-        return
-      }
     } else {
       const oldItem = setup.slots[slot]
-      if (oldItem && hasActiveFiligrees(oldItem.id, setup)) {
-        if (
-          globalThis.confirm(
-            'This item has slotted filigrees. Removing it will clear all filigrees and unlocked slots. Are you sure?'
-          )
-        ) {
-          dispatch(equipItemAction({ slot, item }))
-          openSlotBrowser(null)
+      if (oldItem) {
+        const msg =
+          'This item has slotted filigrees. Removing it will clear all filigrees and unlocked slots. Are you sure?'
+        if (!confirmFiligreeClear(oldItem.id, setup, msg)) {
+          return
         }
-        return
       }
     }
     dispatch(equipItemAction({ slot, item }))

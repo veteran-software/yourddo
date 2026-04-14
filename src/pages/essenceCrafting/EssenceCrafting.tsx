@@ -17,9 +17,12 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown
+  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
+import type {
+  ShoppingListTotals
+} from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
@@ -159,7 +162,7 @@ const EssenceCrafting = () => {
             Math.min(stats.length - 1, (effectiveML || 1) - 1)
           )
           const value = stats[idx]
-          if (value === -1 || value === null || value === undefined) {
+          if (value == null || value === -1) {
             return false
           }
         }
