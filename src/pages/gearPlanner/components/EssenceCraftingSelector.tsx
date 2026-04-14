@@ -29,15 +29,13 @@ const EssenceCraftingSelector = (props: Props) => {
   } = props
 
   const minLevel = parseInt(selectedItem.minLevel) || 1
-  const curseBoost =
-    activeSetup.slottedCurses[selectedItem.id]?.name ===
-    'Curse of Minor Masterworks'
-      ? 1
-      : activeSetup.slottedCurses[selectedItem.id]?.name ===
-          'Curse of Major Masterworks'
-        ? 2
-        : 0
-  const effectiveLevel = minLevel + curseBoost
+  const getCurseBoost = () => {
+    const curseName = activeSetup.slottedCurses[selectedItem.id]?.name
+    if (curseName === 'Curse of Minor Masterworks') return 1
+    if (curseName === 'Curse of Major Masterworks') return 2
+    return 0
+  }
+  const effectiveLevel = minLevel + getCurseBoost()
 
   const isGemOfManyFacets = selectedItem.name.includes('Gem of Many Facets')
 
@@ -157,7 +155,7 @@ const EssenceCraftingSelector = (props: Props) => {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel, minLevel]
+    [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel]
   )
 
   const suffixOptions = useMemo(
@@ -183,7 +181,7 @@ const EssenceCraftingSelector = (props: Props) => {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel, minLevel]
+    [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel]
   )
 
   // Assuming 'extra' for Mark of House Cannith
@@ -210,7 +208,7 @@ const EssenceCraftingSelector = (props: Props) => {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel, minLevel]
+    [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel]
   )
 
   const renderDropdown = (
