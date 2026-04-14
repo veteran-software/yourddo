@@ -1232,12 +1232,12 @@
     "name": "Curse of the Merciless",
     "enchantments": [
       {
-        "name": "Critical Confirmation",
+        "name": "Critical Confirmation Rolls",
         "modifier": "2",
         "bonus": "Fortune"
       },
       {
-        "name": "Critical Damage",
+        "name": "Critical Damage Rolls",
         "modifier": "2",
         "bonus": "Fortune"
       }

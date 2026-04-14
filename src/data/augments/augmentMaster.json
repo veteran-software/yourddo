@@ -6619,7 +6619,7 @@
   },
   {
     "name": "Dolorous Silencer (ML:8)",
-    "description": "Slotted Effect: +1d6 Profane bonuse to Sneak Attack Dice.",
+    "description": "Slotted Effect: +1d6 Profane bonus to Sneak Attack Dice.",
     "minimumLevel": 8,
     "image": "dolorousAugment",
     "binding": {

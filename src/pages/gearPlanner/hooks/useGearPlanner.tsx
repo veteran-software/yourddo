@@ -276,25 +276,26 @@ const useGearPlanner = (props: Props) => {
 
   const isMetal = useCallback((material: string | null | undefined) => {
     if (!material) return false
+    const materialLower = material.trim().toLowerCase()
     const metalMaterials = [
-      'Steel',
-      'Iron',
-      'Gold',
-      'Silver',
-      'Mithral',
-      'Adamantine',
-      'Alchemical Silver',
-      'Cold Iron',
-      'Byeshk',
-      'Bronze',
-      'Copper',
-      'Dwarven Iron',
-      'Magesteel',
-      'Planeforged Steel',
-      'Spiritforged Iron'
+      'steel',
+      'iron',
+      'gold',
+      'silver',
+      'mithral',
+      'adamantine',
+      'alchemical silver',
+      'cold iron',
+      'byeshk',
+      'bronze',
+      'copper',
+      'dwarven iron',
+      'magesteel',
+      'planeforged steel',
+      'spiritforged iron'
     ]
 
-    return metalMaterials.includes(material)
+    return metalMaterials.includes(materialLower)
   }, [])
 
   const isItemVisibleForClasses = useCallback(
@@ -601,9 +602,6 @@ const useGearPlanner = (props: Props) => {
       if (targetSlot === GearSlot.OffHand) {
         if (s.shieldFilters.length > 0) {
           if (!s.shieldFilters.includes(i.type)) return false
-        } else if (i.type === 'Rune Arm' || SHIELD_TYPES.includes(i.type)) {
-          // If no shield filters are selected, show all shields and rune arms
-          return true
         }
       }
 
