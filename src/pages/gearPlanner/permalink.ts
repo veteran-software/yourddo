@@ -234,10 +234,10 @@ const decodeItemPayload = (
     if (filigrees) {
       setup.slottedFiligrees[item.id] = filigrees.map((fName) => {
         if (!fName) return null
-        return allItems.find((i) => i.name === fName) || null
+        return allItems.find((i) => i.name === fName) ?? null
       })
     }
-    if (unlockedFiligreeSlots !== null && unlockedFiligreeSlots !== undefined) {
+    if (unlockedFiligreeSlots != null) {
       setup.unlockedFiligreeSlots[item.id] = unlockedFiligreeSlots
     }
     if (slottedGemSetBonuses) {
