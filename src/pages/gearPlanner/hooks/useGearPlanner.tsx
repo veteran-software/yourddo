@@ -21,6 +21,7 @@ import {
   setGemSetBonus as setGemSetBonusAction,
   setItemMaterial as setItemMaterialAction,
   setItemMinLevel as setItemMinLevelAction,
+  setLostPurposeEnchantment as setLostPurposeEnchantmentAction,
   setNearlyFinishedEnchantment as setNearlyFinishedEnchantmentAction,
   setRitualTableEnchantment as setRitualTableEnchantmentAction,
   setUnlockedFiligreeSlots as setUnlockedFiligreeSlotsAction
@@ -32,6 +33,7 @@ import EnchantmentList from '../components/EnchantmentList.tsx'
 import EssenceCraftingSelector from '../components/EssenceCraftingSelector.tsx'
 import GemSetBonusSelector from '../components/GetSetBonusSelector.tsx'
 import ItemSetBonusDisplay from '../components/ItemSetBonusDisplay.tsx'
+import LostPurposeSelector from '../components/LostPurposeSelector.tsx'
 import NearlyFinishedSelector from '../components/NearlyFinishedSelector.tsx'
 import RitualTableSelector from '../components/RitualTableSelector.tsx'
 import TroveBadge from '../components/TroveBadge.tsx'
@@ -453,13 +455,15 @@ const useGearPlanner = (props: Props) => {
         druidEquipped,
         druidPet.slottedAugments,
         druidPet.slottedNearlyFinished,
-        druidPet.slottedRitualTable
+        druidPet.slottedRitualTable,
+        druidPet.slottedLostPurpose
       ),
     [
       druidEquipped,
       druidPet.slottedAugments,
       druidPet.slottedNearlyFinished,
-      druidPet.slottedRitualTable
+      druidPet.slottedRitualTable,
+      druidPet.slottedLostPurpose
     ]
   )
 
@@ -472,6 +476,7 @@ const useGearPlanner = (props: Props) => {
       let currentSlottedFiligrees = activeSetup?.slottedFiligrees
       let currentSlottedNearlyFinished = activeSetup?.slottedNearlyFinished
       let currentSlottedRitualTable = activeSetup?.slottedRitualTable
+      let currentSlottedLostPurpose = activeSetup?.slottedLostPurpose
 
       if (owner === 'artificer_pet') {
         currentConflicts = artificerConflicts
@@ -480,6 +485,7 @@ const useGearPlanner = (props: Props) => {
         currentSlottedFiligrees = artificerPet.slottedFiligrees
         currentSlottedNearlyFinished = artificerPet.slottedNearlyFinished
         currentSlottedRitualTable = artificerPet.slottedRitualTable
+        currentSlottedLostPurpose = artificerPet.slottedLostPurpose
       } else if (owner === 'druid_pet') {
         currentConflicts = druidConflicts
         currentEquipped = druidEquipped
@@ -487,6 +493,7 @@ const useGearPlanner = (props: Props) => {
         currentSlottedFiligrees = druidPet.slottedFiligrees
         currentSlottedNearlyFinished = druidPet.slottedNearlyFinished
         currentSlottedRitualTable = druidPet.slottedRitualTable
+        currentSlottedLostPurpose = druidPet.slottedLostPurpose
       }
 
       return {
@@ -495,7 +502,8 @@ const useGearPlanner = (props: Props) => {
         currentSlottedAugments,
         currentSlottedFiligrees,
         currentSlottedNearlyFinished,
-        currentSlottedRitualTable
+        currentSlottedRitualTable,
+        currentSlottedLostPurpose
       }
     },
     [
@@ -509,14 +517,17 @@ const useGearPlanner = (props: Props) => {
       activeSetup?.slottedFiligrees,
       activeSetup?.slottedNearlyFinished,
       activeSetup?.slottedRitualTable,
+      activeSetup?.slottedLostPurpose,
       artificerPet.slottedAugments,
       artificerPet.slottedFiligrees,
       artificerPet.slottedNearlyFinished,
       artificerPet.slottedRitualTable,
+      artificerPet.slottedLostPurpose,
       druidPet.slottedAugments,
       druidPet.slottedFiligrees,
       druidPet.slottedNearlyFinished,
-      druidPet.slottedRitualTable
+      druidPet.slottedRitualTable,
+      druidPet.slottedLostPurpose
     ]
   )
 
@@ -527,7 +538,8 @@ const useGearPlanner = (props: Props) => {
         currentEquipped,
         currentSlottedAugments,
         currentSlottedNearlyFinished,
-        currentSlottedRitualTable
+        currentSlottedRitualTable,
+        currentSlottedLostPurpose
       } = getContextInfo(slot)
 
       return item.enchantments.some((ench) => {
@@ -537,7 +549,9 @@ const useGearPlanner = (props: Props) => {
           slot,
           currentSlottedAugments,
           currentSlottedNearlyFinished,
-          currentSlottedRitualTable
+          currentSlottedRitualTable,
+          currentSlottedLostPurpose,
+          item.id
         )
         return potential.isConflict && potential.isRedundant
       })
@@ -1208,7 +1222,8 @@ const useGearPlanner = (props: Props) => {
       slottedGemSetBonuses: {},
       slottedEssenceEnchantments: {},
       slottedNearlyFinished: {},
-      slottedRitualTable: {}
+      slottedRitualTable: {},
+      slottedLostPurpose: {}
     }
 
     dispatch(addSetupAction(newSetup))
@@ -1403,6 +1418,14 @@ const useGearPlanner = (props: Props) => {
     dispatch(setRitualTableEnchantmentAction({ itemId, enchantment, slot }))
   }
 
+  const setLostPurposeEnchantment = (
+    itemId: string,
+    enchantment: LootEnchantment | null,
+    slot?: GearSlot
+  ) => {
+    dispatch(setLostPurposeEnchantmentAction({ itemId, enchantment, slot }))
+  }
+
   /**
    * Determines applicable augments for a given slot type and item minimum level.
    *
@@ -1523,6 +1546,7 @@ const useGearPlanner = (props: Props) => {
     let currentSlottedAugments = activeSetup.slottedAugments
     let currentSlottedNearlyFinished = activeSetup.slottedNearlyFinished
     let currentSlottedRitualTable = activeSetup.slottedRitualTable
+    let currentSlottedLostPurpose = activeSetup.slottedLostPurpose
 
     if (owner === 'character') {
       selectedItem = setup.slots[slot]
@@ -1531,6 +1555,7 @@ const useGearPlanner = (props: Props) => {
       currentSlottedAugments = activeSetup.slottedAugments
       currentSlottedNearlyFinished = activeSetup.slottedNearlyFinished
       currentSlottedRitualTable = activeSetup.slottedRitualTable
+      currentSlottedLostPurpose = activeSetup.slottedLostPurpose
     } else if (owner === 'artificer_pet') {
       selectedItem = artificerPet.slots[slot]
       currentConflicts = artificerConflicts
@@ -1538,6 +1563,7 @@ const useGearPlanner = (props: Props) => {
       currentSlottedAugments = artificerPet.slottedAugments
       currentSlottedNearlyFinished = artificerPet.slottedNearlyFinished
       currentSlottedRitualTable = artificerPet.slottedRitualTable
+      currentSlottedLostPurpose = artificerPet.slottedLostPurpose
     } else if (owner === 'druid_pet') {
       selectedItem = druidPet.slots[slot]
       currentConflicts = druidConflicts
@@ -1545,6 +1571,7 @@ const useGearPlanner = (props: Props) => {
       currentSlottedAugments = druidPet.slottedAugments
       currentSlottedNearlyFinished = druidPet.slottedNearlyFinished
       currentSlottedRitualTable = druidPet.slottedRitualTable
+      currentSlottedLostPurpose = druidPet.slottedLostPurpose
     }
 
     return (
@@ -1614,14 +1641,13 @@ const useGearPlanner = (props: Props) => {
                 </div>
 
                 {(() => {
-                  const curseBoost =
-                    activeSetup.slottedCurses[selectedItem.id]?.name ===
-                    'Curse of Minor Masterworks'
-                      ? 1
-                      : activeSetup.slottedCurses[selectedItem.id]?.name ===
-                          'Curse of Major Masterworks'
-                        ? 2
-                        : 0
+                  const curseName = activeSetup.slottedCurses[selectedItem.id]?.name
+                  let curseBoost = 0
+                  if (curseName === 'Curse of Minor Masterworks') {
+                    curseBoost = 1
+                  } else if (curseName === 'Curse of Major Masterworks') {
+                    curseBoost = 2
+                  }
 
                   if (curseBoost > 0) {
                     return (
@@ -1648,7 +1674,8 @@ const useGearPlanner = (props: Props) => {
                             e.name !== 'Craftable Rune Arm' &&
                             e.name !== 'Nearly Finished' &&
                             e.name !== 'Sealed in Fire' &&
-                            e.name !== 'Sealed in Undeath'
+                            e.name !== 'Sealed in Undeath' &&
+                            e.name !== 'Lost Purpose'
                         )}
                         itemId={selectedItem.id}
                         conflicts={currentConflicts}
@@ -1658,6 +1685,7 @@ const useGearPlanner = (props: Props) => {
                         slottedAugments={currentSlottedAugments}
                         slottedNearlyFinished={currentSlottedNearlyFinished}
                         slottedRitualTable={currentSlottedRitualTable}
+                        slottedLostPurpose={currentSlottedLostPurpose}
                       />
                     </div>
                   )}
@@ -1674,7 +1702,6 @@ const useGearPlanner = (props: Props) => {
                     onSelect={(ench) =>
                       { setNearlyFinishedEnchantment(selectedItem.id, ench, slot); }
                     }
-                    troveData={troveData}
                   />
                 )}
 
@@ -1691,6 +1718,21 @@ const useGearPlanner = (props: Props) => {
                       { setRitualTableEnchantment(selectedItem.id, ench, slot); }
                     }
                     troveData={troveData}
+                  />
+                )}
+
+                {selectedItem.enchantments?.some(
+                  (e) => e.name === 'Lost Purpose'
+                ) && (
+                  <LostPurposeSelector
+                    item={selectedItem}
+                    slot={slot}
+                    selectedEnchantment={
+                      currentSlottedLostPurpose[selectedItem.id] ?? null
+                    }
+                    onSelect={(ench) =>
+                      { setLostPurposeEnchantment(selectedItem.id, ench, slot); }
+                    }
                   />
                 )}
 
@@ -1983,6 +2025,19 @@ const useGearPlanner = (props: Props) => {
         setItemMinLevelAction({
           itemId,
           minLevel,
+          slot
+        })
+      )
+    },
+    setLostPurposeEnchantment: (
+      itemId: string,
+      enchantment: LootEnchantment | null,
+      slot: GearSlot
+    ) => {
+      dispatch(
+        setLostPurposeEnchantmentAction({
+          itemId,
+          enchantment,
           slot
         })
       )

@@ -22,6 +22,7 @@ interface PetState {
   slottedEssenceEnchantments: Record<string, Record<string, string | null>>
   slottedNearlyFinished: Record<string, LootEnchantment | null>
   slottedRitualTable: Record<string, LootEnchantment | null>
+  slottedLostPurpose: Record<string, LootEnchantment | null>
 }
 
 interface GearPlannerState {
@@ -40,7 +41,8 @@ const initialPetState = (): PetState => ({
   slottedGemSetBonuses: {},
   slottedEssenceEnchantments: {},
   slottedNearlyFinished: {},
-  slottedRitualTable: {}
+  slottedRitualTable: {},
+  slottedLostPurpose: {}
 })
 
 const initialState: GearPlannerState = {
@@ -63,7 +65,8 @@ const initialState: GearPlannerState = {
       slottedGemSetBonuses: {},
       slottedEssenceEnchantments: {},
       slottedNearlyFinished: {},
-      slottedRitualTable: {}
+      slottedRitualTable: {},
+      slottedLostPurpose: {}
     }
   ],
   activeSetupId: 'default',
@@ -120,6 +123,7 @@ const gearPlannerSlice = createSlice({
         setup.slottedEssenceEnchantments = {}
       if (!setup.slottedNearlyFinished) setup.slottedNearlyFinished = {}
       if (!setup.slottedRitualTable) setup.slottedRitualTable = {}
+      if (!setup.slottedLostPurpose) setup.slottedLostPurpose = {}
       state.characterSetups.push(setup)
     },
     removeSetup: (state, action: PayloadAction<string>) => {
@@ -494,6 +498,38 @@ const gearPlannerSlice = createSlice({
         updateRitualTable(state.druidPet)
       }
     },
+    setLostPurposeEnchantment: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        enchantment: LootEnchantment | null
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, enchantment, slot } = action.payload
+      let owner: SlotOwner = 'character'
+
+      if (slot) {
+        owner = getSlotOwner(slot)
+      }
+
+      const updateLostPurpose = (petState: PetState) => {
+        petState.slottedLostPurpose[itemId] = enchantment
+      }
+
+      if (owner === 'character') {
+        const setup = state.characterSetups.find(
+          (s) => s.id === state.activeSetupId
+        )
+        if (setup) {
+          setup.slottedLostPurpose[itemId] = enchantment
+        }
+      } else if (owner === 'artificer_pet') {
+        updateLostPurpose(state.artificerPet)
+      } else if (owner === 'druid_pet') {
+        updateLostPurpose(state.druidPet)
+      }
+    },
     setItemMinLevel: (
       state,
       action: PayloadAction<{
@@ -595,6 +631,7 @@ export const {
   setEssenceEnchantment,
   setNearlyFinishedEnchantment,
   setRitualTableEnchantment,
+  setLostPurposeEnchantment,
   setItemMinLevel,
   setItemMaterial
 } = gearPlannerSlice.actions
