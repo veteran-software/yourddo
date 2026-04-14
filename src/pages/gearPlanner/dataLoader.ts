@@ -372,6 +372,8 @@ export const loadGearData = (): Promise<{
 
     if (!isValidSlotItem(item)) return
 
+    // This is to prevent upgraded items from being natively selected.  The user
+    // should select the base item and upgrade it if desired in the gear grid
     if (item.pageTitle?.includes('(Upgraded)')) {
       return
     }
