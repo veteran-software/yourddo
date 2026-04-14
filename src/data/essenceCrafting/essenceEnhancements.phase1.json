@@ -586,6 +586,43 @@
     ]
   },
   {
+    "name": "Armor Destroying [Combined] (Armor-Piercing & Destruction)",
+    "enchantments": [
+      {
+        "name": "Armor-Piercing",
+        "stats": [
+          2, 3, 4, 5, 6, 6, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 14, 14, 15, 15, 16, 17, 17, 18, 18, 19, 20, 20, 21,
+          21, 22, 23, 23, 24, 24
+        ]
+      },
+      {
+        "name": "Destruction",
+        "stats": [
+          "On Hit: Your target gains a stack of Armor Destruction."
+        ]
+      }
+    ],
+    "bound": null,
+    "unbound": {
+      "level": 400,
+      "essence": 800,
+      "purified": 15,
+      "collectible": [
+        {
+          "name": "Mystical Band",
+          "qty": 5
+        }
+      ]
+    },
+    "prefixTitle": null,
+    "suffixTitle": null,
+    "prefix": ["Weapon (Melee)", "Weapon (Ranged)"],
+    "suffix": [],
+    "extra": [],
+    "group": "Damage",
+    "stat": []
+  },
+  {
     "name": "Armor-Piercing",
     "enchantments": [
       {
@@ -1193,206 +1230,36 @@
       {
         "name": "Tactical DC: Trip",
         "stats": [
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          5,
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?"
+          1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12,
+          12, 13
         ]
       },
       {
         "name": "Tactical DC: Improved Trip",
         "stats": [
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          5,
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?"
+          1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12,
+          12, 13
         ]
       },
       {
         "name": "Tactical DC: Sunder",
         "stats": [
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          5,
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?"
+          1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12,
+          12, 13
         ]
       },
       {
         "name": "Tactical DC: Improved Sunder",
         "stats": [
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          5,
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?"
+          1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12,
+          12, 13
         ]
       },
       {
         "name": "Tactical DC: Stunning",
         "stats": [
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          5,
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?",
-          "?"
+          1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12,
+          12, 13
         ]
       }
     ],
@@ -2470,7 +2337,9 @@
     "suffix": [],
     "extra": [],
     "group": "Damage",
-    "stat": [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10, 11, 11, 11]
+    "stat": [
+      1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10, 11, 11, 11, 12, 12
+    ]
   },
   {
     "name": "Devotion",
@@ -2854,7 +2723,11 @@
     "enchantments": [
       {
         "name": "Dodge Chance",
-        "bonus": "Enhancement"
+        "bonus": "Enhancement",
+        "stats": [
+          1, 2, 2, 3, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 14, 14,
+          14, 15, 15, 15
+        ]
       }
     ],
     "bound": {
@@ -6179,10 +6052,19 @@
     "name": "Initiate's [Combined] (Spell Pen & Max SP)",
     "enchantments": [
       {
-        "name": "Spell Penetration"
+        "name": "Spell Penetration",
+        "bonus": "Equipment",
+        "stats": [
+          1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10
+        ]
       },
       {
-        "name": "Wizardry"
+        "name": "Wizardry",
+        "bonus": "Enhancement",
+        "stats": [
+          19, 33, 41, 60, 71, 79, 88, 96, 104, 112, 121, 129, 137, 145, 154, 162, 170, 178, 187, 195, 203, 211, 220,
+          228, 236, 244, 253, 261, 269, 277, 286, 294, 302, 310, 319, 327
+        ]
       }
     ],
     "bound": null,
@@ -13693,18 +13575,34 @@
     "name": "Sabotaging [Combined] (Seeker & Deception)",
     "enchantments": [
       {
-        "name": "Confirm Critical Rolls"
+        "name": "Confirm Critical Rolls",
+        "bonus": "Enhancement",
+        "stats": [
+          1, 2, 2, 3, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 14, 14,
+          14, 15, 15, 15
+        ]
       },
       {
-        "name": "Critical Damage Rolls"
+        "name": "Critical Damage Rolls",
+        "bonus": "Enhancement",
+        "stats": [
+          1, 2, 2, 3, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 14, 14,
+          14, 15, 15, 15
+        ]
       },
       {
         "name": "Sneak Attack Attack Rolls",
-        "statModified": "Sneak Attack Attack Rolls"
+        "bonus": "Enhancement",
+        "stats": [
+          1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10, 11, 11, 11, 12, 12
+        ]
       },
       {
         "name": "Sneak Attack Damage Rolls",
-        "statModified": "Sneak Attack Damage Rolls"
+        "bonus": "Enhancement",
+        "stats": [
+          1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9, 10, 10, 11, 11, 11, 12, 12
+        ]
       }
     ],
     "bound": null,
@@ -13836,8 +13734,8 @@
     "name": "Seeker",
     "enchantments": [
       {
-        "name": "Critical Accuracy",
-        "statModified": "Critical Accuracy",
+        "name": "Critical Attack Rolls",
+        "statModified": "Critical Attack Rolls",
         "bonus": "Enhancement",
         "stats": [
           1, 2, 2, 3, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 14, 14,
@@ -14219,13 +14117,15 @@
     "stat": [6]
   },
   {
-    "name": "Silver Flame's [Combined] (Seeker & Deception)",
+    "name": "Silver Flame's [Combined] (Turn Undead Level & Turn Undead Dice)",
     "enchantments": [
       {
-        "name": "Turn Undead Hit Dice"
+        "name": "Turn Undead Level",
+        "stats": [2]
       },
       {
-        "name": "Maximum Turn Undead Dice"
+        "name": "Maximum Turn Undead Dice",
+        "stats": [2]
       }
     ],
     "bound": null,
@@ -14235,7 +14135,7 @@
       "purified": 15,
       "collectible": [
         {
-          "name": "Mystical Urn",
+          "name": "Mystical Dried Fish",
           "qty": 5
         }
       ]
@@ -14882,7 +14782,6 @@
     "enchantments": [
       {
         "name": "Spell Penetration",
-        "statModified": "Spell Penetration",
         "bonus": "Equipment"
       }
     ],
@@ -16366,12 +16265,10 @@
     "name": "Warded [Combined] (Curse Resist & Prot from Evil)",
     "enchantments": [
       {
-        "name": "Curse Resistance",
-        "statModified": "Curse Resistance"
+        "name": "Curse Resistance"
       },
       {
-        "name": "Protection from Evil",
-        "statModified": "Protection from Evil"
+        "name": "Protection from Evil"
       }
     ],
     "bound": null,
@@ -16398,10 +16295,17 @@
     "name": "Watchful [Combined] (Dodge & Heightened Awareness)",
     "enchantments": [
       {
-        "name": "Dodge Chance"
+        "name": "Dodge Chance",
+        "bonus": "Enhancement",
+        "stat": [
+          1, 2, 2, 3, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 14, 14, 14,
+          15, 15, 15
+        ]
       },
       {
-        "name": "Heightened Awareness"
+        "name": "Heightened Awareness",
+        "bonus": "Insight",
+        "stats": ["?"]
       }
     ],
     "bound": null,
@@ -16411,7 +16315,7 @@
       "purified": 15,
       "collectible": [
         {
-          "name": "Mystical Vessel",
+          "name": "Mystical Plant",
           "qty": 5
         }
       ]
@@ -16588,7 +16492,6 @@
     "enchantments": [
       {
         "name": "Maximum Spell Points",
-        "statModified": "Maximum Spell Points",
         "bonus": "Enhancement"
       }
     ],
