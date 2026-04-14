@@ -62,6 +62,7 @@ export interface LootEnchantment {
   statModified?: string
   modifier?: string | number
   bonus?: string | number
+  stats?: (number | string)[]
   notes?: string
 }
 

@@ -1613,6 +1613,29 @@ const useGearPlanner = (props: Props) => {
                   )}
                 </div>
 
+                {(() => {
+                  const curseBoost =
+                    activeSetup.slottedCurses[selectedItem.id]?.name ===
+                    'Curse of Minor Masterworks'
+                      ? 1
+                      : activeSetup.slottedCurses[selectedItem.id]?.name ===
+                          'Curse of Major Masterworks'
+                        ? 2
+                        : 0
+
+                  if (curseBoost > 0) {
+                    return (
+                      <div
+                        className='text-success fw-bold'
+                        style={{ fontSize: '0.6rem' }}
+                      >
+                        Crafting Effect Level +{curseBoost}
+                      </div>
+                    )
+                  }
+                  return null
+                })()}
+
                 {selectedItem.enchantments &&
                   selectedItem.enchantments.length > 0 && (
                     <div

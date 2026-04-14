@@ -29,6 +29,15 @@ const EssenceCraftingSelector = (props: Props) => {
   } = props
 
   const minLevel = parseInt(selectedItem.minLevel) || 1
+  const curseBoost =
+    activeSetup.slottedCurses[selectedItem.id]?.name ===
+    'Curse of Minor Masterworks'
+      ? 1
+      : activeSetup.slottedCurses[selectedItem.id]?.name ===
+          'Curse of Major Masterworks'
+        ? 2
+        : 0
+  const effectiveLevel = minLevel + curseBoost
 
   const isGemOfManyFacets = selectedItem.name.includes('Gem of Many Facets')
 
@@ -42,7 +51,7 @@ const EssenceCraftingSelector = (props: Props) => {
 
       const idx = Math.max(
         0,
-        Math.min(opt.scalingStats.length - 1, minLevel - 1)
+        Math.min(opt.scalingStats.length - 1, effectiveLevel - 1)
       )
       const value = opt.scalingStats[idx]
 
@@ -52,7 +61,7 @@ const EssenceCraftingSelector = (props: Props) => {
 
       return `${displayName} ${modifierValue}${bonusText}`
     },
-    [minLevel]
+    [effectiveLevel]
   )
 
   const slotIdMap: Record<string, string[]> = useMemo(() => {
@@ -135,7 +144,7 @@ const EssenceCraftingSelector = (props: Props) => {
           if (e.scalingStats && e.scalingStats.length > 0) {
             const idx = Math.max(
               0,
-              Math.min(e.scalingStats.length - 1, minLevel - 1)
+              Math.min(e.scalingStats.length - 1, effectiveLevel - 1)
             )
             if (e.scalingStats[idx] === -1) {
               return false
@@ -148,7 +157,7 @@ const EssenceCraftingSelector = (props: Props) => {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, getFormattedName, allowedSlotIds, minLevel]
+    [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel, minLevel]
   )
 
   const suffixOptions = useMemo(
@@ -161,7 +170,7 @@ const EssenceCraftingSelector = (props: Props) => {
           if (e.scalingStats && e.scalingStats.length > 0) {
             const idx = Math.max(
               0,
-              Math.min(e.scalingStats.length - 1, minLevel - 1)
+              Math.min(e.scalingStats.length - 1, effectiveLevel - 1)
             )
             if (e.scalingStats[idx] === -1) {
               return false
@@ -174,7 +183,7 @@ const EssenceCraftingSelector = (props: Props) => {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, getFormattedName, allowedSlotIds, minLevel]
+    [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel, minLevel]
   )
 
   // Assuming 'extra' for Mark of House Cannith
@@ -188,7 +197,7 @@ const EssenceCraftingSelector = (props: Props) => {
           if (e.scalingStats && e.scalingStats.length > 0) {
             const idx = Math.max(
               0,
-              Math.min(e.scalingStats.length - 1, minLevel - 1)
+              Math.min(e.scalingStats.length - 1, effectiveLevel - 1)
             )
             if (e.scalingStats[idx] === -1) {
               return false
@@ -201,7 +210,7 @@ const EssenceCraftingSelector = (props: Props) => {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, getFormattedName, allowedSlotIds, minLevel]
+    [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel, minLevel]
   )
 
   const renderDropdown = (
@@ -279,14 +288,23 @@ const EssenceCraftingSelector = (props: Props) => {
                     ? rawName
                     : [rawName]
 
-                  const idx = Math.max(
-                    0,
-                    Math.min(
-                      (currentSelection.scalingStats?.length ?? 1) - 1,
-                      minLevel - 1
-                    )
-                  )
-                  const value = currentSelection.scalingStats?.[idx]
+                  const value =
+                    e.stats && e.stats.length > 0
+                      ? e.stats[
+                          Math.max(
+                            0,
+                            Math.min(e.stats.length - 1, effectiveLevel - 1)
+                          )
+                        ]
+                      : currentSelection.scalingStats?.[
+                          Math.max(
+                            0,
+                            Math.min(
+                              (currentSelection.scalingStats?.length ?? 1) - 1,
+                              effectiveLevel - 1
+                            )
+                          )
+                        ]
 
                   return names.map((name) => ({
                     ...e,
@@ -340,7 +358,7 @@ const EssenceCraftingSelector = (props: Props) => {
         <div className='d-flex gap-2 mb-1'>
           <div className='flex-grow-1'>
             <div className='text-dark mb-0' style={{ fontSize: '0.6rem' }}>
-              Min Level (1-36)
+              Min Level (1-34)
             </div>
             <Dropdown className='w-100 mb-2'>
               <Dropdown.Toggle
@@ -365,7 +383,7 @@ const EssenceCraftingSelector = (props: Props) => {
                   overflowY: 'auto'
                 }}
               >
-                {Array.from({ length: 36 }, (_, i) => i + 1).map((lvl) => (
+                {Array.from({ length: 34 }, (_, i) => i + 1).map((lvl) => (
                   <Dropdown.Item
                     key={lvl}
                     onClick={() => {

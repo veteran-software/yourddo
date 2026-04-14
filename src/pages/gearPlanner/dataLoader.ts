@@ -102,6 +102,7 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
         name: string
         statModified?: string
         bonus?: string
+        stats?: (number | string)[]
       }[]
     }[]
 
@@ -116,6 +117,7 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
           name: string
           statModified?: string
           bonus?: string
+          stats?: (number | string)[]
         }[]
       }
     >()
@@ -167,7 +169,8 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
             ? phase1Info.allEnchantments.map((e) => ({
                 name: e.name,
                 bonus: e.bonus,
-                statModified: e.statModified
+                statModified: e.statModified,
+                stats: e.stats
               }))
             : matchingEnchantments.map((e) => ({
                 name: e.name,
