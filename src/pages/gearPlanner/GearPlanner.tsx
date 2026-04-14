@@ -100,7 +100,9 @@ const GearPlanner = () => {
     showSidebar,
     setShowSidebar,
     setShowEnchantmentSearch,
-    setShowSetBonusBrowser
+    setShowSetBonusBrowser,
+    pendingMinorArtifact,
+    setPendingMinorArtifact
   } = gpHook
 
   const [showSettings, setShowSettings] = useState(false)
@@ -849,6 +851,38 @@ const GearPlanner = () => {
           }
           title='Create a Gear Planner Permalink'
         />
+
+        <Modal
+          show={!!pendingMinorArtifact}
+          onHide={() => {
+            setPendingMinorArtifact(null)
+          }}
+          centered
+        >
+          <Modal.Header closeButton className='bg-warning text-dark'>
+            <Modal.Title>Minor Artifact Restriction</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className='bg-dark text-light'>
+            <p>
+              You already have a minor artifact in your gear set. A player can
+              only wear one minor artifact at a time.
+            </p>
+            <p className='mb-0'>
+              Please choose a different item for this slot, or remove the
+              existing minor artifact first.
+            </p>
+          </Modal.Body>
+          <Modal.Footer className='bg-dark border-top-0'>
+            <Button
+              variant='outline-light'
+              onClick={() => {
+                setPendingMinorArtifact(null)
+              }}
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Container>
     </div>
   )

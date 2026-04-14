@@ -153,7 +153,9 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
         )
         const phase1Info =
           phase1Map.get(entry.effectId.toLowerCase()) ??
-          phase1Map.get(entry.enchantmentName.toLowerCase())
+          phase1Map.get(normalizeEffectName(entry.effectId)) ??
+          phase1Map.get(entry.enchantmentName.toLowerCase()) ??
+          phase1Map.get(normalizeEffectName(entry.enchantmentName))
 
         const scalingStats = phase1Info?.stat
         const statModified = phase1Info?.statModified ?? entry.statModified

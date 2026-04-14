@@ -34,11 +34,7 @@ const EssenceCraftingSelector = (props: Props) => {
 
   const getFormattedName = useCallback(
     (opt: EssenceEnchantment) => {
-      const rawDisplayName =
-        opt.shardName ?? opt.statModified ?? opt.enchantmentName
-      const displayName = Array.isArray(rawDisplayName)
-        ? rawDisplayName.join(', ')
-        : rawDisplayName
+      const displayName = opt.shardName ?? opt.enchantmentName
 
       if (!opt.scalingStats || opt.scalingStats.length === 0) {
         return displayName
@@ -62,6 +58,8 @@ const EssenceCraftingSelector = (props: Props) => {
   const slotIdMap: Record<string, string[]> = useMemo(() => {
     return {
       [GearSlot.Armor]: ['armor', 'robe', 'docent'],
+      [GearSlot.ArtificerPetArmor]: ['armor', 'robe', 'docent'],
+      [GearSlot.DruidPetArmor]: ['armor', 'robe', 'docent'],
       [GearSlot.Head]: ['helm'],
       [GearSlot.Hands]: ['gloves'],
       [GearSlot.Cloak]: ['cloak'],
@@ -73,8 +71,16 @@ const EssenceCraftingSelector = (props: Props) => {
       [GearSlot.FirstFinger]: ['ring'],
       [GearSlot.SecondFinger]: ['ring'],
       [GearSlot.Trinket]: ['trinket'],
-      [GearSlot.MainHand]: ['weapon-melee', 'weapon-ranged'],
-      [GearSlot.OffHand]: ['weapon-melee', 'shield', 'orb', 'runearm']
+      [GearSlot.MainHand]: ['weapon-melee', 'weapon-ranged', 'weapon'],
+      [GearSlot.OffHand]: [
+        'weapon-melee',
+        'shield',
+        'orb',
+        'runearm',
+        'weapon'
+      ],
+      [GearSlot.ArtificerPetWeapon]: ['weapon-melee', 'weapon'],
+      [GearSlot.DruidPetWeapon]: ['weapon-melee', 'weapon']
     }
   }, [])
 
@@ -89,9 +95,11 @@ const EssenceCraftingSelector = (props: Props) => {
 
     if (meleeWeapons.has(weaponType)) {
       filteredIds.push('weapon-melee')
+      filteredIds.push('weapon')
     }
     if (rangedWeapons.has(weaponType) || throwingWeapons.has(weaponType)) {
       filteredIds.push('weapon-ranged')
+      filteredIds.push('weapon')
     }
     if (shields.has(weaponType) || weaponType === 'Orb') {
       filteredIds.push('shield')
@@ -120,44 +128,80 @@ const EssenceCraftingSelector = (props: Props) => {
   const prefixOptions = useMemo(
     () =>
       essenceEnchantments
-        .filter(
-          (e) => e.affixType === 'prefix' && allowedSlotIds.includes(e.slotId)
-        )
+        .filter((e) => {
+          if (e.affixType !== 'prefix' || !allowedSlotIds.includes(e.slotId)) {
+            return false
+          }
+          if (e.scalingStats && e.scalingStats.length > 0) {
+            const idx = Math.max(
+              0,
+              Math.min(e.scalingStats.length - 1, minLevel - 1)
+            )
+            if (e.scalingStats[idx] === -1) {
+              return false
+            }
+          }
+          return true
+        })
         .sort((a, b) =>
           getFormattedName(a).localeCompare(getFormattedName(b), 'en', {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, getFormattedName, allowedSlotIds]
+    [essenceEnchantments, getFormattedName, allowedSlotIds, minLevel]
   )
 
   const suffixOptions = useMemo(
     () =>
       essenceEnchantments
-        .filter(
-          (e) => e.affixType === 'suffix' && allowedSlotIds.includes(e.slotId)
-        )
+        .filter((e) => {
+          if (e.affixType !== 'suffix' || !allowedSlotIds.includes(e.slotId)) {
+            return false
+          }
+          if (e.scalingStats && e.scalingStats.length > 0) {
+            const idx = Math.max(
+              0,
+              Math.min(e.scalingStats.length - 1, minLevel - 1)
+            )
+            if (e.scalingStats[idx] === -1) {
+              return false
+            }
+          }
+          return true
+        })
         .sort((a, b) =>
           getFormattedName(a).localeCompare(getFormattedName(b), 'en', {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, getFormattedName, allowedSlotIds]
+    [essenceEnchantments, getFormattedName, allowedSlotIds, minLevel]
   )
 
   // Assuming 'extra' for Mark of House Cannith
   const extraOptions = useMemo(
     () =>
       essenceEnchantments
-        .filter(
-          (e) => e.affixType === 'extra' && allowedSlotIds.includes(e.slotId)
-        )
+        .filter((e) => {
+          if (e.affixType !== 'extra' || !allowedSlotIds.includes(e.slotId)) {
+            return false
+          }
+          if (e.scalingStats && e.scalingStats.length > 0) {
+            const idx = Math.max(
+              0,
+              Math.min(e.scalingStats.length - 1, minLevel - 1)
+            )
+            if (e.scalingStats[idx] === -1) {
+              return false
+            }
+          }
+          return true
+        })
         .sort((a, b) =>
           getFormattedName(a).localeCompare(getFormattedName(b), 'en', {
             sensitivity: 'base'
           })
         ),
-    [essenceEnchantments, getFormattedName, allowedSlotIds]
+    [essenceEnchantments, getFormattedName, allowedSlotIds, minLevel]
   )
 
   const renderDropdown = (

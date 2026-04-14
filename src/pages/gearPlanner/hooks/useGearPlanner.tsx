@@ -109,6 +109,10 @@ const useGearPlanner = (props: Props) => {
     useState<SetBonusIndex>({})
   const [loading, setLoading] = useState(true)
   const [dataReady, setDataReady] = useState(false)
+  const [pendingMinorArtifact, setPendingMinorArtifact] = useState<{
+    slot: GearSlot
+    item: GearItem
+  } | null>(null)
 
   const [allItemsBySlot, setAllItemsBySlot] = useState<
     Map<GearSlot, GearItem[]>
@@ -1243,6 +1247,23 @@ const useGearPlanner = (props: Props) => {
     setup: GearSetup
   ) => {
     if (item) {
+      // Minor artifact check: can only wear one at a time.
+      if (isMinorArtifact(item)) {
+        const otherArtifactSlot = (
+          Object.keys(setup.slots) as GearSlot[]
+        ).find(
+          (s) =>
+            s !== slot &&
+            setup.slots[s] &&
+            isMinorArtifact(setup.slots[s])
+        )
+
+        if (otherArtifactSlot && !pendingMinorArtifact) {
+          setPendingMinorArtifact({ slot, item })
+          return
+        }
+      }
+
       const oldItem = setup.slots[slot]
       if (
         oldItem &&
@@ -1882,6 +1903,8 @@ const useGearPlanner = (props: Props) => {
     loading,
     openSetBonusBrowser,
     openSlotBrowser,
+    pendingMinorArtifact,
+    setPendingMinorArtifact,
     renderSlot,
     searchResultsBySlot,
     selectItem,

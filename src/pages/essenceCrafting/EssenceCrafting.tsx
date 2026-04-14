@@ -17,12 +17,9 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown
-  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type {
-  ShoppingListTotals
-} from '../../components/common/ShoppingListDrawer.tsx'
+import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
@@ -145,16 +142,32 @@ const EssenceCrafting = () => {
     [enhancementByName]
   )
 
-  // Rule: Insightful effects (including Parrying) cannot be applied if effective ML < 10
+  // Rule: Insightful effects (including Parrying) cannot be applied if effective ML < 10.
+  // Also, any enchantment with a value of -1 at the current level is not craftable.
   const isEnhancementAllowedAtML = useCallback(
     (name: string | null, effectiveML: number): boolean => {
       if (!name) {
         return true
       }
 
+      const entry = enhancementByName.get(name)
+      if (entry) {
+        const stats = Array.isArray(entry.stat) ? entry.stat : []
+        if (stats.length > 0) {
+          const idx = Math.max(
+            0,
+            Math.min(stats.length - 1, (effectiveML || 1) - 1)
+          )
+          const value = stats[idx]
+          if (value === -1 || value === null || value === undefined) {
+            return false
+          }
+        }
+      }
+
       return !(isInsightfulEnhancement(name) && (effectiveML || 1) < 10)
     },
-    [isInsightfulEnhancement]
+    [enhancementByName, isInsightfulEnhancement]
   )
 
   // Load from permalink (if present) or sessionStorage once
