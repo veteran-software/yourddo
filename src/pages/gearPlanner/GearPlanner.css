@@ -59,13 +59,13 @@
     color: #f8f9fa !important; /* Match Bootstrap dark theme text */
 }
 
-/* Allow scrolling the background through the backdrop */
+/* Ensure the backdrop does not block clicks when scroll is enabled */
 .offcanvas-backdrop {
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 .offcanvas-backdrop.show {
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 .gear-planner-item-browser .list-group-item {

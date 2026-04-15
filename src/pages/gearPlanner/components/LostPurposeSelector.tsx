@@ -1,41 +1,39 @@
+import { useMemo } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
+import type { CraftingIngredient } from '../../../types/crafting.ts'
 import type { GearItem, GearSlot, LootEnchantment } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
-interface LostPurposeSelectorProps {
-  item: GearItem
-  slot: GearSlot
-  selectedEnchantment: LootEnchantment | null
-  onSelect: (enchantment: LootEnchantment | null) => void
-}
-
-const LostPurposeSelector = ({
-  item,
-  slot,
-  selectedEnchantment,
-  onSelect
-}: LostPurposeSelectorProps) => {
+const LostPurposeSelector = ({ item, slot, selectedEnchantment, onSelect }: Props) => {
   // Filter recipes for compatible items
   // cannithRepurposingStation.ts exports an array of recipes
-  const recipes = lostPurposeRecipes.filter((r) => {
-    const isLostPurpose = r.description?.includes('Lost Purpose item')
-    if (!isLostPurpose) return false
+  const recipes: CraftingIngredient[] = useMemo(
+    () =>
+      lostPurposeRecipes.filter((recipe: CraftingIngredient) => {
+        const isLostPurpose: boolean | undefined = recipe.description?.includes('Lost Purpose item')
+        if (!isLostPurpose) {
+          return false
+        }
 
-    const isLegendaryRecipe = r.name?.toLowerCase().includes('legendary')
-    const isLegendaryItem = (parseInt(item.minLevel) || 1) >= 20
+        const isLegendaryRecipe: boolean = recipe.name.toLowerCase().includes('legendary')
+        const isLegendaryItem: boolean = (parseInt(item.minLevel) || 1) >= 20
 
-    if (isLegendaryItem) {
-      return isLegendaryRecipe
-    }
-    return !isLegendaryRecipe
-  })
+        if (isLegendaryItem) {
+          return isLegendaryRecipe
+        }
+        return !isLegendaryRecipe
+      }),
+    [item.minLevel]
+  )
 
-  if (recipes.length === 0) return null
+  if (recipes.length === 0) {
+    return null
+  }
 
   // Find the recipe name for the selected enchantment to display in the toggle
-  const selectedRecipe = recipes.find(
-    (r) => r.setBonus?.[0]?.name === selectedEnchantment?.name
+  const selectedRecipe: CraftingIngredient | undefined = recipes.find(
+    (recipe: CraftingIngredient) => recipe.setBonus?.[0]?.name === selectedEnchantment?.name
   )
 
   return (
@@ -43,6 +41,7 @@ const LostPurposeSelector = ({
       <div className='text-dark mb-0 text-start' style={{ fontSize: '0.6rem' }}>
         Lost Purpose Upgrade
       </div>
+
       <Dropdown className='w-100'>
         <Dropdown.Toggle
           variant='outline-dark'
@@ -55,9 +54,7 @@ const LostPurposeSelector = ({
           }}
         >
           <span className='text-truncate text-dark'>
-            {selectedRecipe?.name ??
-              selectedEnchantment?.name ??
-              '-- Select Set Bonus --'}
+            {selectedRecipe?.name ?? selectedEnchantment?.name ?? '-- Select Set Bonus --'}
           </span>
         </Dropdown.Toggle>
 
@@ -76,10 +73,14 @@ const LostPurposeSelector = ({
           >
             -- None --
           </Dropdown.Item>
+
           <Dropdown.Divider />
-          {recipes.map((recipe, idx) => {
-            const setBonusName = recipe.setBonus?.[0]?.name
-            if (!setBonusName) return null
+
+          {recipes.map((recipe: CraftingIngredient, idx: number) => {
+            const setBonusName: string | undefined = recipe.setBonus?.[0]?.name
+            if (!setBonusName) {
+              return null
+            }
 
             return (
               <Dropdown.Item
@@ -100,10 +101,7 @@ const LostPurposeSelector = ({
       </Dropdown>
 
       {selectedEnchantment && (
-        <div
-          className='mt-1 text-secondary text-start'
-          style={{ fontSize: '0.6rem', lineHeight: '1.1' }}
-        >
+        <div className='mt-1 text-secondary text-start' style={{ fontSize: '0.6rem', lineHeight: '1.1' }}>
           <EnchantmentList
             enchantments={[selectedEnchantment]}
             itemId={item.id}
@@ -116,6 +114,13 @@ const LostPurposeSelector = ({
       )}
     </div>
   )
+}
+
+interface Props {
+  item: GearItem
+  slot: GearSlot
+  selectedEnchantment: LootEnchantment | null
+  onSelect: (enchantment: LootEnchantment | null) => void
 }
 
 export default LostPurposeSelector

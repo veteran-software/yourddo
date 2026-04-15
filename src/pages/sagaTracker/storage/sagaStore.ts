@@ -21,9 +21,7 @@ export const setTurnedInAt = (m: Record<string, number>) => set('turnedInAt', m,
 export const requestPersistentStorage = async () => {
   try {
     // Ask the browser not to evict our data under storage pressure
-    if (navigator.storage?.persist) {
-      await navigator.storage.persist()
-    }
+    await navigator.storage.persist()
   } catch {
     // ignore
   }

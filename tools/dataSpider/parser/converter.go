@@ -2592,7 +2592,7 @@ func parseTemplateDinoSlot(raw string) string {
 
 	if typ != "" {
 		if typeName, ok2 := items[typ]; ok2 {
-			return fmt.Sprintf("Isle of Dread: %s Slot (%s):", slotName, typeName)
+			return fmt.Sprintf("Isle of Dread: %s Slot (%s)", slotName, typeName)
 		}
 	} else if slot == "E" || slot == "SET" {
 		return "Isle of Dread: Set Bonus Slot"

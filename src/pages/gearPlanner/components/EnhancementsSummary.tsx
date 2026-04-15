@@ -1,17 +1,9 @@
 import { useMemo } from 'react'
 import { Accordion, Col, Row } from 'react-bootstrap'
 import { FaListUl } from 'react-icons/fa6'
-import {
-  getBonus,
-  normalizeString,
-  parseModifierValue
-} from '../conflictResolver.ts'
+import { getBonus, normalizeString, parseModifierValue } from '../conflictResolver.ts'
 import type { EssenceEnchantment } from '../dataLoader.ts'
-import {
-  aggregateEnchantmentEntries,
-  getActiveSetEnhancements,
-  sortItemsByValue
-} from '../helpers.ts'
+import { aggregateEnchantmentEntries, getActiveSetEnhancements, sortItemsByValue } from '../helpers.ts'
 import type { Curse, GearAugment, GearItem } from '../types.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
 
@@ -34,18 +26,9 @@ const EnchantmentsSummary = ({
   slottedGemSetBonuses?: Record<string, (string | null)[]>
   slottedEssenceEnchantments?: Record<string, Record<string, string | null>>
   essenceEnchantments?: EssenceEnchantment[]
-  slottedNearlyFinished?: Record<
-    string,
-    import('../types.ts').LootEnchantment | null
-  >
-  slottedRitualTable?: Record<
-    string,
-    import('../types.ts').LootEnchantment | null
-  >
-  slottedLostPurpose?: Record<
-    string,
-    import('../types.ts').LootEnchantment | null
-  >
+  slottedNearlyFinished?: Record<string, import('../types.ts').LootEnchantment | null>
+  slottedRitualTable?: Record<string, import('../types.ts').LootEnchantment | null>
+  slottedLostPurpose?: Record<string, import('../types.ts').LootEnchantment | null>
 }) => {
   const aggregated = useMemo(() => {
     type AggregationMap = Record<
@@ -83,12 +66,13 @@ const EnchantmentsSummary = ({
       const value = parseModifierValue(ench.modifier)
       const valueStr = ench.modifier?.toString() ?? ''
 
-      if (!map[normName]) {
+      if (!(normName in map)) {
         map[normName] = { originalName: ench.name, bonuses: {} }
       }
-      if (!map[normName].bonuses[normBonus]) {
+
+      if (!(normBonus in map[normName].bonuses)) {
         map[normName].bonuses[normBonus] = {
-          maxValue: -Infinity,
+          maxValue: 0,
           maxValueStr: '',
           items: []
         }
@@ -98,8 +82,7 @@ const EnchantmentsSummary = ({
       if (value > group.maxValue) {
         group.maxValue = value
         group.maxValueStr = valueStr
-      } else if (group.maxValue === -Infinity) {
-        group.maxValue = 0
+      } else if (group.maxValue === 0) {
         group.maxValueStr = valueStr
       }
 
@@ -146,9 +129,10 @@ const EnchantmentsSummary = ({
       const bonuses = Object.entries(entry.bonuses)
         .map(([bonusType, data]) => {
           const sortedItems = [...data.items].sort(sortItemsByValue)
+
           return {
             bonusType,
-            maxValue: data.maxValue === -Infinity ? 0 : data.maxValue,
+            maxValue: data.maxValue,
             maxValueStr: data.maxValueStr,
             items: sortedItems
           }
@@ -156,9 +140,7 @@ const EnchantmentsSummary = ({
         .sort((a, b) => b.maxValue - a.maxValue)
 
       const isNumeric = bonuses.some((b) => b.maxValue !== 0)
-      const total = isNumeric
-        ? bonuses.reduce((sum, b) => sum + b.maxValue, 0)
-        : 0
+      const total = isNumeric ? bonuses.reduce((sum, b) => sum + b.maxValue, 0) : 0
 
       return {
         name: entry.originalName,
@@ -193,43 +175,25 @@ const EnchantmentsSummary = ({
       <Row className='g-2'>
         {aggregated.map((ench, idx) => (
           <Col key={`${ench.name}-${String(idx)}`} xs={12} md={6} lg={4}>
-            <Accordion
-              data-bs-theme='dark'
-              className='gear-planner-ench-summary-accordion'
-            >
+            <Accordion data-bs-theme='dark' className='gear-planner-ench-summary-accordion'>
               <Accordion.Item eventKey='0'>
                 <Accordion.Header className=''>
                   <div className='d-flex justify-content-between align-items-center w-100 me-3'>
-                    <span
-                      className='fw-bold text-info text-truncate me-2'
-                      style={{ fontSize: '0.8rem' }}
-                    >
+                    <span className='fw-bold text-info text-truncate me-2' style={{ fontSize: '0.8rem' }}>
                       {ench.name}
                     </span>
-                    {ench.isNumeric && (
-                      <GenericBadge
-                        badgeText={`+${String(ench.total)}`}
-                        fontSize='0.75rem'
-                      />
-                    )}
+                    {ench.isNumeric && <GenericBadge badgeText={`+${String(ench.total)}`} fontSize='0.75rem' />}
                   </div>
                 </Accordion.Header>
 
                 <Accordion.Body className='p-2 bg-dark'>
                   {ench.bonuses.map((bonus, bIdx) => (
-                    <div
-                      key={`${bonus.bonusType}-${String(bIdx)}`}
-                      className='mb-2 last-child-mb-0'
-                    >
+                    <div key={`${bonus.bonusType}-${String(bIdx)}`} className='mb-2 last-child-mb-0'>
                       <div className='d-flex justify-content-between align-items-center border-bottom border-secondary mb-1 pb-1'>
-                        <span className='small text-light italic text-capitalize'>
-                          {bonus.bonusType}
-                        </span>
+                        <span className='small text-light italic text-capitalize'>{bonus.bonusType}</span>
 
                         <span className='small fw-bold text-light'>
-                          {bonus.maxValue === 0
-                            ? bonus.maxValueStr || 'Active'
-                            : `+${String(bonus.maxValue)}`}
+                          {bonus.maxValue === 0 ? bonus.maxValueStr || 'Active' : `+${String(bonus.maxValue)}`}
                         </span>
                       </div>
 
@@ -237,19 +201,13 @@ const EnchantmentsSummary = ({
                         <div
                           key={`${item.itemName}-${String(iIdx)}`}
                           className={`ps-2 small d-flex justify-content-between align-items-center ${
-                            item.value === bonus.maxValue
-                              ? 'text-secondary'
-                              : 'text-muted text-decoration-line-through'
+                            item.value === bonus.maxValue ? 'text-secondary' : 'text-muted text-decoration-line-through'
                           }`}
                         >
-                          <span className='text-truncate me-1'>
-                            • {item.itemName}
-                          </span>
+                          <span className='text-truncate me-1'>• {item.itemName}</span>
 
                           <span className='flex-shrink-0'>
-                            {item.value === 0
-                              ? item.valueStr
-                              : `+${String(item.value)}`}
+                            {item.value === 0 ? item.valueStr : `+${String(item.value)}`}
                           </span>
                         </div>
                       ))}

@@ -5,8 +5,8 @@ const ItemSetBonusDisplay = (props: Props) => {
   const { activeSetup, openSetBonusBrowser, selectedItem } = props
 
   if (selectedItem.name.includes('Gem of Many Facets')) {
-    const gemBonuses = activeSetup.slottedGemSetBonuses?.[selectedItem.id] || []
-    const activeGemBonuses = gemBonuses.filter((b) => b !== null)
+    const gemBonuses: (string | null)[] = activeSetup.slottedGemSetBonuses[selectedItem.id]
+    const activeGemBonuses: string[] = gemBonuses.filter((b) => b !== null)
 
     if (activeGemBonuses.length === 0) {
       return null
@@ -15,11 +15,7 @@ const ItemSetBonusDisplay = (props: Props) => {
     return (
       <div className='my-0'>
         {activeGemBonuses.map((setName) => (
-          <SetBonusBadge
-            key={setName}
-            openSetBonusBrowser={openSetBonusBrowser}
-            setName={setName}
-          />
+          <SetBonusBadge key={setName} openSetBonusBrowser={openSetBonusBrowser} setName={setName} />
         ))}
       </div>
     )
@@ -29,11 +25,7 @@ const ItemSetBonusDisplay = (props: Props) => {
     return (
       <div className='my-0'>
         {selectedItem.setBonus.map((sb) => (
-          <SetBonusBadge
-            key={sb.name}
-            setName={sb.name}
-            openSetBonusBrowser={openSetBonusBrowser}
-          />
+          <SetBonusBadge key={sb.name} setName={sb.name} openSetBonusBrowser={openSetBonusBrowser} />
         ))}
       </div>
     )

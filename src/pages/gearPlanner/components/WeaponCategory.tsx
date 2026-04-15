@@ -1,8 +1,6 @@
 import { Accordion, Col, Form, Row } from 'react-bootstrap'
 import { useAppDispatch } from '../../../redux/hooks.ts'
-import {
-  updateSetup as updateSetupAction
-} from '../../../redux/slices/gearPlannerSlice.ts'
+import { updateSetup as updateSetupAction } from '../../../redux/slices/gearPlannerSlice.ts'
 import type { GearSetup } from '../types.ts'
 
 const WeaponCategory = (props: Props) => {
@@ -10,9 +8,7 @@ const WeaponCategory = (props: Props) => {
 
   return (
     <Accordion.Item eventKey={category} key={category} className='border-0'>
-      <Accordion.Header className='bg-dark py-1'>
-        {category} Weapons
-      </Accordion.Header>
+      <Accordion.Header className='bg-dark py-1'>{category} Weapons</Accordion.Header>
 
       <Accordion.Body className='bg-dark-subtle p-2'>
         <Row>

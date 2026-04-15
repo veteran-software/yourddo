@@ -11,10 +11,7 @@ import {
 } from './types.ts'
 
 export const isWeapon = (item: LootItem) => {
-  return (
-    Object.values(WEAPON_TYPES).some((types) => types.includes(item.type)) ||
-    item.type === 'Shield'
-  )
+  return Object.values(WEAPON_TYPES).some((types) => types.includes(item.type)) || item.type === 'Shield'
 }
 
 export const isMinorArtifact = (item: LootItem) => {
@@ -36,8 +33,7 @@ export const getMaxFiligreeSlots = (item: LootItem) => {
   return 0
 }
 
-export const sortItemsByValue = (a: { value: number }, b: { value: number }) =>
-  b.value - a.value
+export const sortItemsByValue = (a: { value: number }, b: { value: number }) => b.value - a.value
 
 export const aggregateEnchantmentEntries = (
   item: GearItem,
@@ -52,21 +48,21 @@ export const aggregateEnchantmentEntries = (
   slottedLostPurpose?: Record<string, LootEnchantment | null>
 ) => {
   const entries: { ench: LootEnchantment; sourceName: string }[] = (
-    item.enchantments ?? []
+    Array.isArray(item.enchantments) ? item.enchantments : []
   )
     .filter(
-      (e) =>
+      (e: LootEnchantment) =>
         e.name !== 'Craftable Rune Arm' &&
         e.name !== 'Nearly Finished' &&
         e.name !== 'Sealed in Fire' &&
         e.name !== 'Sealed in Undeath'
     )
-    .map((e) => ({
+    .map((e: LootEnchantment) => ({
       ench: e,
       sourceName: item.name
     }))
 
-  const nearlyFinished = slottedNearlyFinished?.[item.id]
+  const nearlyFinished: LootEnchantment | null | undefined = slottedNearlyFinished?.[item.id]
   if (nearlyFinished) {
     entries.push({
       ench: {
@@ -96,12 +92,7 @@ export const aggregateEnchantmentEntries = (
   addAugmentEntries(entries, item.name, itemAugs)
   addCurseEntries(entries, item.name, curse)
   addFiligreeEntries(entries, item.name, filigrees)
-  addEssenceCraftingEntries(
-    entries,
-    item,
-    slottedEssenceEnchantments?.[item.id],
-    essenceEnchantments
-  )
+  addEssenceCraftingEntries(entries, item, slottedEssenceEnchantments?.[item.id], essenceEnchantments)
 
   if (activeSetEnhancements) {
     entries.push(...activeSetEnhancements)
@@ -110,15 +101,10 @@ export const aggregateEnchantmentEntries = (
   return entries
 }
 
-export const getActiveEnhancementsForSet = (
-  setDef: SetBonus | undefined,
-  count: number
-) => {
+export const getActiveEnhancementsForSet = (setDef: SetBonus | undefined, count: number) => {
   if (!setDef?.enhancements) return []
 
-  return setDef.enhancements.filter(
-    (enh) => (enh.numPiecesEquipped ?? setDef.numPiecesEquipped ?? 0) <= count
-  )
+  return setDef.enhancements.filter((enh) => (enh.numPiecesEquipped ?? setDef.numPiecesEquipped ?? 0) <= count)
 }
 
 const getItemCounts = (
@@ -171,7 +157,7 @@ const getFiligreeCounts = (
   const filigreeNamesPerSet: Record<string, Set<string>> = {}
   for (const itemFiligrees of Object.values(slottedFiligrees)) {
     for (const fili of itemFiligrees) {
-      if (fili?.grouping && typeof fili.grouping === 'string') {
+      if (fili?.grouping) {
         processFiligreeGrouping(fili, filigreeNamesPerSet)
       }
     }
@@ -182,10 +168,7 @@ const getFiligreeCounts = (
   }
 }
 
-const processFiligreeGrouping = (
-  fili: GearItem,
-  filigreeNamesPerSet: Record<string, Set<string>>
-) => {
+const processFiligreeGrouping = (fili: GearItem, filigreeNamesPerSet: Record<string, Set<string>>) => {
   const groupingStr = fili.grouping
   if (typeof groupingStr !== 'string') return
 
@@ -193,10 +176,12 @@ const processFiligreeGrouping = (
     .split('/')
     .map((s) => s.trim())
     .filter((s) => s.length > 0)
+
   for (const setName of setNames) {
-    if (!filigreeNamesPerSet[setName]) {
+    if (!(setName in filigreeNamesPerSet)) {
       filigreeNamesPerSet[setName] = new Set<string>()
     }
+
     if (fili.name) {
       filigreeNamesPerSet[setName].add(fili.name)
     }
@@ -286,14 +271,10 @@ const iterateEnchentments = (
 ) => {
   for (const effect of opt.enchantments) {
     const rawDisplayName = effect.statModified ?? effect.name
-    const displayNames: string[] = Array.isArray(rawDisplayName)
-      ? rawDisplayName
-      : [rawDisplayName]
+    const displayNames: string[] = Array.isArray(rawDisplayName) ? rawDisplayName : [rawDisplayName]
 
     const scalingValue = opt.scalingStats
-      ? opt.scalingStats[
-          Math.max(0, Math.min(opt.scalingStats.length - 1, minLevel - 1))
-        ]
+      ? opt.scalingStats[Math.max(0, Math.min(opt.scalingStats.length - 1, minLevel - 1))]
       : null
 
     for (const name of displayNames) {

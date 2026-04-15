@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, Col, Form, ListGroup, Modal, Row } from 'react-bootstrap'
 import { FaMagnifyingGlass, FaMinus, FaPlus, FaTrash } from 'react-icons/fa6'
 import { useAppSelector } from '../../../redux/hooks.ts'
@@ -9,30 +9,20 @@ import GenericBadge from './badges/GenericBadge.tsx'
 import SetBonusBadge from './badges/SetBonusBadge.tsx'
 
 const FiligreeModal = (props: Props) => {
-  const {
-    allFiligrees,
-    item,
-    onHide,
-    setFiligree,
-    setUnlockedFiligreeSlots,
-    setup,
-    show,
-    slot
-  } = props
+  const { allFiligrees, item, onHide, setFiligree, setUnlockedFiligreeSlots, setup, show, slot } = props
 
   const [activeSlotIndex, setActiveSlotIndex] = useState<number | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [showOnlyOwned, setShowOnlyOwned] = useState(false)
   const [displayLimit, setDisplayLimit] = useState(50)
-  const observerTarget = useRef<HTMLDivElement>(null)
+  const observerRef = useRef<HTMLDivElement>(null)
 
   const { troveData } = useAppSelector((state) => state.app)
 
   const maxSlots = getMaxFiligreeSlots(item)
   const isArtifact = (item.artifacttype?.trim().length ?? 0) > 0
-  const currentUnlockedSlots = setup.unlockedFiligreeSlots?.[item.id] ?? 1
-  const slotted =
-    setup.slottedFiligrees?.[item.id] ?? new Array(maxSlots).fill(null)
+  const currentUnlockedSlots = setup.unlockedFiligreeSlots[item.id] ?? 1
+  const slotted = setup.slottedFiligrees[item.id] ?? new Array(maxSlots).fill(null)
 
   const handleSlotClick = (index: number) => {
     setActiveSlotIndex(index === activeSlotIndex ? null : index)
@@ -85,18 +75,11 @@ const FiligreeModal = (props: Props) => {
 
   const isFiligreeSlotted = (fili: GearItem) => {
     const normalizedNewName = normalizeName(fili.name)
-    return slotted.some(
-      (s, idx) =>
-        s &&
-        normalizeName(s.name) === normalizedNewName &&
-        idx !== activeSlotIndex
-    )
+    return slotted.some((s, idx) => s && normalizeName(s.name) === normalizedNewName && idx !== activeSlotIndex)
   }
 
   const allFiltered = allFiligrees.filter((f) => {
-    const matchesSearch = f.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
+    const matchesSearch = f.name.toLowerCase().includes(searchTerm.toLowerCase())
     if (!matchesSearch) return false
 
     if (showOnlyOwned) {
@@ -105,9 +88,7 @@ const FiligreeModal = (props: Props) => {
       const troveEntry =
         troveData?.[normalizedName] ??
         troveData?.[
-          normalizedName.endsWith(' (rare)')
-            ? getTroveKey(normalizedName.slice(0, -' (rare)'.length))
-            : normalizedName
+          normalizedName.endsWith(' (rare)') ? getTroveKey(normalizedName.slice(0, -' (rare)'.length)) : normalizedName
         ]
 
       return !!troveEntry
@@ -130,7 +111,7 @@ const FiligreeModal = (props: Props) => {
       { threshold: 0.1 }
     )
 
-    const currentTarget = observerTarget.current
+    const currentTarget = observerRef.current
     const timeoutId = setTimeout(() => {
       if (currentTarget) {
         observer.observe(currentTarget)
@@ -139,13 +120,14 @@ const FiligreeModal = (props: Props) => {
 
     return () => {
       clearTimeout(timeoutId)
+
       if (currentTarget) {
         observer.unobserve(currentTarget)
       }
+
       observer.disconnect()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeSlotIndex])
+  }, [activeSlotIndex, allFiltered.length, displayLimit])
 
   return (
     <Modal show={show} onHide={onHide} size='lg' centered scrollable>
@@ -157,8 +139,7 @@ const FiligreeModal = (props: Props) => {
 
       <Modal.Body className='bg-dark text-light' style={{ minHeight: '400px' }}>
         <p className='text-info mb-4'>
-          Select a slot to add or change a filigree. You can unlock up to{' '}
-          {maxSlots} slots.
+          Select a slot to add or change a filigree. You can unlock up to {maxSlots} slots.
         </p>
 
         <Row className='g-2 mb-4'>
@@ -170,12 +151,7 @@ const FiligreeModal = (props: Props) => {
             if (!isUnlocked) {
               if (idx === currentUnlockedSlots && idx < maxSlots) {
                 return (
-                  <Col
-                    key={`slot-unlock-${String(idx)}`}
-                    xs={6}
-                    md={4}
-                    lg={2.4}
-                  >
+                  <Col key={`slot-unlock-${String(idx)}`} xs={6} md={4} lg={2.4}>
                     <div className='d-flex gap-1 h-100'>
                       <Button
                         variant='outline-secondary'
@@ -250,10 +226,7 @@ const FiligreeModal = (props: Props) => {
                       </Button>
                     </>
                   ) : (
-                    <div
-                      className='small text-muted d-flex align-items-center'
-                      style={{ fontSize: '0.7rem' }}
-                    >
+                    <div className='small text-muted d-flex align-items-center' style={{ fontSize: '0.7rem' }}>
                       <FaPlus className='me-1' /> Slot {idx + 1}
                     </div>
                   )}
@@ -263,25 +236,23 @@ const FiligreeModal = (props: Props) => {
           })}
         </Row>
 
-        {activeSlotIndex !== null &&
-          troveData &&
-          Object.keys(troveData).length > 0 && (
-            <Row className='mb-3 align-items-center px-1'>
-              <Col>
-                <Form.Check
-                  type='checkbox'
-                  id='show-only-owned-filigrees'
-                  label='Only Owned'
-                  className='text-light small'
-                  checked={showOnlyOwned}
-                  onChange={(e) => {
-                    setShowOnlyOwned(e.target.checked)
-                    setDisplayLimit(50)
-                  }}
-                />
-              </Col>
-            </Row>
-          )}
+        {activeSlotIndex !== null && troveData && Object.keys(troveData).length > 0 && (
+          <Row className='mb-3 align-items-center px-1'>
+            <Col>
+              <Form.Check
+                type='checkbox'
+                id='show-only-owned-filigrees'
+                label='Only Owned'
+                className='text-light small'
+                checked={showOnlyOwned}
+                onChange={(e) => {
+                  setShowOnlyOwned(e.target.checked)
+                  setDisplayLimit(50)
+                }}
+              />
+            </Col>
+          </Row>
+        )}
 
         {activeSlotIndex !== null && (
           <div className='border border-primary rounded p-3 bg-dark-subtle'>
@@ -308,28 +279,23 @@ const FiligreeModal = (props: Props) => {
               </Col>
             </Row>
 
-            <ListGroup
-              className='filigree-selection-list'
-              style={{ maxHeight: '400px', overflowY: 'auto' }}
-            >
+            <ListGroup className='filigree-selection-list' style={{ maxHeight: '400px', overflowY: 'auto' }}>
               {filteredFiligrees.length > 0 ? (
-                filteredFiligrees.map((f) => {
-                  const normalizedName = getTroveKey(f.name)
+                filteredFiligrees.map((filigree: GearItem) => {
+                  const normalizedName = getTroveKey(filigree.name)
                   const troveEntry =
                     troveData?.[normalizedName] ??
                     troveData?.[
                       normalizedName.endsWith(' (rare)')
-                        ? getTroveKey(
-                            normalizedName.slice(0, -' (rare)'.length)
-                          )
+                        ? getTroveKey(normalizedName.slice(0, -' (rare)'.length))
                         : normalizedName
                     ]
                   const owners = troveEntry ? getTroveOwners(troveEntry) : ''
-                  const isSlotted = isFiligreeSlotted(f)
+                  const isSlotted = isFiligreeSlotted(filigree)
 
                   return (
                     <ListGroup.Item
-                      key={f.id}
+                      key={filigree.id}
                       action={!isSlotted}
                       className={`bg-dark text-light border-secondary d-flex justify-content-between align-items-center py-2 ${
                         isSlotted ? 'opacity-25' : ''
@@ -339,68 +305,50 @@ const FiligreeModal = (props: Props) => {
                       }}
                       onClick={() => {
                         if (!isSlotted) {
-                          handleSelectFiligree(f)
+                          handleSelectFiligree(filigree)
                         }
                       }}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           if (!isSlotted) {
                             e.preventDefault()
-                            handleSelectFiligree(f)
+                            handleSelectFiligree(filigree)
                           }
                         }
                       }}
                     >
                       <div className='flex-grow-1 min-w-0'>
                         <div className='d-flex align-items-center gap-2 mb-1'>
-                          <div
-                            className='fw-bold text-truncate'
-                            style={{ fontSize: '0.85rem' }}
-                          >
-                            {f.name}
+                          <div className='fw-bold text-truncate' style={{ fontSize: '0.85rem' }}>
+                            {filigree.name}
                           </div>
 
-                          {owners && (
-                            <GenericBadge
-                              badgeText={owners}
-                              fontSize='0.7rem'
-                            />
-                          )}
+                          {owners && <GenericBadge badgeText={owners} fontSize='0.7rem' />}
                         </div>
 
-                        {f.enchantments?.map((ench) => (
-                          <div
-                            key={`${f.id}-${ench.name}-${String(ench.modifier)}`}
-                            className='text-muted small'
-                            style={{ fontSize: '0.75rem' }}
-                          >
-                            {ench.name}: +{ench.modifier}
-                          </div>
-                        ))}
+                        {Array.isArray(filigree.enchantments) &&
+                          filigree.enchantments.map((ench) => (
+                            <div
+                              key={`${filigree.id}-${ench.name}-${String(ench.modifier)}`}
+                              className='text-muted small'
+                              style={{ fontSize: '0.75rem' }}
+                            >
+                              {ench.name}: +{ench.modifier}
+                            </div>
+                          ))}
                       </div>
 
-                      {f.setBonus?.[0] && (
-                        <SetBonusBadge setName={f.setBonus[0].name} />
-                      )}
+                      {filigree.setBonus?.[0] && <SetBonusBadge setName={filigree.setBonus[0].name} />}
                     </ListGroup.Item>
                   )
                 })
               ) : (
-                <div className='text-center text-muted py-3'>
-                  No filigrees found.
-                </div>
+                <div className='text-center text-muted py-3'>No filigrees found.</div>
               )}
 
               {displayLimit < allFiltered.length && (
-                <div
-                  ref={observerTarget}
-                  className='text-center py-3'
-                  style={{ height: '50px' }}
-                >
-                  <div
-                    className='spinner-border spinner-border-sm text-primary'
-                    role='status'
-                  >
+                <div ref={observerRef} className='text-center py-3' style={{ height: '50px' }}>
+                  <div className='spinner-border spinner-border-sm text-primary' role='status'>
                     <span className='visually-hidden'>Loading...</span>
                   </div>
                 </div>
@@ -426,17 +374,8 @@ interface Props {
   slot: GearSlot
   setup: GearSetup
   allFiligrees: GearItem[]
-  setFiligree: (
-    itemId: string,
-    slotIndex: number,
-    filigree: LootItem | null,
-    slot: GearSlot
-  ) => void
-  setUnlockedFiligreeSlots: (
-    itemId: string,
-    numSlots: number,
-    slot: GearSlot
-  ) => void
+  setFiligree: (itemId: string, slotIndex: number, filigree: LootItem | null, slot: GearSlot) => void
+  setUnlockedFiligreeSlots: (itemId: string, numSlots: number, slot: GearSlot) => void
 }
 
 export default FiligreeModal

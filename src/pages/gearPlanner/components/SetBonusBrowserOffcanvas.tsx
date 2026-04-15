@@ -1,17 +1,8 @@
-import { Accordion, Col, Form, Offcanvas, Row } from 'react-bootstrap'
+import { Col, Form, Offcanvas, Row } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
-import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
-import { getTroveKey } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver'
-import {
-  type GearAugment,
-  type GearItem,
-  type GearSetup,
-  GearSlot,
-  type LootItem,
-  type SetBonusIndex
-} from '../types'
-import SearchResultSlot from './SearchResultSlot'
+import { type GearAugment, type GearItem, type GearSetup, GearSlot, type LootItem, type SetBonusIndex } from '../types'
+import SetBonusItems from './SetBonusItems.tsx'
 
 const SetBonusBrowserOffcanvas = (props: Props) => {
   const {
@@ -52,9 +43,7 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
       <Offcanvas.Body className='bg-dark text-white p-3'>
         <Form.Group className='mb-3'>
           <div className='d-flex justify-content-between align-items-center mb-1'>
-            <Form.Label className='small text-info fw-bold mb-0'>
-              Search Items
-            </Form.Label>
+            <Form.Label className='small text-info fw-bold mb-0'>Search Items</Form.Label>
             {troveData && Object.keys(troveData).length > 0 && (
               <Form.Check
                 type='checkbox'
@@ -84,18 +73,12 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
         <Row>
           <Col xs={12} md={6}>
             <Form.Group className='mb-3'>
-              <Form.Label className='small text-info fw-bold'>
-                Select an Item Set
-              </Form.Label>
+              <Form.Label className='small text-info fw-bold'>Select an Item Set</Form.Label>
 
               <Form.Select
                 size='sm'
                 className='bg-light text-dark'
-                value={
-                  filteredItemSets.includes(browsingSet ?? '')
-                    ? (browsingSet ?? '')
-                    : ''
-                }
+                value={filteredItemSets.includes(browsingSet ?? '') ? (browsingSet ?? '') : ''}
                 onChange={(e) => {
                   setBrowsingSet(e.target.value || null)
                 }}
@@ -112,18 +95,12 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
 
           <Col xs={12} md={6}>
             <Form.Group className='mb-3'>
-              <Form.Label className='small text-info fw-bold'>
-                Select a Filigree Set
-              </Form.Label>
+              <Form.Label className='small text-info fw-bold'>Select a Filigree Set</Form.Label>
 
               <Form.Select
                 size='sm'
                 className='bg-light text-dark'
-                value={
-                  allFiligreeSetNames.includes(browsingSet ?? '')
-                    ? (browsingSet ?? '')
-                    : ''
-                }
+                value={allFiligreeSetNames.includes(browsingSet ?? '') ? (browsingSet ?? '') : ''}
                 onChange={(e) => {
                   setBrowsingSet(e.target.value || null)
                 }}
@@ -141,136 +118,22 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
 
         {browsingSet && (
           <div className='mt-4'>
-            <h6 className='text-info border-bottom border-info pb-2 mb-3'>
-              Items in: {browsingSet}
-            </h6>
+            <h6 className='text-info border-bottom border-info pb-2 mb-3'>Items in: {browsingSet}</h6>
 
-            <div
-              className='overflow-auto'
-              style={{ maxHeight: 'calc(100vh - 200px)' }}
-            >
-              {(() => {
-                const indexedItems = setBonusIndex[browsingSet ?? ''] || []
-                const min = activeSetup?.minLevel ?? 1
-                const max = activeSetup?.maxLevel ?? 34
-
-                // Check if this is a Lost Purpose set
-                const isLostPurposeSet = lostPurposeRecipes.some(
-                  (r) => r.setBonus?.[0]?.name === browsingSet
-                )
-
-                const setItemResults = allItems.filter((item) => {
-                  const itemLevel = Number(item.minLevel) || 1
-                  if (itemLevel < min || itemLevel > max) return false
-                  if (!isItemVisibleForClasses(item, activeSetup)) return false
-
-                  // Owned Only filter
-                  if (showOwnedOnly && troveData) {
-                    if (!troveData[getTroveKey(item.name)]) {
-                      return false
-                    }
-                  }
-
-                  if (itemNameSearch) {
-                    const searchLower = itemNameSearch.toLowerCase().trim()
-                    if (
-                      !item.name.toLowerCase().includes(searchLower) &&
-                      !item.name
-                        .toLowerCase()
-                        .replaceAll(/[^a-z0-9]/g, '')
-                        .includes(searchLower.replaceAll(/[^a-z0-9]/g, ''))
-                    )
-                      return false
-                  }
-
-                  // Normal set bonus check
-                  const isInIndex = indexedItems.some(
-                    (ii) =>
-                      ii.name === item.name &&
-                      (item.slot === GearSlot.Filigree ||
-                        ii.minLevel === itemLevel)
-                  )
-
-                  if (isInIndex) return true
-
-                  // Lost Purpose check
-                  if (isLostPurposeSet) {
-                    return item.enchantments?.some(
-                      (ench) => ench.name === 'Lost Purpose'
-                    )
-                  }
-
-                  return false
-                })
-
-                if (setItemResults.length === 0) {
-                  return (
-                    <div className='text-center py-4 text-secondary small'>
-                      No items found for this set in the selected level range.
-                    </div>
-                  )
-                }
-
-                // Group by slot
-                const grouped: Record<string, GearItem[]> = {}
-                setItemResults
-                  .toSorted((a, b) => {
-                    // Priority 1: Trove ownership
-                    const isOwnedA = troveData?.[getTroveKey(a.name)] ? 1 : 0
-                    const isOwnedB = troveData?.[getTroveKey(b.name)] ? 1 : 0
-                    if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
-
-                    // Priority 2: Min Level (desc)
-                    const levelA = Number.parseInt(a.minLevel, 10) || 0
-                    const levelB = Number.parseInt(b.minLevel, 10) || 0
-                    if (levelB !== levelA) return levelB - levelA
-
-                    // Priority 3: Name (asc)
-                    return a.name.localeCompare(b.name)
-                  })
-                  .forEach((item) => {
-                    const slotKey = item.slot || 'Other'
-                    if (!grouped[slotKey]) grouped[slotKey] = []
-                    grouped[slotKey].push(item)
-                  })
-
-                return (
-                  <Accordion data-bs-theme='dark'>
-                    {Object.entries(grouped).map(([slot, items]) => {
-                      const {
-                        currentConflicts,
-                        currentEquipped,
-                        currentSlottedAugments,
-                        currentSlottedFiligrees
-                      } = getContextInfo(slot)
-
-                      return (
-                        <SearchResultSlot
-                          key={slot}
-                          slot={slot}
-                          items={items}
-                          currentConflicts={currentConflicts}
-                          currentEquipped={currentEquipped}
-                          currentSlottedAugments={currentSlottedAugments}
-                          currentSlottedFiligrees={
-                            currentSlottedFiligrees as Record<
-                              string,
-                              (GearItem | null)[]
-                            >
-                          }
-                          selectItem={selectItem}
-                          setShowEnchantmentSearch={() => {
-                            /* Don't close for set bonus browser */
-                          }}
-                          openSetBonusBrowser={openSetBonusBrowser}
-                          troveData={troveData}
-                          browsingSet={browsingSet}
-                        />
-                      )
-                    })}
-                  </Accordion>
-                )
-              })()}
+            <div className='overflow-auto' style={{ maxHeight: 'calc(100vh - 200px)' }}>
+              <SetBonusItems
+                browsingSet={browsingSet}
+                activeSetup={activeSetup}
+                allItems={allItems}
+                setBonusIndex={setBonusIndex}
+                isItemVisibleForClasses={isItemVisibleForClasses}
+                showOwnedOnly={showOwnedOnly}
+                troveData={troveData}
+                itemNameSearch={itemNameSearch}
+                getContextInfo={getContextInfo}
+                selectItem={selectItem}
+                openSetBonusBrowser={openSetBonusBrowser}
+              />
             </div>
           </div>
         )}

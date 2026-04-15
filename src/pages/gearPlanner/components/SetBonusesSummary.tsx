@@ -1,18 +1,12 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Badge, Row } from 'react-bootstrap'
 import { FaLayerGroup } from 'react-icons/fa6'
 import type { GearAugment, GearItem, LootEnchantment } from '../types.ts'
 import SetBonusCard from './SetBonusCard.tsx'
 
 const SetBonusesSummary = (props: Props) => {
-  const {
-    equippedItems,
-    onSetClick,
-    slottedAugments,
-    slottedFiligrees,
-    slottedGemSetBonuses,
-    slottedLostPurpose
-  } = props
+  const { equippedItems, onSetClick, slottedAugments, slottedFiligrees, slottedGemSetBonuses, slottedLostPurpose } =
+    props
 
   const getCountsFromItems = (
     equippedItems: GearItem[],
@@ -50,47 +44,52 @@ const SetBonusesSummary = (props: Props) => {
     }
   }
 
-  const updateFiligreeSetCounts = (
-    fili: GearItem | null,
-    filigreeNamesPerSet: Record<string, Set<string>>
-  ) => {
+  const updateFiligreeSetCounts = (fili: GearItem | null, filigreeNamesPerSet: Record<string, Set<string>>) => {
     if (!fili?.setBonus) return
     for (const sb of fili.setBonus) {
       const setName = sb.name
-      if (!filigreeNamesPerSet[setName]) {
+      if (!(setName in filigreeNamesPerSet)) {
         filigreeNamesPerSet[setName] = new Set()
       }
+
       if (fili.name) {
         filigreeNamesPerSet[setName].add(fili.name)
       }
     }
   }
 
-  const getCountsFromFiligrees = (
-    slottedFiligrees: Record<string, (GearItem | null)[]> | undefined,
-    counts: Record<string, number>
-  ) => {
-    if (!slottedFiligrees) return
-    const filigreeNamesPerSet: Record<string, Set<string>> = {}
-    for (const itemFiligrees of Object.values(slottedFiligrees)) {
-      for (const fili of itemFiligrees) {
-        updateFiligreeSetCounts(fili, filigreeNamesPerSet)
+  const getCountsFromFiligrees = useCallback(
+    (slottedFiligrees: Record<string, (GearItem | null)[]> | undefined, counts: Record<string, number>) => {
+      if (!slottedFiligrees) {
+        return
       }
-    }
 
-    for (const [setName, names] of Object.entries(filigreeNamesPerSet)) {
-      counts[setName] = (counts[setName] ?? 0) + names.size
-    }
-  }
+      const filigreeNamesPerSet: Record<string, Set<string>> = {}
+
+      for (const itemFiligrees of Object.values(slottedFiligrees)) {
+        for (const fili of itemFiligrees) {
+          updateFiligreeSetCounts(fili, filigreeNamesPerSet)
+        }
+      }
+
+      for (const [setName, names] of Object.entries(filigreeNamesPerSet)) {
+        counts[setName] = (counts[setName] ?? 0) + names.size
+      }
+    },
+    []
+  )
 
   const getCountsFromLostPurpose = (
     slottedLostPurpose: Record<string, LootEnchantment | null> | undefined,
     counts: Record<string, number>
   ) => {
-    if (!slottedLostPurpose) return
-    for (const ench of Object.values(slottedLostPurpose)) {
-      if (ench?.name) {
-        counts[ench.name] = (counts[ench.name] ?? 0) + 1
+    if (!slottedLostPurpose) {
+      return
+    }
+
+    for (const enchantment of Object.values(slottedLostPurpose)) {
+      if (enchantment?.name) {
+        counts[enchantment.name] = (counts[enchantment.name] ?? 0) + 1
       }
     }
   }
@@ -106,9 +105,9 @@ const SetBonusesSummary = (props: Props) => {
     return Object.entries(counts)
       .filter(([, count]) => count > 0)
       .sort((a, b) => b[1] - a[1])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     equippedItems,
+    getCountsFromFiligrees,
     slottedAugments,
     slottedFiligrees,
     slottedGemSetBonuses,
@@ -124,22 +123,14 @@ const SetBonusesSummary = (props: Props) => {
           <FaLayerGroup className='me-2' /> Active Set Bonuses
         </span>
 
-        <Badge
-          bg='dark'
-          className='text-info border border-info small fw-normal'
-        >
+        <Badge bg='dark' className='text-info border border-info small fw-normal'>
           Click set name to browse items
         </Badge>
       </h5>
 
       <Row>
         {activeSets.map(([setName, count]) => (
-          <SetBonusCard
-            key={setName}
-            setName={setName}
-            count={count}
-            onSetClick={onSetClick}
-          />
+          <SetBonusCard key={setName} setName={setName} count={count} onSetClick={onSetClick} />
         ))}
       </Row>
     </div>

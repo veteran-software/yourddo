@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 import { Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import FilterableDropdown from '../../../../components/common/FilterableDropdown.tsx'
@@ -52,7 +52,7 @@ const SubjugationBasicDropdown = () => {
             </small>
           </Dropdown.Item>
         ))
-      : [<>Unknown Ingredient</>]
+      : [<Fragment key='UnknownIngredientFragment'>Unknown Ingredient</Fragment>]
   }
 
   const renderSectionHeader = (name: string, ingredients?: CraftingIngredient[]) => {

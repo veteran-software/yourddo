@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 import { Dropdown, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import FilterableDropdown from '../../../../components/common/FilterableDropdown.tsx'
@@ -80,7 +80,7 @@ const DevastationDropdown = () => {
     return (
       <>
         {Object.entries(groupedIngredients).map(([secondaryFocus, focusIngredients]) => (
-          <>
+          <Fragment key={secondaryFocus}>
             <Dropdown.Header className='border-bottom bg-light-subtle text-white'>
               <h6 className='m-0 text-center'>
                 <Stack direction='horizontal' gap={2} className='align-items-center justify-content-center'>
@@ -98,7 +98,7 @@ const DevastationDropdown = () => {
             </Dropdown.Header>
 
             {focusIngredients.length > 0 && focusIngredients.map(renderDropdownItem)}
-          </>
+          </Fragment>
         ))}
       </>
     )

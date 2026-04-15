@@ -18,11 +18,7 @@ const TroveBadge = (props: Props) => {
   }
 
   return (
-    <Badge
-      bg='primary'
-      className='mx-1 shadow-sm border border-1'
-      style={{ fontSize: '0.6rem' }}
-    >
+    <Badge bg='primary' className='mx-1 shadow-sm border border-1' style={{ fontSize: '0.6rem' }}>
       {owners}
     </Badge>
   )

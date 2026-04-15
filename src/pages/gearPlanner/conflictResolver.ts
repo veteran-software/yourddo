@@ -1,10 +1,4 @@
-import {
-  ARTIFICER_PET_SLOTS,
-  DRUID_PET_SLOTS,
-  type GearItem,
-  GearSlot,
-  type LootEnchantment
-} from './types'
+import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, type GearItem, GearSlot, type LootEnchantment } from './types'
 
 export interface EnchantmentConflict {
   name: string
@@ -81,10 +75,7 @@ export const parseModifierValue = (modifier: RobustString): number => {
  */
 export const resolveConflicts = (
   equippedItems: GearItem[],
-  slottedAugments?: Record<
-    string,
-    Record<number, import('./types').GearAugment | null>
-  >,
+  slottedAugments?: Record<string, Record<number, import('./types').GearAugment | null>>,
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>
@@ -103,7 +94,7 @@ export const resolveConflicts = (
   equippedItems.forEach((item) => {
     const owner = getSlotOwner(item.slot)
 
-    if (item.enchantments) {
+    if (Array.isArray(item.enchantments)) {
       item.enchantments
         .filter(
           (e) =>
@@ -208,7 +199,7 @@ export const resolveConflicts = (
   allEnchantments.forEach((entry) => {
     const key = `${entry.owner}|${entry.normalizedName}|${entry.normalizedBonus}`
 
-    if (!grouped[key]) {
+    if (!(key in grouped)) {
       grouped[key] = []
     }
 
@@ -242,7 +233,7 @@ export const resolveConflicts = (
 
     const normalizedName = normalizeString(name)
 
-    if (!conflicts[normalizedName]) {
+    if (!(normalizedName in conflicts)) {
       conflicts[normalizedName] = []
     }
 
@@ -252,28 +243,19 @@ export const resolveConflicts = (
   return conflicts
 }
 
-const findMatchingInherent = (
-  item: GearItem,
-  normalizedTargetName: string,
-  normalizedTargetBonus: string
-) => {
+const findMatchingInherent = (item: GearItem, normalizedTargetName: string, normalizedTargetBonus: string) => {
   let max = -Infinity
   item.enchantments
-    ?.filter(
-      (e) =>
-        e.name !== 'Nearly Finished' &&
-        e.name !== 'Sealed in Fire' &&
-        e.name !== 'Sealed in Undeath'
-    )
+    .filter((e) => e.name !== 'Nearly Finished' && e.name !== 'Sealed in Fire' && e.name !== 'Sealed in Undeath')
     .forEach((ench) => {
-      if (
-        normalizeString(ench.name) === normalizedTargetName &&
-        getBonus(ench.bonus) === normalizedTargetBonus
-      ) {
+      if (normalizeString(ench.name) === normalizedTargetName && getBonus(ench.bonus) === normalizedTargetBonus) {
         const val = parseModifierValue(ench.modifier)
-        if (val > max) max = val
+        if (val > max) {
+          max = val
+        }
       }
     })
+
   return max
 }
 
@@ -332,19 +314,13 @@ const findMatchingAugments = (
   itemId: string,
   normalizedTargetName: string,
   normalizedTargetBonus: string,
-  slottedAugments?: Record<
-    string,
-    Record<number, import('./types').GearAugment | null>
-  >
+  slottedAugments?: Record<string, Record<number, import('./types').GearAugment | null>>
 ) => {
   let max = -Infinity
   if (slottedAugments?.[itemId]) {
     Object.values(slottedAugments[itemId]).forEach((aug) => {
       aug?.effectsAdded?.forEach((ench) => {
-        if (
-          normalizeString(ench.name) === normalizedTargetName &&
-          getBonus(ench.bonus) === normalizedTargetBonus
-        ) {
+        if (normalizeString(ench.name) === normalizedTargetName && getBonus(ench.bonus) === normalizedTargetBonus) {
           const val = parseModifierValue(ench.modifier)
           if (val > max) max = val
         }
@@ -362,10 +338,7 @@ export const checkPotentialConflict = (
   enchantment: LootEnchantment,
   equippedItems: GearItem[],
   slot?: GearSlot,
-  slottedAugments?: Record<
-    string,
-    Record<number, import('./types').GearAugment | null>
-  >,
+  slottedAugments?: Record<string, Record<number, import('./types').GearAugment | null>>,
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
@@ -389,7 +362,7 @@ export const checkPotentialConflict = (
   let currentMax = -Infinity
   let foundMatch = false
 
-  equippedItems?.forEach((item) => {
+  equippedItems.forEach((item) => {
     if (getSlotOwner(item.slot) !== targetOwner || item.id === ignoreItemId) {
       return
     }
@@ -402,39 +375,22 @@ export const checkPotentialConflict = (
       return
     }
 
-    const inherentMax = findMatchingInherent(
-      item,
-      normalizedTargetName,
-      normalizedTargetBonus
-    )
+    const inherentMax = findMatchingInherent(item, normalizedTargetName, normalizedTargetBonus)
     const nfMax = findMatchingNearlyFinished(
       item.id,
       normalizedTargetName,
       normalizedTargetBonus,
       slottedNearlyFinished
     )
-    const rtMax = findMatchingRitualTable(
-      item.id,
-      normalizedTargetName,
-      normalizedTargetBonus,
-      slottedRitualTable
-    )
-    const augMax = findMatchingAugments(
-      item.id,
-      normalizedTargetName,
-      normalizedTargetBonus,
-      slottedAugments
-    )
-    const lpMax = findMatchingLostPurpose(
-      item.id,
-      normalizedTargetName,
-      normalizedTargetBonus,
-      slottedLostPurpose
-    )
+
+    const rtMax = findMatchingRitualTable(item.id, normalizedTargetName, normalizedTargetBonus, slottedRitualTable)
+    const augMax = findMatchingAugments(item.id, normalizedTargetName, normalizedTargetBonus, slottedAugments)
+    const lpMax = findMatchingLostPurpose(item.id, normalizedTargetName, normalizedTargetBonus, slottedLostPurpose)
 
     const itemMax = Math.max(inherentMax, nfMax, rtMax, augMax, lpMax)
     if (itemMax !== -Infinity) {
       foundMatch = true
+
       if (itemMax > currentMax) {
         currentMax = itemMax
       }

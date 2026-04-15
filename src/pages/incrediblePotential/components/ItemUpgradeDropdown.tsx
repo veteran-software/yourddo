@@ -123,9 +123,9 @@ const ItemUpgradeDropdown = (props: Props) => {
           filterMode={filterMode}
           filterOptions={upgradeFilters}
           setFilterMode={(mode: 'OR' | 'AND') => dispatch(setFilterMode(mode))}
-          items={filteredUpgradeList}
+          items={baseUpgradeList}
           getItemFilters={(item: CraftingIngredient): string[] => {
-            return item.enhancements?.map((enhancement: Enhancement) => enhancement.name) ?? []
+            return item.effectsAdded?.map((enhancement: Enhancement) => enhancement.name) ?? []
           }}
           selectedFilters={selectedUpgradeFilters}
           setSelectedFilters={(filters: string[]) => {

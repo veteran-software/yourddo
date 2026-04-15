@@ -14,15 +14,7 @@ import {
   Tab,
   Tabs
 } from 'react-bootstrap'
-import {
-  FaChevronRight,
-  FaFileExport,
-  FaGear,
-  FaLayerGroup,
-  FaLink,
-  FaMagnifyingGlass,
-  FaXmark
-} from 'react-icons/fa6'
+import { FaChevronRight, FaFileExport, FaGear, FaLayerGroup, FaLink, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6'
 import { useLocation, useNavigate } from 'react-router-dom'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -32,18 +24,14 @@ import {
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
-import EnchantmentSearchOffcanvas
-  from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import FiligreeModal from './components/FiligreeModal.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
 import SetBonusBrowserOffcanvas from './components/SetBonusBrowserOffcanvas.tsx'
 import SetBonusesSummary from './components/SetBonusesSummary.tsx'
 import WeaponCategory from './components/WeaponCategory.tsx'
-import {
-  generateBBCodeExport,
-  generateDiscordMarkdownExport
-} from './exportHelpers'
+import { generateBBCodeExport, generateDiscordMarkdownExport } from './exportHelpers'
 import useGearPlanner from './hooks/useGearPlanner.tsx'
 import {
   buildPermalinkUrl,
@@ -129,12 +117,7 @@ const GearPlanner = () => {
     const { gp, source } = readGpFromUrl(location)
 
     if (gp) {
-      const result = tryDecodeGearPermalink(
-        gp,
-        gpHook.allItems,
-        gpHook.allAugments,
-        gpHook.allCurses
-      )
+      const result = tryDecodeGearPermalink(gp, gpHook.allItems, gpHook.allAugments, gpHook.allCurses)
 
       if (result.ok) {
         const importedSetup = {
@@ -165,30 +148,8 @@ const GearPlanner = () => {
           <span className='visually-hidden'>Loading Gear Data...</span>
         </div>
         <p className='mt-2' aria-hidden='true'>
-          {gpHook.loading
-            ? 'Loading Gear Data...'
-            : 'Preparing Item Browser...'}
+          {gpHook.loading ? 'Loading Gear Data...' : 'Preparing Item Browser...'}
         </p>
-      </Container>
-    )
-  }
-
-  if (!gpHook.activeSetup) {
-    return (
-      <Container className='py-4'>
-        <Card className='shadow'>
-          <Card.Body className='text-center py-5'>
-            <h4 className='text-muted'>No gear setups available.</h4>
-
-            <Button
-              variant='primary'
-              className='mt-3'
-              onClick={gpHook.addSetup}
-            >
-              Create Default Setup
-            </Button>
-          </Card.Body>
-        </Card>
       </Container>
     )
   }
@@ -203,10 +164,7 @@ const GearPlanner = () => {
         }}
         title='Toggle Settings Sidebar'
       >
-        <FaChevronRight
-          className={showSidebar ? 'rotate-180' : ''}
-          style={{ transition: 'transform 0.3s' }}
-        />
+        <FaChevronRight className={showSidebar ? 'rotate-180' : ''} style={{ transition: 'transform 0.3s' }} />
       </Button>
 
       <CharacterSettingsSidebar
@@ -249,16 +207,9 @@ const GearPlanner = () => {
                 </div>
               </Col>
 
-              <Col
-                xs={12}
-                md='auto'
-                className='d-flex gap-2 justify-content-md-end'
-              >
+              <Col xs={12} md='auto' className='d-flex gap-2 justify-content-md-end'>
                 <ButtonGroup className='w-100 w-md-auto mt-2 mt-md-0 flex-wrap flex-md-nowrap justify-content-center justify-content-md-end'>
-                  <Dropdown
-                    as={ButtonGroup}
-                    className='flex-grow-1 flex-md-grow-0'
-                  >
+                  <Dropdown as={ButtonGroup} className='flex-grow-1 flex-md-grow-0'>
                     <Dropdown.Toggle
                       variant='outline-light'
                       size='sm'
@@ -271,13 +222,8 @@ const GearPlanner = () => {
                     <Dropdown.Menu variant='dark'>
                       <Dropdown.Item
                         onClick={() => {
-                          const encoded = encodeGearPermalink(
-                            gpHook.activeSetup
-                          )
-                          const permalinkUrl = buildPermalinkUrl(
-                            encoded,
-                            location
-                          )
+                          const encoded = encodeGearPermalink(gpHook.activeSetup)
+                          const permalinkUrl = buildPermalinkUrl(encoded, location)
                           const content = generateBBCodeExport(
                             gpHook.activeSetup,
                             gpHook.essenceEnchantments,
@@ -285,9 +231,7 @@ const GearPlanner = () => {
                             druidPet,
                             permalinkUrl
                           )
-                          navigator.clipboard
-                            .writeText(content)
-                            .catch(console.error)
+                          navigator.clipboard.writeText(content).catch(console.error)
                           alert('Forum BBCode copied to clipboard!')
                         }}
                       >
@@ -296,13 +240,8 @@ const GearPlanner = () => {
 
                       <Dropdown.Item
                         onClick={() => {
-                          const encoded = encodeGearPermalink(
-                            gpHook.activeSetup
-                          )
-                          const permalinkUrl = buildPermalinkUrl(
-                            encoded,
-                            location
-                          )
+                          const encoded = encodeGearPermalink(gpHook.activeSetup)
+                          const permalinkUrl = buildPermalinkUrl(encoded, location)
                           const content = generateDiscordMarkdownExport(
                             gpHook.activeSetup,
                             gpHook.essenceEnchantments,
@@ -310,9 +249,7 @@ const GearPlanner = () => {
                             druidPet,
                             permalinkUrl
                           )
-                          navigator.clipboard
-                            .writeText(content)
-                            .catch(console.error)
+                          navigator.clipboard.writeText(content).catch(console.error)
                           alert('Discord Markdown copied to clipboard!')
                         }}
                       >
@@ -393,17 +330,13 @@ const GearPlanner = () => {
                   <div className='mt-3'>
                     <h5 className='mb-3 border-bottom pb-2'>Equipped Items</h5>
 
-                    <Row>
-                      {GEAR_SLOTS.map((slot) => gpHook.renderSlot(slot, setup))}
-                    </Row>
+                    <Row>{GEAR_SLOTS.map((slot) => gpHook.renderSlot(slot, setup))}</Row>
 
                     <SetBonusesSummary
                       equippedItems={gpHook.characterEquipped}
                       slottedAugments={gpHook.activeSetup.slottedAugments}
                       slottedFiligrees={gpHook.activeSetup.slottedFiligrees}
-                      slottedGemSetBonuses={
-                        gpHook.activeSetup.slottedGemSetBonuses
-                      }
+                      slottedGemSetBonuses={gpHook.activeSetup.slottedGemSetBonuses}
                       slottedLostPurpose={gpHook.activeSetup.slottedLostPurpose}
                       onSetClick={gpHook.openSetBonusBrowser}
                     />
@@ -413,46 +346,31 @@ const GearPlanner = () => {
                       slottedAugments={gpHook.activeSetup.slottedAugments}
                       slottedCurses={gpHook.activeSetup.slottedCurses}
                       slottedFiligrees={gpHook.activeSetup.slottedFiligrees}
-                      slottedGemSetBonuses={
-                        gpHook.activeSetup.slottedGemSetBonuses
-                      }
-                      slottedEssenceEnchantments={
-                        gpHook.activeSetup.slottedEssenceEnchantments
-                      }
+                      slottedGemSetBonuses={gpHook.activeSetup.slottedGemSetBonuses}
+                      slottedEssenceEnchantments={gpHook.activeSetup.slottedEssenceEnchantments}
                       essenceEnchantments={gpHook.essenceEnchantments}
-                      slottedNearlyFinished={
-                        gpHook.activeSetup.slottedNearlyFinished
-                      }
+                      slottedNearlyFinished={gpHook.activeSetup.slottedNearlyFinished}
                       slottedRitualTable={gpHook.activeSetup.slottedRitualTable}
                       slottedLostPurpose={gpHook.activeSetup.slottedLostPurpose}
                     />
 
-                    {setup.classes?.includes('Artificer') &&
-                      setup.classes?.includes('Druid') && (
-                        <div className='mt-3 p-2 bg-warning-subtle text-warning-emphasis border border-warning rounded small text-center fw-bold'>
-                          Note: Only one pet may be active at a time.
-                        </div>
-                      )}
+                    {setup.classes.includes('Artificer') && setup.classes.includes('Druid') && (
+                      <div className='mt-3 p-2 bg-warning-subtle text-warning-emphasis border border-warning rounded small text-center fw-bold'>
+                        Note: Only one pet may be active at a time.
+                      </div>
+                    )}
 
-                    {setup.classes?.includes('Artificer') && (
+                    {setup.classes.includes('Artificer') && (
                       <div className='mt-4 p-3 border border-info rounded bg-dark-subtle'>
-                        <h5 className='mb-3 text-info border-bottom border-info pb-2'>
-                          Iron Defender (Artificer Pet)
-                        </h5>
+                        <h5 className='mb-3 text-info border-bottom border-info pb-2'>Iron Defender (Artificer Pet)</h5>
 
-                        <Row>
-                          {ARTIFICER_PET_SLOTS.map((slot) =>
-                            gpHook.renderSlot(slot, setup)
-                          )}
-                        </Row>
+                        <Row>{ARTIFICER_PET_SLOTS.map((slot) => gpHook.renderSlot(slot, setup))}</Row>
 
                         <SetBonusesSummary
                           equippedItems={gpHook.artificerEquipped}
                           slottedAugments={artificerPet.slottedAugments}
                           slottedFiligrees={artificerPet.slottedFiligrees}
-                          slottedGemSetBonuses={
-                            artificerPet.slottedGemSetBonuses
-                          }
+                          slottedGemSetBonuses={artificerPet.slottedGemSetBonuses}
                           slottedLostPurpose={artificerPet.slottedLostPurpose}
                           onSetClick={gpHook.openSetBonusBrowser}
                         />
@@ -462,33 +380,23 @@ const GearPlanner = () => {
                           slottedAugments={artificerPet.slottedAugments}
                           slottedCurses={artificerPet.slottedCurses}
                           slottedFiligrees={artificerPet.slottedFiligrees}
-                          slottedGemSetBonuses={
-                            artificerPet.slottedGemSetBonuses
-                          }
-                          slottedEssenceEnchantments={
-                            artificerPet.slottedEssenceEnchantments
-                          }
+                          slottedGemSetBonuses={artificerPet.slottedGemSetBonuses}
+                          slottedEssenceEnchantments={artificerPet.slottedEssenceEnchantments}
                           essenceEnchantments={gpHook.essenceEnchantments}
-                          slottedNearlyFinished={
-                            artificerPet.slottedNearlyFinished
-                          }
+                          slottedNearlyFinished={artificerPet.slottedNearlyFinished}
                           slottedRitualTable={artificerPet.slottedRitualTable}
                           slottedLostPurpose={artificerPet.slottedLostPurpose}
                         />
                       </div>
                     )}
 
-                    {setup.classes?.includes('Druid') && (
+                    {setup.classes.includes('Druid') && (
                       <div className='mt-4 p-3 border border-success rounded bg-dark-subtle'>
                         <h5 className='mb-3 text-success border-bottom border-success pb-2'>
                           Wolf Companion (Druid Pet)
                         </h5>
 
-                        <Row>
-                          {DRUID_PET_SLOTS.map((slot) =>
-                            gpHook.renderSlot(slot, setup)
-                          )}
-                        </Row>
+                        <Row>{DRUID_PET_SLOTS.map((slot) => gpHook.renderSlot(slot, setup))}</Row>
 
                         <SetBonusesSummary
                           equippedItems={gpHook.druidEquipped}
@@ -505,9 +413,7 @@ const GearPlanner = () => {
                           slottedCurses={druidPet.slottedCurses}
                           slottedFiligrees={druidPet.slottedFiligrees}
                           slottedGemSetBonuses={druidPet.slottedGemSetBonuses}
-                          slottedEssenceEnchantments={
-                            druidPet.slottedEssenceEnchantments
-                          }
+                          slottedEssenceEnchantments={druidPet.slottedEssenceEnchantments}
                           essenceEnchantments={gpHook.essenceEnchantments}
                           slottedNearlyFinished={druidPet.slottedNearlyFinished}
                           slottedRitualTable={druidPet.slottedRitualTable}
@@ -539,9 +445,7 @@ const GearPlanner = () => {
               <Row>
                 <Col md={6}>
                   <Form.Group className='mb-4'>
-                    <Form.Label className='fw-bold text-info'>
-                      Setup Name
-                    </Form.Label>
+                    <Form.Label className='fw-bold text-info'>Setup Name</Form.Label>
 
                     <Form.Control
                       type='text'
@@ -561,9 +465,7 @@ const GearPlanner = () => {
                   <Row className='mb-4'>
                     <Col xs={6}>
                       <Form.Group>
-                        <Form.Label className='fw-bold text-info'>
-                          Min Level
-                        </Form.Label>
+                        <Form.Label className='fw-bold text-info'>Min Level</Form.Label>
 
                         <Form.Control
                           type='number'
@@ -585,9 +487,7 @@ const GearPlanner = () => {
 
                     <Col xs={6}>
                       <Form.Group>
-                        <Form.Label className='fw-bold text-info'>
-                          Max Level
-                        </Form.Label>
+                        <Form.Label className='fw-bold text-info'>Max Level</Form.Label>
 
                         <Form.Control
                           type='number'
@@ -609,9 +509,7 @@ const GearPlanner = () => {
                   </Row>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label className='fw-bold text-info'>
-                      Classes (Up to 3)
-                    </Form.Label>
+                    <Form.Label className='fw-bold text-info'>Classes (Up to 3)</Form.Label>
 
                     <Stack gap={2}>
                       {[0, 1, 2].map((idx) => (
@@ -634,19 +532,13 @@ const GearPlanner = () => {
                               classes: newClasses
                             }
 
-                            gpHook.updateClassProficiencies(
-                              tempSetup,
-                              gpHook.activeSetup.classes,
-                              newClasses
-                            )
+                            gpHook.updateClassProficiencies(tempSetup, gpHook.activeSetup.classes, newClasses)
 
                             setupUpdate.weaponFilters = tempSetup.weaponFilters
                             setupUpdate.armorFilters = tempSetup.armorFilters
                             setupUpdate.shieldFilters = tempSetup.shieldFilters
 
-                            dispatch(
-                              updateSetupAction(setupUpdate as GearSetup)
-                            )
+                            dispatch(updateSetupAction(setupUpdate as GearSetup))
                           }}
                         >
                           <option value=''>Select Class...</option>
@@ -664,14 +556,9 @@ const GearPlanner = () => {
 
                 <Col md={6}>
                   <Form.Group className='mb-3'>
-                    <Form.Label className='fw-bold text-info d-block'>
-                      Weapon Type Filters
-                    </Form.Label>
+                    <Form.Label className='fw-bold text-info d-block'>Weapon Type Filters</Form.Label>
 
-                    <Accordion
-                      data-bs-theme='dark'
-                      className='border border-secondary rounded overflow-hidden'
-                    >
+                    <Accordion data-bs-theme='dark' className='border border-secondary rounded overflow-hidden'>
                       {Object.entries(WEAPON_TYPES).map(([category, types]) => (
                         <WeaponCategory
                           key={category}
@@ -685,9 +572,7 @@ const GearPlanner = () => {
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label className='fw-bold text-info d-block'>
-                      Armor Type Filters
-                    </Form.Label>
+                    <Form.Label className='fw-bold text-info d-block'>Armor Type Filters</Form.Label>
 
                     <div className='p-2 border border-secondary rounded mb-3'>
                       <Row>
@@ -697,15 +582,11 @@ const GearPlanner = () => {
                               type='checkbox'
                               id={`armor-${type}`}
                               label={type}
-                              checked={gpHook.activeSetup.armorFilters.includes(
-                                type
-                              )}
+                              checked={gpHook.activeSetup.armorFilters.includes(type)}
                               onChange={(e) => {
                                 const updated = e.target.checked
                                   ? [...gpHook.activeSetup.armorFilters, type]
-                                  : gpHook.activeSetup.armorFilters.filter(
-                                      (t) => t !== type
-                                    )
+                                  : gpHook.activeSetup.armorFilters.filter((t) => t !== type)
                                 dispatch(
                                   updateSetupAction({
                                     id: gpHook.activeSetup.id,
@@ -719,9 +600,7 @@ const GearPlanner = () => {
                       </Row>
                     </div>
 
-                    <Form.Label className='fw-bold text-info d-block'>
-                      Shield & Off-hand Type Filters
-                    </Form.Label>
+                    <Form.Label className='fw-bold text-info d-block'>Shield & Off-hand Type Filters</Form.Label>
 
                     <div className='p-2 border border-secondary rounded mb-3'>
                       <Row>
@@ -731,15 +610,11 @@ const GearPlanner = () => {
                               type='checkbox'
                               id={`shield-${type}`}
                               label={type}
-                              checked={gpHook.activeSetup.shieldFilters.includes(
-                                type
-                              )}
+                              checked={gpHook.activeSetup.shieldFilters.includes(type)}
                               onChange={(e) => {
                                 const updated = e.target.checked
                                   ? [...gpHook.activeSetup.shieldFilters, type]
-                                  : gpHook.activeSetup.shieldFilters.filter(
-                                      (t) => t !== type
-                                    )
+                                  : gpHook.activeSetup.shieldFilters.filter((t) => t !== type)
                                 dispatch(
                                   updateSetupAction({
                                     id: gpHook.activeSetup.id,
@@ -753,9 +628,7 @@ const GearPlanner = () => {
                       </Row>
                     </div>
 
-                    <Form.Label className='fw-bold text-info d-block'>
-                      Character Settings
-                    </Form.Label>
+                    <Form.Label className='fw-bold text-info d-block'>Character Settings</Form.Label>
 
                     <div className='p-2 border border-secondary rounded'>
                       <Form.Check
@@ -776,9 +649,7 @@ const GearPlanner = () => {
 
                       {!gpHook.activeSetup.classes.includes('Druid') && (
                         <div className='text-muted small mt-0'>
-                          <small>
-                            Only applicable if Druid class is selected.
-                          </small>
+                          <small>Only applicable if Druid class is selected.</small>
                         </div>
                       )}
                     </div>
@@ -808,10 +679,7 @@ const GearPlanner = () => {
           showOwnedOnly={showOwnedOnly}
           setShowOwnedOnly={setShowOwnedOnly}
           troveData={troveData}
-          currentSlottedFiligrees={
-            gpHook.getContextInfo(gpHook.browsingSlot ?? '')
-              .currentSlottedFiligrees
-          }
+          currentSlottedFiligrees={gpHook.getContextInfo(gpHook.browsingSlot ?? '').currentSlottedFiligrees}
           {...gpHook}
         />
 
@@ -853,9 +721,7 @@ const GearPlanner = () => {
           onHide={() => {
             setShowPermalink(false)
           }}
-          buildUrl={() =>
-            buildPermalinkUrl(encodeGearPermalink(gpHook.activeSetup), location)
-          }
+          buildUrl={() => buildPermalinkUrl(encodeGearPermalink(gpHook.activeSetup), location)}
           title='Create a Gear Planner Permalink'
         />
 
@@ -869,16 +735,16 @@ const GearPlanner = () => {
           <Modal.Header closeButton className='bg-warning text-dark'>
             <Modal.Title>Minor Artifact Restriction</Modal.Title>
           </Modal.Header>
+
           <Modal.Body className='bg-dark text-light'>
             <p>
-              You already have a minor artifact in your gear set. A player can
-              only wear one minor artifact at a time.
+              You already have a minor artifact in your gear set. A player can only wear one minor artifact at a time.
             </p>
             <p className='mb-0'>
-              Please choose a different item for this slot, or remove the
-              existing minor artifact first.
+              Please choose a different item for this slot, or remove the existing minor artifact first.
             </p>
           </Modal.Body>
+
           <Modal.Footer className='bg-dark border-top-0'>
             <Button
               variant='outline-light'

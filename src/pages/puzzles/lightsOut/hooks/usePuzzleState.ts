@@ -20,7 +20,6 @@ const usePuzzleState = (
     setMarkedSolution(null)
     setEditMode(true)
     setShowSolution(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initBoard])
 
   const handleCellClick = useCallback(

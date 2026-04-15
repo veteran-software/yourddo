@@ -3,12 +3,9 @@ import { Card, Col, Container, Row, Stack } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { titleCase } from 'title-case'
-import AugmentSlotFilterableDropdown
-  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import FilterableDropdown from '../../components/common/FilterableDropdown.tsx'
-import {
-  filterIngredientsMap
-} from '../../components/filters/helpers/filterUtils.ts'
+import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
 import augmentMaster from '../../data/augments/augmentMaster.ts'
 import {
   craftedHeroicViktraniumWeapons,
@@ -38,12 +35,8 @@ import {
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
-import {
-  camelCaseToTitleCase,
-  getCumulativeIngredients
-} from '../../utils/utils.ts'
-import CumulativeIngredientsCard
-  from '../dinosaurBoneCrafting/components/CumulativeIngredientsCard.tsx'
+import { camelCaseToTitleCase, getCumulativeIngredients } from '../../utils/utils.ts'
+import CumulativeIngredientsCard from '../dinosaurBoneCrafting/components/CumulativeIngredientsCard.tsx'
 import ItemDisplay from '../dinosaurBoneCrafting/components/ItemDisplay.tsx'
 
 const ViktraniumExperiment = () => {
@@ -140,9 +133,9 @@ const ViktraniumExperiment = () => {
 
       // Basic Color Augments
       if (words.length === 1) {
-        const allowed = allowedBySlot[color]
+        const allowed = allowedBySlot[color] as string[] | undefined
 
-        if (allowed && allowed.length > 0) {
+        if (allowed?.length) {
           acc[slot] = [...augmentMaster]
             .filter((ing: AugmentItem) => allowed.includes((ing.augmentType ?? '') as string))
             .sort((a: AugmentItem, b: AugmentItem) => {

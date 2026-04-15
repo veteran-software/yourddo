@@ -4,7 +4,7 @@ import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import activeTileImg from '../../assets/tile_active.png'
 import emptyTileImg from '../../assets/tile_empty.png'
 import inactiveTileImg from '../../assets/tile_inactive.png'
-import useLightsOutSolver from './lightsOut/hooks/useLightsOutSolver.ts'
+import lightsOutSolver from './lightsOut/lightsOutSolver.ts'
 import type { Board, Config, Presses } from './lightsOut/types/types.ts'
 
 const ROWS = 4
@@ -12,7 +12,7 @@ const COLS = 5
 type EditAction = 'toggle' | 'remove'
 
 const MonasteryOfTheScorpion = () => {
-  const { initBoard, toggleCell, randomPresses, applyPresses, solveBoard } = useLightsOutSolver()
+  const { initBoard, toggleCell, randomPresses, applyPresses, solveBoard } = lightsOutSolver()
 
   // maskState: true = tile present, false = hole
   const [mask, setMask] = useState<boolean[][]>(() =>
@@ -34,7 +34,6 @@ const MonasteryOfTheScorpion = () => {
     setSolution(null)
     setMarkedSolution(null)
     setShowSolution(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mask])
 
   const handleSolve = () => {

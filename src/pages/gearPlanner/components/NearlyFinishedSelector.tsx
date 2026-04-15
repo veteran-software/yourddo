@@ -1,44 +1,28 @@
+import { useMemo } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import nearlyFinishedRecipes from '../../../data/nearlyFinished/recipes.json'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 import type { GearItem, GearSlot, LootEnchantment } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
-interface Choice {
-  name: string
-}
-
-interface Recipe {
-  item: string
-  stage: string
-  choices: Choice[]
-}
-
-const NearlyFinishedSelector = ({
-  item,
-  slot,
-  selectedEnchantment,
-  onSelect
-}: Props) => {
-  const recipes =
-    (
-      nearlyFinishedRecipes as unknown as {
-        meltingStation: CraftingIngredient[]
-        reforgingStation: Recipe[]
-      }
-    ).reforgingStation || []
-
-  const recipe = recipes.find(
-    (r: Recipe) => r.item === item.name && r.stage === 'Nearly Finished'
+const NearlyFinishedSelector = ({ item, slot, selectedEnchantment, onSelect }: Props) => {
+  const recipes: Recipe[] = useMemo(
+    () => (nearlyFinishedRecipes as unknown as NearlyFinishedRecipes).reforgingStation,
+    []
   )
 
-  if (!recipe) return null
+  const recipe: Recipe | undefined = recipes.find((r: Recipe) => r.item === item.name && r.stage === 'Nearly Finished')
+
+  if (!recipe) {
+    return null
+  }
 
   return (
     <div className='mt-2'>
       <div className='text-dark mb-0 text-start' style={{ fontSize: '0.6rem' }}>
         Nearly Finished
       </div>
+
       <Dropdown className='w-100'>
         <Dropdown.Toggle
           variant='outline-dark'
@@ -50,9 +34,7 @@ const NearlyFinishedSelector = ({
             backgroundColor: 'rgba(0,0,0,0.05)'
           }}
         >
-          <span className='text-truncate text-dark'>
-            {selectedEnchantment?.name ?? '-- Select Enhancement --'}
-          </span>
+          <span className='text-truncate text-dark'>{selectedEnchantment?.name ?? '-- Select Enhancement --'}</span>
         </Dropdown.Toggle>
 
         <Dropdown.Menu
@@ -70,17 +52,17 @@ const NearlyFinishedSelector = ({
           >
             -- None --
           </Dropdown.Item>
-          <Dropdown.Divider />
-          {recipe.choices.map((choice, idx) => {
-            // Check if the user owns an upgraded version with this choice
 
+          <Dropdown.Divider />
+
+          {recipe.choices.map((choice: Choice, idx: number) => {
             return (
               <Dropdown.Item
                 key={`${choice.name}-${String(idx)}`}
                 onClick={() => {
                   onSelect({
                     name: choice.name,
-                    bonus: 'Enhancement', // Default as requested
+                    bonus: 'Enhancement',
                     modifier: choice.name.split('+').pop()?.trim() ?? ''
                   })
                 }}
@@ -94,10 +76,7 @@ const NearlyFinishedSelector = ({
       </Dropdown>
 
       {selectedEnchantment && (
-        <div
-          className='mt-1 text-secondary'
-          style={{ fontSize: '0.6rem', lineHeight: '1.1' }}
-        >
+        <div className='mt-1 text-secondary' style={{ fontSize: '0.6rem', lineHeight: '1.1' }}>
           <EnchantmentList
             enchantments={[selectedEnchantment]}
             itemId={item.id}
@@ -117,6 +96,21 @@ interface Props {
   slot: GearSlot
   selectedEnchantment: LootEnchantment | null
   onSelect: (enchantment: LootEnchantment | null) => void
+}
+
+interface NearlyFinishedRecipes {
+  meltingStation: CraftingIngredient[]
+  reforgingStation: Recipe[]
+}
+
+interface Choice {
+  name: string
+}
+
+interface Recipe {
+  item: string
+  stage: string
+  choices: Choice[]
 }
 
 export default NearlyFinishedSelector

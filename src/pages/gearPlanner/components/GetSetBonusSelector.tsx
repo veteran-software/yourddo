@@ -10,12 +10,8 @@ const GemSetBonusSelector = (props: Props) => {
         Select Set Bonuses
       </div>
       {[0, 1].map((idx) => {
-        const currentSelection =
-          activeSetup.slottedGemSetBonuses?.[selectedItem.id]?.[idx] ?? null
-        const otherSelection =
-          activeSetup.slottedGemSetBonuses?.[selectedItem.id]?.[
-            idx === 0 ? 1 : 0
-          ] ?? null
+        const currentSelection = activeSetup.slottedGemSetBonuses[selectedItem.id][idx] ?? null
+        const otherSelection = activeSetup.slottedGemSetBonuses[selectedItem.id][idx === 0 ? 1 : 0] ?? null
 
         return (
           <div key={idx} className={idx === 0 ? 'mb-1' : ''}>
@@ -30,9 +26,7 @@ const GemSetBonusSelector = (props: Props) => {
                   backgroundColor: 'rgba(0,0,0,0.05)'
                 }}
               >
-                <span className='text-truncate text-dark'>
-                  {currentSelection ?? '-- Select Set --'}
-                </span>
+                <span className='text-truncate text-dark'>{currentSelection ?? '-- Select Set --'}</span>
               </Dropdown.Toggle>
 
               <Dropdown.Menu
@@ -76,12 +70,7 @@ interface Props {
   selectedItem: GearItem
   activeSetup: GearSetup
   slot: GearSlot
-  setSlottedGemSetBonus: (
-    itemId: string,
-    idx: number,
-    setName: string | null,
-    slot: GearSlot
-  ) => void
+  setSlottedGemSetBonus: (itemId: string, idx: number, setName: string | null, slot: GearSlot) => void
 }
 
 export default GemSetBonusSelector

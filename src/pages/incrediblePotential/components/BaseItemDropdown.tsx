@@ -94,7 +94,7 @@ const BaseItemDropdown = (props: Props) => {
       <FilterOffCanvas
         filterMode={filterMode}
         filterOptions={ringFilters}
-        items={filteredRingList}
+        items={baseItemList}
         getItemFilters={(item: Ring): string[] => {
           return item.enchantments.slice(0, 2).map((enhancement) => enhancement.name)
         }}

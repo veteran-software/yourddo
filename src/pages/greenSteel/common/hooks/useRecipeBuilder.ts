@@ -4,15 +4,9 @@ import { altarOfDevastation } from '../../../../data/altarOfDevastation.ts'
 import { altarOfFecundity } from '../../../../data/altarOfFecundity.ts'
 import { altarOfInvasion } from '../../../../data/altarOfInvasion.ts'
 import { altarOfSubjugation } from '../../../../data/altarOfSubjugation.ts'
-import {
-  legendaryAltarOfDevastation
-} from '../../../../data/legendaryAltarOfDevastation.ts'
-import {
-  legendaryAltarOfInvasion
-} from '../../../../data/legendaryAltarOfInvasion.ts'
-import {
-  legendaryAltarOfSubjugation
-} from '../../../../data/legendaryAltarOfSubjugation.ts'
+import { legendaryAltarOfDevastation } from '../../../../data/legendaryAltarOfDevastation.ts'
+import { legendaryAltarOfInvasion } from '../../../../data/legendaryAltarOfInvasion.ts'
+import { legendaryAltarOfSubjugation } from '../../../../data/legendaryAltarOfSubjugation.ts'
 import { useAppSelector } from '../../../../redux/hooks.ts'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
 import { findCraftedIngredientByName } from '../../../../utils/objectUtils.ts'
@@ -127,7 +121,6 @@ const useRecipeBuilder = (type: GreenSteelType) => {
     if (JSON.stringify(craftedMaterials) !== JSON.stringify(newCrafted)) {
       setCraftedMaterials(newCrafted)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     type,
     heroicSelections.selectedDevastationBasic,

@@ -20,7 +20,7 @@ export const loadInitial = (
   type Stored = Partial<Pick<LoadedSagaItem, 'id' | 'completed' | 'turnedIn'>> & Record<string, unknown>
 
   // Build a map of id -> { completed, turnedIn } from storage (backward compatible)
-  const statusById: Record<string, { completed: boolean; turnedIn: boolean }> = {}
+  const statusById: Record<string, { completed: boolean; turnedIn: boolean } | undefined> = {}
 
   try {
     const raw = localStorage.getItem(storageKey)

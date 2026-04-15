@@ -177,7 +177,7 @@ const upsert = (
   }
 
   if (!character || !location || !itemName) {
-    if (location || itemName || character || row.Quantity != null) {
+    if (location || itemName || character) {
       warn(
         `Missing item/character/location — skipped row: ${JSON.stringify(row)}`
       )
@@ -194,19 +194,15 @@ const upsert = (
   // Normalize the item key so lookups (which are also normalized) match reliably
   const iKey = getTroveKey(itemName)
 
-  // Initialize the entry if missing; do not overwrite existing aggregates.
-  if (rollup[iKey]) {
-    updateBinding(rollup[iKey], binding, itemName, warn)
-  } else {
-    rollup[iKey] = { binding, byCharacter: [] }
-  }
+  rollup[iKey] ??= { binding, byCharacter: [] }
+  updateBinding(rollup[iKey], binding, itemName, warn)
 
   // Find existing character entry; if none, create it
   const existing = rollup[iKey].byCharacter.find(
     (e) => e.character === character
   )
   if (existing) {
-    existing.locations[location] = (existing.locations[location] ?? 0) + qty
+    existing.locations[location] = existing.locations[location] + qty
   } else {
     // Initialize a full Location map to satisfy Record<Location, number>
     const base: Record<Location, number> = {
@@ -216,7 +212,7 @@ const upsert = (
       Bank: 0,
       'Reincarnation Cache': 0
     }
-    base[location] = (base[location] ?? 0) + qty
+    base[location] = qty
     rollup[iKey].byCharacter.push({ character, locations: base })
   }
 }
@@ -259,14 +255,10 @@ export const buildItemRollupFromCsvFile = (file: File): Promise<BuildResult> =>
           errors.push(...result.errors)
         }
 
-        // When using workers, result.data is an array of one row object.
-        // When not using workers, result.data is typically a single row object.
         const row = (
           Array.isArray(result.data) ? result.data[0] : result.data
         ) as TroveCsvRow
-        if (row) {
-          upsert(data, row, warn)
-        }
+        upsert(data, row, warn)
       },
       complete() {
         resolve({
@@ -275,19 +267,6 @@ export const buildItemRollupFromCsvFile = (file: File): Promise<BuildResult> =>
           errors
         })
       },
-      error(err) {
-        errors.push({
-          type: 'Abort',
-          code: 'UnknownError',
-          message: String(err),
-          row: 0
-        } as unknown as ParseError)
-        resolve({
-          data,
-          warnings,
-          errors
-        })
-      }
     })
   })
 

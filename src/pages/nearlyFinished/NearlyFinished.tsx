@@ -40,10 +40,12 @@ interface NearlyFinishedData {
 // Categorize items based on whether they cost Threads of Fate (Raid items) or not (Regular items)
 const isRaidItem = (entry: ReforgingEntry): boolean => entry.cost.some((c) => c.name === 'Thread of Fate')
 
-const buildMeltingMap = (melting: MeltingRecipe[]): Record<string, { name: string; quantity: number }[]> => {
-  const map: Record<string, { name: string; quantity: number }[]> = {}
+const buildMeltingMap = (
+  melting: MeltingRecipe[]
+): Record<string, { name: string; quantity: number }[] | undefined> => {
+  const map: Record<string, { name: string; quantity: number }[] | undefined> = {}
   for (const r of melting) {
-    map[r.name] = r.requirements?.map((req) => ({ name: req.name, quantity: req.quantity })) ?? []
+    map[r.name] = r.requirements.map((req) => ({ name: req.name, quantity: req.quantity }))
   }
   return map
 }
@@ -52,7 +54,7 @@ const buildMeltingMap = (melting: MeltingRecipe[]): Record<string, { name: strin
 const expandRequirement = (
   name: string,
   qty: number,
-  meltingMap: Record<string, { name: string; quantity: number }[]>,
+  meltingMap: Record<string, { name: string; quantity: number }[] | undefined>,
   rawTotals: Record<string, number>,
   craftedTotals: Record<string, number>
 ) => {
@@ -73,7 +75,7 @@ const expandRequirement = (
 const groupAsSingleSection = (label: string, items: Ingredient[]): Record<string, Ingredient[]> => ({ [label]: items })
 
 const renderIngredient = (ingredient: Ingredient) => {
-  const formattedName: string = formatIngredientName(ingredient?.image ?? ingredient?.name ?? '')
+  const formattedName: string = formatIngredientName(ingredient.image ?? ingredient.name)
   const imageSrc = `${ICON_BASE}${camelcase(formattedName)}.png`
 
   return (
@@ -95,20 +97,21 @@ const TotalsList = memo(
     title: string
     totals: { name: string; qty: number }[]
     type: 'raw' | 'crafted'
-    meltingMap: Record<string, { name: string; quantity: number }[]>
+    meltingMap: Record<string, { name: string; quantity: number }[] | undefined>
   }) => {
     return (
       <Card className='mb-3'>
         <Card.Header>
           <strong>{title}</strong> <Badge bg='secondary'>{totals.length}</Badge>
         </Card.Header>
+
         <Card.Body className='p-2'>
           {totals.length === 0 ? (
             <div className='text-muted ps-2'>No ingredients required yet</div>
           ) : (
             <Stack gap={2}>
               {totals.map(({ name, qty }) => {
-                const requirements = meltingMap[name]?.map(
+                const requirements = (meltingMap[name] as { name: string; quantity: number }[] | undefined)?.map(
                   (req) => ({ name: req.name, quantity: req.quantity }) as CraftingIngredient
                 )
                 return (
@@ -243,7 +246,7 @@ const NearlyFinished = () => {
     const visit = (name: string) => {
       if (visited.has(name) || !craftedTotals[name]) return
       visited.add(name)
-      const requirements = meltingMap[name]
+      const requirements = meltingMap[name] as { name: string; quantity: number }[] | undefined
       if (requirements) {
         for (const req of requirements) {
           visit(req.name)
@@ -342,6 +345,7 @@ const NearlyFinished = () => {
               <Button variant='outline-light' size='sm' onClick={clearSelection}>
                 <FaRotateLeft className='me-1' /> Reset All
               </Button>
+
               <Button
                 variant='outline-light'
                 size='sm'
@@ -371,6 +375,7 @@ const NearlyFinished = () => {
                   dropdownTriggerPrefix='🛡️'
                 />
               </Col>
+
               <Col>
                 <FilterableDropdown
                   items={legendaryDropdownItems}
@@ -384,6 +389,7 @@ const NearlyFinished = () => {
                   dropdownTriggerPrefix='✨'
                 />
               </Col>
+
               <Col>
                 <FilterableDropdown
                   items={raidDropdownItems}
@@ -409,6 +415,7 @@ const NearlyFinished = () => {
                 <Col md={5}>
                   <TotalsList title='1. Gather Raw Materials' totals={rawEntries} type='raw' meltingMap={meltingMap} />
                 </Col>
+
                 <Col md={7}>
                   <Card>
                     <Card.Header className='bg-success-subtle text-success-emphasis'>
@@ -417,6 +424,7 @@ const NearlyFinished = () => {
                         <Badge bg='success'>{sortedCraftedTotals.length + 1}</Badge>
                       </Stack>
                     </Card.Header>
+
                     <Card.Body className='p-2'>
                       {sortedCraftedTotals.length === 0 ? (
                         <div className='p-2 border-bottom last-child-no-border'>
@@ -424,6 +432,7 @@ const NearlyFinished = () => {
                             <Badge pill bg='secondary'>
                               1
                             </Badge>
+
                             <div className='flex-grow-1'>
                               <CraftedIngredientDisplay
                                 ingredient={
@@ -444,15 +453,16 @@ const NearlyFinished = () => {
                       ) : (
                         <Stack gap={2}>
                           {sortedCraftedTotals.map(({ name, qty }, index) => {
-                            const requirements = meltingMap[name]?.map(
-                              (req) => ({ name: req.name, quantity: req.quantity }) as CraftingIngredient
-                            )
+                            const requirements = (
+                              meltingMap[name] as { name: string; quantity: number }[] | undefined
+                            )?.map((req) => ({ name: req.name, quantity: req.quantity }) as CraftingIngredient)
                             return (
                               <div key={name} className='p-2 border-bottom last-child-no-border'>
                                 <Stack direction='horizontal' gap={3} className='align-items-center'>
                                   <Badge pill bg='secondary'>
                                     {index + 1}
                                   </Badge>
+
                                   <div className='flex-grow-1'>
                                     <CraftedIngredientDisplay
                                       ingredient={{ name, requirements } as CraftingIngredient}
@@ -465,6 +475,7 @@ const NearlyFinished = () => {
                               </div>
                             )
                           })}
+
                           <div className='p-2 bg-success-subtle rounded'>
                             <Stack direction='horizontal' gap={3} className='align-items-center'>
                               <Badge pill bg='success'>

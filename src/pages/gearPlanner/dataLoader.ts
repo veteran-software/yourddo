@@ -47,10 +47,9 @@ export const loadCurses = (): Promise<Curse[]> => {
   const module = dataModules['../../data/deckOfManyCurses.json']
   if (module && typeof module === 'object' && 'default' in module) {
     const curses = module.default as Curse[]
-    return Promise.resolve(
-      [...curses].sort((a, b) => a.name.localeCompare(b.name))
-    )
+    return Promise.resolve([...curses].sort((a, b) => a.name.localeCompare(b.name)))
   }
+
   return Promise.resolve([])
 }
 
@@ -59,6 +58,7 @@ export const loadSetBonusIndex = (): Promise<SetBonusIndex> => {
   if (module && typeof module === 'object' && 'default' in module) {
     return Promise.resolve(module.default as SetBonusIndex)
   }
+
   return Promise.resolve({})
 }
 
@@ -67,16 +67,14 @@ export const loadFiligreeSets = (): Promise<{ name: string }[]> => {
   if (module && typeof module === 'object' && 'default' in module) {
     return Promise.resolve(module.default as { name: string }[])
   }
+
   return Promise.resolve([])
 }
 
 export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
-  const plannerModule =
-    dataModules['../../data/essenceCrafting/runtime/planner_entries.json']
-  const enchantmentsModule =
-    dataModules['../../data/essenceCrafting/runtime/enchantments.json']
-  const phase1Module =
-    dataModules['../../data/essenceCrafting/essenceEnhancements.phase1.json']
+  const plannerModule = dataModules['../../data/essenceCrafting/runtime/planner_entries.json']
+  const enchantmentsModule = dataModules['../../data/essenceCrafting/runtime/enchantments.json']
+  const phase1Module = dataModules['../../data/essenceCrafting/essenceEnhancements.phase1.json']
 
   if (
     plannerModule &&
@@ -95,6 +93,7 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
       name: string
       bonus?: string | number
     }[]
+
     const phase1Data = phase1Module.default as {
       name: string
       stat?: (number | string)[]
@@ -142,6 +141,7 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
           shardName: d.name,
           allEnchantments: d.enchantments
         }
+
         phase1Map.set(d.name.toLowerCase(), info)
         phase1Map.set(normalizeEffectName(d.name), info)
       }
@@ -150,9 +150,7 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
     // Map the simple effect names to LootEnchantment objects
     return Promise.resolve(
       entries.map((entry) => {
-        const matchingEnchantments = enchantments.filter(
-          (e) => e.effectId === entry.effectId
-        )
+        const matchingEnchantments = enchantments.filter((e) => e.effectId === entry.effectId)
         const phase1Info =
           phase1Map.get(entry.effectId.toLowerCase()) ??
           phase1Map.get(normalizeEffectName(entry.effectId)) ??
@@ -196,11 +194,7 @@ const SLOT_MAP: Record<string, GearSlot[]> = {
   'boots.json': [GearSlot.Feet],
   'bracers.json': [GearSlot.Wrists],
   'cloak.json': [GearSlot.Cloak],
-  'docent.json': [
-    GearSlot.Armor,
-    GearSlot.ArtificerPetArmor,
-    GearSlot.DruidPetArmor
-  ],
+  'docent.json': [GearSlot.Armor, GearSlot.ArtificerPetArmor, GearSlot.DruidPetArmor],
   'gloves.json': [GearSlot.Hands],
   'goggles.json': [GearSlot.Eyes],
   'heavyArmor.json': [GearSlot.Armor],
@@ -270,28 +264,33 @@ const inferSetBonuses = (item: GearItem) => {
   if (item.setBonus && item.setBonus.length > 0) return
 
   const sets: { name: string }[] = []
-  item.enchantments?.forEach((ench) => {
-    const lowerName = (ench.name ?? '').toLowerCase()
-    if (lowerName.includes('set bonus')) {
-      // Remove "Set Bonus" prefix/suffix and common artifacts
-      const setName = ench.name
-        .replace(/Set Bonus:?/i, '')
-        .replace(/Set Bonus/i, '')
-        .trim()
+  if (Array.isArray(item.enchantments)) {
+    item.enchantments.forEach((enchantment: LootEnchantment) => {
+      const lowerName = enchantment.name.toLowerCase()
 
-      if (setName) {
-        sets.push({ name: setName })
+      if (lowerName.includes('set bonus')) {
+        // Remove "Set Bonus" prefix/suffix and common artifacts
+        const setName = enchantment.name
+          .replace(/Set Bonus:?/i, '')
+          .replace(/Set Bonus/i, '')
+          .trim()
+
+        if (setName) {
+          sets.push({ name: setName })
+        }
       }
-    }
-  })
+    })
+  }
 
   // Also check notes for runtime items
   const itemAsObj = item as unknown as Record<string, unknown>
   if (sets.length === 0 && typeof itemAsObj.notes === 'string') {
     const notesStr = itemAsObj.notes.toLowerCase()
+
     if (notesStr.includes('set bonus')) {
       // Try to extract set name from notes like "An Against the Slave Lords Set Bonus can be applied to this item."
       const match = /An (.*) Set Bonus can be applied/i.exec(itemAsObj.notes)
+
       if (match?.[1]) {
         sets.push({ name: match[1].trim() })
       }
@@ -329,9 +328,7 @@ export const loadGearData = (): Promise<{
   const seenKeys = new Set<string>()
 
   const isWeaponType = (item: GearItem) =>
-    Object.values(WEAPON_TYPES).flat().includes(item.type) ||
-    item.type === 'Handwraps' ||
-    item.type === 'Weapon'
+    Object.values(WEAPON_TYPES).flat().includes(item.type) || item.type === 'Handwraps' || item.type === 'Weapon'
 
   const isValidSlotItem = (item: GearItem) => {
     const typeLower = item.type.toLowerCase()
@@ -342,9 +339,7 @@ export const loadGearData = (): Promise<{
 
     if (item.slot === GearSlot.OffHand) {
       const isShieldOrRuneArm = SHIELD_TYPES.includes(item.type)
-      const isOffhandWeapon =
-        Object.values(WEAPON_TYPES).flat().includes(item.type) ||
-        item.type === 'Weapon'
+      const isOffhandWeapon = Object.values(WEAPON_TYPES).flat().includes(item.type) || item.type === 'Weapon'
       if (!isShieldOrRuneArm && !isOffhandWeapon) return false
     }
 
@@ -354,10 +349,7 @@ export const loadGearData = (): Promise<{
     }
 
     if (item.slot === GearSlot.Armor) {
-      const isArmor =
-        ARMOR_TYPES.includes(item.type) ||
-        item.type === 'Robe' ||
-        item.type === 'Outfit'
+      const isArmor = ARMOR_TYPES.includes(item.type) || item.type === 'Robe' || item.type === 'Outfit'
       if (!isArmor) return false
     }
 
@@ -374,7 +366,7 @@ export const loadGearData = (): Promise<{
 
     // This is to prevent upgraded items from being natively selected.  The user
     // should select the base item and upgrade it if desired in the gear grid
-    if (item.pageTitle?.includes('(Upgraded)')) {
+    if (item.pageTitle.includes('(Upgraded)')) {
       return
     }
 
@@ -443,12 +435,7 @@ export const loadGearData = (): Promise<{
     const path = `../../data/loot/runtime/${fileName}`
     const module = dataModules[path]
 
-    if (
-      module &&
-      typeof module === 'object' &&
-      'default' in module &&
-      Array.isArray(module.default)
-    ) {
+    if (module && typeof module === 'object' && 'default' in module && Array.isArray(module.default)) {
       const data = module.default as LootItem[]
 
       data.forEach((item: LootItem, index) => {
@@ -465,15 +452,9 @@ export const loadGearData = (): Promise<{
           ])
 
           if (armorNames.has(item.name)) {
-            effectiveSlots = [
-              GearSlot.ArtificerPetArmor,
-              GearSlot.DruidPetArmor
-            ]
+            effectiveSlots = [GearSlot.ArtificerPetArmor, GearSlot.DruidPetArmor]
           } else {
-            effectiveSlots = [
-              GearSlot.ArtificerPetWeapon,
-              GearSlot.DruidPetWeapon
-            ]
+            effectiveSlots = [GearSlot.ArtificerPetWeapon, GearSlot.DruidPetWeapon]
           }
         }
 

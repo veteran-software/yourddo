@@ -25,9 +25,7 @@ const SearchResultSlot = (props: Props) => {
   } = props
 
   const equippedInSlot = currentEquipped.find((e) => e.slot === slot)
-  const isPartofSet =
-    !browsingSet ||
-    equippedInSlot?.setBonus?.some((sb) => sb.name === browsingSet)
+  const isPartOfSet = !browsingSet || equippedInSlot?.setBonus?.some((sb) => sb.name === browsingSet)
 
   return (
     <Accordion.Item eventKey={slot} key={slot}>
@@ -37,10 +35,7 @@ const SearchResultSlot = (props: Props) => {
             {slot} ({items.length})
           </span>
           {equippedInSlot && (
-            <span
-              className={`${isPartofSet ? 'text-info' : 'text-warning'} ms-2`}
-              style={{ fontSize: '0.75rem' }}
-            >
+            <span className={`${isPartOfSet ? 'text-info' : 'text-warning'} ms-2`} style={{ fontSize: '0.75rem' }}>
               {equippedInSlot.name}
             </span>
           )}
@@ -50,22 +45,19 @@ const SearchResultSlot = (props: Props) => {
       <Accordion.Body className='p-2 bg-dark'>
         <Stack gap={2}>
           {items.map((item) => {
-            const isEquippedInSlot = currentEquipped.some(
-              (e) => e.id === item.id
-            )
+            const isEquippedInSlot = currentEquipped.some((e) => e.id === item.id)
             let slottedHostName = ''
             let hostItemForModal: GearItem | undefined = undefined
-            if (currentSlottedFiligrees) {
-              for (const [itemId, filis] of Object.entries(
-                currentSlottedFiligrees
-              )) {
-                if (filis?.some((f) => f?.id === item.id)) {
-                  const hostItem = currentEquipped.find((e) => e.id === itemId)
-                  if (hostItem) {
-                    slottedHostName = hostItem.name
-                    hostItemForModal = hostItem
-                    break
-                  }
+
+            for (const [itemId, filigrees] of Object.entries(currentSlottedFiligrees)) {
+              if (filigrees.some((filigree: GearItem | null) => filigree?.id === item.id)) {
+                const hostItem: GearItem | undefined = currentEquipped.find((item: GearItem) => item.id === itemId)
+
+                if (hostItem) {
+                  slottedHostName = hostItem.name
+                  hostItemForModal = hostItem
+
+                  break
                 }
               }
             }
@@ -92,45 +84,28 @@ const SearchResultSlot = (props: Props) => {
                   <Card.Header className='py-0 px-2 bg-secondary-subtle d-flex align-items-center gap-1 overflow-hidden'>
                     {isEquipped && (
                       <GenericBadge
-                        badgeText={
-                          slottedHostName
-                            ? `Slotted (${slottedHostName})`
-                            : 'Equipped'
-                        }
+                        badgeText={slottedHostName ? `Slotted (${slottedHostName})` : 'Equipped'}
                         onClick={
                           slottedHostName && hostItemForModal
                             ? () => {
                                 ;(
                                   globalThis as unknown as {
-                                    openFiligreeModal: (
-                                      item: GearItem,
-                                      slot: GearSlot
-                                    ) => void
+                                    openFiligreeModal: (item: GearItem, slot: GearSlot) => void
                                   }
-                                ).openFiligreeModal(
-                                  hostItemForModal,
-                                  hostItemForModal?.slot
-                                )
+                                ).openFiligreeModal(hostItemForModal, hostItemForModal.slot)
                               }
                             : undefined
                         }
                       />
                     )}
 
-                    {troveData && (
-                      <TroveBadge itemName={item.name} troveData={troveData} />
-                    )}
+                    {troveData && <TroveBadge itemName={item.name} troveData={troveData} />}
                   </Card.Header>
                 )}
 
                 <Card.Body className='p-2'>
-                  <div className='fw-bold small text-truncate text-dark'>
-                    {item.name}
-                  </div>
-                  <div
-                    className='text-dark fw-medium'
-                    style={{ fontSize: '0.7rem' }}
-                  >
+                  <div className='fw-bold small text-truncate text-dark'>{item.name}</div>
+                  <div className='text-dark fw-medium' style={{ fontSize: '0.7rem' }}>
                     ML: {item.minLevel || '1'} | {item.type || 'Item'}
                   </div>
 
@@ -146,11 +121,9 @@ const SearchResultSlot = (props: Props) => {
                     </div>
                   )}
 
-                  {item.augments && item.augments.length > 0 && (
-                    <AugmentSlotsList augments={item.augments} />
-                  )}
+                  {item.augments && item.augments.length > 0 && <AugmentSlotsList augments={item.augments} />}
 
-                  {item.enchantments && item.enchantments.length > 0 && (
+                  {Array.isArray(item.enchantments) && item.enchantments.length > 0 && (
                     <div
                       className='mt-1 pt-1 border-top border-secondary-subtle overflow-hidden'
                       style={{ fontSize: '0.7rem' }}

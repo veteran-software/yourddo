@@ -64,15 +64,7 @@ export interface ItemState {
 // Utility: map UI slot keys to dataset item tokens used in the phase1 JSON
 export const SLOT_KEY_TO_DATA_TOKENS: Record<string, string[]> = {
   mainHand: ['Weapon (Melee)', 'Weapon (Ranged)', 'Weapon'],
-  offHand: [
-    'Weapon (Melee)',
-    'Weapon (Ranged)',
-    'Weapon',
-    'Off-hand Weapon',
-    'Shield',
-    'Orb',
-    'Rune Arm'
-  ],
+  offHand: ['Weapon (Melee)', 'Weapon (Ranged)', 'Weapon', 'Off-hand Weapon', 'Shield', 'Orb', 'Rune Arm'],
   artificerPetArmor: ['Armor', 'Robe', 'Docent'],
   druidPetArmor: ['Armor', 'Robe', 'Docent'],
   artificerPetWeapon: ['Weapon (Melee)', 'Weapon'],
@@ -99,10 +91,6 @@ export type AffixKind = 'prefix' | 'suffix' | 'extra'
 export const ALL_SLOT_KEYS: { key: string; label: string }[] = [
   { key: 'mainHand', label: 'Weapon (Main Hand)' },
   { key: 'offHand', label: 'Weapon (Off Hand)' },
-  { key: 'artificerPetArmor', label: 'Iron Defender Armor' },
-  { key: 'artificerPetWeapon', label: 'Iron Defender Weapon' },
-  { key: 'druidPetArmor', label: 'Wolf Companion Armor' },
-  { key: 'druidPetWeapon', label: 'Wolf Companion Weapon' },
   { key: 'runeArm', label: 'Rune Arm' },
   { key: 'orb', label: 'Orb' },
   { key: 'armor', label: 'Armor' },
@@ -131,9 +119,7 @@ export const AVAILABLE_AUGMENT_TYPES: { key: string; label: string }[] = [
   { key: 'colorless', label: 'Colorless' }
 ]
 
-export const ALLOWED_AUGMENT_KEYS = new Set(
-  AVAILABLE_AUGMENT_TYPES.map((t) => t.key)
-)
+export const ALLOWED_AUGMENT_KEYS = new Set(AVAILABLE_AUGMENT_TYPES.map((t) => t.key))
 
 // Certain augment slot colors only appear in
 // certain item categories. This function expresses that availability per UI slot key.

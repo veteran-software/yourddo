@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Accordion, Form, Offcanvas } from 'react-bootstrap'
 import { FaXmark } from 'react-icons/fa6'
 import type { ItemRollup } from '../../../components/trove/types'
@@ -23,6 +24,43 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
     troveData
   } = props
 
+  const searchResults = useMemo(() => {
+    if (enchantmentSearch.length <= 2) {
+      return <div className='text-center py-4 text-secondary small'>Type at least 3 characters to search.</div>
+    } else if (!searchResultsBySlot || Object.keys(searchResultsBySlot).length === 0) {
+      return <div className='text-center py-4 text-secondary small'>No items found with that enchantment.</div>
+    } else {
+      return (
+        <Accordion data-bs-theme='dark'>
+          {Object.entries(searchResultsBySlot).map(([slot, items]) => (
+            <SearchResultSlot
+              key={slot}
+              slot={slot}
+              items={items}
+              currentSlottedFiligrees={currentSlottedFiligrees}
+              currentConflicts={getContextInfo(slot).currentConflicts}
+              currentEquipped={getContextInfo(slot).currentEquipped}
+              currentSlottedAugments={getContextInfo(slot).currentSlottedAugments}
+              selectItem={selectItem}
+              setShowEnchantmentSearch={setShowEnchantmentSearch}
+              openSetBonusBrowser={openSetBonusBrowser}
+              troveData={troveData}
+            />
+          ))}
+        </Accordion>
+      )
+    }
+  }, [
+    currentSlottedFiligrees,
+    enchantmentSearch,
+    getContextInfo,
+    openSetBonusBrowser,
+    searchResultsBySlot,
+    selectItem,
+    setShowEnchantmentSearch,
+    troveData
+  ])
+
   return (
     <Offcanvas
       show={showEnchantmentSearch}
@@ -34,9 +72,7 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
       className='gear-planner-enchantment-search gear-planner-offcanvas'
     >
       <Offcanvas.Header closeButton className='bg-primary text-white py-2'>
-        <Offcanvas.Title className='fs-6'>
-          Enchantment or Set Bonus Search
-        </Offcanvas.Title>
+        <Offcanvas.Title className='fs-6'>Enchantment or Set Bonus Search</Offcanvas.Title>
       </Offcanvas.Header>
 
       <Offcanvas.Body className='p-3 bg-dark text-white'>
@@ -93,52 +129,8 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
           )}
         </div>
 
-        <div
-          className='mt-3 overflow-auto'
-          style={{ maxHeight: 'calc(100vh - 150px)' }}
-        >
-          {(() => {
-            if (enchantmentSearch.length <= 2) {
-              return (
-                <div className='text-center py-4 text-secondary small'>
-                  Type at least 3 characters to search.
-                </div>
-              )
-            }
-
-            if (
-              !searchResultsBySlot ||
-              Object.keys(searchResultsBySlot).length === 0
-            ) {
-              return (
-                <div className='text-center py-4 text-secondary small'>
-                  No items found with that enchantment.
-                </div>
-              )
-            }
-
-            return (
-              <Accordion data-bs-theme='dark'>
-                {Object.entries(searchResultsBySlot).map(([slot, items]) => (
-                  <SearchResultSlot
-                    key={slot}
-                    slot={slot}
-                    items={items}
-                    currentSlottedFiligrees={currentSlottedFiligrees}
-                    currentConflicts={getContextInfo(slot).currentConflicts}
-                    currentEquipped={getContextInfo(slot).currentEquipped}
-                    currentSlottedAugments={
-                      getContextInfo(slot).currentSlottedAugments
-                    }
-                    selectItem={selectItem}
-                    setShowEnchantmentSearch={setShowEnchantmentSearch}
-                    openSetBonusBrowser={openSetBonusBrowser}
-                    troveData={troveData}
-                  />
-                ))}
-              </Accordion>
-            )
-          })()}
+        <div className='mt-3 overflow-auto' style={{ maxHeight: 'calc(100vh - 150px)' }}>
+          {searchResults}
         </div>
       </Offcanvas.Body>
     </Offcanvas>

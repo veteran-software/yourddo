@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { altarOfSubjugation } from '../../../data/altarOfSubjugation.ts'
 import { useAppDispatch } from '../../../redux/hooks.ts'
 import {
@@ -40,15 +40,18 @@ const useRecipeBuilder = () => {
     [dispatch]
   )
 
-  const resetRecipe = () => {
+  const resetRecipe = useCallback(() => {
     dispatch(clearCraftedIngredients())
     dispatch(clearRawMaterials())
-  }
+  }, [dispatch])
 
-  return {
-    recipeBuilder,
-    resetRecipe
-  }
+  return useMemo(
+    () => ({
+      recipeBuilder,
+      resetRecipe
+    }),
+    [recipeBuilder, resetRecipe]
+  )
 }
 
 export default useRecipeBuilder

@@ -3,13 +3,7 @@ import { Accordion } from 'react-bootstrap'
 import BrowserItem from '../components/BrowserItem.tsx'
 import LazyAccordionBody from '../components/LazyAccordionBody.tsx'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
-import {
-  type GearAugment,
-  type GearItem,
-  GearSlot,
-  SHIELD_TYPES,
-  WEAPON_TYPES
-} from '../types.ts'
+import { type GearAugment, type GearItem, GearSlot, SHIELD_TYPES, WEAPON_TYPES } from '../types.ts'
 
 const useItemBrowser = (props: Props) => {
   const {
@@ -24,14 +18,11 @@ const useItemBrowser = (props: Props) => {
   } = props
 
   const getMatchedType = (item: GearItem, types: string[]) => {
-    const matchedType = types.find((t) => {
+    const matchedType = types.find((t: string) => {
       const tLower = t.toLowerCase()
       if (item.type.toLowerCase() === tLower) return true
 
-      if (
-        tLower === 'handwraps' &&
-        (item.type === 'Gloves' || item.type.toLowerCase() === 'handwraps')
-      ) {
+      if (tLower === 'handwraps' && (item.type === 'Gloves' || item.type.toLowerCase() === 'handwraps')) {
         return true
       }
 
@@ -56,11 +47,7 @@ const useItemBrowser = (props: Props) => {
       if (typeLower === tLower) return true
 
       // Special case for handwraps
-      if (
-        tLower === 'handwraps' &&
-        (item.type === 'Gloves' || typeLower === 'handwraps')
-      )
-        return true
+      if (tLower === 'handwraps' && (item.type === 'Gloves' || typeLower === 'handwraps')) return true
 
       // Fallback to name match for generic "Weapon" types or if type is slightly different
       return item.type === 'Weapon' && nameLower.includes(tLower)
@@ -74,29 +61,25 @@ const useItemBrowser = (props: Props) => {
       return (
         <Accordion defaultActiveKey='0' data-bs-theme='dark'>
           {weaponCategories.map(([category, types], idx) => {
-            const categoryItems = filteredItems.filter((i) =>
-              isItemMatchForTypes(i, types)
-            )
+            const categoryItems = filteredItems.filter((i) => isItemMatchForTypes(i, types))
 
-            if (categoryItems.length === 0) return <></>
+            if (categoryItems.length === 0) return null
 
             // Try to find if any item of this category is equipped in the current slot
             const { currentEquipped } = getContextInfo(browsingSlot)
-            const equippedInSlot = currentEquipped.find(
-              (e) => e.slot === browsingSlot
-            )
-            const isThisCategoryEquipped =
-              equippedInSlot && isItemMatchForTypes(equippedInSlot, types)
-            const isPartofSet =
-              !setBonusFilter ||
-              equippedInSlot?.setBonus?.some((sb) => sb.name === setBonusFilter)
+            const equippedInSlot = currentEquipped.find((e) => e.slot === browsingSlot)
+            const isThisCategoryEquipped = equippedInSlot && isItemMatchForTypes(equippedInSlot, types)
+            const isPartofSet = !setBonusFilter || equippedInSlot?.setBonus?.some((sb) => sb.name === setBonusFilter)
 
-            // Sub-categorize by individual type within the main category
+            // Subcategorize by individual type within the main category
             const typeGroups: Record<string, GearItem[]> = {}
 
             categoryItems.forEach((item) => {
               const matchedType = getMatchedType(item, types)
-              if (!typeGroups[matchedType]) typeGroups[matchedType] = []
+              if (!(matchedType in typeGroups)) {
+                typeGroups[matchedType] = []
+              }
+
               typeGroups[matchedType].push(item)
             })
 
@@ -120,10 +103,7 @@ const useItemBrowser = (props: Props) => {
                 </Accordion.Header>
 
                 <Accordion.Body className='ps-2 pe-0 py-0 bg-dark-subtle'>
-                  <LazyAccordionBody
-                    items={categoryItems}
-                    renderItems={() => renderTypeGroups(typeGroups)}
-                  />
+                  <LazyAccordionBody items={categoryItems} renderItems={() => renderTypeGroups(typeGroups)} />
                 </Accordion.Body>
               </Accordion.Item>
             )
@@ -134,44 +114,34 @@ const useItemBrowser = (props: Props) => {
 
     if (browsingSlot === GearSlot.OffHand) {
       const craftedItems = filteredItems.filter(
-        (i) =>
-          i.id.startsWith('essence-crafted-') &&
-          (i.type === 'Crafted' || i.type === 'Armor')
+        (i) => i.id.startsWith('essence-crafted-') && (i.type === 'Crafted' || i.type === 'Armor')
       )
       const shieldItems = filteredItems.filter(
         (i) =>
-          (i.id.startsWith('essence-crafted-') &&
-            SHIELD_TYPES.includes(i.type)) ||
-          (!i.id.startsWith('essence-crafted-') &&
-            SHIELD_TYPES.includes(i.type))
+          (i.id.startsWith('essence-crafted-') && SHIELD_TYPES.includes(i.type)) ||
+          (!i.id.startsWith('essence-crafted-') && SHIELD_TYPES.includes(i.type))
       )
       const weaponItems = filteredItems.filter(
-        (i) =>
-          !i.id.startsWith('essence-crafted-') && !SHIELD_TYPES.includes(i.type)
+        (i) => !i.id.startsWith('essence-crafted-') && !SHIELD_TYPES.includes(i.type)
       )
 
       const { currentEquipped } = getContextInfo(browsingSlot)
-      const equippedInSlot = currentEquipped.find(
-        (e) => e.slot === browsingSlot
-      )
-      const isPartofSet =
-        !setBonusFilter ||
-        equippedInSlot?.setBonus?.some((sb) => sb.name === setBonusFilter)
+      const equippedInSlot = currentEquipped.find((e) => e.slot === browsingSlot)
+      const isPartofSet = !setBonusFilter || equippedInSlot?.setBonus?.some((sb) => sb.name === setBonusFilter)
 
       const renderSubCategories = (items: GearItem[]): ReactElement => {
         const typeGroups: Record<string, GearItem[]> = {}
         items.forEach((item) => {
           const type = item.type
-          if (!typeGroups[type]) typeGroups[type] = []
+
+          if (!(type in typeGroups)) {
+            typeGroups[type] = []
+          }
+
           typeGroups[type].push(item)
         })
 
-        return (
-          <LazyAccordionBody
-            items={items}
-            renderItems={() => renderTypeGroups(typeGroups)}
-          />
-        )
+        return <LazyAccordionBody items={items} renderItems={() => renderTypeGroups(typeGroups)} />
       }
 
       return (
@@ -183,9 +153,7 @@ const useItemBrowser = (props: Props) => {
                   <span>Essence Crafting ({craftedItems.length})</span>
                 </div>
               </Accordion.Header>
-              <Accordion.Body className='p-2 bg-dark-subtle'>
-                {renderItems(craftedItems, false, false)}
-              </Accordion.Body>
+              <Accordion.Body className='p-2 bg-dark-subtle'>{renderItems(craftedItems, false, false)}</Accordion.Body>
             </Accordion.Item>
           )}
 
@@ -195,20 +163,17 @@ const useItemBrowser = (props: Props) => {
                 <div className='d-flex justify-content-between w-100 me-3'>
                   <span>Shields & Rune Arms ({shieldItems.length})</span>
 
-                  {equippedInSlot &&
-                    SHIELD_TYPES.includes(equippedInSlot.type) && (
-                      <span
-                        className={`${isPartofSet ? 'text-info' : 'text-danger'} ms-2`}
-                        style={{ fontSize: '0.75rem' }}
-                      >
-                        {equippedInSlot.name}
-                      </span>
-                    )}
+                  {equippedInSlot && SHIELD_TYPES.includes(equippedInSlot.type) && (
+                    <span
+                      className={`${isPartofSet ? 'text-info' : 'text-danger'} ms-2`}
+                      style={{ fontSize: '0.75rem' }}
+                    >
+                      {equippedInSlot.name}
+                    </span>
+                  )}
                 </div>
               </Accordion.Header>
-              <Accordion.Body className='p-2 bg-dark-subtle'>
-                {renderSubCategories(shieldItems)}
-              </Accordion.Body>
+              <Accordion.Body className='p-2 bg-dark-subtle'>{renderSubCategories(shieldItems)}</Accordion.Body>
             </Accordion.Item>
           )}
 
@@ -217,20 +182,17 @@ const useItemBrowser = (props: Props) => {
               <Accordion.Header>
                 <div className='d-flex justify-content-between w-100 me-3'>
                   <span>Off-hand Weapons ({weaponItems.length})</span>
-                  {equippedInSlot &&
-                    !SHIELD_TYPES.includes(equippedInSlot.type) && (
-                      <span
-                        className={`${isPartofSet ? 'text-info' : 'text-danger'} ms-2`}
-                        style={{ fontSize: '0.75rem' }}
-                      >
-                        {equippedInSlot.name}
-                      </span>
-                    )}
+                  {equippedInSlot && !SHIELD_TYPES.includes(equippedInSlot.type) && (
+                    <span
+                      className={`${isPartofSet ? 'text-info' : 'text-danger'} ms-2`}
+                      style={{ fontSize: '0.75rem' }}
+                    >
+                      {equippedInSlot.name}
+                    </span>
+                  )}
                 </div>
               </Accordion.Header>
-              <Accordion.Body className='p-2 bg-dark-subtle'>
-                {renderSubCategories(weaponItems)}
-              </Accordion.Body>
+              <Accordion.Body className='p-2 bg-dark-subtle'>{renderSubCategories(weaponItems)}</Accordion.Body>
             </Accordion.Item>
           )}
         </Accordion>
@@ -240,14 +202,9 @@ const useItemBrowser = (props: Props) => {
     return renderItems(filteredItems)
   }
 
-  const renderItems = (
-    items: GearItem[],
-    showCount = true,
-    useLimit = true
-  ): ReactElement | null => {
+  const renderItems = (items: GearItem[], showCount = true, useLimit = true): ReactElement | null => {
     if (!browsingSlot) return null
-    const { currentConflicts, currentEquipped, currentSlottedAugments } =
-      getContextInfo(browsingSlot)
+    const { currentConflicts, currentEquipped, currentSlottedAugments } = getContextInfo(browsingSlot)
 
     const itemsToDisplay = useLimit ? items.slice(0, itemsToShow) : items
 
@@ -255,8 +212,7 @@ const useItemBrowser = (props: Props) => {
       <>
         {showCount && (
           <p className='text-light small mb-2'>
-            Showing {Math.min(itemsToDisplay.length, items.length)} of{' '}
-            {items.length} results
+            Showing {Math.min(itemsToDisplay.length, items.length)} of {items.length} results
           </p>
         )}
 
@@ -279,9 +235,7 @@ const useItemBrowser = (props: Props) => {
     )
   }
 
-  const renderTypeGroups = (
-    typeGroups: Record<string, GearItem[]>
-  ): ReactElement => {
+  const renderTypeGroups = (typeGroups: Record<string, GearItem[]>): ReactElement => {
     if (!browsingSlot) return <></>
     const { currentEquipped } = getContextInfo(browsingSlot)
 
@@ -289,24 +243,15 @@ const useItemBrowser = (props: Props) => {
       <Accordion data-bs-theme='dark'>
         {Object.entries(typeGroups).map(([typeName, items], subIdx) => {
           // Try to find if any item of this type is equipped in the current slot
-          const equippedInSlot = currentEquipped.find(
-            (e) => e.slot === browsingSlot
-          )
+          const equippedInSlot = currentEquipped.find((e) => e.slot === browsingSlot)
           const isThisTypeEquipped =
             equippedInSlot &&
-            (getMatchedType(equippedInSlot, [typeName]) === typeName ||
-              equippedInSlot.type === typeName)
-          const isPartofSet =
-            !setBonusFilter ||
-            equippedInSlot?.setBonus?.some((sb) => sb.name === setBonusFilter)
+            (getMatchedType(equippedInSlot, [typeName]) === typeName || equippedInSlot.type === typeName)
+          const isPartofSet = !setBonusFilter || equippedInSlot?.setBonus?.some((sb) => sb.name === setBonusFilter)
 
           return (
             <Accordion.Item eventKey={String(subIdx)} key={typeName}>
-              <Accordion.Header
-                className={
-                  browsingSlot === GearSlot.MainHand ? 'rounded-0' : ''
-                }
-              >
+              <Accordion.Header className={browsingSlot === GearSlot.MainHand ? 'rounded-0' : ''}>
                 <div className='d-flex justify-content-between w-100 me-3 small fw-bold'>
                   <span>
                     {typeName} ({items.length})
@@ -324,10 +269,7 @@ const useItemBrowser = (props: Props) => {
               </Accordion.Header>
 
               <Accordion.Body className='p-2 bg-dark'>
-                <LazyAccordionBody
-                  items={items}
-                  renderItems={(items) => renderItems(items, false, false)}
-                />
+                <LazyAccordionBody items={items} renderItems={(items) => renderItems(items, false, false)} />
               </Accordion.Body>
             </Accordion.Item>
           )

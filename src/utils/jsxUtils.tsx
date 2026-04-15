@@ -1,3 +1,4 @@
+import React from 'react'
 import { Container, OverlayTrigger, Stack } from 'react-bootstrap'
 
 import OverlayWrapper from '../components/common/OwnedIngredientsOverlay.tsx'
@@ -12,10 +13,7 @@ export interface CharacterEntry {
   locations: Record<Location, number>
 }
 
-export const renderBindingNode = (
-  ingredient: Ingredient | undefined,
-  troveBinding?: string
-): React.JSX.Element => {
+export const renderBindingNode = (ingredient: Ingredient | undefined, troveBinding?: string): React.JSX.Element => {
   // Prefer explicit binding on the ingredient if present
   if (ingredient?.binding?.type === 'Unbound') {
     return (
@@ -68,7 +66,7 @@ export const renderBindingNode = (
 
 export const normalizeEntries = (byCharacter: unknown): CharacterEntry[] => {
   if (Array.isArray(byCharacter)) return byCharacter as CharacterEntry[]
-  const map = (byCharacter as Record<string, Record<Location, number>>) ?? {}
+  const map = byCharacter as Record<string, Record<Location, number>>
   return Object.entries(map).map(([character, locations]) => ({
     character,
     locations
@@ -76,9 +74,7 @@ export const normalizeEntries = (byCharacter: unknown): CharacterEntry[] => {
 }
 
 const computeTotalOwned = (entries: CharacterEntry[]): number =>
-  entries
-    .flatMap((e) => Object.values(e.locations))
-    .reduce((sum, qty) => sum + qty, 0)
+  entries.flatMap((e) => Object.values(e.locations)).reduce((sum, qty) => sum + qty, 0)
 
 const qtyColorClass = (owned: number, required: number): string => {
   if (owned <= 0) return 'text-danger'
@@ -91,14 +87,7 @@ const buildPopover = (
   ingredient: Ingredient,
   entries: CharacterEntry[],
   troveBinding?: string
-): React.JSX.Element => (
-  <OverlayWrapper
-    id={id}
-    ingredient={ingredient}
-    entries={entries}
-    troveBinding={troveBinding}
-  />
-)
+): React.JSX.Element => <OverlayWrapper id={id} ingredient={ingredient} entries={entries} troveBinding={troveBinding} />
 
 export const getOwnedIngredients = (
   ingredient: Ingredient | undefined,
@@ -107,75 +96,50 @@ export const getOwnedIngredients = (
 ): React.JSX.Element => {
   if (ingredient && troveData) {
     const ingredientKey = getTroveKey(ingredient.name)
-    const requiredNum =
-      typeof quantityRequired === 'number'
-        ? quantityRequired
-        : Number(quantityRequired)
-    const troveItem = troveData[ingredientKey]
+    const requiredNum = typeof quantityRequired === 'number' ? quantityRequired : Number(quantityRequired)
+    const troveItem = (troveData as Record<string, unknown>)[ingredientKey] as
+      | {
+          binding: string
+          byCharacter: { character: string; locations: Record<Location, number> }[]
+        }
+      | undefined
     const entries = troveItem ? normalizeEntries(troveItem.byCharacter) : []
-    const popover = buildPopover(
-      ingredientKey,
-      ingredient,
-      entries,
-      troveItem?.binding
-    )
+    const popover = buildPopover(ingredientKey, ingredient, entries, troveItem?.binding)
 
     if (troveItem) {
       const totalOwned = computeTotalOwned(entries)
       const color = qtyColorClass(totalOwned, requiredNum)
-      return (
-        <Container className='d-flex justify-content-end pe-1'>
-          <OverlayTrigger
-            trigger={['hover', 'click']}
-            delay={{ show: 250, hide: 1000 }}
-            placement='auto'
-            overlay={popover}
-            rootClose
-          >
-            <Stack
-              direction='horizontal'
-              gap={2}
-              className={color}
-              style={{ cursor: 'pointer' }}
+
+      if (totalOwned > 0) {
+        return (
+          <Container className='d-flex justify-content-end pe-1'>
+            <OverlayTrigger
+              trigger={['hover', 'click']}
+              delay={{ show: 250, hide: 500 }}
+              placement='auto'
+              overlay={popover}
+              rootClose
             >
-              {formatNumber(totalOwned)}/{formatNumber(requiredNum)}
-            </Stack>
-          </OverlayTrigger>
-        </Container>
-      )
+              <Stack direction='horizontal' gap={2} className={color} style={{ cursor: 'pointer' }}>
+                {formatNumber(totalOwned)}/{formatNumber(requiredNum)}
+              </Stack>
+            </OverlayTrigger>
+          </Container>
+        )
+      }
     }
 
     // If Trove is present but item not owned
     return (
       <Container className='d-flex justify-content-end pe-1'>
-        <OverlayTrigger
-          trigger={['hover', 'click']}
-          delay={{ show: 250, hide: 1000 }}
-          placement='auto'
-          overlay={popover}
-          rootClose
-        >
-          <Stack
-            direction='horizontal'
-            gap={2}
-            className='text-danger'
-            style={{ cursor: 'pointer' }}
-          >
-            {formatNumber(0)}/{formatNumber(requiredNum)}
-          </Stack>
-        </OverlayTrigger>
+        <Stack direction='horizontal' gap={2} className='text-danger' style={{ cursor: 'pointer' }}>
+          {formatNumber(0)}/{formatNumber(requiredNum)}
+        </Stack>
       </Container>
     )
   }
 
   // No trove data: still format the required quantity for locale friendliness
-  const quantityRequiredNum =
-    typeof quantityRequired === 'number'
-      ? quantityRequired
-      : Number(quantityRequired)
-  return (
-    <Container className='d-flex justify-content-end pe-1'>
-      {formatNumber(quantityRequiredNum)}
-    </Container>
-  )
+  const quantityRequiredNum = typeof quantityRequired === 'number' ? quantityRequired : Number(quantityRequired)
+  return <Container className='d-flex justify-content-end pe-1'>{formatNumber(quantityRequiredNum)}</Container>
 }

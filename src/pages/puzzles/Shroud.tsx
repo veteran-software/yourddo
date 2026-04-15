@@ -4,13 +4,13 @@ import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import activeTileImg from '../../assets/tile_active.png'
 import emptyTileImg from '../../assets/tile_empty.png'
 import inactiveTileImg from '../../assets/tile_inactive.png'
-import useLightsOutSolver from './lightsOut/hooks/useLightsOutSolver.ts'
 import usePuzzleState from './lightsOut/hooks/usePuzzleState.ts'
+import lightsOutSolver from './lightsOut/lightsOutSolver.ts'
 import type { Config } from './lightsOut/types/types.ts'
 
 const Shroud = () => {
   const { initBoard, makeRectConfig, makeCircular4x4Config, toggleCell, randomPresses, applyPresses, solveBoard } =
-    useLightsOutSolver()
+    lightsOutSolver()
 
   const options = {
     '3x3': makeRectConfig(3, 3),

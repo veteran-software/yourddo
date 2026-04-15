@@ -1,14 +1,6 @@
 import { Dropdown } from 'react-bootstrap'
-import {
-  checkPotentialConflict,
-  type EnchantmentConflict
-} from '../conflictResolver.ts'
-import {
-  type Curse,
-  type GearAugment,
-  type GearItem,
-  GearSlot
-} from '../types.ts'
+import { checkPotentialConflict, type EnchantmentConflict } from '../conflictResolver.ts'
+import { type Curse, type GearAugment, type GearItem, GearSlot } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
 const CurseSlotItem = (props: Props) => {
@@ -43,7 +35,7 @@ const CurseSlotItem = (props: Props) => {
           }}
         >
           <span className='text-truncate text-dark d-flex align-items-center'>
-            {slotted ? `${slotted.name} (${slotted.type})` : 'No Curse'}
+            {slotted ? slotted.name : 'Empty Slot'}
           </span>
         </Dropdown.Toggle>
 
@@ -62,35 +54,39 @@ const CurseSlotItem = (props: Props) => {
           <Dropdown.Divider />
 
           {allCurses.map((curse) => {
-            const hasConflict = curse.enchantments?.some((ench) => {
-              const potential = checkPotentialConflict(
-                ench,
-                currentEquipped,
-                slot,
-                currentSlottedAugments,
-                undefined,
-                undefined,
-                undefined,
-                selectedItem.id
-              )
+            const hasConflict =
+              Array.isArray(curse.enchantments) &&
+              curse.enchantments.some((ench) => {
+                const potential = checkPotentialConflict(
+                  ench,
+                  currentEquipped,
+                  slot,
+                  currentSlottedAugments,
+                  undefined,
+                  undefined,
+                  undefined,
+                  selectedItem.id
+                )
 
-              return potential.isConflict && potential.isRedundant
-            })
+                return potential.isConflict && potential.isRedundant
+              })
 
-            const hasUpgrade = curse.enchantments?.some((ench) => {
-              const pot = checkPotentialConflict(
-                ench,
-                currentEquipped,
-                slot,
-                currentSlottedAugments,
-                undefined,
-                undefined,
-                undefined,
-                selectedItem.id
-              )
+            const hasUpgrade =
+              Array.isArray(curse.enchantments) &&
+              curse.enchantments.some((ench) => {
+                const pot = checkPotentialConflict(
+                  ench,
+                  currentEquipped,
+                  slot,
+                  currentSlottedAugments,
+                  undefined,
+                  undefined,
+                  undefined,
+                  selectedItem.id
+                )
 
-              return pot.isConflict && !pot.isRedundant
-            })
+                return pot.isConflict && !pot.isRedundant
+              })
 
             return (
               <Dropdown.Item
@@ -107,19 +103,13 @@ const CurseSlotItem = (props: Props) => {
 
                 <span className='ms-2 flex-shrink-0'>
                   {hasConflict && (
-                    <span
-                      className='badge bg-warning text-dark px-1 py-0 ms-1'
-                      style={{ fontSize: '0.55rem' }}
-                    >
+                    <span className='badge bg-warning text-dark px-1 py-0 ms-1' style={{ fontSize: '0.55rem' }}>
                       Conflicting
                     </span>
                   )}
 
                   {hasUpgrade && (
-                    <span
-                      className='badge bg-info px-1 py-0 ms-1'
-                      style={{ fontSize: '0.55rem' }}
-                    >
+                    <span className='badge bg-info px-1 py-0 ms-1' style={{ fontSize: '0.55rem' }}>
                       Upgrade
                     </span>
                   )}
@@ -130,7 +120,7 @@ const CurseSlotItem = (props: Props) => {
         </Dropdown.Menu>
       </Dropdown>
 
-      {slotted?.enchantments && (
+      {slotted && (
         <div
           className='mt-1 ps-2 border-start border-2 gear-planner-augment-enchantments flex-grow-1'
           style={{ fontSize: '0.65rem', minHeight: '0' }}

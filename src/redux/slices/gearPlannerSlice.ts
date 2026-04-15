@@ -115,54 +115,28 @@ const gearPlannerSlice = createSlice({
       state.activeSetupId = action.payload
     },
     addSetup: (state, action: PayloadAction<GearSetup>) => {
-      const setup = action.payload
-      if (!setup.slottedFiligrees) setup.slottedFiligrees = {}
-      if (!setup.unlockedFiligreeSlots) setup.unlockedFiligreeSlots = {}
-      if (!setup.slottedGemSetBonuses) setup.slottedGemSetBonuses = {}
-      if (!setup.slottedEssenceEnchantments)
-        setup.slottedEssenceEnchantments = {}
-      if (!setup.slottedNearlyFinished) setup.slottedNearlyFinished = {}
-      if (!setup.slottedRitualTable) setup.slottedRitualTable = {}
-      if (!setup.slottedLostPurpose) setup.slottedLostPurpose = {}
-      state.characterSetups.push(setup)
+      state.characterSetups.push(action.payload)
     },
     removeSetup: (state, action: PayloadAction<string>) => {
-      state.characterSetups = state.characterSetups.filter(
-        (s) => s.id !== action.payload
-      )
+      state.characterSetups = state.characterSetups.filter((s) => s.id !== action.payload)
       if (state.activeSetupId === action.payload) {
         state.activeSetupId = state.characterSetups[0]?.id || ''
       }
     },
-    updateSetup: (
-      state,
-      action: PayloadAction<Partial<GearSetup> & { id: string }>
-    ) => {
-      const setup = state.characterSetups.find(
-        (s) => s.id === action.payload.id
-      )
+    updateSetup: (state, action: PayloadAction<Partial<GearSetup> & { id: string }>) => {
+      const setup = state.characterSetups.find((s) => s.id === action.payload.id)
       if (setup) {
         Object.assign(setup, action.payload)
 
         // Enforce level range 1-34 and relationship minLevel <= maxLevel
-        setup.minLevel = Number.isNaN(setup.minLevel)
-          ? 1
-          : Math.max(1, Math.min(34, setup.minLevel))
-        setup.maxLevel = Number.isNaN(setup.maxLevel)
-          ? 34
-          : Math.max(1, Math.min(34, setup.maxLevel))
+        setup.minLevel = Number.isNaN(setup.minLevel) ? 1 : Math.max(1, Math.min(34, setup.minLevel))
+        setup.maxLevel = Number.isNaN(setup.maxLevel) ? 34 : Math.max(1, Math.min(34, setup.maxLevel))
 
         if (setup.minLevel > setup.maxLevel) {
-          if (
-            action.payload.minLevel !== undefined &&
-            action.payload.maxLevel === undefined
-          ) {
+          if (action.payload.minLevel !== undefined && action.payload.maxLevel === undefined) {
             // If minLevel was changed, push maxLevel up to match
             setup.maxLevel = setup.minLevel
-          } else if (
-            action.payload.maxLevel !== undefined &&
-            action.payload.minLevel === undefined
-          ) {
+          } else if (action.payload.maxLevel !== undefined && action.payload.minLevel === undefined) {
             // If maxLevel was changed, push minLevel down to match
             setup.minLevel = setup.maxLevel
           } else {
@@ -172,17 +146,12 @@ const gearPlannerSlice = createSlice({
         }
       }
     },
-    equipItem: (
-      state,
-      action: PayloadAction<{ slot: GearSlot; item: GearItem | null }>
-    ) => {
+    equipItem: (state, action: PayloadAction<{ slot: GearSlot; item: GearItem | null }>) => {
       const { slot, item } = action.payload
       const owner = getSlotOwner(slot)
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find(
-          (s) => s.id === state.activeSetupId
-        )
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
         if (setup) {
           gearPlannerSlice.caseReducers.enforceSingleMinorArtifact(state, {
             payload: { setupId: state.activeSetupId, item, slot },
@@ -203,7 +172,7 @@ const gearPlannerSlice = createSlice({
           state.artificerPet.unlockedFiligreeSlots[oldItem.id] = 0
         }
         state.artificerPet.slots[slot] = item
-      } else if (owner === 'druid_pet') {
+      } else {
         const oldItem = state.druidPet.slots[slot]
         if (oldItem) {
           state.druidPet.slottedFiligrees[oldItem.id] = []
@@ -233,25 +202,19 @@ const gearPlannerSlice = createSlice({
       }
 
       const updateAugment = (petState: PetState) => {
-        if (!petState.slottedAugments[itemId]) {
-          petState.slottedAugments[itemId] = {}
-        }
+        petState.slottedAugments[itemId] ??= {}
         petState.slottedAugments[itemId][slotIndex] = augment
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find(
-          (s) => s.id === state.activeSetupId
-        )
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
         if (setup) {
-          if (!setup.slottedAugments[itemId]) {
-            setup.slottedAugments[itemId] = {}
-          }
+          setup.slottedAugments[itemId] ??= {}
           setup.slottedAugments[itemId][slotIndex] = augment
         }
       } else if (owner === 'artificer_pet') {
         updateAugment(state.artificerPet)
-      } else if (owner === 'druid_pet') {
+      } else {
         updateAugment(state.druidPet)
       }
     },
@@ -271,15 +234,13 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find(
-          (s) => s.id === state.activeSetupId
-        )
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
         if (setup) {
           setup.slottedCurses[itemId] = curse
         }
       } else if (owner === 'artificer_pet') {
         state.artificerPet.slottedCurses[itemId] = curse
-      } else if (owner === 'druid_pet') {
+      } else {
         state.druidPet.slottedCurses[itemId] = curse
       }
     },
@@ -300,31 +261,19 @@ const gearPlannerSlice = createSlice({
       }
 
       const updateFiligree = (petState: PetState) => {
-        if (!petState.slottedFiligrees[itemId]) {
-          petState.slottedFiligrees[itemId] = new Array(10).fill(
-            null
-          ) as GearItem[]
-        }
-        petState.slottedFiligrees[itemId][slotIndex] =
-          filigree as GearItem | null
+        petState.slottedFiligrees[itemId] ??= new Array(10).fill(null) as GearItem[]
+        petState.slottedFiligrees[itemId][slotIndex] = filigree as GearItem | null
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find(
-          (s) => s.id === state.activeSetupId
-        )
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
         if (setup) {
-          if (!setup.slottedFiligrees[itemId]) {
-            setup.slottedFiligrees[itemId] = new Array(10).fill(
-              null
-            ) as GearItem[]
-          }
-          setup.slottedFiligrees[itemId][slotIndex] =
-            filigree as GearItem | null
+          setup.slottedFiligrees[itemId] ??= new Array(10).fill(null) as GearItem[]
+          setup.slottedFiligrees[itemId][slotIndex] = filigree as GearItem | null
         }
       } else if (owner === 'artificer_pet') {
         updateFiligree(state.artificerPet)
-      } else if (owner === 'druid_pet') {
+      } else {
         updateFiligree(state.druidPet)
       }
     },
@@ -344,15 +293,13 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find(
-          (s) => s.id === state.activeSetupId
-        )
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
         if (setup) {
           setup.unlockedFiligreeSlots[itemId] = numSlots
         }
       } else if (owner === 'artificer_pet') {
         state.artificerPet.unlockedFiligreeSlots[itemId] = numSlots
-      } else if (owner === 'druid_pet') {
+      } else {
         state.druidPet.unlockedFiligreeSlots[itemId] = numSlots
       }
     },
@@ -373,25 +320,19 @@ const gearPlannerSlice = createSlice({
       }
 
       const updateGemBonus = (petState: PetState) => {
-        if (!petState.slottedGemSetBonuses[itemId]) {
-          petState.slottedGemSetBonuses[itemId] = [null, null]
-        }
+        petState.slottedGemSetBonuses[itemId] ??= [null, null]
         petState.slottedGemSetBonuses[itemId][slotIndex] = setName
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find(
-          (s) => s.id === state.activeSetupId
-        )
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
         if (setup) {
-          if (!setup.slottedGemSetBonuses[itemId]) {
-            setup.slottedGemSetBonuses[itemId] = [null, null]
-          }
+          setup.slottedGemSetBonuses[itemId] ??= [null, null]
           setup.slottedGemSetBonuses[itemId][slotIndex] = setName
         }
       } else if (owner === 'artificer_pet') {
         updateGemBonus(state.artificerPet)
-      } else if (owner === 'druid_pet') {
+      } else {
         updateGemBonus(state.druidPet)
       }
     },
@@ -412,25 +353,19 @@ const gearPlannerSlice = createSlice({
       }
 
       const updateEssence = (petState: PetState) => {
-        if (!petState.slottedEssenceEnchantments[itemId]) {
-          petState.slottedEssenceEnchantments[itemId] = {}
-        }
+        petState.slottedEssenceEnchantments[itemId] ??= {}
         petState.slottedEssenceEnchantments[itemId][slotName] = enchantmentId
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find(
-          (s) => s.id === state.activeSetupId
-        )
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
         if (setup) {
-          if (!setup.slottedEssenceEnchantments[itemId]) {
-            setup.slottedEssenceEnchantments[itemId] = {}
-          }
+          setup.slottedEssenceEnchantments[itemId] ??= {}
           setup.slottedEssenceEnchantments[itemId][slotName] = enchantmentId
         }
       } else if (owner === 'artificer_pet') {
         updateEssence(state.artificerPet)
-      } else if (owner === 'druid_pet') {
+      } else {
         updateEssence(state.druidPet)
       }
     },
@@ -454,15 +389,13 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find(
-          (s) => s.id === state.activeSetupId
-        )
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
         if (setup) {
           setup.slottedNearlyFinished[itemId] = enchantment
         }
       } else if (owner === 'artificer_pet') {
         updateNearlyFinished(state.artificerPet)
-      } else if (owner === 'druid_pet') {
+      } else {
         updateNearlyFinished(state.druidPet)
       }
     },
@@ -486,15 +419,13 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find(
-          (s) => s.id === state.activeSetupId
-        )
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
         if (setup) {
           setup.slottedRitualTable[itemId] = enchantment
         }
       } else if (owner === 'artificer_pet') {
         updateRitualTable(state.artificerPet)
-      } else if (owner === 'druid_pet') {
+      } else {
         updateRitualTable(state.druidPet)
       }
     },
@@ -518,15 +449,13 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find(
-          (s) => s.id === state.activeSetupId
-        )
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
         if (setup) {
           setup.slottedLostPurpose[itemId] = enchantment
         }
       } else if (owner === 'artificer_pet') {
         updateLostPurpose(state.artificerPet)
-      } else if (owner === 'druid_pet') {
+      } else {
         updateLostPurpose(state.druidPet)
       }
     },
@@ -546,29 +475,23 @@ const gearPlannerSlice = createSlice({
       }
 
       const updateMinLevel = (petState: PetState) => {
-        const currentItem = Object.values(petState.slots).find(
-          (i) => i?.id === itemId
-        )
+        const currentItem = Object.values(petState.slots).find((i) => i?.id === itemId)
         if (currentItem) {
           currentItem.minLevel = String(minLevel)
         }
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find(
-          (s) => s.id === state.activeSetupId
-        )
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
         if (setup) {
-          const currentItem = Object.values(setup.slots).find(
-            (i) => i?.id === itemId
-          )
+          const currentItem = Object.values(setup.slots).find((i) => i?.id === itemId)
           if (currentItem) {
             currentItem.minLevel = String(minLevel)
           }
         }
       } else if (owner === 'artificer_pet') {
         updateMinLevel(state.artificerPet)
-      } else if (owner === 'druid_pet') {
+      } else {
         updateMinLevel(state.druidPet)
       }
     },
@@ -588,29 +511,23 @@ const gearPlannerSlice = createSlice({
       }
 
       const updateMaterial = (petState: PetState) => {
-        const currentItem = Object.values(petState.slots).find(
-          (i) => i?.id === itemId
-        )
+        const currentItem = Object.values(petState.slots).find((i) => i?.id === itemId)
         if (currentItem) {
           currentItem.material = material
         }
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find(
-          (s) => s.id === state.activeSetupId
-        )
+        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
         if (setup) {
-          const currentItem = Object.values(setup.slots).find(
-            (i) => i?.id === itemId
-          )
+          const currentItem = Object.values(setup.slots).find((i) => i?.id === itemId)
           if (currentItem) {
             currentItem.material = material
           }
         }
       } else if (owner === 'artificer_pet') {
         updateMaterial(state.artificerPet)
-      } else if (owner === 'druid_pet') {
+      } else {
         updateMaterial(state.druidPet)
       }
     }

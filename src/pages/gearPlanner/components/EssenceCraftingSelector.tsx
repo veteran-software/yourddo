@@ -1,20 +1,10 @@
 import { useCallback, useMemo } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { shields } from '../../../data/basics/armor.ts'
-import {
-  meleeWeapons,
-  rangedWeapons,
-  throwingWeapons
-} from '../../../data/basics/weapons.ts'
+import { meleeWeapons, rangedWeapons, throwingWeapons } from '../../../data/basics/weapons.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import type { EssenceEnchantment } from '../dataLoader.ts'
-import {
-  type GearAugment,
-  type GearItem,
-  type GearSetup,
-  GearSlot,
-  type LootEnchantment
-} from '../types.ts'
+import { type GearAugment, type GearItem, type GearSetup, GearSlot, type LootEnchantment } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
 const EssenceCraftingSelector = (props: Props) => {
@@ -29,10 +19,18 @@ const EssenceCraftingSelector = (props: Props) => {
   } = props
 
   const minLevel = parseInt(selectedItem.minLevel) || 1
+
   const getCurseBoost = () => {
     const curseName = activeSetup.slottedCurses[selectedItem.id]?.name
-    if (curseName === 'Curse of Minor Masterworks') return 1
-    if (curseName === 'Curse of Major Masterworks') return 2
+
+    if (curseName === 'Curse of Minor Masterworks') {
+      return 1
+    }
+
+    if (curseName === 'Curse of Major Masterworks') {
+      return 2
+    }
+
     return 0
   }
   const effectiveLevel = minLevel + getCurseBoost()
@@ -47,14 +45,10 @@ const EssenceCraftingSelector = (props: Props) => {
         return displayName
       }
 
-      const idx = Math.max(
-        0,
-        Math.min(opt.scalingStats.length - 1, effectiveLevel - 1)
-      )
+      const idx = Math.max(0, Math.min(opt.scalingStats.length - 1, effectiveLevel - 1))
       const value = opt.scalingStats[idx]
 
-      const modifierValue =
-        typeof value === 'number' ? `+${String(value)}` : value
+      const modifierValue = typeof value === 'number' ? `+${String(value)}` : value
       const bonusText = opt.bonus ? ` (${opt.bonus})` : ''
 
       return `${displayName} ${modifierValue}${bonusText}`
@@ -79,20 +73,14 @@ const EssenceCraftingSelector = (props: Props) => {
       [GearSlot.SecondFinger]: ['ring'],
       [GearSlot.Trinket]: ['trinket'],
       [GearSlot.MainHand]: ['weapon-melee', 'weapon-ranged', 'weapon'],
-      [GearSlot.OffHand]: [
-        'weapon-melee',
-        'shield',
-        'orb',
-        'runearm',
-        'weapon'
-      ],
+      [GearSlot.OffHand]: ['weapon-melee', 'shield', 'orb', 'runearm', 'weapon'],
       [GearSlot.ArtificerPetWeapon]: ['weapon-melee', 'weapon'],
       [GearSlot.DruidPetWeapon]: ['weapon-melee', 'weapon']
     }
   }, [])
 
   const allowedSlotIds = useMemo(() => {
-    const ids = slotIdMap[slot] || []
+    const ids = slot in slotIdMap ? slotIdMap[slot] : []
     if (slot !== GearSlot.MainHand && slot !== GearSlot.OffHand) {
       return ids
     }
@@ -104,16 +92,20 @@ const EssenceCraftingSelector = (props: Props) => {
       filteredIds.push('weapon-melee')
       filteredIds.push('weapon')
     }
+
     if (rangedWeapons.has(weaponType) || throwingWeapons.has(weaponType)) {
       filteredIds.push('weapon-ranged')
       filteredIds.push('weapon')
     }
+
     if (shields.has(weaponType) || weaponType === 'Orb') {
       filteredIds.push('shield')
     }
+
     if (weaponType === 'Orb') {
       filteredIds.push('orb')
     }
+
     if (weaponType === 'Rune Arm') {
       filteredIds.push('runearm')
     }
@@ -122,9 +114,11 @@ const EssenceCraftingSelector = (props: Props) => {
     if (ids.includes('shield') && !filteredIds.includes('shield')) {
       filteredIds.push('shield')
     }
+
     if (ids.includes('orb') && !filteredIds.includes('orb')) {
       filteredIds.push('orb')
     }
+
     if (ids.includes('runearm') && !filteredIds.includes('runearm')) {
       filteredIds.push('runearm')
     }
@@ -140,10 +134,7 @@ const EssenceCraftingSelector = (props: Props) => {
             return false
           }
           if (e.scalingStats && e.scalingStats.length > 0) {
-            const idx = Math.max(
-              0,
-              Math.min(e.scalingStats.length - 1, effectiveLevel - 1)
-            )
+            const idx = Math.max(0, Math.min(e.scalingStats.length - 1, effectiveLevel - 1))
             if (e.scalingStats[idx] === -1) {
               return false
             }
@@ -166,10 +157,7 @@ const EssenceCraftingSelector = (props: Props) => {
             return false
           }
           if (e.scalingStats && e.scalingStats.length > 0) {
-            const idx = Math.max(
-              0,
-              Math.min(e.scalingStats.length - 1, effectiveLevel - 1)
-            )
+            const idx = Math.max(0, Math.min(e.scalingStats.length - 1, effectiveLevel - 1))
             if (e.scalingStats[idx] === -1) {
               return false
             }
@@ -193,10 +181,7 @@ const EssenceCraftingSelector = (props: Props) => {
             return false
           }
           if (e.scalingStats && e.scalingStats.length > 0) {
-            const idx = Math.max(
-              0,
-              Math.min(e.scalingStats.length - 1, effectiveLevel - 1)
-            )
+            const idx = Math.max(0, Math.min(e.scalingStats.length - 1, effectiveLevel - 1))
             if (e.scalingStats[idx] === -1) {
               return false
             }
@@ -211,14 +196,8 @@ const EssenceCraftingSelector = (props: Props) => {
     [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel]
   )
 
-  const renderDropdown = (
-    label: string,
-    slotName: string,
-    options: EssenceEnchantment[]
-  ) => {
-    const currentSelectionId =
-      activeSetup.slottedEssenceEnchantments?.[selectedItem.id]?.[slotName] ??
-      null
+  const renderDropdown = (label: string, slotName: string, options: EssenceEnchantment[]) => {
+    const currentSelectionId = activeSetup.slottedEssenceEnchantments[selectedItem.id]?.[slotName] ?? null
     const currentSelection = options.find((o) => o.id === currentSelectionId)
 
     return (
@@ -226,6 +205,7 @@ const EssenceCraftingSelector = (props: Props) => {
         <div className='text-dark mb-0' style={{ fontSize: '0.6rem' }}>
           {label}
         </div>
+
         <Dropdown className='w-100'>
           <Dropdown.Toggle
             variant='outline-dark'
@@ -238,9 +218,7 @@ const EssenceCraftingSelector = (props: Props) => {
             }}
           >
             <span className='text-truncate text-dark'>
-              {currentSelection
-                ? getFormattedName(currentSelection)
-                : `-- Select ${label} --`}
+              {currentSelection ? getFormattedName(currentSelection) : `-- Select ${label} --`}
             </span>
           </Dropdown.Toggle>
 
@@ -273,45 +251,30 @@ const EssenceCraftingSelector = (props: Props) => {
             ))}
           </Dropdown.Menu>
         </Dropdown>
+
         {currentSelection?.enchantments && (
-          <div
-            className='mt-1 text-secondary'
-            style={{ fontSize: '0.6rem', lineHeight: '1.1' }}
-          >
+          <div className='mt-1 text-secondary' style={{ fontSize: '0.6rem', lineHeight: '1.1' }}>
             <EnchantmentList
-              enchantments={currentSelection.enchantments.flatMap(
-                (e: LootEnchantment) => {
-                  const rawName: string = e.statModified ?? e.name
-                  const names: string[] = Array.isArray(rawName)
-                    ? rawName
-                    : [rawName]
+              enchantments={currentSelection.enchantments.flatMap((e: LootEnchantment) => {
+                const rawName: string = e.statModified ?? e.name
+                const names: string[] = Array.isArray(rawName) ? rawName : [rawName]
 
-                  const value =
-                    e.stats && e.stats.length > 0
-                      ? e.stats[
-                          Math.max(
-                            0,
-                            Math.min(e.stats.length - 1, effectiveLevel - 1)
-                          )
-                        ]
-                      : currentSelection.scalingStats?.[
-                          Math.max(
-                            0,
-                            Math.min(
-                              (currentSelection.scalingStats?.length ?? 1) - 1,
-                              effectiveLevel - 1
-                            )
-                          )
-                        ]
+                const numScalingStats = Array.isArray(currentSelection.scalingStats)
+                  ? currentSelection.scalingStats.length
+                  : 1
 
-                  return names.map((name) => ({
-                    ...e,
-                    name: name.trim(),
-                    modifier: value ?? undefined,
-                    bonus: currentSelection.bonus ?? e.bonus
-                  }))
-                }
-              )}
+                const value =
+                  e.stats && e.stats.length > 0
+                    ? e.stats[Math.max(0, Math.min(e.stats.length - 1, effectiveLevel - 1))]
+                    : currentSelection.scalingStats?.[Math.max(0, Math.min(numScalingStats - 1, effectiveLevel - 1))]
+
+                return names.map((name) => ({
+                  ...e,
+                  name: name.trim(),
+                  modifier: value ?? undefined,
+                  bonus: currentSelection.bonus ?? e.bonus
+                }))
+              })}
               itemId={selectedItem.id}
               conflicts={props.currentConflicts}
               equippedItems={props.currentEquipped}
@@ -369,9 +332,7 @@ const EssenceCraftingSelector = (props: Props) => {
                   backgroundColor: 'rgba(0,0,0,0.05)'
                 }}
               >
-                <span className='text-truncate text-dark'>
-                  {selectedItem.minLevel}
-                </span>
+                <span className='text-truncate text-dark'>{selectedItem.minLevel}</span>
               </Dropdown.Toggle>
 
               <Dropdown.Menu
@@ -410,9 +371,7 @@ const EssenceCraftingSelector = (props: Props) => {
                   backgroundColor: 'rgba(0,0,0,0.05)'
                 }}
               >
-                <span className='text-truncate text-dark'>
-                  {selectedItem.material || '-- Select --'}
-                </span>
+                <span className='text-truncate text-dark'>{selectedItem.material || '-- Select --'}</span>
               </Dropdown.Toggle>
 
               <Dropdown.Menu
@@ -447,10 +406,10 @@ const EssenceCraftingSelector = (props: Props) => {
       )}
 
       {renderDropdown('Prefix Slot', 'prefix', prefixOptions)}
+
       {renderDropdown('Suffix Slot', 'suffix', suffixOptions)}
-      {minLevel >= 10 &&
-        extraOptions.length > 0 &&
-        renderDropdown('Mark of House Cannith Slot', 'extra', extraOptions)}
+
+      {minLevel >= 10 && extraOptions.length > 0 && renderDropdown('Mark of House Cannith Slot', 'extra', extraOptions)}
     </div>
   )
 }
@@ -459,12 +418,7 @@ interface Props {
   selectedItem: GearItem
   activeSetup: GearSetup
   essenceEnchantments: EssenceEnchantment[]
-  setEssenceEnchantment: (
-    itemId: string,
-    slotName: string,
-    enchantmentId: string | null,
-    slot: GearSlot
-  ) => void
+  setEssenceEnchantment: (itemId: string, slotName: string, enchantmentId: string | null, slot: GearSlot) => void
   setItemMinLevel: (itemId: string, minLevel: number, slot: GearSlot) => void
   setItemMaterial: (itemId: string, material: string, slot: GearSlot) => void
   slot: GearSlot

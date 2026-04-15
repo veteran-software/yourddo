@@ -1,15 +1,5 @@
-import {
-  compressToEncodedURIComponent,
-  decompressFromEncodedURIComponent
-} from 'lz-string'
-import {
-  type Curse,
-  type GearAugment,
-  type GearItem,
-  type GearSetup,
-  GearSlot,
-  type LootEnchantment
-} from './types.ts'
+import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
+import { type Curse, type GearAugment, type GearItem, type GearSetup, GearSlot, type LootEnchantment } from './types.ts' // ----- Types for compact v1 payload -----
 
 // ----- Types for compact v1 payload -----
 // We use a compact format to keep the URL short.
@@ -94,9 +84,7 @@ export const encodeGearPermalink = (setup: GearSetup): string => {
       const lostPurpose = setup.slottedLostPurpose?.[item.id] ?? null
 
       const filigrees = setup.slottedFiligrees[item.id]
-      const filigreeNames = filigrees
-        ? filigrees.map((f) => (f ? f.name : null))
-        : null
+      const filigreeNames = filigrees ? filigrees.map((f) => (f ? f.name : null)) : null
 
       const unlockedFiligreeSlots = setup.unlockedFiligreeSlots[item.id] ?? null
       const slottedGemSetBonuses = setup.slottedGemSetBonuses[item.id] ?? null
@@ -148,17 +136,8 @@ export const tryDecodeGearPermalink = (
 
     const payload = JSON.parse(text) as V1Payload
 
-    const [
-      name,
-      minLevel,
-      maxLevel,
-      classes,
-      weaponFilters,
-      armorFilters,
-      shieldFilters,
-      allowMetalWithDruid,
-      items
-    ] = payload
+    const [name, minLevel, maxLevel, classes, weaponFilters, armorFilters, shieldFilters, allowMetalWithDruid, items] =
+      payload
 
     const setup: GearSetup = {
       id: `pl-${Date.now().toString()}`,
@@ -219,8 +198,7 @@ const decodeItemPayload = (
     return
   }
   const item =
-    allItems.find((i) => i.name === itemName && i.slot === gearSlot) ??
-    allItems.find((i) => i.name === itemName)
+    allItems.find((i) => i.name === itemName && i.slot === gearSlot) ?? allItems.find((i) => i.name === itemName)
 
   if (item) {
     setup.slots[gearSlot] = item
@@ -261,23 +239,14 @@ const decodeItemAugments = (
   }
 }
 
-const decodeItemCurse = (
-  item: GearItem,
-  curseName: string | null,
-  allCurses: Curse[],
-  setup: GearSetup
-) => {
+const decodeItemCurse = (item: GearItem, curseName: string | null, allCurses: Curse[], setup: GearSetup) => {
   if (curseName && item.slot !== GearSlot.Quiver) {
     const curse = allCurses.find((c) => c.name === curseName)
     if (curse) setup.slottedCurses[item.id] = curse
   }
 }
 
-const decodeItemEssenceCrafting = (
-  item: GearItem,
-  essenceCrafting: [string, string][] | null,
-  setup: GearSetup
-) => {
+const decodeItemEssenceCrafting = (item: GearItem, essenceCrafting: [string, string][] | null, setup: GearSetup) => {
   if (essenceCrafting && essenceCrafting.length > 0) {
     setup.slottedEssenceEnchantments[item.id] = {}
     essenceCrafting.forEach(([slotName, enchId]) => {
@@ -326,10 +295,7 @@ export const readGpFromUrl = (
 }
 
 export const removeGpFromUrl = async (
-  navigate: (
-    to: { pathname?: string; search?: string },
-    opts: { replace: boolean }
-  ) => Promise<void> | void,
+  navigate: (to: { pathname?: string; search?: string }, opts: { replace: boolean }) => Promise<void> | void,
   location: LocationLike,
   source: 'search' | 'hash' | null,
   win: Window = globalThis as unknown as Window
@@ -337,10 +303,7 @@ export const removeGpFromUrl = async (
   if (!source) return
 
   if (source === 'search') {
-    await navigate(
-      { pathname: location.pathname, search: '' },
-      { replace: true }
-    )
+    await navigate({ pathname: location.pathname, search: '' }, { replace: true })
 
     return
   }
@@ -354,9 +317,7 @@ export const removeGpFromUrl = async (
 
   params.delete('gp')
 
-  const newHash = params.toString()
-    ? `#${hashPath}?${params.toString()}`
-    : `#${hashPath}`
+  const newHash = params.toString() ? `#${hashPath}?${params.toString()}` : `#${hashPath}`
 
   const newUrl = `${origin}${pathname}${search}${newHash}`
   win.history.replaceState({}, '', newUrl)

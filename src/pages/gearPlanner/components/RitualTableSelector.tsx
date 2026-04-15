@@ -1,30 +1,18 @@
+import { useMemo } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types.ts'
 import { ritualTable } from '../../../data/ritualTable.ts'
+import type { CraftingIngredient } from '../../../types/crafting.ts'
 import type { GearItem, GearSlot, LootEnchantment } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 import TroveBadge from './TroveBadge.tsx'
 
-interface RitualTableSelectorProps {
-  item: GearItem
-  slot: GearSlot
-  selectedEnchantment: LootEnchantment | null
-  onSelect: (enchantment: LootEnchantment | null) => void
-  troveData: ItemRollup | null
-}
+const RitualTableSelector = (props: Props) => {
+  const { item, onSelect, selectedEnchantment, slot, troveData } = props
 
-const RitualTableSelector = ({
-  item,
-  slot,
-  selectedEnchantment,
-  onSelect,
-  troveData
-}: RitualTableSelectorProps) => {
   // Determine the requirement based on the enchantment
-  const isWeapon = item.enchantments?.some((e) => e.name === 'Sealed in Fire')
-  const isAccessory = item.enchantments?.some(
-    (e) => e.name === 'Sealed in Undeath'
-  )
+  const isWeapon = item.enchantments.some((enchantment: LootEnchantment) => enchantment.name === 'Sealed in Fire')
+  const isAccessory = item.enchantments.some((enchantment: LootEnchantment) => enchantment.name === 'Sealed in Undeath')
 
   let requirementName: string | null = null
   if (isWeapon) {
@@ -33,20 +21,25 @@ const RitualTableSelector = ({
     requirementName = 'Sealed in Undeath Accessory'
   }
 
-  if (!requirementName) return null
-
   // Find all recipes that have this requirement
-  const recipes = ritualTable.filter((recipe) =>
-    recipe.requirements?.some((req) => req.name === requirementName)
+  const recipes: CraftingIngredient[] = useMemo(
+    () =>
+      ritualTable.filter((recipe: CraftingIngredient) =>
+        recipe.requirements?.some((req: CraftingIngredient) => req.name === requirementName)
+      ),
+    [requirementName]
   )
 
-  if (recipes.length === 0) return null
+  if (!requirementName || recipes.length === 0) {
+    return null
+  }
 
   return (
     <div className='mt-2'>
       <div className='text-dark mb-0 text-start' style={{ fontSize: '0.6rem' }}>
         Ritual Table Upgrade
       </div>
+
       <Dropdown className='w-100'>
         <Dropdown.Toggle
           variant='outline-dark'
@@ -63,9 +56,8 @@ const RitualTableSelector = ({
               const effect = r.effectsAdded?.[0]
               return (
                 (effect?.name ?? r.name) === selectedEnchantment?.name &&
-                (effect?.modifier?.toString() ?? '1') ===
-                  selectedEnchantment?.modifier &&
-                (effect?.bonus ?? 'Enhancement') === selectedEnchantment?.bonus
+                (effect?.modifier?.toString() ?? '1') === selectedEnchantment.modifier &&
+                (effect?.bonus ?? 'Enhancement') === selectedEnchantment.bonus
               )
             })?.name ?? '-- Select Upgrade --'}
           </span>
@@ -104,19 +96,15 @@ const RitualTableSelector = ({
                 className='d-flex justify-content-between align-items-center'
               >
                 <span>{recipe.name}</span>
-                {troveData && (
-                  <TroveBadge troveData={troveData} itemName={recipe.name} />
-                )}
+                {troveData && <TroveBadge troveData={troveData} itemName={recipe.name} />}
               </Dropdown.Item>
             )
           })}
         </Dropdown.Menu>
       </Dropdown>
+
       {selectedEnchantment && (
-        <div
-          className='mt-1 text-secondary text-start'
-          style={{ fontSize: '0.6rem', lineHeight: '1.1' }}
-        >
+        <div className='mt-1 text-secondary text-start' style={{ fontSize: '0.6rem', lineHeight: '1.1' }}>
           <EnchantmentList
             enchantments={[selectedEnchantment]}
             itemId={item.id}
@@ -129,6 +117,14 @@ const RitualTableSelector = ({
       )}
     </div>
   )
+}
+
+interface Props {
+  item: GearItem
+  slot: GearSlot
+  selectedEnchantment: LootEnchantment | null
+  onSelect: (enchantment: LootEnchantment | null) => void
+  troveData: ItemRollup | null
 }
 
 export default RitualTableSelector

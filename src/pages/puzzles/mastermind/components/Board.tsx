@@ -7,8 +7,8 @@ const Board = (props: Props) => {
 
   return (
     <Stack direction='vertical' gap={2} className='align-items-center'>
-      {guesses.map((guess, i) => (
-        <GuessRow key={i} code={guess.code} fb={guess.feedback} />
+      {guesses.map((guess) => (
+        <GuessRow key={guess.code.join('-')} code={guess.code} fb={guess.feedback} />
       ))}
     </Stack>
   )

@@ -342,7 +342,7 @@ type ItemData struct {
 	EnchantmentsRaw      string                `json:"-"`
 	Augments             []AugmentItem         `json:"augments,omitempty"`
 	AugmentsRaw          string                `json:"-"`
-	ItemSetsRaw          string                `json:"itemSetsRaw,omitempty"`
+	ItemSetsRaw          string                `json:"-"`
 	SetBonus             []SetBonusOut         `json:"setBonus,omitempty"`
 }
 

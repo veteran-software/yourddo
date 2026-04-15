@@ -143,7 +143,15 @@ const FilterableDropdown = (props: Props) => {
         </Dropdown>
 
         {selectedItem && onReset && (
-          <Button variant='outline-info' onClick={onReset}>
+          <Button
+            variant='outline-info'
+            onClick={() => {
+              onReset()
+              if (onFiltersChange) {
+                onFiltersChange([])
+              }
+            }}
+          >
             Reset
           </Button>
         )}

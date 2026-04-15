@@ -1,17 +1,9 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Dropdown, Form } from 'react-bootstrap'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import { getTroveKey } from '../../../utils/troveUtils.ts'
-import {
-  checkPotentialConflict,
-  type EnchantmentConflict
-} from '../conflictResolver.ts'
-import {
-  type GearAugment,
-  type GearAugmentSlot,
-  type GearItem,
-  GearSlot
-} from '../types.ts'
+import { checkPotentialConflict, type EnchantmentConflict } from '../conflictResolver.ts'
+import { type GearAugment, type GearAugmentSlot, type GearItem, GearSlot } from '../types.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
 import SetBonusBadge from './badges/SetBonusBadge.tsx'
 import EnchantmentList from './EnchantmentList.tsx'
@@ -36,8 +28,11 @@ const AugmentSlotItem = (props: Props) => {
   const [showOwnedOnly, setShowOwnedOnly] = React.useState(false)
 
   const filterApplicable = (group: GearAugment[]) => {
-    if (!showOwnedOnly || !troveData) return group
-    return group.filter((aug) => !!troveData[getTroveKey(aug.name)])
+    if (!showOwnedOnly || !troveData) {
+      return group
+    }
+
+    return group.filter((aug) => !(getTroveKey(aug.name) in troveData))
   }
 
   return (
@@ -76,9 +71,7 @@ const AugmentSlotItem = (props: Props) => {
           }}
         >
           <span className='text-truncate text-dark d-flex align-items-center'>
-            {slotted
-              ? `${slotted.name} (ML:${String(slotted.minimumLevel)})`
-              : 'Empty Slot'}
+            {slotted ? `${slotted.name} (ML:${String(slotted.minimumLevel)})` : 'Empty Slot'}
           </span>
         </Dropdown.Toggle>
 
@@ -97,11 +90,8 @@ const AugmentSlotItem = (props: Props) => {
           <Dropdown.Divider />
 
           {applicable.sortedGroupNames.map((groupName) => (
-            <React.Fragment key={groupName}>
-              <Dropdown.Header
-                className='text-light fw-bold py-0 ps-1'
-                style={{ fontSize: '0.6rem' }}
-              >
+            <Fragment key={groupName}>
+              <Dropdown.Header className='text-light fw-bold py-0 ps-1' style={{ fontSize: '0.6rem' }}>
                 {groupName} Augments
               </Dropdown.Header>
 
@@ -144,9 +134,7 @@ const AugmentSlotItem = (props: Props) => {
                     className='d-flex align-items-center justify-content-between'
                   >
                     <span className='text-truncate'>
-                      {troveData && (
-                        <TroveBadge itemName={aug.name} troveData={troveData} />
-                      )}
+                      {troveData && <TroveBadge itemName={aug.name} troveData={troveData} />}
                       {aug.name} (ML:{aug.minimumLevel})
                     </span>
 
@@ -158,7 +146,7 @@ const AugmentSlotItem = (props: Props) => {
                   </Dropdown.Item>
                 )
               })}
-            </React.Fragment>
+            </Fragment>
           ))}
         </Dropdown.Menu>
       </Dropdown>
@@ -174,6 +162,7 @@ const AugmentSlotItem = (props: Props) => {
           ))}
         </div>
       )}
+
       {slotted?.effectsAdded && slotted.effectsAdded.length > 0 && (
         <div
           className='mt-1 ps-2 border-start border-2 gear-planner-augment-enchantments flex-grow-1'
@@ -207,12 +196,7 @@ interface Props {
   currentConflicts: Record<string, EnchantmentConflict[]>
   currentEquipped: GearItem[]
   currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  setSlottedAugment: (
-    itemId: string,
-    slotIndex: number,
-    augment: GearAugment | null,
-    slot?: GearSlot
-  ) => void
+  setSlottedAugment: (itemId: string, slotIndex: number, augment: GearAugment | null, slot?: GearSlot) => void
   openSetBonusBrowser: (setName: string) => void
 }
 

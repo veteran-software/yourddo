@@ -37,19 +37,11 @@ const CharacterSettingsSidebar = (props: Props) => {
           {activeSetup.classes.some((c) => c !== null) ? (
             <Stack gap={1} className='mb-3'>
               {activeSetup.classes.map(
-                (cls, idx) =>
-                  cls && (
-                    <GenericBadge
-                      key={`${cls}-${String(idx)}`}
-                      badgeText={cls}
-                    />
-                  )
+                (cls, idx) => cls && <GenericBadge key={`${cls}-${String(idx)}`} badgeText={cls} />
               )}
             </Stack>
           ) : (
-            <div className='small italic text-secondary mb-3'>
-              No classes selected
-            </div>
+            <div className='small italic text-secondary mb-3'>No classes selected</div>
           )}
         </div>
 
@@ -59,17 +51,11 @@ const CharacterSettingsSidebar = (props: Props) => {
           {activeSetup.weaponFilters.length > 0 ? (
             <div className='d-flex flex-wrap gap-1 mb-3'>
               {activeSetup.weaponFilters.map((weapon) => (
-                <GenericBadge
-                  key={weapon}
-                  badgeText={weapon}
-                  fontSize='0.7rem'
-                />
+                <GenericBadge key={weapon} badgeText={weapon} fontSize='0.7rem' />
               ))}
             </div>
           ) : (
-            <div className='small italic text-secondary mb-3'>
-              No weapon filters
-            </div>
+            <div className='small italic text-secondary mb-3'>No weapon filters</div>
           )}
         </div>
 
@@ -82,24 +68,16 @@ const CharacterSettingsSidebar = (props: Props) => {
               ))}
             </div>
           ) : (
-            <div className='small italic text-secondary mb-3'>
-              No armor filters
-            </div>
+            <div className='small italic text-secondary mb-3'>No armor filters</div>
           )}
         </div>
 
         <div className='mb-3'>
-          <div className='fw-bold text-info small mb-1'>
-            Shield/Off-hand Filters
-          </div>
+          <div className='fw-bold text-info small mb-1'>Shield/Off-hand Filters</div>
           {activeSetup.shieldFilters.length > 0 ? (
             <div className='d-flex flex-wrap gap-1'>
               {activeSetup.shieldFilters.map((shield) => (
-                <GenericBadge
-                  key={shield}
-                  badgeText={shield}
-                  fontSize='0.7rem'
-                />
+                <GenericBadge key={shield} badgeText={shield} fontSize='0.7rem' />
               ))}
             </div>
           ) : (

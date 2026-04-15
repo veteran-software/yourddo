@@ -32,12 +32,12 @@ const Footer = () => {
 
   const { data: xmlData } = serverStatusApi.useDcQuery(undefined, polling)
   const [statusTrigger] = serverStatusApi.useLazyStatusQuery()
-  const mainServersIntervalId = useRef(-1)
+  const mainServersIntervalIdRef = useRef(-1)
 
   // Lamannia
   const { data: xmlDataLam } = serverStatusLamApi.useDcQuery(undefined, polling)
   const [statusTriggerLam] = serverStatusLamApi.useLazyStatusQuery()
-  const lamServerIntervalId = useRef(-1)
+  const lamServerIntervalIdRef = useRef(-1)
 
   const navRef = useRef<HTMLDivElement>(null)
 
@@ -82,7 +82,7 @@ const Footer = () => {
       const parser = new XMLParser({ ignoreAttributes: true })
       const obj: Root = parser.parse(xmlData) as Root
 
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setGameWorlds(
           (
             (obj.ArrayOfDatacenterStruct.DatacenterStruct as DatacenterStruct).Datacenter.datacenter.Datacenter.Worlds
@@ -90,6 +90,9 @@ const Footer = () => {
           ).toSorted((a: World, b: World) => (a.Order < b.Order ? -1 : 1))
         )
       }, 0)
+      return () => {
+        clearTimeout(timeoutId)
+      }
     }
   }, [xmlData])
 
@@ -112,14 +115,14 @@ const Footer = () => {
 
     fetchApiStatuses().catch(console.error)
 
-    mainServersIntervalId.current = (
+    mainServersIntervalIdRef.current = (
       globalThis.setInterval as unknown as (handler: TimerHandler, timeout?: number) => number
     )(() => {
       fetchApiStatuses().catch(console.error)
     }, 60000)
 
     return () => {
-      globalThis.clearInterval(mainServersIntervalId.current as unknown as number)
+      globalThis.clearInterval(mainServersIntervalIdRef.current as unknown as number)
     }
   }, [gameWorlds, iterateResults, statusTrigger])
 
@@ -170,14 +173,14 @@ const Footer = () => {
 
     fetchApiStatuses().catch(console.error)
 
-    lamServerIntervalId.current = (
+    lamServerIntervalIdRef.current = (
       globalThis.setInterval as unknown as (handler: TimerHandler, timeout?: number) => number
     )(() => {
       fetchApiStatuses().catch(console.error)
     }, 60000)
 
     return () => {
-      globalThis.clearInterval(lamServerIntervalId.current as unknown as number)
+      globalThis.clearInterval(lamServerIntervalIdRef.current as unknown as number)
     }
   }, [gameWorldsLam, iterateResults, statusTriggerLam])
 
@@ -194,7 +197,7 @@ const Footer = () => {
               .map((world: World, idx: number) => {
                 return (
                   <Fragment key={world.Name}>
-                    {idx > 0 && <>&bull;</>}
+                    {idx > 0 && <span>&bull;</span>}
                     <ServerStatusDisplay name={stripPrefix(world.Name)} up={statuses[stripPrefix(world.Name)]} />
                   </Fragment>
                 )
@@ -202,12 +205,12 @@ const Footer = () => {
 
             {gameWorldsLam?.map((world: World) => {
               if (!statusesLam[world.Name]) {
-                return <></>
+                return <Fragment key={world.Name} />
               }
 
               return (
                 <Fragment key={world.Name}>
-                  <>&bull;</>
+                  <span>&bull;</span>
                   <ServerStatusDisplay name={world.Name} up={statusesLam[world.Name]} />
                 </Fragment>
               )
@@ -224,7 +227,7 @@ const Footer = () => {
                 if (world.Name.includes('[Old]')) {
                   return (
                     <Fragment key={world.Name}>
-                      {idx > 0 && <>&bull;</>}
+                      {idx > 0 && <span>&bull;</span>}
                       <ServerStatusDisplay
                         name={stripPrefix(world.Name)}
                         up={statuses[stripPrefix(world.Name)]}

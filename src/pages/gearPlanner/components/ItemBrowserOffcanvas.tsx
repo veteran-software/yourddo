@@ -4,12 +4,7 @@ import { FaXmark } from 'react-icons/fa6'
 import type { ItemRollup } from '../../../components/trove/types.ts'
 import type { EnchantmentConflict } from '../conflictResolver'
 import useItemBrowser from '../hooks/useItemBrowser.tsx'
-import {
-  type GearAugment,
-  type GearItem,
-  type GearSetup,
-  GearSlot
-} from '../types'
+import { type GearAugment, type GearItem, type GearSetup, GearSlot } from '../types'
 
 const ItemBrowserOffcanvas = (props: Props) => {
   const {
@@ -112,7 +107,7 @@ const ItemBrowserOffcanvas = (props: Props) => {
               <button
                 className='btn btn-outline-danger btn-sm w-100 d-flex justify-content-between align-items-center mb-3'
                 onClick={() => {
-                  if (browsingSlot) selectItem(browsingSlot, null)
+                  selectItem(browsingSlot, null)
                 }}
               >
                 <span>Clear Slot</span>
@@ -123,21 +118,12 @@ const ItemBrowserOffcanvas = (props: Props) => {
             {renderCategorizedItems()}
 
             {filteredItems.length === 0 && (
-              <div className='text-center py-4 text-light'>
-                No items found for this slot.
-              </div>
+              <div className='text-center py-4 text-light'>No items found for this slot.</div>
             )}
 
             {itemsToShow < filteredItems.length && (
-              <div
-                ref={observerTarget}
-                className='text-center py-3'
-                style={{ minHeight: '50px' }}
-              >
-                <div
-                  className='spinner-border spinner-border-sm text-primary'
-                  role='status'
-                >
+              <div ref={observerTarget} className='text-center py-3' style={{ minHeight: '50px' }}>
+                <div className='spinner-border spinner-border-sm text-primary' role='status'>
                   <span className='visually-hidden' aria-hidden='true'>
                     Loading more...
                   </span>

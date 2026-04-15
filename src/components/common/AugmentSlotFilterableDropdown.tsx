@@ -69,9 +69,7 @@ const groupByAugmentType = (list: Ingredient[] | undefined, fallbackHeader: stri
 
   return list.reduce<Record<string, Ingredient[]>>((material: Record<string, Ingredient[]>, ing: Ingredient) => {
     const key: string = ing.augmentType ?? fallbackHeader
-    if (!material[key]) {
-      material[key] = []
-    }
+    material[key] ??= []
 
     material[key].push(ing)
 
@@ -140,7 +138,7 @@ const orderGroups = (
   const result: Record<string, Ingredient[]> = {}
   desired.forEach((k: string) => {
     // Guard against keys that are in the desired order but not present in the actual groups
-    if (groups[k]?.length) {
+    if (groups[k] && groups[k].length > 0) {
       result[k] = groups[k]
     }
   })

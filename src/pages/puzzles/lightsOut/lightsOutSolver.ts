@@ -1,4 +1,3 @@
-import type { Board, Config, Presses } from '../types/types.ts'
 import {
   applyPlusToggle,
   applyWrapToggle,
@@ -12,7 +11,8 @@ import {
   makeCircular4x4Config,
   makeRectConfig,
   makeShapeConfig
-} from './utils/helpers.ts'
+} from './hooks/utils/helpers.ts'
+import type { Board, Config, Presses } from './types/types.ts'
 
 // Top‐level helper that does the core solve() work
 const solveInternal = (
@@ -45,7 +45,7 @@ const solveInternal = (
   return out
 }
 
-const useLightsOutSolver = () => {
+const lightsOutSolver = () => {
   const getSolver = (config: Config) => {
     const indexOf: number[][] = Array.from({ length: config.rows }, () => Array(config.cols).fill(-1) as number[])
     let counter = 0
@@ -99,6 +99,7 @@ const useLightsOutSolver = () => {
         }
       }
     }
+
     return result
   }
 
@@ -122,4 +123,4 @@ const useLightsOutSolver = () => {
   }
 }
 
-export default useLightsOutSolver
+export default lightsOutSolver

@@ -1,17 +1,19 @@
-import { memo, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Card, Col } from 'react-bootstrap'
 import { findSetBonus } from '../../../data/setBonuses.ts'
+import type { Enhancement } from '../../../types/core.ts'
+import type { SetBonus } from '../../../types/crafting.ts'
 import { getActiveEnhancementsForSet } from '../helpers.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
 
-const SetBonusCard = memo((props: Props) => {
+const SetBonusCard = (props: Props) => {
   const { count, onSetClick, setName } = props
 
-  const setDef = useMemo(() => findSetBonus(setName), [setName])
+  const setDefinition: SetBonus = useMemo(() => findSetBonus(setName), [setName])
 
-  const activeEnhancements = useMemo(
-    () => getActiveEnhancementsForSet(setDef, count),
-    [setDef, count]
+  const activeEnhancements: Enhancement[] = useMemo(
+    () => getActiveEnhancementsForSet(setDefinition, count),
+    [setDefinition, count]
   )
 
   return (
@@ -23,34 +25,28 @@ const SetBonusCard = memo((props: Props) => {
         <Card.Body className='p-2'>
           <div className='d-flex justify-content-between align-items-center mb-1'>
             <span className='fw-bold text-info'>{setName}</span>
-            <GenericBadge
-              badgeText={`${String(count)} Piece${count > 1 ? 's' : ''}`}
-              fontSize='0.75rem'
-            />
+            <GenericBadge badgeText={`${String(count)} Piece${count > 1 ? 's' : ''}`} fontSize='0.75rem' />
           </div>
 
-          {activeEnhancements.map((enh, idx) => (
+          {activeEnhancements.map((enchantment: Enhancement, idx: number) => (
             <div
-              key={`${enh.name}-${String(idx)}`}
+              key={`${enchantment.name}-${String(idx)}`}
               className='small text-secondary ps-2 border-start border-secondary mb-1'
             >
-              • {enh.name}
-              {enh.modifier ? `: ${String(enh.modifier)}` : ''} (
-              {enh.numPiecesEquipped ?? setDef?.numPiecesEquipped} pieces)
+              • {enchantment.name}
+              {enchantment.modifier ? `: ${String(enchantment.modifier)}` : ''} (
+              {enchantment.numPiecesEquipped ?? setDefinition.numPiecesEquipped} pieces)
             </div>
           ))}
 
           {activeEnhancements.length === 0 && (
-            <div className='small text-muted ps-2 italic text-center py-2'>
-              Equip more pieces to see bonuses.
-            </div>
+            <div className='small text-muted ps-2 italic text-center py-2'>Equip more pieces to see bonuses.</div>
           )}
         </Card.Body>
       </Card>
     </Col>
   )
-})
-SetBonusCard.displayName = 'SetBonusCard'
+}
 
 interface Props {
   setName: string
