@@ -305,14 +305,17 @@ const inferSetBonuses = (item: GearItem) => {
 interface RawAugment {
   name: string
   description?: string
-  minimumLevel?: number
+  minLevel?: number
   update?: number
   image?: string
   augmentType?: string
+  binding?: LootBinding
+  foundIn?: string[]
+  weight?: number
   effectsAdded?: {
     name?: string
     modifier?: string | number
-    bonus?: string
+    bonus?: string | number
   }[]
   setBonus?: { name: string }[]
 }
@@ -383,15 +386,18 @@ export const loadGearData = (): Promise<{
     const augments = augModule.default as RawAugment[]
 
     augments.forEach((aug, index) => {
-      const gearItem: GearItem = {
+      const gearItem: GearItem & GearAugment = {
         id: `aug-${String(index)}`,
         name: aug.name,
         type: 'Augment',
         description: aug.description ?? '',
-        minLevel: String(aug.minimumLevel ?? '1'),
-        absoluteMinLevel: String(aug.minimumLevel ?? '1'),
-        minimumLevel: aug.minimumLevel ?? 1,
+        minLevel: aug.minLevel ? Number(aug.minLevel) : 1,
+        absoluteMinLevel: String(aug.minLevel ?? '1'),
+        minimumLevel: aug.minLevel ? Number(aug.minLevel) : 1,
         augmentType: aug.augmentType ?? '',
+        binding: aug.binding,
+        foundIn: aug.foundIn,
+        weight: aug.weight,
         effectsAdded:
           aug.effectsAdded?.map(
             (e) =>
@@ -410,7 +416,7 @@ export const loadGearData = (): Promise<{
         restriction: '',
         hardness: '0',
         durability: '0',
-        weight: '0',
+        weight: String(aug.weight ?? '0'),
         update: String(aug.update ?? '0'),
         details: '',
         upgradeable: '',
@@ -426,7 +432,7 @@ export const loadGearData = (): Promise<{
       inferSetBonuses(gearItem)
       addItem(gearItem)
 
-      allAugments.push(gearItem as unknown as GearAugment)
+      allAugments.push(gearItem)
     })
   }
 

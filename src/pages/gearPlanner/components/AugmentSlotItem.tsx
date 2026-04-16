@@ -16,6 +16,9 @@ const AugmentSlotItem = (props: Props) => {
     currentConflicts,
     currentEquipped,
     currentSlottedAugments,
+    currentSlottedNearlyFinished,
+    currentSlottedRitualTable,
+    currentSlottedLostPurpose,
     idx,
     openSetBonusBrowser,
     selectedItem,
@@ -32,7 +35,7 @@ const AugmentSlotItem = (props: Props) => {
       return group
     }
 
-    return group.filter((aug) => !(getTroveKey(aug.name) in troveData))
+    return group.filter((aug) => getTroveKey(aug.name) in troveData)
   }
 
   return (
@@ -71,7 +74,7 @@ const AugmentSlotItem = (props: Props) => {
           }}
         >
           <span className='text-truncate text-dark d-flex align-items-center'>
-            {slotted ? `${slotted.name} (ML:${String(slotted.minimumLevel)})` : 'Empty Slot'}
+            {slotted ? `${slotted.name} (ML:${String(slotted.minLevel)})` : 'Empty Slot'}
           </span>
         </Dropdown.Toggle>
 
@@ -95,38 +98,28 @@ const AugmentSlotItem = (props: Props) => {
                 {groupName} Augments
               </Dropdown.Header>
 
-              {filterApplicable(applicable.groups[groupName]).map((aug) => {
-                const hasConflict = aug.effectsAdded?.some((ench) => {
-                  const pot = checkPotentialConflict(
+              {filterApplicable(applicable.groups[groupName]).map((aug: GearAugment) => {
+                const results = aug.effectsAdded?.map((ench) =>
+                  checkPotentialConflict(
                     ench,
                     currentEquipped,
                     slot,
                     currentSlottedAugments,
-                    undefined,
-                    undefined,
-                    undefined,
-                    selectedItem.id
+                    currentSlottedNearlyFinished,
+                    currentSlottedRitualTable,
+                    currentSlottedLostPurpose,
+                    selectedItem.id,
+                    idx
                   )
-                  return pot.isConflict && pot.isRedundant
-                })
+                )
 
-                const hasUpgrade = aug.effectsAdded?.some((ench) => {
-                  const pot = checkPotentialConflict(
-                    ench,
-                    currentEquipped,
-                    slot,
-                    currentSlottedAugments,
-                    undefined,
-                    undefined,
-                    undefined,
-                    selectedItem.id
-                  )
-                  return pot.isConflict && !pot.isRedundant
-                })
+                const hasConflict = results?.some((pot) => pot.isConflict && pot.isRedundant)
+                const hasUpgrade = results?.some((pot) => pot.isConflict && pot.isUpgrade)
+                const isOverpowered = results?.some((pot) => pot.isConflict && pot.isOverpowered)
 
                 return (
                   <Dropdown.Item
-                    key={`${aug.name}-${String(aug.minimumLevel)}`}
+                    key={`${aug.name}-${String(aug.minLevel)}`}
                     onClick={() => {
                       setSlottedAugment(selectedItem.id, idx, aug, slot)
                     }}
@@ -135,13 +128,15 @@ const AugmentSlotItem = (props: Props) => {
                   >
                     <span className='text-truncate'>
                       {troveData && <TroveBadge itemName={aug.name} troveData={troveData} />}
-                      {aug.name} (ML:{aug.minimumLevel})
+                      {aug.name} (ML:{aug.minLevel})
                     </span>
 
                     <span className='ms-2 flex-shrink-0'>
-                      {hasConflict && <GenericBadge badgeText='Conflicting' />}
+                      {hasConflict && <GenericBadge badgeText='Redundant' />}
 
                       {hasUpgrade && <GenericBadge badgeText='Upgrade' />}
+
+                      {isOverpowered && <GenericBadge badgeText='Overpowered' />}
                     </span>
                   </Dropdown.Item>
                 )
@@ -176,6 +171,9 @@ const AugmentSlotItem = (props: Props) => {
             source='slot'
             browsingSlot={slot}
             slottedAugments={currentSlottedAugments}
+            slottedNearlyFinished={currentSlottedNearlyFinished}
+            slottedRitualTable={currentSlottedRitualTable}
+            slottedLostPurpose={currentSlottedLostPurpose}
           />
         </div>
       )}
@@ -196,6 +194,9 @@ interface Props {
   currentConflicts: Record<string, EnchantmentConflict[]>
   currentEquipped: GearItem[]
   currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
+  currentSlottedNearlyFinished: Record<string, import('../types.ts').LootEnchantment | null>
+  currentSlottedRitualTable: Record<string, import('../types.ts').LootEnchantment | null>
+  currentSlottedLostPurpose: Record<string, import('../types.ts').LootEnchantment | null>
   setSlottedAugment: (itemId: string, slotIndex: number, augment: GearAugment | null, slot?: GearSlot) => void
   openSetBonusBrowser: (setName: string) => void
 }

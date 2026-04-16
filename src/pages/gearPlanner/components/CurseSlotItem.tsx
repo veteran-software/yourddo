@@ -9,6 +9,9 @@ const CurseSlotItem = (props: Props) => {
     currentConflicts,
     currentEquipped,
     currentSlottedAugments,
+    currentSlottedNearlyFinished,
+    currentSlottedRitualTable,
+    currentSlottedLostPurpose,
     selectedItem,
     setCurse,
     slot,
@@ -54,39 +57,24 @@ const CurseSlotItem = (props: Props) => {
           <Dropdown.Divider />
 
           {allCurses.map((curse) => {
-            const hasConflict =
+            const results =
               Array.isArray(curse.enchantments) &&
-              curse.enchantments.some((ench) => {
-                const potential = checkPotentialConflict(
+              curse.enchantments.map((ench) =>
+                checkPotentialConflict(
                   ench,
                   currentEquipped,
                   slot,
                   currentSlottedAugments,
-                  undefined,
-                  undefined,
-                  undefined,
+                  currentSlottedNearlyFinished,
+                  currentSlottedRitualTable,
+                  currentSlottedLostPurpose,
                   selectedItem.id
                 )
+              )
 
-                return potential.isConflict && potential.isRedundant
-              })
-
-            const hasUpgrade =
-              Array.isArray(curse.enchantments) &&
-              curse.enchantments.some((ench) => {
-                const pot = checkPotentialConflict(
-                  ench,
-                  currentEquipped,
-                  slot,
-                  currentSlottedAugments,
-                  undefined,
-                  undefined,
-                  undefined,
-                  selectedItem.id
-                )
-
-                return pot.isConflict && !pot.isRedundant
-              })
+            const hasConflict = results && results.some((pot) => pot.isConflict && pot.isRedundant)
+            const hasUpgrade = results && results.some((pot) => pot.isConflict && pot.isUpgrade)
+            const isOverpowered = results && results.some((pot) => pot.isConflict && pot.isOverpowered)
 
             return (
               <Dropdown.Item
@@ -113,6 +101,12 @@ const CurseSlotItem = (props: Props) => {
                       Upgrade
                     </span>
                   )}
+
+                  {isOverpowered && (
+                    <span className='badge bg-danger px-1 py-0 ms-1' style={{ fontSize: '0.55rem' }}>
+                      Overpowered
+                    </span>
+                  )}
                 </span>
               </Dropdown.Item>
             )
@@ -133,6 +127,9 @@ const CurseSlotItem = (props: Props) => {
             source='slot'
             browsingSlot={slot}
             slottedAugments={currentSlottedAugments}
+            slottedNearlyFinished={currentSlottedNearlyFinished}
+            slottedRitualTable={currentSlottedRitualTable}
+            slottedLostPurpose={currentSlottedLostPurpose}
           />
         </div>
       )}
@@ -148,6 +145,9 @@ interface Props {
   currentConflicts: Record<string, EnchantmentConflict[]>
   currentEquipped: GearItem[]
   currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
+  currentSlottedNearlyFinished: Record<string, import('../types.ts').LootEnchantment | null>
+  currentSlottedRitualTable: Record<string, import('../types.ts').LootEnchantment | null>
+  currentSlottedLostPurpose: Record<string, import('../types.ts').LootEnchantment | null>
   setCurse: (itemId: string, curse: Curse | null, slot?: GearSlot) => void
 }
 

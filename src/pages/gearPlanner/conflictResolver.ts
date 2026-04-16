@@ -314,11 +314,17 @@ const findMatchingAugments = (
   itemId: string,
   normalizedTargetName: string,
   normalizedTargetBonus: string,
-  slottedAugments?: Record<string, Record<number, import('./types').GearAugment | null>>
+  slottedAugments?: Record<string, Record<number, import('./types').GearAugment | null>>,
+  ignoreSlotIndex?: number
 ) => {
   let max = -Infinity
   if (slottedAugments?.[itemId]) {
-    Object.values(slottedAugments[itemId]).forEach((aug) => {
+    Object.entries(slottedAugments[itemId]).forEach(([slotIdxStr, aug]) => {
+      const slotIdx = Number(slotIdxStr)
+      if (ignoreSlotIndex !== undefined && slotIdx === ignoreSlotIndex) {
+        return
+      }
+
       aug?.effectsAdded?.forEach((ench) => {
         if (normalizeString(ench.name) === normalizedTargetName && getBonus(ench.bonus) === normalizedTargetBonus) {
           const val = parseModifierValue(ench.modifier)
@@ -342,8 +348,9 @@ export const checkPotentialConflict = (
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
-  ignoreItemId?: string
-): { isConflict: boolean; currentMax: number; isRedundant: boolean } => {
+  ignoreItemId?: string,
+  ignoreSlotIndex?: number
+): { isConflict: boolean; currentMax: number; isRedundant: boolean; isUpgrade?: boolean; isOverpowered?: boolean } => {
   const parsedValue = parseModifierValue(enchantment.modifier)
   const normalizedTargetName = normalizeString(enchantment.name)
 
@@ -363,7 +370,8 @@ export const checkPotentialConflict = (
   let foundMatch = false
 
   equippedItems.forEach((item) => {
-    if (getSlotOwner(item.slot) !== targetOwner || item.id === ignoreItemId) {
+    const isSameItem = item.id === ignoreItemId
+    if (getSlotOwner(item.slot) !== targetOwner) {
       return
     }
 
@@ -375,17 +383,26 @@ export const checkPotentialConflict = (
       return
     }
 
-    const inherentMax = findMatchingInherent(item, normalizedTargetName, normalizedTargetBonus)
-    const nfMax = findMatchingNearlyFinished(
+    // Only check inherent and other upgrades if NOT the same item
+    const inherentMax = isSameItem ? -Infinity : findMatchingInherent(item, normalizedTargetName, normalizedTargetBonus)
+    const nfMax = isSameItem
+      ? -Infinity
+      : findMatchingNearlyFinished(item.id, normalizedTargetName, normalizedTargetBonus, slottedNearlyFinished)
+
+    const rtMax = isSameItem
+      ? -Infinity
+      : findMatchingRitualTable(item.id, normalizedTargetName, normalizedTargetBonus, slottedRitualTable)
+
+    const augMax = findMatchingAugments(
       item.id,
       normalizedTargetName,
       normalizedTargetBonus,
-      slottedNearlyFinished
+      slottedAugments,
+      isSameItem ? ignoreSlotIndex : undefined
     )
-
-    const rtMax = findMatchingRitualTable(item.id, normalizedTargetName, normalizedTargetBonus, slottedRitualTable)
-    const augMax = findMatchingAugments(item.id, normalizedTargetName, normalizedTargetBonus, slottedAugments)
-    const lpMax = findMatchingLostPurpose(item.id, normalizedTargetName, normalizedTargetBonus, slottedLostPurpose)
+    const lpMax = isSameItem
+      ? -Infinity
+      : findMatchingLostPurpose(item.id, normalizedTargetName, normalizedTargetBonus, slottedLostPurpose)
 
     const itemMax = Math.max(inherentMax, nfMax, rtMax, augMax, lpMax)
     if (itemMax !== -Infinity) {
@@ -404,6 +421,8 @@ export const checkPotentialConflict = (
   return {
     isConflict: true,
     currentMax,
-    isRedundant: parsedValue === currentMax
+    isRedundant: parsedValue === currentMax,
+    isUpgrade: parsedValue > currentMax,
+    isOverpowered: parsedValue < currentMax
   }
 }

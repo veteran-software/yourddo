@@ -51,7 +51,7 @@ const EnchantmentList = (props: Props) => {
 
         if (source === 'slot') {
           const itemConflicts =
-            normalizeString(ench.name) in console ? conflicts[normalizeString(ench.name)] : undefined
+            normalizeString(ench.name) in conflicts ? conflicts[normalizeString(ench.name)] : undefined
 
           const bonusToMatch = getBonus(ench.bonus)
           const conflict = itemConflicts?.find((c) => getBonus(c.bonus) === bonusToMatch)

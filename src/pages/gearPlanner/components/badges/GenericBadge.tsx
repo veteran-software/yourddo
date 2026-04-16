@@ -9,17 +9,25 @@ const GenericBadge = (props: Props) => {
 
   switch (badgeText.toLowerCase()) {
     case 'conflicting':
+    case 'redundant':
       bg = 'warning'
       text = 'dark'
+      break
+    case 'upgrade':
+      bg = 'success'
+      text = 'light'
       break
     case 'equipped':
       bg = 'success'
       text = 'dark'
       break
-    case 'upgrade':
     case 'select':
       bg = 'info'
       text = 'dark'
+      break
+    case 'overpowered':
+      bg = 'danger'
+      text = 'light'
       break
     default:
       bg = 'primary'

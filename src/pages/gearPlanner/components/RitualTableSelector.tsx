@@ -8,7 +8,19 @@ import EnchantmentList from './EnchantmentList.tsx'
 import TroveBadge from './TroveBadge.tsx'
 
 const RitualTableSelector = (props: Props) => {
-  const { item, onSelect, selectedEnchantment, slot, troveData } = props
+  const {
+    item,
+    onSelect,
+    selectedEnchantment,
+    slot,
+    troveData,
+    conflicts,
+    equippedItems,
+    slottedAugments,
+    slottedNearlyFinished,
+    slottedRitualTable,
+    slottedLostPurpose
+  } = props
 
   // Determine the requirement based on the enchantment
   const isWeapon = item.enchantments.some((enchantment: LootEnchantment) => enchantment.name === 'Sealed in Fire')
@@ -108,10 +120,14 @@ const RitualTableSelector = (props: Props) => {
           <EnchantmentList
             enchantments={[selectedEnchantment]}
             itemId={item.id}
-            conflicts={{}}
-            equippedItems={[]}
+            conflicts={conflicts}
+            equippedItems={equippedItems}
             source='slot'
             browsingSlot={slot}
+            slottedAugments={slottedAugments}
+            slottedNearlyFinished={slottedNearlyFinished}
+            slottedRitualTable={slottedRitualTable}
+            slottedLostPurpose={slottedLostPurpose}
           />
         </div>
       )}
@@ -125,6 +141,12 @@ interface Props {
   selectedEnchantment: LootEnchantment | null
   onSelect: (enchantment: LootEnchantment | null) => void
   troveData: ItemRollup | null
+  conflicts: Record<string, import('../conflictResolver.ts').EnchantmentConflict[]>
+  equippedItems: GearItem[]
+  slottedAugments: Record<string, Record<number, import('../types.ts').GearAugment | null>>
+  slottedNearlyFinished: Record<string, LootEnchantment | null>
+  slottedRitualTable: Record<string, LootEnchantment | null>
+  slottedLostPurpose: Record<string, LootEnchantment | null>
 }
 
 export default RitualTableSelector

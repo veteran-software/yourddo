@@ -5,7 +5,18 @@ import type { CraftingIngredient } from '../../../types/crafting.ts'
 import type { GearItem, GearSlot, LootEnchantment } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
-const NearlyFinishedSelector = ({ item, slot, selectedEnchantment, onSelect }: Props) => {
+const NearlyFinishedSelector = ({
+  item,
+  slot,
+  selectedEnchantment,
+  onSelect,
+  conflicts,
+  equippedItems,
+  slottedAugments,
+  slottedNearlyFinished,
+  slottedRitualTable,
+  slottedLostPurpose
+}: Props) => {
   const recipes: Recipe[] = useMemo(
     () => (nearlyFinishedRecipes as unknown as NearlyFinishedRecipes).reforgingStation,
     []
@@ -80,10 +91,14 @@ const NearlyFinishedSelector = ({ item, slot, selectedEnchantment, onSelect }: P
           <EnchantmentList
             enchantments={[selectedEnchantment]}
             itemId={item.id}
-            conflicts={{}}
-            equippedItems={[]}
+            conflicts={conflicts}
+            equippedItems={equippedItems}
             source='slot'
             browsingSlot={slot}
+            slottedAugments={slottedAugments}
+            slottedNearlyFinished={slottedNearlyFinished}
+            slottedRitualTable={slottedRitualTable}
+            slottedLostPurpose={slottedLostPurpose}
           />
         </div>
       )}
@@ -96,6 +111,12 @@ interface Props {
   slot: GearSlot
   selectedEnchantment: LootEnchantment | null
   onSelect: (enchantment: LootEnchantment | null) => void
+  conflicts: Record<string, import('../conflictResolver.ts').EnchantmentConflict[]>
+  equippedItems: GearItem[]
+  slottedAugments: Record<string, Record<number, import('../types.ts').GearAugment | null>>
+  slottedNearlyFinished: Record<string, LootEnchantment | null>
+  slottedRitualTable: Record<string, LootEnchantment | null>
+  slottedLostPurpose: Record<string, LootEnchantment | null>
 }
 
 interface NearlyFinishedRecipes {

@@ -115,10 +115,14 @@ export interface GearAugmentSlot {
 export interface GearAugment {
   name: string
   augmentType: string
-  minimumLevel: number
-  effectsAdded?: LootEnchantment[]
+  minLevel: number
+  binding?: LootBinding
   description?: string
+  foundIn?: string[]
   image?: string
+  weight?: number
+  update?: number
+  effectsAdded?: LootEnchantment[]
   setBonus?: { name: string }[]
 }
 
@@ -127,7 +131,7 @@ export interface LootItem {
   name: string
   type: string
   description: string
-  minLevel: string
+  minLevel: string | number
   absoluteMinLevel: string
   binding?: LootBinding
   restriction: string

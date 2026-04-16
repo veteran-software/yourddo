@@ -18,7 +18,7 @@ const EssenceCraftingSelector = (props: Props) => {
     slot
   } = props
 
-  const minLevel = parseInt(selectedItem.minLevel) || 1
+  const minLevel = parseInt(String(selectedItem.minLevel)) || 1
 
   const getCurseBoost = () => {
     const curseName = activeSetup.slottedCurses[selectedItem.id]?.name
@@ -281,6 +281,9 @@ const EssenceCraftingSelector = (props: Props) => {
               source='slot'
               browsingSlot={slot}
               slottedAugments={props.currentSlottedAugments}
+              slottedNearlyFinished={props.currentSlottedNearlyFinished}
+              slottedRitualTable={props.currentSlottedRitualTable}
+              slottedLostPurpose={props.currentSlottedLostPurpose}
             />
           </div>
         )}
@@ -425,6 +428,9 @@ interface Props {
   currentConflicts: Record<string, EnchantmentConflict[]>
   currentEquipped: GearItem[]
   currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
+  currentSlottedNearlyFinished: Record<string, import('../types.ts').LootEnchantment | null>
+  currentSlottedRitualTable: Record<string, import('../types.ts').LootEnchantment | null>
+  currentSlottedLostPurpose: Record<string, import('../types.ts').LootEnchantment | null>
 }
 
 export default EssenceCraftingSelector

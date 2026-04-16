@@ -5,7 +5,18 @@ import type { CraftingIngredient } from '../../../types/crafting.ts'
 import type { GearItem, GearSlot, LootEnchantment } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
-const LostPurposeSelector = ({ item, slot, selectedEnchantment, onSelect }: Props) => {
+const LostPurposeSelector = ({
+  item,
+  slot,
+  selectedEnchantment,
+  onSelect,
+  conflicts,
+  equippedItems,
+  slottedAugments,
+  slottedNearlyFinished,
+  slottedRitualTable,
+  slottedLostPurpose
+}: Props) => {
   // Filter recipes for compatible items
   // cannithRepurposingStation.ts exports an array of recipes
   const recipes: CraftingIngredient[] = useMemo(
@@ -17,7 +28,7 @@ const LostPurposeSelector = ({ item, slot, selectedEnchantment, onSelect }: Prop
         }
 
         const isLegendaryRecipe: boolean = recipe.name.toLowerCase().includes('legendary')
-        const isLegendaryItem: boolean = (parseInt(item.minLevel) || 1) >= 20
+        const isLegendaryItem: boolean = (parseInt(String(item.minLevel)) || 1) >= 20
 
         if (isLegendaryItem) {
           return isLegendaryRecipe
@@ -105,10 +116,14 @@ const LostPurposeSelector = ({ item, slot, selectedEnchantment, onSelect }: Prop
           <EnchantmentList
             enchantments={[selectedEnchantment]}
             itemId={item.id}
-            conflicts={{}}
-            equippedItems={[]}
+            conflicts={conflicts}
+            equippedItems={equippedItems}
             source='slot'
             browsingSlot={slot}
+            slottedAugments={slottedAugments}
+            slottedNearlyFinished={slottedNearlyFinished}
+            slottedRitualTable={slottedRitualTable}
+            slottedLostPurpose={slottedLostPurpose}
           />
         </div>
       )}
@@ -121,6 +136,12 @@ interface Props {
   slot: GearSlot
   selectedEnchantment: LootEnchantment | null
   onSelect: (enchantment: LootEnchantment | null) => void
+  conflicts: Record<string, import('../conflictResolver.ts').EnchantmentConflict[]>
+  equippedItems: GearItem[]
+  slottedAugments: Record<string, Record<number, import('../types.ts').GearAugment | null>>
+  slottedNearlyFinished: Record<string, LootEnchantment | null>
+  slottedRitualTable: Record<string, LootEnchantment | null>
+  slottedLostPurpose: Record<string, LootEnchantment | null>
 }
 
 export default LostPurposeSelector

@@ -7,7 +7,7 @@ import {
   useState
 } from 'react'
 import { Card, Col } from 'react-bootstrap'
-import { FaMagnifyingGlass } from 'react-icons/fa6'
+import { FaArrowUpRightFromSquare, FaMagnifyingGlass } from 'react-icons/fa6'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks.ts'
 import {
   addSetup as addSetupAction,
@@ -59,6 +59,7 @@ import {
   type GearItem,
   type GearSetup,
   GearSlot,
+  type LootDropLocation,
   type LootEnchantment,
   type LootItem,
   type SetBonusIndex,
@@ -187,7 +188,7 @@ const useGearPlanner = (props: Props) => {
           if (!isFiligreeAlreadyPresent(setName, filigree.name)) {
             filigreeSetBonusIndex[setName].push({
               name: filigree.name,
-              minLevel: parseInt(filigree.minLevel) || 1
+              minLevel: parseInt(String(filigree.minLevel)) || 1
             })
           }
         }
@@ -276,6 +277,66 @@ const useGearPlanner = (props: Props) => {
     ]
 
     return metalMaterials.includes(materialLower)
+  }, [])
+
+  const formatDropLocations = useCallback((dropLocations: LootDropLocation[]): React.ReactNode => {
+    if (!Array.isArray(dropLocations) || dropLocations.length === 0) {
+      return ''
+    }
+
+    const cleanLocationName = (name: string): string => {
+      // Find the last set of parentheses
+      const lastParenOpen = name.lastIndexOf('(')
+      const lastParenClose = name.lastIndexOf(')')
+
+      if (lastParenOpen !== -1 && lastParenClose !== -1 && lastParenClose > lastParenOpen) {
+        // Only remove if it's the last thing in the string (possibly with some whitespace)
+        if (name.substring(lastParenClose + 1).trim() === '') {
+          return name.substring(0, lastParenOpen).trim()
+        }
+      }
+
+      return name.trim()
+    }
+
+    const locations = dropLocations
+      .map((loc) => {
+        let text = ''
+        if (loc.isCraftOnly) {
+          text = 'Craft Only'
+        } else if (loc.questWildernessChain) {
+          text = loc.questWildernessChain
+          if (loc.difficulty) text += ` (${loc.difficulty})`
+        } else if (loc.adventurePack) {
+          text = loc.adventurePack
+        } else if (loc.sourceType) {
+          text = loc.sourceType
+        }
+
+        if (!text) return null
+
+        const cleanedName = cleanLocationName(text)
+        const url = `https://ddocompendium.com/w/${encodeURIComponent(cleanedName)}`
+
+        return (
+          <a
+            key={text}
+            href={url}
+            target='_blank'
+            rel='noopener'
+            referrerPolicy='no-referrer-when-downgrade'
+            data-referrer='https://yourddo.com'
+            className='text-primary'
+          >
+            {text} <FaArrowUpRightFromSquare />
+          </a>
+        )
+      })
+      .filter((node): node is JSX.Element => node !== null)
+
+    if (locations.length === 0) return ''
+
+    return locations.reduce((prev, curr, i) => [prev, i > 0 ? ', ' : '', curr] as any, [])
   }, [])
 
   const isItemVisibleForClasses = useCallback((item: GearItem, setup: GearSetup) => {
@@ -400,9 +461,16 @@ const useGearPlanner = (props: Props) => {
         characterEquipped,
         activeSetup.slottedAugments,
         activeSetup.slottedNearlyFinished,
-        activeSetup.slottedRitualTable
+        activeSetup.slottedRitualTable,
+        activeSetup.slottedLostPurpose
       ),
-    [characterEquipped, activeSetup.slottedAugments, activeSetup.slottedNearlyFinished, activeSetup.slottedRitualTable]
+    [
+      characterEquipped,
+      activeSetup.slottedAugments,
+      activeSetup.slottedNearlyFinished,
+      activeSetup.slottedRitualTable,
+      activeSetup.slottedLostPurpose
+    ]
   )
 
   const artificerConflicts = useMemo(
@@ -411,13 +479,15 @@ const useGearPlanner = (props: Props) => {
         artificerEquipped,
         artificerPet.slottedAugments,
         artificerPet.slottedNearlyFinished,
-        artificerPet.slottedRitualTable
+        artificerPet.slottedRitualTable,
+        artificerPet.slottedLostPurpose
       ),
     [
       artificerEquipped,
       artificerPet.slottedAugments,
       artificerPet.slottedNearlyFinished,
-      artificerPet.slottedRitualTable
+      artificerPet.slottedRitualTable,
+      artificerPet.slottedLostPurpose
     ]
   )
 
@@ -651,10 +721,12 @@ const useGearPlanner = (props: Props) => {
       if (!armorFilterMatches(slot, item, setup)) return false
       if (!otherFilterMatches(slot, item, setup, ignoreSetFilter)) return false
 
+      if (!ownedOnlyMatches(item)) return false
+
       // Item Name Search Filter
       return nameSearchMatches(item)
     },
-    [levelMatches, weaponFilterMatches, armorFilterMatches, otherFilterMatches, nameSearchMatches]
+    [levelMatches, weaponFilterMatches, armorFilterMatches, otherFilterMatches, ownedOnlyMatches, nameSearchMatches]
   )
 
   const isSetVisibleInRange = useCallback(
@@ -918,6 +990,10 @@ const useGearPlanner = (props: Props) => {
     const itemMatchesSearch = (item: GearItem) => {
       // level, weapon/armor types, conflicts, etc.
       if (!shouldShowItem(item, item.slot, activeSetup, true)) return false
+
+      if (showOwnedOnly && troveData && !troveData[getTroveKey(item.name)]) {
+        return false
+      }
 
       let matchesSetName = false
       const combinedIndex = { ...itemSetBonusIndex, ...filigreeSetBonusIndex }
@@ -1279,7 +1355,7 @@ const useGearPlanner = (props: Props) => {
         if (!matches) return false
       }
 
-      const augLevel = aug.minimumLevel
+      const augLevel = aug.minLevel
       return augLevel <= levelLimit
     })
 
@@ -1302,8 +1378,8 @@ const useGearPlanner = (props: Props) => {
           return isOwnedB - isOwnedA
         }
 
-        if (b.minimumLevel !== a.minimumLevel) {
-          return b.minimumLevel - a.minimumLevel
+        if (b.minLevel !== a.minLevel) {
+          return b.minLevel - a.minLevel
         }
 
         return a.name.localeCompare(b.name)
@@ -1385,6 +1461,13 @@ const useGearPlanner = (props: Props) => {
             {selectedItem ? (
               <div className='text-center w-100 d-flex flex-column'>
                 <div className='fw-bold small text-dark mb-1'>{selectedItem.name}</div>
+                {Array.isArray(selectedItem.dropLocations) && selectedItem.dropLocations.length > 0 && (
+                  <div className='text-primary' style={{ fontSize: '0.65rem', paddingBottom: '0.25rem' }}>
+                    <hr className='mb-1 mt-0' />
+                    <div style={{ lineHeight: '1.2' }}>{formatDropLocations(selectedItem.dropLocations)}</div>
+                    <hr className='mt-1 mb-0' />
+                  </div>
+                )}
                 {selectedItem.name.includes('Gem of Many Facets') && (
                   <GemSetBonusSelector
                     selectedItem={selectedItem}
@@ -1460,6 +1543,12 @@ const useGearPlanner = (props: Props) => {
                     onSelect={(ench) => {
                       setNearlyFinishedEnchantment(selectedItem.id, ench, slot)
                     }}
+                    conflicts={currentConflicts}
+                    equippedItems={currentEquipped}
+                    slottedAugments={currentSlottedAugments}
+                    slottedNearlyFinished={currentSlottedNearlyFinished}
+                    slottedRitualTable={currentSlottedRitualTable}
+                    slottedLostPurpose={currentSlottedLostPurpose}
                   />
                 )}
 
@@ -1474,6 +1563,12 @@ const useGearPlanner = (props: Props) => {
                       setRitualTableEnchantment(selectedItem.id, ench, slot)
                     }}
                     troveData={troveData}
+                    conflicts={currentConflicts}
+                    equippedItems={currentEquipped}
+                    slottedAugments={currentSlottedAugments}
+                    slottedNearlyFinished={currentSlottedNearlyFinished}
+                    slottedRitualTable={currentSlottedRitualTable}
+                    slottedLostPurpose={currentSlottedLostPurpose}
                   />
                 )}
 
@@ -1485,6 +1580,12 @@ const useGearPlanner = (props: Props) => {
                     onSelect={(ench) => {
                       setLostPurposeEnchantment(selectedItem.id, ench, slot)
                     }}
+                    conflicts={currentConflicts}
+                    equippedItems={currentEquipped}
+                    slottedAugments={currentSlottedAugments}
+                    slottedNearlyFinished={currentSlottedNearlyFinished}
+                    slottedRitualTable={currentSlottedRitualTable}
+                    slottedLostPurpose={currentSlottedLostPurpose}
                   />
                 )}
 
@@ -1501,6 +1602,9 @@ const useGearPlanner = (props: Props) => {
                       currentConflicts={currentConflicts}
                       currentEquipped={currentEquipped}
                       currentSlottedAugments={currentSlottedAugments}
+                      currentSlottedNearlyFinished={currentSlottedNearlyFinished}
+                      currentSlottedRitualTable={currentSlottedRitualTable}
+                      currentSlottedLostPurpose={currentSlottedLostPurpose}
                     />
                   </div>
                 )}
@@ -1519,6 +1623,9 @@ const useGearPlanner = (props: Props) => {
                       currentConflicts={currentConflicts}
                       currentEquipped={currentEquipped}
                       currentSlottedAugments={currentSlottedAugments}
+                      currentSlottedNearlyFinished={currentSlottedNearlyFinished}
+                      currentSlottedRitualTable={currentSlottedRitualTable}
+                      currentSlottedLostPurpose={currentSlottedLostPurpose}
                     />
                   </div>
                 ) : null}
@@ -1528,7 +1635,7 @@ const useGearPlanner = (props: Props) => {
                     {selectedItem.augments.map((augSlot, idx) => {
                       const slotted =
                         selectedItem.id in currentSlottedAugments ? currentSlottedAugments[selectedItem.id][idx] : null
-                      const itemMinLevel = Number.parseInt(selectedItem.minLevel, 10) || 1
+                      const itemMinLevel = Number.parseInt(String(selectedItem.minLevel), 10) || 1
                       const applicable = getApplicableAugments(augSlot.augmentType, itemMinLevel)
 
                       return (
@@ -1543,6 +1650,9 @@ const useGearPlanner = (props: Props) => {
                           currentConflicts={currentConflicts}
                           currentEquipped={currentEquipped}
                           currentSlottedAugments={currentSlottedAugments}
+                          currentSlottedNearlyFinished={currentSlottedNearlyFinished}
+                          currentSlottedRitualTable={currentSlottedRitualTable}
+                          currentSlottedLostPurpose={currentSlottedLostPurpose}
                           setSlottedAugment={setSlottedAugment}
                           openSetBonusBrowser={openSetBonusBrowser}
                         />
@@ -1602,6 +1712,9 @@ const useGearPlanner = (props: Props) => {
                         currentConflicts={currentConflicts}
                         currentEquipped={currentEquipped}
                         currentSlottedAugments={currentSlottedAugments}
+                        currentSlottedNearlyFinished={currentSlottedNearlyFinished}
+                        currentSlottedRitualTable={currentSlottedRitualTable}
+                        currentSlottedLostPurpose={currentSlottedLostPurpose}
                         setCurse={setSlottedCurse}
                       />
                     </div>

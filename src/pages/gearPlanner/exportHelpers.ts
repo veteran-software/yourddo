@@ -153,7 +153,7 @@ export const generateBBCodeExport = (
       lines.push(`[indent][b][color=cyan]Essence Crafting:[/color][/b][/indent]`)
       lines.push(`[list]`)
 
-      const minLevel = parseInt(item.minLevel) || 1
+      const minLevel = parseInt(String(item.minLevel)) || 1
 
       Object.entries(essenceCrafting).forEach(([slotName, enchId]) => {
         if (enchId) {
@@ -353,7 +353,7 @@ export const generateDiscordMarkdownExport = (
     if (essenceCrafting && Object.values(essenceCrafting).some((v) => v !== null)) {
       lines.push(`- **Essence Crafting:**`)
 
-      const minLevel = parseInt(item.minLevel) || 1
+      const minLevel = parseInt(String(item.minLevel)) || 1
 
       Object.entries(essenceCrafting).forEach(([slotName, enchId]) => {
         if (enchId) {
