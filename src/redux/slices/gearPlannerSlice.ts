@@ -103,8 +103,8 @@ const gearPlannerSlice = createSlice({
             const otherSlot = s as GearSlot
             const otherItem = setup.slots[otherSlot]
             if (otherItem) {
-              setup.slottedFiligrees[otherItem.id] = []
-              setup.unlockedFiligreeSlots[otherItem.id] = 0
+              delete setup.slottedFiligrees[otherItem.id]
+              delete setup.unlockedFiligreeSlots[otherItem.id]
             }
             setup.slots[otherSlot] = null
           }
@@ -160,25 +160,37 @@ const gearPlannerSlice = createSlice({
 
           const oldItem = setup.slots[slot]
           if (oldItem) {
-            setup.slottedFiligrees[oldItem.id] = []
-            setup.unlockedFiligreeSlots[oldItem.id] = 0
+            delete setup.slottedFiligrees[oldItem.id]
+            delete setup.unlockedFiligreeSlots[oldItem.id]
           }
           setup.slots[slot] = item
+          if (item) {
+            setup.slottedFiligrees[item.id] ??= new Array(10).fill(null)
+            setup.unlockedFiligreeSlots[item.id] ??= 0
+          }
         }
       } else if (owner === 'artificer_pet') {
         const oldItem = state.artificerPet.slots[slot]
         if (oldItem) {
-          state.artificerPet.slottedFiligrees[oldItem.id] = []
-          state.artificerPet.unlockedFiligreeSlots[oldItem.id] = 0
+          delete state.artificerPet.slottedFiligrees[oldItem.id]
+          delete state.artificerPet.unlockedFiligreeSlots[oldItem.id]
         }
         state.artificerPet.slots[slot] = item
+        if (item) {
+          state.artificerPet.slottedFiligrees[item.id] ??= new Array(10).fill(null)
+          state.artificerPet.unlockedFiligreeSlots[item.id] ??= 0
+        }
       } else {
         const oldItem = state.druidPet.slots[slot]
         if (oldItem) {
-          state.druidPet.slottedFiligrees[oldItem.id] = []
-          state.druidPet.unlockedFiligreeSlots[oldItem.id] = 0
+          delete state.druidPet.slottedFiligrees[oldItem.id]
+          delete state.druidPet.unlockedFiligreeSlots[oldItem.id]
         }
         state.druidPet.slots[slot] = item
+        if (item) {
+          state.druidPet.slottedFiligrees[item.id] ??= new Array(10).fill(null)
+          state.druidPet.unlockedFiligreeSlots[item.id] ??= 0
+        }
       }
     },
     setAugment: (
