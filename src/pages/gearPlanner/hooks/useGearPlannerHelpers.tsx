@@ -1,5 +1,5 @@
 import { type JSX, type ReactNode, useCallback } from 'react'
-import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
+import { FaArrowUpRightFromSquare, FaGem } from 'react-icons/fa6'
 import { isMinorArtifact } from '../helpers'
 import {
   type GearItem,
@@ -154,22 +154,25 @@ export const FiligreeLabel = ({ item, setup, slot }: { item: GearItem; setup: Ge
   }
 
   return (
-    <button
-      type='button'
-      className='fw-bold border-0 bg-transparent p-0 text-start w-100'
-      style={{
-        color: '#ff8c00',
-        fontSize: '0.7rem'
-      }}
-      onClick={() => {
-        ;(
-          globalThis as unknown as {
-            openFiligreeModal: (item: GearItem, slot: GearSlot) => void
-          }
-        ).openFiligreeModal(item, slot)
-      }}
-    >
-      {label}
-    </button>
+    <div className='w-100 d-flex justify-content-center my-1'>
+      <button
+        type='button'
+        className='fw-bold border-0 bg-transparent p-0 d-flex align-items-center gap-1'
+        style={{
+          color: '#ff8c00',
+          fontSize: '0.7rem'
+        }}
+        onClick={() => {
+          ;(
+            globalThis as unknown as {
+              openFiligreeModal: (item: GearItem, slot: GearSlot) => void
+            }
+          ).openFiligreeModal(item, slot)
+        }}
+      >
+        <FaGem size={10} />
+        <span style={{ borderBottom: '1px dashed #ff8c00' }}>{label}</span>
+      </button>
+    </div>
   )
 }

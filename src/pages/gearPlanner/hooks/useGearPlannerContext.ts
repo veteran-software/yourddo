@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react'
-import { type PetState } from '../../../redux/slices/gearPlannerSlice'
 import { type EnchantmentConflict, getSlotOwner, resolveConflicts } from '../conflictResolver'
-import { type GearAugment, type GearItem, type GearSetup, type LootEnchantment } from '../types'
+import { type GearAugment, type GearItem, type GearSetup, type LootEnchantment, type PetState } from '../types'
 
 export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: Props) => {
   const characterEquipped: GearItem[] = useMemo(() => {

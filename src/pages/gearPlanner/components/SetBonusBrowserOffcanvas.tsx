@@ -19,6 +19,7 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
     setBrowsingSet,
     setShowSetBonusBrowser,
     showSetBonusBrowser,
+    setBrowsingSlot,
     showOwnedOnly,
     setShowOwnedOnly,
     troveData,
@@ -31,6 +32,7 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
       show={showSetBonusBrowser}
       onHide={() => {
         setShowSetBonusBrowser(false)
+        setBrowsingSlot(null)
       }}
       placement='end'
       scroll
@@ -161,7 +163,8 @@ interface Props {
     currentSlottedFiligrees: Record<string, (LootItem | null)[]>
   }
   selectItem: (slot: GearSlot, item: GearItem | null) => void
-  openSetBonusBrowser: (setName: string) => void
+  openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
+  setBrowsingSlot: (slot: GearSlot | null) => void
   browsingSlot: GearSlot | null
   showOwnedOnly: boolean
   setShowOwnedOnly: (show: boolean) => void

@@ -17,12 +17,9 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown
-  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type {
-  ShoppingListTotals
-} from '../../components/common/ShoppingListDrawer.tsx'
+import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
@@ -318,58 +315,52 @@ const EssenceCrafting = () => {
     sessionStorage.setItem(STORAGE_KEY, payload)
   }, [items, activeKeys, masterMinLevel, masterBindingBound, collapsedKeys])
 
-  // Enforce the rule dynamically: if effective ML for an item drops below 10,
-  // clear any selected Insightful effects (prefix/suffix/extra cannot be applied)
-  useEffect(() => {
-    const nextItems: Record<string, ItemState> = {}
-    let changed = false
+  // Enforce item constraints (Insightful effects at ML < 10, Augment color ML floors)
+  // We do this during render phase to avoid multiple re-renders and ESLint warnings.
+  const { constrainedItems, needsFix } = useMemo(() => {
+    let current = items
+    let anyChanged = false
 
-    changed = iterateItemsOnLevelChange(items, masterMinLevel, nextItems, isEnhancementAllowedAtML, changed)
-
-    if (changed) {
-      setItems((prev) => {
-        // Ensure we only update if it actually changed to avoid infinite loops
-        // since items is also in the dependency array
-        if (JSON.stringify(prev) === JSON.stringify(nextItems)) {
-          return prev
-        }
-
-        return nextItems
-      })
-    }
-  }, [masterMinLevel, isEnhancementAllowedAtML, items])
-
-  // Auto-raise per-item ML override to satisfy augment color ML floors.
-  // This runs after load and whenever items/master ML change. It will only ever raise
-  // an item's ML override; it will not automatically lower if the floor decreases.
-  useEffect(() => {
-    const nextItems: Record<string, ItemState> = {}
-
-    let changed = false
-
-    for (const key of Object.keys(items)) {
-      const currentItem = items[key]
+    // 1. Augment color ML floors: raise per-item ML override if needed
+    const nextAfterAugments: Record<string, ItemState> = {}
+    let augmentChanged = false
+    for (const key of Object.keys(current)) {
+      const currentItem = current[key]
       const floorForAugments = computeAugmentMinLevelFloor(currentItem)
       const effectiveML = currentItem.minLevelOverride ?? masterMinLevel
 
       if (effectiveML < floorForAugments) {
-        changed = true
-        nextItems[key] = { ...currentItem, minLevelOverride: floorForAugments }
+        augmentChanged = true
+        nextAfterAugments[key] = { ...currentItem, minLevelOverride: floorForAugments }
       } else {
-        nextItems[key] = currentItem
+        nextAfterAugments[key] = currentItem
       }
     }
-
-    if (changed) {
-      setItems((prev) => {
-        if (JSON.stringify(prev) === JSON.stringify(nextItems)) {
-          return prev
-        }
-
-        return nextItems
-      })
+    if (augmentChanged) {
+      anyChanged = true
+      current = nextAfterAugments
     }
-  }, [computeAugmentMinLevelFloor, items, masterMinLevel])
+
+    // 2. Insightful effects: clear if effective ML < 10
+    const nextAfterInsightful: Record<string, ItemState> = {}
+    const insightfulChanged = iterateItemsOnLevelChange(
+      current,
+      masterMinLevel,
+      nextAfterInsightful,
+      isEnhancementAllowedAtML,
+      false
+    )
+    if (insightfulChanged) {
+      anyChanged = true
+      current = nextAfterInsightful
+    }
+
+    return { constrainedItems: anyChanged ? current : items, needsFix: anyChanged }
+  }, [items, masterMinLevel, computeAugmentMinLevelFloor, isEnhancementAllowedAtML])
+
+  if (needsFix) {
+    setItems(constrainedItems)
+  }
 
   const toggleSlot = (slotKey: string) => {
     const wasActive = activeKeys.includes(slotKey)

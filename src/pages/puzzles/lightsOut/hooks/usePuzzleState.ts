@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import type { Board, Config, Presses } from '../types/types'
 
 const usePuzzleState = (
@@ -14,13 +14,19 @@ const usePuzzleState = (
 
   const { mask } = config
 
-  useLayoutEffect(() => {
+  // Adjusting state during render (replaces useLayoutEffect with synchronous updates)
+  const [prevConfig, setPrevConfig] = useState(config)
+  const [prevInitBoard, setPrevInitBoard] = useState(() => initBoard)
+
+  if (config !== prevConfig || initBoard !== prevInitBoard) {
+    setPrevConfig(config)
+    setPrevInitBoard(() => initBoard)
     setBoard(initBoard(config))
     setSolution(null)
     setMarkedSolution(null)
     setEditMode(true)
     setShowSolution(false)
-  }, [initBoard])
+  }
 
   const handleCellClick = useCallback(
     (r: number, c: number): void => {

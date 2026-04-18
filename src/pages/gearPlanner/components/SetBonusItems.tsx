@@ -1,8 +1,6 @@
 import { Accordion } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types.ts'
-import {
-  cannithRepurposingStation as lostPurposeRecipes
-} from '../../../data/cannithRepurposingStation.ts'
+import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
 import type { SetBonus } from '../../../types/crafting.ts'
 import { getTroveKey } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
@@ -53,7 +51,8 @@ const SetBonusItems = (props: Props) => {
 
     let isMatch: boolean | undefined = indexedItems?.some(
       (ii: SetBonusIndexEntry) =>
-        ii.name === item.name && (item.slot === GearSlot.Filigree || Math.abs(ii.minLevel - itemLevel) <= 1)
+        ii.name === item.name &&
+        (item.slot === GearSlot.Filigree || ii.minLevel === 0 || Math.abs(ii.minLevel - itemLevel) <= 1)
     )
 
     // 1b. Check if the item itself explicitly lists this set bonus
@@ -184,7 +183,7 @@ interface Props {
     currentSlottedFiligrees: Record<string, (LootItem | null)[]>
   }
   selectItem: (slot: GearSlot, item: GearItem | null) => void
-  openSetBonusBrowser: (setName: string) => void
+  openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
   browsingSlot: GearSlot | null
 }
 

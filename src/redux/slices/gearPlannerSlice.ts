@@ -9,27 +9,13 @@ import {
   type GearSetup,
   GearSlot,
   type LootEnchantment,
-  type LootItem
+  type LootItem,
+  type PetState
 } from '../../pages/gearPlanner/types'
-
-export interface PetState {
-  slots: Record<string, GearItem | null>
-  slottedAugments: Record<string, Record<number, GearAugment | null>>
-  slottedCurses: Record<string, Curse | null>
-  slottedFiligrees: Record<string, (GearItem | null)[]>
-  unlockedFiligreeSlots: Record<string, number>
-  slottedGemSetBonuses: Record<string, (string | null)[]>
-  slottedEssenceEnchantments: Record<string, Record<string, string | null>>
-  slottedNearlyFinished: Record<string, LootEnchantment | null>
-  slottedRitualTable: Record<string, LootEnchantment | null>
-  slottedLostPurpose: Record<string, LootEnchantment | null>
-}
 
 interface GearPlannerState {
   characterSetups: GearSetup[]
   activeSetupId: string
-  artificerPet: PetState
-  druidPet: PetState
 }
 
 const initialPetState = (): PetState => ({
@@ -66,12 +52,12 @@ const initialState: GearPlannerState = {
       slottedEssenceEnchantments: {},
       slottedNearlyFinished: {},
       slottedRitualTable: {},
-      slottedLostPurpose: {}
+      slottedLostPurpose: {},
+      artificerPet: initialPetState(),
+      druidPet: initialPetState()
     }
   ],
-  activeSetupId: 'default',
-  artificerPet: initialPetState(),
-  druidPet: initialPetState()
+  activeSetupId: 'default'
 }
 
 type SlotOwner = 'character' | 'artificer_pet' | 'druid_pet'
@@ -97,18 +83,22 @@ const gearPlannerSlice = createSlice({
       const { setupId, item, slot } = action.payload
       const setup = state.characterSetups.find((s) => s.id === setupId)
       if (setup && item && isMinorArtifact(item)) {
-        Object.keys(setup.slots).forEach((s) => {
-          const currentItem = setup.slots[s as GearSlot]
+        const itemIdsToRemove: string[] = []
+        Object.entries(setup.slots).forEach(([s, currentItem]) => {
           if (currentItem && isMinorArtifact(currentItem) && s !== slot) {
-            const otherSlot = s as GearSlot
-            const otherItem = setup.slots[otherSlot]
-            if (otherItem) {
-              delete setup.slottedFiligrees[otherItem.id]
-              delete setup.unlockedFiligreeSlots[otherItem.id]
-            }
-            setup.slots[otherSlot] = null
+            itemIdsToRemove.push(currentItem.id)
+            setup.slots[s as GearSlot] = null
           }
         })
+
+        if (itemIdsToRemove.length > 0) {
+          setup.slottedFiligrees = Object.fromEntries(
+            Object.entries(setup.slottedFiligrees).filter(([id]) => !itemIdsToRemove.includes(id))
+          )
+          setup.unlockedFiligreeSlots = Object.fromEntries(
+            Object.entries(setup.unlockedFiligreeSlots).filter(([id]) => !itemIdsToRemove.includes(id))
+          )
+        }
       }
     },
     setActiveSetup: (state, action: PayloadAction<string>) => {
@@ -148,49 +138,41 @@ const gearPlannerSlice = createSlice({
     },
     equipItem: (state, action: PayloadAction<{ slot: GearSlot; item: GearItem | null }>) => {
       const { slot, item } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
+
       const owner = getSlotOwner(slot)
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-        if (setup) {
-          gearPlannerSlice.caseReducers.enforceSingleMinorArtifact(state, {
-            payload: { setupId: state.activeSetupId, item, slot },
-            type: 'gearPlanner/enforceSingleMinorArtifact'
-          })
+        gearPlannerSlice.caseReducers.enforceSingleMinorArtifact(state, {
+          payload: { setupId: state.activeSetupId, item, slot },
+          type: 'gearPlanner/enforceSingleMinorArtifact'
+        })
+      }
 
-          const oldItem = setup.slots[slot]
-          if (oldItem) {
-            delete setup.slottedFiligrees[oldItem.id]
-            delete setup.unlockedFiligreeSlots[oldItem.id]
-          }
-          setup.slots[slot] = item
-          if (item) {
-            setup.slottedFiligrees[item.id] ??= new Array(10).fill(null)
-            setup.unlockedFiligreeSlots[item.id] ??= 0
-          }
-        }
+      let target: PetState | GearSetup
+      if (owner === 'character') {
+        target = setup
       } else if (owner === 'artificer_pet') {
-        const oldItem = state.artificerPet.slots[slot]
-        if (oldItem) {
-          delete state.artificerPet.slottedFiligrees[oldItem.id]
-          delete state.artificerPet.unlockedFiligreeSlots[oldItem.id]
-        }
-        state.artificerPet.slots[slot] = item
-        if (item) {
-          state.artificerPet.slottedFiligrees[item.id] ??= new Array(10).fill(null)
-          state.artificerPet.unlockedFiligreeSlots[item.id] ??= 0
-        }
+        target = setup.artificerPet
       } else {
-        const oldItem = state.druidPet.slots[slot]
-        if (oldItem) {
-          delete state.druidPet.slottedFiligrees[oldItem.id]
-          delete state.druidPet.unlockedFiligreeSlots[oldItem.id]
-        }
-        state.druidPet.slots[slot] = item
-        if (item) {
-          state.druidPet.slottedFiligrees[item.id] ??= new Array(10).fill(null)
-          state.druidPet.unlockedFiligreeSlots[item.id] ??= 0
-        }
+        target = setup.druidPet
+      }
+
+      const oldItem = (target.slots as Record<string, GearItem | null>)[slot]
+      if (oldItem) {
+        target.slottedFiligrees = Object.fromEntries(
+          Object.entries(target.slottedFiligrees).filter(([id]) => id !== oldItem.id)
+        )
+        target.unlockedFiligreeSlots = Object.fromEntries(
+          Object.entries(target.unlockedFiligreeSlots).filter(([id]) => id !== oldItem.id)
+        )
+      }
+
+      ;(target.slots as Record<string, GearItem | null>)[slot] = item
+      if (item) {
+        target.slottedFiligrees[item.id] ??= new Array(10).fill(null)
+        target.unlockedFiligreeSlots[item.id] ??= 0
       }
     },
     setAugment: (
@@ -203,14 +185,12 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotIndex, augment, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
       let owner: SlotOwner = 'character'
 
       if (slot) {
         owner = getSlotOwner(slot)
-      } else {
-        // Fallback to searching if slot is not provided (though it should be)
-        // This is tricky because itemId is not unique across owners if we are unlucky,
-        // but it's usually unique.
       }
 
       const updateAugment = (petState: PetState) => {
@@ -219,15 +199,12 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-        if (setup) {
-          setup.slottedAugments[itemId] ??= {}
-          setup.slottedAugments[itemId][slotIndex] = augment
-        }
+        setup.slottedAugments[itemId] ??= {}
+        setup.slottedAugments[itemId][slotIndex] = augment
       } else if (owner === 'artificer_pet') {
-        updateAugment(state.artificerPet)
+        updateAugment(setup.artificerPet)
       } else {
-        updateAugment(state.druidPet)
+        updateAugment(setup.druidPet)
       }
     },
     setCurse: (
@@ -239,6 +216,8 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, curse, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
       let owner: SlotOwner = 'character'
 
       if (slot) {
@@ -246,14 +225,11 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-        if (setup) {
-          setup.slottedCurses[itemId] = curse
-        }
+        setup.slottedCurses[itemId] = curse
       } else if (owner === 'artificer_pet') {
-        state.artificerPet.slottedCurses[itemId] = curse
+        setup.artificerPet.slottedCurses[itemId] = curse
       } else {
-        state.druidPet.slottedCurses[itemId] = curse
+        setup.druidPet.slottedCurses[itemId] = curse
       }
     },
     setFiligree: (
@@ -266,6 +242,8 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotIndex, filigree, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
       let owner: SlotOwner = 'character'
 
       if (slot) {
@@ -278,15 +256,12 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-        if (setup) {
-          setup.slottedFiligrees[itemId] ??= new Array(10).fill(null) as GearItem[]
-          setup.slottedFiligrees[itemId][slotIndex] = filigree as GearItem | null
-        }
+        setup.slottedFiligrees[itemId] ??= new Array(10).fill(null) as GearItem[]
+        setup.slottedFiligrees[itemId][slotIndex] = filigree as GearItem | null
       } else if (owner === 'artificer_pet') {
-        updateFiligree(state.artificerPet)
+        updateFiligree(setup.artificerPet)
       } else {
-        updateFiligree(state.druidPet)
+        updateFiligree(setup.druidPet)
       }
     },
     setUnlockedFiligreeSlots: (
@@ -298,6 +273,8 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, numSlots, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
       let owner: SlotOwner = 'character'
 
       if (slot) {
@@ -305,14 +282,11 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-        if (setup) {
-          setup.unlockedFiligreeSlots[itemId] = numSlots
-        }
+        setup.unlockedFiligreeSlots[itemId] = numSlots
       } else if (owner === 'artificer_pet') {
-        state.artificerPet.unlockedFiligreeSlots[itemId] = numSlots
+        setup.artificerPet.unlockedFiligreeSlots[itemId] = numSlots
       } else {
-        state.druidPet.unlockedFiligreeSlots[itemId] = numSlots
+        setup.druidPet.unlockedFiligreeSlots[itemId] = numSlots
       }
     },
     setGemSetBonus: (
@@ -325,6 +299,8 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotIndex, setName, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
       let owner: SlotOwner = 'character'
 
       if (slot) {
@@ -337,15 +313,12 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-        if (setup) {
-          setup.slottedGemSetBonuses[itemId] ??= [null, null]
-          setup.slottedGemSetBonuses[itemId][slotIndex] = setName
-        }
+        setup.slottedGemSetBonuses[itemId] ??= [null, null]
+        setup.slottedGemSetBonuses[itemId][slotIndex] = setName
       } else if (owner === 'artificer_pet') {
-        updateGemBonus(state.artificerPet)
+        updateGemBonus(setup.artificerPet)
       } else {
-        updateGemBonus(state.druidPet)
+        updateGemBonus(setup.druidPet)
       }
     },
     setEssenceEnchantment: (
@@ -358,6 +331,8 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotName, enchantmentId, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
       let owner: SlotOwner = 'character'
 
       if (slot) {
@@ -370,15 +345,12 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-        if (setup) {
-          setup.slottedEssenceEnchantments[itemId] ??= {}
-          setup.slottedEssenceEnchantments[itemId][slotName] = enchantmentId
-        }
+        setup.slottedEssenceEnchantments[itemId] ??= {}
+        setup.slottedEssenceEnchantments[itemId][slotName] = enchantmentId
       } else if (owner === 'artificer_pet') {
-        updateEssence(state.artificerPet)
+        updateEssence(setup.artificerPet)
       } else {
-        updateEssence(state.druidPet)
+        updateEssence(setup.druidPet)
       }
     },
     setNearlyFinishedEnchantment: (
@@ -390,6 +362,8 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, enchantment, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
       let owner: SlotOwner = 'character'
 
       if (slot) {
@@ -401,14 +375,11 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-        if (setup) {
-          setup.slottedNearlyFinished[itemId] = enchantment
-        }
+        setup.slottedNearlyFinished[itemId] = enchantment
       } else if (owner === 'artificer_pet') {
-        updateNearlyFinished(state.artificerPet)
+        updateNearlyFinished(setup.artificerPet)
       } else {
-        updateNearlyFinished(state.druidPet)
+        updateNearlyFinished(setup.druidPet)
       }
     },
     setRitualTableEnchantment: (
@@ -420,6 +391,8 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, enchantment, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
       let owner: SlotOwner = 'character'
 
       if (slot) {
@@ -431,14 +404,11 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-        if (setup) {
-          setup.slottedRitualTable[itemId] = enchantment
-        }
+        setup.slottedRitualTable[itemId] = enchantment
       } else if (owner === 'artificer_pet') {
-        updateRitualTable(state.artificerPet)
+        updateRitualTable(setup.artificerPet)
       } else {
-        updateRitualTable(state.druidPet)
+        updateRitualTable(setup.druidPet)
       }
     },
     setLostPurposeEnchantment: (
@@ -450,6 +420,8 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, enchantment, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
       let owner: SlotOwner = 'character'
 
       if (slot) {
@@ -461,14 +433,11 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-        if (setup) {
-          setup.slottedLostPurpose[itemId] = enchantment
-        }
+        setup.slottedLostPurpose[itemId] = enchantment
       } else if (owner === 'artificer_pet') {
-        updateLostPurpose(state.artificerPet)
+        updateLostPurpose(setup.artificerPet)
       } else {
-        updateLostPurpose(state.druidPet)
+        updateLostPurpose(setup.druidPet)
       }
     },
     setItemMinLevel: (
@@ -480,6 +449,8 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, minLevel, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
       let owner: SlotOwner = 'character'
 
       if (slot) {
@@ -494,17 +465,14 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-        if (setup) {
-          const currentItem = Object.values(setup.slots).find((i) => i?.id === itemId)
-          if (currentItem) {
-            currentItem.minLevel = String(minLevel)
-          }
+        const currentItem = Object.values(setup.slots).find((i) => i?.id === itemId)
+        if (currentItem) {
+          currentItem.minLevel = String(minLevel)
         }
       } else if (owner === 'artificer_pet') {
-        updateMinLevel(state.artificerPet)
+        updateMinLevel(setup.artificerPet)
       } else {
-        updateMinLevel(state.druidPet)
+        updateMinLevel(setup.druidPet)
       }
     },
     setItemMaterial: (
@@ -516,6 +484,8 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, material, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
       let owner: SlotOwner = 'character'
 
       if (slot) {
@@ -530,17 +500,14 @@ const gearPlannerSlice = createSlice({
       }
 
       if (owner === 'character') {
-        const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-        if (setup) {
-          const currentItem = Object.values(setup.slots).find((i) => i?.id === itemId)
-          if (currentItem) {
-            currentItem.material = material
-          }
+        const currentItem = Object.values(setup.slots).find((i) => i?.id === itemId)
+        if (currentItem) {
+          currentItem.material = material
         }
       } else if (owner === 'artificer_pet') {
-        updateMaterial(state.artificerPet)
+        updateMaterial(setup.artificerPet)
       } else {
-        updateMaterial(state.druidPet)
+        updateMaterial(setup.druidPet)
       }
     }
   }

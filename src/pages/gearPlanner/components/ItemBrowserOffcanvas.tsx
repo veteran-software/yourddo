@@ -23,14 +23,20 @@ const ItemBrowserOffcanvas = (props: Props) => {
     showOwnedOnly,
     itemNameSearch,
     setItemNameSearch,
-    troveData
+    troveData,
+    showSetBonusBrowser
   } = props
 
-  const { renderCategorizedItems } = renderItemBrowser({ ...props })
+  const handleSelectItem = (slot: GearSlot, item: GearItem | null) => {
+    selectItem(slot, item)
+    openSlotBrowser(null)
+  }
+
+  const { renderCategorizedItems } = renderItemBrowser({ ...props, selectItem: handleSelectItem })
 
   return (
     <Offcanvas
-      show={browsingSlot !== null}
+      show={browsingSlot !== null && !showSetBonusBrowser}
       onHide={() => {
         openSlotBrowser(null)
       }}
@@ -107,7 +113,7 @@ const ItemBrowserOffcanvas = (props: Props) => {
               <button
                 className='btn btn-outline-danger btn-sm w-100 d-flex justify-content-between align-items-center mb-3'
                 onClick={() => {
-                  selectItem(browsingSlot, null)
+                  handleSelectItem(browsingSlot, null)
                 }}
               >
                 <span>Clear Slot</span>
@@ -157,7 +163,8 @@ interface Props {
   }
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   isMetal: (material: string | null | undefined) => boolean
-  openSetBonusBrowser: (setName: string) => void
+  openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
+  showSetBonusBrowser: boolean
   observerTarget: RefObject<HTMLDivElement | null>
   itemNameSearch: string
   setItemNameSearch: (search: string) => void

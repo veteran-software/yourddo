@@ -25,8 +25,12 @@ const RitualTableSelector = (props: Props) => {
   } = props
 
   // Determine the requirement based on the enchantment
-  const isWeapon = item.enchantments.some((enchantment: LootEnchantment) => enchantment.name === 'Sealed in Fire')
-  const isAccessory = item.enchantments.some((enchantment: LootEnchantment) => enchantment.name === 'Sealed in Undeath')
+  const isWeapon =
+    Array.isArray(item.enchantments) &&
+    item.enchantments.some((enchantment: LootEnchantment) => enchantment.name === 'Sealed in Fire')
+  const isAccessory =
+    Array.isArray(item.enchantments) &&
+    item.enchantments.some((enchantment: LootEnchantment) => enchantment.name === 'Sealed in Undeath')
 
   let requirementName: string | null = null
   if (isWeapon) {
@@ -66,14 +70,16 @@ const RitualTableSelector = (props: Props) => {
           }}
         >
           <span className='text-truncate text-dark'>
-            {recipes.find((r) => {
-              const effect = r.effectsAdded?.[0]
-              return (
-                (effect?.name ?? r.name) === selectedEnchantment?.name &&
-                (effect?.modifier?.toString() ?? '1') === selectedEnchantment.modifier &&
-                (effect?.bonus ?? 'Enhancement') === selectedEnchantment.bonus
-              )
-            })?.name ?? '-- Select Upgrade --'}
+            {selectedEnchantment
+              ? (recipes.find((r) => {
+                  const effect = r.effectsAdded?.[0]
+                  return (
+                    (effect?.name ?? r.name) === selectedEnchantment.name &&
+                    (effect?.modifier?.toString() ?? '1') === selectedEnchantment.modifier &&
+                    (effect?.bonus ?? 'Enhancement') === selectedEnchantment.bonus
+                  )
+                })?.name ?? selectedEnchantment.name)
+              : '-- Select Upgrade --'}
           </span>
         </Dropdown.Toggle>
 

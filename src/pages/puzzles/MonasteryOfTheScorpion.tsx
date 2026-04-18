@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, ButtonGroup, Card, Col, Form, Row, ToggleButton } from 'react-bootstrap'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import activeTileImg from '../../assets/tile_active.png'
@@ -11,9 +11,8 @@ const ROWS = 4
 const COLS = 5
 type EditAction = 'toggle' | 'remove'
 
+const { initBoard, toggleCell, randomPresses, applyPresses, solveBoard } = lightsOutSolver()
 const MonasteryOfTheScorpion = () => {
-  const { initBoard, toggleCell, randomPresses, applyPresses, solveBoard } = lightsOutSolver()
-
   // maskState: true = tile present, false = hole
   const [mask, setMask] = useState<boolean[][]>(() =>
     Array.from({ length: ROWS }, () => Array(COLS).fill(true) as boolean[])
@@ -29,12 +28,14 @@ const MonasteryOfTheScorpion = () => {
   const [showSolution, setShowSolution] = useState(false)
 
   // reset the board whenever mask changes (holes => forced off)
-  useLayoutEffect(() => {
+  const [prevMask, setPrevMask] = useState(mask)
+  if (mask !== prevMask) {
+    setPrevMask(mask)
     setBoard(initBoard({ rows: ROWS, cols: COLS, mask }))
     setSolution(null)
     setMarkedSolution(null)
     setShowSolution(false)
-  }, [mask])
+  }
 
   const handleSolve = () => {
     setEditMode(false)

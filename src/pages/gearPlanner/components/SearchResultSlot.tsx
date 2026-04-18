@@ -232,7 +232,7 @@ interface Props {
   currentSlottedFiligrees: Record<string, (GearItem | null)[]>
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   setShowEnchantmentSearch: (show: boolean) => void
-  openSetBonusBrowser: (setName: string) => void
+  openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
   troveData: ItemRollup | null
   browsingSet?: string | null
 }

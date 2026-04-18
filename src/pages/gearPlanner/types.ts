@@ -174,6 +174,19 @@ export interface Curse {
   type: string
 }
 
+export interface PetState {
+  slots: Record<string, GearItem | null>
+  slottedAugments: Record<string, Record<number, GearAugment | null>>
+  slottedCurses: Record<string, Curse | null>
+  slottedFiligrees: Record<string, (GearItem | null)[]>
+  unlockedFiligreeSlots: Record<string, number>
+  slottedGemSetBonuses: Record<string, (string | null)[]>
+  slottedEssenceEnchantments: Record<string, Record<string, string | null>>
+  slottedNearlyFinished: Record<string, LootEnchantment | null>
+  slottedRitualTable: Record<string, LootEnchantment | null>
+  slottedLostPurpose: Record<string, LootEnchantment | null>
+}
+
 export interface GearSetup {
   id: string
   name: string
@@ -194,6 +207,8 @@ export interface GearSetup {
   slottedNearlyFinished: Record<string, LootEnchantment | null> // itemId -> selected enchantment
   slottedRitualTable: Record<string, LootEnchantment | null> // itemId -> selected enchantment
   slottedLostPurpose: Record<string, LootEnchantment | null> // itemId -> selected enchantment
+  artificerPet: PetState
+  druidPet: PetState
 }
 
 export const GEAR_CLASSES = [
@@ -259,7 +274,7 @@ export const WEAPON_TYPES: Record<string, string[]> = {
   Throwing: ['Dart', 'Shuriken', 'Throwing Axe', 'Throwing Dagger', 'Throwing Hammer']
 }
 
-export const SHIELD_TYPES = ['Buckler', 'Large Shield', 'Orb', 'Rune Arm', 'Small Shield', 'Tower Shield']
+export const SHIELD_TYPES = ['Buckler', 'Large Shield', 'Orb', 'Rune Arm', 'Shield', 'Small Shield', 'Tower Shield']
 
 export const ARMOR_TYPES = ['Cloth Armor', 'Docent', 'Heavy Armor', 'Light Armor', 'Medium Armor']
 

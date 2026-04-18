@@ -5,10 +5,52 @@ import {
   type Curse,
   type GearAugment,
   type GearItem,
+  GearSlot,
   type LootEnchantment,
   type LootItem,
   WEAPON_TYPES
 } from './types.ts'
+
+export const isEssenceCraftedName = (name: string) => name.startsWith('Essence Crafted')
+
+export const reconstructEssenceCraftedItem = (name: string, slot: GearSlot, minLevel: number): GearItem => {
+  let type = 'Crafted'
+  if (name.includes('Weapon')) type = 'Weapon'
+  else if (name.includes('Shield')) type = 'Shield'
+  else if (name.includes('Rune Arm')) type = 'Rune Arm'
+  else if (name.includes('Orb')) type = 'Orb'
+  else if (name.includes('Armor')) type = 'Armor'
+
+  return {
+    id: `essence-crafted-${slot}-${type}`,
+    name: name,
+    pageTitle: name,
+    slot: slot,
+    type: type,
+    description: 'A custom crafted item using essence crafting.',
+    minLevel: String(minLevel),
+    absoluteMinLevel: String(minLevel),
+    binding: { type: 'Bound to Character on Acquire', to: 'Character', from: 'Crafting' },
+    restriction: '',
+    material: '',
+    hardness: '0',
+    durability: '0',
+    weight: '0',
+    dropLocations: [{ sourceType: 'Essence Crafting', isCraftOnly: true }],
+    update: '0',
+    details: '',
+    upgradeable: 'No',
+    upgradedFrom: '',
+    bug: '',
+    replaced: '',
+    icon: 'essence_crafted',
+    image: 'essence_crafted',
+    optionsRaw: '',
+    enchantments: [],
+    essenceSlots: ['prefix', 'suffix', 'extra'],
+    isEssenceCrafted: true
+  }
+}
 
 export const isWeapon = (item: LootItem) => {
   return Object.values(WEAPON_TYPES).some((types) => types.includes(item.type)) || item.type === 'Shield'

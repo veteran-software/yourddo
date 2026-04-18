@@ -2,7 +2,7 @@ import { type JSX, type ReactNode } from 'react'
 import { Card, Col } from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import type { ItemRollup } from '../../../components/trove/types.ts'
-import { type PetState } from '../../../redux/slices/gearPlannerSlice'
+import { SLOT_GROUPS } from '../../../utils/augmentUtils.ts'
 import AugmentSlotItem from '../components/AugmentSlotItem'
 import CurseSlotItem from '../components/CurseSlotItem'
 import EnchantmentList from '../components/EnchantmentList'
@@ -15,6 +15,7 @@ import RitualTableSelector from '../components/RitualTableSelector'
 import TroveBadge from '../components/TroveBadge'
 import { type EnchantmentConflict, getSlotOwner } from '../conflictResolver'
 import { type EssenceEnchantment } from '../dataLoader'
+import { getMaxFiligreeSlots, isMinorArtifact } from '../helpers'
 import {
   type Curse,
   type GearAugment,
@@ -23,8 +24,10 @@ import {
   type GearSetup,
   GearSlot,
   type LootDropLocation,
-  type LootEnchantment
+  type LootEnchantment,
+  type PetState
 } from '../types'
+import { FiligreeLabel } from './useGearPlannerHelpers'
 
 export const renderGearPlanner = (props: Props) => {
   const {
@@ -135,8 +138,14 @@ export const renderGearPlanner = (props: Props) => {
                 <ItemSetBonusDisplay
                   selectedItem={selectedItem}
                   activeSetup={activeSetup}
-                  openSetBonusBrowser={openSetBonusBrowser}
+                  openSetBonusBrowser={(setName: string) => {
+                    openSetBonusBrowser(setName, slot)
+                  }}
                 />
+
+                {(getMaxFiligreeSlots(selectedItem) > 0 || isMinorArtifact(selectedItem)) && (
+                  <FiligreeLabel item={selectedItem} setup={activeSetup} slot={slot} />
+                )}
 
                 <div className='text-secondary mb-0' style={{ fontSize: '0.7rem' }}>
                   ML: {selectedItem.minLevel || '1'} | {selectedItem.type || 'Item'}
@@ -153,18 +162,21 @@ export const renderGearPlanner = (props: Props) => {
                   )}
                 </div>
 
-                {activeSetup.slottedCurses?.[selectedItem.id]?.name === 'Curse of Minor Masterworks' && (
-                  <div key='curse-boost-minor' className='text-success fw-bold' style={{ fontSize: '0.6rem' }}>
-                    Crafting Effect Level +1
-                  </div>
-                )}
-                {activeSetup.slottedCurses?.[selectedItem.id]?.name === 'Curse of Major Masterworks' && (
-                  <div key='curse-boost-major' className='text-success fw-bold' style={{ fontSize: '0.6rem' }}>
-                    Crafting Effect Level +2
-                  </div>
-                )}
+                {selectedItem.id in activeSetup.slottedCurses &&
+                  activeSetup.slottedCurses[selectedItem.id]?.name === 'Curse of Minor Masterworks' && (
+                    <div key='curse-boost-minor' className='text-success fw-bold' style={{ fontSize: '0.6rem' }}>
+                      Crafting Effect Level +1
+                    </div>
+                  )}
 
-                {selectedItem.enchantments.length > 0 && (
+                {selectedItem.id in activeSetup.slottedCurses &&
+                  activeSetup.slottedCurses[selectedItem.id]?.name === 'Curse of Major Masterworks' && (
+                    <div key='curse-boost-major' className='text-success fw-bold' style={{ fontSize: '0.6rem' }}>
+                      Crafting Effect Level +2
+                    </div>
+                  )}
+
+                {Array.isArray(selectedItem.enchantments) && selectedItem.enchantments.length > 0 && (
                   <div
                     className='text-start mt-1 pt-1 border-top gear-planner-slot-enchantments'
                     style={{ fontSize: '0.65rem' }}
@@ -187,15 +199,41 @@ export const renderGearPlanner = (props: Props) => {
                   <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
                     {selectedItem.augments.map((augmentSlot: GearAugmentSlot, idx: number) => {
                       const groups: Record<string, GearAugment[]> = {}
-                      allAugments.forEach((aug) => {
-                        if (aug.augmentType === augmentSlot.augmentType) {
-                          const groupKey = aug.augmentType || 'Other'
-                          groups[groupKey] ??= []
-                          groups[groupKey].push(aug)
-                        }
-                      })
+                      const slotTypeLower: string = augmentSlot.augmentType.replace(' Slot', '').toLowerCase()
+                      const groupConfig = SLOT_GROUPS[slotTypeLower]
 
-                      const sortedGroupNames = Object.keys(groups).sort((a, b) => a.localeCompare(b))
+                      if (groupConfig) {
+                        for (const config of groupConfig) {
+                          const matchingAugments = allAugments.filter(
+                            (aug: GearAugment) =>
+                              aug.augmentType.replace(' Slot', '').toLowerCase() === config.key.toLowerCase()
+                          )
+
+                          if (matchingAugments.length > 0) {
+                            groups[config.label] = matchingAugments.toSorted((a, b) => a.name.localeCompare(b.name))
+                          }
+                        }
+                      } else {
+                        // Fallback to exact match logic
+                        const normalizedSlotType: string = augmentSlot.augmentType.replace(' Slot', '')
+
+                        for (const aug of allAugments) {
+                          const normalizedAugType: string = aug.augmentType.replace(' Slot', '')
+
+                          if (normalizedAugType === normalizedSlotType) {
+                            const groupKey: string = aug.augmentType || 'Other'
+                            groups[groupKey] ??= []
+                            groups[groupKey].push(aug)
+                          }
+                        }
+
+                        // Sort fallback groups too
+                        for (const key of Object.keys(groups)) {
+                          groups[key] = groups[key].toSorted((a, b) => a.name.localeCompare(b.name))
+                        }
+                      }
+
+                      const sortedGroupNames: string[] = Object.keys(groups).sort((a, b) => a.localeCompare(b))
 
                       return (
                         <AugmentSlotItem
@@ -251,7 +289,7 @@ export const renderGearPlanner = (props: Props) => {
                   item={selectedItem}
                   slot={slot}
                   selectedEnchantment={currentSlottedNearlyFinished[selectedItem.id] ?? null}
-                  onSelect={(enchantment) => {
+                  onSelect={(enchantment: LootEnchantment | null) => {
                     setNearlyFinishedEnchantment(selectedItem.id, enchantment, slot)
                   }}
                   conflicts={currentConflicts}
@@ -268,7 +306,7 @@ export const renderGearPlanner = (props: Props) => {
                   item={selectedItem}
                   slot={slot}
                   selectedEnchantment={currentSlottedRitualTable[selectedItem.id] ?? null}
-                  onSelect={(enchantment) => {
+                  onSelect={(enchantment: LootEnchantment | null) => {
                     setRitualTableEnchantment(selectedItem.id, enchantment, slot)
                   }}
                   conflicts={currentConflicts}
@@ -282,24 +320,27 @@ export const renderGearPlanner = (props: Props) => {
                   wrapperStyle={{ fontSize: '0.65rem' }}
                 />
 
-                {selectedItem.enchantments?.some((e) => e.name === 'Lost Purpose') && (
-                  <LostPurposeSelector
-                    item={selectedItem}
-                    slot={slot}
-                    selectedEnchantment={currentSlottedLostPurpose[selectedItem.id] ?? null}
-                    onSelect={(enchantment) => {
-                      setLostPurposeEnchantment(selectedItem.id, enchantment, slot)
-                    }}
-                    conflicts={currentConflicts}
-                    equippedItems={currentEquipped}
-                    slottedAugments={currentSlottedAugments}
-                    slottedNearlyFinished={currentSlottedNearlyFinished}
-                    slottedRitualTable={currentSlottedRitualTable}
-                    slottedLostPurpose={currentSlottedLostPurpose}
-                    wrapperClassName='text-start mt-1 pt-1 border-top'
-                    wrapperStyle={{ fontSize: '0.65rem' }}
-                  />
-                )}
+                {Array.isArray(selectedItem.enchantments) &&
+                  selectedItem.enchantments.some(
+                    (enchantment: LootEnchantment) => enchantment.name === 'Lost Purpose'
+                  ) && (
+                    <LostPurposeSelector
+                      item={selectedItem}
+                      slot={slot}
+                      selectedEnchantment={currentSlottedLostPurpose[selectedItem.id] ?? null}
+                      onSelect={(enchantment: LootEnchantment | null) => {
+                        setLostPurposeEnchantment(selectedItem.id, enchantment, slot)
+                      }}
+                      conflicts={currentConflicts}
+                      equippedItems={currentEquipped}
+                      slottedAugments={currentSlottedAugments}
+                      slottedNearlyFinished={currentSlottedNearlyFinished}
+                      slottedRitualTable={currentSlottedRitualTable}
+                      slottedLostPurpose={currentSlottedLostPurpose}
+                      wrapperClassName='text-start mt-1 pt-1 border-top'
+                      wrapperStyle={{ fontSize: '0.65rem' }}
+                    />
+                  )}
 
                 <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
                   <CurseSlotItem
@@ -346,7 +387,7 @@ interface Props {
   allAugments: GearAugment[]
   allCurses: Curse[]
   openSlotBrowser: (slot: GearSlot | null) => void
-  openSetBonusBrowser: (setName: string) => void
+  openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
   formatDropLocations: (dropLocations: LootDropLocation[]) => ReactNode
   isMetal: (material: string | null | undefined) => boolean
   setSlottedGemSetBonus: (itemId: string, slotIndex: number, setName: string | null, slot?: GearSlot) => void

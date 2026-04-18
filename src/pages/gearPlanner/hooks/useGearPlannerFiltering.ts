@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { getTroveKey } from '../../../utils/troveUtils'
+import { ALL_SLOT_KEYS } from '../../essenceCrafting/types'
 import { normalizeString } from '../conflictResolver'
 import {
   ARTIFICER_PET_SLOTS,
@@ -32,6 +33,10 @@ export const useGearPlannerFiltering = ({
 }: Props) => {
   const filterByOwned: (item: GearItem) => boolean = useCallback(
     (item: GearItem) => {
+      if (item.isEssenceCrafted) {
+        return true
+      }
+
       if (showOwnedOnly && troveData) {
         return getTroveKey(item.name) in troveData
       }
@@ -49,35 +54,24 @@ export const useGearPlannerFiltering = ({
       }
     }
 
-    if (slot === GearSlot.MainHand || slot === GearSlot.OffHand) {
-      return true
-    }
-
     return item.slot === slot
   }, [])
 
   const isSetVisibleInRange = useCallback(
-    (setName: string, index: SetBonusIndex, visibleItemKeys: Set<string>, isFiligreeSet = false) => {
+    (setName: string, index: SetBonusIndex, visibleItemNames: Set<string>, isFiligreeSet = false) => {
       const indexedItems: SetBonusIndexEntry[] | undefined = index[setName]
-      const { minLevel: min, maxLevel: max } = activeSetup
 
-      if (!indexedItems) return false
-
-      for (const item of indexedItems) {
-        if (isFiligreeSet) {
-          return true
-        }
-
-        if (item.minLevel >= min && item.minLevel <= max) {
-          if (visibleItemKeys.has(`${item.name}|${item.minLevel.toString()}`)) {
-            return true
-          }
-        }
+      if (!indexedItems) {
+        return false
       }
 
-      return false
+      if (isFiligreeSet) {
+        return true
+      }
+
+      return indexedItems.some((item) => visibleItemNames.has(item.name))
     },
-    [activeSetup]
+    []
   )
 
   const filteredItemSets = useMemo(() => {
@@ -85,17 +79,15 @@ export const useGearPlannerFiltering = ({
       return []
     }
 
+    console.log(`activeSetup: `, activeSetup)
+
     const { minLevel: min, maxLevel: max } = activeSetup
 
-    const getVisibleItemKeys = (): Set<string> => {
-      const keys = new Set<string>()
+    const getVisibleItemNames = (): Set<string> => {
+      const names = new Set<string>()
 
       for (const [slot, items] of allItemsBySlot.entries()) {
-        if (!isItemVisibleForClasses({ slot } as GearItem, activeSetup)) {
-          continue
-        }
-
-        // Filter out pet gear - not shown in set browser at all
+        // Filter out pet gear - not shown in the set browser at all
         if (isPetSlot(slot)) {
           continue
         }
@@ -103,25 +95,25 @@ export const useGearPlannerFiltering = ({
         for (const item of items) {
           const level: number = Number(item.minLevel) || 1
           if (level >= min && level <= max) {
-            const key = `${item.name}|${level.toString()}`
-            keys.add(key)
+            names.add(item.name)
           }
         }
       }
 
-      return keys
+      return names
     }
 
     const getSetsWithItemsInSlot = (): Set<string> => {
       const sets = new Set<string>()
 
-      if (browsingSlot) {
-        // Filter out pet gear - not shown in set browser at all
-        if (isPetSlot(browsingSlot)) {
+      const targetSlot = browsingSlot
+      if (targetSlot) {
+        // Filter out pet gear - not shown in the set browser at all
+        if (isPetSlot(targetSlot)) {
           return sets
         }
 
-        const slotItems: GearItem[] = allItemsBySlot.get(browsingSlot) ?? []
+        const slotItems: GearItem[] = allItemsBySlot.get(targetSlot) ?? []
 
         for (const i of slotItems) {
           const level = Number(i.minLevel) || 1
@@ -130,32 +122,40 @@ export const useGearPlannerFiltering = ({
             level >= min &&
             level <= max &&
             isItemVisibleForClasses(i, activeSetup) &&
-            shouldShowItem(i, browsingSlot, activeSetup, true)
+            shouldShowItem(i, targetSlot, activeSetup, true)
           ) {
-            const key = `${i.name}|${level.toString()}`
-            const itemSets = itemToSetsMap.get(key)
-
-            if (itemSets) {
-              itemSets.forEach((s) => sets.add(s))
+            if (i.setBonus) {
+              i.setBonus.forEach((s) => sets.add(s.name))
             }
           }
         }
+      } else {
+        // If browsingSlot is null, all sets are available
+        return new Set(Object.keys(itemSetBonusIndex))
       }
 
       return sets
     }
 
-    const visibleItemKeys: Set<string> = getVisibleItemKeys()
+    const visibleItemNames: Set<string> = getVisibleItemNames()
     const setsWithItemsInSlot: Set<string> = getSetsWithItemsInSlot()
 
     return Object.keys(itemSetBonusIndex)
       .filter((setName: string) => {
-        if (!isSetVisibleInRange(setName, itemSetBonusIndex, visibleItemKeys)) {
+        if (!isSetVisibleInRange(setName, itemSetBonusIndex, visibleItemNames)) {
           return false
         }
 
-        if (browsingSlot && browsingSet === null) {
+        if (browsingSlot && (browsingSet === null || browsingSet === '')) {
           return setsWithItemsInSlot.has(setName)
+        }
+
+        if (browsingSet && browsingSet !== '') {
+          return true
+        }
+
+        if (!browsingSlot && (browsingSet === null || browsingSet === '')) {
+          return true
         }
 
         return true
@@ -170,7 +170,6 @@ export const useGearPlannerFiltering = ({
     browsingSlot,
     browsingSet,
     shouldShowItem,
-    itemToSetsMap,
     isSetVisibleInRange
   ])
 
@@ -185,24 +184,104 @@ export const useGearPlannerFiltering = ({
           return false
         }
 
-        if (browsingSlot && browsingSet === null && browsingSlot !== GearSlot.Filigree) {
-          return false
-        }
-
-        return true
+        return !(browsingSlot && (browsingSet === null || browsingSet === '') && browsingSlot !== GearSlot.Filigree)
       })
       .sort((a, b) => a.localeCompare(b))
   }, [filigreeSetBonusIndex, dataReady, isSetVisibleInRange, browsingSlot, browsingSet])
 
+  const getEssenceCraftedItems = useCallback((slot: GearSlot, minLevel: number) => {
+    const items: GearItem[] = []
+
+    if (isPetSlot(slot)) return items
+
+    const createItem = (type: string, name?: string): GearItem => ({
+      id: `essence-crafted-${slot}-${type}`,
+      name: name ?? `Essence Crafted ${type}`,
+      pageTitle: name ?? `Essence Crafted ${type}`,
+      slot: slot,
+      type: type,
+      description: 'A custom crafted item using essence crafting.',
+      minLevel: String(minLevel),
+      absoluteMinLevel: String(minLevel),
+      binding: { type: 'Bound to Character on Acquire', to: 'Character', from: 'Crafting' },
+      restriction: '',
+      material: '',
+      hardness: '0',
+      durability: '0',
+      weight: '0',
+      dropLocations: [{ sourceType: 'Essence Crafting', isCraftOnly: true }],
+      update: '0',
+      details: '',
+      upgradeable: 'No',
+      upgradedFrom: '',
+      bug: '',
+      replaced: '',
+      icon: 'essence_crafted',
+      image: 'essence_crafted',
+      optionsRaw: '',
+      enchantments: [],
+      essenceSlots: ['prefix', 'suffix', 'extra'],
+      isEssenceCrafted: true
+    })
+
+    const getSlotLabel = (s: GearSlot) => {
+      const mapping: Record<string, string> = {
+        [GearSlot.Head]: 'helmet',
+        [GearSlot.Hands]: 'gloves',
+        [GearSlot.Feet]: 'boots',
+        [GearSlot.Wrists]: 'bracers',
+        [GearSlot.Eyes]: 'goggles',
+        [GearSlot.Cloak]: 'cloak',
+        [GearSlot.Waist]: 'belt',
+        [GearSlot.Neck]: 'necklace',
+        [GearSlot.FirstFinger]: 'ring1',
+        [GearSlot.SecondFinger]: 'ring2',
+        [GearSlot.Armor]: 'armor',
+        [GearSlot.Trinket]: 'trinket',
+        [GearSlot.MainHand]: 'mainHand',
+        [GearSlot.OffHand]: 'offHand'
+      }
+      const key = mapping[s]
+      const label = ALL_SLOT_KEYS.find((k) => k.key === key)?.label
+      if (label === 'Ring 1' || label === 'Ring 2') return 'Ring'
+      if (label === 'Weapon (Main Hand)' || label === 'Weapon (Off Hand)') return 'Weapon'
+      return label ?? s
+    }
+
+    if (slot === GearSlot.MainHand || slot === GearSlot.OffHand) {
+      items.push(createItem('Weapon', `Essence Crafted Weapon`))
+      if (slot === GearSlot.OffHand) {
+        items.push(createItem('Shield', `Essence Crafted Shield`))
+        items.push(createItem('Rune Arm', `Essence Crafted Rune Arm`))
+        items.push(createItem('Orb', `Essence Crafted Orb`))
+      }
+    } else if (slot === GearSlot.Armor) {
+      items.push(createItem('Armor', `Essence Crafted Armor`))
+    } else if (slot === GearSlot.Augment || slot === GearSlot.Filigree || slot === GearSlot.Quiver) {
+      // These slots don't usually have essence crafting or have other specialized crafting
+    } else {
+      const label = getSlotLabel(slot)
+      items.push(createItem('Crafted', `Essence Crafted ${label}`))
+    }
+
+    return items
+  }, [])
+
   const filteredItems: GearItem[] = useMemo(() => {
+    const normalizedSearch: string = normalizeString(itemNameSearch || internalItemNameSearch)
+    if (normalizedSearch && normalizedSearch.length >= 3) {
+      return []
+    }
+
     if (!dataReady || !browsingSlot) {
       return []
     }
 
     const slotItems: GearItem[] = allItemsBySlot.get(browsingSlot) ?? []
-    const normalizedSearch: string = normalizeString(itemNameSearch || internalItemNameSearch)
+    const essenceCraftedItems = getEssenceCraftedItems(browsingSlot, activeSetup.minLevel)
+    const combinedItems = [...essenceCraftedItems, ...slotItems]
 
-    return slotItems
+    return combinedItems
       .filter((item: GearItem) => {
         if (!isItemVisibleForClasses(item, activeSetup)) {
           return false
@@ -217,9 +296,9 @@ export const useGearPlannerFiltering = ({
         }
 
         if (setBonusFilter) {
-          const key = `${item.name}|${String(item.minLevel)}`
-          const itemSets: string[] | undefined = itemToSetsMap.get(key)
-          if (!itemSets?.includes(setBonusFilter)) {
+          const itemSets = item.setBonus?.map((sb) => sb.name) ?? []
+          const indexedSets = itemToSetsMap.get(`${item.name}|${String(item.minLevel)}`) ?? []
+          if (!itemSets.includes(setBonusFilter) && !indexedSets.includes(setBonusFilter)) {
             return false
           }
         }
@@ -227,6 +306,13 @@ export const useGearPlannerFiltering = ({
         return filterByOwned(item)
       })
       .sort((a, b) => {
+        if (a.isEssenceCrafted && !b.isEssenceCrafted) {
+          return -1
+        }
+        if (!a.isEssenceCrafted && b.isEssenceCrafted) {
+          return 1
+        }
+
         const isOwnedA = troveData?.[getTroveKey(a.name)] ? 1 : 0
         const isOwnedB = troveData?.[getTroveKey(b.name)] ? 1 : 0
 
@@ -255,7 +341,8 @@ export const useGearPlannerFiltering = ({
     itemToSetsMap,
     filterByOwned,
     troveData,
-    isItemVisibleForClasses
+    isItemVisibleForClasses,
+    getEssenceCraftedItems
   ])
 
   const searchResultsBySlot = useMemo(() => {
@@ -278,12 +365,15 @@ export const useGearPlannerFiltering = ({
         continue
       }
 
-      const filtered = items.filter((item) => {
+      const essenceCraftedItems = getEssenceCraftedItems(slot, activeSetup.minLevel)
+      const combinedItems = [...essenceCraftedItems, ...items]
+
+      const filtered = combinedItems.filter((item) => {
         if (!isItemVisibleForClasses(item, activeSetup)) {
           return false
         }
 
-        if (showOwnedOnly && troveData && !(getTroveKey(item.name) in troveData)) {
+        if (showOwnedOnly && troveData && !item.isEssenceCrafted && !(getTroveKey(item.name) in troveData)) {
           return false
         }
 
@@ -298,6 +388,13 @@ export const useGearPlannerFiltering = ({
 
       if (filtered.length > 0) {
         results[slot] = filtered.toSorted((a, b) => {
+          if (a.isEssenceCrafted && !b.isEssenceCrafted) {
+            return -1
+          }
+          if (!a.isEssenceCrafted && b.isEssenceCrafted) {
+            return 1
+          }
+
           const isOwnedA = troveData?.[getTroveKey(a.name)] ? 1 : 0
           const isOwnedB = troveData?.[getTroveKey(b.name)] ? 1 : 0
 
@@ -326,7 +423,9 @@ export const useGearPlannerFiltering = ({
     activeSetup,
     showOwnedOnly,
     troveData,
-    isItemVisibleForClasses
+    isItemVisibleForClasses,
+    browsingSlot,
+    getEssenceCraftedItems
   ])
 
   return {

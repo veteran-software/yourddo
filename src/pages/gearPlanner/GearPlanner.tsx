@@ -58,12 +58,7 @@ const GearPlanner = () => {
   const dispatch = useAppDispatch()
   const location = useLocation()
   const navigate = useNavigate()
-  const {
-    characterSetups: setups,
-    activeSetupId,
-    artificerPet,
-    druidPet
-  } = useAppSelector((state) => state.gearPlanner)
+  const { characterSetups: setups, activeSetupId } = useAppSelector((state) => state.gearPlanner)
   const { troveData } = useAppSelector((state) => state.app)
 
   const [showPermalink, setShowPermalink] = useState(false)
@@ -82,14 +77,8 @@ const GearPlanner = () => {
     showOwnedOnly: false
   })
 
-  const {
-    showSidebar,
-    setShowSidebar,
-    setShowEnchantmentSearch,
-    setShowSetBonusBrowser,
-    pendingMinorArtifact,
-    setPendingMinorArtifact
-  } = gpHook
+  const { showSidebar, setShowSidebar, setShowEnchantmentSearch, pendingMinorArtifact, setPendingMinorArtifact } =
+    gpHook
 
   const [showSettings, setShowSettings] = useState(false)
   const [showFiligreeModal, setShowFiligreeModal] = useState(false)
@@ -190,7 +179,7 @@ const GearPlanner = () => {
                     size='sm'
                     className='d-flex align-items-center gap-2'
                     onClick={() => {
-                      setShowSetBonusBrowser(true)
+                      gpHook.openSetBonusBrowser(null)
                     }}
                   >
                     <FaLayerGroup /> Browse Set Bonuses
@@ -229,8 +218,8 @@ const GearPlanner = () => {
                           const content = generateBBCodeExport(
                             gpHook.activeSetup,
                             gpHook.essenceEnchantments,
-                            artificerPet,
-                            druidPet,
+                            gpHook.activeSetup.artificerPet,
+                            gpHook.activeSetup.druidPet,
                             permalinkUrl
                           )
                           navigator.clipboard.writeText(content).catch(console.error)
@@ -247,8 +236,8 @@ const GearPlanner = () => {
                           const content = generateDiscordMarkdownExport(
                             gpHook.activeSetup,
                             gpHook.essenceEnchantments,
-                            artificerPet,
-                            druidPet,
+                            gpHook.activeSetup.artificerPet,
+                            gpHook.activeSetup.druidPet,
                             permalinkUrl
                           )
                           navigator.clipboard.writeText(content).catch(console.error)
@@ -375,24 +364,24 @@ const GearPlanner = () => {
 
                         <SetBonusesSummary
                           equippedItems={gpHook.artificerEquipped}
-                          slottedAugments={artificerPet.slottedAugments}
-                          slottedFiligrees={artificerPet.slottedFiligrees}
-                          slottedGemSetBonuses={artificerPet.slottedGemSetBonuses}
-                          slottedLostPurpose={artificerPet.slottedLostPurpose}
+                          slottedAugments={gpHook.activeSetup.artificerPet.slottedAugments}
+                          slottedFiligrees={gpHook.activeSetup.artificerPet.slottedFiligrees}
+                          slottedGemSetBonuses={gpHook.activeSetup.artificerPet.slottedGemSetBonuses}
+                          slottedLostPurpose={gpHook.activeSetup.artificerPet.slottedLostPurpose}
                           onSetClick={gpHook.openSetBonusBrowser}
                         />
 
                         <EnchantmentsSummary
                           equippedItems={gpHook.artificerEquipped}
-                          slottedAugments={artificerPet.slottedAugments}
-                          slottedCurses={artificerPet.slottedCurses}
-                          slottedFiligrees={artificerPet.slottedFiligrees}
-                          slottedGemSetBonuses={artificerPet.slottedGemSetBonuses}
-                          slottedEssenceEnchantments={artificerPet.slottedEssenceEnchantments}
+                          slottedAugments={gpHook.activeSetup.artificerPet.slottedAugments}
+                          slottedCurses={gpHook.activeSetup.artificerPet.slottedCurses}
+                          slottedFiligrees={gpHook.activeSetup.artificerPet.slottedFiligrees}
+                          slottedGemSetBonuses={gpHook.activeSetup.artificerPet.slottedGemSetBonuses}
+                          slottedEssenceEnchantments={gpHook.activeSetup.artificerPet.slottedEssenceEnchantments}
                           essenceEnchantments={gpHook.essenceEnchantments}
-                          slottedNearlyFinished={artificerPet.slottedNearlyFinished}
-                          slottedRitualTable={artificerPet.slottedRitualTable}
-                          slottedLostPurpose={artificerPet.slottedLostPurpose}
+                          slottedNearlyFinished={gpHook.activeSetup.artificerPet.slottedNearlyFinished}
+                          slottedRitualTable={gpHook.activeSetup.artificerPet.slottedRitualTable}
+                          slottedLostPurpose={gpHook.activeSetup.artificerPet.slottedLostPurpose}
                           allItems={gpHook.allItems}
                           allAugments={gpHook.allAugments}
                           allCurses={gpHook.allCurses}
@@ -411,24 +400,24 @@ const GearPlanner = () => {
 
                         <SetBonusesSummary
                           equippedItems={gpHook.druidEquipped}
-                          slottedAugments={druidPet.slottedAugments}
-                          slottedFiligrees={druidPet.slottedFiligrees}
-                          slottedGemSetBonuses={druidPet.slottedGemSetBonuses}
-                          slottedLostPurpose={druidPet.slottedLostPurpose}
+                          slottedAugments={gpHook.activeSetup.druidPet.slottedAugments}
+                          slottedFiligrees={gpHook.activeSetup.druidPet.slottedFiligrees}
+                          slottedGemSetBonuses={gpHook.activeSetup.druidPet.slottedGemSetBonuses}
+                          slottedLostPurpose={gpHook.activeSetup.druidPet.slottedLostPurpose}
                           onSetClick={gpHook.openSetBonusBrowser}
                         />
 
                         <EnchantmentsSummary
                           equippedItems={gpHook.druidEquipped}
-                          slottedAugments={druidPet.slottedAugments}
-                          slottedCurses={druidPet.slottedCurses}
-                          slottedFiligrees={druidPet.slottedFiligrees}
-                          slottedGemSetBonuses={druidPet.slottedGemSetBonuses}
-                          slottedEssenceEnchantments={druidPet.slottedEssenceEnchantments}
+                          slottedAugments={gpHook.activeSetup.druidPet.slottedAugments}
+                          slottedCurses={gpHook.activeSetup.druidPet.slottedCurses}
+                          slottedFiligrees={gpHook.activeSetup.druidPet.slottedFiligrees}
+                          slottedGemSetBonuses={gpHook.activeSetup.druidPet.slottedGemSetBonuses}
+                          slottedEssenceEnchantments={gpHook.activeSetup.druidPet.slottedEssenceEnchantments}
                           essenceEnchantments={gpHook.essenceEnchantments}
-                          slottedNearlyFinished={druidPet.slottedNearlyFinished}
-                          slottedRitualTable={druidPet.slottedRitualTable}
-                          slottedLostPurpose={druidPet.slottedLostPurpose}
+                          slottedNearlyFinished={gpHook.activeSetup.druidPet.slottedNearlyFinished}
+                          slottedRitualTable={gpHook.activeSetup.druidPet.slottedRitualTable}
+                          slottedLostPurpose={gpHook.activeSetup.druidPet.slottedLostPurpose}
                           allItems={gpHook.allItems}
                           allAugments={gpHook.allAugments}
                           allCurses={gpHook.allCurses}

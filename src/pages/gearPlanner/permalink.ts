@@ -1,5 +1,15 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
-import { type Curse, type GearAugment, type GearItem, type GearSetup, GearSlot, type LootEnchantment } from './types.ts' // ----- Types for compact v1 payload -----
+import { getSlotOwner } from './conflictResolver.ts'
+import { isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers.ts'
+import {
+  type Curse,
+  type GearAugment,
+  type GearItem,
+  type GearSetup,
+  GearSlot,
+  type LootEnchantment,
+  type PetState
+} from './types.ts' // ----- Types for compact v1 payload -----
 
 // ----- Types for compact v1 payload -----
 // We use a compact format to keep the URL short.
@@ -24,7 +34,9 @@ import { type Curse, type GearAugment, type GearItem, type GearSetup, GearSlot, 
 //     lostPurpose: LootEnchantment | null,
 //     slottedFiligrees: (string | null)[] | null,
 //     unlockedFiligreeSlots: number | null,
-//     slottedGemSetBonuses: (string | null)[] | null
+//     slottedGemSetBonuses: (string | null)[] | null,
+//     itemMinLevel: number | null,
+//     itemMaterial: string | null
 //   ][]
 // ]
 
@@ -48,7 +60,9 @@ type V1Payload = [
     LootEnchantment | null, // lostPurpose
     (string | null)[] | null, // slottedFiligrees (item names)
     number | null, // unlockedFiligreeSlots
-    (string | null)[] | null // slottedGemSetBonuses
+    (string | null)[] | null, // slottedGemSetBonuses
+    number | null, // itemMinLevel
+    string | null // itemMaterial
   ][]
 ]
 
@@ -56,10 +70,22 @@ type V1Payload = [
 export const encodeGearPermalink = (setup: GearSetup): string => {
   const items: V1Payload[8] = []
 
-  Object.entries(setup.slots).forEach(([slot, item]) => {
+  const allSlots = {
+    ...setup.slots,
+    ...setup.artificerPet.slots,
+    ...setup.druidPet.slots
+  }
+
+  Object.entries(allSlots).forEach(([slot, item]) => {
     if (item) {
+      const gearSlot = slot as GearSlot
+      const owner = getSlotOwner(gearSlot)
+      let state: GearSetup | PetState = setup
+      if (owner === 'artificer_pet') state = setup.artificerPet
+      if (owner === 'druid_pet') state = setup.druidPet
+
       const augments: [number, string][] = []
-      const itemAugs = setup.slottedAugments[item.id]
+      const itemAugs = state.slottedAugments[item.id] as Record<number, GearAugment | null> | undefined
 
       if (itemAugs) {
         Object.entries(itemAugs).forEach(([idx, aug]) => {
@@ -69,25 +95,25 @@ export const encodeGearPermalink = (setup: GearSetup): string => {
         })
       }
 
-      const curse = setup.slottedCurses[item.id]
+      const curse = state.slottedCurses[item.id]
       const curseName = curse ? curse.name : null
 
-      const essenceEnch = setup.slottedEssenceEnchantments[item.id]
+      const essenceEnch = state.slottedEssenceEnchantments[item.id] as Record<string, string | null> | undefined
       const essenceEnchPayload: [string, string][] | null = essenceEnch
         ? Object.entries(essenceEnch)
             .filter((entry): entry is [string, string] => entry[1] !== null)
             .map(([slotName, id]) => [slotName, id])
         : null
 
-      const nearlyFinished = setup.slottedNearlyFinished?.[item.id] ?? null
-      const ritualTable = setup.slottedRitualTable?.[item.id] ?? null
-      const lostPurpose = setup.slottedLostPurpose?.[item.id] ?? null
+      const nearlyFinished = state.slottedNearlyFinished[item.id] ?? null
+      const ritualTable = state.slottedRitualTable[item.id] ?? null
+      const lostPurpose = state.slottedLostPurpose[item.id] ?? null
 
-      const filigrees = setup.slottedFiligrees[item.id]
+      const filigrees = state.slottedFiligrees[item.id] as (GearItem | null)[] | undefined
       const filigreeNames = filigrees ? filigrees.map((f) => (f ? f.name : null)) : null
 
-      const unlockedFiligreeSlots = setup.unlockedFiligreeSlots[item.id] ?? null
-      const slottedGemSetBonuses = setup.slottedGemSetBonuses[item.id] ?? null
+      const unlockedFiligreeSlots = state.unlockedFiligreeSlots[item.id] ?? null
+      const slottedGemSetBonuses = state.slottedGemSetBonuses[item.id] ?? null
 
       items.push([
         slot,
@@ -100,7 +126,9 @@ export const encodeGearPermalink = (setup: GearSetup): string => {
         lostPurpose,
         filigreeNames,
         unlockedFiligreeSlots,
-        slottedGemSetBonuses
+        slottedGemSetBonuses,
+        Number(item.minLevel) || null,
+        item.material || null
       ])
     }
   })
@@ -139,6 +167,19 @@ export const tryDecodeGearPermalink = (
     const [name, minLevel, maxLevel, classes, weaponFilters, armorFilters, shieldFilters, allowMetalWithDruid, items] =
       payload
 
+    const initialPetState = (): PetState => ({
+      slots: {},
+      slottedAugments: {},
+      slottedCurses: {},
+      slottedFiligrees: {},
+      unlockedFiligreeSlots: {},
+      slottedGemSetBonuses: {},
+      slottedEssenceEnchantments: {},
+      slottedNearlyFinished: {},
+      slottedRitualTable: {},
+      slottedLostPurpose: {}
+    })
+
     const setup: GearSetup = {
       id: `pl-${Date.now().toString()}`,
       name,
@@ -158,7 +199,9 @@ export const tryDecodeGearPermalink = (
       slottedEssenceEnchantments: {},
       slottedNearlyFinished: {},
       slottedRitualTable: {},
-      slottedLostPurpose: {}
+      slottedLostPurpose: {},
+      artificerPet: initialPetState(),
+      druidPet: initialPetState()
     }
 
     items.forEach((itemPayload) => {
@@ -168,6 +211,42 @@ export const tryDecodeGearPermalink = (
     return { ok: true, data: setup }
   } catch {
     return { ok: false }
+  }
+}
+
+const getTargetState = (setup: GearSetup, gearSlot: GearSlot): GearSetup | PetState => {
+  const owner = getSlotOwner(gearSlot)
+  if (owner === 'artificer_pet') return setup.artificerPet
+  if (owner === 'druid_pet') return setup.druidPet
+  return setup
+}
+
+const decodeSupplementaryProperties = (
+  item: GearItem,
+  state: GearSetup | PetState,
+  allItems: GearItem[],
+  nearlyFinished: LootEnchantment | null,
+  ritualTable: LootEnchantment | null,
+  lostPurpose: LootEnchantment | null,
+  filigrees: (string | null)[] | null,
+  unlockedFiligreeSlots: number | null,
+  slottedGemSetBonuses: (string | null)[] | null
+) => {
+  if (nearlyFinished) state.slottedNearlyFinished[item.id] = nearlyFinished
+  if (ritualTable) state.slottedRitualTable[item.id] = ritualTable
+  if (lostPurpose) state.slottedLostPurpose[item.id] = lostPurpose
+
+  if (filigrees) {
+    state.slottedFiligrees[item.id] = filigrees.map((fName) => {
+      if (!fName) return null
+      return allItems.find((i) => i.name === fName) ?? null
+    })
+  }
+  if (unlockedFiligreeSlots != null) {
+    state.unlockedFiligreeSlots[item.id] = unlockedFiligreeSlots
+  }
+  if (slottedGemSetBonuses) {
+    state.slottedGemSetBonuses[item.id] = slottedGemSetBonuses
   }
 }
 
@@ -189,7 +268,9 @@ const decodeItemPayload = (
     lostPurpose,
     filigrees,
     unlockedFiligreeSlots,
-    slottedGemSetBonuses
+    slottedGemSetBonuses,
+    itemMinLevel,
+    itemMaterial
   ] = itemPayload
 
   // Find the item in allItems by name and slot to ensure we get the correct ID
@@ -197,60 +278,70 @@ const decodeItemPayload = (
   if (!Object.values(GearSlot).includes(gearSlot)) {
     return
   }
-  const item =
+  let item =
     allItems.find((i) => i.name === itemName && i.slot === gearSlot) ?? allItems.find((i) => i.name === itemName)
 
-  if (item) {
-    setup.slots[gearSlot] = item
-    decodeItemAugments(item, augments, allAugments, setup)
-    decodeItemCurse(item, curseName, allCurses, setup)
-    decodeItemEssenceCrafting(item, essenceCrafting, setup)
-    if (nearlyFinished) setup.slottedNearlyFinished[item.id] = nearlyFinished
-    if (ritualTable) setup.slottedRitualTable[item.id] = ritualTable
-    if (lostPurpose) setup.slottedLostPurpose[item.id] = lostPurpose
-
-    if (filigrees) {
-      setup.slottedFiligrees[item.id] = filigrees.map((fName) => {
-        if (!fName) return null
-        return allItems.find((i) => i.name === fName) ?? null
-      })
-    }
-    if (unlockedFiligreeSlots != null) {
-      setup.unlockedFiligreeSlots[item.id] = unlockedFiligreeSlots
-    }
-    if (slottedGemSetBonuses) {
-      setup.slottedGemSetBonuses[item.id] = slottedGemSetBonuses
-    }
+  if (!item && isEssenceCraftedName(itemName)) {
+    item = reconstructEssenceCraftedItem(itemName, gearSlot, itemMinLevel ?? setup.minLevel)
   }
+
+  if (!item) return
+
+  // Clone to avoid modifying the original in allItems
+  item = { ...item }
+  if (itemMinLevel != null) item.minLevel = String(itemMinLevel)
+  if (itemMaterial != null) item.material = itemMaterial
+
+  const state = getTargetState(setup, gearSlot)
+
+  state.slots[gearSlot] = item
+  decodeItemAugments(item, augments, allAugments, state)
+  decodeItemCurse(item, curseName, allCurses, state)
+  decodeItemEssenceCrafting(item, essenceCrafting, state)
+  decodeSupplementaryProperties(
+    item,
+    state,
+    allItems,
+    nearlyFinished,
+    ritualTable,
+    lostPurpose,
+    filigrees,
+    unlockedFiligreeSlots,
+    slottedGemSetBonuses
+  )
 }
 
 const decodeItemAugments = (
   item: GearItem,
   augments: [number, string][],
   allAugments: GearAugment[],
-  setup: GearSetup
+  state: GearSetup | PetState
 ) => {
   if (augments.length > 0) {
-    setup.slottedAugments[item.id] = {}
+    state.slottedAugments[item.id] = {}
     augments.forEach(([idx, augName]) => {
       const augment = allAugments.find((a) => a.name === augName)
-      if (augment) setup.slottedAugments[item.id][idx] = augment
+      if (augment) state.slottedAugments[item.id][idx] = augment
     })
   }
 }
 
-const decodeItemCurse = (item: GearItem, curseName: string | null, allCurses: Curse[], setup: GearSetup) => {
+const decodeItemCurse = (item: GearItem, curseName: string | null, allCurses: Curse[], state: GearSetup | PetState) => {
   if (curseName && item.slot !== GearSlot.Quiver) {
     const curse = allCurses.find((c) => c.name === curseName)
-    if (curse) setup.slottedCurses[item.id] = curse
+    if (curse) state.slottedCurses[item.id] = curse
   }
 }
 
-const decodeItemEssenceCrafting = (item: GearItem, essenceCrafting: [string, string][] | null, setup: GearSetup) => {
+const decodeItemEssenceCrafting = (
+  item: GearItem,
+  essenceCrafting: [string, string][] | null,
+  state: GearSetup | PetState
+) => {
   if (essenceCrafting && essenceCrafting.length > 0) {
-    setup.slottedEssenceEnchantments[item.id] = {}
+    state.slottedEssenceEnchantments[item.id] = {}
     essenceCrafting.forEach(([slotName, enchId]) => {
-      setup.slottedEssenceEnchantments[item.id][slotName] = enchId
+      state.slottedEssenceEnchantments[item.id][slotName] = enchId
     })
   }
 }
@@ -308,7 +399,7 @@ export const removeGpFromUrl = async (
     return
   }
 
-  if (win == undefined || typeof win.history.replaceState !== 'function') return
+  if ((win as Window | undefined) == undefined || typeof win.history.replaceState !== 'function') return
 
   const { origin, pathname, hash, search } = win.location
   const hashBody = (hash || '').replace(/^#/, '')
@@ -328,7 +419,7 @@ export const buildPermalinkUrl = (
   location: LocationLike,
   win: Window = globalThis as unknown as Window
 ): string => {
-  if (win == undefined) {
+  if ((win as Window | undefined) == undefined) {
     return `/gear-planner?gp=${encoded}`
   }
 

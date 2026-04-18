@@ -54,14 +54,43 @@ const renderItemBrowser = (props: Props) => {
     })
   }
 
+  const renderSubCategories = (items: GearItem[]): ReactElement => {
+    const typeGroups: Record<string, GearItem[]> = {}
+    items.forEach((item) => {
+      const type = item.type
+
+      if (!(type in typeGroups)) {
+        typeGroups[type] = []
+      }
+
+      typeGroups[type].push(item)
+    })
+
+    return <LazyAccordionBody items={items} renderItems={() => renderTypeGroups(typeGroups)} />
+  }
+
   const renderCategorizedItems = (): ReactElement | null => {
     if (browsingSlot === GearSlot.MainHand) {
       const weaponCategories = Object.entries(WEAPON_TYPES)
+      const craftedItems = filteredItems.filter((i) => i.id.startsWith('essence-crafted-'))
 
       return (
         <Accordion defaultActiveKey='0' data-bs-theme='dark'>
+          {craftedItems.length > 0 && (
+            <Accordion.Item eventKey='crafted'>
+              <Accordion.Header>
+                <div className='d-flex justify-content-between w-100 me-3'>
+                  <span>Essence Crafting ({craftedItems.length})</span>
+                </div>
+              </Accordion.Header>
+              <Accordion.Body className='p-2 bg-dark-subtle'>{renderSubCategories(craftedItems)}</Accordion.Body>
+            </Accordion.Item>
+          )}
+
           {weaponCategories.map(([category, types], idx) => {
-            const categoryItems = filteredItems.filter((i) => isItemMatchForTypes(i, types))
+            const categoryItems = filteredItems.filter(
+              (i) => !i.id.startsWith('essence-crafted-') && isItemMatchForTypes(i, types)
+            )
 
             if (categoryItems.length === 0) return null
 
@@ -113,50 +142,15 @@ const renderItemBrowser = (props: Props) => {
     }
 
     if (browsingSlot === GearSlot.OffHand) {
-      const craftedItems = filteredItems.filter(
-        (i) => i.id.startsWith('essence-crafted-') && (i.type === 'Crafted' || i.type === 'Armor')
-      )
-      const shieldItems = filteredItems.filter(
-        (i) =>
-          (i.id.startsWith('essence-crafted-') && SHIELD_TYPES.includes(i.type)) ||
-          (!i.id.startsWith('essence-crafted-') && SHIELD_TYPES.includes(i.type))
-      )
-      const weaponItems = filteredItems.filter(
-        (i) => !i.id.startsWith('essence-crafted-') && !SHIELD_TYPES.includes(i.type)
-      )
+      const shieldItems = filteredItems.filter((i) => SHIELD_TYPES.includes(i.type))
+      const weaponItems = filteredItems.filter((i) => !SHIELD_TYPES.includes(i.type))
 
       const { currentEquipped } = getContextInfo(browsingSlot)
       const equippedInSlot = currentEquipped.find((e) => e.slot === browsingSlot)
       const isPartofSet = !setBonusFilter || equippedInSlot?.setBonus?.some((sb) => sb.name === setBonusFilter)
 
-      const renderSubCategories = (items: GearItem[]): ReactElement => {
-        const typeGroups: Record<string, GearItem[]> = {}
-        items.forEach((item) => {
-          const type = item.type
-
-          if (!(type in typeGroups)) {
-            typeGroups[type] = []
-          }
-
-          typeGroups[type].push(item)
-        })
-
-        return <LazyAccordionBody items={items} renderItems={() => renderTypeGroups(typeGroups)} />
-      }
-
       return (
         <Accordion defaultActiveKey='0' data-bs-theme='dark'>
-          {craftedItems.length > 0 && (
-            <Accordion.Item eventKey='crafted'>
-              <Accordion.Header>
-                <div className='d-flex justify-content-between w-100 me-3'>
-                  <span>Essence Crafting ({craftedItems.length})</span>
-                </div>
-              </Accordion.Header>
-              <Accordion.Body className='p-2 bg-dark-subtle'>{renderItems(craftedItems, false, false)}</Accordion.Body>
-            </Accordion.Item>
-          )}
-
           {shieldItems.length > 0 && (
             <Accordion.Item eventKey='shields'>
               <Accordion.Header>

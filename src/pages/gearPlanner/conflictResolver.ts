@@ -1,10 +1,4 @@
-import {
-  ARTIFICER_PET_SLOTS,
-  DRUID_PET_SLOTS,
-  type GearItem,
-  GearSlot,
-  type LootEnchantment
-} from './types'
+import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, type GearItem, GearSlot, type LootEnchantment } from './types'
 
 export interface EnchantmentConflict {
   name: string
@@ -251,16 +245,18 @@ export const resolveConflicts = (
 
 const findMatchingInherent = (item: GearItem, normalizedTargetName: string, normalizedTargetBonus: string) => {
   let max = -Infinity
-  item.enchantments
-    .filter((e) => e.name !== 'Nearly Finished' && e.name !== 'Sealed in Fire' && e.name !== 'Sealed in Undeath')
-    .forEach((ench) => {
-      if (normalizeString(ench.name) === normalizedTargetName && getBonus(ench.bonus) === normalizedTargetBonus) {
-        const val = parseModifierValue(ench.modifier)
-        if (val > max) {
-          max = val
+  if (Array.isArray(item.enchantments)) {
+    item.enchantments
+      .filter((e) => e.name !== 'Nearly Finished' && e.name !== 'Sealed in Fire' && e.name !== 'Sealed in Undeath')
+      .forEach((ench) => {
+        if (normalizeString(ench.name) === normalizedTargetName && getBonus(ench.bonus) === normalizedTargetBonus) {
+          const val = parseModifierValue(ench.modifier)
+          if (val > max) {
+            max = val
+          }
         }
-      }
-    })
+      })
+  }
 
   return max
 }

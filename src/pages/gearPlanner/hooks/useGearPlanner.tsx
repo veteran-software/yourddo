@@ -23,12 +23,7 @@ const useGearPlanner = (props: Props) => {
     showOwnedOnly: propShowOwnedOnly
   } = props
 
-  const {
-    characterSetups: setups,
-    activeSetupId,
-    artificerPet,
-    druidPet
-  } = useAppSelector((state) => state.gearPlanner)
+  const { characterSetups: setups, activeSetupId } = useAppSelector((state) => state.gearPlanner)
 
   const { troveData } = useAppSelector((state) => state.app)
 
@@ -62,6 +57,7 @@ const useGearPlanner = (props: Props) => {
     setBrowsingSet,
     openSlotBrowser,
     openSetBonusBrowser,
+    setBrowsingSlot,
     pendingMinorArtifact,
     setPendingMinorArtifact,
     showConflicts,
@@ -77,6 +73,7 @@ const useGearPlanner = (props: Props) => {
   const isItemVisibleForClasses = useIsItemVisibleForClasses()
 
   const activeSetup = setups.find((s) => s.id === activeSetupId) ?? setups[0]
+  const { artificerPet, druidPet } = activeSetup
 
   const {
     characterEquipped,
@@ -179,6 +176,7 @@ const useGearPlanner = (props: Props) => {
     loading,
     openSetBonusBrowser,
     openSlotBrowser,
+    setBrowsingSlot,
     pendingMinorArtifact,
     setPendingMinorArtifact,
     renderSlot,

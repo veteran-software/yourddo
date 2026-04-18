@@ -8,20 +8,18 @@ import usePuzzleState from './lightsOut/hooks/usePuzzleState.ts'
 import lightsOutSolver from './lightsOut/lightsOutSolver.ts'
 import type { Config } from './lightsOut/types/types.ts'
 
+const { initBoard, toggleCell, randomPresses, applyPresses, solveBoard } = lightsOutSolver()
+const config: Config = {
+  rows: 3,
+  cols: 5,
+  mask: [
+    [true, false, true, false, true],
+    [true, false, true, false, true],
+    [true, true, true, true, true]
+  ]
+}
+
 const TotalChaos = () => {
-  const { initBoard, toggleCell, randomPresses, applyPresses, solveBoard } = lightsOutSolver()
-
-  // single fixed “W” shape: 3×5, columns 2 & 4 only have the bottom cell
-  const config: Config = {
-    rows: 3,
-    cols: 5,
-    mask: [
-      [true, false, true, false, true],
-      [true, false, true, false, true],
-      [true, true, true, true, true]
-    ]
-  }
-
   const {
     board,
     setBoard,

@@ -2,7 +2,6 @@ import { useAppDispatch } from '../../../redux/hooks'
 import {
   addSetup as addSetupAction,
   equipItem as equipItemAction,
-  type PetState,
   removeSetup as removeSetupAction,
   setActiveSetup as setActiveSetupAction,
   setAugment as setAugmentAction,
@@ -27,7 +26,8 @@ import {
   type GearSetup,
   GearSlot,
   type LootEnchantment,
-  type LootItem
+  type LootItem,
+  type PetState
 } from '../types'
 
 interface UseGearPlannerActionsProps {
@@ -49,6 +49,19 @@ export const useGearPlannerActions = ({
 
   const addSetup = () => {
     const newId = crypto.randomUUID()
+    const initialPetState = (): PetState => ({
+      slots: {},
+      slottedAugments: {},
+      slottedCurses: {},
+      slottedFiligrees: {},
+      unlockedFiligreeSlots: {},
+      slottedGemSetBonuses: {},
+      slottedEssenceEnchantments: {},
+      slottedNearlyFinished: {},
+      slottedRitualTable: {},
+      slottedLostPurpose: {}
+    })
+
     const newSetup: GearSetup = {
       id: newId,
       name: `New Setup ${String(setups.length + 1)}`,
@@ -68,7 +81,9 @@ export const useGearPlannerActions = ({
       slottedEssenceEnchantments: {},
       slottedNearlyFinished: {},
       slottedRitualTable: {},
-      slottedLostPurpose: {}
+      slottedLostPurpose: {},
+      artificerPet: initialPetState(),
+      druidPet: initialPetState()
     }
 
     dispatch(addSetupAction(newSetup))

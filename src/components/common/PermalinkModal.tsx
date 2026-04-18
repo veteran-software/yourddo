@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
-import { Button, Form, InputGroup, Modal, Stack } from 'react-bootstrap'
+import { Button, Form, InputGroup, Modal } from 'react-bootstrap'
+import { FaCheck, FaCopy, FaLink } from 'react-icons/fa6'
 
 const PermalinkModal = (props: Props) => {
   const { show, onHide, buildUrl, title = 'Permalink' } = props
@@ -44,31 +45,40 @@ const PermalinkModal = (props: Props) => {
   }
 
   return (
-    <Modal show={show} onHide={handleClose} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
+    <Modal show={show} onHide={handleClose} centered size='lg'>
+      <Modal.Header closeButton className='border-0 pb-0'>
+        <Modal.Title className='w-100 text-center ps-4'>
+          <FaLink className='me-2 text-primary' />
+          {title}
+        </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Stack gap={2}>
-          <Form.Label htmlFor='permalink-url' className='mb-0'>
-            Shareable link
-          </Form.Label>
-          <InputGroup>
-            <Form.Control id='permalink-url' ref={inputRef} value={url} readOnly />
-            <Button
-              variant={buttonVariant}
-              onClick={() => {
-                void handleCopy()
-              }}
-              title='Copy to clipboard'
-            >
-              {buttonText}
-            </Button>
-          </InputGroup>
-        </Stack>
+      <Modal.Body className='text-center p-4'>
+        <p className='text-secondary mb-4'>Anyone with this link can view your gear setup.</p>
+        <InputGroup size='lg' className='mb-3'>
+          <Form.Control
+            id='permalink-url'
+            ref={inputRef}
+            value={url}
+            readOnly
+            className='text-center bg-white border-primary-subtle text-dark'
+            style={{ fontFamily: 'monospace', color: '#000' }}
+            onClick={() => inputRef.current?.select()}
+          />
+        </InputGroup>
+        <Button
+          variant={buttonVariant}
+          size='lg'
+          className='px-5'
+          onClick={() => {
+            void handleCopy()
+          }}
+        >
+          {copyStatus === 'copied' ? <FaCheck className='me-2' /> : <FaCopy className='me-2' />}
+          {buttonText}
+        </Button>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant='secondary' onClick={handleClose}>
+      <Modal.Footer className='border-0 pt-0 justify-content-center'>
+        <Button variant='link' className='text-muted' onClick={handleClose}>
           Close
         </Button>
       </Modal.Footer>

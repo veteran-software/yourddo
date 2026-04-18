@@ -38,10 +38,10 @@ export const useGearPlannerUI = ({ itemNameSearch }: UseGearPlannerUIProps) => {
   }, [])
 
   const openSetBonusBrowser = useCallback(
-    (setName: string) => {
+    (setName: string | null, slot: GearSlot | null = null) => {
       setBrowsingSet(setName)
       setShowSetBonusBrowser(true)
-      setBrowsingSlot(null)
+      setBrowsingSlot(slot)
       setInternalItemNameSearch('')
     },
     [setBrowsingSet, setBrowsingSlot, setInternalItemNameSearch]
