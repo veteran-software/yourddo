@@ -84,7 +84,7 @@ export const useGearPlannerData = () => {
           if (!isFiligreeAlreadyPresent(setName, filigree.name)) {
             filigreeSetBonusIndexLocal[setName].push({
               name: filigree.name,
-              minLevel: parseInt(String(filigree.minLevel)) || 1
+              minLevel: Number.parseInt(String(filigree.minLevel)) || 1
             })
           }
         }

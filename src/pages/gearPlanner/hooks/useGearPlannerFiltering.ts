@@ -80,8 +80,6 @@ export const useGearPlannerFiltering = ({
       return []
     }
 
-    console.log(`activeSetup: `, activeSetup)
-
     const { minLevel: min, maxLevel: max } = activeSetup
 
     const getVisibleItemNames = (): Set<string> => {

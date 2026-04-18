@@ -83,8 +83,8 @@ export const generateBBCodeExport = (
 ) => {
   const lines: string[] = []
 
-  lines.push(`[center][b][size=5]Gear Setup: ${setup.name}[/size][/b]`)
   lines.push(
+    `[center][b][size=5]Gear Setup: ${setup.name}[/size][/b]`,
     `[size=3]Levels ${String(setup.minLevel)}-${String(setup.maxLevel)} | ${setup.classes.filter(Boolean).join(' / ')}[/size][/center]`
   )
 
@@ -120,15 +120,14 @@ export const generateBBCodeExport = (
   }
 
   const renderSlotFiligrees = (filigrees: (LootItem | null)[] | undefined) => {
-    if (filigrees && filigrees.length > 0 && filigrees.some((f) => f !== null)) {
-      lines.push(`[indent][b][color=yellow]Filigrees:[/color][/b][/indent]`)
-      lines.push(`[list]`)
+    if (filigrees?.some((f) => f !== null)) {
+      lines.push(`[indent][b][color=yellow]Filigrees:[/color][/b][/indent]`, `[list]`)
 
       filigrees.forEach((filigree: LootItem | null) => {
         if (filigree) {
           lines.push(`[*] ${filigree.name}`)
 
-          filigree.enchantments?.forEach((ench) => {
+          filigree.enchantments?.forEach((ench: LootEnchantment) => {
             lines.push(`[list][*] ${formatEnchantment(ench)}[/list]`)
           })
         }
@@ -139,7 +138,7 @@ export const generateBBCodeExport = (
   }
 
   const renderSlotGemSets = (gemSets: (string | null)[] | undefined) => {
-    if (gemSets && gemSets.length > 0 && gemSets.some((s) => s !== null)) {
+    if (gemSets?.some((s) => s !== null)) {
       lines.push(`[indent][b][color=green]Gem Set Bonuses:[/color][/b] ${gemSets.filter(Boolean).join(', ')}[/indent]`)
     }
   }
@@ -150,10 +149,9 @@ export const generateBBCodeExport = (
     allEssenceEnchantments: EssenceEnchantment[]
   ) => {
     if (essenceCrafting && Object.values(essenceCrafting).some((v) => v !== null)) {
-      lines.push(`[indent][b][color=cyan]Essence Crafting:[/color][/b][/indent]`)
-      lines.push(`[list]`)
+      lines.push(`[indent][b][color=cyan]Essence Crafting:[/color][/b][/indent]`, `[list]`)
 
-      const minLevel = parseInt(String(item.minLevel)) || 1
+      const minLevel = Number.parseInt(String(item.minLevel)) || 1
 
       Object.entries(essenceCrafting).forEach(([slotName, enchId]) => {
         if (enchId) {
@@ -237,8 +235,7 @@ export const generateBBCodeExport = (
     const gemSets = isPetSlot && petState ? petState.slottedGemSetBonuses[item.id] : setup.slottedGemSetBonuses[item.id]
     renderSlotGemSets(gemSets)
 
-    lines.push('[center]---[/center]')
-    lines.push('')
+    lines.push('[center]---[/center]', '')
   }
 
   lines.push(`[b][size=4]Equipped Gear[/size][/b]`)
@@ -264,15 +261,13 @@ export const generateBBCodeExport = (
   )
 
   if (activeSetEnhancements.length > 0) {
-    lines.push(`[b][size=4]Active Set Bonuses[/size][/b]`)
-    lines.push(`[list]`)
+    lines.push(`[b][size=4]Active Set Bonuses[/size][/b]`, `[list]`)
 
     activeSetEnhancements.forEach((entry) => {
       lines.push(`[*] [b]${entry.sourceName.replace('Set Bonus: ', '')}:[/b] ${formatEnchantment(entry.ench)}`)
     })
 
-    lines.push(`[/list]`)
-    lines.push('')
+    lines.push(`[/list]`, '')
   }
 
   return lines.join('\n')
@@ -287,8 +282,8 @@ export const generateDiscordMarkdownExport = (
 ) => {
   const lines: string[] = []
 
-  lines.push(`## Gear Setup: ${setup.name}`)
   lines.push(
+    `## Gear Setup: ${setup.name}`,
     `Levels ${String(setup.minLevel)}-${String(setup.maxLevel)} | ${setup.classes.filter(Boolean).join(' / ')}`
   )
 
@@ -320,14 +315,14 @@ export const generateDiscordMarkdownExport = (
   }
 
   const renderSlotFiligrees = (filigrees: (LootItem | null)[] | undefined) => {
-    if (filigrees && filigrees.length > 0 && filigrees.some((f) => f !== null)) {
+    if (filigrees?.some((f) => f !== null)) {
       lines.push(`- **Filigrees:**`)
 
       filigrees.forEach((fili) => {
         if (fili) {
           lines.push(`  - ${fili.name}`)
 
-          fili.enchantments?.forEach((ench) => {
+          fili.enchantments?.forEach((ench: LootEnchantment) => {
             lines.push(`    - ${formatEnchantment(ench)}`)
           })
         }
@@ -459,26 +454,26 @@ export const generateDiscordMarkdownExport = (
 
   const allAugments = {
     ...setup.slottedAugments,
-    ...(artificerPet?.slottedAugments ?? {}),
-    ...(druidPet?.slottedAugments ?? {})
+    ...artificerPet?.slottedAugments,
+    ...druidPet?.slottedAugments
   }
 
   const allFiligrees = {
     ...setup.slottedFiligrees,
-    ...(artificerPet?.slottedFiligrees ?? {}),
-    ...(druidPet?.slottedFiligrees ?? {})
+    ...artificerPet?.slottedFiligrees,
+    ...druidPet?.slottedFiligrees
   }
 
   const allGemSets = {
     ...setup.slottedGemSetBonuses,
-    ...(artificerPet?.slottedGemSetBonuses ?? {}),
-    ...(druidPet?.slottedGemSetBonuses ?? {})
+    ...artificerPet?.slottedGemSetBonuses,
+    ...druidPet?.slottedGemSetBonuses
   }
 
   const allLostPurpose = {
     ...setup.slottedLostPurpose,
-    ...(artificerPet?.slottedLostPurpose ?? {}),
-    ...(druidPet?.slottedLostPurpose ?? {})
+    ...artificerPet?.slottedLostPurpose,
+    ...druidPet?.slottedLostPurpose
   }
 
   const activeSetEnhancements = getActiveSetEnhancements(
