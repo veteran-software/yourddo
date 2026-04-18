@@ -17,9 +17,12 @@ import {
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import AugmentSlotFilterableDropdown
+  from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
+import type {
+  ShoppingListTotals
+} from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
@@ -30,6 +33,7 @@ import { toSingularName } from '../../utils/stringUtils.ts'
 import {
   buildPermalinkUrl,
   encodeEssencePermalink,
+  type PermalinkStatePayload,
   readCcFromUrl,
   removeCcFromUrl,
   tryDecodeEssencePermalink
@@ -74,17 +78,17 @@ const EssenceCrafting = () => {
     const { cc } = readCcFromUrl(location)
     if (cc) {
       const v2 = tryDecodeEssencePermalink(cc)
+
       if (v2.ok) {
-        return sanitizeAugmentsOnItems(v2.data)
+        return sanitizeAugmentsOnItems(v2.data satisfies PermalinkStatePayload)
       }
     }
 
-    const loadedText = sessionStorage.getItem(STORAGE_KEY)
+    const loadedText: string | null = sessionStorage.getItem(STORAGE_KEY)
     if (loadedText) {
       try {
-        const parsed = JSON.parse(loadedText) as {
-          items: Record<string, ItemState>
-        }
+        const parsed = JSON.parse(loadedText) as PermalinkStatePayload
+
         return sanitizeAugmentsOnItems(parsed)
       } catch (err) {
         console.warn('EssenceCrafting: failed to load initial state.', err)
@@ -92,10 +96,12 @@ const EssenceCrafting = () => {
     }
     return {}
   })
+
   const [activeKeys, setActiveKeys] = useState<string[]>(() => {
     const { cc } = readCcFromUrl(location)
     if (cc) {
       const v2 = tryDecodeEssencePermalink(cc)
+
       if (v2.ok) {
         return v2.data.activeKeys
       }
@@ -116,19 +122,22 @@ const EssenceCrafting = () => {
   })
   const [masterMinLevel, setMasterMinLevel] = useState(() => {
     const { cc } = readCcFromUrl(location)
+
     if (cc) {
       const v2 = tryDecodeEssencePermalink(cc)
+
       if (v2.ok) {
         return v2.data.masterMinLevel ?? 1
       }
     }
 
-    const loadedText = sessionStorage.getItem(STORAGE_KEY)
+    const loadedText: string | null = sessionStorage.getItem(STORAGE_KEY)
     if (loadedText) {
       try {
         const parsed = JSON.parse(loadedText) as {
           masterMinLevel?: number
         }
+
         return typeof parsed.masterMinLevel === 'number' ? parsed.masterMinLevel : 1
       } catch {
         // Fallback below
@@ -136,14 +145,17 @@ const EssenceCrafting = () => {
     }
     return 1
   })
+
   // Binding selection removed from UI; keep state for backward-compatible permalink/session payloads (unused in logic)
   const [masterBindingBound] = useState(() => {
     const loadedText = sessionStorage.getItem(STORAGE_KEY)
+
     if (loadedText) {
       try {
         const parsed = JSON.parse(loadedText) as {
           masterBindingBound?: boolean
         }
+
         return typeof parsed.masterBindingBound === 'boolean' ? parsed.masterBindingBound : true
       } catch {
         // Fallback below
@@ -151,11 +163,13 @@ const EssenceCrafting = () => {
     }
     return true
   })
+
   // track which item cards are collapsed (default open -> not present in this set)
   const [collapsedKeys, setCollapsedKeys] = useState<string[]>(() => {
     const { cc } = readCcFromUrl(location)
     if (cc) {
       const v2 = tryDecodeEssencePermalink(cc)
+
       if (v2.ok) {
         return Array.isArray(v2.data.collapsedKeys) ? v2.data.collapsedKeys : []
       }
@@ -167,6 +181,7 @@ const EssenceCrafting = () => {
         const parsed = JSON.parse(loadedText) as {
           collapsedKeys?: string[]
         }
+
         return Array.isArray(parsed.collapsedKeys) ? parsed.collapsedKeys : []
       } catch {
         // Fallback below
@@ -174,8 +189,10 @@ const EssenceCrafting = () => {
     }
     return []
   })
+
   // Permalink modal visibility
   const [showPermalink, setShowPermalink] = useState(false)
+
   // Shopping List drawer visibility and plan (Bound/Unbound)
   const [showShoppingList, setShowShoppingList] = useState(false)
   const [shoppingListPlanBound, setShoppingListPlanBound] = useState(true)
@@ -209,8 +226,6 @@ const EssenceCrafting = () => {
     },
     [AUGMENT_COLOR_FLOOR]
   )
-
-  // ----- Permalink encoding/decoding moved to ./permalink.ts -----
 
   // Build a lookup map for dataset entries by name for quick access when rendering scaled values
   const enhancementByName = useMemo(() => {
@@ -258,9 +273,11 @@ const EssenceCrafting = () => {
       const entry = enhancementByName.get(name)
       if (entry) {
         const stats = Array.isArray(entry.stat) ? entry.stat : []
+
         if (stats.length > 0) {
-          const idx = Math.max(0, Math.min(stats.length - 1, (effectiveML || 1) - 1))
-          const value = stats[idx]
+          const idx: number = Math.max(0, Math.min(stats.length - 1, (effectiveML || 1) - 1))
+          const value: string | number = stats[idx]
+
           if (value === -1) {
             return false
           }
@@ -276,8 +293,12 @@ const EssenceCrafting = () => {
   const didLoadRef = useRef(false)
 
   useEffect(() => {
-    if (didLoadRef.current) return
+    if (didLoadRef.current) {
+      return
+    }
+
     const { cc, source } = readCcFromUrl(location)
+
     if (cc) {
       didLoadRef.current = true
       removeCcFromUrl(navigate, location, source).catch(console.error)
@@ -304,15 +325,19 @@ const EssenceCrafting = () => {
     let changed = false
 
     changed = iterateItemsOnLevelChange(items, masterMinLevel, nextItems, isEnhancementAllowedAtML, changed)
+
     if (changed) {
       setItems((prev) => {
         // Ensure we only update if it actually changed to avoid infinite loops
         // since items is also in the dependency array
-        if (JSON.stringify(prev) === JSON.stringify(nextItems)) return prev
+        if (JSON.stringify(prev) === JSON.stringify(nextItems)) {
+          return prev
+        }
+
         return nextItems
       })
     }
-  }, [masterMinLevel, isEnhancementAllowedAtML])
+  }, [masterMinLevel, isEnhancementAllowedAtML, items])
 
   // Auto-raise per-item ML override to satisfy augment color ML floors.
   // This runs after load and whenever items/master ML change. It will only ever raise
@@ -334,13 +359,17 @@ const EssenceCrafting = () => {
         nextItems[key] = currentItem
       }
     }
+
     if (changed) {
       setItems((prev) => {
-        if (JSON.stringify(prev) === JSON.stringify(nextItems)) return prev
+        if (JSON.stringify(prev) === JSON.stringify(nextItems)) {
+          return prev
+        }
+
         return nextItems
       })
     }
-  }, [computeAugmentMinLevelFloor, masterMinLevel])
+  }, [computeAugmentMinLevelFloor, items, masterMinLevel])
 
   const toggleSlot = (slotKey: string) => {
     const wasActive = activeKeys.includes(slotKey)
@@ -374,6 +403,7 @@ const EssenceCrafting = () => {
         minLevelOverride: null,
         bindingOverride: null
       }
+
       return { ...prev, [slotKey]: next }
     })
   }
@@ -993,13 +1023,13 @@ const EssenceCrafting = () => {
       isCombined: boolean
       isMinLevel?: boolean
       boundData: {
-        shardLevel: number | null
+        shardLevel: number
         rows: { name: string; qty: number }[]
-      } | null
+      }
       unboundData: {
-        shardLevel: number | null
+        shardLevel: number
         rows: { name: string; qty: number }[]
-      } | null
+      }
       valueOnly: string | null
       display: string | null
     }[]
@@ -1011,21 +1041,21 @@ const EssenceCrafting = () => {
     // Build unified material rows combining Bound and Unbound into a single table with two quantity columns
     const renderUnifiedMaterials = (
       boundData: {
-        shardLevel: number | null
+        shardLevel: number
         rows: { name: string; qty: number }[]
-      } | null,
+      },
       unboundData: {
-        shardLevel: number | null
+        shardLevel: number
         rows: { name: string; qty: number }[]
-      } | null
+      }
     ): ReactElement => {
       // If neither exists, show a compact empty state
-      if (!boundData && !unboundData) {
+      if (boundData.rows.length === 0 && unboundData.rows.length === 0) {
         return <div className='p-2 text-muted'>No Bound or Unbound version exists for this shard.</div>
       }
 
-      const boundMap = new Map<string, number>((boundData?.rows ?? []).map((r) => [r.name, r.qty]))
-      const unboundMap = new Map<string, number>((unboundData?.rows ?? []).map((r) => [r.name, r.qty]))
+      const boundMap = new Map<string, number>(boundData.rows.map((r) => [r.name, r.qty]))
+      const unboundMap = new Map<string, number>(unboundData.rows.map((r) => [r.name, r.qty]))
 
       // Build unified rows and sort so any N/A entries (missing Bound or Unbound) are pushed to the bottom.
       // Within each group (complete vs. N/A), keep alphabetical order by ingredient name.
@@ -1093,7 +1123,7 @@ const EssenceCrafting = () => {
               <div className='d-flex w-100 align-items-center justify-content-between gap-2'>
                 <strong>{accordionEntry.display ?? ''}</strong>
                 <small className='text-muted'>
-                  {getShardLevelLabel(accordionEntry.boundData?.shardLevel, accordionEntry.unboundData?.shardLevel)}
+                  {getShardLevelLabel(accordionEntry.boundData.shardLevel, accordionEntry.unboundData.shardLevel)}
                 </small>
               </div>
             </Accordion.Header>
@@ -1172,18 +1202,25 @@ const EssenceCrafting = () => {
       const totalsMap = new Map<string, number>()
       let markCount = 0
 
-      const orderedActiveKeys = ALL_SLOT_KEYS.map((s) => s.key).filter((k) => activeKeys.includes(k))
-      for (const slotKey of orderedActiveKeys) {
-        const item = items[slotKey]
-        if (!item) continue
+      const orderedActiveKeys: string[] = ALL_SLOT_KEYS.map((slot: { key: string; label: string }) => slot.key).filter(
+        (key: string) => activeKeys.includes(key)
+      )
 
+      for (const slotKey of orderedActiveKeys) {
+        if (!(slotKey in items)) {
+          continue
+        }
+
+        const item: ItemState | undefined = items[slotKey]
         const effectiveML = effectiveMLBySlot.get(slotKey) ?? masterMinLevel
+
         if (item.hasCannithMark) {
           markCount += 1
         }
 
         // Add materials for Minimum Level shard
         const mlData = buildMinLevelMaterials(effectiveML, bound)
+
         if (mlData) {
           for (const r of mlData.rows) {
             totalsMap.set(r.name, (totalsMap.get(r.name) ?? 0) + r.qty)

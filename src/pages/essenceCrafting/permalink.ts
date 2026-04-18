@@ -74,7 +74,7 @@ export interface PermalinkStatePayload {
   items: Record<string, ItemState>
   activeKeys: string[]
   collapsedKeys: string[]
-  masterMinLevel: number
+  masterMinLevel: number | undefined
 }
 
 // ----- Helpers -----
