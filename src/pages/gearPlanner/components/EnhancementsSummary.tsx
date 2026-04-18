@@ -1,9 +1,17 @@
 import { useMemo } from 'react'
 import { Accordion, Col, Row } from 'react-bootstrap'
 import { FaListUl } from 'react-icons/fa6'
-import { getBonus, normalizeString, parseModifierValue } from '../conflictResolver.ts'
+import {
+  getBonus,
+  normalizeString,
+  parseModifierValue
+} from '../conflictResolver.ts'
 import type { EssenceEnchantment } from '../dataLoader.ts'
-import { aggregateEnchantmentEntries, getActiveSetEnhancements, sortItemsByValue } from '../helpers.ts'
+import {
+  aggregateEnchantmentEntries,
+  getActiveSetEnhancements,
+  sortItemsByValue
+} from '../helpers.ts'
 import type { Curse, GearAugment, GearItem, LootEnchantment } from '../types.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
 
@@ -259,16 +267,19 @@ const EnchantmentsSummary = (props: Props) => {
                   {ench.bonuses.map((bonus, bIdx) => (
                     <div key={`${bonus.bonusType}-${String(bIdx)}`} className='mb-2 last-child-mb-0'>
                       <div className='d-flex justify-content-between align-items-center border-bottom border-secondary mb-1 pb-1'>
-                        <span
-                          className={`small italic text-capitalize ${
-                            onBonusClick ? 'text-info cursor-pointer' : 'text-light'
-                          }`}
-                          onClick={() => onBonusClick?.(ench.name)}
-                          role={onBonusClick ? 'button' : undefined}
-                          tabIndex={onBonusClick ? 0 : undefined}
-                        >
-                          {bonus.bonusType}
-                        </span>
+                        {onBonusClick ? (
+                          <button
+                            type='button'
+                            className='btn btn-link p-0 border-0 small italic text-capitalize text-info text-decoration-none shadow-none align-baseline'
+                            onClick={() => {
+                              onBonusClick(ench.name)
+                            }}
+                          >
+                            {bonus.bonusType}
+                          </button>
+                        ) : (
+                          <span className='small italic text-capitalize text-light'>{bonus.bonusType}</span>
+                        )}
 
                         <span className='small fw-bold text-light'>{calculateBonus(bonus)}</span>
                       </div>

@@ -19,10 +19,14 @@ const SetBonusCard = (props: Props) => {
   return (
     <Col md={6} lg={4} key={setName} className='mb-2'>
       <Card
-        className='bg-dark border-secondary h-100 cursor-pointer gear-planner-set-card'
+        as={onSetClick ? 'button' : 'div'}
+        className={`bg-dark border-secondary h-100 gear-planner-set-card w-100 text-start p-0 ${
+          onSetClick ? 'cursor-pointer' : ''
+        }`}
         onClick={() => onSetClick?.(setName)}
+        {...(onSetClick ? { type: 'button' } : {})}
       >
-        <Card.Body className='p-2'>
+        <Card.Body className='p-2 w-100'>
           <div className='d-flex justify-content-between align-items-center mb-1'>
             <span className='fw-bold text-info'>{setName}</span>
             <GenericBadge badgeText={`${String(count)} Piece${count > 1 ? 's' : ''}`} fontSize='0.75rem' />

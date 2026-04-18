@@ -5,6 +5,7 @@ const SetBonusBadge = (props: Props) => {
 
   return (
     <Badge
+      as={openSetBonusBrowser ? 'button' : 'span'}
       key={setName}
       bg='warning'
       text='dark'
@@ -16,6 +17,7 @@ const SetBonusBadge = (props: Props) => {
           openSetBonusBrowser(setName)
         }
       }}
+      {...(openSetBonusBrowser ? { type: 'button' } : {})}
     >
       Set: {setName}
     </Badge>

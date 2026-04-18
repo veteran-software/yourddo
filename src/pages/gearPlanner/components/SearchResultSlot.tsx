@@ -1,12 +1,19 @@
 import { Accordion, Badge, Card, Stack } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
-import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
+import {
+  cannithRepurposingStation as lostPurposeRecipes
+} from '../../../data/cannithRepurposingStation.ts'
 import nearlyFinishedRecipesRaw from '../../../data/nearlyFinished/recipes.json'
 import { ritualTable } from '../../../data/ritualTable.ts'
 import type { CraftingIngredient, SetBonus } from '../../../types/crafting.ts'
 import { getTroveKey, getTroveOwners } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
-import { type GearAugment, type GearItem, GearSlot, type LootEnchantment } from '../types.ts'
+import {
+  type GearAugment,
+  type GearItem,
+  GearSlot,
+  type LootEnchantment
+} from '../types.ts'
 import AugmentSlotsList from './AugmentSlotList.tsx'
 import GenericBadge from './badges/GenericBadge.tsx'
 import SetBonusBadge from './badges/SetBonusBadge.tsx'
@@ -135,7 +142,8 @@ const SearchResultSlot = (props: Props) => {
             return (
               <Card
                 key={item.id}
-                className={`shadow-sm border-secondary bg-white text-dark position-relative ${
+                as={item.slot === 'Filigree' ? 'div' : 'button'}
+                className={`shadow-sm border-secondary bg-white text-dark position-relative text-start p-0 w-100 ${
                   item.slot === 'Filigree' ? '' : 'cursor-pointer'
                 }`}
                 onClick={() => {
@@ -143,6 +151,7 @@ const SearchResultSlot = (props: Props) => {
                   selectItem(item.slot, item)
                   setShowEnchantmentSearch(false)
                 }}
+                {...(item.slot !== 'Filigree' ? { type: 'button' } : {})}
               >
                 {showHeader && (
                   <Card.Header className='py-0 px-2 bg-secondary-subtle d-flex align-items-center gap-1 overflow-hidden'>

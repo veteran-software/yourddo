@@ -37,11 +37,13 @@ const GenericBadge = (props: Props) => {
 
   return (
     <Badge
+      as={onClick ? 'button' : 'span'}
       bg={bg}
       text={text}
       className={`p-1 shadow-sm border border-1 ${onClick ? 'cursor-pointer' : ''}`}
       style={{ fontSize: fontSize }}
       onClick={onClick}
+      {...(onClick ? { type: 'button' } : {})}
     >
       {badgeText}
     </Badge>

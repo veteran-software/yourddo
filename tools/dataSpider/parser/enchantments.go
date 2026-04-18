@@ -686,6 +686,10 @@ func parseTemplateAbility(rawAbilityValue string) *api.Enchantment {
 		bonusType = defaultBonusType // Default value
 	}
 
+	if strings.ToLower(abilityScore) == "insightful" {
+		bonusType = "Insight"
+	}
+
 	// 4. Title (Optional, Index 3) - overrides the standard Name if present
 	if len(parts) >= 4 && stripBrackets(parts[3]) != "" {
 		name = stripBrackets(parts[3]) // Use custom title (e.g., "Curse of Clumsiness")
