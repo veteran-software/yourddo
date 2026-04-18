@@ -1,4 +1,10 @@
-import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, type GearItem, GearSlot, type LootEnchantment } from './types'
+import {
+  ARTIFICER_PET_SLOTS,
+  DRUID_PET_SLOTS,
+  type GearItem,
+  GearSlot,
+  type LootEnchantment
+} from './types'
 
 export interface EnchantmentConflict {
   name: string
@@ -336,6 +342,61 @@ const findMatchingAugments = (
   return max
 }
 
+const lostPurposeMax = (
+  isSameItem: boolean,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  item: GearItem,
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
+) => {
+  if (isSameItem) {
+    return -Infinity
+  }
+
+  return findMatchingLostPurpose(item.id, normalizedTargetName, normalizedTargetBonus, slottedLostPurpose)
+}
+
+const nearlyFinishedMax = (
+  isSameItem: boolean,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  item: GearItem,
+  slottedNearlyFinished?: Record<string, LootEnchantment | null>
+) => {
+  if (isSameItem) {
+    return -Infinity
+  }
+
+  return findMatchingNearlyFinished(item.id, normalizedTargetName, normalizedTargetBonus, slottedNearlyFinished)
+}
+
+const ritualTableMax = (
+  isSameItem: boolean,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  item: GearItem,
+  slottedRitualTable?: Record<string, LootEnchantment | null>
+) => {
+  if (isSameItem) {
+    return -Infinity
+  }
+
+  return findMatchingRitualTable(item.id, normalizedTargetName, normalizedTargetBonus, slottedRitualTable)
+}
+
+const inherentMax = (
+  isSameItem: boolean,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  item: GearItem
+) => {
+  if (isSameItem) {
+    return -Infinity
+  }
+
+  return findMatchingInherent(item, normalizedTargetName, normalizedTargetBonus)
+}
+
 /**
  * Checks if a specific enchantment on an item would conflict with currently equipped items.
  * A potential conflict is only checked against items from the same owner.
@@ -352,7 +413,7 @@ export const checkPotentialConflict = (
   ignoreSlotIndex?: number
 ): { isConflict: boolean; currentMax: number; isRedundant: boolean; isUpgrade?: boolean; isOverpowered?: boolean } => {
   const parsedValue = parseModifierValue(enchantment.modifier)
-  const normalizedTargetName = normalizeString(enchantment.name)
+  const normalizedTargetName: string = normalizeString(enchantment.name)
 
   // Skip conflict check for upgrade placeholder enchantments
   if (
@@ -363,16 +424,16 @@ export const checkPotentialConflict = (
     return { isConflict: false, currentMax: 0, isRedundant: false }
   }
 
-  const normalizedTargetBonus = getBonus(enchantment.bonus)
+  const normalizedTargetBonus: string = getBonus(enchantment.bonus)
   const targetOwner = slot ? getSlotOwner(slot) : 'character'
 
   let currentMax = -Infinity
   let foundMatch = false
 
-  equippedItems.forEach((item) => {
-    const isSameItem = item.id === ignoreItemId
+  for (const item of equippedItems) {
+    const isSameItem: boolean = item.id === ignoreItemId
     if (getSlotOwner(item.slot) !== targetOwner) {
-      return
+      continue
     }
 
     if (
@@ -380,31 +441,26 @@ export const checkPotentialConflict = (
       normalizedTargetName === 'lost purpose' ||
       normalizedTargetName === 'ritual table'
     ) {
-      return
+      continue
     }
 
     // Only check inherent and other upgrades if NOT the same item
-    const inherentMax = isSameItem ? -Infinity : findMatchingInherent(item, normalizedTargetName, normalizedTargetBonus)
-    const nfMax = isSameItem
-      ? -Infinity
-      : findMatchingNearlyFinished(item.id, normalizedTargetName, normalizedTargetBonus, slottedNearlyFinished)
 
-    const rtMax = isSameItem
-      ? -Infinity
-      : findMatchingRitualTable(item.id, normalizedTargetName, normalizedTargetBonus, slottedRitualTable)
-
-    const augMax = findMatchingAugments(
+    const augMax: number = findMatchingAugments(
       item.id,
       normalizedTargetName,
       normalizedTargetBonus,
       slottedAugments,
       isSameItem ? ignoreSlotIndex : undefined
     )
-    const lpMax = isSameItem
-      ? -Infinity
-      : findMatchingLostPurpose(item.id, normalizedTargetName, normalizedTargetBonus, slottedLostPurpose)
 
-    const itemMax = Math.max(inherentMax, nfMax, rtMax, augMax, lpMax)
+    const itemMax: number = Math.max(
+      inherentMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item),
+      nearlyFinishedMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedNearlyFinished),
+      ritualTableMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedRitualTable),
+      augMax,
+      lostPurposeMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedLostPurpose)
+    )
     if (itemMax !== -Infinity) {
       foundMatch = true
 
@@ -412,7 +468,7 @@ export const checkPotentialConflict = (
         currentMax = itemMax
       }
     }
-  })
+  }
 
   if (!foundMatch) {
     return { isConflict: false, currentMax: 0, isRedundant: false }
