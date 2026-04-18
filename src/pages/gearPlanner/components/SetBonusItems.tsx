@@ -9,7 +9,6 @@ import {
   DRUID_PET_SLOTS,
   type GearAugment,
   type GearItem,
-  type GearSetup,
   GearSlot,
   type LootEnchantment,
   type LootItem,
@@ -169,10 +168,8 @@ const SetBonusItems = (props: Props) => {
 
 interface Props {
   browsingSet: string
-  activeSetup: GearSetup
   allItems: GearItem[]
   setBonusIndex: SetBonusIndex
-  isItemVisibleForClasses: (item: GearItem, setup: GearSetup) => boolean
   showOwnedOnly: boolean
   troveData: ItemRollup | null
   itemNameSearch: string
@@ -184,7 +181,6 @@ interface Props {
   }
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
-  browsingSlot: GearSlot | null
 }
 
 export default SetBonusItems

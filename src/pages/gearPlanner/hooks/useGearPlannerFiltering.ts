@@ -26,6 +26,7 @@ export const useGearPlannerFiltering = ({
   browsingSet,
   itemNameSearch,
   internalItemNameSearch,
+  enchantmentSearch,
   setBonusFilter,
   showOwnedOnly,
   troveData,
@@ -269,9 +270,6 @@ export const useGearPlannerFiltering = ({
 
   const filteredItems: GearItem[] = useMemo(() => {
     const normalizedSearch: string = normalizeString(itemNameSearch || internalItemNameSearch)
-    if (normalizedSearch && normalizedSearch.length >= 3) {
-      return []
-    }
 
     if (!dataReady || !browsingSlot) {
       return []
@@ -291,8 +289,13 @@ export const useGearPlannerFiltering = ({
           return false
         }
 
-        if (normalizedSearch && !normalizeString(item.name).includes(normalizedSearch)) {
-          return false
+        if (normalizedSearch) {
+          const matchName = item.normalizedName?.includes(normalizedSearch)
+          const matchEnchantment = item.normalizedEnchantments?.some((e) => e.includes(normalizedSearch))
+
+          if (!matchName && !matchEnchantment) {
+            return false
+          }
         }
 
         if (setBonusFilter) {
@@ -349,7 +352,7 @@ export const useGearPlannerFiltering = ({
     if (!dataReady) return {} as Record<GearSlot, GearItem[]>
 
     const results: Partial<Record<GearSlot, GearItem[]>> = {}
-    const normalizedSearch: string = normalizeString(itemNameSearch || internalItemNameSearch)
+    const normalizedSearch: string = normalizeString(enchantmentSearch)
 
     if (!normalizedSearch || normalizedSearch.length < 3) return results
 
@@ -377,8 +380,13 @@ export const useGearPlannerFiltering = ({
           return false
         }
 
-        if (!normalizeString(item.name).includes(normalizedSearch)) {
-          return false
+        if (normalizedSearch) {
+          const matchName = item.normalizedName?.includes(normalizedSearch)
+          const matchEnchantment = item.normalizedEnchantments?.some((e) => e.includes(normalizedSearch))
+
+          if (!matchName && !matchEnchantment) {
+            return false
+          }
         }
 
         const level: number = Number(item.minLevel) || 1
@@ -417,8 +425,7 @@ export const useGearPlannerFiltering = ({
     return results
   }, [
     dataReady,
-    itemNameSearch,
-    internalItemNameSearch,
+    enchantmentSearch,
     allItemsBySlot,
     activeSetup,
     showOwnedOnly,
@@ -450,6 +457,7 @@ interface Props {
   browsingSet: string | null
   itemNameSearch: string
   internalItemNameSearch: string
+  enchantmentSearch: string
   setBonusFilter: string | null
   showOwnedOnly: boolean
   troveData: Record<string, unknown> | null

@@ -96,6 +96,7 @@ const useGearPlanner = (props: Props) => {
     activeSetup,
     browsingSlot,
     browsingSet,
+    enchantmentSearch: props.enchantmentSearch,
     itemNameSearch: propItemNameSearch,
     internalItemNameSearch,
     setBonusFilter: propSetBonusFilter ?? setBonusFilter,

@@ -18,7 +18,7 @@ const EssenceCraftingSelector = (props: Props) => {
     slot
   } = props
 
-  const minLevel = parseInt(String(selectedItem.minLevel)) || 1
+  const minLevel = Number.parseInt(String(selectedItem.minLevel)) || 1
 
   const getCurseBoost = () => {
     const curseName = activeSetup.slottedCurses[selectedItem.id]?.name
@@ -89,13 +89,11 @@ const EssenceCraftingSelector = (props: Props) => {
     const filteredIds: string[] = []
 
     if (meleeWeapons.has(weaponType)) {
-      filteredIds.push('weapon-melee')
-      filteredIds.push('weapon')
+      filteredIds.push('weapon-melee', 'weapon')
     }
 
     if (rangedWeapons.has(weaponType) || throwingWeapons.has(weaponType)) {
-      filteredIds.push('weapon-ranged')
-      filteredIds.push('weapon')
+      filteredIds.push('weapon-ranged', 'weapon')
     }
 
     if (shields.has(weaponType) || weaponType === 'Orb') {

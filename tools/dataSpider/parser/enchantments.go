@@ -384,6 +384,10 @@ func parseTemplateSave(rawSaveValue string) *api.Enchantment {
 		bonusType = "Resistance" // Default value
 	}
 
+	if strings.ToLower(bonusType) == "insightful" {
+		bonusType = "Insight"
+	}
+
 	// 4. Title (Optional, Index 3) - overrides the standard Name if present
 	var name string
 	if len(parts) >= 4 && stripBrackets(parts[3]) != "" {
@@ -686,7 +690,7 @@ func parseTemplateAbility(rawAbilityValue string) *api.Enchantment {
 		bonusType = defaultBonusType // Default value
 	}
 
-	if strings.ToLower(abilityScore) == "insightful" {
+	if strings.ToLower(bonusType) == "insightful" {
 		bonusType = "Insight"
 	}
 
@@ -1183,6 +1187,10 @@ func parseTemplateAC(rawACValue string) *api.Enchantment {
 		calculatedBonusType = "" // armor class case doesn't specify a bonus type in the EnchCat
 	default:
 		calculatedBonusType = bonusType
+	}
+
+	if strings.ToLower(calculatedBonusType) == "insightful" {
+		calculatedBonusType = "Insight"
 	}
 
 	// Format Name as Armor Class (<source>)

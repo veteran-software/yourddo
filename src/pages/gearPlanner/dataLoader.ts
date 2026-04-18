@@ -22,7 +22,7 @@ export interface EssenceEnchantment {
   slotId: string
   affixType: string
   group: string
-  enchantments: LootEnchantment[]
+  enchantments?: LootEnchantment[]
   scalingStats?: (number | string)[]
   statModified?: string | string[]
   bonus?: string
@@ -126,9 +126,9 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
     const normalizeEffectName = (name: string): string => {
       return name
         .toLowerCase()
-        .replace(/'s/g, '-s') // match "champion-s"
-        .replace(/&/g, ' ')
-        .replace(/[^a-z0-9]/g, ' ')
+        .replaceAll(/'s/g, '-s') // match "champion-s"
+        .replaceAll(/&/g, ' ')
+        .replaceAll(/[^a-z0-9]/g, ' ')
         .split(' ')
         .filter((s) => s.length > 0)
         .join('-')

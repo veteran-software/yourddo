@@ -1,18 +1,16 @@
 import { Col, Form, Offcanvas, Row } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
 import type { EnchantmentConflict } from '../conflictResolver'
-import { type GearAugment, type GearItem, type GearSetup, GearSlot, type LootItem, type SetBonusIndex } from '../types'
+import { type GearAugment, type GearItem, GearSlot, type LootItem, type SetBonusIndex } from '../types'
 import SetBonusItems from './SetBonusItems.tsx'
 
 const SetBonusBrowserOffcanvas = (props: Props) => {
   const {
-    activeSetup,
     allItems,
     browsingSet,
     filteredItemSets,
     allFiligreeSetNames,
     getContextInfo,
-    isItemVisibleForClasses,
     openSetBonusBrowser,
     selectItem,
     setBonusIndex,
@@ -125,17 +123,14 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
             <div className='overflow-auto' style={{ maxHeight: 'calc(100vh - 200px)' }}>
               <SetBonusItems
                 browsingSet={browsingSet}
-                activeSetup={activeSetup}
                 allItems={allItems}
                 setBonusIndex={setBonusIndex}
-                isItemVisibleForClasses={isItemVisibleForClasses}
                 showOwnedOnly={showOwnedOnly}
                 troveData={troveData}
                 itemNameSearch={itemNameSearch}
                 getContextInfo={getContextInfo}
                 selectItem={selectItem}
                 openSetBonusBrowser={openSetBonusBrowser}
-                browsingSlot={props.browsingSlot}
               />
             </div>
           </div>
@@ -146,31 +141,28 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
 }
 
 interface Props {
-  showSetBonusBrowser: boolean
-  setShowSetBonusBrowser: (show: boolean) => void
-  browsingSet: string | null
-  setBrowsingSet: (set: string | null) => void
-  filteredItemSets: string[]
   allFiligreeSetNames: string[]
-  setBonusIndex: SetBonusIndex
-  activeSetup: GearSetup
   allItems: GearItem[]
-  isItemVisibleForClasses: (item: GearItem, setup: GearSetup) => boolean
+  browsingSet: string | null
+  filteredItemSets: string[]
   getContextInfo: (slot: string) => {
     currentConflicts: Record<string, EnchantmentConflict[]>
     currentEquipped: GearItem[]
     currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
     currentSlottedFiligrees: Record<string, (LootItem | null)[]>
   }
-  selectItem: (slot: GearSlot, item: GearItem | null) => void
-  openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
-  setBrowsingSlot: (slot: GearSlot | null) => void
-  browsingSlot: GearSlot | null
-  showOwnedOnly: boolean
-  setShowOwnedOnly: (show: boolean) => void
-  troveData: ItemRollup | null
   itemNameSearch: string
+  openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
+  selectItem: (slot: GearSlot, item: GearItem | null) => void
+  setBonusIndex: SetBonusIndex
+  setBrowsingSet: (set: string | null) => void
+  setBrowsingSlot: (slot: GearSlot | null) => void
   setItemNameSearch: (search: string) => void
+  setShowOwnedOnly: (show: boolean) => void
+  setShowSetBonusBrowser: (show: boolean) => void
+  showOwnedOnly: boolean
+  showSetBonusBrowser: boolean
+  troveData: ItemRollup | null
 }
 
 export default SetBonusBrowserOffcanvas

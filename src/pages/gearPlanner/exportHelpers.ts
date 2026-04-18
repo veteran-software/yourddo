@@ -1,14 +1,6 @@
 import type { EssenceEnchantment } from './dataLoader.ts'
 import { getActiveSetEnhancements } from './helpers'
-import type {
-  Curse,
-  GearAugment,
-  GearItem,
-  GearSetup,
-  GearSlot,
-  LootEnchantment,
-  LootItem
-} from './types'
+import type { Curse, GearAugment, GearItem, GearSetup, GearSlot, LootEnchantment, LootItem } from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
 
 const renderSlots = (
@@ -136,7 +128,7 @@ export const generateBBCodeExport = (
         if (filigree) {
           lines.push(`[*] ${filigree.name}`)
 
-          filigree.enchantments.forEach((ench) => {
+          filigree.enchantments?.forEach((ench) => {
             lines.push(`[list][*] ${formatEnchantment(ench)}[/list]`)
           })
         }
@@ -335,7 +327,7 @@ export const generateDiscordMarkdownExport = (
         if (fili) {
           lines.push(`  - ${fili.name}`)
 
-          fili.enchantments.forEach((ench) => {
+          fili.enchantments?.forEach((ench) => {
             lines.push(`    - ${formatEnchantment(ench)}`)
           })
         }

@@ -1,17 +1,9 @@
 import { useMemo } from 'react'
 import { Accordion, Col, Row } from 'react-bootstrap'
 import { FaListUl } from 'react-icons/fa6'
-import {
-  getBonus,
-  normalizeString,
-  parseModifierValue
-} from '../conflictResolver.ts'
+import { getBonus, normalizeString, parseModifierValue } from '../conflictResolver.ts'
 import type { EssenceEnchantment } from '../dataLoader.ts'
-import {
-  aggregateEnchantmentEntries,
-  getActiveSetEnhancements,
-  sortItemsByValue
-} from '../helpers.ts'
+import { aggregateEnchantmentEntries, getActiveSetEnhancements, sortItemsByValue } from '../helpers.ts'
 import type { Curse, GearAugment, GearItem, LootEnchantment } from '../types.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
 
@@ -81,15 +73,15 @@ const EnchantmentsSummary = (props: Props) => {
     })
 
     allCurses?.forEach((curse) => {
-      curse.enchantments.forEach(processEnch)
+      curse.enchantments?.forEach(processEnch)
     })
 
     allFiligrees?.forEach((fili) => {
-      fili.enchantments.forEach(processEnch)
+      fili.enchantments?.forEach(processEnch)
     })
 
     essenceEnchantments?.forEach((ee) => {
-      ee.enchantments.forEach(processEnch)
+      ee.enchantments?.forEach(processEnch)
     })
 
     return map

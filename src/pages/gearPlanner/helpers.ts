@@ -311,6 +311,7 @@ const iterateEnchentments = (
   entries: { ench: LootEnchantment; sourceName: string }[],
   item: GearItem
 ) => {
+  if (!opt.enchantments) return
   for (const effect of opt.enchantments) {
     const rawDisplayName = effect.statModified ?? effect.name
     const displayNames: string[] = Array.isArray(rawDisplayName) ? rawDisplayName : [rawDisplayName]

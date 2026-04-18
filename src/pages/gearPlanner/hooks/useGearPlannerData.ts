@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { normalizeString } from '../conflictResolver'
 import {
   type EssenceEnchantment,
   loadCurses,
@@ -135,6 +136,12 @@ export const useGearPlannerData = () => {
         const chunk: GearItem[] = allItemsToProcess.slice(i, i + chunkSize)
 
         for (const item of chunk) {
+          item.normalizedName = normalizeString(item.name)
+          item.normalizedEnchantments = [
+            ...(item.enchantments?.map((e) => normalizeString(e.name)) ?? []),
+            ...(item.effectsAdded?.map((e) => normalizeString(e.name)) ?? [])
+          ]
+
           const list: GearItem[] | undefined = slotMap.get(item.slot)
 
           if (list) {

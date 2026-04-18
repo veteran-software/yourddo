@@ -151,7 +151,7 @@ export interface LootItem {
   icon: string
   image: string
   optionsRaw: string
-  enchantments: LootEnchantment[]
+  enchantments?: LootEnchantment[]
   augments?: GearAugmentSlot[]
   essenceSlots?: string[]
   setBonus?: { name: string }[]
@@ -166,11 +166,13 @@ export interface GearItem extends LootItem {
   grouping?: string
   isEssenceCrafted?: boolean
   essenceSlots?: string[]
+  normalizedName?: string
+  normalizedEnchantments?: string[]
 }
 
 export interface Curse {
   name: string
-  enchantments: LootEnchantment[]
+  enchantments?: LootEnchantment[]
   type: string
 }
 
