@@ -1,6 +1,14 @@
 import type { EssenceEnchantment } from './dataLoader.ts'
 import { getActiveSetEnhancements } from './helpers'
-import type { Curse, GearAugment, GearItem, GearSetup, GearSlot, LootEnchantment, LootItem } from './types'
+import type {
+  Curse,
+  GearAugment,
+  GearItem,
+  GearSetup,
+  GearSlot,
+  LootEnchantment,
+  LootItem
+} from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
 
 const renderSlots = (
@@ -95,7 +103,7 @@ export const generateBBCodeExport = (
   lines.push('')
 
   const renderSlotHeader = (slot: GearSlot, item: GearItem) => {
-    lines.push(`[b]${slot}:[/b] [u]${item.name}[/u] (ML: ${item.minLevel})`)
+    lines.push(`[b]${slot}:[/b] [u]${item.name}[/u] (ML: ${String(item.minLevel)})`)
   }
 
   const renderSlotEnchantments = (
@@ -299,7 +307,7 @@ export const generateDiscordMarkdownExport = (
   lines.push('')
 
   const renderSlotHeader = (slot: GearSlot, item: GearItem) => {
-    lines.push(`**${slot}:** __${item.name}__ (ML: ${item.minLevel})`)
+    lines.push(`**${slot}:** __${item.name}__ (ML: ${String(item.minLevel)})`)
   }
 
   const renderSlotEnchantments = (
