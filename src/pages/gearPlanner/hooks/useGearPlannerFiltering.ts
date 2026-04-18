@@ -1,7 +1,18 @@
 import { useCallback, useMemo } from 'react'
 import { getTroveKey } from '../../../utils/troveUtils'
 import { normalizeString } from '../conflictResolver'
-import { type GearItem, type GearSetup, GearSlot, type SetBonusIndex, type SetBonusIndexEntry } from '../types'
+import {
+  ARTIFICER_PET_SLOTS,
+  DRUID_PET_SLOTS,
+  type GearItem,
+  type GearSetup,
+  GearSlot,
+  type SetBonusIndex,
+  type SetBonusIndexEntry
+} from '../types'
+
+const isPetSlot = (slot: string) =>
+  ARTIFICER_PET_SLOTS.includes(slot as GearSlot) || DRUID_PET_SLOTS.includes(slot as GearSlot)
 
 export const useGearPlannerFiltering = ({
   dataReady,
@@ -11,6 +22,7 @@ export const useGearPlannerFiltering = ({
   filigreeSetBonusIndex,
   activeSetup,
   browsingSlot,
+  browsingSet,
   itemNameSearch,
   internalItemNameSearch,
   setBonusFilter,
@@ -83,6 +95,11 @@ export const useGearPlannerFiltering = ({
           continue
         }
 
+        // Filter out pet gear - not shown in set browser at all
+        if (isPetSlot(slot)) {
+          continue
+        }
+
         for (const item of items) {
           const level: number = Number(item.minLevel) || 1
           if (level >= min && level <= max) {
@@ -99,6 +116,11 @@ export const useGearPlannerFiltering = ({
       const sets = new Set<string>()
 
       if (browsingSlot) {
+        // Filter out pet gear - not shown in set browser at all
+        if (isPetSlot(browsingSlot)) {
+          return sets
+        }
+
         const slotItems: GearItem[] = allItemsBySlot.get(browsingSlot) ?? []
 
         for (const i of slotItems) {
@@ -132,7 +154,11 @@ export const useGearPlannerFiltering = ({
           return false
         }
 
-        return !(browsingSlot && !setsWithItemsInSlot.has(setName))
+        if (browsingSlot && browsingSet === null) {
+          return setsWithItemsInSlot.has(setName)
+        }
+
+        return true
       })
       .sort((a, b) => a.localeCompare(b))
   }, [
@@ -142,6 +168,7 @@ export const useGearPlannerFiltering = ({
     allItemsBySlot,
     isItemVisibleForClasses,
     browsingSlot,
+    browsingSet,
     shouldShowItem,
     itemToSetsMap,
     isSetVisibleInRange
@@ -153,9 +180,19 @@ export const useGearPlannerFiltering = ({
     }
 
     return Object.keys(filigreeSetBonusIndex)
-      .filter((setName: string) => isSetVisibleInRange(setName, filigreeSetBonusIndex, new Set(), true))
+      .filter((setName: string) => {
+        if (!isSetVisibleInRange(setName, filigreeSetBonusIndex, new Set(), true)) {
+          return false
+        }
+
+        if (browsingSlot && browsingSet === null && browsingSlot !== GearSlot.Filigree) {
+          return false
+        }
+
+        return true
+      })
       .sort((a, b) => a.localeCompare(b))
-  }, [filigreeSetBonusIndex, dataReady, isSetVisibleInRange])
+  }, [filigreeSetBonusIndex, dataReady, isSetVisibleInRange, browsingSlot, browsingSet])
 
   const filteredItems: GearItem[] = useMemo(() => {
     if (!dataReady || !browsingSlot) {
@@ -229,7 +266,18 @@ export const useGearPlannerFiltering = ({
 
     if (!normalizedSearch || normalizedSearch.length < 3) return results
 
+    const isBrowsingPet = browsingSlot && isPetSlot(browsingSlot)
+
     for (const [slot, items] of allItemsBySlot.entries()) {
+      // Skip pet slots unless we are browsing a pet
+      const isThisPetSlot = isPetSlot(slot)
+      if (isThisPetSlot && !isBrowsingPet) {
+        continue
+      }
+      if (!isThisPetSlot && isBrowsingPet) {
+        continue
+      }
+
       const filtered = items.filter((item) => {
         if (!isItemVisibleForClasses(item, activeSetup)) {
           return false
@@ -300,6 +348,7 @@ interface Props {
   filigreeSetBonusIndex: SetBonusIndex
   activeSetup: GearSetup
   browsingSlot: GearSlot | null
+  browsingSet: string | null
   itemNameSearch: string
   internalItemNameSearch: string
   setBonusFilter: string | null

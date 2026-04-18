@@ -133,6 +133,7 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                 getContextInfo={getContextInfo}
                 selectItem={selectItem}
                 openSetBonusBrowser={openSetBonusBrowser}
+                browsingSlot={props.browsingSlot}
               />
             </div>
           </div>
@@ -161,6 +162,7 @@ interface Props {
   }
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   openSetBonusBrowser: (setName: string) => void
+  browsingSlot: GearSlot | null
   showOwnedOnly: boolean
   setShowOwnedOnly: (show: boolean) => void
   troveData: ItemRollup | null

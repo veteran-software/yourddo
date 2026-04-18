@@ -19,7 +19,9 @@ const RitualTableSelector = (props: Props) => {
     slottedAugments,
     slottedNearlyFinished,
     slottedRitualTable,
-    slottedLostPurpose
+    slottedLostPurpose,
+    wrapperClassName,
+    wrapperStyle
   } = props
 
   // Determine the requirement based on the enchantment
@@ -47,7 +49,7 @@ const RitualTableSelector = (props: Props) => {
   }
 
   return (
-    <div className='mt-2'>
+    <div className={wrapperClassName ?? 'mt-2'} style={wrapperStyle}>
       <div className='text-dark mb-0 text-start' style={{ fontSize: '0.6rem' }}>
         Ritual Table Upgrade
       </div>
@@ -147,6 +149,8 @@ interface Props {
   slottedNearlyFinished: Record<string, LootEnchantment | null>
   slottedRitualTable: Record<string, LootEnchantment | null>
   slottedLostPurpose: Record<string, LootEnchantment | null>
+  wrapperClassName?: string
+  wrapperStyle?: React.CSSProperties
 }
 
 export default RitualTableSelector

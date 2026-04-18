@@ -15,7 +15,9 @@ const NearlyFinishedSelector = ({
   slottedAugments,
   slottedNearlyFinished,
   slottedRitualTable,
-  slottedLostPurpose
+  slottedLostPurpose,
+  wrapperClassName,
+  wrapperStyle
 }: Props) => {
   const recipes: Recipe[] = useMemo(
     () => (nearlyFinishedRecipes as unknown as NearlyFinishedRecipes).reforgingStation,
@@ -29,7 +31,7 @@ const NearlyFinishedSelector = ({
   }
 
   return (
-    <div className='mt-2'>
+    <div className={wrapperClassName ?? 'mt-2'} style={wrapperStyle}>
       <div className='text-dark mb-0 text-start' style={{ fontSize: '0.6rem' }}>
         Nearly Finished
       </div>
@@ -117,6 +119,8 @@ interface Props {
   slottedNearlyFinished: Record<string, LootEnchantment | null>
   slottedRitualTable: Record<string, LootEnchantment | null>
   slottedLostPurpose: Record<string, LootEnchantment | null>
+  wrapperClassName?: string
+  wrapperStyle?: React.CSSProperties
 }
 
 interface NearlyFinishedRecipes {

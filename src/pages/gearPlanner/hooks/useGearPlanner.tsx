@@ -98,6 +98,7 @@ const useGearPlanner = (props: Props) => {
     filigreeSetBonusIndex,
     activeSetup,
     browsingSlot,
+    browsingSet,
     itemNameSearch: propItemNameSearch,
     internalItemNameSearch,
     setBonusFilter: propSetBonusFilter ?? setBonusFilter,

@@ -1,8 +1,11 @@
-import { Accordion, Card, Stack } from 'react-bootstrap'
+import { Accordion, Badge, Card, Stack } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
+import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
+import nearlyFinishedRecipes from '../../../data/nearlyFinished/recipes.json'
+import { ritualTable } from '../../../data/ritualTable.ts'
 import { getTroveKey, getTroveOwners } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
-import { type GearAugment, type GearItem, GearSlot } from '../types.ts'
+import { type GearAugment, type GearItem, GearSlot, type LootEnchantment } from '../types.ts'
 import AugmentSlotsList from './AugmentSlotList.tsx'
 import GenericBadge from './badges/GenericBadge.tsx'
 import SetBonusBadge from './badges/SetBonusBadge.tsx'
@@ -68,6 +71,45 @@ const SearchResultSlot = (props: Props) => {
             const owners = troveEntry ? getTroveOwners(troveEntry) : ''
             const showHeader = isEquipped || owners
 
+            // Check for upgrade systems
+            let upgradeSource = ''
+            if (browsingSet) {
+              const isLostPurposeItem = item.enchantments?.some((e: LootEnchantment) => e.name === 'Lost Purpose')
+              if (isLostPurposeItem) {
+                const isLPSet = lostPurposeRecipes.some((r) => r.setBonus?.[0]?.name === browsingSet)
+                if (isLPSet) upgradeSource = 'Lost Purpose'
+              }
+
+              if (!upgradeSource) {
+                const nfRecipe = (nearlyFinishedRecipes as any).reforgingStation?.find(
+                  (r: any) => r.item === item.name && r.stage === 'Nearly Finished'
+                )
+                if (nfRecipe) {
+                  // Check if any of the nearly finished choices for this item grant the browsing set
+                  const hasNFSet = nfRecipe.choices?.some((choice: any) =>
+                    // We assume choice name might match set name or we'd need more data
+                    // In some cases NF adds a set bonus like 'Nearly Finished: ...'
+                    choice.name.includes(browsingSet)
+                  )
+                  if (hasNFSet) upgradeSource = 'Nearly Finished'
+                }
+              }
+
+              if (!upgradeSource) {
+                const isWeapon = item.enchantments?.some((e: LootEnchantment) => e.name === 'Sealed in Fire')
+                const isAccessory = item.enchantments?.some((e: LootEnchantment) => e.name === 'Sealed in Undeath')
+                if (isWeapon || isAccessory) {
+                  const reqName = isWeapon ? 'Sealed in Fire Weapon' : 'Sealed in Undeath Accessory'
+                  const hasRitualSet = ritualTable.some(
+                    (r) =>
+                      r.requirements?.some((req) => req.name === reqName) &&
+                      r.setBonus?.some((sb) => sb.name === browsingSet)
+                  )
+                  if (hasRitualSet) upgradeSource = 'Ritual Table'
+                }
+              }
+            }
+
             return (
               <Card
                 key={item.id}
@@ -105,8 +147,18 @@ const SearchResultSlot = (props: Props) => {
 
                 <Card.Body className='p-2'>
                   <div className='fw-bold small text-truncate text-dark'>{item.name}</div>
-                  <div className='text-dark fw-medium' style={{ fontSize: '0.7rem' }}>
-                    ML: {item.minLevel || '1'} | {item.type || 'Item'}
+                  <div
+                    className='text-dark fw-medium d-flex justify-content-between align-items-center'
+                    style={{ fontSize: '0.7rem' }}
+                  >
+                    <span>
+                      ML: {item.minLevel || '1'} | {item.type || 'Item'}
+                    </span>
+                    {upgradeSource && (
+                      <Badge bg='info' text='dark' style={{ fontSize: '0.6rem' }}>
+                        via {upgradeSource}
+                      </Badge>
+                    )}
                   </div>
 
                   {item.setBonus && item.setBonus.length > 0 && (

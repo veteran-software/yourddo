@@ -15,7 +15,9 @@ const LostPurposeSelector = ({
   slottedAugments,
   slottedNearlyFinished,
   slottedRitualTable,
-  slottedLostPurpose
+  slottedLostPurpose,
+  wrapperClassName,
+  wrapperStyle
 }: Props) => {
   // Filter recipes for compatible items
   // cannithRepurposingStation.ts exports an array of recipes
@@ -48,7 +50,7 @@ const LostPurposeSelector = ({
   )
 
   return (
-    <div className='mt-2'>
+    <div className={wrapperClassName ?? 'mt-2'} style={wrapperStyle}>
       <div className='text-dark mb-0 text-start' style={{ fontSize: '0.6rem' }}>
         Lost Purpose Upgrade
       </div>
@@ -142,6 +144,8 @@ interface Props {
   slottedNearlyFinished: Record<string, LootEnchantment | null>
   slottedRitualTable: Record<string, LootEnchantment | null>
   slottedLostPurpose: Record<string, LootEnchantment | null>
+  wrapperClassName?: string
+  wrapperStyle?: React.CSSProperties
 }
 
 export default LostPurposeSelector

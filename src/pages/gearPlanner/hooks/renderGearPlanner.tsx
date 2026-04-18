@@ -122,6 +122,7 @@ export const renderGearPlanner = (props: Props) => {
                     <hr className='mt-1 mb-0' />
                   </div>
                 )}
+
                 {selectedItem.name.includes('Gem of Many Facets') && (
                   <GemSetBonusSelector
                     selectedItem={selectedItem}
@@ -130,6 +131,7 @@ export const renderGearPlanner = (props: Props) => {
                     setSlottedGemSetBonus={setSlottedGemSetBonus}
                   />
                 )}
+
                 <ItemSetBonusDisplay
                   selectedItem={selectedItem}
                   activeSetup={activeSetup}
@@ -151,12 +153,12 @@ export const renderGearPlanner = (props: Props) => {
                   )}
                 </div>
 
-                {activeSetup.slottedCurses[selectedItem.id]?.name === 'Curse of Minor Masterworks' && (
+                {activeSetup.slottedCurses?.[selectedItem.id]?.name === 'Curse of Minor Masterworks' && (
                   <div key='curse-boost-minor' className='text-success fw-bold' style={{ fontSize: '0.6rem' }}>
                     Crafting Effect Level +1
                   </div>
                 )}
-                {activeSetup.slottedCurses[selectedItem.id]?.name === 'Curse of Major Masterworks' && (
+                {activeSetup.slottedCurses?.[selectedItem.id]?.name === 'Curse of Major Masterworks' && (
                   <div key='curse-boost-major' className='text-success fw-bold' style={{ fontSize: '0.6rem' }}>
                     Crafting Effect Level +2
                   </div>
@@ -201,7 +203,11 @@ export const renderGearPlanner = (props: Props) => {
                           selectedItem={selectedItem}
                           idx={idx}
                           augSlot={augmentSlot}
-                          slotted={currentSlottedAugments[selectedItem.id][idx]}
+                          slotted={
+                            selectedItem.id in currentSlottedAugments
+                              ? currentSlottedAugments[selectedItem.id][idx]
+                              : null
+                          }
                           applicable={{
                             groups,
                             sortedGroupNames
@@ -241,42 +247,42 @@ export const renderGearPlanner = (props: Props) => {
                   </div>
                 )}
 
-                <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
-                  <NearlyFinishedSelector
-                    item={selectedItem}
-                    slot={slot}
-                    selectedEnchantment={currentSlottedNearlyFinished[selectedItem.id] ?? null}
-                    onSelect={(enchantment) => {
-                      setNearlyFinishedEnchantment(selectedItem.id, enchantment, slot)
-                    }}
-                    conflicts={currentConflicts}
-                    equippedItems={currentEquipped}
-                    slottedAugments={currentSlottedAugments}
-                    slottedNearlyFinished={currentSlottedNearlyFinished}
-                    slottedRitualTable={currentSlottedRitualTable}
-                    slottedLostPurpose={currentSlottedLostPurpose}
-                  />
-                </div>
+                <NearlyFinishedSelector
+                  item={selectedItem}
+                  slot={slot}
+                  selectedEnchantment={currentSlottedNearlyFinished[selectedItem.id] ?? null}
+                  onSelect={(enchantment) => {
+                    setNearlyFinishedEnchantment(selectedItem.id, enchantment, slot)
+                  }}
+                  conflicts={currentConflicts}
+                  equippedItems={currentEquipped}
+                  slottedAugments={currentSlottedAugments}
+                  slottedNearlyFinished={currentSlottedNearlyFinished}
+                  slottedRitualTable={currentSlottedRitualTable}
+                  slottedLostPurpose={currentSlottedLostPurpose}
+                  wrapperClassName='text-start mt-1 pt-1 border-top'
+                  wrapperStyle={{ fontSize: '0.65rem' }}
+                />
 
-                <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
-                  <RitualTableSelector
-                    item={selectedItem}
-                    slot={slot}
-                    selectedEnchantment={currentSlottedRitualTable[selectedItem.id] ?? null}
-                    onSelect={(enchantment) => {
-                      setRitualTableEnchantment(selectedItem.id, enchantment, slot)
-                    }}
-                    conflicts={currentConflicts}
-                    equippedItems={currentEquipped}
-                    slottedAugments={currentSlottedAugments}
-                    slottedNearlyFinished={currentSlottedNearlyFinished}
-                    slottedRitualTable={currentSlottedRitualTable}
-                    slottedLostPurpose={currentSlottedLostPurpose}
-                    troveData={troveData}
-                  />
-                </div>
+                <RitualTableSelector
+                  item={selectedItem}
+                  slot={slot}
+                  selectedEnchantment={currentSlottedRitualTable[selectedItem.id] ?? null}
+                  onSelect={(enchantment) => {
+                    setRitualTableEnchantment(selectedItem.id, enchantment, slot)
+                  }}
+                  conflicts={currentConflicts}
+                  equippedItems={currentEquipped}
+                  slottedAugments={currentSlottedAugments}
+                  slottedNearlyFinished={currentSlottedNearlyFinished}
+                  slottedRitualTable={currentSlottedRitualTable}
+                  slottedLostPurpose={currentSlottedLostPurpose}
+                  troveData={troveData}
+                  wrapperClassName='text-start mt-1 pt-1 border-top'
+                  wrapperStyle={{ fontSize: '0.65rem' }}
+                />
 
-                <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
+                {selectedItem.enchantments?.some((e) => e.name === 'Lost Purpose') && (
                   <LostPurposeSelector
                     item={selectedItem}
                     slot={slot}
@@ -290,8 +296,10 @@ export const renderGearPlanner = (props: Props) => {
                     slottedNearlyFinished={currentSlottedNearlyFinished}
                     slottedRitualTable={currentSlottedRitualTable}
                     slottedLostPurpose={currentSlottedLostPurpose}
+                    wrapperClassName='text-start mt-1 pt-1 border-top'
+                    wrapperStyle={{ fontSize: '0.65rem' }}
                   />
-                </div>
+                )}
 
                 <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
                   <CurseSlotItem

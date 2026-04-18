@@ -14,7 +14,7 @@ const ItemSetBonusDisplay = (props: Props) => {
 
     return (
       <div className='my-0'>
-        {activeGemBonuses.map((setName) => (
+        {activeGemBonuses.map((setName: string) => (
           <SetBonusBadge key={setName} openSetBonusBrowser={openSetBonusBrowser} setName={setName} />
         ))}
       </div>
@@ -24,7 +24,7 @@ const ItemSetBonusDisplay = (props: Props) => {
   if (selectedItem.setBonus && selectedItem.setBonus.length > 0) {
     return (
       <div className='my-0'>
-        {selectedItem.setBonus.map((sb) => (
+        {selectedItem.setBonus.map((sb: { name: string }) => (
           <SetBonusBadge key={sb.name} setName={sb.name} openSetBonusBrowser={openSetBonusBrowser} />
         ))}
       </div>

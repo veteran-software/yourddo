@@ -41,8 +41,10 @@ export const useGearPlannerUI = ({ itemNameSearch }: UseGearPlannerUIProps) => {
     (setName: string) => {
       setBrowsingSet(setName)
       setShowSetBonusBrowser(true)
+      setBrowsingSlot(null)
+      setInternalItemNameSearch('')
     },
-    [setBrowsingSet]
+    [setBrowsingSet, setBrowsingSlot, setInternalItemNameSearch]
   )
 
   useEffect(() => {
