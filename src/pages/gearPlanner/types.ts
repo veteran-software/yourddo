@@ -153,6 +153,7 @@ export interface LootItem {
   optionsRaw: string
   enchantments: LootEnchantment[]
   augments?: GearAugmentSlot[]
+  essenceSlots?: string[]
   setBonus?: { name: string }[]
 }
 
@@ -164,6 +165,7 @@ export interface GearItem extends LootItem {
   effectsAdded?: LootEnchantment[]
   grouping?: string
   isEssenceCrafted?: boolean
+  essenceSlots?: string[]
 }
 
 export interface Curse {

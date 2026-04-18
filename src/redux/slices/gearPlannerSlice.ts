@@ -12,7 +12,7 @@ import {
   type LootItem
 } from '../../pages/gearPlanner/types'
 
-interface PetState {
+export interface PetState {
   slots: Record<string, GearItem | null>
   slottedAugments: Record<string, Record<number, GearAugment | null>>
   slottedCurses: Record<string, Curse | null>

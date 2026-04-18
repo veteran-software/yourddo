@@ -5,7 +5,7 @@ import LazyAccordionBody from '../components/LazyAccordionBody.tsx'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import { type GearAugment, type GearItem, GearSlot, SHIELD_TYPES, WEAPON_TYPES } from '../types.ts'
 
-const useItemBrowser = (props: Props) => {
+const renderItemBrowser = (props: Props) => {
   const {
     browsingSlot,
     filteredItems,
@@ -298,4 +298,4 @@ interface Props {
   setBonusFilter?: string | null
 }
 
-export default useItemBrowser
+export default renderItemBrowser

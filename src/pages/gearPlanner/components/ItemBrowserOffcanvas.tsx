@@ -3,7 +3,7 @@ import { Form, Offcanvas } from 'react-bootstrap'
 import { FaXmark } from 'react-icons/fa6'
 import type { ItemRollup } from '../../../components/trove/types.ts'
 import type { EnchantmentConflict } from '../conflictResolver'
-import useItemBrowser from '../hooks/useItemBrowser.tsx'
+import renderItemBrowser from '../hooks/renderItemBrowser.tsx'
 import { type GearAugment, type GearItem, type GearSetup, GearSlot } from '../types'
 
 const ItemBrowserOffcanvas = (props: Props) => {
@@ -26,7 +26,7 @@ const ItemBrowserOffcanvas = (props: Props) => {
     troveData
   } = props
 
-  const { renderCategorizedItems } = useItemBrowser({ ...props })
+  const { renderCategorizedItems } = renderItemBrowser({ ...props })
 
   return (
     <Offcanvas

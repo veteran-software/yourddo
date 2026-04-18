@@ -14,15 +14,7 @@ import {
   Tab,
   Tabs
 } from 'react-bootstrap'
-import {
-  FaChevronRight,
-  FaFileExport,
-  FaGear,
-  FaLayerGroup,
-  FaLink,
-  FaMagnifyingGlass,
-  FaXmark
-} from 'react-icons/fa6'
+import { FaChevronRight, FaFileExport, FaGear, FaLayerGroup, FaLink, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6'
 import { useLocation, useNavigate } from 'react-router-dom'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -32,18 +24,14 @@ import {
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
-import EnchantmentSearchOffcanvas
-  from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import FiligreeModal from './components/FiligreeModal.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
 import SetBonusBrowserOffcanvas from './components/SetBonusBrowserOffcanvas.tsx'
 import SetBonusesSummary from './components/SetBonusesSummary.tsx'
 import WeaponCategory from './components/WeaponCategory.tsx'
-import {
-  generateBBCodeExport,
-  generateDiscordMarkdownExport
-} from './exportHelpers'
+import { generateBBCodeExport, generateDiscordMarkdownExport } from './exportHelpers'
 import useGearPlanner from './hooks/useGearPlanner.tsx'
 import {
   buildPermalinkUrl,
@@ -78,28 +66,20 @@ const GearPlanner = () => {
   } = useAppSelector((state) => state.gearPlanner)
   const { troveData } = useAppSelector((state) => state.app)
 
-  const [showConflicts, setShowConflicts] = useState(true)
-  const [showOwnedOnly, setShowOwnedOnly] = useState(false)
   const [showPermalink, setShowPermalink] = useState(false)
   const [filigreeTarget, setFiligreeTarget] = useState<{
     item: GearItem
     slot: GearSlot
   } | null>(null)
-  const [setBonusFilter, setSetBonusFilter] = useState<string | null>(null)
   const [enchantmentSearch, setEnchantmentSearch] = useState('')
   const [itemNameSearch] = useState('')
-
-  const handleBonusClick = (name: string) => {
-    setEnchantmentSearch(name)
-    gpHook.setShowEnchantmentSearch(true)
-  }
 
   const gpHook = useGearPlanner({
     enchantmentSearch,
     itemNameSearch,
-    setBonusFilter,
-    showConflicts,
-    showOwnedOnly
+    setBonusFilter: null,
+    showConflicts: true,
+    showOwnedOnly: false
   })
 
   const {
@@ -169,6 +149,11 @@ const GearPlanner = () => {
         </p>
       </Container>
     )
+  }
+
+  const handleBonusClick = (name: string) => {
+    setEnchantmentSearch(name)
+    gpHook.setShowEnchantmentSearch(true)
   }
 
   return (
@@ -704,21 +689,12 @@ const GearPlanner = () => {
         <EnchantmentSearchOffcanvas
           enchantmentSearch={enchantmentSearch}
           setEnchantmentSearch={setEnchantmentSearch}
-          showConflicts={showConflicts}
-          setShowConflicts={setShowConflicts}
-          showOwnedOnly={showOwnedOnly}
-          setShowOwnedOnly={setShowOwnedOnly}
           troveData={troveData}
           currentSlottedFiligrees={gpHook.getContextInfo(gpHook.browsingSlot ?? '').currentSlottedFiligrees}
           {...gpHook}
         />
 
-        <SetBonusBrowserOffcanvas
-          showOwnedOnly={showOwnedOnly}
-          setShowOwnedOnly={setShowOwnedOnly}
-          troveData={troveData}
-          {...gpHook}
-        />
+        <SetBonusBrowserOffcanvas troveData={troveData} {...gpHook} />
 
         {filigreeTarget && (
           <FiligreeModal
@@ -735,16 +711,7 @@ const GearPlanner = () => {
           />
         )}
 
-        <ItemBrowserOffcanvas
-          showConflicts={showConflicts}
-          setShowConflicts={setShowConflicts}
-          showOwnedOnly={showOwnedOnly}
-          setShowOwnedOnly={setShowOwnedOnly}
-          setBonusFilter={setBonusFilter}
-          setSetBonusFilter={setSetBonusFilter}
-          troveData={troveData}
-          {...gpHook}
-        />
+        <ItemBrowserOffcanvas troveData={troveData} {...gpHook} />
 
         <PermalinkModal
           show={showPermalink}

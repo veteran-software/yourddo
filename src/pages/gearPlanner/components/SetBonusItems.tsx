@@ -94,8 +94,8 @@ const SetBonusItems = (props: Props) => {
       if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
 
       // Priority 2: Min Level (desc)
-      const levelA = Number.parseInt(a.minLevel, 10) || 0
-      const levelB = Number.parseInt(b.minLevel, 10) || 0
+      const levelA = Number.parseInt(String(a.minLevel), 10) || 0
+      const levelB = Number.parseInt(String(b.minLevel), 10) || 0
       if (levelB !== levelA) return levelB - levelA
 
       // Priority 3: Name (asc)

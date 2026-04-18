@@ -19,7 +19,7 @@ export const isMinorArtifact = (item: LootItem) => {
 }
 
 export const getMaxFiligreeSlots = (item: LootItem) => {
-  const minLevel = Number.parseInt(item.minLevel, 10) || 1
+  const minLevel = Number.parseInt(String(item.minLevel), 10) || 1
   if (isMinorArtifact(item)) {
     if (minLevel >= 33) return 5
     if (minLevel >= 30) return 4
@@ -299,7 +299,7 @@ const addEssenceCraftingEntries = (
 ) => {
   if (!itemEssenceEnchantments || !essenceEnchantments) return
 
-  const minLevel = Number.parseInt(item.minLevel, 10) || 1
+  const minLevel = Number.parseInt(String(item.minLevel), 10) || 1
 
   for (const enchantmentId of Object.values(itemEssenceEnchantments)) {
     if (enchantmentId) {

@@ -1,20 +1,10 @@
 import { useCallback, useMemo } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { shields } from '../../../data/basics/armor.ts'
-import {
-  meleeWeapons,
-  rangedWeapons,
-  throwingWeapons
-} from '../../../data/basics/weapons.ts'
+import { meleeWeapons, rangedWeapons, throwingWeapons } from '../../../data/basics/weapons.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import type { EssenceEnchantment } from '../dataLoader.ts'
-import {
-  type GearAugment,
-  type GearItem,
-  type GearSetup,
-  GearSlot,
-  type LootEnchantment
-} from '../types.ts'
+import { type GearAugment, type GearItem, type GearSetup, GearSlot, type LootEnchantment } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
 const EssenceCraftingSelector = (props: Props) => {
@@ -444,9 +434,9 @@ interface Props {
   selectedItem: GearItem
   activeSetup: GearSetup
   essenceEnchantments: EssenceEnchantment[]
-  setEssenceEnchantment: (itemId: string, slotName: string, enchantmentId: string | null, slot: GearSlot) => void
-  setItemMinLevel: (itemId: string, minLevel: number, slot: GearSlot) => void
-  setItemMaterial: (itemId: string, material: string, slot: GearSlot) => void
+  setEssenceEnchantment: (itemId: string, slotName: string, enchantmentId: string | null, slot?: GearSlot) => void
+  setItemMinLevel: (itemId: string, minLevel: number, slot?: GearSlot) => void
+  setItemMaterial: (itemId: string, material: string, slot?: GearSlot) => void
   slot: GearSlot
   currentConflicts: Record<string, EnchantmentConflict[]>
   currentEquipped: GearItem[]
