@@ -132,7 +132,7 @@ export interface LootItem {
   type: string
   description: string
   minLevel: string | number
-  absoluteMinLevel: string
+  absoluteMinLevel: string | undefined
   binding?: LootBinding
   restriction: string
   material: string

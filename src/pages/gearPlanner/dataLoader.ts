@@ -1,9 +1,11 @@
+import { SLOT_MAP } from '../../utils/constants.ts'
 import {
   ARMOR_TYPES,
   type Curse,
   type GearAugment,
   type GearItem,
   GearSlot,
+  type LootBinding,
   type LootEnchantment,
   type LootItem,
   type SetBonusIndex,
@@ -189,83 +191,14 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
   return Promise.resolve([])
 }
 
-const SLOT_MAP: Record<string, GearSlot[]> = {
-  'belt.json': [GearSlot.Waist],
-  'boots.json': [GearSlot.Feet],
-  'bracers.json': [GearSlot.Wrists],
-  'cloak.json': [GearSlot.Cloak],
-  'docent.json': [GearSlot.Armor, GearSlot.ArtificerPetArmor, GearSlot.DruidPetArmor],
-  'gloves.json': [GearSlot.Hands],
-  'goggles.json': [GearSlot.Eyes],
-  'heavyArmor.json': [GearSlot.Armor],
-  'helmet.json': [GearSlot.Head],
-  'lightArmor.json': [GearSlot.Armor],
-  'mediumArmor.json': [GearSlot.Armor],
-  'necklace.json': [GearSlot.Neck],
-  'outfit.json': [GearSlot.Armor],
-  'ring.json': [GearSlot.FirstFinger, GearSlot.SecondFinger],
-  'robe.json': [GearSlot.Armor],
-  'trinket.json': [GearSlot.Trinket],
-  // Weapons
-  'bastardSword.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'battleAxe.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'club.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'dagger.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'dart.json': [GearSlot.MainHand],
-  'dwarvenWarAxe.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'falchion.json': [GearSlot.MainHand],
-  'greatAxe.json': [GearSlot.MainHand],
-  'greatClub.json': [GearSlot.MainHand],
-  'greatCrossbow.json': [GearSlot.MainHand],
-  'greatSword.json': [GearSlot.MainHand],
-  'handAxe.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'handwraps.json': [GearSlot.MainHand],
-  'heavyCrossbow.json': [GearSlot.MainHand],
-  'heavyMace.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'heavyPick.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'kama.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'khopesh.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'kukri.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'lightCrossbow.json': [GearSlot.MainHand],
-  'lightHammer.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'lightMace.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'lightPick.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'longBow.json': [GearSlot.MainHand],
-  'longSword.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'maul.json': [GearSlot.MainHand],
-  'morningstar.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'quarterstaff.json': [GearSlot.MainHand],
-  'quiver.json': [GearSlot.Quiver],
-  'rapier.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'repeatingHeavyCrossbow.json': [GearSlot.MainHand],
-  'repeatingLightCrossbow.json': [GearSlot.MainHand],
-  'scimitar.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'shortBow.json': [GearSlot.MainHand],
-  'shortSword.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'shuriken.json': [GearSlot.MainHand],
-  'sickle.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'throwingAxe.json': [GearSlot.MainHand],
-  'throwingDagger.json': [GearSlot.MainHand],
-  'throwingHammer.json': [GearSlot.MainHand],
-  'warhammer.json': [GearSlot.MainHand, GearSlot.OffHand],
-  'filigrees.json': [GearSlot.Filigree],
-  // Shields & Rune Arms
-  'buckler.json': [GearSlot.OffHand],
-  'largeShield.json': [GearSlot.OffHand],
-  'orb.json': [GearSlot.OffHand],
-  'runeArm.json': [GearSlot.OffHand],
-  'smallShield.json': [GearSlot.OffHand],
-  'towerShield.json': [GearSlot.OffHand],
-  // Pet Items
-  'collar.json': [GearSlot.ArtificerPetWeapon, GearSlot.DruidPetWeapon]
-}
-
-const inferSetBonuses = (item: GearItem) => {
+const inferSetBonuses = (item: GearItem | GearAugment) => {
   if (item.setBonus && item.setBonus.length > 0) return
 
   const sets: { name: string }[] = []
-  if (Array.isArray(item.enchantments)) {
-    item.enchantments.forEach((enchantment: LootEnchantment) => {
+  const enchantments = 'enchantments' in item ? item.enchantments : (item.effectsAdded ?? [])
+
+  if (Array.isArray(enchantments)) {
+    enchantments.forEach((enchantment: LootEnchantment) => {
       const lowerName = enchantment.name.toLowerCase()
 
       if (lowerName.includes('set bonus')) {
@@ -282,14 +215,18 @@ const inferSetBonuses = (item: GearItem) => {
     })
   }
 
-  // Also check notes for runtime items
-  const itemAsObj = item as unknown as Record<string, unknown>
-  if (sets.length === 0 && typeof itemAsObj.notes === 'string') {
-    const notesStr = itemAsObj.notes.toLowerCase()
+  // Also check description/notes for runtime items
+  const description = 'description' in item ? item.description : undefined
+  const gearItem = item as LootItem
+  const notes = 'description' in item ? undefined : gearItem.description
+  const textToCheck = description ?? notes
 
-    if (notesStr.includes('set bonus')) {
-      // Try to extract set name from notes like "An Against the Slave Lords Set Bonus can be applied to this item."
-      const match = /An (.*) Set Bonus can be applied/i.exec(itemAsObj.notes)
+  if (sets.length === 0 && typeof textToCheck === 'string') {
+    const textLower = textToCheck.toLowerCase()
+
+    if (textLower.includes('set bonus')) {
+      // Try to extract set name from text like "An Against the Slave Lords Set Bonus can be applied to this item."
+      const match = /An (.*) Set Bonus can be applied/i.exec(textToCheck)
 
       if (match?.[1]) {
         sets.push({ name: match[1].trim() })
@@ -373,7 +310,7 @@ export const loadGearData = (): Promise<{
       return
     }
 
-    const key = `${item.name}|${item.minLevel}|${item.slot}`
+    const key = `${item.name}|${String(item.minLevel)}|${item.slot}`
     if (!seenKeys.has(key)) {
       allItems.push(item)
       seenKeys.add(key)
@@ -385,19 +322,17 @@ export const loadGearData = (): Promise<{
   if (augModule && typeof augModule === 'object' && 'default' in augModule) {
     const augments = augModule.default as RawAugment[]
 
-    augments.forEach((aug, index) => {
-      const gearItem: GearItem & GearAugment = {
-        id: `aug-${String(index)}`,
+    augments.forEach((aug: RawAugment) => {
+      const augmentItem: GearAugment = {
         name: aug.name,
-        type: 'Augment',
-        description: aug.description ?? '',
-        minLevel: aug.minLevel ? Number(aug.minLevel) : 1,
-        absoluteMinLevel: String(aug.minLevel ?? '1'),
-        minimumLevel: aug.minLevel ? Number(aug.minLevel) : 1,
         augmentType: aug.augmentType ?? '',
+        minLevel: aug.minLevel ?? 1,
+        description: aug.description ?? '',
         binding: aug.binding,
         foundIn: aug.foundIn,
+        image: aug.image ?? '',
         weight: aug.weight,
+        update: aug.update,
         effectsAdded:
           aug.effectsAdded?.map(
             (e) =>
@@ -407,32 +342,12 @@ export const loadGearData = (): Promise<{
                 bonus: e.bonus ?? undefined
               }) as LootEnchantment
           ) ?? [],
-        enchantments: [],
-        augments: [],
-        setBonus: aug.setBonus?.map((sb) => ({ name: sb.name })),
-        slot: GearSlot.Augment,
-        material: 'Stone',
-        pageTitle: aug.name,
-        restriction: '',
-        hardness: '0',
-        durability: '0',
-        weight: String(aug.weight ?? '0'),
-        update: String(aug.update ?? '0'),
-        details: '',
-        upgradeable: '',
-        upgradedFrom: '',
-        bug: '',
-        replaced: '',
-        icon: aug.image ?? '',
-        image: '',
-        optionsRaw: '',
-        dropLocations: []
+        setBonus: aug.setBonus?.map((sb) => ({ name: sb.name }))
       }
 
-      inferSetBonuses(gearItem)
-      addItem(gearItem)
+      inferSetBonuses(augmentItem)
 
-      allAugments.push(gearItem)
+      allAugments.push(augmentItem)
     })
   }
 
@@ -444,7 +359,7 @@ export const loadGearData = (): Promise<{
     if (module && typeof module === 'object' && 'default' in module && Array.isArray(module.default)) {
       const data = module.default as LootItem[]
 
-      data.forEach((item: LootItem, index) => {
+      data.forEach((item: LootItem, idx: number) => {
         // Special-case: Some items in collar.json are actually pet armors, not weapons
         let effectiveSlots = slots
 
@@ -467,10 +382,10 @@ export const loadGearData = (): Promise<{
         effectiveSlots.forEach((slot: GearSlot) => {
           const gearItem: GearItem = {
             ...item,
-            id: `${fileName}-${String(index)}-${slot}`,
+            id: `${fileName}-${String(idx)}-${slot}`,
             slot: slot,
             minLevel: item.minLevel || '1',
-            absoluteMinLevel: item.absoluteMinLevel || item.minLevel || '1'
+            absoluteMinLevel: (item.absoluteMinLevel ?? String(item.minLevel)) || '1'
           }
 
           inferSetBonuses(gearItem)
