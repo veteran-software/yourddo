@@ -1,5 +1,5 @@
 import type { EssenceEnchantment } from './dataLoader.ts'
-import { getActiveSetEnhancements } from './helpers'
+import { getActiveSetEnhancements, getScaledEssenceEnchantments } from './helpers'
 import type { Curse, GearAugment, GearItem, GearSetup, GearSlot, LootEnchantment, LootItem } from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
 
@@ -155,34 +155,13 @@ export const generateBBCodeExport = (
 
       Object.entries(essenceCrafting).forEach(([slotName, enchId]) => {
         if (enchId) {
-          const ench: EssenceEnchantment | undefined = allEssenceEnchantments.find(
-            (enchantment: EssenceEnchantment) => enchantment.id === enchId
-          )
+          const ench = allEssenceEnchantments.find((e) => e.id === enchId)
 
           if (ench) {
-            const idx = Math.max(0, Math.min((ench.scalingStats?.length ?? 1) - 1, minLevel - 1))
-            const scalingValue = ench.scalingStats?.[idx]
-
-            if (Array.isArray(ench.enchantments) && ench.enchantments.length > 0) {
-              ench.enchantments.forEach((innerEnch) => {
-                lines.push(
-                  `[*] [b]${slotName}:[/b] ${formatEnchantment({
-                    ...innerEnch,
-                    name: innerEnch.name || ench.enchantmentName,
-                    modifier: scalingValue ?? innerEnch.modifier,
-                    bonus: innerEnch.bonus ?? ench.bonus
-                  })}`
-                )
-              })
-            } else {
-              lines.push(
-                `[*] [b]${slotName}:[/b] ${formatEnchantment({
-                  name: ench.enchantmentName,
-                  modifier: scalingValue,
-                  bonus: ench.bonus
-                })}`
-              )
-            }
+            const enchantments = getScaledEssenceEnchantments(ench, minLevel)
+            enchantments.forEach((innerEnch) => {
+              lines.push(`[*] [b]${slotName}:[/b] ${formatEnchantment(innerEnch)}`)
+            })
           }
         }
       })
@@ -354,29 +333,10 @@ export const generateDiscordMarkdownExport = (
         if (enchId) {
           const ench = allEssenceEnchantments.find((e) => e.id === enchId)
           if (ench) {
-            const idx = Math.max(0, Math.min((ench.scalingStats?.length ?? 1) - 1, minLevel - 1))
-            const scalingValue = ench.scalingStats?.[idx]
-
-            if (Array.isArray(ench.enchantments) && ench.enchantments.length > 0) {
-              ench.enchantments.forEach((innerEnch: LootEnchantment) => {
-                lines.push(
-                  `  - **${slotName}:** ${formatEnchantment({
-                    ...innerEnch,
-                    name: innerEnch.name || ench.enchantmentName,
-                    modifier: scalingValue ?? innerEnch.modifier,
-                    bonus: innerEnch.bonus ?? ench.bonus
-                  })}`
-                )
-              })
-            } else {
-              lines.push(
-                `  - **${slotName}:** ${formatEnchantment({
-                  name: ench.enchantmentName,
-                  modifier: scalingValue,
-                  bonus: ench.bonus
-                })}`
-              )
-            }
+            const enchantments = getScaledEssenceEnchantments(ench, minLevel)
+            enchantments.forEach((innerEnch: LootEnchantment) => {
+              lines.push(`  - **${slotName}:** ${formatEnchantment(innerEnch)}`)
+            })
           }
         }
       })

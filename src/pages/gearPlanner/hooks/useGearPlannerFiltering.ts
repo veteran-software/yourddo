@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { getTroveKey } from '../../../utils/troveUtils'
 import { ALL_SLOT_KEYS } from '../../essenceCrafting/types'
 import { normalizeString } from '../conflictResolver'
+import { createEssenceCraftedItem } from '../helpers'
 import {
   ARTIFICER_PET_SLOTS,
   DRUID_PET_SLOTS,
@@ -193,35 +194,8 @@ export const useGearPlannerFiltering = ({
 
     if (isPetSlot(slot)) return items
 
-    const createItem = (type: string, name?: string): GearItem => ({
-      id: `essence-crafted-${slot}-${type}`,
-      name: name ?? `Essence Crafted ${type}`,
-      pageTitle: name ?? `Essence Crafted ${type}`,
-      slot: slot,
-      type: type,
-      description: 'A custom crafted item using essence crafting.',
-      minLevel: String(minLevel),
-      absoluteMinLevel: String(minLevel),
-      binding: { type: 'Bound to Character on Acquire', to: 'Character', from: 'Crafting' },
-      restriction: '',
-      material: '',
-      hardness: '0',
-      durability: '0',
-      weight: '0',
-      dropLocations: [{ sourceType: 'Essence Crafting', isCraftOnly: true }],
-      update: '0',
-      details: '',
-      upgradeable: 'No',
-      upgradedFrom: '',
-      bug: '',
-      replaced: '',
-      icon: 'essence_crafted',
-      image: 'essence_crafted',
-      optionsRaw: '',
-      enchantments: [],
-      essenceSlots: ['prefix', 'suffix', 'extra'],
-      isEssenceCrafted: true
-    })
+    const createItem = (type: string, name?: string): GearItem =>
+      createEssenceCraftedItem(type, name ?? `Essence Crafted ${type}`, slot, minLevel)
 
     const getSlotLabel = (s: GearSlot) => {
       const mapping: Record<string, string> = {

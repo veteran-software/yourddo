@@ -13,6 +13,64 @@ import {
 
 export const isEssenceCraftedName = (name: string) => name.startsWith('Essence Crafted')
 
+export const createEssenceCraftedItem = (type: string, name: string, slot: GearSlot, minLevel: number): GearItem => ({
+  id: `essence-crafted-${slot}-${type}`,
+  name: name,
+  pageTitle: name,
+  slot: slot,
+  type: type,
+  description: 'A custom crafted item using essence crafting.',
+  minLevel: String(minLevel),
+  absoluteMinLevel: String(minLevel),
+  binding: { type: 'Bound to Character on Acquire', to: 'Character', from: 'Crafting' },
+  restriction: '',
+  material: '',
+  hardness: '0',
+  durability: '0',
+  weight: '0',
+  dropLocations: [{ sourceType: 'Essence Crafting', isCraftOnly: true }],
+  update: '0',
+  details: '',
+  upgradeable: 'No',
+  upgradedFrom: '',
+  bug: '',
+  replaced: '',
+  icon: 'essence_crafted',
+  image: 'essence_crafted',
+  optionsRaw: '',
+  enchantments: [],
+  essenceSlots: ['prefix', 'suffix', 'extra'],
+  isEssenceCrafted: true
+})
+
+export const getScaledEssenceEnchantments = (ench: EssenceEnchantment, minLevel: number): LootEnchantment[] => {
+  const idx = Math.max(0, Math.min((ench.scalingStats?.length ?? 1) - 1, minLevel - 1))
+  const scalingValue = ench.scalingStats?.[idx]
+
+  const results: LootEnchantment[] = []
+  const effects =
+    Array.isArray(ench.enchantments) && ench.enchantments.length > 0
+      ? ench.enchantments
+      : ([{ name: ench.enchantmentName, bonus: ench.bonus }] as LootEnchantment[])
+
+  effects.forEach((innerEnch) => {
+    const rawDisplayName = (innerEnch.statModified ?? innerEnch.name) || ench.enchantmentName
+    const displayNames: string[] = Array.isArray(rawDisplayName)
+      ? (rawDisplayName as unknown as string[])
+      : [rawDisplayName]
+
+    displayNames.forEach((name) => {
+      results.push({
+        ...innerEnch,
+        name: name.trim(),
+        modifier: scalingValue ?? innerEnch.modifier ?? undefined,
+        bonus: ench.bonus ?? innerEnch.bonus
+      })
+    })
+  })
+  return results
+}
+
 export const reconstructEssenceCraftedItem = (name: string, slot: GearSlot, minLevel: number): GearItem => {
   let type = 'Crafted'
   if (name.includes('Weapon')) type = 'Weapon'
@@ -21,35 +79,7 @@ export const reconstructEssenceCraftedItem = (name: string, slot: GearSlot, minL
   else if (name.includes('Orb')) type = 'Orb'
   else if (name.includes('Armor')) type = 'Armor'
 
-  return {
-    id: `essence-crafted-${slot}-${type}`,
-    name: name,
-    pageTitle: name,
-    slot: slot,
-    type: type,
-    description: 'A custom crafted item using essence crafting.',
-    minLevel: String(minLevel),
-    absoluteMinLevel: String(minLevel),
-    binding: { type: 'Bound to Character on Acquire', to: 'Character', from: 'Crafting' },
-    restriction: '',
-    material: '',
-    hardness: '0',
-    durability: '0',
-    weight: '0',
-    dropLocations: [{ sourceType: 'Essence Crafting', isCraftOnly: true }],
-    update: '0',
-    details: '',
-    upgradeable: 'No',
-    upgradedFrom: '',
-    bug: '',
-    replaced: '',
-    icon: 'essence_crafted',
-    image: 'essence_crafted',
-    optionsRaw: '',
-    enchantments: [],
-    essenceSlots: ['prefix', 'suffix', 'extra'],
-    isEssenceCrafted: true
-  }
+  return createEssenceCraftedItem(type, name, slot, minLevel)
 }
 
 export const isWeapon = (item: LootItem) => {
@@ -305,33 +335,19 @@ const addFiligreeEntries = (
   }
 }
 
-const iterateEnchentments = (
+const iterateEnchantments = (
   opt: EssenceEnchantment,
   minLevel: number,
   entries: { ench: LootEnchantment; sourceName: string }[],
   item: GearItem
 ) => {
-  if (!opt.enchantments) return
-  for (const effect of opt.enchantments) {
-    const rawDisplayName = effect.statModified ?? effect.name
-    const displayNames: string[] = Array.isArray(rawDisplayName) ? rawDisplayName : [rawDisplayName]
-
-    const scalingValue = opt.scalingStats
-      ? opt.scalingStats[Math.max(0, Math.min(opt.scalingStats.length - 1, minLevel - 1))]
-      : null
-
-    for (const name of displayNames) {
-      entries.push({
-        ench: {
-          ...effect,
-          name: name.trim(),
-          modifier: scalingValue ?? undefined,
-          bonus: opt.bonus ?? effect.bonus
-        },
-        sourceName: `${item.name} (Essence: ${opt.shardName ?? 'UNKNOWN'})`
-      })
-    }
-  }
+  const scaledEnchantments = getScaledEssenceEnchantments(opt, minLevel)
+  scaledEnchantments.forEach((ench) => {
+    entries.push({
+      ench,
+      sourceName: `${item.name} (Essence: ${opt.shardName ?? 'UNKNOWN'})`
+    })
+  })
 }
 
 const addEssenceCraftingEntries = (
@@ -349,7 +365,7 @@ const addEssenceCraftingEntries = (
       const opt = essenceEnchantments.find((e) => e.id === enchantmentId)
 
       if (opt) {
-        iterateEnchentments(opt, minLevel, entries, item)
+        iterateEnchantments(opt, minLevel, entries, item)
       }
     }
   }
