@@ -1238,7 +1238,7 @@ const useGearPlanner = (props: Props) => {
   }
 
   const hasActiveFiligrees = (itemId: string, setup: GearSetup) => {
-    return setup.slottedFiligrees[itemId].some((f) => f !== null)
+    return (setup.slottedFiligrees[itemId] ?? []).some((f) => f !== null)
   }
 
   /**
@@ -1664,9 +1664,9 @@ const useGearPlanner = (props: Props) => {
                   <div key='filigrees' className='text-start mt-1 pt-1 border-top'>
                     <FiligreeLabel item={selectedItem} setup={setup} slot={slot} />
 
-                    {setup.slottedFiligrees[selectedItem.id].some((f) => f !== null) && (
+                    {(setup.slottedFiligrees[selectedItem.id] ?? []).some((f) => f !== null) && (
                       <div className='mt-1 ps-1 border-start border-2' style={{ borderColor: '#ff8c00' }}>
-                        {setup.slottedFiligrees[selectedItem.id]
+                        {(setup.slottedFiligrees[selectedItem.id] ?? [])
                           .filter((f) => f !== null)
                           .map((filigree, fIdx) => (
                             <div key={`${filigree.name}-${String(fIdx)}`} className='mb-1'>
@@ -1818,10 +1818,10 @@ const useGearPlanner = (props: Props) => {
 }
 
 const FiligreeLabel = ({ item, setup, slot }: { item: GearItem; setup: GearSetup; slot: GearSlot }) => {
-  const isSlotted = setup.slottedFiligrees[item.id].some((f) => f !== null)
+  const isSlotted = (setup.slottedFiligrees[item.id] ?? []).some((f) => f !== null)
   let label = 'Sentience Accepted'
   if (isSlotted) {
-    const activeCount = setup.slottedFiligrees[item.id].filter((f) => f !== null).length
+    const activeCount = (setup.slottedFiligrees[item.id] ?? []).filter((f) => f !== null).length
     label = `Filigrees Slotted (${String(activeCount)})`
   } else if (isMinorArtifact(item)) {
     label = 'Minor Artifact'

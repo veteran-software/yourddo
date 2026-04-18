@@ -77,6 +77,11 @@ const GearPlanner = () => {
   const [enchantmentSearch, setEnchantmentSearch] = useState('')
   const [itemNameSearch] = useState('')
 
+  const handleBonusClick = (name: string, _bonusType: string) => {
+    setEnchantmentSearch(name)
+    gpHook.setShowEnchantmentSearch(true)
+  }
+
   const gpHook = useGearPlanner({
     enchantmentSearch,
     itemNameSearch,
@@ -352,6 +357,11 @@ const GearPlanner = () => {
                       slottedNearlyFinished={gpHook.activeSetup.slottedNearlyFinished}
                       slottedRitualTable={gpHook.activeSetup.slottedRitualTable}
                       slottedLostPurpose={gpHook.activeSetup.slottedLostPurpose}
+                      allItems={gpHook.allItems}
+                      allAugments={gpHook.allAugments}
+                      allCurses={gpHook.allCurses}
+                      allFiligrees={gpHook.allFiligrees}
+                      onBonusClick={handleBonusClick}
                     />
 
                     {setup.classes.includes('Artificer') && setup.classes.includes('Druid') && (
@@ -386,6 +396,10 @@ const GearPlanner = () => {
                           slottedNearlyFinished={artificerPet.slottedNearlyFinished}
                           slottedRitualTable={artificerPet.slottedRitualTable}
                           slottedLostPurpose={artificerPet.slottedLostPurpose}
+                          allItems={gpHook.allItems}
+                          allAugments={gpHook.allAugments}
+                          allCurses={gpHook.allCurses}
+                          allFiligrees={gpHook.allFiligrees}
                         />
                       </div>
                     )}
@@ -418,6 +432,10 @@ const GearPlanner = () => {
                           slottedNearlyFinished={druidPet.slottedNearlyFinished}
                           slottedRitualTable={druidPet.slottedRitualTable}
                           slottedLostPurpose={druidPet.slottedLostPurpose}
+                          allItems={gpHook.allItems}
+                          allAugments={gpHook.allAugments}
+                          allCurses={gpHook.allCurses}
+                          allFiligrees={gpHook.allFiligrees}
                         />
                       </div>
                     )}

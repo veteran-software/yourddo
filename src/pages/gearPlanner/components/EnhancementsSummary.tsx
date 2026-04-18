@@ -4,7 +4,7 @@ import { FaListUl } from 'react-icons/fa6'
 import { getBonus, normalizeString, parseModifierValue } from '../conflictResolver.ts'
 import type { EssenceEnchantment } from '../dataLoader.ts'
 import { aggregateEnchantmentEntries, getActiveSetEnhancements, sortItemsByValue } from '../helpers.ts'
-import type { Curse, GearAugment, GearItem } from '../types.ts'
+import type { Curse, GearAugment, GearItem, LootEnchantment } from '../types.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
 
 const EnchantmentsSummary = ({
@@ -17,7 +17,12 @@ const EnchantmentsSummary = ({
   essenceEnchantments,
   slottedNearlyFinished,
   slottedRitualTable,
-  slottedLostPurpose
+  slottedLostPurpose,
+  allItems,
+  allAugments,
+  allCurses,
+  allFiligrees,
+  onBonusClick
 }: {
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
@@ -29,7 +34,47 @@ const EnchantmentsSummary = ({
   slottedNearlyFinished?: Record<string, import('../types.ts').LootEnchantment | null>
   slottedRitualTable?: Record<string, import('../types.ts').LootEnchantment | null>
   slottedLostPurpose?: Record<string, import('../types.ts').LootEnchantment | null>
+  allItems?: GearItem[]
+  allAugments?: GearAugment[]
+  allCurses?: Curse[]
+  allFiligrees?: GearItem[]
+  onBonusClick?: (name: string, bonusType: string) => void
 }) => {
+  const allPossibleBonuses = useMemo(() => {
+    const map: Record<string, Set<string>> = {}
+
+    const processEnch = (ench: LootEnchantment) => {
+      const normName = normalizeString(ench.name)
+      if (!normName) return
+      if (!map[normName]) map[normName] = new Set<string>()
+      map[normName].add(getBonus(ench.bonus))
+    }
+
+    allItems?.forEach((item) => {
+      if (Array.isArray(item.enchantments)) {
+        item.enchantments.forEach(processEnch)
+      }
+    })
+
+    allAugments?.forEach((aug) => {
+      aug.effectsAdded?.forEach(processEnch)
+    })
+
+    allCurses?.forEach((curse) => {
+      curse.enchantments?.forEach(processEnch)
+    })
+
+    allFiligrees?.forEach((fili) => {
+      fili.enchantments?.forEach(processEnch)
+    })
+
+    essenceEnchantments?.forEach((ee) => {
+      ee.enchantments?.forEach(processEnch)
+    })
+
+    return map
+  }, [allItems, allAugments, allCurses, allFiligrees, essenceEnchantments])
+
   const aggregated = useMemo(() => {
     type AggregationMap = Record<
       string,
@@ -82,7 +127,7 @@ const EnchantmentsSummary = ({
       if (value > group.maxValue) {
         group.maxValue = value
         group.maxValueStr = valueStr
-      } else if (group.maxValue === 0) {
+      } else if (group.maxValue === 0 && valueStr) {
         group.maxValueStr = valueStr
       }
 
@@ -124,6 +169,22 @@ const EnchantmentsSummary = ({
     for (const { ench, sourceName } of activeSetEnhancements) {
       addEntryToMap(ench, sourceName, 'Set Bonus')
     }
+
+    // Add empty entries for missing bonus types
+    Object.keys(map).forEach((normName) => {
+      const possibleBonuses = allPossibleBonuses[normName]
+      if (possibleBonuses) {
+        possibleBonuses.forEach((bonusType) => {
+          if (!(bonusType in map[normName].bonuses)) {
+            map[normName].bonuses[bonusType] = {
+              maxValue: 0,
+              maxValueStr: '',
+              items: []
+            }
+          }
+        })
+      }
+    })
 
     const result = Object.values(map).map((entry) => {
       const bonuses = Object.entries(entry.bonuses)
@@ -190,27 +251,46 @@ const EnchantmentsSummary = ({
                   {ench.bonuses.map((bonus, bIdx) => (
                     <div key={`${bonus.bonusType}-${String(bIdx)}`} className='mb-2 last-child-mb-0'>
                       <div className='d-flex justify-content-between align-items-center border-bottom border-secondary mb-1 pb-1'>
-                        <span className='small text-light italic text-capitalize'>{bonus.bonusType}</span>
+                        <span
+                          className={`small italic text-capitalize ${
+                            onBonusClick ? 'text-info cursor-pointer' : 'text-light'
+                          }`}
+                          onClick={() => onBonusClick?.(ench.name, bonus.bonusType)}
+                          role={onBonusClick ? 'button' : undefined}
+                          tabIndex={onBonusClick ? 0 : undefined}
+                        >
+                          {bonus.bonusType}
+                        </span>
 
                         <span className='small fw-bold text-light'>
-                          {bonus.maxValue === 0 ? bonus.maxValueStr || 'Active' : `+${String(bonus.maxValue)}`}
+                          {bonus.items.length === 0
+                            ? '---'
+                            : bonus.maxValue === 0
+                              ? bonus.maxValueStr || 'Active'
+                              : `+${String(bonus.maxValue)}`}
                         </span>
                       </div>
 
-                      {bonus.items.map((item, iIdx) => (
-                        <div
-                          key={`${item.itemName}-${String(iIdx)}`}
-                          className={`ps-2 small d-flex justify-content-between align-items-center ${
-                            item.value === bonus.maxValue ? 'text-secondary' : 'text-muted text-decoration-line-through'
-                          }`}
-                        >
-                          <span className='text-truncate me-1'>• {item.itemName}</span>
+                      {bonus.items.length === 0 ? (
+                        <div className='ps-2 small text-muted italic'>• No items equipped</div>
+                      ) : (
+                        bonus.items.map((item, iIdx) => (
+                          <div
+                            key={`${item.itemName}-${String(iIdx)}`}
+                            className={`ps-2 small d-flex justify-content-between align-items-center ${
+                              item.value === bonus.maxValue
+                                ? 'text-secondary'
+                                : 'text-muted text-decoration-line-through'
+                            }`}
+                          >
+                            <span className='text-truncate me-1'>• {item.itemName}</span>
 
-                          <span className='flex-shrink-0'>
-                            {item.value === 0 ? item.valueStr : `+${String(item.value)}`}
-                          </span>
-                        </div>
-                      ))}
+                            <span className='flex-shrink-0'>
+                              {item.value === 0 ? item.valueStr : `+${String(item.value)}`}
+                            </span>
+                          </div>
+                        ))
+                      )}
                     </div>
                   ))}
                 </Accordion.Body>
