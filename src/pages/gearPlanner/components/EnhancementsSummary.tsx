@@ -1,19 +1,31 @@
 import { useMemo } from 'react'
 import { Accordion, Col, Row } from 'react-bootstrap'
 import { FaListUl } from 'react-icons/fa6'
-import {
-  getBonus,
-  normalizeString,
-  parseModifierValue
-} from '../conflictResolver.ts'
+import { getBonus, normalizeString, parseModifierValue } from '../conflictResolver.ts'
 import type { EssenceEnchantment } from '../dataLoader.ts'
-import {
-  aggregateEnchantmentEntries,
-  getActiveSetEnhancements,
-  sortItemsByValue
-} from '../helpers.ts'
+import { aggregateEnchantmentEntries, getActiveSetEnhancements, sortItemsByValue } from '../helpers.ts'
 import type { Curse, GearAugment, GearItem, LootEnchantment } from '../types.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
+
+interface AggregationItem {
+  itemName: string
+  slot: string
+  value: number
+  valueStr: string
+}
+
+interface AggregationBonus {
+  maxValue: number
+  maxValueStr: string
+  items: AggregationItem[]
+}
+
+interface AggregationEntry {
+  originalName: string
+  bonuses: Record<string, AggregationBonus>
+}
+
+type AggregationMap = Record<string, AggregationEntry>
 
 const EnchantmentsSummary = (props: Props) => {
   const {
@@ -39,8 +51,14 @@ const EnchantmentsSummary = (props: Props) => {
 
     const processEnch = (ench: LootEnchantment) => {
       const normName = normalizeString(ench.name)
-      if (!normName) return
-      if (!map[normName]) map[normName] = new Set<string>()
+      if (!normName) {
+        return
+      }
+
+      if (!(normName in map)) {
+        map[normName] = new Set<string>()
+      }
+
       map[normName].add(getBonus(ench.bonus))
     }
 
@@ -55,51 +73,24 @@ const EnchantmentsSummary = (props: Props) => {
     })
 
     allCurses?.forEach((curse) => {
-      curse.enchantments?.forEach(processEnch)
+      curse.enchantments.forEach(processEnch)
     })
 
     allFiligrees?.forEach((fili) => {
-      fili.enchantments?.forEach(processEnch)
+      fili.enchantments.forEach(processEnch)
     })
 
     essenceEnchantments?.forEach((ee) => {
-      ee.enchantments?.forEach(processEnch)
+      ee.enchantments.forEach(processEnch)
     })
 
     return map
   }, [allItems, allAugments, allCurses, allFiligrees, essenceEnchantments])
 
   const aggregated = useMemo(() => {
-    type AggregationMap = Record<
-      string,
-      {
-        originalName: string
-        bonuses: Record<
-          string,
-          {
-            maxValue: number
-            maxValueStr: string
-            items: {
-              itemName: string
-              slot: string
-              value: number
-              valueStr: string
-            }[]
-          }
-        >
-      }
-    >
     const map: AggregationMap = {}
 
-    const addEntryToMap = (
-      ench: {
-        name: string
-        bonus?: string | number
-        modifier?: string | number
-      },
-      sourceName: string,
-      slot: string
-    ) => {
+    const addEntryToMap = (ench: LootEnchantment, sourceName: string, slot: string) => {
       const normName = normalizeString(ench.name)
       const normBonus = getBonus(ench.bonus)
       const value = parseModifierValue(ench.modifier)
@@ -117,7 +108,7 @@ const EnchantmentsSummary = (props: Props) => {
         }
       }
 
-      const group = map[normName].bonuses[normBonus]
+      const group: AggregationBonus = map[normName].bonuses[normBonus]
       if (value > group.maxValue) {
         group.maxValue = value
         group.maxValueStr = valueStr
@@ -130,7 +121,7 @@ const EnchantmentsSummary = (props: Props) => {
         slot,
         value,
         valueStr
-      })
+      } as AggregationItem)
     }
 
     const activeSetEnhancements = getActiveSetEnhancements(
@@ -165,25 +156,30 @@ const EnchantmentsSummary = (props: Props) => {
     }
 
     // Add empty entries for missing bonus types
-    Object.keys(map).forEach((normName) => {
-      const possibleBonuses = allPossibleBonuses[normName]
-      if (possibleBonuses) {
-        possibleBonuses.forEach((bonusType) => {
+    Object.keys(map).forEach((normName: string) => {
+      if (!(normName in allPossibleBonuses)) {
+        return
+      }
+
+      const possibleBonuses: Set<string> = allPossibleBonuses[normName]
+
+      if (possibleBonuses.size > 0) {
+        possibleBonuses.forEach((bonusType: string) => {
           if (!(bonusType in map[normName].bonuses)) {
             map[normName].bonuses[bonusType] = {
               maxValue: 0,
               maxValueStr: '',
               items: []
-            }
+            } as AggregationBonus
           }
         })
       }
     })
 
-    const result = Object.values(map).map((entry) => {
+    const result = Object.values(map).map((entry: AggregationEntry) => {
       const bonuses = Object.entries(entry.bonuses)
-        .map(([bonusType, data]) => {
-          const sortedItems = [...data.items].sort(sortItemsByValue)
+        .map(([bonusType, data]: [string, AggregationBonus]) => {
+          const sortedItems: AggregationItem[] = [...data.items].sort(sortItemsByValue)
 
           return {
             bonusType,
@@ -209,17 +205,35 @@ const EnchantmentsSummary = (props: Props) => {
   }, [
     equippedItems,
     slottedAugments,
-    slottedCurses,
     slottedFiligrees,
     slottedGemSetBonuses,
+    slottedLostPurpose,
+    slottedCurses,
     slottedEssenceEnchantments,
     essenceEnchantments,
     slottedNearlyFinished,
     slottedRitualTable,
-    slottedLostPurpose
+    allPossibleBonuses
   ])
 
-  if (aggregated.length === 0) return null
+  if (aggregated.length === 0) {
+    return null
+  }
+
+  const calculateBonus = (bonus: {
+    bonusType: string
+    maxValue: number
+    maxValueStr: string
+    items: AggregationItem[]
+  }) => {
+    if (bonus.items.length === 0) {
+      return '---'
+    } else if (bonus.maxValue === 0) {
+      return bonus.maxValueStr || 'Active'
+    } else {
+      return `+${String(bonus.maxValue)}`
+    }
+  }
 
   return (
     <div className='mt-4 p-3 border border-info rounded bg-dark-subtle shadow-sm'>
@@ -256,13 +270,7 @@ const EnchantmentsSummary = (props: Props) => {
                           {bonus.bonusType}
                         </span>
 
-                        <span className='small fw-bold text-light'>
-                          {bonus.items.length === 0
-                            ? '---'
-                            : bonus.maxValue === 0
-                              ? bonus.maxValueStr || 'Active'
-                              : `+${String(bonus.maxValue)}`}
-                        </span>
+                        <span className='small fw-bold text-light'>{calculateBonus(bonus)}</span>
                       </div>
 
                       {bonus.items.length === 0 ? (

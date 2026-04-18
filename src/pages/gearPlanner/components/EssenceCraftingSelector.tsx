@@ -1,10 +1,20 @@
 import { useCallback, useMemo } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { shields } from '../../../data/basics/armor.ts'
-import { meleeWeapons, rangedWeapons, throwingWeapons } from '../../../data/basics/weapons.ts'
+import {
+  meleeWeapons,
+  rangedWeapons,
+  throwingWeapons
+} from '../../../data/basics/weapons.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import type { EssenceEnchantment } from '../dataLoader.ts'
-import { type GearAugment, type GearItem, type GearSetup, GearSlot, type LootEnchantment } from '../types.ts'
+import {
+  type GearAugment,
+  type GearItem,
+  type GearSetup,
+  GearSlot,
+  type LootEnchantment
+} from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
 const EssenceCraftingSelector = (props: Props) => {
@@ -33,8 +43,8 @@ const EssenceCraftingSelector = (props: Props) => {
 
     return 0
   }
-  const effectiveLevel = minLevel + getCurseBoost()
 
+  const effectiveLevel = minLevel + getCurseBoost()
   const isGemOfManyFacets = selectedItem.name.includes('Gem of Many Facets')
 
   const getFormattedName = useCallback(
@@ -79,7 +89,7 @@ const EssenceCraftingSelector = (props: Props) => {
     }
   }, [])
 
-  const allowedSlotIds = useMemo(() => {
+  const allowedSlotIds: string[] = useMemo(() => {
     const ids = slot in slotIdMap ? slotIdMap[slot] : []
     if (slot !== GearSlot.MainHand && slot !== GearSlot.OffHand) {
       return ids
@@ -126,22 +136,25 @@ const EssenceCraftingSelector = (props: Props) => {
     return filteredIds
   }, [slotIdMap, slot, selectedItem.type])
 
-  const prefixOptions = useMemo(
+  const prefixOptions: EssenceEnchantment[] = useMemo(
     () =>
       essenceEnchantments
-        .filter((e) => {
+        .filter((e: EssenceEnchantment) => {
           if (e.affixType !== 'prefix' || !allowedSlotIds.includes(e.slotId)) {
             return false
           }
+
           if (e.scalingStats && e.scalingStats.length > 0) {
             const idx = Math.max(0, Math.min(e.scalingStats.length - 1, effectiveLevel - 1))
+
             if (e.scalingStats[idx] === -1) {
               return false
             }
           }
+
           return true
         })
-        .sort((a, b) =>
+        .sort((a: EssenceEnchantment, b: EssenceEnchantment) =>
           getFormattedName(a).localeCompare(getFormattedName(b), 'en', {
             sensitivity: 'base'
           })
@@ -152,19 +165,22 @@ const EssenceCraftingSelector = (props: Props) => {
   const suffixOptions = useMemo(
     () =>
       essenceEnchantments
-        .filter((e) => {
+        .filter((e: EssenceEnchantment) => {
           if (e.affixType !== 'suffix' || !allowedSlotIds.includes(e.slotId)) {
             return false
           }
+
           if (e.scalingStats && e.scalingStats.length > 0) {
             const idx = Math.max(0, Math.min(e.scalingStats.length - 1, effectiveLevel - 1))
+
             if (e.scalingStats[idx] === -1) {
               return false
             }
           }
+
           return true
         })
-        .sort((a, b) =>
+        .sort((a: EssenceEnchantment, b: EssenceEnchantment) =>
           getFormattedName(a).localeCompare(getFormattedName(b), 'en', {
             sensitivity: 'base'
           })
@@ -172,23 +188,25 @@ const EssenceCraftingSelector = (props: Props) => {
     [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel]
   )
 
-  // Assuming 'extra' for Mark of House Cannith
   const extraOptions = useMemo(
     () =>
       essenceEnchantments
-        .filter((e) => {
+        .filter((e: EssenceEnchantment) => {
           if (e.affixType !== 'extra' || !allowedSlotIds.includes(e.slotId)) {
             return false
           }
+
           if (e.scalingStats && e.scalingStats.length > 0) {
             const idx = Math.max(0, Math.min(e.scalingStats.length - 1, effectiveLevel - 1))
+
             if (e.scalingStats[idx] === -1) {
               return false
             }
           }
+
           return true
         })
-        .sort((a, b) =>
+        .sort((a: EssenceEnchantment, b: EssenceEnchantment) =>
           getFormattedName(a).localeCompare(getFormattedName(b), 'en', {
             sensitivity: 'base'
           })
@@ -197,8 +215,13 @@ const EssenceCraftingSelector = (props: Props) => {
   )
 
   const renderDropdown = (label: string, slotName: string, options: EssenceEnchantment[]) => {
-    const currentSelectionId = activeSetup.slottedEssenceEnchantments[selectedItem.id]?.[slotName] ?? null
-    const currentSelection = options.find((o) => o.id === currentSelectionId)
+    const currentSelectionId =
+      selectedItem.id in activeSetup.slottedEssenceEnchantments &&
+      slotName in activeSetup.slottedEssenceEnchantments[selectedItem.id]
+        ? activeSetup.slottedEssenceEnchantments[selectedItem.id][slotName]
+        : null
+
+    const currentSelection = options.find((option: EssenceEnchantment) => option.id === currentSelectionId)
 
     return (
       <div className='mb-1'>
@@ -239,14 +262,14 @@ const EssenceCraftingSelector = (props: Props) => {
 
             <Dropdown.Divider />
 
-            {options.map((opt) => (
+            {options.map((option: EssenceEnchantment) => (
               <Dropdown.Item
-                key={opt.id}
+                key={option.id}
                 onClick={() => {
-                  setEssenceEnchantment(selectedItem.id, slotName, opt.id, slot)
+                  setEssenceEnchantment(selectedItem.id, slotName, option.id, slot)
                 }}
               >
-                {getFormattedName(opt)}
+                {getFormattedName(option)}
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>
@@ -255,24 +278,24 @@ const EssenceCraftingSelector = (props: Props) => {
         {currentSelection?.enchantments && (
           <div className='mt-1 text-secondary' style={{ fontSize: '0.6rem', lineHeight: '1.1' }}>
             <EnchantmentList
-              enchantments={currentSelection.enchantments.flatMap((e: LootEnchantment) => {
-                const rawName: string = e.statModified ?? e.name
+              enchantments={currentSelection.enchantments.flatMap((enchantment: LootEnchantment) => {
+                const rawName: string = enchantment.statModified ?? enchantment.name
                 const names: string[] = Array.isArray(rawName) ? rawName : [rawName]
 
-                const numScalingStats = Array.isArray(currentSelection.scalingStats)
+                const numScalingStats: number = Array.isArray(currentSelection.scalingStats)
                   ? currentSelection.scalingStats.length
                   : 1
 
                 const value =
-                  e.stats && e.stats.length > 0
-                    ? e.stats[Math.max(0, Math.min(e.stats.length - 1, effectiveLevel - 1))]
+                  enchantment.stats && enchantment.stats.length > 0
+                    ? enchantment.stats[Math.max(0, Math.min(enchantment.stats.length - 1, effectiveLevel - 1))]
                     : currentSelection.scalingStats?.[Math.max(0, Math.min(numScalingStats - 1, effectiveLevel - 1))]
 
-                return names.map((name) => ({
-                  ...e,
+                return names.map((name: string) => ({
+                  ...enchantment,
                   name: name.trim(),
                   modifier: value ?? undefined,
-                  bonus: currentSelection.bonus ?? e.bonus
+                  bonus: currentSelection.bonus ?? enchantment.bonus
                 }))
               })}
               itemId={selectedItem.id}
@@ -321,7 +344,7 @@ const EssenceCraftingSelector = (props: Props) => {
       {!isGemOfManyFacets && (
         <div className='d-flex gap-2 mb-1'>
           <div className='flex-grow-1'>
-            <div className='text-dark mb-0' style={{ fontSize: '0.6rem' }}>
+            <div className='text-dark mb-0' style={{ fontSize: '0.65rem' }}>
               Min Level (1-34)
             </div>
             <Dropdown className='w-100 mb-2'>
