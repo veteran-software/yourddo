@@ -1,5 +1,6 @@
 import {
   type JSX,
+  type ReactNode,
   useCallback,
   useEffect,
   useMemo,
@@ -38,7 +39,7 @@ import NearlyFinishedSelector from '../components/NearlyFinishedSelector.tsx'
 import RitualTableSelector from '../components/RitualTableSelector.tsx'
 import TroveBadge from '../components/TroveBadge.tsx'
 import {
-  checkPotentialConflict,
+  type EnchantmentConflict,
   getSlotOwner,
   normalizeString,
   resolveConflicts
@@ -63,6 +64,7 @@ import {
   type LootEnchantment,
   type LootItem,
   type SetBonusIndex,
+  type SetBonusIndexEntry,
   SHIELD_TYPES,
   WEAPON_TYPES
 } from '../types.ts'
@@ -74,14 +76,13 @@ import {
  * @param {Object} props - The props provided to the gear planner hook.
  * @param {function} props.enchantmentSearch - A callback function for initiating an enchantment search.
  * @param {function} props.setBonusFilter - A function to filter available set bonuses based on specific criteria.
- * @param {boolean} props.showConflicts - A flag indicating whether to display conflicting items.
  *
  * @returns {Object} An object containing state and utility functions related to the gear planner, including:
  * - Methods for interacting with browsing states, set bonuses, and gear items.
  * - State variables for tracking current slot browsing, conflict states, available items, display settings, and more.
  */
 const useGearPlanner = (props: Props) => {
-  const { enchantmentSearch, itemNameSearch, setBonusFilter, showConflicts, showOwnedOnly } = props
+  const { enchantmentSearch, itemNameSearch, setBonusFilter, showOwnedOnly } = props
 
   const dispatch = useAppDispatch()
   const {
@@ -131,12 +132,22 @@ const useGearPlanner = (props: Props) => {
   const [browsingSet, setBrowsingSet] = useState<string | null>(null)
   const observerTargetRef = useRef<HTMLDivElement>(null)
 
+  /**
+   * Opens the item browser for a specific gear slot.
+   *
+   * @param {GearSlot | null} slot - The gear slot to browse, or null to close.
+   */
   const openSlotBrowser = useCallback((slot: GearSlot | null) => {
     setBrowsingSlot(slot)
     setItemsToShow(50)
     setInternalItemNameSearch('')
   }, [])
 
+  /**
+   * Opens the set bonus browser for a specific set bonus.
+   *
+   * @param {string} setName - The name of the set bonus to browse.
+   */
   const openSetBonusBrowser = useCallback(
     (setName: string) => {
       setBrowsingSet(setName)
@@ -145,6 +156,9 @@ const useGearPlanner = (props: Props) => {
     [setBrowsingSet]
   )
 
+  /**
+   * Increases the number of items shown in the current view.
+   */
   const loadMore = useCallback(() => {
     setItemsToShow((prev) => prev + 50)
   }, [])
@@ -173,6 +187,13 @@ const useGearPlanner = (props: Props) => {
         // Augment filigreeSetBonusIndex
         const filigreeSetBonusIndex: SetBonusIndex = {}
 
+        /**
+         * Checks if a filigree is already present in a specific set bonus index.
+         *
+         * @param {string} setName - The name of the set bonus.
+         * @param {string} filigreeName - The name of the filigree.
+         * @returns {boolean} True if the filigree is present, false otherwise.
+         */
         const isFiligreeAlreadyPresent = (setName: string, filigreeName: string) => {
           const setEntries = filigreeSetBonusIndex[setName]
           if (!setEntries) return false
@@ -182,6 +203,12 @@ const useGearPlanner = (props: Props) => {
           return false
         }
 
+        /**
+         * Adds a filigree to the internal filigree set bonus index.
+         *
+         * @param {GearItem} filigree - The filigree item to add.
+         * @param {string} setName - The name of the set bonus it belongs to.
+         */
         const updateFiligreeSetBonusIndexInternal = (filigree: GearItem, setName: string) => {
           filigreeSetBonusIndex[setName] ??= []
 
@@ -255,6 +282,12 @@ const useGearPlanner = (props: Props) => {
 
   const activeSetup = setups.find((s) => s.id === activeSetupId) ?? setups[0]
 
+  /**
+   * Checks if a material is considered metal.
+   *
+   * @param {string | null | undefined} material - The material to check.
+   * @returns {boolean} True if the material is metal, false otherwise.
+   */
   const isMetal = useCallback((material: string | null | undefined) => {
     if (!material) return false
     const materialLower = material.trim().toLowerCase()
@@ -279,11 +312,23 @@ const useGearPlanner = (props: Props) => {
     return metalMaterials.includes(materialLower)
   }, [])
 
-  const formatDropLocations = useCallback((dropLocations: LootDropLocation[]): React.ReactNode => {
+  /**
+   * Formats drop locations into clickable links.
+   *
+   * @param {LootDropLocation[]} dropLocations - The array of drop locations.
+   * @returns {ReactNode} A formatted React node containing the links.
+   */
+  const formatDropLocations = useCallback((dropLocations: LootDropLocation[]): ReactNode => {
     if (!Array.isArray(dropLocations) || dropLocations.length === 0) {
       return ''
     }
 
+    /**
+     * Cleans a location name for use in a URL.
+     *
+     * @param {string} name - The location name to clean.
+     * @returns {string} The cleaned name.
+     */
     const cleanLocationName = (name: string): string => {
       // Find the last set of parentheses
       const lastParenOpen = name.lastIndexOf('(')
@@ -302,6 +347,7 @@ const useGearPlanner = (props: Props) => {
     const locations = dropLocations
       .map((loc) => {
         let text = ''
+
         if (loc.isCraftOnly) {
           text = 'Craft Only'
         } else if (loc.questWildernessChain) {
@@ -334,11 +380,20 @@ const useGearPlanner = (props: Props) => {
       })
       .filter((node): node is JSX.Element => node !== null)
 
-    if (locations.length === 0) return ''
+    if (locations.length === 0) {
+      return ''
+    }
 
-    return locations.reduce((prev, curr, i) => [prev, i > 0 ? ', ' : '', curr] as any, [])
+    return locations.reduce((prev, curr, i) => [prev, i > 0 ? ', ' : '', curr], []) as ReactNode
   }, [])
 
+  /**
+   * Checks if an item is visible for the current character classes (e.g., pet items).
+   *
+   * @param {GearItem} item - The item to check.
+   * @param {GearSetup} setup - The current gear setup.
+   * @returns {boolean} True if the item is visible, false otherwise.
+   */
   const isItemVisibleForClasses = useCallback((item: GearItem, setup: GearSetup) => {
     const isArtificer = setup.classes.includes('Artificer')
     const isDruid = setup.classes.includes('Druid')
@@ -346,9 +401,11 @@ const useGearPlanner = (props: Props) => {
     if (item.slot === GearSlot.ArtificerPetArmor || item.slot === GearSlot.ArtificerPetWeapon) {
       return isArtificer
     }
+
     if (item.slot === GearSlot.DruidPetArmor || item.slot === GearSlot.DruidPetWeapon) {
       return isDruid
     }
+
     return true
   }, [])
 
@@ -364,6 +421,14 @@ const useGearPlanner = (props: Props) => {
     let timeoutId_1: ReturnType<typeof setTimeout> | null = null
     let timeoutId_2: ReturnType<typeof setTimeout> | null = null
 
+    /**
+     * Groups gear items and filigrees by their slot asynchronously.
+     *
+     * @param {GearItem[]} items - The array of gear items.
+     * @param {GearItem[]} filigrees - The array of filigrees.
+     * @param {number} chunkSize - The number of items to process in each chunk.
+     * @returns {Promise<Map<GearSlot, GearItem[]>>} A promise that resolves to a map of slots to items.
+     */
     const indexItemsBySlot = async (
       items: GearItem[],
       filigrees: GearItem[],
@@ -374,8 +439,10 @@ const useGearPlanner = (props: Props) => {
 
       for (let i = 0; i < allItemsToProcess.length; i += chunkSize) {
         const chunk = allItemsToProcess.slice(i, i + chunkSize)
+
         for (const item of chunk) {
           const list = slotMap.get(item.slot)
+
           if (list) {
             list.push(item)
           } else {
@@ -392,17 +459,27 @@ const useGearPlanner = (props: Props) => {
       return slotMap
     }
 
+    /**
+     * Maps item keys (name|minLevel) to the set bonuses they belong to asynchronously.
+     *
+     * @param {SetBonusIndex} index - The set bonus index to process.
+     * @param {number} chunkSize - The number of sets to process in each chunk.
+     * @returns {Promise<Map<string, string[]>>} A promise that resolves to a map of item keys to set names.
+     */
     const indexSetsByItem = async (index: SetBonusIndex, chunkSize: number): Promise<Map<string, string[]>> => {
       const setsMap = new Map<string, string[]>()
       const setEntries = Object.entries(index)
       for (let i = 0; i < setEntries.length; i += chunkSize) {
         const chunk = setEntries.slice(i, i + chunkSize)
         for (const [setName, items] of chunk) {
-          if (!items) continue
+          if (!items) {
+            continue
+          }
 
           for (const item of items) {
             const key = `${item.name}|${String(item.minLevel)}`
             const list = setsMap.get(key)
+
             if (list) {
               list.push(setName)
             } else {
@@ -410,6 +487,7 @@ const useGearPlanner = (props: Props) => {
             }
           }
         }
+
         await new Promise((resolve) => {
           timeoutId_2 = setTimeout(resolve, 0)
         })
@@ -446,12 +524,18 @@ const useGearPlanner = (props: Props) => {
   }, [activeSetup.slots])
 
   const artificerEquipped = useMemo(() => {
-    if (!activeSetup.classes.includes('Artificer')) return []
+    if (!activeSetup.classes.includes('Artificer')) {
+      return []
+    }
+
     return Object.values(artificerPet.slots).filter((item): item is GearItem => item !== null)
   }, [artificerPet.slots, activeSetup.classes])
 
   const druidEquipped = useMemo(() => {
-    if (!activeSetup.classes.includes('Druid')) return []
+    if (!activeSetup.classes.includes('Druid')) {
+      return []
+    }
+
     return Object.values(druidPet.slots).filter((item): item is GearItem => item !== null)
   }, [druidPet.slots, activeSetup.classes])
 
@@ -509,11 +593,18 @@ const useGearPlanner = (props: Props) => {
     ]
   )
 
+  /**
+   * Retrieves context-specific gear state based on the slot's owner (character or pet).
+   *
+   * @param {string} slot - The gear slot name.
+   * @returns {Object} An object containing conflicts, equipped items, and slotted enhancements.
+   */
   const getContextInfo = useCallback(
     (slot: string) => {
       const owner = getSlotOwner(slot)
-      let currentConflicts = characterConflicts
-      let currentEquipped = characterEquipped
+
+      let currentConflicts: Record<string, EnchantmentConflict[]> = characterConflicts
+      let currentEquipped: GearItem[] = characterEquipped
       let currentSlottedAugments = activeSetup.slottedAugments
       let currentSlottedFiligrees = activeSetup.slottedFiligrees
       let currentSlottedNearlyFinished = activeSetup.slottedNearlyFinished
@@ -573,33 +664,14 @@ const useGearPlanner = (props: Props) => {
     ]
   )
 
-  const isItemConflicting = useCallback(
-    (item: GearItem, slot: GearSlot) => {
-      const {
-        currentEquipped,
-        currentSlottedAugments,
-        currentSlottedNearlyFinished,
-        currentSlottedRitualTable,
-        currentSlottedLostPurpose
-      } = getContextInfo(slot)
-
-      return item.enchantments.some((ench) => {
-        const potential = checkPotentialConflict(
-          ench,
-          currentEquipped,
-          slot,
-          currentSlottedAugments,
-          currentSlottedNearlyFinished,
-          currentSlottedRitualTable,
-          currentSlottedLostPurpose,
-          item.id
-        )
-        return potential.isConflict && potential.isRedundant
-      })
-    },
-    [getContextInfo]
-  )
-
+  /**
+   * Checks if an item matches the active weapon filters in the setup.
+   *
+   * @param {GearSlot} targetSlot - The slot being filtered.
+   * @param {GearItem} item - The item to check.
+   * @param {GearSetup} setup - The current gear setup.
+   * @returns {boolean} True if the item matches the filters, false otherwise.
+   */
   const weaponFilterMatches = useCallback((targetSlot: GearSlot, item: GearItem, setup: GearSetup) => {
     if (targetSlot === GearSlot.MainHand || targetSlot === GearSlot.OffHand) {
       // If the item is a weapon, it must match a weapon filter
@@ -626,6 +698,14 @@ const useGearPlanner = (props: Props) => {
     return true
   }, [])
 
+  /**
+   * Checks if an item matches the active armor filters in the setup.
+   *
+   * @param {GearSlot} targetSlot - The slot being filtered.
+   * @param {GearItem} i - The item to check.
+   * @param {GearSetup} s - The current gear setup.
+   * @returns {boolean} True if the item matches the filters, false otherwise.
+   */
   const armorFilterMatches = useCallback((targetSlot: GearSlot, i: GearItem, s: GearSetup) => {
     if (targetSlot === GearSlot.Armor) {
       if (s.armorFilters.length > 0) {
@@ -641,6 +721,15 @@ const useGearPlanner = (props: Props) => {
     return true
   }, [])
 
+  /**
+   * Applies miscellaneous filters like shield type, Druid metal restrictions, and set bonus filters.
+   *
+   * @param {GearSlot} targetSlot - The slot being filtered.
+   * @param {GearItem} i - The item to check.
+   * @param {GearSetup} s - The current gear setup.
+   * @param {boolean} ignoreSetFilter - Whether to bypass the set bonus filter.
+   * @returns {boolean} True if the item matches the filters, false otherwise.
+   */
   const otherFilterMatches = useCallback(
     (targetSlot: GearSlot, i: GearItem, s: GearSetup, ignoreSetFilter: boolean) => {
       // Shield Filter
@@ -666,44 +755,80 @@ const useGearPlanner = (props: Props) => {
           ...itemSetBonusIndex,
           ...filigreeSetBonusIndex
         }
+
         const indexedItems = combinedIndex[setBonusFilter]
         const itemLvl = Number(i.minLevel) || 1
+
         return indexedItems?.some((ii) => ii.name === i.name && ii.minLevel === itemLvl) ?? false
       }
+
       return true
     },
     [setBonusFilter, itemSetBonusIndex, filigreeSetBonusIndex, isMetal]
   )
 
+  /**
+   * Checks if an item's minimum level falls within the setup's level range.
+   *
+   * @param {GearItem} item - The item to check.
+   * @param {GearSlot} slot - The gear slot.
+   * @param {GearSetup} setup - The current gear setup.
+   * @returns {boolean} True if the level matches, false otherwise.
+   */
   const levelMatches = useCallback((item: GearItem, slot: GearSlot, setup: GearSetup) => {
     if (slot !== GearSlot.Filigree) {
-      const itemLevel = Number.parseInt(item.minLevel, 10) || 1
+      const itemLevel = Number.parseInt(String(item.minLevel), 10) || 1
       return itemLevel >= setup.minLevel && itemLevel <= setup.maxLevel
     }
+
     return true
   }, [])
 
+  /**
+   * Checks if the item is owned by the user (if "owned only" filter is active).
+   *
+   * @param {GearItem} item - The item to check.
+   * @returns {boolean} True if the item is owned or the filter is inactive.
+   */
   const ownedOnlyMatches = useCallback(
     (item: GearItem) => {
       if (showOwnedOnly && troveData) {
-        return !!troveData[getTroveKey(item.name)]
+        return getTroveKey(item.name) in troveData
       }
+
       return true
     },
     [showOwnedOnly, troveData]
   )
 
+  /**
+   * Checks if the item's name matches the current name search query.
+   *
+   * @param {GearItem} item - The item to check.
+   * @returns {boolean} True if the name matches or search is empty.
+   */
   const nameSearchMatches = useCallback(
     (item: GearItem) => {
       if (itemNameSearch) {
         const searchLower = itemNameSearch.toLowerCase().trim()
+
         return item.name.toLowerCase().includes(searchLower)
       }
+
       return true
     },
     [itemNameSearch]
   )
 
+  /**
+   * Determines if an item should be displayed based on all active filters and visibility rules.
+   *
+   * @param {GearItem} item - The item to check.
+   * @param {GearSlot} slot - The gear slot.
+   * @param {GearSetup} setup - The current gear setup.
+   * @param {boolean} ignoreSetFilter - Whether to ignore the set bonus filter.
+   * @returns {boolean} True if the item should be shown, false otherwise.
+   */
   const shouldShowItem = useCallback(
     (item: GearItem, slot: GearSlot, setup: GearSetup, ignoreSetFilter = false) => {
       // Level filter
@@ -717,11 +842,21 @@ const useGearPlanner = (props: Props) => {
         return false
       }
 
-      if (!weaponFilterMatches(slot, item, setup)) return false
-      if (!armorFilterMatches(slot, item, setup)) return false
-      if (!otherFilterMatches(slot, item, setup, ignoreSetFilter)) return false
+      if (!weaponFilterMatches(slot, item, setup)) {
+        return false
+      }
 
-      if (!ownedOnlyMatches(item)) return false
+      if (!armorFilterMatches(slot, item, setup)) {
+        return false
+      }
+
+      if (!otherFilterMatches(slot, item, setup, ignoreSetFilter)) {
+        return false
+      }
+
+      if (!ownedOnlyMatches(item)) {
+        return false
+      }
 
       // Item Name Search Filter
       return nameSearchMatches(item)
@@ -729,9 +864,18 @@ const useGearPlanner = (props: Props) => {
     [levelMatches, weaponFilterMatches, armorFilterMatches, otherFilterMatches, ownedOnlyMatches, nameSearchMatches]
   )
 
+  /**
+   * Checks if a set bonus is visible within the current level range and filter criteria.
+   *
+   * @param {string} setName - The name of the set bonus.
+   * @param {SetBonusIndex} index - The set bonus index to check against.
+   * @param {Set<string>} visibleItemKeys - A set of keys for items currently visible.
+   * @param {boolean} isFiligreeSet - Whether the set is a filigree set.
+   * @returns {boolean} True if the set is visible, false otherwise.
+   */
   const isSetVisibleInRange = useCallback(
     (setName: string, index: SetBonusIndex, visibleItemKeys: Set<string>, isFiligreeSet = false) => {
-      const indexedItems = index[setName]
+      const indexedItems: SetBonusIndexEntry[] | undefined = index[setName]
       const { minLevel: min, maxLevel: max } = activeSetup
 
       if (!indexedItems) return false
@@ -740,6 +884,7 @@ const useGearPlanner = (props: Props) => {
         if (isFiligreeSet) {
           return true
         }
+
         if (item.minLevel >= min && item.minLevel <= max) {
           if (visibleItemKeys.has(`${item.name}|${item.minLevel.toString()}`)) {
             return true
@@ -753,13 +898,25 @@ const useGearPlanner = (props: Props) => {
   )
 
   const filteredItemSets = useMemo(() => {
-    if (!dataReady) return []
+    if (!dataReady) {
+      return []
+    }
+
     const { minLevel: min, maxLevel: max } = activeSetup
 
+    /**
+     * Generates a set of keys for all items currently visible based on level and class rules.
+     *
+     * @returns {Set<string>} A set of item keys (name|minLevel).
+     */
     const getVisibleItemKeys = () => {
       const keys = new Set<string>()
+
       for (const [slot, items] of allItemsBySlot.entries()) {
-        if (!isItemVisibleForClasses({ slot } as GearItem, activeSetup)) continue
+        if (!isItemVisibleForClasses({ slot } as GearItem, activeSetup)) {
+          continue
+        }
+
         for (const i of items) {
           const level = Number(i.minLevel) || 1
           if (level >= min && level <= max) {
@@ -768,13 +925,21 @@ const useGearPlanner = (props: Props) => {
           }
         }
       }
+
       return keys
     }
 
+    /**
+     * Identifies all set bonuses that contain items applicable to the current browsing slot.
+     *
+     * @returns {Set<string>} A set of set bonus names.
+     */
     const getSetsWithItemsInSlot = () => {
       const sets = new Set<string>()
+
       if (browsingSlot) {
         const slotItems = allItemsBySlot.get(browsingSlot) ?? []
+
         for (const i of slotItems) {
           const level = Number(i.minLevel) || 1
 
@@ -786,12 +951,14 @@ const useGearPlanner = (props: Props) => {
           ) {
             const key = `${i.name}|${level.toString()}`
             const itemSets = itemToSetsMap.get(key)
+
             if (itemSets) {
               itemSets.forEach((s) => sets.add(s))
             }
           }
         }
       }
+
       return sets
     }
 
@@ -800,7 +967,9 @@ const useGearPlanner = (props: Props) => {
 
     return Object.keys(itemSetBonusIndex)
       .filter((setName) => {
-        if (!isSetVisibleInRange(setName, itemSetBonusIndex, visibleItemKeys)) return false
+        if (!isSetVisibleInRange(setName, itemSetBonusIndex, visibleItemKeys)) {
+          return false
+        }
 
         return !(browsingSlot && !setsWithItemsInSlot.has(setName))
       })
@@ -818,7 +987,9 @@ const useGearPlanner = (props: Props) => {
   ])
 
   const filteredFiligreeSets = useMemo(() => {
-    if (!dataReady) return []
+    if (!dataReady) {
+      return []
+    }
 
     return allFiligreeSetNames
   }, [allFiligreeSetNames, dataReady])
@@ -833,6 +1004,13 @@ const useGearPlanner = (props: Props) => {
     const excludedSlots = [GearSlot.Quiver, GearSlot.ArtificerPetWeapon, GearSlot.DruidPetWeapon] as GearSlot[]
 
     if (!excludedSlots.includes(browsingSlot)) {
+      /**
+       * Gets the appropriate name for an Essence Crafted item based on the slot and type.
+       *
+       * @param {GearSlot} slot - The gear slot.
+       * @param {string} [type] - Optional item type (e.g., for weapons).
+       * @returns {string} The name of the crafted item.
+       */
       const getEssenceCraftedName = (slot: GearSlot, type?: string) => {
         switch (slot) {
           case GearSlot.Head:
@@ -935,8 +1113,8 @@ const useGearPlanner = (props: Props) => {
         if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
 
         // Priority 2: Min Level (desc)
-        const levelA = Number.parseInt(a.minLevel, 10) || 1
-        const levelB = Number.parseInt(b.minLevel, 10) || 1
+        const levelA = Number.parseInt(String(a.minLevel), 10) || 1
+        const levelB = Number.parseInt(String(b.minLevel), 10) || 1
         if (levelB !== levelA) return levelB - levelA
 
         // Priority 3: Name (asc)
@@ -987,11 +1165,17 @@ const useGearPlanner = (props: Props) => {
 
     const searchLower = enchantmentSearch.toLowerCase().trim()
 
+    /**
+     * Checks if an item matches the current enchantment or set bonus search.
+     *
+     * @param {GearItem} item - The item to check.
+     * @returns {boolean} True if the item matches the search criteria.
+     */
     const itemMatchesSearch = (item: GearItem) => {
       // level, weapon/armor types, conflicts, etc.
       if (!shouldShowItem(item, item.slot, activeSetup, true)) return false
 
-      if (showOwnedOnly && troveData && !troveData[getTroveKey(item.name)]) {
+      if (showOwnedOnly && troveData && !(getTroveKey(item.name) in troveData)) {
         return false
       }
 
@@ -1019,8 +1203,8 @@ const useGearPlanner = (props: Props) => {
     return allItems
       .filter(itemMatchesSearch)
       .sort((a, b) => {
-        const levelA = Number.parseInt(a.minLevel, 10) || 1
-        const levelB = Number.parseInt(b.minLevel, 10) || 1
+        const levelA = Number.parseInt(String(a.minLevel), 10) || 1
+        const levelB = Number.parseInt(String(b.minLevel), 10) || 1
         if (levelB !== levelA) return levelB - levelA
 
         // Priority 3: Name (asc)
@@ -1137,6 +1321,9 @@ const useGearPlanner = (props: Props) => {
    * - Adds the newly created setup to the existing list of setups.
    * - Marks the newly created setup as the active one.
    */
+  /**
+   * Adds a new gear setup to the character's list of setups.
+   */
   const addSetup = () => {
     const newId = crypto.randomUUID()
     const newSetup: GearSetup = {
@@ -1172,6 +1359,11 @@ const useGearPlanner = (props: Props) => {
    *
    * @returns {void} This function does not return a value.
    */
+  /**
+   * Deletes a gear setup by its unique identifier.
+   *
+   * @param {string} id - The ID of the setup to delete.
+   */
   const deleteSetup = (id: string): void => {
     dispatch(removeSetupAction(id))
   }
@@ -1184,11 +1376,25 @@ const useGearPlanner = (props: Props) => {
    *
    * @returns {void}
    */
+  /**
+   * Selects an item for a specific gear slot.
+   *
+   * @param {GearSlot} slot - The gear slot to update.
+   * @param {GearItem | null} item - The item to equip, or null to unequip.
+   */
   const selectItem = (slot: GearSlot, item: GearItem | null): void => {
     handleItemEquip(slot, item, activeSetup)
     openSlotBrowser(null)
   }
 
+  /**
+   * Checks if equipping an item would result in multiple minor artifacts being equipped.
+   *
+   * @param {GearSlot} slot - The gear slot.
+   * @param {GearItem} item - The item to check.
+   * @param {GearSetup} setup - The current gear setup.
+   * @returns {boolean} True if there's a conflict, false otherwise.
+   */
   const checkMinorArtifactConflict = (slot: GearSlot, item: GearItem, setup: GearSetup): boolean => {
     if (!isMinorArtifact(item)) return false
 
@@ -1203,6 +1409,14 @@ const useGearPlanner = (props: Props) => {
     return false
   }
 
+  /**
+   * Prompts the user to confirm clearing filigrees if the item has active ones.
+   *
+   * @param {string} itemId - The ID of the item.
+   * @param {GearSetup} setup - The current gear setup.
+   * @param {string} message - The confirmation message to display.
+   * @returns {boolean} True if confirmed or no filigrees present, false otherwise.
+   */
   const confirmFiligreeClear = (itemId: string, setup: GearSetup, message: string): boolean => {
     if (hasActiveFiligrees(itemId, setup)) {
       return globalThis.confirm(message)
@@ -1210,6 +1424,13 @@ const useGearPlanner = (props: Props) => {
     return true
   }
 
+  /**
+   * Manages the equipping or unequipping of an item, handling conflicts and confirmations.
+   *
+   * @param {GearSlot} slot - The gear slot.
+   * @param {GearItem | null} item - The item to equip, or null to unequip.
+   * @param {GearSetup} setup - The current gear setup.
+   */
   const handleItemEquip = (slot: GearSlot, item: GearItem | null, setup: GearSetup) => {
     if (item) {
       if (checkMinorArtifactConflict(slot, item, setup)) {
@@ -1237,6 +1458,13 @@ const useGearPlanner = (props: Props) => {
     dispatch(equipItemAction({ slot, item }))
   }
 
+  /**
+   * Checks if a specific item has any active (slotted) filigrees.
+   *
+   * @param {string} itemId - The ID of the item.
+   * @param {GearSetup} setup - The current gear setup.
+   * @returns {boolean} True if the item has active filigrees, false otherwise.
+   */
   const hasActiveFiligrees = (itemId: string, setup: GearSetup) => {
     return (setup.slottedFiligrees[itemId] ?? []).some((f) => f !== null)
   }
@@ -1268,34 +1496,93 @@ const useGearPlanner = (props: Props) => {
     dispatch(setCurseAction({ itemId, curse, slot }))
   }
 
+  /**
+   * Slots a filigree into a gear item.
+   *
+   * @param {string} itemId - The ID of the gear item.
+   * @param {number} slotIndex - The index of the filigree slot.
+   * @param {LootItem | null} filigree - The filigree to slot, or null to remove.
+   * @param {GearSlot} [slot] - Optional gear slot indicator.
+   */
   const setSlottedFiligree = (itemId: string, slotIndex: number, filigree: LootItem | null, slot?: GearSlot) => {
     dispatch(setFiligreeAction({ itemId, slotIndex, filigree, slot }))
   }
 
+  /**
+   * Slots a gem set bonus into a gear item.
+   *
+   * @param {string} itemId - The ID of the gear item.
+   * @param {number} slotIndex - The index of the gem slot.
+   * @param {string | null} setName - The name of the set bonus, or null to remove.
+   * @param {GearSlot} [slot] - Optional gear slot indicator.
+   */
   const setSlottedGemSetBonus = (itemId: string, slotIndex: number, setName: string | null, slot?: GearSlot) => {
     dispatch(setGemSetBonusAction({ itemId, slotIndex, setName, slot }))
   }
 
+  /**
+   * Sets an essence enchantment for a gear item.
+   *
+   * @param {string} itemId - The ID of the gear item.
+   * @param {string} slotName - The name of the enchantment slot.
+   * @param {string | null} enchantmentId - The ID of the enchantment, or null to remove.
+   * @param {GearSlot} [slot] - Optional gear slot indicator.
+   */
   const setEssenceEnchantment = (itemId: string, slotName: string, enchantmentId: string | null, slot?: GearSlot) => {
     dispatch(setEssenceEnchantmentAction({ itemId, slotName, enchantmentId, slot }))
   }
 
+  /**
+   * Sets the minimum level for a gear item.
+   *
+   * @param {string} itemId - The ID of the gear item.
+   * @param {number} minLevel - The minimum level to set.
+   * @param {GearSlot} [slot] - Optional gear slot indicator.
+   */
   const setItemMinLevel = (itemId: string, minLevel: number, slot?: GearSlot) => {
     dispatch(setItemMinLevelAction({ itemId, minLevel, slot }))
   }
 
+  /**
+   * Sets the material for a gear item.
+   *
+   * @param {string} itemId - The ID of the gear item.
+   * @param {string} material - The material name.
+   * @param {GearSlot} [slot] - Optional gear slot indicator.
+   */
   const setItemMaterial = (itemId: string, material: string, slot?: GearSlot) => {
     dispatch(setItemMaterialAction({ itemId, material, slot }))
   }
 
+  /**
+   * Sets a "Nearly Finished" enchantment for a gear item.
+   *
+   * @param {string} itemId - The ID of the gear item.
+   * @param {LootEnchantment | null} enchantment - The enchantment to set, or null to remove.
+   * @param {GearSlot} [slot] - Optional gear slot indicator.
+   */
   const setNearlyFinishedEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
     dispatch(setNearlyFinishedEnchantmentAction({ itemId, enchantment, slot }))
   }
 
+  /**
+   * Sets a "Ritual Table" enchantment for a gear item.
+   *
+   * @param {string} itemId - The ID of the gear item.
+   * @param {LootEnchantment | null} enchantment - The enchantment to set, or null to remove.
+   * @param {GearSlot} [slot] - Optional gear slot indicator.
+   */
   const setRitualTableEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
     dispatch(setRitualTableEnchantmentAction({ itemId, enchantment, slot }))
   }
 
+  /**
+   * Sets a "Lost Purpose" enchantment for a gear item.
+   *
+   * @param {string} itemId - The ID of the gear item.
+   * @param {LootEnchantment | null} enchantment - The enchantment to set, or null to remove.
+   * @param {GearSlot} [slot] - Optional gear slot indicator.
+   */
   const setLostPurposeEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
     dispatch(setLostPurposeEnchantmentAction({ itemId, enchantment, slot }))
   }
@@ -1817,6 +2104,15 @@ const useGearPlanner = (props: Props) => {
   }
 }
 
+/**
+ * A component that displays a label for filigree/sentience status on an item.
+ *
+ * @param {Object} props - The component props.
+ * @param {GearItem} props.item - The gear item.
+ * @param {GearSetup} props.setup - The current gear setup.
+ * @param {GearSlot} props.slot - The slot the item is in.
+ * @returns {JSX.Element} The rendered label.
+ */
 const FiligreeLabel = ({ item, setup, slot }: { item: GearItem; setup: GearSetup; slot: GearSlot }) => {
   const isSlotted = (setup.slottedFiligrees[item.id] ?? []).some((f) => f !== null)
   let label = 'Sentience Accepted'
