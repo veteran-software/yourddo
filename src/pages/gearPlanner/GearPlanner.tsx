@@ -14,7 +14,15 @@ import {
   Tab,
   Tabs
 } from 'react-bootstrap'
-import { FaChevronRight, FaFileExport, FaGear, FaLayerGroup, FaLink, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6'
+import {
+  FaChevronRight,
+  FaFileExport,
+  FaGear,
+  FaLayerGroup,
+  FaLink,
+  FaMagnifyingGlass,
+  FaXmark
+} from 'react-icons/fa6'
 import { useLocation, useNavigate } from 'react-router-dom'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -24,14 +32,18 @@ import {
   updateSetup as updateSetupAction
 } from '../../redux/slices/gearPlannerSlice'
 import CharacterSettingsSidebar from './components/CharacterSettingsSidebar.tsx'
-import EnchantmentSearchOffcanvas from './components/EnchantmentSearchOffcanvas.tsx'
+import EnchantmentSearchOffcanvas
+  from './components/EnchantmentSearchOffcanvas.tsx'
 import EnchantmentsSummary from './components/EnhancementsSummary.tsx'
 import FiligreeModal from './components/FiligreeModal.tsx'
 import ItemBrowserOffcanvas from './components/ItemBrowserOffcanvas.tsx'
 import SetBonusBrowserOffcanvas from './components/SetBonusBrowserOffcanvas.tsx'
 import SetBonusesSummary from './components/SetBonusesSummary.tsx'
 import WeaponCategory from './components/WeaponCategory.tsx'
-import { generateBBCodeExport, generateDiscordMarkdownExport } from './exportHelpers'
+import {
+  generateBBCodeExport,
+  generateDiscordMarkdownExport
+} from './exportHelpers'
 import useGearPlanner from './hooks/useGearPlanner.tsx'
 import {
   buildPermalinkUrl,
@@ -77,7 +89,7 @@ const GearPlanner = () => {
   const [enchantmentSearch, setEnchantmentSearch] = useState('')
   const [itemNameSearch] = useState('')
 
-  const handleBonusClick = (name: string, _bonusType: string) => {
+  const handleBonusClick = (name: string) => {
     setEnchantmentSearch(name)
     gpHook.setShowEnchantmentSearch(true)
   }

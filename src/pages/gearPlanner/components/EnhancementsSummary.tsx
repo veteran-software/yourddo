@@ -1,45 +1,39 @@
 import { useMemo } from 'react'
 import { Accordion, Col, Row } from 'react-bootstrap'
 import { FaListUl } from 'react-icons/fa6'
-import { getBonus, normalizeString, parseModifierValue } from '../conflictResolver.ts'
+import {
+  getBonus,
+  normalizeString,
+  parseModifierValue
+} from '../conflictResolver.ts'
 import type { EssenceEnchantment } from '../dataLoader.ts'
-import { aggregateEnchantmentEntries, getActiveSetEnhancements, sortItemsByValue } from '../helpers.ts'
+import {
+  aggregateEnchantmentEntries,
+  getActiveSetEnhancements,
+  sortItemsByValue
+} from '../helpers.ts'
 import type { Curse, GearAugment, GearItem, LootEnchantment } from '../types.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
 
-const EnchantmentsSummary = ({
-  equippedItems,
-  slottedAugments,
-  slottedCurses,
-  slottedFiligrees,
-  slottedGemSetBonuses,
-  slottedEssenceEnchantments,
-  essenceEnchantments,
-  slottedNearlyFinished,
-  slottedRitualTable,
-  slottedLostPurpose,
-  allItems,
-  allAugments,
-  allCurses,
-  allFiligrees,
-  onBonusClick
-}: {
-  equippedItems: GearItem[]
-  slottedAugments: Record<string, Record<number, GearAugment | null>>
-  slottedCurses: Record<string, Curse | null>
-  slottedFiligrees: Record<string, (GearItem | null)[]> | undefined
-  slottedGemSetBonuses?: Record<string, (string | null)[]>
-  slottedEssenceEnchantments?: Record<string, Record<string, string | null>>
-  essenceEnchantments?: EssenceEnchantment[]
-  slottedNearlyFinished?: Record<string, import('../types.ts').LootEnchantment | null>
-  slottedRitualTable?: Record<string, import('../types.ts').LootEnchantment | null>
-  slottedLostPurpose?: Record<string, import('../types.ts').LootEnchantment | null>
-  allItems?: GearItem[]
-  allAugments?: GearAugment[]
-  allCurses?: Curse[]
-  allFiligrees?: GearItem[]
-  onBonusClick?: (name: string, bonusType: string) => void
-}) => {
+const EnchantmentsSummary = (props: Props) => {
+  const {
+    allAugments,
+    allCurses,
+    allFiligrees,
+    allItems,
+    equippedItems,
+    essenceEnchantments,
+    onBonusClick,
+    slottedAugments,
+    slottedCurses,
+    slottedEssenceEnchantments,
+    slottedFiligrees,
+    slottedGemSetBonuses,
+    slottedLostPurpose,
+    slottedNearlyFinished,
+    slottedRitualTable
+  } = props
+
   const allPossibleBonuses = useMemo(() => {
     const map: Record<string, Set<string>> = {}
 
@@ -255,7 +249,7 @@ const EnchantmentsSummary = ({
                           className={`small italic text-capitalize ${
                             onBonusClick ? 'text-info cursor-pointer' : 'text-light'
                           }`}
-                          onClick={() => onBonusClick?.(ench.name, bonus.bonusType)}
+                          onClick={() => onBonusClick?.(ench.name)}
                           role={onBonusClick ? 'button' : undefined}
                           tabIndex={onBonusClick ? 0 : undefined}
                         >
@@ -301,6 +295,24 @@ const EnchantmentsSummary = ({
       </Row>
     </div>
   )
+}
+
+interface Props {
+  equippedItems: GearItem[]
+  slottedAugments: Record<string, Record<number, GearAugment | null>>
+  slottedCurses: Record<string, Curse | null>
+  slottedFiligrees: Record<string, (GearItem | null)[]> | undefined
+  slottedGemSetBonuses?: Record<string, (string | null)[]>
+  slottedEssenceEnchantments?: Record<string, Record<string, string | null>>
+  essenceEnchantments?: EssenceEnchantment[]
+  slottedNearlyFinished?: Record<string, import('../types.ts').LootEnchantment | null>
+  slottedRitualTable?: Record<string, import('../types.ts').LootEnchantment | null>
+  slottedLostPurpose?: Record<string, import('../types.ts').LootEnchantment | null>
+  allItems?: GearItem[]
+  allAugments?: GearAugment[]
+  allCurses?: Curse[]
+  allFiligrees?: GearItem[]
+  onBonusClick?: (name: string) => void
 }
 
 export default EnchantmentsSummary
