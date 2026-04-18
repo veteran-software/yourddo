@@ -1,8 +1,9 @@
 import { Accordion, Badge, Card, Stack } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
 import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
-import nearlyFinishedRecipes from '../../../data/nearlyFinished/recipes.json'
+import nearlyFinishedRecipesRaw from '../../../data/nearlyFinished/recipes.json'
 import { ritualTable } from '../../../data/ritualTable.ts'
+import type { CraftingIngredient, SetBonus } from '../../../types/crafting.ts'
 import { getTroveKey, getTroveOwners } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import { type GearAugment, type GearItem, GearSlot, type LootEnchantment } from '../types.ts'
@@ -11,6 +12,76 @@ import GenericBadge from './badges/GenericBadge.tsx'
 import SetBonusBadge from './badges/SetBonusBadge.tsx'
 import EnchantmentList from './EnchantmentList.tsx'
 import TroveBadge from './TroveBadge.tsx'
+
+interface NearlyFinishedRecipe {
+  item: string
+  stage: string
+  choices?: { name: string }[]
+}
+
+const nearlyFinishedRecipes = nearlyFinishedRecipesRaw as unknown as {
+  reforgingStation: NearlyFinishedRecipe[]
+}
+
+const getFiligreeHost = (
+  item: GearItem,
+  currentEquipped: GearItem[],
+  currentSlottedFiligrees: Record<string, (GearItem | null)[]>
+) => {
+  for (const [itemId, filigrees] of Object.entries(currentSlottedFiligrees)) {
+    if (filigrees.some((filigree: GearItem | null) => filigree?.id === item.id)) {
+      const hostItem = currentEquipped.find((equipped: GearItem) => equipped.id === itemId)
+
+      if (hostItem) {
+        return hostItem
+      }
+    }
+  }
+
+  return null
+}
+
+const getUpgradeSource = (item: GearItem, browsingSet: string) => {
+  const isLostPurposeItem: boolean | undefined =
+    Array.isArray(item.enchantments) &&
+    item.enchantments.some((enchantment: LootEnchantment) => enchantment.name === 'Lost Purpose')
+  if (isLostPurposeItem) {
+    const isLPSet: boolean = lostPurposeRecipes.some(
+      (recipe: CraftingIngredient) => recipe.setBonus?.[0]?.name === browsingSet
+    )
+
+    if (isLPSet) {
+      return 'Lost Purpose'
+    }
+  }
+
+  const nfRecipe: NearlyFinishedRecipe | undefined = nearlyFinishedRecipes.reforgingStation.find(
+    (recipe: NearlyFinishedRecipe) => recipe.item === item.name && recipe.stage === 'Nearly Finished'
+  )
+  if (nfRecipe) {
+    const hasNFSet = nfRecipe.choices?.some((choice) => choice.name.includes(browsingSet))
+    if (hasNFSet) {
+      return 'Nearly Finished'
+    }
+  }
+
+  const isWeapon = Array.isArray(item.enchantments) && item.enchantments.some((e) => e.name === 'Sealed in Fire')
+  const isAccessory = Array.isArray(item.enchantments) && item.enchantments.some((e) => e.name === 'Sealed in Undeath')
+  if (isWeapon || isAccessory) {
+    const reqName: string = isWeapon ? 'Sealed in Fire Weapon' : 'Sealed in Undeath Accessory'
+    const hasRitualSet: boolean = ritualTable.some(
+      (recipe: CraftingIngredient) =>
+        recipe.requirements?.some((req: CraftingIngredient) => req.name === reqName) &&
+        recipe.setBonus?.some((sb: SetBonus) => sb.name === browsingSet)
+    )
+
+    if (hasRitualSet) {
+      return 'Ritual Table'
+    }
+  }
+
+  return ''
+}
 
 const SearchResultSlot = (props: Props) => {
   const {
@@ -27,8 +98,9 @@ const SearchResultSlot = (props: Props) => {
     troveData
   } = props
 
-  const equippedInSlot = currentEquipped.find((e) => e.slot === slot)
-  const isPartOfSet = !browsingSet || equippedInSlot?.setBonus?.some((sb) => sb.name === browsingSet)
+  const equippedInSlot: GearItem | undefined = currentEquipped.find((equipped: GearItem) => equipped.slot === slot)
+  const isPartOfSet: boolean | undefined =
+    !browsingSet || equippedInSlot?.setBonus?.some((sb: SetBonus) => sb.name === browsingSet)
 
   return (
     <Accordion.Item eventKey={slot} key={slot}>
@@ -37,6 +109,7 @@ const SearchResultSlot = (props: Props) => {
           <span>
             {slot} ({items.length})
           </span>
+
           {equippedInSlot && (
             <span className={`${isPartOfSet ? 'text-info' : 'text-warning'} ms-2`} style={{ fontSize: '0.75rem' }}>
               {equippedInSlot.name}
@@ -49,66 +122,15 @@ const SearchResultSlot = (props: Props) => {
         <Stack gap={2}>
           {items.map((item) => {
             const isEquippedInSlot = currentEquipped.some((e) => e.id === item.id)
-            let slottedHostName = ''
-            let hostItemForModal: GearItem | undefined = undefined
-
-            for (const [itemId, filigrees] of Object.entries(currentSlottedFiligrees)) {
-              if (filigrees.some((filigree: GearItem | null) => filigree?.id === item.id)) {
-                const hostItem: GearItem | undefined = currentEquipped.find((item: GearItem) => item.id === itemId)
-
-                if (hostItem) {
-                  slottedHostName = hostItem.name
-                  hostItemForModal = hostItem
-
-                  break
-                }
-              }
-            }
-
+            const hostItemForModal = getFiligreeHost(item, currentEquipped, currentSlottedFiligrees)
+            const slottedHostName = hostItemForModal?.name ?? ''
             const isEquipped = isEquippedInSlot || !!slottedHostName
 
             const troveEntry = troveData?.[getTroveKey(item.name)]
             const owners = troveEntry ? getTroveOwners(troveEntry) : ''
-            const showHeader = isEquipped || owners
+            const showHeader = isEquipped || !!owners
 
-            // Check for upgrade systems
-            let upgradeSource = ''
-            if (browsingSet) {
-              const isLostPurposeItem = item.enchantments?.some((e: LootEnchantment) => e.name === 'Lost Purpose')
-              if (isLostPurposeItem) {
-                const isLPSet = lostPurposeRecipes.some((r) => r.setBonus?.[0]?.name === browsingSet)
-                if (isLPSet) upgradeSource = 'Lost Purpose'
-              }
-
-              if (!upgradeSource) {
-                const nfRecipe = (nearlyFinishedRecipes as any).reforgingStation?.find(
-                  (r: any) => r.item === item.name && r.stage === 'Nearly Finished'
-                )
-                if (nfRecipe) {
-                  // Check if any of the nearly finished choices for this item grant the browsing set
-                  const hasNFSet = nfRecipe.choices?.some((choice: any) =>
-                    // We assume choice name might match set name or we'd need more data
-                    // In some cases NF adds a set bonus like 'Nearly Finished: ...'
-                    choice.name.includes(browsingSet)
-                  )
-                  if (hasNFSet) upgradeSource = 'Nearly Finished'
-                }
-              }
-
-              if (!upgradeSource) {
-                const isWeapon = item.enchantments?.some((e: LootEnchantment) => e.name === 'Sealed in Fire')
-                const isAccessory = item.enchantments?.some((e: LootEnchantment) => e.name === 'Sealed in Undeath')
-                if (isWeapon || isAccessory) {
-                  const reqName = isWeapon ? 'Sealed in Fire Weapon' : 'Sealed in Undeath Accessory'
-                  const hasRitualSet = ritualTable.some(
-                    (r) =>
-                      r.requirements?.some((req) => req.name === reqName) &&
-                      r.setBonus?.some((sb) => sb.name === browsingSet)
-                  )
-                  if (hasRitualSet) upgradeSource = 'Ritual Table'
-                }
-              }
-            }
+            const upgradeSource: string = browsingSet ? getUpgradeSource(item, browsingSet) : ''
 
             return (
               <Card

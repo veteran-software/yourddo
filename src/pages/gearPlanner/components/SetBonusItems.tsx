@@ -1,6 +1,9 @@
 import { Accordion } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types.ts'
-import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
+import {
+  cannithRepurposingStation as lostPurposeRecipes
+} from '../../../data/cannithRepurposingStation.ts'
+import type { SetBonus } from '../../../types/crafting.ts'
 import { getTroveKey } from '../../../utils/troveUtils.ts'
 import type { EnchantmentConflict } from '../conflictResolver.ts'
 import {
@@ -13,6 +16,7 @@ import {
   type LootEnchantment,
   type LootItem,
   type SetBonusIndex,
+  type SetBonusIndexEntry,
   type SlotKey
 } from '../types.ts'
 import SearchResultSlot from './SearchResultSlot.tsx'
@@ -20,28 +24,23 @@ import SearchResultSlot from './SearchResultSlot.tsx'
 const SetBonusItems = (props: Props) => {
   const {
     browsingSet,
-    activeSetup,
     allItems,
     setBonusIndex,
-    isItemVisibleForClasses,
     showOwnedOnly,
     troveData,
     itemNameSearch,
     getContextInfo,
     selectItem,
-    openSetBonusBrowser,
-    browsingSlot
+    openSetBonusBrowser
   } = props
 
   const indexedItems = browsingSet in setBonusIndex ? setBonusIndex[browsingSet] : []
-  const min = activeSetup.minLevel
-  const max = activeSetup.maxLevel
 
   // Check if this is a Lost Purpose set
   const isLostPurposeSet = lostPurposeRecipes.some((r) => r.setBonus?.[0]?.name === browsingSet)
 
-  const setItemResults = allItems.filter((item) => {
-    const itemLevel = Number(item.minLevel) || 1
+  const setItemResults: GearItem[] = allItems.filter((item) => {
+    const itemLevel: number = Number(item.minLevel) || 1
 
     // 0. Pet check
     const isPetSlot = (slot: string) =>
@@ -51,15 +50,15 @@ const SetBonusItems = (props: Props) => {
     }
 
     // 1. Set Match (must match the set we are browsing)
-    const isInIndex = indexedItems?.some(
-      (ii) => ii.name === item.name && (item.slot === GearSlot.Filigree || Math.abs(ii.minLevel - itemLevel) <= 1)
-    )
 
-    let isMatch = isInIndex
+    let isMatch: boolean | undefined = indexedItems?.some(
+      (ii: SetBonusIndexEntry) =>
+        ii.name === item.name && (item.slot === GearSlot.Filigree || Math.abs(ii.minLevel - itemLevel) <= 1)
+    )
 
     // 1b. Check if the item itself explicitly lists this set bonus
     if (!isMatch && Array.isArray(item.setBonus)) {
-      isMatch = item.setBonus.some((sb) => sb.name === browsingSet)
+      isMatch = item.setBonus.some((sb: SetBonus) => sb.name === browsingSet)
     }
 
     // 1c. Lost Purpose check
@@ -67,7 +66,9 @@ const SetBonusItems = (props: Props) => {
       isMatch = item.enchantments.some((enchantment: LootEnchantment) => enchantment.name === 'Lost Purpose')
     }
 
-    if (!isMatch) return false
+    if (!isMatch) {
+      return false
+    }
 
     // 2. Class Visibility (skip if we want to see everything in the set?)
     // The user said "show other items that also have the set bonus"
