@@ -86,7 +86,7 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
             onChange={(e) => {
               setEnchantmentSearch(e.target.value)
             }}
-            className='bg-light text-dark pe-4'
+            className='bg-light text-dark fw-bold dark-placeholder'
           />
 
           {enchantmentSearch && (
