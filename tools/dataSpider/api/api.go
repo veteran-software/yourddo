@@ -144,7 +144,7 @@ func FetchCategoryContent(categoryName string) (map[string]string, error) {
 			break
 		}
 
-        time.Sleep(350 * time.Millisecond)
+        time.Sleep(495 * time.Millisecond)
 	}
 
 	return contentMap, nil
