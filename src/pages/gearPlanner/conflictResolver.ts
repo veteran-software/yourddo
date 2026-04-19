@@ -1,5 +1,11 @@
-import fountainData from '../../data/fountainOfNecroticMight.json'
-import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, type GearItem, GearSlot, type LootEnchantment } from './types'
+import { findFountainUpgradeData } from './helpers'
+import {
+  ARTIFICER_PET_SLOTS,
+  DRUID_PET_SLOTS,
+  type GearItem,
+  GearSlot,
+  type LootEnchantment
+} from './types'
 
 export interface EnchantmentConflict {
   name: string
@@ -99,7 +105,7 @@ export const resolveConflicts = (
     const isFountainUpgraded = slottedFountainOfNecroticMight[item.id]
     let baseEnchantments = item.enchantments ?? []
     if (isFountainUpgraded) {
-      const upgradeData = fountainData.find((f) => f.name === item.name)
+      const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
       if (upgradeData) {
         baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
       }
@@ -264,7 +270,7 @@ const findMatchingInherent = (
   const isFountainUpgraded = slottedFountainOfNecroticMight[item.id]
   let baseEnchantments = item.enchantments ?? []
   if (isFountainUpgraded) {
-    const upgradeData = fountainData.find((f) => f.name === item.name)
+    const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
     if (upgradeData) {
       baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
     }

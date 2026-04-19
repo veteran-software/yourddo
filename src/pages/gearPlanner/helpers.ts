@@ -14,6 +14,18 @@ import {
 
 export const isEssenceCraftedName = (name: string) => name.startsWith('Essence Crafted')
 
+export const findFountainUpgradeData = (itemName: string, pageTitle?: string) => {
+  const normalize = (s: string) => s.replace(/\s/g, ' ').trim().toLowerCase()
+  const target = normalize(itemName)
+
+  let data = fountainData.find((f) => normalize(f.name) === target)
+  if (!data && pageTitle) {
+    const cleanPageTitle = normalize(pageTitle.split('(')[0])
+    data = fountainData.find((f) => normalize(f.name) === cleanPageTitle)
+  }
+  return data
+}
+
 export const createEssenceCraftedItem = (type: string, name: string, slot: GearSlot, minLevel: number): GearItem => ({
   id: `essence-crafted-${slot}-${type}`,
   name: name,
@@ -122,7 +134,7 @@ export const aggregateEnchantmentEntries = (
   let baseEnchantments = Array.isArray(item.enchantments) ? item.enchantments : []
 
   if (isFountainUpgraded) {
-    const upgradeData = fountainData.find((f) => f.name === item.name)
+    const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
     if (upgradeData) {
       baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
     }

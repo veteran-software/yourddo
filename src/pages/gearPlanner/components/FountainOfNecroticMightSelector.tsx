@@ -1,5 +1,5 @@
 import { Form } from 'react-bootstrap'
-import fountainData from '../../../data/fountainOfNecroticMight.json'
+import { findFountainUpgradeData } from '../helpers'
 import { type GearItem, GearSlot } from '../types'
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const FountainOfNecroticMightSelector = ({ item, slot, active, onToggle, wrapperClassName, wrapperStyle }: Props) => {
-  const isUpgradeable = fountainData.some((f) => f.name === item.name)
+  const isUpgradeable = !!findFountainUpgradeData(item.name, item.pageTitle)
 
   const hasEnchantment = item.enchantments?.some((e) => e.name === 'Upgradeable Item (Black Abbot)')
 

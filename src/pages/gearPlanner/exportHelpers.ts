@@ -1,16 +1,16 @@
 import type { EssenceEnchantment } from './dataLoader.ts'
 import {
+  findFountainUpgradeData,
   getActiveSetEnhancements,
   getScaledEssenceEnchantments
 } from './helpers'
 import type {
-  Curse,
-  GearAugment,
   GearItem,
   GearSetup,
   GearSlot,
   LootEnchantment,
-  LootItem
+  LootItem,
+  PetState
 } from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
 
@@ -36,18 +36,6 @@ const renderSlots = (
   })
 }
 
-interface PetState {
-  slots: Record<string, GearItem | null>
-  slottedAugments: Record<string, Record<number, GearAugment | null>>
-  slottedCurses: Record<string, Curse | null>
-  slottedFiligrees: Record<string, (GearItem | null)[]>
-  unlockedFiligreeSlots: Record<string, number>
-  slottedGemSetBonuses: Record<string, (string | null)[]>
-  slottedNearlyFinished: Record<string, LootEnchantment | null>
-  slottedRitualTable: Record<string, LootEnchantment | null>
-  slottedLostPurpose: Record<string, LootEnchantment | null>
-  slottedEssenceEnchantments: Record<string, Record<string, string | null>>
-}
 
 const formatEnchantment = (ench: {
   name: string
@@ -81,8 +69,38 @@ const formatEnchantment = (ench: {
   if (ench.notes) {
     parts.push(`- ${ench.notes}`)
   }
-
   return parts.join(' ')
+}
+
+const getFilteredEnchantments = (
+  enchantments: LootEnchantment[],
+  nearlyFinished?: LootEnchantment,
+  ritualTable?: LootEnchantment,
+  lostPurpose?: LootEnchantment
+) => {
+  return enchantments.filter((ench) => {
+    if (nearlyFinished && ench.name === 'Nearly Finished') return false
+    if (ritualTable && (ench.name === 'Sealed in Fire' || ench.name === 'Sealed in Undeath')) return false
+    if (lostPurpose && ench.name === 'Lost Purpose') return false
+    if (ench.name === 'Upgradeable Item (Black Abbot)') return false
+    return true
+  })
+}
+
+const getFiligreeLines = (filigrees: (LootItem | null)[] | undefined, prefix = '  - ') => {
+  const lines: string[] = []
+  if (filigrees?.some((f) => f !== null)) {
+    lines.push(`- **Filigrees:**`)
+    filigrees.forEach((fili) => {
+      if (fili) {
+        lines.push(`  - ${fili.name}`)
+        fili.enchantments?.forEach((ench: LootEnchantment) => {
+          lines.push(`${prefix}${formatEnchantment(ench)}`)
+        })
+      }
+    })
+  }
+  return lines
 }
 
 export const generateBBCodeExport = (
@@ -113,19 +131,23 @@ export const generateBBCodeExport = (
     item: GearItem,
     nearlyFinished?: LootEnchantment,
     ritualTable?: LootEnchantment,
-    lostPurpose?: LootEnchantment
+    lostPurpose?: LootEnchantment,
+    isFountainUpgraded?: boolean
   ) => {
-    if (Array.isArray(item.enchantments) && item.enchantments.length > 0) {
+    let baseEnchantments = Array.isArray(item.enchantments) ? item.enchantments : []
+    if (isFountainUpgraded) {
+      const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
+      if (upgradeData) {
+        baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
+      }
+    }
+
+    const filtered = getFilteredEnchantments(baseEnchantments, nearlyFinished, ritualTable, lostPurpose)
+    if (filtered.length > 0) {
       lines.push(`[list]`)
-
-      item.enchantments.forEach((enchantment: LootEnchantment) => {
-        if (nearlyFinished && enchantment.name === 'Nearly Finished') return
-        if (ritualTable && (enchantment.name === 'Sealed in Fire' || enchantment.name === 'Sealed in Undeath')) return
-        if (lostPurpose && enchantment.name === 'Lost Purpose') return
-
+      filtered.forEach((enchantment: LootEnchantment) => {
         lines.push(`[*] ${formatEnchantment(enchantment)}`)
       })
-
       lines.push(`[/list]`)
     }
   }
@@ -181,6 +203,29 @@ export const generateBBCodeExport = (
     }
   }
 
+  const renderUpgrades = (
+    fountainUpgraded: boolean,
+    nearlyFinished: LootEnchantment | null,
+    ritualTable: LootEnchantment | null,
+    lostPurpose: LootEnchantment | null
+  ) => {
+    if (fountainUpgraded) {
+      lines.push(`[indent][b][color=cyan]Fountain of Necrotic Might Upgrade[/color][/b][/indent]`)
+    }
+
+    if (nearlyFinished) {
+      lines.push(`[indent][b][color=orange]Nearly Finished:[/color][/b] ${formatEnchantment(nearlyFinished)}[/indent]`)
+    }
+
+    if (ritualTable) {
+      lines.push(`[indent][b][color=green]Ritual Table Upgrade:[/color][/b] ${formatEnchantment(ritualTable)}[/indent]`)
+    }
+
+    if (lostPurpose) {
+      lines.push(`[indent][b][color=purple]Lost Purpose Upgrade:[/color][/b] ${formatEnchantment(lostPurpose)}[/indent]`)
+    }
+  }
+
   const renderSlot = (
     slot: GearSlot,
     item: GearItem,
@@ -197,22 +242,21 @@ export const generateBBCodeExport = (
     const lostPurpose: LootEnchantment | null =
       isPetSlot && petState ? petState.slottedLostPurpose[item.id] : setup.slottedLostPurpose[item.id]
 
+    const fountainUpgraded: boolean =
+      isPetSlot && petState
+        ? petState.slottedFountainOfNecroticMight[item.id]
+        : setup.slottedFountainOfNecroticMight[item.id]
+
     renderSlotHeader(slot, item)
-    renderSlotEnchantments(item, nearlyFinished ?? undefined, ritualTable ?? undefined, lostPurpose ?? undefined)
+    renderSlotEnchantments(
+      item,
+      nearlyFinished ?? undefined,
+      ritualTable ?? undefined,
+      lostPurpose ?? undefined,
+      fountainUpgraded
+    )
 
-    if (nearlyFinished) {
-      lines.push(`[indent][b][color=orange]Nearly Finished:[/color][/b] ${formatEnchantment(nearlyFinished)}[/indent]`)
-    }
-
-    if (ritualTable) {
-      lines.push(`[indent][b][color=green]Ritual Table Upgrade:[/color][/b] ${formatEnchantment(ritualTable)}[/indent]`)
-    }
-
-    if (lostPurpose) {
-      lines.push(
-        `[indent][b][color=purple]Lost Purpose Upgrade:[/color][/b] ${formatEnchantment(lostPurpose)}[/indent]`
-      )
-    }
+    renderUpgrades(fountainUpgraded, nearlyFinished, ritualTable, lostPurpose)
 
     const essenceCrafting =
       isPetSlot && petState ? petState.slottedEssenceEnchantments[item.id] : setup.slottedEssenceEnchantments[item.id]
@@ -291,32 +335,29 @@ export const generateDiscordMarkdownExport = (
     item: GearItem,
     nearlyFinished?: LootEnchantment,
     ritualTable?: LootEnchantment,
-    lostPurpose?: LootEnchantment
+    lostPurpose?: LootEnchantment,
+    isFountainUpgraded?: boolean
   ) => {
-    if (Array.isArray(item.enchantments) && item.enchantments.length > 0) {
-      item.enchantments.forEach((ench: LootEnchantment) => {
-        if (nearlyFinished && ench.name === 'Nearly Finished') return
-        if (ritualTable && (ench.name === 'Sealed in Fire' || ench.name === 'Sealed in Undeath')) return
-        if (lostPurpose && ench.name === 'Lost Purpose') return
+    let baseEnchantments = Array.isArray(item.enchantments) ? item.enchantments : []
+    if (isFountainUpgraded) {
+      const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
+      if (upgradeData) {
+        baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
+      }
+    }
 
+    const filtered = getFilteredEnchantments(baseEnchantments, nearlyFinished, ritualTable, lostPurpose)
+    if (filtered.length > 0) {
+      filtered.forEach((ench: LootEnchantment) => {
         lines.push(`- ${formatEnchantment(ench)}`)
       })
     }
   }
 
   const renderSlotFiligrees = (filigrees: (LootItem | null)[] | undefined) => {
-    if (filigrees?.some((f) => f !== null)) {
-      lines.push(`- **Filigrees:**`)
-
-      filigrees.forEach((fili) => {
-        if (fili) {
-          lines.push(`  - ${fili.name}`)
-
-          fili.enchantments?.forEach((ench: LootEnchantment) => {
-            lines.push(`    - ${formatEnchantment(ench)}`)
-          })
-        }
-      })
+    const filiLines = getFiligreeLines(filigrees, `    - `)
+    if (filiLines.length > 0) {
+      lines.push(...filiLines)
     }
   }
 
@@ -354,6 +395,29 @@ export const generateDiscordMarkdownExport = (
     }
   }
 
+  const renderUpgrades = (
+    fountainUpgraded: boolean,
+    nearlyFinished: LootEnchantment | null,
+    ritualTable: LootEnchantment | null,
+    lostPurpose: LootEnchantment | null
+  ) => {
+    if (fountainUpgraded) {
+      lines.push(`- **Fountain of Necrotic Might Upgrade**`)
+    }
+
+    if (nearlyFinished) {
+      lines.push(`- **Nearly Finished:** ${formatEnchantment(nearlyFinished)}`)
+    }
+
+    if (ritualTable) {
+      lines.push(`- **Ritual Table Upgrade:** ${formatEnchantment(ritualTable)}`)
+    }
+
+    if (lostPurpose) {
+      lines.push(`- **Lost Purpose Upgrade:** ${formatEnchantment(lostPurpose)}`)
+    }
+  }
+
   const renderSlot = (
     slot: GearSlot,
     item: GearItem,
@@ -370,20 +434,21 @@ export const generateDiscordMarkdownExport = (
     const lostPurpose: LootEnchantment | null =
       isPetSlot && petState ? petState.slottedLostPurpose[item.id] : setup.slottedLostPurpose[item.id]
 
+    const fountainUpgraded: boolean =
+      isPetSlot && petState
+        ? petState.slottedFountainOfNecroticMight[item.id]
+        : setup.slottedFountainOfNecroticMight[item.id]
+
     renderSlotHeader(slot, item)
-    renderSlotEnchantments(item, nearlyFinished ?? undefined, ritualTable ?? undefined, lostPurpose ?? undefined)
+    renderSlotEnchantments(
+      item,
+      nearlyFinished ?? undefined,
+      ritualTable ?? undefined,
+      lostPurpose ?? undefined,
+      fountainUpgraded
+    )
 
-    if (nearlyFinished) {
-      lines.push(`- **Nearly Finished:** ${formatEnchantment(nearlyFinished)}`)
-    }
-
-    if (ritualTable) {
-      lines.push(`- **Ritual Table Upgrade:** ${formatEnchantment(ritualTable)}`)
-    }
-
-    if (lostPurpose) {
-      lines.push(`- **Lost Purpose Upgrade:** ${formatEnchantment(lostPurpose)}`)
-    }
+    renderUpgrades(fountainUpgraded, nearlyFinished, ritualTable, lostPurpose)
 
     const essenceCrafting =
       isPetSlot && petState ? petState.slottedEssenceEnchantments[item.id] : setup.slottedEssenceEnchantments[item.id]

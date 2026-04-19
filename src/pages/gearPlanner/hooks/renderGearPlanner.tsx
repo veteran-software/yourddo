@@ -2,13 +2,13 @@ import { type JSX, type ReactNode } from 'react'
 import { Card, Col } from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import type { ItemRollup } from '../../../components/trove/types.ts'
-import fountainData from '../../../data/fountainOfNecroticMight.json'
 import { SLOT_GROUPS } from '../../../utils/augmentUtils.ts'
 import AugmentSlotItem from '../components/AugmentSlotItem'
 import CurseSlotItem from '../components/CurseSlotItem'
 import EnchantmentList from '../components/EnchantmentList'
 import EssenceCraftingSelector from '../components/EssenceCraftingSelector'
-import FountainOfNecroticMightSelector from '../components/FountainOfNecroticMightSelector'
+import FountainOfNecroticMightSelector
+  from '../components/FountainOfNecroticMightSelector'
 import GemSetBonusSelector from '../components/GetSetBonusSelector'
 import ItemSetBonusDisplay from '../components/ItemSetBonusDisplay'
 import LostPurposeSelector from '../components/LostPurposeSelector'
@@ -17,7 +17,11 @@ import RitualTableSelector from '../components/RitualTableSelector'
 import TroveBadge from '../components/TroveBadge'
 import { getSlotOwner } from '../conflictResolver'
 import { type EssenceEnchantment } from '../dataLoader'
-import { getMaxFiligreeSlots, isMinorArtifact } from '../helpers'
+import {
+  findFountainUpgradeData,
+  getMaxFiligreeSlots,
+  isMinorArtifact
+} from '../helpers'
 import {
   type Curse,
   type EntityGearState,
@@ -73,7 +77,7 @@ export const renderGearPlanner = (props: Props) => {
     let displayEnchantments: LootEnchantment[] = selectedItem?.enchantments ?? []
 
     if (selectedItem && isFountainUpgraded) {
-      const upgradeData = fountainData.find((f) => f.name === selectedItem.name)
+      const upgradeData = findFountainUpgradeData(selectedItem.name, selectedItem.pageTitle)
       if (upgradeData) {
         displayEnchantments = upgradeData.effectsAdded as LootEnchantment[]
       }
