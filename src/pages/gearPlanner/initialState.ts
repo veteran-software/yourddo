@@ -10,7 +10,8 @@ export const initialPetState = (): PetState => ({
   slottedEssenceEnchantments: {},
   slottedNearlyFinished: {},
   slottedRitualTable: {},
-  slottedLostPurpose: {}
+  slottedLostPurpose: {},
+  slottedFountainOfNecroticMight: {}
 })
 
 export const createDefaultSetup = (id: string, name: string): GearSetup => ({
@@ -33,6 +34,7 @@ export const createDefaultSetup = (id: string, name: string): GearSetup => ({
   slottedNearlyFinished: {},
   slottedRitualTable: {},
   slottedLostPurpose: {},
+  slottedFountainOfNecroticMight: {},
   artificerPet: initialPetState(),
   druidPet: initialPetState()
 })

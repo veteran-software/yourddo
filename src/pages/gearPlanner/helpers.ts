@@ -1,3 +1,4 @@
+import fountainData from '../../data/fountainOfNecroticMight.json'
 import { findSetBonus } from '../../data/setBonuses.ts'
 import type { SetBonus } from '../../types/crafting.ts'
 import type { EssenceEnchantment } from './dataLoader.ts'
@@ -114,17 +115,27 @@ export const aggregateEnchantmentEntries = (
   activeSetEnhancements?: { ench: LootEnchantment; sourceName: string }[],
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
-  slottedLostPurpose?: Record<string, LootEnchantment | null>
+  slottedLostPurpose?: Record<string, LootEnchantment | null>,
+  slottedFountainOfNecroticMight?: Record<string, boolean>
 ) => {
-  const entries: { ench: LootEnchantment; sourceName: string }[] = (
-    Array.isArray(item.enchantments) ? item.enchantments : []
-  )
+  const isFountainUpgraded = slottedFountainOfNecroticMight?.[item.id]
+  let baseEnchantments = Array.isArray(item.enchantments) ? item.enchantments : []
+
+  if (isFountainUpgraded) {
+    const upgradeData = fountainData.find((f) => f.name === item.name)
+    if (upgradeData) {
+      baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
+    }
+  }
+
+  const entries: { ench: LootEnchantment; sourceName: string }[] = baseEnchantments
     .filter(
       (e: LootEnchantment) =>
         e.name !== 'Craftable Rune Arm' &&
         e.name !== 'Nearly Finished' &&
         e.name !== 'Sealed in Fire' &&
-        e.name !== 'Sealed in Undeath'
+        e.name !== 'Sealed in Undeath' &&
+        e.name !== 'Upgradeable Item (Black Abbot)'
     )
     .map((e: LootEnchantment) => ({
       ench: e,

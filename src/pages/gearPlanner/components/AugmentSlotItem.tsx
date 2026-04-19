@@ -2,11 +2,9 @@ import React, { Fragment } from 'react'
 import { Dropdown, Form } from 'react-bootstrap'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import { getTroveKey } from '../../../utils/troveUtils.ts'
+import { checkPotentialConflict } from '../conflictResolver.ts'
 import {
-  checkPotentialConflict,
-  type EnchantmentConflict
-} from '../conflictResolver.ts'
-import {
+  type EntityGearState,
   type GearAugment,
   type GearAugmentSlot,
   type GearItem,
@@ -39,22 +37,17 @@ import TroveBadge from './TroveBadge.tsx'
  * @param {Object|null} props.slotted - The augment currently slotted in this slot, if any.
  */
 const AugmentSlotItem = (props: Props) => {
+  const { applicable, augSlot, entityState, idx, openSetBonusBrowser, selectedItem, setSlottedAugment, slot, slotted } =
+    props
+
   const {
-    applicable,
-    augSlot,
-    currentConflicts,
-    currentEquipped,
-    currentSlottedAugments,
-    currentSlottedNearlyFinished,
-    currentSlottedRitualTable,
-    currentSlottedLostPurpose,
-    idx,
-    openSetBonusBrowser,
-    selectedItem,
-    setSlottedAugment,
-    slot,
-    slotted
-  } = props
+    equipped: currentEquipped,
+    slottedAugments: currentSlottedAugments,
+    slottedNearlyFinished: currentSlottedNearlyFinished,
+    slottedRitualTable: currentSlottedRitualTable,
+    slottedLostPurpose: currentSlottedLostPurpose,
+    slottedFountainOfNecroticMight: currentSlottedFountainOfNecroticMight
+  } = entityState
 
   const { troveData } = useAppSelector((state) => state.app)
   const [showOwnedOnly, setShowOwnedOnly] = React.useState(false)
@@ -141,6 +134,7 @@ const AugmentSlotItem = (props: Props) => {
                     currentSlottedNearlyFinished,
                     currentSlottedRitualTable,
                     currentSlottedLostPurpose,
+                    currentSlottedFountainOfNecroticMight,
                     selectedItem.id,
                     idx
                   )
@@ -199,14 +193,9 @@ const AugmentSlotItem = (props: Props) => {
           <EnchantmentList
             enchantments={slotted.effectsAdded}
             itemId={`${selectedItem.id}-aug-${String(idx)}`}
-            conflicts={currentConflicts}
-            equippedItems={currentEquipped}
+            entityState={entityState}
             source='slot'
             browsingSlot={slot}
-            slottedAugments={currentSlottedAugments}
-            slottedNearlyFinished={currentSlottedNearlyFinished}
-            slottedRitualTable={currentSlottedRitualTable}
-            slottedLostPurpose={currentSlottedLostPurpose}
           />
         </div>
       )}
@@ -224,12 +213,7 @@ interface Props {
     sortedGroupNames: string[]
   }
   slot: GearSlot
-  currentConflicts: Record<string, EnchantmentConflict[]>
-  currentEquipped: GearItem[]
-  currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  currentSlottedNearlyFinished: Record<string, import('../types.ts').LootEnchantment | null>
-  currentSlottedRitualTable: Record<string, import('../types.ts').LootEnchantment | null>
-  currentSlottedLostPurpose: Record<string, import('../types.ts').LootEnchantment | null>
+  entityState: EntityGearState
   setSlottedAugment: (itemId: string, slotIndex: number, augment: GearAugment | null, slot?: GearSlot) => void
   openSetBonusBrowser: (setName: string) => void
 }

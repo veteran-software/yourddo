@@ -1,6 +1,5 @@
 import { useAppSelector } from '../../../redux/hooks.ts'
-import type { EnchantmentConflict } from '../conflictResolver.ts'
-import { type GearAugment, type GearItem, GearSlot } from '../types.ts'
+import { type EntityGearState, type GearItem, GearSlot } from '../types.ts'
 import AugmentSlotsList from './AugmentSlotList.tsx'
 import GenericBadge from './badges/GenericBadge.tsx'
 import SetBonusBadge from './badges/SetBonusBadge.tsx'
@@ -8,16 +7,9 @@ import EnchantmentList from './EnchantmentList.tsx'
 import TroveBadge from './TroveBadge.tsx'
 
 const BrowserItem = (props: Props) => {
-  const {
-    browsingSlot,
-    currentConflicts,
-    currentEquipped,
-    currentSlottedAugments,
-    isMetal,
-    item,
-    openSetBonusBrowser,
-    selectItem
-  } = props
+  const { browsingSlot, entityState, isMetal, item, openSetBonusBrowser, selectItem } = props
+
+  const { equipped: currentEquipped } = entityState
 
   const { troveData } = useAppSelector((state) => state.app)
 
@@ -67,11 +59,9 @@ const BrowserItem = (props: Props) => {
               <EnchantmentList
                 enchantments={item.enchantments}
                 itemId={item.id}
-                conflicts={currentConflicts}
-                equippedItems={currentEquipped}
+                entityState={entityState}
                 source='browser'
                 browsingSlot={browsingSlot}
-                slottedAugments={currentSlottedAugments}
               />
             </div>
           </div>
@@ -84,9 +74,7 @@ const BrowserItem = (props: Props) => {
 interface Props {
   item: GearItem
   browsingSlot: GearSlot
-  currentConflicts: Record<string, EnchantmentConflict[]>
-  currentEquipped: GearItem[]
-  currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
+  entityState: EntityGearState
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   isMetal: (material: string | null | undefined) => boolean
   openSetBonusBrowser: (setName: string) => void

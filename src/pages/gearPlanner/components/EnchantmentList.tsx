@@ -1,22 +1,21 @@
 import { Badge } from 'react-bootstrap'
 import { checkPotentialConflict, type EnchantmentConflict, getBonus, normalizeString } from '../conflictResolver.ts'
-import { type GearAugment, type GearItem, GearSlot, type LootEnchantment } from '../types.ts'
+import { type EntityGearState, GearSlot, type LootEnchantment } from '../types.ts'
 
 const EnchantmentList = (props: Props) => {
+  const { browsingSlot, entityState, enchantments, itemId, source } = props
+
+  if (!enchantments) return null
+
   const {
-    browsingSlot,
     conflicts,
-    enchantments,
-    equippedItems,
-    itemId,
+    equipped: equippedItems,
     slottedAugments,
     slottedNearlyFinished,
     slottedRitualTable,
     slottedLostPurpose,
-    source
-  } = props
-
-  if (!enchantments) return null
+    slottedFountainOfNecroticMight
+  } = entityState
 
   return (
     <>
@@ -38,6 +37,7 @@ const EnchantmentList = (props: Props) => {
                 slottedNearlyFinished,
                 slottedRitualTable,
                 slottedLostPurpose,
+                slottedFountainOfNecroticMight,
                 itemId
               )
 
@@ -138,14 +138,9 @@ const EnchantmentList = (props: Props) => {
 interface Props {
   enchantments: LootEnchantment[] | null | undefined
   itemId: string
-  conflicts: Record<string, EnchantmentConflict[]>
-  equippedItems: GearItem[]
+  entityState: EntityGearState
   source: 'slot' | 'search' | 'browser'
   browsingSlot?: GearSlot | null
-  slottedAugments?: Record<string, Record<number, GearAugment | null>>
-  slottedNearlyFinished?: Record<string, LootEnchantment | null>
-  slottedRitualTable?: Record<string, LootEnchantment | null>
-  slottedLostPurpose?: Record<string, LootEnchantment | null>
 }
 
 export default EnchantmentList

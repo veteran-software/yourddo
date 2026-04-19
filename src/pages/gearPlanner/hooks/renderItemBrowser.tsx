@@ -2,14 +2,16 @@ import type { ReactElement } from 'react'
 import { Accordion } from 'react-bootstrap'
 import BrowserItem from '../components/BrowserItem.tsx'
 import LazyAccordionBody from '../components/LazyAccordionBody.tsx'
-import type { EnchantmentConflict } from '../conflictResolver.ts'
-import { type GearAugment, type GearItem, GearSlot, SHIELD_TYPES, WEAPON_TYPES } from '../types.ts'
+import { getSlotOwner } from '../conflictResolver'
+import { type EntityGearState, type GearItem, GearSlot, SHIELD_TYPES, WEAPON_TYPES } from '../types.ts'
+import type { ContextInfo } from './useGearPlannerContext.ts'
 
 const renderItemBrowser = (props: Props) => {
   const {
     browsingSlot,
     filteredItems,
     getContextInfo,
+    getEntityState,
     isMetal,
     itemsToShow,
     openSetBonusBrowser,
@@ -198,7 +200,8 @@ const renderItemBrowser = (props: Props) => {
 
   const renderItems = (items: GearItem[], showCount = true, useLimit = true): ReactElement | null => {
     if (!browsingSlot) return null
-    const { currentConflicts, currentEquipped, currentSlottedAugments } = getContextInfo(browsingSlot)
+    const owner = getSlotOwner(browsingSlot)
+    const effectiveState = getEntityState(owner)
 
     const itemsToDisplay = useLimit ? items.slice(0, itemsToShow) : items
 
@@ -216,9 +219,7 @@ const renderItemBrowser = (props: Props) => {
               key={item.id}
               item={item}
               browsingSlot={browsingSlot}
-              currentConflicts={currentConflicts}
-              currentEquipped={currentEquipped}
-              currentSlottedAugments={currentSlottedAugments}
+              entityState={effectiveState}
               selectItem={selectItem}
               isMetal={isMetal}
               openSetBonusBrowser={openSetBonusBrowser}
@@ -281,11 +282,8 @@ interface Props {
   browsingSlot: GearSlot | null
   itemsToShow: number
   filteredItems: GearItem[]
-  getContextInfo: (slot: GearSlot) => {
-    currentConflicts: Record<string, EnchantmentConflict[]>
-    currentEquipped: GearItem[]
-    currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  }
+  getContextInfo: (slot: GearSlot) => ContextInfo
+  getEntityState: (owner: string) => EntityGearState
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   isMetal: (material: string | null | undefined) => boolean
   openSetBonusBrowser: (setName: string) => void

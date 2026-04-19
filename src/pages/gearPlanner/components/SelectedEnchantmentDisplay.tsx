@@ -1,10 +1,4 @@
-import type { EnchantmentConflict } from '../conflictResolver.ts'
-import {
-  type GearAugment,
-  type GearItem,
-  type GearSlot,
-  type LootEnchantment
-} from '../types.ts'
+import { type EntityGearState, type GearItem, type GearSlot, type LootEnchantment } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
 export interface BaseSelectorProps {
@@ -12,12 +6,7 @@ export interface BaseSelectorProps {
   slot: GearSlot
   selectedEnchantment: LootEnchantment | null
   onSelect: (enchantment: LootEnchantment | null) => void
-  conflicts: Record<string, EnchantmentConflict[]>
-  equippedItems: GearItem[]
-  slottedAugments: Record<string, Record<number, GearAugment | null>>
-  slottedNearlyFinished: Record<string, LootEnchantment | null>
-  slottedRitualTable: Record<string, LootEnchantment | null>
-  slottedLostPurpose: Record<string, LootEnchantment | null>
+  entityState: EntityGearState
   wrapperClassName?: string
   wrapperStyle?: React.CSSProperties
 }
@@ -26,28 +15,12 @@ interface Props {
   selectedEnchantment: LootEnchantment | null
   item: GearItem
   slot: GearSlot
-  conflicts: Record<string, EnchantmentConflict[]>
-  equippedItems: GearItem[]
-  slottedAugments: Record<string, Record<number, GearAugment | null>>
-  slottedNearlyFinished: Record<string, LootEnchantment | null>
-  slottedRitualTable: Record<string, LootEnchantment | null>
-  slottedLostPurpose: Record<string, LootEnchantment | null>
+  entityState: EntityGearState
   className?: string
 }
 
 const SelectedEnchantmentDisplay = (props: Props) => {
-  const {
-    selectedEnchantment,
-    item,
-    slot,
-    conflicts,
-    equippedItems,
-    slottedAugments,
-    slottedNearlyFinished,
-    slottedRitualTable,
-    slottedLostPurpose,
-    className
-  } = props
+  const { selectedEnchantment, item, slot, entityState, className } = props
 
   if (!selectedEnchantment) return null
 
@@ -56,14 +29,9 @@ const SelectedEnchantmentDisplay = (props: Props) => {
       <EnchantmentList
         enchantments={[selectedEnchantment]}
         itemId={item.id}
-        conflicts={conflicts}
-        equippedItems={equippedItems}
+        entityState={entityState}
         source='slot'
         browsingSlot={slot}
-        slottedAugments={slottedAugments}
-        slottedNearlyFinished={slottedNearlyFinished}
-        slottedRitualTable={slottedRitualTable}
-        slottedLostPurpose={slottedLostPurpose}
       />
     </div>
   )

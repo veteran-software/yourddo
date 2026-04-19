@@ -1,22 +1,19 @@
 import { Dropdown } from 'react-bootstrap'
-import { checkPotentialConflict, type EnchantmentConflict } from '../conflictResolver.ts'
-import { type Curse, type GearAugment, type GearItem, GearSlot } from '../types.ts'
+import { checkPotentialConflict } from '../conflictResolver.ts'
+import { type Curse, type EntityGearState, type GearItem, GearSlot } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
 const CurseSlotItem = (props: Props) => {
+  const { allCurses, entityState, selectedItem, setCurse, slot, slotted } = props
+
   const {
-    allCurses,
-    currentConflicts,
-    currentEquipped,
-    currentSlottedAugments,
-    currentSlottedNearlyFinished,
-    currentSlottedRitualTable,
-    currentSlottedLostPurpose,
-    selectedItem,
-    setCurse,
-    slot,
-    slotted
-  } = props
+    equipped: currentEquipped,
+    slottedAugments: currentSlottedAugments,
+    slottedNearlyFinished: currentSlottedNearlyFinished,
+    slottedRitualTable: currentSlottedRitualTable,
+    slottedLostPurpose: currentSlottedLostPurpose,
+    slottedFountainOfNecroticMight: currentSlottedFountainOfNecroticMight
+  } = entityState
 
   return (
     <div className='mx-n2 px-2 py-1 mb-1 bg-white last-child-mb-0'>
@@ -68,6 +65,7 @@ const CurseSlotItem = (props: Props) => {
                   currentSlottedNearlyFinished,
                   currentSlottedRitualTable,
                   currentSlottedLostPurpose,
+                  currentSlottedFountainOfNecroticMight,
                   selectedItem.id
                 )
               )
@@ -122,14 +120,9 @@ const CurseSlotItem = (props: Props) => {
           <EnchantmentList
             enchantments={slotted.enchantments}
             itemId={`${selectedItem.id}-curse`}
-            conflicts={currentConflicts}
-            equippedItems={currentEquipped}
+            entityState={entityState}
             source='slot'
             browsingSlot={slot}
-            slottedAugments={currentSlottedAugments}
-            slottedNearlyFinished={currentSlottedNearlyFinished}
-            slottedRitualTable={currentSlottedRitualTable}
-            slottedLostPurpose={currentSlottedLostPurpose}
           />
         </div>
       )}
@@ -142,12 +135,7 @@ interface Props {
   allCurses: Curse[]
   slotted: Curse | null | undefined
   slot: GearSlot
-  currentConflicts: Record<string, EnchantmentConflict[]>
-  currentEquipped: GearItem[]
-  currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  currentSlottedNearlyFinished: Record<string, import('../types.ts').LootEnchantment | null>
-  currentSlottedRitualTable: Record<string, import('../types.ts').LootEnchantment | null>
-  currentSlottedLostPurpose: Record<string, import('../types.ts').LootEnchantment | null>
+  entityState: EntityGearState
   setCurse: (itemId: string, curse: Curse | null, slot?: GearSlot) => void
 }
 

@@ -8,6 +8,7 @@ import {
   setCurse as setCurseAction,
   setEssenceEnchantment as setEssenceEnchantmentAction,
   setFiligree as setFiligreeAction,
+  setFountainOfNecroticMight as setFountainOfNecroticMightAction,
   setGemSetBonus as setGemSetBonusAction,
   setItemMaterial as setItemMaterialAction,
   setItemMinLevel as setItemMinLevelAction,
@@ -253,6 +254,16 @@ export const useGearPlannerActions = ({
     )
   }
 
+  const setFountainOfNecroticMight = (itemId: string, active: boolean, slot?: GearSlot) => {
+    dispatch(
+      setFountainOfNecroticMightAction({
+        itemId,
+        active,
+        slot
+      })
+    )
+  }
+
   return {
     addSetup,
     deleteSetup,
@@ -269,6 +280,7 @@ export const useGearPlannerActions = ({
     setItemMinLevel,
     setNearlyFinishedEnchantment,
     setRitualTableEnchantment,
-    setLostPurposeEnchantment
+    setLostPurposeEnchantment,
+    setFountainOfNecroticMight
   }
 }

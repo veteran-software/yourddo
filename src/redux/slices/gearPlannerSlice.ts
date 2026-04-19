@@ -123,7 +123,7 @@ const gearPlannerSlice = createSlice({
 
       const target = getTarget(setup, owner)
 
-      const oldItem = (target.slots)[slot]
+      const oldItem = target.slots[slot]
       if (oldItem) {
         target.slottedFiligrees = Object.fromEntries(
           Object.entries(target.slottedFiligrees).filter(([id]) => id !== oldItem.id)
@@ -133,7 +133,7 @@ const gearPlannerSlice = createSlice({
         )
       }
 
-      ;(target.slots)[slot] = item
+      target.slots[slot] = item
       if (item) {
         target.slottedFiligrees[item.id] ??= new Array(10).fill(null)
         target.unlockedFiligreeSlots[item.id] ??= 0
@@ -282,6 +282,21 @@ const gearPlannerSlice = createSlice({
       const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
       target.slottedLostPurpose[itemId] = enchantment
     },
+    setFountainOfNecroticMight: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        active: boolean
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, active, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
+
+      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
+      target.slottedFountainOfNecroticMight[itemId] = active
+    },
     setItemMinLevel: (
       state,
       action: PayloadAction<{
@@ -336,6 +351,7 @@ export const {
   setNearlyFinishedEnchantment,
   setRitualTableEnchantment,
   setLostPurposeEnchantment,
+  setFountainOfNecroticMight,
   setItemMinLevel,
   setItemMaterial
 } = gearPlannerSlice.actions

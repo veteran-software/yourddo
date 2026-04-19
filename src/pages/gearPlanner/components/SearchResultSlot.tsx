@@ -1,19 +1,11 @@
 import { Accordion, Badge, Card, Stack } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
-import {
-  cannithRepurposingStation as lostPurposeRecipes
-} from '../../../data/cannithRepurposingStation.ts'
+import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
 import nearlyFinishedRecipesRaw from '../../../data/nearlyFinished/recipes.json'
 import { ritualTable } from '../../../data/ritualTable.ts'
 import type { CraftingIngredient, SetBonus } from '../../../types/crafting.ts'
 import { getTroveKey, getTroveOwners } from '../../../utils/troveUtils.ts'
-import type { EnchantmentConflict } from '../conflictResolver.ts'
-import {
-  type GearAugment,
-  type GearItem,
-  GearSlot,
-  type LootEnchantment
-} from '../types.ts'
+import { type EntityGearState, type GearItem, GearSlot, type LootEnchantment } from '../types.ts'
 import AugmentSlotsList from './AugmentSlotList.tsx'
 import GenericBadge from './badges/GenericBadge.tsx'
 import SetBonusBadge from './badges/SetBonusBadge.tsx'
@@ -93,10 +85,7 @@ const getUpgradeSource = (item: GearItem, browsingSet: string) => {
 const SearchResultSlot = (props: Props) => {
   const {
     browsingSet,
-    currentConflicts,
-    currentEquipped,
-    currentSlottedAugments,
-    currentSlottedFiligrees,
+    entityState,
     items,
     openSetBonusBrowser,
     selectItem,
@@ -104,6 +93,8 @@ const SearchResultSlot = (props: Props) => {
     slot,
     troveData
   } = props
+
+  const { equipped: currentEquipped, slottedFiligrees: currentSlottedFiligrees } = entityState
 
   const equippedInSlot: GearItem | undefined = currentEquipped.find((equipped: GearItem) => equipped.slot === slot)
   const isPartOfSet: boolean | undefined =
@@ -214,11 +205,9 @@ const SearchResultSlot = (props: Props) => {
                       <EnchantmentList
                         enchantments={item.enchantments}
                         itemId={item.id}
-                        conflicts={currentConflicts}
-                        equippedItems={currentEquipped}
+                        entityState={entityState}
                         source='search'
                         browsingSlot={item.slot}
-                        slottedAugments={currentSlottedAugments}
                       />
                     </div>
                   )}
@@ -235,10 +224,7 @@ const SearchResultSlot = (props: Props) => {
 interface Props {
   slot: string
   items: GearItem[]
-  currentConflicts: Record<string, EnchantmentConflict[]>
-  currentEquipped: GearItem[]
-  currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  currentSlottedFiligrees: Record<string, (GearItem | null)[]>
+  entityState: EntityGearState
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   setShowEnchantmentSearch: (show: boolean) => void
   openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void

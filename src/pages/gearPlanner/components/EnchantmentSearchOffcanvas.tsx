@@ -2,15 +2,14 @@ import { useMemo } from 'react'
 import { Accordion, Form, Offcanvas } from 'react-bootstrap'
 import { FaXmark } from 'react-icons/fa6'
 import type { ItemRollup } from '../../../components/trove/types'
-import type { EnchantmentConflict } from '../conflictResolver'
-import { type GearAugment, type GearItem, GearSlot } from '../types'
+import { getSlotOwner } from '../conflictResolver'
+import { type EntityGearState, type GearItem, GearSlot } from '../types'
 import SearchResultSlot from './SearchResultSlot'
 
 const EnchantmentSearchOffcanvas = (props: Props) => {
   const {
-    currentSlottedFiligrees,
     enchantmentSearch,
-    getContextInfo,
+    getEntityState,
     openSetBonusBrowser,
     searchResultsBySlot,
     selectItem,
@@ -37,10 +36,7 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
               key={slot}
               slot={slot}
               items={items}
-              currentSlottedFiligrees={currentSlottedFiligrees}
-              currentConflicts={getContextInfo(slot).currentConflicts}
-              currentEquipped={getContextInfo(slot).currentEquipped}
-              currentSlottedAugments={getContextInfo(slot).currentSlottedAugments}
+              entityState={getEntityState(getSlotOwner(slot))}
               selectItem={selectItem}
               setShowEnchantmentSearch={setShowEnchantmentSearch}
               openSetBonusBrowser={openSetBonusBrowser}
@@ -51,9 +47,8 @@ const EnchantmentSearchOffcanvas = (props: Props) => {
       )
     }
   }, [
-    currentSlottedFiligrees,
     enchantmentSearch,
-    getContextInfo,
+    getEntityState,
     openSetBonusBrowser,
     searchResultsBySlot,
     selectItem,
@@ -147,12 +142,7 @@ interface Props {
   showOwnedOnly: boolean
   setShowOwnedOnly: (show: boolean) => void
   searchResultsBySlot: Record<string, GearItem[]> | null
-  currentSlottedFiligrees: Record<string, (GearItem | null)[]>
-  getContextInfo: (slot: string) => {
-    currentConflicts: Record<string, EnchantmentConflict[]>
-    currentEquipped: GearItem[]
-    currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  }
+  getEntityState: (owner: string) => EntityGearState
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   openSetBonusBrowser: (setName: string) => void
   troveData: ItemRollup | null

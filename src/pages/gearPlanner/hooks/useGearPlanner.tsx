@@ -75,15 +75,9 @@ const useGearPlanner = (props: Props) => {
   const activeSetup = setups.find((s) => s.id === activeSetupId) ?? setups[0]
   const { artificerPet, druidPet } = activeSetup
 
-  const {
-    characterEquipped,
-    artificerEquipped,
-    druidEquipped,
-    characterConflicts,
-    artificerConflicts,
-    druidConflicts,
-    getContextInfo
-  } = useGearPlannerContext({ activeSetup, artificerPet, druidPet })
+  const { characterEquipped, artificerEquipped, druidEquipped, getContextInfo, getEntityState } = useGearPlannerContext(
+    { activeSetup, artificerPet, druidPet }
+  )
 
   const { filteredItems, filteredItemSets, filteredFiligreeSets, searchResultsBySlot } = useGearPlannerFiltering({
     dataReady,
@@ -115,14 +109,7 @@ const useGearPlanner = (props: Props) => {
 
   const { renderSlot } = renderGearPlanner({
     activeSetup,
-    artificerPet,
-    druidPet,
-    characterConflicts,
-    artificerConflicts,
-    druidConflicts,
-    characterEquipped,
-    artificerEquipped,
-    druidEquipped,
+    getEntityState,
     troveData: troveData,
     allAugments,
     allCurses,
@@ -139,7 +126,8 @@ const useGearPlanner = (props: Props) => {
     setEssenceEnchantment: actions.setEssenceEnchantment,
     setNearlyFinishedEnchantment: actions.setNearlyFinishedEnchantment,
     setRitualTableEnchantment: actions.setRitualTableEnchantment,
-    setLostPurposeEnchantment: actions.setLostPurposeEnchantment
+    setLostPurposeEnchantment: actions.setLostPurposeEnchantment,
+    setFountainOfNecroticMight: actions.setFountainOfNecroticMight
   })
 
   const observerTargetRef = useRef<HTMLDivElement>(null)
@@ -151,7 +139,7 @@ const useGearPlanner = (props: Props) => {
     allCurses,
     artificerEquipped,
     allFiligrees,
-    allItems: useMemo(() => [...allItems, ...allFiligrees], [allItems, allFiligrees]),
+    allItems,
     browsingSlot,
     browsingSet,
     setBrowsingSet,
@@ -169,6 +157,7 @@ const useGearPlanner = (props: Props) => {
     filteredFiligreeSets,
     allFiligreeSetNames,
     getContextInfo,
+    getEntityState,
     isItemVisibleForClasses,
     isMetal,
     setItemMaterial: actions.setItemMaterial,
@@ -197,6 +186,7 @@ const useGearPlanner = (props: Props) => {
     setEssenceEnchantment: actions.setEssenceEnchantment,
     setItemMinLevel: actions.setItemMinLevel,
     setLostPurposeEnchantment: actions.setLostPurposeEnchantment,
+    setFountainOfNecroticMight: actions.setFountainOfNecroticMight,
     observerTarget: observerTargetRef,
     showConflicts,
     setShowConflicts,

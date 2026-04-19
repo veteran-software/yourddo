@@ -3,15 +3,14 @@ import type { ItemRollup } from '../../../components/trove/types.ts'
 import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
 import type { SetBonus } from '../../../types/crafting.ts'
 import { getTroveKey } from '../../../utils/troveUtils.ts'
-import type { EnchantmentConflict } from '../conflictResolver.ts'
+import { getSlotOwner } from '../conflictResolver'
 import {
   ARTIFICER_PET_SLOTS,
   DRUID_PET_SLOTS,
-  type GearAugment,
+  type EntityGearState,
   type GearItem,
   GearSlot,
   type LootEnchantment,
-  type LootItem,
   type SetBonusIndex,
   type SetBonusIndexEntry,
   type SlotKey
@@ -26,7 +25,7 @@ const SetBonusItems = (props: Props) => {
     showOwnedOnly,
     troveData,
     itemNameSearch,
-    getContextInfo,
+    getEntityState,
     selectItem,
     openSetBonusBrowser
   } = props
@@ -140,18 +139,12 @@ const SetBonusItems = (props: Props) => {
   return (
     <Accordion data-bs-theme='dark'>
       {Object.entries(grouped).map(([slot, items]) => {
-        const { currentConflicts, currentEquipped, currentSlottedAugments, currentSlottedFiligrees } =
-          getContextInfo(slot)
-
         return (
           <SearchResultSlot
             key={slot}
             slot={slot}
             items={items}
-            currentConflicts={currentConflicts}
-            currentEquipped={currentEquipped}
-            currentSlottedAugments={currentSlottedAugments}
-            currentSlottedFiligrees={currentSlottedFiligrees as Record<string, (GearItem | null)[]>}
+            entityState={getEntityState(getSlotOwner(slot))}
             selectItem={selectItem}
             setShowEnchantmentSearch={() => {
               /* Don't close for set bonus browser */
@@ -173,12 +166,7 @@ interface Props {
   showOwnedOnly: boolean
   troveData: ItemRollup | null
   itemNameSearch: string
-  getContextInfo: (slot: string) => {
-    currentConflicts: Record<string, EnchantmentConflict[]>
-    currentEquipped: GearItem[]
-    currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-    currentSlottedFiligrees: Record<string, (LootItem | null)[]>
-  }
+  getEntityState: (owner: string) => EntityGearState
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
 }

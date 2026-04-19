@@ -2,9 +2,8 @@ import { useCallback, useMemo } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { shields } from '../../../data/basics/armor.ts'
 import { meleeWeapons, rangedWeapons, throwingWeapons } from '../../../data/basics/weapons.ts'
-import type { EnchantmentConflict } from '../conflictResolver.ts'
-import type { EssenceEnchantment } from '../dataLoader.ts'
-import { type GearAugment, type GearItem, type GearSetup, GearSlot, type LootEnchantment } from '../types.ts'
+import { type EssenceEnchantment } from '../dataLoader.ts'
+import { type EntityGearState, type GearItem, type GearSetup, GearSlot, type LootEnchantment } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
 const EssenceCraftingSelector = (props: Props) => {
@@ -15,7 +14,8 @@ const EssenceCraftingSelector = (props: Props) => {
     setEssenceEnchantment,
     setItemMinLevel,
     setItemMaterial,
-    slot
+    slot,
+    entityState
   } = props
 
   const minLevel = Number.parseInt(String(selectedItem.minLevel)) || 1
@@ -287,14 +287,9 @@ const EssenceCraftingSelector = (props: Props) => {
                 }))
               })}
               itemId={selectedItem.id}
-              conflicts={props.currentConflicts}
-              equippedItems={props.currentEquipped}
+              entityState={entityState}
               source='slot'
               browsingSlot={slot}
-              slottedAugments={props.currentSlottedAugments}
-              slottedNearlyFinished={props.currentSlottedNearlyFinished}
-              slottedRitualTable={props.currentSlottedRitualTable}
-              slottedLostPurpose={props.currentSlottedLostPurpose}
             />
           </div>
         )}
@@ -436,12 +431,7 @@ interface Props {
   setItemMinLevel: (itemId: string, minLevel: number, slot?: GearSlot) => void
   setItemMaterial: (itemId: string, material: string, slot?: GearSlot) => void
   slot: GearSlot
-  currentConflicts: Record<string, EnchantmentConflict[]>
-  currentEquipped: GearItem[]
-  currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  currentSlottedNearlyFinished: Record<string, import('../types.ts').LootEnchantment | null>
-  currentSlottedRitualTable: Record<string, import('../types.ts').LootEnchantment | null>
-  currentSlottedLostPurpose: Record<string, import('../types.ts').LootEnchantment | null>
+  entityState: EntityGearState
 }
 
 export default EssenceCraftingSelector

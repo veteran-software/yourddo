@@ -2,9 +2,9 @@ import { type RefObject } from 'react'
 import { Form, Offcanvas } from 'react-bootstrap'
 import { FaXmark } from 'react-icons/fa6'
 import type { ItemRollup } from '../../../components/trove/types.ts'
-import type { EnchantmentConflict } from '../conflictResolver'
 import renderItemBrowser from '../hooks/renderItemBrowser.tsx'
-import { type GearAugment, type GearItem, type GearSetup, GearSlot } from '../types'
+import type { ContextInfo } from '../hooks/useGearPlannerContext'
+import type { EntityGearState, GearItem, GearSetup, GearSlot } from '../types'
 
 const ItemBrowserOffcanvas = (props: Props) => {
   const {
@@ -32,7 +32,11 @@ const ItemBrowserOffcanvas = (props: Props) => {
     openSlotBrowser(null)
   }
 
-  const { renderCategorizedItems } = renderItemBrowser({ ...props, selectItem: handleSelectItem })
+  const { renderCategorizedItems } = renderItemBrowser({
+    ...props,
+    selectItem: handleSelectItem,
+    getEntityState: props.getEntityState
+  })
 
   return (
     <Offcanvas
@@ -156,11 +160,8 @@ interface Props {
   setBonusFilter: string | null
   setSetBonusFilter: (filter: string | null) => void
   filteredItemSets: string[]
-  getContextInfo: (slot: GearSlot) => {
-    currentConflicts: Record<string, EnchantmentConflict[]>
-    currentEquipped: GearItem[]
-    currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-  }
+  getContextInfo: (slot: GearSlot) => ContextInfo
+  getEntityState: (owner: string) => EntityGearState
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   isMetal: (material: string | null | undefined) => boolean
   openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void

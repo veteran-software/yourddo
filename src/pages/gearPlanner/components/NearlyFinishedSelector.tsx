@@ -5,20 +5,7 @@ import type { CraftingIngredient } from '../../../types/crafting.ts'
 import SelectedEnchantmentDisplay, { type BaseSelectorProps } from './SelectedEnchantmentDisplay.tsx'
 
 const NearlyFinishedSelector = (props: BaseSelectorProps) => {
-  const {
-    item,
-    slot,
-    selectedEnchantment,
-    onSelect,
-    conflicts,
-    equippedItems,
-    slottedAugments,
-    slottedNearlyFinished,
-    slottedRitualTable,
-    slottedLostPurpose,
-    wrapperClassName,
-    wrapperStyle
-  } = props
+  const { item, slot, selectedEnchantment, onSelect, entityState, wrapperClassName, wrapperStyle } = props
   const recipes: Recipe[] = useMemo(
     () => (nearlyFinishedRecipes as unknown as NearlyFinishedRecipes).reforgingStation,
     []
@@ -92,12 +79,7 @@ const NearlyFinishedSelector = (props: BaseSelectorProps) => {
         selectedEnchantment={selectedEnchantment}
         item={item}
         slot={slot}
-        conflicts={conflicts}
-        equippedItems={equippedItems}
-        slottedAugments={slottedAugments}
-        slottedNearlyFinished={slottedNearlyFinished}
-        slottedRitualTable={slottedRitualTable}
-        slottedLostPurpose={slottedLostPurpose}
+        entityState={entityState}
         className='mt-1 text-secondary'
       />
     </div>

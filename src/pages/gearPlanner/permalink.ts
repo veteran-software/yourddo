@@ -1,6 +1,7 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
 import { getSlotOwner } from './conflictResolver.ts'
 import { isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers.ts'
+import { initialPetState } from './initialState.ts'
 import {
   type Curse,
   type GearAugment,
@@ -36,7 +37,8 @@ import {
 //     unlockedFiligreeSlots: number | null,
 //     slottedGemSetBonuses: (string | null)[] | null,
 //     itemMinLevel: number | null,
-//     itemMaterial: string | null
+//     itemMaterial: string | null,
+//     isFountainUpgraded: 0 | 1 | null
 //   ][]
 // ]
 
@@ -62,7 +64,8 @@ type V1Payload = [
     number | null, // unlockedFiligreeSlots
     (string | null)[] | null, // slottedGemSetBonuses
     number | null, // itemMinLevel
-    string | null // itemMaterial
+    string | null, // itemMaterial
+    0 | 1 | null // isFountainUpgraded
   ][]
 ]
 
@@ -85,7 +88,8 @@ export const encodeGearPermalink = (setup: GearSetup): string => {
       if (owner === 'druid_pet') state = setup.druidPet
 
       const augments: [number, string][] = []
-      const itemAugs = state.slottedAugments[item.id] as Record<number, GearAugment | null> | undefined
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const itemAugs = state.slottedAugments?.[item.id] as Record<number, GearAugment | null> | undefined
 
       if (itemAugs) {
         Object.entries(itemAugs).forEach(([idx, aug]) => {
@@ -95,25 +99,36 @@ export const encodeGearPermalink = (setup: GearSetup): string => {
         })
       }
 
-      const curse = state.slottedCurses[item.id]
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const curse = state.slottedCurses?.[item.id]
       const curseName = curse ? curse.name : null
 
-      const essenceEnch = state.slottedEssenceEnchantments[item.id] as Record<string, string | null> | undefined
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const essenceEnch = state.slottedEssenceEnchantments?.[item.id] as Record<string, string | null> | undefined
       const essenceEnchPayload: [string, string][] | null = essenceEnch
         ? Object.entries(essenceEnch)
             .filter((entry): entry is [string, string] => entry[1] !== null)
             .map(([slotName, id]) => [slotName, id])
         : null
 
-      const nearlyFinished = state.slottedNearlyFinished[item.id] ?? null
-      const ritualTable = state.slottedRitualTable[item.id] ?? null
-      const lostPurpose = state.slottedLostPurpose[item.id] ?? null
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const nearlyFinished = state.slottedNearlyFinished?.[item.id] ?? null
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const ritualTable = state.slottedRitualTable?.[item.id] ?? null
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const lostPurpose = state.slottedLostPurpose?.[item.id] ?? null
 
-      const filigrees = state.slottedFiligrees[item.id] as (GearItem | null)[] | undefined
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const filigrees = state.slottedFiligrees?.[item.id] as (GearItem | null)[] | undefined
       const filigreeNames = filigrees ? filigrees.map((f) => (f ? f.name : null)) : null
 
-      const unlockedFiligreeSlots = state.unlockedFiligreeSlots[item.id] ?? null
-      const slottedGemSetBonuses = state.slottedGemSetBonuses[item.id] ?? null
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const unlockedFiligreeSlots = state.unlockedFiligreeSlots?.[item.id] ?? null
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const slottedGemSetBonuses = state.slottedGemSetBonuses?.[item.id] ?? null
+
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const isFountainUpgraded = state.slottedFountainOfNecroticMight?.[item.id] ?? false
 
       items.push([
         slot,
@@ -128,7 +143,8 @@ export const encodeGearPermalink = (setup: GearSetup): string => {
         unlockedFiligreeSlots,
         slottedGemSetBonuses,
         Number(item.minLevel) || null,
-        item.material || null
+        item.material || null,
+        isFountainUpgraded ? 1 : 0
       ])
     }
   })
@@ -167,19 +183,6 @@ export const tryDecodeGearPermalink = (
     const [name, minLevel, maxLevel, classes, weaponFilters, armorFilters, shieldFilters, allowMetalWithDruid, items] =
       payload
 
-    const initialPetState = (): PetState => ({
-      slots: {},
-      slottedAugments: {},
-      slottedCurses: {},
-      slottedFiligrees: {},
-      unlockedFiligreeSlots: {},
-      slottedGemSetBonuses: {},
-      slottedEssenceEnchantments: {},
-      slottedNearlyFinished: {},
-      slottedRitualTable: {},
-      slottedLostPurpose: {}
-    })
-
     const setup: GearSetup = {
       id: `pl-${Date.now().toString()}`,
       name,
@@ -200,13 +203,16 @@ export const tryDecodeGearPermalink = (
       slottedNearlyFinished: {},
       slottedRitualTable: {},
       slottedLostPurpose: {},
+      slottedFountainOfNecroticMight: {},
       artificerPet: initialPetState(),
       druidPet: initialPetState()
     }
 
-    items.forEach((itemPayload) => {
-      decodeItemPayload(itemPayload, allItems, allAugments, allCurses, setup)
-    })
+    if (Array.isArray(items)) {
+      items.forEach((itemPayload) => {
+        decodeItemPayload(itemPayload, allItems, allAugments, allCurses, setup)
+      })
+    }
 
     return { ok: true, data: setup }
   } catch {
@@ -230,22 +236,31 @@ const decodeSupplementaryProperties = (
   lostPurpose: LootEnchantment | null,
   filigrees: (string | null)[] | null,
   unlockedFiligreeSlots: number | null,
-  slottedGemSetBonuses: (string | null)[] | null
+  slottedGemSetBonuses: (string | null)[] | null,
+  isFountainUpgraded: 0 | 1 | null
 ) => {
-  if (nearlyFinished) state.slottedNearlyFinished[item.id] = nearlyFinished
-  if (ritualTable) state.slottedRitualTable[item.id] = ritualTable
-  if (lostPurpose) state.slottedLostPurpose[item.id] = lostPurpose
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (nearlyFinished && state.slottedNearlyFinished) state.slottedNearlyFinished[item.id] = nearlyFinished
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (ritualTable && state.slottedRitualTable) state.slottedRitualTable[item.id] = ritualTable
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (lostPurpose && state.slottedLostPurpose) state.slottedLostPurpose[item.id] = lostPurpose
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (isFountainUpgraded && state.slottedFountainOfNecroticMight) state.slottedFountainOfNecroticMight[item.id] = true
 
-  if (filigrees) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (filigrees && state.slottedFiligrees) {
     state.slottedFiligrees[item.id] = filigrees.map((fName) => {
       if (!fName) return null
       return allItems.find((i) => i.name === fName) ?? null
     })
   }
-  if (unlockedFiligreeSlots != null) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (unlockedFiligreeSlots != null && state.unlockedFiligreeSlots) {
     state.unlockedFiligreeSlots[item.id] = unlockedFiligreeSlots
   }
-  if (slottedGemSetBonuses) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (slottedGemSetBonuses && state.slottedGemSetBonuses) {
     state.slottedGemSetBonuses[item.id] = slottedGemSetBonuses
   }
 }
@@ -257,6 +272,8 @@ const decodeItemPayload = (
   allCurses: Curse[],
   setup: GearSetup
 ) => {
+  if (!Array.isArray(itemPayload)) return
+
   const [
     slot,
     itemName,
@@ -270,7 +287,8 @@ const decodeItemPayload = (
     unlockedFiligreeSlots,
     slottedGemSetBonuses,
     itemMinLevel,
-    itemMaterial
+    itemMaterial,
+    isFountainUpgraded
   ] = itemPayload
 
   // Find the item in allItems by name and slot to ensure we get the correct ID
@@ -307,7 +325,8 @@ const decodeItemPayload = (
     lostPurpose,
     filigrees,
     unlockedFiligreeSlots,
-    slottedGemSetBonuses
+    slottedGemSetBonuses,
+    isFountainUpgraded
   )
 }
 
@@ -317,7 +336,8 @@ const decodeItemAugments = (
   allAugments: GearAugment[],
   state: GearSetup | PetState
 ) => {
-  if (augments.length > 0) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (augments.length > 0 && state.slottedAugments) {
     state.slottedAugments[item.id] = {}
     augments.forEach(([idx, augName]) => {
       const augment = allAugments.find((a) => a.name === augName)
@@ -327,7 +347,8 @@ const decodeItemAugments = (
 }
 
 const decodeItemCurse = (item: GearItem, curseName: string | null, allCurses: Curse[], state: GearSetup | PetState) => {
-  if (curseName && item.slot !== GearSlot.Quiver) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (curseName && item.slot !== GearSlot.Quiver && state.slottedCurses) {
     const curse = allCurses.find((c) => c.name === curseName)
     if (curse) state.slottedCurses[item.id] = curse
   }
@@ -338,7 +359,8 @@ const decodeItemEssenceCrafting = (
   essenceCrafting: [string, string][] | null,
   state: GearSetup | PetState
 ) => {
-  if (essenceCrafting && essenceCrafting.length > 0) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (essenceCrafting && essenceCrafting.length > 0 && state.slottedEssenceEnchantments) {
     state.slottedEssenceEnchantments[item.id] = {}
     essenceCrafting.forEach(([slotName, enchId]) => {
       state.slottedEssenceEnchantments[item.id][slotName] = enchId

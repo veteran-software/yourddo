@@ -1,3 +1,4 @@
+import fountainData from '../../data/fountainOfNecroticMight.json'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, type GearItem, GearSlot, type LootEnchantment } from './types'
 
 export interface EnchantmentConflict {
@@ -78,7 +79,8 @@ export const resolveConflicts = (
   slottedAugments?: Record<string, Record<number, import('./types').GearAugment | null>>,
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
-  slottedLostPurpose?: Record<string, LootEnchantment | null>
+  slottedLostPurpose?: Record<string, LootEnchantment | null>,
+  slottedFountainOfNecroticMight: Record<string, boolean> = {}
 ): Record<string, EnchantmentConflict[]> => {
   const allEnchantments: {
     itemId: string
@@ -94,8 +96,17 @@ export const resolveConflicts = (
   equippedItems.forEach((item) => {
     const owner = getSlotOwner(item.slot)
 
-    if (Array.isArray(item.enchantments)) {
-      item.enchantments
+    const isFountainUpgraded = slottedFountainOfNecroticMight[item.id]
+    let baseEnchantments = item.enchantments ?? []
+    if (isFountainUpgraded) {
+      const upgradeData = fountainData.find((f) => f.name === item.name)
+      if (upgradeData) {
+        baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
+      }
+    }
+
+    if (Array.isArray(baseEnchantments)) {
+      baseEnchantments
         .filter(
           (e) =>
             e.name !== 'Nearly Finished' &&
@@ -243,10 +254,24 @@ export const resolveConflicts = (
   return conflicts
 }
 
-const findMatchingInherent = (item: GearItem, normalizedTargetName: string, normalizedTargetBonus: string) => {
+const findMatchingInherent = (
+  item: GearItem,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  slottedFountainOfNecroticMight: Record<string, boolean> = {}
+) => {
   let max = -Infinity
-  if (Array.isArray(item.enchantments)) {
-    item.enchantments
+  const isFountainUpgraded = slottedFountainOfNecroticMight[item.id]
+  let baseEnchantments = item.enchantments ?? []
+  if (isFountainUpgraded) {
+    const upgradeData = fountainData.find((f) => f.name === item.name)
+    if (upgradeData) {
+      baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
+    }
+  }
+
+  if (Array.isArray(baseEnchantments)) {
+    baseEnchantments
       .filter((e) => e.name !== 'Nearly Finished' && e.name !== 'Sealed in Fire' && e.name !== 'Sealed in Undeath')
       .forEach((ench) => {
         if (normalizeString(ench.name) === normalizedTargetName && getBonus(ench.bonus) === normalizedTargetBonus) {
@@ -384,13 +409,14 @@ const inherentMax = (
   isSameItem: boolean,
   normalizedTargetName: string,
   normalizedTargetBonus: string,
-  item: GearItem
+  item: GearItem,
+  slottedFountainOfNecroticMight: Record<string, boolean> = {}
 ) => {
   if (isSameItem) {
     return -Infinity
   }
 
-  return findMatchingInherent(item, normalizedTargetName, normalizedTargetBonus)
+  return findMatchingInherent(item, normalizedTargetName, normalizedTargetBonus, slottedFountainOfNecroticMight)
 }
 
 /**
@@ -405,6 +431,7 @@ export const checkPotentialConflict = (
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
+  slottedFountainOfNecroticMight: Record<string, boolean> = {},
   ignoreItemId?: string,
   ignoreSlotIndex?: number
 ): { isConflict: boolean; currentMax: number; isRedundant: boolean; isUpgrade?: boolean; isOverpowered?: boolean } => {
@@ -451,7 +478,7 @@ export const checkPotentialConflict = (
     )
 
     const itemMax: number = Math.max(
-      inherentMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item),
+      inherentMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedFountainOfNecroticMight),
       nearlyFinishedMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedNearlyFinished),
       ritualTableMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedRitualTable),
       augMax,

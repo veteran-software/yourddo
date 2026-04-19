@@ -43,7 +43,8 @@ const EnchantmentsSummary = (props: Props) => {
     slottedGemSetBonuses,
     slottedLostPurpose,
     slottedNearlyFinished,
-    slottedRitualTable
+    slottedRitualTable,
+    slottedFountainOfNecroticMight
   } = props
 
   const allPossibleBonuses = useMemo(() => {
@@ -143,7 +144,8 @@ const EnchantmentsSummary = (props: Props) => {
         undefined,
         slottedNearlyFinished,
         slottedRitualTable,
-        slottedLostPurpose
+        slottedLostPurpose,
+        slottedFountainOfNecroticMight
       )
 
       for (const { ench, sourceName } of entries) {
@@ -213,6 +215,7 @@ const EnchantmentsSummary = (props: Props) => {
     essenceEnchantments,
     slottedNearlyFinished,
     slottedRitualTable,
+    slottedFountainOfNecroticMight,
     allPossibleBonuses
   ])
 
@@ -319,6 +322,7 @@ interface Props {
   slottedNearlyFinished?: Record<string, import('../types.ts').LootEnchantment | null>
   slottedRitualTable?: Record<string, import('../types.ts').LootEnchantment | null>
   slottedLostPurpose?: Record<string, import('../types.ts').LootEnchantment | null>
+  slottedFountainOfNecroticMight?: Record<string, boolean>
   allItems?: GearItem[]
   allAugments?: GearAugment[]
   allCurses?: Curse[]

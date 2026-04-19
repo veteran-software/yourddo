@@ -1,26 +1,33 @@
 import { useCallback, useMemo } from 'react'
 import { type EnchantmentConflict, getSlotOwner, resolveConflicts } from '../conflictResolver'
-import { type GearAugment, type GearItem, type GearSetup, type LootEnchantment, type PetState } from '../types'
+import {
+  type EntityGearState,
+  type GearAugment,
+  type GearItem,
+  type GearSetup,
+  type LootEnchantment,
+  type PetState
+} from '../types'
 
 export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: Props) => {
-  const characterEquipped: GearItem[] = useMemo(() => {
-    return Object.values(activeSetup.slots).filter((item): item is GearItem => item !== null)
-  }, [activeSetup.slots])
+  const getEntityEquipped = (slots: Record<string, GearItem | null>): GearItem[] => {
+    return Object.values(slots).filter((item): item is GearItem => item !== null)
+  }
+
+  const characterEquipped: GearItem[] = useMemo(() => getEntityEquipped(activeSetup.slots), [activeSetup.slots])
 
   const artificerEquipped: GearItem[] = useMemo(() => {
     if (!activeSetup.classes.includes('Artificer')) {
       return []
     }
-
-    return Object.values(artificerPet.slots).filter((item): item is GearItem => item !== null)
+    return getEntityEquipped(artificerPet.slots)
   }, [artificerPet.slots, activeSetup.classes])
 
   const druidEquipped: GearItem[] = useMemo(() => {
     if (!activeSetup.classes.includes('Druid')) {
       return []
     }
-
-    return Object.values(druidPet.slots).filter((item): item is GearItem => item !== null)
+    return getEntityEquipped(druidPet.slots)
   }, [druidPet.slots, activeSetup.classes])
 
   const characterConflicts: Record<string, EnchantmentConflict[]> = useMemo(
@@ -30,104 +37,99 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
         activeSetup.slottedAugments,
         activeSetup.slottedNearlyFinished,
         activeSetup.slottedRitualTable,
-        activeSetup.slottedLostPurpose
+        activeSetup.slottedLostPurpose,
+        activeSetup.slottedFountainOfNecroticMight
       ),
     [
       characterEquipped,
       activeSetup.slottedAugments,
       activeSetup.slottedNearlyFinished,
       activeSetup.slottedRitualTable,
-      activeSetup.slottedLostPurpose
+      activeSetup.slottedLostPurpose,
+      activeSetup.slottedFountainOfNecroticMight
     ]
   )
 
-  const artificerConflicts: Record<string, EnchantmentConflict[]> = useMemo(
-    () =>
-      resolveConflicts(
-        artificerEquipped,
-        artificerPet.slottedAugments,
-        artificerPet.slottedNearlyFinished,
-        artificerPet.slottedRitualTable,
-        artificerPet.slottedLostPurpose
-      ),
+  const petConflicts = useMemo(() => {
+    const results: Record<string, Record<string, EnchantmentConflict[]>> = {
+      artificer_pet: {},
+      druid_pet: {}
+    }
+
+    const entities = [
+      { id: 'artificer_pet', equipped: artificerEquipped, state: artificerPet },
+      { id: 'druid_pet', equipped: druidEquipped, state: druidPet }
+    ]
+
+    entities.forEach((entity) => {
+      results[entity.id] = resolveConflicts(
+        entity.equipped,
+        entity.state.slottedAugments,
+        entity.state.slottedNearlyFinished,
+        entity.state.slottedRitualTable,
+        entity.state.slottedLostPurpose,
+        entity.state.slottedFountainOfNecroticMight
+      )
+    })
+
+    return results
+  }, [artificerEquipped, artificerPet, druidEquipped, druidPet])
+
+  const artificerConflicts = petConflicts.artificer_pet
+  const druidConflicts = petConflicts.druid_pet
+
+  const getEntityState = useCallback(
+    (owner: string): EntityGearState => {
+      if (owner === 'artificer_pet') {
+        return {
+          ...artificerPet,
+          equipped: artificerEquipped,
+          conflicts: artificerConflicts
+        }
+      }
+      if (owner === 'druid_pet') {
+        return {
+          ...druidPet,
+          equipped: druidEquipped,
+          conflicts: druidConflicts
+        }
+      }
+      return {
+        ...activeSetup,
+        equipped: characterEquipped,
+        conflicts: characterConflicts
+      }
+    },
     [
+      activeSetup,
+      artificerPet,
+      druidPet,
+      characterEquipped,
       artificerEquipped,
-      artificerPet.slottedAugments,
-      artificerPet.slottedNearlyFinished,
-      artificerPet.slottedRitualTable,
-      artificerPet.slottedLostPurpose
-    ]
-  )
-
-  const druidConflicts: Record<string, EnchantmentConflict[]> = useMemo(
-    () =>
-      resolveConflicts(
-        druidEquipped,
-        druidPet.slottedAugments,
-        druidPet.slottedNearlyFinished,
-        druidPet.slottedRitualTable,
-        druidPet.slottedLostPurpose
-      ),
-    [
       druidEquipped,
-      druidPet.slottedAugments,
-      druidPet.slottedNearlyFinished,
-      druidPet.slottedRitualTable,
-      druidPet.slottedLostPurpose
+      characterConflicts,
+      artificerConflicts,
+      druidConflicts
     ]
   )
 
   const getContextInfo = useCallback(
-    (slot: string) => {
+    (slot: string): ContextInfo => {
       const owner = getSlotOwner(slot)
-
-      let currentConflicts: Record<string, EnchantmentConflict[]> = characterConflicts
-      let currentEquipped: GearItem[] = characterEquipped
-      let currentSlottedAugments: Record<string, Record<number, GearAugment | null>> = activeSetup.slottedAugments
-      let currentSlottedFiligrees: Record<string, (GearItem | null)[]> = activeSetup.slottedFiligrees
-      let currentSlottedNearlyFinished: Record<string, LootEnchantment | null> = activeSetup.slottedNearlyFinished
-      let currentSlottedRitualTable: Record<string, LootEnchantment | null> = activeSetup.slottedRitualTable
-      let currentSlottedLostPurpose: Record<string, LootEnchantment | null> = activeSetup.slottedLostPurpose
-
-      if (owner === 'artificer_pet') {
-        currentConflicts = artificerConflicts
-        currentEquipped = artificerEquipped
-        currentSlottedAugments = artificerPet.slottedAugments
-        currentSlottedFiligrees = artificerPet.slottedFiligrees
-        currentSlottedNearlyFinished = artificerPet.slottedNearlyFinished
-        currentSlottedRitualTable = artificerPet.slottedRitualTable
-        currentSlottedLostPurpose = artificerPet.slottedLostPurpose
-      } else if (owner === 'druid_pet') {
-        currentConflicts = druidConflicts
-        currentEquipped = druidEquipped
-        currentSlottedAugments = druidPet.slottedAugments
-        currentSlottedFiligrees = druidPet.slottedFiligrees
-        currentSlottedNearlyFinished = druidPet.slottedNearlyFinished
-        currentSlottedRitualTable = druidPet.slottedRitualTable
-        currentSlottedLostPurpose = druidPet.slottedLostPurpose
-      }
+      const entityState = getEntityState(owner)
 
       return {
-        currentConflicts,
-        currentEquipped,
-        currentSlottedAugments,
-        currentSlottedFiligrees,
-        currentSlottedNearlyFinished,
-        currentSlottedRitualTable,
-        currentSlottedLostPurpose
+        currentConflicts: entityState.conflicts,
+        currentEquipped: entityState.equipped,
+        currentSlottedAugments: entityState.slottedAugments,
+        currentSlottedFiligrees: entityState.slottedFiligrees,
+        currentSlottedNearlyFinished: entityState.slottedNearlyFinished,
+        currentSlottedRitualTable: entityState.slottedRitualTable,
+        currentSlottedLostPurpose: entityState.slottedLostPurpose,
+        currentSlottedFountainOfNecroticMight: entityState.slottedFountainOfNecroticMight
       }
     },
-    [
-      characterConflicts,
-      artificerConflicts,
-      druidConflicts,
-      characterEquipped,
-      artificerEquipped,
-      druidEquipped,
-      activeSetup,
-      artificerPet,
-      druidPet
-    ]
+    [getEntityState]
   )
 
   return {
@@ -137,7 +139,8 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
     characterConflicts,
     artificerConflicts,
     druidConflicts,
-    getContextInfo
+    getContextInfo,
+    getEntityState
   }
 }
 
@@ -145,4 +148,15 @@ interface Props {
   activeSetup: GearSetup
   artificerPet: PetState
   druidPet: PetState
+}
+
+export interface ContextInfo {
+  currentConflicts: Record<string, EnchantmentConflict[]>
+  currentEquipped: GearItem[]
+  currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
+  currentSlottedFiligrees: Record<string, (GearItem | null)[]>
+  currentSlottedNearlyFinished: Record<string, LootEnchantment | null>
+  currentSlottedRitualTable: Record<string, LootEnchantment | null>
+  currentSlottedLostPurpose: Record<string, LootEnchantment | null>
+  currentSlottedFountainOfNecroticMight: Record<string, boolean>
 }

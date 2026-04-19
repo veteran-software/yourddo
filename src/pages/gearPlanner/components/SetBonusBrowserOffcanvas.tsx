@@ -1,7 +1,6 @@
 import { Col, Form, Offcanvas, Row } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
-import type { EnchantmentConflict } from '../conflictResolver'
-import { type GearAugment, type GearItem, GearSlot, type LootItem, type SetBonusIndex } from '../types'
+import type { EntityGearState, GearItem, GearSlot, SetBonusIndex } from '../types'
 import SetBonusItems from './SetBonusItems.tsx'
 
 const SetBonusBrowserOffcanvas = (props: Props) => {
@@ -10,7 +9,6 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
     browsingSet,
     filteredItemSets,
     allFiligreeSetNames,
-    getContextInfo,
     openSetBonusBrowser,
     selectItem,
     setBonusIndex,
@@ -22,7 +20,8 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
     setShowOwnedOnly,
     troveData,
     itemNameSearch,
-    setItemNameSearch
+    setItemNameSearch,
+    getEntityState
   } = props
 
   return (
@@ -128,7 +127,7 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                 showOwnedOnly={showOwnedOnly}
                 troveData={troveData}
                 itemNameSearch={itemNameSearch}
-                getContextInfo={getContextInfo}
+                getEntityState={getEntityState}
                 selectItem={selectItem}
                 openSetBonusBrowser={openSetBonusBrowser}
               />
@@ -145,18 +144,13 @@ interface Props {
   allItems: GearItem[]
   browsingSet: string | null
   filteredItemSets: string[]
-  getContextInfo: (slot: string) => {
-    currentConflicts: Record<string, EnchantmentConflict[]>
-    currentEquipped: GearItem[]
-    currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-    currentSlottedFiligrees: Record<string, (LootItem | null)[]>
-  }
   itemNameSearch: string
   openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   setBonusIndex: SetBonusIndex
   setBrowsingSet: (set: string | null) => void
   setBrowsingSlot: (slot: GearSlot | null) => void
+  getEntityState: (owner: string) => EntityGearState
   setItemNameSearch: (search: string) => void
   setShowOwnedOnly: (show: boolean) => void
   setShowSetBonusBrowser: (show: boolean) => void

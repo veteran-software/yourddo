@@ -44,6 +44,7 @@ import {
   ARMOR_TYPES,
   ARTIFICER_PET_SLOTS,
   DRUID_PET_SLOTS,
+  type EntityGearState,
   GEAR_CLASSES,
   GEAR_SLOTS,
   type GearItem,
@@ -53,6 +54,65 @@ import {
   WEAPON_TYPES
 } from './types'
 import './GearPlanner.css'
+
+const PetGearSection = ({
+  title,
+  slots,
+  setup,
+  entityState,
+  gpHook,
+  borderColorClass,
+  textColorClass
+}: {
+  title: string
+  slots: GearSlot[]
+  setup: GearSetup
+  entityState: EntityGearState
+  gpHook: {
+    renderSlot: (slot: GearSlot, setup: GearSetup) => React.ReactNode
+    openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
+    essenceEnchantments: import('./dataLoader.ts').EssenceEnchantment[]
+    allItems: GearItem[]
+    allAugments: import('./types.ts').GearAugment[]
+    allCurses: import('./types.ts').Curse[]
+    allFiligrees: GearItem[]
+  }
+  borderColorClass: string
+  textColorClass: string
+}) => (
+  <div className={`mt-4 p-3 border ${borderColorClass} rounded bg-dark-subtle`}>
+    <h5 className={`mb-3 ${textColorClass} border-bottom ${borderColorClass} pb-2`}>{title}</h5>
+
+    <Row>{slots.map((slot) => gpHook.renderSlot(slot, setup))}</Row>
+
+    <SetBonusesSummary
+      equippedItems={entityState.equipped}
+      slottedAugments={entityState.slottedAugments}
+      slottedFiligrees={entityState.slottedFiligrees}
+      slottedGemSetBonuses={entityState.slottedGemSetBonuses}
+      slottedLostPurpose={entityState.slottedLostPurpose}
+      onSetClick={gpHook.openSetBonusBrowser}
+    />
+
+    <EnchantmentsSummary
+      equippedItems={entityState.equipped}
+      slottedAugments={entityState.slottedAugments}
+      slottedCurses={entityState.slottedCurses}
+      slottedFiligrees={entityState.slottedFiligrees}
+      slottedGemSetBonuses={entityState.slottedGemSetBonuses}
+      slottedEssenceEnchantments={entityState.slottedEssenceEnchantments}
+      essenceEnchantments={gpHook.essenceEnchantments}
+      slottedNearlyFinished={entityState.slottedNearlyFinished}
+      slottedRitualTable={entityState.slottedRitualTable}
+      slottedLostPurpose={entityState.slottedLostPurpose}
+      slottedFountainOfNecroticMight={entityState.slottedFountainOfNecroticMight}
+      allItems={gpHook.allItems}
+      allAugments={gpHook.allAugments}
+      allCurses={gpHook.allCurses}
+      allFiligrees={gpHook.allFiligrees}
+    />
+  </div>
+)
 
 const GearPlanner = () => {
   const dispatch = useAppDispatch()
@@ -343,6 +403,7 @@ const GearPlanner = () => {
                       slottedNearlyFinished={gpHook.activeSetup.slottedNearlyFinished}
                       slottedRitualTable={gpHook.activeSetup.slottedRitualTable}
                       slottedLostPurpose={gpHook.activeSetup.slottedLostPurpose}
+                      slottedFountainOfNecroticMight={gpHook.activeSetup.slottedFountainOfNecroticMight}
                       allItems={gpHook.allItems}
                       allAugments={gpHook.allAugments}
                       allCurses={gpHook.allCurses}
@@ -357,73 +418,27 @@ const GearPlanner = () => {
                     )}
 
                     {setup.classes.includes('Artificer') && (
-                      <div className='mt-4 p-3 border border-info rounded bg-dark-subtle'>
-                        <h5 className='mb-3 text-info border-bottom border-info pb-2'>Iron Defender (Artificer Pet)</h5>
-
-                        <Row>{ARTIFICER_PET_SLOTS.map((slot) => gpHook.renderSlot(slot, setup))}</Row>
-
-                        <SetBonusesSummary
-                          equippedItems={gpHook.artificerEquipped}
-                          slottedAugments={gpHook.activeSetup.artificerPet.slottedAugments}
-                          slottedFiligrees={gpHook.activeSetup.artificerPet.slottedFiligrees}
-                          slottedGemSetBonuses={gpHook.activeSetup.artificerPet.slottedGemSetBonuses}
-                          slottedLostPurpose={gpHook.activeSetup.artificerPet.slottedLostPurpose}
-                          onSetClick={gpHook.openSetBonusBrowser}
-                        />
-
-                        <EnchantmentsSummary
-                          equippedItems={gpHook.artificerEquipped}
-                          slottedAugments={gpHook.activeSetup.artificerPet.slottedAugments}
-                          slottedCurses={gpHook.activeSetup.artificerPet.slottedCurses}
-                          slottedFiligrees={gpHook.activeSetup.artificerPet.slottedFiligrees}
-                          slottedGemSetBonuses={gpHook.activeSetup.artificerPet.slottedGemSetBonuses}
-                          slottedEssenceEnchantments={gpHook.activeSetup.artificerPet.slottedEssenceEnchantments}
-                          essenceEnchantments={gpHook.essenceEnchantments}
-                          slottedNearlyFinished={gpHook.activeSetup.artificerPet.slottedNearlyFinished}
-                          slottedRitualTable={gpHook.activeSetup.artificerPet.slottedRitualTable}
-                          slottedLostPurpose={gpHook.activeSetup.artificerPet.slottedLostPurpose}
-                          allItems={gpHook.allItems}
-                          allAugments={gpHook.allAugments}
-                          allCurses={gpHook.allCurses}
-                          allFiligrees={gpHook.allFiligrees}
-                        />
-                      </div>
+                      <PetGearSection
+                        title='Iron Defender (Artificer Pet)'
+                        slots={ARTIFICER_PET_SLOTS}
+                        setup={setup}
+                        entityState={gpHook.getEntityState('artificer_pet')}
+                        gpHook={gpHook}
+                        borderColorClass='border-info'
+                        textColorClass='text-info'
+                      />
                     )}
 
                     {setup.classes.includes('Druid') && (
-                      <div className='mt-4 p-3 border border-success rounded bg-dark-subtle'>
-                        <h5 className='mb-3 text-success border-bottom border-success pb-2'>
-                          Wolf Companion (Druid Pet)
-                        </h5>
-
-                        <Row>{DRUID_PET_SLOTS.map((slot) => gpHook.renderSlot(slot, setup))}</Row>
-
-                        <SetBonusesSummary
-                          equippedItems={gpHook.druidEquipped}
-                          slottedAugments={gpHook.activeSetup.druidPet.slottedAugments}
-                          slottedFiligrees={gpHook.activeSetup.druidPet.slottedFiligrees}
-                          slottedGemSetBonuses={gpHook.activeSetup.druidPet.slottedGemSetBonuses}
-                          slottedLostPurpose={gpHook.activeSetup.druidPet.slottedLostPurpose}
-                          onSetClick={gpHook.openSetBonusBrowser}
-                        />
-
-                        <EnchantmentsSummary
-                          equippedItems={gpHook.druidEquipped}
-                          slottedAugments={gpHook.activeSetup.druidPet.slottedAugments}
-                          slottedCurses={gpHook.activeSetup.druidPet.slottedCurses}
-                          slottedFiligrees={gpHook.activeSetup.druidPet.slottedFiligrees}
-                          slottedGemSetBonuses={gpHook.activeSetup.druidPet.slottedGemSetBonuses}
-                          slottedEssenceEnchantments={gpHook.activeSetup.druidPet.slottedEssenceEnchantments}
-                          essenceEnchantments={gpHook.essenceEnchantments}
-                          slottedNearlyFinished={gpHook.activeSetup.druidPet.slottedNearlyFinished}
-                          slottedRitualTable={gpHook.activeSetup.druidPet.slottedRitualTable}
-                          slottedLostPurpose={gpHook.activeSetup.druidPet.slottedLostPurpose}
-                          allItems={gpHook.allItems}
-                          allAugments={gpHook.allAugments}
-                          allCurses={gpHook.allCurses}
-                          allFiligrees={gpHook.allFiligrees}
-                        />
-                      </div>
+                      <PetGearSection
+                        title='Wolf Companion (Druid Pet)'
+                        slots={DRUID_PET_SLOTS}
+                        setup={setup}
+                        entityState={gpHook.getEntityState('druid_pet')}
+                        gpHook={gpHook}
+                        borderColorClass='border-success'
+                        textColorClass='text-success'
+                      />
                     )}
                   </div>
                 </Tab>
@@ -679,7 +694,6 @@ const GearPlanner = () => {
           enchantmentSearch={enchantmentSearch}
           setEnchantmentSearch={setEnchantmentSearch}
           troveData={troveData}
-          currentSlottedFiligrees={gpHook.getContextInfo(gpHook.browsingSlot ?? '').currentSlottedFiligrees}
           {...gpHook}
         />
 

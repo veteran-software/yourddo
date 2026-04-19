@@ -4,9 +4,7 @@ import type { ItemRollup } from '../../../components/trove/types.ts'
 import { ritualTable } from '../../../data/ritualTable.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 import type { LootEnchantment } from '../types.ts'
-import SelectedEnchantmentDisplay, {
-  type BaseSelectorProps
-} from './SelectedEnchantmentDisplay.tsx'
+import SelectedEnchantmentDisplay, { type BaseSelectorProps } from './SelectedEnchantmentDisplay.tsx'
 import TroveBadge from './TroveBadge.tsx'
 
 interface Props extends BaseSelectorProps {
@@ -14,21 +12,7 @@ interface Props extends BaseSelectorProps {
 }
 
 const RitualTableSelector = (props: Props) => {
-  const {
-    item,
-    onSelect,
-    selectedEnchantment,
-    slot,
-    troveData,
-    conflicts,
-    equippedItems,
-    slottedAugments,
-    slottedNearlyFinished,
-    slottedRitualTable,
-    slottedLostPurpose,
-    wrapperClassName,
-    wrapperStyle
-  } = props
+  const { item, onSelect, selectedEnchantment, slot, troveData, entityState, wrapperClassName, wrapperStyle } = props
 
   // Determine the requirement based on the enchantment
   const isWeapon =
@@ -133,12 +117,7 @@ const RitualTableSelector = (props: Props) => {
         selectedEnchantment={selectedEnchantment}
         item={item}
         slot={slot}
-        conflicts={conflicts}
-        equippedItems={equippedItems}
-        slottedAugments={slottedAugments}
-        slottedNearlyFinished={slottedNearlyFinished}
-        slottedRitualTable={slottedRitualTable}
-        slottedLostPurpose={slottedLostPurpose}
+        entityState={entityState}
       />
     </div>
   )

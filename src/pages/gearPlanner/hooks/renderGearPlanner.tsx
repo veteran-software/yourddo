@@ -2,44 +2,39 @@ import { type JSX, type ReactNode } from 'react'
 import { Card, Col } from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import type { ItemRollup } from '../../../components/trove/types.ts'
+import fountainData from '../../../data/fountainOfNecroticMight.json'
 import { SLOT_GROUPS } from '../../../utils/augmentUtils.ts'
 import AugmentSlotItem from '../components/AugmentSlotItem'
 import CurseSlotItem from '../components/CurseSlotItem'
 import EnchantmentList from '../components/EnchantmentList'
 import EssenceCraftingSelector from '../components/EssenceCraftingSelector'
+import FountainOfNecroticMightSelector from '../components/FountainOfNecroticMightSelector'
 import GemSetBonusSelector from '../components/GetSetBonusSelector'
 import ItemSetBonusDisplay from '../components/ItemSetBonusDisplay'
 import LostPurposeSelector from '../components/LostPurposeSelector'
 import NearlyFinishedSelector from '../components/NearlyFinishedSelector'
 import RitualTableSelector from '../components/RitualTableSelector'
 import TroveBadge from '../components/TroveBadge'
-import { type EnchantmentConflict, getSlotOwner } from '../conflictResolver'
+import { getSlotOwner } from '../conflictResolver'
 import { type EssenceEnchantment } from '../dataLoader'
 import { getMaxFiligreeSlots, isMinorArtifact } from '../helpers'
 import {
   type Curse,
+  type EntityGearState,
   type GearAugment,
   type GearAugmentSlot,
   type GearItem,
   type GearSetup,
   GearSlot,
   type LootDropLocation,
-  type LootEnchantment,
-  type PetState
+  type LootEnchantment
 } from '../types'
 import { FiligreeLabel } from './useGearPlannerHelpers'
 
 export const renderGearPlanner = (props: Props) => {
   const {
     activeSetup,
-    artificerPet,
-    druidPet,
-    characterConflicts,
-    artificerConflicts,
-    druidConflicts,
-    characterEquipped,
-    artificerEquipped,
-    druidEquipped,
+    getEntityState,
     troveData,
     allAugments,
     allCurses,
@@ -56,43 +51,32 @@ export const renderGearPlanner = (props: Props) => {
     setEssenceEnchantment,
     setNearlyFinishedEnchantment,
     setRitualTableEnchantment,
-    setLostPurposeEnchantment
+    setLostPurposeEnchantment,
+    setFountainOfNecroticMight
   } = props
 
   const renderSlot = (slot: GearSlot, setup: GearSetup): JSX.Element => {
     const owner: string = getSlotOwner(slot)
-    let selectedItem: GearItem | null = null
-    let currentConflicts: Record<string, EnchantmentConflict[]> = characterConflicts
-    let currentEquipped: GearItem[] = characterEquipped
-    let currentSlottedAugments: Record<string, Record<number, GearAugment | null>> = activeSetup.slottedAugments
-    let currentSlottedNearlyFinished: Record<string, LootEnchantment | null> = activeSetup.slottedNearlyFinished
-    let currentSlottedRitualTable: Record<string, LootEnchantment | null> = activeSetup.slottedRitualTable
-    let currentSlottedLostPurpose: Record<string, LootEnchantment | null> = activeSetup.slottedLostPurpose
+    const entityState = getEntityState(owner)
 
-    if (owner === 'character') {
-      selectedItem = setup.slots[slot]
-      currentConflicts = characterConflicts
-      currentEquipped = characterEquipped
-      currentSlottedAugments = activeSetup.slottedAugments
-      currentSlottedNearlyFinished = activeSetup.slottedNearlyFinished
-      currentSlottedRitualTable = activeSetup.slottedRitualTable
-      currentSlottedLostPurpose = activeSetup.slottedLostPurpose
-    } else if (owner === 'artificer_pet') {
-      selectedItem = artificerPet.slots[slot]
-      currentConflicts = artificerConflicts
-      currentEquipped = artificerEquipped
-      currentSlottedAugments = artificerPet.slottedAugments
-      currentSlottedNearlyFinished = artificerPet.slottedNearlyFinished
-      currentSlottedRitualTable = artificerPet.slottedRitualTable
-      currentSlottedLostPurpose = artificerPet.slottedLostPurpose
-    } else if (owner === 'druid_pet') {
-      selectedItem = druidPet.slots[slot]
-      currentConflicts = druidConflicts
-      currentEquipped = druidEquipped
-      currentSlottedAugments = druidPet.slottedAugments
-      currentSlottedNearlyFinished = druidPet.slottedNearlyFinished
-      currentSlottedRitualTable = druidPet.slottedRitualTable
-      currentSlottedLostPurpose = druidPet.slottedLostPurpose
+    const selectedItem: GearItem | null = entityState.slots[slot] ?? null
+    const currentSlottedAugments = entityState.slottedAugments
+    const currentSlottedNearlyFinished = entityState.slottedNearlyFinished
+    const currentSlottedRitualTable = entityState.slottedRitualTable
+    const currentSlottedLostPurpose = entityState.slottedLostPurpose
+    const currentSlottedFountainOfNecroticMight = entityState.slottedFountainOfNecroticMight
+
+    const isFountainUpgraded: boolean | undefined =
+      selectedItem && selectedItem.id in currentSlottedFountainOfNecroticMight
+        ? currentSlottedFountainOfNecroticMight[selectedItem.id]
+        : false
+    let displayEnchantments: LootEnchantment[] = selectedItem?.enchantments ?? []
+
+    if (selectedItem && isFountainUpgraded) {
+      const upgradeData = fountainData.find((f) => f.name === selectedItem.name)
+      if (upgradeData) {
+        displayEnchantments = upgradeData.effectsAdded as LootEnchantment[]
+      }
     }
 
     return (
@@ -177,21 +161,16 @@ export const renderGearPlanner = (props: Props) => {
                     </div>
                   )}
 
-                {Array.isArray(selectedItem.enchantments) && selectedItem.enchantments.length > 0 && (
+                {Array.isArray(displayEnchantments) && displayEnchantments.length > 0 && (
                   <div
                     className='text-start mt-1 pt-1 border-top gear-planner-slot-enchantments'
                     style={{ fontSize: '0.65rem' }}
                   >
                     <EnchantmentList
-                      enchantments={selectedItem.enchantments}
-                      conflicts={currentConflicts}
+                      enchantments={displayEnchantments}
+                      entityState={entityState}
                       itemId={selectedItem.id}
-                      equippedItems={currentEquipped}
                       source='slot'
-                      slottedAugments={currentSlottedAugments}
-                      slottedNearlyFinished={currentSlottedNearlyFinished}
-                      slottedRitualTable={currentSlottedRitualTable}
-                      slottedLostPurpose={currentSlottedLostPurpose}
                     />
                   </div>
                 )}
@@ -252,12 +231,7 @@ export const renderGearPlanner = (props: Props) => {
                             sortedGroupNames
                           }}
                           slot={slot}
-                          currentConflicts={currentConflicts}
-                          currentEquipped={currentEquipped}
-                          currentSlottedAugments={currentSlottedAugments}
-                          currentSlottedNearlyFinished={currentSlottedNearlyFinished}
-                          currentSlottedRitualTable={currentSlottedRitualTable}
-                          currentSlottedLostPurpose={currentSlottedLostPurpose}
+                          entityState={entityState}
                           setSlottedAugment={setSlottedAugment}
                           openSetBonusBrowser={openSetBonusBrowser}
                         />
@@ -276,12 +250,7 @@ export const renderGearPlanner = (props: Props) => {
                       setItemMinLevel={setItemMinLevel}
                       setItemMaterial={setItemMaterial}
                       essenceEnchantments={essenceEnchantments}
-                      currentConflicts={currentConflicts}
-                      currentEquipped={currentEquipped}
-                      currentSlottedAugments={currentSlottedAugments}
-                      currentSlottedNearlyFinished={currentSlottedNearlyFinished}
-                      currentSlottedRitualTable={currentSlottedRitualTable}
-                      currentSlottedLostPurpose={currentSlottedLostPurpose}
+                      entityState={entityState}
                     />
                   </div>
                 )}
@@ -293,12 +262,18 @@ export const renderGearPlanner = (props: Props) => {
                   onSelect={(enchantment: LootEnchantment | null) => {
                     setNearlyFinishedEnchantment(selectedItem.id, enchantment, slot)
                   }}
-                  conflicts={currentConflicts}
-                  equippedItems={currentEquipped}
-                  slottedAugments={currentSlottedAugments}
-                  slottedNearlyFinished={currentSlottedNearlyFinished}
-                  slottedRitualTable={currentSlottedRitualTable}
-                  slottedLostPurpose={currentSlottedLostPurpose}
+                  entityState={entityState}
+                  wrapperClassName='text-start mt-1 pt-1 border-top'
+                  wrapperStyle={{ fontSize: '0.65rem' }}
+                />
+
+                <FountainOfNecroticMightSelector
+                  item={selectedItem}
+                  slot={slot}
+                  active={currentSlottedFountainOfNecroticMight[selectedItem.id] || false}
+                  onToggle={(active: boolean) => {
+                    setFountainOfNecroticMight(selectedItem.id, active, slot)
+                  }}
                   wrapperClassName='text-start mt-1 pt-1 border-top'
                   wrapperStyle={{ fontSize: '0.65rem' }}
                 />
@@ -310,13 +285,8 @@ export const renderGearPlanner = (props: Props) => {
                   onSelect={(enchantment: LootEnchantment | null) => {
                     setRitualTableEnchantment(selectedItem.id, enchantment, slot)
                   }}
-                  conflicts={currentConflicts}
-                  equippedItems={currentEquipped}
-                  slottedAugments={currentSlottedAugments}
-                  slottedNearlyFinished={currentSlottedNearlyFinished}
-                  slottedRitualTable={currentSlottedRitualTable}
-                  slottedLostPurpose={currentSlottedLostPurpose}
                   troveData={troveData}
+                  entityState={entityState}
                   wrapperClassName='text-start mt-1 pt-1 border-top'
                   wrapperStyle={{ fontSize: '0.65rem' }}
                 />
@@ -332,12 +302,7 @@ export const renderGearPlanner = (props: Props) => {
                       onSelect={(enchantment: LootEnchantment | null) => {
                         setLostPurposeEnchantment(selectedItem.id, enchantment, slot)
                       }}
-                      conflicts={currentConflicts}
-                      equippedItems={currentEquipped}
-                      slottedAugments={currentSlottedAugments}
-                      slottedNearlyFinished={currentSlottedNearlyFinished}
-                      slottedRitualTable={currentSlottedRitualTable}
-                      slottedLostPurpose={currentSlottedLostPurpose}
+                      entityState={entityState}
                       wrapperClassName='text-start mt-1 pt-1 border-top'
                       wrapperStyle={{ fontSize: '0.65rem' }}
                     />
@@ -349,12 +314,7 @@ export const renderGearPlanner = (props: Props) => {
                     allCurses={allCurses}
                     slotted={setup.slottedCurses[selectedItem.id]}
                     slot={slot}
-                    currentConflicts={currentConflicts}
-                    currentEquipped={currentEquipped}
-                    currentSlottedAugments={currentSlottedAugments}
-                    currentSlottedNearlyFinished={currentSlottedNearlyFinished}
-                    currentSlottedRitualTable={currentSlottedRitualTable}
-                    currentSlottedLostPurpose={currentSlottedLostPurpose}
+                    entityState={entityState}
                     setCurse={setSlottedCurse}
                   />
                 </div>
@@ -373,17 +333,10 @@ export const renderGearPlanner = (props: Props) => {
 
 interface Props {
   activeSetup: GearSetup
-  artificerPet: PetState
-  druidPet: PetState
+  getEntityState: (owner: string) => EntityGearState
   setItemMinLevel: (itemId: string, minLevel: number, slot?: GearSlot) => void
   setItemMaterial: (itemId: string, material: string, slot?: GearSlot) => void
   essenceEnchantments: EssenceEnchantment[]
-  characterConflicts: Record<string, EnchantmentConflict[]>
-  artificerConflicts: Record<string, EnchantmentConflict[]>
-  druidConflicts: Record<string, EnchantmentConflict[]>
-  characterEquipped: GearItem[]
-  artificerEquipped: GearItem[]
-  druidEquipped: GearItem[]
   troveData: ItemRollup | null
   allAugments: GearAugment[]
   allCurses: Curse[]
@@ -398,4 +351,5 @@ interface Props {
   setNearlyFinishedEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setRitualTableEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setLostPurposeEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
+  setFountainOfNecroticMight: (itemId: string, active: boolean, slot?: GearSlot) => void
 }

@@ -5,20 +5,7 @@ import type { CraftingIngredient } from '../../../types/crafting.ts'
 import SelectedEnchantmentDisplay, { type BaseSelectorProps } from './SelectedEnchantmentDisplay.tsx'
 
 const LostPurposeSelector = (props: BaseSelectorProps) => {
-  const {
-    item,
-    slot,
-    selectedEnchantment,
-    onSelect,
-    conflicts,
-    equippedItems,
-    slottedAugments,
-    slottedNearlyFinished,
-    slottedRitualTable,
-    slottedLostPurpose,
-    wrapperClassName,
-    wrapperStyle
-  } = props
+  const { item, slot, selectedEnchantment, onSelect, entityState, wrapperClassName, wrapperStyle } = props
 
   // Filter recipes for compatible items
   // cannithRepurposingStation.ts exports an array of recipes
@@ -118,12 +105,7 @@ const LostPurposeSelector = (props: BaseSelectorProps) => {
         selectedEnchantment={selectedEnchantment}
         item={item}
         slot={slot}
-        conflicts={conflicts}
-        equippedItems={equippedItems}
-        slottedAugments={slottedAugments}
-        slottedNearlyFinished={slottedNearlyFinished}
-        slottedRitualTable={slottedRitualTable}
-        slottedLostPurpose={slottedLostPurpose}
+        entityState={entityState}
       />
     </div>
   )

@@ -1,4 +1,5 @@
 import type { SetBonus } from '../../types/crafting.ts'
+import type { EnchantmentConflict } from './conflictResolver.ts'
 
 export interface SetBonusIndexEntry {
   name: string
@@ -191,9 +192,15 @@ export interface SlottedProperties {
   slottedNearlyFinished: Record<string, LootEnchantment | null>
   slottedRitualTable: Record<string, LootEnchantment | null>
   slottedLostPurpose: Record<string, LootEnchantment | null>
+  slottedFountainOfNecroticMight: Record<string, boolean>
 }
 
-export interface PetState extends SlottedProperties {}
+export interface EntityGearState extends SlottedProperties {
+  equipped: GearItem[]
+  conflicts: Record<string, EnchantmentConflict[]>
+}
+
+export type PetState = SlottedProperties
 
 export interface GearSetup extends SlottedProperties {
   id: string

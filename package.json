@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "prebuild": "go run ./tools/cannithSplit/main.go ./tools/cannithSplit/transform.go ./tools/cannithSplit/types.go ./tools/cannithSplit/indexes.go src/data/essenceCrafting/essenceEnhancements.phase1.json src/data/essenceCrafting/runtime && yarn items:data && go run ./tools/dataSpider/indexer/main.go",
-    "items:data": "yarn items:data:armor && yarn items:data:augment && yarn items:data:clothing && yarn items:data:collar && yarn items:data:filigree && yarn items:data:jewelry && yarn items:data:quiver && yarn items:data:runeArms && yarn items:data:shields && yarn items:data:weapons",
+    "items:data": "yarn items:data:armor && yarn items:data:augment && yarn items:data:clothing && yarn items:data:collar && yarn items:data:filigree && yarn items:data:jewelry && yarn items:data:quiver && yarn items:data:runeArms && yarn items:data:shields && yarn items:data:weapons && yarn update:fountain",
     "items:data:armor": "go run ./tools/dataSpider Armor",
     "items:data:augment": "go run ./tools/dataSpider Augment",
     "items:data:clothing": "go run ./tools/dataSpider Clothing",
@@ -25,7 +25,8 @@
     "sort:essence": "node scripts/sortCannithPhase1.mjs",
     "sort:essence:write": "node scripts/sortCannithPhase1.mjs --write",
     "normalize:essence": "node scripts/normalizeCannithPhase1.mjs",
-    "normalize:essence:write": "node scripts/normalizeCannithPhase1.mjs --write"
+    "normalize:essence:write": "node scripts/normalizeCannithPhase1.mjs --write",
+    "update:fountain": "go run ./tools/fountainUpdate/main.go"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
