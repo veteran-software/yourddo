@@ -33,11 +33,8 @@ export const createEssenceCraftedItem = (type: string, name: string, slot: GearS
   details: '',
   upgradeable: 'No',
   upgradedFrom: '',
-  bug: '',
-  replaced: '',
   icon: 'essence_crafted',
   image: 'essence_crafted',
-  optionsRaw: '',
   enchantments: [],
   essenceSlots: ['prefix', 'suffix', 'extra'],
   isEssenceCrafted: true
@@ -87,7 +84,7 @@ export const isWeapon = (item: LootItem) => {
 }
 
 export const isMinorArtifact = (item: LootItem) => {
-  return (item.artifacttype?.trim().length ?? 0) > 0
+  return (item.artifactType?.trim().length ?? 0) > 0
 }
 
 export const getMaxFiligreeSlots = (item: LootItem) => {

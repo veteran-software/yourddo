@@ -20,7 +20,7 @@ const FiligreeModal = (props: Props) => {
   const { troveData } = useAppSelector((state) => state.app)
 
   const maxSlots = getMaxFiligreeSlots(item)
-  const isArtifact = (item.artifacttype?.trim().length ?? 0) > 0
+  const isArtifact = (item.artifactType?.trim().length ?? 0) > 0
   const currentUnlockedSlots = setup.unlockedFiligreeSlots[item.id] ?? 1
   const slotted = setup.slottedFiligrees[item.id] ?? new Array(maxSlots).fill(null)
 

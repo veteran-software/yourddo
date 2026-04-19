@@ -192,17 +192,19 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
 }
 
 const inferSetBonuses = (item: GearItem | GearAugment) => {
-  if (item.setBonus && item.setBonus.length > 0) return
+  if (item.setBonus && item.setBonus.length > 0) {
+    return
+  }
 
   const sets: { name: string }[] = []
   const enchantments = 'enchantments' in item ? item.enchantments : (item.effectsAdded ?? [])
 
   if (Array.isArray(enchantments)) {
     enchantments.forEach((enchantment: LootEnchantment) => {
-      const lowerName = enchantment.name.toLowerCase()
+      const lowerName: string = enchantment.name.toLowerCase()
 
       if (lowerName.includes('set bonus')) {
-        // Remove "Set Bonus" prefix/suffix and common artifacts
+        // Remove the "Set Bonus" prefix/suffix and common artifacts
         const setName = enchantment.name
           .replace(/Set Bonus:?/i, '')
           .replace(/Set Bonus/i, '')
@@ -216,17 +218,17 @@ const inferSetBonuses = (item: GearItem | GearAugment) => {
   }
 
   // Also check description/notes for runtime items
-  const description = 'description' in item ? item.description : undefined
+  const description: string | undefined = 'description' in item ? item.description : undefined
   const gearItem = item as LootItem
-  const notes = 'description' in item ? undefined : gearItem.description
-  const textToCheck = description ?? notes
+  const notes: string | undefined = 'description' in item ? undefined : gearItem.description
+  const textToCheck: string | undefined = description ?? notes
 
   if (sets.length === 0 && typeof textToCheck === 'string') {
-    const textLower = textToCheck.toLowerCase()
+    const textLower: string = textToCheck.toLowerCase()
 
     if (textLower.includes('set bonus')) {
-      // Try to extract set name from text like "An Against the Slave Lords Set Bonus can be applied to this item."
-      const match = /An (.*) Set Bonus can be applied/i.exec(textToCheck)
+      // Try to extract the set name from text like "An Against the Slave Lords Set Bonus can be applied to this item."
+      const match: RegExpExecArray | null = /An (.*) Set Bonus can be applied/i.exec(textToCheck)
 
       if (match?.[1]) {
         sets.push({ name: match[1].trim() })
@@ -321,6 +323,7 @@ export const loadGearData = (): Promise<{
   const augModule = dataModules['../../data/loot/runtime/augment.json']
   if (augModule && typeof augModule === 'object' && 'default' in augModule) {
     const augments = augModule.default as RawAugment[]
+    console.log('Augments loaded:', augments)
 
     augments.forEach((aug: RawAugment) => {
       const augmentItem: GearAugment = {

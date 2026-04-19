@@ -1,3 +1,5 @@
+import type { SetBonus } from '../../types/crafting.ts'
+
 export interface SetBonusIndexEntry {
   name: string
   minLevel: number
@@ -91,6 +93,9 @@ export interface LootBinding {
 
 export interface LootBaseValue {
   platinum?: string
+  gold?: string
+  silver?: string
+  copper?: string
 }
 
 export interface LootDropLocation {
@@ -123,7 +128,7 @@ export interface GearAugment {
   weight?: number
   update?: number
   effectsAdded?: LootEnchantment[]
-  setBonus?: { name: string }[]
+  setBonus?: SetBonus[]
 }
 
 export interface LootItem {
@@ -140,21 +145,20 @@ export interface LootItem {
   durability: string
   weight: string
   baseValue?: LootBaseValue
-  artifacttype?: string
+  artifactType?: string
+  capacity?: string
+  maxStackSize?: string
   dropLocations: LootDropLocation[]
   update: string
   details: string
   upgradeable: string
   upgradedFrom: string
-  bug: string
-  replaced: string
   icon: string
   image: string
-  optionsRaw: string
   enchantments?: LootEnchantment[]
   augments?: GearAugmentSlot[]
   essenceSlots?: string[]
-  setBonus?: { name: string }[]
+  setBonus?: SetBonus[]
 }
 
 export interface GearItem extends LootItem {

@@ -35,7 +35,7 @@ const AugmentSlotItem = (props: Props) => {
       return group
     }
 
-    return group.filter((aug) => getTroveKey(aug.name) in troveData)
+    return group.filter((aug: GearAugment) => getTroveKey(aug.name) in troveData)
   }
 
   return (
