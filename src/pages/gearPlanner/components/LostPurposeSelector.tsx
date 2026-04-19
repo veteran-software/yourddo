@@ -1,8 +1,8 @@
-import { useMemo } from 'react'
-import { Dropdown } from 'react-bootstrap'
-import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
-import type { CraftingIngredient } from '../../../types/crafting.ts'
-import SelectedEnchantmentDisplay, { type BaseSelectorProps } from './SelectedEnchantmentDisplay.tsx'
+import {useMemo} from 'react'
+import {Dropdown} from 'react-bootstrap'
+import {cannithRepurposingStation as lostPurposeRecipes} from '../../../data/cannithRepurposingStation.ts'
+import type {CraftingIngredient} from '../../../types/crafting.ts'
+import SelectedEnchantmentDisplay, {type BaseSelectorProps} from './SelectedEnchantmentDisplay.tsx'
 
 const LostPurposeSelector = (props: BaseSelectorProps) => {
   const { item, slot, selectedEnchantment, onSelect, entityState, wrapperClassName, wrapperStyle } = props
@@ -18,7 +18,7 @@ const LostPurposeSelector = (props: BaseSelectorProps) => {
         }
 
         const isLegendaryRecipe: boolean = recipe.name.toLowerCase().includes('legendary')
-        const isLegendaryItem: boolean = (parseInt(String(item.minLevel)) || 1) >= 20
+        const isLegendaryItem: boolean = (Number.parseInt(String(item.minLevel)) || 1) >= 20
 
         if (isLegendaryItem) {
           return isLegendaryRecipe

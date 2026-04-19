@@ -1,6 +1,17 @@
 import type { EssenceEnchantment } from './dataLoader.ts'
-import { getActiveSetEnhancements, getScaledEssenceEnchantments } from './helpers'
-import type { Curse, GearAugment, GearItem, GearSetup, GearSlot, LootEnchantment, LootItem } from './types'
+import {
+  getActiveSetEnhancements,
+  getScaledEssenceEnchantments
+} from './helpers'
+import type {
+  Curse,
+  GearAugment,
+  GearItem,
+  GearSetup,
+  GearSlot,
+  LootEnchantment,
+  LootItem
+} from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
 
 const renderSlots = (
@@ -327,7 +338,7 @@ export const generateDiscordMarkdownExport = (
     if (essenceCrafting && Object.values(essenceCrafting).some((v) => v !== null)) {
       lines.push(`- **Essence Crafting:**`)
 
-      const minLevel = parseInt(String(item.minLevel)) || 1
+      const minLevel = Number.parseInt(String(item.minLevel)) || 1
 
       Object.entries(essenceCrafting).forEach(([slotName, enchId]) => {
         if (enchId) {

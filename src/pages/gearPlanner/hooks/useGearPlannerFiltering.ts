@@ -224,9 +224,11 @@ export const useGearPlannerFiltering = ({
     if (slot === GearSlot.MainHand || slot === GearSlot.OffHand) {
       items.push(createItem('Weapon', `Essence Crafted Weapon`))
       if (slot === GearSlot.OffHand) {
-        items.push(createItem('Shield', `Essence Crafted Shield`))
-        items.push(createItem('Rune Arm', `Essence Crafted Rune Arm`))
-        items.push(createItem('Orb', `Essence Crafted Orb`))
+        items.push(
+          createItem('Shield', `Essence Crafted Shield`),
+          createItem('Rune Arm', `Essence Crafted Rune Arm`),
+          createItem('Orb', `Essence Crafted Orb`)
+        )
       }
     } else if (slot === GearSlot.Armor) {
       items.push(createItem('Armor', `Essence Crafted Armor`))

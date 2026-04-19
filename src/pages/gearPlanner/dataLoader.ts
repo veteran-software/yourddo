@@ -387,7 +387,7 @@ export const loadGearData = (): Promise<{
             id: `${fileName}-${String(idx)}-${slot}`,
             slot: slot,
             minLevel: item.minLevel || '1',
-            minimumLevel: parseInt(String(item.minLevel || 1), 10),
+            minimumLevel: Number.parseInt(String(item.minLevel || 1), 10),
             absoluteMinLevel: (item.absoluteMinLevel ?? String(item.minLevel)) || '1'
           }
 
