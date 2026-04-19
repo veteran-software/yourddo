@@ -1,5 +1,6 @@
 import fountainData from '../../data/fountainOfNecroticMight.json'
 import { findSetBonus } from '../../data/setBonuses.ts'
+import stormreaverUpgradeData from '../../data/stormreaverUpgrade.json'
 import type { SetBonus } from '../../types/crafting.ts'
 import type { EssenceEnchantment } from './dataLoader.ts'
 import {
@@ -9,21 +10,53 @@ import {
   GearSlot,
   type LootEnchantment,
   type LootItem,
+  type UpgradeEntry,
   WEAPON_TYPES
 } from './types.ts'
 
 export const isEssenceCraftedName = (name: string) => name.startsWith('Essence Crafted')
 
-export const findFountainUpgradeData = (itemName: string, pageTitle?: string) => {
+export const findFountainUpgradeData = (itemName: string, pageTitle?: string): UpgradeEntry | undefined => {
+  return findUpgradeData(itemName, fountainData as UpgradeEntry[], pageTitle)
+}
+
+export const findStormreaverUpgradeData = (itemName: string, pageTitle?: string): UpgradeEntry | undefined => {
+  return findUpgradeData(itemName, stormreaverUpgradeData as UpgradeEntry[], pageTitle)
+}
+
+export const findUpgradeData = (
+  itemName: string,
+  dataSet: UpgradeEntry[],
+  pageTitle?: string
+): UpgradeEntry | undefined => {
   const normalize = (s: string) => s.replace(/\s/g, ' ').trim().toLowerCase()
   const target = normalize(itemName)
 
-  let data = fountainData.find((f) => normalize(f.name) === target)
+  let data = dataSet.find((f) => normalize(f.name) === target)
   if (!data && pageTitle) {
     const cleanPageTitle = normalize(pageTitle.split('(')[0])
-    data = fountainData.find((f) => normalize(f.name) === cleanPageTitle)
+    data = dataSet.find((f) => normalize(f.name) === cleanPageTitle)
   }
   return data
+}
+
+export const getDisplayEnchantments = (
+  item: GearItem,
+  isFountainUpgraded: boolean,
+  isStormreaverUpgraded: boolean
+): LootEnchantment[] => {
+  if (isFountainUpgraded) {
+    const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
+    if (upgradeData) {
+      return upgradeData.effectsAdded
+    }
+  } else if (isStormreaverUpgraded) {
+    const upgradeData = findStormreaverUpgradeData(item.name, item.pageTitle)
+    if (upgradeData) {
+      return upgradeData.effectsAdded
+    }
+  }
+  return item.enchantments ?? []
 }
 
 export const createEssenceCraftedItem = (type: string, name: string, slot: GearSlot, minLevel: number): GearItem => ({
@@ -128,26 +161,24 @@ export const aggregateEnchantmentEntries = (
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
-  slottedFountainOfNecroticMight?: Record<string, boolean>
+  slottedFountainOfNecroticMight?: Record<string, boolean>,
+  slottedStormreaverUpgrade?: Record<string, boolean>
 ) => {
-  const isFountainUpgraded = slottedFountainOfNecroticMight?.[item.id]
-  let baseEnchantments = Array.isArray(item.enchantments) ? item.enchantments : []
-
-  if (isFountainUpgraded) {
-    const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
-    if (upgradeData) {
-      baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
-    }
-  }
+  const isFountainUpgraded = slottedFountainOfNecroticMight?.[item.id] ?? false
+  const isStormreaverUpgraded = slottedStormreaverUpgrade?.[item.id] ?? false
+  const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded)
 
   const entries: { ench: LootEnchantment; sourceName: string }[] = baseEnchantments
     .filter(
       (e: LootEnchantment) =>
         e.name !== 'Craftable Rune Arm' &&
         e.name !== 'Nearly Finished' &&
+        e.name !== 'Lost Purpose' &&
+        e.name !== 'Ritual Table' &&
         e.name !== 'Sealed in Fire' &&
         e.name !== 'Sealed in Undeath' &&
-        e.name !== 'Upgradeable Item (Black Abbot)'
+        e.name !== 'Upgradeable Item (Black Abbot)' &&
+        e.name !== 'Upgradeable Item (Stormreaver)'
     )
     .map((e: LootEnchantment) => ({
       ench: e,

@@ -44,7 +44,8 @@ const EnchantmentsSummary = (props: Props) => {
     slottedLostPurpose,
     slottedNearlyFinished,
     slottedRitualTable,
-    slottedFountainOfNecroticMight
+    slottedFountainOfNecroticMight,
+    slottedStormreaverUpgrade
   } = props
 
   const allPossibleBonuses = useMemo(() => {
@@ -138,14 +139,15 @@ const EnchantmentsSummary = (props: Props) => {
         item,
         slottedAugments[item.id],
         slottedCurses[item.id],
-        slottedFiligrees?.[item.id],
+        slottedFiligrees[item.id],
         slottedEssenceEnchantments,
         essenceEnchantments,
         undefined,
         slottedNearlyFinished,
         slottedRitualTable,
         slottedLostPurpose,
-        slottedFountainOfNecroticMight
+        slottedFountainOfNecroticMight,
+        slottedStormreaverUpgrade
       )
 
       for (const { ench, sourceName } of entries) {
@@ -216,6 +218,7 @@ const EnchantmentsSummary = (props: Props) => {
     slottedNearlyFinished,
     slottedRitualTable,
     slottedFountainOfNecroticMight,
+    slottedStormreaverUpgrade,
     allPossibleBonuses
   ])
 
@@ -315,14 +318,15 @@ interface Props {
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
   slottedCurses: Record<string, Curse | null>
-  slottedFiligrees: Record<string, (GearItem | null)[]> | undefined
-  slottedGemSetBonuses?: Record<string, (string | null)[]>
-  slottedEssenceEnchantments?: Record<string, Record<string, string | null>>
+  slottedFiligrees: Record<string, (GearItem | null)[]>
+  slottedGemSetBonuses: Record<string, (string | null)[]>
+  slottedEssenceEnchantments: Record<string, Record<string, string | null>>
   essenceEnchantments?: EssenceEnchantment[]
-  slottedNearlyFinished?: Record<string, import('../types.ts').LootEnchantment | null>
-  slottedRitualTable?: Record<string, import('../types.ts').LootEnchantment | null>
-  slottedLostPurpose?: Record<string, import('../types.ts').LootEnchantment | null>
-  slottedFountainOfNecroticMight?: Record<string, boolean>
+  slottedNearlyFinished: Record<string, import('../types.ts').LootEnchantment | null>
+  slottedRitualTable: Record<string, import('../types.ts').LootEnchantment | null>
+  slottedLostPurpose: Record<string, import('../types.ts').LootEnchantment | null>
+  slottedFountainOfNecroticMight: Record<string, boolean>
+  slottedStormreaverUpgrade: Record<string, boolean>
   allItems?: GearItem[]
   allAugments?: GearAugment[]
   allCurses?: Curse[]

@@ -1,39 +1,16 @@
-import { Form } from 'react-bootstrap'
-import { findFountainUpgradeData } from '../helpers'
-import { type GearItem, GearSlot } from '../types'
+import fountainData from '../../../data/fountainOfNecroticMight.json'
+import { type UpgradeSelectorProps } from '../types'
+import GenericUpgradeSelector from './GenericUpgradeSelector'
 
-interface Props {
-  item: GearItem
-  slot: GearSlot
-  active: boolean
-  onToggle: (active: boolean) => void
-  wrapperClassName?: string
-  wrapperStyle?: React.CSSProperties
-}
-
-const FountainOfNecroticMightSelector = ({ item, slot, active, onToggle, wrapperClassName, wrapperStyle }: Props) => {
-  const isUpgradeable = !!findFountainUpgradeData(item.name, item.pageTitle)
-
-  const hasEnchantment = item.enchantments?.some((e) => e.name === 'Upgradeable Item (Black Abbot)')
-
-  if (!isUpgradeable || !hasEnchantment) {
-    return null
-  }
-
+const FountainOfNecroticMightSelector = (props: UpgradeSelectorProps) => {
   return (
-    <div className={wrapperClassName} style={wrapperStyle}>
-      <Form.Check
-        type='checkbox'
-        id={`fountain-upgrade-${item.id}-${slot}`}
-        label='Upgrade in Fountain of Necrotic Might'
-        checked={active}
-        onChange={(e) => {
-          onToggle(e.target.checked)
-        }}
-        style={{ fontSize: '0.65rem' }}
-        className='text-start fw-bold text-primary'
-      />
-    </div>
+    <GenericUpgradeSelector
+      {...props}
+      upgradeDataSet={fountainData}
+      enchantmentName='Upgradeable Item (Black Abbot)'
+      label='Upgrade in Fountain of Necrotic Might'
+      idPrefix='fountain-upgrade'
+    />
   )
 }
 

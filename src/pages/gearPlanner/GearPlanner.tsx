@@ -106,6 +106,7 @@ const PetGearSection = ({
       slottedRitualTable={entityState.slottedRitualTable}
       slottedLostPurpose={entityState.slottedLostPurpose}
       slottedFountainOfNecroticMight={entityState.slottedFountainOfNecroticMight}
+      slottedStormreaverUpgrade={entityState.slottedStormreaverUpgrade}
       allItems={gpHook.allItems}
       allAugments={gpHook.allAugments}
       allCurses={gpHook.allCurses}
@@ -404,6 +405,7 @@ const GearPlanner = () => {
                       slottedRitualTable={gpHook.activeSetup.slottedRitualTable}
                       slottedLostPurpose={gpHook.activeSetup.slottedLostPurpose}
                       slottedFountainOfNecroticMight={gpHook.activeSetup.slottedFountainOfNecroticMight}
+                      slottedStormreaverUpgrade={gpHook.activeSetup.slottedStormreaverUpgrade}
                       allItems={gpHook.allItems}
                       allAugments={gpHook.allAugments}
                       allCurses={gpHook.allCurses}

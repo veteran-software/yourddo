@@ -31,7 +31,33 @@ const loadState = (): GearPlannerState => {
         activeSetupId: 'default'
       }
     }
-    return JSON.parse(serializedState) as GearPlannerState
+    const state = JSON.parse(serializedState) as GearPlannerState
+
+    // Migrate/Fix state if fields are missing
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any */
+    state.characterSetups.forEach((setup) => {
+      const ensureFields = (target: any) => {
+        target.slottedNearlyFinished ??= {}
+        target.slottedRitualTable ??= {}
+        target.slottedLostPurpose ??= {}
+        target.slottedFountainOfNecroticMight ??= {}
+        target.slottedStormreaverUpgrade ??= {}
+        target.slottedAugments ??= {}
+        target.slottedCurses ??= {}
+        target.slottedFiligrees ??= {}
+        target.unlockedFiligreeSlots ??= {}
+        target.slottedGemSetBonuses ??= {}
+        target.slottedEssenceEnchantments ??= {}
+      }
+
+      ensureFields(setup)
+      const s = setup as any
+      if (s.artificerPet) ensureFields(s.artificerPet)
+      if (s.druidPet) ensureFields(s.druidPet)
+    })
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any */
+
+    return state
   } catch (err) {
     console.error('Error loading state from localStorage:', err)
 
@@ -316,6 +342,21 @@ const gearPlannerSlice = createSlice({
       const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
       target.slottedFountainOfNecroticMight[itemId] = active
     },
+    setStormreaverUpgrade: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        active: boolean
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, active, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
+
+      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
+      target.slottedStormreaverUpgrade[itemId] = active
+    },
     setItemMinLevel: (
       state,
       action: PayloadAction<{
@@ -371,6 +412,7 @@ export const {
   setRitualTableEnchantment,
   setLostPurposeEnchantment,
   setFountainOfNecroticMight,
+  setStormreaverUpgrade,
   setItemMinLevel,
   setItemMaterial
 } = gearPlannerSlice.actions

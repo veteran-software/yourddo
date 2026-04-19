@@ -181,6 +181,21 @@ export interface Curse {
   type: string
 }
 
+export interface UpgradeEntry {
+  name: string
+  effectsRemoved: LootEnchantment[]
+  effectsAdded: LootEnchantment[]
+}
+
+export interface UpgradeSelectorProps {
+  item: GearItem
+  slot: GearSlot
+  active: boolean
+  onToggle: (active: boolean) => void
+  wrapperClassName?: string
+  wrapperStyle?: React.CSSProperties
+}
+
 export interface SlottedProperties {
   slots: Record<string, GearItem | null>
   slottedAugments: Record<string, Record<number, GearAugment | null>>
@@ -193,6 +208,7 @@ export interface SlottedProperties {
   slottedRitualTable: Record<string, LootEnchantment | null>
   slottedLostPurpose: Record<string, LootEnchantment | null>
   slottedFountainOfNecroticMight: Record<string, boolean>
+  slottedStormreaverUpgrade: Record<string, boolean>
 }
 
 export interface EntityGearState extends SlottedProperties {

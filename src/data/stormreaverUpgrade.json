@@ -1,0 +1,391 @@
+[
+  {
+    "name": "Amulet of the Stormreaver",
+    "effectsRemoved": [
+      {
+        "name": "Greater Lightning Resistance",
+        "modifier": "30",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Armor Class (Deflection)",
+        "modifier": "4",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Clickie Spell: Chain Lightning [CL:12])(3 Recharge: 3/Day Recharge: 3/Day)"
+      }
+    ],
+    "effectsAdded": [
+      {
+        "name": "Superior Lightning Resistance",
+        "modifier": "40",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Armor Class (Deflection)",
+        "modifier": "5",
+        "bonus": "Enhancement"
+      },
+      {
+        "name": "Clickie Spell: Chain Lightning [CL:12])(3 Recharge: 3/Day Recharge: 3/Day)"
+      }
+    ]
+  },
+  {
+    "name": "Cloudburst",
+    "effectsRemoved": [
+      {
+        "name": "Cloudburst",
+        "notes": "On Vorpal, this weapon triggers a Cloudburst, striking its target with lightning and dealing sonic damage to surrounding enemies through a powerful thunderclap."
+      },
+      {
+        "name": "Electricity Damage",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsAdded": [
+      {
+        "name": "Cloudburst",
+        "notes": "On Vorpal, this weapon triggers a Cloudburst, striking its target with lightning and dealing sonic damage to surrounding enemies through a powerful thunderclap."
+      },
+      {
+        "name": "Lightning Strike",
+        "notes": "Occasionally, this dynamic power comes to the surface, devastating enemies with a massive lightning strike."
+      },
+      {
+        "name": "Electricity Damage",
+        "bonus": "Enhancement"
+      }
+    ]
+  },
+  {
+    "name": "Dreamspitter",
+    "effectsRemoved": [
+      {
+        "name": "Bane Damage vs Evil Outsiders",
+        "modifier": "3d6",
+        "bonus": "On-hit"
+      },
+      {
+        "name": "Life Stealing",
+        "notes": "This weapon has a chance to drain 1 to 3 levels from its target on a critical hit."
+      },
+      {
+        "name": "Enchantment Focus",
+        "modifier": "2",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Suppressed",
+        "notes": "This psionic item is powerful, but you sense that it has not unlocked all of its secrets to you at this time."
+      }
+    ],
+    "effectsAdded": [
+      {
+        "name": "Bane Damage vs Evil Outsiders",
+        "modifier": "3d6",
+        "bonus": "On-hit"
+      },
+      {
+        "name": "Life Stealing",
+        "notes": "This weapon has a chance to drain 1 to 3 levels from its target on a critical hit."
+      },
+      {
+        "name": "Enchantment Focus",
+        "modifier": "2",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Suppressed",
+        "notes": "This psionic item is powerful, but you sense that it has not unlocked all of its secrets to you at this time."
+      },
+      {
+        "name": "Force Damage",
+        "bonus": "Enhancement"
+      }
+    ]
+  },
+  {
+    "name": "Gauntlets of Eternity",
+    "effectsRemoved": [
+      { "name": "Skill: Heal", "modifier": "13", "bonus": "Competence" },
+      { "name": "Skill: Repair", "modifier": "13", "bonus": "Competence" },
+      { "name": "Spell Power: Positive Energy", "modifier": "60", "bonus": "Equipment" },
+      { "name": "Positive Energy Spell Critical Chance", "modifier": "15", "bonus": "Equipment" },
+      {
+        "name": "Turn Undead Level",
+        "modifier": "2",
+        "notes": "This ability helps only those who can Turn Undead. Your effective level while Turning is increased by 2, the maximum hit dice you can affect is increased by 2 and the total hit dice you can affect is increased by 4."
+      },
+      { "name": "Turn Undead Maximum Hit Dice", "modifier": "2" },
+      { "name": "Turn Undead Hit Dice", "modifier": "4" }
+    ],
+    "effectsAdded": [
+      { "name": "Skill: Heal", "modifier": "15", "bonus": "Competence" },
+      { "name": "Skill: Repair", "modifier": "15", "bonus": "Competence" },
+      { "name": "Spell Power: Positive Energy", "modifier": "72", "bonus": "Equipment" },
+      { "name": "Positive Energy Spell Critical Chance", "modifier": "15", "bonus": "Equipment" },
+      {
+        "name": "Turn Undead Level",
+        "modifier": "2",
+        "notes": "This ability helps only those who can Turn Undead. Your effective level while Turning is increased by 2, the maximum hit dice you can affect is increased by 2 and the total hit dice you can affect is increased by 4."
+      },
+      { "name": "Turn Undead Maximum Hit Dice", "modifier": "2" },
+      { "name": "Turn Undead Hit Dice", "modifier": "4" }
+    ]
+  },
+  {
+    "name": "Head of Good Fortune",
+    "effectsRemoved": [
+      { "name": "Fortitude Saving Throws", "modifier": "2", "bonus": "Luck" },
+      { "name": "Reflex Saving Throws", "modifier": "2", "bonus": "Luck" },
+      { "name": "Will Saving Throws", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Balance", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Bluff", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Concentration", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Diplomacy", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Disable Device", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Haggle", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Heal", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Hide", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Intimidate", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Jump", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Listen", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Move Silently", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Open Lock", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Perform", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Repair", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Search", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Spellcraft", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Spot", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Swim", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Tumble", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Use Magic Device", "modifier": "2", "bonus": "Luck" },
+      { "name": "Fortification", "modifier": "75", "bonus": "Enhancement" }
+    ],
+    "effectsAdded": [
+      { "name": "Fortification", "modifier": "100", "bonus": "Enhancement" },
+      { "name": "Dodge", "modifier": "4%", "bonus": "Enhancement" },
+      { "name": "Fortitude Saving Throws", "modifier": "2", "bonus": "Luck" },
+      { "name": "Reflex Saving Throws", "modifier": "2", "bonus": "Luck" },
+      { "name": "Will Saving Throws", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Balance", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Bluff", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Concentration", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Diplomacy", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Disable Device", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Haggle", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Heal", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Hide", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Intimidate", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Jump", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Listen", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Move Silently", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Open Lock", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Perform", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Repair", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Search", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Spellcraft", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Spot", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Swim", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Tumble", "modifier": "2", "bonus": "Luck" },
+      { "name": "Skill: Use Magic Device", "modifier": "2", "bonus": "Luck" }
+    ]
+  },
+  {
+    "name": "Madstone Boots",
+    "effectsRemoved": [
+      { "name": "Movement Speed", "modifier": "20%", "bonus": "Enhancement" },
+      { "name": "Dexterity", "modifier": "4", "bonus": "Enhancement" },
+      { "name": "Spell Power: Acid", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Cold", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Electric", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Fire", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Force", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Piercing", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Slashing", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Bludgeoning", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Light", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Chaos", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Evil", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Good", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Lawful", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Negative Energy", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Poison", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Positive Energy", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Sonic", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Repair", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Spell Power: Rust", "modifier": "48", "bonus": "Equipment" },
+      { "name": "Clickie Spell: Madstone Rage [CL:5])(1 Recharge: 1/Day Recharge: 1/Day)" }
+    ],
+    "effectsAdded": [
+      { "name": "Dexterity", "modifier": "6", "bonus": "Enhancement" },
+      { "name": "Spell Power: Acid", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Cold", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Electric", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Fire", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Force", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Piercing", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Slashing", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Bludgeoning", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Light", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Chaos", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Evil", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Good", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Lawful", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Negative Energy", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Poison", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Positive Energy", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Sonic", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Repair", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Spell Power: Rust", "modifier": "52", "bonus": "Equipment" },
+      { "name": "Movement Speed", "modifier": "30%", "bonus": "Enhancement" },
+      { "name": "Clickie Spell: Madstone Rage [CL:5])(1 Recharge: 1/Day Recharge: 1/Day)" }
+    ]
+  },
+  {
+    "name": "Madstone Shield",
+    "effectsRemoved": [
+      { "name": "Armor Class", "modifier": "5", "bonus": "Enhancement" },
+      { "name": "Attack Rolls", "modifier": "5", "bonus": "Enhancement" },
+      { "name": "Damage Rolls", "modifier": "5", "bonus": "Enhancement" },
+      { "name": "Feat: Tower Shield Proficiency" }
+    ],
+    "effectsAdded": [
+      {
+        "name": "Bashing",
+        "notes": "This shield is exceptionally durable and dense, and does and additional 2d6 damage when use to shield bash."
+      },
+      {
+        "name": "Shield Bashing +10%%",
+        "notes": "+10%% Enhancement bonus to increased chance of Secondary Shield Bash."
+      },
+      { "name": "Armor Class", "modifier": "5", "bonus": "Enhancement" },
+      { "name": "Attack Rolls", "modifier": "5", "bonus": "Enhancement" },
+      { "name": "Damage Rolls", "modifier": "5", "bonus": "Enhancement" },
+      { "name": "Feat: Tower Shield Proficiency" }
+    ]
+  },
+  {
+    "name": "Ring of Lies",
+    "effectsRemoved": [
+      { "name": "Charisma", "modifier": "6", "bonus": "Enhancement" },
+      { "name": "Skill: Diplomacy", "modifier": "10", "bonus": "Competence" },
+      { "name": "Skill: Bluff", "modifier": "10", "bonus": "Competence" },
+      { "name": "Skill: Haggle", "modifier": "10", "bonus": "Competence" },
+      { "name": "Skill: Perform", "modifier": "10", "bonus": "Competence" }
+    ],
+    "effectsAdded": [
+      { "name": "Skill: Bluff", "modifier": "2", "bonus": "Exceptional" },
+      { "name": "Skill: Diplomacy", "modifier": "2", "bonus": "Exceptional" },
+      { "name": "Skill: Haggle", "modifier": "2", "bonus": "Exceptional" },
+      { "name": "Skill: Intimidate", "modifier": "2", "bonus": "Exceptional" },
+      { "name": "Skill: Perform", "modifier": "2", "bonus": "Exceptional" },
+      { "name": "Skill: Use Magic Device", "modifier": "2", "bonus": "Exceptional" },
+      { "name": "Charisma", "modifier": "6", "bonus": "Enhancement" },
+      { "name": "Skill: Diplomacy", "modifier": "10", "bonus": "Competence" },
+      { "name": "Skill: Bluff", "modifier": "10", "bonus": "Competence" },
+      { "name": "Skill: Haggle", "modifier": "10", "bonus": "Competence" },
+      { "name": "Skill: Perform", "modifier": "10", "bonus": "Competence" }
+    ]
+  },
+  {
+    "name": "Stormreaver's Napkin",
+    "effectsRemoved": [
+      { "name": "Intelligence", "modifier": "6", "bonus": "Enhancement" },
+      { "name": "Spell DC: Abjuration", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Breath Weapon", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Conjuration", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Divination", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Enchantment", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Evocation", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Illusion", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Necromancy", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Transmutation", "modifier": "1", "bonus": "Equipment" }
+    ],
+    "effectsAdded": [
+      { "name": "Spell Penetration (Level 9)", "modifier": "2", "bonus": "Enhancement" },
+      { "name": "Intelligence", "modifier": "6", "bonus": "Enhancement" },
+      { "name": "Spell DC: Abjuration", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Breath Weapon", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Conjuration", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Divination", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Enchantment", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Evocation", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Illusion", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Necromancy", "modifier": "1", "bonus": "Equipment" },
+      { "name": "Spell DC: Transmutation", "modifier": "1", "bonus": "Equipment" }
+    ]
+  },
+  {
+    "name": "Tenderizer",
+    "effectsRemoved": [
+      {
+        "name": "Impact",
+        "notes": "Passive: The base critical threat range is doubled. This does not stack with the Improved Critical Feat. Vorpal strikes by this weapon also bypass all Fortification."
+      },
+      { "name": "Tactical DC: Stunning Blow", "modifier": "10", "bonus": "Enhancement" },
+      { "name": "Tactical DC: Stunning Fist", "modifier": "10", "bonus": "Enhancement" },
+      {
+        "name": "Bleeding",
+        "notes": "This weapon is cruelly sharp and will do an additional 1d8 damage to targets that are vulnerable to bleeding."
+      },
+      { "name": "Maladroit", "notes": "On Hit: This weapon deals -1 points of Dexterity damage." }
+    ],
+    "effectsAdded": [
+      {
+        "name": "Bone Breaking",
+        "notes": "Critical hits by this weapon deal an extra 1d6 points of Dexterity damage by shattering the bones of its target."
+      },
+      {
+        "name": "Impact",
+        "notes": "Passive: The base critical threat range is doubled. This does not stack with the Improved Critical Feat. Vorpal strikes by this weapon also bypass all Fortification."
+      },
+      { "name": "Tactical DC: Stunning Blow", "modifier": "10", "bonus": "Enhancement" },
+      { "name": "Tactical DC: Stunning Fist", "modifier": "10", "bonus": "Enhancement" },
+      {
+        "name": "Bleeding",
+        "notes": "This weapon is cruelly sharp and will do an additional 1d8 damage to targets that are vulnerable to bleeding."
+      },
+      { "name": "Maladroit", "notes": "On Hit: This weapon deals -1 points of Dexterity damage." },
+      { "name": "Spikes", "modifier": "1d6" }
+    ]
+  },
+  {
+    "name": "Treason",
+    "effectsRemoved": [
+      { "name": "Sneak Attack Rolls", "modifier": "3", "bonus": "Enhancement" },
+      { "name": "Sneak Attack Damage Rolls", "modifier": "5", "bonus": "Enhancement" },
+      { "name": "Treason", "modifier": "-20%", "bonus": "Enhancement" },
+      { "name": "Fortification Bypass Chance", "modifier": "10%", "bonus": "Enhancement" }
+    ],
+    "effectsAdded": [
+      { "name": "Sneak Attack Rolls", "modifier": "4", "bonus": "Enhancement" },
+      { "name": "Sneak Attack Damage Rolls", "modifier": "6", "bonus": "Enhancement" },
+      { "name": "Fortification Bypass Chance", "modifier": "15%", "bonus": "Enhancement" },
+      { "name": "Treason", "modifier": "-20%", "bonus": "Enhancement" }
+    ]
+  },
+  {
+    "name": "Ventilated Bracers",
+    "effectsRemoved": [
+      { "name": "Armor Class (Armor)", "modifier": "6", "bonus": "Enhancement" },
+      {
+        "name": "Air Guard",
+        "notes": "When the user of this item is successfully attacked in melee, this power occasionally comes to the surface, knocking enemies over or speeding up the wearer with rushing winds."
+      },
+      { "name": "Skill: Disable Device", "modifier": "3", "bonus": "Enhancement" },
+      { "name": "Skill: Open Lock", "modifier": "3", "bonus": "Enhancement" }
+    ],
+    "effectsAdded": [
+      { "name": "Skill: Open Lock", "modifier": "5", "bonus": "Enhancement" },
+      { "name": "Skill: Disable Device", "modifier": "5", "bonus": "Enhancement" },
+      { "name": "Armor Class (Armor)", "modifier": "7", "bonus": "Enhancement" },
+      {
+        "name": "Air Guard",
+        "notes": "When the user of this item is successfully attacked in melee, this power occasionally comes to the surface, knocking enemies over or speeding up the wearer with rushing winds."
+      }
+    ]
+  }
+]

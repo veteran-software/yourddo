@@ -1,11 +1,5 @@
-import { findFountainUpgradeData } from './helpers'
-import {
-  ARTIFICER_PET_SLOTS,
-  DRUID_PET_SLOTS,
-  type GearItem,
-  GearSlot,
-  type LootEnchantment
-} from './types'
+import { getDisplayEnchantments } from './helpers'
+import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, type GearItem, GearSlot, type LootEnchantment } from './types'
 
 export interface EnchantmentConflict {
   name: string
@@ -86,7 +80,8 @@ export const resolveConflicts = (
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
-  slottedFountainOfNecroticMight: Record<string, boolean> = {}
+  slottedFountainOfNecroticMight: Record<string, boolean> = {},
+  slottedStormreaverUpgrade: Record<string, boolean> = {}
 ): Record<string, EnchantmentConflict[]> => {
   const allEnchantments: {
     itemId: string
@@ -102,24 +97,22 @@ export const resolveConflicts = (
   equippedItems.forEach((item) => {
     const owner = getSlotOwner(item.slot)
 
-    const isFountainUpgraded = slottedFountainOfNecroticMight[item.id]
-    let baseEnchantments = item.enchantments ?? []
-    if (isFountainUpgraded) {
-      const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
-      if (upgradeData) {
-        baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
-      }
-    }
+    const isFountainUpgraded = slottedFountainOfNecroticMight[item.id] ?? false
+    const isStormreaverUpgraded = slottedStormreaverUpgrade[item.id] ?? false
+    const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded)
 
     if (Array.isArray(baseEnchantments)) {
       baseEnchantments
         .filter(
           (e) =>
+            e.name !== 'Craftable Rune Arm' &&
             e.name !== 'Nearly Finished' &&
             e.name !== 'Lost Purpose' &&
             e.name !== 'Ritual Table' &&
             e.name !== 'Sealed in Fire' &&
-            e.name !== 'Sealed in Undeath'
+            e.name !== 'Sealed in Undeath' &&
+            e.name !== 'Upgradeable Item (Black Abbot)' &&
+            e.name !== 'Upgradeable Item (Stormreaver)'
         )
         .forEach((ench) => {
           allEnchantments.push({
@@ -264,17 +257,13 @@ const findMatchingInherent = (
   item: GearItem,
   normalizedTargetName: string,
   normalizedTargetBonus: string,
-  slottedFountainOfNecroticMight: Record<string, boolean> = {}
+  slottedFountainOfNecroticMight: Record<string, boolean> = {},
+  slottedStormreaverUpgrade: Record<string, boolean> = {}
 ) => {
   let max = -Infinity
-  const isFountainUpgraded = slottedFountainOfNecroticMight[item.id]
-  let baseEnchantments = item.enchantments ?? []
-  if (isFountainUpgraded) {
-    const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
-    if (upgradeData) {
-      baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
-    }
-  }
+  const isFountainUpgraded = slottedFountainOfNecroticMight[item.id] ?? false
+  const isStormreaverUpgraded = slottedStormreaverUpgrade[item.id] ?? false
+  const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded)
 
   if (Array.isArray(baseEnchantments)) {
     baseEnchantments
@@ -416,13 +405,20 @@ const inherentMax = (
   normalizedTargetName: string,
   normalizedTargetBonus: string,
   item: GearItem,
-  slottedFountainOfNecroticMight: Record<string, boolean> = {}
+  slottedFountainOfNecroticMight: Record<string, boolean> = {},
+  slottedStormreaverUpgrade: Record<string, boolean> = {}
 ) => {
   if (isSameItem) {
     return -Infinity
   }
 
-  return findMatchingInherent(item, normalizedTargetName, normalizedTargetBonus, slottedFountainOfNecroticMight)
+  return findMatchingInherent(
+    item,
+    normalizedTargetName,
+    normalizedTargetBonus,
+    slottedFountainOfNecroticMight,
+    slottedStormreaverUpgrade
+  )
 }
 
 /**
@@ -438,6 +434,7 @@ export const checkPotentialConflict = (
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
   slottedFountainOfNecroticMight: Record<string, boolean> = {},
+  slottedStormreaverUpgrade: Record<string, boolean> = {},
   ignoreItemId?: string,
   ignoreSlotIndex?: number
 ): { isConflict: boolean; currentMax: number; isRedundant: boolean; isUpgrade?: boolean; isOverpowered?: boolean } => {
@@ -484,7 +481,14 @@ export const checkPotentialConflict = (
     )
 
     const itemMax: number = Math.max(
-      inherentMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedFountainOfNecroticMight),
+      inherentMax(
+        isSameItem,
+        normalizedTargetName,
+        normalizedTargetBonus,
+        item,
+        slottedFountainOfNecroticMight,
+        slottedStormreaverUpgrade
+      ),
       nearlyFinishedMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedNearlyFinished),
       ritualTableMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedRitualTable),
       augMax,

@@ -15,6 +15,7 @@ import {
   setLostPurposeEnchantment as setLostPurposeEnchantmentAction,
   setNearlyFinishedEnchantment as setNearlyFinishedEnchantmentAction,
   setRitualTableEnchantment as setRitualTableEnchantmentAction,
+  setStormreaverUpgrade as setStormreaverUpgradeAction,
   setUnlockedFiligreeSlots as setUnlockedFiligreeSlotsAction
 } from '../../../redux/slices/gearPlannerSlice'
 import { getSlotOwner } from '../conflictResolver'
@@ -264,6 +265,16 @@ export const useGearPlannerActions = ({
     )
   }
 
+  const setStormreaverUpgrade = (itemId: string, active: boolean, slot?: GearSlot) => {
+    dispatch(
+      setStormreaverUpgradeAction({
+        itemId,
+        active,
+        slot
+      })
+    )
+  }
+
   return {
     addSetup,
     deleteSetup,
@@ -281,6 +292,7 @@ export const useGearPlannerActions = ({
     setNearlyFinishedEnchantment,
     setRitualTableEnchantment,
     setLostPurposeEnchantment,
-    setFountainOfNecroticMight
+    setFountainOfNecroticMight,
+    setStormreaverUpgrade
   }
 }

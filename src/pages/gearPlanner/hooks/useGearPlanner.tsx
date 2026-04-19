@@ -127,7 +127,8 @@ const useGearPlanner = (props: Props) => {
     setNearlyFinishedEnchantment: actions.setNearlyFinishedEnchantment,
     setRitualTableEnchantment: actions.setRitualTableEnchantment,
     setLostPurposeEnchantment: actions.setLostPurposeEnchantment,
-    setFountainOfNecroticMight: actions.setFountainOfNecroticMight
+    setFountainOfNecroticMight: actions.setFountainOfNecroticMight,
+    setStormreaverUpgrade: actions.setStormreaverUpgrade
   })
 
   const observerTargetRef = useRef<HTMLDivElement>(null)
@@ -187,6 +188,7 @@ const useGearPlanner = (props: Props) => {
     setItemMinLevel: actions.setItemMinLevel,
     setLostPurposeEnchantment: actions.setLostPurposeEnchantment,
     setFountainOfNecroticMight: actions.setFountainOfNecroticMight,
+    setStormreaverUpgrade: actions.setStormreaverUpgrade,
     observerTarget: observerTargetRef,
     showConflicts,
     setShowConflicts,

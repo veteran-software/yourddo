@@ -1,17 +1,6 @@
 import type { EssenceEnchantment } from './dataLoader.ts'
-import {
-  findFountainUpgradeData,
-  getActiveSetEnhancements,
-  getScaledEssenceEnchantments
-} from './helpers'
-import type {
-  GearItem,
-  GearSetup,
-  GearSlot,
-  LootEnchantment,
-  LootItem,
-  PetState
-} from './types'
+import { getActiveSetEnhancements, getDisplayEnchantments, getScaledEssenceEnchantments } from './helpers'
+import type { GearItem, GearSetup, GearSlot, LootEnchantment, LootItem, PetState } from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
 
 const renderSlots = (
@@ -35,7 +24,6 @@ const renderSlots = (
     }
   })
 }
-
 
 const formatEnchantment = (ench: {
   name: string
@@ -82,7 +70,7 @@ const getFilteredEnchantments = (
     if (nearlyFinished && ench.name === 'Nearly Finished') return false
     if (ritualTable && (ench.name === 'Sealed in Fire' || ench.name === 'Sealed in Undeath')) return false
     if (lostPurpose && ench.name === 'Lost Purpose') return false
-    if (ench.name === 'Upgradeable Item (Black Abbot)') return false
+    if (ench.name === 'Upgradeable Item (Black Abbot)' || ench.name === 'Upgradeable Item (Stormreaver)') return false
     return true
   })
 }
@@ -132,16 +120,10 @@ export const generateBBCodeExport = (
     nearlyFinished?: LootEnchantment,
     ritualTable?: LootEnchantment,
     lostPurpose?: LootEnchantment,
-    isFountainUpgraded?: boolean
+    isFountainUpgraded?: boolean,
+    isStormreaverUpgraded?: boolean
   ) => {
-    let baseEnchantments = Array.isArray(item.enchantments) ? item.enchantments : []
-    if (isFountainUpgraded) {
-      const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
-      if (upgradeData) {
-        baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
-      }
-    }
-
+    const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded ?? false, isStormreaverUpgraded ?? false)
     const filtered = getFilteredEnchantments(baseEnchantments, nearlyFinished, ritualTable, lostPurpose)
     if (filtered.length > 0) {
       lines.push(`[list]`)
@@ -205,12 +187,17 @@ export const generateBBCodeExport = (
 
   const renderUpgrades = (
     fountainUpgraded: boolean,
+    stormreaverUpgraded: boolean,
     nearlyFinished: LootEnchantment | null,
     ritualTable: LootEnchantment | null,
     lostPurpose: LootEnchantment | null
   ) => {
     if (fountainUpgraded) {
       lines.push(`[indent][b][color=cyan]Fountain of Necrotic Might Upgrade[/color][/b][/indent]`)
+    }
+
+    if (stormreaverUpgraded) {
+      lines.push(`[indent][b][color=cyan]Stormreaver Monument Upgrade[/color][/b][/indent]`)
     }
 
     if (nearlyFinished) {
@@ -222,7 +209,9 @@ export const generateBBCodeExport = (
     }
 
     if (lostPurpose) {
-      lines.push(`[indent][b][color=purple]Lost Purpose Upgrade:[/color][/b] ${formatEnchantment(lostPurpose)}[/indent]`)
+      lines.push(
+        `[indent][b][color=purple]Lost Purpose Upgrade:[/color][/b] ${formatEnchantment(lostPurpose)}[/indent]`
+      )
     }
   }
 
@@ -233,19 +222,13 @@ export const generateBBCodeExport = (
     isPetSlot = false,
     petState?: PetState
   ) => {
-    const nearlyFinished: LootEnchantment | null =
-      isPetSlot && petState ? petState.slottedNearlyFinished[item.id] : setup.slottedNearlyFinished[item.id]
+    const state = isPetSlot && petState ? petState : setup
 
-    const ritualTable: LootEnchantment | null =
-      isPetSlot && petState ? petState.slottedRitualTable[item.id] : setup.slottedRitualTable[item.id]
-
-    const lostPurpose: LootEnchantment | null =
-      isPetSlot && petState ? petState.slottedLostPurpose[item.id] : setup.slottedLostPurpose[item.id]
-
-    const fountainUpgraded: boolean =
-      isPetSlot && petState
-        ? petState.slottedFountainOfNecroticMight[item.id]
-        : setup.slottedFountainOfNecroticMight[item.id]
+    const nearlyFinished = state.slottedNearlyFinished[item.id]
+    const ritualTable = state.slottedRitualTable[item.id]
+    const lostPurpose = state.slottedLostPurpose[item.id]
+    const fountainUpgraded = state.slottedFountainOfNecroticMight[item.id]
+    const stormreaverUpgraded = state.slottedStormreaverUpgrade[item.id]
 
     renderSlotHeader(slot, item)
     renderSlotEnchantments(
@@ -253,20 +236,19 @@ export const generateBBCodeExport = (
       nearlyFinished ?? undefined,
       ritualTable ?? undefined,
       lostPurpose ?? undefined,
-      fountainUpgraded
+      fountainUpgraded,
+      stormreaverUpgraded
     )
 
-    renderUpgrades(fountainUpgraded, nearlyFinished, ritualTable, lostPurpose)
+    renderUpgrades(fountainUpgraded, stormreaverUpgraded, nearlyFinished, ritualTable, lostPurpose)
 
-    const essenceCrafting =
-      isPetSlot && petState ? petState.slottedEssenceEnchantments[item.id] : setup.slottedEssenceEnchantments[item.id]
-
+    const essenceCrafting = state.slottedEssenceEnchantments[item.id]
     renderSlotEssenceCrafting(item, essenceCrafting, allEssenceEnchantments)
 
-    const filigrees = isPetSlot && petState ? petState.slottedFiligrees[item.id] : setup.slottedFiligrees[item.id]
+    const filigrees = state.slottedFiligrees[item.id]
     renderSlotFiligrees(filigrees)
 
-    const gemSets = isPetSlot && petState ? petState.slottedGemSetBonuses[item.id] : setup.slottedGemSetBonuses[item.id]
+    const gemSets = state.slottedGemSetBonuses[item.id]
     renderSlotGemSets(gemSets)
 
     lines.push('[center]---[/center]', '')
@@ -336,16 +318,10 @@ export const generateDiscordMarkdownExport = (
     nearlyFinished?: LootEnchantment,
     ritualTable?: LootEnchantment,
     lostPurpose?: LootEnchantment,
-    isFountainUpgraded?: boolean
+    isFountainUpgraded?: boolean,
+    isStormreaverUpgraded?: boolean
   ) => {
-    let baseEnchantments = Array.isArray(item.enchantments) ? item.enchantments : []
-    if (isFountainUpgraded) {
-      const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
-      if (upgradeData) {
-        baseEnchantments = upgradeData.effectsAdded as LootEnchantment[]
-      }
-    }
-
+    const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded ?? false, isStormreaverUpgraded ?? false)
     const filtered = getFilteredEnchantments(baseEnchantments, nearlyFinished, ritualTable, lostPurpose)
     if (filtered.length > 0) {
       filtered.forEach((ench: LootEnchantment) => {
@@ -397,12 +373,17 @@ export const generateDiscordMarkdownExport = (
 
   const renderUpgrades = (
     fountainUpgraded: boolean,
+    stormreaverUpgraded: boolean,
     nearlyFinished: LootEnchantment | null,
     ritualTable: LootEnchantment | null,
     lostPurpose: LootEnchantment | null
   ) => {
     if (fountainUpgraded) {
       lines.push(`- **Fountain of Necrotic Might Upgrade**`)
+    }
+
+    if (stormreaverUpgraded) {
+      lines.push(`- **Stormreaver Monument Upgrade**`)
     }
 
     if (nearlyFinished) {
@@ -425,19 +406,13 @@ export const generateDiscordMarkdownExport = (
     isPetSlot = false,
     petState?: PetState
   ) => {
-    const nearlyFinished: LootEnchantment | null =
-      isPetSlot && petState ? petState.slottedNearlyFinished[item.id] : setup.slottedNearlyFinished[item.id]
+    const state = isPetSlot && petState ? petState : setup
 
-    const ritualTable: LootEnchantment | null =
-      isPetSlot && petState ? petState.slottedRitualTable[item.id] : setup.slottedRitualTable[item.id]
-
-    const lostPurpose: LootEnchantment | null =
-      isPetSlot && petState ? petState.slottedLostPurpose[item.id] : setup.slottedLostPurpose[item.id]
-
-    const fountainUpgraded: boolean =
-      isPetSlot && petState
-        ? petState.slottedFountainOfNecroticMight[item.id]
-        : setup.slottedFountainOfNecroticMight[item.id]
+    const nearlyFinished = state.slottedNearlyFinished[item.id]
+    const ritualTable = state.slottedRitualTable[item.id]
+    const lostPurpose = state.slottedLostPurpose[item.id]
+    const fountainUpgraded = state.slottedFountainOfNecroticMight[item.id]
+    const stormreaverUpgraded = state.slottedStormreaverUpgrade[item.id]
 
     renderSlotHeader(slot, item)
     renderSlotEnchantments(
@@ -445,19 +420,19 @@ export const generateDiscordMarkdownExport = (
       nearlyFinished ?? undefined,
       ritualTable ?? undefined,
       lostPurpose ?? undefined,
-      fountainUpgraded
+      fountainUpgraded,
+      stormreaverUpgraded
     )
 
-    renderUpgrades(fountainUpgraded, nearlyFinished, ritualTable, lostPurpose)
+    renderUpgrades(fountainUpgraded, stormreaverUpgraded, nearlyFinished, ritualTable, lostPurpose)
 
-    const essenceCrafting =
-      isPetSlot && petState ? petState.slottedEssenceEnchantments[item.id] : setup.slottedEssenceEnchantments[item.id]
+    const essenceCrafting = state.slottedEssenceEnchantments[item.id]
     renderSlotEssenceCrafting(item, essenceCrafting, allEssenceEnchantments)
 
-    const filigrees = isPetSlot && petState ? petState.slottedFiligrees[item.id] : setup.slottedFiligrees[item.id]
+    const filigrees = state.slottedFiligrees[item.id]
     renderSlotFiligrees(filigrees)
 
-    const gemSets = isPetSlot && petState ? petState.slottedGemSetBonuses[item.id] : setup.slottedGemSetBonuses[item.id]
+    const gemSets = state.slottedGemSetBonuses[item.id]
     renderSlotGemSets(gemSets)
 
     lines.push('')

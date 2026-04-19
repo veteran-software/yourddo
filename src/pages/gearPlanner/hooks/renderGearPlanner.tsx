@@ -7,21 +7,17 @@ import AugmentSlotItem from '../components/AugmentSlotItem'
 import CurseSlotItem from '../components/CurseSlotItem'
 import EnchantmentList from '../components/EnchantmentList'
 import EssenceCraftingSelector from '../components/EssenceCraftingSelector'
-import FountainOfNecroticMightSelector
-  from '../components/FountainOfNecroticMightSelector'
+import FountainOfNecroticMightSelector from '../components/FountainOfNecroticMightSelector'
 import GemSetBonusSelector from '../components/GetSetBonusSelector'
 import ItemSetBonusDisplay from '../components/ItemSetBonusDisplay'
 import LostPurposeSelector from '../components/LostPurposeSelector'
 import NearlyFinishedSelector from '../components/NearlyFinishedSelector'
 import RitualTableSelector from '../components/RitualTableSelector'
+import StormreaverUpgradeSelector from '../components/StormreaverUpgradeSelector'
 import TroveBadge from '../components/TroveBadge'
 import { getSlotOwner } from '../conflictResolver'
 import { type EssenceEnchantment } from '../dataLoader'
-import {
-  findFountainUpgradeData,
-  getMaxFiligreeSlots,
-  isMinorArtifact
-} from '../helpers'
+import { getDisplayEnchantments, getMaxFiligreeSlots, isMinorArtifact } from '../helpers'
 import {
   type Curse,
   type EntityGearState,
@@ -34,6 +30,46 @@ import {
   type LootEnchantment
 } from '../types'
 import { FiligreeLabel } from './useGearPlannerHelpers'
+
+const getApplicableAugments = (augmentSlot: GearAugmentSlot, allAugments: GearAugment[]) => {
+  const groups: Record<string, GearAugment[]> = {}
+  const slotTypeLower: string = augmentSlot.augmentType.replace(' Slot', '').toLowerCase()
+  const groupConfig = SLOT_GROUPS[slotTypeLower]
+
+  if (groupConfig) {
+    for (const config of groupConfig) {
+      const matchingAugments = allAugments.filter(
+        (aug: GearAugment) => aug.augmentType.replace(' Slot', '').toLowerCase() === config.key.toLowerCase()
+      )
+
+      if (matchingAugments.length > 0) {
+        groups[config.label] = matchingAugments.toSorted((a, b) => a.name.localeCompare(b.name))
+      }
+    }
+  } else {
+    // Fallback to exact match logic
+    const normalizedSlotType: string = augmentSlot.augmentType.replace(' Slot', '')
+
+    for (const aug of allAugments) {
+      const normalizedAugType: string = aug.augmentType.replace(' Slot', '')
+
+      if (normalizedAugType === normalizedSlotType) {
+        const groupKey: string = aug.augmentType || 'Other'
+        groups[groupKey] ??= []
+        groups[groupKey].push(aug)
+      }
+    }
+
+    // Sort fallback groups too
+    for (const key of Object.keys(groups)) {
+      groups[key] = groups[key].toSorted((a, b) => a.name.localeCompare(b.name))
+    }
+  }
+
+  const sortedGroupNames: string[] = Object.keys(groups).sort((a, b) => a.localeCompare(b))
+
+  return { groups, sortedGroupNames }
+}
 
 export const renderGearPlanner = (props: Props) => {
   const {
@@ -56,8 +92,53 @@ export const renderGearPlanner = (props: Props) => {
     setNearlyFinishedEnchantment,
     setRitualTableEnchantment,
     setLostPurposeEnchantment,
-    setFountainOfNecroticMight
+    setFountainOfNecroticMight,
+    setStormreaverUpgrade
   } = props
+
+  const renderItemNameAndDrop = (item: GearItem) => (
+    <>
+      <div className='fw-bold small text-dark mb-1'>{item.name}</div>
+      {Array.isArray(item.dropLocations) && item.dropLocations.length > 0 && (
+        <div className='text-primary' style={{ fontSize: '0.65rem', paddingBottom: '0.25rem' }}>
+          <hr className='mb-1 mt-0' />
+          <div style={{ lineHeight: '1.2' }}>{formatDropLocations(item.dropLocations)}</div>
+          <hr className='mt-1 mb-0' />
+        </div>
+      )}
+    </>
+  )
+
+  const renderItemMetadata = (item: GearItem) => (
+    <>
+      <div className='text-secondary mb-0' style={{ fontSize: '0.7rem' }}>
+        ML: {item.minLevel || '1'} | {item.type || 'Item'}
+        {item.material && (
+          <>
+            &nbsp;|&nbsp;
+            <span
+              className={`mb-1 fw-bold ${isMetal(item.material) ? 'text-danger' : 'text-success'}`}
+              style={{ fontSize: '0.6rem' }}
+            >
+              {item.material} {isMetal(item.material) && '(Metal)'}
+            </span>
+          </>
+        )}
+      </div>
+
+      {activeSetup.slottedCurses[item.id]?.name === 'Curse of Minor Masterworks' && (
+        <div key='curse-boost-minor' className='text-success fw-bold' style={{ fontSize: '0.6rem' }}>
+          Crafting Effect Level +1
+        </div>
+      )}
+
+      {activeSetup.slottedCurses[item.id]?.name === 'Curse of Major Masterworks' && (
+        <div key='curse-boost-major' className='text-success fw-bold' style={{ fontSize: '0.6rem' }}>
+          Crafting Effect Level +2
+        </div>
+      )}
+    </>
+  )
 
   const renderSlot = (slot: GearSlot, setup: GearSetup): JSX.Element => {
     const owner: string = getSlotOwner(slot)
@@ -69,19 +150,14 @@ export const renderGearPlanner = (props: Props) => {
     const currentSlottedRitualTable = entityState.slottedRitualTable
     const currentSlottedLostPurpose = entityState.slottedLostPurpose
     const currentSlottedFountainOfNecroticMight = entityState.slottedFountainOfNecroticMight
+    const currentSlottedStormreaverUpgrade = entityState.slottedStormreaverUpgrade
 
-    const isFountainUpgraded: boolean | undefined =
-      selectedItem && selectedItem.id in currentSlottedFountainOfNecroticMight
-        ? currentSlottedFountainOfNecroticMight[selectedItem.id]
-        : false
-    let displayEnchantments: LootEnchantment[] = selectedItem?.enchantments ?? []
+    const isFountainUpgraded = selectedItem ? currentSlottedFountainOfNecroticMight[selectedItem.id] : false
+    const isStormreaverUpgraded = selectedItem ? currentSlottedStormreaverUpgrade[selectedItem.id] : false
 
-    if (selectedItem && isFountainUpgraded) {
-      const upgradeData = findFountainUpgradeData(selectedItem.name, selectedItem.pageTitle)
-      if (upgradeData) {
-        displayEnchantments = upgradeData.effectsAdded as LootEnchantment[]
-      }
-    }
+    const displayEnchantments: LootEnchantment[] = selectedItem
+      ? getDisplayEnchantments(selectedItem, isFountainUpgraded, isStormreaverUpgraded)
+      : []
 
     return (
       <Col key={slot} xs={12} sm={6} md={4} lg={3} className='mb-3 px-1'>
@@ -106,14 +182,7 @@ export const renderGearPlanner = (props: Props) => {
           >
             {selectedItem ? (
               <div className='text-center w-100 d-flex flex-column'>
-                <div className='fw-bold small text-dark mb-1'>{selectedItem.name}</div>
-                {Array.isArray(selectedItem.dropLocations) && selectedItem.dropLocations.length > 0 && (
-                  <div className='text-primary' style={{ fontSize: '0.65rem', paddingBottom: '0.25rem' }}>
-                    <hr className='mb-1 mt-0' />
-                    <div style={{ lineHeight: '1.2' }}>{formatDropLocations(selectedItem.dropLocations)}</div>
-                    <hr className='mt-1 mb-0' />
-                  </div>
-                )}
+                {renderItemNameAndDrop(selectedItem)}
 
                 {selectedItem.name.includes('Gem of Many Facets') && (
                   <GemSetBonusSelector
@@ -136,34 +205,7 @@ export const renderGearPlanner = (props: Props) => {
                   <FiligreeLabel item={selectedItem} setup={activeSetup} slot={slot} />
                 )}
 
-                <div className='text-secondary mb-0' style={{ fontSize: '0.7rem' }}>
-                  ML: {selectedItem.minLevel || '1'} | {selectedItem.type || 'Item'}
-                  {selectedItem.material && (
-                    <>
-                      &nbsp;|&nbsp;
-                      <span
-                        className={`mb-1 fw-bold ${isMetal(selectedItem.material) ? 'text-danger' : 'text-success'}`}
-                        style={{ fontSize: '0.6rem' }}
-                      >
-                        {selectedItem.material} {isMetal(selectedItem.material) && '(Metal)'}
-                      </span>
-                    </>
-                  )}
-                </div>
-
-                {selectedItem.id in activeSetup.slottedCurses &&
-                  activeSetup.slottedCurses[selectedItem.id]?.name === 'Curse of Minor Masterworks' && (
-                    <div key='curse-boost-minor' className='text-success fw-bold' style={{ fontSize: '0.6rem' }}>
-                      Crafting Effect Level +1
-                    </div>
-                  )}
-
-                {selectedItem.id in activeSetup.slottedCurses &&
-                  activeSetup.slottedCurses[selectedItem.id]?.name === 'Curse of Major Masterworks' && (
-                    <div key='curse-boost-major' className='text-success fw-bold' style={{ fontSize: '0.6rem' }}>
-                      Crafting Effect Level +2
-                    </div>
-                  )}
+                {renderItemMetadata(selectedItem)}
 
                 {Array.isArray(displayEnchantments) && displayEnchantments.length > 0 && (
                   <div
@@ -182,42 +224,7 @@ export const renderGearPlanner = (props: Props) => {
                 {selectedItem.augments && selectedItem.augments.length > 0 && (
                   <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
                     {selectedItem.augments.map((augmentSlot: GearAugmentSlot, idx: number) => {
-                      const groups: Record<string, GearAugment[]> = {}
-                      const slotTypeLower: string = augmentSlot.augmentType.replace(' Slot', '').toLowerCase()
-                      const groupConfig = SLOT_GROUPS[slotTypeLower]
-
-                      if (groupConfig) {
-                        for (const config of groupConfig) {
-                          const matchingAugments = allAugments.filter(
-                            (aug: GearAugment) =>
-                              aug.augmentType.replace(' Slot', '').toLowerCase() === config.key.toLowerCase()
-                          )
-
-                          if (matchingAugments.length > 0) {
-                            groups[config.label] = matchingAugments.toSorted((a, b) => a.name.localeCompare(b.name))
-                          }
-                        }
-                      } else {
-                        // Fallback to exact match logic
-                        const normalizedSlotType: string = augmentSlot.augmentType.replace(' Slot', '')
-
-                        for (const aug of allAugments) {
-                          const normalizedAugType: string = aug.augmentType.replace(' Slot', '')
-
-                          if (normalizedAugType === normalizedSlotType) {
-                            const groupKey: string = aug.augmentType || 'Other'
-                            groups[groupKey] ??= []
-                            groups[groupKey].push(aug)
-                          }
-                        }
-
-                        // Sort fallback groups too
-                        for (const key of Object.keys(groups)) {
-                          groups[key] = groups[key].toSorted((a, b) => a.name.localeCompare(b.name))
-                        }
-                      }
-
-                      const sortedGroupNames: string[] = Object.keys(groups).sort((a, b) => a.localeCompare(b))
+                      const applicable = getApplicableAugments(augmentSlot, allAugments)
 
                       return (
                         <AugmentSlotItem
@@ -230,10 +237,7 @@ export const renderGearPlanner = (props: Props) => {
                               ? currentSlottedAugments[selectedItem.id][idx]
                               : null
                           }
-                          applicable={{
-                            groups,
-                            sortedGroupNames
-                          }}
+                          applicable={applicable}
                           slot={slot}
                           entityState={entityState}
                           setSlottedAugment={setSlottedAugment}
@@ -277,6 +281,17 @@ export const renderGearPlanner = (props: Props) => {
                   active={currentSlottedFountainOfNecroticMight[selectedItem.id] || false}
                   onToggle={(active: boolean) => {
                     setFountainOfNecroticMight(selectedItem.id, active, slot)
+                  }}
+                  wrapperClassName='text-start mt-1 pt-1 border-top'
+                  wrapperStyle={{ fontSize: '0.65rem' }}
+                />
+
+                <StormreaverUpgradeSelector
+                  item={selectedItem}
+                  slot={slot}
+                  active={currentSlottedStormreaverUpgrade[selectedItem.id] || false}
+                  onToggle={(active: boolean) => {
+                    setStormreaverUpgrade(selectedItem.id, active, slot)
                   }}
                   wrapperClassName='text-start mt-1 pt-1 border-top'
                   wrapperStyle={{ fontSize: '0.65rem' }}
@@ -356,4 +371,5 @@ interface Props {
   setRitualTableEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setLostPurposeEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setFountainOfNecroticMight: (itemId: string, active: boolean, slot?: GearSlot) => void
+  setStormreaverUpgrade: (itemId: string, active: boolean, slot?: GearSlot) => void
 }

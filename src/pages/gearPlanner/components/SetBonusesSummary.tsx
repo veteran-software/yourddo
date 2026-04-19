@@ -10,12 +10,12 @@ const SetBonusesSummary = (props: Props) => {
 
   const getCountsFromItems = (
     equippedItems: GearItem[],
-    slottedGemSetBonuses: Record<string, (string | null)[]> | undefined,
+    slottedGemSetBonuses: Record<string, (string | null)[]>,
     counts: Record<string, number>
   ) => {
     equippedItems.forEach((item) => {
       if (item.name.includes('Gem of Many Facets')) {
-        const gemBonuses = slottedGemSetBonuses?.[item.id] ?? []
+        const gemBonuses = slottedGemSetBonuses[item.id] ?? []
         gemBonuses.forEach((setName) => {
           if (setName) {
             counts[setName] = (counts[setName] || 0) + 1
@@ -59,11 +59,7 @@ const SetBonusesSummary = (props: Props) => {
   }
 
   const getCountsFromFiligrees = useCallback(
-    (slottedFiligrees: Record<string, (GearItem | null)[]> | undefined, counts: Record<string, number>) => {
-      if (!slottedFiligrees) {
-        return
-      }
-
+    (slottedFiligrees: Record<string, (GearItem | null)[]>, counts: Record<string, number>) => {
       const filigreeNamesPerSet: Record<string, Set<string>> = {}
 
       for (const itemFiligrees of Object.values(slottedFiligrees)) {
@@ -80,13 +76,9 @@ const SetBonusesSummary = (props: Props) => {
   )
 
   const getCountsFromLostPurpose = (
-    slottedLostPurpose: Record<string, LootEnchantment | null> | undefined,
+    slottedLostPurpose: Record<string, LootEnchantment | null>,
     counts: Record<string, number>
   ) => {
-    if (!slottedLostPurpose) {
-      return
-    }
-
     for (const enchantment of Object.values(slottedLostPurpose)) {
       if (enchantment?.name) {
         counts[enchantment.name] = (counts[enchantment.name] ?? 0) + 1
@@ -140,9 +132,9 @@ const SetBonusesSummary = (props: Props) => {
 interface Props {
   equippedItems: GearItem[]
   slottedAugments: Record<string, Record<number, GearAugment | null>>
-  slottedFiligrees?: Record<string, (GearItem | null)[]>
-  slottedGemSetBonuses?: Record<string, (string | null)[]>
-  slottedLostPurpose?: Record<string, LootEnchantment | null>
+  slottedFiligrees: Record<string, (GearItem | null)[]>
+  slottedGemSetBonuses: Record<string, (string | null)[]>
+  slottedLostPurpose: Record<string, LootEnchantment | null>
   onSetClick?: (setName: string) => void
 }
 

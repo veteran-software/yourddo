@@ -1,5 +1,9 @@
 import { useCallback, useMemo } from 'react'
-import { type EnchantmentConflict, getSlotOwner, resolveConflicts } from '../conflictResolver'
+import {
+  type EnchantmentConflict,
+  getSlotOwner,
+  resolveConflicts
+} from '../conflictResolver'
 import {
   type EntityGearState,
   type GearAugment,
@@ -38,7 +42,8 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
         activeSetup.slottedNearlyFinished,
         activeSetup.slottedRitualTable,
         activeSetup.slottedLostPurpose,
-        activeSetup.slottedFountainOfNecroticMight
+        activeSetup.slottedFountainOfNecroticMight,
+        activeSetup.slottedStormreaverUpgrade
       ),
     [
       characterEquipped,
@@ -46,7 +51,8 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
       activeSetup.slottedNearlyFinished,
       activeSetup.slottedRitualTable,
       activeSetup.slottedLostPurpose,
-      activeSetup.slottedFountainOfNecroticMight
+      activeSetup.slottedFountainOfNecroticMight,
+      activeSetup.slottedStormreaverUpgrade
     ]
   )
 
@@ -68,7 +74,8 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
         entity.state.slottedNearlyFinished,
         entity.state.slottedRitualTable,
         entity.state.slottedLostPurpose,
-        entity.state.slottedFountainOfNecroticMight
+        entity.state.slottedFountainOfNecroticMight,
+        entity.state.slottedStormreaverUpgrade
       )
     })
 
@@ -126,7 +133,8 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
         currentSlottedNearlyFinished: entityState.slottedNearlyFinished,
         currentSlottedRitualTable: entityState.slottedRitualTable,
         currentSlottedLostPurpose: entityState.slottedLostPurpose,
-        currentSlottedFountainOfNecroticMight: entityState.slottedFountainOfNecroticMight
+        currentSlottedFountainOfNecroticMight: entityState.slottedFountainOfNecroticMight,
+        currentSlottedStormreaverUpgrade: entityState.slottedStormreaverUpgrade
       }
     },
     [getEntityState]
@@ -159,4 +167,5 @@ export interface ContextInfo {
   currentSlottedRitualTable: Record<string, LootEnchantment | null>
   currentSlottedLostPurpose: Record<string, LootEnchantment | null>
   currentSlottedFountainOfNecroticMight: Record<string, boolean>
+  currentSlottedStormreaverUpgrade: Record<string, boolean>
 }
