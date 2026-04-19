@@ -323,7 +323,6 @@ export const loadGearData = (): Promise<{
   const augModule = dataModules['../../data/loot/runtime/augment.json']
   if (augModule && typeof augModule === 'object' && 'default' in augModule) {
     const augments = augModule.default as RawAugment[]
-    console.log('Augments loaded:', augments)
 
     augments.forEach((aug: RawAugment) => {
       const augmentItem: GearAugment = {
@@ -388,6 +387,7 @@ export const loadGearData = (): Promise<{
             id: `${fileName}-${String(idx)}-${slot}`,
             slot: slot,
             minLevel: item.minLevel || '1',
+            minimumLevel: parseInt(String(item.minLevel || 1), 10),
             absoluteMinLevel: (item.absoluteMinLevel ?? String(item.minLevel)) || '1'
           }
 

@@ -2,13 +2,42 @@ import React, { Fragment } from 'react'
 import { Dropdown, Form } from 'react-bootstrap'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import { getTroveKey } from '../../../utils/troveUtils.ts'
-import { checkPotentialConflict, type EnchantmentConflict } from '../conflictResolver.ts'
-import { type GearAugment, type GearAugmentSlot, type GearItem, GearSlot } from '../types.ts'
+import {
+  checkPotentialConflict,
+  type EnchantmentConflict
+} from '../conflictResolver.ts'
+import {
+  type GearAugment,
+  type GearAugmentSlot,
+  type GearItem,
+  GearSlot
+} from '../types.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
 import SetBonusBadge from './badges/SetBonusBadge.tsx'
 import EnchantmentList from './EnchantmentList.tsx'
 import TroveBadge from './TroveBadge.tsx'
 
+/**
+ * Renders an augment slot item within a gear planning UI.
+ * This component is responsible for displaying and managing an individual slot where a gear augment can be applied.
+ * It provides a dropdown for selecting or clearing an augment and displays associated augment properties and effects.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {Object} props.applicable - The applicable augments available for this slot, grouped and sorted by type.
+ * @param {Object} props.augSlot - Metadata about the augment slot, such as its type and associated name.
+ * @param {Array} props.currentConflicts - A list of potential or existing conflicts related to applied augments.
+ * @param {Array} props.currentEquipped - The list of items currently equipped by the user.
+ * @param {Array} props.currentSlottedAugments - Augments currently slotted for the gear being planned.
+ * @param {Array} props.currentSlottedNearlyFinished - Augments related to "nearly finished" configurations.
+ * @param {Array} props.currentSlottedRitualTable - Augments applied based on ritual-related configurations.
+ * @param {Array} props.currentSlottedLostPurpose - Augments linked to specific "Lost Purpose" characteristics.
+ * @param {number} props.idx - The unique index of the current augment slot item.
+ * @param {Function} props.openSetBonusBrowser - Callback to open the UI for browsing available set bonuses.
+ * @param {Object} props.selectedItem - The gear item currently selected for augmentation.
+ * @param {Function} props.setSlottedAugment - Callback for updating the slotted augment in the parent state.
+ * @param {Object} props.slot - Represents metadata specific to an augmentable slot in the gear configuration.
+ * @param {Object|null} props.slotted - The augment currently slotted in this slot, if any.
+ */
 const AugmentSlotItem = (props: Props) => {
   const {
     applicable,
@@ -55,8 +84,8 @@ const AugmentSlotItem = (props: Props) => {
               onChange={(e) => {
                 setShowOwnedOnly(e.target.checked)
               }}
-              className='small text-warning pb-0 mb-0'
-              style={{ fontSize: '0.55rem' }}
+              className='small text-info pb-0 mb-0'
+              style={{ fontSize: '0.65rem' }}
             />
           )}
         </span>
@@ -94,11 +123,15 @@ const AugmentSlotItem = (props: Props) => {
 
           {applicable.sortedGroupNames.map((groupName) => (
             <Fragment key={groupName}>
-              <Dropdown.Header className='text-light fw-bold py-0 ps-1' style={{ fontSize: '0.6rem' }}>
+              <Dropdown.Header className='text-light fw-bold py-0 ps-1' style={{ fontSize: '0.65rem' }}>
                 {groupName} Augments
               </Dropdown.Header>
 
               {filterApplicable(applicable.groups[groupName]).map((aug: GearAugment) => {
+                if (selectedItem.minimumLevel && aug.minLevel > selectedItem.minimumLevel) {
+                  return null
+                }
+
                 const results = aug.effectsAdded?.map((ench) =>
                   checkPotentialConflict(
                     ench,

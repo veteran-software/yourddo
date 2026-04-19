@@ -108,6 +108,7 @@ export const renderGearPlanner = (props: Props) => {
               <span>{slot}</span>
               {selectedItem && <TroveBadge itemName={selectedItem.name} troveData={troveData} />}
             </div>
+
             <FaMagnifyingGlass className='text-muted' size={12} />
           </Card.Header>
 
