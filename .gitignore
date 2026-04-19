@@ -28,3 +28,4 @@ coverage/
 .go-cache/
 /src/data/essenceCrafting/runtime/
 /src/data/loot/runtime/
+/src/data/fountainOfNecroticMight.json

@@ -1303,7 +1303,6 @@ func parseTemplateFortification(rawFortValue string) *api.Enchantment {
 		return nil
 	}
 
-	var name string
 	var bonusType string
 
 	// 2. Bonus Type (Optional, Index 1 - defaults to Enhancement)
@@ -1318,16 +1317,8 @@ func parseTemplateFortification(rawFortValue string) *api.Enchantment {
 		bonusType = defaultBonusType // Default value
 	}
 
-	// 3. Title (Optional, Index 2) - overrides the standard Name if present
-	if len(parts) >= 3 && stripBrackets(parts[2]) != "" {
-		name = stripBrackets(parts[2]) // Use custom title (e.g., "Fortification Penalty")
-	} else {
-		// Default name is just "Fortification"
-		name = baseName
-	}
-
 	return &api.Enchantment{
-		Name:      name,
+		Name:      baseName,
 		Amount:    amount,
 		BonusType: bonusType,
 		// No other fields are needed.
