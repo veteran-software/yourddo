@@ -2,23 +2,24 @@ import { useMemo } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import type { GearItem, GearSlot, LootEnchantment } from '../types.ts'
-import EnchantmentList from './EnchantmentList.tsx'
+import SelectedEnchantmentDisplay, { type BaseSelectorProps } from './SelectedEnchantmentDisplay.tsx'
 
-const LostPurposeSelector = ({
-  item,
-  slot,
-  selectedEnchantment,
-  onSelect,
-  conflicts,
-  equippedItems,
-  slottedAugments,
-  slottedNearlyFinished,
-  slottedRitualTable,
-  slottedLostPurpose,
-  wrapperClassName,
-  wrapperStyle
-}: Props) => {
+const LostPurposeSelector = (props: BaseSelectorProps) => {
+  const {
+    item,
+    slot,
+    selectedEnchantment,
+    onSelect,
+    conflicts,
+    equippedItems,
+    slottedAugments,
+    slottedNearlyFinished,
+    slottedRitualTable,
+    slottedLostPurpose,
+    wrapperClassName,
+    wrapperStyle
+  } = props
+
   // Filter recipes for compatible items
   // cannithRepurposingStation.ts exports an array of recipes
   const recipes: CraftingIngredient[] = useMemo(
@@ -113,39 +114,19 @@ const LostPurposeSelector = ({
         </Dropdown.Menu>
       </Dropdown>
 
-      {selectedEnchantment && (
-        <div className='mt-1 text-secondary text-start' style={{ fontSize: '0.6rem', lineHeight: '1.1' }}>
-          <EnchantmentList
-            enchantments={[selectedEnchantment]}
-            itemId={item.id}
-            conflicts={conflicts}
-            equippedItems={equippedItems}
-            source='slot'
-            browsingSlot={slot}
-            slottedAugments={slottedAugments}
-            slottedNearlyFinished={slottedNearlyFinished}
-            slottedRitualTable={slottedRitualTable}
-            slottedLostPurpose={slottedLostPurpose}
-          />
-        </div>
-      )}
+      <SelectedEnchantmentDisplay
+        selectedEnchantment={selectedEnchantment}
+        item={item}
+        slot={slot}
+        conflicts={conflicts}
+        equippedItems={equippedItems}
+        slottedAugments={slottedAugments}
+        slottedNearlyFinished={slottedNearlyFinished}
+        slottedRitualTable={slottedRitualTable}
+        slottedLostPurpose={slottedLostPurpose}
+      />
     </div>
   )
-}
-
-interface Props {
-  item: GearItem
-  slot: GearSlot
-  selectedEnchantment: LootEnchantment | null
-  onSelect: (enchantment: LootEnchantment | null) => void
-  conflicts: Record<string, import('../conflictResolver.ts').EnchantmentConflict[]>
-  equippedItems: GearItem[]
-  slottedAugments: Record<string, Record<number, import('../types.ts').GearAugment | null>>
-  slottedNearlyFinished: Record<string, LootEnchantment | null>
-  slottedRitualTable: Record<string, LootEnchantment | null>
-  slottedLostPurpose: Record<string, LootEnchantment | null>
-  wrapperClassName?: string
-  wrapperStyle?: React.CSSProperties
 }
 
 export default LostPurposeSelector

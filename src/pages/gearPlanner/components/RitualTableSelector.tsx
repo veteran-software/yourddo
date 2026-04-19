@@ -3,9 +3,15 @@ import { Dropdown } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types.ts'
 import { ritualTable } from '../../../data/ritualTable.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
-import type { GearItem, GearSlot, LootEnchantment } from '../types.ts'
-import EnchantmentList from './EnchantmentList.tsx'
+import type { LootEnchantment } from '../types.ts'
+import SelectedEnchantmentDisplay, {
+  type BaseSelectorProps
+} from './SelectedEnchantmentDisplay.tsx'
 import TroveBadge from './TroveBadge.tsx'
+
+interface Props extends BaseSelectorProps {
+  troveData: ItemRollup | null
+}
 
 const RitualTableSelector = (props: Props) => {
   const {
@@ -123,40 +129,19 @@ const RitualTableSelector = (props: Props) => {
         </Dropdown.Menu>
       </Dropdown>
 
-      {selectedEnchantment && (
-        <div className='mt-1 text-secondary text-start' style={{ fontSize: '0.6rem', lineHeight: '1.1' }}>
-          <EnchantmentList
-            enchantments={[selectedEnchantment]}
-            itemId={item.id}
-            conflicts={conflicts}
-            equippedItems={equippedItems}
-            source='slot'
-            browsingSlot={slot}
-            slottedAugments={slottedAugments}
-            slottedNearlyFinished={slottedNearlyFinished}
-            slottedRitualTable={slottedRitualTable}
-            slottedLostPurpose={slottedLostPurpose}
-          />
-        </div>
-      )}
+      <SelectedEnchantmentDisplay
+        selectedEnchantment={selectedEnchantment}
+        item={item}
+        slot={slot}
+        conflicts={conflicts}
+        equippedItems={equippedItems}
+        slottedAugments={slottedAugments}
+        slottedNearlyFinished={slottedNearlyFinished}
+        slottedRitualTable={slottedRitualTable}
+        slottedLostPurpose={slottedLostPurpose}
+      />
     </div>
   )
-}
-
-interface Props {
-  item: GearItem
-  slot: GearSlot
-  selectedEnchantment: LootEnchantment | null
-  onSelect: (enchantment: LootEnchantment | null) => void
-  troveData: ItemRollup | null
-  conflicts: Record<string, import('../conflictResolver.ts').EnchantmentConflict[]>
-  equippedItems: GearItem[]
-  slottedAugments: Record<string, Record<number, import('../types.ts').GearAugment | null>>
-  slottedNearlyFinished: Record<string, LootEnchantment | null>
-  slottedRitualTable: Record<string, LootEnchantment | null>
-  slottedLostPurpose: Record<string, LootEnchantment | null>
-  wrapperClassName?: string
-  wrapperStyle?: React.CSSProperties
 }
 
 export default RitualTableSelector
