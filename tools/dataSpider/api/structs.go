@@ -316,7 +316,7 @@ type ItemData struct {
 	Durability   string    `json:"durability"`
 	Weight       string    `json:"weight"`
 	BaseValue    PriceData `json:"baseValue"` // Structured Data
-	ArtifactType string    `json:"artifacttype"`
+	ArtifactType string    `json:"artifactType"`
 	// Quiver Specific
 	Capacity     string `json:"capacity,omitempty"`
 	MaxStackSize string `json:"maxStackSize,omitempty"`
@@ -327,15 +327,12 @@ type ItemData struct {
 	Details         string           `json:"details"`
 	Upgradeable     string           `json:"upgradeable"`
 	UpgradedFrom    string           `json:"upgradedFrom"`
-	Bug             string           `json:"bug"`
-	Replaced        string           `json:"replaced"`
 	// Visuals & Utility
-	Icon       string `json:"icon"`
-	Image      string `json:"image"`
-	OptionsRaw string `json:"optionsRaw"`
-	IsCrafted  bool   `json:"isCrafted,omitempty"`
-	Grouping   string `json:"grouping,omitempty"`
-	Link       string `json:"link,omitempty"`
+	Icon      string `json:"icon"`
+	Image     string `json:"image"`
+	IsCrafted bool   `json:"isCrafted,omitempty"`
+	Grouping  string `json:"grouping,omitempty"`
+	Link      string `json:"link,omitempty"`
 	// Templates (Raw for subsequent parsing)
 	CraftingRequirements []CraftingRequirement `json:"craftingRequirements,omitempty"`
 	Enchantments         []Enchantment         `json:"enchantments"`

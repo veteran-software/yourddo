@@ -396,12 +396,6 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 	if val, ok := fields["upgradedfrom"]; ok {
 		data.UpgradedFrom = val
 	}
-	if val, ok := fields["bug"]; ok {
-		data.Bug = val
-	}
-	if val, ok := fields["replaced"]; ok {
-		data.Replaced = val
-	}
 	if val, ok := fields["grouping"]; ok {
 		data.Grouping = val
 	}
@@ -417,9 +411,6 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 	}
 	if val, ok := fields["image"]; ok {
 		data.Image = val
-	}
-	if val, ok := fields["options"]; ok {
-		data.OptionsRaw = val
 	}
 	if val, ok := fields["emptyaugments"]; ok {
 		data.AugmentsRaw = val

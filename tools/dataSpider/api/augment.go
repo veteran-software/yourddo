@@ -14,7 +14,7 @@ type AugmentItem struct {
 	FoundIn           []string                `json:"foundIn,omitempty"`
 	Image             string                  `json:"image,omitempty"`
 	InventoryMaxStack *int                    `json:"inventoryMaxStack,omitempty"`
-	MinimumLevel      *int                    `json:"minimumLevel,omitempty"`
+	MinLevel          *int                    `json:"minLevel,omitempty"`
 	AbsoluteMinLevel  *int                    `json:"absoluteMinLevel,omitempty"`
 	Notes             string                  `json:"notes,omitempty"`
 	Type              string                  `json:"type,omitempty"`

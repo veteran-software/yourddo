@@ -24,7 +24,7 @@ type SetBonusIndex map[string][]ItemInfo
 type RawItem struct {
 	Name         string `json:"name"`
 	MinLevel     string `json:"minLevel,omitempty"`     // For regular items
-	MinimumLevel *int   `json:"minimumLevel,omitempty"` // For augments
+	MinimumLevel *int   `json:"minLevel,omitempty"` // For augments
 	SetBonus     []struct {
 		Name string `json:"name"`
 	} `json:"setBonus,omitempty"`

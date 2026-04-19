@@ -150,7 +150,7 @@ func parseBasicFields(out *api.AugmentItem, fields map[string]string, pageTitle 
 
 	if mv := strings.TrimSpace(fields["minlevel"]); mv != "" {
 		if i, err := strconv.Atoi(mv); err == nil {
-			out.MinimumLevel = &i
+			out.MinLevel = &i
 		}
 	}
 
@@ -213,7 +213,7 @@ func parseDropAndCrafting(out *api.AugmentItem, fields map[string]string, pageTi
 		}
 
 		vikPrefix := ""
-		if out.MinimumLevel != nil && *out.MinimumLevel >= 31 {
+		if out.MinLevel != nil && *out.MinLevel >= 31 {
 			vikPrefix = "Legendary Bleak "
 		} else {
 			nameLower := strings.ToLower(firstNonEmpty(out.Name, pageTitle))
@@ -221,7 +221,7 @@ func parseDropAndCrafting(out *api.AugmentItem, fields map[string]string, pageTi
 				vikPrefix = "Legendary Bleak "
 			} else if strings.Contains(nameLower, "(heroic)") {
 				vikPrefix = "Bleak "
-			} else if out.MinimumLevel != nil {
+			} else if out.MinLevel != nil {
 				vikPrefix = "Bleak "
 			}
 		}
@@ -1069,7 +1069,7 @@ func buildManualDiamondSkillAugments(existing map[string]bool) []api.AugmentItem
 			// MinimumLevel pointer
 			out = append(out, api.AugmentItem{
 				Name:         name,
-				MinimumLevel: new(lv.lvl),
+				MinLevel:     new(lv.lvl),
 				FoundIn:      []string{"Random chests"},
 				AugmentType:  "Colorless",
 				EffectsAdded: []api.PartialEnhancementOut{effect},
