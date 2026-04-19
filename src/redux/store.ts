@@ -1,14 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit/react'
+import { configureStore } from '@reduxjs/toolkit'
 import { serverStatusApi } from '../api/serverStatusApi.ts'
 import { serverStatusLamApi } from '../api/serverStatusLamApi.ts'
 
 import appReducer from './slices/appSlice'
 import dinosaurBoneReducer from './slices/dinosaurBoneSlice'
-import gearPlannerReducer from './slices/gearPlannerSlice.ts'
-import greenSteelReducer from './slices/hgsSlice.ts'
+import gearPlannerReducer, {
+  GEAR_PLANNER_STORAGE_KEY
+} from './slices/gearPlannerSlice'
+import greenSteelReducer from './slices/hgsSlice'
 import incrediblePotentialReducer from './slices/incrediblePotentialSlice'
-import legendaryGreenSteelReducer from './slices/lgsSlice.ts'
-import viktraniumExperimentReducer from './slices/viktraniumSlice.ts'
+import legendaryGreenSteelReducer from './slices/lgsSlice'
+import viktraniumExperimentReducer from './slices/viktraniumSlice'
 
 const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
@@ -26,6 +28,21 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(serverStatusApi.middleware).concat(serverStatusLamApi.middleware)
+})
+
+store.subscribe(() => {
+  const state = store.getState()
+
+  const persistSlices = [{ key: GEAR_PLANNER_STORAGE_KEY, data: state.gearPlanner }]
+
+  persistSlices.forEach(({ key, data }) => {
+    try {
+      const serializedState = JSON.stringify(data)
+      localStorage.setItem(key, serializedState)
+    } catch (err) {
+      console.error(`Could not save state for ${key}`, err)
+    }
+  })
 })
 
 export type AppState = ReturnType<typeof store.getState>

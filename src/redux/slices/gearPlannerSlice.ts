@@ -20,10 +20,29 @@ interface GearPlannerState {
   activeSetupId: string
 }
 
-const initialState: GearPlannerState = {
-  characterSetups: [createDefaultSetup('default', 'Default Setup')],
-  activeSetupId: 'default'
+export const GEAR_PLANNER_STORAGE_KEY = 'gearPlannerState'
+
+const loadState = (): GearPlannerState => {
+  try {
+    const serializedState: string | null = localStorage.getItem(GEAR_PLANNER_STORAGE_KEY)
+    if (serializedState === null) {
+      return {
+        characterSetups: [createDefaultSetup('default', 'Default Setup')],
+        activeSetupId: 'default'
+      }
+    }
+    return JSON.parse(serializedState) as GearPlannerState
+  } catch (err) {
+    console.error('Error loading state from localStorage:', err)
+
+    return {
+      characterSetups: [createDefaultSetup('default', 'Default Setup')],
+      activeSetupId: 'default'
+    }
+  }
 }
+
+const initialState: GearPlannerState = loadState()
 
 type SlotOwner = 'character' | 'artificer_pet' | 'druid_pet'
 
