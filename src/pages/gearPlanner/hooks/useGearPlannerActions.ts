@@ -18,6 +18,7 @@ import {
 } from '../../../redux/slices/gearPlannerSlice'
 import { getSlotOwner } from '../conflictResolver'
 import { isMinorArtifact } from '../helpers'
+import { createDefaultSetup } from '../initialState'
 import {
   CLASS_PROFICIENCIES,
   type Curse,
@@ -49,42 +50,7 @@ export const useGearPlannerActions = ({
 
   const addSetup = () => {
     const newId = crypto.randomUUID()
-    const initialPetState = (): PetState => ({
-      slots: {},
-      slottedAugments: {},
-      slottedCurses: {},
-      slottedFiligrees: {},
-      unlockedFiligreeSlots: {},
-      slottedGemSetBonuses: {},
-      slottedEssenceEnchantments: {},
-      slottedNearlyFinished: {},
-      slottedRitualTable: {},
-      slottedLostPurpose: {}
-    })
-
-    const newSetup: GearSetup = {
-      id: newId,
-      name: `New Setup ${String(setups.length + 1)}`,
-      minLevel: 1,
-      maxLevel: 34,
-      classes: [null, null, null],
-      weaponFilters: [],
-      armorFilters: [],
-      shieldFilters: [],
-      allowMetalWithDruid: false,
-      slots: {} as Record<GearSlot, GearItem | null>,
-      slottedAugments: {},
-      slottedCurses: {},
-      slottedFiligrees: {},
-      unlockedFiligreeSlots: {},
-      slottedGemSetBonuses: {},
-      slottedEssenceEnchantments: {},
-      slottedNearlyFinished: {},
-      slottedRitualTable: {},
-      slottedLostPurpose: {},
-      artificerPet: initialPetState(),
-      druidPet: initialPetState()
-    }
+    const newSetup = createDefaultSetup(newId, `New Setup ${String(setups.length + 1)}`)
 
     dispatch(addSetupAction(newSetup))
     dispatch(setActiveSetupAction(newId))

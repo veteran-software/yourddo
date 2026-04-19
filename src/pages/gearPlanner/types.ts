@@ -180,7 +180,7 @@ export interface Curse {
   type: string
 }
 
-export interface PetState {
+export interface SlottedProperties {
   slots: Record<string, GearItem | null>
   slottedAugments: Record<string, Record<number, GearAugment | null>>
   slottedCurses: Record<string, Curse | null>
@@ -193,7 +193,9 @@ export interface PetState {
   slottedLostPurpose: Record<string, LootEnchantment | null>
 }
 
-export interface GearSetup {
+export interface PetState extends SlottedProperties {}
+
+export interface GearSetup extends SlottedProperties {
   id: string
   name: string
   minLevel: number
@@ -204,15 +206,6 @@ export interface GearSetup {
   shieldFilters: string[] // Selected shield types (e.g., 'Buckler', 'Tower Shield')
   allowMetalWithDruid: boolean // Override for Druid metal restriction
   slots: Record<GearSlot, GearItem | null>
-  slottedAugments: Record<string, Record<number, GearAugment | null>> // itemId -> { slotIndex -> augment }
-  slottedCurses: Record<string, Curse | null> // itemId -> curse
-  slottedFiligrees: Record<string, (GearItem | null)[]> // itemId -> filigrees
-  unlockedFiligreeSlots: Record<string, number> // itemId -> number of slots
-  slottedGemSetBonuses: Record<string, (string | null)[]> // itemId -> [bonus1, bonus2]
-  slottedEssenceEnchantments: Record<string, Record<string, string | null>> // itemId -> { slotName -> enchantmentId }
-  slottedNearlyFinished: Record<string, LootEnchantment | null> // itemId -> selected enchantment
-  slottedRitualTable: Record<string, LootEnchantment | null> // itemId -> selected enchantment
-  slottedLostPurpose: Record<string, LootEnchantment | null> // itemId -> selected enchantment
   artificerPet: PetState
   druidPet: PetState
 }
