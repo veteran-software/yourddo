@@ -52,13 +52,21 @@ const AugmentSlotItem = (props: Props) => {
 
   const { troveData } = useAppSelector((state) => state.app)
   const [showOwnedOnly, setShowOwnedOnly] = React.useState(false)
+  const [filter, setFilter] = React.useState('')
 
   const filterApplicable = (group: GearAugment[]) => {
-    if (!showOwnedOnly || !troveData) {
-      return group
+    let filtered = group
+
+    if (filter) {
+      const lowerFilter = filter.toLowerCase()
+      filtered = filtered.filter((aug) => aug.name.toLowerCase().includes(lowerFilter))
     }
 
-    return group.filter((aug: GearAugment) => getTroveKey(aug.name) in troveData)
+    if (!showOwnedOnly || !troveData) {
+      return filtered
+    }
+
+    return filtered.filter((aug: GearAugment) => getTroveKey(aug.name) in troveData)
   }
 
   return (
@@ -103,8 +111,22 @@ const AugmentSlotItem = (props: Props) => {
 
         <Dropdown.Menu
           className='gear-planner-augment-menu'
-          style={{ fontSize: '0.65rem', maxHeight: '200px', overflowY: 'auto' }}
+          style={{ fontSize: '0.65rem', maxHeight: '300px', overflowY: 'auto' }}
         >
+          <div className='px-2 py-1 sticky-top bg-white border-bottom'>
+            <Form.Control
+              size='sm'
+              type='text'
+              placeholder='Search augments...'
+              value={filter}
+              onChange={(e) => {
+                setFilter(e.target.value)
+              }}
+              style={{ fontSize: '0.65rem' }}
+              autoFocus
+            />
+          </div>
+
           <Dropdown.Item
             onClick={() => {
               setSlottedAugment(selectedItem.id, idx, null, slot)
