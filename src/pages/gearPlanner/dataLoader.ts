@@ -259,6 +259,14 @@ interface RawAugment {
   setBonus?: { name: string }[]
 }
 
+export const generateItemId = (
+  item: { name: string; minLevel: string | number },
+  slot: string,
+  fileName: string
+): string => {
+  return `${slot}|${item.name}|${String(item.minLevel || 1)}|${fileName}`
+}
+
 export const loadGearData = (): Promise<{
   items: GearItem[]
   augments: GearAugment[]
@@ -336,14 +344,11 @@ export const loadGearData = (): Promise<{
         weight: aug.weight,
         update: aug.update,
         effectsAdded:
-          aug.effectsAdded?.map(
-            (e) =>
-              ({
-                name: e.name ?? '',
-                modifier: e.modifier ?? undefined,
-                bonus: e.bonus ?? undefined
-              }) as LootEnchantment
-          ) ?? [],
+          aug.effectsAdded?.map((e) => ({
+            name: e.name ?? '',
+            modifier: e.modifier ?? undefined,
+            bonus: e.bonus ?? undefined
+          })) ?? [],
         setBonus: aug.setBonus?.map((sb) => ({ name: sb.name }))
       }
 
@@ -361,7 +366,7 @@ export const loadGearData = (): Promise<{
     if (module && typeof module === 'object' && 'default' in module && Array.isArray(module.default)) {
       const data = module.default as LootItem[]
 
-      data.forEach((item: LootItem, idx: number) => {
+      data.forEach((item: LootItem) => {
         // Special-case: Some items in collar.json are actually pet armors, not weapons
         let effectiveSlots = slots
 
@@ -384,7 +389,7 @@ export const loadGearData = (): Promise<{
         effectiveSlots.forEach((slot: GearSlot) => {
           const gearItem: GearItem = {
             ...item,
-            id: `${fileName}-${String(idx)}-${slot}`,
+            id: generateItemId(item, slot, fileName),
             slot: slot,
             minLevel: item.minLevel || '1',
             minimumLevel: Number.parseInt(String(item.minLevel || 1), 10),
