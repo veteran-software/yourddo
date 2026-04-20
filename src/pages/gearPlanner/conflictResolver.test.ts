@@ -30,18 +30,14 @@ describe('conflictResolver Bugs', () => {
       id: 'item1',
       name: 'Item 1',
       slot: GearSlot.MainHand,
-      enchantments: [
-        { name: 'Strength', bonus: '', modifier: '1' }
-      ]
+      enchantments: [{ name: 'Strength', bonus: '', modifier: '1' }]
     } as unknown as GearItem
 
     const item2 = {
       id: 'item2',
       name: 'Item 2',
       slot: GearSlot.OffHand,
-      enchantments: [
-        { name: 'Strength', bonus: null, modifier: '1' }
-      ]
+      enchantments: [{ name: 'Strength', bonus: null, modifier: '1' }]
     } as unknown as GearItem
 
     it('resolveConflicts should not report conflicts for "no type" bonuses', () => {
@@ -50,11 +46,7 @@ describe('conflictResolver Bugs', () => {
     })
 
     it('checkPotentialConflict should not report conflict for "no type" bonus', () => {
-      const result = checkPotentialConflict(
-        { name: 'Strength', bonus: '', modifier: '1' },
-        [item1],
-        GearSlot.OffHand
-      )
+      const result = checkPotentialConflict({ name: 'Strength', bonus: '', modifier: '1' }, [item1], GearSlot.OffHand)
       expect(result.isConflict).toBe(false)
     })
 
@@ -63,18 +55,14 @@ describe('conflictResolver Bugs', () => {
         id: 'item1',
         name: 'Item 1',
         slot: GearSlot.MainHand,
-        enchantments: [
-          { name: 'Strength', bonus: 'Enhancement', modifier: '1' }
-        ]
+        enchantments: [{ name: 'Strength', bonus: 'Enhancement', modifier: '1' }]
       } as unknown as GearItem
 
       const typedItem2 = {
         id: 'item2',
         name: 'Item 2',
         slot: GearSlot.OffHand,
-        enchantments: [
-          { name: 'Strength', bonus: 'Enhancement', modifier: '1' }
-        ]
+        enchantments: [{ name: 'Strength', bonus: 'Enhancement', modifier: '1' }]
       } as unknown as GearItem
 
       const conflicts = resolveConflicts([typedItem1, typedItem2])
