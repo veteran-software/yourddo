@@ -17,11 +17,11 @@ import {
 export const isEssenceCraftedName = (name: string) => name.startsWith('Essence Crafted')
 
 export const findFountainUpgradeData = (itemName: string, pageTitle?: string): UpgradeEntry | undefined => {
-  return findUpgradeData(itemName, fountainData as UpgradeEntry[], pageTitle)
+  return findUpgradeData(itemName, fountainData, pageTitle)
 }
 
 export const findStormreaverUpgradeData = (itemName: string, pageTitle?: string): UpgradeEntry | undefined => {
-  return findUpgradeData(itemName, stormreaverUpgradeData as UpgradeEntry[], pageTitle)
+  return findUpgradeData(itemName, stormreaverUpgradeData, pageTitle)
 }
 
 export const findUpgradeData = (
@@ -98,9 +98,7 @@ export const getScaledEssenceEnchantments = (ench: EssenceEnchantment, minLevel:
 
   effects.forEach((innerEnch) => {
     const rawDisplayName = (innerEnch.statModified ?? innerEnch.name) || ench.enchantmentName
-    const displayNames: string[] = Array.isArray(rawDisplayName)
-      ? (rawDisplayName as unknown as string[])
-      : [rawDisplayName]
+    const displayNames: string[] = Array.isArray(rawDisplayName) ? rawDisplayName : [rawDisplayName]
 
     displayNames.forEach((name) => {
       results.push({

@@ -323,7 +323,7 @@ export const useGearPlannerFiltering = ({
   ])
 
   const searchResultsBySlot = useMemo(() => {
-    if (!dataReady) return {} as Record<GearSlot, GearItem[]>
+    if (!dataReady) return {}
 
     const results: Partial<Record<GearSlot, GearItem[]>> = {}
     const normalizedSearch: string = normalizeString(enchantmentSearch)

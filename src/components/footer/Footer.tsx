@@ -122,7 +122,7 @@ const Footer = () => {
     }, 60000)
 
     return () => {
-      globalThis.clearInterval(mainServersIntervalIdRef.current as unknown as number)
+      globalThis.clearInterval(mainServersIntervalIdRef.current)
     }
   }, [gameWorlds, iterateResults, statusTrigger])
 
@@ -180,7 +180,7 @@ const Footer = () => {
     }, 60000)
 
     return () => {
-      globalThis.clearInterval(lamServerIntervalIdRef.current as unknown as number)
+      globalThis.clearInterval(lamServerIntervalIdRef.current)
     }
   }, [gameWorldsLam, iterateResults, statusTriggerLam])
 

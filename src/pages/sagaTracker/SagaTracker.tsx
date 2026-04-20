@@ -31,12 +31,7 @@ const STORAGE_KEY_TURNED_IN_AT_V1 = 'yourddo:saga-tracker:turnedInAt:v1'
 const STORAGE_KEY_ACTIVE_TAB = 'yourddo:saga-tracker:activeTab:v1'
 
 // Authoritative fixed list from JSON (no completion fields in file)
-const fixedSagas: Omit<SagaItem, 'completed' | 'turnedIn'>[] = sagas as unknown as {
-  id: string
-  name: string
-  levelRange: string
-  npc: string
-}[]
+const fixedSagas: Omit<SagaItem, 'completed' | 'turnedIn'>[] = sagas
 
 interface QuestDef {
   id: string
@@ -44,7 +39,7 @@ interface QuestDef {
   sagas: string[]
 }
 
-const allQuests: QuestDef[] = questsData as unknown as QuestDef[]
+const allQuests: QuestDef[] = questsData
 
 // Read statuses from localStorage and merge onto the authoritative JSON list
 

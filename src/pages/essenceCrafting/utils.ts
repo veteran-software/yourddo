@@ -19,7 +19,7 @@ export const getAffixOptions = (slotKey: string, affix: AffixKind): string[] => 
 
   if (dataTokensForSlot.length === 0) return []
 
-  const fieldName = affix as 'prefix' | 'suffix' | 'extra'
+  const fieldName = affix
 
   const options = new Set<string>()
 
