@@ -26,7 +26,7 @@ import {
 } from '../../redux/slices/dinosaurBoneSlice.ts'
 import type { AppDispatch } from '../../redux/store.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
-import type { CraftingIngredient } from '../../types/crafting.ts'
+import type { Augment, CraftingIngredient } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { camelCaseToTitleCase, getCumulativeIngredients } from '../../utils/utils.ts'
 import CumulativeIngredientsCard from './components/CumulativeIngredientsCard.tsx'
@@ -130,8 +130,10 @@ const DinosaurBone = () => {
   }
 
   const availableAugmentSlots = useMemo<string[]>(() => {
-    if (!selectedItem?.augments?.length) return []
-    const aug = selectedItem.augments[0]
+    if (!selectedItem?.augments || selectedItem.augments.length === 0) return []
+    const aug: string | Augment = selectedItem.augments[0]
+    if (typeof aug === 'string') return []
+
     return Object.entries(aug)
       .filter(([key, value]) => {
         // Include both null augment slots and set bonus slots
@@ -220,7 +222,7 @@ const DinosaurBone = () => {
                   filters={itemFilters}
                   onFilterModeChange={(mode: 'OR' | 'AND') => dispatch(setItemFilterMode(mode))}
                   onFiltersChange={(filters: string[]) => dispatch(setItemFilters(filters))}
-                  disabled={selectedItem && !isDinosaurBoneWeapon(selectedItem)}
+                  disabled={!!selectedItem && !isDinosaurBoneWeapon(selectedItem)}
                 />
 
                 <FilterableDropdown
@@ -241,7 +243,7 @@ const DinosaurBone = () => {
                   filters={itemFilters}
                   onFilterModeChange={(mode: 'OR' | 'AND') => dispatch(setItemFilterMode(mode))}
                   onFiltersChange={(filters: string[]) => dispatch(setItemFilters(filters))}
-                  disabled={selectedItem && !isAttunedItem(selectedItem)}
+                  disabled={!!selectedItem && !isAttunedItem(selectedItem)}
                 />
 
                 <FilterableDropdown
@@ -262,7 +264,7 @@ const DinosaurBone = () => {
                   filters={itemFilters}
                   onFilterModeChange={(mode: 'OR' | 'AND') => dispatch(setItemFilterMode(mode))}
                   onFiltersChange={(filters: string[]) => dispatch(setItemFilters(filters))}
-                  disabled={selectedItem && !isDinosaurBoneArmorOrAccessory(selectedItem)}
+                  disabled={!!selectedItem && !isDinosaurBoneArmorOrAccessory(selectedItem)}
                 />
 
                 <FilterableDropdown
@@ -283,7 +285,7 @@ const DinosaurBone = () => {
                   filters={itemFilters}
                   onFilterModeChange={(mode: 'OR' | 'AND') => dispatch(setItemFilterMode(mode))}
                   onFiltersChange={(filters: string[]) => dispatch(setItemFilters(filters))}
-                  disabled={selectedItem && !isNamedItem(selectedItem)}
+                  disabled={!!selectedItem && !isNamedItem(selectedItem)}
                 />
               </Stack>
             </Col>

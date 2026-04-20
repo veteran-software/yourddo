@@ -1,21 +1,35 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit/react'
-import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
+
+interface ViktraniumExperimentState {
+  selectedHeroicCraftedItem: CraftingIngredient | undefined
+  selectedHeroicLootItem: CraftingIngredient | undefined
+  selectedLegendaryCraftedItem: CraftingIngredient | undefined
+  selectedLegendaryLootItem: CraftingIngredient | undefined
+  selectedWickedCraftedItem: CraftingIngredient | undefined
+  itemFilters: string[]
+  itemFilterMode: 'OR' | 'AND'
+  selectedAugments: Record<string, CraftingIngredient | null>
+  augmentFilters: string[]
+  augmentFilterMode: 'OR' | 'AND'
+}
+
+const initialState: ViktraniumExperimentState = {
+  selectedHeroicCraftedItem: undefined,
+  selectedHeroicLootItem: undefined,
+  selectedLegendaryCraftedItem: undefined,
+  selectedLegendaryLootItem: undefined,
+  selectedWickedCraftedItem: undefined,
+  itemFilters: [],
+  itemFilterMode: 'AND',
+  selectedAugments: {},
+  augmentFilters: [],
+  augmentFilterMode: 'OR'
+}
 
 const { actions, reducer } = createSlice({
   name: 'viktraniumExperiment',
-  initialState: {
-    selectedHeroicCraftedItem: undefined,
-    selectedHeroicLootItem: undefined,
-    selectedLegendaryCraftedItem: undefined,
-    selectedLegendaryLootItem: undefined,
-    selectedWickedCraftedItem: undefined,
-    itemFilters: [],
-    itemFilterMode: 'AND',
-    selectedAugments: {},
-    augmentFilters: [],
-    augmentFilterMode: 'OR'
-  },
+  initialState,
   reducers: {
     setItemFilters: (state, action: PayloadAction<string[]>) => {
       state.itemFilters = [...action.payload]
@@ -79,7 +93,7 @@ const { actions, reducer } = createSlice({
       state,
       action: PayloadAction<{
         slot: string
-        augment: AugmentItem | null
+        augment: CraftingIngredient | null
       }>
     ) {
       const { slot, augment } = action.payload
@@ -91,19 +105,6 @@ const { actions, reducer } = createSlice({
     }
   }
 })
-
-interface ViktraniumExperimentState {
-  selectedHeroicCraftedItem: CraftingIngredient | undefined
-  selectedHeroicLootItem: CraftingIngredient | undefined
-  selectedLegendaryCraftedItem: CraftingIngredient | undefined
-  selectedLegendaryLootItem: CraftingIngredient | undefined
-  selectedWickedCraftedItem: CraftingIngredient | undefined
-  itemFilters: string[]
-  itemFilterMode: 'OR' | 'AND'
-  selectedAugments: Record<string, AugmentItem | null>
-  augmentFilters: string[]
-  augmentFilterMode: 'OR' | 'AND'
-}
 
 export default reducer
 export const {

@@ -1,16 +1,12 @@
 import { useCallback, useMemo, useRef } from 'react'
 import { useAppSelector } from '../../../redux/hooks'
-import { createDefaultSetup } from '../initialState'
+import type { GearSetup } from '../types.ts'
 import { renderGearPlanner } from './renderGearPlanner.tsx'
 import { useGearPlannerActions } from './useGearPlannerActions'
 import { useGearPlannerContext } from './useGearPlannerContext'
 import { useGearPlannerData } from './useGearPlannerData'
 import { useGearPlannerFiltering } from './useGearPlannerFiltering'
-import {
-  isMetal as isMetalHelper,
-  useFormatDropLocations,
-  useIsItemVisibleForClasses
-} from './useGearPlannerHelpers'
+import { isMetal as isMetalHelper, useFormatDropLocations, useIsItemVisibleForClasses } from './useGearPlannerHelpers'
 import { useGearPlannerUI } from './useGearPlannerUI'
 
 interface Props {
@@ -77,8 +73,7 @@ const useGearPlanner = (props: Props) => {
   const formatDropLocations = useFormatDropLocations()
   const isItemVisibleForClasses = useIsItemVisibleForClasses()
 
-  const activeSetup =
-    setups.find((s) => s.id === activeSetupId) ?? (setups[0]) ?? createDefaultSetup('default', 'Default Setup')
+  const activeSetup = setups.find((s: GearSetup) => s.id === activeSetupId) ?? setups[0]
   const { artificerPet, druidPet } = activeSetup
 
   const { characterEquipped, artificerEquipped, druidEquipped, getContextInfo, getEntityState } = useGearPlannerContext(

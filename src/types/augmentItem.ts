@@ -11,8 +11,8 @@ export interface AugmentItem extends Ingredient {
   binding?: Binding
   foundIn?: (string | LootDropLocation)[] | null
   craftedIn?: string
-  effectsAdded?: Partial<Enhancement>[]
-  effectsRemoved?: Partial<Enhancement>[]
+  effectsAdded?: Enhancement[]
+  effectsRemoved?: Enhancement[]
   setBonus?: SetBonus[]
   requirements?: CraftingIngredient[]
   update?: number | string

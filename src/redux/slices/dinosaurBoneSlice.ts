@@ -1,16 +1,27 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit/react'
 import type { CraftingIngredient } from '../../types/crafting.ts'
 
+interface DinosaurBoneState {
+  selectedItem: CraftingIngredient | undefined
+  itemFilters: string[]
+  itemFilterMode: 'OR' | 'AND'
+  selectedAugments: Record<string, CraftingIngredient | null>
+  augmentFilters: string[]
+  augmentFilterMode: 'OR' | 'AND'
+}
+
+const initialState: DinosaurBoneState = {
+  selectedItem: undefined,
+  itemFilters: [],
+  itemFilterMode: 'AND',
+  selectedAugments: {},
+  augmentFilters: [],
+  augmentFilterMode: 'OR'
+}
+
 const { actions, reducer } = createSlice({
   name: 'dinosaurBone',
-  initialState: {
-    selectedItem: undefined,
-    itemFilters: [],
-    itemFilterMode: 'AND',
-    selectedAugments: {},
-    augmentFilters: [],
-    augmentFilterMode: 'OR'
-  },
+  initialState,
   reducers: {
     setSelectedItem: (state, action: PayloadAction<CraftingIngredient | undefined>) => {
       state.selectedItem = action.payload
@@ -54,15 +65,6 @@ const { actions, reducer } = createSlice({
     }
   }
 })
-
-interface DinosaurBoneState {
-  selectedItem: CraftingIngredient | undefined
-  itemFilters: string[]
-  itemFilterMode: 'OR' | 'AND'
-  selectedAugments: Record<string, CraftingIngredient | null>
-  augmentFilters: string[]
-  augmentFilterMode: 'OR' | 'AND'
-}
 
 export default reducer
 export const {

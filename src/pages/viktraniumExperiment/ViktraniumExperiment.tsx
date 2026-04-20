@@ -32,7 +32,6 @@ import {
   setSelectedLegendaryLootItem,
   setSelectedWickedCraftedItem
 } from '../../redux/slices/viktraniumSlice.ts'
-import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
 import { camelCaseToTitleCase, getCumulativeIngredients } from '../../utils/utils.ts'
@@ -111,8 +110,8 @@ const ViktraniumExperiment = () => {
     selectedWickedCraftedItem
   ])
 
-  const augmentOptions = useMemo<Record<string, AugmentItem[]>>(() => {
-    return availableAugmentSlots.reduce<Record<string, AugmentItem[]>>((acc, slot) => {
+  const augmentOptions = useMemo<Record<string, CraftingIngredient[]>>(() => {
+    return availableAugmentSlots.reduce<Record<string, CraftingIngredient[]>>((acc, slot) => {
       const clean: string = slot.replace(/([A-Z])/g, ' $1').trim()
       const words: string[] = clean.split(' ')
 
@@ -137,8 +136,8 @@ const ViktraniumExperiment = () => {
 
         if (allowed?.length) {
           acc[slot] = [...augmentMaster]
-            .filter((ing: AugmentItem) => allowed.includes((ing.augmentType ?? '') as string))
-            .sort((a: AugmentItem, b: AugmentItem) => {
+            .filter((ing: CraftingIngredient) => allowed.includes((ing.augmentType ?? '') as string))
+            .sort((a: CraftingIngredient, b: CraftingIngredient) => {
               // Sort by augmentType (color) then by name for stable grouping
               const at: string = a.augmentType ?? ''
               const bt: string = b.augmentType ?? ''
@@ -153,8 +152,8 @@ const ViktraniumExperiment = () => {
 
         // Fallback: if unknown color (e.g., Sun/Moon), match the exact type name
         acc[slot] = [...augmentMaster]
-          .filter((ing: AugmentItem) => ing.augmentType === titleCase(words[0]))
-          .sort((a: AugmentItem, b: AugmentItem) => a.name.localeCompare(b.name))
+          .filter((ing: CraftingIngredient) => ing.augmentType === titleCase(words[0]))
+          .sort((a: CraftingIngredient, b: CraftingIngredient) => a.name.localeCompare(b.name))
 
         return acc
       }
@@ -162,16 +161,16 @@ const ViktraniumExperiment = () => {
       // Focused/Multi-word augments use strict type matching (e.g., "Red: Something (Minor)")
       acc[slot] = [...augmentMaster]
         .filter(
-          (ing: AugmentItem) =>
+          (ing: CraftingIngredient) =>
             ing.augmentType === `${titleCase(words[0])}: ${titleCase(words[1])} (${titleCase(words[2])})`
         )
-        .sort((a: AugmentItem, b: AugmentItem) => a.name.localeCompare(b.name))
+        .sort((a: CraftingIngredient, b: CraftingIngredient) => a.name.localeCompare(b.name))
 
       return acc
     }, {})
   }, [availableAugmentSlots])
 
-  const filteredAugmentOptions: Record<string, AugmentItem[]> = useMemo(() => {
+  const filteredAugmentOptions: Record<string, CraftingIngredient[]> = useMemo(() => {
     if (augmentFilters.length === 0) {
       return augmentOptions
     }
@@ -184,7 +183,7 @@ const ViktraniumExperiment = () => {
     )
   }, [augmentOptions, augmentFilters])
 
-  const handleSelectAugment = (slot: string, augment: AugmentItem) => {
+  const handleSelectAugment = (slot: string, augment: CraftingIngredient) => {
     dispatch(
       setSelectedAugment({
         slot,
