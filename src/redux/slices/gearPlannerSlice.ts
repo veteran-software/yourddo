@@ -11,11 +11,10 @@ import {
   GearSlot,
   type LootEnchantment,
   type LootItem,
-  type PetState,
   type SlottedProperties
 } from '../../pages/gearPlanner/types'
 
-interface GearPlannerState {
+export interface GearPlannerState {
   characterSetups: GearSetup[]
   activeSetupId: string
 }
@@ -84,6 +83,22 @@ const getTarget = (setup: GearSetup, owner: SlotOwner): SlottedProperties => {
   return setup
 }
 
+const clearMetadata = (target: SlottedProperties, id: string) => {
+  /* eslint-disable @typescript-eslint/no-dynamic-delete */
+  delete target.slottedAugments[id]
+  delete target.slottedCurses[id]
+  delete target.slottedFiligrees[id]
+  delete target.unlockedFiligreeSlots[id]
+  delete target.slottedGemSetBonuses[id]
+  delete target.slottedEssenceEnchantments[id]
+  delete target.slottedNearlyFinished[id]
+  delete target.slottedRitualTable[id]
+  delete target.slottedLostPurpose[id]
+  delete target.slottedFountainOfNecroticMight[id]
+  delete target.slottedStormreaverUpgrade[id]
+  /* eslint-enable @typescript-eslint/no-dynamic-delete */
+}
+
 const gearPlannerSlice = createSlice({
   name: 'gearPlanner',
   initialState,
@@ -108,12 +123,9 @@ const gearPlannerSlice = createSlice({
         })
 
         if (itemIdsToRemove.length > 0) {
-          setup.slottedFiligrees = Object.fromEntries(
-            Object.entries(setup.slottedFiligrees).filter(([id]) => !itemIdsToRemove.includes(id))
-          )
-          setup.unlockedFiligreeSlots = Object.fromEntries(
-            Object.entries(setup.unlockedFiligreeSlots).filter(([id]) => !itemIdsToRemove.includes(id))
-          )
+          itemIdsToRemove.forEach((id) => {
+            clearMetadata(setup, id)
+          })
         }
       }
     },
@@ -125,8 +137,11 @@ const gearPlannerSlice = createSlice({
     },
     removeSetup: (state, action: PayloadAction<string>) => {
       state.characterSetups = state.characterSetups.filter((s) => s.id !== action.payload)
-      if (state.activeSetupId === action.payload) {
-        state.activeSetupId = state.characterSetups[0]?.id || ''
+      if (state.characterSetups.length === 0) {
+        state.characterSetups.push(createDefaultSetup('default', 'Default Setup'))
+      }
+      if (state.activeSetupId === action.payload || !state.characterSetups.find((s) => s.id === state.activeSetupId)) {
+        state.activeSetupId = state.characterSetups[0]?.id || 'default'
       }
     },
     updateSetup: (state, action: PayloadAction<Partial<GearSetup> & { id: string }>) => {
@@ -170,12 +185,7 @@ const gearPlannerSlice = createSlice({
 
       const oldItem = target.slots[slot]
       if (oldItem) {
-        target.slottedFiligrees = Object.fromEntries(
-          Object.entries(target.slottedFiligrees).filter(([id]) => id !== oldItem.id)
-        )
-        target.unlockedFiligreeSlots = Object.fromEntries(
-          Object.entries(target.unlockedFiligreeSlots).filter(([id]) => id !== oldItem.id)
-        )
+        clearMetadata(target, oldItem.id)
       }
 
       target.slots[slot] = item
@@ -369,7 +379,7 @@ const gearPlannerSlice = createSlice({
       const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
       if (!setup) return
 
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character') as PetState | GearSetup
+      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
       const currentItem = Object.values(target.slots).find((i) => i?.id === itemId)
       if (currentItem) {
         currentItem.minLevel = String(minLevel)
@@ -387,7 +397,7 @@ const gearPlannerSlice = createSlice({
       const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
       if (!setup) return
 
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character') as PetState | GearSetup
+      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
       const currentItem = Object.values(target.slots).find((i) => i?.id === itemId)
       if (currentItem) {
         currentItem.material = material
