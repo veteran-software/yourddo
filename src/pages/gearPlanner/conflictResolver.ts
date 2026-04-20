@@ -46,6 +46,11 @@ export const normalizeString = (str: RobustString): string => {
 export const getBonus = (bonus: RobustString): string => {
   const normalized = normalizeString(bonus)
 
+  // If the bonus is numeric, it's typically an untyped/stacking bonus in DDO data
+  if (normalized !== '' && !Number.isNaN(Number(normalized))) {
+    return 'no type'
+  }
+
   return normalized === '' ? 'no type' : normalized
 }
 
@@ -206,8 +211,12 @@ export const resolveConflicts = (
   // Group by (owner, normalizedName, normalizedBonus)
   const grouped: Record<string, typeof allEnchantments> = {}
 
-  allEnchantments.forEach((entry) => {
-    const key = `${entry.owner}|${entry.normalizedName}|${entry.normalizedBonus}`
+  allEnchantments.forEach((entry, idx) => {
+    // Bug #3: "no type" bonuses stack and should not be grouped for conflict resolution
+    const key =
+      entry.normalizedBonus === 'no type'
+        ? `${entry.owner}|${entry.normalizedName}|no-type-${String(idx)}`
+        : `${entry.owner}|${entry.normalizedName}|${entry.normalizedBonus}`
 
     if (!(key in grouped)) {
       grouped[key] = []
@@ -421,6 +430,57 @@ const inherentMax = (
   )
 }
 
+const getItemEnchantmentMax = (
+  item: GearItem,
+  targetOwner: string,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  slottedAugments?: Record<string, Record<number, import('./types').GearAugment | null>>,
+  slottedNearlyFinished?: Record<string, LootEnchantment | null>,
+  slottedRitualTable?: Record<string, LootEnchantment | null>,
+  slottedLostPurpose?: Record<string, LootEnchantment | null>,
+  slottedFountainOfNecroticMight: Record<string, boolean> = {},
+  slottedStormreaverUpgrade: Record<string, boolean> = {},
+  ignoreItemId?: string,
+  ignoreSlotIndex?: number
+): number => {
+  const isSameItem: boolean = item.id === ignoreItemId
+  if (getSlotOwner(item.slot) !== targetOwner) {
+    return -Infinity
+  }
+
+  if (
+    normalizedTargetName === 'nearly finished' ||
+    normalizedTargetName === 'lost purpose' ||
+    normalizedTargetName === 'ritual table'
+  ) {
+    return -Infinity
+  }
+
+  const augMax: number = findMatchingAugments(
+    item.id,
+    normalizedTargetName,
+    normalizedTargetBonus,
+    slottedAugments,
+    isSameItem ? ignoreSlotIndex : undefined
+  )
+
+  return Math.max(
+    inherentMax(
+      isSameItem,
+      normalizedTargetName,
+      normalizedTargetBonus,
+      item,
+      slottedFountainOfNecroticMight,
+      slottedStormreaverUpgrade
+    ),
+    nearlyFinishedMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedNearlyFinished),
+    ritualTableMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedRitualTable),
+    augMax,
+    lostPurposeMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedLostPurpose)
+  )
+}
+
 /**
  * Checks if a specific enchantment on an item would conflict with currently equipped items.
  * A potential conflict is only checked against items from the same owner.
@@ -451,52 +511,35 @@ export const checkPotentialConflict = (
   }
 
   const normalizedTargetBonus: string = getBonus(enchantment.bonus)
+
+  // Bug #3: "no type" bonuses stack and never conflict
+  if (normalizedTargetBonus === 'no type') {
+    return { isConflict: false, currentMax: 0, isRedundant: false }
+  }
+
   const targetOwner = slot ? getSlotOwner(slot) : 'character'
 
   let currentMax = -Infinity
   let foundMatch = false
 
   for (const item of equippedItems) {
-    const isSameItem: boolean = item.id === ignoreItemId
-    if (getSlotOwner(item.slot) !== targetOwner) {
-      continue
-    }
-
-    if (
-      normalizedTargetName === 'nearly finished' ||
-      normalizedTargetName === 'lost purpose' ||
-      normalizedTargetName === 'ritual table'
-    ) {
-      continue
-    }
-
-    // Only check inherent and other upgrades if NOT the same item
-
-    const augMax: number = findMatchingAugments(
-      item.id,
+    const itemMax = getItemEnchantmentMax(
+      item,
+      targetOwner,
       normalizedTargetName,
       normalizedTargetBonus,
       slottedAugments,
-      isSameItem ? ignoreSlotIndex : undefined
+      slottedNearlyFinished,
+      slottedRitualTable,
+      slottedLostPurpose,
+      slottedFountainOfNecroticMight,
+      slottedStormreaverUpgrade,
+      ignoreItemId,
+      ignoreSlotIndex
     )
 
-    const itemMax: number = Math.max(
-      inherentMax(
-        isSameItem,
-        normalizedTargetName,
-        normalizedTargetBonus,
-        item,
-        slottedFountainOfNecroticMight,
-        slottedStormreaverUpgrade
-      ),
-      nearlyFinishedMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedNearlyFinished),
-      ritualTableMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedRitualTable),
-      augMax,
-      lostPurposeMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedLostPurpose)
-    )
     if (itemMax !== -Infinity) {
       foundMatch = true
-
       if (itemMax > currentMax) {
         currentMax = itemMax
       }
