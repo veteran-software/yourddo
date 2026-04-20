@@ -39,7 +39,8 @@ import {
 //     itemMinLevel: number | null,
 //     itemMaterial: string | null,
 //     isFountainUpgraded: 0 | 1 | null,
-//     isStormreaverUpgraded: 0 | 1 | null
+//     isStormreaverUpgraded: 0 | 1 | null,
+//     itemId: string | null
 //   ][]
 // ]
 
@@ -67,7 +68,8 @@ type V1Payload = [
     number | null, // itemMinLevel
     string | null, // itemMaterial
     0 | 1 | null, // isFountainUpgraded
-    0 | 1 | null // isStormreaverUpgraded
+    0 | 1 | null, // isStormreaverUpgraded
+    string | null // itemId
   ][]
 ]
 
@@ -153,7 +155,8 @@ const encodeItemPayload = (slot: GearSlot, item: GearItem, setup: GearSetup): V1
     Number(item.minLevel) || null,
     item.material || null,
     isFountainUpgraded ? 1 : 0,
-    isStormreaverUpgraded ? 1 : 0
+    isStormreaverUpgraded ? 1 : 0,
+    item.id
   ]
 }
 
@@ -288,16 +291,18 @@ const decodeItemPayload = (
     itemMinLevel,
     itemMaterial,
     isFountainUpgraded,
-    isStormreaverUpgraded
+    isStormreaverUpgraded,
+    itemId
   ] = itemPayload
 
-  // Find the item in allItems by name and slot to ensure we get the correct ID
+  // Find the item in allItems by ID (preferred) or name and slot
   const gearSlot = slot as GearSlot
   if (!Object.values(GearSlot).includes(gearSlot)) {
     return
   }
-  let item =
-    allItems.find((i) => i.name === itemName && i.slot === gearSlot) ?? allItems.find((i) => i.name === itemName)
+  let item = itemId ? allItems.find((i) => i.id === itemId) : null
+
+  item ??= allItems.find((i) => i.name === itemName && i.slot === gearSlot) ?? allItems.find((i) => i.name === itemName)
 
   if (!item && isEssenceCraftedName(itemName)) {
     item = reconstructEssenceCraftedItem(itemName, gearSlot, itemMinLevel ?? setup.minLevel)
