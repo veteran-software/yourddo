@@ -10,7 +10,7 @@ const { actions, reducer } = createSlice({
     selectedAugments: {},
     augmentFilters: [],
     augmentFilterMode: 'OR'
-  } as DinosaurBoneState,
+  },
   reducers: {
     setSelectedItem: (state, action: PayloadAction<CraftingIngredient | undefined>) => {
       state.selectedItem = action.payload

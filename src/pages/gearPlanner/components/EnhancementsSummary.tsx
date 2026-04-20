@@ -123,7 +123,7 @@ const EnchantmentsSummary = (props: Props) => {
         slot,
         value,
         valueStr
-      } as AggregationItem)
+      })
     }
 
     const activeSetEnhancements = getActiveSetEnhancements(
@@ -174,7 +174,7 @@ const EnchantmentsSummary = (props: Props) => {
               maxValue: 0,
               maxValueStr: '',
               items: []
-            } as AggregationBonus
+            }
           }
         })
       }

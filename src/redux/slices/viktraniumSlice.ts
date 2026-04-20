@@ -15,7 +15,7 @@ const { actions, reducer } = createSlice({
     selectedAugments: {},
     augmentFilters: [],
     augmentFilterMode: 'OR'
-  } as ViktraniumExperimentState,
+  },
   reducers: {
     setItemFilters: (state, action: PayloadAction<string[]>) => {
       state.itemFilters = [...action.payload]

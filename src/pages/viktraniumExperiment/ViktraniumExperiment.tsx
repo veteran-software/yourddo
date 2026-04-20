@@ -140,8 +140,8 @@ const ViktraniumExperiment = () => {
             .filter((ing: AugmentItem) => allowed.includes((ing.augmentType ?? '') as string))
             .sort((a: AugmentItem, b: AugmentItem) => {
               // Sort by augmentType (color) then by name for stable grouping
-              const at: string = (a.augmentType ?? '') as string
-              const bt: string = (b.augmentType ?? '') as string
+              const at: string = a.augmentType ?? ''
+              const bt: string = b.augmentType ?? ''
               if (at !== bt) {
                 return at.localeCompare(bt)
               }
@@ -430,10 +430,9 @@ const ViktraniumExperiment = () => {
                           <Col key={slot} xs={12} md={6}>
                             <ItemDisplay
                               selectedItem={
-                                selectedAugments[slot] ??
-                                ({
+                                selectedAugments[slot] ?? {
                                   name: camelCaseToTitleCase(slot)
-                                } as Ingredient)
+                                }
                               }
                             />
                           </Col>

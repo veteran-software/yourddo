@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react'
 import { Card, Form, Offcanvas, Stack, Table } from 'react-bootstrap'
-import type { Ingredient } from '../../types/ingredients.ts'
 import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
 import type { ItemRollup } from '../trove/types.ts'
 
@@ -112,9 +111,7 @@ const ShoppingListDrawer = (props: Props): ReactElement => {
                             <td className='text-truncate' title={name}>
                               {name}
                             </td>
-                            <td className='text-end'>
-                              {getOwnedIngredients({ name } as unknown as Ingredient, qty, troveData)}
-                            </td>
+                            <td className='text-end'>{getOwnedIngredients({ name }, qty, troveData)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -146,9 +143,7 @@ const ShoppingListDrawer = (props: Props): ReactElement => {
                             <td className='text-truncate' title={name}>
                               {name}
                             </td>
-                            <td className='text-end'>
-                              {getOwnedIngredients({ name } as unknown as Ingredient, qty, troveData)}
-                            </td>
+                            <td className='text-end'>{getOwnedIngredients({ name }, qty, troveData)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -180,9 +175,7 @@ const ShoppingListDrawer = (props: Props): ReactElement => {
                             <td className='text-truncate' title={name}>
                               {name}
                             </td>
-                            <td className='text-end'>
-                              {getOwnedIngredients({ name } as unknown as Ingredient, qty, troveData)}
-                            </td>
+                            <td className='text-end'>{getOwnedIngredients({ name }, qty, troveData)}</td>
                           </tr>
                         ))}
                       </tbody>

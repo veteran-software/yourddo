@@ -111,9 +111,7 @@ const TotalsList = memo(
           ) : (
             <Stack gap={2}>
               {totals.map(({ name, qty }) => {
-                const requirements = (meltingMap[name] as { name: string; quantity: number }[] | undefined)?.map(
-                  (req) => ({ name: req.name, quantity: req.quantity }) as CraftingIngredient
-                )
+                const requirements = meltingMap[name]?.map((req) => ({ name: req.name, quantity: req.quantity }))
                 return (
                   <div key={name} className='p-1 border-bottom last-child-no-border'>
                     {type === 'raw' ? (
@@ -125,7 +123,7 @@ const TotalsList = memo(
                       />
                     ) : (
                       <CraftedIngredientDisplay
-                        ingredient={{ name, requirements } as CraftingIngredient}
+                        ingredient={{ name, requirements }}
                         quantity={qty}
                         showLocation={false}
                         showPopover={true}
@@ -159,7 +157,7 @@ const NearlyFinished = () => {
         nearlyFinishedEntries
           .filter((e) => !isRaidItem(e) && !e.item.startsWith('Legendary') && !e.item.startsWith('The Legendary'))
           .sort((a, b) => a.item.localeCompare(b.item))
-          .map((e) => ({ name: e.item }) as Ingredient)
+          .map((e) => ({ name: e.item }))
       ),
     [nearlyFinishedEntries]
   )
@@ -171,7 +169,7 @@ const NearlyFinished = () => {
         nearlyFinishedEntries
           .filter((e) => (!isRaidItem(e) && e.item.startsWith('Legendary')) || e.item.startsWith('The Legendary'))
           .sort((a, b) => a.item.localeCompare(b.item))
-          .map((e) => ({ name: e.item }) as Ingredient)
+          .map((e) => ({ name: e.item }))
       ),
     [nearlyFinishedEntries]
   )
@@ -183,7 +181,7 @@ const NearlyFinished = () => {
         nearlyFinishedEntries
           .filter((e) => isRaidItem(e))
           .sort((a, b) => a.item.localeCompare(b.item))
-          .map((e) => ({ name: e.item }) as Ingredient)
+          .map((e) => ({ name: e.item }))
       ),
     [nearlyFinishedEntries]
   )
@@ -246,7 +244,7 @@ const NearlyFinished = () => {
     const visit = (name: string) => {
       if (visited.has(name) || !craftedTotals[name]) return
       visited.add(name)
-      const requirements = meltingMap[name] as { name: string; quantity: number }[] | undefined
+      const requirements = meltingMap[name]
       if (requirements) {
         for (const req of requirements) {
           visit(req.name)
@@ -265,7 +263,7 @@ const NearlyFinished = () => {
 
     const items: Record<string, Ingredient[]> = groupAsSingleSection(
       'Available Options',
-      currentChoices.map((c) => ({ name: c.name })) as Ingredient[]
+      currentChoices.map((c) => ({ name: c.name }))
     )
 
     return (
@@ -274,10 +272,10 @@ const NearlyFinished = () => {
         items={items}
         label={selectedChoice?.name ?? 'Select one option'}
         onSelect={(ing: Ingredient) => {
-          setSelectedChoice({ name: ing.name } as Enhancement)
+          setSelectedChoice({ name: ing.name })
         }}
         renderSectionBody={renderIngredient}
-        selectedItem={selectedChoice ? ({ name: selectedChoice.name } as unknown as Ingredient) : undefined}
+        selectedItem={selectedChoice ? { name: selectedChoice.name } : undefined}
         title='Property Choice'
         dropdownTriggerPrefix='🎯'
       />
@@ -370,7 +368,7 @@ const NearlyFinished = () => {
                   label={selectedHeroic?.item ?? 'Select Heroic Item'}
                   onSelect={onSelectHeroic}
                   renderSectionBody={renderIngredient}
-                  selectedItem={selectedHeroic ? ({ name: selectedHeroic.item } as unknown as Ingredient) : undefined}
+                  selectedItem={selectedHeroic ? { name: selectedHeroic.item } : undefined}
                   title='Heroic Regular Items'
                   dropdownTriggerPrefix='🛡️'
                 />
@@ -382,9 +380,7 @@ const NearlyFinished = () => {
                   label={selectedLegendary?.item ?? 'Select Legendary Item'}
                   onSelect={onSelectLegendary}
                   renderSectionBody={renderIngredient}
-                  selectedItem={
-                    selectedLegendary ? ({ name: selectedLegendary.item } as unknown as Ingredient) : undefined
-                  }
+                  selectedItem={selectedLegendary ? { name: selectedLegendary.item } : undefined}
                   title='Legendary Regular Items'
                   dropdownTriggerPrefix='✨'
                 />
@@ -396,7 +392,7 @@ const NearlyFinished = () => {
                   label={selectedRaid?.item ?? 'Select Raid Item'}
                   onSelect={onSelectRaid}
                   renderSectionBody={renderIngredient}
-                  selectedItem={selectedRaid ? ({ name: selectedRaid.item } as unknown as Ingredient) : undefined}
+                  selectedItem={selectedRaid ? { name: selectedRaid.item } : undefined}
                   title='Raid Items'
                   dropdownTriggerPrefix='🗡️'
                 />
@@ -435,14 +431,10 @@ const NearlyFinished = () => {
 
                             <div className='flex-grow-1'>
                               <CraftedIngredientDisplay
-                                ingredient={
-                                  {
-                                    name: currentEntry.item,
-                                    requirements: currentEntry.cost.map(
-                                      (c) => ({ name: c.name, quantity: c.quantity }) as CraftingIngredient
-                                    )
-                                  } as CraftingIngredient
-                                }
+                                ingredient={{
+                                  name: currentEntry.item,
+                                  requirements: currentEntry.cost.map((c) => ({ name: c.name, quantity: c.quantity }))
+                                }}
                                 quantity={1}
                                 showLocation={false}
                                 showPopover={true}
@@ -453,9 +445,10 @@ const NearlyFinished = () => {
                       ) : (
                         <Stack gap={2}>
                           {sortedCraftedTotals.map(({ name, qty }, index) => {
-                            const requirements = (
-                              meltingMap[name] as { name: string; quantity: number }[] | undefined
-                            )?.map((req) => ({ name: req.name, quantity: req.quantity }) as CraftingIngredient)
+                            const requirements = meltingMap[name]?.map((req) => ({
+                              name: req.name,
+                              quantity: req.quantity
+                            }))
                             return (
                               <div key={name} className='p-2 border-bottom last-child-no-border'>
                                 <Stack direction='horizontal' gap={3} className='align-items-center'>
@@ -465,7 +458,7 @@ const NearlyFinished = () => {
 
                                   <div className='flex-grow-1'>
                                     <CraftedIngredientDisplay
-                                      ingredient={{ name, requirements } as CraftingIngredient}
+                                      ingredient={{ name, requirements }}
                                       quantity={qty}
                                       showLocation={false}
                                       showPopover={true}
@@ -484,14 +477,10 @@ const NearlyFinished = () => {
                               <div className='fw-bold'>Final Item Upgrade:</div>
                               <div className='flex-grow-1'>
                                 <CraftedIngredientDisplay
-                                  ingredient={
-                                    {
-                                      name: currentEntry.item,
-                                      requirements: currentEntry.cost.map(
-                                        (c) => ({ name: c.name, quantity: c.quantity }) as CraftingIngredient
-                                      )
-                                    } as CraftingIngredient
-                                  }
+                                  ingredient={{
+                                    name: currentEntry.item,
+                                    requirements: currentEntry.cost.map((c) => ({ name: c.name, quantity: c.quantity }))
+                                  }}
                                   quantity={1}
                                   showLocation={false}
                                   showPopover={true}

@@ -1,14 +1,6 @@
-import {
-  compressToEncodedURIComponent,
-  decompressFromEncodedURIComponent
-} from 'lz-string'
+import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
 import augmentMaster from '../../data/augments/augmentMaster.ts'
-import {
-  ALL_SLOT_KEYS,
-  DATASET,
-  type ItemAugmentSlotState,
-  type ItemState
-} from './types.ts'
+import { ALL_SLOT_KEYS, DATASET, type ItemState } from './types.ts'
 
 // ----- Internal: runtime dictionaries and constants (computed once per module load) -----
 const ENHANCEMENT_NAME_TO_ID: Map<string, number> = (() => {
@@ -176,7 +168,7 @@ export const tryDecodeEssencePermalink = (cc: string): { ok: true; data: Permali
           selectedAugment,
           filters,
           filterMode: mode
-        } as ItemAugmentSlotState
+        }
       })
 
       nextItems[slotKey] = item

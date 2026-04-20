@@ -345,10 +345,9 @@ const DinosaurBone = () => {
                           <Col key={slot} xs={12} md={6}>
                             <ItemDisplay
                               selectedItem={
-                                selectedAugments[slot] ??
-                                ({
+                                selectedAugments[slot] ?? {
                                   name: camelCaseToTitleCase(slot)
-                                } as CraftingIngredient)
+                                }
                               }
                             />
                           </Col>

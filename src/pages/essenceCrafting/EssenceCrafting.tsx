@@ -491,7 +491,7 @@ const EssenceCrafting = () => {
     updateItem(slotKey, (item) => ({
       ...item,
       augmentSlots: item.augmentSlots.map((augmentSlot) =>
-        augmentSlot.id === augmentSlotId ? { ...augmentSlot, selectedAugment: aug as AugmentItem } : augmentSlot
+        augmentSlot.id === augmentSlotId ? { ...augmentSlot, selectedAugment: aug } : augmentSlot
       )
     }))
   }
@@ -882,7 +882,7 @@ const EssenceCrafting = () => {
   const renderAugmentSlot = (slotKey: string, augmentSlot: ItemAugmentSlotState): ReactElement => {
     const groupedByDisplay = findAugmentsForSlot(augmentSlot.slotType)
     const flatForSlot = Object.values(groupedByDisplay).flat() as unknown as Ingredient[]
-    const augmentOptions = { [augmentSlot.slotType]: flatForSlot } as Record<string, Ingredient[]>
+    const augmentOptions = { [augmentSlot.slotType]: flatForSlot }
     const filteredAugmentOptions = filterAugmentOptions(augmentOptions, augmentSlot.filters, augmentSlot.filterMode)
     const selectedAugments: Record<string, AugmentItem | null> = {
       [augmentSlot.slotType]: augmentSlot.selectedAugment
@@ -1087,14 +1087,14 @@ const EssenceCrafting = () => {
                 </td>
                 <td className='text-end'>
                   {typeof bQty === 'number' ? (
-                    getOwnedIngredients({ name } as unknown as Ingredient, bQty, troveData)
+                    getOwnedIngredients({ name }, bQty, troveData)
                   ) : (
                     <span className='text-muted'>N/A</span>
                   )}
                 </td>
                 <td className='text-end'>
                   {typeof uQty === 'number' ? (
-                    getOwnedIngredients({ name } as unknown as Ingredient, uQty, troveData)
+                    getOwnedIngredients({ name }, uQty, troveData)
                   ) : (
                     <span className='text-muted'>N/A</span>
                   )}
