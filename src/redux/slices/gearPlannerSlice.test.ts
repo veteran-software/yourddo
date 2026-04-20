@@ -49,16 +49,31 @@ describe('gearPlannerSlice reducers', () => {
   })
 
   it('Bug #2: metadata should be isolated between different slots even if the item is the same type', () => {
-    const setup1 = createDefaultSetup('setup1', 'Setup 1');
-    const item1 = { id: 'Slot 1|Ring|29|ring.json', name: 'Ring', slot: GearSlot.MainHand, minLevel: '29', type: 'Ring' } as unknown as GearItem
-    const item2 = { id: 'Slot 2|Ring|29|ring.json', name: 'Ring', slot: GearSlot.OffHand, minLevel: '29', type: 'Ring' } as unknown as GearItem
+    const setup1 = createDefaultSetup('setup1', 'Setup 1')
+    const item1 = {
+      id: 'Slot 1|Ring|29|ring.json',
+      name: 'Ring',
+      slot: GearSlot.MainHand,
+      minLevel: '29',
+      type: 'Ring'
+    } as unknown as GearItem
+    const item2 = {
+      id: 'Slot 2|Ring|29|ring.json',
+      name: 'Ring',
+      slot: GearSlot.OffHand,
+      minLevel: '29',
+      type: 'Ring'
+    } as unknown as GearItem
 
     const initialState: GearPlannerState = {
       characterSetups: [
         {
           ...setup1,
           id: 'setup1',
-          slots: { [GearSlot.MainHand]: item1, [GearSlot.OffHand]: item2 } as unknown as Record<GearSlot, GearItem | null>,
+          slots: { [GearSlot.MainHand]: item1, [GearSlot.OffHand]: item2 } as unknown as Record<
+            GearSlot,
+            GearItem | null
+          >,
           slottedAugments: {
             [item1.id]: { 0: { name: 'Augment 1', augmentType: 'Yellow', minLevel: '1' } as unknown as GearAugment },
             [item2.id]: { 0: { name: 'Augment 2', augmentType: 'Yellow', minLevel: '1' } as unknown as GearAugment }
