@@ -73,7 +73,7 @@ const FilterableDropdown = (props: Props) => {
 
   const renderDropdownItems = (key: string, ingredients: Ingredient[]) => {
     // `ingredients` is ending up here as undefined sometimes, that shouldn't happen. if nothing is sent, it should be an empty array
-    if (ingredients.length === 0) {
+    if (!ingredients?.length) {
       return <></>
     }
 
@@ -135,7 +135,7 @@ const FilterableDropdown = (props: Props) => {
             }}
           >
             {Object.entries(filteredItems ?? items).map(([key, ingredients]: [string, Ingredient[]]) => (
-              <Fragment key={`${key}-${ingredients.map((ing: Ingredient) => ing.name).join('|')}`}>
+              <Fragment key={`${key}-${ingredients?.map((ing: Ingredient) => ing.name).join('|') ?? ''}`}>
                 {renderDropdownItems(key, ingredients)}
               </Fragment>
             ))}
@@ -160,10 +160,10 @@ const FilterableDropdown = (props: Props) => {
           <FilterOffCanvas
             filterMode={filterMode}
             filterOptions={uniqueEffects}
-            items={Object.values(items).flat()}
+            items={Object.values(items).filter(Boolean).flat()}
             getItemFilters={(item: Ingredient): string[] =>
               // Ingredient may or may not have effectsAdded; access safely
-              ('effectsAdded' in item && Array.isArray(item.effectsAdded)
+              (item && 'effectsAdded' in item && Array.isArray(item.effectsAdded)
                 ? ((item as CraftingIngredient).effectsAdded as Partial<Enhancement>[])
                 : []
               )

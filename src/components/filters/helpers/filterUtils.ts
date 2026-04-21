@@ -18,10 +18,10 @@ export const filterIngredientsMap = <T extends Ingredient>(
   return Object.fromEntries(
     Object.entries(ingredientsMap).map(([element, ingredients]) => [
       element,
-      ingredients.filter((ingredient: T) => {
+      ingredients?.filter((ingredient: T) => {
         const effects = (ingredient as CraftingIngredient).effectsAdded as Partial<Enhancement>[] | undefined
         return effects?.some((effect) => itemFilters.includes(effect.name ?? '')) ?? false
-      })
+      }) ?? []
     ])
   )
 }
@@ -39,7 +39,7 @@ export const filterIngredientsMap = <T extends Ingredient>(
 export const parseUniqueEffects = (ingredientsMap: Record<string, Ingredient[]>): string[] => {
   const effects = new Set<string>()
   Object.values(ingredientsMap).forEach((ingredients: Ingredient[]) => {
-    ingredients.forEach((ingredient: Ingredient) => {
+    ingredients?.forEach((ingredient: Ingredient) => {
       const ingEffects = (ingredient as CraftingIngredient).effectsAdded as Partial<Enhancement>[] | undefined
       ingEffects?.forEach((effect) => {
         if (effect.name) effects.add(effect.name)

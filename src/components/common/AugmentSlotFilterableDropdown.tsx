@@ -222,7 +222,7 @@ const buildGroups = (
     return groupLamordiaByTier(source[slotKey])
   }
 
-  return { [headerLabel]: source[slotKey] }
+  return { [headerLabel]: source[slotKey] ?? [] }
 }
 
 /**
