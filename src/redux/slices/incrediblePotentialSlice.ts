@@ -13,7 +13,7 @@ const initialState: IncrediblePotentialState = {
   ),
   rawMaterials: {},
   ringFilters: baseItems
-    .flatMap((item: Ring): string[] => item.enchantments.slice(0, 2).map((enhancement) => enhancement.name))
+    .flatMap((item: Ring): string[] => item.enchantments.map((enhancement) => enhancement.name))
     .filter((value, index, self) => self.indexOf(value) === index) // Remove duplicates
     .sort((a: string, b: string) => a.localeCompare(b)),
   selectedRing: undefined,
@@ -22,10 +22,7 @@ const initialState: IncrediblePotentialState = {
   selectedUpgradeFilters: [],
   upgradeFilters: [...altarOfSubjugation]
     .filter((recipe: CraftingIngredient) => recipe.name.toLowerCase().includes('ring upgrade'))
-    .flatMap(
-      (item: CraftingIngredient): string[] =>
-        item.effectsAdded?.slice(0, 2).map((enhancement) => enhancement.name) ?? []
-    )
+    .flatMap((item: CraftingIngredient): string[] => item.effectsAdded?.map((enhancement) => enhancement.name) ?? [])
     .filter((value, index, self) => self.indexOf(value) === index)
 }
 

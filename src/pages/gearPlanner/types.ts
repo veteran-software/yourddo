@@ -77,6 +77,11 @@ export const GEAR_SLOTS: GearSlot[] = [
 export const ARTIFICER_PET_SLOTS: GearSlot[] = [GearSlot.ArtificerPetArmor, GearSlot.ArtificerPetWeapon]
 export const DRUID_PET_SLOTS: GearSlot[] = [GearSlot.DruidPetArmor, GearSlot.DruidPetWeapon]
 
+export const isPetSlot = (slot: string | null): boolean => {
+  if (!slot) return false
+  return (ARTIFICER_PET_SLOTS as string[]).includes(slot) || (DRUID_PET_SLOTS as string[]).includes(slot)
+}
+
 export interface LootEnchantment {
   name: string
   statModified?: string

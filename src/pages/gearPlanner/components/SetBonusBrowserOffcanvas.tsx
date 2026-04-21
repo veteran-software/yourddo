@@ -1,6 +1,6 @@
 import { Col, Form, Offcanvas, Row } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types'
-import type { EntityGearState, GearItem, GearSlot, SetBonusIndex } from '../types'
+import type { EntityGearState, GearItem, GearSetup, GearSlot, SetBonusIndex } from '../types'
 import SetBonusItems from './SetBonusItems.tsx'
 
 const SetBonusBrowserOffcanvas = (props: Props) => {
@@ -18,10 +18,14 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
     setBrowsingSlot,
     showOwnedOnly,
     setShowOwnedOnly,
+    showConflicts,
+    setShowConflicts,
     troveData,
     itemNameSearch,
     setItemNameSearch,
-    getEntityState
+    getEntityState,
+    activeSetup,
+    isItemVisibleForClasses
   } = props
 
   return (
@@ -55,6 +59,16 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                 className='small text-warning'
               />
             )}
+            <Form.Check
+              type='checkbox'
+              id='show-conflicts-set-browser'
+              label='Show conflicting'
+              checked={showConflicts}
+              onChange={(e) => {
+                setShowConflicts(e.target.checked)
+              }}
+              className='small text-warning ms-2'
+            />
           </div>
 
           <Form.Control
@@ -125,11 +139,14 @@ const SetBonusBrowserOffcanvas = (props: Props) => {
                 allItems={allItems}
                 setBonusIndex={setBonusIndex}
                 showOwnedOnly={showOwnedOnly}
+                showConflicts={showConflicts}
                 troveData={troveData}
                 itemNameSearch={itemNameSearch}
                 getEntityState={getEntityState}
                 selectItem={selectItem}
                 openSetBonusBrowser={openSetBonusBrowser}
+                activeSetup={activeSetup}
+                isItemVisibleForClasses={isItemVisibleForClasses}
               />
             </div>
           </div>
@@ -153,10 +170,14 @@ interface Props {
   getEntityState: (owner: string) => EntityGearState
   setItemNameSearch: (search: string) => void
   setShowOwnedOnly: (show: boolean) => void
+  setShowConflicts: (show: boolean) => void
   setShowSetBonusBrowser: (show: boolean) => void
   showOwnedOnly: boolean
+  showConflicts: boolean
   showSetBonusBrowser: boolean
   troveData: ItemRollup | null
+  activeSetup: GearSetup
+  isItemVisibleForClasses: (item: GearItem, setup: GearSetup) => boolean
 }
 
 export default SetBonusBrowserOffcanvas

@@ -5,7 +5,8 @@ import {
   type GearItem,
   type GearSetup,
   GearSlot,
-  type LootDropLocation
+  type LootDropLocation,
+  SHIELD_TYPES
 } from '../types'
 
 /**
@@ -114,25 +115,58 @@ export const useFormatDropLocations = () => {
 }
 
 /**
+ * Checks if an item is visible based on the character's class and equipment filters.
+ *
+ * @param {GearItem} item - The item to check.
+ * @param {GearSetup} setup - The current character setup.
+ * @returns {boolean} True if the item should be visible, false otherwise.
+ */
+export const isItemVisible = (item: GearItem, setup: GearSetup): boolean => {
+  const isArtificer: boolean = setup.classes.includes('Artificer')
+  const isDruid: boolean = setup.classes.includes('Druid')
+
+  if (item.slot === GearSlot.ArtificerPetArmor || item.slot === GearSlot.ArtificerPetWeapon) {
+    return isArtificer
+  }
+
+  if (item.slot === GearSlot.DruidPetArmor || item.slot === GearSlot.DruidPetWeapon) {
+    return isDruid
+  }
+
+  if (item.isEssenceCrafted) {
+    return true
+  }
+
+  if (item.slot === GearSlot.Armor) {
+    let effectiveType = item.type
+    if (effectiveType === 'Robe' || effectiveType === 'Outfit') {
+      effectiveType = 'Cloth Armor'
+    }
+    return setup.armorFilters.includes(effectiveType)
+  }
+
+  if (item.slot === GearSlot.MainHand) {
+    return setup.weaponFilters.includes(item.type)
+  }
+
+  if (item.slot === GearSlot.OffHand) {
+    const isShield = SHIELD_TYPES.includes(item.type)
+    if (isShield) {
+      return setup.shieldFilters.includes(item.type)
+    }
+    return setup.weaponFilters.includes(item.type)
+  }
+
+  return true
+}
+
+/**
  * Checks if an item is visible for the current character classes (e.g., pet items).
  *
  * @returns A function that checks item visibility based on setup.
  */
 export const useIsItemVisibleForClasses = () => {
-  return useCallback((item: GearItem, setup: GearSetup) => {
-    const isArtificer: boolean = setup.classes.includes('Artificer')
-    const isDruid: boolean = setup.classes.includes('Druid')
-
-    if (item.slot === GearSlot.ArtificerPetArmor || item.slot === GearSlot.ArtificerPetWeapon) {
-      return isArtificer
-    }
-
-    if (item.slot === GearSlot.DruidPetArmor || item.slot === GearSlot.DruidPetWeapon) {
-      return isDruid
-    }
-
-    return true
-  }, [])
+  return useCallback((item: GearItem, setup: GearSetup) => isItemVisible(item, setup), [])
 }
 
 /**

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAppSelector } from '../../../redux/hooks'
 import { createDefaultSetup } from '../initialState'
 import type { GearSetup } from '../types.ts'
@@ -7,11 +7,7 @@ import { useGearPlannerActions } from './useGearPlannerActions'
 import { useGearPlannerContext } from './useGearPlannerContext'
 import { useGearPlannerData } from './useGearPlannerData'
 import { useGearPlannerFiltering } from './useGearPlannerFiltering'
-import {
-  isMetal as isMetalHelper,
-  useFormatDropLocations,
-  useIsItemVisibleForClasses
-} from './useGearPlannerHelpers'
+import { isMetal as isMetalHelper, useFormatDropLocations, useIsItemVisibleForClasses } from './useGearPlannerHelpers'
 import { useGearPlannerUI } from './useGearPlannerUI'
 
 interface Props {
@@ -26,7 +22,8 @@ const useGearPlanner = (props: Props) => {
   const {
     itemNameSearch: propItemNameSearch,
     setBonusFilter: propSetBonusFilter,
-    showOwnedOnly: propShowOwnedOnly
+    showOwnedOnly: propShowOwnedOnly,
+    showConflicts: propShowConflicts
   } = props
 
   const { characterSetups: setups, activeSetupId } = useAppSelector((state) => state.gearPlanner)
@@ -53,6 +50,7 @@ const useGearPlanner = (props: Props) => {
     internalItemNameSearch,
     setInternalItemNameSearch,
     itemsToShow,
+    setItemsToShow,
     showSidebar,
     setShowSidebar,
     showEnchantmentSearch,
@@ -103,6 +101,8 @@ const useGearPlanner = (props: Props) => {
     internalItemNameSearch,
     setBonusFilter: propSetBonusFilter ?? setBonusFilter,
     showOwnedOnly: propShowOwnedOnly || showOwnedOnly,
+    showConflicts: propShowConflicts || showConflicts,
+    getEntityState,
     troveData: troveData,
     isItemVisibleForClasses
   })
@@ -139,7 +139,29 @@ const useGearPlanner = (props: Props) => {
     setStormreaverUpgrade: actions.setStormreaverUpgrade
   })
 
-  const observerTargetRef = useRef<HTMLDivElement>(null)
+  const [observerTarget, setObserverTarget] = useState<HTMLDivElement | null>(null)
+  const observerTargetRef = useCallback((node: HTMLDivElement | null) => {
+    setObserverTarget(node)
+  }, [])
+
+  useEffect(() => {
+    if (!observerTarget) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setItemsToShow((prev) => prev + 50)
+        }
+      },
+      { threshold: 1.0 }
+    )
+
+    observer.observe(observerTarget)
+
+    return () => {
+      observer.unobserve(observerTarget)
+    }
+  }, [observerTarget, setItemsToShow])
 
   return {
     activeSetup,

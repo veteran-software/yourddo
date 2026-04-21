@@ -1,21 +1,54 @@
+import { useCallback, useMemo } from 'react'
 import { Accordion } from 'react-bootstrap'
 import type { ItemRollup } from '../../../components/trove/types.ts'
 import { cannithRepurposingStation as lostPurposeRecipes } from '../../../data/cannithRepurposingStation.ts'
 import type { SetBonus } from '../../../types/crafting.ts'
 import { getTroveKey } from '../../../utils/troveUtils.ts'
-import { getSlotOwner } from '../conflictResolver'
+import { checkPotentialConflict, getSlotOwner } from '../conflictResolver'
 import {
-  ARTIFICER_PET_SLOTS,
-  DRUID_PET_SLOTS,
   type EntityGearState,
   type GearItem,
+  type GearSetup,
   GearSlot,
+  isPetSlot,
   type LootEnchantment,
   type SetBonusIndex,
   type SetBonusIndexEntry,
   type SlotKey
-} from '../types.ts'
+} from '../types'
 import SearchResultSlot from './SearchResultSlot.tsx'
+
+const isSetMatch = (
+  item: GearItem,
+  browsingSet: string,
+  indexedItems: SetBonusIndexEntry[],
+  isLostPurposeSet: boolean
+) => {
+  const itemLevel: number = Number(item.minLevel) || 1
+
+  // 1. Set Match (must match the set we are browsing)
+  if (
+    indexedItems.some(
+      (ii: SetBonusIndexEntry) =>
+        ii.name === item.name &&
+        (item.slot === GearSlot.Filigree || ii.minLevel === 0 || Math.abs(ii.minLevel - itemLevel) <= 1)
+    )
+  )
+    return true
+
+  // 1b. Check if the item itself explicitly lists this set bonus
+  if (Array.isArray(item.setBonus) && item.setBonus.some((sb: SetBonus) => sb.name === browsingSet)) return true
+
+  // 1c. Lost Purpose check
+  if (
+    isLostPurposeSet &&
+    Array.isArray(item.enchantments) &&
+    item.enchantments.some((enchantment: LootEnchantment) => enchantment.name === 'Lost Purpose')
+  )
+    return true
+
+  return false
+}
 
 const SetBonusItems = (props: Props) => {
   const {
@@ -23,84 +56,97 @@ const SetBonusItems = (props: Props) => {
     allItems,
     setBonusIndex,
     showOwnedOnly,
+    showConflicts,
     troveData,
     itemNameSearch,
     getEntityState,
     selectItem,
-    openSetBonusBrowser
+    openSetBonusBrowser,
+    activeSetup,
+    isItemVisibleForClasses
   } = props
 
-  const indexedItems = browsingSet in setBonusIndex ? setBonusIndex[browsingSet] : []
+  const indexedItems = useMemo(
+    () => (browsingSet && browsingSet in setBonusIndex ? (setBonusIndex[browsingSet] ?? []) : []),
+    [browsingSet, setBonusIndex]
+  )
 
   // Check if this is a Lost Purpose set
-  const isLostPurposeSet = lostPurposeRecipes.some((r) => r.setBonus?.[0]?.name === browsingSet)
+  const isLostPurposeSet = useMemo(
+    () => lostPurposeRecipes.some((r) => r.setBonus?.[0]?.name === browsingSet),
+    [browsingSet]
+  )
 
-  const setItemResults: GearItem[] = allItems.filter((item) => {
-    const itemLevel: number = Number(item.minLevel) || 1
-
-    // 0. Pet check
-    const isPetSlot = (slot: string) =>
-      ARTIFICER_PET_SLOTS.includes(slot as GearSlot) || DRUID_PET_SLOTS.includes(slot as GearSlot)
-    if (isPetSlot(item.slot)) {
-      return false
-    }
-
-    // 1. Set Match (must match the set we are browsing)
-
-    let isMatch: boolean | undefined = indexedItems?.some(
-      (ii: SetBonusIndexEntry) =>
-        ii.name === item.name &&
-        (item.slot === GearSlot.Filigree || ii.minLevel === 0 || Math.abs(ii.minLevel - itemLevel) <= 1)
-    )
-
-    // 1b. Check if the item itself explicitly lists this set bonus
-    if (!isMatch && Array.isArray(item.setBonus)) {
-      isMatch = item.setBonus.some((sb: SetBonus) => sb.name === browsingSet)
-    }
-
-    // 1c. Lost Purpose check
-    if (!isMatch && isLostPurposeSet && Array.isArray(item.enchantments)) {
-      isMatch = item.enchantments.some((enchantment: LootEnchantment) => enchantment.name === 'Lost Purpose')
-    }
-
-    if (!isMatch) {
-      return false
-    }
-
-    // 2. Class Visibility (skip if we want to see everything in the set?)
-    // The user said "show other items that also have the set bonus"
-    // Usually we want to see what's available for our class, but if it's not showing anything,
-    // maybe this filter is too strict. However, isItemVisibleForClasses usually just checks slot usability.
-    // if (!isItemVisibleForClasses(item, activeSetup)) return false
-
-    // 3. Level Range
-    // When explicitly browsing a set, we want to show all items in that set regardless of the current level filter.
-    // This ensures that when a user clicks a set bonus, they can actually "browse other items in the set"
-    // as requested, even if they are higher or lower level than the current setup's range.
-    // if (itemLevel < min || itemLevel > max) return false
-
-    // 4. Owned Only filter
-    if (showOwnedOnly && troveData) {
-      if (!(getTroveKey(item.name) in troveData)) {
+  const isItemMatch = useCallback(
+    (item: GearItem) => {
+      // 0. Class/Category visibility check
+      if (!isItemVisibleForClasses(item, activeSetup)) {
         return false
       }
-    }
 
-    // 5. Name Search
-    if (itemNameSearch) {
-      const searchLower = itemNameSearch.toLowerCase().trim()
-      if (
-        !item.name.toLowerCase().includes(searchLower) &&
-        !item.name
-          .toLowerCase()
-          .replaceAll(/[^a-z0-9]/g, '')
-          .includes(searchLower.replaceAll(/[^a-z0-9]/g, ''))
-      )
+      // 0b. Pet check
+      if (isPetSlot(item.slot)) {
         return false
-    }
+      }
 
-    return true
-  })
+      // 1. Set Match (must match the set we are browsing)
+      if (!isSetMatch(item, browsingSet, indexedItems, isLostPurposeSet)) {
+        return false
+      }
+
+      // 4. Owned Only filter
+      if (showOwnedOnly && troveData && !(getTroveKey(item.name) in troveData)) {
+        return false
+      }
+
+      // 5. Name Search
+      if (itemNameSearch) {
+        const searchLower = itemNameSearch.toLowerCase().trim()
+        const normalizedItemName = item.name.toLowerCase().replaceAll(/[^a-z0-9]/g, '')
+        const normalizedSearch = searchLower.replaceAll(/[^a-z0-9]/g, '')
+        if (!item.name.toLowerCase().includes(searchLower) && !normalizedItemName.includes(normalizedSearch))
+          return false
+      }
+
+      // 6. Conflict Filter
+      if (!showConflicts) {
+        const entityState = getEntityState(getSlotOwner(item.slot))
+        const isConflicting = (item.enchantments ?? item.effectsAdded ?? []).some((ench) => {
+          const res = checkPotentialConflict(
+            ench,
+            entityState.equipped,
+            item.slot,
+            entityState.slottedAugments,
+            entityState.slottedNearlyFinished,
+            entityState.slottedRitualTable,
+            entityState.slottedLostPurpose,
+            entityState.slottedFountainOfNecroticMight,
+            entityState.slottedStormreaverUpgrade,
+            item.id
+          )
+          return res.isConflict && !res.isUpgrade
+        })
+
+        if (isConflicting) return false
+      }
+
+      return true
+    },
+    [
+      browsingSet,
+      indexedItems,
+      isLostPurposeSet,
+      showOwnedOnly,
+      troveData,
+      itemNameSearch,
+      showConflicts,
+      getEntityState,
+      isItemVisibleForClasses,
+      activeSetup
+    ]
+  )
+
+  const setItemResults: GearItem[] = useMemo(() => allItems.filter(isItemMatch), [allItems, isItemMatch])
 
   if (setItemResults.length === 0) {
     return (
@@ -164,11 +210,14 @@ interface Props {
   allItems: GearItem[]
   setBonusIndex: SetBonusIndex
   showOwnedOnly: boolean
+  showConflicts: boolean
   troveData: ItemRollup | null
   itemNameSearch: string
   getEntityState: (owner: string) => EntityGearState
   selectItem: (slot: GearSlot, item: GearItem | null) => void
   openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
+  activeSetup: GearSetup
+  isItemVisibleForClasses: (item: GearItem, setup: GearSetup) => boolean
 }
 
 export default SetBonusItems

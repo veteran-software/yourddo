@@ -1,11 +1,34 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { renderHook } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { Provider } from 'react-redux'
 import { describe, expect, it, vi } from 'vitest'
 import gearPlannerReducer, { type GearPlannerState } from '../../../redux/slices/gearPlannerSlice'
 import { createDefaultSetup } from '../initialState'
 import useGearPlanner from './useGearPlanner'
+
+// Mock IntersectionObserver
+const mockObserve = vi.fn()
+const mockUnobserve = vi.fn()
+
+class MockIntersectionObserver {
+  callback: (entries: { isIntersecting: boolean }[]) => void
+  observe = mockObserve
+  unobserve = mockUnobserve
+  disconnect = vi.fn()
+
+  constructor(callback: (entries: { isIntersecting: boolean }[]) => void) {
+    this.callback = callback
+    MockIntersectionObserver._lastInstance = this
+  }
+
+  private static _lastInstance: MockIntersectionObserver | null = null
+
+  static get lastInstance(): MockIntersectionObserver | null {
+    return MockIntersectionObserver._lastInstance
+  }
+}
+window.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver
 
 // Mock useGearPlannerData and other internal hooks to avoid fetching data
 vi.mock('./useGearPlannerData', () => ({
@@ -23,8 +46,23 @@ vi.mock('./useGearPlannerData', () => ({
   })
 }))
 
+let mockItemsToShow = 50
+const mockSetItemsToShow = vi.fn((updater: ((prev: number) => number) | number) => {
+  if (typeof updater === 'function') {
+    mockItemsToShow = updater(mockItemsToShow)
+  } else {
+    mockItemsToShow = updater
+  }
+})
+
 vi.mock('./useGearPlannerUI', () => ({
-  useGearPlannerUI: () => ({})
+  useGearPlannerUI: vi.fn(() => ({
+    itemsToShow: mockItemsToShow,
+    setItemsToShow: mockSetItemsToShow,
+    showConflicts: false,
+    showOwnedOnly: false,
+    setBonusFilter: null
+  }))
 }))
 
 vi.mock('./useGearPlannerFiltering', () => ({
@@ -115,5 +153,43 @@ describe('useGearPlanner Hook', () => {
     expect(result.current.activeSetup.id).toBe('setup1')
     expect(result.current.activeSetup.artificerPet).toBeDefined()
     expect(result.current.activeSetup.druidPet).toBeDefined()
+  })
+
+  it('Infinite Scroll: should increment itemsToShow when observer target becomes visible', () => {
+    const store = createTestStore({
+      characterSetups: [],
+      activeSetupId: 'default'
+    })
+
+    const { result } = renderHook(
+      () =>
+        useGearPlanner({
+          enchantmentSearch: '',
+          itemNameSearch: '',
+          setBonusFilter: null,
+          showConflicts: false,
+          showOwnedOnly: false
+        }),
+      {
+        wrapper: ({ children }) => wrapper({ children, store })
+      }
+    )
+
+    expect(result.current.itemsToShow).toBe(50)
+
+    // Trigger the callback ref!
+    act(() => {
+      result.current.observerTarget(document.createElement('div'))
+    })
+
+    // Simulate intersection
+    act(() => {
+      MockIntersectionObserver.lastInstance?.callback([{ isIntersecting: true }])
+    })
+
+    expect(mockSetItemsToShow).toHaveBeenCalled()
+    const updater = mockSetItemsToShow.mock.calls[0][0] as unknown as (prev: number) => number
+    expect(typeof updater).toBe('function')
+    expect(updater(50)).toBe(100)
   })
 })

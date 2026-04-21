@@ -102,10 +102,6 @@ const FilterSection = <T,>(props: Props<T>) => {
               checked={filterMode === 'OR'}
               onChange={() => {
                 setFilterMode('OR')
-                // Reset filters when changing modes to avoid confusion
-                if (filterMode !== 'OR') {
-                  setSelectedFilters([])
-                }
               }}
               size='sm'
             >
@@ -120,10 +116,6 @@ const FilterSection = <T,>(props: Props<T>) => {
               checked={filterMode === 'AND'}
               onChange={() => {
                 setFilterMode('AND')
-                // Reset filters when changing modes to avoid confusion
-                if (filterMode !== 'AND') {
-                  setSelectedFilters([])
-                }
               }}
               size='sm'
             >

@@ -1,20 +1,20 @@
 import { useCallback, useMemo } from 'react'
 import { getTroveKey } from '../../../utils/troveUtils'
 import { ALL_SLOT_KEYS } from '../../essenceCrafting/types'
-import { normalizeString } from '../conflictResolver'
+import {
+  checkPotentialConflict,
+  getSlotOwner,
+  normalizeString
+} from '../conflictResolver'
 import { createEssenceCraftedItem } from '../helpers'
 import {
-  ARTIFICER_PET_SLOTS,
-  DRUID_PET_SLOTS,
   type GearItem,
   type GearSetup,
   GearSlot,
+  isPetSlot,
   type SetBonusIndex,
   type SetBonusIndexEntry
 } from '../types'
-
-const isPetSlot = (slot: string) =>
-  ARTIFICER_PET_SLOTS.includes(slot as GearSlot) || DRUID_PET_SLOTS.includes(slot as GearSlot)
 
 export const useGearPlannerFiltering = ({
   dataReady,
@@ -30,6 +30,8 @@ export const useGearPlannerFiltering = ({
   enchantmentSearch,
   setBonusFilter,
   showOwnedOnly,
+  showConflicts,
+  getEntityState,
   troveData,
   isItemVisibleForClasses
 }: Props) => {
@@ -46,6 +48,40 @@ export const useGearPlannerFiltering = ({
       return true
     },
     [showOwnedOnly, troveData]
+  )
+
+  const isItemConflicting = useCallback(
+    (item: GearItem, slot: GearSlot) => {
+      if (showConflicts) {
+        return false
+      }
+
+      const entityState = getEntityState(getSlotOwner(slot))
+      const equipped = entityState.equipped
+
+      const enchantments = item.enchantments ?? item.effectsAdded ?? []
+      for (const ench of enchantments) {
+        const { isConflict, isUpgrade } = checkPotentialConflict(
+          ench,
+          equipped,
+          slot,
+          entityState.slottedAugments,
+          entityState.slottedNearlyFinished,
+          entityState.slottedRitualTable,
+          entityState.slottedLostPurpose,
+          entityState.slottedFountainOfNecroticMight,
+          entityState.slottedStormreaverUpgrade,
+          item.id // Ignore current item if it's already equipped
+        )
+
+        if (isConflict && !isUpgrade) {
+          return true
+        }
+      }
+
+      return false
+    },
+    [showConflicts, getEntityState]
   )
 
   const shouldShowItem = useCallback((item: GearItem, slot: GearSlot, setup: GearSetup, skipLevelCheck = false) => {
@@ -280,6 +316,10 @@ export const useGearPlannerFiltering = ({
           }
         }
 
+        if (isItemConflicting(item, browsingSlot)) {
+          return false
+        }
+
         return filterByOwned(item)
       })
       .sort((a, b) => {
@@ -319,7 +359,8 @@ export const useGearPlannerFiltering = ({
     filterByOwned,
     troveData,
     isItemVisibleForClasses,
-    getEssenceCraftedItems
+    getEssenceCraftedItems,
+    isItemConflicting
   ])
 
   const searchResultsBySlot = useMemo(() => {
@@ -351,6 +392,10 @@ export const useGearPlannerFiltering = ({
         }
 
         if (showOwnedOnly && troveData && !item.isEssenceCrafted && !(getTroveKey(item.name) in troveData)) {
+          return false
+        }
+
+        if (!showConflicts && isItemConflicting(item, slot)) {
           return false
         }
 
@@ -406,7 +451,9 @@ export const useGearPlannerFiltering = ({
     troveData,
     isItemVisibleForClasses,
     browsingSlot,
-    getEssenceCraftedItems
+    getEssenceCraftedItems,
+    isItemConflicting,
+    showConflicts
   ])
 
   return {
@@ -434,6 +481,10 @@ interface Props {
   enchantmentSearch: string
   setBonusFilter: string | null
   showOwnedOnly: boolean
+  showConflicts: boolean
+  getEntityState: (owner: string) => import('../types').EntityGearState
   troveData: Record<string, unknown> | null
   isItemVisibleForClasses: (item: GearItem, setup: GearSetup) => boolean
 }
+
+export default useGearPlannerFiltering

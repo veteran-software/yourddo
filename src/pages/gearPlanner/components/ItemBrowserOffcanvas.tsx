@@ -166,7 +166,7 @@ interface Props {
   isMetal: (material: string | null | undefined) => boolean
   openSetBonusBrowser: (setName: string, slot?: GearSlot | null) => void
   showSetBonusBrowser: boolean
-  observerTarget: RefObject<HTMLDivElement | null>
+  observerTarget: ((node: HTMLDivElement | null) => void) | RefObject<HTMLDivElement | null>
   itemNameSearch: string
   setItemNameSearch: (search: string) => void
   troveData: ItemRollup | null
