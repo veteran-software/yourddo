@@ -140,7 +140,7 @@ const gearPlannerSlice = createSlice({
       if (state.characterSetups.length === 0) {
         state.characterSetups.push(createDefaultSetup('default', 'Default Setup'))
       }
-      if (state.activeSetupId === action.payload || !state.characterSetups.find((s) => s.id === state.activeSetupId)) {
+      if (state.activeSetupId === action.payload || !state.characterSetups.some((s) => s.id === state.activeSetupId)) {
         state.activeSetupId = state.characterSetups[0]?.id || 'default'
       }
     },

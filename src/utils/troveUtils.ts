@@ -301,7 +301,12 @@ export const getStoredTroveData = (): ItemRollup | null => {
 
   type ParsedShape = Record<string, LegacyEntry | ArrayEntry>
 
-  const parsedUnknown = JSON.parse(storedData) as unknown
+  let parsedUnknown: unknown
+  try {
+    parsedUnknown = JSON.parse(storedData) as unknown
+  } catch {
+    return null
+  }
   if (typeof parsedUnknown !== 'object' || parsedUnknown === null) return null
 
   const parsed = parsedUnknown as ParsedShape
