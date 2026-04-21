@@ -7,7 +7,7 @@ describe('getStoredTroveData', () => {
   })
 
   it('returns null if localStorage is empty', () => {
-    vi.mocked(localStorage.getItem).mockReturnValue(null)
+    vi.spyOn(localStorage, 'getItem').mockReturnValue(null)
     expect(getStoredTroveData()).toBeNull()
   })
 
@@ -23,10 +23,10 @@ describe('getStoredTroveData', () => {
         ]
       }
     })
-    vi.mocked(localStorage.getItem).mockReturnValue(validData)
+    vi.spyOn(localStorage, 'getItem').mockReturnValue(validData)
     const result = getStoredTroveData()
     expect(result).not.toBeNull()
-    expect(result!.item1.binding).toBe('Bind on Pickup')
+    expect(result?.item1.binding).toBe('Bind on Pickup')
   })
 
   it('handles legacy data shape', () => {
@@ -38,15 +38,15 @@ describe('getStoredTroveData', () => {
         }
       }
     })
-    vi.mocked(localStorage.getItem).mockReturnValue(legacyData)
+    vi.spyOn(localStorage, 'getItem').mockReturnValue(legacyData)
     const result = getStoredTroveData()
     expect(result).not.toBeNull()
-    expect(Array.isArray(result!.item1.byCharacter)).toBe(true)
-    expect(result!.item1.byCharacter[0].character).toBe('Char1')
+    expect(Array.isArray(result?.item1.byCharacter)).toBe(true)
+    expect(result?.item1.byCharacter[0]?.character).toBe('Char1')
   })
 
   it('returns null if localStorage contains malformed JSON', () => {
-    vi.mocked(localStorage.getItem).mockReturnValue('malformed json')
+    vi.spyOn(localStorage, 'getItem').mockReturnValue('malformed json')
     expect(getStoredTroveData()).toBeNull()
   })
 })
