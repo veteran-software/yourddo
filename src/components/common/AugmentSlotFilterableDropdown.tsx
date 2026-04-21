@@ -214,15 +214,21 @@ const buildGroups = (
   isColorSlot: boolean,
   isLamordiaSlot: boolean
 ): Record<string, Ingredient[]> => {
+  if (!(slotKey in source) || !Array.isArray(source[slotKey]) || source[slotKey].length === 0) {
+    return {}
+  }
+
+  const items: Ingredient[] = source[slotKey]
+
   if (isColorSlot) {
-    return groupByAugmentType(source[slotKey], headerLabel)
+    return groupByAugmentType(items, headerLabel)
   }
 
   if (isLamordiaSlot) {
-    return groupLamordiaByTier(source[slotKey])
+    return groupLamordiaByTier(items)
   }
 
-  return { [headerLabel]: source[slotKey] ?? [] }
+  return { [headerLabel]: items }
 }
 
 /**
