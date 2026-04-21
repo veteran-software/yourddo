@@ -1,5 +1,4 @@
 import { XMLParser } from 'fast-xml-parser'
-import { DateTime } from 'luxon'
 import {
   type Dispatch,
   Fragment,
@@ -18,7 +17,6 @@ import { setFooterHeight } from '../../redux/slices/appSlice.ts'
 import type { AppDispatch } from '../../redux/store.ts'
 import type { DatacenterStruct, Root, World } from '../../types/serverStatus.ts'
 import ServerStatusDisplay from '../common/ServerStatusDisplay.tsx'
-import Countdown from '../timer/Countdown.tsx'
 
 const polling = {
   pollingInterval: 60000, // re-check every minute
@@ -184,8 +182,6 @@ const Footer = () => {
     }
   }, [gameWorldsLam, iterateResults, statusTriggerLam])
 
-  const targetTime: DateTime = DateTime.fromISO('2025-07-17T18:00:00.000', { zone: 'gmt' })
-
   return (
     <Navbar ref={navRef} fixed='bottom' variant='dark' className='bg-primary overflow-x-auto overflow-y-hidden'>
       <Container fluid className='m-auto w-auto py-0 text-center'>
@@ -238,14 +234,6 @@ const Footer = () => {
                 }
               })}
           </Stack>
-
-          {/* Hide the timer at 6pm EST */}
-          {DateTime.now().toSeconds() <= targetTime.plus({ hours: 4 }).toSeconds() && (
-            <Stack className='w-auto justify-content-center' direction='horizontal' gap={2}>
-              <strong>Countdown to 64-bit Servers:</strong>
-              <Countdown targetTimestamp={targetTime.toSeconds()} />
-            </Stack>
-          )}
         </Stack>
       </Container>
     </Navbar>
