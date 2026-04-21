@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap'
 import { FaCheck, FaCopy, FaLink } from 'react-icons/fa6'
 
@@ -8,10 +8,15 @@ const PermalinkModal = (props: Props) => {
   type CopyStatus = 'idle' | 'copied' | 'selected'
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle')
   const inputRef = useRef<HTMLInputElement>(null)
+  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const url = useMemo(() => buildUrl(), [buildUrl])
 
   const handleCopy = async () => {
+    if (copyTimeoutRef.current) {
+      clearTimeout(copyTimeoutRef.current)
+    }
+
     if ('clipboard' in navigator) {
       await navigator.clipboard.writeText(url).catch(console.error)
 
@@ -23,15 +28,26 @@ const PermalinkModal = (props: Props) => {
 
       setCopyStatus('selected')
     }
-    setTimeout(() => {
+    copyTimeoutRef.current = setTimeout(() => {
       setCopyStatus('idle')
     }, 1500)
   }
 
   const handleClose = () => {
+    if (copyTimeoutRef.current) {
+      clearTimeout(copyTimeoutRef.current)
+    }
     setCopyStatus('idle')
     onHide()
   }
+
+  useEffect(() => {
+    return () => {
+      if (copyTimeoutRef.current) {
+        clearTimeout(copyTimeoutRef.current)
+      }
+    }
+  }, [])
 
   let buttonVariant: 'success' | 'warning' | 'primary' = 'primary'
   let buttonText = 'Copy'
