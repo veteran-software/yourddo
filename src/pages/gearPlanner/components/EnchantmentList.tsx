@@ -1,6 +1,15 @@
 import { Badge } from 'react-bootstrap'
-import { checkPotentialConflict, type EnchantmentConflict, getBonus, normalizeString } from '../conflictResolver.ts'
-import { type EntityGearState, GearSlot, type LootEnchantment } from '../types.ts'
+import {
+  checkPotentialConflict,
+  type EnchantmentConflict,
+  getBonus,
+  normalizeString
+} from '../conflictResolver.ts'
+import {
+  type EntityGearState,
+  GearSlot,
+  type LootEnchantment
+} from '../types.ts'
 
 const EnchantmentList = (props: Props) => {
   const { browsingSlot, entityState, enchantments, itemId, source } = props
@@ -21,7 +30,13 @@ const EnchantmentList = (props: Props) => {
   } = entityState
 
   return (
-    <>
+    <div
+      style={
+        source === 'slot' && enchantments.length > 5
+          ? { maxHeight: '10em', overflowY: 'auto', overflowX: 'hidden' }
+          : {}
+      }
+    >
       {enchantments.map((ench: LootEnchantment, idx) => {
         let isOverridden = false
         let isRedundant = false
@@ -137,7 +152,7 @@ const EnchantmentList = (props: Props) => {
           </div>
         )
       })}
-    </>
+    </div>
   )
 }
 
