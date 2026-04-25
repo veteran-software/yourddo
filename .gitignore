@@ -29,3 +29,5 @@ coverage/
 /src/data/essenceCrafting/runtime/
 /src/data/loot/runtime/
 /src/data/fountainOfNecroticMight.json
+src/pages/gearPlannerv2/
+src/redux/slices/gearPlanner.slice.ts

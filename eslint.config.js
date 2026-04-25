@@ -6,7 +6,16 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig([
-  { ignores: ['./dist/*', '**/*.css', '**/*.svg', './eslint.config.js'] },
+  {
+    ignores: [
+      './dist/*',
+      '**/*.css',
+      '**/*.svg',
+      './eslint.config.js',
+      'src/pages/gearPlannerv2/**',
+      'src/redux/slices/gearPlanner.slice.ts'
+    ]
+  },
   js.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,

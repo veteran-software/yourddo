@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  checkPotentialConflict,
-  getBonus,
-  resolveConflicts
-} from './conflictResolver'
+import { checkPotentialConflict, getBonus, normalizeString, resolveConflicts } from './conflictResolver'
 import { type GearItem, GearSlot } from './types'
 
 describe('conflictResolver Bugs', () => {
@@ -69,6 +65,32 @@ describe('conflictResolver Bugs', () => {
       expect(conflicts.strength).toBeDefined()
       expect(conflicts.strength.length).toBe(1)
       expect(conflicts.strength[0].bonus).toBe('Enhancement')
+    })
+  })
+
+  describe('normalizeString', () => {
+    it('should return a trimmed and lowercase version of the input string', () => {
+      expect(normalizeString('  HeLLo WoRLD  ')).toBe('hello world')
+    })
+
+    it('should return an empty string for null input', () => {
+      expect(normalizeString(null)).toBe('')
+    })
+
+    it('should return an empty string for undefined input', () => {
+      expect(normalizeString(undefined)).toBe('')
+    })
+
+    it('should convert a number to a string and normalize it', () => {
+      expect(normalizeString(123)).toBe('123')
+    })
+
+    it('should handle an empty string gracefully', () => {
+      expect(normalizeString('')).toBe('')
+    })
+
+    it('should not modify a string that is already trimmed and lowercase', () => {
+      expect(normalizeString('lowercase')).toBe('lowercase')
     })
   })
 })

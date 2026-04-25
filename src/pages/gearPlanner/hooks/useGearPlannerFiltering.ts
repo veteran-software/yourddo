@@ -1,11 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { getTroveKey } from '../../../utils/troveUtils'
 import { ALL_SLOT_KEYS } from '../../essenceCrafting/types'
-import {
-  checkPotentialConflict,
-  getSlotOwner,
-  normalizeString
-} from '../conflictResolver'
+import { checkPotentialConflict, getSlotOwner, normalizeString } from '../conflictResolver'
 import { createEssenceCraftedItem } from '../helpers'
 import {
   type GearItem,

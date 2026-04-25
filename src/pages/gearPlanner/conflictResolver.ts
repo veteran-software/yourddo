@@ -14,6 +14,13 @@ export interface EnchantmentConflict {
   }[]
 }
 
+/**
+ * Determines the owner of a specified slot.
+ *
+ * @param {string} slot - The name of the gear slot to check.
+ * @returns {string} Returns the owner of the slot, which can be one of
+ *                   'artificer_pet', 'druid_pet', or 'character'.
+ */
 export const getSlotOwner = (slot: string): string => {
   if (ARTIFICER_PET_SLOTS.includes(slot as GearSlot)) {
     return 'artificer_pet'

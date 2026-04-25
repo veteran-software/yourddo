@@ -57,18 +57,18 @@ export const GearSlot = {
 export type GearSlot = (typeof GearSlot)[keyof typeof GearSlot]
 
 export const GEAR_SLOTS: GearSlot[] = [
-  GearSlot.Armor,
-  GearSlot.Head,
-  GearSlot.Hands,
-  GearSlot.Cloak,
-  GearSlot.Waist,
-  GearSlot.Feet,
-  GearSlot.Wrists,
   GearSlot.Eyes,
+  GearSlot.Head,
   GearSlot.Neck,
-  GearSlot.FirstFinger,
-  GearSlot.SecondFinger,
   GearSlot.Trinket,
+  GearSlot.Armor,
+  GearSlot.Cloak,
+  GearSlot.Wrists,
+  GearSlot.Waist,
+  GearSlot.FirstFinger,
+  GearSlot.Feet,
+  GearSlot.Hands,
+  GearSlot.SecondFinger,
   GearSlot.MainHand,
   GearSlot.OffHand,
   GearSlot.Quiver
