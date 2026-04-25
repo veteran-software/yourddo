@@ -12,7 +12,8 @@ export interface BaseSelectorProps {
 }
 
 interface Props {
-  selectedEnchantment: LootEnchantment | null
+  selectedEnchantment?: LootEnchantment | null
+  selectedEnchantments?: LootEnchantment[] | null
   item: GearItem
   slot: GearSlot
   entityState: EntityGearState
@@ -20,14 +21,16 @@ interface Props {
 }
 
 const SelectedEnchantmentDisplay = (props: Props) => {
-  const { selectedEnchantment, item, slot, entityState, className } = props
+  const { selectedEnchantment, selectedEnchantments, item, slot, entityState, className } = props
 
-  if (!selectedEnchantment) return null
+  const enchantments = selectedEnchantments ?? (selectedEnchantment ? [selectedEnchantment] : [])
+
+  if (enchantments.length === 0) return null
 
   return (
     <div className={className ?? 'mt-1 text-secondary text-start'} style={{ fontSize: '0.6rem', lineHeight: '1.1' }}>
       <EnchantmentList
-        enchantments={[selectedEnchantment]}
+        enchantments={enchantments}
         itemId={item.id}
         entityState={entityState}
         source='slot'

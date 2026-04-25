@@ -1,6 +1,7 @@
 import fountainData from '../../data/fountainOfNecroticMight.json'
 import { findSetBonus } from '../../data/setBonuses.ts'
 import stormreaverUpgradeData from '../../data/stormreaverUpgrade.json'
+import traceOfMadnessData from '../../data/traceOfMadness.json'
 import zhentarimData from '../../data/zhentarimAttuned.json'
 import type { SetBonus } from '../../types/crafting.ts'
 import type { EssenceEnchantment } from './dataLoader.ts'
@@ -27,6 +28,10 @@ export const findStormreaverUpgradeData = (itemName: string, pageTitle?: string)
 
 export const findZhentarimUpgradeData = (itemName: string, pageTitle?: string): UpgradeEntry | undefined => {
   return findUpgradeData(itemName, zhentarimData, pageTitle)
+}
+
+export const findTraceOfMadnessUpgradeData = (upgradeName: string): UpgradeEntry | undefined => {
+  return traceOfMadnessData.find((u) => u.name === upgradeName)
 }
 
 export const findUpgradeData = (
@@ -170,6 +175,7 @@ export const aggregateEnchantmentEntries = (
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
+  slottedTraceOfMadness?: Record<string, string | null>,
   slottedFountainOfNecroticMight?: Record<string, boolean>,
   slottedStormreaverUpgrade?: Record<string, boolean>,
   slottedZhentarimAttuned?: Record<string, boolean>
@@ -185,6 +191,7 @@ export const aggregateEnchantmentEntries = (
         e.name !== 'Craftable Rune Arm' &&
         e.name !== 'Nearly Finished' &&
         e.name !== 'Lost Purpose' &&
+        e.name !== 'Trace of Madness' &&
         e.name !== 'Ritual Table' &&
         e.name !== 'Sealed in Fire' &&
         e.name !== 'Sealed in Undeath' &&
@@ -222,6 +229,19 @@ export const aggregateEnchantmentEntries = (
       ench: { ...lostPurpose, modifier: lostPurpose.modifier ?? 'Enhancement' },
       sourceName: item.name
     })
+  }
+
+  const traceOfMadness = slottedTraceOfMadness?.[item.id]
+  if (traceOfMadness) {
+    const upgradeData = findTraceOfMadnessUpgradeData(traceOfMadness)
+    if (upgradeData) {
+      upgradeData.effectsAdded.forEach((ench) => {
+        entries.push({
+          ench: { ...ench, modifier: ench.modifier ?? 'Enhancement' },
+          sourceName: item.name
+        })
+      })
+    }
   }
 
   addAugmentEntries(entries, item.name, itemAugs)

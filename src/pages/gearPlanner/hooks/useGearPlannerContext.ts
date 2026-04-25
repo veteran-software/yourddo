@@ -38,6 +38,7 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
         activeSetup.slottedNearlyFinished,
         activeSetup.slottedRitualTable,
         activeSetup.slottedLostPurpose,
+        activeSetup.slottedTraceOfMadness,
         activeSetup.slottedFountainOfNecroticMight,
         activeSetup.slottedStormreaverUpgrade,
         activeSetup.slottedZhentarimAttuned
@@ -48,6 +49,7 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
       activeSetup.slottedNearlyFinished,
       activeSetup.slottedRitualTable,
       activeSetup.slottedLostPurpose,
+      activeSetup.slottedTraceOfMadness,
       activeSetup.slottedFountainOfNecroticMight,
       activeSetup.slottedStormreaverUpgrade,
       activeSetup.slottedZhentarimAttuned
@@ -72,6 +74,7 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
         entity.state.slottedNearlyFinished,
         entity.state.slottedRitualTable,
         entity.state.slottedLostPurpose,
+        entity.state.slottedTraceOfMadness,
         entity.state.slottedFountainOfNecroticMight,
         entity.state.slottedStormreaverUpgrade,
         entity.state.slottedZhentarimAttuned
@@ -132,6 +135,7 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
         currentSlottedNearlyFinished: entityState.slottedNearlyFinished,
         currentSlottedRitualTable: entityState.slottedRitualTable,
         currentSlottedLostPurpose: entityState.slottedLostPurpose,
+        currentSlottedTraceOfMadness: entityState.slottedTraceOfMadness,
         currentSlottedFountainOfNecroticMight: entityState.slottedFountainOfNecroticMight,
         currentSlottedStormreaverUpgrade: entityState.slottedStormreaverUpgrade,
         currentSlottedZhentarimAttuned: entityState.slottedZhentarimAttuned
@@ -166,6 +170,7 @@ export interface ContextInfo {
   currentSlottedNearlyFinished: Record<string, LootEnchantment | null>
   currentSlottedRitualTable: Record<string, LootEnchantment | null>
   currentSlottedLostPurpose: Record<string, LootEnchantment | null>
+  currentSlottedTraceOfMadness: Record<string, string | null>
   currentSlottedFountainOfNecroticMight: Record<string, boolean>
   currentSlottedStormreaverUpgrade: Record<string, boolean>
   currentSlottedZhentarimAttuned: Record<string, boolean>

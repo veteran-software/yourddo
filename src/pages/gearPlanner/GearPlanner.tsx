@@ -91,6 +91,7 @@ const PetGearSection = ({
       slottedFiligrees={entityState.slottedFiligrees}
       slottedGemSetBonuses={entityState.slottedGemSetBonuses}
       slottedLostPurpose={entityState.slottedLostPurpose}
+      slottedTraceOfMadness={entityState.slottedTraceOfMadness}
       onSetClick={gpHook.openSetBonusBrowser}
     />
 
@@ -105,6 +106,7 @@ const PetGearSection = ({
       slottedNearlyFinished={entityState.slottedNearlyFinished}
       slottedRitualTable={entityState.slottedRitualTable}
       slottedLostPurpose={entityState.slottedLostPurpose}
+      slottedTraceOfMadness={entityState.slottedTraceOfMadness}
       slottedFountainOfNecroticMight={entityState.slottedFountainOfNecroticMight}
       slottedStormreaverUpgrade={entityState.slottedStormreaverUpgrade}
       slottedZhentarimAttuned={entityState.slottedZhentarimAttuned}
@@ -391,6 +393,7 @@ const GearPlanner = () => {
                       slottedFiligrees={gpHook.activeSetup.slottedFiligrees}
                       slottedGemSetBonuses={gpHook.activeSetup.slottedGemSetBonuses}
                       slottedLostPurpose={gpHook.activeSetup.slottedLostPurpose}
+                      slottedTraceOfMadness={gpHook.activeSetup.slottedTraceOfMadness}
                       onSetClick={gpHook.openSetBonusBrowser}
                     />
 
@@ -405,6 +408,7 @@ const GearPlanner = () => {
                       slottedNearlyFinished={gpHook.activeSetup.slottedNearlyFinished}
                       slottedRitualTable={gpHook.activeSetup.slottedRitualTable}
                       slottedLostPurpose={gpHook.activeSetup.slottedLostPurpose}
+                      slottedTraceOfMadness={gpHook.activeSetup.slottedTraceOfMadness}
                       slottedFountainOfNecroticMight={gpHook.activeSetup.slottedFountainOfNecroticMight}
                       slottedStormreaverUpgrade={gpHook.activeSetup.slottedStormreaverUpgrade}
                       slottedZhentarimAttuned={gpHook.activeSetup.slottedZhentarimAttuned}

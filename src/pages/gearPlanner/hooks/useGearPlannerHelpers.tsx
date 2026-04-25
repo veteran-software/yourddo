@@ -138,6 +138,9 @@ export const isItemVisible = (item: GearItem, setup: GearSetup): boolean => {
   }
 
   if (item.slot === GearSlot.Armor) {
+    if (setup.armorFilters.length === 0) {
+      return true
+    }
     let effectiveType = item.type
     if (effectiveType === 'Robe' || effectiveType === 'Outfit') {
       effectiveType = 'Cloth Armor'
@@ -146,13 +149,22 @@ export const isItemVisible = (item: GearItem, setup: GearSetup): boolean => {
   }
 
   if (item.slot === GearSlot.MainHand) {
+    if (setup.weaponFilters.length === 0) {
+      return true
+    }
     return setup.weaponFilters.includes(item.type)
   }
 
   if (item.slot === GearSlot.OffHand) {
     const isShield = SHIELD_TYPES.includes(item.type)
     if (isShield) {
+      if (setup.shieldFilters.length === 0) {
+        return true
+      }
       return setup.shieldFilters.includes(item.type)
+    }
+    if (setup.weaponFilters.length === 0) {
+      return true
     }
     return setup.weaponFilters.includes(item.type)
   }

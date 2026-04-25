@@ -16,6 +16,7 @@ import {
   setNearlyFinishedEnchantment as setNearlyFinishedEnchantmentAction,
   setRitualTableEnchantment as setRitualTableEnchantmentAction,
   setStormreaverUpgrade as setStormreaverUpgradeAction,
+  setTraceOfMadnessEnchantment as setTraceOfMadnessEnchantmentAction,
   setUnlockedFiligreeSlots as setUnlockedFiligreeSlotsAction,
   setZhentarimAttuned as setZhentarimAttunedAction
 } from '../../../redux/slices/gearPlannerSlice'
@@ -256,6 +257,16 @@ export const useGearPlannerActions = ({
     )
   }
 
+  const setTraceOfMadnessEnchantment = (itemId: string, upgradeName: string | null, slot?: GearSlot) => {
+    dispatch(
+      setTraceOfMadnessEnchantmentAction({
+        itemId,
+        upgradeName,
+        slot
+      })
+    )
+  }
+
   const setFountainOfNecroticMight = (itemId: string, active: boolean, slot?: GearSlot) => {
     dispatch(
       setFountainOfNecroticMightAction({
@@ -303,6 +314,7 @@ export const useGearPlannerActions = ({
     setNearlyFinishedEnchantment,
     setRitualTableEnchantment,
     setLostPurposeEnchantment,
+    setTraceOfMadnessEnchantment,
     setFountainOfNecroticMight,
     setStormreaverUpgrade,
     setZhentarimAttuned

@@ -14,6 +14,7 @@ import LostPurposeSelector from '../components/LostPurposeSelector'
 import NearlyFinishedSelector from '../components/NearlyFinishedSelector'
 import RitualTableSelector from '../components/RitualTableSelector'
 import StormreaverUpgradeSelector from '../components/StormreaverUpgradeSelector'
+import TraceOfMadnessSelector from '../components/TraceOfMadnessSelector'
 import TroveBadge from '../components/TroveBadge'
 import ZhentarimAttunedSelector from '../components/ZhentarimAttunedSelector'
 import { getSlotOwner } from '../conflictResolver'
@@ -93,6 +94,7 @@ export const renderGearPlanner = (props: Props) => {
     setNearlyFinishedEnchantment,
     setRitualTableEnchantment,
     setLostPurposeEnchantment,
+    setTraceOfMadnessEnchantment,
     setFountainOfNecroticMight,
     setStormreaverUpgrade,
     setZhentarimAttuned
@@ -151,6 +153,7 @@ export const renderGearPlanner = (props: Props) => {
     const currentSlottedNearlyFinished = entityState.slottedNearlyFinished
     const currentSlottedRitualTable = entityState.slottedRitualTable
     const currentSlottedLostPurpose = entityState.slottedLostPurpose
+    const currentSlottedTraceOfMadness = entityState.slottedTraceOfMadness
     const currentSlottedFountainOfNecroticMight = entityState.slottedFountainOfNecroticMight
     const currentSlottedStormreaverUpgrade = entityState.slottedStormreaverUpgrade
     const currentSlottedZhentarimAttuned = entityState.slottedZhentarimAttuned
@@ -342,6 +345,23 @@ export const renderGearPlanner = (props: Props) => {
                     />
                   )}
 
+                {Array.isArray(selectedItem.enchantments) &&
+                  selectedItem.enchantments.some(
+                    (enchantment: LootEnchantment) => enchantment.name === 'Trace of Madness'
+                  ) && (
+                    <TraceOfMadnessSelector
+                      item={selectedItem}
+                      slot={slot}
+                      selectedEnchantment={currentSlottedTraceOfMadness[selectedItem.id] ?? null}
+                      onSelect={(upgradeName: string | null) => {
+                        setTraceOfMadnessEnchantment(selectedItem.id, upgradeName, slot)
+                      }}
+                      entityState={entityState}
+                      wrapperClassName='text-start mt-1 pt-1 border-top'
+                      wrapperStyle={{ fontSize: '0.65rem' }}
+                    />
+                  )}
+
                 <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
                   <CurseSlotItem
                     selectedItem={selectedItem}
@@ -385,6 +405,7 @@ interface Props {
   setNearlyFinishedEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setRitualTableEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setLostPurposeEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
+  setTraceOfMadnessEnchantment: (itemId: string, upgradeName: string | null, slot?: GearSlot) => void
   setFountainOfNecroticMight: (itemId: string, active: boolean, slot?: GearSlot) => void
   setStormreaverUpgrade: (itemId: string, active: boolean, slot?: GearSlot) => void
   setZhentarimAttuned: (itemId: string, active: boolean, slot?: GearSlot) => void

@@ -92,6 +92,7 @@ export const resolveConflicts = (
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
+  slottedTraceOfMadness?: Record<string, LootEnchantment | null>,
   slottedFountainOfNecroticMight: Record<string, boolean> = {},
   slottedStormreaverUpgrade: Record<string, boolean> = {},
   slottedZhentarimAttuned: Record<string, boolean> = {}
@@ -127,12 +128,14 @@ export const resolveConflicts = (
             e.name !== 'Craftable Rune Arm' &&
             e.name !== 'Nearly Finished' &&
             e.name !== 'Lost Purpose' &&
+            e.name !== 'Trace of Madness' &&
             e.name !== 'Ritual Table' &&
             e.name !== 'Sealed in Fire' &&
             e.name !== 'Sealed in Undeath' &&
             e.name !== 'Zhentarim Attuned' &&
             e.name !== 'Upgradeable Item (Black Abbot)' &&
-            e.name !== 'Upgradeable Item (Stormreaver)'
+            e.name !== 'Upgradeable Item (Stormreaver)' &&
+            !(normalizeString(e.name).includes('enhancement bonus') && !normalizeString(e.name).includes('to '))
         )
         .forEach((ench) => {
           allEnchantments.push({
@@ -189,6 +192,24 @@ export const resolveConflicts = (
       const enchWithModifier = {
         ...lostPurpose,
         modifier: lostPurpose.modifier ?? 'Enhancement'
+      }
+      allEnchantments.push({
+        itemId: item.id,
+        itemName: item.name,
+        slot: item.slot,
+        enchantment: enchWithModifier,
+        parsedValue: parseModifierValue(enchWithModifier.modifier),
+        owner,
+        normalizedName: normalizeString(enchWithModifier.name),
+        normalizedBonus: getBonus(enchWithModifier.bonus)
+      })
+    }
+
+    const traceOfMadness = slottedTraceOfMadness?.[item.id]
+    if (traceOfMadness) {
+      const enchWithModifier = {
+        ...traceOfMadness,
+        modifier: traceOfMadness.modifier ?? 'Enhancement'
       }
       allEnchantments.push({
         itemId: item.id,
@@ -364,6 +385,23 @@ const findMatchingLostPurpose = (
   return -Infinity
 }
 
+const findMatchingTraceOfMadness = (
+  itemId: string,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
+) => {
+  const traceOfMadness = slottedTraceOfMadness?.[itemId]
+  if (
+    traceOfMadness &&
+    normalizeString(traceOfMadness.name) === normalizedTargetName &&
+    getBonus(traceOfMadness.bonus) === normalizedTargetBonus
+  ) {
+    return parseModifierValue(traceOfMadness.modifier ?? 'Enhancement')
+  }
+  return -Infinity
+}
+
 const findMatchingAugments = (
   itemId: string,
   normalizedTargetName: string,
@@ -402,6 +440,20 @@ const lostPurposeMax = (
   }
 
   return findMatchingLostPurpose(item.id, normalizedTargetName, normalizedTargetBonus, slottedLostPurpose)
+}
+
+const traceOfMadnessMax = (
+  isSameItem: boolean,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  item: GearItem,
+  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
+) => {
+  if (isSameItem) {
+    return -Infinity
+  }
+
+  return findMatchingTraceOfMadness(item.id, normalizedTargetName, normalizedTargetBonus, slottedTraceOfMadness)
 }
 
 const nearlyFinishedMax = (
@@ -464,6 +516,7 @@ const getItemEnchantmentMax = (
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
+  slottedTraceOfMadness?: Record<string, LootEnchantment | null>,
   slottedFountainOfNecroticMight: Record<string, boolean> = {},
   slottedStormreaverUpgrade: Record<string, boolean> = {},
   slottedZhentarimAttuned: Record<string, boolean> = {},
@@ -478,8 +531,10 @@ const getItemEnchantmentMax = (
   if (
     normalizedTargetName === 'nearly finished' ||
     normalizedTargetName === 'lost purpose' ||
+    normalizedTargetName === 'trace of madness' ||
     normalizedTargetName === 'ritual table' ||
-    normalizedTargetName === 'zhentarim attuned'
+    normalizedTargetName === 'zhentarim attuned' ||
+    (normalizedTargetName.includes('enhancement bonus') && !normalizedTargetName.includes('to '))
   ) {
     return -Infinity
   }
@@ -505,7 +560,8 @@ const getItemEnchantmentMax = (
     nearlyFinishedMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedNearlyFinished),
     ritualTableMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedRitualTable),
     augMax,
-    lostPurposeMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedLostPurpose)
+    lostPurposeMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedLostPurpose),
+    traceOfMadnessMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedTraceOfMadness)
   )
 }
 
@@ -521,6 +577,7 @@ export const checkPotentialConflict = (
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
+  slottedTraceOfMadness?: Record<string, LootEnchantment | null>,
   slottedFountainOfNecroticMight: Record<string, boolean> = {},
   slottedStormreaverUpgrade: Record<string, boolean> = {},
   slottedZhentarimAttuned: Record<string, boolean> = {},
@@ -530,12 +587,14 @@ export const checkPotentialConflict = (
   const parsedValue = parseModifierValue(enchantment.modifier)
   const normalizedTargetName: string = normalizeString(enchantment.name)
 
-  // Skip conflict check for upgrade placeholder enchantments
+  // Skip conflict check for upgrade placeholder enchantments and base item enhancement bonuses
   if (
     normalizedTargetName === 'nearly finished' ||
     normalizedTargetName === 'lost purpose' ||
+    normalizedTargetName === 'trace of madness' ||
     normalizedTargetName === 'ritual table' ||
-    normalizedTargetName === 'zhentarim attuned'
+    normalizedTargetName === 'zhentarim attuned' ||
+    (normalizedTargetName.includes('enhancement bonus') && !normalizedTargetName.includes('to '))
   ) {
     return { isConflict: false, currentMax: 0, isRedundant: false }
   }
@@ -562,6 +621,7 @@ export const checkPotentialConflict = (
       slottedNearlyFinished,
       slottedRitualTable,
       slottedLostPurpose,
+      slottedTraceOfMadness,
       slottedFountainOfNecroticMight,
       slottedStormreaverUpgrade,
       slottedZhentarimAttuned,

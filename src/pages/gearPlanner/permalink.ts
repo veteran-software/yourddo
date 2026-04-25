@@ -74,7 +74,8 @@ type V1Payload = [
     OptionalEncodedBoolean, // isFountainUpgraded
     OptionalEncodedBoolean, // isStormreaverUpgraded
     string | null, // itemId
-    OptionalEncodedBoolean // isZhentarimUpgraded
+    OptionalEncodedBoolean, // isZhentarimUpgraded
+    LootEnchantment | string | null // traceOfMadness
   ][]
 ]
 
@@ -145,6 +146,7 @@ const encodeItemPayload = (slot: GearSlot, item: GearItem, setup: GearSetup): V1
   const isFountainUpgraded = state.slottedFountainOfNecroticMight[item.id]
   const isStormreaverUpgraded = state.slottedStormreaverUpgrade[item.id]
   const isZhentarimUpgraded = state.slottedZhentarimAttuned[item.id]
+  const traceOfMadness = state.slottedTraceOfMadness[item.id] ?? null
 
   return [
     slot,
@@ -163,7 +165,8 @@ const encodeItemPayload = (slot: GearSlot, item: GearItem, setup: GearSetup): V1
     isFountainUpgraded ? 1 : 0,
     isStormreaverUpgraded ? 1 : 0,
     item.id,
-    isZhentarimUpgraded ? 1 : 0
+    isZhentarimUpgraded ? 1 : 0,
+    traceOfMadness
   ]
 }
 
@@ -206,6 +209,7 @@ export const tryDecodeGearPermalink = (
       slottedNearlyFinished: {},
       slottedRitualTable: {},
       slottedLostPurpose: {},
+      slottedTraceOfMadness: {},
       slottedFountainOfNecroticMight: {},
       slottedStormreaverUpgrade: {},
       slottedZhentarimAttuned: {},
@@ -244,11 +248,19 @@ const decodeSupplementaryProperties = (
   slottedGemSetBonuses: (string | null)[] | null,
   isFountainUpgraded: OptionalEncodedBoolean,
   isStormreaverUpgraded: OptionalEncodedBoolean,
-  isZhentarimUpgraded: OptionalEncodedBoolean
+  isZhentarimUpgraded: OptionalEncodedBoolean,
+  traceOfMadness: LootEnchantment | string | null
 ) => {
   if (nearlyFinished) state.slottedNearlyFinished[item.id] = nearlyFinished
   if (ritualTable) state.slottedRitualTable[item.id] = ritualTable
   if (lostPurpose) state.slottedLostPurpose[item.id] = lostPurpose
+  if (traceOfMadness) {
+    if (typeof traceOfMadness === 'string') {
+      state.slottedTraceOfMadness[item.id] = traceOfMadness
+    } else {
+      state.slottedTraceOfMadness[item.id] = traceOfMadness.name
+    }
+  }
   if (isFountainUpgraded) state.slottedFountainOfNecroticMight[item.id] = true
   if (isStormreaverUpgraded) state.slottedStormreaverUpgrade[item.id] = true
   if (isZhentarimUpgraded) state.slottedZhentarimAttuned[item.id] = true
@@ -303,7 +315,8 @@ const decodeItemPayload = (
     isFountainUpgraded,
     isStormreaverUpgraded,
     itemId,
-    isZhentarimUpgraded
+    isZhentarimUpgraded,
+    traceOfMadness
   ] = itemPayload
 
   // Find the item in allItems by ID (preferred) or name and slot
@@ -344,7 +357,8 @@ const decodeItemPayload = (
     slottedGemSetBonuses,
     isFountainUpgraded,
     isStormreaverUpgraded,
-    isZhentarimUpgraded
+    isZhentarimUpgraded,
+    traceOfMadness ?? null
   )
 }
 

@@ -12,6 +12,7 @@ const CurseSlotItem = (props: Props) => {
     slottedNearlyFinished: currentSlottedNearlyFinished,
     slottedRitualTable: currentSlottedRitualTable,
     slottedLostPurpose: currentSlottedLostPurpose,
+    slottedTraceOfMadness: currentSlottedTraceOfMadness,
     slottedFountainOfNecroticMight: currentSlottedFountainOfNecroticMight,
     slottedStormreaverUpgrade: currentSlottedStormreaverUpgrade,
     slottedZhentarimAttuned: currentSlottedZhentarimAttuned
@@ -67,6 +68,7 @@ const CurseSlotItem = (props: Props) => {
                   currentSlottedNearlyFinished,
                   currentSlottedRitualTable,
                   currentSlottedLostPurpose,
+                  currentSlottedTraceOfMadness,
                   currentSlottedFountainOfNecroticMight,
                   currentSlottedStormreaverUpgrade,
                   currentSlottedZhentarimAttuned,

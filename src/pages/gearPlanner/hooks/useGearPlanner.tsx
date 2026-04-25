@@ -135,6 +135,7 @@ const useGearPlanner = (props: Props) => {
     setNearlyFinishedEnchantment: actions.setNearlyFinishedEnchantment,
     setRitualTableEnchantment: actions.setRitualTableEnchantment,
     setLostPurposeEnchantment: actions.setLostPurposeEnchantment,
+    setTraceOfMadnessEnchantment: actions.setTraceOfMadnessEnchantment,
     setFountainOfNecroticMight: actions.setFountainOfNecroticMight,
     setStormreaverUpgrade: actions.setStormreaverUpgrade,
     setZhentarimAttuned: actions.setZhentarimAttuned

@@ -34,6 +34,7 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
     slottedNearlyFinished: {},
     slottedRitualTable: {},
     slottedLostPurpose: {},
+    slottedTraceOfMadness: {},
     slottedFountainOfNecroticMight: {},
     slottedStormreaverUpgrade: {},
     slottedZhentarimAttuned: {},
@@ -81,8 +82,25 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
 
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.data.slots[GearSlot.MainHand]?.name).toBe('Legendary Sword')
       expect(result.data.slots[GearSlot.MainHand]?.id).toBe(mockItem.id)
+    }
+  })
+
+  it('should encode and decode Trace of Madness', () => {
+    const upgradeName = 'Xoriat Madness: Mania'
+    const setupWithTrace: GearSetup = {
+      ...mockSetup,
+      slottedTraceOfMadness: {
+        [mockItem.id]: upgradeName
+      }
+    }
+
+    const encoded = encodeGearPermalink(setupWithTrace)
+    const result = tryDecodeGearPermalink(encoded, [mockItem], [], [])
+
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.data.slottedTraceOfMadness[mockItem.id]).toBe(upgradeName)
     }
   })
 

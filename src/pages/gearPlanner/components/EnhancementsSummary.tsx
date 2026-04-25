@@ -42,6 +42,7 @@ const EnchantmentsSummary = (props: Props) => {
     slottedFiligrees,
     slottedGemSetBonuses,
     slottedLostPurpose,
+    slottedTraceOfMadness,
     slottedNearlyFinished,
     slottedRitualTable,
     slottedFountainOfNecroticMight,
@@ -147,6 +148,7 @@ const EnchantmentsSummary = (props: Props) => {
         slottedNearlyFinished,
         slottedRitualTable,
         slottedLostPurpose,
+        slottedTraceOfMadness,
         slottedFountainOfNecroticMight,
         slottedStormreaverUpgrade,
         slottedZhentarimAttuned
@@ -214,6 +216,7 @@ const EnchantmentsSummary = (props: Props) => {
     slottedFiligrees,
     slottedGemSetBonuses,
     slottedLostPurpose,
+    slottedTraceOfMadness,
     slottedCurses,
     slottedEssenceEnchantments,
     essenceEnchantments,
@@ -328,6 +331,7 @@ interface Props {
   slottedNearlyFinished: Record<string, import('../types.ts').LootEnchantment | null>
   slottedRitualTable: Record<string, import('../types.ts').LootEnchantment | null>
   slottedLostPurpose: Record<string, import('../types.ts').LootEnchantment | null>
+  slottedTraceOfMadness: Record<string, string | null>
   slottedFountainOfNecroticMight: Record<string, boolean>
   slottedStormreaverUpgrade: Record<string, boolean>
   slottedZhentarimAttuned: Record<string, boolean>

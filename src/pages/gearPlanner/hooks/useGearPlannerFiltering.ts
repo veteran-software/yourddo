@@ -53,7 +53,7 @@ export const useGearPlannerFiltering = ({
       }
 
       const entityState = getEntityState(getSlotOwner(slot))
-      const equipped = entityState.equipped
+      const equipped = entityState.equipped.filter((i) => i.id !== entityState.slots[slot]?.id)
 
       const enchantments = item.enchantments ?? item.effectsAdded ?? []
       for (const ench of enchantments) {
@@ -65,6 +65,7 @@ export const useGearPlannerFiltering = ({
           entityState.slottedNearlyFinished,
           entityState.slottedRitualTable,
           entityState.slottedLostPurpose,
+          entityState.slottedTraceOfMadness,
           entityState.slottedFountainOfNecroticMight,
           entityState.slottedStormreaverUpgrade,
           entityState.slottedZhentarimAttuned,

@@ -11,6 +11,7 @@ export const initialPetState = (): PetState => ({
   slottedNearlyFinished: {},
   slottedRitualTable: {},
   slottedLostPurpose: {},
+  slottedTraceOfMadness: {},
   slottedFountainOfNecroticMight: {},
   slottedStormreaverUpgrade: {},
   slottedZhentarimAttuned: {}
@@ -36,6 +37,7 @@ export const createDefaultSetup = (id: string, name: string): GearSetup => ({
   slottedNearlyFinished: {},
   slottedRitualTable: {},
   slottedLostPurpose: {},
+  slottedTraceOfMadness: {},
   slottedFountainOfNecroticMight: {},
   slottedStormreaverUpgrade: {},
   slottedZhentarimAttuned: {},

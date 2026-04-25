@@ -39,6 +39,7 @@ const loadState = (): GearPlannerState => {
         target.slottedNearlyFinished ??= {}
         target.slottedRitualTable ??= {}
         target.slottedLostPurpose ??= {}
+        target.slottedTraceOfMadness ??= {}
         target.slottedFountainOfNecroticMight ??= {}
         target.slottedStormreaverUpgrade ??= {}
         target.slottedZhentarimAttuned ??= {}
@@ -95,6 +96,7 @@ const clearMetadata = (target: SlottedProperties, id: string) => {
   delete target.slottedNearlyFinished[id]
   delete target.slottedRitualTable[id]
   delete target.slottedLostPurpose[id]
+  delete target.slottedTraceOfMadness[id]
   delete target.slottedFountainOfNecroticMight[id]
   delete target.slottedStormreaverUpgrade[id]
   delete target.slottedZhentarimAttuned[id]
@@ -339,6 +341,21 @@ const gearPlannerSlice = createSlice({
       const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
       target.slottedLostPurpose[itemId] = enchantment
     },
+    setTraceOfMadnessEnchantment: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        upgradeName: string | null
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, upgradeName, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
+
+      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
+      target.slottedTraceOfMadness[itemId] = upgradeName
+    },
     setFountainOfNecroticMight: (
       state,
       action: PayloadAction<{
@@ -438,6 +455,7 @@ export const {
   setNearlyFinishedEnchantment,
   setRitualTableEnchantment,
   setLostPurposeEnchantment,
+  setTraceOfMadnessEnchantment,
   setFountainOfNecroticMight,
   setStormreaverUpgrade,
   setZhentarimAttuned,

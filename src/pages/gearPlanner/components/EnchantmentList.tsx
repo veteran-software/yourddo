@@ -14,6 +14,7 @@ const EnchantmentList = (props: Props) => {
     slottedNearlyFinished,
     slottedRitualTable,
     slottedLostPurpose,
+    slottedTraceOfMadness,
     slottedFountainOfNecroticMight,
     slottedStormreaverUpgrade,
     slottedZhentarimAttuned
@@ -33,12 +34,13 @@ const EnchantmentList = (props: Props) => {
             ? { isConflict: false, currentMax: 0, isRedundant: false }
             : checkPotentialConflict(
                 ench,
-                equippedItems,
+                equippedItems.filter((i) => i.id !== (browsingSlot ? entityState.slots[browsingSlot]?.id : null)),
                 browsingSlot ?? undefined,
                 slottedAugments,
                 slottedNearlyFinished,
                 slottedRitualTable,
                 slottedLostPurpose,
+                slottedTraceOfMadness,
                 slottedFountainOfNecroticMight,
                 slottedStormreaverUpgrade,
                 slottedZhentarimAttuned,

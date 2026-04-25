@@ -1,0 +1,410 @@
+[
+  {
+    "name": "Xoriat Madness: Mania",
+    "effectsAdded": [
+      {
+        "name": "Melodic Guard"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Any armor item with 'Trace of Madness'",
+        "quantity": 1
+      },
+      {
+        "name": "Watcher's Eye",
+        "quantity": 10
+      },
+      {
+        "name": "Polished Stone",
+        "quantity": 20
+      },
+      {
+        "name": "Adhesive Slime",
+        "quantity": 50
+      },
+      {
+        "name": "Brain Sample",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "name": "Xoriat Madness: Hysteria",
+    "effectsAdded": [
+      {
+        "name": "Hysteria"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Any armor item with 'Trace of Madness'",
+        "quantity": 1
+      },
+      {
+        "name": "Watcher's Eye",
+        "quantity": 10
+      },
+      {
+        "name": "Polished Stone",
+        "quantity": 10
+      },
+      {
+        "name": "Adhesive Slime",
+        "quantity": 50
+      },
+      {
+        "name": "Brain Sample",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "name": "Xoriat Madness: Obsession",
+    "effectsAdded": [
+      {
+        "name": "Obsession"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Any armor item with 'Trace of Madness'",
+        "quantity": 1
+      },
+      {
+        "name": "Watcher's Eye",
+        "quantity": 10
+      },
+      {
+        "name": "Polished Stone",
+        "quantity": 50
+      },
+      {
+        "name": "Adhesive Slime",
+        "quantity": 20
+      },
+      {
+        "name": "Brain Sample",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "name": "Xoriat Madness: Paranoia",
+    "effectsAdded": [
+      {
+        "name": "Paranoia"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Any armor item with 'Trace of Madness'",
+        "quantity": 1
+      },
+      {
+        "name": "Watcher's Eye",
+        "quantity": 20
+      },
+      {
+        "name": "Polished Stone",
+        "quantity": 50
+      },
+      {
+        "name": "Adhesive Slime",
+        "quantity": 10
+      },
+      {
+        "name": "Brain Sample",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "name": "Xoriat Madness: Delirium",
+    "effectsAdded": [
+      {
+        "name": "Delirium"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Any armor item with 'Trace of Madness'",
+        "quantity": 1
+      },
+      {
+        "name": "Watcher's Eye",
+        "quantity": 50
+      },
+      {
+        "name": "Polished Stone",
+        "quantity": 10
+      },
+      {
+        "name": "Adhesive Slime",
+        "quantity": 10
+      },
+      {
+        "name": "Brain Sample",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "name": "Xoriat Madness: Solipsism",
+    "effectsAdded": [
+      {
+        "name": "Solipsism"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Any armor item with 'Trace of Madness'",
+        "quantity": 1
+      },
+      {
+        "name": "Watcher's Eye",
+        "quantity": 20
+      },
+      {
+        "name": "Polished Stone",
+        "quantity": 50
+      },
+      {
+        "name": "Adhesive Slime",
+        "quantity": 10
+      },
+      {
+        "name": "Brain Sample",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "name": "Xoriat Madness: Alien Mind",
+    "effectsAdded": [
+      {
+        "name": "Will Saving Throws",
+        "modifier": 10,
+        "bonus": "Resistance"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Any armor item with 'Trace of Madness'",
+        "quantity": 1
+      },
+      {
+        "name": "Watcher's Eye",
+        "quantity": 10
+      },
+      {
+        "name": "Polished Stone",
+        "quantity": 10
+      },
+      {
+        "name": "Adhesive Slime",
+        "quantity": 20
+      },
+      {
+        "name": "Brain Sample",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "name": "Xoriat Madness: Uncanny Awareness",
+    "effectsAdded": [
+      {
+        "name": "Reflex Saving Throws",
+        "modifier": 10,
+        "bonus": "Resistance"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Any armor item with 'Trace of Madness'",
+        "quantity": 1
+      },
+      {
+        "name": "Watcher's Eye",
+        "quantity": 50
+      },
+      {
+        "name": "Polished Stone",
+        "quantity": 10
+      },
+      {
+        "name": "Adhesive Slime",
+        "quantity": 10
+      },
+      {
+        "name": "Brain Sample",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "name": "Xoriat Madness: Subtle Ambition",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Conjuration",
+        "modifier": 2,
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell DC: Illusion",
+        "modifier": 2,
+        "bonus": "Equipment"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Any armor item with 'Trace of Madness'",
+        "quantity": 1
+      },
+      {
+        "name": "Watcher's Eye",
+        "quantity": 20
+      },
+      {
+        "name": "Polished Stone",
+        "quantity": 10
+      },
+      {
+        "name": "Adhesive Slime",
+        "quantity": 20
+      },
+      {
+        "name": "Brain Sample",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "name": "Xoriat Madness: Chaotic Ambition",
+    "effectsAdded": [
+      {
+        "name": "Spell Critical Chance: Acid",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Bludgeoning",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Chaos",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Cold",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Electric",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Evil",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Fire",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Force",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Good",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Lawful",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Light",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Negative Energy",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Piercing",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Poison",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Positive Energy",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Repair",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Rust",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Slashing",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Sonic",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      },
+      {
+        "name": "Spell Critical Chance: Untyped",
+        "modifier": "1%",
+        "bonus": "Equipment"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Any armor item with 'Trace of Madness'",
+        "quantity": 1
+      },
+      {
+        "name": "Watcher's Eye",
+        "quantity": 10
+      },
+      {
+        "name": "Polished Stone",
+        "quantity": 20
+      },
+      {
+        "name": "Adhesive Slime",
+        "quantity": 10
+      },
+      {
+        "name": "Brain Sample",
+        "quantity": 50
+      }
+    ]
+  }
+]

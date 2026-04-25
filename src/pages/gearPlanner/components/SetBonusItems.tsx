@@ -114,12 +114,13 @@ const SetBonusItems = (props: Props) => {
         const isConflicting = (item.enchantments ?? item.effectsAdded ?? []).some((ench) => {
           const res = checkPotentialConflict(
             ench,
-            entityState.equipped,
+            entityState.equipped.filter((i) => i.id !== entityState.slots[item.slot]?.id),
             item.slot,
             entityState.slottedAugments,
             entityState.slottedNearlyFinished,
             entityState.slottedRitualTable,
             entityState.slottedLostPurpose,
+            entityState.slottedTraceOfMadness,
             entityState.slottedFountainOfNecroticMight,
             entityState.slottedStormreaverUpgrade,
             entityState.slottedZhentarimAttuned,
