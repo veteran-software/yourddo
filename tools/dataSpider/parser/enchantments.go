@@ -90,10 +90,10 @@ var elementsMap = map[string][]string{
 
 var abilityToSkillsMap = map[string][]string{
 	"Strength":     {"Jump", "Swim"},
-	"Dexterity":    {"Balance", "Escape Artist", "Hide", "Move Silently", "Open Lock", "Tumble"},
+	"Dexterity":    {"Balance", "Hide", "Move Silently", "Open Lock", "Tumble"},
 	"Constitution": {"Concentration"},
-	"Intelligence": {"Disable Device", "Heal", "Repair", "Search", "Spellcraft"},
-	"Wisdom":       {"Listen", "Spot"},
+	"Intelligence": {"Disable Device", "Repair", "Search", "Spellcraft"},
+	"Wisdom":       {"Heal", "Listen", "Spot"},
 	"Charisma":     {"Bluff", "Diplomacy", "Haggle", "Intimidate", "Perform", "Use Magic Device"},
 }
 

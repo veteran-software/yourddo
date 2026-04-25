@@ -136,7 +136,8 @@ const useGearPlanner = (props: Props) => {
     setRitualTableEnchantment: actions.setRitualTableEnchantment,
     setLostPurposeEnchantment: actions.setLostPurposeEnchantment,
     setFountainOfNecroticMight: actions.setFountainOfNecroticMight,
-    setStormreaverUpgrade: actions.setStormreaverUpgrade
+    setStormreaverUpgrade: actions.setStormreaverUpgrade,
+    setZhentarimAttuned: actions.setZhentarimAttuned
   })
 
   const [observerTarget, setObserverTarget] = useState<HTMLDivElement | null>(null)
@@ -219,6 +220,7 @@ const useGearPlanner = (props: Props) => {
     setShowSidebar,
     setSlottedFiligree: actions.setSlottedFiligree,
     setStormreaverUpgrade: actions.setStormreaverUpgrade,
+    setZhentarimAttuned: actions.setZhentarimAttuned,
     setUnlockedFiligreeSlots: actions.setUnlockedFiligreeSlots,
     showConflicts,
     showEnchantmentSearch,

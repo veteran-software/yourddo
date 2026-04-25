@@ -36,6 +36,7 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
     slottedLostPurpose: {},
     slottedFountainOfNecroticMight: {},
     slottedStormreaverUpgrade: {},
+    slottedZhentarimAttuned: {},
     artificerPet: initialPetState(),
     druidPet: initialPetState()
   }

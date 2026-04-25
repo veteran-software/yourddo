@@ -15,6 +15,7 @@ import NearlyFinishedSelector from '../components/NearlyFinishedSelector'
 import RitualTableSelector from '../components/RitualTableSelector'
 import StormreaverUpgradeSelector from '../components/StormreaverUpgradeSelector'
 import TroveBadge from '../components/TroveBadge'
+import ZhentarimAttunedSelector from '../components/ZhentarimAttunedSelector'
 import { getSlotOwner } from '../conflictResolver'
 import { type EssenceEnchantment } from '../dataLoader'
 import { getDisplayEnchantments, getMaxFiligreeSlots, isMinorArtifact } from '../helpers'
@@ -93,7 +94,8 @@ export const renderGearPlanner = (props: Props) => {
     setRitualTableEnchantment,
     setLostPurposeEnchantment,
     setFountainOfNecroticMight,
-    setStormreaverUpgrade
+    setStormreaverUpgrade,
+    setZhentarimAttuned
   } = props
 
   const renderItemNameAndDrop = (item: GearItem) => (
@@ -151,12 +153,14 @@ export const renderGearPlanner = (props: Props) => {
     const currentSlottedLostPurpose = entityState.slottedLostPurpose
     const currentSlottedFountainOfNecroticMight = entityState.slottedFountainOfNecroticMight
     const currentSlottedStormreaverUpgrade = entityState.slottedStormreaverUpgrade
+    const currentSlottedZhentarimAttuned = entityState.slottedZhentarimAttuned
 
     const isFountainUpgraded = selectedItem ? currentSlottedFountainOfNecroticMight[selectedItem.id] : false
     const isStormreaverUpgraded = selectedItem ? currentSlottedStormreaverUpgrade[selectedItem.id] : false
+    const isZhentarimUpgraded = selectedItem ? currentSlottedZhentarimAttuned[selectedItem.id] : false
 
     const displayEnchantments: LootEnchantment[] = selectedItem
-      ? getDisplayEnchantments(selectedItem, isFountainUpgraded, isStormreaverUpgraded)
+      ? getDisplayEnchantments(selectedItem, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
       : []
 
     return (
@@ -297,6 +301,17 @@ export const renderGearPlanner = (props: Props) => {
                   wrapperStyle={{ fontSize: '0.65rem' }}
                 />
 
+                <ZhentarimAttunedSelector
+                  item={selectedItem}
+                  slot={slot}
+                  active={currentSlottedZhentarimAttuned[selectedItem.id] || false}
+                  onToggle={(active: boolean) => {
+                    setZhentarimAttuned(selectedItem.id, active, slot)
+                  }}
+                  wrapperClassName='text-start mt-1 pt-1 border-top'
+                  wrapperStyle={{ fontSize: '0.65rem' }}
+                />
+
                 <RitualTableSelector
                   item={selectedItem}
                   slot={slot}
@@ -372,4 +387,5 @@ interface Props {
   setLostPurposeEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setFountainOfNecroticMight: (itemId: string, active: boolean, slot?: GearSlot) => void
   setStormreaverUpgrade: (itemId: string, active: boolean, slot?: GearSlot) => void
+  setZhentarimAttuned: (itemId: string, active: boolean, slot?: GearSlot) => void
 }

@@ -47,7 +47,8 @@ const AugmentSlotItem = (props: Props) => {
     slottedRitualTable: currentSlottedRitualTable,
     slottedLostPurpose: currentSlottedLostPurpose,
     slottedFountainOfNecroticMight: currentSlottedFountainOfNecroticMight,
-    slottedStormreaverUpgrade: currentSlottedStormreaverUpgrade
+    slottedStormreaverUpgrade: currentSlottedStormreaverUpgrade,
+    slottedZhentarimAttuned: currentSlottedZhentarimAttuned
   } = entityState
 
   const { troveData } = useAppSelector((state) => state.app)
@@ -159,6 +160,7 @@ const AugmentSlotItem = (props: Props) => {
                     currentSlottedLostPurpose,
                     currentSlottedFountainOfNecroticMight,
                     currentSlottedStormreaverUpgrade,
+                    currentSlottedZhentarimAttuned,
                     selectedItem.id,
                     idx
                   )

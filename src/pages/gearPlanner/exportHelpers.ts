@@ -70,7 +70,12 @@ const getFilteredEnchantments = (
     if (nearlyFinished && ench.name === 'Nearly Finished') return false
     if (ritualTable && (ench.name === 'Sealed in Fire' || ench.name === 'Sealed in Undeath')) return false
     if (lostPurpose && ench.name === 'Lost Purpose') return false
-    if (ench.name === 'Upgradeable Item (Black Abbot)' || ench.name === 'Upgradeable Item (Stormreaver)') return false
+    if (
+      ench.name === 'Zhentarim Attuned' ||
+      ench.name === 'Upgradeable Item (Black Abbot)' ||
+      ench.name === 'Upgradeable Item (Stormreaver)'
+    )
+      return false
     return true
   })
 }
@@ -121,9 +126,15 @@ export const generateBBCodeExport = (
     ritualTable?: LootEnchantment,
     lostPurpose?: LootEnchantment,
     isFountainUpgraded?: boolean,
-    isStormreaverUpgraded?: boolean
+    isStormreaverUpgraded?: boolean,
+    isZhentarimUpgraded?: boolean
   ) => {
-    const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded ?? false, isStormreaverUpgraded ?? false)
+    const baseEnchantments = getDisplayEnchantments(
+      item,
+      isFountainUpgraded ?? false,
+      isStormreaverUpgraded ?? false,
+      isZhentarimUpgraded ?? false
+    )
     const filtered = getFilteredEnchantments(baseEnchantments, nearlyFinished, ritualTable, lostPurpose)
     if (filtered.length > 0) {
       lines.push(`[list]`)
@@ -188,6 +199,7 @@ export const generateBBCodeExport = (
   const renderUpgrades = (
     fountainUpgraded: boolean,
     stormreaverUpgraded: boolean,
+    zhentarimUpgraded: boolean,
     nearlyFinished: LootEnchantment | null,
     ritualTable: LootEnchantment | null,
     lostPurpose: LootEnchantment | null
@@ -198,6 +210,10 @@ export const generateBBCodeExport = (
 
     if (stormreaverUpgraded) {
       lines.push(`[indent][b][color=cyan]Stormreaver Monument Upgrade[/color][/b][/indent]`)
+    }
+
+    if (zhentarimUpgraded) {
+      lines.push(`[indent][b][color=cyan]Zhentarim Attuned Upgrade[/color][/b][/indent]`)
     }
 
     if (nearlyFinished) {
@@ -229,6 +245,7 @@ export const generateBBCodeExport = (
     const lostPurpose = state.slottedLostPurpose[item.id]
     const fountainUpgraded = state.slottedFountainOfNecroticMight[item.id]
     const stormreaverUpgraded = state.slottedStormreaverUpgrade[item.id]
+    const zhentarimUpgraded = state.slottedZhentarimAttuned[item.id]
 
     renderSlotHeader(slot, item)
     renderSlotEnchantments(
@@ -237,10 +254,11 @@ export const generateBBCodeExport = (
       ritualTable ?? undefined,
       lostPurpose ?? undefined,
       fountainUpgraded,
-      stormreaverUpgraded
+      stormreaverUpgraded,
+      zhentarimUpgraded
     )
 
-    renderUpgrades(fountainUpgraded, stormreaverUpgraded, nearlyFinished, ritualTable, lostPurpose)
+    renderUpgrades(fountainUpgraded, stormreaverUpgraded, zhentarimUpgraded, nearlyFinished, ritualTable, lostPurpose)
 
     const essenceCrafting = state.slottedEssenceEnchantments[item.id]
     renderSlotEssenceCrafting(item, essenceCrafting, allEssenceEnchantments)
@@ -319,9 +337,15 @@ export const generateDiscordMarkdownExport = (
     ritualTable?: LootEnchantment,
     lostPurpose?: LootEnchantment,
     isFountainUpgraded?: boolean,
-    isStormreaverUpgraded?: boolean
+    isStormreaverUpgraded?: boolean,
+    isZhentarimUpgraded?: boolean
   ) => {
-    const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded ?? false, isStormreaverUpgraded ?? false)
+    const baseEnchantments = getDisplayEnchantments(
+      item,
+      isFountainUpgraded ?? false,
+      isStormreaverUpgraded ?? false,
+      isZhentarimUpgraded ?? false
+    )
     const filtered = getFilteredEnchantments(baseEnchantments, nearlyFinished, ritualTable, lostPurpose)
     if (filtered.length > 0) {
       filtered.forEach((ench: LootEnchantment) => {
@@ -374,6 +398,7 @@ export const generateDiscordMarkdownExport = (
   const renderUpgrades = (
     fountainUpgraded: boolean,
     stormreaverUpgraded: boolean,
+    zhentarimUpgraded: boolean,
     nearlyFinished: LootEnchantment | null,
     ritualTable: LootEnchantment | null,
     lostPurpose: LootEnchantment | null
@@ -384,6 +409,10 @@ export const generateDiscordMarkdownExport = (
 
     if (stormreaverUpgraded) {
       lines.push(`- **Stormreaver Monument Upgrade**`)
+    }
+
+    if (zhentarimUpgraded) {
+      lines.push(`- **Zhentarim Attuned Upgrade**`)
     }
 
     if (nearlyFinished) {
@@ -413,6 +442,7 @@ export const generateDiscordMarkdownExport = (
     const lostPurpose = state.slottedLostPurpose[item.id]
     const fountainUpgraded = state.slottedFountainOfNecroticMight[item.id]
     const stormreaverUpgraded = state.slottedStormreaverUpgrade[item.id]
+    const zhentarimUpgraded = state.slottedZhentarimAttuned[item.id]
 
     renderSlotHeader(slot, item)
     renderSlotEnchantments(
@@ -421,10 +451,11 @@ export const generateDiscordMarkdownExport = (
       ritualTable ?? undefined,
       lostPurpose ?? undefined,
       fountainUpgraded,
-      stormreaverUpgraded
+      stormreaverUpgraded,
+      zhentarimUpgraded
     )
 
-    renderUpgrades(fountainUpgraded, stormreaverUpgraded, nearlyFinished, ritualTable, lostPurpose)
+    renderUpgrades(fountainUpgraded, stormreaverUpgraded, zhentarimUpgraded, nearlyFinished, ritualTable, lostPurpose)
 
     const essenceCrafting = state.slottedEssenceEnchantments[item.id]
     renderSlotEssenceCrafting(item, essenceCrafting, allEssenceEnchantments)

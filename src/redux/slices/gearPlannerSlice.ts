@@ -41,6 +41,7 @@ const loadState = (): GearPlannerState => {
         target.slottedLostPurpose ??= {}
         target.slottedFountainOfNecroticMight ??= {}
         target.slottedStormreaverUpgrade ??= {}
+        target.slottedZhentarimAttuned ??= {}
         target.slottedAugments ??= {}
         target.slottedCurses ??= {}
         target.slottedFiligrees ??= {}
@@ -96,6 +97,7 @@ const clearMetadata = (target: SlottedProperties, id: string) => {
   delete target.slottedLostPurpose[id]
   delete target.slottedFountainOfNecroticMight[id]
   delete target.slottedStormreaverUpgrade[id]
+  delete target.slottedZhentarimAttuned[id]
   /* eslint-enable @typescript-eslint/no-dynamic-delete */
 }
 
@@ -367,6 +369,21 @@ const gearPlannerSlice = createSlice({
       const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
       target.slottedStormreaverUpgrade[itemId] = active
     },
+    setZhentarimAttuned: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        active: boolean
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, active, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
+
+      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
+      target.slottedZhentarimAttuned[itemId] = active
+    },
     setItemMinLevel: (
       state,
       action: PayloadAction<{
@@ -423,6 +440,7 @@ export const {
   setLostPurposeEnchantment,
   setFountainOfNecroticMight,
   setStormreaverUpgrade,
+  setZhentarimAttuned,
   setItemMinLevel,
   setItemMaterial
 } = gearPlannerSlice.actions

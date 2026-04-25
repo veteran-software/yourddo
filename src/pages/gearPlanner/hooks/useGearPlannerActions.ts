@@ -16,7 +16,8 @@ import {
   setNearlyFinishedEnchantment as setNearlyFinishedEnchantmentAction,
   setRitualTableEnchantment as setRitualTableEnchantmentAction,
   setStormreaverUpgrade as setStormreaverUpgradeAction,
-  setUnlockedFiligreeSlots as setUnlockedFiligreeSlotsAction
+  setUnlockedFiligreeSlots as setUnlockedFiligreeSlotsAction,
+  setZhentarimAttuned as setZhentarimAttunedAction
 } from '../../../redux/slices/gearPlannerSlice'
 import { getSlotOwner } from '../conflictResolver'
 import { isMinorArtifact } from '../helpers'
@@ -275,6 +276,16 @@ export const useGearPlannerActions = ({
     )
   }
 
+  const setZhentarimAttuned = (itemId: string, active: boolean, slot?: GearSlot) => {
+    dispatch(
+      setZhentarimAttunedAction({
+        itemId,
+        active,
+        slot
+      })
+    )
+  }
+
   return {
     addSetup,
     deleteSetup,
@@ -293,6 +304,7 @@ export const useGearPlannerActions = ({
     setRitualTableEnchantment,
     setLostPurposeEnchantment,
     setFountainOfNecroticMight,
-    setStormreaverUpgrade
+    setStormreaverUpgrade,
+    setZhentarimAttuned
   }
 }

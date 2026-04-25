@@ -214,6 +214,7 @@ export interface SlottedProperties {
   slottedLostPurpose: Record<string, LootEnchantment | null>
   slottedFountainOfNecroticMight: Record<string, boolean>
   slottedStormreaverUpgrade: Record<string, boolean>
+  slottedZhentarimAttuned: Record<string, boolean>
 }
 
 export interface EntityGearState extends SlottedProperties {

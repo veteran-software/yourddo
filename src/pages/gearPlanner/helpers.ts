@@ -1,6 +1,7 @@
 import fountainData from '../../data/fountainOfNecroticMight.json'
 import { findSetBonus } from '../../data/setBonuses.ts'
 import stormreaverUpgradeData from '../../data/stormreaverUpgrade.json'
+import zhentarimData from '../../data/zhentarimAttuned.json'
 import type { SetBonus } from '../../types/crafting.ts'
 import type { EssenceEnchantment } from './dataLoader.ts'
 import {
@@ -24,6 +25,10 @@ export const findStormreaverUpgradeData = (itemName: string, pageTitle?: string)
   return findUpgradeData(itemName, stormreaverUpgradeData, pageTitle)
 }
 
+export const findZhentarimUpgradeData = (itemName: string, pageTitle?: string): UpgradeEntry | undefined => {
+  return findUpgradeData(itemName, zhentarimData, pageTitle)
+}
+
 export const findUpgradeData = (
   itemName: string,
   dataSet: UpgradeEntry[],
@@ -43,7 +48,8 @@ export const findUpgradeData = (
 export const getDisplayEnchantments = (
   item: GearItem,
   isFountainUpgraded: boolean,
-  isStormreaverUpgraded: boolean
+  isStormreaverUpgraded: boolean,
+  isZhentarimUpgraded = false
 ): LootEnchantment[] => {
   if (isFountainUpgraded) {
     const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
@@ -52,6 +58,11 @@ export const getDisplayEnchantments = (
     }
   } else if (isStormreaverUpgraded) {
     const upgradeData = findStormreaverUpgradeData(item.name, item.pageTitle)
+    if (upgradeData) {
+      return upgradeData.effectsAdded
+    }
+  } else if (isZhentarimUpgraded) {
+    const upgradeData = findZhentarimUpgradeData(item.name, item.pageTitle)
     if (upgradeData) {
       return upgradeData.effectsAdded
     }
@@ -160,11 +171,13 @@ export const aggregateEnchantmentEntries = (
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
   slottedFountainOfNecroticMight?: Record<string, boolean>,
-  slottedStormreaverUpgrade?: Record<string, boolean>
+  slottedStormreaverUpgrade?: Record<string, boolean>,
+  slottedZhentarimAttuned?: Record<string, boolean>
 ) => {
   const isFountainUpgraded = slottedFountainOfNecroticMight?.[item.id] ?? false
   const isStormreaverUpgraded = slottedStormreaverUpgrade?.[item.id] ?? false
-  const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded)
+  const isZhentarimUpgraded = slottedZhentarimAttuned?.[item.id] ?? false
+  const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
 
   const entries: { ench: LootEnchantment; sourceName: string }[] = baseEnchantments
     .filter(
@@ -175,6 +188,7 @@ export const aggregateEnchantmentEntries = (
         e.name !== 'Ritual Table' &&
         e.name !== 'Sealed in Fire' &&
         e.name !== 'Sealed in Undeath' &&
+        e.name !== 'Zhentarim Attuned' &&
         e.name !== 'Upgradeable Item (Black Abbot)' &&
         e.name !== 'Upgradeable Item (Stormreaver)'
     )

@@ -15,7 +15,8 @@ const EnchantmentList = (props: Props) => {
     slottedRitualTable,
     slottedLostPurpose,
     slottedFountainOfNecroticMight,
-    slottedStormreaverUpgrade
+    slottedStormreaverUpgrade,
+    slottedZhentarimAttuned
   } = entityState
 
   return (
@@ -40,6 +41,7 @@ const EnchantmentList = (props: Props) => {
                 slottedLostPurpose,
                 slottedFountainOfNecroticMight,
                 slottedStormreaverUpgrade,
+                slottedZhentarimAttuned,
                 itemId
               )
 

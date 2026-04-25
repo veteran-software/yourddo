@@ -13,7 +13,8 @@ const CurseSlotItem = (props: Props) => {
     slottedRitualTable: currentSlottedRitualTable,
     slottedLostPurpose: currentSlottedLostPurpose,
     slottedFountainOfNecroticMight: currentSlottedFountainOfNecroticMight,
-    slottedStormreaverUpgrade: currentSlottedStormreaverUpgrade
+    slottedStormreaverUpgrade: currentSlottedStormreaverUpgrade,
+    slottedZhentarimAttuned: currentSlottedZhentarimAttuned
   } = entityState
 
   return (
@@ -68,6 +69,7 @@ const CurseSlotItem = (props: Props) => {
                   currentSlottedLostPurpose,
                   currentSlottedFountainOfNecroticMight,
                   currentSlottedStormreaverUpgrade,
+                  currentSlottedZhentarimAttuned,
                   selectedItem.id
                 )
               )

@@ -122,6 +122,7 @@ const SetBonusItems = (props: Props) => {
             entityState.slottedLostPurpose,
             entityState.slottedFountainOfNecroticMight,
             entityState.slottedStormreaverUpgrade,
+            entityState.slottedZhentarimAttuned,
             item.id
           )
           return res.isConflict && !res.isUpgrade

@@ -40,9 +40,13 @@ import {
 //     itemMaterial: string | null,
 //     isFountainUpgraded: 0 | 1 | null,
 //     isStormreaverUpgraded: 0 | 1 | null,
-//     itemId: string | null
+//     itemId: string | null,
+//     isZhentarimUpgraded: 0 | 1 | null
 //   ][]
 // ]
+
+type EncodedBoolean = 0 | 1
+type OptionalEncodedBoolean = EncodedBoolean | null
 
 type V1Payload = [
   string, // name
@@ -52,7 +56,7 @@ type V1Payload = [
   string[], // weaponFilters
   string[], // armorFilters
   string[], // shieldFilters
-  0 | 1, // allowMetalWithDruid
+  EncodedBoolean, // allowMetalWithDruid
   [
     string, // slot (GearSlot)
     string, // itemName
@@ -67,9 +71,10 @@ type V1Payload = [
     (string | null)[] | null, // slottedGemSetBonuses
     number | null, // itemMinLevel
     string | null, // itemMaterial
-    0 | 1 | null, // isFountainUpgraded
-    0 | 1 | null, // isStormreaverUpgraded
-    string | null // itemId
+    OptionalEncodedBoolean, // isFountainUpgraded
+    OptionalEncodedBoolean, // isStormreaverUpgraded
+    string | null, // itemId
+    OptionalEncodedBoolean // isZhentarimUpgraded
   ][]
 ]
 
@@ -139,6 +144,7 @@ const encodeItemPayload = (slot: GearSlot, item: GearItem, setup: GearSetup): V1
 
   const isFountainUpgraded = state.slottedFountainOfNecroticMight[item.id]
   const isStormreaverUpgraded = state.slottedStormreaverUpgrade[item.id]
+  const isZhentarimUpgraded = state.slottedZhentarimAttuned[item.id]
 
   return [
     slot,
@@ -156,7 +162,8 @@ const encodeItemPayload = (slot: GearSlot, item: GearItem, setup: GearSetup): V1
     item.material || null,
     isFountainUpgraded ? 1 : 0,
     isStormreaverUpgraded ? 1 : 0,
-    item.id
+    item.id,
+    isZhentarimUpgraded ? 1 : 0
   ]
 }
 
@@ -201,6 +208,7 @@ export const tryDecodeGearPermalink = (
       slottedLostPurpose: {},
       slottedFountainOfNecroticMight: {},
       slottedStormreaverUpgrade: {},
+      slottedZhentarimAttuned: {},
       artificerPet: initialPetState(),
       druidPet: initialPetState()
     }
@@ -234,14 +242,16 @@ const decodeSupplementaryProperties = (
   filigrees: (string | null)[] | null,
   unlockedFiligreeSlots: number | null,
   slottedGemSetBonuses: (string | null)[] | null,
-  isFountainUpgraded: 0 | 1 | null,
-  isStormreaverUpgraded: 0 | 1 | null
+  isFountainUpgraded: OptionalEncodedBoolean,
+  isStormreaverUpgraded: OptionalEncodedBoolean,
+  isZhentarimUpgraded: OptionalEncodedBoolean
 ) => {
   if (nearlyFinished) state.slottedNearlyFinished[item.id] = nearlyFinished
   if (ritualTable) state.slottedRitualTable[item.id] = ritualTable
   if (lostPurpose) state.slottedLostPurpose[item.id] = lostPurpose
   if (isFountainUpgraded) state.slottedFountainOfNecroticMight[item.id] = true
   if (isStormreaverUpgraded) state.slottedStormreaverUpgrade[item.id] = true
+  if (isZhentarimUpgraded) state.slottedZhentarimAttuned[item.id] = true
 
   decodeFiligrees(item, state, filigrees, allItems)
 
@@ -292,7 +302,8 @@ const decodeItemPayload = (
     itemMaterial,
     isFountainUpgraded,
     isStormreaverUpgraded,
-    itemId
+    itemId,
+    isZhentarimUpgraded
   ] = itemPayload
 
   // Find the item in allItems by ID (preferred) or name and slot
@@ -332,7 +343,8 @@ const decodeItemPayload = (
     unlockedFiligreeSlots,
     slottedGemSetBonuses,
     isFountainUpgraded,
-    isStormreaverUpgraded
+    isStormreaverUpgraded,
+    isZhentarimUpgraded
   )
 }
 

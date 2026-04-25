@@ -67,6 +67,7 @@ export const useGearPlannerFiltering = ({
           entityState.slottedLostPurpose,
           entityState.slottedFountainOfNecroticMight,
           entityState.slottedStormreaverUpgrade,
+          entityState.slottedZhentarimAttuned,
           item.id // Ignore current item if it's already equipped
         )
 
