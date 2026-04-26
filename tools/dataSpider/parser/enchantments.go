@@ -226,6 +226,67 @@ var abilityNameMap = map[string]string{
 	"CHA": "Charisma",
 }
 
+var weaponTypes = map[string]bool{
+	"club":                     true,
+	"greatclub":                true,
+	"handwraps":                true,
+	"heavy mace":               true,
+	"light hammer":             true,
+	"light mace":               true,
+	"maul":                     true,
+	"morningstar":              true,
+	"quarterstaff":             true,
+	"unarmed":                  true,
+	"warhammer":                true,
+	"dagger":                   true,
+	"heavy pick":               true,
+	"light pick":               true,
+	"rapier":                   true,
+	"shortsword":               true,
+	"bastard sword":            true,
+	"battleaxe":                true,
+	"dwarven axe":              true,
+	"falchion":                 true,
+	"greataxe":                 true,
+	"greatsword":               true,
+	"handaxe":                  true,
+	"kama":                     true,
+	"khopesh":                  true,
+	"kukri":                    true,
+	"longsword":                true,
+	"scimitar":                 true,
+	"sickle":                   true,
+	"great crossbow":           true,
+	"heavy crossbow":           true,
+	"light crossbow":           true,
+	"longbow":                  true,
+	"repeating heavy crossbow": true,
+	"repeating light crossbow": true,
+	"shortbow":                 true,
+	"dart":                     true,
+	"shuriken":                 true,
+	"throwing axe":             true,
+	"throwing dagger":          true,
+	"throwing hammer":          true,
+}
+
+var armorTypes = map[string]bool{
+	"docent":       true,
+	"heavy armor":  true,
+	"light armor":  true,
+	"medium armor": true,
+	"outfit":       true,
+	"robe":         true,
+}
+
+var shieldTypes = map[string]bool{
+	"buckler":      true,
+	"large shield": true,
+	"orb":          true,
+	"small shield": true,
+	"tower shield": true,
+}
+
 var compoundSpellPowers = map[string][]string{
 	"Frozen Storm":        {"Cold", "Lightning"},
 	"Creeping Dust":       {"Cold", "Acid"},
@@ -801,9 +862,12 @@ func parseTemplateEnhancementBonus(rawBonusValue string, itemType string) []*api
 	// Normalize itemType for comparison
 	itemType = strings.ToLower(itemType)
 
-	// TODO: Need to make a slice of all weapon types, not just generic `weapon`
+	isArmor := armorTypes[itemType] || strings.Contains(itemType, "armor")
+	isShield := shieldTypes[itemType] || strings.Contains(itemType, "shield") || strings.Contains(itemType, "buckler")
+	isWeapon := weaponTypes[itemType] || strings.Contains(itemType, "weapon")
+
 	// 1. Handle Armor/Shield bonus to AC
-	if strings.Contains(itemType, "docent") || strings.Contains(itemType, "outfit") || strings.Contains(itemType, "robe") || strings.Contains(itemType, "armor") || strings.Contains(itemType, "shield") || strings.Contains(itemType, "buckler") {
+	if isArmor || isShield {
 		enchantments = append(enchantments, &api.Enchantment{
 			Name:      "Armor Class",
 			Amount:    amount,
@@ -812,14 +876,20 @@ func parseTemplateEnhancementBonus(rawBonusValue string, itemType string) []*api
 	}
 
 	// 2. Handle Weapon/Shield bonus to Attack and Damage Rolls
-	if strings.Contains(itemType, "weapon") || strings.Contains(itemType, "shield") || strings.Contains(itemType, "rune") || strings.Contains(itemType, "buckler") {
+	if isWeapon || isShield {
+		attackName := "Attack Rolls"
+		damageName := "Damage Rolls"
+		if isShield {
+			attackName += " (Shield)"
+			damageName += " (Shield)"
+		}
 		enchantments = append(enchantments, &api.Enchantment{
-			Name:      "Attack Rolls",
+			Name:      attackName,
 			Amount:    amount,
 			BonusType: bonusType,
 		})
 		enchantments = append(enchantments, &api.Enchantment{
-			Name:      "Damage Rolls",
+			Name:      damageName,
 			Amount:    amount,
 			BonusType: bonusType,
 		})
@@ -2529,6 +2599,12 @@ func parseTemplateTrueSeeing() *api.Enchantment {
 
 	return &api.Enchantment{
 		Name: templateName,
+	}
+}
+
+func parseTemplateLegendaryGreenSteel() *api.Enchantment {
+	return &api.Enchantment{
+		Name: "Legendary Green Steel",
 	}
 }
 
@@ -8393,6 +8469,9 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 		case "StonePaws":
 			enchantmentData = parseTemplateStonePaws()
 			isStandard = true
+		case "LegendaryGreenSteel":
+			enchantmentData = parseTemplateLegendaryGreenSteel()
+			isStandard = true
 		case "VulnerabilityGuard":
 			enchantmentData = parseTemplateVulnerabilityGuard()
 			isStandard = true
@@ -8866,6 +8945,9 @@ func ParseEnchantments(rawEnchantments string, itemType string) []api.Enchantmen
 			isStandard = true
 		case "EmptyAugments":
 			// EmptyAugments does not add enchantments; it's handled in the converter to add augment slots.
+			isStandard = true
+		case "LGSAugments":
+			// LGSAugments does not add enchantments; it's handled in the converter to add augment slots.
 			isStandard = true
 		case "EssenceCraftingSlots":
 			// EssenceCraftingSlots does not add enchantments; it's handled in the converter to add augment slots.

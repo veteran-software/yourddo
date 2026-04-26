@@ -416,6 +416,15 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 		data.AugmentsRaw = val
 		if parsed := parseTemplateEmptyAugments(val); len(parsed) > 0 {
 			data.Augments = parsed
+		} else if parsed := parseTemplateLGSAugments(val); len(parsed) > 0 {
+			data.Augments = parsed
+		}
+	} else if val, ok := fields["emptyaugment"]; ok {
+		data.AugmentsRaw = val
+		if parsed := parseTemplateEmptyAugments(val); len(parsed) > 0 {
+			data.Augments = parsed
+		} else if parsed := parseTemplateLGSAugments(val); len(parsed) > 0 {
+			data.Augments = parsed
 		}
 	}
 
@@ -509,6 +518,51 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 				}
 				if !found {
 					data.Augments = append(data.Augments, aug)
+				}
+			}
+			remaining = remaining[end:]
+		}
+
+		// Scan enchantments for LGSAugments as well
+		remaining = val
+		for {
+			start := strings.Index(strings.ToLower(remaining), "{{lgsaugments")
+			if start == -1 {
+				break
+			}
+			// Find closing braces respecting nesting
+			depth := 0
+			end := -1
+			for i := start; i < len(remaining); i++ {
+				if i+1 < len(remaining) && remaining[i:i+2] == "{{" {
+					depth++
+					i++
+				} else if i+1 < len(remaining) && remaining[i:i+2] == "}}" {
+					depth--
+					if depth == 0 {
+						end = i + 2
+						break
+					}
+					i++
+				}
+			}
+			if end == -1 {
+				break
+			}
+
+			tpl := remaining[start:end]
+			augList := parseTemplateLGSAugments(tpl)
+			if len(augList) > 0 {
+				// However, LGS slots are unique enough that we can just check if we have any LGS slots already.
+				found := false
+				for _, existing := range data.Augments {
+					if strings.Contains(existing.AugmentType, "Green Steel Epic") || existing.AugmentType == "Fangs of Shavarath" {
+						found = true
+						break
+					}
+				}
+				if !found {
+					data.Augments = append(data.Augments, augList...)
 				}
 			}
 			remaining = remaining[end:]
@@ -2716,6 +2770,15 @@ func parseTemplateEmptyAugments(raw string) []api.AugmentItem {
 					continue
 				}
 			}
+			if strings.HasPrefix(lower, "{{lgsaugments") {
+				parsed := parseTemplateLGSAugments(val)
+				out = append(out, parsed...)
+				if len(out) >= 8 {
+					out = out[:8]
+					break
+				}
+				continue
+			}
 			// Unknown template -> fail fast as agreed
 			name := val[2:]
 			if idx := strings.IndexAny(name, "|}"); idx != -1 {
@@ -2732,6 +2795,45 @@ func parseTemplateEmptyAugments(raw string) []api.AugmentItem {
 		if len(out) == 8 {
 			break
 		}
+	}
+	return out
+}
+
+func parseTemplateLGSAugments(raw string) []api.AugmentItem {
+	s := strings.TrimSpace(raw)
+	if s == "" {
+		return nil
+	}
+	lower := strings.ToLower(s)
+	if !strings.HasPrefix(lower, "{{lgsaugments") || !strings.HasSuffix(s, "}}") {
+		return nil
+	}
+
+	// Default slots for LGS
+	slotTypes := []string{
+		"Green Steel Epic Tier 1",
+		"Green Steel Epic Tier 2",
+		"Green Steel Epic Tier 3",
+		"Green Steel Epic Tier Active",
+	}
+
+	// {{LGSAugments}} or {{LGSAugments|1}} or {{LGSAugments|(Clothing)}}
+	// If any parameter is present, add the "Fangs of Shavarath" slot.
+	after := s[len("{{LGSAugments"):]
+	pipeIdx := strings.Index(after, "|")
+	if pipeIdx != -1 {
+		params := strings.TrimSuffix(after[pipeIdx+1:], "}}")
+		parts := splitParams(params)
+		if len(parts) > 0 && strings.TrimSpace(parts[0]) != "" {
+			slotTypes = append(slotTypes, "Fangs of Shavarath")
+		}
+	}
+
+	out := make([]api.AugmentItem, 0, len(slotTypes))
+	for _, st := range slotTypes {
+		out = append(out, api.AugmentItem{
+			AugmentType: st,
+		})
 	}
 	return out
 }

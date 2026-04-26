@@ -112,10 +112,10 @@ const AugmentSlotItem = (props: Props) => {
         </Dropdown.Toggle>
 
         <Dropdown.Menu
-          className='gear-planner-augment-menu'
+          className='gear-planner-augment-menu pt-1'
           style={{ fontSize: '0.65rem', maxHeight: '300px', overflowY: 'auto' }}
         >
-          <div className='px-2 py-1 sticky-top bg-white border-bottom'>
+          <div className='px-2 py-1 pt-0 sticky-top bg-dark border-bottom'>
             <Form.Control
               size='sm'
               type='text'
@@ -124,7 +124,7 @@ const AugmentSlotItem = (props: Props) => {
               onChange={(e) => {
                 setFilter(e.target.value)
               }}
-              style={{ fontSize: '0.65rem' }}
+              style={{ fontSize: '0.7rem' }}
               autoFocus
             />
           </div>
@@ -137,11 +137,11 @@ const AugmentSlotItem = (props: Props) => {
             Empty Slot
           </Dropdown.Item>
 
-          <Dropdown.Divider />
+          <Dropdown.Divider className='mt-0' />
 
           {applicable.sortedGroupNames.map((groupName) => (
             <Fragment key={groupName}>
-              <Dropdown.Header className='text-light fw-bold py-0 ps-1' style={{ fontSize: '0.65rem' }}>
+              <Dropdown.Header className='text-light fw-bold py-0 ps-1' style={{ fontSize: '0.7rem' }}>
                 {groupName} Augments
               </Dropdown.Header>
 
