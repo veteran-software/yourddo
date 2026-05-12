@@ -168,6 +168,7 @@ const useGearPlanner = (props: Props) => {
   return {
     activeSetup,
     addSetup: actions.addSetup,
+    clearTab: actions.clearSetup,
     allAugments,
     allCurses,
     allFiligreeSetNames,

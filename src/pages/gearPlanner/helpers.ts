@@ -4,6 +4,7 @@ import stormreaverUpgradeData from '../../data/stormreaverUpgrade.json'
 import traceOfMadnessData from '../../data/traceOfMadness.json'
 import zhentarimData from '../../data/zhentarimAttuned.json'
 import type { SetBonus } from '../../types/crafting.ts'
+import { UPGRADE_PLACEHOLDER_ENCHANTMENTS } from './constants'
 import type { EssenceEnchantment } from './dataLoader.ts'
 import {
   type Curse,
@@ -186,19 +187,7 @@ export const aggregateEnchantmentEntries = (
   const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
 
   const entries: { ench: LootEnchantment; sourceName: string }[] = baseEnchantments
-    .filter(
-      (e: LootEnchantment) =>
-        e.name !== 'Craftable Rune Arm' &&
-        e.name !== 'Nearly Finished' &&
-        e.name !== 'Lost Purpose' &&
-        e.name !== 'Trace of Madness' &&
-        e.name !== 'Ritual Table' &&
-        e.name !== 'Sealed in Fire' &&
-        e.name !== 'Sealed in Undeath' &&
-        e.name !== 'Zhentarim Attuned' &&
-        e.name !== 'Upgradeable Item (Black Abbot)' &&
-        e.name !== 'Upgradeable Item (Stormreaver)'
-    )
+    .filter((e: LootEnchantment) => !UPGRADE_PLACEHOLDER_ENCHANTMENTS.has(e.name))
     .map((e: LootEnchantment) => ({
       ench: e,
       sourceName: item.name

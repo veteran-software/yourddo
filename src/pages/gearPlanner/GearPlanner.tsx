@@ -14,7 +14,16 @@ import {
   Tab,
   Tabs
 } from 'react-bootstrap'
-import { FaChevronRight, FaFileExport, FaGear, FaLayerGroup, FaLink, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6'
+import {
+  FaChevronRight,
+  FaFileExport,
+  FaGear,
+  FaLayerGroup,
+  FaLink,
+  FaMagnifyingGlass,
+  FaTriangleExclamation,
+  FaXmark
+} from 'react-icons/fa6'
 import { useLocation, useNavigate } from 'react-router-dom'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -83,7 +92,7 @@ const PetGearSection = ({
   <div className={`mt-4 p-3 border ${borderColorClass} rounded bg-dark-subtle`}>
     <h5 className={`mb-3 ${textColorClass} border-bottom ${borderColorClass} pb-2`}>{title}</h5>
 
-    <Row>{slots.map((slot) => gpHook.renderSlot(slot, setup))}</Row>
+    <Row>{slots.map((slot: GearSlot) => gpHook.renderSlot(slot, setup))}</Row>
 
     <SetBonusesSummary
       equippedItems={entityState.equipped}
@@ -91,7 +100,6 @@ const PetGearSection = ({
       slottedFiligrees={entityState.slottedFiligrees}
       slottedGemSetBonuses={entityState.slottedGemSetBonuses}
       slottedLostPurpose={entityState.slottedLostPurpose}
-      slottedTraceOfMadness={entityState.slottedTraceOfMadness}
       onSetClick={gpHook.openSetBonusBrowser}
     />
 
@@ -342,6 +350,15 @@ const GearPlanner = () => {
                     onClick={gpHook.addSetup}
                   >
                     Add Setup
+                  </Button>
+
+                  <Button
+                    variant='outline-danger'
+                    size='sm'
+                    className='flex-grow-1 flex-md-grow-0'
+                    onClick={gpHook.addSetup}
+                  >
+                    <FaTriangleExclamation /> Clear Tab <FaTriangleExclamation />
                   </Button>
                 </ButtonGroup>
               </Col>

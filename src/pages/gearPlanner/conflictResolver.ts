@@ -1,3 +1,4 @@
+import { UPGRADE_PLACEHOLDER_ENCHANTMENTS } from './constants'
 import { getDisplayEnchantments } from './helpers'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, type GearItem, GearSlot, type LootEnchantment } from './types'
 
@@ -125,16 +126,7 @@ export const resolveConflicts = (
       baseEnchantments
         .filter(
           (e) =>
-            e.name !== 'Craftable Rune Arm' &&
-            e.name !== 'Nearly Finished' &&
-            e.name !== 'Lost Purpose' &&
-            e.name !== 'Trace of Madness' &&
-            e.name !== 'Ritual Table' &&
-            e.name !== 'Sealed in Fire' &&
-            e.name !== 'Sealed in Undeath' &&
-            e.name !== 'Zhentarim Attuned' &&
-            e.name !== 'Upgradeable Item (Black Abbot)' &&
-            e.name !== 'Upgradeable Item (Stormreaver)' &&
+            !UPGRADE_PLACEHOLDER_ENCHANTMENTS.has(e.name) &&
             !(normalizeString(e.name).includes('enhancement bonus') && !normalizeString(e.name).includes('to '))
         )
         .forEach((ench) => {

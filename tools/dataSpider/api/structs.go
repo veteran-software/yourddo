@@ -256,6 +256,25 @@ type DropSourceData struct {
 	ThreadsOfFateCount  string `json:"threadsOfFateCount,omitempty"`
 	AdditionalItemName  string `json:"additionalItemName,omitempty"`
 	AdditionalItemCount string `json:"additionalItemCount,omitempty"`
+
+	// NEW FIELDS from Template:LGSAugment
+	LGSAugmentAltar   string `json:"lgsAugmentAltar,omitempty"`
+	LGSAugmentPFocus  string `json:"lgsAugmentPFocus,omitempty"`
+	LGSAugmentSFocus  string `json:"lgsAugmentSFocus,omitempty"`
+	LGSAugmentGem     string `json:"lgsAugmentGem,omitempty"`
+	LGSAugmentEssence string `json:"lgsAugmentEssence,omitempty"`
+
+	// NEW FIELDS from Template:GreenSteelCraftingPurchase
+	GSCAltar     string `json:"gscAltar,omitempty"`
+	GSCArrow     string `json:"gscArrow,omitempty"`
+	GSCBone      string `json:"gscBone,omitempty"`
+	GSCShrapnel  string `json:"gscShrapnel,omitempty"`
+	GSCChain     string `json:"gscChain,omitempty"`
+	GSCStone     string `json:"gscStone,omitempty"`
+	GSCScales    string `json:"gscScales,omitempty"`
+	GSCComms     string `json:"gscComms,omitempty"`
+	GSCRunes     string `json:"gscRunes,omitempty"`
+	GSCLegendary string `json:"gscLegendary,omitempty"`
 }
 
 type Enchantment struct {

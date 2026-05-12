@@ -2,7 +2,7 @@ import type { CraftingIngredient } from '../types/crafting.ts'
 
 export const legendaryAltarOfDevastation: CraftingIngredient[] = [
   {
-    name: 'Legendary Superior Focus of Air',
+    name: 'Legendary Superior Focus of Earth',
     requirements: [
       {
         name: 'Legendary Large Glowing Arrowhead',
@@ -20,7 +20,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Legendary Large Sulfurous Stone',
+        name: 'Legendary Large Length of Infernal Chain',
         quantity: 1,
         requirements: []
       },
@@ -43,7 +43,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     type: 'This item may be put in a Legendary eldritch device.'
   },
   {
-    name: 'Legendary Superior Focus of Earth',
+    name: 'Legendary Superior Focus of Air',
     requirements: [
       {
         name: 'Legendary Large Glowing Arrowhead',
@@ -61,7 +61,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Legendary Large Length of Infernal Chain',
+        name: 'Legendary Large Sulfurous Stone',
         quantity: 1,
         requirements: []
       },
@@ -166,6 +166,47 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     type: 'This item may be put in a Legendary eldritch device.'
   },
   {
+    name: 'Legendary Superior Focus of Positive Energy',
+    requirements: [
+      {
+        name: 'Legendary Large Glowing Arrowhead',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Legendary Large Gnawed Bone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Legendary Large Sulfurous Stone',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Legendary Large Devil Scales',
+        quantity: 1,
+        requirements: []
+      },
+      {
+        name: 'Commendation of Valor',
+        quantity: 100,
+        requirements: []
+      }
+    ],
+    quantity: 1,
+    craftedIn: 'Legendary Altar of Devastation',
+    binding: {
+      type: 'Bound',
+      to: 'Account',
+      from: 'Acquisition'
+    },
+    baseValue: {
+      platinum: 80
+    },
+    type: 'This item may be put in a Legendary eldritch device.'
+  },
+  {
     name: 'Legendary Superior Focus of Negative Energy',
     requirements: [
       {
@@ -207,7 +248,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     type: 'This item may be put in a Legendary eldritch device.'
   },
   {
-    name: 'Legendary Superior Focus of Positive Energy',
+    name: 'Legendary Pure Material Essence',
     requirements: [
       {
         name: 'Legendary Large Glowing Arrowhead',
@@ -215,7 +256,7 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
         requirements: []
       },
       {
-        name: 'Legendary Large Gnawed Bone',
+        name: 'Legendary Large Twisted Shrapnel',
         quantity: 1,
         requirements: []
       },
@@ -289,47 +330,6 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     type: 'This item may be put in a Legendary eldritch device.'
   },
   {
-    name: 'Legendary Pure Material Essence',
-    requirements: [
-      {
-        name: 'Legendary Large Glowing Arrowhead',
-        quantity: 1,
-        requirements: []
-      },
-      {
-        name: 'Legendary Large Twisted Shrapnel',
-        quantity: 1,
-        requirements: []
-      },
-      {
-        name: 'Legendary Large Sulfurous Stone',
-        quantity: 1,
-        requirements: []
-      },
-      {
-        name: 'Legendary Large Devil Scales',
-        quantity: 1,
-        requirements: []
-      },
-      {
-        name: 'Commendation of Valor',
-        quantity: 100,
-        requirements: []
-      }
-    ],
-    quantity: 1,
-    craftedIn: 'Legendary Altar of Devastation',
-    binding: {
-      type: 'Bound',
-      to: 'Account',
-      from: 'Acquisition'
-    },
-    baseValue: {
-      platinum: 80
-    },
-    type: 'This item may be put in a Legendary eldritch device.'
-  },
-  {
     name: 'Legendary Flawless Gem of Dominion',
     requirements: [
       {
@@ -371,10 +371,10 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     type: 'This item may be put in a Legendary eldritch device.'
   },
   {
-    name: 'Legendary Flawless Gem of Escalation',
+    name: 'Legendary Flawless Gem of Opposition',
     requirements: [
       {
-        name: 'Legendary Large Twisted Shrapnel',
+        name: 'Legendary Large Gnawed Bone',
         quantity: 1,
         requirements: []
       },
@@ -412,10 +412,10 @@ export const legendaryAltarOfDevastation: CraftingIngredient[] = [
     type: 'This item may be put in a Legendary eldritch device.'
   },
   {
-    name: 'Legendary Flawless Gem of Opposition',
+    name: 'Legendary Flawless Gem of Escalation',
     requirements: [
       {
-        name: 'Legendary Large Gnawed Bone',
+        name: 'Legendary Large Twisted Shrapnel',
         quantity: 1,
         requirements: []
       },

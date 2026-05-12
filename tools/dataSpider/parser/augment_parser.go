@@ -205,6 +205,10 @@ func parseDropAndCrafting(out *api.AugmentItem, fields map[string]string, pageTi
 				case "Crafting":
 					ci := strings.TrimSpace(strings.Join(filterNonEmpty([]string{d.CraftingType, d.CraftingLocation}), " - "))
 					out.CraftedIn = firstNonEmpty(ci, d.CraftingType, d.CraftingLocation, "Crafting")
+				case "LGSAugment":
+					out.CraftedIn = "Legendary Green Steel Augment"
+				case "GreenSteelCraftingPurchase":
+					out.CraftedIn = "Green Steel Crafting"
 				}
 				if out.CraftedIn != "" {
 					break
@@ -627,6 +631,18 @@ func formatDropSource(d api.DropSourceData) string {
 			return fmt.Sprintf("Crafted: Requires %sx %s", d.IngredientCount, d.IngredientName)
 		}
 		return fmt.Sprintf("Crafted: Requires %s", d.IngredientName)
+	case "LGSAugment":
+		fields := filterNonEmpty([]string{d.LGSAugmentAltar, d.LGSAugmentPFocus, d.LGSAugmentSFocus, d.LGSAugmentGem, d.LGSAugmentEssence})
+		if len(fields) > 0 {
+			return "LGS Augment: " + strings.Join(fields, ", ")
+		}
+		return "LGS Augment"
+	case "GreenSteelCraftingPurchase":
+		fields := filterNonEmpty([]string{d.GSCAltar, d.GSCArrow, d.GSCBone, d.GSCShrapnel, d.GSCChain, d.GSCStone, d.GSCScales, d.GSCComms, d.GSCRunes, d.GSCLegendary})
+		if len(fields) > 0 {
+			return "Green Steel Crafting: " + strings.Join(fields, ", ")
+		}
+		return "Green Steel Crafting"
 	default:
 		joinedFields := filterNonEmpty([]string{d.QuestWildernessChain, d.StoreName, d.AdventurePack, d.EventName})
 		return strings.TrimSpace(strings.Join(joinedFields, ", "))

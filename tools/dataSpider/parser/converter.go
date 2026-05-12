@@ -295,6 +295,9 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 					Name:     "Shred of Tapestry",
 					Quantity: new(20),
 				})
+			} else if loc.SourceType == "LGSAugment" || loc.SourceType == "GreenSteelCraftingPurchase" {
+				data.IsCrafted = true
+				data.DropLocations = append(data.DropLocations, loc)
 			} else {
 				data.DropLocations = append(data.DropLocations, loc)
 			}
@@ -553,6 +556,8 @@ func ConvertItemToJSON(pageTitle string, fields map[string]string) api.ItemData 
 			tpl := remaining[start:end]
 			augList := parseTemplateLGSAugments(tpl)
 			if len(augList) > 0 {
+				// For LGS, we allow the specific Tier 2 duplicate within the template itself,
+				// but we still want to avoid adding the whole template twice if it's already there.
 				// However, LGS slots are unique enough that we can just check if we have any LGS slots already.
 				found := false
 				for _, existing := range data.Augments {
@@ -1758,6 +1763,10 @@ func ParseMultiTemplateDropLocation(rawContent string) []api.DropSourceData {
 			dropData = parseTemplateNightRevelsPurchase(fullTemplate)
 		case "ThreadsofFatePurchase":
 			dropData = parseTemplateThreadsofFatePurchase(fullTemplate)
+		case "LGSAugment":
+			dropData = parseTemplateLGSAugment(fullTemplate)
+		case "GreenSteelCraftingPurchase":
+			dropData = parseTemplateGreenSteelCraftingPurchase(fullTemplate)
 		default:
 			// FATAL ERROR for unknown templates
 			logrus.Fatalf("Found unexpected DropLocation template type: %s. Please update parsing logic. Raw string: %s", templateName, fullTemplate)
@@ -2062,6 +2071,156 @@ func parseTemplateThreadsofFatePurchase(rawContent string) api.DropSourceData {
 		drop.AdditionalItemCount = strings.TrimSpace(parts[2])
 	} else if len(parts) == 2 {
 		drop.AdditionalItemCount = "1"
+	}
+
+	return drop
+}
+
+func parseTemplateGreenSteelCraftingPurchase(raw string) api.DropSourceData {
+	const prefix = "{{GreenSteelCraftingPurchase"
+	const suffix = "}}"
+
+	s := strings.TrimSpace(raw)
+	if !strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix) {
+		return api.DropSourceData{SourceType: "Unknown"}
+	}
+
+	inner := strings.TrimSpace(s[len(prefix) : len(s)-len(suffix)])
+	if strings.HasPrefix(inner, "|") {
+		inner = inner[1:]
+	}
+
+	drop := api.DropSourceData{SourceType: "GreenSteelCraftingPurchase"}
+
+	if inner == "" {
+		return drop
+	}
+
+	parts := splitParams(inner)
+	for i, p := range parts {
+		p = strings.TrimSpace(p)
+		if p == "" {
+			continue
+		}
+
+		if strings.Contains(p, "=") {
+			kv := strings.SplitN(p, "=", 2)
+			key := strings.ToLower(strings.TrimSpace(kv[0]))
+			val := stripWikitext(kv[1])
+
+			switch key {
+			case "altar":
+				drop.GSCAltar = val
+			case "arrow":
+				drop.GSCArrow = val
+			case "bone":
+				drop.GSCBone = val
+			case "shrapnel":
+				drop.GSCShrapnel = val
+			case "chain":
+				drop.GSCChain = val
+			case "stone":
+				drop.GSCStone = val
+			case "scales":
+				drop.GSCScales = val
+			case "comms":
+				drop.GSCComms = val
+			case "runes":
+				drop.GSCRunes = val
+			case "legendary":
+				drop.GSCLegendary = val
+			}
+		} else {
+			// Positional: (altar)|(arrow)|(bone)|(shrapnel)|(chain)|(stone)|(scales)|(comms)|(runes)|(legendary)
+			val := stripWikitext(p)
+			switch i {
+			case 0:
+				drop.GSCAltar = val
+			case 1:
+				drop.GSCArrow = val
+			case 2:
+				drop.GSCBone = val
+			case 3:
+				drop.GSCShrapnel = val
+			case 4:
+				drop.GSCChain = val
+			case 5:
+				drop.GSCStone = val
+			case 6:
+				drop.GSCScales = val
+			case 7:
+				drop.GSCComms = val
+			case 8:
+				drop.GSCRunes = val
+			case 9:
+				drop.GSCLegendary = val
+			}
+		}
+	}
+
+	return drop
+}
+
+func parseTemplateLGSAugment(raw string) api.DropSourceData {
+	const prefix = "{{LGSAugment"
+	const suffix = "}}"
+
+	s := strings.TrimSpace(raw)
+	if !strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix) {
+		return api.DropSourceData{SourceType: "Unknown"}
+	}
+
+	inner := strings.TrimSpace(s[len(prefix) : len(s)-len(suffix)])
+	if strings.HasPrefix(inner, "|") {
+		inner = inner[1:]
+	}
+
+	drop := api.DropSourceData{SourceType: "LGSAugment"}
+
+	if inner == "" {
+		return drop
+	}
+
+	parts := splitParams(inner)
+	for i, p := range parts {
+		p = strings.TrimSpace(p)
+		if p == "" {
+			continue
+		}
+
+		if strings.Contains(p, "=") {
+			kv := strings.SplitN(p, "=", 2)
+			key := strings.ToLower(strings.TrimSpace(kv[0]))
+			val := stripWikitext(kv[1])
+
+			switch key {
+			case "altar":
+				drop.LGSAugmentAltar = val
+			case "pfocus":
+				drop.LGSAugmentPFocus = val
+			case "sfocus":
+				drop.LGSAugmentSFocus = val
+			case "gem":
+				drop.LGSAugmentGem = val
+			case "essence":
+				drop.LGSAugmentEssence = val
+			}
+		} else {
+			// Positional: {{LGSAugment|(altar)|(pFocus)|(sFocus)|(gem)|(essence)}}
+			val := stripWikitext(p)
+			switch i {
+			case 0:
+				drop.LGSAugmentAltar = val
+			case 1:
+				drop.LGSAugmentPFocus = val
+			case 2:
+				drop.LGSAugmentSFocus = val
+			case 3:
+				drop.LGSAugmentGem = val
+			case 4:
+				drop.LGSAugmentEssence = val
+			}
+		}
 	}
 
 	return drop

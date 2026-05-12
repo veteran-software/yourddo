@@ -18,7 +18,8 @@ import {
   setStormreaverUpgrade as setStormreaverUpgradeAction,
   setTraceOfMadnessEnchantment as setTraceOfMadnessEnchantmentAction,
   setUnlockedFiligreeSlots as setUnlockedFiligreeSlotsAction,
-  setZhentarimAttuned as setZhentarimAttunedAction
+  setZhentarimAttuned as setZhentarimAttunedAction,
+  updateSetup as updateSetupAction
 } from '../../../redux/slices/gearPlannerSlice'
 import { getSlotOwner } from '../conflictResolver'
 import { isMinorArtifact } from '../helpers'
@@ -297,8 +298,14 @@ export const useGearPlannerActions = ({
     )
   }
 
+  const clearSetup = () => {
+    const fresh = createDefaultSetup(activeSetup.id, activeSetup.name)
+    dispatch(updateSetupAction(fresh))
+  }
+
   return {
     addSetup,
+    clearSetup,
     deleteSetup,
     updateClassProficiencies,
     selectItem,

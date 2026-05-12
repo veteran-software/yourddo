@@ -8,6 +8,12 @@ import {
 import type { GearItem, GearSetup, GearSlot, LootEnchantment, LootItem, PetState } from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
 
+const ALWAYS_HIDDEN_ENCHANTMENTS = new Set([
+  'Zhentarim Attuned',
+  'Upgradeable Item (Black Abbot)',
+  'Upgradeable Item (Stormreaver)'
+])
+
 const renderSlots = (
   slots: readonly GearSlot[],
   allEssenceEnchantments: EssenceEnchantment[],
@@ -75,16 +81,11 @@ const getFilteredEnchantments = (
   const traceOfMadnessData = traceOfMadness ? findTraceOfMadnessUpgradeData(traceOfMadness) : null
 
   return enchantments.filter((ench) => {
+    if (ALWAYS_HIDDEN_ENCHANTMENTS.has(ench.name)) return false
     if (nearlyFinished && ench.name === 'Nearly Finished') return false
     if (ritualTable && (ench.name === 'Sealed in Fire' || ench.name === 'Sealed in Undeath')) return false
     if (lostPurpose && ench.name === 'Lost Purpose') return false
     if (traceOfMadnessData && ench.name === 'Trace of Madness') return false
-    if (
-      ench.name === 'Zhentarim Attuned' ||
-      ench.name === 'Upgradeable Item (Black Abbot)' ||
-      ench.name === 'Upgradeable Item (Stormreaver)'
-    )
-      return false
     return true
   })
 }
