@@ -225,20 +225,10 @@ export const useGearPlannerFiltering = ({
   ])
 
   const filteredFiligreeSets: string[] = useMemo(() => {
-    if (!dataReady) {
-      return []
-    }
-
-    return Object.keys(filigreeSetBonusIndex)
-      .filter((setName: string) => {
-        if (!isSetVisibleInRange(setName, filigreeSetBonusIndex, new Set(), true)) {
-          return false
-        }
-
-        return !(browsingSlot && (browsingSet === null || browsingSet === '') && browsingSlot !== GearSlot.Filigree)
-      })
-      .sort((a, b) => a.localeCompare(b))
-  }, [filigreeSetBonusIndex, dataReady, isSetVisibleInRange, browsingSlot, browsingSet])
+    if (!dataReady) return []
+    if (browsingSlot && !browsingSet && browsingSlot !== GearSlot.Filigree) return []
+    return Object.keys(filigreeSetBonusIndex).sort((a, b) => a.localeCompare(b))
+  }, [filigreeSetBonusIndex, dataReady, browsingSlot, browsingSet])
 
   const getEssenceCraftedItems = useCallback((slot: GearSlot, minLevel: number) => {
     const items: GearItem[] = []
