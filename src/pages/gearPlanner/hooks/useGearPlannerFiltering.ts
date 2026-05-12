@@ -197,16 +197,8 @@ export const useGearPlannerFiltering = ({
           return false
         }
 
-        if (browsingSlot && (browsingSet === null || browsingSet === '')) {
+        if (browsingSlot && !browsingSet) {
           return setsWithItemsInSlot.has(setName)
-        }
-
-        if (browsingSet && browsingSet !== '') {
-          return true
-        }
-
-        if (!browsingSlot && (browsingSet === null || browsingSet === '')) {
-          return true
         }
 
         return true
