@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { useAppSelector } from '../../../redux/hooks'
 import { createDefaultSetup } from '../initialState'
 import type { GearSetup } from '../types.ts'
@@ -138,29 +138,24 @@ const useGearPlanner = (props: Props) => {
     setZhentarimAttuned: actions.setZhentarimAttuned
   })
 
-  const [observerTarget, setObserverTarget] = useState<HTMLDivElement | null>(null)
-  const observerTargetRef = useCallback((node: HTMLDivElement | null) => {
-    setObserverTarget(node)
-  }, [])
-
-  useEffect(() => {
-    if (!observerTarget) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setItemsToShow((prev) => prev + 50)
-        }
-      },
-      { threshold: 1.0 }
-    )
-
-    observer.observe(observerTarget)
-
-    return () => {
-      observer.unobserve(observerTarget)
-    }
-  }, [observerTarget, setItemsToShow])
+  const observerRef = useRef<IntersectionObserver | null>(null)
+  const observerTarget = useCallback(
+    (node: HTMLDivElement | null) => {
+      observerRef.current?.disconnect()
+      observerRef.current = null
+      if (node) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting) setItemsToShow((prev) => prev + 50)
+          },
+          { threshold: 1.0 }
+        )
+        observer.observe(node)
+        observerRef.current = observer
+      }
+    },
+    [setItemsToShow]
+  )
 
   return {
     activeSetup,
@@ -189,8 +184,7 @@ const useGearPlanner = (props: Props) => {
     itemNameSearch: propItemNameSearch || internalItemNameSearch,
     itemsToShow,
     loading,
-    observerTarget: observerTargetRef,
-    observerTargetRef,
+    observerTarget,
     openSetBonusBrowser,
     openSlotBrowser,
     pendingMinorArtifact,
