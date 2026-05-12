@@ -7,7 +7,7 @@ import { useGearPlannerActions } from './useGearPlannerActions'
 import { useGearPlannerContext } from './useGearPlannerContext'
 import { useGearPlannerData } from './useGearPlannerData'
 import { useGearPlannerFiltering } from './useGearPlannerFiltering'
-import { isMetal as isMetalHelper, useFormatDropLocations, useIsItemVisibleForClasses } from './useGearPlannerHelpers'
+import { isMetal, useFormatDropLocations, useIsItemVisibleForClasses } from './useGearPlannerHelpers'
 import { useGearPlannerUI } from './useGearPlannerUI'
 
 interface Props {
@@ -72,7 +72,6 @@ const useGearPlanner = (props: Props) => {
     setSetBonusFilter
   } = useGearPlannerUI({ itemNameSearch: propItemNameSearch })
 
-  const isMetal = useCallback((material: string | null | undefined) => isMetalHelper(material), [])
   const formatDropLocations = useFormatDropLocations()
   const isItemVisibleForClasses = useIsItemVisibleForClasses()
 
