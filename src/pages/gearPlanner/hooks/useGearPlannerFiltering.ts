@@ -12,6 +12,23 @@ import {
   type SetBonusIndexEntry
 } from '../types'
 
+const makeGearItemComparator =
+  (troveData: Record<string, unknown> | null) =>
+  (a: GearItem, b: GearItem): number => {
+    if (a.isEssenceCrafted && !b.isEssenceCrafted) return -1
+    if (!a.isEssenceCrafted && b.isEssenceCrafted) return 1
+
+    const isOwnedA = troveData?.[getTroveKey(a.name)] ? 1 : 0
+    const isOwnedB = troveData?.[getTroveKey(b.name)] ? 1 : 0
+    if (isOwnedA !== isOwnedB) return isOwnedB - isOwnedA
+
+    const levelA = Number(a.minLevel) || 1
+    const levelB = Number(b.minLevel) || 1
+    if (levelA !== levelB) return levelB - levelA
+
+    return a.name.localeCompare(b.name)
+  }
+
 export const useGearPlannerFiltering = ({
   dataReady,
   allItemsBySlot,
@@ -320,30 +337,7 @@ export const useGearPlannerFiltering = ({
 
         return filterByOwned(item)
       })
-      .sort((a, b) => {
-        if (a.isEssenceCrafted && !b.isEssenceCrafted) {
-          return -1
-        }
-        if (!a.isEssenceCrafted && b.isEssenceCrafted) {
-          return 1
-        }
-
-        const isOwnedA = troveData?.[getTroveKey(a.name)] ? 1 : 0
-        const isOwnedB = troveData?.[getTroveKey(b.name)] ? 1 : 0
-
-        if (isOwnedA !== isOwnedB) {
-          return isOwnedB - isOwnedA
-        }
-
-        const levelA = Number(a.minLevel) || 1
-        const levelB = Number(b.minLevel) || 1
-
-        if (levelA !== levelB) {
-          return levelB - levelA
-        }
-
-        return a.name.localeCompare(b.name)
-      })
+      .sort(makeGearItemComparator(troveData))
   }, [
     dataReady,
     browsingSlot,
@@ -412,30 +406,7 @@ export const useGearPlannerFiltering = ({
       })
 
       if (filtered.length > 0) {
-        results[slot] = filtered.toSorted((a, b) => {
-          if (a.isEssenceCrafted && !b.isEssenceCrafted) {
-            return -1
-          }
-          if (!a.isEssenceCrafted && b.isEssenceCrafted) {
-            return 1
-          }
-
-          const isOwnedA = troveData?.[getTroveKey(a.name)] ? 1 : 0
-          const isOwnedB = troveData?.[getTroveKey(b.name)] ? 1 : 0
-
-          if (isOwnedA !== isOwnedB) {
-            return isOwnedB - isOwnedA
-          }
-
-          const levelA = Number(a.minLevel) || 1
-          const levelB = Number(b.minLevel) || 1
-
-          if (levelA !== levelB) {
-            return levelB - levelA
-          }
-
-          return a.name.localeCompare(b.name)
-        })
+        results[slot] = filtered.toSorted(makeGearItemComparator(troveData))
       }
     }
 
