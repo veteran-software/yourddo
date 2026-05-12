@@ -106,6 +106,81 @@ const getFiligreeLines = (filigrees: (LootItem | null)[] | undefined, prefix = '
   return lines
 }
 
+interface SlotFormatters {
+  header: (slot: GearSlot, item: GearItem) => void
+  enchantments: (
+    item: GearItem,
+    nearlyFinished?: LootEnchantment,
+    ritualTable?: LootEnchantment,
+    lostPurpose?: LootEnchantment,
+    traceOfMadness?: string,
+    fountainUpgraded?: boolean,
+    stormreaverUpgraded?: boolean,
+    zhentarimUpgraded?: boolean
+  ) => void
+  upgrades: (
+    fountainUpgraded: boolean,
+    stormreaverUpgraded: boolean,
+    zhentarimUpgraded: boolean,
+    nearlyFinished: LootEnchantment | null,
+    ritualTable: LootEnchantment | null,
+    lostPurpose: LootEnchantment | null,
+    traceOfMadness: string | null
+  ) => void
+  essenceCrafting: (
+    item: GearItem,
+    essenceCrafting: Record<string, string | null> | undefined,
+    allEssenceEnchantments: EssenceEnchantment[]
+  ) => void
+  filigrees: (filigrees: (LootItem | null)[] | undefined) => void
+  gemSets: (gemSets: (string | null)[] | undefined) => void
+  separator: () => void
+}
+
+const buildRenderSlot =
+  (setup: GearSetup, fmt: SlotFormatters) =>
+  (
+    slot: GearSlot,
+    item: GearItem,
+    allEssenceEnchantments: EssenceEnchantment[],
+    isPetSlot = false,
+    petState?: PetState
+  ): void => {
+    const state = isPetSlot && petState ? petState : setup
+    const nearlyFinished = state.slottedNearlyFinished[item.id]
+    const ritualTable = state.slottedRitualTable[item.id]
+    const lostPurpose = state.slottedLostPurpose[item.id]
+    const traceOfMadness = state.slottedTraceOfMadness[item.id]
+    const fountainUpgraded = state.slottedFountainOfNecroticMight[item.id]
+    const stormreaverUpgraded = state.slottedStormreaverUpgrade[item.id]
+    const zhentarimUpgraded = state.slottedZhentarimAttuned[item.id]
+
+    fmt.header(slot, item)
+    fmt.enchantments(
+      item,
+      nearlyFinished ?? undefined,
+      ritualTable ?? undefined,
+      lostPurpose ?? undefined,
+      traceOfMadness ?? undefined,
+      fountainUpgraded,
+      stormreaverUpgraded,
+      zhentarimUpgraded
+    )
+    fmt.upgrades(
+      fountainUpgraded,
+      stormreaverUpgraded,
+      zhentarimUpgraded,
+      nearlyFinished ?? null,
+      ritualTable ?? null,
+      lostPurpose ?? null,
+      traceOfMadness ?? null
+    )
+    fmt.essenceCrafting(item, state.slottedEssenceEnchantments[item.id], allEssenceEnchantments)
+    fmt.filigrees(state.slottedFiligrees[item.id])
+    fmt.gemSets(state.slottedGemSetBonuses[item.id])
+    fmt.separator()
+  }
+
 export const generateBBCodeExport = (
   setup: GearSetup,
   allEssenceEnchantments: EssenceEnchantment[],
@@ -126,163 +201,44 @@ export const generateBBCodeExport = (
 
   lines.push('')
 
-  const renderSlotHeader = (slot: GearSlot, item: GearItem) => {
-    lines.push(`[b]${slot}:[/b] [u]${item.name}[/u] (ML: ${String(item.minLevel)})`)
-  }
+  const renderSlot = buildRenderSlot(setup, {
+    header: (slot, item) => {
+      lines.push(`[b]${slot}:[/b] [u]${item.name}[/u] (ML: ${String(item.minLevel)})`)
+    },
 
-  const renderSlotEnchantments = (
-    item: GearItem,
-    nearlyFinished?: LootEnchantment,
-    ritualTable?: LootEnchantment,
-    lostPurpose?: LootEnchantment,
-    traceOfMadness?: string,
-    isFountainUpgraded?: boolean,
-    isStormreaverUpgraded?: boolean,
-    isZhentarimUpgraded?: boolean
-  ) => {
-    const baseEnchantments = getDisplayEnchantments(
+    enchantments: (
       item,
-      isFountainUpgraded ?? false,
-      isStormreaverUpgraded ?? false,
-      isZhentarimUpgraded ?? false
-    )
-    const filtered = getFilteredEnchantments(baseEnchantments, nearlyFinished, ritualTable, lostPurpose, traceOfMadness)
-    if (filtered.length > 0) {
-      lines.push(`[list]`)
-      filtered.forEach((enchantment: LootEnchantment) => {
-        lines.push(`[*] ${formatEnchantment(enchantment)}`)
-      })
-      lines.push(`[/list]`)
-    }
-  }
-
-  const renderSlotFiligrees = (filigrees: (LootItem | null)[] | undefined) => {
-    if (filigrees?.some((f) => f !== null)) {
-      lines.push(`[indent][b][color=yellow]Filigrees:[/color][/b][/indent]`, `[list]`)
-
-      filigrees.forEach((filigree: LootItem | null) => {
-        if (filigree) {
-          lines.push(`[*] ${filigree.name}`)
-
-          filigree.enchantments?.forEach((ench: LootEnchantment) => {
-            lines.push(`[list][*] ${formatEnchantment(ench)}[/list]`)
-          })
-        }
-      })
-
-      lines.push(`[/list]`)
-    }
-  }
-
-  const renderSlotGemSets = (gemSets: (string | null)[] | undefined) => {
-    if (gemSets?.some((s) => s !== null)) {
-      lines.push(`[indent][b][color=green]Gem Set Bonuses:[/color][/b] ${gemSets.filter(Boolean).join(', ')}[/indent]`)
-    }
-  }
-
-  const renderSlotEssenceCrafting = (
-    item: GearItem,
-    essenceCrafting: Record<string, string | null> | undefined,
-    allEssenceEnchantments: EssenceEnchantment[]
-  ) => {
-    if (essenceCrafting && Object.values(essenceCrafting).some((v) => v !== null)) {
-      lines.push(`[indent][b][color=cyan]Essence Crafting:[/color][/b][/indent]`, `[list]`)
-
-      const minLevel = Number.parseInt(String(item.minLevel)) || 1
-
-      Object.entries(essenceCrafting).forEach(([slotName, enchId]) => {
-        if (enchId) {
-          const ench = allEssenceEnchantments.find((e) => e.id === enchId)
-
-          if (ench) {
-            const enchantments = getScaledEssenceEnchantments(ench, minLevel)
-            enchantments.forEach((innerEnch) => {
-              lines.push(`[*] [b]${slotName}:[/b] ${formatEnchantment(innerEnch)}`)
-            })
-          }
-        }
-      })
-
-      lines.push(`[/list]`)
-    }
-  }
-
-  const renderUpgrades = (
-    fountainUpgraded: boolean,
-    stormreaverUpgraded: boolean,
-    zhentarimUpgraded: boolean,
-    nearlyFinished: LootEnchantment | null,
-    ritualTable: LootEnchantment | null,
-    lostPurpose: LootEnchantment | null,
-    traceOfMadness: string | null
-  ) => {
-    if (fountainUpgraded) {
-      lines.push(`[indent][b][color=cyan]Fountain of Necrotic Might Upgrade[/color][/b][/indent]`)
-    }
-
-    if (stormreaverUpgraded) {
-      lines.push(`[indent][b][color=cyan]Stormreaver Monument Upgrade[/color][/b][/indent]`)
-    }
-
-    if (zhentarimUpgraded) {
-      lines.push(`[indent][b][color=cyan]Zhentarim Attuned Upgrade[/color][/b][/indent]`)
-    }
-
-    if (nearlyFinished) {
-      lines.push(`[indent][b][color=orange]Nearly Finished:[/color][/b] ${formatEnchantment(nearlyFinished)}[/indent]`)
-    }
-
-    if (ritualTable) {
-      lines.push(`[indent][b][color=green]Ritual Table Upgrade:[/color][/b] ${formatEnchantment(ritualTable)}[/indent]`)
-    }
-
-    if (lostPurpose) {
-      lines.push(
-        `[indent][b][color=purple]Lost Purpose Upgrade:[/color][/b] ${formatEnchantment(lostPurpose)}[/indent]`
-      )
-    }
-
-    if (traceOfMadness) {
-      const upgradeData = findTraceOfMadnessUpgradeData(traceOfMadness)
-      if (upgradeData) {
-        lines.push(`[indent][b][color=orange]Trace of Madness:[/color][/b] ${upgradeData.name}[/indent]`)
-        upgradeData.effectsAdded.forEach((ench) => {
-          lines.push(`[indent][list][*] ${formatEnchantment(ench)}[/list][/indent]`)
-        })
-      }
-    }
-  }
-
-  const renderSlot = (
-    slot: GearSlot,
-    item: GearItem,
-    allEssenceEnchantments: EssenceEnchantment[],
-    isPetSlot = false,
-    petState?: PetState
-  ) => {
-    const state = isPetSlot && petState ? petState : setup
-
-    const nearlyFinished = state.slottedNearlyFinished[item.id]
-    const ritualTable = state.slottedRitualTable[item.id]
-    const lostPurpose = state.slottedLostPurpose[item.id]
-    const traceOfMadness = state.slottedTraceOfMadness[item.id]
-    const fountainUpgraded = state.slottedFountainOfNecroticMight[item.id]
-    const stormreaverUpgraded = state.slottedStormreaverUpgrade[item.id]
-    const zhentarimUpgraded = state.slottedZhentarimAttuned[item.id]
-
-    renderSlotHeader(slot, item)
-    renderSlotEnchantments(
-      item,
-      nearlyFinished ?? undefined,
-      ritualTable ?? undefined,
-      lostPurpose ?? undefined,
-      traceOfMadness ?? undefined,
+      nearlyFinished,
+      ritualTable,
+      lostPurpose,
+      traceOfMadness,
       fountainUpgraded,
       stormreaverUpgraded,
       zhentarimUpgraded
-    )
+    ) => {
+      const baseEnchantments = getDisplayEnchantments(
+        item,
+        fountainUpgraded ?? false,
+        stormreaverUpgraded ?? false,
+        zhentarimUpgraded ?? false
+      )
+      const filtered = getFilteredEnchantments(
+        baseEnchantments,
+        nearlyFinished,
+        ritualTable,
+        lostPurpose,
+        traceOfMadness
+      )
+      if (filtered.length > 0) {
+        lines.push(`[list]`)
+        filtered.forEach((enchantment: LootEnchantment) => {
+          lines.push(`[*] ${formatEnchantment(enchantment)}`)
+        })
+        lines.push(`[/list]`)
+      }
+    },
 
-    renderUpgrades(
+    upgrades: (
       fountainUpgraded,
       stormreaverUpgraded,
       zhentarimUpgraded,
@@ -290,19 +246,74 @@ export const generateBBCodeExport = (
       ritualTable,
       lostPurpose,
       traceOfMadness
-    )
+    ) => {
+      if (fountainUpgraded) lines.push(`[indent][b][color=cyan]Fountain of Necrotic Might Upgrade[/color][/b][/indent]`)
+      if (stormreaverUpgraded) lines.push(`[indent][b][color=cyan]Stormreaver Monument Upgrade[/color][/b][/indent]`)
+      if (zhentarimUpgraded) lines.push(`[indent][b][color=cyan]Zhentarim Attuned Upgrade[/color][/b][/indent]`)
+      if (nearlyFinished)
+        lines.push(
+          `[indent][b][color=orange]Nearly Finished:[/color][/b] ${formatEnchantment(nearlyFinished)}[/indent]`
+        )
+      if (ritualTable)
+        lines.push(
+          `[indent][b][color=green]Ritual Table Upgrade:[/color][/b] ${formatEnchantment(ritualTable)}[/indent]`
+        )
+      if (lostPurpose)
+        lines.push(
+          `[indent][b][color=purple]Lost Purpose Upgrade:[/color][/b] ${formatEnchantment(lostPurpose)}[/indent]`
+        )
+      if (traceOfMadness) {
+        const upgradeData = findTraceOfMadnessUpgradeData(traceOfMadness)
+        if (upgradeData) {
+          lines.push(`[indent][b][color=orange]Trace of Madness:[/color][/b] ${upgradeData.name}[/indent]`)
+          upgradeData.effectsAdded.forEach((ench) => {
+            lines.push(`[indent][list][*] ${formatEnchantment(ench)}[/list][/indent]`)
+          })
+        }
+      }
+    },
 
-    const essenceCrafting = state.slottedEssenceEnchantments[item.id]
-    renderSlotEssenceCrafting(item, essenceCrafting, allEssenceEnchantments)
+    essenceCrafting: (item, essenceCrafting, allEssenceEnchantments) => {
+      if (!essenceCrafting || !Object.values(essenceCrafting).some((v) => v !== null)) return
+      lines.push(`[indent][b][color=cyan]Essence Crafting:[/color][/b][/indent]`, `[list]`)
+      const minLevel = Number.parseInt(String(item.minLevel)) || 1
+      Object.entries(essenceCrafting).forEach(([slotName, enchId]) => {
+        if (enchId) {
+          const ench = allEssenceEnchantments.find((e) => e.id === enchId)
+          if (ench) {
+            getScaledEssenceEnchantments(ench, minLevel).forEach((innerEnch) => {
+              lines.push(`[*] [b]${slotName}:[/b] ${formatEnchantment(innerEnch)}`)
+            })
+          }
+        }
+      })
+      lines.push(`[/list]`)
+    },
 
-    const filigrees = state.slottedFiligrees[item.id]
-    renderSlotFiligrees(filigrees)
+    filigrees: (filigrees) => {
+      if (!filigrees?.some((f) => f !== null)) return
+      lines.push(`[indent][b][color=yellow]Filigrees:[/color][/b][/indent]`, `[list]`)
+      filigrees.forEach((filigree: LootItem | null) => {
+        if (filigree) {
+          lines.push(`[*] ${filigree.name}`)
+          filigree.enchantments?.forEach((ench: LootEnchantment) => {
+            lines.push(`[list][*] ${formatEnchantment(ench)}[/list]`)
+          })
+        }
+      })
+      lines.push(`[/list]`)
+    },
 
-    const gemSets = state.slottedGemSetBonuses[item.id]
-    renderSlotGemSets(gemSets)
+    gemSets: (gemSets) => {
+      if (gemSets?.some((s) => s !== null)) {
+        lines.push(
+          `[indent][b][color=green]Gem Set Bonuses:[/color][/b] ${gemSets.filter(Boolean).join(', ')}[/indent]`
+        )
+      }
+    },
 
-    lines.push('[center]---[/center]', '')
-  }
+    separator: () => lines.push('[center]---[/center]', '')
+  })
 
   lines.push(`[b][size=4]Equipped Gear[/size][/b]`)
   renderSlots(GEAR_SLOTS, allEssenceEnchantments, setup, renderSlot)
@@ -328,11 +339,9 @@ export const generateBBCodeExport = (
 
   if (activeSetEnhancements.length > 0) {
     lines.push(`[b][size=4]Active Set Bonuses[/size][/b]`, `[list]`)
-
     activeSetEnhancements.forEach((entry) => {
       lines.push(`[*] [b]${entry.sourceName.replace('Set Bonus: ', '')}:[/b] ${formatEnchantment(entry.ench)}`)
     })
-
     lines.push(`[/list]`, '')
   }
 
@@ -359,149 +368,40 @@ export const generateDiscordMarkdownExport = (
 
   lines.push('')
 
-  const renderSlotHeader = (slot: GearSlot, item: GearItem) => {
-    lines.push(`**${slot}:** __${item.name}__ (ML: ${String(item.minLevel)})`)
-  }
+  const renderSlot = buildRenderSlot(setup, {
+    header: (slot, item) => {
+      lines.push(`**${slot}:** __${item.name}__ (ML: ${String(item.minLevel)})`)
+    },
 
-  const renderSlotEnchantments = (
-    item: GearItem,
-    nearlyFinished?: LootEnchantment,
-    ritualTable?: LootEnchantment,
-    lostPurpose?: LootEnchantment,
-    traceOfMadness?: string,
-    isFountainUpgraded?: boolean,
-    isStormreaverUpgraded?: boolean,
-    isZhentarimUpgraded?: boolean
-  ) => {
-    const baseEnchantments = getDisplayEnchantments(
+    enchantments: (
       item,
-      isFountainUpgraded ?? false,
-      isStormreaverUpgraded ?? false,
-      isZhentarimUpgraded ?? false
-    )
-    const filtered = getFilteredEnchantments(baseEnchantments, nearlyFinished, ritualTable, lostPurpose, traceOfMadness)
-    if (filtered.length > 0) {
-      filtered.forEach((ench: LootEnchantment) => {
-        lines.push(`- ${formatEnchantment(ench)}`)
-      })
-    }
-  }
-
-  const renderSlotFiligrees = (filigrees: (LootItem | null)[] | undefined) => {
-    const filiLines = getFiligreeLines(filigrees, `    - `)
-    if (filiLines.length > 0) {
-      lines.push(...filiLines)
-    }
-  }
-
-  const renderSlotGemSets = (gemSets: (string | null)[] | undefined) => {
-    if (gemSets && gemSets.length > 0) {
-      const activeGemSets: (string | null)[] = gemSets.filter(Boolean)
-
-      if (activeGemSets.length > 0) {
-        lines.push(`- **Gem Set Bonuses:** ${activeGemSets.join(', ')}`)
-      }
-    }
-  }
-
-  const renderSlotEssenceCrafting = (
-    item: GearItem,
-    essenceCrafting: Record<string, string | null> | undefined,
-    allEssenceEnchantments: EssenceEnchantment[]
-  ) => {
-    if (essenceCrafting && Object.values(essenceCrafting).some((v) => v !== null)) {
-      lines.push(`- **Essence Crafting:**`)
-
-      const minLevel = Number.parseInt(String(item.minLevel)) || 1
-
-      Object.entries(essenceCrafting).forEach(([slotName, enchId]) => {
-        if (enchId) {
-          const ench = allEssenceEnchantments.find((e) => e.id === enchId)
-          if (ench) {
-            const enchantments = getScaledEssenceEnchantments(ench, minLevel)
-            enchantments.forEach((innerEnch: LootEnchantment) => {
-              lines.push(`  - **${slotName}:** ${formatEnchantment(innerEnch)}`)
-            })
-          }
-        }
-      })
-    }
-  }
-
-  const renderUpgrades = (
-    fountainUpgraded: boolean,
-    stormreaverUpgraded: boolean,
-    zhentarimUpgraded: boolean,
-    nearlyFinished: LootEnchantment | null,
-    ritualTable: LootEnchantment | null,
-    lostPurpose: LootEnchantment | null,
-    traceOfMadness: string | null
-  ) => {
-    if (fountainUpgraded) {
-      lines.push(`- **Fountain of Necrotic Might Upgrade**`)
-    }
-
-    if (stormreaverUpgraded) {
-      lines.push(`- **Stormreaver Monument Upgrade**`)
-    }
-
-    if (zhentarimUpgraded) {
-      lines.push(`- **Zhentarim Attuned Upgrade**`)
-    }
-
-    if (nearlyFinished) {
-      lines.push(`- **Nearly Finished:** ${formatEnchantment(nearlyFinished)}`)
-    }
-
-    if (ritualTable) {
-      lines.push(`- **Ritual Table Upgrade:** ${formatEnchantment(ritualTable)}`)
-    }
-
-    if (lostPurpose) {
-      lines.push(`- **Lost Purpose Upgrade:** ${formatEnchantment(lostPurpose)}`)
-    }
-
-    if (traceOfMadness) {
-      const upgradeData = findTraceOfMadnessUpgradeData(traceOfMadness)
-      if (upgradeData) {
-        lines.push(`- **Trace of Madness:** ${upgradeData.name}`)
-        upgradeData.effectsAdded.forEach((ench) => {
-          lines.push(`  - ${formatEnchantment(ench)}`)
-        })
-      }
-    }
-  }
-
-  const renderSlot = (
-    slot: GearSlot,
-    item: GearItem,
-    allEssenceEnchantments: EssenceEnchantment[],
-    isPetSlot = false,
-    petState?: PetState
-  ) => {
-    const state = isPetSlot && petState ? petState : setup
-
-    const nearlyFinished = state.slottedNearlyFinished[item.id]
-    const ritualTable = state.slottedRitualTable[item.id]
-    const lostPurpose = state.slottedLostPurpose[item.id]
-    const traceOfMadness = state.slottedTraceOfMadness[item.id]
-    const fountainUpgraded = state.slottedFountainOfNecroticMight[item.id]
-    const stormreaverUpgraded = state.slottedStormreaverUpgrade[item.id]
-    const zhentarimUpgraded = state.slottedZhentarimAttuned[item.id]
-
-    renderSlotHeader(slot, item)
-    renderSlotEnchantments(
-      item,
-      nearlyFinished ?? undefined,
-      ritualTable ?? undefined,
-      lostPurpose ?? undefined,
-      traceOfMadness ?? undefined,
+      nearlyFinished,
+      ritualTable,
+      lostPurpose,
+      traceOfMadness,
       fountainUpgraded,
       stormreaverUpgraded,
       zhentarimUpgraded
-    )
+    ) => {
+      const baseEnchantments = getDisplayEnchantments(
+        item,
+        fountainUpgraded ?? false,
+        stormreaverUpgraded ?? false,
+        zhentarimUpgraded ?? false
+      )
+      const filtered = getFilteredEnchantments(
+        baseEnchantments,
+        nearlyFinished,
+        ritualTable,
+        lostPurpose,
+        traceOfMadness
+      )
+      filtered.forEach((ench: LootEnchantment) => {
+        lines.push(`- ${formatEnchantment(ench)}`)
+      })
+    },
 
-    renderUpgrades(
+    upgrades: (
       fountainUpgraded,
       stormreaverUpgraded,
       zhentarimUpgraded,
@@ -509,33 +409,65 @@ export const generateDiscordMarkdownExport = (
       ritualTable,
       lostPurpose,
       traceOfMadness
-    )
+    ) => {
+      if (fountainUpgraded) lines.push(`- **Fountain of Necrotic Might Upgrade**`)
+      if (stormreaverUpgraded) lines.push(`- **Stormreaver Monument Upgrade**`)
+      if (zhentarimUpgraded) lines.push(`- **Zhentarim Attuned Upgrade**`)
+      if (nearlyFinished) lines.push(`- **Nearly Finished:** ${formatEnchantment(nearlyFinished)}`)
+      if (ritualTable) lines.push(`- **Ritual Table Upgrade:** ${formatEnchantment(ritualTable)}`)
+      if (lostPurpose) lines.push(`- **Lost Purpose Upgrade:** ${formatEnchantment(lostPurpose)}`)
+      if (traceOfMadness) {
+        const upgradeData = findTraceOfMadnessUpgradeData(traceOfMadness)
+        if (upgradeData) {
+          lines.push(`- **Trace of Madness:** ${upgradeData.name}`)
+          upgradeData.effectsAdded.forEach((ench) => {
+            lines.push(`  - ${formatEnchantment(ench)}`)
+          })
+        }
+      }
+    },
 
-    const essenceCrafting = state.slottedEssenceEnchantments[item.id]
-    renderSlotEssenceCrafting(item, essenceCrafting, allEssenceEnchantments)
+    essenceCrafting: (item, essenceCrafting, allEssenceEnchantments) => {
+      if (!essenceCrafting || !Object.values(essenceCrafting).some((v) => v !== null)) return
+      lines.push(`- **Essence Crafting:**`)
+      const minLevel = Number.parseInt(String(item.minLevel)) || 1
+      Object.entries(essenceCrafting).forEach(([slotName, enchId]) => {
+        if (enchId) {
+          const ench = allEssenceEnchantments.find((e) => e.id === enchId)
+          if (ench) {
+            getScaledEssenceEnchantments(ench, minLevel).forEach((innerEnch: LootEnchantment) => {
+              lines.push(`  - **${slotName}:** ${formatEnchantment(innerEnch)}`)
+            })
+          }
+        }
+      })
+    },
 
-    const filigrees = state.slottedFiligrees[item.id]
-    renderSlotFiligrees(filigrees)
+    filigrees: (filigrees) => {
+      const filiLines = getFiligreeLines(filigrees, `    - `)
+      if (filiLines.length > 0) lines.push(...filiLines)
+    },
 
-    const gemSets = state.slottedGemSetBonuses[item.id]
-    renderSlotGemSets(gemSets)
+    gemSets: (gemSets) => {
+      const activeGemSets = gemSets?.filter(Boolean) ?? []
+      if (activeGemSets.length > 0) {
+        lines.push(`- **Gem Set Bonuses:** ${activeGemSets.join(', ')}`)
+      }
+    },
 
-    lines.push('')
-  }
+    separator: () => lines.push('')
+  })
 
   lines.push(`### Equipped Gear`)
-
   renderSlots(GEAR_SLOTS, allEssenceEnchantments, setup, renderSlot)
 
   if (setup.classes.includes('Artificer')) {
     lines.push(`### Iron Defender Gear`)
-
     renderSlots(ARTIFICER_PET_SLOTS, allEssenceEnchantments, setup, renderSlot, true, artificerPet)
   }
 
   if (setup.classes.includes('Druid')) {
     lines.push(`### Wolf Companion Gear`)
-
     renderSlots(DRUID_PET_SLOTS, allEssenceEnchantments, setup, renderSlot, true, druidPet)
   }
 
@@ -582,18 +514,15 @@ export const generateDiscordMarkdownExport = (
 
   if (activeSetEnhancements.length > 0) {
     lines.push(`### Active Set Bonuses`)
-
     activeSetEnhancements.forEach((entry) => {
       lines.push(`- **${entry.sourceName.replace('Set Bonus: ', '')}:** ${formatEnchantment(entry.ench)}`)
     })
-
     lines.push('')
   }
 
   const fullContent = lines.join('\n')
   if (fullContent.length > 2000) {
     const warning = `\n> **Note:** This export is ${String(fullContent.length)} characters long, which exceeds Discord's 2000-character limit. You may need to paste it in multiple messages.`
-
     return fullContent + warning
   }
 
