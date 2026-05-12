@@ -170,7 +170,7 @@ export interface ContextInfo {
   currentSlottedNearlyFinished: Record<string, LootEnchantment | null>
   currentSlottedRitualTable: Record<string, LootEnchantment | null>
   currentSlottedLostPurpose: Record<string, LootEnchantment | null>
-  currentSlottedTraceOfMadness: Record<string, LootEnchantment | null>
+  currentSlottedTraceOfMadness: Record<string, string | null>
   currentSlottedFountainOfNecroticMight: Record<string, boolean>
   currentSlottedStormreaverUpgrade: Record<string, boolean>
   currentSlottedZhentarimAttuned: Record<string, boolean>

@@ -36,6 +36,9 @@ const loadState = (): GearPlannerState => {
     /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any */
     state.characterSetups.forEach((setup) => {
       const ensureFields = (target: any) => {
+        target.armorFilters ??= []
+        target.weaponFilters ??= []
+        target.shieldFilters ??= []
         target.slottedNearlyFinished ??= {}
         target.slottedRitualTable ??= {}
         target.slottedLostPurpose ??= {}

@@ -356,7 +356,7 @@ const GearPlanner = () => {
                     variant='outline-danger'
                     size='sm'
                     className='flex-grow-1 flex-md-grow-0'
-                    onClick={gpHook.addSetup}
+                    onClick={gpHook.clearTab}
                   >
                     <FaTriangleExclamation /> Clear Tab <FaTriangleExclamation />
                   </Button>
@@ -410,7 +410,6 @@ const GearPlanner = () => {
                       slottedFiligrees={gpHook.activeSetup.slottedFiligrees}
                       slottedGemSetBonuses={gpHook.activeSetup.slottedGemSetBonuses}
                       slottedLostPurpose={gpHook.activeSetup.slottedLostPurpose}
-                      slottedTraceOfMadness={gpHook.activeSetup.slottedTraceOfMadness}
                       onSetClick={gpHook.openSetBonusBrowser}
                     />
 

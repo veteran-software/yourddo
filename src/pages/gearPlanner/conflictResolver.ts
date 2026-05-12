@@ -1,5 +1,5 @@
 import { UPGRADE_PLACEHOLDER_ENCHANTMENTS } from './constants'
-import { getDisplayEnchantments } from './helpers'
+import { findTraceOfMadnessUpgradeData, getDisplayEnchantments } from './helpers'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, type GearItem, GearSlot, type LootEnchantment } from './types'
 
 export interface EnchantmentConflict {
@@ -93,7 +93,7 @@ export const resolveConflicts = (
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>,
+  slottedTraceOfMadness?: Record<string, string | null>,
   slottedFountainOfNecroticMight: Record<string, boolean> = {},
   slottedStormreaverUpgrade: Record<string, boolean> = {},
   slottedZhentarimAttuned: Record<string, boolean> = {}
@@ -197,21 +197,21 @@ export const resolveConflicts = (
       })
     }
 
-    const traceOfMadness = slottedTraceOfMadness?.[item.id]
-    if (traceOfMadness) {
-      const enchWithModifier = {
-        ...traceOfMadness,
-        modifier: traceOfMadness.modifier ?? 'Enhancement'
-      }
-      allEnchantments.push({
-        itemId: item.id,
-        itemName: item.name,
-        slot: item.slot,
-        enchantment: enchWithModifier,
-        parsedValue: parseModifierValue(enchWithModifier.modifier),
-        owner,
-        normalizedName: normalizeString(enchWithModifier.name),
-        normalizedBonus: getBonus(enchWithModifier.bonus)
+    const traceOfMadnessName = slottedTraceOfMadness?.[item.id]
+    if (traceOfMadnessName) {
+      const upgradeData = findTraceOfMadnessUpgradeData(traceOfMadnessName)
+      upgradeData?.effectsAdded.forEach((ench) => {
+        const enchWithModifier = { ...ench, modifier: ench.modifier ?? 'Enhancement' }
+        allEnchantments.push({
+          itemId: item.id,
+          itemName: item.name,
+          slot: item.slot,
+          enchantment: enchWithModifier,
+          parsedValue: parseModifierValue(enchWithModifier.modifier),
+          owner,
+          normalizedName: normalizeString(enchWithModifier.name),
+          normalizedBonus: getBonus(enchWithModifier.bonus)
+        })
       })
     }
 
@@ -381,17 +381,20 @@ const findMatchingTraceOfMadness = (
   itemId: string,
   normalizedTargetName: string,
   normalizedTargetBonus: string,
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
+  slottedTraceOfMadness?: Record<string, string | null>
 ) => {
-  const traceOfMadness = slottedTraceOfMadness?.[itemId]
-  if (
-    traceOfMadness &&
-    normalizeString(traceOfMadness.name) === normalizedTargetName &&
-    getBonus(traceOfMadness.bonus) === normalizedTargetBonus
-  ) {
-    return parseModifierValue(traceOfMadness.modifier ?? 'Enhancement')
+  const upgradeName = slottedTraceOfMadness?.[itemId]
+  if (!upgradeName) return -Infinity
+  const upgradeData = findTraceOfMadnessUpgradeData(upgradeName)
+  if (!upgradeData) return -Infinity
+  let max = -Infinity
+  for (const ench of upgradeData.effectsAdded) {
+    if (normalizeString(ench.name) === normalizedTargetName && getBonus(ench.bonus) === normalizedTargetBonus) {
+      const val = parseModifierValue(ench.modifier ?? 'Enhancement')
+      if (val > max) max = val
+    }
   }
-  return -Infinity
+  return max
 }
 
 const findMatchingAugments = (
@@ -439,7 +442,7 @@ const traceOfMadnessMax = (
   normalizedTargetName: string,
   normalizedTargetBonus: string,
   item: GearItem,
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
+  slottedTraceOfMadness?: Record<string, string | null>
 ) => {
   if (isSameItem) {
     return -Infinity
@@ -508,7 +511,7 @@ const getItemEnchantmentMax = (
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>,
+  slottedTraceOfMadness?: Record<string, string | null>,
   slottedFountainOfNecroticMight: Record<string, boolean> = {},
   slottedStormreaverUpgrade: Record<string, boolean> = {},
   slottedZhentarimAttuned: Record<string, boolean> = {},
@@ -569,7 +572,7 @@ export const checkPotentialConflict = (
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>,
+  slottedTraceOfMadness?: Record<string, string | null>,
   slottedFountainOfNecroticMight: Record<string, boolean> = {},
   slottedStormreaverUpgrade: Record<string, boolean> = {},
   slottedZhentarimAttuned: Record<string, boolean> = {},

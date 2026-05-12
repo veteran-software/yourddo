@@ -332,6 +332,20 @@ const processFiligreeGrouping = (fili: GearItem, filigreeNamesPerSet: Record<str
   }
 }
 
+export const getSetCounts = (
+  equippedItems: GearItem[],
+  slottedAugments: Record<string, Record<number, GearAugment | null>>,
+  slottedFiligrees?: Record<string, (GearItem | null)[]>,
+  slottedGemSetBonuses?: Record<string, (string | null)[]>,
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
+): Record<string, number> => {
+  const counts: Record<string, number> = {}
+  getItemCounts(equippedItems, slottedGemSetBonuses, counts, slottedLostPurpose)
+  getAugmentCounts(slottedAugments, counts)
+  getFiligreeCounts(slottedFiligrees, counts)
+  return counts
+}
+
 export const getActiveSetEnhancements = (
   equippedItems: GearItem[],
   slottedAugments: Record<string, Record<number, GearAugment | null>>,
@@ -339,11 +353,13 @@ export const getActiveSetEnhancements = (
   slottedGemSetBonuses?: Record<string, (string | null)[]>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>
 ) => {
-  const counts: Record<string, number> = {}
-
-  getItemCounts(equippedItems, slottedGemSetBonuses, counts, slottedLostPurpose)
-  getAugmentCounts(slottedAugments, counts)
-  getFiligreeCounts(slottedFiligrees, counts)
+  const counts = getSetCounts(
+    equippedItems,
+    slottedAugments,
+    slottedFiligrees,
+    slottedGemSetBonuses,
+    slottedLostPurpose
+  )
 
   const entries: { ench: LootEnchantment; sourceName: string }[] = []
   for (const [setName, count] of Object.entries(counts)) {

@@ -121,6 +121,9 @@ export const useFormatDropLocations = () => {
  * @param {GearSetup} setup - The current character setup.
  * @returns {boolean} True if the item should be visible, false otherwise.
  */
+const getEffectiveArmorType = (type: string): string =>
+  type === 'Robe' || type === 'Outfit' ? 'Cloth Armor' : type
+
 export const isItemVisible = (item: GearItem, setup: GearSetup): boolean => {
   const isArtificer: boolean = setup.classes.includes('Artificer')
   const isDruid: boolean = setup.classes.includes('Druid')
@@ -138,35 +141,16 @@ export const isItemVisible = (item: GearItem, setup: GearSetup): boolean => {
   }
 
   if (item.slot === GearSlot.Armor) {
-    if (setup.armorFilters.length === 0) {
-      return true
-    }
-    let effectiveType = item.type
-    if (effectiveType === 'Robe' || effectiveType === 'Outfit') {
-      effectiveType = 'Cloth Armor'
-    }
-    return setup.armorFilters.includes(effectiveType)
+    return setup.armorFilters.length === 0 || setup.armorFilters.includes(getEffectiveArmorType(item.type))
   }
 
   if (item.slot === GearSlot.MainHand) {
-    if (setup.weaponFilters.length === 0) {
-      return true
-    }
-    return setup.weaponFilters.includes(item.type)
+    return setup.weaponFilters.length === 0 || setup.weaponFilters.includes(item.type)
   }
 
   if (item.slot === GearSlot.OffHand) {
-    const isShield = SHIELD_TYPES.includes(item.type)
-    if (isShield) {
-      if (setup.shieldFilters.length === 0) {
-        return true
-      }
-      return setup.shieldFilters.includes(item.type)
-    }
-    if (setup.weaponFilters.length === 0) {
-      return true
-    }
-    return setup.weaponFilters.includes(item.type)
+    const filters = SHIELD_TYPES.includes(item.type) ? setup.shieldFilters : setup.weaponFilters
+    return filters.length === 0 || filters.includes(item.type)
   }
 
   return true

@@ -188,7 +188,7 @@ export interface Curse {
 
 export interface UpgradeEntry {
   name: string
-  effectsRemoved: LootEnchantment[]
+  effectsRemoved?: LootEnchantment[]
   effectsAdded: LootEnchantment[]
 }
 
