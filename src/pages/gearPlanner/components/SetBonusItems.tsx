@@ -40,14 +40,11 @@ const isSetMatch = (
   if (Array.isArray(item.setBonus) && item.setBonus.some((sb: SetBonus) => sb.name === browsingSet)) return true
 
   // 1c. Lost Purpose check
-  if (
+  return (
     isLostPurposeSet &&
     Array.isArray(item.enchantments) &&
     item.enchantments.some((enchantment: LootEnchantment) => enchantment.name === 'Lost Purpose')
   )
-    return true
-
-  return false
 }
 
 const SetBonusItems = (props: Props) => {
@@ -148,7 +145,10 @@ const SetBonusItems = (props: Props) => {
     ]
   )
 
-  const setItemResults: GearItem[] = useMemo(() => allItems.filter(isItemMatch), [allItems, isItemMatch])
+  const setItemResults: GearItem[] = useMemo(
+    () => allItems.filter((item) => isItemMatch(item)),
+    [allItems, isItemMatch]
+  )
 
   if (setItemResults.length === 0) {
     return (
