@@ -97,7 +97,8 @@ const DevastationDropdown = () => {
               </h6>
             </Dropdown.Header>
 
-            {focusIngredients.length > 0 && focusIngredients.map(renderDropdownItem)}
+            {focusIngredients.length > 0 &&
+              focusIngredients.map((ingredient, idx) => renderDropdownItem(ingredient, idx))}
           </Fragment>
         ))}
       </>
