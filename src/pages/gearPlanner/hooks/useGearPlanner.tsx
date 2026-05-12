@@ -87,8 +87,6 @@ const useGearPlanner = (props: Props) => {
 
   const { filteredItems, filteredItemSets, filteredFiligreeSets, searchResultsBySlot } = useGearPlannerFiltering({
     dataReady,
-    allItems,
-    allFiligrees,
     allItemsBySlot,
     itemToSetsMap,
     itemSetBonusIndex,

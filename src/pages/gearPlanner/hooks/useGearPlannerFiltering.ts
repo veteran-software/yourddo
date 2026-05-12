@@ -436,8 +436,6 @@ export const useGearPlannerFiltering = ({
 
 interface Props {
   dataReady: boolean
-  allItems: GearItem[]
-  allFiligrees: GearItem[]
   allItemsBySlot: Map<GearSlot, GearItem[]>
   itemToSetsMap: Map<string, string[]>
   itemSetBonusIndex: SetBonusIndex
