@@ -1,7 +1,6 @@
 import fountainData from '../../data/fountainOfNecroticMight.json'
 import { findSetBonus } from '../../data/setBonuses.ts'
 import stormreaverUpgradeData from '../../data/stormreaverUpgrade.json'
-import traceOfMadnessData from '../../data/traceOfMadness.json'
 import zhentarimData from '../../data/zhentarimAttuned.json'
 import type { SetBonus } from '../../types/crafting.ts'
 import { UPGRADE_PLACEHOLDER_ENCHANTMENTS } from './constants'
@@ -29,10 +28,6 @@ export const findStormreaverUpgradeData = (itemName: string, pageTitle?: string)
 
 export const findZhentarimUpgradeData = (itemName: string, pageTitle?: string): UpgradeEntry | undefined => {
   return findUpgradeData(itemName, zhentarimData, pageTitle)
-}
-
-export const findTraceOfMadnessUpgradeData = (upgradeName: string): UpgradeEntry | undefined => {
-  return traceOfMadnessData.find((u) => u.name === upgradeName)
 }
 
 export const findUpgradeData = (
@@ -176,7 +171,7 @@ export const aggregateEnchantmentEntries = (
   slottedNearlyFinished?: Record<string, LootEnchantment | null>,
   slottedRitualTable?: Record<string, LootEnchantment | null>,
   slottedLostPurpose?: Record<string, LootEnchantment | null>,
-  slottedTraceOfMadness?: Record<string, string | null>,
+  slottedTraceOfMadness?: Record<string, LootEnchantment | null>,
   slottedFountainOfNecroticMight?: Record<string, boolean>,
   slottedStormreaverUpgrade?: Record<string, boolean>,
   slottedZhentarimAttuned?: Record<string, boolean>
@@ -220,17 +215,12 @@ export const aggregateEnchantmentEntries = (
     })
   }
 
-  const traceOfMadness = slottedTraceOfMadness?.[item.id]
-  if (traceOfMadness) {
-    const upgradeData = findTraceOfMadnessUpgradeData(traceOfMadness)
-    if (upgradeData) {
-      upgradeData.effectsAdded.forEach((ench) => {
-        entries.push({
-          ench: { ...ench, modifier: ench.modifier ?? 'Enhancement' },
-          sourceName: item.name
-        })
-      })
-    }
+  const traceEnch = slottedTraceOfMadness?.[item.id]
+  if (traceEnch) {
+    entries.push({
+      ench: { ...traceEnch, modifier: traceEnch.modifier ?? 'Enhancement' },
+      sourceName: item.name
+    })
   }
 
   addAugmentEntries(entries, item.name, itemAugs)

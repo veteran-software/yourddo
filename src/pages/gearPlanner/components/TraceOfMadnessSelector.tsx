@@ -1,13 +1,13 @@
 import { Dropdown } from 'react-bootstrap'
 import traceOfMadnessData from '../../../data/traceOfMadness.json'
-import { type EntityGearState, type GearItem, type GearSlot, type UpgradeEntry } from '../types'
+import { type EntityGearState, type GearItem, type GearSlot, type LootEnchantment, type UpgradeEntry } from '../types'
 import SelectedEnchantmentDisplay from './SelectedEnchantmentDisplay.tsx'
 
 interface TraceOfMadnessSelectorProps {
   item: GearItem
   slot: GearSlot
-  selectedEnchantment: string | null
-  onSelect: (upgradeName: string | null) => void
+  selectedEnchantment: LootEnchantment | null
+  onSelect: (enchantment: LootEnchantment | null) => void
   entityState: EntityGearState
   wrapperClassName?: string
   wrapperStyle?: React.CSSProperties
@@ -25,7 +25,9 @@ const TraceOfMadnessSelector = (props: TraceOfMadnessSelectorProps) => {
   }
 
   const selectedUpgrade = props.selectedEnchantment
-    ? (traceOfMadnessData as UpgradeEntry[]).find((upgrade) => upgrade.name === props.selectedEnchantment)
+    ? (traceOfMadnessData as UpgradeEntry[]).find(
+        (upgrade) => upgrade.effectsAdded[0]?.name === props.selectedEnchantment?.name
+      )
     : undefined
 
   return (
@@ -71,7 +73,7 @@ const TraceOfMadnessSelector = (props: TraceOfMadnessSelectorProps) => {
               <Dropdown.Item
                 key={`${upgrade.name}-${String(idx)}`}
                 onClick={() => {
-                  props.onSelect(upgrade.name)
+                  props.onSelect(upgrade.effectsAdded[0] ?? null)
                 }}
                 className='d-flex justify-content-between align-items-center'
               >
@@ -83,7 +85,7 @@ const TraceOfMadnessSelector = (props: TraceOfMadnessSelectorProps) => {
       </Dropdown>
 
       <SelectedEnchantmentDisplay
-        selectedEnchantments={selectedUpgrade?.effectsAdded ?? null}
+        selectedEnchantments={props.selectedEnchantment ? [props.selectedEnchantment] : null}
         item={item}
         slot={slot}
         entityState={props.entityState}

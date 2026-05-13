@@ -212,7 +212,7 @@ export interface SlottedProperties {
   slottedNearlyFinished: Record<string, LootEnchantment | null>
   slottedRitualTable: Record<string, LootEnchantment | null>
   slottedLostPurpose: Record<string, LootEnchantment | null>
-  slottedTraceOfMadness: Record<string, string | null>
+  slottedTraceOfMadness: Record<string, LootEnchantment | null>
   slottedFountainOfNecroticMight: Record<string, boolean>
   slottedStormreaverUpgrade: Record<string, boolean>
   slottedZhentarimAttuned: Record<string, boolean>

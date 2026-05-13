@@ -353,8 +353,8 @@ export const renderGearPlanner = (props: Props) => {
                       item={selectedItem}
                       slot={slot}
                       selectedEnchantment={currentSlottedTraceOfMadness[selectedItem.id] ?? null}
-                      onSelect={(upgradeName: string | null) => {
-                        setTraceOfMadnessEnchantment(selectedItem.id, upgradeName, slot)
+                      onSelect={(enchantment: LootEnchantment | null) => {
+                        setTraceOfMadnessEnchantment(selectedItem.id, enchantment, slot)
                       }}
                       entityState={entityState}
                       wrapperClassName='text-start mt-1 pt-1 border-top'
@@ -405,7 +405,7 @@ interface Props {
   setNearlyFinishedEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setRitualTableEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setLostPurposeEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
-  setTraceOfMadnessEnchantment: (itemId: string, upgradeName: string | null, slot?: GearSlot) => void
+  setTraceOfMadnessEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setFountainOfNecroticMight: (itemId: string, active: boolean, slot?: GearSlot) => void
   setStormreaverUpgrade: (itemId: string, active: boolean, slot?: GearSlot) => void
   setZhentarimAttuned: (itemId: string, active: boolean, slot?: GearSlot) => void

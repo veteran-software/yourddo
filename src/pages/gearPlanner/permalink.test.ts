@@ -87,11 +87,12 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
   })
 
   it('should encode and decode Trace of Madness', () => {
-    const upgradeName = 'Xoriat Madness: Mania'
+    // effectsAdded[0] of "Xoriat Madness: Mania"
+    const traceEnchantment = { name: 'Melodic Guard' }
     const setupWithTrace: GearSetup = {
       ...mockSetup,
       slottedTraceOfMadness: {
-        [mockItem.id]: upgradeName
+        [mockItem.id]: traceEnchantment
       }
     }
 
@@ -100,7 +101,7 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
 
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.data.slottedTraceOfMadness[mockItem.id]).toBe(upgradeName)
+      expect(result.data.slottedTraceOfMadness[mockItem.id]).toEqual(traceEnchantment)
     }
   })
 

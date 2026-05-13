@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import traceOfMadnessData from '../../data/traceOfMadness.json'
 import { isMinorArtifact } from '../../pages/gearPlanner/helpers'
 import { createDefaultSetup } from '../../pages/gearPlanner/initialState'
 import {
@@ -11,12 +12,42 @@ import {
   GearSlot,
   type LootEnchantment,
   type LootItem,
-  type SlottedProperties
+  type SlottedProperties,
+  type UpgradeEntry
 } from '../../pages/gearPlanner/types'
 
 export interface GearPlannerState {
   characterSetups: GearSetup[]
   activeSetupId: string
+}
+
+// Represents potentially-incomplete data loaded from older localStorage snapshots.
+// All slotted fields are optional because they may be absent in older saves.
+// slottedTraceOfMadness accepts string (legacy) or LootEnchantment (current).
+interface PartialSlotted {
+  armorFilters?: string[]
+  weaponFilters?: string[]
+  shieldFilters?: string[]
+  slottedNearlyFinished?: Record<string, LootEnchantment | null>
+  slottedRitualTable?: Record<string, LootEnchantment | null>
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
+  slottedTraceOfMadness?: Record<string, LootEnchantment | string | null>
+  slottedFountainOfNecroticMight?: Record<string, boolean>
+  slottedStormreaverUpgrade?: Record<string, boolean>
+  slottedZhentarimAttuned?: Record<string, boolean>
+  slottedAugments?: Record<string, Record<number, GearAugment | null>>
+  slottedCurses?: Record<string, Curse | null>
+  slottedFiligrees?: Record<string, (GearItem | null)[]>
+  unlockedFiligreeSlots?: Record<string, number>
+  slottedGemSetBonuses?: Record<string, (string | null)[]>
+  slottedEssenceEnchantments?: Record<string, Record<string, string | null>>
+  artificerPet?: PartialSlotted
+  druidPet?: PartialSlotted
+}
+
+interface PartialGearPlannerState {
+  characterSetups?: PartialSlotted[]
+  activeSetupId?: string
 }
 
 export const GEAR_PLANNER_STORAGE_KEY = 'gearPlannerState'
@@ -30,38 +61,51 @@ const loadState = (): GearPlannerState => {
         activeSetupId: 'default'
       }
     }
-    const state = JSON.parse(serializedState) as GearPlannerState
+    const state = JSON.parse(serializedState) as PartialGearPlannerState
+
+    const ensureFields = (target: PartialSlotted) => {
+      target.armorFilters ??= []
+      target.weaponFilters ??= []
+      target.shieldFilters ??= []
+      target.slottedNearlyFinished ??= {}
+      target.slottedRitualTable ??= {}
+      target.slottedLostPurpose ??= {}
+      target.slottedTraceOfMadness ??= {}
+      target.slottedFountainOfNecroticMight ??= {}
+      target.slottedStormreaverUpgrade ??= {}
+      target.slottedZhentarimAttuned ??= {}
+      target.slottedAugments ??= {}
+      target.slottedCurses ??= {}
+      target.slottedFiligrees ??= {}
+      target.unlockedFiligreeSlots ??= {}
+      target.slottedGemSetBonuses ??= {}
+      target.slottedEssenceEnchantments ??= {}
+    }
+
+    // Migrate slottedTraceOfMadness: convert legacy string (upgrade name) to LootEnchantment
+    const migrateTraceOfMadness = (target: PartialSlotted) => {
+      const slots = target.slottedTraceOfMadness
+      if (!slots) return
+      for (const [id, val] of Object.entries(slots)) {
+        if (typeof val === 'string') {
+          const upgradeEntry = (traceOfMadnessData as UpgradeEntry[]).find((u) => u.name === val)
+          slots[id] = upgradeEntry?.effectsAdded[0] ?? null
+        }
+      }
+    }
 
     // Migrate/Fix state if fields are missing
-    /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any */
-    state.characterSetups.forEach((setup) => {
-      const ensureFields = (target: any) => {
-        target.armorFilters ??= []
-        target.weaponFilters ??= []
-        target.shieldFilters ??= []
-        target.slottedNearlyFinished ??= {}
-        target.slottedRitualTable ??= {}
-        target.slottedLostPurpose ??= {}
-        target.slottedTraceOfMadness ??= {}
-        target.slottedFountainOfNecroticMight ??= {}
-        target.slottedStormreaverUpgrade ??= {}
-        target.slottedZhentarimAttuned ??= {}
-        target.slottedAugments ??= {}
-        target.slottedCurses ??= {}
-        target.slottedFiligrees ??= {}
-        target.unlockedFiligreeSlots ??= {}
-        target.slottedGemSetBonuses ??= {}
-        target.slottedEssenceEnchantments ??= {}
-      }
-
+    state.characterSetups?.forEach((setup) => {
       ensureFields(setup)
-      const s = setup as any
-      if (s.artificerPet) ensureFields(s.artificerPet)
-      if (s.druidPet) ensureFields(s.druidPet)
-    })
-    /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any */
+      if (setup.artificerPet) ensureFields(setup.artificerPet)
+      if (setup.druidPet) ensureFields(setup.druidPet)
 
-    return state
+      migrateTraceOfMadness(setup)
+      if (setup.artificerPet) migrateTraceOfMadness(setup.artificerPet)
+      if (setup.druidPet) migrateTraceOfMadness(setup.druidPet)
+    })
+
+    return state as unknown as GearPlannerState
   } catch (err) {
     console.error('Error loading state from localStorage:', err)
 
@@ -348,16 +392,16 @@ const gearPlannerSlice = createSlice({
       state,
       action: PayloadAction<{
         itemId: string
-        upgradeName: string | null
+        enchantment: LootEnchantment | null
         slot?: GearSlot
       }>
     ) => {
-      const { itemId, upgradeName, slot } = action.payload
+      const { itemId, enchantment, slot } = action.payload
       const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
       if (!setup) return
 
       const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedTraceOfMadness[itemId] = upgradeName
+      target.slottedTraceOfMadness[itemId] = enchantment
     },
     setFountainOfNecroticMight: (
       state,

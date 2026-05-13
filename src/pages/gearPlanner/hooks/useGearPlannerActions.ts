@@ -258,11 +258,11 @@ export const useGearPlannerActions = ({
     )
   }
 
-  const setTraceOfMadnessEnchantment = (itemId: string, upgradeName: string | null, slot?: GearSlot) => {
+  const setTraceOfMadnessEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
     dispatch(
       setTraceOfMadnessEnchantmentAction({
         itemId,
-        upgradeName,
+        enchantment,
         slot
       })
     )

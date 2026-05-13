@@ -1,4 +1,5 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
+import traceOfMadnessData from '../../data/traceOfMadness.json'
 import { getSlotOwner } from './conflictResolver.ts'
 import { isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers.ts'
 import { initialPetState } from './initialState.ts'
@@ -9,7 +10,8 @@ import {
   type GearSetup,
   GearSlot,
   type LootEnchantment,
-  type PetState
+  type PetState,
+  type UpgradeEntry
 } from './types.ts' // ----- Types for compact v1 payload -----
 
 // ----- Types for compact v1 payload -----
@@ -256,9 +258,11 @@ const decodeSupplementaryProperties = (
   if (lostPurpose) state.slottedLostPurpose[item.id] = lostPurpose
   if (traceOfMadness) {
     if (typeof traceOfMadness === 'string') {
-      state.slottedTraceOfMadness[item.id] = traceOfMadness
+      // Legacy format: string was the upgrade name — look up the enchantment
+      const upgradeEntry = (traceOfMadnessData as UpgradeEntry[]).find((u) => u.name === traceOfMadness)
+      state.slottedTraceOfMadness[item.id] = upgradeEntry?.effectsAdded[0] ?? null
     } else {
-      state.slottedTraceOfMadness[item.id] = traceOfMadness.name
+      state.slottedTraceOfMadness[item.id] = traceOfMadness
     }
   }
   if (isFountainUpgraded) state.slottedFountainOfNecroticMight[item.id] = true

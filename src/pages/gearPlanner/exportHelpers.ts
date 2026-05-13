@@ -1,10 +1,5 @@
 import type { EssenceEnchantment } from './dataLoader.ts'
-import {
-  findTraceOfMadnessUpgradeData,
-  getActiveSetEnhancements,
-  getDisplayEnchantments,
-  getScaledEssenceEnchantments
-} from './helpers'
+import { getActiveSetEnhancements, getDisplayEnchantments, getScaledEssenceEnchantments } from './helpers'
 import type { GearItem, GearSetup, GearSlot, LootEnchantment, LootItem, PetState } from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
 
@@ -76,16 +71,14 @@ const getFilteredEnchantments = (
   nearlyFinished?: LootEnchantment,
   ritualTable?: LootEnchantment,
   lostPurpose?: LootEnchantment,
-  traceOfMadness?: string
+  traceOfMadness?: LootEnchantment
 ) => {
-  const traceOfMadnessData = traceOfMadness ? findTraceOfMadnessUpgradeData(traceOfMadness) : null
-
   return enchantments.filter((ench) => {
     if (ALWAYS_HIDDEN_ENCHANTMENTS.has(ench.name)) return false
     if (nearlyFinished && ench.name === 'Nearly Finished') return false
     if (ritualTable && (ench.name === 'Sealed in Fire' || ench.name === 'Sealed in Undeath')) return false
     if (lostPurpose && ench.name === 'Lost Purpose') return false
-    if (traceOfMadnessData && ench.name === 'Trace of Madness') return false
+    if (traceOfMadness && ench.name === 'Trace of Madness') return false
     return true
   })
 }
@@ -113,7 +106,7 @@ interface SlotFormatters {
     nearlyFinished?: LootEnchantment,
     ritualTable?: LootEnchantment,
     lostPurpose?: LootEnchantment,
-    traceOfMadness?: string,
+    traceOfMadness?: LootEnchantment,
     fountainUpgraded?: boolean,
     stormreaverUpgraded?: boolean,
     zhentarimUpgraded?: boolean
@@ -125,7 +118,7 @@ interface SlotFormatters {
     nearlyFinished: LootEnchantment | null,
     ritualTable: LootEnchantment | null,
     lostPurpose: LootEnchantment | null,
-    traceOfMadness: string | null
+    traceOfMadness: LootEnchantment | null
   ) => void
   essenceCrafting: (
     item: GearItem,
@@ -262,15 +255,10 @@ export const generateBBCodeExport = (
         lines.push(
           `[indent][b][color=purple]Lost Purpose Upgrade:[/color][/b] ${formatEnchantment(lostPurpose)}[/indent]`
         )
-      if (traceOfMadness) {
-        const upgradeData = findTraceOfMadnessUpgradeData(traceOfMadness)
-        if (upgradeData) {
-          lines.push(`[indent][b][color=orange]Trace of Madness:[/color][/b] ${upgradeData.name}[/indent]`)
-          upgradeData.effectsAdded.forEach((ench) => {
-            lines.push(`[indent][list][*] ${formatEnchantment(ench)}[/list][/indent]`)
-          })
-        }
-      }
+      if (traceOfMadness)
+        lines.push(
+          `[indent][b][color=orange]Trace of Madness:[/color][/b] ${formatEnchantment(traceOfMadness)}[/indent]`
+        )
     },
 
     essenceCrafting: (item, essenceCrafting, allEssenceEnchantments) => {
@@ -416,15 +404,7 @@ export const generateDiscordMarkdownExport = (
       if (nearlyFinished) lines.push(`- **Nearly Finished:** ${formatEnchantment(nearlyFinished)}`)
       if (ritualTable) lines.push(`- **Ritual Table Upgrade:** ${formatEnchantment(ritualTable)}`)
       if (lostPurpose) lines.push(`- **Lost Purpose Upgrade:** ${formatEnchantment(lostPurpose)}`)
-      if (traceOfMadness) {
-        const upgradeData = findTraceOfMadnessUpgradeData(traceOfMadness)
-        if (upgradeData) {
-          lines.push(`- **Trace of Madness:** ${upgradeData.name}`)
-          upgradeData.effectsAdded.forEach((ench) => {
-            lines.push(`  - ${formatEnchantment(ench)}`)
-          })
-        }
-      }
+      if (traceOfMadness) lines.push(`- **Trace of Madness:** ${formatEnchantment(traceOfMadness)}`)
     },
 
     essenceCrafting: (item, essenceCrafting, allEssenceEnchantments) => {

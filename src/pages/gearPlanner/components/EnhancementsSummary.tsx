@@ -331,7 +331,7 @@ interface Props {
   slottedNearlyFinished: Record<string, import('../types.ts').LootEnchantment | null>
   slottedRitualTable: Record<string, import('../types.ts').LootEnchantment | null>
   slottedLostPurpose: Record<string, import('../types.ts').LootEnchantment | null>
-  slottedTraceOfMadness: Record<string, string | null>
+  slottedTraceOfMadness: Record<string, import('../types.ts').LootEnchantment | null>
   slottedFountainOfNecroticMight: Record<string, boolean>
   slottedStormreaverUpgrade: Record<string, boolean>
   slottedZhentarimAttuned: Record<string, boolean>
