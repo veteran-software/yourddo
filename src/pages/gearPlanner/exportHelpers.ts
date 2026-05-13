@@ -83,22 +83,6 @@ const getFilteredEnchantments = (
   })
 }
 
-const getFiligreeLines = (filigrees: (LootItem | null)[] | undefined, prefix = '  - ') => {
-  const lines: string[] = []
-  if (filigrees?.some((f) => f !== null)) {
-    lines.push(`- **Filigrees:**`)
-    filigrees.forEach((fili) => {
-      if (fili) {
-        lines.push(`  - ${fili.name}`)
-        fili.enchantments?.forEach((ench: LootEnchantment) => {
-          lines.push(`${prefix}${formatEnchantment(ench)}`)
-        })
-      }
-    })
-  }
-  return lines
-}
-
 interface SlotFormatters {
   header: (slot: GearSlot, item: GearItem) => void
   enchantments: (
@@ -424,8 +408,17 @@ export const generateDiscordMarkdownExport = (
     },
 
     filigrees: (filigrees) => {
-      const filiLines = getFiligreeLines(filigrees, `    - `)
-      if (filiLines.length > 0) lines.push(...filiLines)
+      if (filigrees?.some((f) => f !== null)) {
+        lines.push(`- **Filigrees:**`)
+        filigrees.forEach((fili) => {
+          if (fili) {
+            lines.push(`  - ${fili.name}`)
+            fili.enchantments?.forEach((ench: LootEnchantment) => {
+              lines.push(`    - ${formatEnchantment(ench)}`)
+            })
+          }
+        })
+      }
     },
 
     gemSets: (gemSets) => {
