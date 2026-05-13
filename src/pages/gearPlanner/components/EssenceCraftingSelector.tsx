@@ -124,11 +124,11 @@ const EssenceCraftingSelector = (props: Props) => {
     return filteredIds
   }, [slotIdMap, slot, selectedItem.type])
 
-  const prefixOptions: EssenceEnchantment[] = useMemo(
-    () =>
+  const { prefixOptions, suffixOptions, extraOptions } = useMemo(() => {
+    const filterAndSort = (affixType: string): EssenceEnchantment[] =>
       essenceEnchantments
         .filter((e: EssenceEnchantment) => {
-          if (e.affixType !== 'prefix' || !allowedSlotIds.includes(e.slotId)) {
+          if (e.affixType !== affixType || !allowedSlotIds.includes(e.slotId)) {
             return false
           }
 
@@ -143,64 +143,15 @@ const EssenceCraftingSelector = (props: Props) => {
           return true
         })
         .sort((a: EssenceEnchantment, b: EssenceEnchantment) =>
-          getFormattedName(a).localeCompare(getFormattedName(b), 'en', {
-            sensitivity: 'base'
-          })
-        ),
-    [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel]
-  )
+          getFormattedName(a).localeCompare(getFormattedName(b), 'en', { sensitivity: 'base' })
+        )
 
-  const suffixOptions = useMemo(
-    () =>
-      essenceEnchantments
-        .filter((e: EssenceEnchantment) => {
-          if (e.affixType !== 'suffix' || !allowedSlotIds.includes(e.slotId)) {
-            return false
-          }
-
-          if (e.scalingStats && e.scalingStats.length > 0) {
-            const idx = Math.max(0, Math.min(e.scalingStats.length - 1, effectiveLevel - 1))
-
-            if (e.scalingStats[idx] === -1) {
-              return false
-            }
-          }
-
-          return true
-        })
-        .sort((a: EssenceEnchantment, b: EssenceEnchantment) =>
-          getFormattedName(a).localeCompare(getFormattedName(b), 'en', {
-            sensitivity: 'base'
-          })
-        ),
-    [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel]
-  )
-
-  const extraOptions = useMemo(
-    () =>
-      essenceEnchantments
-        .filter((e: EssenceEnchantment) => {
-          if (e.affixType !== 'extra' || !allowedSlotIds.includes(e.slotId)) {
-            return false
-          }
-
-          if (e.scalingStats && e.scalingStats.length > 0) {
-            const idx = Math.max(0, Math.min(e.scalingStats.length - 1, effectiveLevel - 1))
-
-            if (e.scalingStats[idx] === -1) {
-              return false
-            }
-          }
-
-          return true
-        })
-        .sort((a: EssenceEnchantment, b: EssenceEnchantment) =>
-          getFormattedName(a).localeCompare(getFormattedName(b), 'en', {
-            sensitivity: 'base'
-          })
-        ),
-    [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel]
-  )
+    return {
+      prefixOptions: filterAndSort('prefix'),
+      suffixOptions: filterAndSort('suffix'),
+      extraOptions: filterAndSort('extra')
+    }
+  }, [essenceEnchantments, getFormattedName, allowedSlotIds, effectiveLevel])
 
   const renderDropdown = (label: string, slotName: string, options: EssenceEnchantment[]) => {
     const currentSelectionId =

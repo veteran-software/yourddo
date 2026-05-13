@@ -116,6 +116,29 @@ interface SlotFormatters {
   separator: () => void
 }
 
+const renderGearSections = (
+  lines: string[],
+  setup: GearSetup,
+  allEssenceEnchantments: EssenceEnchantment[],
+  renderSlot: Parameters<typeof renderSlots>[3],
+  formatHeading: (text: string) => string,
+  artificerPet?: PetState,
+  druidPet?: PetState
+) => {
+  lines.push(formatHeading('Equipped Gear'))
+  renderSlots(GEAR_SLOTS, allEssenceEnchantments, setup, renderSlot)
+
+  if (setup.classes.includes('Artificer')) {
+    lines.push(formatHeading('Iron Defender Gear'))
+    renderSlots(ARTIFICER_PET_SLOTS, allEssenceEnchantments, setup, renderSlot, true, artificerPet)
+  }
+
+  if (setup.classes.includes('Druid')) {
+    lines.push(formatHeading('Wolf Companion Gear'))
+    renderSlots(DRUID_PET_SLOTS, allEssenceEnchantments, setup, renderSlot, true, druidPet)
+  }
+}
+
 const buildRenderSlot =
   (setup: GearSetup, fmt: SlotFormatters) =>
   (
@@ -289,18 +312,15 @@ export const generateBBCodeExport = (
     separator: () => lines.push('[center]---[/center]', '')
   })
 
-  lines.push(`[b][size=4]Equipped Gear[/size][/b]`)
-  renderSlots(GEAR_SLOTS, allEssenceEnchantments, setup, renderSlot)
-
-  if (setup.classes.includes('Artificer')) {
-    lines.push(`[b][size=4]Iron Defender Gear[/size][/b]`)
-    renderSlots(ARTIFICER_PET_SLOTS, allEssenceEnchantments, setup, renderSlot, true, artificerPet)
-  }
-
-  if (setup.classes.includes('Druid')) {
-    lines.push(`[b][size=4]Wolf Companion Gear[/size][/b]`)
-    renderSlots(DRUID_PET_SLOTS, allEssenceEnchantments, setup, renderSlot, true, druidPet)
-  }
+  renderGearSections(
+    lines,
+    setup,
+    allEssenceEnchantments,
+    renderSlot,
+    (t) => `[b][size=4]${t}[/size][/b]`,
+    artificerPet,
+    druidPet
+  )
 
   const equippedItems = Object.values(setup.slots).filter((i): i is GearItem => i !== null)
   const activeSetEnhancements = getActiveSetEnhancements(
@@ -433,18 +453,7 @@ export const generateDiscordMarkdownExport = (
     separator: () => lines.push('')
   })
 
-  lines.push(`### Equipped Gear`)
-  renderSlots(GEAR_SLOTS, allEssenceEnchantments, setup, renderSlot)
-
-  if (setup.classes.includes('Artificer')) {
-    lines.push(`### Iron Defender Gear`)
-    renderSlots(ARTIFICER_PET_SLOTS, allEssenceEnchantments, setup, renderSlot, true, artificerPet)
-  }
-
-  if (setup.classes.includes('Druid')) {
-    lines.push(`### Wolf Companion Gear`)
-    renderSlots(DRUID_PET_SLOTS, allEssenceEnchantments, setup, renderSlot, true, druidPet)
-  }
+  renderGearSections(lines, setup, allEssenceEnchantments, renderSlot, (t) => `### ${t}`, artificerPet, druidPet)
 
   const equippedItems = Object.values(setup.slots).filter((i): i is GearItem => i !== null)
 
