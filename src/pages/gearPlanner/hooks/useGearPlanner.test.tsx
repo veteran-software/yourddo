@@ -100,13 +100,8 @@ describe('useGearPlanner Hook', () => {
     <Provider store={store}>{children}</Provider>
   )
 
-  it('Bug #1: should fallback to a default setup and prevent crash if activeSetupId is invalid and setups is empty', () => {
-    const store = createTestStore({
-      characterSetups: [],
-      activeSetupId: 'nonexistent'
-    })
-
-    const { result } = renderHook(
+  const renderUseGearPlannerHook = (store: ReturnType<typeof createTestStore>) =>
+    renderHook(
       () =>
         useGearPlanner({
           enchantmentSearch: '',
@@ -120,11 +115,16 @@ describe('useGearPlanner Hook', () => {
       }
     )
 
-    // Verify it didn't crash and returned a valid setup
+  it('Bug #1: should fallback to a default setup and prevent crash if activeSetupId is invalid and setups is empty', () => {
+    const store = createTestStore({
+      characterSetups: [],
+      activeSetupId: 'nonexistent'
+    })
+
+    const { result } = renderUseGearPlannerHook(store)
+
     expect(result.current.activeSetup).toBeDefined()
     expect(result.current.activeSetup.id).toBe('default')
-
-    // Verify properties that caused the crash are accessible
     expect(result.current.activeSetup.artificerPet).toBeDefined()
     expect(result.current.activeSetup.druidPet).toBeDefined()
   })
@@ -135,19 +135,7 @@ describe('useGearPlanner Hook', () => {
       activeSetupId: 'nonexistent'
     })
 
-    const { result } = renderHook(
-      () =>
-        useGearPlanner({
-          enchantmentSearch: '',
-          itemNameSearch: '',
-          setBonusFilter: null,
-          showConflicts: false,
-          showOwnedOnly: false
-        }),
-      {
-        wrapper: ({ children }) => wrapper({ children, store })
-      }
-    )
+    const { result } = renderUseGearPlannerHook(store)
 
     expect(result.current.activeSetup).toBeDefined()
     expect(result.current.activeSetup.id).toBe('setup1')
@@ -161,19 +149,7 @@ describe('useGearPlanner Hook', () => {
       activeSetupId: 'default'
     })
 
-    const { result } = renderHook(
-      () =>
-        useGearPlanner({
-          enchantmentSearch: '',
-          itemNameSearch: '',
-          setBonusFilter: null,
-          showConflicts: false,
-          showOwnedOnly: false
-        }),
-      {
-        wrapper: ({ children }) => wrapper({ children, store })
-      }
-    )
+    const { result } = renderUseGearPlannerHook(store)
 
     expect(result.current.itemsToShow).toBe(50)
 
