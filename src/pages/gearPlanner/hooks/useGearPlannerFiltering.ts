@@ -12,6 +12,46 @@ import {
   type SetBonusIndexEntry
 } from '../types'
 
+const getVisibleItemNames = (allItemsBySlot: Map<GearSlot, GearItem[]>, min: number, max: number): Set<string> => {
+  const names = new Set<string>()
+  for (const [slot, items] of allItemsBySlot.entries()) {
+    if (isPetSlot(slot)) continue
+    for (const item of items) {
+      const level = Number(item.minLevel) || 1
+      if (level >= min && level <= max) names.add(item.name)
+    }
+  }
+  return names
+}
+
+const getSetsWithItemsInSlot = (
+  browsingSlot: GearSlot | null,
+  allItemsBySlot: Map<GearSlot, GearItem[]>,
+  itemSetBonusIndex: SetBonusIndex,
+  min: number,
+  max: number,
+  isItemVisibleForClasses: (item: GearItem, setup: GearSetup) => boolean,
+  activeSetup: GearSetup,
+  shouldShowItem: (item: GearItem, slot: GearSlot, setup: GearSetup, ignoreSlotted: boolean) => boolean
+): Set<string> => {
+  if (!browsingSlot) return new Set(Object.keys(itemSetBonusIndex))
+  if (isPetSlot(browsingSlot)) return new Set()
+  const sets = new Set<string>()
+  const slotItems = allItemsBySlot.get(browsingSlot) ?? []
+  for (const i of slotItems) {
+    const level = Number(i.minLevel) || 1
+    if (
+      level >= min &&
+      level <= max &&
+      isItemVisibleForClasses(i, activeSetup) &&
+      shouldShowItem(i, browsingSlot, activeSetup, true)
+    ) {
+      i.setBonus?.forEach((s) => sets.add(s.name))
+    }
+  }
+  return sets
+}
+
 const makeGearItemComparator =
   (troveData: Record<string, unknown> | null) =>
   (a: GearItem, b: GearItem): number => {
@@ -134,62 +174,17 @@ export const useGearPlannerFiltering = ({
 
     const { minLevel: min, maxLevel: max } = activeSetup
 
-    const getVisibleItemNames = (): Set<string> => {
-      const names = new Set<string>()
-
-      for (const [slot, items] of allItemsBySlot.entries()) {
-        // Filter out pet gear - not shown in the set browser at all
-        if (isPetSlot(slot)) {
-          continue
-        }
-
-        for (const item of items) {
-          const level: number = Number(item.minLevel) || 1
-          if (level >= min && level <= max) {
-            names.add(item.name)
-          }
-        }
-      }
-
-      return names
-    }
-
-    const getSetsWithItemsInSlot = (): Set<string> => {
-      const sets = new Set<string>()
-
-      const targetSlot = browsingSlot
-      if (targetSlot) {
-        // Filter out pet gear - not shown in the set browser at all
-        if (isPetSlot(targetSlot)) {
-          return sets
-        }
-
-        const slotItems: GearItem[] = allItemsBySlot.get(targetSlot) ?? []
-
-        for (const i of slotItems) {
-          const level = Number(i.minLevel) || 1
-
-          if (
-            level >= min &&
-            level <= max &&
-            isItemVisibleForClasses(i, activeSetup) &&
-            shouldShowItem(i, targetSlot, activeSetup, true)
-          ) {
-            if (i.setBonus) {
-              i.setBonus.forEach((s) => sets.add(s.name))
-            }
-          }
-        }
-      } else {
-        // If browsingSlot is null, all sets are available
-        return new Set(Object.keys(itemSetBonusIndex))
-      }
-
-      return sets
-    }
-
-    const visibleItemNames: Set<string> = getVisibleItemNames()
-    const setsWithItemsInSlot: Set<string> = getSetsWithItemsInSlot()
+    const visibleItemNames = getVisibleItemNames(allItemsBySlot, min, max)
+    const setsWithItemsInSlot = getSetsWithItemsInSlot(
+      browsingSlot,
+      allItemsBySlot,
+      itemSetBonusIndex,
+      min,
+      max,
+      isItemVisibleForClasses,
+      activeSetup,
+      shouldShowItem
+    )
 
     return Object.keys(itemSetBonusIndex)
       .filter((setName: string) => {
