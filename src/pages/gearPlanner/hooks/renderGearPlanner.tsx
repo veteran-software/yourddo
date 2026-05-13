@@ -119,7 +119,7 @@ export const renderGearPlanner = (props: Props) => {
         ML: {item.minLevel || '1'} | {item.type || 'Item'}
         {item.material && (
           <>
-            &nbsp;|&nbsp;
+            {'\xa0|\xa0'}
             <span
               className={`mb-1 fw-bold ${isMetal(item.material) ? 'text-danger' : 'text-success'}`}
               style={{ fontSize: '0.6rem' }}
