@@ -16,8 +16,6 @@ import (
 	"compendium-crawler-go/parser"
 )
 
-const lineDivider = "-------------------------------------------------------------------------"
-
 func main() {
 	if len(os.Args) < 2 {
 		logrus.Info("Usage: go run main.go <Category_Name_Without_Prefix>")
@@ -63,9 +61,7 @@ func main() {
 }
 
 func processCategory(categoryName string) {
-	logrus.Info(lineDivider)
-	logrus.Infof("Starting ETL for %s...", categoryName)
-	logrus.Info(lineDivider)
+	logrus.Infof("[%s] Fetching...", categoryName)
 
 	var rawResults map[string]string
 	var err error
@@ -114,9 +110,7 @@ func processCategory(categoryName string) {
 		return
 	}
 
-	logrus.Info(lineDivider)
-	logrus.Infof("Processing complete for %s. Successfully parsed items. Output: %s", categoryName, outputPath)
-	logrus.Info(lineDivider)
+	logrus.Infof("[%s] Done -> %s", categoryName, outputPath)
 }
 
 func findProjectRoot() string {

@@ -35,11 +35,12 @@ func jitteredSleep(base, jitter time.Duration) {
 }
 
 // setCommonHeaders applies the standard request headers used by all API calls.
+// Accept-Encoding is intentionally omitted — Go's transport sets it automatically
+// and handles decompression transparently. Setting it manually disables that.
 func setCommonHeaders(req *http.Request) {
 	req.Header.Set("User-Agent", userAgent)
 	req.Header.Set("Accept", "application/json, text/plain, */*")
 	req.Header.Set("Accept-Language", "en-US,en;q=0.9")
-	req.Header.Set("Accept-Encoding", "gzip, deflate, br")
 	req.Header.Set("Connection", "keep-alive")
 }
 
