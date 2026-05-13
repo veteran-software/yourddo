@@ -2,11 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/sirupsen/logrus"
 
@@ -49,8 +51,14 @@ func main() {
 		categoriesToProcess = []string{categoryInput}
 	}
 
-	for _, categoryName := range categoriesToProcess {
+	for i, categoryName := range categoriesToProcess {
 		processCategory(categoryName)
+		if i < len(categoriesToProcess)-1 {
+			// Jittered inter-category pause: 1500ms ± 300ms
+			d := 1500*time.Millisecond + time.Duration(rand.Int63n(int64(600*time.Millisecond))) - 300*time.Millisecond
+			logrus.Debugf("Inter-category pause: %s", d)
+			time.Sleep(d)
+		}
 	}
 }
 
