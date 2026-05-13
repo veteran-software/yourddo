@@ -28,7 +28,7 @@ class MockIntersectionObserver {
     return MockIntersectionObserver._lastInstance
   }
 }
-window.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver
+globalThis.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver
 
 // Mock useGearPlannerData and other internal hooks to avoid fetching data
 vi.mock('./useGearPlannerData', () => ({

@@ -348,9 +348,9 @@ const FiligreeModal = (props: Props) => {
 
               {displayLimit < allFiltered.length && (
                 <div ref={observerRef} className='text-center py-3' style={{ height: '50px' }}>
-                  <div className='spinner-border spinner-border-sm text-primary' role='status'>
+                  <output className='spinner-border spinner-border-sm text-primary'>
                     <span className='visually-hidden'>Loading...</span>
-                  </div>
+                  </output>
                 </div>
               )}
             </ListGroup>

@@ -151,21 +151,18 @@ const AugmentSlotItem = (props: Props) => {
                 }
 
                 const results = aug.effectsAdded?.map((ench) =>
-                  checkPotentialConflict(
-                    ench,
-                    currentEquipped,
-                    slot,
-                    currentSlottedAugments,
-                    currentSlottedNearlyFinished,
-                    currentSlottedRitualTable,
-                    currentSlottedLostPurpose,
-                    currentSlottedTraceOfMadness,
-                    currentSlottedFountainOfNecroticMight,
-                    currentSlottedStormreaverUpgrade,
-                    currentSlottedZhentarimAttuned,
-                    selectedItem.id,
-                    idx
-                  )
+                  checkPotentialConflict(ench, currentEquipped, slot, {
+                    slottedAugments: currentSlottedAugments,
+                    slottedNearlyFinished: currentSlottedNearlyFinished,
+                    slottedRitualTable: currentSlottedRitualTable,
+                    slottedLostPurpose: currentSlottedLostPurpose,
+                    slottedTraceOfMadness: currentSlottedTraceOfMadness,
+                    slottedFountainOfNecroticMight: currentSlottedFountainOfNecroticMight,
+                    slottedStormreaverUpgrade: currentSlottedStormreaverUpgrade,
+                    slottedZhentarimAttuned: currentSlottedZhentarimAttuned,
+                    ignoreItemId: selectedItem.id,
+                    ignoreSlotIndex: idx,
+                  })
                 )
 
                 const hasConflict = results?.some((pot) => pot.isConflict && pot.isRedundant)

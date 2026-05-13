@@ -1,15 +1,6 @@
 import { Badge } from 'react-bootstrap'
-import {
-  checkPotentialConflict,
-  type EnchantmentConflict,
-  getBonus,
-  normalizeString
-} from '../conflictResolver.ts'
-import {
-  type EntityGearState,
-  GearSlot,
-  type LootEnchantment
-} from '../types.ts'
+import { checkPotentialConflict, type EnchantmentConflict, getBonus, normalizeString } from '../conflictResolver.ts'
+import { type EntityGearState, GearSlot, type LootEnchantment } from '../types.ts'
 
 const EnchantmentList = (props: Props) => {
   const { browsingSlot, entityState, enchantments, itemId, source } = props
@@ -51,15 +42,17 @@ const EnchantmentList = (props: Props) => {
                 ench,
                 equippedItems.filter((i) => i.id !== (browsingSlot ? entityState.slots[browsingSlot]?.id : null)),
                 browsingSlot ?? undefined,
-                slottedAugments,
-                slottedNearlyFinished,
-                slottedRitualTable,
-                slottedLostPurpose,
-                slottedTraceOfMadness,
-                slottedFountainOfNecroticMight,
-                slottedStormreaverUpgrade,
-                slottedZhentarimAttuned,
-                itemId
+                {
+                  slottedAugments,
+                  slottedNearlyFinished,
+                  slottedRitualTable,
+                  slottedLostPurpose,
+                  slottedTraceOfMadness,
+                  slottedFountainOfNecroticMight,
+                  slottedStormreaverUpgrade,
+                  slottedZhentarimAttuned,
+                  ignoreItemId: itemId
+                }
               )
 
         const modifierText = ench.modifier ? `+${String(ench.modifier)}` : ''

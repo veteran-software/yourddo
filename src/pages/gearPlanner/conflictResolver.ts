@@ -1,6 +1,13 @@
 import { UPGRADE_PLACEHOLDER_ENCHANTMENTS } from './constants'
 import { getDisplayEnchantments } from './helpers'
-import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, type GearItem, GearSlot, type LootEnchantment } from './types'
+import {
+  ARTIFICER_PET_SLOTS,
+  DRUID_PET_SLOTS,
+  type GearAugment,
+  type GearItem,
+  GearSlot,
+  type LootEnchantment
+} from './types'
 
 export interface EnchantmentConflict {
   name: string
@@ -87,17 +94,31 @@ export const parseModifierValue = (modifier: RobustString): number => {
  * Only the highest value of a given (name, bonus) pair is "effective".
  * Conflicts only occur within the same "owner" (character, artificer pet, or druid pet).
  */
+interface ResolveConflictsOptions {
+  slottedAugments?: Record<string, Record<number, GearAugment | null>>
+  slottedNearlyFinished?: Record<string, LootEnchantment | null>
+  slottedRitualTable?: Record<string, LootEnchantment | null>
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
+  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
+  slottedFountainOfNecroticMight?: Record<string, boolean>
+  slottedStormreaverUpgrade?: Record<string, boolean>
+  slottedZhentarimAttuned?: Record<string, boolean>
+}
+
 export const resolveConflicts = (
   equippedItems: GearItem[],
-  slottedAugments?: Record<string, Record<number, import('./types').GearAugment | null>>,
-  slottedNearlyFinished?: Record<string, LootEnchantment | null>,
-  slottedRitualTable?: Record<string, LootEnchantment | null>,
-  slottedLostPurpose?: Record<string, LootEnchantment | null>,
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>,
-  slottedFountainOfNecroticMight: Record<string, boolean> = {},
-  slottedStormreaverUpgrade: Record<string, boolean> = {},
-  slottedZhentarimAttuned: Record<string, boolean> = {}
+  options: ResolveConflictsOptions = {}
 ): Record<string, EnchantmentConflict[]> => {
+  const {
+    slottedAugments,
+    slottedNearlyFinished,
+    slottedRitualTable,
+    slottedLostPurpose,
+    slottedTraceOfMadness,
+    slottedFountainOfNecroticMight = {},
+    slottedStormreaverUpgrade = {},
+    slottedZhentarimAttuned = {}
+  } = options
   const allEnchantments: {
     itemId: string
     itemName: string
@@ -371,22 +392,38 @@ const findMatchingAugments = (
   return max
 }
 
+interface GetItemEnchantmentMaxOptions {
+  slottedAugments?: Record<string, Record<number, GearAugment | null>>
+  slottedNearlyFinished?: Record<string, LootEnchantment | null>
+  slottedRitualTable?: Record<string, LootEnchantment | null>
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
+  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
+  slottedFountainOfNecroticMight?: Record<string, boolean>
+  slottedStormreaverUpgrade?: Record<string, boolean>
+  slottedZhentarimAttuned?: Record<string, boolean>
+  ignoreItemId?: string
+  ignoreSlotIndex?: number
+}
+
 const getItemEnchantmentMax = (
   item: GearItem,
   targetOwner: string,
   normalizedTargetName: string,
   normalizedTargetBonus: string,
-  slottedAugments?: Record<string, Record<number, import('./types').GearAugment | null>>,
-  slottedNearlyFinished?: Record<string, LootEnchantment | null>,
-  slottedRitualTable?: Record<string, LootEnchantment | null>,
-  slottedLostPurpose?: Record<string, LootEnchantment | null>,
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>,
-  slottedFountainOfNecroticMight: Record<string, boolean> = {},
-  slottedStormreaverUpgrade: Record<string, boolean> = {},
-  slottedZhentarimAttuned: Record<string, boolean> = {},
-  ignoreItemId?: string,
-  ignoreSlotIndex?: number
+  options: GetItemEnchantmentMaxOptions = {}
 ): number => {
+  const {
+    slottedAugments,
+    slottedNearlyFinished,
+    slottedRitualTable,
+    slottedLostPurpose,
+    slottedTraceOfMadness,
+    slottedFountainOfNecroticMight = {},
+    slottedStormreaverUpgrade = {},
+    slottedZhentarimAttuned = {},
+    ignoreItemId,
+    ignoreSlotIndex
+  } = options
   const isSameItem: boolean = item.id === ignoreItemId
   if (getSlotOwner(item.slot) !== targetOwner) {
     return -Infinity
@@ -431,6 +468,19 @@ const getItemEnchantmentMax = (
   )
 }
 
+export interface CheckPotentialConflictOptions {
+  slottedAugments?: Record<string, Record<number, GearAugment | null>>
+  slottedNearlyFinished?: Record<string, LootEnchantment | null>
+  slottedRitualTable?: Record<string, LootEnchantment | null>
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
+  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
+  slottedFountainOfNecroticMight?: Record<string, boolean>
+  slottedStormreaverUpgrade?: Record<string, boolean>
+  slottedZhentarimAttuned?: Record<string, boolean>
+  ignoreItemId?: string
+  ignoreSlotIndex?: number
+}
+
 /**
  * Checks if a specific enchantment on an item would conflict with currently equipped items.
  * A potential conflict is only checked against items from the same owner.
@@ -439,17 +489,20 @@ export const checkPotentialConflict = (
   enchantment: LootEnchantment,
   equippedItems: GearItem[],
   slot?: GearSlot,
-  slottedAugments?: Record<string, Record<number, import('./types').GearAugment | null>>,
-  slottedNearlyFinished?: Record<string, LootEnchantment | null>,
-  slottedRitualTable?: Record<string, LootEnchantment | null>,
-  slottedLostPurpose?: Record<string, LootEnchantment | null>,
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>,
-  slottedFountainOfNecroticMight: Record<string, boolean> = {},
-  slottedStormreaverUpgrade: Record<string, boolean> = {},
-  slottedZhentarimAttuned: Record<string, boolean> = {},
-  ignoreItemId?: string,
-  ignoreSlotIndex?: number
+  options: CheckPotentialConflictOptions = {}
 ): { isConflict: boolean; currentMax: number; isRedundant: boolean; isUpgrade?: boolean; isOverpowered?: boolean } => {
+  const {
+    slottedAugments,
+    slottedNearlyFinished,
+    slottedRitualTable,
+    slottedLostPurpose,
+    slottedTraceOfMadness,
+    slottedFountainOfNecroticMight = {},
+    slottedStormreaverUpgrade = {},
+    slottedZhentarimAttuned = {},
+    ignoreItemId,
+    ignoreSlotIndex
+  } = options
   const parsedValue = parseModifierValue(enchantment.modifier)
   const normalizedTargetName: string = normalizeString(enchantment.name)
 
@@ -478,11 +531,7 @@ export const checkPotentialConflict = (
   let foundMatch = false
 
   for (const item of equippedItems) {
-    const itemMax = getItemEnchantmentMax(
-      item,
-      targetOwner,
-      normalizedTargetName,
-      normalizedTargetBonus,
+    const itemMax = getItemEnchantmentMax(item, targetOwner, normalizedTargetName, normalizedTargetBonus, {
       slottedAugments,
       slottedNearlyFinished,
       slottedRitualTable,
@@ -493,7 +542,7 @@ export const checkPotentialConflict = (
       slottedZhentarimAttuned,
       ignoreItemId,
       ignoreSlotIndex
-    )
+    })
 
     if (itemMax !== -Infinity) {
       foundMatch = true

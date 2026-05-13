@@ -24,16 +24,27 @@ const getVisibleItemNames = (allItemsBySlot: Map<GearSlot, GearItem[]>, min: num
   return names
 }
 
-const getSetsWithItemsInSlot = (
-  browsingSlot: GearSlot | null,
-  allItemsBySlot: Map<GearSlot, GearItem[]>,
-  itemSetBonusIndex: SetBonusIndex,
-  min: number,
-  max: number,
-  isItemVisibleForClasses: (item: GearItem, setup: GearSetup) => boolean,
-  activeSetup: GearSetup,
+interface GetSetsWithItemsInSlotOptions {
+  browsingSlot: GearSlot | null
+  allItemsBySlot: Map<GearSlot, GearItem[]>
+  itemSetBonusIndex: SetBonusIndex
+  min: number
+  max: number
+  isItemVisibleForClasses: (item: GearItem, setup: GearSetup) => boolean
+  activeSetup: GearSetup
   shouldShowItem: (item: GearItem, slot: GearSlot, setup: GearSetup, ignoreSlotted: boolean) => boolean
-): Set<string> => {
+}
+
+const getSetsWithItemsInSlot = ({
+  browsingSlot,
+  allItemsBySlot,
+  itemSetBonusIndex,
+  min,
+  max,
+  isItemVisibleForClasses,
+  activeSetup,
+  shouldShowItem
+}: GetSetsWithItemsInSlotOptions): Set<string> => {
   if (!browsingSlot) return new Set(Object.keys(itemSetBonusIndex))
   if (isPetSlot(browsingSlot)) return new Set()
   const sets = new Set<string>()
@@ -114,20 +125,17 @@ export const useGearPlannerFiltering = ({
 
       const enchantments = item.enchantments ?? item.effectsAdded ?? []
       for (const ench of enchantments) {
-        const { isConflict, isUpgrade } = checkPotentialConflict(
-          ench,
-          equipped,
-          slot,
-          entityState.slottedAugments,
-          entityState.slottedNearlyFinished,
-          entityState.slottedRitualTable,
-          entityState.slottedLostPurpose,
-          entityState.slottedTraceOfMadness,
-          entityState.slottedFountainOfNecroticMight,
-          entityState.slottedStormreaverUpgrade,
-          entityState.slottedZhentarimAttuned,
-          item.id // Ignore current item if it's already equipped
-        )
+        const { isConflict, isUpgrade } = checkPotentialConflict(ench, equipped, slot, {
+          slottedAugments: entityState.slottedAugments,
+          slottedNearlyFinished: entityState.slottedNearlyFinished,
+          slottedRitualTable: entityState.slottedRitualTable,
+          slottedLostPurpose: entityState.slottedLostPurpose,
+          slottedTraceOfMadness: entityState.slottedTraceOfMadness,
+          slottedFountainOfNecroticMight: entityState.slottedFountainOfNecroticMight,
+          slottedStormreaverUpgrade: entityState.slottedStormreaverUpgrade,
+          slottedZhentarimAttuned: entityState.slottedZhentarimAttuned,
+          ignoreItemId: item.id
+        })
 
         if (isConflict && !isUpgrade) {
           return true
@@ -175,7 +183,7 @@ export const useGearPlannerFiltering = ({
     const { minLevel: min, maxLevel: max } = activeSetup
 
     const visibleItemNames = getVisibleItemNames(allItemsBySlot, min, max)
-    const setsWithItemsInSlot = getSetsWithItemsInSlot(
+    const setsWithItemsInSlot = getSetsWithItemsInSlot({
       browsingSlot,
       allItemsBySlot,
       itemSetBonusIndex,
@@ -184,7 +192,7 @@ export const useGearPlannerFiltering = ({
       isItemVisibleForClasses,
       activeSetup,
       shouldShowItem
-    )
+    })
 
     return Object.keys(itemSetBonusIndex)
       .filter((setName: string) => {

@@ -32,17 +32,16 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
 
   const characterConflicts: Record<string, EnchantmentConflict[]> = useMemo(
     () =>
-      resolveConflicts(
-        characterEquipped,
-        activeSetup.slottedAugments,
-        activeSetup.slottedNearlyFinished,
-        activeSetup.slottedRitualTable,
-        activeSetup.slottedLostPurpose,
-        activeSetup.slottedTraceOfMadness,
-        activeSetup.slottedFountainOfNecroticMight,
-        activeSetup.slottedStormreaverUpgrade,
-        activeSetup.slottedZhentarimAttuned
-      ),
+      resolveConflicts(characterEquipped, {
+        slottedAugments: activeSetup.slottedAugments,
+        slottedNearlyFinished: activeSetup.slottedNearlyFinished,
+        slottedRitualTable: activeSetup.slottedRitualTable,
+        slottedLostPurpose: activeSetup.slottedLostPurpose,
+        slottedTraceOfMadness: activeSetup.slottedTraceOfMadness,
+        slottedFountainOfNecroticMight: activeSetup.slottedFountainOfNecroticMight,
+        slottedStormreaverUpgrade: activeSetup.slottedStormreaverUpgrade,
+        slottedZhentarimAttuned: activeSetup.slottedZhentarimAttuned
+      }),
     [
       characterEquipped,
       activeSetup.slottedAugments,
@@ -68,17 +67,16 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
     ]
 
     entities.forEach((entity) => {
-      results[entity.id] = resolveConflicts(
-        entity.equipped,
-        entity.state.slottedAugments,
-        entity.state.slottedNearlyFinished,
-        entity.state.slottedRitualTable,
-        entity.state.slottedLostPurpose,
-        entity.state.slottedTraceOfMadness,
-        entity.state.slottedFountainOfNecroticMight,
-        entity.state.slottedStormreaverUpgrade,
-        entity.state.slottedZhentarimAttuned
-      )
+      results[entity.id] = resolveConflicts(entity.equipped, {
+        slottedAugments: entity.state.slottedAugments,
+        slottedNearlyFinished: entity.state.slottedNearlyFinished,
+        slottedRitualTable: entity.state.slottedRitualTable,
+        slottedLostPurpose: entity.state.slottedLostPurpose,
+        slottedTraceOfMadness: entity.state.slottedTraceOfMadness,
+        slottedFountainOfNecroticMight: entity.state.slottedFountainOfNecroticMight,
+        slottedStormreaverUpgrade: entity.state.slottedStormreaverUpgrade,
+        slottedZhentarimAttuned: entity.state.slottedZhentarimAttuned
+      })
     })
 
     return results

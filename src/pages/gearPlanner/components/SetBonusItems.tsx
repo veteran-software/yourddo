@@ -113,15 +113,17 @@ const SetBonusItems = (props: Props) => {
             ench,
             entityState.equipped.filter((i) => i.id !== entityState.slots[item.slot]?.id),
             item.slot,
-            entityState.slottedAugments,
-            entityState.slottedNearlyFinished,
-            entityState.slottedRitualTable,
-            entityState.slottedLostPurpose,
-            entityState.slottedTraceOfMadness,
-            entityState.slottedFountainOfNecroticMight,
-            entityState.slottedStormreaverUpgrade,
-            entityState.slottedZhentarimAttuned,
-            item.id
+            {
+              slottedAugments: entityState.slottedAugments,
+              slottedNearlyFinished: entityState.slottedNearlyFinished,
+              slottedRitualTable: entityState.slottedRitualTable,
+              slottedLostPurpose: entityState.slottedLostPurpose,
+              slottedTraceOfMadness: entityState.slottedTraceOfMadness,
+              slottedFountainOfNecroticMight: entityState.slottedFountainOfNecroticMight,
+              slottedStormreaverUpgrade: entityState.slottedStormreaverUpgrade,
+              slottedZhentarimAttuned: entityState.slottedZhentarimAttuned,
+              ignoreItemId: item.id
+            }
           )
           return res.isConflict && !res.isUpgrade
         })

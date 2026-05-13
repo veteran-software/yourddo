@@ -142,16 +142,17 @@ const EnchantmentsSummary = (props: Props) => {
         slottedAugments[item.id],
         slottedCurses[item.id],
         slottedFiligrees[item.id],
-        slottedEssenceEnchantments,
-        essenceEnchantments,
-        undefined,
-        slottedNearlyFinished,
-        slottedRitualTable,
-        slottedLostPurpose,
-        slottedTraceOfMadness,
-        slottedFountainOfNecroticMight,
-        slottedStormreaverUpgrade,
-        slottedZhentarimAttuned
+        {
+          slottedEssenceEnchantments,
+          essenceEnchantments,
+          slottedNearlyFinished,
+          slottedRitualTable,
+          slottedLostPurpose,
+          slottedTraceOfMadness,
+          slottedFountainOfNecroticMight,
+          slottedStormreaverUpgrade,
+          slottedZhentarimAttuned
+        }
       )
 
       for (const { ench, sourceName } of entries) {

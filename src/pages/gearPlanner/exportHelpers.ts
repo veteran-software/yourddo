@@ -83,18 +83,20 @@ const getFilteredEnchantments = (
   })
 }
 
+interface EnchantmentsOptions {
+  item: GearItem
+  nearlyFinished?: LootEnchantment
+  ritualTable?: LootEnchantment
+  lostPurpose?: LootEnchantment
+  traceOfMadness?: LootEnchantment
+  fountainUpgraded?: boolean
+  stormreaverUpgraded?: boolean
+  zhentarimUpgraded?: boolean
+}
+
 interface SlotFormatters {
   header: (slot: GearSlot, item: GearItem) => void
-  enchantments: (
-    item: GearItem,
-    nearlyFinished?: LootEnchantment,
-    ritualTable?: LootEnchantment,
-    lostPurpose?: LootEnchantment,
-    traceOfMadness?: LootEnchantment,
-    fountainUpgraded?: boolean,
-    stormreaverUpgraded?: boolean,
-    zhentarimUpgraded?: boolean
-  ) => void
+  enchantments: (opts: EnchantmentsOptions) => void
   upgrades: (
     fountainUpgraded: boolean,
     stormreaverUpgraded: boolean,
@@ -133,16 +135,16 @@ const buildRenderSlot =
     const zhentarimUpgraded = state.slottedZhentarimAttuned[item.id]
 
     fmt.header(slot, item)
-    fmt.enchantments(
+    fmt.enchantments({
       item,
-      nearlyFinished ?? undefined,
-      ritualTable ?? undefined,
-      lostPurpose ?? undefined,
-      traceOfMadness ?? undefined,
+      nearlyFinished: nearlyFinished ?? undefined,
+      ritualTable: ritualTable ?? undefined,
+      lostPurpose: lostPurpose ?? undefined,
+      traceOfMadness: traceOfMadness ?? undefined,
       fountainUpgraded,
       stormreaverUpgraded,
       zhentarimUpgraded
-    )
+    })
     fmt.upgrades(
       fountainUpgraded,
       stormreaverUpgraded,
@@ -183,7 +185,7 @@ export const generateBBCodeExport = (
       lines.push(`[b]${slot}:[/b] [u]${item.name}[/u] (ML: ${String(item.minLevel)})`)
     },
 
-    enchantments: (
+    enchantments: ({
       item,
       nearlyFinished,
       ritualTable,
@@ -192,7 +194,7 @@ export const generateBBCodeExport = (
       fountainUpgraded,
       stormreaverUpgraded,
       zhentarimUpgraded
-    ) => {
+    }) => {
       const baseEnchantments = getDisplayEnchantments(
         item,
         fountainUpgraded ?? false,
@@ -345,7 +347,7 @@ export const generateDiscordMarkdownExport = (
       lines.push(`**${slot}:** __${item.name}__ (ML: ${String(item.minLevel)})`)
     },
 
-    enchantments: (
+    enchantments: ({
       item,
       nearlyFinished,
       ritualTable,
@@ -354,7 +356,7 @@ export const generateDiscordMarkdownExport = (
       fountainUpgraded,
       stormreaverUpgraded,
       zhentarimUpgraded
-    ) => {
+    }) => {
       const baseEnchantments = getDisplayEnchantments(
         item,
         fountainUpgraded ?? false,

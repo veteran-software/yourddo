@@ -126,8 +126,8 @@ export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
     const normalizeEffectName = (name: string): string => {
       return name
         .toLowerCase()
-        .replaceAll(/'s/g, '-s') // match "champion-s"
-        .replaceAll(/&/g, ' ')
+        .replaceAll("'s", '-s') // match "champion-s"
+        .replaceAll('&', ' ')
         .replaceAll(/[^a-z0-9]/g, ' ')
         .split(' ')
         .filter((s) => s.length > 0)

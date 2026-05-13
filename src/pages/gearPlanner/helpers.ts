@@ -160,21 +160,36 @@ export const getMaxFiligreeSlots = (item: LootItem) => {
 
 export const sortItemsByValue = (a: { value: number }, b: { value: number }) => b.value - a.value
 
+interface AggregateEnchantmentEntriesOptions {
+  slottedEssenceEnchantments?: Record<string, Record<string, string | null>>
+  essenceEnchantments?: EssenceEnchantment[]
+  activeSetEnhancements?: { ench: LootEnchantment; sourceName: string }[]
+  slottedNearlyFinished?: Record<string, LootEnchantment | null>
+  slottedRitualTable?: Record<string, LootEnchantment | null>
+  slottedLostPurpose?: Record<string, LootEnchantment | null>
+  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
+  slottedFountainOfNecroticMight?: Record<string, boolean>
+  slottedStormreaverUpgrade?: Record<string, boolean>
+  slottedZhentarimAttuned?: Record<string, boolean>
+}
+
 export const aggregateEnchantmentEntries = (
   item: GearItem,
   itemAugs: Record<number, GearAugment | null> | undefined,
   curse: Curse | null | undefined,
   filigrees: (GearItem | null)[] | undefined,
-  slottedEssenceEnchantments?: Record<string, Record<string, string | null>>,
-  essenceEnchantments?: EssenceEnchantment[],
-  activeSetEnhancements?: { ench: LootEnchantment; sourceName: string }[],
-  slottedNearlyFinished?: Record<string, LootEnchantment | null>,
-  slottedRitualTable?: Record<string, LootEnchantment | null>,
-  slottedLostPurpose?: Record<string, LootEnchantment | null>,
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>,
-  slottedFountainOfNecroticMight?: Record<string, boolean>,
-  slottedStormreaverUpgrade?: Record<string, boolean>,
-  slottedZhentarimAttuned?: Record<string, boolean>
+  {
+    slottedEssenceEnchantments,
+    essenceEnchantments,
+    activeSetEnhancements,
+    slottedNearlyFinished,
+    slottedRitualTable,
+    slottedLostPurpose,
+    slottedTraceOfMadness,
+    slottedFountainOfNecroticMight,
+    slottedStormreaverUpgrade,
+    slottedZhentarimAttuned
+  }: AggregateEnchantmentEntriesOptions = {}
 ) => {
   const isFountainUpgraded = slottedFountainOfNecroticMight?.[item.id] ?? false
   const isStormreaverUpgraded = slottedStormreaverUpgrade?.[item.id] ?? false

@@ -60,20 +60,17 @@ const CurseSlotItem = (props: Props) => {
             const results =
               Array.isArray(curse.enchantments) &&
               curse.enchantments.map((ench) =>
-                checkPotentialConflict(
-                  ench,
-                  currentEquipped,
-                  slot,
-                  currentSlottedAugments,
-                  currentSlottedNearlyFinished,
-                  currentSlottedRitualTable,
-                  currentSlottedLostPurpose,
-                  currentSlottedTraceOfMadness,
-                  currentSlottedFountainOfNecroticMight,
-                  currentSlottedStormreaverUpgrade,
-                  currentSlottedZhentarimAttuned,
-                  selectedItem.id
-                )
+                checkPotentialConflict(ench, currentEquipped, slot, {
+                  slottedAugments: currentSlottedAugments,
+                  slottedNearlyFinished: currentSlottedNearlyFinished,
+                  slottedRitualTable: currentSlottedRitualTable,
+                  slottedLostPurpose: currentSlottedLostPurpose,
+                  slottedTraceOfMadness: currentSlottedTraceOfMadness,
+                  slottedFountainOfNecroticMight: currentSlottedFountainOfNecroticMight,
+                  slottedStormreaverUpgrade: currentSlottedStormreaverUpgrade,
+                  slottedZhentarimAttuned: currentSlottedZhentarimAttuned,
+                  ignoreItemId: selectedItem.id
+                })
               )
 
             const hasConflict = results && results.some((pot) => pot.isConflict && pot.isRedundant)

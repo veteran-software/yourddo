@@ -142,7 +142,7 @@ const SearchResultSlot = (props: Props) => {
                   selectItem(item.slot, item)
                   setShowEnchantmentSearch(false)
                 }}
-                {...(item.slot !== 'Filigree' ? { type: 'button' } : {})}
+                {...(item.slot === 'Filigree' ? {} : { type: 'button' })}
               >
                 {showHeader && (
                   <Card.Header className='py-0 px-2 bg-secondary-subtle d-flex align-items-center gap-1 overflow-hidden'>

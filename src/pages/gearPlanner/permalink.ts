@@ -238,20 +238,35 @@ const getTargetState = (setup: GearSetup, gearSlot: GearSlot): GearSetup | PetSt
   return setup
 }
 
+interface DecodeSupplementaryPropertiesOptions {
+  nearlyFinished: LootEnchantment | null
+  ritualTable: LootEnchantment | null
+  lostPurpose: LootEnchantment | null
+  filigrees: (string | null)[] | null
+  unlockedFiligreeSlots: number | null
+  slottedGemSetBonuses: (string | null)[] | null
+  isFountainUpgraded: OptionalEncodedBoolean
+  isStormreaverUpgraded: OptionalEncodedBoolean
+  isZhentarimUpgraded: OptionalEncodedBoolean
+  traceOfMadness: LootEnchantment | string | null
+}
+
 const decodeSupplementaryProperties = (
   item: GearItem,
   state: GearSetup | PetState,
   allItems: GearItem[],
-  nearlyFinished: LootEnchantment | null,
-  ritualTable: LootEnchantment | null,
-  lostPurpose: LootEnchantment | null,
-  filigrees: (string | null)[] | null,
-  unlockedFiligreeSlots: number | null,
-  slottedGemSetBonuses: (string | null)[] | null,
-  isFountainUpgraded: OptionalEncodedBoolean,
-  isStormreaverUpgraded: OptionalEncodedBoolean,
-  isZhentarimUpgraded: OptionalEncodedBoolean,
-  traceOfMadness: LootEnchantment | string | null
+  {
+    nearlyFinished,
+    ritualTable,
+    lostPurpose,
+    filigrees,
+    unlockedFiligreeSlots,
+    slottedGemSetBonuses,
+    isFountainUpgraded,
+    isStormreaverUpgraded,
+    isZhentarimUpgraded,
+    traceOfMadness
+  }: DecodeSupplementaryPropertiesOptions
 ) => {
   if (nearlyFinished) state.slottedNearlyFinished[item.id] = nearlyFinished
   if (ritualTable) state.slottedRitualTable[item.id] = ritualTable
@@ -349,10 +364,7 @@ const decodeItemPayload = (
   decodeItemAugments(item, augments, allAugments, state)
   decodeItemCurse(item, curseName, allCurses, state)
   decodeItemEssenceCrafting(item, essenceCrafting, state)
-  decodeSupplementaryProperties(
-    item,
-    state,
-    allItems,
+  decodeSupplementaryProperties(item, state, allItems, {
     nearlyFinished,
     ritualTable,
     lostPurpose,
@@ -362,8 +374,8 @@ const decodeItemPayload = (
     isFountainUpgraded,
     isStormreaverUpgraded,
     isZhentarimUpgraded,
-    traceOfMadness ?? null
-  )
+    traceOfMadness: traceOfMadness ?? null
+  })
 }
 
 const decodeItemAugments = (

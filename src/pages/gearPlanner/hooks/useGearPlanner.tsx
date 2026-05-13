@@ -148,7 +148,7 @@ const useGearPlanner = (props: Props) => {
           (entries) => {
             if (entries[0].isIntersecting) setItemsToShow((prev) => prev + 50)
           },
-          { threshold: 1.0 }
+          { threshold: 1 }
         )
         observer.observe(node)
         observerRef.current = observer

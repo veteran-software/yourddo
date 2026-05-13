@@ -202,9 +202,9 @@ const GearPlanner = () => {
   if (gpHook.loading || !gpHook.dataReady) {
     return (
       <Container className='py-4 text-center'>
-        <div className='spinner-border text-primary' role='status'>
+        <output className='spinner-border text-primary'>
           <span className='visually-hidden'>Loading Gear Data...</span>
-        </div>
+        </output>
         <p className='mt-2' aria-hidden='true'>
           {gpHook.loading ? 'Loading Gear Data...' : 'Preparing Item Browser...'}
         </p>
@@ -564,7 +564,7 @@ const GearPlanner = () => {
                             const newClasses = [...gpHook.activeSetup.classes]
                             newClasses[idx] = e.target.value || null
 
-                            const setupUpdate: Partial<GearSetup> = {
+                            const setupUpdate: Partial<GearSetup> & { id: string } = {
                               id: gpHook.activeSetup.id,
                               classes: newClasses
                             }
@@ -581,7 +581,7 @@ const GearPlanner = () => {
                             setupUpdate.armorFilters = tempSetup.armorFilters
                             setupUpdate.shieldFilters = tempSetup.shieldFilters
 
-                            dispatch(updateSetupAction(setupUpdate as GearSetup))
+                            dispatch(updateSetupAction(setupUpdate))
                           }}
                         >
                           <option value=''>Select Class...</option>
