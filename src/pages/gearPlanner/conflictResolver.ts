@@ -371,85 +371,6 @@ const findMatchingAugments = (
   return max
 }
 
-const lostPurposeMax = (
-  isSameItem: boolean,
-  normalizedTargetName: string,
-  normalizedTargetBonus: string,
-  item: GearItem,
-  slottedLostPurpose?: Record<string, LootEnchantment | null>
-) => {
-  if (isSameItem) {
-    return -Infinity
-  }
-
-  return findMatchingLostPurpose(item.id, normalizedTargetName, normalizedTargetBonus, slottedLostPurpose)
-}
-
-const traceOfMadnessMax = (
-  isSameItem: boolean,
-  normalizedTargetName: string,
-  normalizedTargetBonus: string,
-  item: GearItem,
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
-) => {
-  if (isSameItem) {
-    return -Infinity
-  }
-
-  return findMatchingTraceOfMadness(item.id, normalizedTargetName, normalizedTargetBonus, slottedTraceOfMadness)
-}
-
-const nearlyFinishedMax = (
-  isSameItem: boolean,
-  normalizedTargetName: string,
-  normalizedTargetBonus: string,
-  item: GearItem,
-  slottedNearlyFinished?: Record<string, LootEnchantment | null>
-) => {
-  if (isSameItem) {
-    return -Infinity
-  }
-
-  return findMatchingNearlyFinished(item.id, normalizedTargetName, normalizedTargetBonus, slottedNearlyFinished)
-}
-
-const ritualTableMax = (
-  isSameItem: boolean,
-  normalizedTargetName: string,
-  normalizedTargetBonus: string,
-  item: GearItem,
-  slottedRitualTable?: Record<string, LootEnchantment | null>
-) => {
-  if (isSameItem) {
-    return -Infinity
-  }
-
-  return findMatchingRitualTable(item.id, normalizedTargetName, normalizedTargetBonus, slottedRitualTable)
-}
-
-const inherentMax = (
-  isSameItem: boolean,
-  normalizedTargetName: string,
-  normalizedTargetBonus: string,
-  item: GearItem,
-  slottedFountainOfNecroticMight: Record<string, boolean> = {},
-  slottedStormreaverUpgrade: Record<string, boolean> = {},
-  slottedZhentarimAttuned: Record<string, boolean> = {}
-) => {
-  if (isSameItem) {
-    return -Infinity
-  }
-
-  return findMatchingInherent(
-    item,
-    normalizedTargetName,
-    normalizedTargetBonus,
-    slottedFountainOfNecroticMight,
-    slottedStormreaverUpgrade,
-    slottedZhentarimAttuned
-  )
-}
-
 const getItemEnchantmentMax = (
   item: GearItem,
   targetOwner: string,
@@ -490,21 +411,23 @@ const getItemEnchantmentMax = (
     isSameItem ? ignoreSlotIndex : undefined
   )
 
+  // For the same item, only augments can contribute (the item's own upgrades don't compete with itself)
+  if (isSameItem) return augMax
+
   return Math.max(
-    inherentMax(
-      isSameItem,
+    findMatchingInherent(
+      item,
       normalizedTargetName,
       normalizedTargetBonus,
-      item,
       slottedFountainOfNecroticMight,
       slottedStormreaverUpgrade,
       slottedZhentarimAttuned
     ),
-    nearlyFinishedMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedNearlyFinished),
-    ritualTableMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedRitualTable),
+    findMatchingNearlyFinished(item.id, normalizedTargetName, normalizedTargetBonus, slottedNearlyFinished),
+    findMatchingRitualTable(item.id, normalizedTargetName, normalizedTargetBonus, slottedRitualTable),
     augMax,
-    lostPurposeMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedLostPurpose),
-    traceOfMadnessMax(isSameItem, normalizedTargetName, normalizedTargetBonus, item, slottedTraceOfMadness)
+    findMatchingLostPurpose(item.id, normalizedTargetName, normalizedTargetBonus, slottedLostPurpose),
+    findMatchingTraceOfMadness(item.id, normalizedTargetName, normalizedTargetBonus, slottedTraceOfMadness)
   )
 }
 
