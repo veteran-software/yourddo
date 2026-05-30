@@ -1,10 +1,12 @@
 import fountainData from '../../data/fountainOfNecroticMight.json'
+import nearlyFinishedRecipes from '../../data/nearlyFinished/recipes.json'
 import { findSetBonus } from '../../data/setBonuses.ts'
 import stormreaverUpgradeData from '../../data/stormreaverUpgrade.json'
 import zhentarimData from '../../data/zhentarimAttuned.json'
 import type { SetBonus } from '../../types/crafting.ts'
 import { UPGRADE_PLACEHOLDER_ENCHANTMENTS } from './constants'
 import type { EssenceEnchantment } from './dataLoader.ts'
+import { nearlyFinishedUpgradeItems } from './dataLoader.ts'
 import {
   type Curse,
   type GearAugment,
@@ -44,6 +46,18 @@ export const findUpgradeData = (
     data = dataSet.find((f) => normalize(f.name) === cleanPageTitle)
   }
   return data
+}
+
+interface ReforgingRecipe {
+  item: string
+  stage: string
+  effectsAdded?: LootEnchantment[]
+  choices?: { name: string }[]
+}
+
+export const findReforgingRecipe = (itemName: string, stage: string): ReforgingRecipe | undefined => {
+  const station = (nearlyFinishedRecipes as { reforgingStation: ReforgingRecipe[] }).reforgingStation
+  return station.find((r) => r.item === itemName && r.stage === stage)
 }
 
 export const getDisplayEnchantments = (
@@ -165,6 +179,8 @@ interface AggregateEnchantmentEntriesOptions {
   essenceEnchantments?: EssenceEnchantment[]
   activeSetEnhancements?: { ench: LootEnchantment; sourceName: string }[]
   slottedNearlyFinished?: Record<string, LootEnchantment | null>
+  slottedAlmostThere?: Record<string, LootEnchantment | null>
+  slottedFinishingTouch?: Record<string, LootEnchantment | null>
   slottedRitualTable?: Record<string, LootEnchantment | null>
   slottedLostPurpose?: Record<string, LootEnchantment | null>
   slottedTraceOfMadness?: Record<string, LootEnchantment | null>
@@ -183,6 +199,8 @@ export const aggregateEnchantmentEntries = (
     essenceEnchantments,
     activeSetEnhancements,
     slottedNearlyFinished,
+    slottedAlmostThere,
+    slottedFinishingTouch,
     slottedRitualTable,
     slottedLostPurpose,
     slottedTraceOfMadness,
@@ -194,25 +212,55 @@ export const aggregateEnchantmentEntries = (
   const isFountainUpgraded = slottedFountainOfNecroticMight?.[item.id] ?? false
   const isStormreaverUpgraded = slottedStormreaverUpgrade?.[item.id] ?? false
   const isZhentarimUpgraded = slottedZhentarimAttuned?.[item.id] ?? false
-  const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
 
-  const entries: { ench: LootEnchantment; sourceName: string }[] = baseEnchantments
+  const nfStored = slottedNearlyFinished?.[item.id] ?? null
+  const atStored = slottedAlmostThere?.[item.id] ?? null
+  const ftStored = slottedFinishingTouch?.[item.id] ?? null
+  const nfRecipe = findReforgingRecipe(item.name, 'Nearly Finished')
+  const atRecipe = findReforgingRecipe(item.name, 'Almost There')
+  const ftRecipe = findReforgingRecipe(item.name, 'Finishing Touch')
+  const nfIsToggle = nfRecipe != null && !nfRecipe.choices?.length
+  const atIsToggle = atRecipe != null && !atRecipe.choices?.length
+  const ftIsToggle = ftRecipe != null && !ftRecipe.choices?.length
+
+  // For toggle (checkbox) upgrades, replace the full enchantment list with the
+  // runtime upgrade tier's enchantment list. Higher tiers take priority.
+  const upgradeItems = nearlyFinishedUpgradeItems as Partial<typeof nearlyFinishedUpgradeItems>
+  let resolvedEnchantments: LootEnchantment[]
+  if (ftIsToggle && ftStored?.name === '__active__') {
+    resolvedEnchantments =
+      upgradeItems[`${item.name} (Complete)`]?.enchantments ??
+      getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
+  } else if (atIsToggle && atStored?.name === '__active__') {
+    resolvedEnchantments =
+      upgradeItems[`${item.name} (Almost There Upgraded)`]?.enchantments ??
+      getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
+  } else if (nfIsToggle && nfStored?.name === '__active__') {
+    resolvedEnchantments =
+      upgradeItems[`${item.name} (Nearly Finished Upgraded)`]?.enchantments ??
+      getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
+  } else {
+    resolvedEnchantments = getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
+  }
+
+  const entries: { ench: LootEnchantment; sourceName: string }[] = resolvedEnchantments
     .filter((e: LootEnchantment) => !UPGRADE_PLACEHOLDER_ENCHANTMENTS.has(e.name))
     .map((e: LootEnchantment) => ({
       ench: e,
       sourceName: item.name
     }))
 
-  const nearlyFinished: LootEnchantment | null | undefined = slottedNearlyFinished?.[item.id]
-  if (nearlyFinished) {
-    entries.push({
-      ench: {
-        ...nearlyFinished,
-        modifier: nearlyFinished.modifier ?? 'Enhancement'
-      },
-      sourceName: item.name
-    })
+  const addReforgingStageEffects = (stored: LootEnchantment | null | undefined, isToggle: boolean) => {
+    if (!stored) return
+    // Toggle: enchantments already replaced above — nothing more to add
+    if (isToggle) return
+    // Dropdown: add the selected choice enchantment
+    entries.push({ ench: { ...stored }, sourceName: item.name })
   }
+
+  addReforgingStageEffects(nfStored, nfIsToggle)
+  addReforgingStageEffects(atStored, atIsToggle)
+  addReforgingStageEffects(ftStored, ftIsToggle)
 
   const ritualTable = slottedRitualTable?.[item.id]
   if (ritualTable) {

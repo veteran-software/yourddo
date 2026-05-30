@@ -29,6 +29,8 @@ interface PartialSlotted {
   weaponFilters?: string[]
   shieldFilters?: string[]
   slottedNearlyFinished?: Record<string, LootEnchantment | null>
+  slottedAlmostThere?: Record<string, LootEnchantment | null>
+  slottedFinishingTouch?: Record<string, LootEnchantment | null>
   slottedRitualTable?: Record<string, LootEnchantment | null>
   slottedLostPurpose?: Record<string, LootEnchantment | null>
   slottedTraceOfMadness?: Record<string, LootEnchantment | string | null>
@@ -68,6 +70,8 @@ const loadState = (): GearPlannerState => {
       target.weaponFilters ??= []
       target.shieldFilters ??= []
       target.slottedNearlyFinished ??= {}
+      target.slottedAlmostThere ??= {}
+      target.slottedFinishingTouch ??= {}
       target.slottedRitualTable ??= {}
       target.slottedLostPurpose ??= {}
       target.slottedTraceOfMadness ??= {}
@@ -141,6 +145,8 @@ const clearMetadata = (target: SlottedProperties, id: string) => {
   delete target.slottedGemSetBonuses[id]
   delete target.slottedEssenceEnchantments[id]
   delete target.slottedNearlyFinished[id]
+  delete target.slottedAlmostThere[id]
+  delete target.slottedFinishingTouch[id]
   delete target.slottedRitualTable[id]
   delete target.slottedLostPurpose[id]
   delete target.slottedTraceOfMadness[id]
@@ -358,6 +364,36 @@ const gearPlannerSlice = createSlice({
       const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
       target.slottedNearlyFinished[itemId] = enchantment
     },
+    setAlmostThereEnchantment: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        enchantment: LootEnchantment | null
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, enchantment, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
+
+      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
+      target.slottedAlmostThere[itemId] = enchantment
+    },
+    setFinishingTouchEnchantment: (
+      state,
+      action: PayloadAction<{
+        itemId: string
+        enchantment: LootEnchantment | null
+        slot?: GearSlot
+      }>
+    ) => {
+      const { itemId, enchantment, slot } = action.payload
+      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+      if (!setup) return
+
+      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
+      target.slottedFinishingTouch[itemId] = enchantment
+    },
     setRitualTableEnchantment: (
       state,
       action: PayloadAction<{
@@ -483,6 +519,10 @@ const gearPlannerSlice = createSlice({
       if (currentItem) {
         currentItem.material = material
       }
+    },
+    importSetups: (state, action: PayloadAction<GearSetup[]>) => {
+      state.characterSetups = action.payload
+      state.activeSetupId = action.payload[0]?.id ?? 'default'
     }
   }
 })
@@ -500,6 +540,8 @@ export const {
   setGemSetBonus,
   setEssenceEnchantment,
   setNearlyFinishedEnchantment,
+  setAlmostThereEnchantment,
+  setFinishingTouchEnchantment,
   setRitualTableEnchantment,
   setLostPurposeEnchantment,
   setTraceOfMadnessEnchantment,
@@ -507,7 +549,8 @@ export const {
   setStormreaverUpgrade,
   setZhentarimAttuned,
   setItemMinLevel,
-  setItemMaterial
+  setItemMaterial,
+  importSetups
 } = gearPlannerSlice.actions
 
 export default gearPlannerSlice.reducer

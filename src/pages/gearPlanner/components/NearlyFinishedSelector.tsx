@@ -1,8 +1,10 @@
 import { useMemo } from 'react'
-import { Dropdown } from 'react-bootstrap'
+import { Dropdown, Form } from 'react-bootstrap'
 import nearlyFinishedRecipes from '../../../data/nearlyFinished/recipes.json'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 import SelectedEnchantmentDisplay, { type BaseSelectorProps } from './SelectedEnchantmentDisplay.tsx'
+
+const ACTIVE_SENTINEL = '__active__'
 
 const NearlyFinishedSelector = (props: BaseSelectorProps) => {
   const { item, slot, selectedEnchantment, onSelect, entityState, wrapperClassName, wrapperStyle } = props
@@ -13,12 +15,32 @@ const NearlyFinishedSelector = (props: BaseSelectorProps) => {
 
   const recipe: Recipe | undefined = recipes.find((r: Recipe) => r.item === item.name && r.stage === 'Nearly Finished')
 
-  if (!recipe) {
-    return null
+  if (!recipe) return null
+
+  const hasChoices = (recipe.choices?.length ?? 0) > 0
+  const isActive = selectedEnchantment !== null
+  const wClass = wrapperClassName ?? 'mt-2'
+
+  if (!hasChoices) {
+    return (
+      <div className={wClass} style={wrapperStyle}>
+        <Form.Check
+          type='checkbox'
+          id={`nearly-finished-check-${item.id}-${slot}`}
+          label='Nearly Finished upgrade applied'
+          checked={isActive}
+          onChange={(e) => {
+            onSelect(e.target.checked ? { name: ACTIVE_SENTINEL } : null)
+          }}
+          style={{ fontSize: '0.65rem' }}
+          className='text-start fw-bold text-primary'
+        />
+      </div>
+    )
   }
 
   return (
-    <div className={wrapperClassName ?? 'mt-2'} style={wrapperStyle}>
+    <div className={wClass} style={wrapperStyle}>
       <div className='text-dark mb-0 text-start' style={{ fontSize: '0.6rem' }}>
         Nearly Finished
       </div>
@@ -55,7 +77,7 @@ const NearlyFinishedSelector = (props: BaseSelectorProps) => {
 
           <Dropdown.Divider />
 
-          {recipe.choices.map((choice: Choice, idx: number) => {
+          {(recipe.choices ?? []).map((choice: Choice, idx: number) => {
             return (
               <Dropdown.Item
                 key={`${choice.name}-${String(idx)}`}
@@ -98,7 +120,7 @@ interface Choice {
 interface Recipe {
   item: string
   stage: string
-  choices: Choice[]
+  choices?: Choice[]
 }
 
 export default NearlyFinishedSelector

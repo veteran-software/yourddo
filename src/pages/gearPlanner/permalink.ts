@@ -77,7 +77,9 @@ type V1Payload = [
     OptionalEncodedBoolean, // isStormreaverUpgraded
     string | null, // itemId
     OptionalEncodedBoolean, // isZhentarimUpgraded
-    LootEnchantment | string | null // traceOfMadness
+    LootEnchantment | string | null, // traceOfMadness
+    LootEnchantment | null, // almostThere
+    LootEnchantment | null // finishingTouch
   ][]
 ]
 
@@ -136,6 +138,8 @@ const encodeItemPayload = (slot: GearSlot, item: GearItem, setup: GearSetup): V1
     .map(([slotName, id]) => [slotName, id])
 
   const nearlyFinished = state.slottedNearlyFinished[item.id] ?? null
+  const almostThere = state.slottedAlmostThere[item.id] ?? null
+  const finishingTouch = state.slottedFinishingTouch[item.id] ?? null
   const ritualTable = state.slottedRitualTable[item.id] ?? null
   const lostPurpose = state.slottedLostPurpose[item.id] ?? null
 
@@ -168,7 +172,9 @@ const encodeItemPayload = (slot: GearSlot, item: GearItem, setup: GearSetup): V1
     isStormreaverUpgraded ? 1 : 0,
     item.id,
     isZhentarimUpgraded ? 1 : 0,
-    traceOfMadness
+    traceOfMadness,
+    almostThere,
+    finishingTouch
   ]
 }
 
@@ -209,6 +215,8 @@ export const tryDecodeGearPermalink = (
       slottedGemSetBonuses: {},
       slottedEssenceEnchantments: {},
       slottedNearlyFinished: {},
+      slottedAlmostThere: {},
+      slottedFinishingTouch: {},
       slottedRitualTable: {},
       slottedLostPurpose: {},
       slottedTraceOfMadness: {},
@@ -240,6 +248,8 @@ const getTargetState = (setup: GearSetup, gearSlot: GearSlot): GearSetup | PetSt
 
 interface DecodeSupplementaryPropertiesOptions {
   nearlyFinished: LootEnchantment | null
+  almostThere: LootEnchantment | null
+  finishingTouch: LootEnchantment | null
   ritualTable: LootEnchantment | null
   lostPurpose: LootEnchantment | null
   filigrees: (string | null)[] | null
@@ -257,6 +267,8 @@ const decodeSupplementaryProperties = (
   allItems: GearItem[],
   {
     nearlyFinished,
+    almostThere,
+    finishingTouch,
     ritualTable,
     lostPurpose,
     filigrees,
@@ -269,6 +281,8 @@ const decodeSupplementaryProperties = (
   }: DecodeSupplementaryPropertiesOptions
 ) => {
   if (nearlyFinished) state.slottedNearlyFinished[item.id] = nearlyFinished
+  if (almostThere) state.slottedAlmostThere[item.id] = almostThere
+  if (finishingTouch) state.slottedFinishingTouch[item.id] = finishingTouch
   if (ritualTable) state.slottedRitualTable[item.id] = ritualTable
   if (lostPurpose) state.slottedLostPurpose[item.id] = lostPurpose
   if (traceOfMadness) {
@@ -335,7 +349,9 @@ const decodeItemPayload = (
     isStormreaverUpgraded,
     itemId,
     isZhentarimUpgraded,
-    traceOfMadness
+    traceOfMadness,
+    almostThere,
+    finishingTouch
   ] = itemPayload
 
   // Find the item in allItems by ID (preferred) or name and slot
@@ -366,6 +382,8 @@ const decodeItemPayload = (
   decodeItemEssenceCrafting(item, essenceCrafting, state)
   decodeSupplementaryProperties(item, state, allItems, {
     nearlyFinished,
+    almostThere: almostThere ?? null,
+    finishingTouch: finishingTouch ?? null,
     ritualTable,
     lostPurpose,
     filigrees,

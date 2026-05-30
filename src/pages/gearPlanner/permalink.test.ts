@@ -32,6 +32,8 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
     slottedGemSetBonuses: {},
     slottedEssenceEnchantments: {},
     slottedNearlyFinished: {},
+    slottedAlmostThere: {},
+    slottedFinishingTouch: {},
     slottedRitualTable: {},
     slottedLostPurpose: {},
     slottedTraceOfMadness: {},

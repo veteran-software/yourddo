@@ -104,7 +104,9 @@ interface SlotFormatters {
     nearlyFinished: LootEnchantment | null,
     ritualTable: LootEnchantment | null,
     lostPurpose: LootEnchantment | null,
-    traceOfMadness: LootEnchantment | null
+    traceOfMadness: LootEnchantment | null,
+    almostThere?: LootEnchantment | null,
+    finishingTouch?: LootEnchantment | null
   ) => void
   essenceCrafting: (
     item: GearItem,
@@ -150,6 +152,8 @@ const buildRenderSlot =
   ): void => {
     const state = isPetSlot && petState ? petState : setup
     const nearlyFinished = state.slottedNearlyFinished[item.id]
+    const almostThere = state.slottedAlmostThere[item.id]
+    const finishingTouch = state.slottedFinishingTouch[item.id]
     const ritualTable = state.slottedRitualTable[item.id]
     const lostPurpose = state.slottedLostPurpose[item.id]
     const traceOfMadness = state.slottedTraceOfMadness[item.id]
@@ -175,7 +179,9 @@ const buildRenderSlot =
       nearlyFinished ?? null,
       ritualTable ?? null,
       lostPurpose ?? null,
-      traceOfMadness ?? null
+      traceOfMadness ?? null,
+      almostThere ?? null,
+      finishingTouch ?? null
     )
     fmt.essenceCrafting(item, state.slottedEssenceEnchantments[item.id], allEssenceEnchantments)
     fmt.filigrees(state.slottedFiligrees[item.id])
@@ -247,7 +253,9 @@ export const generateBBCodeExport = (
       nearlyFinished,
       ritualTable,
       lostPurpose,
-      traceOfMadness
+      traceOfMadness,
+      almostThere,
+      finishingTouch
     ) => {
       if (fountainUpgraded) lines.push(`[indent][b][color=cyan]Fountain of Necrotic Might Upgrade[/color][/b][/indent]`)
       if (stormreaverUpgraded) lines.push(`[indent][b][color=cyan]Stormreaver Monument Upgrade[/color][/b][/indent]`)
@@ -255,6 +263,18 @@ export const generateBBCodeExport = (
       if (nearlyFinished)
         lines.push(
           `[indent][b][color=orange]Nearly Finished:[/color][/b] ${formatEnchantment(nearlyFinished)}[/indent]`
+        )
+      if (almostThere)
+        lines.push(
+          almostThere.name === '__active__'
+            ? `[indent][b][color=orange]Almost There upgrade applied[/color][/b][/indent]`
+            : `[indent][b][color=orange]Almost There:[/color][/b] ${formatEnchantment(almostThere)}[/indent]`
+        )
+      if (finishingTouch)
+        lines.push(
+          finishingTouch.name === '__active__'
+            ? `[indent][b][color=orange]Finishing Touch upgrade applied[/color][/b][/indent]`
+            : `[indent][b][color=orange]Finishing Touch:[/color][/b] ${formatEnchantment(finishingTouch)}[/indent]`
         )
       if (ritualTable)
         lines.push(
@@ -402,12 +422,26 @@ export const generateDiscordMarkdownExport = (
       nearlyFinished,
       ritualTable,
       lostPurpose,
-      traceOfMadness
+      traceOfMadness,
+      almostThere,
+      finishingTouch
     ) => {
       if (fountainUpgraded) lines.push(`- **Fountain of Necrotic Might Upgrade**`)
       if (stormreaverUpgraded) lines.push(`- **Stormreaver Monument Upgrade**`)
       if (zhentarimUpgraded) lines.push(`- **Zhentarim Attuned Upgrade**`)
       if (nearlyFinished) lines.push(`- **Nearly Finished:** ${formatEnchantment(nearlyFinished)}`)
+      if (almostThere)
+        lines.push(
+          almostThere.name === '__active__'
+            ? `- **Almost There upgrade applied**`
+            : `- **Almost There:** ${formatEnchantment(almostThere)}`
+        )
+      if (finishingTouch)
+        lines.push(
+          finishingTouch.name === '__active__'
+            ? `- **Finishing Touch upgrade applied**`
+            : `- **Finishing Touch:** ${formatEnchantment(finishingTouch)}`
+        )
       if (ritualTable) lines.push(`- **Ritual Table Upgrade:** ${formatEnchantment(ritualTable)}`)
       if (lostPurpose) lines.push(`- **Lost Purpose Upgrade:** ${formatEnchantment(lostPurpose)}`)
       if (traceOfMadness) lines.push(`- **Trace of Madness:** ${formatEnchantment(traceOfMadness)}`)

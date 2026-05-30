@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Accordion,
   Button,
@@ -17,6 +17,7 @@ import {
 import {
   FaChevronRight,
   FaFileExport,
+  FaFileImport,
   FaGear,
   FaLayerGroup,
   FaLink,
@@ -49,6 +50,7 @@ import {
   removeGpFromUrl,
   tryDecodeGearPermalink
 } from './permalink.ts'
+import { exportSetupsToJson, importSetupsFromJson } from './saveHelpers'
 import {
   ARMOR_TYPES,
   ARTIFICER_PET_SLOTS,
@@ -112,6 +114,8 @@ const PetGearSection = ({
       slottedEssenceEnchantments={entityState.slottedEssenceEnchantments}
       essenceEnchantments={gpHook.essenceEnchantments}
       slottedNearlyFinished={entityState.slottedNearlyFinished}
+      slottedAlmostThere={entityState.slottedAlmostThere}
+      slottedFinishingTouch={entityState.slottedFinishingTouch}
       slottedRitualTable={entityState.slottedRitualTable}
       slottedLostPurpose={entityState.slottedLostPurpose}
       slottedTraceOfMadness={entityState.slottedTraceOfMadness}
@@ -154,6 +158,22 @@ const GearPlanner = () => {
 
   const [showSettings, setShowSettings] = useState(false)
   const [showFiligreeModal, setShowFiligreeModal] = useState(false)
+
+  const importFileRef = useRef<HTMLInputElement>(null)
+
+  const handleImportFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    e.target.value = ''
+    void importSetupsFromJson(file)
+      .then((importedSetups) => {
+        gpHook.importSetups(importedSetups)
+        alert(`Imported ${String(importedSetups.length)} setup(s) successfully.`)
+      })
+      .catch((err: unknown) => {
+        alert(`Import failed: ${err instanceof Error ? err.message : 'Unknown error'}`)
+      })
+  }
 
   useEffect(() => {
     const win = globalThis as unknown as Window
@@ -285,6 +305,20 @@ const GearPlanner = () => {
                     <Dropdown.Menu variant='dark'>
                       <Dropdown.Item
                         onClick={() => {
+                          try {
+                            exportSetupsToJson(setups)
+                          } catch (err: unknown) {
+                            alert(`Save failed: ${err instanceof Error ? err.message : 'Unknown error'}`)
+                          }
+                        }}
+                      >
+                        Save to File (JSON)
+                      </Dropdown.Item>
+
+                      <Dropdown.Divider />
+
+                      <Dropdown.Item
+                        onClick={() => {
                           const encoded = encodeGearPermalink(gpHook.activeSetup)
                           const permalinkUrl = buildPermalinkUrl(encoded, location)
                           const content = generateBBCodeExport(
@@ -320,6 +354,17 @@ const GearPlanner = () => {
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
+
+                  <Button
+                    variant='outline-light'
+                    size='sm'
+                    className='d-flex align-items-center justify-content-center gap-2 flex-grow-1 flex-md-grow-0'
+                    onClick={() => {
+                      importFileRef.current?.click()
+                    }}
+                  >
+                    <FaFileImport /> Import
+                  </Button>
 
                   <Button
                     variant='outline-light'
@@ -422,6 +467,8 @@ const GearPlanner = () => {
                       slottedEssenceEnchantments={gpHook.activeSetup.slottedEssenceEnchantments}
                       essenceEnchantments={gpHook.essenceEnchantments}
                       slottedNearlyFinished={gpHook.activeSetup.slottedNearlyFinished}
+                      slottedAlmostThere={gpHook.activeSetup.slottedAlmostThere}
+                      slottedFinishingTouch={gpHook.activeSetup.slottedFinishingTouch}
                       slottedRitualTable={gpHook.activeSetup.slottedRitualTable}
                       slottedLostPurpose={gpHook.activeSetup.slottedLostPurpose}
                       slottedTraceOfMadness={gpHook.activeSetup.slottedTraceOfMadness}
@@ -781,6 +828,14 @@ const GearPlanner = () => {
           </Modal.Footer>
         </Modal>
       </Container>
+
+      <input
+        ref={importFileRef}
+        type='file'
+        accept='.json'
+        style={{ display: 'none' }}
+        onChange={handleImportFileChange}
+      />
     </div>
   )
 }

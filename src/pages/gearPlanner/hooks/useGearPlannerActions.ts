@@ -2,12 +2,15 @@ import { useAppDispatch } from '../../../redux/hooks'
 import {
   addSetup as addSetupAction,
   equipItem as equipItemAction,
+  importSetups as importSetupsAction,
   removeSetup as removeSetupAction,
   setActiveSetup as setActiveSetupAction,
+  setAlmostThereEnchantment as setAlmostThereEnchantmentAction,
   setAugment as setAugmentAction,
   setCurse as setCurseAction,
   setEssenceEnchantment as setEssenceEnchantmentAction,
   setFiligree as setFiligreeAction,
+  setFinishingTouchEnchantment as setFinishingTouchEnchantmentAction,
   setFountainOfNecroticMight as setFountainOfNecroticMightAction,
   setGemSetBonus as setGemSetBonusAction,
   setItemMaterial as setItemMaterialAction,
@@ -238,6 +241,26 @@ export const useGearPlannerActions = ({
     )
   }
 
+  const setAlmostThereEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
+    dispatch(
+      setAlmostThereEnchantmentAction({
+        itemId,
+        enchantment,
+        slot
+      })
+    )
+  }
+
+  const setFinishingTouchEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
+    dispatch(
+      setFinishingTouchEnchantmentAction({
+        itemId,
+        enchantment,
+        slot
+      })
+    )
+  }
+
   const setRitualTableEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
     dispatch(
       setRitualTableEnchantmentAction({
@@ -298,6 +321,10 @@ export const useGearPlannerActions = ({
     )
   }
 
+  const importSetups = (setupsToImport: GearSetup[]) => {
+    dispatch(importSetupsAction(setupsToImport))
+  }
+
   const clearSetup = () => {
     const fresh = createDefaultSetup(activeSetup.id, activeSetup.name)
     dispatch(updateSetupAction(fresh))
@@ -306,6 +333,7 @@ export const useGearPlannerActions = ({
   return {
     addSetup,
     clearSetup,
+    importSetups,
     deleteSetup,
     updateClassProficiencies,
     selectItem,
@@ -319,6 +347,8 @@ export const useGearPlannerActions = ({
     setEssenceEnchantment,
     setItemMinLevel,
     setNearlyFinishedEnchantment,
+    setAlmostThereEnchantment,
+    setFinishingTouchEnchantment,
     setRitualTableEnchantment,
     setLostPurposeEnchantment,
     setTraceOfMadnessEnchantment,

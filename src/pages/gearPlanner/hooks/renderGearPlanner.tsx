@@ -3,10 +3,12 @@ import { Card, Col } from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import type { ItemRollup } from '../../../components/trove/types.ts'
 import { SLOT_GROUPS } from '../../../utils/augmentUtils.ts'
+import AlmostThereSelector from '../components/AlmostThereSelector'
 import AugmentSlotItem from '../components/AugmentSlotItem'
 import CurseSlotItem from '../components/CurseSlotItem'
 import EnchantmentList from '../components/EnchantmentList'
 import EssenceCraftingSelector from '../components/EssenceCraftingSelector'
+import FinishingTouchSelector from '../components/FinishingTouchSelector'
 import FountainOfNecroticMightSelector from '../components/FountainOfNecroticMightSelector'
 import GemSetBonusSelector from '../components/GetSetBonusSelector'
 import ItemSetBonusDisplay from '../components/ItemSetBonusDisplay'
@@ -18,7 +20,7 @@ import TraceOfMadnessSelector from '../components/TraceOfMadnessSelector'
 import TroveBadge from '../components/TroveBadge'
 import ZhentarimAttunedSelector from '../components/ZhentarimAttunedSelector'
 import { getSlotOwner } from '../conflictResolver'
-import { type EssenceEnchantment } from '../dataLoader'
+import { type EssenceEnchantment, nearlyFinishedNFUpgradedAugments } from '../dataLoader'
 import { getDisplayEnchantments, getMaxFiligreeSlots, isMinorArtifact } from '../helpers'
 import {
   type Curse,
@@ -92,6 +94,8 @@ export const renderGearPlanner = (props: Props) => {
     setSlottedCurse,
     setEssenceEnchantment,
     setNearlyFinishedEnchantment,
+    setAlmostThereEnchantment,
+    setFinishingTouchEnchantment,
     setRitualTableEnchantment,
     setLostPurposeEnchantment,
     setTraceOfMadnessEnchantment,
@@ -151,6 +155,8 @@ export const renderGearPlanner = (props: Props) => {
     const selectedItem: GearItem | null = entityState.slots[slot] ?? null
     const currentSlottedAugments = entityState.slottedAugments
     const currentSlottedNearlyFinished = entityState.slottedNearlyFinished
+    const currentSlottedAlmostThere = entityState.slottedAlmostThere
+    const currentSlottedFinishingTouch = entityState.slottedFinishingTouch
     const currentSlottedRitualTable = entityState.slottedRitualTable
     const currentSlottedLostPurpose = entityState.slottedLostPurpose
     const currentSlottedTraceOfMadness = entityState.slottedTraceOfMadness
@@ -165,6 +171,15 @@ export const renderGearPlanner = (props: Props) => {
     const displayEnchantments: LootEnchantment[] = selectedItem
       ? getDisplayEnchantments(selectedItem, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
       : []
+
+    const nfAddedAugments = selectedItem ? nearlyFinishedNFUpgradedAugments[selectedItem.name] : undefined
+    const hasAnyNFUpgradeActive = selectedItem
+      ? !!currentSlottedNearlyFinished[selectedItem.id] ||
+        !!currentSlottedAlmostThere[selectedItem.id] ||
+        !!currentSlottedFinishingTouch[selectedItem.id]
+      : false
+    const effectiveAugments =
+      nfAddedAugments && hasAnyNFUpgradeActive ? nfAddedAugments : (selectedItem?.augments ?? [])
 
     return (
       <Col key={slot} xs={12} sm={6} md={4} lg={3} className='mb-3 px-1'>
@@ -228,9 +243,9 @@ export const renderGearPlanner = (props: Props) => {
                   </div>
                 )}
 
-                {selectedItem.augments && selectedItem.augments.length > 0 && (
+                {effectiveAugments.length > 0 && (
                   <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
-                    {selectedItem.augments.map((augmentSlot: GearAugmentSlot, idx: number) => {
+                    {effectiveAugments.map((augmentSlot: GearAugmentSlot, idx: number) => {
                       const applicable = getApplicableAugments(augmentSlot, allAugments)
 
                       return (
@@ -276,6 +291,30 @@ export const renderGearPlanner = (props: Props) => {
                   selectedEnchantment={currentSlottedNearlyFinished[selectedItem.id] ?? null}
                   onSelect={(enchantment: LootEnchantment | null) => {
                     setNearlyFinishedEnchantment(selectedItem.id, enchantment, slot)
+                  }}
+                  entityState={entityState}
+                  wrapperClassName='text-start mt-1 pt-1 border-top'
+                  wrapperStyle={{ fontSize: '0.65rem' }}
+                />
+
+                <AlmostThereSelector
+                  item={selectedItem}
+                  slot={slot}
+                  selectedEnchantment={currentSlottedAlmostThere[selectedItem.id] ?? null}
+                  onSelect={(enchantment: LootEnchantment | null) => {
+                    setAlmostThereEnchantment(selectedItem.id, enchantment, slot)
+                  }}
+                  entityState={entityState}
+                  wrapperClassName='text-start mt-1 pt-1 border-top'
+                  wrapperStyle={{ fontSize: '0.65rem' }}
+                />
+
+                <FinishingTouchSelector
+                  item={selectedItem}
+                  slot={slot}
+                  selectedEnchantment={currentSlottedFinishingTouch[selectedItem.id] ?? null}
+                  onSelect={(enchantment: LootEnchantment | null) => {
+                    setFinishingTouchEnchantment(selectedItem.id, enchantment, slot)
                   }}
                   entityState={entityState}
                   wrapperClassName='text-start mt-1 pt-1 border-top'
@@ -403,6 +442,8 @@ interface Props {
   setSlottedCurse: (itemId: string, curse: Curse | null, slot?: GearSlot) => void
   setEssenceEnchantment: (itemId: string, slotName: string, enchantmentId: string | null, slot?: GearSlot) => void
   setNearlyFinishedEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
+  setAlmostThereEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
+  setFinishingTouchEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setRitualTableEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setLostPurposeEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setTraceOfMadnessEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void

@@ -210,6 +210,8 @@ export interface SlottedProperties {
   slottedGemSetBonuses: Record<string, (string | null)[]>
   slottedEssenceEnchantments: Record<string, Record<string, string | null>>
   slottedNearlyFinished: Record<string, LootEnchantment | null>
+  slottedAlmostThere: Record<string, LootEnchantment | null>
+  slottedFinishingTouch: Record<string, LootEnchantment | null>
   slottedRitualTable: Record<string, LootEnchantment | null>
   slottedLostPurpose: Record<string, LootEnchantment | null>
   slottedTraceOfMadness: Record<string, LootEnchantment | null>

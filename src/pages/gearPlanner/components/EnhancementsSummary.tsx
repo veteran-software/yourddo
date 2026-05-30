@@ -44,6 +44,8 @@ const EnchantmentsSummary = (props: Props) => {
     slottedLostPurpose,
     slottedTraceOfMadness,
     slottedNearlyFinished,
+    slottedAlmostThere,
+    slottedFinishingTouch,
     slottedRitualTable,
     slottedFountainOfNecroticMight,
     slottedStormreaverUpgrade,
@@ -146,6 +148,8 @@ const EnchantmentsSummary = (props: Props) => {
           slottedEssenceEnchantments,
           essenceEnchantments,
           slottedNearlyFinished,
+          slottedAlmostThere,
+          slottedFinishingTouch,
           slottedRitualTable,
           slottedLostPurpose,
           slottedTraceOfMadness,
@@ -222,6 +226,8 @@ const EnchantmentsSummary = (props: Props) => {
     slottedEssenceEnchantments,
     essenceEnchantments,
     slottedNearlyFinished,
+    slottedAlmostThere,
+    slottedFinishingTouch,
     slottedRitualTable,
     slottedFountainOfNecroticMight,
     slottedStormreaverUpgrade,
@@ -330,6 +336,8 @@ interface Props {
   slottedEssenceEnchantments: Record<string, Record<string, string | null>>
   essenceEnchantments?: EssenceEnchantment[]
   slottedNearlyFinished: Record<string, import('../types.ts').LootEnchantment | null>
+  slottedAlmostThere: Record<string, import('../types.ts').LootEnchantment | null>
+  slottedFinishingTouch: Record<string, import('../types.ts').LootEnchantment | null>
   slottedRitualTable: Record<string, import('../types.ts').LootEnchantment | null>
   slottedLostPurpose: Record<string, import('../types.ts').LootEnchantment | null>
   slottedTraceOfMadness: Record<string, import('../types.ts').LootEnchantment | null>

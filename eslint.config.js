@@ -1,11 +1,11 @@
 import eslintReact from '@eslint-react/eslint-plugin'
 import js from '@eslint/js'
 import * as sonarjs from 'eslint-plugin-sonarjs'
-import { defineConfig } from 'eslint/config'
+import zodPlugin from 'eslint-plugin-zod'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
-export default defineConfig([
+export default [
   {
     ignores: [
       './dist/*',
@@ -25,6 +25,7 @@ export default defineConfig([
   },
   eslintReact.configs['recommended-typescript'],
   sonarjs.configs.recommended,
+  zodPlugin.configs.recommended,
   {
     files: ['scripts/**/*'],
     languageOptions: {
@@ -42,4 +43,4 @@ export default defineConfig([
       }
     }
   }
-])
+]

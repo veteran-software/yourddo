@@ -1,8 +1,10 @@
+import nearlyFinishedRecipesData from '../../data/nearlyFinished/recipes.json'
 import { SLOT_MAP } from '../../utils/constants.ts'
 import {
   ARMOR_TYPES,
   type Curse,
   type GearAugment,
+  type GearAugmentSlot,
   type GearItem,
   GearSlot,
   type LootBinding,
@@ -43,6 +45,47 @@ const dataModules = import.meta.glob(
   {
     eager: true
   }
+)
+
+const nfRecipeStation = (nearlyFinishedRecipesData as { reforgingStation: { item: string }[] }).reforgingStation
+const nfItemNamesSet = new Set(nfRecipeStation.map((r) => r.item))
+
+const NF_UPGRADE_SUFFIXES = ['(Nearly Finished Upgraded)', '(Almost There Upgraded)', '(Complete']
+
+const isNearlyFinishedUpgradeTier = (item: { name: string; pageTitle: string }): boolean =>
+  nfItemNamesSet.has(item.name) && NF_UPGRADE_SUFFIXES.some((s) => item.pageTitle.includes(s))
+
+interface NearlyFinishedUpgradeEntry {
+  enchantments: LootEnchantment[]
+  augments: GearAugmentSlot[]
+}
+
+export const nearlyFinishedUpgradeItems: Record<string, NearlyFinishedUpgradeEntry> = (() => {
+  const result: Record<string, NearlyFinishedUpgradeEntry> = {}
+  Object.keys(SLOT_MAP).forEach((fileName) => {
+    const path = `../../data/loot/runtime/${fileName}`
+    const module = dataModules[path]
+    if (module && typeof module === 'object' && 'default' in module && Array.isArray(module.default)) {
+      const data = module.default as LootItem[]
+      data.forEach((item: LootItem) => {
+        if (isNearlyFinishedUpgradeTier(item)) {
+          result[item.pageTitle] = {
+            enchantments: item.enchantments ?? [],
+            augments: item.augments ?? []
+          }
+        }
+      })
+    }
+  })
+  return result
+})()
+
+// Maps item name → augment slots from the (Nearly Finished Upgraded) tier.
+// Only populated for items whose NF upgrade adds new augment slots.
+export const nearlyFinishedNFUpgradedAugments: Record<string, GearAugmentSlot[]> = Object.fromEntries(
+  Object.entries(nearlyFinishedUpgradeItems)
+    .filter(([key, entry]) => key.endsWith('(Nearly Finished Upgraded)') && entry.augments.length > 0)
+    .map(([key, entry]) => [key.replace(' (Nearly Finished Upgraded)', ''), entry.augments])
 )
 
 export const loadCurses = (): Promise<Curse[]> => {
@@ -314,9 +357,9 @@ export const loadGearData = (): Promise<{
 
     if (!isValidSlotItem(item)) return
 
-    // This is to prevent upgraded items from being natively selected.  The user
-    // should select the base item and upgrade it if desired in the gear grid
-    if (item.pageTitle.includes('(Upgraded)')) {
+    // Prevent upgraded/NF-tier items from appearing in the browser list.
+    // Users select the base item and apply upgrades via the gear grid controls.
+    if (item.pageTitle.includes('(Upgraded)') || isNearlyFinishedUpgradeTier(item)) {
       return
     }
 
