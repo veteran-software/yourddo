@@ -1,12 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, Form, Nav, Stack } from 'react-bootstrap'
-import { FaCloudArrowUp } from 'react-icons/fa6'
+import { Button, Form, Modal, Nav, Stack } from 'react-bootstrap'
+import { FaCheck, FaCloudArrowUp, FaCopy } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks.ts'
 import { setTroveData } from '../../redux/slices/appSlice.ts'
 import type { AppDispatch } from '../../redux/store.ts'
 import { formatNumber } from '../../utils/objectUtils.ts'
 import { buildItemRollupFromCsvFile, getStoredTroveData, storeTroveData } from '../../utils/troveUtils.ts'
+
+const TROVE_SERVER_PATHS: { server: string; path: string }[] = [
+  { server: 'Shadowdale', path: '%APPDATA%\\Dungeon Helper\\plugins\\Trove\\Shadowdale' },
+  { server: 'Thrane', path: '%APPDATA%\\Dungeon Helper\\plugins\\Trove\\Thrane' },
+  { server: 'Cormyr', path: '%APPDATA%\\Dungeon Helper\\plugins\\Trove\\Cormyr' },
+  { server: 'Moonsea', path: '%APPDATA%\\Dungeon Helper\\plugins\\Trove\\Moonsea' }
+]
 
 const TroveImport = (props: Props) => {
   const { closeNav } = props
@@ -18,6 +25,8 @@ const TroveImport = (props: Props) => {
 
   const [warnings, setWarnings] = useState<string[]>([])
   const [errors, setErrors] = useState<string[]>([])
+  const [showModal, setShowModal] = useState(false)
+  const [copiedServer, setCopiedServer] = useState<string | null>(null)
 
   // Only persist Trove data when the user uploads a file. Avoid background overwrites.
   useEffect(() => {
@@ -55,6 +64,19 @@ const TroveImport = (props: Props) => {
     }
   }
 
+  const handleCopyPath = (server: string, path: string) => {
+    navigator.clipboard.writeText(path).catch(console.error)
+    setCopiedServer(server)
+    setTimeout(() => {
+      setCopiedServer(null)
+    }, 2000)
+  }
+
+  const handleUpload = () => {
+    setShowModal(false)
+    troveInputRef.current?.click()
+  }
+
   return (
     <>
       <Form.Control
@@ -71,7 +93,7 @@ const TroveImport = (props: Props) => {
         as={Button}
         onClick={() => {
           closeNav()
-          troveInputRef.current?.click()
+          setShowModal(true)
         }}
         title={troveData ? `${formatNumber(Object.keys(troveData).length)} Items Loaded` : 'Import from DH Trove'}
       >
@@ -80,6 +102,61 @@ const TroveImport = (props: Props) => {
           &nbsp;DH Trove
         </Stack>
       </Nav.Link>
+
+      <Modal
+        show={showModal}
+        onHide={() => {
+          setShowModal(false)
+        }}
+        centered
+        size='lg'
+      >
+        <Modal.Header closeButton className='bg-primary text-white'>
+          <Modal.Title>DH Trove Import</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Import your Dungeon Helper Trove CSV to easily see what items you have or don&apos;t have across your
+            characters and storage. The path is server-specific, so copy the one that matches your server and paste it
+            into the File Explorer address bar in Windows after clicking <strong>Upload DH Trove CSV</strong> below. The
+            file you are looking for is <code>TroveExport.Inventory.csv</code>. If you only see{' '}
+            <code>TroveExport.csv</code>, you are on an older version of Dungeon Helper Trove and should update to the
+            latest version.
+          </p>
+          <hr />
+          <p className='mb-1'>
+            <strong>Find your DH Trove CSV at:</strong>
+          </p>
+          <Stack gap={2}>
+            {TROVE_SERVER_PATHS.map(({ server, path }) => (
+              <div key={server} className='border border-1 border-light-subtle rounded p-2'>
+                <strong className='text-muted fw-semibold'>{server}</strong>
+                <Stack direction='horizontal' gap={2} className='align-items-stretch mt-1'>
+                  <code className='flex-grow-1 bg-dark text-light p-2 rounded' style={{ wordBreak: 'break-all' }}>
+                    {path}
+                  </code>
+                  <Button
+                    variant='outline-secondary'
+                    size='sm'
+                    onClick={() => {
+                      handleCopyPath(server, path)
+                    }}
+                    title={`Copy ${server} path`}
+                  >
+                    {copiedServer === server ? <FaCheck color='green' /> : <FaCopy />} Copy
+                  </Button>
+                </Stack>
+              </div>
+            ))}
+          </Stack>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='primary' onClick={handleUpload}>
+            <FaCloudArrowUp className='me-2' />
+            Upload DH Trove CSV
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }
