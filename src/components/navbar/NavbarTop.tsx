@@ -74,15 +74,15 @@ const NavbarTop = () => {
             >
               Saga Tracker
             </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to='/gear-planner'
-              onClick={() => {
-                setExpanded(false)
-              }}
-            >
-              Gear Planner
-            </Nav.Link>
+            {/*<Nav.Link*/}
+            {/*  as={Link}*/}
+            {/*  to='/gear-planner'*/}
+            {/*  onClick={() => {*/}
+            {/*    setExpanded(false)*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  Gear Planner*/}
+            {/*</Nav.Link>*/}
             <Nav.Link
               as={Button}
               href='https://github.com/veteran-software/yourddo'

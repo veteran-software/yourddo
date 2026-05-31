@@ -26,7 +26,6 @@ const PageRoutes = () => {
 
         <Route path='/saga-tracker' element={<SagaTracker />} />
         <Route path='/gear-planner' element={<GearPlanner />} />
-        {/*<Route path='/gear-planner' element={<GearPlannerV2 />} />*/}
 
         <Route path='/essence-crafting' element={<EssenceCrafting />} />
         <Route path='/cauldron-of-cadence' element={<CauldronOfCadence />} />
