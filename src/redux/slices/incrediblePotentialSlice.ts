@@ -5,15 +5,15 @@ import type { Ring } from '../../types/core.ts'
 import type { CraftingIngredient } from '../../types/crafting.ts'
 
 const initialState: IncrediblePotentialState = {
-  craftedIngredients: {} as Record<string, number>,
+  craftedIngredients: {},
   filterMode: 'OR',
   filteredRingList: baseItems,
   filteredUpgradeList: [...altarOfSubjugation].filter((recipe: CraftingIngredient) =>
     recipe.name.toLowerCase().includes('ring upgrade')
   ),
-  rawMaterials: {} as Record<string, number>,
+  rawMaterials: {},
   ringFilters: baseItems
-    .flatMap((item: Ring): string[] => item.enchantments.slice(0, 2).map((enhancement) => enhancement.name))
+    .flatMap((item: Ring): string[] => item.enchantments.map((enhancement) => enhancement.name))
     .filter((value, index, self) => self.indexOf(value) === index) // Remove duplicates
     .sort((a: string, b: string) => a.localeCompare(b)),
   selectedRing: undefined,
@@ -22,10 +22,7 @@ const initialState: IncrediblePotentialState = {
   selectedUpgradeFilters: [],
   upgradeFilters: [...altarOfSubjugation]
     .filter((recipe: CraftingIngredient) => recipe.name.toLowerCase().includes('ring upgrade'))
-    .flatMap(
-      (item: CraftingIngredient): string[] =>
-        item.effectsAdded?.slice(0, 2).map((enhancement) => enhancement.name) ?? []
-    )
+    .flatMap((item: CraftingIngredient): string[] => item.effectsAdded?.map((enhancement) => enhancement.name) ?? [])
     .filter((value, index, self) => self.indexOf(value) === index)
 }
 
@@ -46,10 +43,10 @@ const { actions, reducer } = createSlice({
       }
     },
     clearCraftedIngredients: (state) => {
-      state.craftedIngredients = {} as Record<string, number>
+      state.craftedIngredients = {}
     },
     clearRawMaterials: (state) => {
-      state.rawMaterials = {} as Record<string, number>
+      state.rawMaterials = {}
     },
     setFilteredRingList(state, action: PayloadAction<Ring[]>) {
       state.filteredRingList = action.payload

@@ -8,7 +8,7 @@ import Footer from '../footer/Footer.tsx'
 import NavbarTop from '../navbar/NavbarTop.tsx'
 
 const BaseLayout = () => {
-  const [subdomain] = useState(getSubdomain())
+  const [subdomain] = useState(() => getSubdomain())
 
   const { footerHeight } = useAppSelector((state) => state.app, shallowEqual)
 

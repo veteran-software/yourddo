@@ -1,4 +1,5 @@
 import { titleCase } from 'title-case'
+import type { LootDropLocation } from '../pages/gearPlanner/types.ts'
 import type { CraftingIngredient } from '../types/crafting.ts'
 import type { Ingredient } from '../types/ingredients.ts'
 import { FOCI } from './constants.ts'
@@ -35,6 +36,28 @@ export const formatIngredientName = (ingredientName: string, fecundityItem?: Cra
   }
 
   return formattedName
+}
+
+export const formatDropLocation = (location: string | LootDropLocation): string => {
+  if (typeof location === 'string') {
+    return location
+  }
+
+  const parts: string[] = []
+  if (location.questWildernessChain) {
+    parts.push(location.questWildernessChain)
+  }
+  if (location.whichChestPerson) {
+    parts.push(location.whichChestPerson)
+  }
+  if (location.difficulty) {
+    parts.push(location.difficulty)
+  }
+  if (location.sourceType && location.sourceType !== 'Quest') {
+    parts.push(`(${location.sourceType})`)
+  }
+
+  return parts.join(' | ') || 'Unknown Location'
 }
 
 export const isVowel = (letter: string): boolean => {

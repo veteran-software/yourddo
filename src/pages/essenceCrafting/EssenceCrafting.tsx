@@ -1,5 +1,5 @@
-import type {ReactElement} from 'react'
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import type { ReactElement } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Accordion,
   Badge,
@@ -14,22 +14,23 @@ import {
   Stack,
   Table
 } from 'react-bootstrap'
-import {FaArrowUpRightFromSquare} from 'react-icons/fa6'
-import {shallowEqual} from 'react-redux'
-import {useLocation, useNavigate} from 'react-router-dom'
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
+import { shallowEqual } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
 import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
-import type {ShoppingListTotals} from '../../components/common/ShoppingListDrawer.tsx'
+import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
-import {useAppSelector} from '../../redux/hooks.ts'
-import type {AugmentItem} from '../../types/augmentItem.ts'
-import type {Ingredient} from '../../types/ingredients.ts'
-import {findAugmentsForSlot} from '../../utils/augmentUtils.ts'
-import {getOwnedIngredients} from '../../utils/jsxUtils.tsx'
-import {toSingularName} from '../../utils/stringUtils.ts'
+import { useAppSelector } from '../../redux/hooks.ts'
+import type { AugmentItem } from '../../types/augmentItem.ts'
+import type { Ingredient } from '../../types/ingredients.ts'
+import { findAugmentsForSlot } from '../../utils/augmentUtils.ts'
+import { getOwnedIngredients } from '../../utils/jsxUtils.tsx'
+import { toSingularName } from '../../utils/stringUtils.ts'
 import {
   buildPermalinkUrl,
   encodeEssencePermalink,
+  type PermalinkStatePayload,
   readCcFromUrl,
   removeCcFromUrl,
   tryDecodeEssencePermalink
@@ -55,21 +56,140 @@ import {
   STORAGE_KEY
 } from './utils.ts'
 
+const getShardLevelLabel = (boundLv: number | undefined, unboundLv: number | undefined): string => {
+  if (boundLv != null && unboundLv != null)
+    return `Shard Level (Bound ${String(boundLv)} / Unbound ${String(unboundLv)})`
+  if (boundLv != null) return `Shard Level (Bound ${String(boundLv)})`
+  if (unboundLv != null) return `Shard Level (Unbound ${String(unboundLv)})`
+  return ''
+}
+
 const EssenceCrafting = () => {
   // Router utilities (work for both BrowserRouter and HashRouter)
   const location = useLocation()
   const navigate = useNavigate()
   // Trove integration: get uploaded inventory from a localStorage-backed Redux slice
   const { troveData } = useAppSelector((state) => state.app, shallowEqual)
-  const [items, setItems] = useState<Record<string, ItemState>>({})
-  const [activeKeys, setActiveKeys] = useState<string[]>([])
-  const [masterMinLevel, setMasterMinLevel] = useState(1)
+  const [items, setItems] = useState<Record<string, ItemState>>(() => {
+    // Attempt initial load immediately during construction
+    const { cc } = readCcFromUrl(location)
+    if (cc) {
+      const v2 = tryDecodeEssencePermalink(cc)
+
+      if (v2.ok) {
+        return sanitizeAugmentsOnItems(v2.data satisfies PermalinkStatePayload)
+      }
+    }
+
+    const loadedText: string | null = sessionStorage.getItem(STORAGE_KEY)
+    if (loadedText) {
+      try {
+        const parsed = JSON.parse(loadedText) as PermalinkStatePayload
+
+        return sanitizeAugmentsOnItems(parsed)
+      } catch (err) {
+        console.warn('EssenceCrafting: failed to load initial state.', err)
+      }
+    }
+    return {}
+  })
+
+  const [activeKeys, setActiveKeys] = useState<string[]>(() => {
+    const { cc } = readCcFromUrl(location)
+    if (cc) {
+      const v2 = tryDecodeEssencePermalink(cc)
+
+      if (v2.ok) {
+        return v2.data.activeKeys
+      }
+    }
+
+    const loadedText = sessionStorage.getItem(STORAGE_KEY)
+    if (loadedText) {
+      try {
+        const parsed = JSON.parse(loadedText) as {
+          activeKeys: string[]
+        }
+        return parsed.activeKeys
+      } catch {
+        // Fallback below
+      }
+    }
+    return []
+  })
+  const [masterMinLevel, setMasterMinLevel] = useState(() => {
+    const { cc } = readCcFromUrl(location)
+
+    if (cc) {
+      const v2 = tryDecodeEssencePermalink(cc)
+
+      if (v2.ok) {
+        return v2.data.masterMinLevel ?? 1
+      }
+    }
+
+    const loadedText: string | null = sessionStorage.getItem(STORAGE_KEY)
+    if (loadedText) {
+      try {
+        const parsed = JSON.parse(loadedText) as {
+          masterMinLevel?: number
+        }
+
+        return typeof parsed.masterMinLevel === 'number' ? parsed.masterMinLevel : 1
+      } catch {
+        // Fallback below
+      }
+    }
+    return 1
+  })
+
   // Binding selection removed from UI; keep state for backward-compatible permalink/session payloads (unused in logic)
-  const [masterBindingBound, setMasterBindingBound] = useState(true)
+  const [masterBindingBound] = useState(() => {
+    const loadedText = sessionStorage.getItem(STORAGE_KEY)
+
+    if (loadedText) {
+      try {
+        const parsed = JSON.parse(loadedText) as {
+          masterBindingBound?: boolean
+        }
+
+        return typeof parsed.masterBindingBound === 'boolean' ? parsed.masterBindingBound : true
+      } catch {
+        // Fallback below
+      }
+    }
+    return true
+  })
+
   // track which item cards are collapsed (default open -> not present in this set)
-  const [collapsedKeys, setCollapsedKeys] = useState<string[]>([])
+  const [collapsedKeys, setCollapsedKeys] = useState<string[]>(() => {
+    const { cc } = readCcFromUrl(location)
+    if (cc) {
+      const v2 = tryDecodeEssencePermalink(cc)
+
+      if (v2.ok) {
+        return Array.isArray(v2.data.collapsedKeys) ? v2.data.collapsedKeys : []
+      }
+    }
+
+    const loadedText = sessionStorage.getItem(STORAGE_KEY)
+    if (loadedText) {
+      try {
+        const parsed = JSON.parse(loadedText) as {
+          collapsedKeys?: string[]
+        }
+
+        return Array.isArray(parsed.collapsedKeys) ? parsed.collapsedKeys : []
+      } catch {
+        // Fallback below
+      }
+    }
+    return []
+  })
+
   // Permalink modal visibility
   const [showPermalink, setShowPermalink] = useState(false)
+
   // Shopping List drawer visibility and plan (Bound/Unbound)
   const [showShoppingList, setShowShoppingList] = useState(false)
   const [shoppingListPlanBound, setShoppingListPlanBound] = useState(true)
@@ -103,8 +223,6 @@ const EssenceCrafting = () => {
     },
     [AUGMENT_COLOR_FLOOR]
   )
-
-  // ----- Permalink encoding/decoding moved to ./permalink.ts -----
 
   // Build a lookup map for dataset entries by name for quick access when rendering scaled values
   const enhancementByName = useMemo(() => {
@@ -141,68 +259,48 @@ const EssenceCrafting = () => {
     [enhancementByName]
   )
 
-  // Rule: Insightful effects (including Parrying) cannot be applied if effective ML < 10
+  // Rule: Insightful effects (including Parrying) cannot be applied if effective ML < 10.
+  // Also, any enchantment with a value of -1 at the current level is not craftable.
   const isEnhancementAllowedAtML = useCallback(
     (name: string | null, effectiveML: number): boolean => {
       if (!name) {
         return true
       }
 
+      const entry = enhancementByName.get(name)
+      if (entry) {
+        const stats = Array.isArray(entry.stat) ? entry.stat : []
+
+        if (stats.length > 0) {
+          const idx: number = Math.max(0, Math.min(stats.length - 1, (effectiveML || 1) - 1))
+          const value: string | number = stats[idx]
+
+          if (value === -1) {
+            return false
+          }
+        }
+      }
+
       return !(isInsightfulEnhancement(name) && (effectiveML || 1) < 10)
     },
-    [isInsightfulEnhancement]
+    [enhancementByName, isInsightfulEnhancement]
   )
 
   // Load from permalink (if present) or sessionStorage once
   const didLoadRef = useRef(false)
 
-  const loadInitialState = useCallback((): boolean => {
-    // Re-saved to force reload
-    const { cc, source } = readCcFromUrl(location)
-    if (cc) {
-      const v2 = tryDecodeEssencePermalink(cc)
-      if (v2.ok) {
-        const data = v2.data
-        setItems(sanitizeAugmentsOnItems(data))
-        setActiveKeys(data.activeKeys)
-        setMasterMinLevel(data.masterMinLevel ?? 1)
-        setCollapsedKeys(Array.isArray(data.collapsedKeys) ? data.collapsedKeys : [])
-        Promise.resolve(removeCcFromUrl(navigate, location, source)).catch(console.error)
-        return true
-      }
-    }
-
-    const loadedText = sessionStorage.getItem(STORAGE_KEY)
-    if (!loadedText) return false
-
-    const parsed = JSON.parse(loadedText) as {
-      items: Record<string, ItemState>
-      activeKeys: string[]
-      masterMinLevel?: number
-      masterBindingBound?: boolean
-      collapsedKeys?: string[]
-    }
-
-    setItems(sanitizeAugmentsOnItems(parsed))
-    setActiveKeys(parsed.activeKeys)
-    setMasterMinLevel(typeof parsed.masterMinLevel === 'number' ? parsed.masterMinLevel : 1)
-    setMasterBindingBound(typeof parsed.masterBindingBound === 'boolean' ? parsed.masterBindingBound : true)
-    setCollapsedKeys(Array.isArray(parsed.collapsedKeys) ? parsed.collapsedKeys : [])
-
-    return true
-  }, [location, navigate])
-
   useEffect(() => {
-    if (didLoadRef.current) return
-    try {
-      const loaded = loadInitialState()
-      if (loaded) {
-        didLoadRef.current = true
-      }
-    } catch (err) {
-      console.warn('EssenceCrafting: failed to load session state – resetting to defaults.', err)
+    if (didLoadRef.current) {
+      return
     }
-  }, [loadInitialState])
+
+    const { cc, source } = readCcFromUrl(location)
+
+    if (cc) {
+      didLoadRef.current = true
+      removeCcFromUrl(navigate, location, source).catch(console.error)
+    }
+  }, [location, navigate])
 
   // Persist on change
   useEffect(() => {
@@ -217,42 +315,52 @@ const EssenceCrafting = () => {
     sessionStorage.setItem(STORAGE_KEY, payload)
   }, [items, activeKeys, masterMinLevel, masterBindingBound, collapsedKeys])
 
-  // Enforce the rule dynamically: if effective ML for an item drops below 10,
-  // clear any selected Insightful effects (prefix/suffix/extra cannot be applied)
-  useEffect(() => {
-    const nextItems: Record<string, ItemState> = {}
-    let changed = false
+  // Enforce item constraints (Insightful effects at ML < 10, Augment color ML floors)
+  // We do this during render phase to avoid multiple re-renders and ESLint warnings.
+  const { constrainedItems, needsFix } = useMemo(() => {
+    let current = items
+    let anyChanged = false
 
-    changed = iterateItemsOnLevelChange(items, masterMinLevel, nextItems, isEnhancementAllowedAtML, changed)
-    if (changed) {
-      setItems(nextItems)
-    }
-  }, [masterMinLevel, items, isEnhancementAllowedAtML])
-
-  // Auto-raise per-item ML override to satisfy augment color ML floors.
-  // This runs after load and whenever items/master ML change. It will only ever raise
-  // an item's ML override; it will not automatically lower if the floor decreases.
-  useEffect(() => {
-    const nextItems: Record<string, ItemState> = {}
-
-    let changed = false
-
-    for (const key of Object.keys(items)) {
-      const currentItem = items[key]
+    // 1. Augment color ML floors: raise per-item ML override if needed
+    const nextAfterAugments: Record<string, ItemState> = {}
+    let augmentChanged = false
+    for (const key of Object.keys(current)) {
+      const currentItem = current[key]
       const floorForAugments = computeAugmentMinLevelFloor(currentItem)
       const effectiveML = currentItem.minLevelOverride ?? masterMinLevel
 
       if (effectiveML < floorForAugments) {
-        changed = true
-        nextItems[key] = { ...currentItem, minLevelOverride: floorForAugments }
+        augmentChanged = true
+        nextAfterAugments[key] = { ...currentItem, minLevelOverride: floorForAugments }
       } else {
-        nextItems[key] = currentItem
+        nextAfterAugments[key] = currentItem
       }
     }
-    if (changed) {
-      setItems(nextItems)
+    if (augmentChanged) {
+      anyChanged = true
+      current = nextAfterAugments
     }
-  }, [computeAugmentMinLevelFloor, items, masterMinLevel])
+
+    // 2. Insightful effects: clear if effective ML < 10
+    const nextAfterInsightful: Record<string, ItemState> = {}
+    const insightfulChanged = iterateItemsOnLevelChange(
+      current,
+      masterMinLevel,
+      nextAfterInsightful,
+      isEnhancementAllowedAtML,
+      false
+    )
+    if (insightfulChanged) {
+      anyChanged = true
+      current = nextAfterInsightful
+    }
+
+    return { constrainedItems: anyChanged ? current : items, needsFix: anyChanged }
+  }, [items, masterMinLevel, computeAugmentMinLevelFloor, isEnhancementAllowedAtML])
+
+  if (needsFix) {
+    setItems(constrainedItems)
+  }
 
   const toggleSlot = (slotKey: string) => {
     const wasActive = activeKeys.includes(slotKey)
@@ -286,6 +394,7 @@ const EssenceCrafting = () => {
         minLevelOverride: null,
         bindingOverride: null
       }
+
       return { ...prev, [slotKey]: next }
     })
   }
@@ -322,7 +431,13 @@ const EssenceCrafting = () => {
 
       const nextAugmentSlots = [
         ...item.augmentSlots,
-        { id, slotType: augmentType, selectedAugment: null, filters: [], filterMode: 'OR' as const }
+        {
+          id,
+          slotType: augmentType,
+          selectedAugment: null,
+          filters: [],
+          filterMode: 'OR' as const
+        }
       ]
 
       // Auto-raise item ML override if the new augment color imposes a higher floor
@@ -358,18 +473,25 @@ const EssenceCrafting = () => {
   }
 
   const coreSelect = (slotKey: string, which: 'prefix' | 'suffix' | 'extra', value: string) => {
-    updateItem(slotKey, (item) => ({ ...item, [which]: value === 'None' ? null : value }))
+    updateItem(slotKey, (item) => ({
+      ...item,
+      [which]: value === 'None' ? null : value
+    }))
   }
 
   const setHasMark = (slotKey: string, checked: boolean) => {
-    updateItem(slotKey, (item) => ({ ...item, hasCannithMark: checked, extra: checked ? item.extra : null }))
+    updateItem(slotKey, (item) => ({
+      ...item,
+      hasCannithMark: checked,
+      extra: checked ? item.extra : null
+    }))
   }
 
   const handleSelectAugment = (slotKey: string, augmentSlotId: string, _slotType: string, aug: Ingredient) => {
     updateItem(slotKey, (item) => ({
       ...item,
       augmentSlots: item.augmentSlots.map((augmentSlot) =>
-        augmentSlot.id === augmentSlotId ? { ...augmentSlot, selectedAugment: aug as AugmentItem } : augmentSlot
+        augmentSlot.id === augmentSlotId ? { ...augmentSlot, selectedAugment: aug } : augmentSlot
       )
     }))
   }
@@ -488,34 +610,6 @@ const EssenceCrafting = () => {
     if (typeof value === 'number') return `${name} +${String(value)}`
 
     return `${name} ${value}`
-  }
-
-  // Returns the numeric ML increase for a given enhancement selection
-  const getEnhancementMinIncrease = (name: string | null): number => {
-    if (!name) {
-      return 0
-    }
-
-    const entry = enhancementByName.get(name)
-
-    if (!entry) {
-      return 0
-    }
-
-    const inc = entry.minLevelIncrease
-
-    if (typeof inc === 'number') {
-      return inc
-    }
-
-    if (inc && typeof inc === 'object') {
-      // If dataset uses an object form, try to infer an increase relative to base ML.
-      // Prefer explicit minimumLevel over noMinimumLevel as a conservative requirement.
-      const min = Number(inc.minimumLevel ?? inc.noMinimumLevel)
-      return Number.isFinite(min) ? Math.max(0, min - 1) : 0
-    }
-
-    return 0
   }
 
   // Helper to compute only the value portion (e.g., "+3" or "1d10" or description) for headers
@@ -672,16 +766,25 @@ const EssenceCrafting = () => {
       const rows: { name: string; qty: number }[] = []
 
       if (essenceQty != null && essenceQty > 0) {
-        rows.push({ name: toSingularName('Magic Item Essences'), qty: essenceQty })
+        rows.push({
+          name: toSingularName('Magic Item Essences'),
+          qty: essenceQty
+        })
       }
 
       if (purifiedQty != null && purifiedQty > 0) {
-        rows.push({ name: toSingularName('Purified Eberron Dragonshard Fragments'), qty: purifiedQty })
+        rows.push({
+          name: toSingularName('Purified Eberron Dragonshard Fragments'),
+          qty: purifiedQty
+        })
       }
 
       collectibles.forEach((collectible) => {
         if (collectible.qty > 0 && collectible.name)
-          rows.push({ name: toSingularName(collectible.name), qty: collectible.qty })
+          rows.push({
+            name: toSingularName(collectible.name),
+            qty: collectible.qty
+          })
       })
 
       if (rows.length === 0) {
@@ -732,7 +835,13 @@ const EssenceCrafting = () => {
   }
 
   const buildMinLevelMaterials = useCallback(
-    (level: number, bound: boolean): { shardLevel: number | null; rows: { name: string; qty: number }[] } | null => {
+    (
+      level: number,
+      bound: boolean
+    ): {
+      shardLevel: number | null
+      rows: { name: string; qty: number }[]
+    } | null => {
       const rows: { name: string; qty: number }[] = []
       const ESSENCE_NAME = toSingularName('Magic Item Essences')
       const PURIFIED_NAME = toSingularName('Purified Eberron Dragonshard Fragments')
@@ -773,7 +882,7 @@ const EssenceCrafting = () => {
   const renderAugmentSlot = (slotKey: string, augmentSlot: ItemAugmentSlotState): ReactElement => {
     const groupedByDisplay = findAugmentsForSlot(augmentSlot.slotType)
     const flatForSlot = Object.values(groupedByDisplay).flat() as unknown as Ingredient[]
-    const augmentOptions = { [augmentSlot.slotType]: flatForSlot } as Record<string, Ingredient[]>
+    const augmentOptions = { [augmentSlot.slotType]: flatForSlot }
     const filteredAugmentOptions = filterAugmentOptions(augmentOptions, augmentSlot.filters, augmentSlot.filterMode)
     const selectedAugments: Record<string, AugmentItem | null> = {
       [augmentSlot.slotType]: augmentSlot.selectedAugment
@@ -827,7 +936,12 @@ const EssenceCrafting = () => {
   const renderMaterialsAccordion = (slotKey: string, item: ItemState): ReactElement | null => {
     const effectiveML: number = items[slotKey].minLevelOverride ?? masterMinLevel
 
-    const selections: { key: string; label: string; name: string | null; isMinLevel?: boolean }[] = [
+    const selections: {
+      key: string
+      label: string
+      name: string | null
+      isMinLevel?: boolean
+    }[] = [
       {
         key: 'minLevel',
         label: 'Minimum Level',
@@ -899,8 +1013,14 @@ const EssenceCrafting = () => {
       name: string
       isCombined: boolean
       isMinLevel?: boolean
-      boundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
-      unboundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
+      boundData: {
+        shardLevel: number
+        rows: { name: string; qty: number }[]
+      }
+      unboundData: {
+        shardLevel: number
+        rows: { name: string; qty: number }[]
+      }
       valueOnly: string | null
       display: string | null
     }[]
@@ -911,16 +1031,22 @@ const EssenceCrafting = () => {
 
     // Build unified material rows combining Bound and Unbound into a single table with two quantity columns
     const renderUnifiedMaterials = (
-      boundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null,
-      unboundData: { shardLevel: number | null; rows: { name: string; qty: number }[] } | null
+      boundData: {
+        shardLevel: number
+        rows: { name: string; qty: number }[]
+      },
+      unboundData: {
+        shardLevel: number
+        rows: { name: string; qty: number }[]
+      }
     ): ReactElement => {
       // If neither exists, show a compact empty state
-      if (!boundData && !unboundData) {
+      if (boundData.rows.length === 0 && unboundData.rows.length === 0) {
         return <div className='p-2 text-muted'>No Bound or Unbound version exists for this shard.</div>
       }
 
-      const boundMap = new Map<string, number>((boundData?.rows ?? []).map((r) => [r.name, r.qty]))
-      const unboundMap = new Map<string, number>((unboundData?.rows ?? []).map((r) => [r.name, r.qty]))
+      const boundMap = new Map<string, number>(boundData.rows.map((r) => [r.name, r.qty]))
+      const unboundMap = new Map<string, number>(unboundData.rows.map((r) => [r.name, r.qty]))
 
       // Build unified rows and sort so any N/A entries (missing Bound or Unbound) are pushed to the bottom.
       // Within each group (complete vs. N/A), keep alphabetical order by ingredient name.
@@ -934,7 +1060,9 @@ const EssenceCrafting = () => {
         })
         .sort((left, right) => {
           if (left.hasNA !== right.hasNA) return left.hasNA ? 1 : -1
-          return left.name.localeCompare(right.name, 'en', { sensitivity: 'base' })
+          return left.name.localeCompare(right.name, 'en', {
+            sensitivity: 'base'
+          })
         })
 
       return (
@@ -959,14 +1087,14 @@ const EssenceCrafting = () => {
                 </td>
                 <td className='text-end'>
                   {typeof bQty === 'number' ? (
-                    getOwnedIngredients({ name } as unknown as Ingredient, bQty, troveData)
+                    getOwnedIngredients({ name }, bQty, troveData)
                   ) : (
                     <span className='text-muted'>N/A</span>
                   )}
                 </td>
                 <td className='text-end'>
                   {typeof uQty === 'number' ? (
-                    getOwnedIngredients({ name } as unknown as Ingredient, uQty, troveData)
+                    getOwnedIngredients({ name }, uQty, troveData)
                   ) : (
                     <span className='text-muted'>N/A</span>
                   )}
@@ -986,15 +1114,7 @@ const EssenceCrafting = () => {
               <div className='d-flex w-100 align-items-center justify-content-between gap-2'>
                 <strong>{accordionEntry.display ?? ''}</strong>
                 <small className='text-muted'>
-                  {(() => {
-                    const boundLv = accordionEntry.boundData?.shardLevel
-                    const unboundLv = accordionEntry.unboundData?.shardLevel
-                    if (boundLv != null && unboundLv != null)
-                      return `Shard Level (Bound ${String(boundLv)} / Unbound ${String(unboundLv)})`
-                    if (boundLv != null) return `Shard Level (Bound ${String(boundLv)})`
-                    if (unboundLv != null) return `Shard Level (Unbound ${String(unboundLv)})`
-                    return ''
-                  })()}
+                  {getShardLevelLabel(accordionEntry.boundData.shardLevel, accordionEntry.unboundData.shardLevel)}
                 </small>
               </div>
             </Accordion.Header>
@@ -1005,6 +1125,39 @@ const EssenceCrafting = () => {
           </Accordion.Item>
         ))}
       </Accordion>
+    )
+  }
+
+  const renderAugmentAdder = (slotKey: string, item: ItemState) => {
+    const used = new Set(item.augmentSlots.map((augmentSlot) => augmentSlot.slotType))
+    const allowedForThisItem = new Set(allowedAugmentColorsForSlot(slotKey))
+    const remaining = AVAILABLE_AUGMENT_TYPES.filter(
+      (colorOption) => allowedForThisItem.has(colorOption.key) && !used.has(colorOption.key)
+    )
+
+    const noneLeft = remaining.length === 0
+
+    return (
+      <Form.Select
+        size='sm'
+        disabled={noneLeft}
+        onChange={(event) => {
+          const value = event.target.value
+          if (value) {
+            addAugmentSlot(slotKey, value)
+          }
+
+          // reset select to placeholder
+          event.currentTarget.selectedIndex = 0
+        }}
+      >
+        <option value=''>{noneLeft ? 'No more augment colors available for this item' : 'Add Augment Slot...'}</option>
+        {remaining.map((colorOption) => (
+          <option key={colorOption.key} value={colorOption.key}>
+            {colorOption.label}
+          </option>
+        ))}
+      </Form.Select>
     )
   }
 
@@ -1040,18 +1193,25 @@ const EssenceCrafting = () => {
       const totalsMap = new Map<string, number>()
       let markCount = 0
 
-      const orderedActiveKeys = ALL_SLOT_KEYS.map((s) => s.key).filter((k) => activeKeys.includes(k))
-      for (const slotKey of orderedActiveKeys) {
-        const item = items[slotKey]
-        if (!item) continue
+      const orderedActiveKeys: string[] = ALL_SLOT_KEYS.map((slot: { key: string; label: string }) => slot.key).filter(
+        (key: string) => activeKeys.includes(key)
+      )
 
+      for (const slotKey of orderedActiveKeys) {
+        if (!(slotKey in items)) {
+          continue
+        }
+
+        const item: ItemState | undefined = items[slotKey]
         const effectiveML = effectiveMLBySlot.get(slotKey) ?? masterMinLevel
+
         if (item.hasCannithMark) {
           markCount += 1
         }
 
         // Add materials for Minimum Level shard
         const mlData = buildMinLevelMaterials(effectiveML, bound)
+
         if (mlData) {
           for (const r of mlData.rows) {
             totalsMap.set(r.name, (totalsMap.get(r.name) ?? 0) + r.qty)
@@ -1092,24 +1252,7 @@ const EssenceCrafting = () => {
     const augmentFloor = computeAugmentMinLevelFloor(item)
     const effectiveML = item.minLevelOverride ?? masterMinLevel
 
-    // Collect ML increase messages for selected affixes
-    const incPairs: { name: string; inc: number }[] = []
-    const pushIncreaseIfAny = (effectName: string | null) => {
-      if (!effectName) {
-        return
-      }
-
-      const inc: number = getEnhancementMinIncrease(effectName)
-      if (inc > 0) {
-        incPairs.push({ name: effectName, inc })
-      }
-    }
-
-    pushIncreaseIfAny(item.prefix)
-    pushIncreaseIfAny(item.suffix)
-    pushIncreaseIfAny(item.hasCannithMark ? item.extra : null)
-
-    const selectIsInvalid = incPairs.length > 0 || effectiveML < augmentFloor
+    const selectIsInvalid = effectiveML < augmentFloor
 
     return (
       <>
@@ -1133,16 +1276,6 @@ const EssenceCrafting = () => {
             </option>
           ))}
         </Form.Select>
-
-        {incPairs.length > 0 && (
-          <div className='invalid-feedback d-block mt-1'>
-            {incPairs.map((pair: { name: string; inc: number }) => (
-              <div
-                key={pair.name}
-              >{`Adding the ${pair.name} effect will raise the minimum level of this item by ${String(pair.inc)}.`}</div>
-            ))}
-          </div>
-        )}
 
         {effectiveML < augmentFloor && (
           <div className='invalid-feedback d-block mt-1'>
@@ -1316,43 +1449,7 @@ const EssenceCrafting = () => {
                               <hr />
 
                               <Stack direction='horizontal' gap={2} className='flex-wrap'>
-                                {(() => {
-                                  const used = new Set(item.augmentSlots.map((augmentSlot) => augmentSlot.slotType))
-                                  const allowedForThisItem = new Set(allowedAugmentColorsForSlot(slotKey))
-                                  const remaining = AVAILABLE_AUGMENT_TYPES.filter(
-                                    (colorOption) =>
-                                      allowedForThisItem.has(colorOption.key) && !used.has(colorOption.key)
-                                  )
-
-                                  const noneLeft = remaining.length === 0
-
-                                  return (
-                                    <Form.Select
-                                      size='sm'
-                                      disabled={noneLeft}
-                                      onChange={(event) => {
-                                        const value = event.target.value
-                                        if (value) {
-                                          addAugmentSlot(slotKey, value)
-                                        }
-
-                                        // reset select to placeholder
-                                        event.currentTarget.selectedIndex = 0
-                                      }}
-                                    >
-                                      <option value=''>
-                                        {noneLeft
-                                          ? 'No more augment colors available for this item'
-                                          : 'Add Augment Slot...'}
-                                      </option>
-                                      {remaining.map((colorOption) => (
-                                        <option key={colorOption.key} value={colorOption.key}>
-                                          {colorOption.label}
-                                        </option>
-                                      ))}
-                                    </Form.Select>
-                                  )
-                                })()}
+                                {renderAugmentAdder(slotKey, item)}
                               </Stack>
 
                               {item.augmentSlots.length === 0 ? (
@@ -1383,7 +1480,15 @@ const EssenceCrafting = () => {
           setShowPermalink(false)
         }}
         buildUrl={() =>
-          buildPermalinkUrl(encodeEssencePermalink({ items, activeKeys, collapsedKeys, masterMinLevel }), location)
+          buildPermalinkUrl(
+            encodeEssencePermalink({
+              items,
+              activeKeys,
+              collapsedKeys,
+              masterMinLevel
+            }),
+            location
+          )
         }
       />
 

@@ -2,23 +2,32 @@ import type { Bonus, Enhancement } from '../../../types/core.ts'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
 import { commonBinding, createRequirements } from './static.ts'
 
-export const attributeScales = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'].map(
-  (attr) => ({
-    name: attr,
-    effectName: `${attr} +14`,
-    modifier: 14,
-    notes: 'Minor Artifact: +15'
-  })
-)
+export const attributeScales = [
+  'Strength',
+  'Dexterity',
+  'Constitution',
+  'Intelligence',
+  'Wisdom',
+  'Charisma'
+].map((attr) => ({
+  name: attr,
+  effectName: `${attr} +14`,
+  modifier: 14,
+  notes: 'Minor Artifact: +15'
+}))
 
 // Spell crit damage scales data
-export const spellCritScales = [['Acid'], ['Light and Alignment'], ['Negative and Poison'], ['Sonic'], ['Untyped']].map(
-  ([type]) => ({
-    name: `${type} Spell Critical Damage`,
-    effectName: `${type} Spell Crit Damage`,
-    modifier: '20%'
-  })
-)
+export const spellCritScales = [
+  ['Acid'],
+  ['Light and Alignment'],
+  ['Negative and Poison'],
+  ['Sonic'],
+  ['Untyped']
+].map(([type]) => ({
+  name: `${type} Spell Critical Damage`,
+  effectName: `${type} Spell Crit Damage`,
+  modifier: '20%'
+}))
 
 // Special scales
 export const specialScales = [
@@ -56,7 +65,10 @@ export const createAccessoryScale = (scaleData: {
   }) as CraftingIngredient
 
 // Factory function for accessory fangs
-export const createAccessoryFang = (name: string, effects: Enhancement[]): CraftingIngredient => ({
+export const createAccessoryFang = (
+  name: string,
+  effects: Enhancement[]
+): CraftingIngredient => ({
   name: `Fang: ${name}`,
   image: 'dinosaurBoneFangAugment',
   minimumLevel: 31,
@@ -105,12 +117,12 @@ export const specialFangs = [
     name: 'Deception',
     effects: [
       {
-        name: 'Sneak Attack +11',
+        name: 'Sneak Attack Rolls',
         modifier: 11,
         bonus: 'Enhancement'
       },
       {
-        name: 'Sneak Attack Damage +17',
+        name: 'Sneak Attack Damage Rolls',
         modifier: 17,
         bonus: 'Enhancement'
       }
@@ -120,12 +132,12 @@ export const specialFangs = [
     name: 'Seeker',
     effects: [
       {
-        name: 'Critical Confirmation +14',
+        name: 'Critical Confirmation Rolls',
         modifier: 14,
         bonus: 'Enhancement'
       },
       {
-        name: 'Critical Damage +14',
+        name: 'Critical Damage Rolls',
         modifier: 14,
         bonus: 'Enhancement'
       }
@@ -238,7 +250,10 @@ export const spellCritClaws = [
 }))
 
 // Factory function for accessory horns
-export const createAccessoryHorn = (name: string, effects: Enhancement[]): CraftingIngredient => ({
+export const createAccessoryHorn = (
+  name: string,
+  effects: Enhancement[]
+): CraftingIngredient => ({
   name: `Horn: ${name}`,
   image: 'dinosaurBoneHornAugment',
   minimumLevel: 31,

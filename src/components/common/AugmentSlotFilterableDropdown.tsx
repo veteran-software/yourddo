@@ -69,9 +69,7 @@ const groupByAugmentType = (list: Ingredient[] | undefined, fallbackHeader: stri
 
   return list.reduce<Record<string, Ingredient[]>>((material: Record<string, Ingredient[]>, ing: Ingredient) => {
     const key: string = ing.augmentType ?? fallbackHeader
-    if (!material[key]) {
-      material[key] = []
-    }
+    material[key] ??= []
 
     material[key].push(ing)
 
@@ -140,7 +138,7 @@ const orderGroups = (
   const result: Record<string, Ingredient[]> = {}
   desired.forEach((k: string) => {
     // Guard against keys that are in the desired order but not present in the actual groups
-    if (groups[k]?.length) {
+    if (k in groups && Array.isArray(groups[k]) && groups[k].length > 0) {
       result[k] = groups[k]
     }
   })
@@ -185,7 +183,7 @@ const groupLamordiaByTier = (list: Ingredient[] | undefined): Record<string, Ing
   const legendary: Ingredient[] = []
 
   list.forEach((ing: Ingredient) => {
-    const lvl: number = ing.minimumLevel ?? 0
+    const lvl = Number(ing.minimumLevel ?? 0)
     if (lvl >= 30) {
       legendary.push(ing)
     } else {
@@ -216,15 +214,21 @@ const buildGroups = (
   isColorSlot: boolean,
   isLamordiaSlot: boolean
 ): Record<string, Ingredient[]> => {
+  if (!(slotKey in source) || !Array.isArray(source[slotKey]) || source[slotKey].length === 0) {
+    return {}
+  }
+
+  const items: Ingredient[] = source[slotKey]
+
   if (isColorSlot) {
-    return groupByAugmentType(source[slotKey], headerLabel)
+    return groupByAugmentType(items, headerLabel)
   }
 
   if (isLamordiaSlot) {
-    return groupLamordiaByTier(source[slotKey])
+    return groupLamordiaByTier(items)
   }
 
-  return { [headerLabel]: source[slotKey] }
+  return { [headerLabel]: items }
 }
 
 /**

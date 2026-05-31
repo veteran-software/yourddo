@@ -1,23 +1,5 @@
-import {
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
-import {
-  Badge,
-  Button,
-  Card,
-  Col,
-  Form,
-  InputGroup,
-  Row,
-  Stack,
-  Tab,
-  Tabs
-} from 'react-bootstrap'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Badge, Button, Card, Col, Form, InputGroup, Row, Stack, Tab, Tabs } from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import IndeterminateCheck from './components/IndeterminateCheck'
 import { loadInitial } from './components/loadInitial'
@@ -49,12 +31,7 @@ const STORAGE_KEY_TURNED_IN_AT_V1 = 'yourddo:saga-tracker:turnedInAt:v1'
 const STORAGE_KEY_ACTIVE_TAB = 'yourddo:saga-tracker:activeTab:v1'
 
 // Authoritative fixed list from JSON (no completion fields in file)
-const fixedSagas: Omit<SagaItem, 'completed' | 'turnedIn'>[] = sagas as unknown as {
-  id: string
-  name: string
-  levelRange: string
-  npc: string
-}[]
+const fixedSagas: Omit<SagaItem, 'completed' | 'turnedIn'>[] = sagas
 
 interface QuestDef {
   id: string
@@ -62,7 +39,7 @@ interface QuestDef {
   sagas: string[]
 }
 
-const allQuests: QuestDef[] = questsData as unknown as QuestDef[]
+const allQuests: QuestDef[] = questsData
 
 // Read statuses from localStorage and merge onto the authoritative JSON list
 
@@ -407,7 +384,6 @@ const SagaTracker = () => {
   // expand/collapse state per saga row
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
-
   // One-time: request persistent storage and migrate from localStorage to IndexedDB if needed.
   useEffect(() => {
     //eslint-disable-next-line sonarjs/cognitive-complexity
@@ -435,7 +411,9 @@ const SagaTracker = () => {
                   .filter((e) => Boolean(e.id)) as { id: string; completed: boolean; turnedIn: boolean }[]
                 await idbSetSagaItems(dbItems)
               }
-            } catch { /* ignore */ }
+            } catch {
+              /* ignore */
+            }
           }
         }
 
@@ -453,7 +431,9 @@ const SagaTracker = () => {
                 }
                 await idbSetQuestDoneAt(dbQuests)
               }
-            } catch { /* ignore */ }
+            } catch {
+              /* ignore */
+            }
           }
         }
 
@@ -471,7 +451,9 @@ const SagaTracker = () => {
                 }
                 await idbSetTurnedInAt(dbTurned)
               }
-            } catch { /* ignore */ }
+            } catch {
+              /* ignore */
+            }
           }
         }
 
@@ -510,23 +492,33 @@ const SagaTracker = () => {
 
   // One-time sync: if a saga is already marked turnedIn (from older saves) but
   // we have no timestamp for it, initialize a cutoff so past quest runs don't count.
+  const initialSyncRef = useRef(false)
+
   useEffect(() => {
-    setTurnedInAt((prev) => {
-      let changed = false
-      const next = { ...prev }
+    if (initialSyncRef.current) return
+    initialSyncRef.current = true
 
-      for (const it of items) {
-        if (it.turnedIn && (!Number.isFinite(prev[it.id]) || (prev[it.id] ?? 0) === 0)) {
-          next[it.id] = Date.now()
-          changed = true
+    // Use a small delay to avoid synchronous state update in effect
+    const timeoutId = setTimeout(() => {
+      setTurnedInAt((prev) => {
+        let changed = false
+        const next = { ...prev }
+
+        for (const it of items) {
+          if (it.turnedIn && (!Number.isFinite(prev[it.id]) || (prev[it.id] ?? 0) === 0)) {
+            next[it.id] = Date.now()
+            changed = true
+          }
         }
-      }
 
-      return changed ? next : prev
-    })
-    // run only on the initial mount with initial items
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+        return changed ? next : prev
+      })
+    }, 0)
+
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [items])
 
   useEffect(() => {
     try {
@@ -682,40 +674,41 @@ const SagaTracker = () => {
   }
 
   // When pressing the search button or Enter, auto-expand sagas that have matching quests or names
+  const lastProcessedQueryRef = useRef('')
+
+  const updateExpanded = useCallback(
+    (nq: string) => {
+      setExpanded((prev) => {
+        if (nq.length < 3) {
+          return Object.keys(prev).length === 0 ? prev : {}
+        }
+
+        const next: Record<string, boolean> = {}
+        for (const s of fixedSagas) {
+          const qs = questsBySaga[s.id] ?? []
+          next[s.id] = qs.some((qq) => normalize(qq.name).includes(nq))
+        }
+
+        return compareExpanded(prev, next)
+      })
+    },
+    [questsBySaga]
+  )
+
   useEffect(() => {
     const nq = normalize(searchQuery)
+    if (nq === lastProcessedQueryRef.current) return
+    lastProcessedQueryRef.current = nq
 
-    setExpanded((prev) => {
-      if (nq.length < 3) {
-        // If search is cleared or too short, collapse all
-        return Object.keys(prev).length === 0 ? prev : {}
-      }
+    // Use a small delay to avoid synchronous state update in effect
+    const timeoutId = setTimeout(() => {
+      updateExpanded(nq)
+    }, 0)
 
-      const next: Record<string, boolean> = {}
-      for (const s of fixedSagas) {
-        const quests = questsBySaga[s.id] ?? []
-        const questMatchesAny = quests.some((qq) => normalize(qq.name).includes(nq))
-
-        next[s.id] = questMatchesAny
-      }
-
-      // Deep comparison to avoid redundant state updates
-      const prevKeys = Object.keys(prev)
-      const nextKeys = Object.keys(next)
-      let changed = prevKeys.length !== nextKeys.length
-
-      if (!changed) {
-        for (const k of nextKeys) {
-          if (next[k] !== prev[k]) {
-            changed = true
-            break
-          }
-        }
-      }
-
-      return changed ? next : prev
-    })
-  }, [searchQuery, questsBySaga])
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [searchQuery, updateExpanded])
 
   const runSearch = () => {
     // Legacy function, now handled by useEffect for auto-expansion
@@ -742,11 +735,9 @@ const SagaTracker = () => {
     }
   }
 
-
   const onToggleExpand = (id: string) => {
     setExpanded((e) => ({ ...e, [id]: !e[id] }))
   }
-
 
   const onImportClick = () => fileInputRef.current?.click()
   const onImportFile = async (file?: File | null) => {
@@ -784,24 +775,55 @@ const SagaTracker = () => {
     }
   }
 
+  const updateSagaItems = useCallback(() => {
+    setItems((prevItems) => {
+      let hasChanges = false
+      const nextItems: SagaItem[] = []
+
+      for (const it of prevItems) {
+        const quests = questsBySaga[it.id] as QuestDef[] | undefined
+        let nextIt = it
+
+        if (quests && quests.length > 0) {
+          const tTime = turnedInAt[it.id] ?? 0
+          const allDone = quests.every((q) => (questDoneAt[q.id] ?? 0) > tTime)
+          if (allDone !== it.completed) {
+            hasChanges = true
+            nextIt = { ...it, completed: allDone }
+          }
+        }
+
+        nextItems.push(nextIt)
+      }
+
+      return hasChanges ? nextItems : prevItems
+    })
+  }, [questsBySaga, questDoneAt, turnedInAt])
+
   // Auto-check a saga as completed when all its quests are completed (since its last turn-in).
   useEffect(() => {
-    const nextItems = items.map((it) => {
-      const quests = questsBySaga[it.id] ?? []
-      if (quests.length === 0) return it
-
-      const allDone = quests.every((q) => isQuestDoneForSaga(it.id, q.id))
-      if (allDone !== it.completed) {
-        return { ...it, completed: allDone }
-      }
-      return it
-    })
-
-    const changed = nextItems.some((it, idx) => it.completed !== items[idx].completed)
-    if (changed) {
-      setItems(nextItems)
+    const timeoutId = setTimeout(updateSagaItems, 0)
+    return () => {
+      clearTimeout(timeoutId)
     }
-  }, [items, questDoneAt, turnedInAt, questsBySaga, isQuestDoneForSaga])
+  }, [updateSagaItems])
+
+  function compareExpanded(prev: Record<string, boolean>, next: Record<string, boolean>) {
+    const prevKeys = Object.keys(prev)
+    const nextKeys = Object.keys(next)
+    let innerChanged = prevKeys.length !== nextKeys.length
+
+    if (!innerChanged) {
+      for (const k of nextKeys) {
+        if (next[k] !== prev[k]) {
+          innerChanged = true
+          break
+        }
+      }
+    }
+
+    return innerChanged ? next : prev
+  }
 
   return (
     <Stack gap={3} className='p-2 p-md-3'>
@@ -877,7 +899,7 @@ const SagaTracker = () => {
               id='saga-tabs'
               activeKey={activeTab}
               onSelect={(k) => {
-                setActiveTab(k ?? 'heroic');
+                setActiveTab(k ?? 'heroic')
               }}
               className='mb-3'
               fill

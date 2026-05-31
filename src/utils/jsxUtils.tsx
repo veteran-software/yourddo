@@ -1,11 +1,11 @@
+import React from 'react'
 import { Container, OverlayTrigger, Stack } from 'react-bootstrap'
 
 import OverlayWrapper from '../components/common/OwnedIngredientsOverlay.tsx'
 import type { ItemRollup, Location } from '../components/trove/types.ts'
 import type { Ingredient } from '../types/ingredients.ts'
 import { formatNumber } from './objectUtils.ts'
-import { toSingularName } from './stringUtils.ts'
-import { normItem } from './troveUtils.ts'
+import { getTroveKey } from './troveUtils.ts'
 
 // ----- Extracted helpers to reduce cognitive complexity in getOwnedIngredients -----
 export interface CharacterEntry {
@@ -66,8 +66,11 @@ export const renderBindingNode = (ingredient: Ingredient | undefined, troveBindi
 
 export const normalizeEntries = (byCharacter: unknown): CharacterEntry[] => {
   if (Array.isArray(byCharacter)) return byCharacter as CharacterEntry[]
-  const map = (byCharacter as Record<string, Record<Location, number>>) ?? {}
-  return Object.entries(map).map(([character, locations]) => ({ character, locations }))
+  const map = byCharacter as Record<string, Record<Location, number>>
+  return Object.entries(map).map(([character, locations]) => ({
+    character,
+    locations
+  }))
 }
 
 const computeTotalOwned = (entries: CharacterEntry[]): number =>
@@ -92,46 +95,46 @@ export const getOwnedIngredients = (
   troveData: ItemRollup | null
 ): React.JSX.Element => {
   if (ingredient && troveData) {
-    const ingredientKey = normItem(toSingularName(ingredient.name))
+    const ingredientKey = getTroveKey(ingredient.name)
     const requiredNum = typeof quantityRequired === 'number' ? quantityRequired : Number(quantityRequired)
-    const troveItem = troveData[ingredientKey]
+    const troveItem = (troveData as Record<string, unknown>)[ingredientKey] as
+      | {
+          binding: string
+          byCharacter: { character: string; locations: Record<Location, number> }[]
+        }
+      | undefined
     const entries = troveItem ? normalizeEntries(troveItem.byCharacter) : []
     const popover = buildPopover(ingredientKey, ingredient, entries, troveItem?.binding)
 
     if (troveItem) {
       const totalOwned = computeTotalOwned(entries)
       const color = qtyColorClass(totalOwned, requiredNum)
-      return (
-        <Container className='d-flex justify-content-end pe-1'>
-          <OverlayTrigger
-            trigger={['hover', 'click']}
-            delay={{ show: 250, hide: 1000 }}
-            placement='auto'
-            overlay={popover}
-            rootClose
-          >
-            <Stack direction='horizontal' gap={2} className={color} style={{ cursor: 'pointer' }}>
-              {formatNumber(totalOwned)}/{formatNumber(requiredNum)}
-            </Stack>
-          </OverlayTrigger>
-        </Container>
-      )
+
+      if (totalOwned > 0) {
+        return (
+          <Container className='d-flex justify-content-end pe-1'>
+            <OverlayTrigger
+              trigger={['hover', 'click']}
+              delay={{ show: 250, hide: 500 }}
+              placement='auto'
+              overlay={popover}
+              rootClose
+            >
+              <Stack direction='horizontal' gap={2} className={color} style={{ cursor: 'pointer' }}>
+                {formatNumber(totalOwned)}/{formatNumber(requiredNum)}
+              </Stack>
+            </OverlayTrigger>
+          </Container>
+        )
+      }
     }
 
     // If Trove is present but item not owned
     return (
       <Container className='d-flex justify-content-end pe-1'>
-        <OverlayTrigger
-          trigger={['hover', 'click']}
-          delay={{ show: 250, hide: 1000 }}
-          placement='auto'
-          overlay={popover}
-          rootClose
-        >
-          <Stack direction='horizontal' gap={2} className='text-danger' style={{ cursor: 'pointer' }}>
-            {formatNumber(0)}/{formatNumber(requiredNum)}
-          </Stack>
-        </OverlayTrigger>
+        <Stack direction='horizontal' gap={2} className='text-danger' style={{ cursor: 'pointer' }}>
+          {formatNumber(0)}/{formatNumber(requiredNum)}
+        </Stack>
       </Container>
     )
   }

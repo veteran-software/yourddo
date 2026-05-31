@@ -34,9 +34,7 @@ const BaseItemDropdown = (props: Props) => {
       dispatch(
         setFilteredRingList(
           baseItemList.filter((item: Ring) => {
-            const itemEnhancements: string[] = item.enchantments
-              .slice(0, 2)
-              .map((enhancement: Enhancement) => enhancement.name)
+            const itemEnhancements: string[] = item.enchantments.map((enhancement: Enhancement) => enhancement.name)
 
             return filterMode === 'OR'
               ? selectedRingFilters.some((filter: string) => {
@@ -94,9 +92,9 @@ const BaseItemDropdown = (props: Props) => {
       <FilterOffCanvas
         filterMode={filterMode}
         filterOptions={ringFilters}
-        items={filteredRingList}
+        items={baseItemList}
         getItemFilters={(item: Ring): string[] => {
-          return item.enchantments.slice(0, 2).map((enhancement) => enhancement.name)
+          return item.enchantments.map((enhancement) => enhancement.name)
         }}
         selectedFilters={selectedRingFilters}
         setSelectedFilters={(filters: string[]) => {

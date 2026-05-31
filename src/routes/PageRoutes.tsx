@@ -3,6 +3,8 @@ import BaseLayout from '../components/layout/BaseLayout.tsx'
 import CauldronOfCadence from '../pages/cauldronOfCadence/CauldronOfCadence.tsx'
 import DinosaurBone from '../pages/dinosaurBoneCrafting/DinosaurBone.tsx'
 import EssenceCrafting from '../pages/essenceCrafting/EssenceCrafting.tsx'
+import GearPlanner from '../pages/gearPlanner/GearPlanner.tsx'
+// import GearPlannerV2 from '../pages/gearPlannerv2/GearPlannerV2.tsx'
 import HeroicGreenSteel from '../pages/greenSteel/heroic/HeroicGreenSteel.tsx'
 import LegendaryGreenSteel from '../pages/greenSteel/legendary/LegendaryGreenSteel.tsx'
 import Home from '../pages/Home.tsx'
@@ -23,6 +25,7 @@ const PageRoutes = () => {
         <Route path='/' element={<Home />} />
 
         <Route path='/saga-tracker' element={<SagaTracker />} />
+        <Route path='/gear-planner' element={<GearPlanner />} />
 
         <Route path='/essence-crafting' element={<EssenceCrafting />} />
         <Route path='/cauldron-of-cadence' element={<CauldronOfCadence />} />

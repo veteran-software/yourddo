@@ -107,7 +107,7 @@ const CauldronOfCadence = () => {
                               ?.flatMap(
                                 (enhancement: Enhancement) =>
                                   `${enhancement.name} (+${String(enhancement.modifier)}${
-                                    enhancement.bonus ? ` ${enhancement.bonus}` : ''
+                                    enhancement.bonus ? ` ${String(enhancement.bonus)}` : ''
                                   })`
                               )
                               .join(', ')}

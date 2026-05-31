@@ -21,14 +21,6 @@ export interface Phase1EnchantmentMeta {
   bonus?: string
 }
 
-export type Phase1MinLevelIncrease =
-  | number
-  | {
-      noMinimumLevel?: number
-      minimumLevel?: number
-    }
-  | null
-
 export type TAffix = string[] | string | null
 
 export interface EssencePhase1Entry {
@@ -43,7 +35,6 @@ export interface EssencePhase1Entry {
   suffix?: TAffix
   extra?: TAffix
   group?: string | null
-  minLevelIncrease?: Phase1MinLevelIncrease
   stat?: (number | string)[]
 }
 
@@ -73,16 +64,20 @@ export interface ItemState {
 // Utility: map UI slot keys to dataset item tokens used in the phase1 JSON
 export const SLOT_KEY_TO_DATA_TOKENS: Record<string, string[]> = {
   mainHand: ['Weapon (Melee)', 'Weapon (Ranged)', 'Weapon'],
-  offHand: ['Weapon (Melee)', 'Weapon (Ranged)', 'Weapon', 'Off-hand Weapon'],
+  offHand: ['Weapon (Melee)', 'Weapon (Ranged)', 'Weapon', 'Off-hand Weapon', 'Shield', 'Orb', 'Rune Arm'],
+  artificerPetArmor: ['Armor', 'Robe', 'Docent'],
+  druidPetArmor: ['Armor', 'Robe', 'Docent'],
+  artificerPetWeapon: ['Weapon (Melee)', 'Weapon'],
+  druidPetWeapon: ['Weapon (Melee)', 'Weapon'],
   runeArm: ['Runearm', 'Rune Arm'],
   orb: ['Orb'],
-  armor: ['Armor'],
+  armor: ['Armor', 'Robe', 'Docent'],
   belt: ['Belt'],
-  boots: ['Boots'],
-  bracers: ['Bracers'],
+  boots: ['Boots', 'Boot'],
+  bracers: ['Bracers', 'Bracer'],
   cloak: ['Cloak'],
-  gloves: ['Gloves'],
-  goggles: ['Goggles'],
+  gloves: ['Gloves', 'Glove'],
+  goggles: ['Goggles', 'Goggle'],
   helmet: ['Helm', 'Helmet', 'Head'],
   necklace: ['Necklace', 'Neck'],
   ring1: ['Ring'],
@@ -105,8 +100,8 @@ export const ALL_SLOT_KEYS: { key: string; label: string }[] = [
   { key: 'cloak', label: 'Cloak' },
   { key: 'gloves', label: 'Gloves' },
   { key: 'goggles', label: 'Goggles' },
-  { key: 'helmet', label: 'Head' },
-  { key: 'necklace', label: 'Neck' },
+  { key: 'helmet', label: 'Helmet' },
+  { key: 'necklace', label: 'Necklace' },
   { key: 'ring1', label: 'Ring 1' },
   { key: 'ring2', label: 'Ring 2' },
   { key: 'trinket', label: 'Trinket' },

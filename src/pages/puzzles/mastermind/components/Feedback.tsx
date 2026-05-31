@@ -21,7 +21,7 @@ const Feedback = (props: Props) => {
     >
       {dots.map((col: 'black' | 'white' | 'grey', idx: number) => (
         <div
-          key={idx}
+          key={`${col}-${String(idx)}`}
           style={{
             width: 14,
             height: 14,

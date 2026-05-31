@@ -43,7 +43,7 @@ const IngredientPopover = (props: Props) => {
               <ListGroup.Item key={`effect-${String(idx)}`} className='py-1 px-3'>
                 <small>
                   <strong>{effect.name}</strong>
-                  {effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''}
+                  {effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${String(effect.bonus)})` : ''}
                   {effect.notes && (
                     <div className='text-muted' style={{ fontSize: '0.9em', fontStyle: 'italic' }}>
                       {effect.notes}
@@ -74,7 +74,7 @@ const IngredientPopover = (props: Props) => {
               return (
                 <ListGroup.Item key={`${ing.name}-${String(idx)}`}>
                   <FarmedIngredientDisplay
-                    ingredient={findCraftedIngredientByName(ing.name, ingredients as CraftingIngredient[])}
+                    ingredient={findCraftedIngredientByName(ing.name, ingredients)}
                     quantity={ing.quantity ?? 0}
                     key={`${ing.name}-${String(idx)}`}
                   />

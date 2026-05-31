@@ -28,7 +28,7 @@ function readJson(file) {
   try {
     return JSON.parse(text)
   } catch (err) {
-    throw new Error(`Failed to parse JSON: ${file}\n${err.message}`)
+    throw new Error(`Failed to parse JSON: ${file}\n${err.message}`, { cause: err })
   }
 }
 

@@ -44,30 +44,63 @@ const NavbarTop = () => {
       collapseOnSelect
     >
       <Container fluid>
-        <Navbar.Brand href='/' className='p-0' onClick={() => { setExpanded(false); }}>
+        <Navbar.Brand
+          href='/'
+          className='p-0'
+          onClick={() => {
+            setExpanded(false)
+          }}
+        >
           <Image src={logo} height={45} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls='responsive-navbar-nav' />
         <Navbar.Collapse id='responsive-navbar-nav'>
           <Nav className='me-auto w-100 justify-content-end gap-3'>
             {activeMenus.map((menu: NavMenuDropdown) => (
-              <MenuDropdown key={menu.title} menu={menu} closeNav={() => { setExpanded(false); }} />
+              <MenuDropdown
+                key={menu.title}
+                menu={menu}
+                closeNav={() => {
+                  setExpanded(false)
+                }}
+              />
             ))}
-            <Nav.Link as={Link} to='/saga-tracker' onClick={() => { setExpanded(false); }}>
+            <Nav.Link
+              as={Link}
+              to='/saga-tracker'
+              onClick={() => {
+                setExpanded(false)
+              }}
+            >
               Saga Tracker
             </Nav.Link>
+            {/*<Nav.Link*/}
+            {/*  as={Link}*/}
+            {/*  to='/gear-planner'*/}
+            {/*  onClick={() => {*/}
+            {/*    setExpanded(false)*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  Gear Planner*/}
+            {/*</Nav.Link>*/}
             <Nav.Link
               as={Button}
               href='https://github.com/veteran-software/yourddo'
               target='_blank'
               rel='noreferrer'
               title='YourDDO on GitHub'
-              onClick={() => { setExpanded(false); }}
+              onClick={() => {
+                setExpanded(false)
+              }}
             >
               <FaGithub size={25} />
             </Nav.Link>
 
-            <TroveImport closeNav={() => { setExpanded(false); }} />
+            <TroveImport
+              closeNav={() => {
+                setExpanded(false)
+              }}
+            />
           </Nav>
         </Navbar.Collapse>
       </Container>

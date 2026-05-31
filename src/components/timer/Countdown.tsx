@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react'
 const Countdown = (props: Props) => {
   const { onComplete, targetTimestamp } = props
 
-  const [remainingTime, setRemainingTime] = useState(calculateRemainingTime(targetTimestamp))
+  const [remainingTime, setRemainingTime] = useState(() => calculateRemainingTime(targetTimestamp))
 
   useEffect(() => {
-    const updateRemainingTime = () => {
+    const interval = setInterval(() => {
       const now: DateTime = DateTime.now()
       const targetTime: DateTime = DateTime.fromSeconds(targetTimestamp)
       const diff: Duration = targetTime.diff(now, ['days', 'hours', 'minutes', 'seconds'])
@@ -19,11 +19,7 @@ const Countdown = (props: Props) => {
       }
 
       setRemainingTime(diff)
-    }
-
-    updateRemainingTime()
-
-    const interval = setInterval(updateRemainingTime, 1000)
+    }, 1000)
 
     return () => {
       clearInterval(interval)

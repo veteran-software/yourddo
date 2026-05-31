@@ -1,6 +1,51 @@
 import type { SetBonus } from '../types/crafting.ts'
+import itemSetsData from './loot/itemSets.json'
+import filigreeSetsData from './loot/runtime/filigreeSets.json'
 
-const setBonuses: SetBonus[] = [
+interface ItemSetJson {
+  name: string
+  bonuses: {
+    threshold: number
+    enhancements:
+      | {
+          name?: string
+          modifier?: string | number
+          bonus?: string
+          notes?: string
+        }[]
+      | null
+  }[]
+}
+
+const itemSets = (itemSetsData as ItemSetJson[]).map((set) => ({
+  name: set.name,
+  enhancements: set.bonuses.flatMap((bonus) =>
+    (bonus.enhancements ?? []).map((enh) => ({
+      name: enh.name ?? 'Unnamed Enhancement',
+      modifier: enh.modifier,
+      bonus: enh.bonus,
+      notes: enh.notes,
+      numPiecesEquipped: bonus.threshold
+    }))
+  )
+}))
+
+const filigreeSets = (filigreeSetsData as ItemSetJson[]).map((set) => ({
+  name: set.name,
+  enhancements: set.bonuses.flatMap((bonus) =>
+    (bonus.enhancements ?? []).map((enh) => ({
+      name: enh.name ?? 'Unnamed Enhancement',
+      modifier: enh.modifier,
+      bonus: `Filigree Set: ${set.name}`,
+      notes: enh.notes,
+      numPiecesEquipped: bonus.threshold
+    }))
+  )
+}))
+
+export const setBonuses: SetBonus[] = [
+  ...itemSets,
+  ...filigreeSets,
   {
     name: "The Legendary Dread Isle's Curse",
     numPiecesEquipped: 5,
@@ -260,5 +305,9 @@ const setBonuses: SetBonus[] = [
   }
 ]
 
+const setBonusMap = new Map<string, SetBonus>(
+  setBonuses.map((sb) => [sb.name, sb])
+)
+
 export const findSetBonus = (name: string): SetBonus =>
-  setBonuses.find((setBonus) => setBonus.name === name) ?? { name: 'Unknown Set Bonus' }
+  setBonusMap.get(name) ?? { name: 'Unknown Set Bonus' }

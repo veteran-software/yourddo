@@ -8,7 +8,7 @@ const AUGMENTS_BY_TYPE: Record<string, AugmentItem[]> = (() => {
   augmentMaster.forEach((aug: AugmentItem) => {
     const key = (aug.augmentType ?? '').toLowerCase()
     // Initialize lazily without using a nested assignment in an expression (Sonar rule)
-    index[key] ??= [];
+    index[key] ??= []
     index[key].push(aug)
   })
   return index as Record<string, AugmentItem[]>
@@ -21,7 +21,7 @@ const getByType = (typeKey: string): AugmentItem[] => {
 }
 
 // Configuration that maps a slot to the group labels and their corresponding type keys
-const SLOT_GROUPS: Record<string, { label: string; key: string }[]> = {
+export const SLOT_GROUPS: Record<string, { label: string; key: string }[] | undefined> = {
   red: [
     { label: 'Red', key: 'red' },
     { label: 'Colorless', key: 'colorless' }

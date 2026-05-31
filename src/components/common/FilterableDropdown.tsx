@@ -72,8 +72,8 @@ const FilterableDropdown = (props: Props) => {
   }
 
   const renderDropdownItems = (key: string, ingredients: Ingredient[]) => {
-    // `ingredients` is ending up here as undefined sometimes, that shouldn't happen. if nothing is sent, it should be an empty array
-    if (ingredients.length === 0) {
+    // ingredients may be undefined or not an array in practice
+    if (!Array.isArray(ingredients) || ingredients.length === 0) {
       return <></>
     }
 
@@ -107,7 +107,7 @@ const FilterableDropdown = (props: Props) => {
     )
   }
 
-  const uniqueEffects: string[] = useMemo(() => parseUniqueEffects(items), [items])
+  const uniqueEffects: string[] = useMemo(() => (items ? parseUniqueEffects(items) : []), [items])
 
   return (
     <Stack direction='vertical' gap={0}>
@@ -134,8 +134,8 @@ const FilterableDropdown = (props: Props) => {
               overflowY: 'auto'
             }}
           >
-            {Object.entries(filteredItems ?? items).map(([key, ingredients]: [string, Ingredient[]]) => (
-              <Fragment key={`${key}-${ingredients.map((ing: Ingredient) => ing.name).join('|')}`}>
+            {Object.entries(filteredItems ?? items ?? {}).map(([key, ingredients]: [string, Ingredient[]]) => (
+              <Fragment key={`${key}-${Array.isArray(ingredients) ? ingredients.map((ing: Ingredient) => ing.name).join('|') : ''}`}>
                 {renderDropdownItems(key, ingredients)}
               </Fragment>
             ))}
@@ -143,7 +143,15 @@ const FilterableDropdown = (props: Props) => {
         </Dropdown>
 
         {selectedItem && onReset && (
-          <Button variant='outline-info' onClick={onReset}>
+          <Button
+            variant='outline-info'
+            onClick={() => {
+              onReset()
+              if (onFiltersChange) {
+                onFiltersChange([])
+              }
+            }}
+          >
             Reset
           </Button>
         )}
@@ -152,7 +160,7 @@ const FilterableDropdown = (props: Props) => {
           <FilterOffCanvas
             filterMode={filterMode}
             filterOptions={uniqueEffects}
-            items={Object.values(items).flat()}
+            items={Object.values(items ?? {}).filter(Boolean).flat()}
             getItemFilters={(item: Ingredient): string[] =>
               // Ingredient may or may not have effectsAdded; access safely
               ('effectsAdded' in item && Array.isArray(item.effectsAdded)
@@ -201,7 +209,7 @@ interface Props {
   filteredItems?: Record<string, Ingredient[]>
   filters?: string[]
   groupBySecondaryFocus?: boolean
-  items: Record<string, Ingredient[]>
+  items: Record<string, Ingredient[]> | undefined
   label: string
   onFilterModeChange?: (mode: 'OR' | 'AND') => void
   onFiltersChange?: (filters: string[]) => void

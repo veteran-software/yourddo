@@ -29,14 +29,14 @@ const MaterialsAccordion = (props: Props) => {
                   return <Fragment key={name} />
                 }
 
-                if (findCraftedIngredientByName(name, ingredients as CraftingIngredient[]) === undefined) {
+                if (findCraftedIngredientByName(name, ingredients) === undefined) {
                   console.log(name)
                 }
 
                 return (
                   <ListGroup.Item key={name}>
                     <FarmedIngredientDisplay
-                      ingredient={findCraftedIngredientByName(name, ingredients as CraftingIngredient[])}
+                      ingredient={findCraftedIngredientByName(name, ingredients)}
                       quantity={count}
                     />
                   </ListGroup.Item>

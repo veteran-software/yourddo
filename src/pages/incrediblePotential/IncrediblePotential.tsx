@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks.ts'
@@ -24,17 +24,21 @@ const IncrediblePotential = () => {
   const { recipeBuilder, resetRecipe } = useRecipeBuilder()
 
   const [itemButtonLabel, setItemButtonLabel] = useState(selectBaseItem)
-  const [recipeButtonLabel, setRecipeButtonLabel] = useState(chooseUpgrade)
+
+  const recipeButtonLabel = useMemo(() => {
+    if (selectedUpgrade) {
+      return `${incrediblePotential} : ${selectedUpgrade.effectsAdded?.[0].name ?? ''}`
+    }
+
+    return chooseUpgrade
+  }, [selectedUpgrade])
 
   useEffect(() => {
     if (selectedUpgrade) {
-      setRecipeButtonLabel(`${incrediblePotential} : ${selectedUpgrade.effectsAdded?.[0].name ?? ''}`)
-
       resetRecipe()
       recipeBuilder(selectedUpgrade)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, recipeBuilder, selectedUpgrade])
+  }, [recipeBuilder, resetRecipe, selectedUpgrade])
 
   return (
     <Container className='px-0'>

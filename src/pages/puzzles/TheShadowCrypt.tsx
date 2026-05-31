@@ -114,7 +114,7 @@ const TheShadowCrypt = () => {
       return (
         <div className='d-flex align-items-center flex-wrap flex-md-nowrap mb-2' style={{ rowGap: '1rem' }}>
           {steps.map((step, idx) => {
-            const itemKey = `${key}-${String(idx)}`
+            const itemKey = `${key}-${String(idx)}-${step}`
             return (
               <div key={itemKey} className='d-flex align-items-center flex-nowrap me-2 mb-2'>
                 <div className='d-flex flex-column align-items-center px-1'>
@@ -140,7 +140,7 @@ const TheShadowCrypt = () => {
     return (
       <div className='d-flex flex-column mb-2' style={{ rowGap: '0.5rem' }}>
         {steps.map((step, idx) => {
-          const itemKey = `${key}-${String(idx)}`
+          const itemKey = `${key}-${String(idx)}-${step}`
           return (
             <div key={itemKey} className='d-flex align-items-center'>
               <Form.Check

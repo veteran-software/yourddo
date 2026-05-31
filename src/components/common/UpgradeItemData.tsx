@@ -88,8 +88,8 @@ const UpgradeItemData = (props: Props) => {
 
                     {bonus.enhancements?.map((enhancement: Enhancement, enhIdx: number) => (
                       <ListGroup.Item key={`enhancement-${String(enhIdx)}`}>
-                        {enhancement.name} (+{enhancement.modifier}
-                        {enhancement.bonus ? ` ${enhancement.bonus}` : ''})
+                        {enhancement.name} (+{String(enhancement.modifier)}
+                        {enhancement.bonus ? ` ${String(enhancement.bonus)}` : ''})
                       </ListGroup.Item>
                     ))}
                   </Fragment>

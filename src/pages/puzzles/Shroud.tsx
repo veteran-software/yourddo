@@ -4,22 +4,22 @@ import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import activeTileImg from '../../assets/tile_active.png'
 import emptyTileImg from '../../assets/tile_empty.png'
 import inactiveTileImg from '../../assets/tile_inactive.png'
-import useLightsOutSolver from './lightsOut/hooks/useLightsOutSolver.ts'
 import usePuzzleState from './lightsOut/hooks/usePuzzleState.ts'
+import lightsOutSolver from './lightsOut/lightsOutSolver.ts'
 import type { Config } from './lightsOut/types/types.ts'
 
+const { initBoard, makeRectConfig, makeCircular4x4Config, toggleCell, randomPresses, applyPresses, solveBoard } =
+  lightsOutSolver()
+
+const options = {
+  '3x3': makeRectConfig(3, 3),
+  '4x4': makeRectConfig(4, 4),
+  '5x5': makeRectConfig(5, 5),
+  '6x6': makeRectConfig(6, 6),
+  'Circular (4x4)': makeCircular4x4Config()
+} as const
+
 const Shroud = () => {
-  const { initBoard, makeRectConfig, makeCircular4x4Config, toggleCell, randomPresses, applyPresses, solveBoard } =
-    useLightsOutSolver()
-
-  const options = {
-    '3x3': makeRectConfig(3, 3),
-    '4x4': makeRectConfig(4, 4),
-    '5x5': makeRectConfig(5, 5),
-    '6x6': makeRectConfig(6, 6),
-    'Circular (4x4)': makeCircular4x4Config()
-  } as const
-
   const [configName, setConfigName] = useState<keyof typeof options>('3x3')
   const config: Config = options[configName]
 

@@ -189,33 +189,32 @@ export const setAugmentConfigs = [
  * @param {string | string[]} config.enhancement - The enhancements provided by the set bonus when equipped.
  * @returns {CraftingIngredient} The configuration for the created Set Augment item.
  */
-const createSetAugment = (config: (typeof setAugmentConfigs)[number]): CraftingIngredient =>
-  ({
-    ...baseSetAugment,
-    name: `Set Augment: ${config.name}`,
-    description: `Slotting this Augment in any Augment Slot will override its Set Bonus to the ${config.name} set.`,
-    requirements: [
-      {
-        name: 'Thread of Fate',
-        quantity: 50
-      },
-      {
-        name: 'Empty Soul Vessel',
-        quantity: 1
-      },
-      {
-        name: config.requiredItem,
-        quantity: 1
-      }
-    ],
-    setBonus: [
-      {
-        name: config.name,
-        numPiecesEquipped: 3,
-        enhancements: Array.isArray(config.enhancement) ? config.enhancement : [config.enhancement]
-      } as SetBonus
-    ] as SetBonus[]
-  }) as CraftingIngredient
+const createSetAugment = (config: (typeof setAugmentConfigs)[number]): CraftingIngredient => ({
+  ...baseSetAugment,
+  name: `Set Augment: ${config.name}`,
+  description: `Slotting this Augment in any Augment Slot will override its Set Bonus to the ${config.name} set.`,
+  requirements: [
+    {
+      name: 'Thread of Fate',
+      quantity: 50
+    },
+    {
+      name: 'Empty Soul Vessel',
+      quantity: 1
+    },
+    {
+      name: config.requiredItem,
+      quantity: 1
+    }
+  ],
+  setBonus: [
+    {
+      name: config.name,
+      numPiecesEquipped: 3,
+      enhancements: Array.isArray(config.enhancement) ? config.enhancement : [config.enhancement]
+    } as SetBonus
+  ] as SetBonus[]
+})
 
 /**
  * Represents an array of crafting ingredients derived from configurations using a mapping function.

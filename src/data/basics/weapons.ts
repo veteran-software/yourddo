@@ -3,7 +3,7 @@ export const meleeWeapons = new Set([
   'Battle Axe',
   'Club',
   'Dagger',
-  'Dwarven Waraxe',
+  'Dwarven War Axe',
   'Falchion',
   'Great Axe',
   'Great Club',

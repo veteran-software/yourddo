@@ -4,24 +4,22 @@ import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import activeTileImg from '../../assets/tile_active.png'
 import emptyTileImg from '../../assets/tile_empty.png'
 import inactiveTileImg from '../../assets/tile_inactive.png'
-import useLightsOutSolver from './lightsOut/hooks/useLightsOutSolver.ts'
 import usePuzzleState from './lightsOut/hooks/usePuzzleState.ts'
+import lightsOutSolver from './lightsOut/lightsOutSolver.ts'
 import type { Config } from './lightsOut/types/types.ts'
 
+const { initBoard, toggleCell, randomPresses, applyPresses, solveBoard } = lightsOutSolver()
+const config: Config = {
+  rows: 3,
+  cols: 5,
+  mask: [
+    [true, false, true, false, true],
+    [true, false, true, false, true],
+    [true, true, true, true, true]
+  ]
+}
+
 const TotalChaos = () => {
-  const { initBoard, toggleCell, randomPresses, applyPresses, solveBoard } = useLightsOutSolver()
-
-  // single fixed “W” shape: 3×5, columns 2 & 4 only have the bottom cell
-  const config: Config = {
-    rows: 3,
-    cols: 5,
-    mask: [
-      [true, false, true, false, true],
-      [true, false, true, false, true],
-      [true, true, true, true, true]
-    ]
-  }
-
   const {
     board,
     setBoard,
@@ -66,7 +64,6 @@ const TotalChaos = () => {
     setEditMode(false)
     setShowSolution(false)
   }
-
 
   return (
     <Card>

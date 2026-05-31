@@ -66,7 +66,7 @@ const toAugmentObject = (augments?: string[]): Augment[] | undefined => {
     }
   })
 
-  return [a as Augment]
+  return [a]
 }
 
 const mapItemIsJewelrySubType = (it: U75Item) => {

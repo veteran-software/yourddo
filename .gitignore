@@ -24,4 +24,10 @@ dist-ssr
 *.sw?
 .yarn/
 coverage/
-/src/data/essenceCrafting/runtime/*
+.go/
+.go-cache/
+/src/data/essenceCrafting/runtime/
+/src/data/loot/runtime/
+/src/data/fountainOfNecroticMight.json
+src/pages/gearPlannerv2/
+src/redux/slices/gearPlanner.slice.ts

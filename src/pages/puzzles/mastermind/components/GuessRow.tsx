@@ -8,8 +8,8 @@ const GuessRow = (props: Props) => {
 
   return (
     <Stack direction='horizontal' gap={2} className='align-items-center'>
-      {code.map((c, i) => (
-        <Peg key={i} color={c} />
+      {code.map((color: Color, idx) => (
+        <Peg key={`${color.toString()}-${String(idx)}`} color={color} />
       ))}
 
       <Feedback black={fb.black} white={fb.white} />

@@ -16,7 +16,7 @@ export const renderBody = (ingredient: CraftingIngredient) => (
     dropdownName={ingredient.effectsAdded
       ?.map((effect: Enhancement) => {
         return `${effect.name}${
-          effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${effect.bonus})` : ''
+          effect.modifier && effect.bonus ? ` (+${String(effect.modifier)} ${String(effect.bonus)})` : ''
         }`
       })
       .toSorted((a: string, b: string) => a.localeCompare(b))
