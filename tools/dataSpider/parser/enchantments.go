@@ -515,6 +515,7 @@ var enchSingleHandlers = map[string]func(string) *api.Enchantment{
 	"StealerOfSouls":                func(t string) *api.Enchantment { return parseTemplateStealerOfSouls(t) },
 	"TheMoralCompass":               func(t string) *api.Enchantment { return parseTemplateTheMoralCompass(t) },
 	"MindTear":                      func(t string) *api.Enchantment { return parseTemplateMindTear(t) },
+	"Mindcleaver":                   func(t string) *api.Enchantment { return parseTemplateMindcleaver(t) },
 	"PlantSlaying":                  func(t string) *api.Enchantment { return parseTemplatePlantSlaying(t) },
 	"StaticAttraction":              func(t string) *api.Enchantment { return parseTemplateStaticAttraction(t) },
 	"SoulTear":                      func(t string) *api.Enchantment { return parseTemplateSoulTear(t) },
