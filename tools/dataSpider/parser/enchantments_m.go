@@ -726,6 +726,10 @@ func parseTemplateMindTear(raw string) *api.Enchantment {
 	return parseSimpleTemplate(raw, "{{MindTear", "Mind Tear", "This weapon tears at the identity of your foes, reducing their MRR and Spell Power.")
 }
 
+func parseTemplateMindcleaver(raw string) *api.Enchantment {
+	return parseSimpleTemplate(raw, "{{Mindcleaver", "Mindcleaver", "This blade is made of pure force and is surprisingly light to the touch. It bypasses the Incorporeal chances of Ethereal monsters innately.")
+}
+
 // parseTemplateTheMoralCompass parses `{{TheMoralCompass}}`.
 
 func parseTemplateMonkPath(raw string) *api.Enchantment {
