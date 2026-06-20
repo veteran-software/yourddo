@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   Accordion,
+  Alert,
   Button,
   ButtonGroup,
   Card,
@@ -16,6 +17,7 @@ import {
 } from 'react-bootstrap'
 import {
   FaChevronRight,
+  FaCircleInfo,
   FaFileExport,
   FaFileImport,
   FaGear,
@@ -143,10 +145,12 @@ const GearPlanner = () => {
     slot: GearSlot
   } | null>(null)
   const [enchantmentSearch, setEnchantmentSearch] = useState('')
+  const [enchantmentBonusType, setEnchantmentBonusType] = useState('')
   const [itemNameSearch] = useState('')
 
   const gpHook = useGearPlanner({
     enchantmentSearch,
+    enchantmentBonusType,
     itemNameSearch,
     setBonusFilter: null,
     showConflicts: true,
@@ -156,8 +160,29 @@ const GearPlanner = () => {
   const { showSidebar, setShowSidebar, setShowEnchantmentSearch, pendingMinorArtifact, setPendingMinorArtifact } =
     gpHook
 
+  const GEAR_PLANNER_INFO_DISMISSED_KEY = 'gearPlannerInfoDismissed'
+
   const [showSettings, setShowSettings] = useState(false)
   const [showFiligreeModal, setShowFiligreeModal] = useState(false)
+  const [showInfoModal, setShowInfoModal] = useState(() => {
+    try {
+      return localStorage.getItem(GEAR_PLANNER_INFO_DISMISSED_KEY) !== 'true'
+    } catch {
+      return true
+    }
+  })
+  const [dontShowInfoAgain, setDontShowInfoAgain] = useState(false)
+
+  const handleInfoModalClose = () => {
+    if (dontShowInfoAgain) {
+      try {
+        localStorage.setItem(GEAR_PLANNER_INFO_DISMISSED_KEY, 'true')
+      } catch {
+        /* ignore */
+      }
+    }
+    setShowInfoModal(false)
+  }
 
   const importFileRef = useRef<HTMLInputElement>(null)
 
@@ -232,9 +257,15 @@ const GearPlanner = () => {
     )
   }
 
-  const handleBonusClick = (name: string) => {
+  const handleBonusClick = (name: string, bonusType: string) => {
     setEnchantmentSearch(name)
+    setEnchantmentBonusType(bonusType)
     gpHook.setShowEnchantmentSearch(true)
+  }
+
+  const handleSetEnchantmentSearch = (search: string) => {
+    setEnchantmentSearch(search)
+    setEnchantmentBonusType('')
   }
 
   return (
@@ -257,11 +288,36 @@ const GearPlanner = () => {
       />
 
       <Container fluid='lg' className='py-4'>
+        <Alert variant='warning' className='d-flex align-items-center gap-2'>
+          <FaTriangleExclamation className='flex-shrink-0' />
+          <span>
+            <strong>Beta:</strong> The Gear Planner is currently in beta. Please report any bugs or feature requests to{' '}
+            <strong>Ague</strong> in the{' '}
+            <Alert.Link href='https://discord.gg/jk3hYA5Jgv' target='_blank' rel='noreferrer'>
+              YourDDO Discord server
+            </Alert.Link>
+            .
+          </span>
+        </Alert>
         <Card className='shadow'>
           <Card.Header className='bg-primary text-white py-3'>
             <Row className='align-items-center g-3'>
               <Col xs={12} md='auto'>
-                <h2 className='mb-0'>Gear Planner</h2>
+                <div className='d-flex align-items-center gap-2'>
+                  <h2 className='mb-0'>Gear Planner</h2>
+                  <button
+                    type='button'
+                    className='btn btn-link p-0 border-0 text-white opacity-75 shadow-none'
+                    onClick={() => {
+                      setDontShowInfoAgain(false)
+                      setShowInfoModal(true)
+                    }}
+                    title='About the Gear Planner'
+                    aria-label='About the Gear Planner'
+                  >
+                    <FaCircleInfo size={18} />
+                  </button>
+                </div>
               </Col>
 
               <Col xs={12} md className='ms-md-auto'>
@@ -763,7 +819,7 @@ const GearPlanner = () => {
 
         <EnchantmentSearchOffcanvas
           enchantmentSearch={enchantmentSearch}
-          setEnchantmentSearch={setEnchantmentSearch}
+          setEnchantmentSearch={handleSetEnchantmentSearch}
           troveData={troveData}
           {...gpHook}
         />
@@ -786,6 +842,52 @@ const GearPlanner = () => {
         )}
 
         <ItemBrowserOffcanvas troveData={troveData} {...gpHook} />
+
+        <Modal show={showInfoModal} onHide={handleInfoModalClose} centered>
+          <Modal.Header closeButton className='bg-primary text-white'>
+            <Modal.Title>About the Gear Planner</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className='bg-dark text-white'>
+            <p>
+              The Gear Planner is designed to be a comprehensive min/max tool for DDO gear optimization. Rather than
+              displaying enchantments as simple labels, it breaks many named enchantments down into their core
+              attributes so you can see exactly what stacks, what conflicts, and where you&apos;re leaving stats on the
+              table.
+            </p>
+            <p>
+              <strong>More systems coming.</strong> Crafting systems, upgrade paths, and additional gearing options will
+              be added over time until the planner covers everything DDO has to offer.
+            </p>
+            <p>
+              Use the <strong>Settings</strong> button in the toolbar to select your class(es) and character details.
+              The arrow on the left edge shows a summary of your current settings. Configuring your character
+              automatically filters out options that don&apos;t apply to your build and unlocks extras that do,
+              including dedicated gear slots for your Artificer Iron Defender or Druid Wolf Companion.
+            </p>
+            <hr className='border-secondary' />
+            <p className='mb-0 small text-warning-emphasis'>
+              <FaTriangleExclamation className='me-1' />
+              <strong>Back up your data.</strong> Your gear setups are saved in your browser&apos;s local storage. If
+              your browser is configured to clear site data when you close a tab or window, your setups will be lost.
+              Use the <strong>Export JSON</strong> option regularly to keep a safe backup.
+            </p>
+          </Modal.Body>
+          <Modal.Footer className='bg-primary border-top-0 d-flex align-items-center'>
+            <Form.Check
+              type='checkbox'
+              id='gear-planner-info-dont-show'
+              label="Don't show again"
+              checked={dontShowInfoAgain}
+              onChange={(e) => {
+                setDontShowInfoAgain(e.target.checked)
+              }}
+              className='text-white me-auto'
+            />
+            <Button variant='light' onClick={handleInfoModalClose}>
+              Got it
+            </Button>
+          </Modal.Footer>
+        </Modal>
 
         <PermalinkModal
           show={showPermalink}

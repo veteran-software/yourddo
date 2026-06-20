@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import traceOfMadnessData from '../../data/traceOfMadness.json'
 import { isMinorArtifact } from '../../pages/gearPlanner/helpers'
-import { createDefaultSetup } from '../../pages/gearPlanner/initialState'
+import { createDefaultSetup, initialPetState } from '../../pages/gearPlanner/initialState'
 import {
   ARTIFICER_PET_SLOTS,
   type Curse,
@@ -25,9 +25,11 @@ export interface GearPlannerState {
 // All slotted fields are optional because they may be absent in older saves.
 // slottedTraceOfMadness accepts string (legacy) or LootEnchantment (current).
 interface PartialSlotted {
+  slots?: Record<string, unknown>
   armorFilters?: string[]
   weaponFilters?: string[]
   shieldFilters?: string[]
+  allowMetalWithDruid?: boolean
   slottedNearlyFinished?: Record<string, LootEnchantment | null>
   slottedAlmostThere?: Record<string, LootEnchantment | null>
   slottedFinishingTouch?: Record<string, LootEnchantment | null>
@@ -66,6 +68,7 @@ const loadState = (): GearPlannerState => {
     const state = JSON.parse(serializedState) as PartialGearPlannerState
 
     const ensureFields = (target: PartialSlotted) => {
+      target.slots ??= {}
       target.armorFilters ??= []
       target.weaponFilters ??= []
       target.shieldFilters ??= []
@@ -101,12 +104,15 @@ const loadState = (): GearPlannerState => {
     // Migrate/Fix state if fields are missing
     state.characterSetups?.forEach((setup) => {
       ensureFields(setup)
-      if (setup.artificerPet) ensureFields(setup.artificerPet)
-      if (setup.druidPet) ensureFields(setup.druidPet)
+      setup.allowMetalWithDruid ??= false
+      setup.artificerPet ??= initialPetState() as unknown as PartialSlotted
+      setup.druidPet ??= initialPetState() as unknown as PartialSlotted
+      ensureFields(setup.artificerPet)
+      ensureFields(setup.druidPet)
 
       migrateTraceOfMadness(setup)
-      if (setup.artificerPet) migrateTraceOfMadness(setup.artificerPet)
-      if (setup.druidPet) migrateTraceOfMadness(setup.druidPet)
+      migrateTraceOfMadness(setup.artificerPet)
+      migrateTraceOfMadness(setup.druidPet)
     })
 
     return state as unknown as GearPlannerState
