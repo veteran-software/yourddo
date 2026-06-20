@@ -23,7 +23,10 @@ export const LootItemSchema = z.object({
   artifactType: z.string().trim().optional(),
   capacity: z.string().trim().optional(),
   maxStackSize: z.string().trim().optional(),
-  dropLocations: z.array(LootDropLocationSchema),
+  dropLocations: z
+    .array(LootDropLocationSchema)
+    .nullable()
+    .transform((v) => v ?? []),
   update: z.string().trim(),
   details: z.string().trim(),
   upgradeable: z.string().trim(),

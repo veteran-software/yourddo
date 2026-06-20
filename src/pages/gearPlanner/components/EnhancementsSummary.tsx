@@ -7,11 +7,22 @@ import { aggregateEnchantmentEntries, getActiveSetEnhancements, sortItemsByValue
 import type { Curse, GearAugment, GearItem, LootEnchantment } from '../types.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
 
+type AggregationSourceType = 'item' | 'augment' | 'filigree' | 'essence'
+
+const isItemOrEssenceSource = (i: AggregationItem) => i.sourceType === 'item' || i.sourceType === 'essence'
+const isNonItemSource = (i: AggregationItem) => i.sourceType !== 'item' && i.sourceType !== 'essence'
+const getSourceLabel = (i: AggregationItem): string => {
+  if (i.sourceType === 'filigree') return 'Filigree'
+  if (i.sourceType === 'augment') return 'Augment'
+  return i.sourceType
+}
+
 interface AggregationItem {
   itemName: string
   slot: string
   value: number
   valueStr: string
+  sourceType: AggregationSourceType
 }
 
 interface AggregationBonus {
@@ -29,9 +40,6 @@ type AggregationMap = Record<string, AggregationEntry>
 
 const EnchantmentsSummary = (props: Props) => {
   const {
-    allAugments,
-    allCurses,
-    allFiligrees,
     allItems,
     equippedItems,
     essenceEnchantments,
@@ -53,7 +61,7 @@ const EnchantmentsSummary = (props: Props) => {
   } = props
 
   const allPossibleBonuses = useMemo(() => {
-    const map: Record<string, Set<string>> = {}
+    const map: Record<string, Set<string> | undefined> = {}
 
     const processEnch = (ench: LootEnchantment) => {
       const normName = normalizeString(ench.name)
@@ -61,11 +69,8 @@ const EnchantmentsSummary = (props: Props) => {
         return
       }
 
-      if (!(normName in map)) {
-        map[normName] = new Set<string>()
-      }
-
-      map[normName].add(getBonus(ench.bonus))
+      const set = (map[normName] ??= new Set<string>())
+      set.add(getBonus(ench.bonus))
     }
 
     allItems?.forEach((item) => {
@@ -74,27 +79,22 @@ const EnchantmentsSummary = (props: Props) => {
       }
     })
 
-    allAugments?.forEach((aug) => {
-      aug.effectsAdded?.forEach(processEnch)
-    })
-
-    allCurses?.forEach((curse) => {
-      curse.enchantments?.forEach(processEnch)
-    })
-
-    allFiligrees?.forEach((fili) => {
-      fili.enchantments?.forEach(processEnch)
-    })
-
     essenceEnchantments?.forEach((ee) => {
       ee.enchantments?.forEach(processEnch)
     })
 
     return map
-  }, [allItems, allAugments, allCurses, allFiligrees, essenceEnchantments])
+  }, [allItems, essenceEnchantments])
 
   const aggregated = useMemo(() => {
     const map: AggregationMap = {}
+
+    const getSourceType = (sourceName: string): AggregationSourceType => {
+      if (sourceName.includes(' (Filigree:')) return 'filigree'
+      if (sourceName.includes(' (Essence:')) return 'essence'
+      if (sourceName.includes(' (') && sourceName.endsWith(')')) return 'augment'
+      return 'item'
+    }
 
     const addEntryToMap = (ench: LootEnchantment, sourceName: string, slot: string) => {
       const normName = normalizeString(ench.name)
@@ -126,7 +126,8 @@ const EnchantmentsSummary = (props: Props) => {
         itemName: sourceName,
         slot,
         value,
-        valueStr
+        valueStr,
+        sourceType: getSourceType(sourceName)
       })
     }
 
@@ -170,35 +171,37 @@ const EnchantmentsSummary = (props: Props) => {
 
     // Add empty entries for missing bonus types
     Object.keys(map).forEach((normName: string) => {
-      if (!(normName in allPossibleBonuses)) {
-        return
-      }
+      const possibleBonuses = allPossibleBonuses[normName]
+      if (!possibleBonuses || possibleBonuses.size === 0) return
 
-      const possibleBonuses: Set<string> = allPossibleBonuses[normName]
-
-      if (possibleBonuses.size > 0) {
-        possibleBonuses.forEach((bonusType: string) => {
-          if (!(bonusType in map[normName].bonuses)) {
-            map[normName].bonuses[bonusType] = {
-              maxValue: 0,
-              maxValueStr: '',
-              items: []
-            }
+      possibleBonuses.forEach((bonusType: string) => {
+        if (!(bonusType in map[normName].bonuses)) {
+          map[normName].bonuses[bonusType] = {
+            maxValue: 0,
+            maxValueStr: '',
+            items: []
           }
-        })
-      }
+        }
+      })
     })
 
-    const result = Object.values(map).map((entry: AggregationEntry) => {
+    const result = Object.entries(map).map(([normName, entry]: [string, AggregationEntry]) => {
       const bonuses = Object.entries(entry.bonuses)
         .map(([bonusType, data]: [string, AggregationBonus]) => {
           const sortedItems: AggregationItem[] = [...data.items].sort(sortItemsByValue)
+
+          const hasItemSource =
+            (allPossibleBonuses[normName]?.has(bonusType) ?? false) || sortedItems.some(isItemOrEssenceSource)
+
+          const nonItemSources = new Set(sortedItems.filter(isNonItemSource).map(getSourceLabel))
 
           return {
             bonusType,
             maxValue: data.maxValue,
             maxValueStr: data.maxValueStr,
-            items: sortedItems
+            items: sortedItems,
+            hasItemSource,
+            nonItemSources
           }
         })
         .sort((a, b) => b.maxValue - a.maxValue)
@@ -278,18 +281,25 @@ const EnchantmentsSummary = (props: Props) => {
                   {ench.bonuses.map((bonus, bIdx) => (
                     <div key={`${bonus.bonusType}-${String(bIdx)}`} className='mb-2 last-child-mb-0'>
                       <div className='d-flex justify-content-between align-items-center border-bottom border-secondary mb-1 pb-1'>
-                        {onBonusClick ? (
+                        {onBonusClick && bonus.hasItemSource ? (
                           <button
                             type='button'
                             className='btn btn-link p-0 border-0 small italic text-capitalize text-info text-decoration-none shadow-none align-baseline'
                             onClick={() => {
-                              onBonusClick(ench.name)
+                              onBonusClick(ench.name, bonus.bonusType)
                             }}
                           >
                             {bonus.bonusType}
                           </button>
                         ) : (
-                          <span className='small italic text-capitalize text-light'>{bonus.bonusType}</span>
+                          <span className='d-flex align-items-center gap-1'>
+                            <span className='small italic text-capitalize text-light'>{bonus.bonusType}</span>
+                            {bonus.nonItemSources.size > 0 && (
+                              <span className='badge text-bg-secondary' style={{ fontSize: '0.6rem' }}>
+                                {[...bonus.nonItemSources].join('/')} only
+                              </span>
+                            )}
+                          </span>
                         )}
 
                         <span className='small fw-bold text-light'>{calculateBonus(bonus)}</span>
@@ -348,7 +358,7 @@ interface Props {
   allAugments?: GearAugment[]
   allCurses?: Curse[]
   allFiligrees?: GearItem[]
-  onBonusClick?: (name: string) => void
+  onBonusClick?: (name: string, bonusType: string) => void
 }
 
 export default EnchantmentsSummary

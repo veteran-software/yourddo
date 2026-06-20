@@ -1,14 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createDefaultSetup } from '../../pages/gearPlanner/initialState'
-import {
-  type GearAugment,
-  type GearItem,
-  GearSlot
-} from '../../pages/gearPlanner/types'
-import gearPlannerReducer, {
-  type GearPlannerState,
-  removeSetup
-} from './gearPlannerSlice'
+import { type GearAugment, type GearItem, GearSlot } from '../../pages/gearPlanner/types'
+import gearPlannerReducer, { type GearPlannerState, removeSetup } from './gearPlannerSlice'
 
 describe('gearPlannerSlice reducers', () => {
   it('Bug #7: removeSetup should not leave characterSetups empty', () => {
@@ -32,7 +25,7 @@ describe('gearPlannerSlice reducers', () => {
 
     const nextState: GearPlannerState = gearPlannerReducer(initialState, removeSetup('setup1'))
 
-    expect(nextState.characterSetups.length).toBe(1)
+    expect(nextState.characterSetups).toHaveLength(1)
     expect(nextState.characterSetups[0].id).toBe('setup2')
     expect(nextState.activeSetupId).toBe('setup2')
   })

@@ -12,6 +12,7 @@ import { useGearPlannerUI } from './useGearPlannerUI'
 
 interface Props {
   enchantmentSearch: string
+  enchantmentBonusType: string
   itemNameSearch: string
   setBonusFilter: string | null
   showConflicts: boolean
@@ -94,6 +95,7 @@ const useGearPlanner = (props: Props) => {
     browsingSlot,
     browsingSet,
     enchantmentSearch: props.enchantmentSearch,
+    enchantmentBonusType: props.enchantmentBonusType,
     itemNameSearch: propItemNameSearch,
     internalItemNameSearch,
     setBonusFilter: propSetBonusFilter ?? setBonusFilter,

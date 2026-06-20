@@ -51,6 +51,7 @@ describe('useGearPlannerFiltering Hook', () => {
     itemNameSearch: '',
     internalItemNameSearch: '',
     enchantmentSearch: '',
+    enchantmentBonusType: '',
     setBonusFilter: null,
     showOwnedOnly: false,
     showConflicts: true,

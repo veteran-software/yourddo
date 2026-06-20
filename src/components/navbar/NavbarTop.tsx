@@ -1,6 +1,6 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Button, Container, Image, Nav, Navbar } from 'react-bootstrap'
-import { FaGithub } from 'react-icons/fa6'
+import { FaDiscord, FaGithub } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import { useAppDispatch } from '../../redux/hooks'
@@ -74,15 +74,15 @@ const NavbarTop = () => {
             >
               Saga Tracker
             </Nav.Link>
-            {/*<Nav.Link*/}
-            {/*  as={Link}*/}
-            {/*  to='/gear-planner'*/}
-            {/*  onClick={() => {*/}
-            {/*    setExpanded(false)*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  Gear Planner*/}
-            {/*</Nav.Link>*/}
+            <Nav.Link
+              as={Link}
+              to='/gear-planner'
+              onClick={() => {
+                setExpanded(false)
+              }}
+            >
+              Gear Planner
+            </Nav.Link>
             <Nav.Link
               as={Button}
               href='https://github.com/veteran-software/yourddo'
@@ -94,6 +94,18 @@ const NavbarTop = () => {
               }}
             >
               <FaGithub size={25} />
+            </Nav.Link>
+            <Nav.Link
+              as={Button}
+              href='https://discord.gg/jk3hYA5Jgv'
+              target='_blank'
+              rel='noreferrer'
+              title='YourDDO Discord Server'
+              onClick={() => {
+                setExpanded(false)
+              }}
+            >
+              <FaDiscord size={25} />
             </Nav.Link>
 
             <TroveImport

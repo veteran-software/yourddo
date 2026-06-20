@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { getTroveKey } from '../../../utils/troveUtils'
 import { ALL_SLOT_KEYS } from '../../essenceCrafting/types'
-import { checkPotentialConflict, getSlotOwner, normalizeString } from '../conflictResolver'
+import { checkPotentialConflict, getBonus, getSlotOwner, normalizeString } from '../conflictResolver'
 import { createEssenceCraftedItem } from '../helpers'
 import {
   type GearItem,
@@ -11,6 +11,25 @@ import {
   type SetBonusIndex,
   type SetBonusIndexEntry
 } from '../types'
+
+const matchesEnchantmentSearch = (item: GearItem, normalizedSearch: string, enchantmentBonusType: string): boolean => {
+  if (enchantmentBonusType) {
+    return (
+      (item.enchantments?.some(
+        (e) => normalizeString(e.name).includes(normalizedSearch) && getBonus(e.bonus) === enchantmentBonusType
+      ) ??
+        false) ||
+      (item.effectsAdded?.some(
+        (e) => normalizeString(e.name).includes(normalizedSearch) && getBonus(e.bonus) === enchantmentBonusType
+      ) ??
+        false)
+    )
+  }
+  return (
+    (item.normalizedName?.includes(normalizedSearch) ?? false) ||
+    (item.normalizedEnchantments?.some((e) => e.includes(normalizedSearch)) ?? false)
+  )
+}
 
 const getVisibleItemNames = (allItemsBySlot: Map<GearSlot, GearItem[]>, min: number, max: number): Set<string> => {
   const names = new Set<string>()
@@ -92,6 +111,7 @@ export const useGearPlannerFiltering = ({
   itemNameSearch,
   internalItemNameSearch,
   enchantmentSearch,
+  enchantmentBonusType,
   setBonusFilter,
   showOwnedOnly,
   showConflicts,
@@ -258,7 +278,10 @@ export const useGearPlannerFiltering = ({
     }
 
     if (slot === GearSlot.MainHand || slot === GearSlot.OffHand) {
-      items.push(createItem('Weapon', `Essence Crafted Weapon`))
+      items.push(
+        createItem('Weapon (Melee)', `Essence Crafted Weapon (Melee)`),
+        createItem('Weapon (Ranged)', `Essence Crafted Weapon (Ranged)`)
+      )
       if (slot === GearSlot.OffHand) {
         items.push(
           createItem('Shield', `Essence Crafted Shield`),
@@ -376,13 +399,8 @@ export const useGearPlannerFiltering = ({
           return false
         }
 
-        if (normalizedSearch) {
-          const matchName = item.normalizedName?.includes(normalizedSearch)
-          const matchEnchantment = item.normalizedEnchantments?.some((e) => e.includes(normalizedSearch))
-
-          if (!matchName && !matchEnchantment) {
-            return false
-          }
+        if (normalizedSearch && !matchesEnchantmentSearch(item, normalizedSearch, enchantmentBonusType)) {
+          return false
         }
 
         const level: number = Number(item.minLevel) || 1
@@ -399,6 +417,7 @@ export const useGearPlannerFiltering = ({
   }, [
     dataReady,
     enchantmentSearch,
+    enchantmentBonusType,
     allItemsBySlot,
     activeSetup,
     showOwnedOnly,
@@ -431,6 +450,7 @@ interface Props {
   itemNameSearch: string
   internalItemNameSearch: string
   enchantmentSearch: string
+  enchantmentBonusType: string
   setBonusFilter: string | null
   showOwnedOnly: boolean
   showConflicts: boolean

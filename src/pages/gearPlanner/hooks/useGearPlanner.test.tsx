@@ -105,6 +105,7 @@ describe('useGearPlanner Hook', () => {
       () =>
         useGearPlanner({
           enchantmentSearch: '',
+          enchantmentBonusType: '',
           itemNameSearch: '',
           setBonusFilter: null,
           showConflicts: false,

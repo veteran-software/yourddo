@@ -88,11 +88,11 @@ const EssenceCraftingSelector = (props: Props) => {
     const weaponType = selectedItem.type
     const filteredIds: string[] = []
 
-    if (meleeWeapons.has(weaponType)) {
+    if (weaponType === 'Weapon (Melee)' || meleeWeapons.has(weaponType)) {
       filteredIds.push('weapon-melee', 'weapon')
     }
 
-    if (rangedWeapons.has(weaponType) || throwingWeapons.has(weaponType)) {
+    if (weaponType === 'Weapon (Ranged)' || rangedWeapons.has(weaponType) || throwingWeapons.has(weaponType)) {
       filteredIds.push('weapon-ranged', 'weapon')
     }
 
@@ -108,17 +108,9 @@ const EssenceCraftingSelector = (props: Props) => {
       filteredIds.push('runearm')
     }
 
-    // Fallback for generic Crafted items if any
-    if (ids.includes('shield') && !filteredIds.includes('shield')) {
-      filteredIds.push('shield')
-    }
-
-    if (ids.includes('orb') && !filteredIds.includes('orb')) {
-      filteredIds.push('orb')
-    }
-
-    if (ids.includes('runearm') && !filteredIds.includes('runearm')) {
-      filteredIds.push('runearm')
+    // Fallback for generic Crafted items (e.g., type "Weapon") where no specific type matched
+    if (filteredIds.length === 0) {
+      return ids
     }
 
     return filteredIds

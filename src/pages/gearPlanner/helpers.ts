@@ -140,7 +140,9 @@ export const getScaledEssenceEnchantments = (ench: EssenceEnchantment, minLevel:
 
 export const reconstructEssenceCraftedItem = (name: string, slot: GearSlot, minLevel: number): GearItem => {
   let type = 'Crafted'
-  if (name.includes('Weapon')) type = 'Weapon'
+  if (name.includes('Weapon (Melee)')) type = 'Weapon (Melee)'
+  else if (name.includes('Weapon (Ranged)')) type = 'Weapon (Ranged)'
+  else if (name.includes('Weapon')) type = 'Weapon'
   else if (name.includes('Shield')) type = 'Shield'
   else if (name.includes('Rune Arm')) type = 'Rune Arm'
   else if (name.includes('Orb')) type = 'Orb'
