@@ -9,6 +9,14 @@ import GenericBadge from './badges/GenericBadge.tsx'
 
 type AggregationSourceType = 'item' | 'augment' | 'filigree' | 'essence'
 
+const isItemOrEssenceSource = (i: AggregationItem) => i.sourceType === 'item' || i.sourceType === 'essence'
+const isNonItemSource = (i: AggregationItem) => i.sourceType !== 'item' && i.sourceType !== 'essence'
+const getSourceLabel = (i: AggregationItem): string => {
+  if (i.sourceType === 'filigree') return 'Filigree'
+  if (i.sourceType === 'augment') return 'Augment'
+  return i.sourceType
+}
+
 interface AggregationItem {
   itemName: string
   slot: string
@@ -32,9 +40,6 @@ type AggregationMap = Record<string, AggregationEntry>
 
 const EnchantmentsSummary = (props: Props) => {
   const {
-    allAugments,
-    allCurses,
-    allFiligrees,
     allItems,
     equippedItems,
     essenceEnchantments,
@@ -56,7 +61,7 @@ const EnchantmentsSummary = (props: Props) => {
   } = props
 
   const allPossibleBonuses = useMemo(() => {
-    const map: Record<string, Set<string>> = {}
+    const map: Record<string, Set<string> | undefined> = {}
 
     const processEnch = (ench: LootEnchantment) => {
       const normName = normalizeString(ench.name)
@@ -64,11 +69,8 @@ const EnchantmentsSummary = (props: Props) => {
         return
       }
 
-      if (!(normName in map)) {
-        map[normName] = new Set<string>()
-      }
-
-      map[normName].add(getBonus(ench.bonus))
+      const set = (map[normName] ??= new Set<string>())
+      set.add(getBonus(ench.bonus))
     }
 
     allItems?.forEach((item) => {
@@ -90,7 +92,7 @@ const EnchantmentsSummary = (props: Props) => {
     const getSourceType = (sourceName: string): AggregationSourceType => {
       if (sourceName.includes(' (Filigree:')) return 'filigree'
       if (sourceName.includes(' (Essence:')) return 'essence'
-      if (/\([^)]+\)$/.test(sourceName)) return 'augment'
+      if (sourceName.includes(' (') && sourceName.endsWith(')')) return 'augment'
       return 'item'
     }
 
@@ -169,23 +171,18 @@ const EnchantmentsSummary = (props: Props) => {
 
     // Add empty entries for missing bonus types
     Object.keys(map).forEach((normName: string) => {
-      if (!(normName in allPossibleBonuses)) {
-        return
-      }
+      const possibleBonuses = allPossibleBonuses[normName]
+      if (!possibleBonuses || possibleBonuses.size === 0) return
 
-      const possibleBonuses: Set<string> = allPossibleBonuses[normName]
-
-      if (possibleBonuses.size > 0) {
-        possibleBonuses.forEach((bonusType: string) => {
-          if (!(bonusType in map[normName].bonuses)) {
-            map[normName].bonuses[bonusType] = {
-              maxValue: 0,
-              maxValueStr: '',
-              items: []
-            }
+      possibleBonuses.forEach((bonusType: string) => {
+        if (!(bonusType in map[normName].bonuses)) {
+          map[normName].bonuses[bonusType] = {
+            maxValue: 0,
+            maxValueStr: '',
+            items: []
           }
-        })
-      }
+        }
+      })
     })
 
     const result = Object.entries(map).map(([normName, entry]: [string, AggregationEntry]) => {
@@ -194,18 +191,9 @@ const EnchantmentsSummary = (props: Props) => {
           const sortedItems: AggregationItem[] = [...data.items].sort(sortItemsByValue)
 
           const hasItemSource =
-            (allPossibleBonuses[normName]?.has(bonusType)) ||
-            sortedItems.some((i) => i.sourceType === 'item' || i.sourceType === 'essence')
+            (allPossibleBonuses[normName]?.has(bonusType) ?? false) || sortedItems.some(isItemOrEssenceSource)
 
-          const nonItemSources = new Set(
-            sortedItems
-              .filter((i) => i.sourceType !== 'item' && i.sourceType !== 'essence')
-              .map((i) => {
-                if (i.sourceType === 'filigree') return 'Filigree'
-                if (i.sourceType === 'augment') return 'Augment'
-                return i.sourceType
-              })
-          )
+          const nonItemSources = new Set(sortedItems.filter(isNonItemSource).map(getSourceLabel))
 
           return {
             bonusType,

@@ -63,7 +63,7 @@ describe('conflictResolver Bugs', () => {
 
       const conflicts = resolveConflicts([typedItem1, typedItem2])
       expect(conflicts.strength).toBeDefined()
-      expect(conflicts.strength.length).toBe(1)
+      expect(conflicts.strength).toHaveLength(1)
       expect(conflicts.strength[0].bonus).toBe('Enhancement')
     })
   })

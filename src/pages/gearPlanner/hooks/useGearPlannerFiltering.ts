@@ -12,6 +12,25 @@ import {
   type SetBonusIndexEntry
 } from '../types'
 
+const matchesEnchantmentSearch = (item: GearItem, normalizedSearch: string, enchantmentBonusType: string): boolean => {
+  if (enchantmentBonusType) {
+    return (
+      (item.enchantments?.some(
+        (e) => normalizeString(e.name).includes(normalizedSearch) && getBonus(e.bonus) === enchantmentBonusType
+      ) ??
+        false) ||
+      (item.effectsAdded?.some(
+        (e) => normalizeString(e.name).includes(normalizedSearch) && getBonus(e.bonus) === enchantmentBonusType
+      ) ??
+        false)
+    )
+  }
+  return (
+    (item.normalizedName?.includes(normalizedSearch) ?? false) ||
+    (item.normalizedEnchantments?.some((e) => e.includes(normalizedSearch)) ?? false)
+  )
+}
+
 const getVisibleItemNames = (allItemsBySlot: Map<GearSlot, GearItem[]>, min: number, max: number): Set<string> => {
   const names = new Set<string>()
   for (const [slot, items] of allItemsBySlot.entries()) {
@@ -380,21 +399,8 @@ export const useGearPlannerFiltering = ({
           return false
         }
 
-        if (normalizedSearch) {
-          if (enchantmentBonusType) {
-            const hasMatch =
-              item.enchantments?.some(
-                (e) => normalizeString(e.name).includes(normalizedSearch) && getBonus(e.bonus) === enchantmentBonusType
-              ) ||
-              item.effectsAdded?.some(
-                (e) => normalizeString(e.name).includes(normalizedSearch) && getBonus(e.bonus) === enchantmentBonusType
-              )
-            if (!hasMatch) return false
-          } else {
-            const matchName = item.normalizedName?.includes(normalizedSearch)
-            const matchEnchantment = item.normalizedEnchantments?.some((e) => e.includes(normalizedSearch))
-            if (!matchName && !matchEnchantment) return false
-          }
+        if (normalizedSearch && !matchesEnchantmentSearch(item, normalizedSearch, enchantmentBonusType)) {
+          return false
         }
 
         const level: number = Number(item.minLevel) || 1
