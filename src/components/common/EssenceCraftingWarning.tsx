@@ -2,7 +2,7 @@ import { FaTriangleExclamation } from 'react-icons/fa6'
 
 const ESSENCE_CRAFTING_WARNING_RELEASE = new Date('2026-07-22T00:00:00-04:00').getTime()
 
-export const shouldShowEssenceCraftingWarning = () => {
+const shouldShowEssenceCraftingWarning = () => {
   return Date.now() >= ESSENCE_CRAFTING_WARNING_RELEASE
 }
 
