@@ -166,88 +166,90 @@ const SetupTabs = ({
             </Stack>
           }
         >
-          <div className='mt-3'>
-            <h5 className='mb-3 border-bottom pb-2'>Equipped Items</h5>
+          {setup.id === activeSetupId && (
+            <div className='mt-3'>
+              <h5 className='mb-3 border-bottom pb-2'>Equipped Items</h5>
 
-            <Row>{GEAR_SLOTS.map((slot) => renderSlot(slot, setup))}</Row>
+              <Row>{GEAR_SLOTS.map((slot) => renderSlot(slot, setup))}</Row>
 
-            <SetBonusesSummary
-              equippedItems={characterEquipped}
-              slottedAugments={activeSetup.slottedAugments}
-              slottedFiligrees={activeSetup.slottedFiligrees}
-              slottedGemSetBonuses={activeSetup.slottedGemSetBonuses}
-              slottedLostPurpose={activeSetup.slottedLostPurpose}
-              onSetClick={openSetBonusBrowser}
-            />
+              <SetBonusesSummary
+                equippedItems={characterEquipped}
+                slottedAugments={activeSetup.slottedAugments}
+                slottedFiligrees={activeSetup.slottedFiligrees}
+                slottedGemSetBonuses={activeSetup.slottedGemSetBonuses}
+                slottedLostPurpose={activeSetup.slottedLostPurpose}
+                onSetClick={openSetBonusBrowser}
+              />
 
-            <EnchantmentsSummary
-              equippedItems={characterEquipped}
-              slottedAugments={activeSetup.slottedAugments}
-              slottedCurses={activeSetup.slottedCurses}
-              slottedFiligrees={activeSetup.slottedFiligrees}
-              slottedGemSetBonuses={activeSetup.slottedGemSetBonuses}
-              slottedEssenceEnchantments={activeSetup.slottedEssenceEnchantments}
-              essenceEnchantments={essenceEnchantments}
-              slottedNearlyFinished={activeSetup.slottedNearlyFinished}
-              slottedAlmostThere={activeSetup.slottedAlmostThere}
-              slottedFinishingTouch={activeSetup.slottedFinishingTouch}
-              slottedRitualTable={activeSetup.slottedRitualTable}
-              slottedLostPurpose={activeSetup.slottedLostPurpose}
-              slottedTraceOfMadness={activeSetup.slottedTraceOfMadness}
-              slottedFountainOfNecroticMight={activeSetup.slottedFountainOfNecroticMight}
-              slottedStormreaverUpgrade={activeSetup.slottedStormreaverUpgrade}
-              slottedZhentarimAttuned={activeSetup.slottedZhentarimAttuned}
-              allItems={allItems}
-              allAugments={allAugments}
-              allCurses={allCurses}
-              allFiligrees={allFiligrees}
-              onBonusClick={onBonusClick}
-            />
-
-            {setup.classes.includes('Artificer') && setup.classes.includes('Druid') && (
-              <div className='mt-3 p-2 bg-warning-subtle text-warning-emphasis border border-warning rounded small text-center fw-bold'>
-                Note: Only one pet may be active at a time.
-              </div>
-            )}
-
-            {setup.classes.includes('Artificer') && (
-              <PetGearSection
-                title='Iron Defender (Artificer Pet)'
-                slots={ARTIFICER_PET_SLOTS}
-                setup={setup}
-                entityState={getEntityState('artificer_pet')}
-                renderSlot={renderSlot}
-                openSetBonusBrowser={openSetBonusBrowser}
-                onBonusClick={onBonusClick}
+              <EnchantmentsSummary
+                equippedItems={characterEquipped}
+                slottedAugments={activeSetup.slottedAugments}
+                slottedCurses={activeSetup.slottedCurses}
+                slottedFiligrees={activeSetup.slottedFiligrees}
+                slottedGemSetBonuses={activeSetup.slottedGemSetBonuses}
+                slottedEssenceEnchantments={activeSetup.slottedEssenceEnchantments}
                 essenceEnchantments={essenceEnchantments}
+                slottedNearlyFinished={activeSetup.slottedNearlyFinished}
+                slottedAlmostThere={activeSetup.slottedAlmostThere}
+                slottedFinishingTouch={activeSetup.slottedFinishingTouch}
+                slottedRitualTable={activeSetup.slottedRitualTable}
+                slottedLostPurpose={activeSetup.slottedLostPurpose}
+                slottedTraceOfMadness={activeSetup.slottedTraceOfMadness}
+                slottedFountainOfNecroticMight={activeSetup.slottedFountainOfNecroticMight}
+                slottedStormreaverUpgrade={activeSetup.slottedStormreaverUpgrade}
+                slottedZhentarimAttuned={activeSetup.slottedZhentarimAttuned}
                 allItems={allItems}
                 allAugments={allAugments}
                 allCurses={allCurses}
                 allFiligrees={allFiligrees}
-                borderColorClass='border-info'
-                textColorClass='text-info'
-              />
-            )}
-
-            {setup.classes.includes('Druid') && (
-              <PetGearSection
-                title='Wolf Companion (Druid Pet)'
-                slots={DRUID_PET_SLOTS}
-                setup={setup}
-                entityState={getEntityState('druid_pet')}
-                renderSlot={renderSlot}
-                openSetBonusBrowser={openSetBonusBrowser}
                 onBonusClick={onBonusClick}
-                essenceEnchantments={essenceEnchantments}
-                allItems={allItems}
-                allAugments={allAugments}
-                allCurses={allCurses}
-                allFiligrees={allFiligrees}
-                borderColorClass='border-success'
-                textColorClass='text-success'
               />
-            )}
-          </div>
+
+              {setup.classes.includes('Artificer') && setup.classes.includes('Druid') && (
+                <div className='mt-3 p-2 bg-warning-subtle text-warning-emphasis border border-warning rounded small text-center fw-bold'>
+                  Note: Only one pet may be active at a time.
+                </div>
+              )}
+
+              {setup.classes.includes('Artificer') && (
+                <PetGearSection
+                  title='Iron Defender (Artificer Pet)'
+                  slots={ARTIFICER_PET_SLOTS}
+                  setup={setup}
+                  entityState={getEntityState('artificer_pet')}
+                  renderSlot={renderSlot}
+                  openSetBonusBrowser={openSetBonusBrowser}
+                  onBonusClick={onBonusClick}
+                  essenceEnchantments={essenceEnchantments}
+                  allItems={allItems}
+                  allAugments={allAugments}
+                  allCurses={allCurses}
+                  allFiligrees={allFiligrees}
+                  borderColorClass='border-info'
+                  textColorClass='text-info'
+                />
+              )}
+
+              {setup.classes.includes('Druid') && (
+                <PetGearSection
+                  title='Wolf Companion (Druid Pet)'
+                  slots={DRUID_PET_SLOTS}
+                  setup={setup}
+                  entityState={getEntityState('druid_pet')}
+                  renderSlot={renderSlot}
+                  openSetBonusBrowser={openSetBonusBrowser}
+                  onBonusClick={onBonusClick}
+                  essenceEnchantments={essenceEnchantments}
+                  allItems={allItems}
+                  allAugments={allAugments}
+                  allCurses={allCurses}
+                  allFiligrees={allFiligrees}
+                  borderColorClass='border-success'
+                  textColorClass='text-success'
+                />
+              )}
+            </div>
+          )}
         </Tab>
       ))}
     </Tabs>

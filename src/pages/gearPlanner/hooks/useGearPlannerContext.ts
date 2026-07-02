@@ -64,42 +64,47 @@ export const useGearPlannerContext = ({ activeSetup, artificerPet, druidPet }: P
   const artificerConflicts = petConflicts.artificer_pet
   const druidConflicts = petConflicts.druid_pet
 
+  const characterState = useMemo(
+    () => ({
+      ...activeSetup,
+      ...createUpgradeViews(activeSetup.itemUpgrades),
+      equipped: characterEquipped,
+      conflicts: characterConflicts
+    }),
+    [activeSetup, characterEquipped, characterConflicts]
+  )
+
+  const artificerState = useMemo(
+    () => ({
+      ...artificerPet,
+      ...createUpgradeViews(artificerPet.itemUpgrades),
+      equipped: artificerEquipped,
+      conflicts: artificerConflicts
+    }),
+    [artificerPet, artificerEquipped, artificerConflicts]
+  )
+
+  const druidState = useMemo(
+    () => ({
+      ...druidPet,
+      ...createUpgradeViews(druidPet.itemUpgrades),
+      equipped: druidEquipped,
+      conflicts: druidConflicts
+    }),
+    [druidPet, druidEquipped, druidConflicts]
+  )
+
   const getEntityState = useCallback(
     (owner: string): EntityGearState => {
       if (owner === 'artificer_pet') {
-        return {
-          ...artificerPet,
-          ...createUpgradeViews(artificerPet.itemUpgrades),
-          equipped: artificerEquipped,
-          conflicts: artificerConflicts
-        }
+        return artificerState
       }
       if (owner === 'druid_pet') {
-        return {
-          ...druidPet,
-          ...createUpgradeViews(druidPet.itemUpgrades),
-          equipped: druidEquipped,
-          conflicts: druidConflicts
-        }
+        return druidState
       }
-      return {
-        ...activeSetup,
-        ...createUpgradeViews(activeSetup.itemUpgrades),
-        equipped: characterEquipped,
-        conflicts: characterConflicts
-      }
+      return characterState
     },
-    [
-      activeSetup,
-      artificerPet,
-      druidPet,
-      characterEquipped,
-      artificerEquipped,
-      druidEquipped,
-      characterConflicts,
-      artificerConflicts,
-      druidConflicts
-    ]
+    [artificerState, druidState, characterState]
   )
 
   const getContextInfo = useCallback(

@@ -66,14 +66,19 @@ const useGearPlanner = (props: Props) => {
   const formatDropLocations = useFormatDropLocations()
   const isItemVisibleForClasses = useIsItemVisibleForClasses()
 
-  const activeSetup: GearSetup =
-    setups.find((s: GearSetup) => s.id === activeSetupId) ??
-    (setups.length > 0 ? setups[0] : createDefaultSetup('default', 'Default Setup'))
+  const activeSetup: GearSetup = useMemo(() => {
+    return (
+      setups.find((s: GearSetup) => s.id === activeSetupId) ??
+      (setups.length > 0 ? setups[0] : createDefaultSetup('default', 'Default Setup'))
+    )
+  }, [activeSetupId, setups])
   const { artificerPet, druidPet } = activeSetup
-  const activeSetupWithUpgradeViews: GearSetup & UpgradeViews = {
-    ...activeSetup,
-    ...createUpgradeViews(activeSetup.itemUpgrades)
-  }
+  const activeSetupWithUpgradeViews: GearSetup & UpgradeViews = useMemo(() => {
+    return {
+      ...activeSetup,
+      ...createUpgradeViews(activeSetup.itemUpgrades)
+    }
+  }, [activeSetup])
 
   const { characterEquipped, artificerEquipped, druidEquipped, getContextInfo, getEntityState } = useGearPlannerContext(
     { activeSetup: activeSetupWithUpgradeViews, artificerPet, druidPet }

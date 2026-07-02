@@ -4,6 +4,7 @@ import { ALL_SLOT_KEYS } from '../../essenceCrafting/types'
 import { checkPotentialConflict, getBonus, getSlotOwner, normalizeString } from '../conflictResolver'
 import { createEssenceCraftedItem } from '../helpers'
 import {
+  type EntityGearState,
   type GearItem,
   type GearSetup,
   GearSlot,
@@ -99,6 +100,37 @@ const makeGearItemComparator =
     return a.name.localeCompare(b.name)
   }
 
+const createItemConflictChecker = (entityState: EntityGearState, slot: GearSlot, showConflicts: boolean) => {
+  const cache = new Map<string, boolean>()
+
+  return (item: GearItem): boolean => {
+    if (showConflicts) {
+      return false
+    }
+
+    const cached = cache.get(item.id)
+    if (cached !== undefined) {
+      return cached
+    }
+
+    const equipped = entityState.equipped.filter((i) => i.id !== entityState.slots[slot]?.id)
+    const enchantments = item.enchantments ?? item.effectsAdded ?? []
+
+    const hasConflict = enchantments.some((ench) => {
+      const { isConflict, isUpgrade } = checkPotentialConflict(ench, equipped, slot, {
+        slottedAugments: entityState.slottedAugments,
+        itemUpgrades: entityState.itemUpgrades,
+        ignoreItemId: item.id
+      })
+
+      return isConflict && !isUpgrade
+    })
+
+    cache.set(item.id, hasConflict)
+    return hasConflict
+  }
+}
+
 export const useGearPlannerFiltering = ({
   dataReady,
   allItemsBySlot,
@@ -131,33 +163,6 @@ export const useGearPlannerFiltering = ({
       return true
     },
     [showOwnedOnly, troveData]
-  )
-
-  const isItemConflicting = useCallback(
-    (item: GearItem, slot: GearSlot) => {
-      if (showConflicts) {
-        return false
-      }
-
-      const entityState = getEntityState(getSlotOwner(slot))
-      const equipped = entityState.equipped.filter((i) => i.id !== entityState.slots[slot]?.id)
-
-      const enchantments = item.enchantments ?? item.effectsAdded ?? []
-      for (const ench of enchantments) {
-        const { isConflict, isUpgrade } = checkPotentialConflict(ench, equipped, slot, {
-          slottedAugments: entityState.slottedAugments,
-          itemUpgrades: entityState.itemUpgrades,
-          ignoreItemId: item.id
-        })
-
-        if (isConflict && !isUpgrade) {
-          return true
-        }
-      }
-
-      return false
-    },
-    [showConflicts, getEntityState]
   )
 
   const shouldShowItem = useCallback((item: GearItem, slot: GearSlot, setup: GearSetup, skipLevelCheck = false) => {
@@ -304,6 +309,8 @@ export const useGearPlannerFiltering = ({
     const slotItems: GearItem[] = allItemsBySlot.get(browsingSlot) ?? []
     const essenceCraftedItems = getEssenceCraftedItems(browsingSlot, activeSetup.minLevel)
     const combinedItems = [...essenceCraftedItems, ...slotItems]
+    const entityState = getEntityState(getSlotOwner(browsingSlot))
+    const isItemConflicting = createItemConflictChecker(entityState, browsingSlot, showConflicts)
 
     return combinedItems
       .filter((item: GearItem) => {
@@ -332,7 +339,7 @@ export const useGearPlannerFiltering = ({
           }
         }
 
-        if (isItemConflicting(item, browsingSlot)) {
+        if (isItemConflicting(item)) {
           return false
         }
 
@@ -352,7 +359,8 @@ export const useGearPlannerFiltering = ({
     troveData,
     isItemVisibleForClasses,
     getEssenceCraftedItems,
-    isItemConflicting
+    getEntityState,
+    showConflicts
   ])
 
   const searchResultsBySlot = useMemo(() => {
@@ -377,6 +385,8 @@ export const useGearPlannerFiltering = ({
 
       const essenceCraftedItems = getEssenceCraftedItems(slot, activeSetup.minLevel)
       const combinedItems = [...essenceCraftedItems, ...items]
+      const entityState = getEntityState(getSlotOwner(slot))
+      const isItemConflicting = createItemConflictChecker(entityState, slot, showConflicts)
 
       const filtered = combinedItems.filter((item) => {
         if (!isItemVisibleForClasses(item, activeSetup)) {
@@ -387,7 +397,7 @@ export const useGearPlannerFiltering = ({
           return false
         }
 
-        if (!showConflicts && isItemConflicting(item, slot)) {
+        if (!showConflicts && isItemConflicting(item)) {
           return false
         }
 
@@ -417,7 +427,7 @@ export const useGearPlannerFiltering = ({
     isItemVisibleForClasses,
     browsingSlot,
     getEssenceCraftedItems,
-    isItemConflicting,
+    getEntityState,
     showConflicts
   ])
 

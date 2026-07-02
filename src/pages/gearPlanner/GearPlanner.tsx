@@ -93,6 +93,20 @@ const GearPlanner = () => {
     [dispatch]
   )
 
+  const handleBonusClick = useCallback(
+    (name: string, bonusType: string) => {
+      setEnchantmentSearch(name)
+      setEnchantmentBonusType(bonusType)
+      setShowEnchantmentSearch(true)
+    },
+    [setShowEnchantmentSearch]
+  )
+
+  const handleSetEnchantmentSearch = useCallback((search: string) => {
+    setEnchantmentSearch(search)
+    setEnchantmentBonusType('')
+  }, [])
+
   useEffect(() => {
     const win = globalThis as unknown as Window
     win.openFiligreeModal = (item: GearItem, slot: GearSlot) => {
@@ -117,17 +131,6 @@ const GearPlanner = () => {
         </p>
       </Container>
     )
-  }
-
-  const handleBonusClick = (name: string, bonusType: string) => {
-    setEnchantmentSearch(name)
-    setEnchantmentBonusType(bonusType)
-    gpHook.setShowEnchantmentSearch(true)
-  }
-
-  const handleSetEnchantmentSearch = (search: string) => {
-    setEnchantmentSearch(search)
-    setEnchantmentBonusType('')
   }
 
   return (

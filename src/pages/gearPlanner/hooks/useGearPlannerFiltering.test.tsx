@@ -144,6 +144,49 @@ describe('useGearPlannerFiltering Hook', () => {
     expect(result.current.filteredItems).toHaveLength(1)
   })
 
+  it('should resolve entity state once per slot filter pass', () => {
+    const getEntityState = vi.fn(
+      () =>
+        ({
+          equipped: [],
+          slots: {},
+          itemUpgrades: {},
+          slottedAugments: {},
+          slottedNearlyFinished: {},
+          slottedAlmostThere: {},
+          slottedFinishingTouch: {},
+          slottedRitualTable: {},
+          slottedLostPurpose: {},
+          slottedTraceOfMadness: {},
+          slottedFountainOfNecroticMight: {},
+          slottedStormreaverUpgrade: {},
+          slottedZhentarimAttuned: {}
+        }) as unknown as EntityGearState
+    )
+
+    vi.mocked(conflictResolver.checkPotentialConflict).mockReturnValue({
+      isConflict: false,
+      isRedundant: false,
+      currentMax: 0,
+      isUpgrade: false
+    })
+
+    const items = [mockGearItem(1, 'Item A'), mockGearItem(2, 'Item B'), mockGearItem(3, 'Item C')]
+    const allItemsBySlot = new Map([[GearSlot.Quiver, items]])
+
+    const { result } = renderHook(() =>
+      useGearPlannerFiltering({
+        ...defaultProps,
+        allItemsBySlot,
+        showConflicts: false,
+        getEntityState
+      })
+    )
+
+    expect(result.current.filteredItems).toHaveLength(3)
+    expect(getEntityState).toHaveBeenCalledTimes(1)
+  })
+
   it('should respect isItemVisibleForClasses (e.g., Armor/Docent filtering)', () => {
     const docent = { ...mockGearItem(1, 'Docent of the Sea', GearSlot.Armor), type: 'Docent' }
     const plate = { ...mockGearItem(2, 'Full Plate', GearSlot.Armor), type: 'Heavy Armor' }

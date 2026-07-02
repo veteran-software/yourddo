@@ -134,6 +134,9 @@ describe('Gear planner extracted UI parts', () => {
     expect(screen.getAllByTestId(`slot-${GearSlot.Eyes}`)[0]).toBeInTheDocument()
     expect(screen.getAllByTestId('set-bonuses-summary')[0]).toBeInTheDocument()
     expect(screen.getAllByTestId('enchantments-summary')[0]).toBeInTheDocument()
+    expect(screen.queryAllByTestId('set-bonuses-summary')).toHaveLength(1)
+    expect(screen.queryAllByTestId('enchantments-summary')).toHaveLength(1)
+    expect(renderSlot).toHaveBeenCalledTimes(15)
 
     await user.click(screen.getByRole('tab', { name: 'Setup 2' }))
     expect(onSelectSetup).toHaveBeenCalledWith('setup-2')
