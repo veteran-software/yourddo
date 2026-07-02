@@ -4,7 +4,6 @@ import reaperForgeData from '../../data/reaperForge.json'
 import { findSetBonus } from '../../data/setBonuses.ts'
 import stormreaverUpgradeData from '../../data/stormreaverUpgrade.json'
 import zhentarimData from '../../data/zhentarimAttuned.json'
-import type { Skill } from '../../types/core.ts'
 import type { SetBonus } from '../../types/crafting.ts'
 import { UPGRADE_PLACEHOLDER_ENCHANTMENTS } from './constants'
 import type { EssenceEnchantment } from './dataLoader.ts'
@@ -55,39 +54,8 @@ interface ReaperForgeEffect {
 }
 
 const reaperForgeEffects = (reaperForgeData as { effects: ReaperForgeEffect[] }).effects
-const reaperForgeSkills: readonly Skill[] = [
-  'Balance',
-  'Bluff',
-  'Concentration',
-  'Diplomacy',
-  'Disable Device',
-  'Haggle',
-  'Heal',
-  'Hide',
-  'Intimidate',
-  'Jump',
-  'Listen',
-  'Move Silently',
-  'Open Lock',
-  'Perform',
-  'Repair',
-  'Search',
-  'Spellcraft',
-  'Spot',
-  'Swim',
-  'Tumble',
-  'Use Magic Device'
-] as const
 
 const expandReaperForgeGrant = (grant: ReaperForgeGrant): LootEnchantment[] => {
-  if (grant.stat === 'All Skills') {
-    return reaperForgeSkills.map((skill) => ({
-      name: `Skill: ${skill}`,
-      bonus: 'Reaper',
-      modifier: grant.modifier
-    }))
-  }
-
   return [
     {
       name: grant.stat,

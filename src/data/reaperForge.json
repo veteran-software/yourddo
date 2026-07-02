@@ -7,7 +7,7 @@
       "allowedSlots": ["Eyes"],
       "grants": [
         { "stat": "Attack Rolls", "modifier": 1 },
-        { "stat": "Spell Penetration", "modifier": 1 }
+        { "stat": "Spell Penetration (Level 9)", "modifier": 1 }
       ]
     },
     {
@@ -30,7 +30,26 @@
       "grants": [
         { "stat": "Melee Power", "modifier": 2 },
         { "stat": "Ranged Power", "modifier": 2 },
-        { "stat": "Spell Power", "modifier": 2 },
+        { "stat": "Spell Power: Acid", "modifier": 2 },
+        { "stat": "Spell Power: Cold", "modifier": 2 },
+        { "stat": "Spell Power: Electric", "modifier": 2 },
+        { "stat": "Spell Power: Fire", "modifier": 2 },
+        { "stat": "Spell Power: Force", "modifier": 2 },
+        { "stat": "Spell Power: Piercing", "modifier": 2 },
+        { "stat": "Spell Power: Slashing", "modifier": 2 },
+        { "stat": "Spell Power: Bludgeoning", "modifier": 2 },
+        { "stat": "Spell Power: Light", "modifier": 2 },
+        { "stat": "Spell Power: Chaos", "modifier": 2 },
+        { "stat": "Spell Power: Evil", "modifier": 2 },
+        { "stat": "Spell Power: Good", "modifier": 2 },
+        { "stat": "Spell Power: Lawful", "modifier": 2 },
+        { "stat": "Spell Power: Negative Energy", "modifier": 2 },
+        { "stat": "Spell Power: Poison", "modifier": 2 },
+        { "stat": "Spell Power: Positive Energy", "modifier": 2 },
+        { "stat": "Spell Power: Sonic", "modifier": 2 },
+        { "stat": "Spell Power: Repair", "modifier": 2 },
+        { "stat": "Spell Power: Rust", "modifier": 2 },
+        { "stat": "Spell Power: Universal", "modifier": 2 },
         { "stat": "Physical Resistance Rating", "modifier": 2 },
         { "stat": "Magical Resistance Rating", "modifier": 2 }
       ]
@@ -49,7 +68,7 @@
       "name": "Reaper Belt Enchantment",
       "allowedSlots": ["Waist"],
       "grants": [
-        { "stat": "Hit Points", "modifier": 10 },
+        { "stat": "Maximum Hit Points", "modifier": 10 },
         { "stat": "Physical Resistance Rating", "modifier": 3 }
       ]
     },
@@ -58,7 +77,27 @@
       "name": "Reaper Gloves Enchantment",
       "allowedSlots": ["Hands"],
       "grants": [
-        { "stat": "All Skills", "modifier": 1 },
+        { "stat": "Skill: Balance", "modifier": 1 },
+        { "stat": "Skill: Bluff", "modifier": 1 },
+        { "stat": "Skill: Concentration", "modifier": 1 },
+        { "stat": "Skill: Diplomacy", "modifier": 1 },
+        { "stat": "Skill: Disable Device", "modifier": 1 },
+        { "stat": "Skill: Haggle", "modifier": 1 },
+        { "stat": "Skill: Heal", "modifier": 1 },
+        { "stat": "Skill: Hide", "modifier": 1 },
+        { "stat": "Skill: Intimidate", "modifier": 1 },
+        { "stat": "Skill: Jump", "modifier": 1 },
+        { "stat": "Skill: Listen", "modifier": 1 },
+        { "stat": "Skill: Move Silently", "modifier": 1 },
+        { "stat": "Skill: Open Lock", "modifier": 1 },
+        { "stat": "Skill: Perform", "modifier": 1 },
+        { "stat": "Skill: Repair", "modifier": 1 },
+        { "stat": "Skill: Search", "modifier": 1 },
+        { "stat": "Skill: Spellcraft", "modifier": 1 },
+        { "stat": "Skill: Spot", "modifier": 1 },
+        { "stat": "Skill: Swim", "modifier": 1 },
+        { "stat": "Skill: Tumble", "modifier": 1 },
+        { "stat": "Skill: Use Magic Device", "modifier": 1 },
         { "stat": "Physical Resistance Rating", "modifier": 3 }
       ]
     },
@@ -105,8 +144,20 @@
       "name": "Reaper Ring Boost (1)",
       "allowedSlots": ["First Finger", "Second Finger"],
       "grants": [
-        { "stat": "Spell DCs", "modifier": 1 },
-        { "stat": "Tactical DCs", "modifier": 1 },
+        { "stat": "Spell DC: Abjuration", "modifier": 1 },
+        { "stat": "Spell DC: Breath Weapon", "modifier": 1 },
+        { "stat": "Spell DC: Conjuration", "modifier": 1 },
+        { "stat": "Spell DC: Divination", "modifier": 1 },
+        { "stat": "Spell DC: Enchantment", "modifier": 1 },
+        { "stat": "Spell DC: Evocation", "modifier": 1 },
+        { "stat": "Spell DC: Illusion", "modifier": 1 },
+        { "stat": "Spell DC: Necromancy", "modifier": 1 },
+        { "stat": "Spell DC: Transmutation", "modifier": 1 },
+        { "stat": "Tactical DC: Trip", "modifier": 1 },
+        { "stat": "Tactical DC: Improved Trip", "modifier": 1 },
+        { "stat": "Tactical DC: Sunder", "modifier": 1 },
+        { "stat": "Tactical DC: Improved Sunder", "modifier": 1 },
+        { "stat": "Tactical DC: Stunning", "modifier": 1 },
         { "stat": "Assassinate DCs", "modifier": 1 }
       ]
     },
