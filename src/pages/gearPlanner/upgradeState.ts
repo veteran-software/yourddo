@@ -11,6 +11,7 @@ export interface ItemUpgradeState {
   fountainOfNecroticMight?: boolean
   stormreaverUpgrade?: boolean
   zhentarimAttuned?: boolean
+  reaperForge?: string | null
 }
 
 export type ItemUpgrades = Record<string, ItemUpgradeState>
@@ -22,7 +23,7 @@ export type LegacyTraceOfMadnessMap = Record<string, LootEnchantment | null | st
 export type LegacyBooleanUpgradeMap = Record<string, boolean>
 type EnchantmentUpgradeKind = Exclude<
   ItemUpgradeKind,
-  'fountainOfNecroticMight' | 'stormreaverUpgrade' | 'zhentarimAttuned'
+  'fountainOfNecroticMight' | 'stormreaverUpgrade' | 'zhentarimAttuned' | 'reaperForge'
 >
 type BooleanUpgradeKind = Extract<
   ItemUpgradeKind,
@@ -52,6 +53,7 @@ export interface UpgradeViews {
   slottedFountainOfNecroticMight: Record<string, boolean>
   slottedStormreaverUpgrade: Record<string, boolean>
   slottedZhentarimAttuned: Record<string, boolean>
+  slottedReaperForge: Record<string, string | null>
 }
 
 export const createEmptyItemUpgrades = (): ItemUpgrades => ({})
@@ -96,7 +98,8 @@ export const createUpgradeViews = (itemUpgrades: ItemUpgrades | undefined): Upgr
     slottedTraceOfMadness: {},
     slottedFountainOfNecroticMight: {},
     slottedStormreaverUpgrade: {},
-    slottedZhentarimAttuned: {}
+    slottedZhentarimAttuned: {},
+    slottedReaperForge: {}
   }
 
   if (!itemUpgrades) return result
@@ -135,6 +138,10 @@ export const createUpgradeViews = (itemUpgrades: ItemUpgrades | undefined): Upgr
       if (value !== undefined) {
         result[view][itemId] = value
       }
+    }
+
+    if (state.reaperForge !== undefined) {
+      result.slottedReaperForge[itemId] = state.reaperForge
     }
   }
 

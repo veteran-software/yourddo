@@ -14,6 +14,7 @@ import GemSetBonusSelector from '../components/GetSetBonusSelector'
 import ItemSetBonusDisplay from '../components/ItemSetBonusDisplay'
 import LostPurposeSelector from '../components/LostPurposeSelector'
 import NearlyFinishedSelector from '../components/NearlyFinishedSelector'
+import ReaperForgeSelector from '../components/ReaperForgeSelector'
 import RitualTableSelector from '../components/RitualTableSelector'
 import StormreaverUpgradeSelector from '../components/StormreaverUpgradeSelector'
 import TraceOfMadnessSelector from '../components/TraceOfMadnessSelector'
@@ -101,7 +102,8 @@ export const renderGearPlanner = (props: Props) => {
     setTraceOfMadnessEnchantment,
     setFountainOfNecroticMight,
     setStormreaverUpgrade,
-    setZhentarimAttuned
+    setZhentarimAttuned,
+    setReaperForge
   } = props
 
   const renderItemNameAndDrop = (item: GearItem) => (
@@ -163,6 +165,7 @@ export const renderGearPlanner = (props: Props) => {
     const currentSlottedFountainOfNecroticMight = entityState.slottedFountainOfNecroticMight
     const currentSlottedStormreaverUpgrade = entityState.slottedStormreaverUpgrade
     const currentSlottedZhentarimAttuned = entityState.slottedZhentarimAttuned
+    const currentSlottedReaperForge = entityState.slottedReaperForge
 
     const isFountainUpgraded = selectedItem ? currentSlottedFountainOfNecroticMight[selectedItem.id] : false
     const isStormreaverUpgraded = selectedItem ? currentSlottedStormreaverUpgrade[selectedItem.id] : false
@@ -354,6 +357,18 @@ export const renderGearPlanner = (props: Props) => {
                   wrapperStyle={{ fontSize: '0.65rem' }}
                 />
 
+                <ReaperForgeSelector
+                  item={selectedItem}
+                  slot={slot}
+                  selectedEffectId={currentSlottedReaperForge[selectedItem.id] ?? null}
+                  onSelectEffect={(effectId: string | null) => {
+                    setReaperForge(selectedItem.id, effectId, slot)
+                  }}
+                  entityState={entityState}
+                  wrapperClassName='text-start mt-1 pt-1 border-top'
+                  wrapperStyle={{ fontSize: '0.65rem' }}
+                />
+
                 <RitualTableSelector
                   item={selectedItem}
                   slot={slot}
@@ -450,4 +465,5 @@ interface Props {
   setFountainOfNecroticMight: (itemId: string, active: boolean, slot?: GearSlot) => void
   setStormreaverUpgrade: (itemId: string, active: boolean, slot?: GearSlot) => void
   setZhentarimAttuned: (itemId: string, active: boolean, slot?: GearSlot) => void
+  setReaperForge: (itemId: string, effectId: string | null, slot?: GearSlot) => void
 }

@@ -137,7 +137,8 @@ const useGearPlanner = (props: Props) => {
     setTraceOfMadnessEnchantment: actions.setTraceOfMadnessEnchantment,
     setFountainOfNecroticMight: actions.setFountainOfNecroticMight,
     setStormreaverUpgrade: actions.setStormreaverUpgrade,
-    setZhentarimAttuned: actions.setZhentarimAttuned
+    setZhentarimAttuned: actions.setZhentarimAttuned,
+    setReaperForge: actions.setReaperForge
   })
 
   const observerRef = useRef<IntersectionObserver | null>(null)
@@ -217,6 +218,7 @@ const useGearPlanner = (props: Props) => {
     setSlottedFiligree: actions.setSlottedFiligree,
     setStormreaverUpgrade: actions.setStormreaverUpgrade,
     setZhentarimAttuned: actions.setZhentarimAttuned,
+    setReaperForge: actions.setReaperForge,
     setUnlockedFiligreeSlots: actions.setUnlockedFiligreeSlots,
     showConflicts,
     showEnchantmentSearch,

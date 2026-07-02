@@ -29,6 +29,7 @@ import {
   type LootItem,
   type PetState
 } from '../types'
+import type { ItemUpgradeKind } from '../upgradeState'
 
 interface UseGearPlannerActionsProps {
   setups: GearSetup[]
@@ -224,17 +225,8 @@ export const useGearPlannerActions = ({
 
   const setItemUpgrade = (
     itemId: string,
-    upgrade:
-      | 'nearlyFinished'
-      | 'almostThere'
-      | 'finishingTouch'
-      | 'ritualTable'
-      | 'lostPurpose'
-      | 'traceOfMadness'
-      | 'fountainOfNecroticMight'
-      | 'stormreaverUpgrade'
-      | 'zhentarimAttuned',
-    value: import('../upgradeState').ItemUpgradeState[import('../upgradeState').ItemUpgradeKind],
+    upgrade: ItemUpgradeKind,
+    value: import('../upgradeState').ItemUpgradeState[ItemUpgradeKind],
     slot?: GearSlot
   ) => {
     dispatch(
@@ -307,6 +299,10 @@ export const useGearPlannerActions = ({
     setItemUpgrade(itemId, 'zhentarimAttuned', active, slot)
   }
 
+  const setReaperForge = (itemId: string, effectId: string | null, slot?: GearSlot) => {
+    setItemUpgrade(itemId, 'reaperForge', effectId, slot)
+  }
+
   const importSetups = (setupsToImport: GearSetup[]) => {
     dispatch(importSetupsAction(setupsToImport))
   }
@@ -340,6 +336,7 @@ export const useGearPlannerActions = ({
     setTraceOfMadnessEnchantment,
     setFountainOfNecroticMight,
     setStormreaverUpgrade,
-    setZhentarimAttuned
+    setZhentarimAttuned,
+    setReaperForge
   }
 }

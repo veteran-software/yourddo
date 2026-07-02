@@ -47,6 +47,7 @@ const EnchantmentsSummary = (props: Props) => {
     slottedAugments,
     slottedCurses,
     slottedEssenceEnchantments,
+    itemUpgrades,
     slottedFiligrees,
     slottedGemSetBonuses,
     slottedLostPurpose,
@@ -115,7 +116,9 @@ const EnchantmentsSummary = (props: Props) => {
       }
 
       const group: AggregationBonus = map[normName].bonuses[normBonus]
-      if (value > group.maxValue) {
+      if (normBonus === 'reaper') {
+        group.maxValue += value
+      } else if (value > group.maxValue) {
         group.maxValue = value
         group.maxValueStr = valueStr
       } else if (group.maxValue === 0 && valueStr) {
@@ -147,6 +150,7 @@ const EnchantmentsSummary = (props: Props) => {
         slottedFiligrees[item.id],
         {
           slottedEssenceEnchantments,
+          itemUpgrades,
           essenceEnchantments,
           slottedNearlyFinished,
           slottedAlmostThere,
@@ -344,6 +348,7 @@ interface Props {
   slottedFiligrees: Record<string, (GearItem | null)[]>
   slottedGemSetBonuses: Record<string, (string | null)[]>
   slottedEssenceEnchantments: Record<string, Record<string, string | null>>
+  itemUpgrades?: import('../upgradeState').ItemUpgrades
   essenceEnchantments?: EssenceEnchantment[]
   slottedNearlyFinished: Record<string, import('../types.ts').LootEnchantment | null>
   slottedAlmostThere: Record<string, import('../types.ts').LootEnchantment | null>

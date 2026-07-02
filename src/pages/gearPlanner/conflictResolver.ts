@@ -1,5 +1,5 @@
 import { UPGRADE_PLACEHOLDER_ENCHANTMENTS } from './constants'
-import { getDisplayEnchantments } from './helpers'
+import { getDisplayEnchantments, getReaperForgeEnchantments } from './helpers'
 import {
   ARTIFICER_PET_SLOTS,
   DRUID_PET_SLOTS,
@@ -75,6 +75,8 @@ export const getBonus = (bonus: RobustString): string => {
 
   return normalized === '' ? 'no type' : normalized
 }
+
+const isStackableBonus = (bonus: string): boolean => bonus === 'no type' || bonus === 'reaper'
 
 /**
  * Parses a numeric value from a modifier string like "3", "+14%", or "2[W]".
@@ -194,6 +196,22 @@ export const resolveConflicts = (
     const traceEnch = upgradeViews.slottedTraceOfMadness[item.id]
     if (traceEnch) pushUpgradeEnchantment(traceEnch, item, owner)
 
+    const reaperForge = getReaperForgeEnchantments(
+      getItemUpgradeView(resolvedItemUpgrades, item.id).reaperForge ?? null
+    )
+    reaperForge.forEach((ench) => {
+      allEnchantments.push({
+        itemId: item.id,
+        itemName: item.name,
+        slot: item.slot,
+        enchantment: ench,
+        parsedValue: parseModifierValue(ench.modifier),
+        owner,
+        normalizedName: normalizeString(ench.name),
+        normalizedBonus: getBonus(ench.bonus)
+      })
+    })
+
     // Include slotted augments for this item
     if (slottedAugments?.[item.id]) {
       Object.entries(slottedAugments[item.id]).forEach(([slotIdx, aug]) => {
@@ -219,11 +237,10 @@ export const resolveConflicts = (
   const grouped: Record<string, typeof allEnchantments> = {}
 
   allEnchantments.forEach((entry, idx) => {
-    // Bug #3: "no type" bonuses stack and should not be grouped for conflict resolution
-    const key =
-      entry.normalizedBonus === 'no type'
-        ? `${entry.owner}|${entry.normalizedName}|no-type-${String(idx)}`
-        : `${entry.owner}|${entry.normalizedName}|${entry.normalizedBonus}`
+    // Stackable bonuses should not be grouped for conflict resolution.
+    const key = isStackableBonus(entry.normalizedBonus)
+      ? `${entry.owner}|${entry.normalizedName}|no-type-${String(idx)}`
+      : `${entry.owner}|${entry.normalizedName}|${entry.normalizedBonus}`
 
     if (!(key in grouped)) {
       grouped[key] = []
@@ -436,6 +453,10 @@ const getItemEnchantmentMax = (
     return -Infinity
   }
 
+  if (isStackableBonus(normalizedTargetBonus)) {
+    return -Infinity
+  }
+
   const augMax: number = findMatchingAugments(
     item.id,
     normalizedTargetName,
@@ -500,8 +521,8 @@ export const checkPotentialConflict = (
 
   const normalizedTargetBonus: string = getBonus(enchantment.bonus)
 
-  // Bug #3: "no type" bonuses stack and never conflict
-  if (normalizedTargetBonus === 'no type') {
+  // Stackable bonuses never conflict.
+  if (isStackableBonus(normalizedTargetBonus)) {
     return { isConflict: false, currentMax: 0, isRedundant: false }
   }
 

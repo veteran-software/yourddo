@@ -1,5 +1,10 @@
 import type { EssenceEnchantment } from './dataLoader.ts'
-import { getActiveSetEnhancements, getDisplayEnchantments, getScaledEssenceEnchantments } from './helpers'
+import {
+  getActiveSetEnhancements,
+  getDisplayEnchantments,
+  getReaperForgeEnchantments,
+  getScaledEssenceEnchantments
+} from './helpers'
 import { pickPlannerSetupMetadata } from './plannerStateFields'
 import type { GearAugment, GearItem, GearSetup, GearSlot, LootEnchantment, LootItem, PetState } from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
@@ -233,7 +238,7 @@ const appendEnchantments = (
     itemUpgrade.ritualTable ?? undefined,
     itemUpgrade.lostPurpose ?? undefined,
     itemUpgrade.traceOfMadness ?? undefined
-  )
+  ).concat(getReaperForgeEnchantments(itemUpgrade.reaperForge ?? null))
 
   if (filtered.length === 0) return
 
