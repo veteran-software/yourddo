@@ -141,6 +141,32 @@ const getTarget = (setup: GearSetup, owner: SlotOwner): SlottedProperties => {
   return setup
 }
 
+const withActiveTarget = (
+  state: GearPlannerState,
+  slot: GearSlot | undefined,
+  fn: (target: SlottedProperties, setup: GearSetup) => void
+): void => {
+  const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+  if (!setup) return
+
+  const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
+  fn(target, setup)
+}
+
+const withActiveItem = (
+  state: GearPlannerState,
+  itemId: string,
+  slot: GearSlot | undefined,
+  fn: (item: GearItem, target: SlottedProperties) => void
+): void => {
+  withActiveTarget(state, slot, (target) => {
+    const currentItem = Object.values(target.slots).find((item) => item?.id === itemId)
+    if (currentItem) {
+      fn(currentItem, target)
+    }
+  })
+}
+
 const clearMetadata = (target: SlottedProperties, id: string) => {
   /* eslint-disable @typescript-eslint/no-dynamic-delete */
   delete target.slottedAugments[id]
@@ -258,12 +284,10 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotIndex, augment, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedAugments[itemId] ??= {}
-      target.slottedAugments[itemId][slotIndex] = augment
+      withActiveTarget(state, slot, (target) => {
+        target.slottedAugments[itemId] ??= {}
+        target.slottedAugments[itemId][slotIndex] = augment
+      })
     },
     setCurse: (
       state,
@@ -274,11 +298,9 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, curse, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedCurses[itemId] = curse
+      withActiveTarget(state, slot, (target) => {
+        target.slottedCurses[itemId] = curse
+      })
     },
     setFiligree: (
       state,
@@ -290,12 +312,10 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotIndex, filigree, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedFiligrees[itemId] ??= new Array(10).fill(null) as GearItem[]
-      target.slottedFiligrees[itemId][slotIndex] = filigree as GearItem | null
+      withActiveTarget(state, slot, (target) => {
+        target.slottedFiligrees[itemId] ??= new Array(10).fill(null) as GearItem[]
+        target.slottedFiligrees[itemId][slotIndex] = filigree as GearItem | null
+      })
     },
     setUnlockedFiligreeSlots: (
       state,
@@ -306,11 +326,9 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, numSlots, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.unlockedFiligreeSlots[itemId] = numSlots
+      withActiveTarget(state, slot, (target) => {
+        target.unlockedFiligreeSlots[itemId] = numSlots
+      })
     },
     setGemSetBonus: (
       state,
@@ -322,12 +340,10 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotIndex, setName, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedGemSetBonuses[itemId] ??= [null, null]
-      target.slottedGemSetBonuses[itemId][slotIndex] = setName
+      withActiveTarget(state, slot, (target) => {
+        target.slottedGemSetBonuses[itemId] ??= [null, null]
+        target.slottedGemSetBonuses[itemId][slotIndex] = setName
+      })
     },
     setEssenceEnchantment: (
       state,
@@ -339,12 +355,10 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotName, enchantmentId, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedEssenceEnchantments[itemId] ??= {}
-      target.slottedEssenceEnchantments[itemId][slotName] = enchantmentId
+      withActiveTarget(state, slot, (target) => {
+        target.slottedEssenceEnchantments[itemId] ??= {}
+        target.slottedEssenceEnchantments[itemId][slotName] = enchantmentId
+      })
     },
     setItemUpgrade: (
       state,
@@ -356,11 +370,9 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, upgrade, value, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      setItemUpgradeState(target.itemUpgrades, itemId, upgrade, value as never)
+      withActiveTarget(state, slot, (target) => {
+        setItemUpgradeState(target.itemUpgrades, itemId, upgrade, value as never)
+      })
     },
     setItemMinLevel: (
       state,
@@ -371,14 +383,9 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, minLevel, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      const currentItem = Object.values(target.slots).find((i) => i?.id === itemId)
-      if (currentItem) {
+      withActiveItem(state, itemId, slot, (currentItem) => {
         currentItem.minLevel = String(minLevel)
-      }
+      })
     },
     setItemMaterial: (
       state,
@@ -389,14 +396,9 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, material, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      const currentItem = Object.values(target.slots).find((i) => i?.id === itemId)
-      if (currentItem) {
+      withActiveItem(state, itemId, slot, (currentItem) => {
         currentItem.material = material
-      }
+      })
     },
     importSetups: (state, action: PayloadAction<GearSetup[]>) => {
       state.characterSetups = action.payload

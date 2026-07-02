@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { createDefaultSetup } from '../../pages/gearPlanner/initialState'
 import { type GearAugment, type GearItem, GearSlot } from '../../pages/gearPlanner/types'
-import gearPlannerReducer, { type GearPlannerState, removeSetup, setItemUpgrade } from './gearPlannerSlice'
+import gearPlannerReducer, {
+  type GearPlannerState,
+  removeSetup,
+  setItemMaterial,
+  setItemUpgrade
+} from './gearPlannerSlice'
 
 describe('gearPlannerSlice reducers', () => {
   it('Bug #7: removeSetup should not leave characterSetups empty', () => {
@@ -107,5 +112,36 @@ describe('gearPlannerSlice reducers', () => {
     expect(nextState.characterSetups[0].itemUpgrades['item-1'].nearlyFinished).toEqual({
       name: 'Nearly Finished Bonus'
     })
+  })
+
+  it('updates a current item through the shared target helper', () => {
+    const item = {
+      id: 'item-2',
+      name: 'Test Item',
+      slot: GearSlot.MainHand,
+      minLevel: '1',
+      type: 'Sword'
+    } as unknown as GearItem
+
+    const initialState: GearPlannerState = {
+      characterSetups: [
+        {
+          ...createDefaultSetup('setup2', 'Setup 2'),
+          slots: { [GearSlot.MainHand]: item } as unknown as Record<GearSlot, GearItem | null>
+        }
+      ],
+      activeSetupId: 'setup2'
+    }
+
+    const nextState = gearPlannerReducer(
+      initialState,
+      setItemMaterial({
+        itemId: item.id,
+        material: 'Adamantine',
+        slot: GearSlot.MainHand
+      })
+    )
+
+    expect(nextState.characterSetups[0].slots[GearSlot.MainHand]?.material).toBe('Adamantine')
   })
 })
