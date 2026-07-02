@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { Dropdown, Form } from 'react-bootstrap'
 import nearlyFinishedRecipes from '../../../data/nearlyFinished/recipes.json'
 import type { CraftingIngredient } from '../../../types/crafting.ts'
+import { getNearlyFinishedChoiceLabels, parseNearlyFinishedChoice } from '../helpers'
 import SelectedEnchantmentDisplay, { type BaseSelectorProps } from './SelectedEnchantmentDisplay.tsx'
 
 const ACTIVE_SENTINEL = '__active__'
@@ -17,7 +18,8 @@ const NearlyFinishedSelector = (props: BaseSelectorProps) => {
 
   if (!recipe) return null
 
-  const hasChoices = (recipe.choices?.length ?? 0) > 0
+  const choiceLabels = getNearlyFinishedChoiceLabels(recipe.choices, item.upgradeable)
+  const hasChoices = choiceLabels.length > 0
   const isActive = selectedEnchantment !== null
   const wClass = wrapperClassName ?? 'mt-2'
 
@@ -77,20 +79,18 @@ const NearlyFinishedSelector = (props: BaseSelectorProps) => {
 
           <Dropdown.Divider />
 
-          {(recipe.choices ?? []).map((choice: Choice, idx: number) => {
+          {choiceLabels.map((choiceName: string, idx: number) => {
+            const parsedChoice = parseNearlyFinishedChoice(choiceName)
+
             return (
               <Dropdown.Item
-                key={`${choice.name}-${String(idx)}`}
+                key={`${choiceName}-${String(idx)}`}
                 onClick={() => {
-                  onSelect({
-                    name: choice.name,
-                    bonus: 'Enhancement',
-                    modifier: choice.name.split('+').pop()?.trim() ?? ''
-                  })
+                  onSelect(parsedChoice)
                 }}
                 className='d-flex justify-content-between align-items-center'
               >
-                <span>{choice.name}</span>
+                <span>{choiceName}</span>
               </Dropdown.Item>
             )
           })}
@@ -113,14 +113,10 @@ interface NearlyFinishedRecipes {
   reforgingStation: Recipe[]
 }
 
-interface Choice {
-  name: string
-}
-
 interface Recipe {
   item: string
   stage: string
-  choices?: Choice[]
+  choices?: { name: string }[]
 }
 
 export default NearlyFinishedSelector
