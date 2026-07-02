@@ -18,6 +18,7 @@ import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
+import EssenceCraftingWarning from '../../components/common/EssenceCraftingWarning.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
 import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
@@ -1330,6 +1331,8 @@ const EssenceCrafting = () => {
         </Card.Header>
 
         <Card.Body>
+          <EssenceCraftingWarning className='mb-3' />
+
           <Row>
             <Col lg={3} className='mb-3'>
               <Form.Group className='mb-3' controlId='master-min-level'>
@@ -1376,7 +1379,9 @@ const EssenceCrafting = () => {
 
             <Col lg={9}>
               <Stack gap={3}>
-                {activeKeys.length === 0 && <p className='text-muted'>Select a slot on the left to begin crafting.</p>}
+                {activeKeys.length === 0 && (
+                  <p className='text-center text-muted'>Select a slot on the left to begin crafting.</p>
+                )}
 
                 {/* Maintain the same order as the sidebar list */}
                 {ALL_SLOT_KEYS.map((slotDef) => slotDef.key)

@@ -1,3 +1,4 @@
+import EssenceCraftingWarning from '../../../components/common/EssenceCraftingWarning.tsx'
 import { useAppSelector } from '../../../redux/hooks.ts'
 import { type EntityGearState, type GearItem, GearSlot } from '../types.ts'
 import AugmentSlotsList from './AugmentSlotList.tsx'
@@ -32,6 +33,8 @@ const BrowserItem = (props: Props) => {
           <div className='fw-bold text-white fs-6'>{item.name}</div>
           <GenericBadge badgeText='Select' fontSize='0.75rem' />
         </div>
+
+        {item.isEssenceCrafted && <EssenceCraftingWarning className='mb-1' />}
 
         {item.setBonus && item.setBonus.length > 0 && (
           <div className='mt-1 mb-1'>
