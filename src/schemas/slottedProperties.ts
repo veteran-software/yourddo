@@ -14,7 +14,8 @@ const ItemUpgradeStateSchema = z
     traceOfMadness: LootEnchantmentSchema.nullable(),
     fountainOfNecroticMight: z.boolean(),
     stormreaverUpgrade: z.boolean(),
-    zhentarimAttuned: z.boolean()
+    zhentarimAttuned: z.boolean(),
+    reaperForge: z.string().trim().nullable()
   })
   .partial()
 

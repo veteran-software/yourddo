@@ -45,6 +45,8 @@ describe('Gear Planner save file validation', () => {
       slot: GearSlot.MainHand,
       minimumLevel: 1
     }
+    const itemId = 'test-main-hand-null-enchantments'
+    setup.itemUpgrades[itemId] = { reaperForge: 'reaper-ring-boost-3' }
 
     const file = new File(
       [
@@ -63,6 +65,7 @@ describe('Gear Planner save file validation', () => {
     expect(imported).toHaveLength(1)
     expect(imported[0].id).toBe('test')
     expect(imported[0].slots[GearSlot.MainHand]?.id).toBe('test-main-hand-null-enchantments')
+    expect(imported[0].itemUpgrades[itemId]?.reaperForge).toBe('reaper-ring-boost-3')
   })
 
   it('normalizes older save files that omit newer planner fields', async () => {
