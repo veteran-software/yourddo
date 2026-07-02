@@ -1,6 +1,6 @@
 import traceOfMadnessData from '../../data/traceOfMadness.json'
 import { getSlotOwner } from './conflictResolver'
-import { isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers'
+import { canApplyCurse, isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers'
 import { initialPetState } from './initialState'
 import { pickPlannerSetupMetadata } from './plannerStateFields'
 import {
@@ -157,7 +157,7 @@ const decodeItemAugments = (
 }
 
 const decodeItemCurse = (item: GearItem, curseName: string | null, allCurses: Curse[], state: GearSetup | PetState) => {
-  if (curseName && item.slot !== GearSlot.Quiver) {
+  if (curseName && canApplyCurse(item)) {
     const curse = allCurses.find((c) => c.name === curseName)
     if (curse) state.slottedCurses[item.id] = curse
   }
@@ -207,7 +207,7 @@ export const buildPermalinkItemPayloadV2 = (
     itemName: item.name,
     itemId: item.id,
     augments,
-    curseName: state.slottedCurses[item.id]?.name ?? null,
+    curseName: canApplyCurse(item) ? (state.slottedCurses[item.id]?.name ?? null) : null,
     essenceCrafting: essenceCrafting.length > 0 ? essenceCrafting : null,
     nearlyFinished: itemUpgrade.slottedNearlyFinished[item.id] ?? null,
     almostThere: itemUpgrade.slottedAlmostThere[item.id] ?? null,
