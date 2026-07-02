@@ -382,7 +382,10 @@ const BB_CODE_STYLE: ExportTextStyle = {
   itemHeader: (slot, item) => `[b]${slot}:[/b] [u]${item.name}[/u] (ML: ${String(item.minLevel)})`,
   enchantmentBullet: (text) => `[*] ${text}`,
   upgradeLine: (tone, label, value) => {
-    const color = tone === 'cyan' ? 'cyan' : tone === 'orange' ? 'orange' : tone === 'green' ? 'green' : 'purple'
+    let color: 'cyan' | 'orange' | 'green' | 'purple' = 'purple'
+    if (tone === 'cyan') color = 'cyan'
+    else if (tone === 'orange') color = 'orange'
+    else if (tone === 'green') color = 'green'
     const labelText = value ? `${label}:` : label
     const valueText = value ? ` ${value}` : ''
     return `[indent][b][color=${color}]${labelText}[/color][/b]${valueText}[/indent]`
