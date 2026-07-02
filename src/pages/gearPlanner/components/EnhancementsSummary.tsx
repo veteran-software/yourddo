@@ -239,6 +239,7 @@ const EnchantmentsSummary = (props: Props) => {
     slottedFountainOfNecroticMight,
     slottedStormreaverUpgrade,
     slottedZhentarimAttuned,
+    itemUpgrades,
     allPossibleBonuses
   ])
 

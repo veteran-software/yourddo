@@ -51,7 +51,7 @@ describe('permalink V2 payload helpers', () => {
     expect(decoded.name).toBe('Setup 1')
     expect(decoded.slots[GearSlot.MainHand]?.id).toBe(mockItem.id)
     expect(decoded.slots[GearSlot.MainHand]?.material).toBe(mockItem.material)
-    expect(decoded.itemUpgrades[mockItem.id]?.reaperForge).toBe('reaper-ring-boost-3')
+    expect(decoded.itemUpgrades[mockItem.id].reaperForge).toBe('reaper-ring-boost-3')
   })
 
   it('omits quiver curses from the V2 payload and decode path', () => {
