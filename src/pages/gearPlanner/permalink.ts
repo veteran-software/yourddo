@@ -13,6 +13,7 @@ import {
   type PetState,
   type UpgradeEntry
 } from './types.ts' // ----- Types for compact v1 payload -----
+import { createEmptyItemUpgrades, createUpgradeViews, setItemUpgradeState } from './upgradeState'
 
 // ----- Types for compact v1 payload -----
 // We use a compact format to keep the URL short.
@@ -137,11 +138,12 @@ const encodeItemPayload = (slot: GearSlot, item: GearItem, setup: GearSetup): V1
     .filter((entry): entry is [string, string] => entry[1] !== null)
     .map(([slotName, id]) => [slotName, id])
 
-  const nearlyFinished = state.slottedNearlyFinished[item.id] ?? null
-  const almostThere = state.slottedAlmostThere[item.id] ?? null
-  const finishingTouch = state.slottedFinishingTouch[item.id] ?? null
-  const ritualTable = state.slottedRitualTable[item.id] ?? null
-  const lostPurpose = state.slottedLostPurpose[item.id] ?? null
+  const itemUpgrade = createUpgradeViews(state.itemUpgrades)
+  const nearlyFinished = itemUpgrade.slottedNearlyFinished[item.id] ?? null
+  const almostThere = itemUpgrade.slottedAlmostThere[item.id] ?? null
+  const finishingTouch = itemUpgrade.slottedFinishingTouch[item.id] ?? null
+  const ritualTable = itemUpgrade.slottedRitualTable[item.id] ?? null
+  const lostPurpose = itemUpgrade.slottedLostPurpose[item.id] ?? null
 
   const filigrees = state.slottedFiligrees[item.id] ?? []
   const filigreeNames = filigrees.map((f) => (f ? f.name : null))
@@ -149,10 +151,10 @@ const encodeItemPayload = (slot: GearSlot, item: GearItem, setup: GearSetup): V1
   const unlockedFiligreeSlots = state.unlockedFiligreeSlots[item.id] ?? null
   const slottedGemSetBonuses = state.slottedGemSetBonuses[item.id] ?? null
 
-  const isFountainUpgraded = state.slottedFountainOfNecroticMight[item.id]
-  const isStormreaverUpgraded = state.slottedStormreaverUpgrade[item.id]
-  const isZhentarimUpgraded = state.slottedZhentarimAttuned[item.id]
-  const traceOfMadness = state.slottedTraceOfMadness[item.id] ?? null
+  const traceOfMadness = itemUpgrade.slottedTraceOfMadness[item.id] ?? null
+  const isFountainUpgraded = itemUpgrade.slottedFountainOfNecroticMight[item.id]
+  const isStormreaverUpgraded = itemUpgrade.slottedStormreaverUpgrade[item.id]
+  const isZhentarimUpgraded = itemUpgrade.slottedZhentarimAttuned[item.id]
 
   return [
     slot,
@@ -214,15 +216,7 @@ export const tryDecodeGearPermalink = (
       unlockedFiligreeSlots: {},
       slottedGemSetBonuses: {},
       slottedEssenceEnchantments: {},
-      slottedNearlyFinished: {},
-      slottedAlmostThere: {},
-      slottedFinishingTouch: {},
-      slottedRitualTable: {},
-      slottedLostPurpose: {},
-      slottedTraceOfMadness: {},
-      slottedFountainOfNecroticMight: {},
-      slottedStormreaverUpgrade: {},
-      slottedZhentarimAttuned: {},
+      itemUpgrades: createEmptyItemUpgrades(),
       artificerPet: initialPetState(),
       druidPet: initialPetState()
     }
@@ -280,23 +274,23 @@ const decodeSupplementaryProperties = (
     traceOfMadness
   }: DecodeSupplementaryPropertiesOptions
 ) => {
-  if (nearlyFinished) state.slottedNearlyFinished[item.id] = nearlyFinished
-  if (almostThere) state.slottedAlmostThere[item.id] = almostThere
-  if (finishingTouch) state.slottedFinishingTouch[item.id] = finishingTouch
-  if (ritualTable) state.slottedRitualTable[item.id] = ritualTable
-  if (lostPurpose) state.slottedLostPurpose[item.id] = lostPurpose
+  if (nearlyFinished) setItemUpgradeState(state.itemUpgrades, item.id, 'nearlyFinished', nearlyFinished)
+  if (almostThere) setItemUpgradeState(state.itemUpgrades, item.id, 'almostThere', almostThere)
+  if (finishingTouch) setItemUpgradeState(state.itemUpgrades, item.id, 'finishingTouch', finishingTouch)
+  if (ritualTable) setItemUpgradeState(state.itemUpgrades, item.id, 'ritualTable', ritualTable)
+  if (lostPurpose) setItemUpgradeState(state.itemUpgrades, item.id, 'lostPurpose', lostPurpose)
   if (traceOfMadness) {
     if (typeof traceOfMadness === 'string') {
       // Legacy format: string was the upgrade name — look up the enchantment
       const upgradeEntry = (traceOfMadnessData as UpgradeEntry[]).find((u) => u.name === traceOfMadness)
-      state.slottedTraceOfMadness[item.id] = upgradeEntry?.effectsAdded[0] ?? null
+      setItemUpgradeState(state.itemUpgrades, item.id, 'traceOfMadness', upgradeEntry?.effectsAdded[0] ?? null)
     } else {
-      state.slottedTraceOfMadness[item.id] = traceOfMadness
+      setItemUpgradeState(state.itemUpgrades, item.id, 'traceOfMadness', traceOfMadness)
     }
   }
-  if (isFountainUpgraded) state.slottedFountainOfNecroticMight[item.id] = true
-  if (isStormreaverUpgraded) state.slottedStormreaverUpgrade[item.id] = true
-  if (isZhentarimUpgraded) state.slottedZhentarimAttuned[item.id] = true
+  if (isFountainUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'fountainOfNecroticMight', true)
+  if (isStormreaverUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'stormreaverUpgrade', true)
+  if (isZhentarimUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'zhentarimAttuned', true)
 
   decodeFiligrees(item, state, filigrees, allItems)
 

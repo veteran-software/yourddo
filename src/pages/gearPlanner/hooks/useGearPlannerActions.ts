@@ -5,23 +5,15 @@ import {
   importSetups as importSetupsAction,
   removeSetup as removeSetupAction,
   setActiveSetup as setActiveSetupAction,
-  setAlmostThereEnchantment as setAlmostThereEnchantmentAction,
   setAugment as setAugmentAction,
   setCurse as setCurseAction,
   setEssenceEnchantment as setEssenceEnchantmentAction,
   setFiligree as setFiligreeAction,
-  setFinishingTouchEnchantment as setFinishingTouchEnchantmentAction,
-  setFountainOfNecroticMight as setFountainOfNecroticMightAction,
   setGemSetBonus as setGemSetBonusAction,
   setItemMaterial as setItemMaterialAction,
   setItemMinLevel as setItemMinLevelAction,
-  setLostPurposeEnchantment as setLostPurposeEnchantmentAction,
-  setNearlyFinishedEnchantment as setNearlyFinishedEnchantmentAction,
-  setRitualTableEnchantment as setRitualTableEnchantmentAction,
-  setStormreaverUpgrade as setStormreaverUpgradeAction,
-  setTraceOfMadnessEnchantment as setTraceOfMadnessEnchantmentAction,
+  setItemUpgrade as setItemUpgradeAction,
   setUnlockedFiligreeSlots as setUnlockedFiligreeSlotsAction,
-  setZhentarimAttuned as setZhentarimAttunedAction,
   updateSetup as updateSetupAction
 } from '../../../redux/slices/gearPlannerSlice'
 import { getSlotOwner } from '../conflictResolver'
@@ -34,7 +26,6 @@ import {
   type GearItem,
   type GearSetup,
   GearSlot,
-  type LootEnchantment,
   type LootItem,
   type PetState
 } from '../types'
@@ -231,94 +222,89 @@ export const useGearPlannerActions = ({
     )
   }
 
-  const setNearlyFinishedEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
+  const setItemUpgrade = (
+    itemId: string,
+    upgrade:
+      | 'nearlyFinished'
+      | 'almostThere'
+      | 'finishingTouch'
+      | 'ritualTable'
+      | 'lostPurpose'
+      | 'traceOfMadness'
+      | 'fountainOfNecroticMight'
+      | 'stormreaverUpgrade'
+      | 'zhentarimAttuned',
+    value: import('../upgradeState').ItemUpgradeState[import('../upgradeState').ItemUpgradeKind],
+    slot?: GearSlot
+  ) => {
     dispatch(
-      setNearlyFinishedEnchantmentAction({
+      setItemUpgradeAction({
         itemId,
-        enchantment,
+        upgrade,
+        value,
         slot
       })
     )
   }
 
-  const setAlmostThereEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
-    dispatch(
-      setAlmostThereEnchantmentAction({
-        itemId,
-        enchantment,
-        slot
-      })
-    )
+  const setNearlyFinishedEnchantment = (
+    itemId: string,
+    enchantment: import('../types').LootEnchantment | null,
+    slot?: GearSlot
+  ) => {
+    setItemUpgrade(itemId, 'nearlyFinished', enchantment, slot)
   }
 
-  const setFinishingTouchEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
-    dispatch(
-      setFinishingTouchEnchantmentAction({
-        itemId,
-        enchantment,
-        slot
-      })
-    )
+  const setAlmostThereEnchantment = (
+    itemId: string,
+    enchantment: import('../types').LootEnchantment | null,
+    slot?: GearSlot
+  ) => {
+    setItemUpgrade(itemId, 'almostThere', enchantment, slot)
   }
 
-  const setRitualTableEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
-    dispatch(
-      setRitualTableEnchantmentAction({
-        itemId,
-        enchantment,
-        slot
-      })
-    )
+  const setFinishingTouchEnchantment = (
+    itemId: string,
+    enchantment: import('../types').LootEnchantment | null,
+    slot?: GearSlot
+  ) => {
+    setItemUpgrade(itemId, 'finishingTouch', enchantment, slot)
   }
 
-  const setLostPurposeEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
-    dispatch(
-      setLostPurposeEnchantmentAction({
-        itemId,
-        enchantment,
-        slot
-      })
-    )
+  const setRitualTableEnchantment = (
+    itemId: string,
+    enchantment: import('../types').LootEnchantment | null,
+    slot?: GearSlot
+  ) => {
+    setItemUpgrade(itemId, 'ritualTable', enchantment, slot)
   }
 
-  const setTraceOfMadnessEnchantment = (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => {
-    dispatch(
-      setTraceOfMadnessEnchantmentAction({
-        itemId,
-        enchantment,
-        slot
-      })
-    )
+  const setLostPurposeEnchantment = (
+    itemId: string,
+    enchantment: import('../types').LootEnchantment | null,
+    slot?: GearSlot
+  ) => {
+    setItemUpgrade(itemId, 'lostPurpose', enchantment, slot)
+  }
+
+  const setTraceOfMadnessEnchantment = (
+    itemId: string,
+    enchantment: import('../types').LootEnchantment | null,
+    slot?: GearSlot
+  ) => {
+    setItemUpgrade(itemId, 'traceOfMadness', enchantment, slot)
   }
 
   const setFountainOfNecroticMight = (itemId: string, active: boolean, slot?: GearSlot) => {
-    dispatch(
-      setFountainOfNecroticMightAction({
-        itemId,
-        active,
-        slot
-      })
-    )
+    setItemUpgrade(itemId, 'fountainOfNecroticMight', active, slot)
   }
 
   const setStormreaverUpgrade = (itemId: string, active: boolean, slot?: GearSlot) => {
-    dispatch(
-      setStormreaverUpgradeAction({
-        itemId,
-        active,
-        slot
-      })
-    )
+    setItemUpgrade(itemId, 'stormreaverUpgrade', active, slot)
   }
 
   const setZhentarimAttuned = (itemId: string, active: boolean, slot?: GearSlot) => {
-    dispatch(
-      setZhentarimAttunedAction({
-        itemId,
-        active,
-        slot
-      })
-    )
+    setItemUpgrade(itemId, 'zhentarimAttuned', active, slot)
   }
 
   const importSetups = (setupsToImport: GearSetup[]) => {

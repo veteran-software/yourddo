@@ -31,15 +31,7 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
     unlockedFiligreeSlots: {},
     slottedGemSetBonuses: {},
     slottedEssenceEnchantments: {},
-    slottedNearlyFinished: {},
-    slottedAlmostThere: {},
-    slottedFinishingTouch: {},
-    slottedRitualTable: {},
-    slottedLostPurpose: {},
-    slottedTraceOfMadness: {},
-    slottedFountainOfNecroticMight: {},
-    slottedStormreaverUpgrade: {},
-    slottedZhentarimAttuned: {},
+    itemUpgrades: {},
     artificerPet: initialPetState(),
     druidPet: initialPetState()
   }
@@ -93,8 +85,10 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
     const traceEnchantment = { name: 'Melodic Guard' }
     const setupWithTrace: GearSetup = {
       ...mockSetup,
-      slottedTraceOfMadness: {
-        [mockItem.id]: traceEnchantment
+      itemUpgrades: {
+        [mockItem.id]: {
+          traceOfMadness: traceEnchantment
+        }
       }
     }
 
@@ -103,7 +97,7 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
 
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.data.slottedTraceOfMadness[mockItem.id]).toEqual(traceEnchantment)
+      expect(result.data.itemUpgrades[mockItem.id].traceOfMadness).toEqual(traceEnchantment)
     }
   })
 

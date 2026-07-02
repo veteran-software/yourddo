@@ -8,6 +8,13 @@ import {
   GearSlot,
   type LootEnchantment
 } from './types'
+import type {
+  ItemUpgrades,
+  LegacyBooleanUpgradeMap,
+  LegacyLootEnchantmentMap,
+  LegacyTraceOfMadnessMap
+} from './upgradeState'
+import { createUpgradeViews, getItemUpgradeView, resolveItemUpgrades } from './upgradeState'
 
 export interface EnchantmentConflict {
   name: string
@@ -96,29 +103,25 @@ export const parseModifierValue = (modifier: RobustString): number => {
  */
 interface ResolveConflictsOptions {
   slottedAugments?: Record<string, Record<number, GearAugment | null>>
-  slottedNearlyFinished?: Record<string, LootEnchantment | null>
-  slottedRitualTable?: Record<string, LootEnchantment | null>
-  slottedLostPurpose?: Record<string, LootEnchantment | null>
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
-  slottedFountainOfNecroticMight?: Record<string, boolean>
-  slottedStormreaverUpgrade?: Record<string, boolean>
-  slottedZhentarimAttuned?: Record<string, boolean>
+  itemUpgrades?: ItemUpgrades
+  slottedNearlyFinished?: LegacyLootEnchantmentMap
+  slottedAlmostThere?: LegacyLootEnchantmentMap
+  slottedFinishingTouch?: LegacyLootEnchantmentMap
+  slottedRitualTable?: LegacyLootEnchantmentMap
+  slottedLostPurpose?: LegacyLootEnchantmentMap
+  slottedTraceOfMadness?: LegacyTraceOfMadnessMap
+  slottedFountainOfNecroticMight?: LegacyBooleanUpgradeMap
+  slottedStormreaverUpgrade?: LegacyBooleanUpgradeMap
+  slottedZhentarimAttuned?: LegacyBooleanUpgradeMap
 }
 
 export const resolveConflicts = (
   equippedItems: GearItem[],
   options: ResolveConflictsOptions = {}
 ): Record<string, EnchantmentConflict[]> => {
-  const {
-    slottedAugments,
-    slottedNearlyFinished,
-    slottedRitualTable,
-    slottedLostPurpose,
-    slottedTraceOfMadness,
-    slottedFountainOfNecroticMight = {},
-    slottedStormreaverUpgrade = {},
-    slottedZhentarimAttuned = {}
-  } = options
+  const { slottedAugments } = options
+  const resolvedItemUpgrades = resolveItemUpgrades(options)
+  const upgradeViews = createUpgradeViews(resolvedItemUpgrades)
   const allEnchantments: {
     itemId: string
     itemName: string
@@ -147,9 +150,10 @@ export const resolveConflicts = (
   equippedItems.forEach((item) => {
     const owner = getSlotOwner(item.slot)
 
-    const isFountainUpgraded = slottedFountainOfNecroticMight[item.id] ?? false
-    const isStormreaverUpgraded = slottedStormreaverUpgrade[item.id] ?? false
-    const isZhentarimUpgraded = slottedZhentarimAttuned[item.id] ?? false
+    const itemUpgrade = getItemUpgradeView(resolvedItemUpgrades, item.id)
+    const isFountainUpgraded = itemUpgrade.fountainOfNecroticMight ?? false
+    const isStormreaverUpgraded = itemUpgrade.stormreaverUpgrade ?? false
+    const isZhentarimUpgraded = itemUpgrade.zhentarimAttuned ?? false
     const baseEnchantments = getDisplayEnchantments(
       item,
       isFountainUpgraded,
@@ -178,16 +182,16 @@ export const resolveConflicts = (
         })
     }
 
-    const nearlyFinished = slottedNearlyFinished?.[item.id]
+    const nearlyFinished = upgradeViews.slottedNearlyFinished[item.id]
     if (nearlyFinished) pushUpgradeEnchantment(nearlyFinished, item, owner)
 
-    const ritualTable = slottedRitualTable?.[item.id]
+    const ritualTable = upgradeViews.slottedRitualTable[item.id]
     if (ritualTable) pushUpgradeEnchantment(ritualTable, item, owner)
 
-    const lostPurpose = slottedLostPurpose?.[item.id]
+    const lostPurpose = upgradeViews.slottedLostPurpose[item.id]
     if (lostPurpose) pushUpgradeEnchantment(lostPurpose, item, owner)
 
-    const traceEnch = slottedTraceOfMadness?.[item.id]
+    const traceEnch = upgradeViews.slottedTraceOfMadness[item.id]
     if (traceEnch) pushUpgradeEnchantment(traceEnch, item, owner)
 
     // Include slotted augments for this item
@@ -269,14 +273,13 @@ const findMatchingInherent = (
   item: GearItem,
   normalizedTargetName: string,
   normalizedTargetBonus: string,
-  slottedFountainOfNecroticMight: Record<string, boolean> = {},
-  slottedStormreaverUpgrade: Record<string, boolean> = {},
-  slottedZhentarimAttuned: Record<string, boolean> = {}
+  itemUpgrades?: import('./upgradeState').ItemUpgrades
 ) => {
   let max = -Infinity
-  const isFountainUpgraded = slottedFountainOfNecroticMight[item.id] ?? false
-  const isStormreaverUpgraded = slottedStormreaverUpgrade[item.id] ?? false
-  const isZhentarimUpgraded = slottedZhentarimAttuned[item.id] ?? false
+  const itemUpgrade = getItemUpgradeView(itemUpgrades, item.id)
+  const isFountainUpgraded = itemUpgrade.fountainOfNecroticMight ?? false
+  const isStormreaverUpgraded = itemUpgrade.stormreaverUpgrade ?? false
+  const isZhentarimUpgraded = itemUpgrade.zhentarimAttuned ?? false
   const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
 
   if (Array.isArray(baseEnchantments)) {
@@ -305,9 +308,9 @@ const findMatchingNearlyFinished = (
   itemId: string,
   normalizedTargetName: string,
   normalizedTargetBonus: string,
-  slottedNearlyFinished?: Record<string, LootEnchantment | null>
+  itemUpgrades?: import('./upgradeState').ItemUpgrades
 ) => {
-  const nearlyFinished = slottedNearlyFinished?.[itemId]
+  const nearlyFinished = getItemUpgradeView(itemUpgrades, itemId).nearlyFinished
   if (
     nearlyFinished &&
     normalizeString(nearlyFinished.name) === normalizedTargetName &&
@@ -322,9 +325,9 @@ const findMatchingRitualTable = (
   itemId: string,
   normalizedTargetName: string,
   normalizedTargetBonus: string,
-  slottedRitualTable?: Record<string, LootEnchantment | null>
+  itemUpgrades?: import('./upgradeState').ItemUpgrades
 ) => {
-  const ritualTable = slottedRitualTable?.[itemId]
+  const ritualTable = getItemUpgradeView(itemUpgrades, itemId).ritualTable
   if (
     ritualTable &&
     normalizeString(ritualTable.name) === normalizedTargetName &&
@@ -339,9 +342,9 @@ const findMatchingLostPurpose = (
   itemId: string,
   normalizedTargetName: string,
   normalizedTargetBonus: string,
-  slottedLostPurpose?: Record<string, LootEnchantment | null>
+  itemUpgrades?: import('./upgradeState').ItemUpgrades
 ) => {
-  const lostPurpose = slottedLostPurpose?.[itemId]
+  const lostPurpose = getItemUpgradeView(itemUpgrades, itemId).lostPurpose
   if (
     lostPurpose &&
     normalizeString(lostPurpose.name) === normalizedTargetName &&
@@ -356,9 +359,9 @@ const findMatchingTraceOfMadness = (
   itemId: string,
   normalizedTargetName: string,
   normalizedTargetBonus: string,
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
+  itemUpgrades?: import('./upgradeState').ItemUpgrades
 ) => {
-  const ench = slottedTraceOfMadness?.[itemId]
+  const ench = getItemUpgradeView(itemUpgrades, itemId).traceOfMadness
   if (!ench) return -Infinity
   if (normalizeString(ench.name) === normalizedTargetName && getBonus(ench.bonus) === normalizedTargetBonus) {
     return parseModifierValue(ench.modifier ?? 'Enhancement')
@@ -394,13 +397,16 @@ const findMatchingAugments = (
 
 interface GetItemEnchantmentMaxOptions {
   slottedAugments?: Record<string, Record<number, GearAugment | null>>
-  slottedNearlyFinished?: Record<string, LootEnchantment | null>
-  slottedRitualTable?: Record<string, LootEnchantment | null>
-  slottedLostPurpose?: Record<string, LootEnchantment | null>
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
-  slottedFountainOfNecroticMight?: Record<string, boolean>
-  slottedStormreaverUpgrade?: Record<string, boolean>
-  slottedZhentarimAttuned?: Record<string, boolean>
+  itemUpgrades?: ItemUpgrades
+  slottedNearlyFinished?: LegacyLootEnchantmentMap
+  slottedAlmostThere?: LegacyLootEnchantmentMap
+  slottedFinishingTouch?: LegacyLootEnchantmentMap
+  slottedRitualTable?: LegacyLootEnchantmentMap
+  slottedLostPurpose?: LegacyLootEnchantmentMap
+  slottedTraceOfMadness?: LegacyTraceOfMadnessMap
+  slottedFountainOfNecroticMight?: LegacyBooleanUpgradeMap
+  slottedStormreaverUpgrade?: LegacyBooleanUpgradeMap
+  slottedZhentarimAttuned?: LegacyBooleanUpgradeMap
   ignoreItemId?: string
   ignoreSlotIndex?: number
 }
@@ -412,18 +418,8 @@ const getItemEnchantmentMax = (
   normalizedTargetBonus: string,
   options: GetItemEnchantmentMaxOptions = {}
 ): number => {
-  const {
-    slottedAugments,
-    slottedNearlyFinished,
-    slottedRitualTable,
-    slottedLostPurpose,
-    slottedTraceOfMadness,
-    slottedFountainOfNecroticMight = {},
-    slottedStormreaverUpgrade = {},
-    slottedZhentarimAttuned = {},
-    ignoreItemId,
-    ignoreSlotIndex
-  } = options
+  const { slottedAugments, ignoreItemId, ignoreSlotIndex } = options
+  const resolvedItemUpgrades = resolveItemUpgrades(options)
   const isSameItem: boolean = item.id === ignoreItemId
   if (getSlotOwner(item.slot) !== targetOwner) {
     return -Infinity
@@ -452,31 +448,25 @@ const getItemEnchantmentMax = (
   if (isSameItem) return augMax
 
   return Math.max(
-    findMatchingInherent(
-      item,
-      normalizedTargetName,
-      normalizedTargetBonus,
-      slottedFountainOfNecroticMight,
-      slottedStormreaverUpgrade,
-      slottedZhentarimAttuned
-    ),
-    findMatchingNearlyFinished(item.id, normalizedTargetName, normalizedTargetBonus, slottedNearlyFinished),
-    findMatchingRitualTable(item.id, normalizedTargetName, normalizedTargetBonus, slottedRitualTable),
+    findMatchingInherent(item, normalizedTargetName, normalizedTargetBonus, resolvedItemUpgrades),
+    findMatchingNearlyFinished(item.id, normalizedTargetName, normalizedTargetBonus, resolvedItemUpgrades),
+    findMatchingRitualTable(item.id, normalizedTargetName, normalizedTargetBonus, resolvedItemUpgrades),
     augMax,
-    findMatchingLostPurpose(item.id, normalizedTargetName, normalizedTargetBonus, slottedLostPurpose),
-    findMatchingTraceOfMadness(item.id, normalizedTargetName, normalizedTargetBonus, slottedTraceOfMadness)
+    findMatchingLostPurpose(item.id, normalizedTargetName, normalizedTargetBonus, resolvedItemUpgrades),
+    findMatchingTraceOfMadness(item.id, normalizedTargetName, normalizedTargetBonus, resolvedItemUpgrades)
   )
 }
 
 export interface CheckPotentialConflictOptions {
   slottedAugments?: Record<string, Record<number, GearAugment | null>>
-  slottedNearlyFinished?: Record<string, LootEnchantment | null>
-  slottedRitualTable?: Record<string, LootEnchantment | null>
-  slottedLostPurpose?: Record<string, LootEnchantment | null>
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
-  slottedFountainOfNecroticMight?: Record<string, boolean>
-  slottedStormreaverUpgrade?: Record<string, boolean>
-  slottedZhentarimAttuned?: Record<string, boolean>
+  itemUpgrades?: ItemUpgrades
+  slottedNearlyFinished?: LegacyLootEnchantmentMap
+  slottedRitualTable?: LegacyLootEnchantmentMap
+  slottedLostPurpose?: LegacyLootEnchantmentMap
+  slottedTraceOfMadness?: LegacyTraceOfMadnessMap
+  slottedFountainOfNecroticMight?: LegacyBooleanUpgradeMap
+  slottedStormreaverUpgrade?: LegacyBooleanUpgradeMap
+  slottedZhentarimAttuned?: LegacyBooleanUpgradeMap
   ignoreItemId?: string
   ignoreSlotIndex?: number
 }
@@ -491,18 +481,8 @@ export const checkPotentialConflict = (
   slot?: GearSlot,
   options: CheckPotentialConflictOptions = {}
 ): { isConflict: boolean; currentMax: number; isRedundant: boolean; isUpgrade?: boolean; isOverpowered?: boolean } => {
-  const {
-    slottedAugments,
-    slottedNearlyFinished,
-    slottedRitualTable,
-    slottedLostPurpose,
-    slottedTraceOfMadness,
-    slottedFountainOfNecroticMight = {},
-    slottedStormreaverUpgrade = {},
-    slottedZhentarimAttuned = {},
-    ignoreItemId,
-    ignoreSlotIndex
-  } = options
+  const { slottedAugments, ignoreItemId, ignoreSlotIndex } = options
+  const resolvedItemUpgrades = resolveItemUpgrades(options)
   const parsedValue = parseModifierValue(enchantment.modifier)
   const normalizedTargetName: string = normalizeString(enchantment.name)
 
@@ -533,13 +513,7 @@ export const checkPotentialConflict = (
   for (const item of equippedItems) {
     const itemMax = getItemEnchantmentMax(item, targetOwner, normalizedTargetName, normalizedTargetBonus, {
       slottedAugments,
-      slottedNearlyFinished,
-      slottedRitualTable,
-      slottedLostPurpose,
-      slottedTraceOfMadness,
-      slottedFountainOfNecroticMight,
-      slottedStormreaverUpgrade,
-      slottedZhentarimAttuned,
+      itemUpgrades: resolvedItemUpgrades,
       ignoreItemId,
       ignoreSlotIndex
     })

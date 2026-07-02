@@ -2,6 +2,7 @@ import { useCallback, useMemo, useRef } from 'react'
 import { useAppSelector } from '../../../redux/hooks'
 import { createDefaultSetup } from '../initialState'
 import type { GearSetup } from '../types.ts'
+import { createUpgradeViews, type UpgradeViews } from '../upgradeState'
 import { renderGearPlanner } from './renderGearPlanner.tsx'
 import { useGearPlannerActions } from './useGearPlannerActions'
 import { useGearPlannerContext } from './useGearPlannerContext'
@@ -80,9 +81,13 @@ const useGearPlanner = (props: Props) => {
     setups.find((s: GearSetup) => s.id === activeSetupId) ??
     (setups.length > 0 ? setups[0] : createDefaultSetup('default', 'Default Setup'))
   const { artificerPet, druidPet } = activeSetup
+  const activeSetupWithUpgradeViews: GearSetup & UpgradeViews = {
+    ...activeSetup,
+    ...createUpgradeViews(activeSetup.itemUpgrades)
+  }
 
   const { characterEquipped, artificerEquipped, druidEquipped, getContextInfo, getEntityState } = useGearPlannerContext(
-    { activeSetup, artificerPet, druidPet }
+    { activeSetup: activeSetupWithUpgradeViews, artificerPet, druidPet }
   )
 
   const { filteredItems, filteredItemSets, filteredFiligreeSets, searchResultsBySlot } = useGearPlannerFiltering({
@@ -91,7 +96,7 @@ const useGearPlanner = (props: Props) => {
     itemToSetsMap,
     itemSetBonusIndex,
     filigreeSetBonusIndex,
-    activeSetup,
+    activeSetup: activeSetupWithUpgradeViews,
     browsingSlot,
     browsingSet,
     enchantmentSearch: props.enchantmentSearch,
@@ -162,7 +167,7 @@ const useGearPlanner = (props: Props) => {
   )
 
   return {
-    activeSetup,
+    activeSetup: activeSetupWithUpgradeViews,
     addSetup: actions.addSetup,
     clearTab: actions.clearSetup,
     importSetups: actions.importSetups,

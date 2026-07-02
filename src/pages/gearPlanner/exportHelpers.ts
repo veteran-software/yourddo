@@ -2,6 +2,13 @@ import type { EssenceEnchantment } from './dataLoader.ts'
 import { getActiveSetEnhancements, getDisplayEnchantments, getScaledEssenceEnchantments } from './helpers'
 import type { GearItem, GearSetup, GearSlot, LootEnchantment, LootItem, PetState } from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
+import {
+  createUpgradeViews,
+  getItemUpgradeView,
+  type LegacyBooleanUpgradeMap,
+  type LegacyLootEnchantmentMap,
+  type LegacyTraceOfMadnessMap
+} from './upgradeState'
 
 const ALWAYS_HIDDEN_ENCHANTMENTS = new Set([
   'Zhentarim Attuned',
@@ -85,13 +92,16 @@ const getFilteredEnchantments = (
 
 interface EnchantmentsOptions {
   item: GearItem
-  nearlyFinished?: LootEnchantment
-  ritualTable?: LootEnchantment
-  lostPurpose?: LootEnchantment
-  traceOfMadness?: LootEnchantment
-  fountainUpgraded?: boolean
-  stormreaverUpgraded?: boolean
-  zhentarimUpgraded?: boolean
+  itemUpgrades?: import('./upgradeState').ItemUpgrades
+  slottedNearlyFinished?: LegacyLootEnchantmentMap
+  slottedAlmostThere?: LegacyLootEnchantmentMap
+  slottedFinishingTouch?: LegacyLootEnchantmentMap
+  slottedRitualTable?: LegacyLootEnchantmentMap
+  slottedLostPurpose?: LegacyLootEnchantmentMap
+  slottedTraceOfMadness?: LegacyTraceOfMadnessMap
+  slottedFountainOfNecroticMight?: LegacyBooleanUpgradeMap
+  slottedStormreaverUpgrade?: LegacyBooleanUpgradeMap
+  slottedZhentarimAttuned?: LegacyBooleanUpgradeMap
 }
 
 interface SlotFormatters {
@@ -151,26 +161,21 @@ const buildRenderSlot =
     petState?: PetState
   ): void => {
     const state = isPetSlot && petState ? petState : setup
-    const nearlyFinished = state.slottedNearlyFinished[item.id]
-    const almostThere = state.slottedAlmostThere[item.id]
-    const finishingTouch = state.slottedFinishingTouch[item.id]
-    const ritualTable = state.slottedRitualTable[item.id]
-    const lostPurpose = state.slottedLostPurpose[item.id]
-    const traceOfMadness = state.slottedTraceOfMadness[item.id]
-    const fountainUpgraded = state.slottedFountainOfNecroticMight[item.id]
-    const stormreaverUpgraded = state.slottedStormreaverUpgrade[item.id]
-    const zhentarimUpgraded = state.slottedZhentarimAttuned[item.id]
+    const itemUpgrade = getItemUpgradeView(state.itemUpgrades, item.id)
+    const nearlyFinished = itemUpgrade.nearlyFinished ?? null
+    const almostThere = itemUpgrade.almostThere ?? null
+    const finishingTouch = itemUpgrade.finishingTouch ?? null
+    const ritualTable = itemUpgrade.ritualTable ?? null
+    const lostPurpose = itemUpgrade.lostPurpose ?? null
+    const traceOfMadness = itemUpgrade.traceOfMadness ?? null
+    const fountainUpgraded = itemUpgrade.fountainOfNecroticMight ?? false
+    const stormreaverUpgraded = itemUpgrade.stormreaverUpgrade ?? false
+    const zhentarimUpgraded = itemUpgrade.zhentarimAttuned ?? false
 
     fmt.header(slot, item)
     fmt.enchantments({
       item,
-      nearlyFinished: nearlyFinished ?? undefined,
-      ritualTable: ritualTable ?? undefined,
-      lostPurpose: lostPurpose ?? undefined,
-      traceOfMadness: traceOfMadness ?? undefined,
-      fountainUpgraded,
-      stormreaverUpgraded,
-      zhentarimUpgraded
+      itemUpgrades: state.itemUpgrades
     })
     fmt.upgrades(
       fountainUpgraded,
@@ -214,28 +219,20 @@ export const generateBBCodeExport = (
       lines.push(`[b]${slot}:[/b] [u]${item.name}[/u] (ML: ${String(item.minLevel)})`)
     },
 
-    enchantments: ({
-      item,
-      nearlyFinished,
-      ritualTable,
-      lostPurpose,
-      traceOfMadness,
-      fountainUpgraded,
-      stormreaverUpgraded,
-      zhentarimUpgraded
-    }) => {
+    enchantments: ({ item, itemUpgrades }) => {
+      const itemUpgrade = getItemUpgradeView(itemUpgrades, item.id)
       const baseEnchantments = getDisplayEnchantments(
         item,
-        fountainUpgraded ?? false,
-        stormreaverUpgraded ?? false,
-        zhentarimUpgraded ?? false
+        itemUpgrade.fountainOfNecroticMight ?? false,
+        itemUpgrade.stormreaverUpgrade ?? false,
+        itemUpgrade.zhentarimAttuned ?? false
       )
       const filtered = getFilteredEnchantments(
         baseEnchantments,
-        nearlyFinished,
-        ritualTable,
-        lostPurpose,
-        traceOfMadness
+        itemUpgrade.nearlyFinished ?? undefined,
+        itemUpgrade.ritualTable ?? undefined,
+        itemUpgrade.lostPurpose ?? undefined,
+        itemUpgrade.traceOfMadness ?? undefined
       )
       if (filtered.length > 0) {
         lines.push(`[list]`)
@@ -348,7 +345,7 @@ export const generateBBCodeExport = (
     setup.slottedAugments,
     setup.slottedFiligrees,
     setup.slottedGemSetBonuses,
-    setup.slottedLostPurpose
+    createUpgradeViews(setup.itemUpgrades).slottedLostPurpose
   )
 
   if (activeSetEnhancements.length > 0) {
@@ -387,28 +384,20 @@ export const generateDiscordMarkdownExport = (
       lines.push(`**${slot}:** __${item.name}__ (ML: ${String(item.minLevel)})`)
     },
 
-    enchantments: ({
-      item,
-      nearlyFinished,
-      ritualTable,
-      lostPurpose,
-      traceOfMadness,
-      fountainUpgraded,
-      stormreaverUpgraded,
-      zhentarimUpgraded
-    }) => {
+    enchantments: ({ item, itemUpgrades }) => {
+      const itemUpgrade = getItemUpgradeView(itemUpgrades, item.id)
       const baseEnchantments = getDisplayEnchantments(
         item,
-        fountainUpgraded ?? false,
-        stormreaverUpgraded ?? false,
-        zhentarimUpgraded ?? false
+        itemUpgrade.fountainOfNecroticMight ?? false,
+        itemUpgrade.stormreaverUpgrade ?? false,
+        itemUpgrade.zhentarimAttuned ?? false
       )
       const filtered = getFilteredEnchantments(
         baseEnchantments,
-        nearlyFinished,
-        ritualTable,
-        lostPurpose,
-        traceOfMadness
+        itemUpgrade.nearlyFinished ?? undefined,
+        itemUpgrade.ritualTable ?? undefined,
+        itemUpgrade.lostPurpose ?? undefined,
+        itemUpgrade.traceOfMadness ?? undefined
       )
       filtered.forEach((ench: LootEnchantment) => {
         lines.push(`- ${formatEnchantment(ench)}`)
@@ -517,9 +506,9 @@ export const generateDiscordMarkdownExport = (
   }
 
   const allLostPurpose = {
-    ...setup.slottedLostPurpose,
-    ...artificerPet?.slottedLostPurpose,
-    ...druidPet?.slottedLostPurpose
+    ...createUpgradeViews(setup.itemUpgrades).slottedLostPurpose,
+    ...createUpgradeViews(artificerPet?.itemUpgrades).slottedLostPurpose,
+    ...createUpgradeViews(druidPet?.itemUpgrades).slottedLostPurpose
   }
 
   const activeSetEnhancements = getActiveSetEnhancements(

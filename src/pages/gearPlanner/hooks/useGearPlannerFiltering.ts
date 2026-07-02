@@ -147,13 +147,7 @@ export const useGearPlannerFiltering = ({
       for (const ench of enchantments) {
         const { isConflict, isUpgrade } = checkPotentialConflict(ench, equipped, slot, {
           slottedAugments: entityState.slottedAugments,
-          slottedNearlyFinished: entityState.slottedNearlyFinished,
-          slottedRitualTable: entityState.slottedRitualTable,
-          slottedLostPurpose: entityState.slottedLostPurpose,
-          slottedTraceOfMadness: entityState.slottedTraceOfMadness,
-          slottedFountainOfNecroticMight: entityState.slottedFountainOfNecroticMight,
-          slottedStormreaverUpgrade: entityState.slottedStormreaverUpgrade,
-          slottedZhentarimAttuned: entityState.slottedZhentarimAttuned,
+          itemUpgrades: entityState.itemUpgrades,
           ignoreItemId: item.id
         })
 
