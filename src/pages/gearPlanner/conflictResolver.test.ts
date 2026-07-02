@@ -67,6 +67,25 @@ describe('conflictResolver Bugs', () => {
       expect(conflicts.strength[0].bonus).toBe('Enhancement')
     })
 
+    it('should not report conflicts for Reaper bonuses', () => {
+      const reaperItem1 = {
+        id: 'item1',
+        name: 'Item 1',
+        slot: GearSlot.Head,
+        enchantments: [{ name: 'Strength', bonus: 'Reaper', modifier: '1' }]
+      } as unknown as GearItem
+
+      const reaperItem2 = {
+        id: 'item2',
+        name: 'Item 2',
+        slot: GearSlot.Cloak,
+        enchantments: [{ name: 'Strength', bonus: 'Reaper', modifier: '1' }]
+      } as unknown as GearItem
+
+      const conflicts = resolveConflicts([reaperItem1, reaperItem2])
+      expect(conflicts.strength).toBeUndefined()
+    })
+
     it('should resolve legacy upgrade fields through the compact state resolver', () => {
       const legacyItem = {
         id: 'item3',

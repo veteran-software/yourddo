@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import cloakData from '../../data/loot/runtime/cloak.json'
-import { getNearlyFinishedChoiceLabels, parseNearlyFinishedChoice } from './helpers'
+import { aggregateEnchantmentEntries, getNearlyFinishedChoiceLabels, parseNearlyFinishedChoice } from './helpers'
+import { type GearItem, GearSlot } from './types'
+import { createEmptyItemUpgrades, setItemUpgradeState } from './upgradeState'
 
 describe('gear planner nearly finished helpers', () => {
   it('reconstructs Cloak of Balance nearly finished options from the upgradeable text', () => {
@@ -27,5 +29,26 @@ describe('gear planner nearly finished helpers', () => {
       bonus: 'Enhancement',
       modifier: '13'
     })
+  })
+
+  it('adds reaper forge grants to aggregated enchantments', () => {
+    const item = {
+      id: 'item-1',
+      name: 'Test Item',
+      slot: GearSlot.Head
+    } as unknown as GearItem
+    const itemUpgrades = createEmptyItemUpgrades()
+    setItemUpgradeState(itemUpgrades, item.id, 'reaperForge', 'reaper-helmet-enchantment')
+
+    const entries = aggregateEnchantmentEntries(item, undefined, undefined, undefined, { itemUpgrades })
+
+    expect(entries.map((entry) => entry.ench.name)).toEqual([
+      'Strength',
+      'Dexterity',
+      'Constitution',
+      'Intelligence',
+      'Wisdom',
+      'Charisma'
+    ])
   })
 })

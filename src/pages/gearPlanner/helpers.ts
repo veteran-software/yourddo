@@ -1,5 +1,6 @@
 import fountainData from '../../data/fountainOfNecroticMight.json'
 import nearlyFinishedRecipes from '../../data/nearlyFinished/recipes.json'
+import reaperForgeData from '../../data/reaperForge.json'
 import { findSetBonus } from '../../data/setBonuses.ts'
 import stormreaverUpgradeData from '../../data/stormreaverUpgrade.json'
 import zhentarimData from '../../data/zhentarimAttuned.json'
@@ -37,6 +38,47 @@ export const findStormreaverUpgradeData = (itemName: string, pageTitle?: string)
 
 export const findZhentarimUpgradeData = (itemName: string, pageTitle?: string): UpgradeEntry | undefined => {
   return findUpgradeData(itemName, zhentarimData, pageTitle)
+}
+
+interface ReaperForgeGrant {
+  stat: string
+  modifier: number
+  unit?: 'percent'
+}
+
+interface ReaperForgeEffect {
+  id: string
+  name: string
+  allowedSlots: GearSlot[]
+  grants: ReaperForgeGrant[]
+}
+
+const reaperForgeEffects = (reaperForgeData as { effects: ReaperForgeEffect[] }).effects
+
+const expandReaperForgeGrant = (grant: ReaperForgeGrant): LootEnchantment[] => {
+  return [
+    {
+      name: grant.stat,
+      bonus: 'Reaper',
+      modifier: grant.unit === 'percent' ? `${String(grant.modifier)}%` : grant.modifier
+    }
+  ]
+}
+
+export const getReaperForgeEffectsForSlot = (slot: GearSlot): ReaperForgeEffect[] => {
+  return reaperForgeEffects.filter((effect) => effect.allowedSlots.includes(slot))
+}
+
+export const getReaperForgeEffectById = (effectId: string | null | undefined): ReaperForgeEffect | undefined => {
+  if (!effectId) return undefined
+  return reaperForgeEffects.find((effect) => effect.id === effectId)
+}
+
+export const getReaperForgeEnchantments = (effectId: string | null | undefined): LootEnchantment[] => {
+  const effect = getReaperForgeEffectById(effectId)
+  if (!effect) return []
+
+  return effect.grants.flatMap(expandReaperForgeGrant)
 }
 
 export const findUpgradeData = (
@@ -326,6 +368,7 @@ export const aggregateEnchantmentEntries = (
   const isFountainUpgraded = itemUpgrade.fountainOfNecroticMight ?? false
   const isStormreaverUpgraded = itemUpgrade.stormreaverUpgrade ?? false
   const isZhentarimUpgraded = itemUpgrade.zhentarimAttuned ?? false
+  const reaperForgeEnchantments = getReaperForgeEnchantments(itemUpgrade.reaperForge ?? null)
 
   const nfStored = itemUpgrade.nearlyFinished ?? null
   const atStored = itemUpgrade.almostThere ?? null
@@ -399,6 +442,13 @@ export const aggregateEnchantmentEntries = (
       sourceName: item.name
     })
   }
+
+  reaperForgeEnchantments.forEach((ench) => {
+    entries.push({
+      ench,
+      sourceName: item.name
+    })
+  })
 
   addAugmentEntries(entries, item.name, itemAugs)
   addCurseEntries(entries, item.name, curse)

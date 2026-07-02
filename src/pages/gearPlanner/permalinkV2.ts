@@ -47,6 +47,7 @@ export interface PermalinkItemPayloadV2 {
   isFountainUpgraded: boolean
   isStormreaverUpgraded: boolean
   isZhentarimUpgraded: boolean
+  reaperForge: string | null
 }
 
 export interface PermalinkPayloadV2 {
@@ -96,6 +97,7 @@ const decodeSupplementaryProperties = (
     isFountainUpgraded: boolean
     isStormreaverUpgraded: boolean
     isZhentarimUpgraded: boolean
+    reaperForge: string | null
     traceOfMadness: LootEnchantment | string | null
   }
 ) => {
@@ -111,6 +113,7 @@ const decodeSupplementaryProperties = (
     isFountainUpgraded,
     isStormreaverUpgraded,
     isZhentarimUpgraded,
+    reaperForge,
     traceOfMadness
   } = options
 
@@ -130,6 +133,7 @@ const decodeSupplementaryProperties = (
   if (isFountainUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'fountainOfNecroticMight', true)
   if (isStormreaverUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'stormreaverUpgrade', true)
   if (isZhentarimUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'zhentarimAttuned', true)
+  if (reaperForge) setItemUpgradeState(state.itemUpgrades, item.id, 'reaperForge', reaperForge)
 
   decodeFiligrees(item, state, filigrees, allItems)
 
@@ -222,7 +226,8 @@ export const buildPermalinkItemPayloadV2 = (
     itemMaterial: item.material || null,
     isFountainUpgraded: itemUpgrade.slottedFountainOfNecroticMight[item.id] ?? false,
     isStormreaverUpgraded: itemUpgrade.slottedStormreaverUpgrade[item.id] ?? false,
-    isZhentarimUpgraded: itemUpgrade.slottedZhentarimAttuned[item.id] ?? false
+    isZhentarimUpgraded: itemUpgrade.slottedZhentarimAttuned[item.id] ?? false,
+    reaperForge: itemUpgrade.slottedReaperForge[item.id] ?? null
   }
 }
 
@@ -304,7 +309,8 @@ export const decodePermalinkPayloadV2 = (
       itemMaterial,
       isFountainUpgraded,
       isStormreaverUpgraded,
-      isZhentarimUpgraded
+      isZhentarimUpgraded,
+      reaperForge
     } = itemPayload
 
     if (!isGearSlot(slot)) {
@@ -344,6 +350,7 @@ export const decodePermalinkPayloadV2 = (
       isFountainUpgraded,
       isStormreaverUpgraded,
       isZhentarimUpgraded,
+      reaperForge,
       traceOfMadness: traceOfMadness ?? null
     })
   })

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { createDefaultSetup, initialPetState } from './initialState'
 import { buildPermalinkPayloadV2, decodePermalinkPayloadV2, isPermalinkPayloadV2 } from './permalinkV2'
 import { type Curse, type GearItem, GearSlot } from './types'
+import { setItemUpgradeState } from './upgradeState'
 
 describe('permalink V2 payload helpers', () => {
   const mockItem = {
@@ -38,6 +39,7 @@ describe('permalink V2 payload helpers', () => {
   it('recognizes and decodes the V2 payload shape', () => {
     const setup = createDefaultSetup('setup-1', 'Setup 1')
     setup.slots[GearSlot.MainHand] = mockItem
+    setItemUpgradeState(setup.itemUpgrades, mockItem.id, 'reaperForge', 'reaper-ring-boost-3')
 
     const payload = buildPermalinkPayloadV2(setup)
 
@@ -49,6 +51,7 @@ describe('permalink V2 payload helpers', () => {
     expect(decoded.name).toBe('Setup 1')
     expect(decoded.slots[GearSlot.MainHand]?.id).toBe(mockItem.id)
     expect(decoded.slots[GearSlot.MainHand]?.material).toBe(mockItem.material)
+    expect(decoded.itemUpgrades[mockItem.id].reaperForge).toBe('reaper-ring-boost-3')
   })
 
   it('omits quiver curses from the V2 payload and decode path', () => {
