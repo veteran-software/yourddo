@@ -1,10 +1,13 @@
 import { Dropdown } from 'react-bootstrap'
 import { checkPotentialConflict } from '../conflictResolver.ts'
+import { canApplyCurse } from '../helpers.ts'
 import { type Curse, type EntityGearState, type GearItem, GearSlot } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
 
 const CurseSlotItem = (props: Props) => {
   const { allCurses, entityState, selectedItem, setCurse, slot, slotted } = props
+
+  if (!canApplyCurse(selectedItem)) return null
 
   const {
     equipped: currentEquipped,

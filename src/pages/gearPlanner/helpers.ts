@@ -166,6 +166,10 @@ export const isMinorArtifact = (item: LootItem) => {
   return (item.artifactType?.trim().length ?? 0) > 0
 }
 
+export const canApplyCurse = (item: GearItem) => {
+  return item.slot !== GearSlot.Quiver
+}
+
 export const getMaxFiligreeSlots = (item: LootItem) => {
   const minLevel = Number.parseInt(String(item.minLevel), 10) || 1
   if (isMinorArtifact(item)) {

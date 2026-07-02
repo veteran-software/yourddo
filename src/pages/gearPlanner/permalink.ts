@@ -1,7 +1,7 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
 import traceOfMadnessData from '../../data/traceOfMadness.json'
 import { getSlotOwner } from './conflictResolver.ts'
-import { isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers.ts'
+import { canApplyCurse, isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers.ts'
 import { initialPetState } from './initialState.ts'
 import {
   buildPermalinkPayloadV2,
@@ -341,7 +341,7 @@ const decodeItemAugments = (
 }
 
 const decodeItemCurse = (item: GearItem, curseName: string | null, allCurses: Curse[], state: GearSetup | PetState) => {
-  if (curseName && item.slot !== GearSlot.Quiver) {
+  if (curseName && canApplyCurse(item)) {
     const curse = allCurses.find((c) => c.name === curseName)
     if (curse) state.slottedCurses[item.id] = curse
   }

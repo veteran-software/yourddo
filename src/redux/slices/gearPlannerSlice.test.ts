@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { createDefaultSetup } from '../../pages/gearPlanner/initialState'
-import { type GearAugment, type GearItem, GearSlot } from '../../pages/gearPlanner/types'
+import { type Curse, type GearAugment, type GearItem, GearSlot } from '../../pages/gearPlanner/types'
 import gearPlannerReducer, {
   type GearPlannerState,
   removeSetup,
+  setCurse,
   setItemMaterial,
   setItemUpgrade
 } from './gearPlannerSlice'
@@ -143,5 +144,37 @@ describe('gearPlannerSlice reducers', () => {
     )
 
     expect(nextState.characterSetups[0].slots[GearSlot.MainHand]?.material).toBe('Adamantine')
+  })
+
+  it('does not apply curses to quivers', () => {
+    const item = {
+      id: 'quiver-1',
+      name: 'Test Quiver',
+      slot: GearSlot.Quiver,
+      minLevel: '1',
+      type: 'Quiver'
+    } as unknown as GearItem
+    const curse = { name: 'Curse of Testing', type: 'Minor' } as Curse
+
+    const initialState: GearPlannerState = {
+      characterSetups: [
+        {
+          ...createDefaultSetup('setup3', 'Setup 3'),
+          slots: { [GearSlot.Quiver]: item } as unknown as Record<GearSlot, GearItem | null>
+        }
+      ],
+      activeSetupId: 'setup3'
+    }
+
+    const nextState = gearPlannerReducer(
+      initialState,
+      setCurse({
+        itemId: item.id,
+        curse,
+        slot: GearSlot.Quiver
+      })
+    )
+
+    expect(nextState.characterSetups[0].slottedCurses[item.id]).toBeUndefined()
   })
 })

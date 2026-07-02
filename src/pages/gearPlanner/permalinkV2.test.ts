@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createDefaultSetup, initialPetState } from './initialState'
 import { buildPermalinkPayloadV2, decodePermalinkPayloadV2, isPermalinkPayloadV2 } from './permalinkV2'
-import { type GearItem, GearSlot } from './types'
+import { type Curse, type GearItem, GearSlot } from './types'
 
 describe('permalink V2 payload helpers', () => {
   const mockItem = {
@@ -49,5 +49,25 @@ describe('permalink V2 payload helpers', () => {
     expect(decoded.name).toBe('Setup 1')
     expect(decoded.slots[GearSlot.MainHand]?.id).toBe(mockItem.id)
     expect(decoded.slots[GearSlot.MainHand]?.material).toBe(mockItem.material)
+  })
+
+  it('omits quiver curses from the V2 payload and decode path', () => {
+    const quiverItem = {
+      id: 'Quiver|Test Quiver|1|quiver.json',
+      name: 'Test Quiver',
+      slot: GearSlot.Quiver,
+      minLevel: '1'
+    } as unknown as GearItem
+    const curse = { name: 'Curse of Testing', type: 'Minor' } as Curse
+
+    const setup = createDefaultSetup('setup-1', 'Setup 1')
+    setup.slots[GearSlot.Quiver] = quiverItem
+    setup.slottedCurses[quiverItem.id] = curse
+
+    const payload = buildPermalinkPayloadV2(setup)
+    expect(payload.items[0].curseName).toBeNull()
+
+    const decoded = decodePermalinkPayloadV2(payload, [quiverItem], [], [curse])
+    expect(decoded.slottedCurses[quiverItem.id]).toBeUndefined()
   })
 })

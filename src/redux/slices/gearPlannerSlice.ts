@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import { isMinorArtifact } from '../../pages/gearPlanner/helpers'
+import { canApplyCurse, isMinorArtifact } from '../../pages/gearPlanner/helpers'
 import { createDefaultSetup, initialPetState } from '../../pages/gearPlanner/initialState'
 import {
   ARTIFICER_PET_SLOTS,
@@ -299,6 +299,14 @@ const gearPlannerSlice = createSlice({
     ) => {
       const { itemId, curse, slot } = action.payload
       withActiveTarget(state, slot, (target) => {
+        const currentItem = Object.values(target.slots).find((item) => item?.id === itemId)
+        if (currentItem && !canApplyCurse(currentItem)) {
+          /* eslint-disable @typescript-eslint/no-dynamic-delete */
+          delete target.slottedCurses[itemId]
+          /* eslint-enable @typescript-eslint/no-dynamic-delete */
+          return
+        }
+
         target.slottedCurses[itemId] = curse
       })
     },
