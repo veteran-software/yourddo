@@ -1,10 +1,10 @@
 package parser
 
 import (
+	api "compendium-crawler-go/api"
 	"fmt"
 	"strconv"
 	"strings"
-	api "compendium-crawler-go/api"
 )
 
 func parseTemplateSpellFocus(rawFocusValue string) []*api.Enchantment {
@@ -63,17 +63,16 @@ func parseTemplateSpellFocus(rawFocusValue string) []*api.Enchantment {
 		var enchantments []*api.Enchantment
 		// Split the single Mastery enchantment into one entry for each school
 		for _, schoolName := range spellSchools {
-			name := fmt.Sprintf("Spell DC: %s", schoolName)
-			// Use the generic title if it was provided
-			if title != "" {
-				name = title
-			}
-
 			enchantments = append(enchantments, &api.Enchantment{
-				Name:      name,
+				Name:      fmt.Sprintf("Spell DC: %s", schoolName),
 				Amount:    amount,
 				BonusType: bonusType,
 			})
+		}
+		if title != "" {
+			for _, enchantment := range enchantments {
+				enchantment.Name = title
+			}
 		}
 		return enchantments
 	}
@@ -82,8 +81,10 @@ func parseTemplateSpellFocus(rawFocusValue string) []*api.Enchantment {
 	var name string
 	if title != "" {
 		name = title // Use custom title
+	} else if strings.EqualFold(school, "Rune Arm") {
+		name = "Rune Arm: DC"
 	} else {
-		name = fmt.Sprintf("%s Focus", school)
+		name = fmt.Sprintf("Spell DC: %s", school)
 	}
 
 	return []*api.Enchantment{
@@ -94,7 +95,6 @@ func parseTemplateSpellFocus(rawFocusValue string) []*api.Enchantment {
 		},
 	}
 }
-
 
 func parseTemplateSpellPower(rawPowerValue string) []*api.Enchantment {
 	const prefix = "{{SpellPower|"
@@ -149,7 +149,6 @@ func parseTemplateSpellPower(rawPowerValue string) []*api.Enchantment {
 
 	return enchantments
 }
-
 
 func parseTemplateSpellPoints(rawSPValue string) *api.Enchantment {
 	const prefix = "{{SpellPoints|"
@@ -218,7 +217,6 @@ func parseTemplateSpellPoints(rawSPValue string) *api.Enchantment {
 	}
 }
 
-
 func parseTemplateSpellLore(rawLoreValue string) []*api.Enchantment {
 	const prefix = "{{SpellLore|"
 	const suffix = "}}"
@@ -274,7 +272,6 @@ func parseTemplateSpellLore(rawLoreValue string) []*api.Enchantment {
 
 	return enchantments
 }
-
 
 // Template:SpellAugmentation
 // Usage: {{SpellAugmentation|(Type)|(Spell Level)|(School)|(Title)|(Hide Class)}}
@@ -382,7 +379,6 @@ func parseTemplateSpellAugmentation(raw string) *api.Enchantment {
 	}
 }
 
-
 func parseTemplateSpellSchoolSave(rawSaveValue string) []*api.Enchantment {
 	const prefix = "{{SpellSchoolSave|"
 	const suffix = "}}"
@@ -473,7 +469,6 @@ func parseTemplateSpellSchoolSave(rawSaveValue string) []*api.Enchantment {
 
 	return enchantments
 }
-
 
 func parseTemplateSpeed(rawSpeedValue string) []*api.Enchantment {
 	const prefix = "{{Speed|"
@@ -634,7 +629,6 @@ func parseTemplateSpeed(rawSpeedValue string) []*api.Enchantment {
 	return enchantments
 }
 
-
 func parseTemplateSpellPenetration(rawSPValue string) *api.Enchantment {
 	const prefix = "{{SpellPenetration|"
 	const suffix = "}}"
@@ -689,7 +683,6 @@ func parseTemplateSpellPenetration(rawSPValue string) *api.Enchantment {
 	}
 }
 
-
 func parseTemplateSoundproof() *api.Enchantment {
 	const templateName = "Soundproof"
 
@@ -700,7 +693,6 @@ func parseTemplateSoundproof() *api.Enchantment {
 		// All other fields remain empty.
 	}
 }
-
 
 func parseTemplateSpellResistance(rawSRValue string) *api.Enchantment {
 	const prefix = "{{SpellResistance|"
@@ -748,7 +740,6 @@ func parseTemplateSpellResistance(rawSRValue string) *api.Enchantment {
 	}
 }
 
-
 // Template:Sparkscale
 // No parameters; this template label expands to descriptive text on the wiki.
 // For our structured data, we capture it as a simple named enchantment.
@@ -757,7 +748,6 @@ func parseTemplateSparkscale() *api.Enchantment {
 		Name: "Sparkscale",
 	}
 }
-
 
 func parseTemplateSpellCritDamage(rawSCDValue string) []*api.Enchantment {
 	const prefix = "{{SpellCritDamage|"
@@ -853,7 +843,6 @@ func parseTemplateSpellCritDamage(rawSCDValue string) []*api.Enchantment {
 	return enchantments
 }
 
-
 // Template:SneakAttackDamage
 // Usage (assumed): {{SneakAttackDamage|(Amount)|(Bonus Type)}}
 // Requirements:
@@ -922,7 +911,6 @@ func parseTemplateSneakAttackDamage(raw string) *api.Enchantment {
 	}
 }
 
-
 // Template:SpellPowerGuard
 // Usage: {{SpellPowerGuard}}
 // Returns a Psionic Bonus of 8 to Universal Spell Power.
@@ -933,7 +921,6 @@ func parseTemplateSpellPowerGuard() *api.Enchantment {
 		Amount:    "8",
 	}
 }
-
 
 // Template: SneakAttackDice
 // Usage: {{SneakAttackDice|(Enhancement Amount)|(Bonus Type)|(Fixed Amount)}}
@@ -980,7 +967,6 @@ func parseTemplateSneakAttackDice(raw string) *api.Enchantment {
 		BonusType: bonusType,
 	}
 }
-
 
 // Template: SlayLiving
 // Usage: {{SlayLiving|(Type)}}
@@ -1036,7 +1022,6 @@ func parseTemplateSpellTurmoil(raw string) *api.Enchantment {
 		Notes: new(note),
 	}
 }
-
 
 // Template: SpellAbsorption
 // Usage: {{SpellAbsorption|(Charges)|(Recharge Rate)|(Spell Blocked)|(Special Type)|(Title)}}
@@ -1106,7 +1091,6 @@ func parseTemplateSpellAbsorption(raw string) *api.Enchantment {
 	}
 }
 
-
 // Template: SneakAttack
 // Usage: {{SneakAttack|(Enhancement Amount)|(Bonus Type)|(Damage Amount)}}
 func parseTemplateSneakAttack(raw string) []*api.Enchantment {
@@ -1171,7 +1155,6 @@ func parseTemplateSneakAttack(raw string) []*api.Enchantment {
 	return results
 }
 
-
 // Template: SpellResonance
 // Usage: {{SpellResonance}}
 func parseTemplateSpellResonance(raw string) *api.Enchantment {
@@ -1187,7 +1170,6 @@ func parseTemplateSpellResonance(raw string) *api.Enchantment {
 		Notes: new("When casting Force spells, there is a chance that you will gain a +20 alchemical bonus to Force Spell Power for 30 seconds. When casting Sonic spells, there is a chance that you will gain a +20 alchemical bonus to Sonic Spell Power 30 seconds."),
 	}
 }
-
 
 // Template: Spearblock
 // Usage: {{Spearblock|(Enhancement Amount)|(Title)}}
@@ -1234,7 +1216,6 @@ func parseTemplateSpearblock(raw string) *api.Enchantment {
 		Notes: new(fmt.Sprintf("Passive: Reduces physical damage taken by %s, except from Bludgeoning or Slashing weapons. (Damage Reduction: %s/Slash, Bludgeon)", doubledAmount, doubledAmount)),
 	}
 }
-
 
 func parseTemplateSonic(raw string) *api.Enchantment {
 	const template = "Sonic"
@@ -1350,7 +1331,6 @@ func parseTemplateSonic(raw string) *api.Enchantment {
 	}
 }
 
-
 func parseTemplateSlaveLordsBlank(raw string) []*api.Enchantment {
 	const template = "SlaveLordsBlank"
 	const prefix = "{{" + template
@@ -1405,7 +1385,6 @@ func parseTemplateSlaveLordsBlank(raw string) []*api.Enchantment {
 	}
 }
 
-
 func parseTemplateSpikeGuard() *api.Enchantment {
 	return &api.Enchantment{
 		Name:  "Spike Guard",
@@ -1413,14 +1392,12 @@ func parseTemplateSpikeGuard() *api.Enchantment {
 	}
 }
 
-
 func parseTemplateSpikeStudded() *api.Enchantment {
 	return &api.Enchantment{
 		Name:  "Spike-Studded",
 		Notes: new("This item is reinforced with metal studs that improve your unarmed strikes. Your unarmed strikes do an additional 1d4 piercing damage."),
 	}
 }
-
 
 func parseTemplateSoulOfElements(raw string) *api.Enchantment {
 	const template = "SoulOfElements"
@@ -1440,7 +1417,6 @@ func parseTemplateSoulOfElements(raw string) *api.Enchantment {
 		Notes: new(notes),
 	}
 }
-
 
 func parseTemplateSolarGuard(raw string) *api.Enchantment {
 	const template = "SolarGuard"
@@ -1485,7 +1461,6 @@ func parseTemplateSolarGuard(raw string) *api.Enchantment {
 		Notes: new(notes),
 	}
 }
-
 
 func parseTemplateSmiting(raw string) *api.Enchantment {
 	const prefix = "{{Smiting"
