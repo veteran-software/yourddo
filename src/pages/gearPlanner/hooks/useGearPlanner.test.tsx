@@ -6,6 +6,8 @@ import { describe, expect, it, vi } from 'vitest'
 import gearPlannerReducer, { type GearPlannerState } from '../../../redux/slices/gearPlannerSlice'
 import { createDefaultSetup } from '../initialState'
 import useGearPlanner from './useGearPlanner'
+import { useGearPlannerFiltering } from './useGearPlannerFiltering'
+import { useGearPlannerUI } from './useGearPlannerUI'
 
 // Mock IntersectionObserver
 const mockObserve = vi.fn()
@@ -57,16 +59,35 @@ const mockSetItemsToShow = vi.fn((updater: ((prev: number) => number) | number) 
 
 vi.mock('./useGearPlannerUI', () => ({
   useGearPlannerUI: vi.fn(() => ({
+    browsingSlot: null,
+    setBrowsingSlot: vi.fn(),
+    internalItemNameSearch: 'UI-owned search',
+    setInternalItemNameSearch: vi.fn(),
     itemsToShow: mockItemsToShow,
     setItemsToShow: mockSetItemsToShow,
-    showConflicts: false,
-    showOwnedOnly: false,
-    setBonusFilter: null
+    showConflicts: true,
+    showOwnedOnly: true,
+    setBonusFilter: 'UI set',
+    showSidebar: false,
+    setShowSidebar: vi.fn(),
+    showEnchantmentSearch: false,
+    setShowEnchantmentSearch: vi.fn(),
+    showSetBonusBrowser: false,
+    setShowSetBonusBrowser: vi.fn(),
+    browsingSet: null,
+    setBrowsingSet: vi.fn(),
+    openSlotBrowser: vi.fn(),
+    openSetBonusBrowser: vi.fn(),
+    pendingMinorArtifact: null,
+    setPendingMinorArtifact: vi.fn(),
+    setShowConflicts: vi.fn(),
+    setShowOwnedOnly: vi.fn(),
+    setSetBonusFilter: vi.fn()
   }))
 }))
 
 vi.mock('./useGearPlannerFiltering', () => ({
-  useGearPlannerFiltering: () => ({})
+  useGearPlannerFiltering: vi.fn(() => ({}))
 }))
 
 vi.mock('./useGearPlannerActions', () => ({
@@ -105,11 +126,7 @@ describe('useGearPlanner Hook', () => {
       () =>
         useGearPlanner({
           enchantmentSearch: '',
-          enchantmentBonusType: '',
-          itemNameSearch: '',
-          setBonusFilter: null,
-          showConflicts: false,
-          showOwnedOnly: false
+          enchantmentBonusType: ''
         }),
       {
         wrapper: ({ children }) => wrapper({ children, store })
@@ -168,5 +185,22 @@ describe('useGearPlanner Hook', () => {
     const updater = mockSetItemsToShow.mock.calls[0][0] as unknown as (prev: number) => number
     expect(typeof updater).toBe('function')
     expect(updater(50)).toBe(100)
+  })
+
+  it('uses UI-owned search and conflict state when building the filtering query', () => {
+    const store = createTestStore({
+      characterSetups: [],
+      activeSetupId: 'default'
+    })
+
+    renderUseGearPlannerHook(store)
+
+    expect(useGearPlannerUI).toHaveBeenCalledWith()
+    expect(useGearPlannerFiltering).toHaveBeenCalled()
+
+    const filterArgs = vi.mocked(useGearPlannerFiltering).mock.calls[0][0]
+    expect(filterArgs.itemNameSearch).toBe('UI-owned search')
+    expect(filterArgs.showConflicts).toBe(true)
+    expect(filterArgs.showOwnedOnly).toBe(true)
   })
 })

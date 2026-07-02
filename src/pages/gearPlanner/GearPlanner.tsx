@@ -36,15 +36,10 @@ const GearPlanner = () => {
   } | null>(null)
   const [enchantmentSearch, setEnchantmentSearch] = useState('')
   const [enchantmentBonusType, setEnchantmentBonusType] = useState('')
-  const [itemNameSearch] = useState('')
 
   const gpHook = useGearPlanner({
     enchantmentSearch,
-    enchantmentBonusType,
-    itemNameSearch,
-    setBonusFilter: null,
-    showConflicts: true,
-    showOwnedOnly: false
+    enchantmentBonusType
   })
 
   const { showSidebar, setShowSidebar, setShowEnchantmentSearch, pendingMinorArtifact, setPendingMinorArtifact } =

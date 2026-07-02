@@ -14,20 +14,9 @@ import { useGearPlannerUI } from './useGearPlannerUI'
 interface Props {
   enchantmentSearch: string
   enchantmentBonusType: string
-  itemNameSearch: string
-  setBonusFilter: string | null
-  showConflicts: boolean
-  showOwnedOnly: boolean
 }
 
 const useGearPlanner = (props: Props) => {
-  const {
-    itemNameSearch: propItemNameSearch,
-    setBonusFilter: propSetBonusFilter,
-    showOwnedOnly: propShowOwnedOnly,
-    showConflicts: propShowConflicts
-  } = props
-
   const { characterSetups: setups, activeSetupId } = useAppSelector((state) => state.gearPlanner)
 
   const { troveData } = useAppSelector((state) => state.app)
@@ -72,7 +61,7 @@ const useGearPlanner = (props: Props) => {
     setShowOwnedOnly,
     setBonusFilter,
     setSetBonusFilter
-  } = useGearPlannerUI({ itemNameSearch: propItemNameSearch })
+  } = useGearPlannerUI()
 
   const formatDropLocations = useFormatDropLocations()
   const isItemVisibleForClasses = useIsItemVisibleForClasses()
@@ -101,11 +90,10 @@ const useGearPlanner = (props: Props) => {
     browsingSet,
     enchantmentSearch: props.enchantmentSearch,
     enchantmentBonusType: props.enchantmentBonusType,
-    itemNameSearch: propItemNameSearch,
-    internalItemNameSearch,
-    setBonusFilter: propSetBonusFilter ?? setBonusFilter,
-    showOwnedOnly: propShowOwnedOnly || showOwnedOnly,
-    showConflicts: propShowConflicts || showConflicts,
+    itemNameSearch: internalItemNameSearch,
+    setBonusFilter,
+    showOwnedOnly,
+    showConflicts,
     getEntityState,
     troveData: troveData,
     isItemVisibleForClasses
@@ -191,7 +179,7 @@ const useGearPlanner = (props: Props) => {
     getEntityState,
     isItemVisibleForClasses,
     isMetal,
-    itemNameSearch: propItemNameSearch || internalItemNameSearch,
+    itemNameSearch: internalItemNameSearch,
     itemsToShow,
     loading,
     observerTarget,

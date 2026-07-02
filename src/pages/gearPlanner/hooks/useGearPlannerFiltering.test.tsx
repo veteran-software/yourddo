@@ -49,7 +49,6 @@ describe('useGearPlannerFiltering Hook', () => {
     browsingSlot: GearSlot.Quiver,
     browsingSet: null,
     itemNameSearch: '',
-    internalItemNameSearch: '',
     enchantmentSearch: '',
     enchantmentBonusType: '',
     setBonusFilter: null,

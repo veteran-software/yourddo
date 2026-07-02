@@ -109,7 +109,6 @@ export const useGearPlannerFiltering = ({
   browsingSlot,
   browsingSet,
   itemNameSearch,
-  internalItemNameSearch,
   enchantmentSearch,
   enchantmentBonusType,
   setBonusFilter,
@@ -296,7 +295,7 @@ export const useGearPlannerFiltering = ({
   }, [])
 
   const filteredItems: GearItem[] = useMemo(() => {
-    const normalizedSearch: string = normalizeString(itemNameSearch || internalItemNameSearch)
+    const normalizedSearch: string = normalizeString(itemNameSearch)
 
     if (!dataReady || !browsingSlot) {
       return []
@@ -345,7 +344,6 @@ export const useGearPlannerFiltering = ({
     browsingSlot,
     allItemsBySlot,
     itemNameSearch,
-    internalItemNameSearch,
     activeSetup,
     shouldShowItem,
     setBonusFilter,
@@ -442,7 +440,6 @@ interface Props {
   browsingSlot: GearSlot | null
   browsingSet: string | null
   itemNameSearch: string
-  internalItemNameSearch: string
   enchantmentSearch: string
   enchantmentBonusType: string
   setBonusFilter: string | null

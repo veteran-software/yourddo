@@ -1,11 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { type GearItem, type GearSlot } from '../types'
 
-interface UseGearPlannerUIProps {
-  itemNameSearch: string
-}
-
-export const useGearPlannerUI = ({ itemNameSearch }: UseGearPlannerUIProps) => {
+export const useGearPlannerUI = () => {
   const [browsingSlot, setBrowsingSlot] = useState<GearSlot | null>(null)
   const [internalItemNameSearch, setInternalItemNameSearch] = useState('')
   const [itemsToShow, setItemsToShow] = useState(50)
@@ -29,7 +25,7 @@ export const useGearPlannerUI = ({ itemNameSearch }: UseGearPlannerUIProps) => {
     return () => {
       clearTimeout(timeoutId)
     }
-  }, [itemNameSearch, internalItemNameSearch, browsingSlot])
+  }, [internalItemNameSearch, browsingSlot])
 
   const openSlotBrowser = useCallback((slot: GearSlot | null) => {
     setBrowsingSlot(slot)
@@ -37,15 +33,12 @@ export const useGearPlannerUI = ({ itemNameSearch }: UseGearPlannerUIProps) => {
     setInternalItemNameSearch('')
   }, [])
 
-  const openSetBonusBrowser = useCallback(
-    (setName: string | null, slot: GearSlot | null = null) => {
-      setBrowsingSet(setName)
-      setShowSetBonusBrowser(true)
-      setBrowsingSlot(slot)
-      setInternalItemNameSearch('')
-    },
-    [setBrowsingSet, setBrowsingSlot, setInternalItemNameSearch]
-  )
+  const openSetBonusBrowser = useCallback((setName: string | null, slot: GearSlot | null = null) => {
+    setBrowsingSet(setName)
+    setShowSetBonusBrowser(true)
+    setBrowsingSlot(slot)
+    setInternalItemNameSearch('')
+  }, [])
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
