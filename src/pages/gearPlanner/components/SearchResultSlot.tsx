@@ -5,6 +5,7 @@ import nearlyFinishedRecipesRaw from '../../../data/nearlyFinished/recipes.json'
 import { ritualTable } from '../../../data/ritualTable.ts'
 import type { CraftingIngredient, SetBonus } from '../../../types/crafting.ts'
 import { getTroveKey, getTroveOwners } from '../../../utils/troveUtils.ts'
+import { getNearlyFinishedChoiceLabels } from '../helpers'
 import { type EntityGearState, type GearItem, GearSlot, type LootEnchantment } from '../types.ts'
 import AugmentSlotsList from './AugmentSlotList.tsx'
 import GenericBadge from './badges/GenericBadge.tsx'
@@ -58,7 +59,8 @@ const getUpgradeSource = (item: GearItem, browsingSet: string) => {
     (recipe: NearlyFinishedRecipe) => recipe.item === item.name && recipe.stage === 'Nearly Finished'
   )
   if (nfRecipe) {
-    const hasNFSet = nfRecipe.choices?.some((choice) => choice.name.includes(browsingSet))
+    const nfChoiceLabels = getNearlyFinishedChoiceLabels(nfRecipe.choices, item.upgradeable)
+    const hasNFSet = nfChoiceLabels.some((choice) => choice.includes(browsingSet))
     if (hasNFSet) {
       return 'Nearly Finished'
     }

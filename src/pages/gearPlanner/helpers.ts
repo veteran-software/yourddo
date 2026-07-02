@@ -67,6 +67,116 @@ export const findReforgingRecipe = (itemName: string, stage: string): ReforgingR
   return station.find((r) => r.item === itemName && r.stage === stage)
 }
 
+const NEARLY_FINISHED_CHOICE_RE = /\{\{Ability\|([^|{}]+)\|([^|{}]+)(?:\|([^|{}]+))?\}\}/gi
+
+const formatNearlyFinishedChoiceLabel = (stat: string, modifier: string, bonus?: string): string => {
+  const parts: string[] = []
+
+  if (bonus?.trim()) {
+    parts.push(bonus.trim())
+  }
+
+  parts.push(stat.trim())
+
+  const normalizedModifier =
+    modifier.trim().startsWith('+') || modifier.trim().startsWith('-') ? modifier.trim() : `+${modifier.trim()}`
+
+  parts.push(normalizedModifier)
+
+  return parts.join(' ')
+}
+
+export const parseNearlyFinishedChoice = (label: string): LootEnchantment => {
+  const trimmed = label.trim()
+  const lastSpace = trimmed.lastIndexOf(' ')
+
+  if (lastSpace === -1) {
+    return {
+      name: trimmed,
+      bonus: 'Enhancement'
+    }
+  }
+
+  const content = trimmed.slice(0, lastSpace).trim()
+  const value = trimmed
+    .slice(lastSpace + 1)
+    .trim()
+    .replace(/^\+/, '')
+
+  if (!content || Number.isNaN(Number(value))) {
+    return {
+      name: trimmed,
+      bonus: 'Enhancement'
+    }
+  }
+
+  const tokens = content.split(/\s+/)
+  const knownBonusTokens = new Set([
+    'alchemy',
+    'competence',
+    'enhancement',
+    'exceptional',
+    'insight',
+    'insightful',
+    'morale',
+    'profane',
+    'quality',
+    'resistance',
+    'racial',
+    'responsiveness',
+    'vitality',
+    'artifact',
+    'artifact-level',
+    'blessed',
+    'dodge',
+    'luck',
+    'festive',
+    'guild',
+    'sacred',
+    'devotion',
+    'parrying',
+    'exalted'
+  ])
+
+  const firstToken = tokens[0]?.toLowerCase()
+  if (firstToken && knownBonusTokens.has(firstToken) && tokens.length > 1) {
+    return {
+      name: tokens.slice(1).join(' '),
+      bonus: tokens[0],
+      modifier: value
+    }
+  }
+
+  return {
+    name: content,
+    bonus: 'Enhancement',
+    modifier: value
+  }
+}
+
+export const getNearlyFinishedChoiceLabels = (
+  recipeChoices: { name: string }[] | undefined,
+  upgradeable?: string
+): string[] => {
+  if (recipeChoices?.length) {
+    return recipeChoices.map((choice) => choice.name)
+  }
+
+  if (!upgradeable) {
+    return []
+  }
+
+  const labels: string[] = []
+  let match: RegExpExecArray | null
+
+  NEARLY_FINISHED_CHOICE_RE.lastIndex = 0
+  while ((match = NEARLY_FINISHED_CHOICE_RE.exec(upgradeable)) !== null) {
+    labels.push(formatNearlyFinishedChoiceLabel(match[1], match[2], match[3]))
+  }
+
+  return labels
+}
+
 export const getDisplayEnchantments = (
   item: GearItem,
   isFountainUpgraded: boolean,
