@@ -282,55 +282,59 @@ const EnchantmentsSummary = (props: Props) => {
                 </Accordion.Header>
 
                 <Accordion.Body className='p-2 bg-dark'>
-                  {ench.bonuses.map((bonus, bIdx) => (
-                    <div key={`${bonus.bonusType}-${String(bIdx)}`} className='mb-2 last-child-mb-0'>
-                      <div className='d-flex justify-content-between align-items-center border-bottom border-secondary mb-1 pb-1'>
-                        {onBonusClick && bonus.hasItemSource ? (
-                          <button
-                            type='button'
-                            className='btn btn-link p-0 border-0 small italic text-capitalize text-info text-decoration-none shadow-none align-baseline'
-                            onClick={() => {
-                              onBonusClick(ench.name, bonus.bonusType)
-                            }}
-                          >
-                            {bonus.bonusType}
-                          </button>
-                        ) : (
-                          <span className='d-flex align-items-center gap-1'>
-                            <span className='small italic text-capitalize text-light'>{bonus.bonusType}</span>
-                            {bonus.nonItemSources.size > 0 && (
-                              <span className='badge text-bg-secondary' style={{ fontSize: '0.6rem' }}>
-                                {[...bonus.nonItemSources].join('/')} only
-                              </span>
-                            )}
-                          </span>
-                        )}
+                  {ench.bonuses.map((bonus, bIdx) => {
+                    const isReaperBonus = bonus.bonusType === 'reaper'
 
-                        <span className='small fw-bold text-light'>{calculateBonus(bonus)}</span>
-                      </div>
-
-                      {bonus.items.length === 0 ? (
-                        <div className='ps-2 small text-muted italic'>• No items equipped</div>
-                      ) : (
-                        bonus.items.map((item, iIdx) => (
-                          <div
-                            key={`${item.itemName}-${String(iIdx)}`}
-                            className={`ps-2 small d-flex justify-content-between align-items-center ${
-                              item.value === bonus.maxValue
-                                ? 'text-secondary'
-                                : 'text-muted text-decoration-line-through'
-                            }`}
-                          >
-                            <span className='text-truncate me-1'>• {item.itemName}</span>
-
-                            <span className='flex-shrink-0'>
-                              {item.value === 0 ? item.valueStr : `+${String(item.value)}`}
+                    return (
+                      <div key={`${bonus.bonusType}-${String(bIdx)}`} className='mb-2 last-child-mb-0'>
+                        <div className='d-flex justify-content-between align-items-center border-bottom border-secondary mb-1 pb-1'>
+                          {onBonusClick && bonus.hasItemSource ? (
+                            <button
+                              type='button'
+                              className='btn btn-link p-0 border-0 small italic text-capitalize text-info text-decoration-none shadow-none align-baseline'
+                              onClick={() => {
+                                onBonusClick(ench.name, bonus.bonusType)
+                              }}
+                            >
+                              {bonus.bonusType}
+                            </button>
+                          ) : (
+                            <span className='d-flex align-items-center gap-1'>
+                              <span className='small italic text-capitalize text-light'>{bonus.bonusType}</span>
+                              {bonus.nonItemSources.size > 0 && (
+                                <span className='badge text-bg-secondary' style={{ fontSize: '0.6rem' }}>
+                                  {[...bonus.nonItemSources].join('/')} only
+                                </span>
+                              )}
                             </span>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                  ))}
+                          )}
+
+                          <span className='small fw-bold text-light'>{calculateBonus(bonus)}</span>
+                        </div>
+
+                        {bonus.items.length === 0 ? (
+                          <div className='ps-2 small text-muted italic'>• No items equipped</div>
+                        ) : (
+                          bonus.items.map((item, iIdx) => (
+                            <div
+                              key={`${item.itemName}-${String(iIdx)}`}
+                              className={`ps-2 small d-flex justify-content-between align-items-center ${
+                                isReaperBonus || item.value === bonus.maxValue
+                                  ? 'text-secondary'
+                                  : 'text-muted text-decoration-line-through'
+                              }`}
+                            >
+                              <span className='text-truncate me-1'>• {item.itemName}</span>
+
+                              <span className='flex-shrink-0'>
+                                {item.value === 0 ? item.valueStr : `+${String(item.value)}`}
+                              </span>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    )
+                  })}
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>

@@ -49,5 +49,13 @@ describe('EnchantmentsSummary', () => {
 
     expect(screen.getAllByText(/reaper/i).length).toBeGreaterThan(0)
     expect(screen.getAllByText('+2').length).toBeGreaterThan(0)
+
+    const itemRows = screen
+      .getAllByText(/Item 1|Item 2/)
+      .map((el) => el.parentElement?.className ?? '')
+      .filter(Boolean)
+
+    expect(itemRows.every((className) => className.includes('text-secondary'))).toBe(true)
+    expect(itemRows.some((className) => className.includes('text-decoration-line-through'))).toBe(false)
   })
 })
