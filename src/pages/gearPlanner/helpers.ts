@@ -67,7 +67,7 @@ export const findReforgingRecipe = (itemName: string, stage: string): ReforgingR
   return station.find((r) => r.item === itemName && r.stage === stage)
 }
 
-const NEARLY_FINISHED_CHOICE_RE = /\{\{Ability\|([^|{}]+)\|([^|{}]+)(?:\|([^|{}]+))?\}\}/gi
+const NEARLY_FINISHED_CHOICE_RE = /\{\{Ability\|([^|{}]+)\|([^|{}]+)(?:\|([^|{}]+))?}}/gi
 
 const formatNearlyFinishedChoiceLabel = (stat: string, modifier: string, bonus?: string): string => {
   const parts: string[] = []
