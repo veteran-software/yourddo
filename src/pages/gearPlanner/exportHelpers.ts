@@ -1,6 +1,7 @@
 import type { EssenceEnchantment } from './dataLoader.ts'
 import { getActiveSetEnhancements, getDisplayEnchantments, getScaledEssenceEnchantments } from './helpers'
-import type { GearItem, GearSetup, GearSlot, LootEnchantment, LootItem, PetState } from './types'
+import { pickPlannerSetupMetadata } from './plannerStateFields'
+import type { GearAugment, GearItem, GearSetup, GearSlot, LootEnchantment, LootItem, PetState } from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
 import {
   createUpgradeViews,
@@ -88,6 +89,62 @@ const getFilteredEnchantments = (
     if (traceOfMadness && ench.name === 'Trace of Madness') return false
     return true
   })
+}
+
+interface GearExportSnapshot {
+  equippedItems: GearItem[]
+  petItems: GearItem[]
+  allItems: GearItem[]
+  allAugments: Record<string, Record<number, GearAugment | null>>
+  allFiligrees: Record<string, (LootItem | null)[]>
+  allGemSets: Record<string, (string | null)[]>
+  allLostPurpose: Record<string, LootEnchantment | null>
+  activeSetEnhancements: { ench: LootEnchantment; sourceName: string }[]
+}
+
+const buildGearExportSnapshot = (
+  setup: GearSetup,
+  artificerPet?: PetState,
+  druidPet?: PetState
+): GearExportSnapshot => {
+  const equippedItems = Object.values(setup.slots).filter((i): i is GearItem => i !== null)
+  const petItems = [
+    ...(artificerPet ? Object.values(artificerPet.slots) : []),
+    ...(druidPet ? Object.values(druidPet.slots) : [])
+  ].filter((i): i is GearItem => i !== null)
+
+  const allItems = [...equippedItems, ...petItems]
+  const allAugments = {
+    ...setup.slottedAugments,
+    ...artificerPet?.slottedAugments,
+    ...druidPet?.slottedAugments
+  }
+  const allFiligrees = {
+    ...setup.slottedFiligrees,
+    ...artificerPet?.slottedFiligrees,
+    ...druidPet?.slottedFiligrees
+  }
+  const allGemSets = {
+    ...setup.slottedGemSetBonuses,
+    ...artificerPet?.slottedGemSetBonuses,
+    ...druidPet?.slottedGemSetBonuses
+  }
+  const allLostPurpose = {
+    ...createUpgradeViews(setup.itemUpgrades).slottedLostPurpose,
+    ...createUpgradeViews(artificerPet?.itemUpgrades).slottedLostPurpose,
+    ...createUpgradeViews(druidPet?.itemUpgrades).slottedLostPurpose
+  }
+
+  return {
+    equippedItems,
+    petItems,
+    allItems,
+    allAugments,
+    allFiligrees,
+    allGemSets,
+    allLostPurpose,
+    activeSetEnhancements: getActiveSetEnhancements(allItems, allAugments, allFiligrees, allGemSets, allLostPurpose)
+  }
 }
 
 interface EnchantmentsOptions {
@@ -202,10 +259,11 @@ export const generateBBCodeExport = (
   permalinkUrl?: string
 ) => {
   const lines: string[] = []
+  const setupMeta = pickPlannerSetupMetadata(setup)
 
   lines.push(
-    `[center][b][size=5]Gear Setup: ${setup.name}[/size][/b]`,
-    `[size=3]Levels ${String(setup.minLevel)}-${String(setup.maxLevel)} | ${setup.classes.filter(Boolean).join(' / ')}[/size][/center]`
+    `[center][b][size=5]Gear Setup: ${setupMeta.name}[/size][/b]`,
+    `[size=3]Levels ${String(setupMeta.minLevel)}-${String(setupMeta.maxLevel)} | ${setupMeta.classes.filter(Boolean).join(' / ')}[/size][/center]`
   )
 
   if (permalinkUrl) {
@@ -213,6 +271,7 @@ export const generateBBCodeExport = (
   }
 
   lines.push('')
+  const snapshot = buildGearExportSnapshot(setup, artificerPet, druidPet)
 
   const renderSlot = buildRenderSlot(setup, {
     header: (slot, item) => {
@@ -339,18 +398,9 @@ export const generateBBCodeExport = (
     druidPet
   )
 
-  const equippedItems = Object.values(setup.slots).filter((i): i is GearItem => i !== null)
-  const activeSetEnhancements = getActiveSetEnhancements(
-    equippedItems,
-    setup.slottedAugments,
-    setup.slottedFiligrees,
-    setup.slottedGemSetBonuses,
-    createUpgradeViews(setup.itemUpgrades).slottedLostPurpose
-  )
-
-  if (activeSetEnhancements.length > 0) {
+  if (snapshot.activeSetEnhancements.length > 0) {
     lines.push(`[b][size=4]Active Set Bonuses[/size][/b]`, `[list]`)
-    activeSetEnhancements.forEach((entry) => {
+    snapshot.activeSetEnhancements.forEach((entry) => {
       lines.push(`[*] [b]${entry.sourceName.replace('Set Bonus: ', '')}:[/b] ${formatEnchantment(entry.ench)}`)
     })
     lines.push(`[/list]`, '')
@@ -367,10 +417,11 @@ export const generateDiscordMarkdownExport = (
   permalinkUrl?: string
 ) => {
   const lines: string[] = []
+  const setupMeta = pickPlannerSetupMetadata(setup)
 
   lines.push(
-    `## Gear Setup: ${setup.name}`,
-    `Levels ${String(setup.minLevel)}-${String(setup.maxLevel)} | ${setup.classes.filter(Boolean).join(' / ')}`
+    `## Gear Setup: ${setupMeta.name}`,
+    `Levels ${String(setupMeta.minLevel)}-${String(setupMeta.maxLevel)} | ${setupMeta.classes.filter(Boolean).join(' / ')}`
   )
 
   if (permalinkUrl) {
@@ -378,6 +429,7 @@ export const generateDiscordMarkdownExport = (
   }
 
   lines.push('')
+  const snapshot = buildGearExportSnapshot(setup, artificerPet, druidPet)
 
   const renderSlot = buildRenderSlot(setup, {
     header: (slot, item) => {
@@ -477,51 +529,9 @@ export const generateDiscordMarkdownExport = (
   })
 
   renderGearSections(lines, setup, allEssenceEnchantments, renderSlot, (t) => `### ${t}`, artificerPet, druidPet)
-
-  const equippedItems = Object.values(setup.slots).filter((i): i is GearItem => i !== null)
-
-  const petItems = [
-    ...(artificerPet ? Object.values(artificerPet.slots) : []),
-    ...(druidPet ? Object.values(druidPet.slots) : [])
-  ].filter((i): i is GearItem => i !== null)
-
-  const allItems = [...equippedItems, ...petItems]
-
-  const allAugments = {
-    ...setup.slottedAugments,
-    ...artificerPet?.slottedAugments,
-    ...druidPet?.slottedAugments
-  }
-
-  const allFiligrees = {
-    ...setup.slottedFiligrees,
-    ...artificerPet?.slottedFiligrees,
-    ...druidPet?.slottedFiligrees
-  }
-
-  const allGemSets = {
-    ...setup.slottedGemSetBonuses,
-    ...artificerPet?.slottedGemSetBonuses,
-    ...druidPet?.slottedGemSetBonuses
-  }
-
-  const allLostPurpose = {
-    ...createUpgradeViews(setup.itemUpgrades).slottedLostPurpose,
-    ...createUpgradeViews(artificerPet?.itemUpgrades).slottedLostPurpose,
-    ...createUpgradeViews(druidPet?.itemUpgrades).slottedLostPurpose
-  }
-
-  const activeSetEnhancements = getActiveSetEnhancements(
-    allItems,
-    allAugments,
-    allFiligrees,
-    allGemSets,
-    allLostPurpose
-  )
-
-  if (activeSetEnhancements.length > 0) {
+  if (snapshot.activeSetEnhancements.length > 0) {
     lines.push(`### Active Set Bonuses`)
-    activeSetEnhancements.forEach((entry) => {
+    snapshot.activeSetEnhancements.forEach((entry) => {
       lines.push(`- **${entry.sourceName.replace('Set Bonus: ', '')}:** ${formatEnchantment(entry.ench)}`)
     })
     lines.push('')
