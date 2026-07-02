@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { Accordion, Col, Row } from 'react-bootstrap'
 import { FaListUl } from 'react-icons/fa6'
 import { getBonus, normalizeString, parseModifierValue } from '../conflictResolver.ts'
@@ -361,4 +361,4 @@ interface Props {
   onBonusClick?: (name: string, bonusType: string) => void
 }
 
-export default EnchantmentsSummary
+export default memo(EnchantmentsSummary)

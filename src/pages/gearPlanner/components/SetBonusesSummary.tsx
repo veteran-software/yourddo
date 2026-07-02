@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { Badge, Row } from 'react-bootstrap'
 import { FaLayerGroup } from 'react-icons/fa6'
 import { getSetCounts } from '../helpers.ts'
@@ -54,4 +54,4 @@ interface Props {
   onSetClick?: (setName: string) => void
 }
 
-export default SetBonusesSummary
+export default memo(SetBonusesSummary)

@@ -2,6 +2,7 @@ import { useCallback, useMemo, useRef } from 'react'
 import { useAppSelector } from '../../../redux/hooks'
 import { createDefaultSetup } from '../initialState'
 import type { GearSetup } from '../types.ts'
+import { createUpgradeViews, type UpgradeViews } from '../upgradeState'
 import { renderGearPlanner } from './renderGearPlanner.tsx'
 import { useGearPlannerActions } from './useGearPlannerActions'
 import { useGearPlannerContext } from './useGearPlannerContext'
@@ -13,20 +14,9 @@ import { useGearPlannerUI } from './useGearPlannerUI'
 interface Props {
   enchantmentSearch: string
   enchantmentBonusType: string
-  itemNameSearch: string
-  setBonusFilter: string | null
-  showConflicts: boolean
-  showOwnedOnly: boolean
 }
 
 const useGearPlanner = (props: Props) => {
-  const {
-    itemNameSearch: propItemNameSearch,
-    setBonusFilter: propSetBonusFilter,
-    showOwnedOnly: propShowOwnedOnly,
-    showConflicts: propShowConflicts
-  } = props
-
   const { characterSetups: setups, activeSetupId } = useAppSelector((state) => state.gearPlanner)
 
   const { troveData } = useAppSelector((state) => state.app)
@@ -71,18 +61,27 @@ const useGearPlanner = (props: Props) => {
     setShowOwnedOnly,
     setBonusFilter,
     setSetBonusFilter
-  } = useGearPlannerUI({ itemNameSearch: propItemNameSearch })
+  } = useGearPlannerUI()
 
   const formatDropLocations = useFormatDropLocations()
   const isItemVisibleForClasses = useIsItemVisibleForClasses()
 
-  const activeSetup: GearSetup =
-    setups.find((s: GearSetup) => s.id === activeSetupId) ??
-    (setups.length > 0 ? setups[0] : createDefaultSetup('default', 'Default Setup'))
+  const activeSetup: GearSetup = useMemo(() => {
+    return (
+      setups.find((s: GearSetup) => s.id === activeSetupId) ??
+      (setups.length > 0 ? setups[0] : createDefaultSetup('default', 'Default Setup'))
+    )
+  }, [activeSetupId, setups])
   const { artificerPet, druidPet } = activeSetup
+  const activeSetupWithUpgradeViews: GearSetup & UpgradeViews = useMemo(() => {
+    return {
+      ...activeSetup,
+      ...createUpgradeViews(activeSetup.itemUpgrades)
+    }
+  }, [activeSetup])
 
   const { characterEquipped, artificerEquipped, druidEquipped, getContextInfo, getEntityState } = useGearPlannerContext(
-    { activeSetup, artificerPet, druidPet }
+    { activeSetup: activeSetupWithUpgradeViews, artificerPet, druidPet }
   )
 
   const { filteredItems, filteredItemSets, filteredFiligreeSets, searchResultsBySlot } = useGearPlannerFiltering({
@@ -91,16 +90,15 @@ const useGearPlanner = (props: Props) => {
     itemToSetsMap,
     itemSetBonusIndex,
     filigreeSetBonusIndex,
-    activeSetup,
+    activeSetup: activeSetupWithUpgradeViews,
     browsingSlot,
     browsingSet,
     enchantmentSearch: props.enchantmentSearch,
     enchantmentBonusType: props.enchantmentBonusType,
-    itemNameSearch: propItemNameSearch,
-    internalItemNameSearch,
-    setBonusFilter: propSetBonusFilter ?? setBonusFilter,
-    showOwnedOnly: propShowOwnedOnly || showOwnedOnly,
-    showConflicts: propShowConflicts || showConflicts,
+    itemNameSearch: internalItemNameSearch,
+    setBonusFilter,
+    showOwnedOnly,
+    showConflicts,
     getEntityState,
     troveData: troveData,
     isItemVisibleForClasses
@@ -162,7 +160,7 @@ const useGearPlanner = (props: Props) => {
   )
 
   return {
-    activeSetup,
+    activeSetup: activeSetupWithUpgradeViews,
     addSetup: actions.addSetup,
     clearTab: actions.clearSetup,
     importSetups: actions.importSetups,
@@ -186,7 +184,7 @@ const useGearPlanner = (props: Props) => {
     getEntityState,
     isItemVisibleForClasses,
     isMetal,
-    itemNameSearch: propItemNameSearch || internalItemNameSearch,
+    itemNameSearch: internalItemNameSearch,
     itemsToShow,
     loading,
     observerTarget,

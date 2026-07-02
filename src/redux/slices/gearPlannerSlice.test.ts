@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { createDefaultSetup } from '../../pages/gearPlanner/initialState'
 import { type GearAugment, type GearItem, GearSlot } from '../../pages/gearPlanner/types'
-import gearPlannerReducer, { type GearPlannerState, removeSetup } from './gearPlannerSlice'
+import gearPlannerReducer, {
+  type GearPlannerState,
+  removeSetup,
+  setItemMaterial,
+  setItemUpgrade
+} from './gearPlannerSlice'
 
 describe('gearPlannerSlice reducers', () => {
   it('Bug #7: removeSetup should not leave characterSetups empty', () => {
@@ -86,5 +91,57 @@ describe('gearPlannerSlice reducers', () => {
     expect(nextSetup.slottedAugments[item2.id]).toBeDefined()
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     expect(nextSetup.slottedAugments[item2.id][0]!.name).toBe('Augment 2')
+  })
+
+  it('stores upgrade state in the unified itemUpgrades map', () => {
+    const initialState: GearPlannerState = {
+      characterSetups: [createDefaultSetup('setup1', 'Setup 1')],
+      activeSetupId: 'setup1'
+    }
+
+    const nextState = gearPlannerReducer(
+      initialState,
+      setItemUpgrade({
+        itemId: 'item-1',
+        upgrade: 'nearlyFinished',
+        value: { name: 'Nearly Finished Bonus' },
+        slot: GearSlot.MainHand
+      })
+    )
+
+    expect(nextState.characterSetups[0].itemUpgrades['item-1'].nearlyFinished).toEqual({
+      name: 'Nearly Finished Bonus'
+    })
+  })
+
+  it('updates a current item through the shared target helper', () => {
+    const item = {
+      id: 'item-2',
+      name: 'Test Item',
+      slot: GearSlot.MainHand,
+      minLevel: '1',
+      type: 'Sword'
+    } as unknown as GearItem
+
+    const initialState: GearPlannerState = {
+      characterSetups: [
+        {
+          ...createDefaultSetup('setup2', 'Setup 2'),
+          slots: { [GearSlot.MainHand]: item } as unknown as Record<GearSlot, GearItem | null>
+        }
+      ],
+      activeSetupId: 'setup2'
+    }
+
+    const nextState = gearPlannerReducer(
+      initialState,
+      setItemMaterial({
+        itemId: item.id,
+        material: 'Adamantine',
+        slot: GearSlot.MainHand
+      })
+    )
+
+    expect(nextState.characterSetups[0].slots[GearSlot.MainHand]?.material).toBe('Adamantine')
   })
 })

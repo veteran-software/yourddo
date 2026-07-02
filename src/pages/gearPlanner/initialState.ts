@@ -1,4 +1,5 @@
 import { type GearItem, type GearSetup, GearSlot, type PetState } from './types'
+import { createEmptyItemUpgrades } from './upgradeState'
 
 export const initialPetState = (): PetState => ({
   slots: {},
@@ -8,15 +9,7 @@ export const initialPetState = (): PetState => ({
   unlockedFiligreeSlots: {},
   slottedGemSetBonuses: {},
   slottedEssenceEnchantments: {},
-  slottedNearlyFinished: {},
-  slottedAlmostThere: {},
-  slottedFinishingTouch: {},
-  slottedRitualTable: {},
-  slottedLostPurpose: {},
-  slottedTraceOfMadness: {},
-  slottedFountainOfNecroticMight: {},
-  slottedStormreaverUpgrade: {},
-  slottedZhentarimAttuned: {}
+  itemUpgrades: createEmptyItemUpgrades()
 })
 
 export const createDefaultSetup = (id: string, name: string): GearSetup => ({
@@ -36,15 +29,7 @@ export const createDefaultSetup = (id: string, name: string): GearSetup => ({
   unlockedFiligreeSlots: {},
   slottedGemSetBonuses: {},
   slottedEssenceEnchantments: {},
-  slottedNearlyFinished: {},
-  slottedAlmostThere: {},
-  slottedFinishingTouch: {},
-  slottedRitualTable: {},
-  slottedLostPurpose: {},
-  slottedTraceOfMadness: {},
-  slottedFountainOfNecroticMight: {},
-  slottedStormreaverUpgrade: {},
-  slottedZhentarimAttuned: {},
+  itemUpgrades: createEmptyItemUpgrades(),
   artificerPet: initialPetState(),
   druidPet: initialPetState()
 })

@@ -33,7 +33,11 @@ export const LootItemSchema = z.object({
   upgradedFrom: z.string().trim(),
   icon: z.string().trim(),
   image: z.string().trim(),
-  enchantments: z.array(LootEnchantmentSchema).optional(),
+  enchantments: z
+    .array(LootEnchantmentSchema)
+    .nullable()
+    .optional()
+    .transform((v) => v ?? undefined),
   augments: z.array(GearAugmentSlotSchema).optional(),
   essenceSlots: z.array(z.string().trim()).optional(),
   setBonus: z.array(SetBonusSchema).optional()

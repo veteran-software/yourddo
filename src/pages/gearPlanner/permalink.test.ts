@@ -1,4 +1,4 @@
-import { compressToEncodedURIComponent } from 'lz-string'
+import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
 import { describe, expect, it } from 'vitest'
 import { initialPetState } from './initialState'
 import { encodeGearPermalink, tryDecodeGearPermalink } from './permalink'
@@ -31,21 +31,26 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
     unlockedFiligreeSlots: {},
     slottedGemSetBonuses: {},
     slottedEssenceEnchantments: {},
-    slottedNearlyFinished: {},
-    slottedAlmostThere: {},
-    slottedFinishingTouch: {},
-    slottedRitualTable: {},
-    slottedLostPurpose: {},
-    slottedTraceOfMadness: {},
-    slottedFountainOfNecroticMight: {},
-    slottedStormreaverUpgrade: {},
-    slottedZhentarimAttuned: {},
+    itemUpgrades: {},
     artificerPet: initialPetState(),
     druidPet: initialPetState()
   }
 
   it('should encode and decode using itemId', () => {
     const encoded: string = encodeGearPermalink(mockSetup)
+    const decodedText = decompressFromEncodedURIComponent(encoded)
+    expect(decodedText).not.toBeNull()
+
+    const parsed: unknown = JSON.parse(decodedText)
+    const decodedJson = parsed as { version: number; setup: { name: string }; items: unknown[] }
+    expect(decodedJson).toMatchObject({
+      version: 2,
+      setup: {
+        name: 'Test Setup'
+      }
+    })
+    expect(Array.isArray(decodedJson.items)).toBe(true)
+
     const result = tryDecodeGearPermalink(encoded, [mockItem], [], [])
 
     expect(result.ok).toBe(true)
@@ -55,10 +60,8 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
   })
 
   it('should fallback to itemName if itemId is missing (compatibility with old permalinks)', () => {
-    // Manually construct an old-style payload (without the last itemId element)
-    // Structure: [name, minLevel, maxLevel, classes, weapons, armors, shields, allowMetal, items]
-    // items item: [slot, itemName, augments, curse, essence, nearly, ritual, lost, filigrees, unlocked, gemsets, minlevel, material, fountain, stormreaver]
-    const oldItemPayload = [
+    // Manually construct a payload where itemId is absent/null so itemName fallback is exercised.
+    const legacyItemPayload = [
       GearSlot.MainHand,
       'Legendary Sword',
       [], // augments
@@ -73,11 +76,15 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
       29, // minlevel
       null, // material
       0, // fountain
-      0 // stormreaver
-      // itemId MISSING
+      0, // stormreaver
+      null, // itemId
+      0, // zhentarim
+      null, // traceOfMadness
+      null, // almostThere
+      null // finishingTouch
     ]
 
-    const oldPayload = ['Old Setup', 1, 32, [], [], [], [], 0, [oldItemPayload]]
+    const oldPayload = ['Old Setup', 1, 32, [], [], [], [], 0, [legacyItemPayload]]
 
     const encoded = compressToEncodedURIComponent(JSON.stringify(oldPayload))
     const result = tryDecodeGearPermalink(encoded, [mockItem], [], [])
@@ -93,8 +100,10 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
     const traceEnchantment = { name: 'Melodic Guard' }
     const setupWithTrace: GearSetup = {
       ...mockSetup,
-      slottedTraceOfMadness: {
-        [mockItem.id]: traceEnchantment
+      itemUpgrades: {
+        [mockItem.id]: {
+          traceOfMadness: traceEnchantment
+        }
       }
     }
 
@@ -103,7 +112,7 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
 
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.data.slottedTraceOfMadness[mockItem.id]).toEqual(traceEnchantment)
+      expect(result.data.itemUpgrades[mockItem.id].traceOfMadness).toEqual(traceEnchantment)
     }
   })
 

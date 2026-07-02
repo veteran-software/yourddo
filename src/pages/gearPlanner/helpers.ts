@@ -17,6 +17,13 @@ import {
   type UpgradeEntry,
   WEAPON_TYPES
 } from './types.ts'
+import {
+  getItemUpgradeView,
+  type LegacyBooleanUpgradeMap,
+  type LegacyLootEnchantmentMap,
+  type LegacyTraceOfMadnessMap,
+  resolveItemUpgrades
+} from './upgradeState'
 
 export const isEssenceCraftedName = (name: string) => name.startsWith('Essence Crafted')
 
@@ -180,15 +187,16 @@ interface AggregateEnchantmentEntriesOptions {
   slottedEssenceEnchantments?: Record<string, Record<string, string | null>>
   essenceEnchantments?: EssenceEnchantment[]
   activeSetEnhancements?: { ench: LootEnchantment; sourceName: string }[]
-  slottedNearlyFinished?: Record<string, LootEnchantment | null>
-  slottedAlmostThere?: Record<string, LootEnchantment | null>
-  slottedFinishingTouch?: Record<string, LootEnchantment | null>
-  slottedRitualTable?: Record<string, LootEnchantment | null>
-  slottedLostPurpose?: Record<string, LootEnchantment | null>
-  slottedTraceOfMadness?: Record<string, LootEnchantment | null>
-  slottedFountainOfNecroticMight?: Record<string, boolean>
-  slottedStormreaverUpgrade?: Record<string, boolean>
-  slottedZhentarimAttuned?: Record<string, boolean>
+  itemUpgrades?: import('./upgradeState').ItemUpgrades
+  slottedNearlyFinished?: LegacyLootEnchantmentMap
+  slottedAlmostThere?: LegacyLootEnchantmentMap
+  slottedFinishingTouch?: LegacyLootEnchantmentMap
+  slottedRitualTable?: LegacyLootEnchantmentMap
+  slottedLostPurpose?: LegacyLootEnchantmentMap
+  slottedTraceOfMadness?: LegacyTraceOfMadnessMap
+  slottedFountainOfNecroticMight?: LegacyBooleanUpgradeMap
+  slottedStormreaverUpgrade?: LegacyBooleanUpgradeMap
+  slottedZhentarimAttuned?: LegacyBooleanUpgradeMap
 }
 
 export const aggregateEnchantmentEntries = (
@@ -196,28 +204,18 @@ export const aggregateEnchantmentEntries = (
   itemAugs: Record<number, GearAugment | null> | undefined,
   curse: Curse | null | undefined,
   filigrees: (GearItem | null)[] | undefined,
-  {
-    slottedEssenceEnchantments,
-    essenceEnchantments,
-    activeSetEnhancements,
-    slottedNearlyFinished,
-    slottedAlmostThere,
-    slottedFinishingTouch,
-    slottedRitualTable,
-    slottedLostPurpose,
-    slottedTraceOfMadness,
-    slottedFountainOfNecroticMight,
-    slottedStormreaverUpgrade,
-    slottedZhentarimAttuned
-  }: AggregateEnchantmentEntriesOptions = {}
+  options: AggregateEnchantmentEntriesOptions = {}
 ) => {
-  const isFountainUpgraded = slottedFountainOfNecroticMight?.[item.id] ?? false
-  const isStormreaverUpgraded = slottedStormreaverUpgrade?.[item.id] ?? false
-  const isZhentarimUpgraded = slottedZhentarimAttuned?.[item.id] ?? false
+  const { slottedEssenceEnchantments, essenceEnchantments, activeSetEnhancements } = options
+  const resolvedItemUpgrades = resolveItemUpgrades(options)
+  const itemUpgrade = getItemUpgradeView(resolvedItemUpgrades, item.id)
+  const isFountainUpgraded = itemUpgrade.fountainOfNecroticMight ?? false
+  const isStormreaverUpgraded = itemUpgrade.stormreaverUpgrade ?? false
+  const isZhentarimUpgraded = itemUpgrade.zhentarimAttuned ?? false
 
-  const nfStored = slottedNearlyFinished?.[item.id] ?? null
-  const atStored = slottedAlmostThere?.[item.id] ?? null
-  const ftStored = slottedFinishingTouch?.[item.id] ?? null
+  const nfStored = itemUpgrade.nearlyFinished ?? null
+  const atStored = itemUpgrade.almostThere ?? null
+  const ftStored = itemUpgrade.finishingTouch ?? null
   const nfRecipe = findReforgingRecipe(item.name, 'Nearly Finished')
   const atRecipe = findReforgingRecipe(item.name, 'Almost There')
   const ftRecipe = findReforgingRecipe(item.name, 'Finishing Touch')
@@ -264,7 +262,7 @@ export const aggregateEnchantmentEntries = (
   addReforgingStageEffects(atStored, atIsToggle)
   addReforgingStageEffects(ftStored, ftIsToggle)
 
-  const ritualTable = slottedRitualTable?.[item.id]
+  const ritualTable = itemUpgrade.ritualTable
   if (ritualTable) {
     entries.push({
       ench: { ...ritualTable, modifier: ritualTable.modifier ?? 'Enhancement' },
@@ -272,7 +270,7 @@ export const aggregateEnchantmentEntries = (
     })
   }
 
-  const lostPurpose = slottedLostPurpose?.[item.id]
+  const lostPurpose = itemUpgrade.lostPurpose
   if (lostPurpose) {
     entries.push({
       ench: { ...lostPurpose, modifier: lostPurpose.modifier ?? 'Enhancement' },
@@ -280,7 +278,7 @@ export const aggregateEnchantmentEntries = (
     })
   }
 
-  const traceEnch = slottedTraceOfMadness?.[item.id]
+  const traceEnch = itemUpgrade.traceOfMadness
   if (traceEnch) {
     entries.push({
       ench: { ...traceEnch, modifier: traceEnch.modifier ?? 'Enhancement' },

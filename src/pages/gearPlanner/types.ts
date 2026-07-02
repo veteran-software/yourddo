@@ -1,5 +1,6 @@
 import type { SetBonus } from '../../types/crafting.ts'
 import type { EnchantmentConflict } from './conflictResolver.ts'
+import type { ItemUpgrades, UpgradeViews } from './upgradeState'
 
 export interface SetBonusIndexEntry {
   name: string
@@ -154,14 +155,14 @@ export interface LootItem {
   artifactType?: string
   capacity?: string
   maxStackSize?: string
-  dropLocations: LootDropLocation[]
+  dropLocations: LootDropLocation[] | null
   update: string
   details: string
   upgradeable: string
   upgradedFrom: string
   icon: string
   image: string
-  enchantments?: LootEnchantment[]
+  enchantments?: LootEnchantment[] | null
   augments?: GearAugmentSlot[]
   essenceSlots?: string[]
   setBonus?: SetBonus[]
@@ -209,18 +210,10 @@ export interface SlottedProperties {
   unlockedFiligreeSlots: Record<string, number>
   slottedGemSetBonuses: Record<string, (string | null)[]>
   slottedEssenceEnchantments: Record<string, Record<string, string | null>>
-  slottedNearlyFinished: Record<string, LootEnchantment | null>
-  slottedAlmostThere: Record<string, LootEnchantment | null>
-  slottedFinishingTouch: Record<string, LootEnchantment | null>
-  slottedRitualTable: Record<string, LootEnchantment | null>
-  slottedLostPurpose: Record<string, LootEnchantment | null>
-  slottedTraceOfMadness: Record<string, LootEnchantment | null>
-  slottedFountainOfNecroticMight: Record<string, boolean>
-  slottedStormreaverUpgrade: Record<string, boolean>
-  slottedZhentarimAttuned: Record<string, boolean>
+  itemUpgrades: ItemUpgrades
 }
 
-export interface EntityGearState extends SlottedProperties {
+export interface EntityGearState extends SlottedProperties, UpgradeViews {
   equipped: GearItem[]
   conflicts: Record<string, EnchantmentConflict[]>
 }

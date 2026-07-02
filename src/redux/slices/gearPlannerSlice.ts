@@ -1,5 +1,4 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import traceOfMadnessData from '../../data/traceOfMadness.json'
 import { isMinorArtifact } from '../../pages/gearPlanner/helpers'
 import { createDefaultSetup, initialPetState } from '../../pages/gearPlanner/initialState'
 import {
@@ -10,11 +9,19 @@ import {
   type GearItem,
   type GearSetup,
   GearSlot,
-  type LootEnchantment,
   type LootItem,
-  type SlottedProperties,
-  type UpgradeEntry
+  type SlottedProperties
 } from '../../pages/gearPlanner/types'
+import {
+  clearItemUpgradeState,
+  createEmptyItemUpgrades,
+  type ItemUpgradeKind,
+  type ItemUpgrades,
+  type ItemUpgradeState,
+  type LegacySlottedProperties,
+  migrateLegacyItemUpgrades,
+  setItemUpgradeState
+} from '../../pages/gearPlanner/upgradeState'
 
 export interface GearPlannerState {
   characterSetups: GearSetup[]
@@ -24,21 +31,13 @@ export interface GearPlannerState {
 // Represents potentially-incomplete data loaded from older localStorage snapshots.
 // All slotted fields are optional because they may be absent in older saves.
 // slottedTraceOfMadness accepts string (legacy) or LootEnchantment (current).
-interface PartialSlotted {
+interface PartialSlotted extends LegacySlottedProperties {
   slots?: Record<string, unknown>
   armorFilters?: string[]
   weaponFilters?: string[]
   shieldFilters?: string[]
   allowMetalWithDruid?: boolean
-  slottedNearlyFinished?: Record<string, LootEnchantment | null>
-  slottedAlmostThere?: Record<string, LootEnchantment | null>
-  slottedFinishingTouch?: Record<string, LootEnchantment | null>
-  slottedRitualTable?: Record<string, LootEnchantment | null>
-  slottedLostPurpose?: Record<string, LootEnchantment | null>
-  slottedTraceOfMadness?: Record<string, LootEnchantment | string | null>
-  slottedFountainOfNecroticMight?: Record<string, boolean>
-  slottedStormreaverUpgrade?: Record<string, boolean>
-  slottedZhentarimAttuned?: Record<string, boolean>
+  itemUpgrades?: ItemUpgrades
   slottedAugments?: Record<string, Record<number, GearAugment | null>>
   slottedCurses?: Record<string, Curse | null>
   slottedFiligrees?: Record<string, (GearItem | null)[]>
@@ -67,52 +66,52 @@ const loadState = (): GearPlannerState => {
     }
     const state = JSON.parse(serializedState) as PartialGearPlannerState
 
-    const ensureFields = (target: PartialSlotted) => {
-      target.slots ??= {}
-      target.armorFilters ??= []
-      target.weaponFilters ??= []
-      target.shieldFilters ??= []
-      target.slottedNearlyFinished ??= {}
-      target.slottedAlmostThere ??= {}
-      target.slottedFinishingTouch ??= {}
-      target.slottedRitualTable ??= {}
-      target.slottedLostPurpose ??= {}
-      target.slottedTraceOfMadness ??= {}
-      target.slottedFountainOfNecroticMight ??= {}
-      target.slottedStormreaverUpgrade ??= {}
-      target.slottedZhentarimAttuned ??= {}
-      target.slottedAugments ??= {}
-      target.slottedCurses ??= {}
-      target.slottedFiligrees ??= {}
-      target.unlockedFiligreeSlots ??= {}
-      target.slottedGemSetBonuses ??= {}
-      target.slottedEssenceEnchantments ??= {}
-    }
-
-    // Migrate slottedTraceOfMadness: convert legacy string (upgrade name) to LootEnchantment
-    const migrateTraceOfMadness = (target: PartialSlotted) => {
-      const slots = target.slottedTraceOfMadness
-      if (!slots) return
-      for (const [id, val] of Object.entries(slots)) {
-        if (typeof val === 'string') {
-          const upgradeEntry = (traceOfMadnessData as UpgradeEntry[]).find((u) => u.name === val)
-          slots[id] = upgradeEntry?.effectsAdded[0] ?? null
-        }
-      }
-    }
-
     // Migrate/Fix state if fields are missing
     state.characterSetups?.forEach((setup) => {
-      ensureFields(setup)
+      setup.slots ??= {}
+      setup.armorFilters ??= []
+      setup.weaponFilters ??= []
+      setup.shieldFilters ??= []
       setup.allowMetalWithDruid ??= false
+      setup.slottedAugments ??= {}
+      setup.slottedCurses ??= {}
+      setup.slottedFiligrees ??= {}
+      setup.unlockedFiligreeSlots ??= {}
+      setup.slottedGemSetBonuses ??= {}
+      setup.slottedEssenceEnchantments ??= {}
+      setup.itemUpgrades ??= createEmptyItemUpgrades()
+      const setupItemUpgrades = setup.itemUpgrades
+      migrateLegacyItemUpgrades(setup, setupItemUpgrades)
+
       setup.artificerPet ??= initialPetState() as unknown as PartialSlotted
       setup.druidPet ??= initialPetState() as unknown as PartialSlotted
-      ensureFields(setup.artificerPet)
-      ensureFields(setup.druidPet)
+      setup.artificerPet.slots ??= {}
+      setup.artificerPet.armorFilters ??= []
+      setup.artificerPet.weaponFilters ??= []
+      setup.artificerPet.shieldFilters ??= []
+      setup.artificerPet.slottedAugments ??= {}
+      setup.artificerPet.slottedCurses ??= {}
+      setup.artificerPet.slottedFiligrees ??= {}
+      setup.artificerPet.unlockedFiligreeSlots ??= {}
+      setup.artificerPet.slottedGemSetBonuses ??= {}
+      setup.artificerPet.slottedEssenceEnchantments ??= {}
+      setup.artificerPet.itemUpgrades ??= createEmptyItemUpgrades()
+      const artificerItemUpgrades = setup.artificerPet.itemUpgrades
+      migrateLegacyItemUpgrades(setup.artificerPet, artificerItemUpgrades)
 
-      migrateTraceOfMadness(setup)
-      migrateTraceOfMadness(setup.artificerPet)
-      migrateTraceOfMadness(setup.druidPet)
+      setup.druidPet.slots ??= {}
+      setup.druidPet.armorFilters ??= []
+      setup.druidPet.weaponFilters ??= []
+      setup.druidPet.shieldFilters ??= []
+      setup.druidPet.slottedAugments ??= {}
+      setup.druidPet.slottedCurses ??= {}
+      setup.druidPet.slottedFiligrees ??= {}
+      setup.druidPet.unlockedFiligreeSlots ??= {}
+      setup.druidPet.slottedGemSetBonuses ??= {}
+      setup.druidPet.slottedEssenceEnchantments ??= {}
+      setup.druidPet.itemUpgrades ??= createEmptyItemUpgrades()
+      const druidItemUpgrades = setup.druidPet.itemUpgrades
+      migrateLegacyItemUpgrades(setup.druidPet, druidItemUpgrades)
     })
 
     return state as unknown as GearPlannerState
@@ -142,6 +141,32 @@ const getTarget = (setup: GearSetup, owner: SlotOwner): SlottedProperties => {
   return setup
 }
 
+const withActiveTarget = (
+  state: GearPlannerState,
+  slot: GearSlot | undefined,
+  fn: (target: SlottedProperties, setup: GearSetup) => void
+): void => {
+  const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
+  if (!setup) return
+
+  const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
+  fn(target, setup)
+}
+
+const withActiveItem = (
+  state: GearPlannerState,
+  itemId: string,
+  slot: GearSlot | undefined,
+  fn: (item: GearItem, target: SlottedProperties) => void
+): void => {
+  withActiveTarget(state, slot, (target) => {
+    const currentItem = Object.values(target.slots).find((item) => item?.id === itemId)
+    if (currentItem) {
+      fn(currentItem, target)
+    }
+  })
+}
+
 const clearMetadata = (target: SlottedProperties, id: string) => {
   /* eslint-disable @typescript-eslint/no-dynamic-delete */
   delete target.slottedAugments[id]
@@ -150,15 +175,7 @@ const clearMetadata = (target: SlottedProperties, id: string) => {
   delete target.unlockedFiligreeSlots[id]
   delete target.slottedGemSetBonuses[id]
   delete target.slottedEssenceEnchantments[id]
-  delete target.slottedNearlyFinished[id]
-  delete target.slottedAlmostThere[id]
-  delete target.slottedFinishingTouch[id]
-  delete target.slottedRitualTable[id]
-  delete target.slottedLostPurpose[id]
-  delete target.slottedTraceOfMadness[id]
-  delete target.slottedFountainOfNecroticMight[id]
-  delete target.slottedStormreaverUpgrade[id]
-  delete target.slottedZhentarimAttuned[id]
+  clearItemUpgradeState(target.itemUpgrades, id)
   /* eslint-enable @typescript-eslint/no-dynamic-delete */
 }
 
@@ -267,12 +284,10 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotIndex, augment, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedAugments[itemId] ??= {}
-      target.slottedAugments[itemId][slotIndex] = augment
+      withActiveTarget(state, slot, (target) => {
+        target.slottedAugments[itemId] ??= {}
+        target.slottedAugments[itemId][slotIndex] = augment
+      })
     },
     setCurse: (
       state,
@@ -283,11 +298,9 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, curse, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedCurses[itemId] = curse
+      withActiveTarget(state, slot, (target) => {
+        target.slottedCurses[itemId] = curse
+      })
     },
     setFiligree: (
       state,
@@ -299,12 +312,10 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotIndex, filigree, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedFiligrees[itemId] ??= new Array(10).fill(null) as GearItem[]
-      target.slottedFiligrees[itemId][slotIndex] = filigree as GearItem | null
+      withActiveTarget(state, slot, (target) => {
+        target.slottedFiligrees[itemId] ??= new Array(10).fill(null) as GearItem[]
+        target.slottedFiligrees[itemId][slotIndex] = filigree as GearItem | null
+      })
     },
     setUnlockedFiligreeSlots: (
       state,
@@ -315,11 +326,9 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, numSlots, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.unlockedFiligreeSlots[itemId] = numSlots
+      withActiveTarget(state, slot, (target) => {
+        target.unlockedFiligreeSlots[itemId] = numSlots
+      })
     },
     setGemSetBonus: (
       state,
@@ -331,12 +340,10 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotIndex, setName, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedGemSetBonuses[itemId] ??= [null, null]
-      target.slottedGemSetBonuses[itemId][slotIndex] = setName
+      withActiveTarget(state, slot, (target) => {
+        target.slottedGemSetBonuses[itemId] ??= [null, null]
+        target.slottedGemSetBonuses[itemId][slotIndex] = setName
+      })
     },
     setEssenceEnchantment: (
       state,
@@ -348,147 +355,24 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, slotName, enchantmentId, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedEssenceEnchantments[itemId] ??= {}
-      target.slottedEssenceEnchantments[itemId][slotName] = enchantmentId
+      withActiveTarget(state, slot, (target) => {
+        target.slottedEssenceEnchantments[itemId] ??= {}
+        target.slottedEssenceEnchantments[itemId][slotName] = enchantmentId
+      })
     },
-    setNearlyFinishedEnchantment: (
+    setItemUpgrade: (
       state,
       action: PayloadAction<{
         itemId: string
-        enchantment: LootEnchantment | null
+        upgrade: ItemUpgradeKind
+        value: ItemUpgradeState[ItemUpgradeKind]
         slot?: GearSlot
       }>
     ) => {
-      const { itemId, enchantment, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedNearlyFinished[itemId] = enchantment
-    },
-    setAlmostThereEnchantment: (
-      state,
-      action: PayloadAction<{
-        itemId: string
-        enchantment: LootEnchantment | null
-        slot?: GearSlot
-      }>
-    ) => {
-      const { itemId, enchantment, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedAlmostThere[itemId] = enchantment
-    },
-    setFinishingTouchEnchantment: (
-      state,
-      action: PayloadAction<{
-        itemId: string
-        enchantment: LootEnchantment | null
-        slot?: GearSlot
-      }>
-    ) => {
-      const { itemId, enchantment, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedFinishingTouch[itemId] = enchantment
-    },
-    setRitualTableEnchantment: (
-      state,
-      action: PayloadAction<{
-        itemId: string
-        enchantment: LootEnchantment | null
-        slot?: GearSlot
-      }>
-    ) => {
-      const { itemId, enchantment, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedRitualTable[itemId] = enchantment
-    },
-    setLostPurposeEnchantment: (
-      state,
-      action: PayloadAction<{
-        itemId: string
-        enchantment: LootEnchantment | null
-        slot?: GearSlot
-      }>
-    ) => {
-      const { itemId, enchantment, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedLostPurpose[itemId] = enchantment
-    },
-    setTraceOfMadnessEnchantment: (
-      state,
-      action: PayloadAction<{
-        itemId: string
-        enchantment: LootEnchantment | null
-        slot?: GearSlot
-      }>
-    ) => {
-      const { itemId, enchantment, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedTraceOfMadness[itemId] = enchantment
-    },
-    setFountainOfNecroticMight: (
-      state,
-      action: PayloadAction<{
-        itemId: string
-        active: boolean
-        slot?: GearSlot
-      }>
-    ) => {
-      const { itemId, active, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedFountainOfNecroticMight[itemId] = active
-    },
-    setStormreaverUpgrade: (
-      state,
-      action: PayloadAction<{
-        itemId: string
-        active: boolean
-        slot?: GearSlot
-      }>
-    ) => {
-      const { itemId, active, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedStormreaverUpgrade[itemId] = active
-    },
-    setZhentarimAttuned: (
-      state,
-      action: PayloadAction<{
-        itemId: string
-        active: boolean
-        slot?: GearSlot
-      }>
-    ) => {
-      const { itemId, active, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      target.slottedZhentarimAttuned[itemId] = active
+      const { itemId, upgrade, value, slot } = action.payload
+      withActiveTarget(state, slot, (target) => {
+        setItemUpgradeState(target.itemUpgrades, itemId, upgrade, value as never)
+      })
     },
     setItemMinLevel: (
       state,
@@ -499,14 +383,9 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, minLevel, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      const currentItem = Object.values(target.slots).find((i) => i?.id === itemId)
-      if (currentItem) {
+      withActiveItem(state, itemId, slot, (currentItem) => {
         currentItem.minLevel = String(minLevel)
-      }
+      })
     },
     setItemMaterial: (
       state,
@@ -517,14 +396,9 @@ const gearPlannerSlice = createSlice({
       }>
     ) => {
       const { itemId, material, slot } = action.payload
-      const setup = state.characterSetups.find((s) => s.id === state.activeSetupId)
-      if (!setup) return
-
-      const target = getTarget(setup, slot ? getSlotOwner(slot) : 'character')
-      const currentItem = Object.values(target.slots).find((i) => i?.id === itemId)
-      if (currentItem) {
+      withActiveItem(state, itemId, slot, (currentItem) => {
         currentItem.material = material
-      }
+      })
     },
     importSetups: (state, action: PayloadAction<GearSetup[]>) => {
       state.characterSetups = action.payload
@@ -545,15 +419,7 @@ export const {
   setUnlockedFiligreeSlots,
   setGemSetBonus,
   setEssenceEnchantment,
-  setNearlyFinishedEnchantment,
-  setAlmostThereEnchantment,
-  setFinishingTouchEnchantment,
-  setRitualTableEnchantment,
-  setLostPurposeEnchantment,
-  setTraceOfMadnessEnchantment,
-  setFountainOfNecroticMight,
-  setStormreaverUpgrade,
-  setZhentarimAttuned,
+  setItemUpgrade,
   setItemMinLevel,
   setItemMaterial,
   importSetups

@@ -4,6 +4,12 @@ import { getSlotOwner } from './conflictResolver.ts'
 import { isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers.ts'
 import { initialPetState } from './initialState.ts'
 import {
+  buildPermalinkPayloadV2,
+  decodePermalinkPayloadV2,
+  isPermalinkPayloadV2,
+  type PermalinkPayloadV2
+} from './permalinkV2.ts'
+import {
   type Curse,
   type GearAugment,
   type GearItem,
@@ -13,6 +19,7 @@ import {
   type PetState,
   type UpgradeEntry
 } from './types.ts' // ----- Types for compact v1 payload -----
+import { createEmptyItemUpgrades, setItemUpgradeState } from './upgradeState'
 
 // ----- Types for compact v1 payload -----
 // We use a compact format to keep the URL short.
@@ -85,97 +92,7 @@ type V1Payload = [
 
 // ----- Encoding -----
 export const encodeGearPermalink = (setup: GearSetup): string => {
-  const items: V1Payload[8] = []
-
-  const allSlots = {
-    ...setup.slots,
-    ...setup.artificerPet.slots,
-    ...setup.druidPet.slots
-  }
-
-  Object.entries(allSlots).forEach(([slot, item]) => {
-    if (item) {
-      items.push(encodeItemPayload(slot as GearSlot, item, setup))
-    }
-  })
-
-  const payload: V1Payload = [
-    setup.name,
-    setup.minLevel,
-    setup.maxLevel,
-    setup.classes,
-    setup.weaponFilters,
-    setup.armorFilters,
-    setup.shieldFilters,
-    setup.allowMetalWithDruid ? 1 : 0,
-    items
-  ]
-
-  return compressToEncodedURIComponent(JSON.stringify(payload))
-}
-
-const encodeItemPayload = (slot: GearSlot, item: GearItem, setup: GearSetup): V1Payload[8][number] => {
-  const owner = getSlotOwner(slot)
-  let state: GearSetup | PetState = setup
-  if (owner === 'artificer_pet') state = setup.artificerPet
-  if (owner === 'druid_pet') state = setup.druidPet
-
-  const augments: [number, string][] = []
-  const itemAugs = state.slottedAugments[item.id] ?? {}
-
-  Object.entries(itemAugs).forEach(([idx, aug]) => {
-    if (aug) {
-      augments.push([Number(idx), aug.name])
-    }
-  })
-
-  const curse = state.slottedCurses[item.id]
-  const curseName = curse ? curse.name : null
-
-  const essenceEnch = state.slottedEssenceEnchantments[item.id] ?? {}
-  const essenceEnchPayload: [string, string][] | null = Object.entries(essenceEnch)
-    .filter((entry): entry is [string, string] => entry[1] !== null)
-    .map(([slotName, id]) => [slotName, id])
-
-  const nearlyFinished = state.slottedNearlyFinished[item.id] ?? null
-  const almostThere = state.slottedAlmostThere[item.id] ?? null
-  const finishingTouch = state.slottedFinishingTouch[item.id] ?? null
-  const ritualTable = state.slottedRitualTable[item.id] ?? null
-  const lostPurpose = state.slottedLostPurpose[item.id] ?? null
-
-  const filigrees = state.slottedFiligrees[item.id] ?? []
-  const filigreeNames = filigrees.map((f) => (f ? f.name : null))
-
-  const unlockedFiligreeSlots = state.unlockedFiligreeSlots[item.id] ?? null
-  const slottedGemSetBonuses = state.slottedGemSetBonuses[item.id] ?? null
-
-  const isFountainUpgraded = state.slottedFountainOfNecroticMight[item.id]
-  const isStormreaverUpgraded = state.slottedStormreaverUpgrade[item.id]
-  const isZhentarimUpgraded = state.slottedZhentarimAttuned[item.id]
-  const traceOfMadness = state.slottedTraceOfMadness[item.id] ?? null
-
-  return [
-    slot,
-    item.name,
-    augments,
-    curseName,
-    essenceEnchPayload,
-    nearlyFinished,
-    ritualTable,
-    lostPurpose,
-    filigreeNames,
-    unlockedFiligreeSlots,
-    slottedGemSetBonuses,
-    Number(item.minLevel) || null,
-    item.material || null,
-    isFountainUpgraded ? 1 : 0,
-    isStormreaverUpgraded ? 1 : 0,
-    item.id,
-    isZhentarimUpgraded ? 1 : 0,
-    traceOfMadness,
-    almostThere,
-    finishingTouch
-  ]
+  return compressToEncodedURIComponent(JSON.stringify(buildPermalinkPayloadV2(setup)))
 }
 
 // ----- Decoding -----
@@ -192,48 +109,57 @@ export const tryDecodeGearPermalink = (
       return { ok: false }
     }
 
-    const payload = JSON.parse(text) as V1Payload
+    const payload = JSON.parse(text) as V1Payload | PermalinkPayloadV2
 
-    const [name, minLevel, maxLevel, classes, weaponFilters, armorFilters, shieldFilters, allowMetalWithDruid, items] =
-      payload
+    if (Array.isArray(payload)) {
+      const [
+        name,
+        minLevel,
+        maxLevel,
+        classes,
+        weaponFilters,
+        armorFilters,
+        shieldFilters,
+        allowMetalWithDruid,
+        items
+      ] = payload
 
-    const setup: GearSetup = {
-      id: `pl-${Date.now().toString()}`,
-      name,
-      minLevel,
-      maxLevel,
-      classes,
-      weaponFilters,
-      armorFilters,
-      shieldFilters,
-      allowMetalWithDruid: Boolean(allowMetalWithDruid),
-      slots: {} as Record<GearSlot, GearItem | null>,
-      slottedAugments: {},
-      slottedCurses: {},
-      slottedFiligrees: {},
-      unlockedFiligreeSlots: {},
-      slottedGemSetBonuses: {},
-      slottedEssenceEnchantments: {},
-      slottedNearlyFinished: {},
-      slottedAlmostThere: {},
-      slottedFinishingTouch: {},
-      slottedRitualTable: {},
-      slottedLostPurpose: {},
-      slottedTraceOfMadness: {},
-      slottedFountainOfNecroticMight: {},
-      slottedStormreaverUpgrade: {},
-      slottedZhentarimAttuned: {},
-      artificerPet: initialPetState(),
-      druidPet: initialPetState()
+      const setup: GearSetup = {
+        id: `pl-${Date.now().toString()}`,
+        name,
+        minLevel,
+        maxLevel,
+        classes,
+        weaponFilters,
+        armorFilters,
+        shieldFilters,
+        allowMetalWithDruid: Boolean(allowMetalWithDruid),
+        slots: {} as Record<GearSlot, GearItem | null>,
+        slottedAugments: {},
+        slottedCurses: {},
+        slottedFiligrees: {},
+        unlockedFiligreeSlots: {},
+        slottedGemSetBonuses: {},
+        slottedEssenceEnchantments: {},
+        itemUpgrades: createEmptyItemUpgrades(),
+        artificerPet: initialPetState(),
+        druidPet: initialPetState()
+      }
+
+      if (Array.isArray(items)) {
+        items.forEach((itemPayload) => {
+          decodeItemPayload(itemPayload, allItems, allAugments, allCurses, setup)
+        })
+      }
+
+      return { ok: true, data: setup }
     }
 
-    if (Array.isArray(items)) {
-      items.forEach((itemPayload) => {
-        decodeItemPayload(itemPayload, allItems, allAugments, allCurses, setup)
-      })
+    if (isPermalinkPayloadV2(payload)) {
+      return { ok: true, data: decodePermalinkPayloadV2(payload, allItems, allAugments, allCurses) }
     }
 
-    return { ok: true, data: setup }
+    return { ok: false }
   } catch {
     return { ok: false }
   }
@@ -280,23 +206,23 @@ const decodeSupplementaryProperties = (
     traceOfMadness
   }: DecodeSupplementaryPropertiesOptions
 ) => {
-  if (nearlyFinished) state.slottedNearlyFinished[item.id] = nearlyFinished
-  if (almostThere) state.slottedAlmostThere[item.id] = almostThere
-  if (finishingTouch) state.slottedFinishingTouch[item.id] = finishingTouch
-  if (ritualTable) state.slottedRitualTable[item.id] = ritualTable
-  if (lostPurpose) state.slottedLostPurpose[item.id] = lostPurpose
+  if (nearlyFinished) setItemUpgradeState(state.itemUpgrades, item.id, 'nearlyFinished', nearlyFinished)
+  if (almostThere) setItemUpgradeState(state.itemUpgrades, item.id, 'almostThere', almostThere)
+  if (finishingTouch) setItemUpgradeState(state.itemUpgrades, item.id, 'finishingTouch', finishingTouch)
+  if (ritualTable) setItemUpgradeState(state.itemUpgrades, item.id, 'ritualTable', ritualTable)
+  if (lostPurpose) setItemUpgradeState(state.itemUpgrades, item.id, 'lostPurpose', lostPurpose)
   if (traceOfMadness) {
     if (typeof traceOfMadness === 'string') {
       // Legacy format: string was the upgrade name — look up the enchantment
       const upgradeEntry = (traceOfMadnessData as UpgradeEntry[]).find((u) => u.name === traceOfMadness)
-      state.slottedTraceOfMadness[item.id] = upgradeEntry?.effectsAdded[0] ?? null
+      setItemUpgradeState(state.itemUpgrades, item.id, 'traceOfMadness', upgradeEntry?.effectsAdded[0] ?? null)
     } else {
-      state.slottedTraceOfMadness[item.id] = traceOfMadness
+      setItemUpgradeState(state.itemUpgrades, item.id, 'traceOfMadness', traceOfMadness)
     }
   }
-  if (isFountainUpgraded) state.slottedFountainOfNecroticMight[item.id] = true
-  if (isStormreaverUpgraded) state.slottedStormreaverUpgrade[item.id] = true
-  if (isZhentarimUpgraded) state.slottedZhentarimAttuned[item.id] = true
+  if (isFountainUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'fountainOfNecroticMight', true)
+  if (isStormreaverUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'stormreaverUpgrade', true)
+  if (isZhentarimUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'zhentarimAttuned', true)
 
   decodeFiligrees(item, state, filigrees, allItems)
 
@@ -331,7 +257,10 @@ const decodeItemPayload = (
 ) => {
   if (!Array.isArray(itemPayload)) return
 
-  const [
+  const decoded = decodeV1ItemPayload(itemPayload)
+  if (!decoded) return
+
+  const {
     slot,
     itemName,
     augments,
@@ -352,13 +281,13 @@ const decodeItemPayload = (
     traceOfMadness,
     almostThere,
     finishingTouch
-  ] = itemPayload
+  } = decoded
 
   // Find the item in allItems by ID (preferred) or name and slot
-  const gearSlot = slot as GearSlot
-  if (!Object.values(GearSlot).includes(gearSlot)) {
+  if (!(Object.values(GearSlot) as string[]).includes(slot)) {
     return
   }
+  const gearSlot = slot as GearSlot
   let item = itemId ? allItems.find((i) => i.id === itemId) : null
 
   item ??= allItems.find((i) => i.name === itemName && i.slot === gearSlot) ?? allItems.find((i) => i.name === itemName)
@@ -429,6 +358,140 @@ const decodeItemEssenceCrafting = (
       state.slottedEssenceEnchantments[item.id][slotName] = enchId
     })
   }
+}
+
+interface DecodedV1ItemPayload {
+  slot: string
+  itemName: string
+  augments: [number, string][]
+  curseName: string | null
+  essenceCrafting: [string, string][] | null
+  nearlyFinished: LootEnchantment | null
+  ritualTable: LootEnchantment | null
+  lostPurpose: LootEnchantment | null
+  filigrees: (string | null)[] | null
+  unlockedFiligreeSlots: number | null
+  slottedGemSetBonuses: (string | null)[] | null
+  itemMinLevel: number | null
+  itemMaterial: string | null
+  isFountainUpgraded: OptionalEncodedBoolean
+  isStormreaverUpgraded: OptionalEncodedBoolean
+  itemId: string | null
+  isZhentarimUpgraded: OptionalEncodedBoolean
+  traceOfMadness: LootEnchantment | string | null
+  almostThere: LootEnchantment | null
+  finishingTouch: LootEnchantment | null
+}
+
+const decodeV1ItemPayload = (itemPayload: unknown[]): DecodedV1ItemPayload | null => {
+  if (itemPayload.length >= 20) {
+    const [
+      slot,
+      itemName,
+      augments,
+      curseName,
+      essenceCrafting,
+      nearlyFinished,
+      ritualTable,
+      lostPurpose,
+      filigrees,
+      unlockedFiligreeSlots,
+      slottedGemSetBonuses,
+      itemMinLevel,
+      itemMaterial,
+      isFountainUpgraded,
+      isStormreaverUpgraded,
+      itemId,
+      isZhentarimUpgraded,
+      traceOfMadness,
+      almostThere,
+      finishingTouch
+    ] = itemPayload as V1Payload[8][number]
+
+    return {
+      slot,
+      itemName,
+      augments,
+      curseName,
+      essenceCrafting,
+      nearlyFinished,
+      ritualTable,
+      lostPurpose,
+      filigrees,
+      unlockedFiligreeSlots,
+      slottedGemSetBonuses,
+      itemMinLevel,
+      itemMaterial,
+      isFountainUpgraded,
+      isStormreaverUpgraded,
+      itemId,
+      isZhentarimUpgraded,
+      traceOfMadness: traceOfMadness ?? null,
+      almostThere: almostThere ?? null,
+      finishingTouch: finishingTouch ?? null
+    }
+  }
+
+  if (itemPayload.length >= 15) {
+    const [
+      slot,
+      itemName,
+      augments,
+      curseName,
+      essenceCrafting,
+      nearlyFinished,
+      ritualTable,
+      lostPurpose,
+      filigrees,
+      unlockedFiligreeSlots,
+      slottedGemSetBonuses,
+      itemMinLevel,
+      itemMaterial,
+      isFountainUpgraded,
+      isStormreaverUpgraded
+    ] = itemPayload as unknown as [
+      string,
+      string,
+      [number, string][],
+      string | null,
+      [string, string][] | null,
+      LootEnchantment | null,
+      LootEnchantment | null,
+      LootEnchantment | null,
+      (string | null)[] | null,
+      number | null,
+      (string | null)[] | null,
+      number | null,
+      string | null,
+      OptionalEncodedBoolean,
+      OptionalEncodedBoolean
+    ]
+
+    return {
+      slot,
+      itemName,
+      augments,
+      curseName,
+      essenceCrafting,
+      nearlyFinished,
+      ritualTable,
+      lostPurpose,
+      filigrees,
+      unlockedFiligreeSlots,
+      slottedGemSetBonuses,
+      itemMinLevel,
+      itemMaterial,
+      isFountainUpgraded,
+      isStormreaverUpgraded,
+      itemId: null,
+      isZhentarimUpgraded: null,
+      traceOfMadness: null,
+      almostThere: null,
+      finishingTouch: null
+    }
+  }
+
+  return null
 }
 
 // ----- URL helpers -----

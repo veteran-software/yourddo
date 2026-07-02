@@ -66,6 +66,30 @@ describe('conflictResolver Bugs', () => {
       expect(conflicts.strength).toHaveLength(1)
       expect(conflicts.strength[0].bonus).toBe('Enhancement')
     })
+
+    it('should resolve legacy upgrade fields through the compact state resolver', () => {
+      const legacyItem = {
+        id: 'item3',
+        name: 'Item 3',
+        slot: GearSlot.MainHand,
+        enchantments: []
+      } as unknown as GearItem
+
+      const result = checkPotentialConflict(
+        { name: 'Strength', bonus: 'Enhancement', modifier: '1' },
+        [legacyItem],
+        GearSlot.OffHand,
+        {
+          slottedNearlyFinished: {
+            item3: { name: 'Strength', bonus: 'Enhancement', modifier: '2' }
+          }
+        }
+      )
+
+      expect(result.isConflict).toBe(true)
+      expect(result.currentMax).toBe(2)
+      expect(result.isOverpowered).toBe(true)
+    })
   })
 
   describe('normalizeString', () => {
