@@ -1,5 +1,5 @@
 import { Button, Row, Stack, Tab, Tabs } from 'react-bootstrap'
-import { FaXmark } from 'react-icons/fa6'
+import { FaChevronDown, FaXmark } from 'react-icons/fa6'
 import type { EssenceEnchantment } from '../dataLoader'
 import {
   ARTIFICER_PET_SLOTS,
@@ -28,6 +28,8 @@ interface SetupTabsProps {
   renderSlot: (slot: GearSlot, setup: GearSetup) => React.ReactNode
   getEntityState: (owner: 'artificer_pet' | 'druid_pet') => EntityGearState
   openSetBonusBrowser: (setName: string | null, slot?: GearSlot | null) => void
+  allItemCardsCollapsed: boolean
+  onToggleCollapseAll: () => void
   onSelectSetup: (setupId: string) => void
   onDeleteSetup: (setupId: string) => void
   onBonusClick: (name: string, bonusType: string) => void
@@ -118,6 +120,8 @@ const SetupTabs = ({
   renderSlot,
   getEntityState,
   openSetBonusBrowser,
+  allItemCardsCollapsed,
+  onToggleCollapseAll,
   onSelectSetup,
   onDeleteSetup,
   onBonusClick
@@ -169,7 +173,19 @@ const SetupTabs = ({
         >
           {setup.id === activeSetupId && (
             <div className='mt-3'>
-              <h5 className='mb-3 border-bottom pb-2'>Equipped Items</h5>
+              <div className='d-flex align-items-center justify-content-between border-bottom pb-2 mb-3 gap-2'>
+                <h5 className='mb-0'>Equipped Items</h5>
+
+                <Button
+                  variant='outline-secondary'
+                  size='sm'
+                  className='gear-planner-collapse-all-btn d-inline-flex align-items-center gap-1 flex-shrink-0'
+                  onClick={onToggleCollapseAll}
+                >
+                  <FaChevronDown className={allItemCardsCollapsed ? 'rotate-180' : ''} />
+                  {allItemCardsCollapsed ? 'Expand All' : 'Collapse All'}
+                </Button>
+              </div>
 
               <Row>{GEAR_SLOTS.map((slot) => renderSlot(slot, setup))}</Row>
 

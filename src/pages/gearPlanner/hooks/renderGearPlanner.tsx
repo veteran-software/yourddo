@@ -1,6 +1,6 @@
 import { type JSX, type ReactNode } from 'react'
-import { Card, Col } from 'react-bootstrap'
-import { FaMagnifyingGlass } from 'react-icons/fa6'
+import { Button, Card, Col } from 'react-bootstrap'
+import { FaChevronDown, FaChevronRight, FaMagnifyingGlass } from 'react-icons/fa6'
 import type { ItemRollup } from '../../../components/trove/types.ts'
 import { SLOT_GROUPS } from '../../../utils/augmentUtils.ts'
 import AlmostThereSelector from '../components/AlmostThereSelector'
@@ -103,7 +103,9 @@ export const renderGearPlanner = (props: Props) => {
     setFountainOfNecroticMight,
     setStormreaverUpgrade,
     setZhentarimAttuned,
-    setReaperForge
+    setReaperForge,
+    isItemCardCollapsed,
+    toggleItemCardCollapsed
   } = props
 
   const renderItemNameAndDrop = (item: GearItem) => (
@@ -150,6 +152,391 @@ export const renderGearPlanner = (props: Props) => {
     </>
   )
 
+  const renderSelectedItemBody = (args: {
+    selectedItem: GearItem
+    slot: GearSlot
+    setup: GearSetup
+    entityState: EntityGearState
+    itemCardCollapsed: boolean
+    displayEnchantments: LootEnchantment[]
+    effectiveAugments: GearAugmentSlot[]
+    currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
+    currentSlottedNearlyFinished: Record<string, LootEnchantment | null>
+    currentSlottedAlmostThere: Record<string, LootEnchantment | null>
+    currentSlottedFinishingTouch: Record<string, LootEnchantment | null>
+    currentSlottedFountainOfNecroticMight: Record<string, boolean>
+    currentSlottedStormreaverUpgrade: Record<string, boolean>
+    currentSlottedZhentarimAttuned: Record<string, boolean>
+    currentSlottedReaperForge: Record<string, string | null>
+    currentSlottedRitualTable: Record<string, LootEnchantment | null>
+    currentSlottedLostPurpose: Record<string, LootEnchantment | null>
+    currentSlottedTraceOfMadness: Record<string, LootEnchantment | null>
+  }) => {
+    const {
+      selectedItem,
+      slot,
+      setup,
+      entityState,
+      itemCardCollapsed,
+      displayEnchantments,
+      effectiveAugments,
+      currentSlottedAugments,
+      currentSlottedNearlyFinished,
+      currentSlottedAlmostThere,
+      currentSlottedFinishingTouch,
+      currentSlottedFountainOfNecroticMight,
+      currentSlottedStormreaverUpgrade,
+      currentSlottedZhentarimAttuned,
+      currentSlottedReaperForge,
+      currentSlottedRitualTable,
+      currentSlottedLostPurpose,
+      currentSlottedTraceOfMadness
+    } = args
+
+    return (
+      <div className='w-100 d-flex flex-column'>
+        <div className='flex-grow-1 text-center w-100 d-flex flex-column'>
+          {renderItemNameAndDrop(selectedItem)}
+          {renderItemMetadata(selectedItem)}
+
+          {!itemCardCollapsed && (
+            <>
+              {selectedItem.name.includes('Gem of Many Facets') && (
+                <GemSetBonusSelector
+                  selectedItem={selectedItem}
+                  activeSetup={setup}
+                  slot={slot}
+                  setSlottedGemSetBonus={setSlottedGemSetBonus}
+                />
+              )}
+
+              <ItemSetBonusDisplay
+                selectedItem={selectedItem}
+                activeSetup={setup}
+                openSetBonusBrowser={(setName: string) => {
+                  openSetBonusBrowser(setName, slot)
+                }}
+              />
+
+              {(getMaxFiligreeSlots(selectedItem) > 0 || isMinorArtifact(selectedItem)) && (
+                <FiligreeLabel item={selectedItem} setup={setup} slot={slot} />
+              )}
+
+              {Array.isArray(displayEnchantments) && displayEnchantments.length > 0 && (
+                <div
+                  className='text-start mt-1 pt-1 border-top gear-planner-slot-enchantments'
+                  style={{ fontSize: '0.65rem' }}
+                >
+                  <EnchantmentList
+                    enchantments={displayEnchantments}
+                    entityState={entityState}
+                    itemId={selectedItem.id}
+                    source='slot'
+                  />
+                </div>
+              )}
+
+              {effectiveAugments.length > 0 && (
+                <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
+                  {effectiveAugments.map((augmentSlot: GearAugmentSlot, idx: number) => {
+                    const applicable = getApplicableAugments(augmentSlot, allAugments)
+
+                    return (
+                      <AugmentSlotItem
+                        key={`${String(augmentSlot.name)} ${String(idx)}`}
+                        selectedItem={selectedItem}
+                        idx={idx}
+                        augSlot={augmentSlot}
+                        slotted={
+                          selectedItem.id in currentSlottedAugments
+                            ? currentSlottedAugments[selectedItem.id][idx]
+                            : null
+                        }
+                        applicable={applicable}
+                        slot={slot}
+                        entityState={entityState}
+                        setSlottedAugment={setSlottedAugment}
+                        openSetBonusBrowser={openSetBonusBrowser}
+                      />
+                    )
+                  })}
+                </div>
+              )}
+
+              {selectedItem.essenceSlots && selectedItem.essenceSlots.length > 0 && (
+                <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
+                  <EssenceCraftingSelector
+                    selectedItem={selectedItem}
+                    activeSetup={setup}
+                    slot={slot}
+                    setEssenceEnchantment={setEssenceEnchantment}
+                    setItemMinLevel={setItemMinLevel}
+                    setItemMaterial={setItemMaterial}
+                    essenceEnchantments={essenceEnchantments}
+                    entityState={entityState}
+                  />
+                </div>
+              )}
+
+              <NearlyFinishedSelector
+                item={selectedItem}
+                slot={slot}
+                selectedEnchantment={currentSlottedNearlyFinished[selectedItem.id] ?? null}
+                onSelect={(enchantment: LootEnchantment | null) => {
+                  setNearlyFinishedEnchantment(selectedItem.id, enchantment, slot)
+                }}
+                entityState={entityState}
+                wrapperClassName='text-start mt-1 pt-1 border-top'
+                wrapperStyle={{ fontSize: '0.65rem' }}
+              />
+
+              <AlmostThereSelector
+                item={selectedItem}
+                slot={slot}
+                selectedEnchantment={currentSlottedAlmostThere[selectedItem.id] ?? null}
+                onSelect={(enchantment: LootEnchantment | null) => {
+                  setAlmostThereEnchantment(selectedItem.id, enchantment, slot)
+                }}
+                entityState={entityState}
+                wrapperClassName='text-start mt-1 pt-1 border-top'
+                wrapperStyle={{ fontSize: '0.65rem' }}
+              />
+
+              <FinishingTouchSelector
+                item={selectedItem}
+                slot={slot}
+                selectedEnchantment={currentSlottedFinishingTouch[selectedItem.id] ?? null}
+                onSelect={(enchantment: LootEnchantment | null) => {
+                  setFinishingTouchEnchantment(selectedItem.id, enchantment, slot)
+                }}
+                entityState={entityState}
+                wrapperClassName='text-start mt-1 pt-1 border-top'
+                wrapperStyle={{ fontSize: '0.65rem' }}
+              />
+
+              <FountainOfNecroticMightSelector
+                item={selectedItem}
+                slot={slot}
+                active={currentSlottedFountainOfNecroticMight[selectedItem.id] || false}
+                onToggle={(active: boolean) => {
+                  setFountainOfNecroticMight(selectedItem.id, active, slot)
+                }}
+                wrapperClassName='text-start mt-1 pt-1 border-top'
+                wrapperStyle={{ fontSize: '0.65rem' }}
+              />
+
+              <StormreaverUpgradeSelector
+                item={selectedItem}
+                slot={slot}
+                active={currentSlottedStormreaverUpgrade[selectedItem.id] || false}
+                onToggle={(active: boolean) => {
+                  setStormreaverUpgrade(selectedItem.id, active, slot)
+                }}
+                wrapperClassName='text-start mt-1 pt-1 border-top'
+                wrapperStyle={{ fontSize: '0.65rem' }}
+              />
+
+              <ZhentarimAttunedSelector
+                item={selectedItem}
+                slot={slot}
+                active={currentSlottedZhentarimAttuned[selectedItem.id] || false}
+                onToggle={(active: boolean) => {
+                  setZhentarimAttuned(selectedItem.id, active, slot)
+                }}
+                wrapperClassName='text-start mt-1 pt-1 border-top'
+                wrapperStyle={{ fontSize: '0.65rem' }}
+              />
+
+              <ReaperForgeSelector
+                item={selectedItem}
+                slot={slot}
+                selectedEffectId={currentSlottedReaperForge[selectedItem.id] ?? null}
+                onSelectEffect={(effectId: string | null) => {
+                  setReaperForge(selectedItem.id, effectId, slot)
+                }}
+                entityState={entityState}
+                wrapperClassName='text-start mt-1 pt-1 border-top'
+                wrapperStyle={{ fontSize: '0.65rem' }}
+              />
+
+              <RitualTableSelector
+                item={selectedItem}
+                slot={slot}
+                selectedEnchantment={currentSlottedRitualTable[selectedItem.id] ?? null}
+                onSelect={(enchantment: LootEnchantment | null) => {
+                  setRitualTableEnchantment(selectedItem.id, enchantment, slot)
+                }}
+                troveData={troveData}
+                entityState={entityState}
+                wrapperClassName='text-start mt-1 pt-1 border-top'
+                wrapperStyle={{ fontSize: '0.65rem' }}
+              />
+
+              {Array.isArray(selectedItem.enchantments) &&
+                selectedItem.enchantments.some(
+                  (enchantment: LootEnchantment) => enchantment.name === 'Lost Purpose'
+                ) && (
+                  <LostPurposeSelector
+                    item={selectedItem}
+                    slot={slot}
+                    selectedEnchantment={currentSlottedLostPurpose[selectedItem.id] ?? null}
+                    onSelect={(enchantment: LootEnchantment | null) => {
+                      setLostPurposeEnchantment(selectedItem.id, enchantment, slot)
+                    }}
+                    entityState={entityState}
+                    wrapperClassName='text-start mt-1 pt-1 border-top'
+                    wrapperStyle={{ fontSize: '0.65rem' }}
+                  />
+                )}
+
+              {Array.isArray(selectedItem.enchantments) &&
+                selectedItem.enchantments.some(
+                  (enchantment: LootEnchantment) => enchantment.name === 'Trace of Madness'
+                ) && (
+                  <TraceOfMadnessSelector
+                    item={selectedItem}
+                    slot={slot}
+                    selectedEnchantment={currentSlottedTraceOfMadness[selectedItem.id] ?? null}
+                    onSelect={(enchantment: LootEnchantment | null) => {
+                      setTraceOfMadnessEnchantment(selectedItem.id, enchantment, slot)
+                    }}
+                    entityState={entityState}
+                    wrapperClassName='text-start mt-1 pt-1 border-top'
+                    wrapperStyle={{ fontSize: '0.65rem' }}
+                  />
+                )}
+
+              <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
+                <CurseSlotItem
+                  selectedItem={selectedItem}
+                  allCurses={allCurses}
+                  slotted={setup.slottedCurses[selectedItem.id]}
+                  slot={slot}
+                  entityState={entityState}
+                  setCurse={setSlottedCurse}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  const renderSlotCard = (args: {
+    slot: GearSlot
+    selectedItem: GearItem | null
+    itemCardCollapsed: boolean
+    entityState: EntityGearState
+    setup: GearSetup
+    displayEnchantments: LootEnchantment[]
+    effectiveAugments: GearAugmentSlot[]
+    currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
+    currentSlottedNearlyFinished: Record<string, LootEnchantment | null>
+    currentSlottedAlmostThere: Record<string, LootEnchantment | null>
+    currentSlottedFinishingTouch: Record<string, LootEnchantment | null>
+    currentSlottedFountainOfNecroticMight: Record<string, boolean>
+    currentSlottedStormreaverUpgrade: Record<string, boolean>
+    currentSlottedZhentarimAttuned: Record<string, boolean>
+    currentSlottedReaperForge: Record<string, string | null>
+    currentSlottedRitualTable: Record<string, LootEnchantment | null>
+    currentSlottedLostPurpose: Record<string, LootEnchantment | null>
+    currentSlottedTraceOfMadness: Record<string, LootEnchantment | null>
+  }) => {
+    const {
+      slot,
+      selectedItem,
+      itemCardCollapsed,
+      entityState,
+      setup,
+      displayEnchantments,
+      effectiveAugments,
+      currentSlottedAugments,
+      currentSlottedNearlyFinished,
+      currentSlottedAlmostThere,
+      currentSlottedFinishingTouch,
+      currentSlottedFountainOfNecroticMight,
+      currentSlottedStormreaverUpgrade,
+      currentSlottedZhentarimAttuned,
+      currentSlottedReaperForge,
+      currentSlottedRitualTable,
+      currentSlottedLostPurpose,
+      currentSlottedTraceOfMadness
+    } = args
+
+    return (
+      <Col key={slot} xs={12} sm={6} md={4} lg={3} className='mb-3 px-1'>
+        <Card className={`h-100 shadow-sm ${selectedItem ? 'border-primary' : ''} position-relative`}>
+          <Card.Header className='p-0 bg-secondary-subtle text-secondary-emphasis small fw-bold d-flex align-items-stretch'>
+            <Button
+              variant='link'
+              type='button'
+              className={`gear-planner-slot-header-main d-flex align-items-center justify-content-between gap-2 text-secondary-emphasis text-decoration-none text-start rounded-0 border-0 shadow-none ${
+                selectedItem ? '' : 'gear-planner-slot-header-main-alone'
+              }`}
+              onClick={() => {
+                openSlotBrowser(slot)
+              }}
+            >
+              <span className='d-flex align-items-center gap-2 min-w-0'>
+                <span className='gear-planner-slot-header-label text-truncate'>{slot}</span>
+                {selectedItem && <TroveBadge itemName={selectedItem.name} troveData={troveData} />}
+              </span>
+
+              <FaMagnifyingGlass className='text-muted flex-shrink-0' size={12} />
+            </Button>
+
+            {selectedItem && (
+              <Button
+                variant='link'
+                type='button'
+                className='gear-planner-slot-header-collapse flex-shrink-0 text-secondary-emphasis text-decoration-none rounded-0 border-start border-0 shadow-none'
+                aria-label={itemCardCollapsed ? `Expand ${selectedItem.name}` : `Collapse ${selectedItem.name}`}
+                title={itemCardCollapsed ? 'Expand card' : 'Collapse card'}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  toggleItemCardCollapsed(selectedItem.id)
+                }}
+              >
+                {itemCardCollapsed ? <FaChevronRight size={10} /> : <FaChevronDown size={10} />}
+              </Button>
+            )}
+          </Card.Header>
+
+          <Card.Body
+            className={`p-2 d-flex flex-column align-items-center ${selectedItem ? 'bg-white' : 'bg-dark-subtle justify-content-center'}`}
+            style={{ minHeight: '100px' }}
+          >
+            {selectedItem ? (
+              renderSelectedItemBody({
+                selectedItem,
+                slot,
+                setup,
+                entityState,
+                itemCardCollapsed,
+                displayEnchantments,
+                effectiveAugments,
+                currentSlottedAugments,
+                currentSlottedNearlyFinished,
+                currentSlottedAlmostThere,
+                currentSlottedFinishingTouch,
+                currentSlottedFountainOfNecroticMight,
+                currentSlottedStormreaverUpgrade,
+                currentSlottedZhentarimAttuned,
+                currentSlottedReaperForge,
+                currentSlottedRitualTable,
+                currentSlottedLostPurpose,
+                currentSlottedTraceOfMadness
+              })
+            ) : (
+              <div className='text-center italic small text-secondary'>No Item Selected</div>
+            )}
+          </Card.Body>
+        </Card>
+      </Col>
+    )
+  }
+
   const renderSlot = (slot: GearSlot, setup: GearSetup): JSX.Element => {
     const owner: string = getSlotOwner(slot)
     const entityState = getEntityState(owner)
@@ -166,6 +553,7 @@ export const renderGearPlanner = (props: Props) => {
     const currentSlottedStormreaverUpgrade = entityState.slottedStormreaverUpgrade
     const currentSlottedZhentarimAttuned = entityState.slottedZhentarimAttuned
     const currentSlottedReaperForge = entityState.slottedReaperForge
+    const itemCardCollapsed = selectedItem ? isItemCardCollapsed(selectedItem.id) : false
 
     const isFountainUpgraded = selectedItem ? currentSlottedFountainOfNecroticMight[selectedItem.id] : false
     const isStormreaverUpgraded = selectedItem ? currentSlottedStormreaverUpgrade[selectedItem.id] : false
@@ -184,256 +572,26 @@ export const renderGearPlanner = (props: Props) => {
     const effectiveAugments =
       nfAddedAugments && hasAnyNFUpgradeActive ? nfAddedAugments : (selectedItem?.augments ?? [])
 
-    return (
-      <Col key={slot} xs={12} sm={6} md={4} lg={3} className='mb-3 px-1'>
-        <Card className={`h-100 shadow-sm ${selectedItem ? 'border-primary' : ''} position-relative`}>
-          <Card.Header
-            className='py-1 px-2 bg-secondary-subtle text-secondary-emphasis small fw-bold d-flex justify-content-between align-items-center cursor-pointer'
-            onClick={() => {
-              openSlotBrowser(slot)
-            }}
-          >
-            <div className='d-flex align-items-center gap-2'>
-              <span>{slot}</span>
-              {selectedItem && <TroveBadge itemName={selectedItem.name} troveData={troveData} />}
-            </div>
-
-            <FaMagnifyingGlass className='text-muted' size={12} />
-          </Card.Header>
-
-          <Card.Body
-            className={`p-2 d-flex flex-column align-items-center ${selectedItem ? 'bg-white' : 'bg-dark-subtle justify-content-center'}`}
-            style={{ minHeight: '100px' }}
-          >
-            {selectedItem ? (
-              <div className='text-center w-100 d-flex flex-column'>
-                {renderItemNameAndDrop(selectedItem)}
-
-                {selectedItem.name.includes('Gem of Many Facets') && (
-                  <GemSetBonusSelector
-                    selectedItem={selectedItem}
-                    activeSetup={activeSetup}
-                    slot={slot}
-                    setSlottedGemSetBonus={setSlottedGemSetBonus}
-                  />
-                )}
-
-                <ItemSetBonusDisplay
-                  selectedItem={selectedItem}
-                  activeSetup={activeSetup}
-                  openSetBonusBrowser={(setName: string) => {
-                    openSetBonusBrowser(setName, slot)
-                  }}
-                />
-
-                {(getMaxFiligreeSlots(selectedItem) > 0 || isMinorArtifact(selectedItem)) && (
-                  <FiligreeLabel item={selectedItem} setup={activeSetup} slot={slot} />
-                )}
-
-                {renderItemMetadata(selectedItem)}
-
-                {Array.isArray(displayEnchantments) && displayEnchantments.length > 0 && (
-                  <div
-                    className='text-start mt-1 pt-1 border-top gear-planner-slot-enchantments'
-                    style={{ fontSize: '0.65rem' }}
-                  >
-                    <EnchantmentList
-                      enchantments={displayEnchantments}
-                      entityState={entityState}
-                      itemId={selectedItem.id}
-                      source='slot'
-                    />
-                  </div>
-                )}
-
-                {effectiveAugments.length > 0 && (
-                  <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
-                    {effectiveAugments.map((augmentSlot: GearAugmentSlot, idx: number) => {
-                      const applicable = getApplicableAugments(augmentSlot, allAugments)
-
-                      return (
-                        <AugmentSlotItem
-                          key={`${String(augmentSlot.name)} ${String(idx)}`}
-                          selectedItem={selectedItem}
-                          idx={idx}
-                          augSlot={augmentSlot}
-                          slotted={
-                            selectedItem.id in currentSlottedAugments
-                              ? currentSlottedAugments[selectedItem.id][idx]
-                              : null
-                          }
-                          applicable={applicable}
-                          slot={slot}
-                          entityState={entityState}
-                          setSlottedAugment={setSlottedAugment}
-                          openSetBonusBrowser={openSetBonusBrowser}
-                        />
-                      )
-                    })}
-                  </div>
-                )}
-
-                {selectedItem.essenceSlots && selectedItem.essenceSlots.length > 0 && (
-                  <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
-                    <EssenceCraftingSelector
-                      selectedItem={selectedItem}
-                      activeSetup={activeSetup}
-                      slot={slot}
-                      setEssenceEnchantment={setEssenceEnchantment}
-                      setItemMinLevel={setItemMinLevel}
-                      setItemMaterial={setItemMaterial}
-                      essenceEnchantments={essenceEnchantments}
-                      entityState={entityState}
-                    />
-                  </div>
-                )}
-
-                <NearlyFinishedSelector
-                  item={selectedItem}
-                  slot={slot}
-                  selectedEnchantment={currentSlottedNearlyFinished[selectedItem.id] ?? null}
-                  onSelect={(enchantment: LootEnchantment | null) => {
-                    setNearlyFinishedEnchantment(selectedItem.id, enchantment, slot)
-                  }}
-                  entityState={entityState}
-                  wrapperClassName='text-start mt-1 pt-1 border-top'
-                  wrapperStyle={{ fontSize: '0.65rem' }}
-                />
-
-                <AlmostThereSelector
-                  item={selectedItem}
-                  slot={slot}
-                  selectedEnchantment={currentSlottedAlmostThere[selectedItem.id] ?? null}
-                  onSelect={(enchantment: LootEnchantment | null) => {
-                    setAlmostThereEnchantment(selectedItem.id, enchantment, slot)
-                  }}
-                  entityState={entityState}
-                  wrapperClassName='text-start mt-1 pt-1 border-top'
-                  wrapperStyle={{ fontSize: '0.65rem' }}
-                />
-
-                <FinishingTouchSelector
-                  item={selectedItem}
-                  slot={slot}
-                  selectedEnchantment={currentSlottedFinishingTouch[selectedItem.id] ?? null}
-                  onSelect={(enchantment: LootEnchantment | null) => {
-                    setFinishingTouchEnchantment(selectedItem.id, enchantment, slot)
-                  }}
-                  entityState={entityState}
-                  wrapperClassName='text-start mt-1 pt-1 border-top'
-                  wrapperStyle={{ fontSize: '0.65rem' }}
-                />
-
-                <FountainOfNecroticMightSelector
-                  item={selectedItem}
-                  slot={slot}
-                  active={currentSlottedFountainOfNecroticMight[selectedItem.id] || false}
-                  onToggle={(active: boolean) => {
-                    setFountainOfNecroticMight(selectedItem.id, active, slot)
-                  }}
-                  wrapperClassName='text-start mt-1 pt-1 border-top'
-                  wrapperStyle={{ fontSize: '0.65rem' }}
-                />
-
-                <StormreaverUpgradeSelector
-                  item={selectedItem}
-                  slot={slot}
-                  active={currentSlottedStormreaverUpgrade[selectedItem.id] || false}
-                  onToggle={(active: boolean) => {
-                    setStormreaverUpgrade(selectedItem.id, active, slot)
-                  }}
-                  wrapperClassName='text-start mt-1 pt-1 border-top'
-                  wrapperStyle={{ fontSize: '0.65rem' }}
-                />
-
-                <ZhentarimAttunedSelector
-                  item={selectedItem}
-                  slot={slot}
-                  active={currentSlottedZhentarimAttuned[selectedItem.id] || false}
-                  onToggle={(active: boolean) => {
-                    setZhentarimAttuned(selectedItem.id, active, slot)
-                  }}
-                  wrapperClassName='text-start mt-1 pt-1 border-top'
-                  wrapperStyle={{ fontSize: '0.65rem' }}
-                />
-
-                <ReaperForgeSelector
-                  item={selectedItem}
-                  slot={slot}
-                  selectedEffectId={currentSlottedReaperForge[selectedItem.id] ?? null}
-                  onSelectEffect={(effectId: string | null) => {
-                    setReaperForge(selectedItem.id, effectId, slot)
-                  }}
-                  entityState={entityState}
-                  wrapperClassName='text-start mt-1 pt-1 border-top'
-                  wrapperStyle={{ fontSize: '0.65rem' }}
-                />
-
-                <RitualTableSelector
-                  item={selectedItem}
-                  slot={slot}
-                  selectedEnchantment={currentSlottedRitualTable[selectedItem.id] ?? null}
-                  onSelect={(enchantment: LootEnchantment | null) => {
-                    setRitualTableEnchantment(selectedItem.id, enchantment, slot)
-                  }}
-                  troveData={troveData}
-                  entityState={entityState}
-                  wrapperClassName='text-start mt-1 pt-1 border-top'
-                  wrapperStyle={{ fontSize: '0.65rem' }}
-                />
-
-                {Array.isArray(selectedItem.enchantments) &&
-                  selectedItem.enchantments.some(
-                    (enchantment: LootEnchantment) => enchantment.name === 'Lost Purpose'
-                  ) && (
-                    <LostPurposeSelector
-                      item={selectedItem}
-                      slot={slot}
-                      selectedEnchantment={currentSlottedLostPurpose[selectedItem.id] ?? null}
-                      onSelect={(enchantment: LootEnchantment | null) => {
-                        setLostPurposeEnchantment(selectedItem.id, enchantment, slot)
-                      }}
-                      entityState={entityState}
-                      wrapperClassName='text-start mt-1 pt-1 border-top'
-                      wrapperStyle={{ fontSize: '0.65rem' }}
-                    />
-                  )}
-
-                {Array.isArray(selectedItem.enchantments) &&
-                  selectedItem.enchantments.some(
-                    (enchantment: LootEnchantment) => enchantment.name === 'Trace of Madness'
-                  ) && (
-                    <TraceOfMadnessSelector
-                      item={selectedItem}
-                      slot={slot}
-                      selectedEnchantment={currentSlottedTraceOfMadness[selectedItem.id] ?? null}
-                      onSelect={(enchantment: LootEnchantment | null) => {
-                        setTraceOfMadnessEnchantment(selectedItem.id, enchantment, slot)
-                      }}
-                      entityState={entityState}
-                      wrapperClassName='text-start mt-1 pt-1 border-top'
-                      wrapperStyle={{ fontSize: '0.65rem' }}
-                    />
-                  )}
-
-                <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
-                  <CurseSlotItem
-                    selectedItem={selectedItem}
-                    allCurses={allCurses}
-                    slotted={setup.slottedCurses[selectedItem.id]}
-                    slot={slot}
-                    entityState={entityState}
-                    setCurse={setSlottedCurse}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className='text-center italic small text-secondary'>No Item Selected</div>
-            )}
-          </Card.Body>
-        </Card>
-      </Col>
-    )
+    return renderSlotCard({
+      slot,
+      selectedItem,
+      itemCardCollapsed,
+      entityState,
+      setup,
+      displayEnchantments,
+      effectiveAugments,
+      currentSlottedAugments,
+      currentSlottedNearlyFinished,
+      currentSlottedAlmostThere,
+      currentSlottedFinishingTouch,
+      currentSlottedFountainOfNecroticMight,
+      currentSlottedStormreaverUpgrade,
+      currentSlottedZhentarimAttuned,
+      currentSlottedReaperForge,
+      currentSlottedRitualTable,
+      currentSlottedLostPurpose,
+      currentSlottedTraceOfMadness
+    })
   }
 
   return { renderSlot }
@@ -466,4 +624,8 @@ interface Props {
   setStormreaverUpgrade: (itemId: string, active: boolean, slot?: GearSlot) => void
   setZhentarimAttuned: (itemId: string, active: boolean, slot?: GearSlot) => void
   setReaperForge: (itemId: string, effectId: string | null, slot?: GearSlot) => void
+  isItemCardCollapsed: (itemId: string) => boolean
+  toggleItemCardCollapsed: (itemId: string) => void
+  allItemCardsCollapsed: boolean
+  setAllItemCardsCollapsed: (collapsed: boolean) => void
 }
