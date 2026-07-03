@@ -76,6 +76,42 @@ const getApplicableAugments = (augmentSlot: GearAugmentSlot, allAugments: GearAu
   return { groups, sortedGroupNames }
 }
 
+const detailSectionClassName = 'text-start mt-1 pt-1 border-top'
+const detailSectionStyle = { fontSize: '0.65rem' }
+
+const DetailSection = ({
+  children,
+  className = detailSectionClassName
+}: {
+  children: ReactNode
+  className?: string
+}) => (
+  <div className={className} style={detailSectionStyle}>
+    {children}
+  </div>
+)
+
+interface SlotCardState {
+  selectedItem: GearItem
+  slot: GearSlot
+  setup: GearSetup
+  entityState: EntityGearState
+  itemCardCollapsed: boolean
+  displayEnchantments: LootEnchantment[]
+  effectiveAugments: GearAugmentSlot[]
+  currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
+  currentSlottedNearlyFinished: Record<string, LootEnchantment | null>
+  currentSlottedAlmostThere: Record<string, LootEnchantment | null>
+  currentSlottedFinishingTouch: Record<string, LootEnchantment | null>
+  currentSlottedFountainOfNecroticMight: Record<string, boolean>
+  currentSlottedStormreaverUpgrade: Record<string, boolean>
+  currentSlottedZhentarimAttuned: Record<string, boolean>
+  currentSlottedReaperForge: Record<string, string | null>
+  currentSlottedRitualTable: Record<string, LootEnchantment | null>
+  currentSlottedLostPurpose: Record<string, LootEnchantment | null>
+  currentSlottedTraceOfMadness: Record<string, LootEnchantment | null>
+}
+
 export const renderGearPlanner = (props: Props) => {
   const {
     activeSetup,
@@ -152,270 +188,224 @@ export const renderGearPlanner = (props: Props) => {
     </>
   )
 
-  const renderSelectedItemBody = (args: {
-    selectedItem: GearItem
-    slot: GearSlot
-    setup: GearSetup
-    entityState: EntityGearState
-    itemCardCollapsed: boolean
-    displayEnchantments: LootEnchantment[]
-    effectiveAugments: GearAugmentSlot[]
-    currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-    currentSlottedNearlyFinished: Record<string, LootEnchantment | null>
-    currentSlottedAlmostThere: Record<string, LootEnchantment | null>
-    currentSlottedFinishingTouch: Record<string, LootEnchantment | null>
-    currentSlottedFountainOfNecroticMight: Record<string, boolean>
-    currentSlottedStormreaverUpgrade: Record<string, boolean>
-    currentSlottedZhentarimAttuned: Record<string, boolean>
-    currentSlottedReaperForge: Record<string, string | null>
-    currentSlottedRitualTable: Record<string, LootEnchantment | null>
-    currentSlottedLostPurpose: Record<string, LootEnchantment | null>
-    currentSlottedTraceOfMadness: Record<string, LootEnchantment | null>
-  }) => {
-    const {
-      selectedItem,
-      slot,
-      setup,
-      entityState,
-      itemCardCollapsed,
-      displayEnchantments,
-      effectiveAugments,
-      currentSlottedAugments,
-      currentSlottedNearlyFinished,
-      currentSlottedAlmostThere,
-      currentSlottedFinishingTouch,
-      currentSlottedFountainOfNecroticMight,
-      currentSlottedStormreaverUpgrade,
-      currentSlottedZhentarimAttuned,
-      currentSlottedReaperForge,
-      currentSlottedRitualTable,
-      currentSlottedLostPurpose,
-      currentSlottedTraceOfMadness
-    } = args
+  const renderSelectedItemBody = (state: SlotCardState) => {
+    const currentSlottedAugmentsForItem: Record<number, GearAugment | null> =
+      state.currentSlottedAugments[state.selectedItem.id] ?? {}
 
     return (
       <div className='w-100 d-flex flex-column'>
         <div className='flex-grow-1 text-center w-100 d-flex flex-column'>
-          {renderItemNameAndDrop(selectedItem)}
-          {renderItemMetadata(selectedItem)}
+          {renderItemNameAndDrop(state.selectedItem)}
+          {renderItemMetadata(state.selectedItem)}
 
-          {!itemCardCollapsed && (
+          {!state.itemCardCollapsed && (
             <>
-              {selectedItem.name.includes('Gem of Many Facets') && (
+              {state.selectedItem.name.includes('Gem of Many Facets') && (
                 <GemSetBonusSelector
-                  selectedItem={selectedItem}
-                  activeSetup={setup}
-                  slot={slot}
+                  selectedItem={state.selectedItem}
+                  activeSetup={state.setup}
+                  slot={state.slot}
                   setSlottedGemSetBonus={setSlottedGemSetBonus}
                 />
               )}
 
               <ItemSetBonusDisplay
-                selectedItem={selectedItem}
-                activeSetup={setup}
+                selectedItem={state.selectedItem}
+                activeSetup={state.setup}
                 openSetBonusBrowser={(setName: string) => {
-                  openSetBonusBrowser(setName, slot)
+                  openSetBonusBrowser(setName, state.slot)
                 }}
               />
 
-              {(getMaxFiligreeSlots(selectedItem) > 0 || isMinorArtifact(selectedItem)) && (
-                <FiligreeLabel item={selectedItem} setup={setup} slot={slot} />
+              {(getMaxFiligreeSlots(state.selectedItem) > 0 || isMinorArtifact(state.selectedItem)) && (
+                <FiligreeLabel item={state.selectedItem} setup={state.setup} slot={state.slot} />
               )}
 
-              {Array.isArray(displayEnchantments) && displayEnchantments.length > 0 && (
-                <div
-                  className='text-start mt-1 pt-1 border-top gear-planner-slot-enchantments'
-                  style={{ fontSize: '0.65rem' }}
-                >
+              {Array.isArray(state.displayEnchantments) && state.displayEnchantments.length > 0 && (
+                <DetailSection className='text-start mt-1 pt-1 border-top gear-planner-slot-enchantments'>
                   <EnchantmentList
-                    enchantments={displayEnchantments}
-                    entityState={entityState}
-                    itemId={selectedItem.id}
+                    enchantments={state.displayEnchantments}
+                    entityState={state.entityState}
+                    itemId={state.selectedItem.id}
                     source='slot'
                   />
-                </div>
+                </DetailSection>
               )}
 
-              {effectiveAugments.length > 0 && (
-                <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
-                  {effectiveAugments.map((augmentSlot: GearAugmentSlot, idx: number) => {
+              {state.effectiveAugments.length > 0 && (
+                <DetailSection>
+                  {state.effectiveAugments.map((augmentSlot: GearAugmentSlot, idx: number) => {
                     const applicable = getApplicableAugments(augmentSlot, allAugments)
 
                     return (
                       <AugmentSlotItem
                         key={`${String(augmentSlot.name)} ${String(idx)}`}
-                        selectedItem={selectedItem}
+                        selectedItem={state.selectedItem}
                         idx={idx}
                         augSlot={augmentSlot}
-                        slotted={
-                          selectedItem.id in currentSlottedAugments
-                            ? currentSlottedAugments[selectedItem.id][idx]
-                            : null
-                        }
+                        slotted={currentSlottedAugmentsForItem[idx] ?? null}
                         applicable={applicable}
-                        slot={slot}
-                        entityState={entityState}
+                        slot={state.slot}
+                        entityState={state.entityState}
                         setSlottedAugment={setSlottedAugment}
                         openSetBonusBrowser={openSetBonusBrowser}
                       />
                     )
                   })}
-                </div>
+                </DetailSection>
               )}
 
-              {selectedItem.essenceSlots && selectedItem.essenceSlots.length > 0 && (
-                <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
+              {(state.selectedItem.essenceSlots?.length ?? 0) > 0 && (
+                <DetailSection>
                   <EssenceCraftingSelector
-                    selectedItem={selectedItem}
-                    activeSetup={setup}
-                    slot={slot}
+                    selectedItem={state.selectedItem}
+                    activeSetup={state.setup}
+                    slot={state.slot}
                     setEssenceEnchantment={setEssenceEnchantment}
                     setItemMinLevel={setItemMinLevel}
                     setItemMaterial={setItemMaterial}
                     essenceEnchantments={essenceEnchantments}
-                    entityState={entityState}
+                    entityState={state.entityState}
                   />
-                </div>
+                </DetailSection>
               )}
 
               <NearlyFinishedSelector
-                item={selectedItem}
-                slot={slot}
-                selectedEnchantment={currentSlottedNearlyFinished[selectedItem.id] ?? null}
+                item={state.selectedItem}
+                slot={state.slot}
+                selectedEnchantment={state.currentSlottedNearlyFinished[state.selectedItem.id] ?? null}
                 onSelect={(enchantment: LootEnchantment | null) => {
-                  setNearlyFinishedEnchantment(selectedItem.id, enchantment, slot)
+                  setNearlyFinishedEnchantment(state.selectedItem.id, enchantment, state.slot)
                 }}
-                entityState={entityState}
-                wrapperClassName='text-start mt-1 pt-1 border-top'
-                wrapperStyle={{ fontSize: '0.65rem' }}
+                entityState={state.entityState}
+                wrapperClassName={detailSectionClassName}
+                wrapperStyle={detailSectionStyle}
               />
 
               <AlmostThereSelector
-                item={selectedItem}
-                slot={slot}
-                selectedEnchantment={currentSlottedAlmostThere[selectedItem.id] ?? null}
+                item={state.selectedItem}
+                slot={state.slot}
+                selectedEnchantment={state.currentSlottedAlmostThere[state.selectedItem.id] ?? null}
                 onSelect={(enchantment: LootEnchantment | null) => {
-                  setAlmostThereEnchantment(selectedItem.id, enchantment, slot)
+                  setAlmostThereEnchantment(state.selectedItem.id, enchantment, state.slot)
                 }}
-                entityState={entityState}
-                wrapperClassName='text-start mt-1 pt-1 border-top'
-                wrapperStyle={{ fontSize: '0.65rem' }}
+                entityState={state.entityState}
+                wrapperClassName={detailSectionClassName}
+                wrapperStyle={detailSectionStyle}
               />
 
               <FinishingTouchSelector
-                item={selectedItem}
-                slot={slot}
-                selectedEnchantment={currentSlottedFinishingTouch[selectedItem.id] ?? null}
+                item={state.selectedItem}
+                slot={state.slot}
+                selectedEnchantment={state.currentSlottedFinishingTouch[state.selectedItem.id] ?? null}
                 onSelect={(enchantment: LootEnchantment | null) => {
-                  setFinishingTouchEnchantment(selectedItem.id, enchantment, slot)
+                  setFinishingTouchEnchantment(state.selectedItem.id, enchantment, state.slot)
                 }}
-                entityState={entityState}
-                wrapperClassName='text-start mt-1 pt-1 border-top'
-                wrapperStyle={{ fontSize: '0.65rem' }}
+                entityState={state.entityState}
+                wrapperClassName={detailSectionClassName}
+                wrapperStyle={detailSectionStyle}
               />
 
               <FountainOfNecroticMightSelector
-                item={selectedItem}
-                slot={slot}
-                active={currentSlottedFountainOfNecroticMight[selectedItem.id] || false}
+                item={state.selectedItem}
+                slot={state.slot}
+                active={state.currentSlottedFountainOfNecroticMight[state.selectedItem.id] || false}
                 onToggle={(active: boolean) => {
-                  setFountainOfNecroticMight(selectedItem.id, active, slot)
+                  setFountainOfNecroticMight(state.selectedItem.id, active, state.slot)
                 }}
-                wrapperClassName='text-start mt-1 pt-1 border-top'
-                wrapperStyle={{ fontSize: '0.65rem' }}
+                wrapperClassName={detailSectionClassName}
+                wrapperStyle={detailSectionStyle}
               />
 
               <StormreaverUpgradeSelector
-                item={selectedItem}
-                slot={slot}
-                active={currentSlottedStormreaverUpgrade[selectedItem.id] || false}
+                item={state.selectedItem}
+                slot={state.slot}
+                active={state.currentSlottedStormreaverUpgrade[state.selectedItem.id] || false}
                 onToggle={(active: boolean) => {
-                  setStormreaverUpgrade(selectedItem.id, active, slot)
+                  setStormreaverUpgrade(state.selectedItem.id, active, state.slot)
                 }}
-                wrapperClassName='text-start mt-1 pt-1 border-top'
-                wrapperStyle={{ fontSize: '0.65rem' }}
+                wrapperClassName={detailSectionClassName}
+                wrapperStyle={detailSectionStyle}
               />
 
               <ZhentarimAttunedSelector
-                item={selectedItem}
-                slot={slot}
-                active={currentSlottedZhentarimAttuned[selectedItem.id] || false}
+                item={state.selectedItem}
+                slot={state.slot}
+                active={state.currentSlottedZhentarimAttuned[state.selectedItem.id] || false}
                 onToggle={(active: boolean) => {
-                  setZhentarimAttuned(selectedItem.id, active, slot)
+                  setZhentarimAttuned(state.selectedItem.id, active, state.slot)
                 }}
-                wrapperClassName='text-start mt-1 pt-1 border-top'
-                wrapperStyle={{ fontSize: '0.65rem' }}
+                wrapperClassName={detailSectionClassName}
+                wrapperStyle={detailSectionStyle}
               />
 
               <ReaperForgeSelector
-                item={selectedItem}
-                slot={slot}
-                selectedEffectId={currentSlottedReaperForge[selectedItem.id] ?? null}
+                item={state.selectedItem}
+                slot={state.slot}
+                selectedEffectId={state.currentSlottedReaperForge[state.selectedItem.id] ?? null}
                 onSelectEffect={(effectId: string | null) => {
-                  setReaperForge(selectedItem.id, effectId, slot)
+                  setReaperForge(state.selectedItem.id, effectId, state.slot)
                 }}
-                entityState={entityState}
-                wrapperClassName='text-start mt-1 pt-1 border-top'
-                wrapperStyle={{ fontSize: '0.65rem' }}
+                entityState={state.entityState}
+                wrapperClassName={detailSectionClassName}
+                wrapperStyle={detailSectionStyle}
               />
 
               <RitualTableSelector
-                item={selectedItem}
-                slot={slot}
-                selectedEnchantment={currentSlottedRitualTable[selectedItem.id] ?? null}
+                item={state.selectedItem}
+                slot={state.slot}
+                selectedEnchantment={state.currentSlottedRitualTable[state.selectedItem.id] ?? null}
                 onSelect={(enchantment: LootEnchantment | null) => {
-                  setRitualTableEnchantment(selectedItem.id, enchantment, slot)
+                  setRitualTableEnchantment(state.selectedItem.id, enchantment, state.slot)
                 }}
                 troveData={troveData}
-                entityState={entityState}
-                wrapperClassName='text-start mt-1 pt-1 border-top'
-                wrapperStyle={{ fontSize: '0.65rem' }}
+                entityState={state.entityState}
+                wrapperClassName={detailSectionClassName}
+                wrapperStyle={detailSectionStyle}
               />
 
-              {Array.isArray(selectedItem.enchantments) &&
-                selectedItem.enchantments.some(
-                  (enchantment: LootEnchantment) => enchantment.name === 'Lost Purpose'
-                ) && (
-                  <LostPurposeSelector
-                    item={selectedItem}
-                    slot={slot}
-                    selectedEnchantment={currentSlottedLostPurpose[selectedItem.id] ?? null}
-                    onSelect={(enchantment: LootEnchantment | null) => {
-                      setLostPurposeEnchantment(selectedItem.id, enchantment, slot)
-                    }}
-                    entityState={entityState}
-                    wrapperClassName='text-start mt-1 pt-1 border-top'
-                    wrapperStyle={{ fontSize: '0.65rem' }}
-                  />
-                )}
+              {state.selectedItem.enchantments?.some(
+                (enchantment: LootEnchantment) => enchantment.name === 'Lost Purpose'
+              ) && (
+                <LostPurposeSelector
+                  item={state.selectedItem}
+                  slot={state.slot}
+                  selectedEnchantment={state.currentSlottedLostPurpose[state.selectedItem.id] ?? null}
+                  onSelect={(enchantment: LootEnchantment | null) => {
+                    setLostPurposeEnchantment(state.selectedItem.id, enchantment, state.slot)
+                  }}
+                  entityState={state.entityState}
+                  wrapperClassName={detailSectionClassName}
+                  wrapperStyle={detailSectionStyle}
+                />
+              )}
 
-              {Array.isArray(selectedItem.enchantments) &&
-                selectedItem.enchantments.some(
-                  (enchantment: LootEnchantment) => enchantment.name === 'Trace of Madness'
-                ) && (
-                  <TraceOfMadnessSelector
-                    item={selectedItem}
-                    slot={slot}
-                    selectedEnchantment={currentSlottedTraceOfMadness[selectedItem.id] ?? null}
-                    onSelect={(enchantment: LootEnchantment | null) => {
-                      setTraceOfMadnessEnchantment(selectedItem.id, enchantment, slot)
-                    }}
-                    entityState={entityState}
-                    wrapperClassName='text-start mt-1 pt-1 border-top'
-                    wrapperStyle={{ fontSize: '0.65rem' }}
-                  />
-                )}
+              {state.selectedItem.enchantments?.some(
+                (enchantment: LootEnchantment) => enchantment.name === 'Trace of Madness'
+              ) && (
+                <TraceOfMadnessSelector
+                  item={state.selectedItem}
+                  slot={state.slot}
+                  selectedEnchantment={state.currentSlottedTraceOfMadness[state.selectedItem.id] ?? null}
+                  onSelect={(enchantment: LootEnchantment | null) => {
+                    setTraceOfMadnessEnchantment(state.selectedItem.id, enchantment, state.slot)
+                  }}
+                  entityState={state.entityState}
+                  wrapperClassName={detailSectionClassName}
+                  wrapperStyle={detailSectionStyle}
+                />
+              )}
 
-              <div className='text-start mt-1 pt-1 border-top' style={{ fontSize: '0.65rem' }}>
+              <DetailSection>
                 <CurseSlotItem
-                  selectedItem={selectedItem}
+                  selectedItem={state.selectedItem}
                   allCurses={allCurses}
-                  slotted={setup.slottedCurses[selectedItem.id]}
-                  slot={slot}
-                  entityState={entityState}
+                  slotted={state.setup.slottedCurses[state.selectedItem.id]}
+                  slot={state.slot}
+                  entityState={state.entityState}
                   setCurse={setSlottedCurse}
                 />
-              </div>
+              </DetailSection>
             </>
           )}
         </div>
@@ -423,114 +413,46 @@ export const renderGearPlanner = (props: Props) => {
     )
   }
 
-  const renderSlotCard = (args: {
-    slot: GearSlot
-    selectedItem: GearItem | null
-    itemCardCollapsed: boolean
-    entityState: EntityGearState
-    setup: GearSetup
-    displayEnchantments: LootEnchantment[]
-    effectiveAugments: GearAugmentSlot[]
-    currentSlottedAugments: Record<string, Record<number, GearAugment | null>>
-    currentSlottedNearlyFinished: Record<string, LootEnchantment | null>
-    currentSlottedAlmostThere: Record<string, LootEnchantment | null>
-    currentSlottedFinishingTouch: Record<string, LootEnchantment | null>
-    currentSlottedFountainOfNecroticMight: Record<string, boolean>
-    currentSlottedStormreaverUpgrade: Record<string, boolean>
-    currentSlottedZhentarimAttuned: Record<string, boolean>
-    currentSlottedReaperForge: Record<string, string | null>
-    currentSlottedRitualTable: Record<string, LootEnchantment | null>
-    currentSlottedLostPurpose: Record<string, LootEnchantment | null>
-    currentSlottedTraceOfMadness: Record<string, LootEnchantment | null>
-  }) => {
-    const {
-      slot,
-      selectedItem,
-      itemCardCollapsed,
-      entityState,
-      setup,
-      displayEnchantments,
-      effectiveAugments,
-      currentSlottedAugments,
-      currentSlottedNearlyFinished,
-      currentSlottedAlmostThere,
-      currentSlottedFinishingTouch,
-      currentSlottedFountainOfNecroticMight,
-      currentSlottedStormreaverUpgrade,
-      currentSlottedZhentarimAttuned,
-      currentSlottedReaperForge,
-      currentSlottedRitualTable,
-      currentSlottedLostPurpose,
-      currentSlottedTraceOfMadness
-    } = args
-
+  const renderSlotCard = (state: SlotCardState) => {
     return (
-      <Col key={slot} xs={12} sm={6} md={4} lg={3} className='mb-3 px-1'>
-        <Card className={`h-100 shadow-sm ${selectedItem ? 'border-primary' : ''} position-relative`}>
+      <Col key={state.slot} xs={12} sm={6} md={4} lg={3} className='mb-3 px-1'>
+        <Card className='h-100 shadow-sm border-primary position-relative'>
           <Card.Header className='p-0 bg-secondary-subtle text-secondary-emphasis small fw-bold d-flex align-items-stretch'>
             <Button
               variant='link'
               type='button'
-              className={`gear-planner-slot-header-main d-flex align-items-center justify-content-between gap-2 text-secondary-emphasis text-decoration-none text-start rounded-0 border-0 shadow-none ${
-                selectedItem ? '' : 'gear-planner-slot-header-main-alone'
-              }`}
+              className='gear-planner-slot-header-main d-flex align-items-center justify-content-between gap-2 text-secondary-emphasis text-decoration-none text-start rounded-0 border-0 shadow-none'
               onClick={() => {
-                openSlotBrowser(slot)
+                openSlotBrowser(state.slot)
               }}
             >
               <span className='d-flex align-items-center gap-2 min-w-0'>
-                <span className='gear-planner-slot-header-label text-truncate'>{slot}</span>
-                {selectedItem && <TroveBadge itemName={selectedItem.name} troveData={troveData} />}
+                <span className='gear-planner-slot-header-label text-truncate'>{state.slot}</span>
+                <TroveBadge itemName={state.selectedItem.name} troveData={troveData} />
               </span>
 
               <FaMagnifyingGlass className='text-muted flex-shrink-0' size={12} />
             </Button>
 
-            {selectedItem && (
-              <Button
-                variant='link'
-                type='button'
-                className='gear-planner-slot-header-collapse flex-shrink-0 text-secondary-emphasis text-decoration-none rounded-0 border-start border-0 shadow-none'
-                aria-label={itemCardCollapsed ? `Expand ${selectedItem.name}` : `Collapse ${selectedItem.name}`}
-                title={itemCardCollapsed ? 'Expand card' : 'Collapse card'}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  toggleItemCardCollapsed(selectedItem.id)
-                }}
-              >
-                {itemCardCollapsed ? <FaChevronRight size={10} /> : <FaChevronDown size={10} />}
-              </Button>
-            )}
+            <Button
+              variant='link'
+              type='button'
+              className='gear-planner-slot-header-collapse flex-shrink-0 text-secondary-emphasis text-decoration-none rounded-0 border-start border-0 shadow-none'
+              aria-label={
+                state.itemCardCollapsed ? `Expand ${state.selectedItem.name}` : `Collapse ${state.selectedItem.name}`
+              }
+              title={state.itemCardCollapsed ? 'Expand card' : 'Collapse card'}
+              onClick={(e) => {
+                e.stopPropagation()
+                toggleItemCardCollapsed(state.selectedItem.id)
+              }}
+            >
+              {state.itemCardCollapsed ? <FaChevronRight size={10} /> : <FaChevronDown size={10} />}
+            </Button>
           </Card.Header>
 
-          <Card.Body
-            className={`p-2 d-flex flex-column align-items-center ${selectedItem ? 'bg-white' : 'bg-dark-subtle justify-content-center'}`}
-            style={{ minHeight: '100px' }}
-          >
-            {selectedItem ? (
-              renderSelectedItemBody({
-                selectedItem,
-                slot,
-                setup,
-                entityState,
-                itemCardCollapsed,
-                displayEnchantments,
-                effectiveAugments,
-                currentSlottedAugments,
-                currentSlottedNearlyFinished,
-                currentSlottedAlmostThere,
-                currentSlottedFinishingTouch,
-                currentSlottedFountainOfNecroticMight,
-                currentSlottedStormreaverUpgrade,
-                currentSlottedZhentarimAttuned,
-                currentSlottedReaperForge,
-                currentSlottedRitualTable,
-                currentSlottedLostPurpose,
-                currentSlottedTraceOfMadness
-              })
-            ) : (
-              <div className='text-center italic small text-secondary'>No Item Selected</div>
-            )}
+          <Card.Body className='p-2 d-flex flex-column align-items-center bg-white' style={{ minHeight: '100px' }}>
+            {renderSelectedItemBody(state)}
           </Card.Body>
         </Card>
       </Col>
@@ -571,6 +493,38 @@ export const renderGearPlanner = (props: Props) => {
       : false
     const effectiveAugments =
       nfAddedAugments && hasAnyNFUpgradeActive ? nfAddedAugments : (selectedItem?.augments ?? [])
+
+    if (!selectedItem) {
+      return (
+        <Col key={slot} xs={12} sm={6} md={4} lg={3} className='mb-3 px-1'>
+          <Card className='h-100 shadow-sm position-relative'>
+            <Card.Header className='p-0 bg-secondary-subtle text-secondary-emphasis small fw-bold d-flex align-items-stretch'>
+              <Button
+                variant='link'
+                type='button'
+                className='gear-planner-slot-header-main gear-planner-slot-header-main-alone d-flex align-items-center justify-content-between gap-2 text-secondary-emphasis text-decoration-none text-start rounded-0 border-0 shadow-none'
+                onClick={() => {
+                  openSlotBrowser(slot)
+                }}
+              >
+                <span className='d-flex align-items-center gap-2 min-w-0'>
+                  <span className='gear-planner-slot-header-label text-truncate'>{slot}</span>
+                </span>
+
+                <FaMagnifyingGlass className='text-muted flex-shrink-0' size={12} />
+              </Button>
+            </Card.Header>
+
+            <Card.Body
+              className='p-2 d-flex flex-column align-items-center bg-dark-subtle justify-content-center'
+              style={{ minHeight: '100px' }}
+            >
+              <div className='text-center italic small text-secondary'>No Item Selected</div>
+            </Card.Body>
+          </Card>
+        </Col>
+      )
+    }
 
     return renderSlotCard({
       slot,
