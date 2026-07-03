@@ -6,6 +6,7 @@ import { useAppSelector } from '../../redux/hooks.ts'
 import { getSubdomain } from '../../utils/utils'
 import Footer from '../footer/Footer.tsx'
 import NavbarTop from '../navbar/NavbarTop.tsx'
+import RouteSeo from '../seo/RouteSeo.tsx'
 
 const BaseLayout = () => {
   const [subdomain] = useState(() => getSubdomain())
@@ -23,6 +24,8 @@ const BaseLayout = () => {
         paddingBottom: `${String(footerHeight * 2 + 15)}px`
       }}
     >
+      <RouteSeo />
+
       <NavbarTop />
 
       {subdomain !== 'No subdomain' && subdomain === 'develop' && (
