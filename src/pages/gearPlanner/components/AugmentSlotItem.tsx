@@ -54,7 +54,10 @@ const AugmentSlotItem = (props: Props) => {
 
   const { troveData } = useAppSelector((state) => state.app)
   const [showOwnedOnly, setShowOwnedOnly] = React.useState(false)
+  const [showAllAugments, setShowAllAugments] = React.useState(false)
   const [filter, setFilter] = React.useState('')
+  const selectedItemMinLevel = Number(selectedItem.minimumLevel) || 0
+  const isSelectedOverLevel = Boolean(slotted) && selectedItemMinLevel > 0 && Number(slotted?.minLevel) > selectedItemMinLevel
 
   const filterApplicable = (group: GearAugment[]) => {
     let filtered = group
@@ -62,6 +65,10 @@ const AugmentSlotItem = (props: Props) => {
     if (filter) {
       const lowerFilter = filter.toLowerCase()
       filtered = filtered.filter((aug) => aug.name.toLowerCase().includes(lowerFilter))
+    }
+
+    if (!showAllAugments && selectedItemMinLevel > 0) {
+      filtered = filtered.filter((aug) => aug.minLevel <= selectedItemMinLevel)
     }
 
     if (!showOwnedOnly || !troveData) {
@@ -72,7 +79,15 @@ const AugmentSlotItem = (props: Props) => {
   }
 
   return (
-    <div key={idx} className='mx-n2 px-2 py-1 mb-1 bg-white last-child-mb-0'>
+    <div
+      key={idx}
+      className='mx-n2 px-2 py-1 mb-1 last-child-mb-0'
+      style={
+        isSelectedOverLevel
+          ? { backgroundColor: 'rgba(220, 53, 69, 0.14)' }
+          : { backgroundColor: '#ffffff' }
+      }
+    >
       <div className='d-flex align-items-center justify-content-between mb-0 mt-n1'>
         <span
           className='text-dark fw-bold d-flex flex-row justify-content-between w-100'
@@ -127,6 +142,18 @@ const AugmentSlotItem = (props: Props) => {
               style={{ fontSize: '0.7rem' }}
               autoFocus
             />
+
+            <Form.Check
+              type='switch'
+              id={`show-all-augments-${selectedItem.id}-${String(idx)}`}
+              label='Show all'
+              checked={showAllAugments}
+              onChange={(e) => {
+                setShowAllAugments(e.target.checked)
+              }}
+              className='small text-light mt-1 mb-0'
+              style={{ fontSize: '0.65rem' }}
+            />
           </div>
 
           <Dropdown.Item
@@ -146,9 +173,7 @@ const AugmentSlotItem = (props: Props) => {
               </Dropdown.Header>
 
               {filterApplicable(applicable.groups[groupName]).map((aug: GearAugment) => {
-                if (selectedItem.minimumLevel && aug.minLevel > selectedItem.minimumLevel) {
-                  return null
-                }
+                const isOverLevel = selectedItemMinLevel > 0 && aug.minLevel > selectedItemMinLevel
 
                 const results = aug.effectsAdded?.map((ench) =>
                   checkPotentialConflict(ench, currentEquipped, slot, {
@@ -180,10 +205,16 @@ const AugmentSlotItem = (props: Props) => {
                   >
                     <span className='text-truncate'>
                       {troveData && <TroveBadge itemName={aug.name} troveData={troveData} />}
-                      {aug.name} (ML:{aug.minLevel})
+                      {aug.name}
+                      {' '}
+                      <span className={isOverLevel && showAllAugments ? 'text-danger' : undefined}>
+                        (ML:{aug.minLevel})
+                      </span>
                     </span>
 
                     <span className='ms-2 flex-shrink-0'>
+                      {isOverLevel && showAllAugments && <GenericBadge badgeText='Over ML' fontSize='0.55rem' />}
+
                       {hasConflict && <GenericBadge badgeText='Redundant' />}
 
                       {hasUpgrade && <GenericBadge badgeText='Upgrade' />}

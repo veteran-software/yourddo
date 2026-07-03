@@ -17,6 +17,10 @@ const GenericBadge = (props: Props) => {
       bg = 'success'
       text = 'light'
       break
+    case 'over ml':
+      bg = 'secondary'
+      text = 'light'
+      break
     case 'equipped':
       bg = 'success'
       text = 'dark'
