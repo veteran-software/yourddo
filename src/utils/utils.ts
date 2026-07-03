@@ -121,6 +121,10 @@ export const getCumulativeIngredients = (
  * @returns {string} - The extracted subdomain or 'No subdomain' if none found.
  */
 export const getSubdomain = (): string => {
+  if (typeof window === 'undefined') {
+    return 'No subdomain'
+  }
+
   const fullHostname = window.location.hostname
   const hostnameParts = fullHostname.split('.')
 

@@ -4,9 +4,7 @@ import { serverStatusLamApi } from '../api/serverStatusLamApi.ts'
 
 import appReducer from './slices/appSlice'
 import dinosaurBoneReducer from './slices/dinosaurBoneSlice'
-import gearPlannerReducer, {
-  GEAR_PLANNER_STORAGE_KEY
-} from './slices/gearPlannerSlice'
+import gearPlannerReducer, { GEAR_PLANNER_STORAGE_KEY } from './slices/gearPlannerSlice'
 import greenSteelReducer from './slices/hgsSlice'
 import incrediblePotentialReducer from './slices/incrediblePotentialSlice'
 import legendaryGreenSteelReducer from './slices/lgsSlice'
@@ -31,6 +29,10 @@ const store = configureStore({
 })
 
 store.subscribe(() => {
+  if (typeof localStorage === 'undefined') {
+    return
+  }
+
   const state = store.getState()
 
   const persistSlices = [{ key: GEAR_PLANNER_STORAGE_KEY, data: state.gearPlanner }]

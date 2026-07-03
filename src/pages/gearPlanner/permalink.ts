@@ -1,4 +1,4 @@
-import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
+import LZString from 'lz-string'
 import traceOfMadnessData from '../../data/traceOfMadness.json'
 import { getSlotOwner } from './conflictResolver.ts'
 import { canApplyCurse, isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers.ts'
@@ -92,7 +92,7 @@ type V1Payload = [
 
 // ----- Encoding -----
 export const encodeGearPermalink = (setup: GearSetup): string => {
-  return compressToEncodedURIComponent(JSON.stringify(buildPermalinkPayloadV2(setup)))
+  return LZString.compressToEncodedURIComponent(JSON.stringify(buildPermalinkPayloadV2(setup)))
 }
 
 // ----- Decoding -----
@@ -103,7 +103,7 @@ export const tryDecodeGearPermalink = (
   allCurses: Curse[]
 ): { ok: true; data: GearSetup } | { ok: false } => {
   try {
-    const text = decompressFromEncodedURIComponent(gp)
+    const text = LZString.decompressFromEncodedURIComponent(gp)
 
     if (!text) {
       return { ok: false }

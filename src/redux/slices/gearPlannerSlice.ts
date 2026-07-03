@@ -56,6 +56,13 @@ interface PartialGearPlannerState {
 export const GEAR_PLANNER_STORAGE_KEY = 'gearPlannerState'
 
 const loadState = (): GearPlannerState => {
+  if (typeof localStorage === 'undefined') {
+    return {
+      characterSetups: [createDefaultSetup('default', 'Default Setup')],
+      activeSetupId: 'default'
+    }
+  }
+
   try {
     const serializedState: string | null = localStorage.getItem(GEAR_PLANNER_STORAGE_KEY)
     if (serializedState === null) {

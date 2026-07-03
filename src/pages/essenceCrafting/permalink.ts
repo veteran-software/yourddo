@@ -1,4 +1,4 @@
-import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
+import LZString from 'lz-string'
 import augmentMaster from '../../data/augments/augmentMaster.ts'
 import { ALL_SLOT_KEYS, DATASET, type ItemState } from './types.ts'
 
@@ -108,7 +108,7 @@ export const encodeEssencePermalink = (args: {
   })
 
   const payload: V2Payload = { v: 2, ml: masterMinLevel, a: active, c: collapsed, i: itemSlots }
-  return compressToEncodedURIComponent(JSON.stringify(payload))
+  return LZString.compressToEncodedURIComponent(JSON.stringify(payload))
 }
 
 // ----- Decoding -----
@@ -116,7 +116,7 @@ export const encodeEssencePermalink = (args: {
 // Force reload
 export const tryDecodeEssencePermalink = (cc: string): { ok: true; data: PermalinkStatePayload } | { ok: false } => {
   try {
-    const text = decompressFromEncodedURIComponent(cc)
+    const text = LZString.decompressFromEncodedURIComponent(cc)
     if (!text) return { ok: false }
     const obj = JSON.parse(text) as unknown
     const v = (obj as { v?: number }).v

@@ -280,6 +280,10 @@ export const buildItemRollupFromCsvFile = (file: File): Promise<BuildResult> =>
  * @returns {ItemRollup | null} The parsed `ItemRollup` object if data is found, or `null` if no data exists in local storage.
  */
 export const getStoredTroveData = (): ItemRollup | null => {
+  if (typeof localStorage === 'undefined') {
+    return null
+  }
+
   const storedData: string | null = localStorage.getItem('troveData')
 
   if (!storedData) {
@@ -334,5 +338,9 @@ export const getStoredTroveData = (): ItemRollup | null => {
  *                            It is serialized into a JSON string before being saved.
  */
 export const storeTroveData = (data: ItemRollup): void => {
+  if (typeof localStorage === 'undefined') {
+    return
+  }
+
   localStorage.setItem('troveData', JSON.stringify(data))
 }

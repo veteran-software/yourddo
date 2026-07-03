@@ -8,7 +8,8 @@ import tseslint from 'typescript-eslint'
 export default [
   {
     ignores: [
-      './dist/*',
+      './dist/**',
+      './dist-ssr/**',
       '**/*.css',
       '**/*.svg',
       './eslint.config.js',

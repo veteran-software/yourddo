@@ -1,4 +1,4 @@
-import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
+import LZString from 'lz-string'
 import { describe, expect, it } from 'vitest'
 import { initialPetState } from './initialState'
 import { encodeGearPermalink, tryDecodeGearPermalink } from './permalink'
@@ -38,7 +38,7 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
 
   it('should encode and decode using itemId', () => {
     const encoded: string = encodeGearPermalink(mockSetup)
-    const decodedText = decompressFromEncodedURIComponent(encoded)
+    const decodedText = LZString.decompressFromEncodedURIComponent(encoded)
     expect(decodedText).not.toBeNull()
 
     const parsed: unknown = JSON.parse(decodedText)
@@ -86,7 +86,7 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
 
     const oldPayload = ['Old Setup', 1, 32, [], [], [], [], 0, [legacyItemPayload]]
 
-    const encoded = compressToEncodedURIComponent(JSON.stringify(oldPayload))
+    const encoded = LZString.compressToEncodedURIComponent(JSON.stringify(oldPayload))
     const result = tryDecodeGearPermalink(encoded, [mockItem], [], [])
 
     expect(result.ok).toBe(true)
