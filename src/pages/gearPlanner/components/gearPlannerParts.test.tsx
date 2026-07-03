@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useState } from 'react'
 import { Provider } from 'react-redux'
 import type { Location } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import gearPlannerReducer, { type GearPlannerState } from '../../../redux/slices/gearPlannerSlice'
+import { renderGearPlanner } from '../hooks/renderGearPlanner'
 import { createDefaultSetup } from '../initialState'
 import { GearSlot } from '../types'
 import { createUpgradeViews } from '../upgradeState'
@@ -90,6 +92,7 @@ describe('Gear planner extracted UI parts', () => {
     const renderSlot = vi.fn((slot: GearSlot) => <div key={slot} data-testid={`slot-${slot}`} />)
     const onSelectSetup = vi.fn()
     const onDeleteSetup = vi.fn()
+    const onToggleCollapseAll = vi.fn()
 
     render(
       <SetupTabs
@@ -124,6 +127,8 @@ describe('Gear planner extracted UI parts', () => {
           }) as never
         }
         openSetBonusBrowser={vi.fn()}
+        allItemCardsCollapsed={false}
+        onToggleCollapseAll={onToggleCollapseAll}
         onSelectSetup={onSelectSetup}
         onDeleteSetup={onDeleteSetup}
         onBonusClick={vi.fn()}
@@ -131,6 +136,7 @@ describe('Gear planner extracted UI parts', () => {
     )
 
     expect(screen.getAllByText('Equipped Items')[0]).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /collapse all/i })).toBeInTheDocument()
     expect(screen.getAllByTestId(`slot-${GearSlot.Eyes}`)[0]).toBeInTheDocument()
     expect(screen.getAllByTestId('set-bonuses-summary')[0]).toBeInTheDocument()
     expect(screen.getAllByTestId('enchantments-summary')[0]).toBeInTheDocument()
@@ -144,6 +150,105 @@ describe('Gear planner extracted UI parts', () => {
     const secondTab = screen.getByRole('tab', { name: 'Setup 2' })
     await user.click(within(secondTab).getByRole('button'))
     expect(onDeleteSetup).toHaveBeenCalledWith('setup-2')
+
+    await user.click(screen.getByRole('button', { name: /collapse all/i }))
+    expect(onToggleCollapseAll).toHaveBeenCalledTimes(1)
+  })
+
+  it('collapses and expands an item card from the card action', async () => {
+    const user = userEvent.setup()
+    const store = configureStore({
+      reducer: {
+        app: () => ({ troveData: null })
+      }
+    })
+
+    const activeSetup = createDefaultSetup('setup-1', 'Setup 1')
+    const selectedItem = {
+      id: 'item-1',
+      name: 'Test Item',
+      minimumLevel: 20,
+      minLevel: 20,
+      type: 'Weapon',
+      material: 'Wood',
+      augments: [],
+      enchantments: [],
+      setBonus: [],
+      essenceSlots: []
+    }
+    const entityState = {
+      slots: {
+        [GearSlot.Head]: selectedItem
+      },
+      equipped: [],
+      conflicts: {},
+      slottedAugments: {},
+      slottedNearlyFinished: {},
+      slottedAlmostThere: {},
+      slottedFinishingTouch: {},
+      slottedRitualTable: {},
+      slottedLostPurpose: {},
+      slottedTraceOfMadness: {},
+      slottedFountainOfNecroticMight: {},
+      slottedStormreaverUpgrade: {},
+      slottedZhentarimAttuned: {},
+      slottedReaperForge: {}
+    } as never
+
+    const Harness = () => {
+      const [collapsedItemCards, setCollapsedItemCards] = useState<Record<string, boolean>>({})
+      const { renderSlot } = renderGearPlanner({
+        activeSetup,
+        getEntityState: () => entityState,
+        troveData: null,
+        allAugments: [],
+        allCurses: [],
+        openSlotBrowser: vi.fn(),
+        openSetBonusBrowser: vi.fn(),
+        formatDropLocations: () => null,
+        isMetal: () => false,
+        setItemMinLevel: vi.fn(),
+        setItemMaterial: vi.fn(),
+        essenceEnchantments: [],
+        setSlottedGemSetBonus: vi.fn(),
+        setSlottedAugment: vi.fn(),
+        setSlottedCurse: vi.fn(),
+        setEssenceEnchantment: vi.fn(),
+        setNearlyFinishedEnchantment: vi.fn(),
+        setAlmostThereEnchantment: vi.fn(),
+        setFinishingTouchEnchantment: vi.fn(),
+        setRitualTableEnchantment: vi.fn(),
+        setLostPurposeEnchantment: vi.fn(),
+        setTraceOfMadnessEnchantment: vi.fn(),
+        setFountainOfNecroticMight: vi.fn(),
+        setStormreaverUpgrade: vi.fn(),
+        setZhentarimAttuned: vi.fn(),
+        setReaperForge: vi.fn(),
+        isItemCardCollapsed: (itemId: string) => collapsedItemCards[itemId] ?? false,
+        toggleItemCardCollapsed: (itemId: string) => {
+          setCollapsedItemCards((prev) => ({
+            ...prev,
+            [itemId]: !prev[itemId]
+          }))
+        },
+        allItemCardsCollapsed: false
+      })
+
+      return <Provider store={store}>{renderSlot(GearSlot.Head, activeSetup)}</Provider>
+    }
+
+    render(<Harness />)
+
+    expect(screen.getByText(/ML: 20 \| Weapon/i)).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: /collapse test item/i }))
+
+    expect(screen.getByText(/ML: 20 \| Weapon/i)).toBeInTheDocument()
+    expect(screen.getByText('Test Item')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: /expand test item/i }))
+
+    expect(screen.getByText(/ML: 20 \| Weapon/i)).toBeInTheDocument()
   })
 
   it('SettingsModal updates the active setup fields', async () => {

@@ -175,6 +175,61 @@
     padding: 0.2rem 0.5rem;
 }
 
+.gear-planner-slot-header-main,
+.gear-planner-slot-header-collapse {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    min-height: 2.25rem;
+    line-height: 1.2;
+}
+
+.gear-planner-slot-header-main {
+    flex: 1 1 auto;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.gear-planner-slot-header-main-alone {
+    width: 100%;
+}
+
+.gear-planner-slot-header-label {
+    font-size: 0.85rem;
+    line-height: 1.15;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
+}
+
+.gear-planner-slot-header-main .badge {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.gear-planner-slot-header-collapse {
+    min-width: 2.25rem;
+    padding-inline: 0.6rem !important;
+    border-left: 1px solid rgba(0, 0, 0, 0.12) !important;
+}
+
+.gear-planner-slot-header-main:hover,
+.gear-planner-slot-header-main:focus-visible,
+.gear-planner-slot-header-collapse:hover,
+.gear-planner-slot-header-collapse:focus-visible {
+    background-color: rgba(0, 0, 0, 0.06) !important;
+    text-decoration: none !important;
+}
+
+.gear-planner-collapse-all-btn {
+    padding: 0.2rem 0.55rem !important;
+    font-size: 0.75rem !important;
+    line-height: 1.1;
+}
+
 .set-bonus-badge-clickable {
     cursor: pointer;
     transition: filter 0.2s ease-in-out;

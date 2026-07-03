@@ -28,7 +28,7 @@ jobs:
         cache-dependency-path: tools/*/go.mod
 
     - name: Install dependencies
-      run: yarn install
+      run: YARN_ENABLE_SCRIPTS=false yarn install
 
     - name: Prebuild
       run: yarn prebuild
