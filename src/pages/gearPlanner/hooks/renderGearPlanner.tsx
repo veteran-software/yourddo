@@ -627,5 +627,4 @@ interface Props {
   isItemCardCollapsed: (itemId: string) => boolean
   toggleItemCardCollapsed: (itemId: string) => void
   allItemCardsCollapsed: boolean
-  setAllItemCardsCollapsed: (collapsed: boolean) => void
 }

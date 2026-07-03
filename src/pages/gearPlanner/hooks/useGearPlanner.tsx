@@ -16,6 +16,24 @@ interface Props {
   enchantmentBonusType: string
 }
 
+const collectSetupItemIds = (setup: GearSetup) => {
+  const ids = new Set<string>()
+
+  for (const item of Object.values(setup.slots)) {
+    if (item) ids.add(item.id)
+  }
+
+  for (const item of Object.values(setup.artificerPet.slots)) {
+    if (item) ids.add(item.id)
+  }
+
+  for (const item of Object.values(setup.druidPet.slots)) {
+    if (item) ids.add(item.id)
+  }
+
+  return [...ids]
+}
+
 const useGearPlanner = (props: Props) => {
   const { characterSetups: setups, activeSetupId } = useAppSelector((state) => state.gearPlanner)
 
@@ -73,23 +91,7 @@ const useGearPlanner = (props: Props) => {
   const formatDropLocations = useFormatDropLocations()
   const isItemVisibleForClasses = useIsItemVisibleForClasses()
   const [collapsedItemCards, setCollapsedItemCards] = useState<Record<string, boolean>>({})
-  const currentItemIds = useMemo(() => {
-    const ids = new Set<string>()
-
-    for (const item of Object.values(activeSetup.slots)) {
-      if (item) ids.add(item.id)
-    }
-
-    for (const item of Object.values(activeSetup.artificerPet.slots)) {
-      if (item) ids.add(item.id)
-    }
-
-    for (const item of Object.values(activeSetup.druidPet.slots)) {
-      if (item) ids.add(item.id)
-    }
-
-    return [...ids]
-  }, [activeSetup.artificerPet.slots, activeSetup.druidPet.slots, activeSetup.slots])
+  const currentItemIds = useMemo(() => collectSetupItemIds(activeSetup), [activeSetup])
   const isItemCardCollapsed = useCallback((itemId: string) => collapsedItemCards[itemId] ?? false, [collapsedItemCards])
   const toggleItemCardCollapsed = useCallback((itemId: string) => {
     setCollapsedItemCards((prev) => ({
@@ -111,6 +113,9 @@ const useGearPlanner = (props: Props) => {
   )
   const allItemCardsCollapsed =
     currentItemIds.length > 0 && currentItemIds.every((itemId) => collapsedItemCards[itemId])
+  const toggleAllItemCardsCollapsed = useCallback(() => {
+    setAllItemCardsCollapsed(!allItemCardsCollapsed)
+  }, [allItemCardsCollapsed, setAllItemCardsCollapsed])
   const activeSetupWithUpgradeViews: GearSetup & UpgradeViews = useMemo(() => {
     return {
       ...activeSetup,
@@ -179,8 +184,7 @@ const useGearPlanner = (props: Props) => {
     setReaperForge: actions.setReaperForge,
     isItemCardCollapsed,
     toggleItemCardCollapsed,
-    allItemCardsCollapsed,
-    setAllItemCardsCollapsed
+    allItemCardsCollapsed
   })
 
   const observerRef = useRef<IntersectionObserver | null>(null)
@@ -269,6 +273,7 @@ const useGearPlanner = (props: Props) => {
     showSidebar,
     allItemCardsCollapsed,
     setAllItemCardsCollapsed,
+    toggleAllItemCardsCollapsed,
     updateClassProficiencies: actions.updateClassProficiencies
   }
 }

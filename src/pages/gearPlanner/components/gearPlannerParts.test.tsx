@@ -231,8 +231,7 @@ describe('Gear planner extracted UI parts', () => {
             [itemId]: !prev[itemId]
           }))
         },
-        allItemCardsCollapsed: false,
-        setAllItemCardsCollapsed: vi.fn()
+        allItemCardsCollapsed: false
       })
 
       return <Provider store={store}>{renderSlot(GearSlot.Head, activeSetup)}</Provider>

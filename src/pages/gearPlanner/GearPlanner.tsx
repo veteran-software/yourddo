@@ -237,9 +237,7 @@ const GearPlanner = () => {
               getEntityState={gpHook.getEntityState}
               openSetBonusBrowser={gpHook.openSetBonusBrowser}
               allItemCardsCollapsed={gpHook.allItemCardsCollapsed}
-              onToggleCollapseAll={() => {
-                gpHook.setAllItemCardsCollapsed(!gpHook.allItemCardsCollapsed)
-              }}
+              onToggleCollapseAll={gpHook.toggleAllItemCardsCollapsed}
               onSelectSetup={(setupId) => {
                 dispatch(setActiveSetupAction(setupId))
               }}

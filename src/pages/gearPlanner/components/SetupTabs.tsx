@@ -35,6 +35,82 @@ interface SetupTabsProps {
   onBonusClick: (name: string, bonusType: string) => void
 }
 
+interface SummaryState {
+  slottedAugments: EntityGearState['slottedAugments']
+  slottedFiligrees: EntityGearState['slottedFiligrees']
+  slottedGemSetBonuses: EntityGearState['slottedGemSetBonuses']
+  slottedLostPurpose: EntityGearState['slottedLostPurpose']
+  slottedCurses: EntityGearState['slottedCurses']
+  slottedEssenceEnchantments: EntityGearState['slottedEssenceEnchantments']
+  itemUpgrades: EntityGearState['itemUpgrades']
+  slottedNearlyFinished: EntityGearState['slottedNearlyFinished']
+  slottedAlmostThere: EntityGearState['slottedAlmostThere']
+  slottedFinishingTouch: EntityGearState['slottedFinishingTouch']
+  slottedRitualTable: EntityGearState['slottedRitualTable']
+  slottedTraceOfMadness: EntityGearState['slottedTraceOfMadness']
+  slottedFountainOfNecroticMight: EntityGearState['slottedFountainOfNecroticMight']
+  slottedStormreaverUpgrade: EntityGearState['slottedStormreaverUpgrade']
+  slottedZhentarimAttuned: EntityGearState['slottedZhentarimAttuned']
+}
+
+const SetupSummaryBlocks = ({
+  equippedItems,
+  activeSetup,
+  allItems,
+  allAugments,
+  allCurses,
+  allFiligrees,
+  essenceEnchantments,
+  openSetBonusBrowser,
+  onBonusClick
+}: {
+  equippedItems: GearItem[]
+  activeSetup: SummaryState
+  allItems: GearItem[]
+  allAugments: GearAugment[]
+  allCurses: import('../types').Curse[]
+  allFiligrees: GearItem[]
+  essenceEnchantments: EssenceEnchantment[]
+  openSetBonusBrowser: (setName: string | null, slot?: GearSlot | null) => void
+  onBonusClick: (name: string, bonusType: string) => void
+}) => (
+  <>
+    <SetBonusesSummary
+      equippedItems={equippedItems}
+      slottedAugments={activeSetup.slottedAugments}
+      slottedFiligrees={activeSetup.slottedFiligrees}
+      slottedGemSetBonuses={activeSetup.slottedGemSetBonuses}
+      slottedLostPurpose={activeSetup.slottedLostPurpose}
+      onSetClick={openSetBonusBrowser}
+    />
+
+    <EnchantmentsSummary
+      equippedItems={equippedItems}
+      slottedAugments={activeSetup.slottedAugments}
+      slottedCurses={activeSetup.slottedCurses}
+      slottedFiligrees={activeSetup.slottedFiligrees}
+      slottedGemSetBonuses={activeSetup.slottedGemSetBonuses}
+      slottedEssenceEnchantments={activeSetup.slottedEssenceEnchantments}
+      itemUpgrades={activeSetup.itemUpgrades}
+      essenceEnchantments={essenceEnchantments}
+      slottedNearlyFinished={activeSetup.slottedNearlyFinished}
+      slottedAlmostThere={activeSetup.slottedAlmostThere}
+      slottedFinishingTouch={activeSetup.slottedFinishingTouch}
+      slottedRitualTable={activeSetup.slottedRitualTable}
+      slottedLostPurpose={activeSetup.slottedLostPurpose}
+      slottedTraceOfMadness={activeSetup.slottedTraceOfMadness}
+      slottedFountainOfNecroticMight={activeSetup.slottedFountainOfNecroticMight}
+      slottedStormreaverUpgrade={activeSetup.slottedStormreaverUpgrade}
+      slottedZhentarimAttuned={activeSetup.slottedZhentarimAttuned}
+      allItems={allItems}
+      allAugments={allAugments}
+      allCurses={allCurses}
+      allFiligrees={allFiligrees}
+      onBonusClick={onBonusClick}
+    />
+  </>
+)
+
 const PetGearSection = ({
   title,
   slots,
@@ -71,37 +147,15 @@ const PetGearSection = ({
 
     <Row>{slots.map((slot) => renderSlot(slot, setup))}</Row>
 
-    <SetBonusesSummary
+    <SetupSummaryBlocks
       equippedItems={entityState.equipped}
-      slottedAugments={entityState.slottedAugments}
-      slottedFiligrees={entityState.slottedFiligrees}
-      slottedGemSetBonuses={entityState.slottedGemSetBonuses}
-      slottedLostPurpose={entityState.slottedLostPurpose}
-      onSetClick={openSetBonusBrowser}
-    />
-
-    <EnchantmentsSummary
-      equippedItems={entityState.equipped}
-      slottedAugments={entityState.slottedAugments}
-      slottedCurses={entityState.slottedCurses}
-      slottedFiligrees={entityState.slottedFiligrees}
-      slottedGemSetBonuses={entityState.slottedGemSetBonuses}
-      slottedEssenceEnchantments={entityState.slottedEssenceEnchantments}
-      itemUpgrades={entityState.itemUpgrades}
-      essenceEnchantments={essenceEnchantments}
-      slottedNearlyFinished={entityState.slottedNearlyFinished}
-      slottedAlmostThere={entityState.slottedAlmostThere}
-      slottedFinishingTouch={entityState.slottedFinishingTouch}
-      slottedRitualTable={entityState.slottedRitualTable}
-      slottedLostPurpose={entityState.slottedLostPurpose}
-      slottedTraceOfMadness={entityState.slottedTraceOfMadness}
-      slottedFountainOfNecroticMight={entityState.slottedFountainOfNecroticMight}
-      slottedStormreaverUpgrade={entityState.slottedStormreaverUpgrade}
-      slottedZhentarimAttuned={entityState.slottedZhentarimAttuned}
+      activeSetup={entityState}
       allItems={allItems}
       allAugments={allAugments}
       allCurses={allCurses}
       allFiligrees={allFiligrees}
+      essenceEnchantments={essenceEnchantments}
+      openSetBonusBrowser={openSetBonusBrowser}
       onBonusClick={onBonusClick}
     />
   </div>
@@ -189,37 +243,15 @@ const SetupTabs = ({
 
               <Row>{GEAR_SLOTS.map((slot) => renderSlot(slot, setup))}</Row>
 
-              <SetBonusesSummary
+              <SetupSummaryBlocks
                 equippedItems={characterEquipped}
-                slottedAugments={activeSetup.slottedAugments}
-                slottedFiligrees={activeSetup.slottedFiligrees}
-                slottedGemSetBonuses={activeSetup.slottedGemSetBonuses}
-                slottedLostPurpose={activeSetup.slottedLostPurpose}
-                onSetClick={openSetBonusBrowser}
-              />
-
-              <EnchantmentsSummary
-                equippedItems={characterEquipped}
-                slottedAugments={activeSetup.slottedAugments}
-                slottedCurses={activeSetup.slottedCurses}
-                slottedFiligrees={activeSetup.slottedFiligrees}
-                slottedGemSetBonuses={activeSetup.slottedGemSetBonuses}
-                slottedEssenceEnchantments={activeSetup.slottedEssenceEnchantments}
-                itemUpgrades={activeSetup.itemUpgrades}
-                essenceEnchantments={essenceEnchantments}
-                slottedNearlyFinished={activeSetup.slottedNearlyFinished}
-                slottedAlmostThere={activeSetup.slottedAlmostThere}
-                slottedFinishingTouch={activeSetup.slottedFinishingTouch}
-                slottedRitualTable={activeSetup.slottedRitualTable}
-                slottedLostPurpose={activeSetup.slottedLostPurpose}
-                slottedTraceOfMadness={activeSetup.slottedTraceOfMadness}
-                slottedFountainOfNecroticMight={activeSetup.slottedFountainOfNecroticMight}
-                slottedStormreaverUpgrade={activeSetup.slottedStormreaverUpgrade}
-                slottedZhentarimAttuned={activeSetup.slottedZhentarimAttuned}
+                activeSetup={activeSetup}
                 allItems={allItems}
                 allAugments={allAugments}
                 allCurses={allCurses}
                 allFiligrees={allFiligrees}
+                essenceEnchantments={essenceEnchantments}
+                openSetBonusBrowser={openSetBonusBrowser}
                 onBonusClick={onBonusClick}
               />
 
