@@ -174,16 +174,17 @@ const withActiveItem = (
   })
 }
 
+const removeRecordKey = <T>(record: Record<string, T> | undefined, key: string): Record<string, T> =>
+  Object.fromEntries(Object.entries(record ?? {}).filter(([entryKey]) => entryKey !== key))
+
 const clearMetadata = (target: SlottedProperties, id: string) => {
-  /* eslint-disable @typescript-eslint/no-dynamic-delete */
-  delete target.slottedAugments[id]
-  delete target.slottedCurses[id]
-  delete target.slottedFiligrees[id]
-  delete target.unlockedFiligreeSlots[id]
-  delete target.slottedGemSetBonuses[id]
-  delete target.slottedEssenceEnchantments[id]
+  target.slottedAugments = removeRecordKey(target.slottedAugments, id)
+  target.slottedCurses = removeRecordKey(target.slottedCurses, id)
+  target.slottedFiligrees = removeRecordKey(target.slottedFiligrees, id)
+  target.unlockedFiligreeSlots = removeRecordKey(target.unlockedFiligreeSlots, id)
+  target.slottedGemSetBonuses = removeRecordKey(target.slottedGemSetBonuses, id)
+  target.slottedEssenceEnchantments = removeRecordKey(target.slottedEssenceEnchantments, id)
   clearItemUpgradeState(target.itemUpgrades, id)
-  /* eslint-enable @typescript-eslint/no-dynamic-delete */
 }
 
 const gearPlannerSlice = createSlice({
@@ -308,9 +309,7 @@ const gearPlannerSlice = createSlice({
       withActiveTarget(state, slot, (target) => {
         const currentItem = Object.values(target.slots).find((item) => item?.id === itemId)
         if (currentItem && !canApplyCurse(currentItem)) {
-          /* eslint-disable @typescript-eslint/no-dynamic-delete */
-          delete target.slottedCurses[itemId]
-          /* eslint-enable @typescript-eslint/no-dynamic-delete */
+          target.slottedCurses = removeRecordKey(target.slottedCurses, itemId)
           return
         }
 

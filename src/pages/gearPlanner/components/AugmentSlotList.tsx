@@ -40,8 +40,6 @@ const AugmentSlotsList = (props: Props) => {
             break
           case 'Moon':
             bgColor = 'bg-dark'
-            // eslint-disable-next-line sonarjs/no-redundant-assignments
-            textColor = 'text-white'
             break
         }
 
