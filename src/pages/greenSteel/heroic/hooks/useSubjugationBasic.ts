@@ -4,11 +4,7 @@ import { useAppSelector } from '../../../../redux/hooks.ts'
 import type { Enhancement } from '../../../../types/core.ts'
 import type { CraftingIngredient } from '../../../../types/crafting.ts'
 import { deconstructHgsShard } from '../../../../utils/objectUtils.ts'
-import {
-  baseElemental,
-  type ElementalList,
-  subjugationElementalList
-} from '../../common/helpers/elementalData.ts'
+import { baseElemental, type ElementalList, subjugationElementalList } from '../../common/helpers/elementalData.ts'
 import useIngredientsMap from './useIngredientMap.ts'
 
 const useSubjugationBasic = () => {
@@ -73,8 +69,7 @@ const useSubjugationBasic = () => {
 
   const elemental: ElementalList[] = useMemo(() => subjugationElementalList, [])
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const filterCallback = useCallback((item: CraftingIngredient, elementName: string, _elements?: string[]) => {
+  const filterCallback = useCallback((item: CraftingIngredient, elementName: string) => {
     const directMatchNamespaces = new Set(
       subjugationElementalList
         .filter((el: ElementalList) => !baseElemental.some((base: ElementalList) => base.name === el.name))

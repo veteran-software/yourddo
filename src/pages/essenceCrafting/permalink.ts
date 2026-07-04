@@ -76,10 +76,11 @@ export interface PermalinkStatePayload {
 }
 
 // ----- Helpers -----
+let nextGeneratedId = 0
+
 const genId = (): string =>
   (globalThis.crypto as Crypto | undefined)?.randomUUID() ??
-  // eslint-disable-next-line sonarjs/pseudo-random
-  `cc-${Date.now().toString()}-${Math.random().toString(36).slice(2)}`
+  `cc-${Date.now().toString()}-${(nextGeneratedId++).toString(36)}`
 
 // ----- Encoding -----
 export const encodeEssencePermalink = (args: {

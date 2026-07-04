@@ -61,6 +61,71 @@ interface QuestDef {
 
 const allQuests: QuestDef[] = questsData
 
+interface StoredTimestampEntry {
+  id?: unknown
+  lastDoneAt?: unknown
+  turnedInAt?: unknown
+}
+
+const buildTimestampMap = (entries: unknown, valueKey: 'lastDoneAt' | 'turnedInAt'): Record<string, number> => {
+  if (!Array.isArray(entries)) {
+    return {}
+  }
+
+  const map: Record<string, number> = {}
+
+  for (const entry of entries) {
+    const item = entry as StoredTimestampEntry
+    const id = typeof item.id === 'string' ? item.id : undefined
+    const value = typeof item[valueKey] === 'number' ? item[valueKey] : 0
+    if (id && Number.isFinite(value)) {
+      map[id] = value
+    }
+  }
+
+  return map
+}
+
+const loadTimestampMap = (storageKey: string, valueKey: 'lastDoneAt' | 'turnedInAt'): Record<string, number> => {
+  const raw = readLocalStorageItem(storageKey)
+  if (!raw) {
+    return {}
+  }
+
+  try {
+    return buildTimestampMap(JSON.parse(raw), valueKey)
+  } catch {
+    return {}
+  }
+}
+
+const pruneTimestampMap = (map: Record<string, number>, validIds: Set<string>): Record<string, number> =>
+  Object.fromEntries(Object.entries(map).filter(([id]) => validIds.has(id)))
+
+const loadSagaItemsFromLocalStorage = (): { id: string; completed: boolean; turnedIn: boolean }[] | null => {
+  const raw = readLocalStorageItem(STORAGE_KEY_V2)
+  if (!raw) {
+    return null
+  }
+
+  try {
+    const arr = JSON.parse(raw) as { id?: unknown; completed?: unknown; turnedIn?: unknown }[]
+    if (!Array.isArray(arr)) {
+      return null
+    }
+
+    return arr
+      .map((e) => ({
+        id: typeof e.id === 'string' ? e.id : undefined,
+        completed: Boolean(e.completed),
+        turnedIn: Boolean(e.turnedIn)
+      }))
+      .filter((e) => Boolean(e.id)) as { id: string; completed: boolean; turnedIn: boolean }[]
+  } catch {
+    return null
+  }
+}
+
 // Read statuses from localStorage and merge onto the authoritative JSON list
 
 // fuzzy-ish case-insensitive match (substring on normalized text)
@@ -342,159 +407,69 @@ const SagaTracker = () => {
   })
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   // quest last completion timestamp (epoch ms). Applies globally across sagas
-  //eslint-disable-next-line sonarjs/cognitive-complexity
-  const [questDoneAt, setQuestDoneAt] = useState<Record<string, number>>(() => {
-    try {
-      const raw = readLocalStorageItem(STORAGE_KEY_QUESTS_V1)
-      if (!raw) return {}
-
-      const arr = JSON.parse(raw) as { id?: unknown; lastDoneAt?: unknown }[]
-      const map: Record<string, number> = {}
-
-      if (Array.isArray(arr)) {
-        for (const e of arr) {
-          const id = typeof e.id === 'string' ? e.id : undefined
-          const t = typeof e.lastDoneAt === 'number' ? e.lastDoneAt : 0
-          if (id && Number.isFinite(t)) map[id] = t
-        }
-      }
-
-      // prune unknown quests
-      const known = new Set(allQuests.map((q) => q.id))
-      for (const k of Object.keys(map)) {
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-        if (!known.has(k)) delete map[k]
-      }
-
-      return map
-    } catch {
-      return {}
-    }
-  })
+  const [questDoneAt, setQuestDoneAt] = useState<Record<string, number>>(() =>
+    pruneTimestampMap(loadTimestampMap(STORAGE_KEY_QUESTS_V1, 'lastDoneAt'), new Set(allQuests.map((q) => q.id)))
+  )
 
   // per-saga turned-in time, used to determine if a quest counts for that saga
-  //eslint-disable-next-line sonarjs/cognitive-complexity
-  const [turnedInAt, setTurnedInAt] = useState<Record<string, number>>(() => {
-    try {
-      const raw = readLocalStorageItem(STORAGE_KEY_TURNED_IN_AT_V1)
-      if (!raw) return {}
-      const arr = JSON.parse(raw) as { id?: unknown; turnedInAt?: unknown }[]
-      const map: Record<string, number> = {}
-      if (Array.isArray(arr)) {
-        for (const e of arr) {
-          const id = typeof e.id === 'string' ? e.id : undefined
-          const t = typeof e.turnedInAt === 'number' ? e.turnedInAt : 0
-          if (id && Number.isFinite(t)) map[id] = t
-        }
-      }
-
-      // prune unknown sagas
-      const known = new Set(fixedSagas.map((s) => s.id))
-      for (const k of Object.keys(map)) {
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-        if (!known.has(k)) delete map[k]
-      }
-
-      return map
-    } catch {
-      return {}
-    }
-  })
+  const [turnedInAt, setTurnedInAt] = useState<Record<string, number>>(() =>
+    pruneTimestampMap(loadTimestampMap(STORAGE_KEY_TURNED_IN_AT_V1, 'turnedInAt'), new Set(fixedSagas.map((s) => s.id)))
+  )
 
   // expand/collapse state per saga row
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
+  const migrateSagaStorage = async () => {
+    await requestPersistentStorage()
+
+    try {
+      let dbItems = await idbGetSagaItems()
+      let dbQuests = await idbGetQuestDoneAt()
+      let dbTurned = await idbGetTurnedInAt()
+
+      if (!dbItems) {
+        const localItems = loadSagaItemsFromLocalStorage()
+        if (localItems) {
+          dbItems = localItems
+          await idbSetSagaItems(localItems)
+        }
+      }
+
+      if (!dbQuests) {
+        dbQuests = loadTimestampMap(STORAGE_KEY_QUESTS_V1, 'lastDoneAt')
+        if (Object.keys(dbQuests).length > 0) {
+          await idbSetQuestDoneAt(dbQuests)
+        }
+      }
+
+      if (!dbTurned) {
+        dbTurned = loadTimestampMap(STORAGE_KEY_TURNED_IN_AT_V1, 'turnedInAt')
+        if (Object.keys(dbTurned).length > 0) {
+          await idbSetTurnedInAt(dbTurned)
+        }
+      }
+
+      if (dbItems && Array.isArray(dbItems)) {
+        const status = new Map(dbItems.map((e) => [e.id, e]))
+        setItems(
+          fixedSagas.map((s) => ({
+            ...s,
+            completed: Boolean(status.get(s.id)?.completed),
+            turnedIn: Boolean(status.get(s.id)?.turnedIn)
+          }))
+        )
+      }
+
+      if (Object.keys(dbQuests).length > 0) setQuestDoneAt(dbQuests)
+      if (Object.keys(dbTurned).length > 0) setTurnedInAt(dbTurned)
+    } catch (e) {
+      console.error('IDB load/migration failed, relying on localStorage initial state', e)
+    }
+  }
+
   // One-time: request persistent storage and migrate from localStorage to IndexedDB if needed.
   useEffect(() => {
-    //eslint-disable-next-line sonarjs/cognitive-complexity
-    ;(async () => {
-      await requestPersistentStorage()
-
-      try {
-        let dbItems = await idbGetSagaItems()
-        let dbQuests = await idbGetQuestDoneAt()
-        let dbTurned = await idbGetTurnedInAt()
-
-        // Fallback/Migration: if IndexedDB empty, try to migrate from localStorage
-        if (!dbItems) {
-          const raw = readLocalStorageItem(STORAGE_KEY_V2)
-          if (raw) {
-            try {
-              const arr = JSON.parse(raw) as { id?: unknown; completed?: unknown; turnedIn?: unknown }[]
-              if (Array.isArray(arr)) {
-                dbItems = arr
-                  .map((e) => ({
-                    id: typeof e.id === 'string' ? e.id : undefined,
-                    completed: Boolean(e.completed),
-                    turnedIn: Boolean(e.turnedIn)
-                  }))
-                  .filter((e) => Boolean(e.id)) as { id: string; completed: boolean; turnedIn: boolean }[]
-                await idbSetSagaItems(dbItems)
-              }
-            } catch {
-              /* ignore */
-            }
-          }
-        }
-
-        if (!dbQuests) {
-          const raw = readLocalStorageItem(STORAGE_KEY_QUESTS_V1)
-          if (raw) {
-            try {
-              const arr = JSON.parse(raw) as { id?: unknown; lastDoneAt?: unknown }[]
-              if (Array.isArray(arr)) {
-                dbQuests = {}
-                for (const e of arr) {
-                  const id = typeof e.id === 'string' ? e.id : undefined
-                  const t = typeof e.lastDoneAt === 'number' ? e.lastDoneAt : 0
-                  if (id && Number.isFinite(t)) dbQuests[id] = t
-                }
-                await idbSetQuestDoneAt(dbQuests)
-              }
-            } catch {
-              /* ignore */
-            }
-          }
-        }
-
-        if (!dbTurned) {
-          const raw = readLocalStorageItem(STORAGE_KEY_TURNED_IN_AT_V1)
-          if (raw) {
-            try {
-              const arr = JSON.parse(raw) as { id?: unknown; turnedInAt?: unknown }[]
-              if (Array.isArray(arr)) {
-                dbTurned = {}
-                for (const e of arr) {
-                  const id = typeof e.id === 'string' ? e.id : undefined
-                  const t = typeof e.turnedInAt === 'number' ? e.turnedInAt : 0
-                  if (id && Number.isFinite(t)) dbTurned[id] = t
-                }
-                await idbSetTurnedInAt(dbTurned)
-              }
-            } catch {
-              /* ignore */
-            }
-          }
-        }
-
-        // Hydrate state from whatever we have (IDB or migrated or nothing)
-        if (dbItems && Array.isArray(dbItems)) {
-          const status = new Map(dbItems.map((e) => [e.id, e]))
-          setItems(
-            fixedSagas.map((s) => ({
-              ...s,
-              completed: Boolean(status.get(s.id)?.completed),
-              turnedIn: Boolean(status.get(s.id)?.turnedIn)
-            }))
-          )
-        }
-
-        if (dbQuests) setQuestDoneAt(dbQuests)
-        if (dbTurned) setTurnedInAt(dbTurned)
-      } catch (e) {
-        console.error('IDB load/migration failed, relying on localStorage initial state', e)
-      }
-    })().catch(console.error)
+    migrateSagaStorage().catch(console.error)
   }, [])
 
   useEffect(() => {
@@ -617,28 +592,30 @@ const SagaTracker = () => {
   }
 
   const toggleTurnedIn = (id: string) => {
+    let nowTurnedIn = false
+
     setItems((prev) =>
       prev.map((i) => {
         if (i.id !== id) {
           return i
         }
 
-        const nowTurnedIn = !i.turnedIn
-        // update timestamp map to reflect turn-in point for this saga
-        // eslint-disable-next-line sonarjs/no-nested-functions
-        setTurnedInAt((m) => {
-          const copy = { ...m }
-          if (nowTurnedIn) {
-            copy[id] = Date.now()
-          } else {
-            // clearing turned in re-allows all previously completed quests to count
-            copy[id] = 0
-          }
-          return copy
-        })
+        nowTurnedIn = !i.turnedIn
         return { ...i, turnedIn: nowTurnedIn }
       })
     )
+
+    // update timestamp map to reflect turn-in point for this saga
+    setTurnedInAt((m) => {
+      const copy = { ...m }
+      if (nowTurnedIn) {
+        copy[id] = Date.now()
+      } else {
+        // clearing turned in re-allows all previously completed quests to count
+        copy[id] = 0
+      }
+      return copy
+    })
   }
 
   const resetChecks = () => {

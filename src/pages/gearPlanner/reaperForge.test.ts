@@ -100,7 +100,7 @@ describe('reaper forge helpers', () => {
       'Tactical DC: Sunder',
       'Tactical DC: Improved Sunder',
       'Tactical DC: Stunning',
-      'Assassinate DCs'
+      'Assassin Special Ability DC'
     ])
     expect(gloves?.grants).not.toContainEqual({ stat: 'All Skills', modifier: 1 })
     expect(necklace?.grants).not.toContainEqual({ stat: 'Spell Power', modifier: 2 })

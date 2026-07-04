@@ -46,6 +46,12 @@ const solveInternal = (
 }
 
 const lightsOutSolver = () => {
+  const randomFraction = (): number => {
+    const bytes = new Uint32Array(1)
+    globalThis.crypto.getRandomValues(bytes)
+    return bytes[0] / 2 ** 32
+  }
+
   const getSolver = (config: Config) => {
     const indexOf: number[][] = Array.from({ length: config.rows }, () => new Array(config.cols).fill(-1) as number[])
     let counter = 0
@@ -81,8 +87,7 @@ const lightsOutSolver = () => {
     const presses = initBoard(config)
     for (let r = 0; r < config.rows; r++) {
       for (let c = 0; c < config.cols; c++) {
-        // eslint-disable-next-line sonarjs/pseudo-random
-        if (config.mask[r][c] && Math.random() < chance) {
+        if (config.mask[r][c] && randomFraction() < chance) {
           presses[r][c] = 1
         }
       }

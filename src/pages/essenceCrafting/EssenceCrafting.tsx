@@ -386,9 +386,10 @@ const EssenceCrafting = () => {
       // Deselecting: remove this item's state entirely to clear all data
       setItems((prev) => {
         if (!(slotKey in prev)) return prev
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars,sonarjs/no-unused-vars
-        const { [slotKey]: _removed, ...rest } = prev
-        return rest
+        const nextItems: Record<string, ItemState> = Object.fromEntries(
+          Object.entries(prev).filter(([key]) => key !== slotKey)
+        )
+        return nextItems
       })
 
       return
