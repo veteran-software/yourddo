@@ -118,3 +118,39 @@ export const normalizeCanonicalPath = (path: string) => {
 
   return normalized
 }
+
+export const buildStructuredData = (origin: string, seo: SeoConfig, canonicalUrl: string): Record<string, unknown> => ({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${origin}#organization`,
+      name: SITE_NAME,
+      url: origin,
+      logo: `${origin}/web-app-manifest-512x512.png`
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${origin}#website`,
+      name: SITE_NAME,
+      url: origin,
+      description: DEFAULT_DESCRIPTION,
+      publisher: {
+        '@id': `${origin}#organization`
+      }
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonicalUrl}#webpage`,
+      name: seo.title,
+      description: seo.description,
+      url: canonicalUrl,
+      isPartOf: {
+        '@id': `${origin}#website`
+      },
+      about: {
+        '@id': `${origin}#organization`
+      }
+    }
+  ]
+})

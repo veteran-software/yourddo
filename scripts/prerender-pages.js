@@ -64,6 +64,14 @@ const upsertCanonical = (html, href) => {
   return replaceOrInsert(html, pattern, replacement)
 }
 
+const escapeJsonLd = (value) =>
+  JSON.stringify(value)
+    .replaceAll('<', '\\u003c')
+    .replaceAll('>', '\\u003e')
+    .replaceAll('&', '\\u0026')
+    .replaceAll('\u2028', '\\u2028')
+    .replaceAll('\u2029', '\\u2029')
+
 const upsertTitle = (html, title) => html.replace(/<title>.*?<\/title>/is, `<title>${escapeHtml(title)}</title>`)
 
 const buildHtml = (template, prerender) => {
@@ -82,6 +90,11 @@ const buildHtml = (template, prerender) => {
   html = upsertMetaName(html, 'twitter:description', prerender.description)
   html = upsertMetaName(html, 'twitter:image', `${new URL(prerender.canonicalUrl).origin}/web-app-manifest-512x512.png`)
   html = upsertCanonical(html, prerender.canonicalUrl)
+  html = replaceOrInsert(
+    html,
+    /<script\s+id="structured-data"\s+type="application\/ld\+json">.*?<\/script>/is,
+    `<script id="structured-data" type="application/ld+json">${escapeJsonLd(prerender.structuredData)}</script>`
+  )
   html = html.replace(/<main id="root"><\/main>/, `<main id="root">${prerender.html}</main>`)
 
   return html

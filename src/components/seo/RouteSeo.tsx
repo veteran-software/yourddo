@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import { getSubdomain } from '../../utils/utils'
-import { normalizeCanonicalPath, resolveSeo, SITE_NAME } from './seoConfig.ts'
+import { buildStructuredData, normalizeCanonicalPath, resolveSeo, SITE_NAME } from './seoConfig.ts'
 
 const setMetaTagByName = (name: string, value: string) => {
   const selector = `meta[name="${name}"]`
@@ -39,6 +39,19 @@ const setLinkHref = (selector: string, href: string) => {
   tag.href = href
 }
 
+const setJsonLd = (id: string, data: Record<string, unknown>) => {
+  const selector = `script#${id}[type="application/ld+json"]`
+  const tag = document.head.querySelector<HTMLScriptElement>(selector) ?? document.createElement('script')
+
+  if (!tag.isConnected) {
+    tag.type = 'application/ld+json'
+    tag.id = id
+    document.head.append(tag)
+  }
+
+  tag.textContent = JSON.stringify(data)
+}
+
 const RouteSeo = () => {
   const location = useLocation()
 
@@ -56,6 +69,7 @@ const RouteSeo = () => {
   useEffect(() => {
     const origin = window.location.origin
     const canonicalUrl = `${origin}${normalizeCanonicalPath(seo.canonicalPath)}`
+    const structuredData = buildStructuredData(origin, seo, canonicalUrl)
 
     document.title = seo.title
     setMetaTagByName('description', seo.description)
@@ -71,6 +85,7 @@ const RouteSeo = () => {
     setMetaTagByName('twitter:description', seo.description)
     setMetaTagByName('twitter:image', `${origin}${logo}`)
     setLinkHref('link[rel="canonical"]', canonicalUrl)
+    setJsonLd('structured-data', structuredData)
   }, [seo])
 
   return null

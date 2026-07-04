@@ -2,7 +2,7 @@ import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App.tsx'
-import { normalizeCanonicalPath, resolveSeo, SITE_NAME } from './components/seo/seoConfig.ts'
+import { buildStructuredData, normalizeCanonicalPath, resolveSeo, SITE_NAME } from './components/seo/seoConfig.ts'
 import store from './redux/store.ts'
 
 export interface PrerenderResult {
@@ -12,6 +12,7 @@ export interface PrerenderResult {
   canonicalUrl: string
   robots: string
   siteName: string
+  structuredData: Record<string, unknown>
 }
 
 const DEFAULT_ORIGIN = 'https://yourddo.com'
@@ -21,6 +22,7 @@ export const render = (url: string, origin = DEFAULT_ORIGIN): PrerenderResult =>
   const seo = resolveSeo(pathname)
   const canonicalPath = seo.canonicalPath ?? seo.path ?? pathname
   const canonicalUrl = `${origin}${normalizeCanonicalPath(canonicalPath)}`
+  const structuredData = buildStructuredData(origin, seo, canonicalUrl)
 
   const html = renderToString(
     <MemoryRouter initialEntries={[url]}>
@@ -36,6 +38,7 @@ export const render = (url: string, origin = DEFAULT_ORIGIN): PrerenderResult =>
     description: seo.description,
     canonicalUrl,
     robots: seo.noIndex ? 'noindex, nofollow' : 'index, follow',
-    siteName: SITE_NAME
+    siteName: SITE_NAME,
+    structuredData
   }
 }
