@@ -2,13 +2,8 @@ import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App.tsx'
-import {
-  buildStructuredData,
-  normalizeCanonicalPath,
-  resolveSeo,
-  SITE_NAME,
-  SITE_PREVIEW_IMAGE_PATH
-} from './components/seo/seoConfig.ts'
+import { buildStructuredData, normalizeCanonicalPath, resolveSeo } from './components/seo/seoConfig.ts'
+import { SITE_NAME, SITE_PREVIEW_IMAGE_PATH } from './components/seo/siteMeta.ts'
 import store from './redux/store.ts'
 
 export interface PrerenderResult {

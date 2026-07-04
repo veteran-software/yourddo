@@ -1,5 +1,11 @@
 import LZString from 'lz-string'
 import augmentMaster from '../../data/augments/augmentMaster.ts'
+import {
+  buildQueryParamUrl,
+  type LocationLike,
+  readQueryParamFromLocation,
+  removeQueryParamFromLocation
+} from '../../utils/urlHelpers.ts'
 import { ALL_SLOT_KEYS, DATASET, type ItemState } from './types.ts'
 
 // ----- Internal: runtime dictionaries and constants (computed once per module load) -----
@@ -188,41 +194,12 @@ export const tryDecodeEssencePermalink = (cc: string): { ok: true; data: Permali
   }
 }
 
-// ----- URL helpers (BrowserRouter + HashRouter) -----
-export interface LocationLike {
-  pathname: string
-  search: string
-}
-
 export const readCcFromUrl = (
   location: LocationLike,
   win?: Window
 ): { cc: string | null; source: 'search' | 'hash' | null } => {
-  try {
-    const routerParams = new URLSearchParams(location.search)
-    const ccFromRouter = routerParams.get('cc')
-    if (ccFromRouter) return { cc: ccFromRouter, source: 'search' }
-
-    const resolvedWindow = win ?? (typeof window !== 'undefined' ? window : undefined)
-    if (!resolvedWindow) {
-      return { cc: null, source: null }
-    }
-
-    const hash = resolvedWindow.location.hash
-    if (hash.startsWith('#')) {
-      const hashBody = hash.slice(1)
-      const qm = hashBody.indexOf('?')
-      if (qm >= 0) {
-        const query = hashBody.slice(qm + 1)
-        const hashParams = new URLSearchParams(query)
-        const ccFromHash = hashParams.get('cc')
-        if (ccFromHash) return { cc: ccFromHash, source: 'hash' }
-      }
-    }
-  } catch {
-    // ignore
-  }
-  return { cc: null, source: null }
+  const result = readQueryParamFromLocation(location, 'cc', win)
+  return { cc: result.value, source: result.source }
 }
 
 export const removeCcFromUrl = async (
@@ -231,40 +208,9 @@ export const removeCcFromUrl = async (
   source: 'search' | 'hash' | null,
   win?: Window
 ): Promise<void> => {
-  if (!source) return
-
-  if (source === 'search') {
-    await navigate({ pathname: location.pathname, search: '' }, { replace: true })
-    return
-  }
-
-  const resolvedWindow = win ?? (typeof window !== 'undefined' ? window : undefined)
-  if (!resolvedWindow || typeof resolvedWindow.history.replaceState !== 'function') return
-
-  const { origin, pathname, hash, search } = resolvedWindow.location
-  const hashBody = (hash || '').replace(/^#/, '')
-  const [hashPath, hashQuery] = hashBody.split('?')
-  const params = new URLSearchParams(hashQuery)
-  params.delete('cc')
-  const newHash = params.toString() ? `#${hashPath}?${params.toString()}` : `#${hashPath}`
-  const newUrl = `${origin}${pathname}${search}${newHash}`
-  resolvedWindow.history.replaceState({}, '', newUrl)
+  await removeQueryParamFromLocation(navigate, location, source, 'cc', win)
 }
 
 export const buildPermalinkUrl = (encoded: string, location: LocationLike, win?: Window): string => {
-  const resolvedWindow = win ?? (typeof window !== 'undefined' ? window : undefined)
-
-  if (!resolvedWindow) {
-    return `/essence-crafting?cc=${encoded}`
-  }
-  const { origin, pathname, hash } = resolvedWindow.location
-  const currentPath = location.pathname || '/essence-crafting'
-  if (hash.startsWith('#/')) {
-    const params = new URLSearchParams()
-    params.set('cc', encoded)
-    return `${origin}${pathname}#${currentPath}?${params.toString()}`
-  }
-  const url = new URL(origin + currentPath)
-  url.searchParams.set('cc', encoded)
-  return url.toString()
+  return buildQueryParamUrl(encoded, location, 'cc', '/essence-crafting', win)
 }

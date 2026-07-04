@@ -1,3 +1,5 @@
+import { DEFAULT_DESCRIPTION, SITE_NAME } from './siteMeta.ts'
+
 export interface SeoConfig {
   title: string
   description: string
@@ -5,12 +7,6 @@ export interface SeoConfig {
   canonicalPath?: string
   noIndex?: boolean
 }
-
-export const SITE_NAME = 'YourDDO'
-export const SITE_PREVIEW_IMAGE_PATH = '/social-preview.svg'
-
-export const DEFAULT_DESCRIPTION =
-  'YourDDO is a DDO crafting and planning toolkit for gear, augments, set bonuses, essence crafting, and saga tracking.'
 
 export const ROUTE_SEO: SeoConfig[] = [
   {

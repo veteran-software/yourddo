@@ -1,13 +1,8 @@
 import { useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 import { getSubdomain } from '../../utils/utils'
-import {
-  buildStructuredData,
-  normalizeCanonicalPath,
-  resolveSeo,
-  SITE_NAME,
-  SITE_PREVIEW_IMAGE_PATH
-} from './seoConfig.ts'
+import { buildStructuredData, normalizeCanonicalPath, resolveSeo } from './seoConfig.ts'
+import { SITE_NAME, SITE_PREVIEW_IMAGE_PATH } from './siteMeta.ts'
 
 const setMetaTagByName = (name: string, value: string) => {
   const selector = `meta[name="${name}"]`
