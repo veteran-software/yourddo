@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
-import { Badge, Button, Card, Col, Container, Image, Row, Stack } from 'react-bootstrap'
+import { Badge, Button, Card, Col, Container, Dropdown, Row, Stack } from 'react-bootstrap'
 import {
   FaArrowRight,
   FaArrowUpRightFromSquare,
@@ -17,11 +17,12 @@ import {
   FaWandMagicSparkles
 } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
-import logo from '../assets/logo.png'
 import {
+  decodeRecentToolEntry,
   FAVORITE_TOOLS_STORAGE_KEY,
   readStorageList,
   RECENT_TOOLS_STORAGE_KEY,
+  recordRecentToolPath,
   writeStorageList
 } from './home/homeShelf.ts'
 import './Home.scss'
@@ -33,20 +34,27 @@ interface ToolCard {
   to: string
   icon: ReactNode
   actionLabel?: string
-  tone: 'blue' | 'gold' | 'green'
+  actions?: { label: string; to: string }[]
+  tone: ToolTone
 }
 
 interface ToolGroup {
   title: string
   description: string
   tools: ToolCard[]
-  tone: 'blue' | 'gold' | 'green'
+  tone: ToolTone
   eyebrow: string
 }
 
 interface ToolShelfItem extends ToolCard {
   group: string
 }
+
+interface RecentToolItem extends ToolShelfItem {
+  displayTitle: string
+}
+
+type ToolTone = 'blue' | 'gold' | 'green'
 
 interface FeedItem {
   title: string
@@ -116,7 +124,15 @@ const groups: ToolGroup[] = [
         to: '/reavers-fate',
         icon: <FaPuzzlePiece />,
         tone: 'blue',
-        actionLabel: 'Open solver'
+        actionLabel: 'Open solver',
+        actions: [
+          { label: "Reaver's Fate", to: '/reavers-fate' },
+          { label: 'Monastery of the Scorpion', to: '/monastery-of-the-scorpion' },
+          { label: 'The Shadow Crypt', to: '/the-shadow-crypt' },
+          { label: 'The Shroud', to: '/the-shroud' },
+          { label: 'Total Chaos', to: '/total-chaos' },
+          { label: 'The Key to the Mythal', to: '/the-key-to-the-mythal' }
+        ]
       }
     ]
   },
@@ -206,6 +222,63 @@ const allTools: ToolShelfItem[] = groups.flatMap((group) =>
   group.tools.map((tool) => ({ ...tool, group: group.title }))
 )
 
+const recentLabelOverrides: Record<string, string> = {
+  '/reavers-fate': "Reaver's Fate"
+}
+
+const resolveRecentToolTitle = (pathname: string, label: string | undefined, defaultTitle: string) => {
+  if (typeof label === 'string' && label.length > 0) {
+    return label
+  }
+
+  const overrideTitle = recentLabelOverrides[pathname]
+  if (typeof overrideTitle === 'string' && overrideTitle.length > 0) {
+    return overrideTitle
+  }
+
+  return defaultTitle
+}
+
+const recentToolCatalog: Record<
+  string,
+  {
+    title: string
+    description: string
+    group: string
+    icon: ReactNode
+    tone: ToolTone
+  }
+> = {
+  '/monastery-of-the-scorpion': {
+    title: 'Monastery of the Scorpion',
+    description: 'Solve the Monastery of the Scorpion puzzle with the YourDDO helper.',
+    group: 'Puzzle Solvers',
+    icon: <FaPuzzlePiece />,
+    tone: 'blue'
+  },
+  '/the-shadow-crypt': {
+    title: 'The Shadow Crypt',
+    description: 'Solve The Shadow Crypt puzzle with the YourDDO helper.',
+    group: 'Puzzle Solvers',
+    icon: <FaPuzzlePiece />,
+    tone: 'blue'
+  },
+  '/the-shroud': {
+    title: 'The Shroud',
+    description: 'Solve The Shroud puzzle with the YourDDO helper.',
+    group: 'Puzzle Solvers',
+    icon: <FaPuzzlePiece />,
+    tone: 'blue'
+  },
+  '/the-key-to-the-mythal': {
+    title: 'The Key to the Mythal',
+    description: "Use the Reaver's Fate puzzle helper for quicker DDO puzzle solving.",
+    group: 'Puzzle Solvers',
+    icon: <FaPuzzlePiece />,
+    tone: 'blue'
+  }
+}
+
 const ToolTile = ({
   id,
   title,
@@ -213,6 +286,7 @@ const ToolTile = ({
   to,
   icon,
   actionLabel = 'Open',
+  actions,
   tone,
   onToggleFavorite,
   isFavorite,
@@ -220,7 +294,7 @@ const ToolTile = ({
 }: ToolCard & {
   onToggleFavorite: (toolId: string) => void
   isFavorite: boolean
-  onOpen: (toolId: string) => void
+  onOpen: (pathname: string, label?: string) => void
 }) => (
   <Card className={`home-tool-tile home-tool-tile--${tone} h-100 border-0`}>
     <Card.Body className='d-flex flex-column gap-3'>
@@ -248,19 +322,118 @@ const ToolTile = ({
         <Card.Text className='home-tool-copy mb-0'>{description}</Card.Text>
       </div>
       <div className='mt-auto'>
-        <Link
-          to={to}
-          className='btn btn-primary home-tool-button w-100'
-          onClick={() => {
-            onOpen(id)
-          }}
-        >
-          {actionLabel}
-          <FaArrowRight className='ms-2' />
-        </Link>
+        {actions && actions.length > 0 ? (
+          <Dropdown className='home-tool-dropdown w-100'>
+            <Dropdown.Toggle className='home-tool-button w-100' variant='primary'>
+              {actionLabel}
+            </Dropdown.Toggle>
+            <Dropdown.Menu className='w-100'>
+              {actions.map((action) => (
+                <Dropdown.Item
+                  key={action.to}
+                  as={Link}
+                  to={action.to}
+                  onClick={() => {
+                    onOpen(action.to, action.label)
+                  }}
+                >
+                  {action.label}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+        ) : (
+          <Link
+            to={to}
+            className='btn btn-primary home-tool-button w-100'
+            onClick={() => {
+              onOpen(to)
+            }}
+          >
+            {actionLabel}
+            <FaArrowRight className='ms-2' />
+          </Link>
+        )}
       </div>
     </Card.Body>
   </Card>
+)
+
+const getShelfItemTitle = (item: ToolShelfItem | RecentToolItem) => {
+  return 'displayTitle' in item ? item.displayTitle : item.title
+}
+
+const ShelfPanel = ({
+  title,
+  items,
+  emptyTitle,
+  emptyText,
+  clearLabel,
+  onClear,
+  onToggleFavorite,
+  onOpen
+}: {
+  title: string
+  items: (ToolShelfItem | RecentToolItem)[]
+  emptyTitle: string
+  emptyText: string
+  clearLabel?: string
+  onClear?: () => void
+  onToggleFavorite?: (toolId: string) => void
+  onOpen: (pathname: string) => void
+}) => (
+  <section className='home-hero-shelf'>
+    <div className='home-hero-shelf-header'>
+      <span className='home-section-kicker'>{title}</span>
+      {onClear ? (
+        <Button type='button' variant='outline-secondary' size='sm' className='home-hero-shelf-clear' onClick={onClear}>
+          {clearLabel ?? 'Clear'}
+        </Button>
+      ) : null}
+    </div>
+
+    {items.length > 0 ? (
+      <div className='home-hero-shelf-list'>
+        {items.map((item) => (
+          <div key={item.id} className='home-hero-shelf-item'>
+            <div className='home-hero-shelf-item-main'>
+              <div className='home-hero-shelf-item-head'>
+                <strong>{getShelfItemTitle(item)}</strong>
+              </div>
+            </div>
+            <div className='home-hero-shelf-item-actions'>
+              <Link
+                to={item.to}
+                className='btn btn-sm btn-primary home-hero-shelf-open'
+                onClick={() => {
+                  onOpen(item.to)
+                }}
+              >
+                Open
+              </Link>
+              {onToggleFavorite ? (
+                <Button
+                  type='button'
+                  size='sm'
+                  variant='outline-secondary'
+                  onClick={() => {
+                    onToggleFavorite(item.id)
+                  }}
+                >
+                  Unpin
+                </Button>
+              ) : null}
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className='home-hero-shelf-empty'>
+        <strong>{emptyTitle}</strong>
+        <span>{emptyText}</span>
+      </div>
+    )}
+  </section>
 )
 
 const parseFeed = (xmlText: string): FeedItem[] => {
@@ -404,77 +577,39 @@ const NewsFeed = () => {
   )
 }
 
-const ShelfSection = ({
-  title,
-  description,
-  items,
-  emptyTitle,
-  emptyText,
-  onClear,
-  clearLabel
-}: {
-  title: string
-  description: string
-  items: ToolShelfItem[]
-  emptyTitle: string
-  emptyText: string
-  onClear?: () => void
-  clearLabel?: string
-}) => (
-  <section className='home-shelf-band'>
-    <Container>
-      <div className='home-shelf-shell'>
-        <div className='home-shelf-header'>
-          <div>
-            <span className='home-section-kicker'>{title}</span>
-            <h2 className='home-section-title mb-2'>{description}</h2>
-          </div>
-          {onClear ? (
-            <Button type='button' variant='outline-secondary' size='sm' onClick={onClear}>
-              {clearLabel}
-            </Button>
-          ) : null}
-        </div>
-        {items.length > 0 ? (
-          <Row className='g-3'>
-            {items.map((item) => (
-              <Col key={item.id} sm={6} lg={4} xl={3}>
-                <Card className='home-shelf-card border-0 h-100'>
-                  <Card.Body className='d-flex flex-column gap-2'>
-                    <div className='d-flex align-items-center justify-content-between gap-2'>
-                      <strong className='home-shelf-card-title'>{item.title}</strong>
-                      <span className='home-shelf-card-group'>{item.group}</span>
-                    </div>
-                    <div className='home-shelf-card-copy'>{item.description}</div>
-                    <Link to={item.to} className='btn btn-sm btn-primary mt-auto home-shelf-open'>
-                      Open
-                    </Link>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        ) : (
-          <div className='home-shelf-empty'>
-            <strong>{emptyTitle}</strong>
-            <span>{emptyText}</span>
-          </div>
-        )}
-      </div>
-    </Container>
-  </section>
-)
-
 const useHomeShelf = () => {
-  const [recentIds, setRecentIds] = useState<string[]>(() => readStorageList(RECENT_TOOLS_STORAGE_KEY))
+  const [recentEntries, setRecentEntries] = useState<string[]>(() => readStorageList(RECENT_TOOLS_STORAGE_KEY))
   const [favoriteIds, setFavoriteIds] = useState<string[]>(() => readStorageList(FAVORITE_TOOLS_STORAGE_KEY))
 
   const recentTools = useMemo(
     () =>
-      recentIds
-        .map((id) => allTools.find((tool) => tool.id === id))
-        .filter((tool): tool is ToolShelfItem => tool != null),
-    [recentIds]
+      recentEntries
+        .map((entry) => {
+          const { pathname, label } = decodeRecentToolEntry(entry)
+          const tool = allTools.find((candidate) => candidate.to === pathname || candidate.id === pathname)
+          if (tool) {
+            return {
+              ...tool,
+              displayTitle: resolveRecentToolTitle(pathname, label, tool.title)
+            }
+          }
+
+          const recentTool = Object.entries(recentToolCatalog).find(([key]) => key === pathname)?.[1]
+          if (recentTool == null) return null
+
+          return {
+            id: pathname,
+            to: pathname,
+            title: recentTool.title,
+            displayTitle: resolveRecentToolTitle(pathname, label, recentTool.title),
+            description: recentTool.description,
+            group: recentTool.group,
+            icon: recentTool.icon,
+            tone: recentTool.tone
+          }
+        })
+        .filter((tool): tool is RecentToolItem => tool != null),
+    [recentEntries]
   )
 
   const favoriteTools = useMemo(
@@ -485,10 +620,19 @@ const useHomeShelf = () => {
     [favoriteIds]
   )
 
-  const openTool = (toolId: string) => {
-    const nextRecent = [toolId, ...recentIds.filter((id) => id !== toolId)].slice(0, 5)
-    setRecentIds(nextRecent)
-    writeStorageList(RECENT_TOOLS_STORAGE_KEY, nextRecent)
+  const openTool = (pathname: string, label?: string) => {
+    const nextEntry = label ? `${pathname}||${label}` : pathname
+    const nextRecent = [
+      nextEntry,
+      ...recentEntries.filter((entry) => decodeRecentToolEntry(entry).pathname !== pathname)
+    ].slice(0, 5)
+    setRecentEntries(nextRecent)
+    recordRecentToolPath(pathname, label)
+  }
+
+  const clearRecentTools = () => {
+    setRecentEntries([])
+    writeStorageList(RECENT_TOOLS_STORAGE_KEY, [])
   }
 
   const toggleFavorite = (toolId: string) => {
@@ -500,7 +644,14 @@ const useHomeShelf = () => {
     writeStorageList(FAVORITE_TOOLS_STORAGE_KEY, nextFavorites)
   }
 
+  const clearFavorites = () => {
+    setFavoriteIds([])
+    writeStorageList(FAVORITE_TOOLS_STORAGE_KEY, [])
+  }
+
   return {
+    clearFavorites,
+    clearRecentTools,
     favoriteTools,
     isFavorite: (toolId: string) => favoriteIds.includes(toolId),
     openTool,
@@ -528,11 +679,8 @@ const Home = () => {
                   </div>
 
                   <div>
-                    <h1 className='home-title mb-3'>Crafting and planning tools for DDO.</h1>
-                    <p className='home-lead mb-0'>
-                      Open the planner, check a saga, solve a puzzle, or drill into a crafting system without digging
-                      through a long intro.
-                    </p>
+                    <h1 className='home-title mb-3'>One place for planning, tracking, and solving.</h1>
+                    <p className='home-lead mb-0'>Jump from the front page into the tool that matters right now.</p>
                   </div>
 
                   <div className='d-flex flex-wrap gap-2 home-action-row'>
@@ -542,7 +690,7 @@ const Home = () => {
                     <Link to='/saga-tracker' className='btn btn-outline-primary btn-lg home-secondary-action'>
                       Saga Tracker
                     </Link>
-                    <a href='#tool-groups' className='home-secondary-action'>
+                    <a href='#tool-groups' className='btn btn-outline-primary btn-lg home-secondary-action'>
                       Browse all tools
                     </a>
                   </div>
@@ -562,64 +710,55 @@ const Home = () => {
                     </div>
                   </div>
 
-                  <div className='home-utility-links d-flex flex-wrap gap-2'>
-                    <a
-                      href='https://github.com/veteran-software/yourddo'
-                      target='_blank'
-                      rel='noreferrer'
-                      className='home-utility-link'
-                    >
-                      <FaGithub className='me-2' />
-                      GitHub
-                      <FaArrowUpRightFromSquare className='ms-2 home-link-icon' />
-                    </a>
-                    <a
-                      href='https://discord.gg/jk3hYA5Jgv'
-                      target='_blank'
-                      rel='noreferrer'
-                      className='home-utility-link'
-                    >
-                      <FaDiscord className='me-2' />
-                      Discord
-                      <FaArrowUpRightFromSquare className='ms-2 home-link-icon' />
-                    </a>
+                  <div className='home-hero-footer'>
+                    <div className='home-utility-links d-flex flex-wrap align-items-center'>
+                      <a
+                        href='https://github.com/veteran-software/yourddo'
+                        target='_blank'
+                        rel='noreferrer'
+                        className='home-utility-link'
+                      >
+                        <FaGithub className='me-2' />
+                        GitHub
+                        <FaArrowUpRightFromSquare className='ms-2 home-link-icon' />
+                      </a>
+                      <a
+                        href='https://discord.gg/jk3hYA5Jgv'
+                        target='_blank'
+                        rel='noreferrer'
+                        className='home-utility-link'
+                      >
+                        <FaDiscord className='me-2' />
+                        Discord
+                        <FaArrowUpRightFromSquare className='ms-2 home-link-icon' />
+                      </a>
+                    </div>
                   </div>
                 </Stack>
               </Col>
 
               <Col lg={5} xl={6} className='d-flex'>
-                <div className='home-hero-visual home-hero-panel'>
-                  <div className='home-logo-panel'>
-                    <div className='home-logo-accent' />
-                    <Image src={logo} alt='YourDDO logo' fluid className='home-logo' />
-                    <div className='home-logo-caption'>
-                      <strong>One place for planning, tracking, and solving.</strong>
-                      <span>Jump from the front page into the tool that matters right now.</span>
-                    </div>
-                  </div>
+                <div className='home-hero-shelf-stack home-hero-panel'>
+                  <ShelfPanel
+                    title='Recent tools'
+                    items={shelf.recentTools}
+                    emptyTitle='No recent tools yet'
+                    emptyText='Open any tool and it will appear here.'
+                    clearLabel='Clear recents'
+                    onClear={shelf.clearRecentTools}
+                    onOpen={shelf.openTool}
+                  />
 
-                  <div className='home-quick-grid'>
-                    <div className='home-quick-card'>
-                      <span className='home-quick-label'>Quick access</span>
-                      <strong>Gear Planner</strong>
-                      <span>Build and compare full setups.</span>
-                    </div>
-                    <div className='home-quick-card'>
-                      <span className='home-quick-label'>Track progress</span>
-                      <strong>Saga Tracker</strong>
-                      <span>Keep quests and turn-ins organized.</span>
-                    </div>
-                    <div className='home-quick-card'>
-                      <span className='home-quick-label'>Crafting</span>
-                      <strong>Essence Crafting</strong>
-                      <span>Work through recipes and upgrades.</span>
-                    </div>
-                    <div className='home-quick-card'>
-                      <span className='home-quick-label'>Solvers</span>
-                      <strong>Puzzles</strong>
-                      <span>Open the helper for the current run.</span>
-                    </div>
-                  </div>
+                  <ShelfPanel
+                    title='Pinned tools'
+                    items={shelf.favoriteTools}
+                    emptyTitle='No favorites yet'
+                    emptyText='Use the star on any tool card to pin it here.'
+                    clearLabel='Clear pins'
+                    onClear={shelf.clearFavorites}
+                    onToggleFavorite={shelf.toggleFavorite}
+                    onOpen={shelf.openTool}
+                  />
                 </div>
               </Col>
             </Row>
@@ -627,75 +766,6 @@ const Home = () => {
         </section>
 
         <NewsFeed />
-
-        <ShelfSection
-          title='Recent tools'
-          description='Recently opened tools stay near the top, so you can jump back in quickly.'
-          items={shelf.recentTools}
-          emptyTitle='No recent tools yet'
-          emptyText='Open any tool below and it will appear here.'
-        />
-
-        <section className='home-shelf-band'>
-          <Container>
-            <div className='home-shelf-shell'>
-              <div className='home-shelf-header'>
-                <div>
-                  <span className='home-section-kicker'>Favorites</span>
-                  <h2 className='home-section-title mb-2'>Pinned tools</h2>
-                  <p className='home-section-copy mb-0'>
-                    Pin the tools you reach for most and keep them one click away.
-                  </p>
-                </div>
-              </div>
-
-              {shelf.favoriteTools.length > 0 ? (
-                <Row className='g-3'>
-                  {shelf.favoriteTools.map((item) => (
-                    <Col key={item.id} sm={6} lg={4} xl={3}>
-                      <Card className='home-shelf-card border-0 h-100'>
-                        <Card.Body className='d-flex flex-column gap-2'>
-                          <div className='d-flex align-items-center justify-content-between gap-2'>
-                            <strong className='home-shelf-card-title'>{item.title}</strong>
-                            <span className='home-shelf-card-group'>{item.group}</span>
-                          </div>
-                          <div className='home-shelf-card-copy'>{item.description}</div>
-                          <div className='d-flex gap-2 mt-auto'>
-                            <Link
-                              to={item.to}
-                              className='btn btn-sm btn-primary home-shelf-open'
-                              onClick={() => {
-                                shelf.openTool(item.id)
-                              }}
-                            >
-                              Open
-                            </Link>
-                            <Button
-                              type='button'
-                              size='sm'
-                              variant='outline-secondary'
-                              onClick={() => {
-                                shelf.toggleFavorite(item.id)
-                              }}
-                            >
-                              Unpin
-                            </Button>
-                          </div>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              ) : (
-                <div className='home-shelf-empty'>
-                  <strong>No favorites yet</strong>
-                  <span>Use the star on any tool card to pin it here.</span>
-                </div>
-              )}
-            </div>
-          </Container>
-        </section>
-
         <section className='home-section' id='tool-groups'>
           <Container>
             {groups.map((group) => (

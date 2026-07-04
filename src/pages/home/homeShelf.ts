@@ -20,8 +20,29 @@ const TOOL_PATH_TO_ID: Record<string, string> = {
   '/the-shroud': 'the-shroud'
 }
 
+const RECENT_TOOL_ENTRY_SEPARATOR = '||'
+
 export const getToolIdForPath = (pathname: string): string | null => {
   return TOOL_PATH_TO_ID[pathname] ?? null
+}
+
+export const decodeRecentToolEntry = (entry: string): { pathname: string; label?: string } => {
+  const separatorIndex = entry.indexOf(RECENT_TOOL_ENTRY_SEPARATOR)
+  if (separatorIndex < 0) {
+    return { pathname: entry }
+  }
+
+  const pathname = entry.slice(0, separatorIndex)
+  const label = entry.slice(separatorIndex + RECENT_TOOL_ENTRY_SEPARATOR.length)
+
+  return {
+    pathname,
+    label: label.length > 0 ? label : undefined
+  }
+}
+
+const encodeRecentToolEntry = (pathname: string, label?: string) => {
+  return label ? `${pathname}${RECENT_TOOL_ENTRY_SEPARATOR}${label}` : pathname
 }
 
 export const readStorageList = (key: string): string[] => {
@@ -46,11 +67,15 @@ export const writeStorageList = (key: string, values: string[]) => {
   localStorage.setItem(key, JSON.stringify(values))
 }
 
-export const recordRecentToolPath = (pathname: string) => {
-  const toolId = getToolIdForPath(pathname)
-  if (!toolId) return
-
+export const recordRecentToolPath = (pathname: string, label?: string) => {
   const recentIds = readStorageList(RECENT_TOOLS_STORAGE_KEY)
-  const nextRecent = [toolId, ...recentIds.filter((id) => id !== toolId)].slice(0, 5)
+  const existingEntry = recentIds.find((entry) => decodeRecentToolEntry(entry).pathname === pathname)
+  const existingLabel = existingEntry ? decodeRecentToolEntry(existingEntry).label : undefined
+  const recentEntry = encodeRecentToolEntry(pathname, label ?? existingLabel)
+
+  const nextRecent = [
+    recentEntry,
+    ...recentIds.filter((entry) => decodeRecentToolEntry(entry).pathname !== pathname)
+  ].slice(0, 5)
   writeStorageList(RECENT_TOOLS_STORAGE_KEY, nextRecent)
 }
