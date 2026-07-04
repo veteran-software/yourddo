@@ -77,7 +77,7 @@ const RouteSeo = () => {
   }, [location.pathname])
 
   useEffect(() => {
-    const origin = window.location.origin
+    const origin = globalThis.window.location.origin
     const canonicalUrl = `${origin}${normalizeCanonicalPath(seo.canonicalPath)}`
     const structuredData = buildStructuredData(origin, seo, canonicalUrl)
 
