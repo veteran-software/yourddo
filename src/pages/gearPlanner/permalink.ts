@@ -502,7 +502,7 @@ export interface LocationLike {
 
 export const readGpFromUrl = (
   location: LocationLike,
-  win: Window = globalThis as unknown as Window
+  win?: Window
 ): { gp: string | null; source: 'search' | 'hash' | null } => {
   try {
     const routerParams = new URLSearchParams(location.search)
@@ -510,7 +510,10 @@ export const readGpFromUrl = (
 
     if (gpFromRouter) return { gp: gpFromRouter, source: 'search' }
 
-    const hash = win.location.hash
+    const resolvedWindow = win ?? (typeof window !== 'undefined' ? window : undefined)
+    if (!resolvedWindow) return { gp: null, source: null }
+
+    const hash = resolvedWindow.location.hash
 
     if (hash.startsWith('#')) {
       const hashBody = hash.slice(1)
@@ -537,7 +540,7 @@ export const removeGpFromUrl = async (
   navigate: (to: { pathname?: string; search?: string }, opts: { replace: boolean }) => Promise<void> | void,
   location: LocationLike,
   source: 'search' | 'hash' | null,
-  win: Window = globalThis as unknown as Window
+  win?: Window
 ): Promise<void> => {
   if (!source) return
 
@@ -547,9 +550,10 @@ export const removeGpFromUrl = async (
     return
   }
 
-  if ((win as Window | undefined) == undefined || typeof win.history.replaceState !== 'function') return
+  const resolvedWindow = win ?? (typeof window !== 'undefined' ? window : undefined)
+  if (!resolvedWindow || typeof resolvedWindow.history.replaceState !== 'function') return
 
-  const { origin, pathname, hash, search } = win.location
+  const { origin, pathname, hash, search } = resolvedWindow.location
   const hashBody = (hash || '').replace(/^#/, '')
   const [hashPath, hashQuery] = hashBody.split('?')
   const params = new URLSearchParams(hashQuery)
@@ -559,19 +563,17 @@ export const removeGpFromUrl = async (
   const newHash = params.toString() ? `#${hashPath}?${params.toString()}` : `#${hashPath}`
 
   const newUrl = `${origin}${pathname}${search}${newHash}`
-  win.history.replaceState({}, '', newUrl)
+  resolvedWindow.history.replaceState({}, '', newUrl)
 }
 
-export const buildPermalinkUrl = (
-  encoded: string,
-  location: LocationLike,
-  win: Window = globalThis as unknown as Window
-): string => {
-  if ((win as Window | undefined) == undefined) {
+export const buildPermalinkUrl = (encoded: string, location: LocationLike, win?: Window): string => {
+  const resolvedWindow = win ?? (typeof window !== 'undefined' ? window : undefined)
+
+  if (!resolvedWindow) {
     return `/gear-planner?gp=${encoded}`
   }
 
-  const { origin, pathname, hash } = win.location
+  const { origin, pathname, hash } = resolvedWindow.location
   const currentPath = location.pathname || '/gear-planner'
 
   if (hash.startsWith('#/')) {

@@ -23,6 +23,10 @@ export const loadInitial = (
   const statusById: Record<string, { completed: boolean; turnedIn: boolean } | undefined> = {}
 
   try {
+    if (typeof localStorage === 'undefined') {
+      throw new Error('localStorage unavailable')
+    }
+
     const raw = localStorage.getItem(storageKey)
     if (raw) {
       const arr = JSON.parse(raw) as Stored[]

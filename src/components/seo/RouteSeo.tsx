@@ -1,8 +1,13 @@
 import { useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
-import logo from '../../assets/logo.png'
 import { getSubdomain } from '../../utils/utils'
-import { buildStructuredData, normalizeCanonicalPath, resolveSeo, SITE_NAME } from './seoConfig.ts'
+import {
+  buildStructuredData,
+  normalizeCanonicalPath,
+  resolveSeo,
+  SITE_NAME,
+  SITE_PREVIEW_IMAGE_PATH
+} from './seoConfig.ts'
 
 const setMetaTagByName = (name: string, value: string) => {
   const selector = `meta[name="${name}"]`
@@ -37,6 +42,16 @@ const setLinkHref = (selector: string, href: string) => {
   }
 
   tag.href = href
+}
+
+const setImageMeta = (origin: string) => {
+  const imageUrl = `${origin}${SITE_PREVIEW_IMAGE_PATH}`
+  setMetaTagByProperty('og:image', imageUrl)
+  setMetaTagByProperty('og:image:width', '1200')
+  setMetaTagByProperty('og:image:height', '630')
+  setMetaTagByProperty('og:image:alt', 'YourDDO homepage preview')
+  setMetaTagByName('twitter:image', imageUrl)
+  setMetaTagByName('twitter:image:alt', 'YourDDO homepage preview')
 }
 
 const setJsonLd = (id: string, data: Record<string, unknown>) => {
@@ -79,11 +94,10 @@ const RouteSeo = () => {
     setMetaTagByProperty('og:description', seo.description)
     setMetaTagByProperty('og:type', 'website')
     setMetaTagByProperty('og:url', canonicalUrl)
-    setMetaTagByProperty('og:image', `${origin}${logo}`)
     setMetaTagByName('twitter:card', 'summary_large_image')
     setMetaTagByName('twitter:title', seo.title)
     setMetaTagByName('twitter:description', seo.description)
-    setMetaTagByName('twitter:image', `${origin}${logo}`)
+    setImageMeta(origin)
     setLinkHref('link[rel="canonical"]', canonicalUrl)
     setJsonLd('structured-data', structuredData)
   }, [seo])

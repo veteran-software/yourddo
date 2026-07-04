@@ -55,15 +55,12 @@ const escapeXml = (value) =>
     .replaceAll("'", '&apos;')
 
 const buildSitemap = (origin) => {
-  const now = new Date().toISOString()
-
   const urls = ROUTES.map(({ path: routePath, changefreq, priority }) => {
     const url = `${origin}${routePath === '/' ? '' : routePath}`
 
     return [
       '  <url>',
       `    <loc>${escapeXml(url)}</loc>`,
-      `    <lastmod>${now}</lastmod>`,
       `    <changefreq>${changefreq}</changefreq>`,
       `    <priority>${priority}</priority>`,
       '  </url>'

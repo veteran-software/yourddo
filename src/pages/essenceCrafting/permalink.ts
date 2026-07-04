@@ -196,14 +196,19 @@ export interface LocationLike {
 
 export const readCcFromUrl = (
   location: LocationLike,
-  win: Window = window
+  win?: Window
 ): { cc: string | null; source: 'search' | 'hash' | null } => {
   try {
     const routerParams = new URLSearchParams(location.search)
     const ccFromRouter = routerParams.get('cc')
     if (ccFromRouter) return { cc: ccFromRouter, source: 'search' }
 
-    const hash = win.location.hash
+    const resolvedWindow = win ?? (typeof window !== 'undefined' ? window : undefined)
+    if (!resolvedWindow) {
+      return { cc: null, source: null }
+    }
+
+    const hash = resolvedWindow.location.hash
     if (hash.startsWith('#')) {
       const hashBody = hash.slice(1)
       const qm = hashBody.indexOf('?')
@@ -224,7 +229,7 @@ export const removeCcFromUrl = async (
   navigate: (to: { pathname?: string; search?: string }, opts: { replace: boolean }) => Promise<void> | void,
   location: LocationLike,
   source: 'search' | 'hash' | null,
-  win: Window = window
+  win?: Window
 ): Promise<void> => {
   if (!source) return
 
@@ -233,23 +238,26 @@ export const removeCcFromUrl = async (
     return
   }
 
-  if (typeof win === 'undefined' || typeof win.history.replaceState !== 'function') return
+  const resolvedWindow = win ?? (typeof window !== 'undefined' ? window : undefined)
+  if (!resolvedWindow || typeof resolvedWindow.history.replaceState !== 'function') return
 
-  const { origin, pathname, hash, search } = win.location
+  const { origin, pathname, hash, search } = resolvedWindow.location
   const hashBody = (hash || '').replace(/^#/, '')
   const [hashPath, hashQuery] = hashBody.split('?')
   const params = new URLSearchParams(hashQuery)
   params.delete('cc')
   const newHash = params.toString() ? `#${hashPath}?${params.toString()}` : `#${hashPath}`
   const newUrl = `${origin}${pathname}${search}${newHash}`
-  win.history.replaceState({}, '', newUrl)
+  resolvedWindow.history.replaceState({}, '', newUrl)
 }
 
-export const buildPermalinkUrl = (encoded: string, location: LocationLike, win: Window = window): string => {
-  if (typeof win === 'undefined') {
+export const buildPermalinkUrl = (encoded: string, location: LocationLike, win?: Window): string => {
+  const resolvedWindow = win ?? (typeof window !== 'undefined' ? window : undefined)
+
+  if (!resolvedWindow) {
     return `/essence-crafting?cc=${encoded}`
   }
-  const { origin, pathname, hash } = win.location
+  const { origin, pathname, hash } = resolvedWindow.location
   const currentPath = location.pathname || '/essence-crafting'
   if (hash.startsWith('#/')) {
     const params = new URLSearchParams()

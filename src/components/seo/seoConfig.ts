@@ -7,6 +7,7 @@ export interface SeoConfig {
 }
 
 export const SITE_NAME = 'YourDDO'
+export const SITE_PREVIEW_IMAGE_PATH = '/social-preview.svg'
 
 export const DEFAULT_DESCRIPTION =
   'YourDDO is a DDO crafting and planning toolkit for gear, augments, set bonuses, essence crafting, and saga tracking.'
@@ -19,19 +20,19 @@ export const ROUTE_SEO: SeoConfig[] = [
   },
   {
     path: '/gear-planner',
-    title: 'Gear Planner | YourDDO',
+    title: 'DDO Gear Planner | YourDDO',
     description:
       'Plan DDO gear setups, augment slots, set bonuses, filigrees, and item conflicts with the YourDDO Gear Planner.'
   },
   {
     path: '/essence-crafting',
-    title: 'Essence Crafting | YourDDO',
+    title: 'DDO Essence Crafting Planner | YourDDO',
     description:
       'Browse and plan Essence Crafting recipes, augment options, and item upgrades with the YourDDO crafting tool.'
   },
   {
     path: '/saga-tracker',
-    title: 'Saga Tracker | YourDDO',
+    title: 'DDO Saga Tracker | YourDDO',
     description: 'Track DDO saga progress, quests, and turn-ins with the YourDDO Saga Tracker.'
   },
   {
@@ -150,6 +151,18 @@ export const buildStructuredData = (origin: string, seo: SeoConfig, canonicalUrl
       },
       about: {
         '@id': `${origin}#organization`
+      }
+    },
+    {
+      '@type': 'WebApplication',
+      '@id': `${canonicalUrl}#application`,
+      name: SITE_NAME,
+      url: canonicalUrl,
+      description: seo.description,
+      applicationCategory: 'UtilitiesApplication',
+      operatingSystem: 'Web',
+      isPartOf: {
+        '@id': `${origin}#website`
       }
     }
   ]

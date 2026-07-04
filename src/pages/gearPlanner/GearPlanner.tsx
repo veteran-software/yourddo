@@ -51,6 +51,10 @@ const GearPlanner = () => {
   const [showFiligreeModal, setShowFiligreeModal] = useState(false)
   const [showInfoModal, setShowInfoModal] = useState(() => {
     try {
+      if (typeof localStorage === 'undefined') {
+        return true
+      }
+
       return localStorage.getItem(GEAR_PLANNER_INFO_DISMISSED_KEY) !== 'true'
     } catch {
       return true
@@ -61,7 +65,9 @@ const GearPlanner = () => {
   const handleInfoModalClose = () => {
     if (dontShowInfoAgain) {
       try {
-        localStorage.setItem(GEAR_PLANNER_INFO_DISMISSED_KEY, 'true')
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem(GEAR_PLANNER_INFO_DISMISSED_KEY, 'true')
+        }
       } catch {
         /* ignore */
       }

@@ -11,6 +11,9 @@ const templatePath = path.join(distDir, 'index.html')
 
 const ROUTES_TO_PRERENDER = [
   '/',
+  '/gear-planner',
+  '/essence-crafting',
+  '/saga-tracker',
   '/cauldron-of-cadence',
   '/dinosaur-bone',
   '/green-steel',
@@ -84,11 +87,15 @@ const buildHtml = (template, prerender) => {
   html = upsertMetaProperty(html, 'og:description', prerender.description)
   html = upsertMetaProperty(html, 'og:type', 'website')
   html = upsertMetaProperty(html, 'og:url', prerender.canonicalUrl)
-  html = upsertMetaProperty(html, 'og:image', `${new URL(prerender.canonicalUrl).origin}/web-app-manifest-512x512.png`)
+  html = upsertMetaProperty(html, 'og:image', prerender.imageUrl)
+  html = upsertMetaProperty(html, 'og:image:width', '1200')
+  html = upsertMetaProperty(html, 'og:image:height', '630')
+  html = upsertMetaProperty(html, 'og:image:alt', prerender.imageAlt)
   html = upsertMetaName(html, 'twitter:card', 'summary_large_image')
   html = upsertMetaName(html, 'twitter:title', prerender.title)
   html = upsertMetaName(html, 'twitter:description', prerender.description)
-  html = upsertMetaName(html, 'twitter:image', `${new URL(prerender.canonicalUrl).origin}/web-app-manifest-512x512.png`)
+  html = upsertMetaName(html, 'twitter:image', prerender.imageUrl)
+  html = upsertMetaName(html, 'twitter:image:alt', prerender.imageAlt)
   html = upsertCanonical(html, prerender.canonicalUrl)
   html = replaceOrInsert(
     html,

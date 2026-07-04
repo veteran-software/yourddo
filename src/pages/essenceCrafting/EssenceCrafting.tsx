@@ -57,6 +57,16 @@ import {
   STORAGE_KEY
 } from './utils.ts'
 
+const readSessionStorageItem = (key: string): string | null => {
+  if (typeof sessionStorage === 'undefined') return null
+
+  try {
+    return sessionStorage.getItem(key)
+  } catch {
+    return null
+  }
+}
+
 const getShardLevelLabel = (boundLv: number | undefined, unboundLv: number | undefined): string => {
   if (boundLv != null && unboundLv != null)
     return `Shard Level (Bound ${String(boundLv)} / Unbound ${String(unboundLv)})`
@@ -82,7 +92,7 @@ const EssenceCrafting = () => {
       }
     }
 
-    const loadedText: string | null = sessionStorage.getItem(STORAGE_KEY)
+    const loadedText: string | null = readSessionStorageItem(STORAGE_KEY)
     if (loadedText) {
       try {
         const parsed = JSON.parse(loadedText) as PermalinkStatePayload
@@ -105,7 +115,7 @@ const EssenceCrafting = () => {
       }
     }
 
-    const loadedText = sessionStorage.getItem(STORAGE_KEY)
+    const loadedText = readSessionStorageItem(STORAGE_KEY)
     if (loadedText) {
       try {
         const parsed = JSON.parse(loadedText) as {
@@ -129,7 +139,7 @@ const EssenceCrafting = () => {
       }
     }
 
-    const loadedText: string | null = sessionStorage.getItem(STORAGE_KEY)
+    const loadedText: string | null = readSessionStorageItem(STORAGE_KEY)
     if (loadedText) {
       try {
         const parsed = JSON.parse(loadedText) as {
@@ -146,7 +156,7 @@ const EssenceCrafting = () => {
 
   // Binding selection removed from UI; keep state for backward-compatible permalink/session payloads (unused in logic)
   const [masterBindingBound] = useState(() => {
-    const loadedText = sessionStorage.getItem(STORAGE_KEY)
+    const loadedText = readSessionStorageItem(STORAGE_KEY)
 
     if (loadedText) {
       try {
@@ -173,7 +183,7 @@ const EssenceCrafting = () => {
       }
     }
 
-    const loadedText = sessionStorage.getItem(STORAGE_KEY)
+    const loadedText = readSessionStorageItem(STORAGE_KEY)
     if (loadedText) {
       try {
         const parsed = JSON.parse(loadedText) as {
@@ -313,7 +323,9 @@ const EssenceCrafting = () => {
       collapsedKeys
     })
 
-    sessionStorage.setItem(STORAGE_KEY, payload)
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem(STORAGE_KEY, payload)
+    }
   }, [items, activeKeys, masterMinLevel, masterBindingBound, collapsedKeys])
 
   // Enforce item constraints (Insightful effects at ML < 10, Augment color ML floors)

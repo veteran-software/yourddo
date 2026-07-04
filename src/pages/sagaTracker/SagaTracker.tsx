@@ -30,6 +30,26 @@ const STORAGE_KEY_QUESTS_V1 = 'yourddo:saga-tracker:quests:v1'
 const STORAGE_KEY_TURNED_IN_AT_V1 = 'yourddo:saga-tracker:turnedInAt:v1'
 const STORAGE_KEY_ACTIVE_TAB = 'yourddo:saga-tracker:activeTab:v1'
 
+const readLocalStorageItem = (key: string): string | null => {
+  if (typeof localStorage === 'undefined') return null
+
+  try {
+    return localStorage.getItem(key)
+  } catch {
+    return null
+  }
+}
+
+const writeLocalStorageItem = (key: string, value: string) => {
+  if (typeof localStorage === 'undefined') return
+
+  try {
+    localStorage.setItem(key, value)
+  } catch {
+    // ignore storage errors
+  }
+}
+
 // Authoritative fixed list from JSON (no completion fields in file)
 const fixedSagas: Omit<SagaItem, 'completed' | 'turnedIn'>[] = sagas
 
@@ -318,14 +338,14 @@ const SagaTracker = () => {
   const [items, setItems] = useState<SagaItem[]>(() => loadInitial(fixedSagas, STORAGE_KEY_V2) as SagaItem[])
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState<string>(() => {
-    return localStorage.getItem(STORAGE_KEY_ACTIVE_TAB) ?? 'heroic'
+    return readLocalStorageItem(STORAGE_KEY_ACTIVE_TAB) ?? 'heroic'
   })
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   // quest last completion timestamp (epoch ms). Applies globally across sagas
   //eslint-disable-next-line sonarjs/cognitive-complexity
   const [questDoneAt, setQuestDoneAt] = useState<Record<string, number>>(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY_QUESTS_V1)
+      const raw = readLocalStorageItem(STORAGE_KEY_QUESTS_V1)
       if (!raw) return {}
 
       const arr = JSON.parse(raw) as { id?: unknown; lastDoneAt?: unknown }[]
@@ -356,7 +376,7 @@ const SagaTracker = () => {
   //eslint-disable-next-line sonarjs/cognitive-complexity
   const [turnedInAt, setTurnedInAt] = useState<Record<string, number>>(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY_TURNED_IN_AT_V1)
+      const raw = readLocalStorageItem(STORAGE_KEY_TURNED_IN_AT_V1)
       if (!raw) return {}
       const arr = JSON.parse(raw) as { id?: unknown; turnedInAt?: unknown }[]
       const map: Record<string, number> = {}
@@ -397,7 +417,7 @@ const SagaTracker = () => {
 
         // Fallback/Migration: if IndexedDB empty, try to migrate from localStorage
         if (!dbItems) {
-          const raw = localStorage.getItem(STORAGE_KEY_V2)
+          const raw = readLocalStorageItem(STORAGE_KEY_V2)
           if (raw) {
             try {
               const arr = JSON.parse(raw) as { id?: unknown; completed?: unknown; turnedIn?: unknown }[]
@@ -418,7 +438,7 @@ const SagaTracker = () => {
         }
 
         if (!dbQuests) {
-          const raw = localStorage.getItem(STORAGE_KEY_QUESTS_V1)
+          const raw = readLocalStorageItem(STORAGE_KEY_QUESTS_V1)
           if (raw) {
             try {
               const arr = JSON.parse(raw) as { id?: unknown; lastDoneAt?: unknown }[]
@@ -438,7 +458,7 @@ const SagaTracker = () => {
         }
 
         if (!dbTurned) {
-          const raw = localStorage.getItem(STORAGE_KEY_TURNED_IN_AT_V1)
+          const raw = readLocalStorageItem(STORAGE_KEY_TURNED_IN_AT_V1)
           if (raw) {
             try {
               const arr = JSON.parse(raw) as { id?: unknown; turnedInAt?: unknown }[]
@@ -484,7 +504,7 @@ const SagaTracker = () => {
       // Primary: IndexedDB
       idbSetSagaItems(compact).catch(console.error)
       // Fallback/Mirror: localStorage
-      localStorage.setItem(STORAGE_KEY_V2, JSON.stringify(compact))
+      writeLocalStorageItem(STORAGE_KEY_V2, JSON.stringify(compact))
     } catch {
       // ignore storage errors
     }
@@ -524,7 +544,7 @@ const SagaTracker = () => {
     try {
       const compact = Object.entries(questDoneAt).map(([id, lastDoneAt]) => ({ id, lastDoneAt }))
       idbSetQuestDoneAt(questDoneAt).catch(console.error)
-      localStorage.setItem(STORAGE_KEY_QUESTS_V1, JSON.stringify(compact))
+      writeLocalStorageItem(STORAGE_KEY_QUESTS_V1, JSON.stringify(compact))
     } catch {
       // ignore
     }
@@ -534,7 +554,7 @@ const SagaTracker = () => {
     try {
       const compact = Object.entries(turnedInAt).map(([id, t]) => ({ id, turnedInAt: t }))
       idbSetTurnedInAt(turnedInAt).catch(console.error)
-      localStorage.setItem(STORAGE_KEY_TURNED_IN_AT_V1, JSON.stringify(compact))
+      writeLocalStorageItem(STORAGE_KEY_TURNED_IN_AT_V1, JSON.stringify(compact))
     } catch {
       // ignore
     }
@@ -542,7 +562,7 @@ const SagaTracker = () => {
 
   useEffect(() => {
     if (activeTab) {
-      localStorage.setItem(STORAGE_KEY_ACTIVE_TAB, activeTab)
+      writeLocalStorageItem(STORAGE_KEY_ACTIVE_TAB, activeTab)
     }
   }, [activeTab])
 
