@@ -313,7 +313,7 @@ const NearlyFinished = () => {
           <div className='d-flex flex-column align-items-center justify-content-center gap-3'>
             <div className='text-center w-100'>
               <Stack direction='horizontal' gap={2} className='align-items-center justify-content-center'>
-                <h4 className='mb-0'>Nearly Finished Crafting</h4>
+                <h1 className='mb-0 h4'>Nearly Finished Crafting</h1>
                 <OverlayTrigger
                   placement='right'
                   overlay={

@@ -184,7 +184,7 @@ const DinosaurBone = () => {
       <Card>
         <Card.Header className='text-center p-1'>
           <Card.Title>
-            <h4 className='mb-0'>Dinosaur Bone Crafting</h4>
+            <h1 className='mb-0 h4'>Dinosaur Bone Crafting</h1>
           </Card.Title>
           <Card.Subtitle>
             <small>

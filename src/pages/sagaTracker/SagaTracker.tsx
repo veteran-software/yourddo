@@ -827,7 +827,7 @@ const SagaTracker = () => {
 
   return (
     <Stack gap={3} className='p-2 p-md-3'>
-      <h2 className='mb-0'>Saga Tracker</h2>
+      <h1 className='mb-0 h2'>Saga Tracker</h1>
       <div className='text-secondary'>Track your DDO saga completion.</div>
 
       <Card>

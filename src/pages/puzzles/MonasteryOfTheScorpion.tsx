@@ -110,7 +110,7 @@ const MonasteryOfTheScorpion = () => {
     <Card>
       <Card.Header className='text-center p-1'>
         <Card.Title>
-          <h4 className='mb-0'>Monastery of the Scorpion</h4>
+          <h1 className='mb-0 h4'>Monastery of the Scorpion</h1>
           <small>The Reaver&apos;s Reach</small>
         </Card.Title>
         <small>

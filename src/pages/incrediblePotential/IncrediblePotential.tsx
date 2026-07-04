@@ -44,7 +44,7 @@ const IncrediblePotential = () => {
     <Container className='px-0'>
       <Card>
         <Card.Header className='text-center'>
-          <h4 className='mb-0'>Incredible Potential Crafting</h4>
+          <h1 className='mb-0 h4'>Incredible Potential Crafting</h1>
           <Card.Subtitle>
             <small>Tower of Despair Rings</small>
           </Card.Subtitle>

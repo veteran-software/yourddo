@@ -1293,7 +1293,7 @@ const EssenceCrafting = () => {
         <Card.Header className='py-3 position-relative'>
           <div className='d-flex flex-column align-items-center justify-content-center gap-3'>
             <div className='text-center w-100'>
-              <h4 className='mb-0'>Essence Crafting</h4>
+              <h1 className='mb-0 h4'>Essence Crafting</h1>
               <small>
                 <a
                   href='https://github.com/veteran-software/yourddo/issues?q=state%3Aopen%20label%3A%22Essence%20Crafting%22'
