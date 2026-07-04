@@ -428,9 +428,10 @@ const SagaTracker = () => {
       let dbTurned = await idbGetTurnedInAt()
 
       if (!dbItems) {
-        dbItems = loadSagaItemsFromLocalStorage()
-        if (dbItems) {
-          await idbSetSagaItems(dbItems)
+        const localItems = loadSagaItemsFromLocalStorage()
+        if (localItems) {
+          dbItems = localItems
+          await idbSetSagaItems(localItems)
         }
       }
 
