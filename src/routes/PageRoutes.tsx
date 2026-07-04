@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import BaseLayout from '../components/layout/BaseLayout.tsx'
 import CauldronOfCadence from '../pages/cauldronOfCadence/CauldronOfCadence.tsx'
 import DinosaurBone from '../pages/dinosaurBoneCrafting/DinosaurBone.tsx'
@@ -39,7 +39,7 @@ const PageRoutes = () => {
         <Route path='/monastery-of-the-scorpion' element={<MonasteryOfTheScorpion />} />
         <Route path='/reavers-fate' element={<Mastermind />} />
         <Route path='/total-chaos' element={<TotalChaos />} />
-        <Route path='/the-key-to-the-mythal' element={<Mastermind />} />
+        <Route path='/the-key-to-the-mythal' element={<Navigate to='/reavers-fate' replace />} />
         <Route path='/the-shadow-crypt' element={<TheShadowCrypt />} />
         <Route path='/the-shroud' element={<Shroud />} />
       </Route>

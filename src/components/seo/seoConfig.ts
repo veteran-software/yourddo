@@ -80,11 +80,6 @@ export const ROUTE_SEO: SeoConfig[] = [
     description: "Use the Reaver's Fate puzzle helper for faster DDO puzzle solving."
   },
   {
-    path: '/the-key-to-the-mythal',
-    title: 'The Key to the Mythal | YourDDO',
-    description: 'Use the Key to the Mythal puzzle helper for faster DDO puzzle solving.'
-  },
-  {
     path: '/the-shadow-crypt',
     title: 'The Shadow Crypt | YourDDO',
     description: 'Solve The Shadow Crypt puzzle with the YourDDO helper.'
