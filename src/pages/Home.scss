@@ -36,10 +36,10 @@
   display: inline-flex;
   align-items: center;
   padding: 0.24rem 0.55rem;
-  border: 1px solid rgba(15, 63, 184, 0.24);
+  border: 1px solid #b8caf6;
   border-radius: 999px;
-  background: rgba(15, 63, 184, 0.09);
-  color: #050b14;
+  background: #e7efff;
+  color: #071225;
   font-size: 0.76rem;
   line-height: 1;
 }
@@ -406,19 +406,19 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
-  background: rgba(29, 78, 216, 0.14);
-  color: #050b14;
+  background: #dce8ff;
+  color: #071225;
   font-size: 1.2rem;
 }
 
 .home-tool-tile--gold .home-tool-icon {
-  background: rgba(202, 138, 4, 0.14);
-  color: #050b14;
+  background: #fceec7;
+  color: #071225;
 }
 
 .home-tool-tile--green .home-tool-icon {
-  background: rgba(5, 150, 105, 0.14);
-  color: #050b14;
+  background: #dbf3ea;
+  color: #071225;
 }
 
 .home-tool-title {
