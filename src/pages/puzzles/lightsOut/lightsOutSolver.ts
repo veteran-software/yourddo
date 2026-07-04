@@ -49,7 +49,7 @@ const lightsOutSolver = () => {
   const randomFraction = (): number => {
     const bytes = new Uint32Array(1)
     globalThis.crypto.getRandomValues(bytes)
-    return bytes[0] / 0x1_0000_0000
+    return bytes[0] / 2 ** 32
   }
 
   const getSolver = (config: Config) => {
