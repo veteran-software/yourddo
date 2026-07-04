@@ -4,11 +4,7 @@ export interface LocationLike {
 }
 
 export const resolveWindow = (win?: Window): Window | undefined => {
-  if (win != null) {
-    return win
-  }
-
-  return typeof globalThis.window !== 'undefined' ? globalThis.window : undefined
+  return win ?? globalThis.window
 }
 
 export const readQueryParamFromLocation = (
