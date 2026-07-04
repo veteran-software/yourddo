@@ -69,7 +69,7 @@ const TotalChaos = () => {
     <Card>
       <Card.Header className='text-center p-1'>
         <Card.Title>
-          <h4 className='mb-0'>Total Chaos</h4>
+          <h1 className='mb-0 h4'>Total Chaos</h1>
           <small>Keep on the Borderlands</small>
         </Card.Title>
         <small>

@@ -216,7 +216,7 @@ const TheShadowCrypt = () => {
     <Card>
       <Card.Header className='text-center p-1'>
         <Card.Title>
-          <h4 className='mb-0'>The Shadow Crypt</h4>
+          <h1 className='mb-0 h4'>The Shadow Crypt</h1>
           <small>The Necropolis, Part II</small>
         </Card.Title>
         <small>

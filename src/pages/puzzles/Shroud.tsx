@@ -85,7 +85,7 @@ const Shroud = () => {
     <Card>
       <Card.Header className='text-center p-1'>
         <Card.Title>
-          <h4 className='mb-0'>The Shroud / The Codex and the Shroud</h4>
+          <h1 className='mb-0 h4'>The Shroud / The Codex and the Shroud</h1>
           <small>The Vale of Twilight</small>
         </Card.Title>
         <small>

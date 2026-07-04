@@ -1,5 +1,11 @@
-import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
+import LZString from 'lz-string'
 import traceOfMadnessData from '../../data/traceOfMadness.json'
+import {
+  buildQueryParamUrl,
+  type LocationLike,
+  readQueryParamFromLocation,
+  removeQueryParamFromLocation
+} from '../../utils/urlHelpers.ts'
 import { getSlotOwner } from './conflictResolver.ts'
 import { canApplyCurse, isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers.ts'
 import { initialPetState } from './initialState.ts'
@@ -92,7 +98,7 @@ type V1Payload = [
 
 // ----- Encoding -----
 export const encodeGearPermalink = (setup: GearSetup): string => {
-  return compressToEncodedURIComponent(JSON.stringify(buildPermalinkPayloadV2(setup)))
+  return LZString.compressToEncodedURIComponent(JSON.stringify(buildPermalinkPayloadV2(setup)))
 }
 
 // ----- Decoding -----
@@ -103,7 +109,7 @@ export const tryDecodeGearPermalink = (
   allCurses: Curse[]
 ): { ok: true; data: GearSetup } | { ok: false } => {
   try {
-    const text = decompressFromEncodedURIComponent(gp)
+    const text = LZString.decompressFromEncodedURIComponent(gp)
 
     if (!text) {
       return { ok: false }
@@ -494,94 +500,23 @@ const decodeV1ItemPayload = (itemPayload: unknown[]): DecodedV1ItemPayload | nul
   return null
 }
 
-// ----- URL helpers -----
-export interface LocationLike {
-  pathname: string
-  search: string
-}
-
 export const readGpFromUrl = (
   location: LocationLike,
-  win: Window = globalThis as unknown as Window
+  win?: Window
 ): { gp: string | null; source: 'search' | 'hash' | null } => {
-  try {
-    const routerParams = new URLSearchParams(location.search)
-    const gpFromRouter = routerParams.get('gp')
-
-    if (gpFromRouter) return { gp: gpFromRouter, source: 'search' }
-
-    const hash = win.location.hash
-
-    if (hash.startsWith('#')) {
-      const hashBody = hash.slice(1)
-      const qm = hashBody.indexOf('?')
-
-      if (qm >= 0) {
-        const query = hashBody.slice(qm + 1)
-        const hashParams = new URLSearchParams(query)
-        const gpFromHash = hashParams.get('gp')
-
-        if (gpFromHash) {
-          return { gp: gpFromHash, source: 'hash' }
-        }
-      }
-    }
-  } catch {
-    // ignore
-  }
-
-  return { gp: null, source: null }
+  const result = readQueryParamFromLocation(location, 'gp', win)
+  return { gp: result.value, source: result.source }
 }
 
 export const removeGpFromUrl = async (
   navigate: (to: { pathname?: string; search?: string }, opts: { replace: boolean }) => Promise<void> | void,
   location: LocationLike,
   source: 'search' | 'hash' | null,
-  win: Window = globalThis as unknown as Window
+  win?: Window
 ): Promise<void> => {
-  if (!source) return
-
-  if (source === 'search') {
-    await navigate({ pathname: location.pathname, search: '' }, { replace: true })
-
-    return
-  }
-
-  if ((win as Window | undefined) == undefined || typeof win.history.replaceState !== 'function') return
-
-  const { origin, pathname, hash, search } = win.location
-  const hashBody = (hash || '').replace(/^#/, '')
-  const [hashPath, hashQuery] = hashBody.split('?')
-  const params = new URLSearchParams(hashQuery)
-
-  params.delete('gp')
-
-  const newHash = params.toString() ? `#${hashPath}?${params.toString()}` : `#${hashPath}`
-
-  const newUrl = `${origin}${pathname}${search}${newHash}`
-  win.history.replaceState({}, '', newUrl)
+  await removeQueryParamFromLocation(navigate, location, source, 'gp', win)
 }
 
-export const buildPermalinkUrl = (
-  encoded: string,
-  location: LocationLike,
-  win: Window = globalThis as unknown as Window
-): string => {
-  if ((win as Window | undefined) == undefined) {
-    return `/gear-planner?gp=${encoded}`
-  }
-
-  const { origin, pathname, hash } = win.location
-  const currentPath = location.pathname || '/gear-planner'
-
-  if (hash.startsWith('#/')) {
-    const params = new URLSearchParams()
-    params.set('gp', encoded)
-    return `${origin}${pathname}#${currentPath}?${params.toString()}`
-  }
-  const url = new URL(origin + currentPath)
-
-  url.searchParams.set('gp', encoded)
-
-  return url.toString()
+export const buildPermalinkUrl = (encoded: string, location: LocationLike, win?: Window): string => {
+  return buildQueryParamUrl(encoded, location, 'gp', '/gear-planner', win)
 }

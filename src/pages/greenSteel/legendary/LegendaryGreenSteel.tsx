@@ -17,7 +17,7 @@ const LegendaryGreenSteel = () => {
     <Container className='px-0'>
       <Card>
         <Card.Header className='text-center p-1'>
-          <h4 className='mb-0'>Legendary Green Steel Crafting</h4>
+          <h1 className='mb-0 h4'>Legendary Green Steel Crafting</h1>
           <small>
             <a
               href='https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Legendary%20Green%20Steel%22'

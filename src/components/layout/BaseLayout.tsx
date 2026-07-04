@@ -1,16 +1,24 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Alert, Container, Stack } from 'react-bootstrap'
 import { shallowEqual } from 'react-redux'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
+import { recordRecentToolPath } from '../../pages/home/homeShelf.ts'
 import { useAppSelector } from '../../redux/hooks.ts'
 import { getSubdomain } from '../../utils/utils'
 import Footer from '../footer/Footer.tsx'
 import NavbarTop from '../navbar/NavbarTop.tsx'
+import RouteSeo from '../seo/RouteSeo.tsx'
 
 const BaseLayout = () => {
   const [subdomain] = useState(() => getSubdomain())
+  const { pathname } = useLocation()
 
   const { footerHeight } = useAppSelector((state) => state.app, shallowEqual)
+  const isHomeRoute = pathname === '/'
+
+  useEffect(() => {
+    recordRecentToolPath(pathname)
+  }, [pathname])
 
   return (
     <Stack
@@ -23,6 +31,8 @@ const BaseLayout = () => {
         paddingBottom: `${String(footerHeight * 2 + 15)}px`
       }}
     >
+      <RouteSeo />
+
       <NavbarTop />
 
       {subdomain !== 'No subdomain' && subdomain === 'develop' && (
@@ -37,9 +47,15 @@ const BaseLayout = () => {
         </Alert>
       )}
 
-      <Container className='w-100 h-100 overflow-y-auto d-flex flex-column justify-content-start'>
-        <Outlet />
-      </Container>
+      {isHomeRoute ? (
+        <div className='w-100 h-100 overflow-y-auto d-flex flex-column justify-content-start'>
+          <Outlet />
+        </div>
+      ) : (
+        <Container className='w-100 h-100 overflow-y-auto d-flex flex-column justify-content-start'>
+          <Outlet />
+        </Container>
+      )}
 
       <Footer />
 

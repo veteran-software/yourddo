@@ -1,5 +1,11 @@
-import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
+import LZString from 'lz-string'
 import augmentMaster from '../../data/augments/augmentMaster.ts'
+import {
+  buildQueryParamUrl,
+  type LocationLike,
+  readQueryParamFromLocation,
+  removeQueryParamFromLocation
+} from '../../utils/urlHelpers.ts'
 import { ALL_SLOT_KEYS, DATASET, type ItemState } from './types.ts'
 
 // ----- Internal: runtime dictionaries and constants (computed once per module load) -----
@@ -108,7 +114,7 @@ export const encodeEssencePermalink = (args: {
   })
 
   const payload: V2Payload = { v: 2, ml: masterMinLevel, a: active, c: collapsed, i: itemSlots }
-  return compressToEncodedURIComponent(JSON.stringify(payload))
+  return LZString.compressToEncodedURIComponent(JSON.stringify(payload))
 }
 
 // ----- Decoding -----
@@ -116,7 +122,7 @@ export const encodeEssencePermalink = (args: {
 // Force reload
 export const tryDecodeEssencePermalink = (cc: string): { ok: true; data: PermalinkStatePayload } | { ok: false } => {
   try {
-    const text = decompressFromEncodedURIComponent(cc)
+    const text = LZString.decompressFromEncodedURIComponent(cc)
     if (!text) return { ok: false }
     const obj = JSON.parse(text) as unknown
     const v = (obj as { v?: number }).v
@@ -188,75 +194,23 @@ export const tryDecodeEssencePermalink = (cc: string): { ok: true; data: Permali
   }
 }
 
-// ----- URL helpers (BrowserRouter + HashRouter) -----
-export interface LocationLike {
-  pathname: string
-  search: string
-}
-
 export const readCcFromUrl = (
   location: LocationLike,
-  win: Window = window
+  win?: Window
 ): { cc: string | null; source: 'search' | 'hash' | null } => {
-  try {
-    const routerParams = new URLSearchParams(location.search)
-    const ccFromRouter = routerParams.get('cc')
-    if (ccFromRouter) return { cc: ccFromRouter, source: 'search' }
-
-    const hash = win.location.hash
-    if (hash.startsWith('#')) {
-      const hashBody = hash.slice(1)
-      const qm = hashBody.indexOf('?')
-      if (qm >= 0) {
-        const query = hashBody.slice(qm + 1)
-        const hashParams = new URLSearchParams(query)
-        const ccFromHash = hashParams.get('cc')
-        if (ccFromHash) return { cc: ccFromHash, source: 'hash' }
-      }
-    }
-  } catch {
-    // ignore
-  }
-  return { cc: null, source: null }
+  const result = readQueryParamFromLocation(location, 'cc', win)
+  return { cc: result.value, source: result.source }
 }
 
 export const removeCcFromUrl = async (
   navigate: (to: { pathname?: string; search?: string }, opts: { replace: boolean }) => Promise<void> | void,
   location: LocationLike,
   source: 'search' | 'hash' | null,
-  win: Window = window
+  win?: Window
 ): Promise<void> => {
-  if (!source) return
-
-  if (source === 'search') {
-    await navigate({ pathname: location.pathname, search: '' }, { replace: true })
-    return
-  }
-
-  if (typeof win === 'undefined' || typeof win.history.replaceState !== 'function') return
-
-  const { origin, pathname, hash, search } = win.location
-  const hashBody = (hash || '').replace(/^#/, '')
-  const [hashPath, hashQuery] = hashBody.split('?')
-  const params = new URLSearchParams(hashQuery)
-  params.delete('cc')
-  const newHash = params.toString() ? `#${hashPath}?${params.toString()}` : `#${hashPath}`
-  const newUrl = `${origin}${pathname}${search}${newHash}`
-  win.history.replaceState({}, '', newUrl)
+  await removeQueryParamFromLocation(navigate, location, source, 'cc', win)
 }
 
-export const buildPermalinkUrl = (encoded: string, location: LocationLike, win: Window = window): string => {
-  if (typeof win === 'undefined') {
-    return `/essence-crafting?cc=${encoded}`
-  }
-  const { origin, pathname, hash } = win.location
-  const currentPath = location.pathname || '/essence-crafting'
-  if (hash.startsWith('#/')) {
-    const params = new URLSearchParams()
-    params.set('cc', encoded)
-    return `${origin}${pathname}#${currentPath}?${params.toString()}`
-  }
-  const url = new URL(origin + currentPath)
-  url.searchParams.set('cc', encoded)
-  return url.toString()
+export const buildPermalinkUrl = (encoded: string, location: LocationLike, win?: Window): string => {
+  return buildQueryParamUrl(encoded, location, 'cc', '/essence-crafting', win)
 }

@@ -34,7 +34,7 @@ const CauldronOfCadence = () => {
       <Card>
         <Card.Header className='text-center'>
           <Card.Title>
-            <h4 className='mb-0'>Cauldron of Cadence</h4>
+            <h1 className='mb-0 h4'>Cauldron of Cadence</h1>
           </Card.Title>
           <Card.Subtitle>
             <small>

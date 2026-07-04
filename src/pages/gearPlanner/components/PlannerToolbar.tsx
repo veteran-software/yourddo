@@ -41,7 +41,7 @@ const PlannerToolbar = ({
     <Row className='align-items-center g-3'>
       <Col xs={12} md='auto'>
         <div className='d-flex align-items-center gap-2'>
-          <h2 className='mb-0'>Gear Planner</h2>
+          <h1 className='mb-0 h2'>Gear Planner</h1>
           <button
             type='button'
             className='btn btn-link p-0 border-0 text-white opacity-75 shadow-none'
