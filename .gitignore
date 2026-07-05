@@ -31,3 +31,4 @@ coverage/
 /src/data/fountainOfNecroticMight.json
 src/pages/gearPlannerv2/
 src/redux/slices/gearPlanner.slice.ts
+/AGENTS.md
