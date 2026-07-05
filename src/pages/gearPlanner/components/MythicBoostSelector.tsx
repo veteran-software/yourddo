@@ -26,10 +26,10 @@ const MythicBoostSelector = ({
   const choices = useMemo(() => getMythicBoostChoices(item), [item])
   if (choices.length === 0) return null
 
+  const selectedModifier = selectedEnchantment?.modifier ?? null
   const selectedChoice = choices.find(
     (choice) =>
-      choice.selectionLabel === selectedEnchantment?.name &&
-      String(choice.amount) === String(selectedEnchantment?.modifier)
+      choice.selectionLabel === selectedEnchantment?.name && String(choice.amount) === String(selectedModifier)
   )
   const fallbackLabel = selectedEnchantment
     ? `${selectedEnchantment.name} +${String(selectedEnchantment.modifier ?? '')} (${String(
@@ -51,7 +51,7 @@ const MythicBoostSelector = ({
           style={{ fontSize: '0.65rem', minHeight: '20px', backgroundColor: 'rgba(0,0,0,0.05)' }}
         >
           <span className='text-truncate text-dark'>
-            {selectedChoice ? `${selectedChoice.selectionLabel} +${selectedChoice.amount}` : fallbackLabel}
+            {selectedChoice ? `${selectedChoice.selectionLabel} +${String(selectedChoice.amount)}` : fallbackLabel}
           </span>
         </Dropdown.Toggle>
 

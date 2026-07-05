@@ -227,31 +227,30 @@ export const getDisplayEnchantments = (
   isZhentarimUpgraded = false,
   mythicBoost: LootEnchantment | null = null
 ): LootEnchantment[] => {
-  if (isFountainUpgraded) {
-    const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
-    if (upgradeData) {
-      return mythicBoost
-        ? [...upgradeData.effectsAdded, ...getMythicBoostEnchantments(item, mythicBoost)]
-        : upgradeData.effectsAdded
-    }
-  } else if (isStormreaverUpgraded) {
-    const upgradeData = findStormreaverUpgradeData(item.name, item.pageTitle)
-    if (upgradeData) {
-      return mythicBoost
-        ? [...upgradeData.effectsAdded, ...getMythicBoostEnchantments(item, mythicBoost)]
-        : upgradeData.effectsAdded
-    }
-  } else if (isZhentarimUpgraded) {
-    const upgradeData = findZhentarimUpgradeData(item.name, item.pageTitle)
-    if (upgradeData) {
-      return mythicBoost
-        ? [...upgradeData.effectsAdded, ...getMythicBoostEnchantments(item, mythicBoost)]
-        : upgradeData.effectsAdded
-    }
+  const withMythicBoost = (enchantments: LootEnchantment[]): LootEnchantment[] => {
+    return mythicBoost ? [...enchantments, ...getMythicBoostEnchantments(item, mythicBoost)] : enchantments
   }
-  return mythicBoost
-    ? [...(item.enchantments ?? []), ...getMythicBoostEnchantments(item, mythicBoost)]
-    : (item.enchantments ?? [])
+
+  const resolveUpgradeEnchantments = (
+    upgradeData: { effectsAdded: LootEnchantment[] } | null | undefined
+  ): LootEnchantment[] | null => {
+    if (!upgradeData) return null
+    return withMythicBoost(upgradeData.effectsAdded)
+  }
+
+  if (isFountainUpgraded) {
+    return resolveUpgradeEnchantments(findFountainUpgradeData(item.name, item.pageTitle)) ?? item.enchantments ?? []
+  }
+
+  if (isStormreaverUpgraded) {
+    return resolveUpgradeEnchantments(findStormreaverUpgradeData(item.name, item.pageTitle)) ?? item.enchantments ?? []
+  }
+
+  if (isZhentarimUpgraded) {
+    return resolveUpgradeEnchantments(findZhentarimUpgradeData(item.name, item.pageTitle)) ?? item.enchantments ?? []
+  }
+
+  return withMythicBoost(item.enchantments ?? [])
 }
 
 export const createEssenceCraftedItem = (type: string, name: string, slot: GearSlot, minLevel: number): GearItem => ({

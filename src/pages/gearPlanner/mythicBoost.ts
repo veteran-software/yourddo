@@ -35,7 +35,7 @@ const getDefenseLabel = (item: GearItem): string => {
   if (item.slot === GearSlot.Cloak) return 'Cloak'
   if (item.slot === GearSlot.Head) return 'Headwear'
   if (item.slot === GearSlot.Neck) return 'Necklace'
-  if (String(item.type ?? '').includes('Shield')) return 'Shield'
+  if (item.type.includes('Shield')) return 'Shield'
   return 'Defense'
 }
 
@@ -50,7 +50,7 @@ const getSelectionLabel = (item: GearItem, rule: MythicBoostRule): string => {
 }
 
 const getRule = (item: GearItem): MythicBoostRule | null => {
-  const typeName = String(item.type ?? '')
+  const typeName = item.type
 
   return (
     mythicBoostReference.rules.find((rule) => {
