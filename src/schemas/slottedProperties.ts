@@ -12,6 +12,7 @@ const ItemUpgradeStateSchema = z
     ritualTable: LootEnchantmentSchema.nullable(),
     lostPurpose: LootEnchantmentSchema.nullable(),
     traceOfMadness: LootEnchantmentSchema.nullable(),
+    mythicBoost: LootEnchantmentSchema.nullable(),
     fountainOfNecroticMight: z.boolean(),
     stormreaverUpgrade: z.boolean(),
     zhentarimAttuned: z.boolean(),

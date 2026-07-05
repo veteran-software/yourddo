@@ -1,0 +1,62 @@
+{
+  "rules": [
+    {
+      "id": "weapon",
+      "slots": ["Main Hand"],
+      "types": [],
+      "magnitudes": [2, 4],
+      "dropdownLabelTemplate": "Mythic Weapon Boost +<amount>",
+      "bonuses": [
+        { "name": "Melee Power", "abbreviation": "MP" },
+        { "name": "Ranged Power", "abbreviation": "RP" },
+        { "name": "Universal Spell Power", "abbreviation": "USP" }
+      ]
+    },
+    {
+      "id": "accessory",
+      "slots": ["Waist", "Hands", "Eyes", "First Finger", "Second Finger", "Trinket"],
+      "types": ["Belt", "Gloves", "Goggles", "Ring", "Trinket"],
+      "magnitudes": [1, 3],
+      "dropdownLabelTemplate": "Mythic <item type> Boost +<amount>",
+      "bonuses": [
+        { "name": "Melee Power", "abbreviation": "MP" },
+        { "name": "Ranged Power", "abbreviation": "RP" },
+        { "name": "Universal Spell Power", "abbreviation": "USP" }
+      ]
+    },
+    {
+      "id": "defense",
+      "slots": ["Armor", "Feet", "Wrists", "Cloak", "Head", "Neck", "Off Hand"],
+      "types": ["Armor", "Boots", "Bracers", "Cloak", "Headwear", "Helmet", "Necklace", "Shield"],
+      "magnitudes": [2, 4],
+      "dropdownLabelTemplate": "Mythic <item type> Boost +<amount>",
+      "bonuses": [
+        { "name": "Physical Resistance Rating", "abbreviation": "PRR" },
+        { "name": "Magical Resistance Rating", "abbreviation": "MRR" }
+      ]
+    },
+    {
+      "id": "orb",
+      "slots": ["Off Hand"],
+      "types": ["Orb"],
+      "magnitudes": [2, 4],
+      "dropdownLabelTemplate": "Mythic Orb Boost +<amount>",
+      "bonuses": [
+        { "name": "Physical Resistance Rating", "abbreviation": "PRR" },
+        { "name": "Magical Resistance Rating", "abbreviation": "MRR" }
+      ]
+    },
+    {
+      "id": "weapon-offhand",
+      "slots": ["Off Hand"],
+      "types": ["Rune Arm", "Collar"],
+      "magnitudes": [2, 4],
+      "dropdownLabelTemplate": "Mythic Weapon Boost +<amount>",
+      "bonuses": [
+        { "name": "Melee Power", "abbreviation": "MP" },
+        { "name": "Ranged Power", "abbreviation": "RP" },
+        { "name": "Universal Spell Power", "abbreviation": "USP" }
+      ]
+    }
+  ]
+}

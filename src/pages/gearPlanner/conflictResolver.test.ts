@@ -86,6 +86,25 @@ describe('conflictResolver Bugs', () => {
       expect(conflicts.strength).toBeUndefined()
     })
 
+    it('should not report conflicts for Mythic bonuses', () => {
+      const mythicItem1 = {
+        id: 'item1',
+        name: 'Item 1',
+        slot: GearSlot.Head,
+        enchantments: [{ name: 'Mythic Boost', bonus: 'Mythic', modifier: '2' }]
+      } as unknown as GearItem
+
+      const mythicItem2 = {
+        id: 'item2',
+        name: 'Item 2',
+        slot: GearSlot.Cloak,
+        enchantments: [{ name: 'Mythic Boost', bonus: 'Mythic', modifier: '4' }]
+      } as unknown as GearItem
+
+      const conflicts = resolveConflicts([mythicItem1, mythicItem2])
+      expect(conflicts['mythic boost']).toBeUndefined()
+    })
+
     it('should resolve legacy upgrade fields through the compact state resolver', () => {
       const legacyItem = {
         id: 'item3',

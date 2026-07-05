@@ -57,7 +57,8 @@ const AugmentSlotItem = (props: Props) => {
   const [showAllAugments, setShowAllAugments] = React.useState(false)
   const [filter, setFilter] = React.useState('')
   const selectedItemMinLevel = Number(selectedItem.minimumLevel) || 0
-  const isSelectedOverLevel = Boolean(slotted) && selectedItemMinLevel > 0 && Number(slotted?.minLevel) > selectedItemMinLevel
+  const isSelectedOverLevel =
+    Boolean(slotted) && selectedItemMinLevel > 0 && Number(slotted?.minLevel) > selectedItemMinLevel
 
   const filterApplicable = (group: GearAugment[]) => {
     let filtered = group
@@ -82,11 +83,7 @@ const AugmentSlotItem = (props: Props) => {
     <div
       key={idx}
       className='mx-n2 px-2 py-1 mb-1 last-child-mb-0'
-      style={
-        isSelectedOverLevel
-          ? { backgroundColor: 'rgba(220, 53, 69, 0.14)' }
-          : { backgroundColor: '#ffffff' }
-      }
+      style={isSelectedOverLevel ? { backgroundColor: 'rgba(220, 53, 69, 0.14)' } : { backgroundColor: '#ffffff' }}
     >
       <div className='d-flex align-items-center justify-content-between mb-0 mt-n1'>
         <span
@@ -177,6 +174,7 @@ const AugmentSlotItem = (props: Props) => {
 
                 const results = aug.effectsAdded?.map((ench) =>
                   checkPotentialConflict(ench, currentEquipped, slot, {
+                    itemUpgrades: entityState.itemUpgrades,
                     slottedAugments: currentSlottedAugments,
                     slottedNearlyFinished: currentSlottedNearlyFinished,
                     slottedRitualTable: currentSlottedRitualTable,
@@ -186,7 +184,7 @@ const AugmentSlotItem = (props: Props) => {
                     slottedStormreaverUpgrade: currentSlottedStormreaverUpgrade,
                     slottedZhentarimAttuned: currentSlottedZhentarimAttuned,
                     ignoreItemId: selectedItem.id,
-                    ignoreSlotIndex: idx,
+                    ignoreSlotIndex: idx
                   })
                 )
 
@@ -205,8 +203,7 @@ const AugmentSlotItem = (props: Props) => {
                   >
                     <span className='text-truncate'>
                       {troveData && <TroveBadge itemName={aug.name} troveData={troveData} />}
-                      {aug.name}
-                      {' '}
+                      {aug.name}{' '}
                       <span className={isOverLevel && showAllAugments ? 'text-danger' : undefined}>
                         (ML:{aug.minLevel})
                       </span>

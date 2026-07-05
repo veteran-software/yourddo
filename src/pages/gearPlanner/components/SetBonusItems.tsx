@@ -114,6 +114,7 @@ const SetBonusItems = (props: Props) => {
             entityState.equipped.filter((i) => i.id !== entityState.slots[item.slot]?.id),
             item.slot,
             {
+              itemUpgrades: entityState.itemUpgrades,
               slottedAugments: entityState.slottedAugments,
               slottedNearlyFinished: entityState.slottedNearlyFinished,
               slottedRitualTable: entityState.slottedRitualTable,

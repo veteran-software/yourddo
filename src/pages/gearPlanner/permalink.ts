@@ -191,6 +191,7 @@ interface DecodeSupplementaryPropertiesOptions {
   isStormreaverUpgraded: OptionalEncodedBoolean
   isZhentarimUpgraded: OptionalEncodedBoolean
   traceOfMadness: LootEnchantment | string | null
+  mythicBoost?: LootEnchantment | null
 }
 
 const decodeSupplementaryProperties = (

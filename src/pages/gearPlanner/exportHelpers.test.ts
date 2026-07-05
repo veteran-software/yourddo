@@ -151,6 +151,7 @@ const createRichSetup = (): GearSetup => ({
       fountainOfNecroticMight: true,
       stormreaverUpgrade: true,
       zhentarimAttuned: true,
+      mythicBoost: { name: 'Melee Power', modifier: 2, bonus: 'Mythic' },
       nearlyFinished: { name: 'Nearly Finished Bonus' },
       almostThere: { name: '__active__' },
       finishingTouch: { name: '__active__' },
@@ -201,6 +202,7 @@ describe('gear planner exports', () => {
     expect(bbcode).toContain('[indent][b][color=yellow]Filigrees:[/color][/b][/indent]')
     expect(bbcode).toContain('[indent][b][color=green]Gem Set Bonuses:[/color][/b] Gem Set Alpha[/indent]')
     expect(bbcode).toContain('prefix:')
+    expect(bbcode).toContain('Melee Power +2 (Mythic)')
     expect(bbcode).toContain('Essence Power +3 (Enhancement)')
     expect(bbcode).toContain('Filigree One')
     expect(bbcode).toContain('Filigree Bonus +1 (Artifact)')
@@ -218,6 +220,7 @@ describe('gear planner exports', () => {
     expect(markdown).toContain('- **Filigrees:**')
     expect(markdown).toContain('- **Gem Set Bonuses:** Gem Set Alpha')
     expect(markdown).toContain('prefix:')
+    expect(markdown).toContain('Melee Power +2 (Mythic)')
     expect(markdown).toContain('Essence Power +3 (Enhancement)')
     expect(markdown).toContain('Filigree One')
     expect(markdown).toContain('Filigree Bonus +1 (Artifact)')

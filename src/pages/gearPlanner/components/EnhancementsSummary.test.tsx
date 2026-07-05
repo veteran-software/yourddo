@@ -58,4 +58,55 @@ describe('EnchantmentsSummary', () => {
     expect(itemRows.every((className) => className.includes('text-secondary'))).toBe(true)
     expect(itemRows.some((className) => className.includes('text-decoration-line-through'))).toBe(false)
   })
+
+  it('does not strike through Mythic bonus rows', () => {
+    const item1 = {
+      id: 'item-3',
+      name: 'Item 3',
+      slot: GearSlot.Feet,
+      enchantments: [{ name: 'Physical Resistance Rating', bonus: 'Mythic', modifier: 2 }]
+    } as unknown as GearItem
+    const item2 = {
+      id: 'item-4',
+      name: 'Item 4',
+      slot: GearSlot.Cloak,
+      enchantments: [{ name: 'Physical Resistance Rating', bonus: 'Mythic', modifier: 4 }]
+    } as unknown as GearItem
+
+    render(
+      <EnchantmentsSummary
+        equippedItems={[item1, item2]}
+        slottedAugments={{}}
+        slottedCurses={{}}
+        slottedFiligrees={{}}
+        slottedGemSetBonuses={{}}
+        slottedEssenceEnchantments={{}}
+        itemUpgrades={{}}
+        slottedNearlyFinished={{}}
+        slottedAlmostThere={{}}
+        slottedFinishingTouch={{}}
+        slottedRitualTable={{}}
+        slottedLostPurpose={{}}
+        slottedTraceOfMadness={{}}
+        slottedFountainOfNecroticMight={{}}
+        slottedStormreaverUpgrade={{}}
+        slottedZhentarimAttuned={{}}
+        allItems={[item1, item2]}
+        allAugments={[]}
+        allCurses={[]}
+        allFiligrees={[]}
+      />
+    )
+
+    expect(screen.getAllByText(/mythic/i).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/\+6/).length).toBeGreaterThan(0)
+
+    const itemRows = screen
+      .getAllByText(/Item 3|Item 4/)
+      .map((el) => el.parentElement?.className ?? '')
+      .filter(Boolean)
+
+    expect(itemRows.every((className) => className.includes('text-secondary'))).toBe(true)
+    expect(itemRows.some((className) => className.includes('text-decoration-line-through'))).toBe(false)
+  })
 })

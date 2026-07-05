@@ -299,6 +299,10 @@ export const useGearPlannerActions = ({
     setItemUpgrade(itemId, 'zhentarimAttuned', active, slot)
   }
 
+  const setMythicBoost = (itemId: string, enchantment: import('../types').LootEnchantment | null, slot?: GearSlot) => {
+    setItemUpgrade(itemId, 'mythicBoost', enchantment, slot)
+  }
+
   const setReaperForge = (itemId: string, effectId: string | null, slot?: GearSlot) => {
     setItemUpgrade(itemId, 'reaperForge', effectId, slot)
   }
@@ -337,6 +341,7 @@ export const useGearPlannerActions = ({
     setFountainOfNecroticMight,
     setStormreaverUpgrade,
     setZhentarimAttuned,
+    setMythicBoost,
     setReaperForge
   }
 }

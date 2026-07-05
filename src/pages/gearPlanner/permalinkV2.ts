@@ -39,6 +39,7 @@ export interface PermalinkItemPayloadV2 {
   ritualTable: LootEnchantment | null
   lostPurpose: LootEnchantment | null
   traceOfMadness: LootEnchantment | string | null
+  mythicBoost: LootEnchantment | null
   filigrees: (string | null)[] | null
   unlockedFiligreeSlots: number | null
   slottedGemSetBonuses: (string | null)[] | null
@@ -97,6 +98,7 @@ const decodeSupplementaryProperties = (
     isFountainUpgraded: boolean
     isStormreaverUpgraded: boolean
     isZhentarimUpgraded: boolean
+    mythicBoost: LootEnchantment | null
     reaperForge: string | null
     traceOfMadness: LootEnchantment | string | null
   }
@@ -113,6 +115,7 @@ const decodeSupplementaryProperties = (
     isFountainUpgraded,
     isStormreaverUpgraded,
     isZhentarimUpgraded,
+    mythicBoost,
     reaperForge,
     traceOfMadness
   } = options
@@ -133,6 +136,7 @@ const decodeSupplementaryProperties = (
   if (isFountainUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'fountainOfNecroticMight', true)
   if (isStormreaverUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'stormreaverUpgrade', true)
   if (isZhentarimUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'zhentarimAttuned', true)
+  if (mythicBoost) setItemUpgradeState(state.itemUpgrades, item.id, 'mythicBoost', mythicBoost)
   if (reaperForge) setItemUpgradeState(state.itemUpgrades, item.id, 'reaperForge', reaperForge)
 
   decodeFiligrees(item, state, filigrees, allItems)
@@ -219,6 +223,7 @@ export const buildPermalinkItemPayloadV2 = (
     ritualTable: itemUpgrade.slottedRitualTable[item.id] ?? null,
     lostPurpose: itemUpgrade.slottedLostPurpose[item.id] ?? null,
     traceOfMadness: itemUpgrade.slottedTraceOfMadness[item.id] ?? null,
+    mythicBoost: itemUpgrade.slottedMythicBoost[item.id] ?? null,
     filigrees: filigrees.map((f) => (f ? f.name : null)),
     unlockedFiligreeSlots: state.unlockedFiligreeSlots[item.id] ?? null,
     slottedGemSetBonuses: state.slottedGemSetBonuses[item.id] ?? null,
@@ -302,6 +307,7 @@ export const decodePermalinkPayloadV2 = (
       ritualTable,
       lostPurpose,
       traceOfMadness,
+      mythicBoost,
       filigrees,
       unlockedFiligreeSlots,
       slottedGemSetBonuses,
@@ -350,6 +356,7 @@ export const decodePermalinkPayloadV2 = (
       isFountainUpgraded,
       isStormreaverUpgraded,
       isZhentarimUpgraded,
+      mythicBoost: mythicBoost ?? null,
       reaperForge,
       traceOfMadness: traceOfMadness ?? null
     })
