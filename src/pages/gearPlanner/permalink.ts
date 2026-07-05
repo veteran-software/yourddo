@@ -1,31 +1,27 @@
 import LZString from 'lz-string'
-import traceOfMadnessData from '../../data/traceOfMadness.json'
 import {
   buildQueryParamUrl,
   type LocationLike,
   readQueryParamFromLocation,
   removeQueryParamFromLocation
 } from '../../utils/urlHelpers.ts'
-import { getSlotOwner } from './conflictResolver.ts'
-import { canApplyCurse, isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers.ts'
+import { isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers.ts'
 import { initialPetState } from './initialState.ts'
+import {
+  decodeItemAugments,
+  decodeItemCurse,
+  decodeItemEssenceCrafting,
+  decodeSupplementaryProperties,
+  getTargetState
+} from './permalinkShared.ts'
 import {
   buildPermalinkPayloadV2,
   decodePermalinkPayloadV2,
   isPermalinkPayloadV2,
   type PermalinkPayloadV2
 } from './permalinkV2.ts'
-import {
-  type Curse,
-  type GearAugment,
-  type GearItem,
-  type GearSetup,
-  GearSlot,
-  type LootEnchantment,
-  type PetState,
-  type UpgradeEntry
-} from './types.ts' // ----- Types for compact v1 payload -----
-import { createEmptyItemUpgrades, setItemUpgradeState } from './upgradeState'
+import { type Curse, type GearAugment, type GearItem, type GearSetup, GearSlot, type LootEnchantment } from './types.ts' // ----- Types for compact v1 payload -----
+import { createEmptyItemUpgrades } from './upgradeState'
 
 // ----- Types for compact v1 payload -----
 // We use a compact format to keep the URL short.
@@ -171,90 +167,6 @@ export const tryDecodeGearPermalink = (
   }
 }
 
-const getTargetState = (setup: GearSetup, gearSlot: GearSlot): GearSetup | PetState => {
-  const owner = getSlotOwner(gearSlot)
-  if (owner === 'artificer_pet') return setup.artificerPet
-  if (owner === 'druid_pet') return setup.druidPet
-  return setup
-}
-
-interface DecodeSupplementaryPropertiesOptions {
-  nearlyFinished: LootEnchantment | null
-  almostThere: LootEnchantment | null
-  finishingTouch: LootEnchantment | null
-  ritualTable: LootEnchantment | null
-  lostPurpose: LootEnchantment | null
-  filigrees: (string | null)[] | null
-  unlockedFiligreeSlots: number | null
-  slottedGemSetBonuses: (string | null)[] | null
-  isFountainUpgraded: OptionalEncodedBoolean
-  isStormreaverUpgraded: OptionalEncodedBoolean
-  isZhentarimUpgraded: OptionalEncodedBoolean
-  traceOfMadness: LootEnchantment | string | null
-  mythicBoost?: LootEnchantment | null
-}
-
-const decodeSupplementaryProperties = (
-  item: GearItem,
-  state: GearSetup | PetState,
-  allItems: GearItem[],
-  {
-    nearlyFinished,
-    almostThere,
-    finishingTouch,
-    ritualTable,
-    lostPurpose,
-    filigrees,
-    unlockedFiligreeSlots,
-    slottedGemSetBonuses,
-    isFountainUpgraded,
-    isStormreaverUpgraded,
-    isZhentarimUpgraded,
-    traceOfMadness
-  }: DecodeSupplementaryPropertiesOptions
-) => {
-  if (nearlyFinished) setItemUpgradeState(state.itemUpgrades, item.id, 'nearlyFinished', nearlyFinished)
-  if (almostThere) setItemUpgradeState(state.itemUpgrades, item.id, 'almostThere', almostThere)
-  if (finishingTouch) setItemUpgradeState(state.itemUpgrades, item.id, 'finishingTouch', finishingTouch)
-  if (ritualTable) setItemUpgradeState(state.itemUpgrades, item.id, 'ritualTable', ritualTable)
-  if (lostPurpose) setItemUpgradeState(state.itemUpgrades, item.id, 'lostPurpose', lostPurpose)
-  if (traceOfMadness) {
-    if (typeof traceOfMadness === 'string') {
-      // Legacy format: string was the upgrade name — look up the enchantment
-      const upgradeEntry = (traceOfMadnessData as UpgradeEntry[]).find((u) => u.name === traceOfMadness)
-      setItemUpgradeState(state.itemUpgrades, item.id, 'traceOfMadness', upgradeEntry?.effectsAdded[0] ?? null)
-    } else {
-      setItemUpgradeState(state.itemUpgrades, item.id, 'traceOfMadness', traceOfMadness)
-    }
-  }
-  if (isFountainUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'fountainOfNecroticMight', true)
-  if (isStormreaverUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'stormreaverUpgrade', true)
-  if (isZhentarimUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'zhentarimAttuned', true)
-
-  decodeFiligrees(item, state, filigrees, allItems)
-
-  if (unlockedFiligreeSlots != null) {
-    state.unlockedFiligreeSlots[item.id] = unlockedFiligreeSlots
-  }
-  if (slottedGemSetBonuses) {
-    state.slottedGemSetBonuses[item.id] = slottedGemSetBonuses
-  }
-}
-
-const decodeFiligrees = (
-  item: GearItem,
-  state: GearSetup | PetState,
-  filigrees: (string | null)[] | null,
-  allItems: GearItem[]
-) => {
-  if (filigrees) {
-    state.slottedFiligrees[item.id] = filigrees.map((fName) => {
-      if (!fName) return null
-      return allItems.find((i) => i.name === fName) ?? null
-    })
-  }
-}
-
 const decodeItemPayload = (
   itemPayload: V1Payload[8][number],
   allItems: GearItem[],
@@ -325,46 +237,11 @@ const decodeItemPayload = (
     filigrees,
     unlockedFiligreeSlots,
     slottedGemSetBonuses,
-    isFountainUpgraded,
-    isStormreaverUpgraded,
-    isZhentarimUpgraded,
+    isFountainUpgraded: Boolean(isFountainUpgraded),
+    isStormreaverUpgraded: Boolean(isStormreaverUpgraded),
+    isZhentarimUpgraded: Boolean(isZhentarimUpgraded),
     traceOfMadness: traceOfMadness ?? null
   })
-}
-
-const decodeItemAugments = (
-  item: GearItem,
-  augments: [number, string][],
-  allAugments: GearAugment[],
-  state: GearSetup | PetState
-) => {
-  if (augments.length > 0) {
-    state.slottedAugments[item.id] = {}
-    augments.forEach(([idx, augName]) => {
-      const augment = allAugments.find((a) => a.name === augName)
-      if (augment) state.slottedAugments[item.id][idx] = augment
-    })
-  }
-}
-
-const decodeItemCurse = (item: GearItem, curseName: string | null, allCurses: Curse[], state: GearSetup | PetState) => {
-  if (curseName && canApplyCurse(item)) {
-    const curse = allCurses.find((c) => c.name === curseName)
-    if (curse) state.slottedCurses[item.id] = curse
-  }
-}
-
-const decodeItemEssenceCrafting = (
-  item: GearItem,
-  essenceCrafting: [string, string][] | null,
-  state: GearSetup | PetState
-) => {
-  if (essenceCrafting && essenceCrafting.length > 0) {
-    state.slottedEssenceEnchantments[item.id] = {}
-    essenceCrafting.forEach(([slotName, enchId]) => {
-      state.slottedEssenceEnchantments[item.id][slotName] = enchId
-    })
-  }
 }
 
 interface DecodedV1ItemPayload {
