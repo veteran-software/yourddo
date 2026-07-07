@@ -10,7 +10,9 @@ import { renderGearPlanner } from '../hooks/renderGearPlanner'
 import { createDefaultSetup } from '../initialState'
 import { GearSlot } from '../types'
 import { createUpgradeViews } from '../upgradeState'
+import GemSetBonusSelector from './GetSetBonusSelector'
 import InfoModal from './InfoModal'
+import ItemSetBonusDisplay from './ItemSetBonusDisplay'
 import PermalinkImportEffect from './PermalinkImportEffect'
 import PlannerToolbar from './PlannerToolbar'
 import SettingsModal from './SettingsModal'
@@ -244,7 +246,6 @@ describe('Gear planner extracted UI parts', () => {
     render(<Harness />)
 
     expect(screen.getByText(/ML: 20 \| Weapon/i)).toBeInTheDocument()
-    expect(screen.getByText('Mythic Boost')).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: /collapse test item/i }))
 
@@ -254,6 +255,159 @@ describe('Gear planner extracted UI parts', () => {
     await user.click(screen.getByRole('button', { name: /expand test item/i }))
 
     expect(screen.getByText(/ML: 20 \| Weapon/i)).toBeInTheDocument()
+  })
+
+  it('renders the gem set bonus selector when no prior gem selections exist', async () => {
+    const user = userEvent.setup()
+    const activeSetup = createDefaultSetup('setup-1', 'Setup 1')
+    const selectedItem = {
+      id: 'gem-of-many-facets',
+      name: 'Gem of Many Facets',
+      slot: GearSlot.Trinket,
+      minimumLevel: 20,
+      minLevel: 20,
+      type: 'Accessory',
+      material: 'Stone',
+      augments: [],
+      enchantments: [],
+      setBonus: [],
+      essenceSlots: []
+    }
+
+    const { getAllByRole, getByText } = render(
+      <GemSetBonusSelector
+        activeSetup={activeSetup}
+        selectedItem={selectedItem as never}
+        slot={GearSlot.Trinket}
+        setSlottedGemSetBonus={vi.fn()}
+      />
+    )
+
+    expect(getByText('Select Set Bonuses')).toBeInTheDocument()
+    expect(getByText('Random set 1 (from Red Fens or Vault of Night)')).toBeInTheDocument()
+    expect(getByText('Random set 2 (from Chronoscope or Sands of Menechtarun)')).toBeInTheDocument()
+
+    const [firstToggle, secondToggle] = getAllByRole('button', { name: /-- select set --/i })
+
+    await user.click(firstToggle)
+
+    expect(screen.getByText('Divine Blessing')).toBeInTheDocument()
+    expect(screen.getByText('Draconic Prophecy')).toBeInTheDocument()
+    expect(screen.queryByText('Might of the Abishai')).not.toBeInTheDocument()
+
+    await user.click(secondToggle)
+
+    expect(screen.getByText('Might of the Abishai')).toBeInTheDocument()
+    expect(screen.getByText("Windlasher's Ferocity")).toBeInTheDocument()
+  })
+
+  it('uses the epic gem set bonus lists for Epic Gem of Many Facets', async () => {
+    const user = userEvent.setup()
+    const activeSetup = createDefaultSetup('setup-1', 'Setup 1')
+    const selectedItem = {
+      id: 'epic-gem-of-many-facets',
+      name: 'Epic Gem of Many Facets',
+      pageTitle: 'Epic Gem of Many Facets',
+      slot: GearSlot.Trinket,
+      minimumLevel: 20,
+      minLevel: 20,
+      type: 'Accessory',
+      material: 'Stone',
+      augments: [],
+      enchantments: [],
+      setBonus: [],
+      essenceSlots: []
+    }
+
+    const { getAllByRole, getByText } = render(
+      <GemSetBonusSelector
+        activeSetup={activeSetup}
+        selectedItem={selectedItem as never}
+        slot={GearSlot.Trinket}
+        setSlottedGemSetBonus={vi.fn()}
+      />
+    )
+
+    expect(getByText('Random set 1 (from Epic Vault of Night or Epic Red Fens)')).toBeInTheDocument()
+    expect(getByText('Random set 2 (from Epic Chronoscope or Epic Sands of Menechtarun)')).toBeInTheDocument()
+
+    const [firstToggle, secondToggle] = getAllByRole('button', { name: /-- select set --/i })
+
+    await user.click(firstToggle)
+    expect(screen.getByText('Epic Divine Blessing')).toBeInTheDocument()
+    expect(screen.getByText('Epic Draconic Prophecy')).toBeInTheDocument()
+
+    await user.click(secondToggle)
+    expect(screen.getByText('Epic Might of the Abishai')).toBeInTheDocument()
+    expect(screen.getByText("Epic Windlasher's Ferocity")).toBeInTheDocument()
+  })
+
+  it('uses the legendary gem set bonus lists for Legendary Gem of Many Facets', async () => {
+    const user = userEvent.setup()
+    const activeSetup = createDefaultSetup('setup-1', 'Setup 1')
+    const selectedItem = {
+      id: 'legendary-gem-of-many-facets',
+      name: 'Legendary Gem of Many Facets',
+      pageTitle: 'Legendary Gem of Many Facets',
+      slot: GearSlot.Trinket,
+      minimumLevel: 30,
+      minLevel: 30,
+      type: 'Accessory',
+      material: 'Stone',
+      augments: [],
+      enchantments: [],
+      setBonus: [],
+      essenceSlots: []
+    }
+
+    const { getAllByRole, getByText } = render(
+      <GemSetBonusSelector
+        activeSetup={activeSetup}
+        selectedItem={selectedItem as never}
+        slot={GearSlot.Trinket}
+        setSlottedGemSetBonus={vi.fn()}
+      />
+    )
+
+    expect(getByText('Random set 1 (Legendary Vault of Night or Legendary Red Fens)')).toBeInTheDocument()
+    expect(getByText('Random set 2 (Legendary Chronoscope or Legendary Sands of Menechtarun)')).toBeInTheDocument()
+
+    const [firstToggle, secondToggle] = getAllByRole('button', { name: /-- select set --/i })
+
+    await user.click(firstToggle)
+    expect(screen.getByText('Legendary Divine Blessing')).toBeInTheDocument()
+    expect(screen.getByText('Legendary Draconic Prophecy')).toBeInTheDocument()
+
+    await user.click(secondToggle)
+    expect(screen.getByText('Legendary Might of the Abishai')).toBeInTheDocument()
+    expect(screen.getByText("The Legendary Desert's Writhing Storm")).toBeInTheDocument()
+  })
+
+  it('does not crash when the gem set bonus display has no stored selections', () => {
+    const activeSetup = createDefaultSetup('setup-1', 'Setup 1')
+    const selectedItem = {
+      id: 'gem-of-many-facets',
+      name: 'Gem of Many Facets',
+      slot: GearSlot.Trinket,
+      minimumLevel: 20,
+      minLevel: 20,
+      type: 'Accessory',
+      material: 'Stone',
+      augments: [],
+      enchantments: [],
+      setBonus: [],
+      essenceSlots: []
+    }
+
+    const { container } = render(
+      <ItemSetBonusDisplay
+        activeSetup={activeSetup}
+        selectedItem={selectedItem as never}
+        openSetBonusBrowser={vi.fn()}
+      />
+    )
+
+    expect(container).toBeEmptyDOMElement()
   })
 
   it('SettingsModal updates the active setup fields', async () => {

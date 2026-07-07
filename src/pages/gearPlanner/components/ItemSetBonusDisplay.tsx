@@ -5,7 +5,7 @@ const ItemSetBonusDisplay = (props: Props) => {
   const { activeSetup, openSetBonusBrowser, selectedItem } = props
 
   if (selectedItem.name.includes('Gem of Many Facets')) {
-    const gemBonuses: (string | null)[] = activeSetup.slottedGemSetBonuses[selectedItem.id]
+    const gemBonuses: (string | null)[] = activeSetup.slottedGemSetBonuses[selectedItem.id] ?? []
     const activeGemBonuses: string[] = gemBonuses.filter((b) => b !== null)
 
     if (activeGemBonuses.length === 0) {
