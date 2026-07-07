@@ -1,21 +1,26 @@
 import { Dropdown } from 'react-bootstrap'
+import { getGemSetBonusGroups } from '../gemSetBonusOptions.ts'
 import { type GearItem, type GearSetup, GearSlot } from '../types.ts'
 
 const GemSetBonusSelector = (props: Props) => {
   const { activeSetup, selectedItem, setSlottedGemSetBonus, slot } = props
   const gemSetBonuses = activeSetup.slottedGemSetBonuses[selectedItem.id] ?? []
+  const gemSetBonusGroups = getGemSetBonusGroups(selectedItem)
 
   return (
     <div className='mb-2 border-bottom pb-2'>
-      <div className='text-primary mb-1' style={{ fontSize: '0.65rem' }}>
+      <div className='text-primary mb-1 text-start' style={{ fontSize: '0.65rem' }}>
         Select Set Bonuses
       </div>
-      {[0, 1].map((idx) => {
+      {gemSetBonusGroups.map((group, idx) => {
         const currentSelection = gemSetBonuses[idx] ?? null
         const otherSelection = gemSetBonuses[idx === 0 ? 1 : 0] ?? null
 
         return (
           <div key={idx} className={idx === 0 ? 'mb-1' : ''}>
+            <div className='text-dark mb-0 text-start' style={{ fontSize: '0.6rem' }}>
+              {group.label}
+            </div>
             <Dropdown className='w-100'>
               <Dropdown.Toggle
                 variant='outline-dark'
@@ -47,15 +52,15 @@ const GemSetBonusSelector = (props: Props) => {
 
                 <Dropdown.Divider />
 
-                {selectedItem.setBonus?.map((sb) => (
+                {group.setBonuses.map((setName) => (
                   <Dropdown.Item
-                    key={sb.name}
-                    disabled={sb.name === otherSelection}
+                    key={setName}
+                    disabled={setName === otherSelection}
                     onClick={() => {
-                      setSlottedGemSetBonus(selectedItem.id, idx, sb.name, slot)
+                      setSlottedGemSetBonus(selectedItem.id, idx, setName, slot)
                     }}
                   >
-                    {sb.name}
+                    {setName}
                   </Dropdown.Item>
                 ))}
               </Dropdown.Menu>
