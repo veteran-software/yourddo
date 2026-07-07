@@ -17,7 +17,7 @@ const GemSetBonusSelector = (props: Props) => {
         const otherSelection = gemSetBonuses[idx === 0 ? 1 : 0] ?? null
 
         return (
-          <div key={idx} className={idx === 0 ? 'mb-1' : ''}>
+          <div key={group.label} className={idx === 0 ? 'mb-1' : ''}>
             <div className='text-dark mb-0 text-start' style={{ fontSize: '0.6rem' }}>
               {group.label}
             </div>
