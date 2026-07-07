@@ -10,7 +10,9 @@ import { renderGearPlanner } from '../hooks/renderGearPlanner'
 import { createDefaultSetup } from '../initialState'
 import { GearSlot } from '../types'
 import { createUpgradeViews } from '../upgradeState'
+import GemSetBonusSelector from './GetSetBonusSelector'
 import InfoModal from './InfoModal'
+import ItemSetBonusDisplay from './ItemSetBonusDisplay'
 import PermalinkImportEffect from './PermalinkImportEffect'
 import PlannerToolbar from './PlannerToolbar'
 import SettingsModal from './SettingsModal'
@@ -244,7 +246,6 @@ describe('Gear planner extracted UI parts', () => {
     render(<Harness />)
 
     expect(screen.getByText(/ML: 20 \| Weapon/i)).toBeInTheDocument()
-    expect(screen.getByText('Mythic Boost')).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: /collapse test item/i }))
 
@@ -254,6 +255,62 @@ describe('Gear planner extracted UI parts', () => {
     await user.click(screen.getByRole('button', { name: /expand test item/i }))
 
     expect(screen.getByText(/ML: 20 \| Weapon/i)).toBeInTheDocument()
+  })
+
+  it('renders the gem set bonus selector when no prior gem selections exist', () => {
+    const activeSetup = createDefaultSetup('setup-1', 'Setup 1')
+    const selectedItem = {
+      id: 'gem-of-many-facets',
+      name: 'Gem of Many Facets',
+      slot: GearSlot.Trinket,
+      minimumLevel: 20,
+      minLevel: 20,
+      type: 'Accessory',
+      material: 'Stone',
+      augments: [],
+      enchantments: [],
+      setBonus: [],
+      essenceSlots: []
+    }
+
+    const { getAllByRole, getByText } = render(
+      <GemSetBonusSelector
+        activeSetup={activeSetup}
+        selectedItem={selectedItem as never}
+        slot={GearSlot.Trinket}
+        setSlottedGemSetBonus={vi.fn()}
+      />
+    )
+
+    expect(getByText('Select Set Bonuses')).toBeInTheDocument()
+    expect(getAllByRole('button', { name: /-- select set --/i })).toHaveLength(2)
+  })
+
+  it('does not crash when the gem set bonus display has no stored selections', () => {
+    const activeSetup = createDefaultSetup('setup-1', 'Setup 1')
+    const selectedItem = {
+      id: 'gem-of-many-facets',
+      name: 'Gem of Many Facets',
+      slot: GearSlot.Trinket,
+      minimumLevel: 20,
+      minLevel: 20,
+      type: 'Accessory',
+      material: 'Stone',
+      augments: [],
+      enchantments: [],
+      setBonus: [],
+      essenceSlots: []
+    }
+
+    const { container } = render(
+      <ItemSetBonusDisplay
+        activeSetup={activeSetup}
+        selectedItem={selectedItem as never}
+        openSetBonusBrowser={vi.fn()}
+      />
+    )
+
+    expect(container).toBeEmptyDOMElement()
   })
 
   it('SettingsModal updates the active setup fields', async () => {

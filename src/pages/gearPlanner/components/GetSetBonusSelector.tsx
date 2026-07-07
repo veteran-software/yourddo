@@ -3,6 +3,7 @@ import { type GearItem, type GearSetup, GearSlot } from '../types.ts'
 
 const GemSetBonusSelector = (props: Props) => {
   const { activeSetup, selectedItem, setSlottedGemSetBonus, slot } = props
+  const gemSetBonuses = activeSetup.slottedGemSetBonuses[selectedItem.id] ?? []
 
   return (
     <div className='mb-2 border-bottom pb-2'>
@@ -10,8 +11,8 @@ const GemSetBonusSelector = (props: Props) => {
         Select Set Bonuses
       </div>
       {[0, 1].map((idx) => {
-        const currentSelection = activeSetup.slottedGemSetBonuses[selectedItem.id][idx] ?? null
-        const otherSelection = activeSetup.slottedGemSetBonuses[selectedItem.id][idx === 0 ? 1 : 0] ?? null
+        const currentSelection = gemSetBonuses[idx] ?? null
+        const otherSelection = gemSetBonuses[idx === 0 ? 1 : 0] ?? null
 
         return (
           <div key={idx} className={idx === 0 ? 'mb-1' : ''}>

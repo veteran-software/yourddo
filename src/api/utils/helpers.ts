@@ -17,7 +17,9 @@ export const processStatus = (response: string): boolean | undefined => {
       'StormreachLimited',
       'StormreachStandard',
       'StormreachGuest',
-      'StormreachEUPre'
+      'StormreachEUPre',
+      '2021PlayersCouncil',
+      'StreamerPreview'
     ].reduce((count, str) => {
       if (billingRoles.includes(str)) {
         count++
@@ -26,7 +28,7 @@ export const processStatus = (response: string): boolean | undefined => {
       return count
     }, 0)
 
-    return rolesPresent >= 5
+    return rolesPresent >= 3
   }
 
   return false
