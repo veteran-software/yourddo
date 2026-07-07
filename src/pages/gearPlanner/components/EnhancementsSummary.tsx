@@ -116,7 +116,7 @@ const EnchantmentsSummary = (props: Props) => {
       }
 
       const group: AggregationBonus = map[normName].bonuses[normBonus]
-      if (normBonus === 'reaper') {
+      if (normBonus === 'reaper' || normBonus === 'mythic') {
         group.maxValue += value
       } else if (value > group.maxValue) {
         group.maxValue = value
@@ -284,7 +284,7 @@ const EnchantmentsSummary = (props: Props) => {
 
                 <Accordion.Body className='p-2 bg-dark'>
                   {ench.bonuses.map((bonus, bIdx) => {
-                    const isReaperBonus = bonus.bonusType === 'reaper'
+                    const isStackableBonus = bonus.bonusType === 'reaper' || bonus.bonusType === 'mythic'
 
                     return (
                       <div key={`${bonus.bonusType}-${String(bIdx)}`} className='mb-2 last-child-mb-0'>
@@ -320,7 +320,7 @@ const EnchantmentsSummary = (props: Props) => {
                             <div
                               key={`${item.itemName}-${String(iIdx)}`}
                               className={`ps-2 small d-flex justify-content-between align-items-center ${
-                                isReaperBonus || item.value === bonus.maxValue
+                                isStackableBonus || item.value === bonus.maxValue
                                   ? 'text-secondary'
                                   : 'text-muted text-decoration-line-through'
                               }`}

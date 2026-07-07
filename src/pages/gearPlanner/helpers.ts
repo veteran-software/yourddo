@@ -8,6 +8,7 @@ import type { SetBonus } from '../../types/crafting.ts'
 import { UPGRADE_PLACEHOLDER_ENCHANTMENTS } from './constants'
 import type { EssenceEnchantment } from './dataLoader.ts'
 import { nearlyFinishedUpgradeItems } from './dataLoader.ts'
+import { getMythicBoostEnchantments } from './mythicBoost'
 import {
   type Curse,
   type GearAugment,
@@ -223,25 +224,33 @@ export const getDisplayEnchantments = (
   item: GearItem,
   isFountainUpgraded: boolean,
   isStormreaverUpgraded: boolean,
-  isZhentarimUpgraded = false
+  isZhentarimUpgraded = false,
+  mythicBoost: LootEnchantment | null = null
 ): LootEnchantment[] => {
-  if (isFountainUpgraded) {
-    const upgradeData = findFountainUpgradeData(item.name, item.pageTitle)
-    if (upgradeData) {
-      return upgradeData.effectsAdded
-    }
-  } else if (isStormreaverUpgraded) {
-    const upgradeData = findStormreaverUpgradeData(item.name, item.pageTitle)
-    if (upgradeData) {
-      return upgradeData.effectsAdded
-    }
-  } else if (isZhentarimUpgraded) {
-    const upgradeData = findZhentarimUpgradeData(item.name, item.pageTitle)
-    if (upgradeData) {
-      return upgradeData.effectsAdded
-    }
+  const withMythicBoost = (enchantments: LootEnchantment[]): LootEnchantment[] => {
+    return mythicBoost ? [...enchantments, ...getMythicBoostEnchantments(item, mythicBoost)] : enchantments
   }
-  return item.enchantments ?? []
+
+  const resolveUpgradeEnchantments = (
+    upgradeData: { effectsAdded: LootEnchantment[] } | null | undefined
+  ): LootEnchantment[] | null => {
+    if (!upgradeData) return null
+    return withMythicBoost(upgradeData.effectsAdded)
+  }
+
+  if (isFountainUpgraded) {
+    return resolveUpgradeEnchantments(findFountainUpgradeData(item.name, item.pageTitle)) ?? item.enchantments ?? []
+  }
+
+  if (isStormreaverUpgraded) {
+    return resolveUpgradeEnchantments(findStormreaverUpgradeData(item.name, item.pageTitle)) ?? item.enchantments ?? []
+  }
+
+  if (isZhentarimUpgraded) {
+    return resolveUpgradeEnchantments(findZhentarimUpgradeData(item.name, item.pageTitle)) ?? item.enchantments ?? []
+  }
+
+  return withMythicBoost(item.enchantments ?? [])
 }
 
 export const createEssenceCraftedItem = (type: string, name: string, slot: GearSlot, minLevel: number): GearItem => ({
@@ -350,6 +359,7 @@ interface AggregateEnchantmentEntriesOptions {
   slottedRitualTable?: LegacyLootEnchantmentMap
   slottedLostPurpose?: LegacyLootEnchantmentMap
   slottedTraceOfMadness?: LegacyTraceOfMadnessMap
+  slottedMythicBoost?: LegacyLootEnchantmentMap
   slottedFountainOfNecroticMight?: LegacyBooleanUpgradeMap
   slottedStormreaverUpgrade?: LegacyBooleanUpgradeMap
   slottedZhentarimAttuned?: LegacyBooleanUpgradeMap
@@ -368,6 +378,7 @@ export const aggregateEnchantmentEntries = (
   const isFountainUpgraded = itemUpgrade.fountainOfNecroticMight ?? false
   const isStormreaverUpgraded = itemUpgrade.stormreaverUpgrade ?? false
   const isZhentarimUpgraded = itemUpgrade.zhentarimAttuned ?? false
+  const mythicBoost = itemUpgrade.mythicBoost ?? null
   const reaperForgeEnchantments = getReaperForgeEnchantments(itemUpgrade.reaperForge ?? null)
 
   const nfStored = itemUpgrade.nearlyFinished ?? null
@@ -387,17 +398,23 @@ export const aggregateEnchantmentEntries = (
   if (ftIsToggle && ftStored?.name === '__active__') {
     resolvedEnchantments =
       upgradeItems[`${item.name} (Complete)`]?.enchantments ??
-      getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
+      getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded, mythicBoost)
   } else if (atIsToggle && atStored?.name === '__active__') {
     resolvedEnchantments =
       upgradeItems[`${item.name} (Almost There Upgraded)`]?.enchantments ??
-      getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
+      getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded, mythicBoost)
   } else if (nfIsToggle && nfStored?.name === '__active__') {
     resolvedEnchantments =
       upgradeItems[`${item.name} (Nearly Finished Upgraded)`]?.enchantments ??
-      getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
+      getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded, mythicBoost)
   } else {
-    resolvedEnchantments = getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
+    resolvedEnchantments = getDisplayEnchantments(
+      item,
+      isFountainUpgraded,
+      isStormreaverUpgraded,
+      isZhentarimUpgraded,
+      mythicBoost
+    )
   }
 
   const entries: { ench: LootEnchantment; sourceName: string }[] = resolvedEnchantments

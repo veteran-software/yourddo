@@ -121,6 +121,7 @@ describe('Gear planner extracted UI parts', () => {
             slottedFinishingTouch: {},
             slottedRitualTable: {},
             slottedTraceOfMadness: {},
+            slottedMythicBoost: {},
             slottedFountainOfNecroticMight: {},
             slottedStormreaverUpgrade: {},
             slottedZhentarimAttuned: {}
@@ -167,6 +168,7 @@ describe('Gear planner extracted UI parts', () => {
     const selectedItem = {
       id: 'item-1',
       name: 'Test Item',
+      slot: GearSlot.Head,
       minimumLevel: 20,
       minLevel: 20,
       type: 'Weapon',
@@ -189,6 +191,7 @@ describe('Gear planner extracted UI parts', () => {
       slottedRitualTable: {},
       slottedLostPurpose: {},
       slottedTraceOfMadness: {},
+      slottedMythicBoost: {},
       slottedFountainOfNecroticMight: {},
       slottedStormreaverUpgrade: {},
       slottedZhentarimAttuned: {},
@@ -223,6 +226,7 @@ describe('Gear planner extracted UI parts', () => {
         setFountainOfNecroticMight: vi.fn(),
         setStormreaverUpgrade: vi.fn(),
         setZhentarimAttuned: vi.fn(),
+        setMythicBoost: vi.fn(),
         setReaperForge: vi.fn(),
         isItemCardCollapsed: (itemId: string) => collapsedItemCards[itemId] ?? false,
         toggleItemCardCollapsed: (itemId: string) => {
@@ -240,6 +244,7 @@ describe('Gear planner extracted UI parts', () => {
     render(<Harness />)
 
     expect(screen.getByText(/ML: 20 \| Weapon/i)).toBeInTheDocument()
+    expect(screen.getByText('Mythic Boost')).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: /collapse test item/i }))
 

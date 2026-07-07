@@ -1,7 +1,13 @@
-import traceOfMadnessData from '../../data/traceOfMadness.json'
 import { getSlotOwner } from './conflictResolver'
 import { canApplyCurse, isEssenceCraftedName, reconstructEssenceCraftedItem } from './helpers'
 import { initialPetState } from './initialState'
+import {
+  decodeItemAugments,
+  decodeItemCurse,
+  decodeItemEssenceCrafting,
+  decodeSupplementaryProperties,
+  getTargetState
+} from './permalinkShared'
 import { pickPlannerSetupMetadata } from './plannerStateFields'
 import {
   type Curse,
@@ -10,10 +16,9 @@ import {
   type GearSetup,
   GearSlot,
   type LootEnchantment,
-  type PetState,
-  type UpgradeEntry
+  type PetState
 } from './types'
-import { createEmptyItemUpgrades, createUpgradeViews, setItemUpgradeState } from './upgradeState'
+import { createEmptyItemUpgrades, createUpgradeViews } from './upgradeState'
 
 export interface PermalinkSetupPayloadV2 {
   name: string
@@ -39,6 +44,7 @@ export interface PermalinkItemPayloadV2 {
   ritualTable: LootEnchantment | null
   lostPurpose: LootEnchantment | null
   traceOfMadness: LootEnchantment | string | null
+  mythicBoost: LootEnchantment | null
   filigrees: (string | null)[] | null
   unlockedFiligreeSlots: number | null
   slottedGemSetBonuses: (string | null)[] | null
@@ -56,55 +62,67 @@ export interface PermalinkPayloadV2 {
   items: PermalinkItemPayloadV2[]
 }
 
-const isGearSlot = (value: string): value is GearSlot => {
-  return (Object.values(GearSlot) as string[]).includes(value)
-}
+const isGearSlot = (value: string): value is GearSlot => (Object.values(GearSlot) as string[]).includes(value)
 
-const getTargetState = (setup: GearSetup, gearSlot: GearSlot): GearSetup | PetState => {
-  const owner = getSlotOwner(gearSlot)
-  if (owner === 'artificer_pet') return setup.artificerPet
-  if (owner === 'druid_pet') return setup.druidPet
-  return setup
-}
-
-const decodeFiligrees = (
-  item: GearItem,
-  state: GearSetup | PetState,
-  filigrees: (string | null)[] | null,
-  allItems: GearItem[]
-) => {
-  if (filigrees) {
-    state.slottedFiligrees[item.id] = filigrees.map((fName) => {
-      if (!fName) return null
-      return allItems.find((i) => i.name === fName) ?? null
-    })
-  }
-}
-
-const decodeSupplementaryProperties = (
-  item: GearItem,
-  state: GearSetup | PetState,
+const decodePermalinkItemPayload = (
+  itemPayload: PermalinkItemPayloadV2,
+  setup: GearSetup,
   allItems: GearItem[],
-  options: {
-    nearlyFinished: LootEnchantment | null
-    almostThere: LootEnchantment | null
-    finishingTouch: LootEnchantment | null
-    ritualTable: LootEnchantment | null
-    lostPurpose: LootEnchantment | null
-    filigrees: (string | null)[] | null
-    unlockedFiligreeSlots: number | null
-    slottedGemSetBonuses: (string | null)[] | null
-    isFountainUpgraded: boolean
-    isStormreaverUpgraded: boolean
-    isZhentarimUpgraded: boolean
-    reaperForge: string | null
-    traceOfMadness: LootEnchantment | string | null
-  }
+  allAugments: GearAugment[],
+  allCurses: Curse[]
 ) => {
   const {
+    slot,
+    itemName,
+    itemId,
+    augments,
+    curseName,
+    essenceCrafting,
     nearlyFinished,
     almostThere,
     finishingTouch,
+    ritualTable,
+    lostPurpose,
+    traceOfMadness,
+    mythicBoost,
+    filigrees,
+    unlockedFiligreeSlots,
+    slottedGemSetBonuses,
+    itemMinLevel,
+    itemMaterial,
+    isFountainUpgraded,
+    isStormreaverUpgraded,
+    isZhentarimUpgraded,
+    reaperForge
+  } = itemPayload
+
+  if (!(Object.values(GearSlot) as string[]).includes(slot)) return
+
+  const gearSlot = slot
+
+  let item = itemId ? allItems.find((i) => i.id === itemId) : null
+  item ??= allItems.find((i) => i.name === itemName && i.slot === gearSlot) ?? allItems.find((i) => i.name === itemName)
+
+  if (!item && isEssenceCraftedName(itemName)) {
+    item = reconstructEssenceCraftedItem(itemName, gearSlot, itemMinLevel ?? setup.minLevel)
+  }
+
+  if (!item) return
+
+  item = { ...item }
+  if (itemMinLevel != null) item.minLevel = String(itemMinLevel)
+  if (itemMaterial != null) item.material = itemMaterial
+
+  const state = getTargetState(setup, gearSlot)
+
+  state.slots[gearSlot] = item
+  decodeItemAugments(item, augments, allAugments, state)
+  decodeItemCurse(item, curseName, allCurses, state)
+  decodeItemEssenceCrafting(item, essenceCrafting, state)
+  decodeSupplementaryProperties(item, state, allItems, {
+    nearlyFinished,
+    almostThere: almostThere ?? null,
+    finishingTouch: finishingTouch ?? null,
     ritualTable,
     lostPurpose,
     filigrees,
@@ -113,71 +131,10 @@ const decodeSupplementaryProperties = (
     isFountainUpgraded,
     isStormreaverUpgraded,
     isZhentarimUpgraded,
+    mythicBoost: mythicBoost ?? null,
     reaperForge,
-    traceOfMadness
-  } = options
-
-  if (nearlyFinished) setItemUpgradeState(state.itemUpgrades, item.id, 'nearlyFinished', nearlyFinished)
-  if (almostThere) setItemUpgradeState(state.itemUpgrades, item.id, 'almostThere', almostThere)
-  if (finishingTouch) setItemUpgradeState(state.itemUpgrades, item.id, 'finishingTouch', finishingTouch)
-  if (ritualTable) setItemUpgradeState(state.itemUpgrades, item.id, 'ritualTable', ritualTable)
-  if (lostPurpose) setItemUpgradeState(state.itemUpgrades, item.id, 'lostPurpose', lostPurpose)
-  if (traceOfMadness) {
-    if (typeof traceOfMadness === 'string') {
-      const upgradeEntry = (traceOfMadnessData as UpgradeEntry[]).find((u) => u.name === traceOfMadness)
-      setItemUpgradeState(state.itemUpgrades, item.id, 'traceOfMadness', upgradeEntry?.effectsAdded[0] ?? null)
-    } else {
-      setItemUpgradeState(state.itemUpgrades, item.id, 'traceOfMadness', traceOfMadness)
-    }
-  }
-  if (isFountainUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'fountainOfNecroticMight', true)
-  if (isStormreaverUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'stormreaverUpgrade', true)
-  if (isZhentarimUpgraded) setItemUpgradeState(state.itemUpgrades, item.id, 'zhentarimAttuned', true)
-  if (reaperForge) setItemUpgradeState(state.itemUpgrades, item.id, 'reaperForge', reaperForge)
-
-  decodeFiligrees(item, state, filigrees, allItems)
-
-  if (unlockedFiligreeSlots != null) {
-    state.unlockedFiligreeSlots[item.id] = unlockedFiligreeSlots
-  }
-  if (slottedGemSetBonuses) {
-    state.slottedGemSetBonuses[item.id] = slottedGemSetBonuses
-  }
-}
-
-const decodeItemAugments = (
-  item: GearItem,
-  augments: [number, string][],
-  allAugments: GearAugment[],
-  state: GearSetup | PetState
-) => {
-  if (augments.length > 0) {
-    state.slottedAugments[item.id] = {}
-    augments.forEach(([idx, augName]) => {
-      const augment = allAugments.find((a) => a.name === augName)
-      if (augment) state.slottedAugments[item.id][idx] = augment
-    })
-  }
-}
-
-const decodeItemCurse = (item: GearItem, curseName: string | null, allCurses: Curse[], state: GearSetup | PetState) => {
-  if (curseName && canApplyCurse(item)) {
-    const curse = allCurses.find((c) => c.name === curseName)
-    if (curse) state.slottedCurses[item.id] = curse
-  }
-}
-
-const decodeItemEssenceCrafting = (
-  item: GearItem,
-  essenceCrafting: [string, string][] | null,
-  state: GearSetup | PetState
-) => {
-  if (essenceCrafting && essenceCrafting.length > 0) {
-    state.slottedEssenceEnchantments[item.id] = {}
-    essenceCrafting.forEach(([slotName, enchId]) => {
-      state.slottedEssenceEnchantments[item.id][slotName] = enchId
-    })
-  }
+    traceOfMadness: traceOfMadness ?? null
+  })
 }
 
 export const buildPermalinkItemPayloadV2 = (
@@ -219,6 +176,7 @@ export const buildPermalinkItemPayloadV2 = (
     ritualTable: itemUpgrade.slottedRitualTable[item.id] ?? null,
     lostPurpose: itemUpgrade.slottedLostPurpose[item.id] ?? null,
     traceOfMadness: itemUpgrade.slottedTraceOfMadness[item.id] ?? null,
+    mythicBoost: itemUpgrade.slottedMythicBoost[item.id] ?? null,
     filigrees: filigrees.map((f) => (f ? f.name : null)),
     unlockedFiligreeSlots: state.unlockedFiligreeSlots[item.id] ?? null,
     slottedGemSetBonuses: state.slottedGemSetBonuses[item.id] ?? null,
@@ -289,70 +247,7 @@ export const decodePermalinkPayloadV2 = (
   }
 
   payload.items.forEach((itemPayload) => {
-    const {
-      slot,
-      itemName,
-      itemId,
-      augments,
-      curseName,
-      essenceCrafting,
-      nearlyFinished,
-      almostThere,
-      finishingTouch,
-      ritualTable,
-      lostPurpose,
-      traceOfMadness,
-      filigrees,
-      unlockedFiligreeSlots,
-      slottedGemSetBonuses,
-      itemMinLevel,
-      itemMaterial,
-      isFountainUpgraded,
-      isStormreaverUpgraded,
-      isZhentarimUpgraded,
-      reaperForge
-    } = itemPayload
-
-    if (!isGearSlot(slot)) {
-      return
-    }
-    const gearSlot = slot
-
-    let item = itemId ? allItems.find((i) => i.id === itemId) : null
-    item ??=
-      allItems.find((i) => i.name === itemName && i.slot === gearSlot) ?? allItems.find((i) => i.name === itemName)
-
-    if (!item && isEssenceCraftedName(itemName)) {
-      item = reconstructEssenceCraftedItem(itemName, gearSlot, itemMinLevel ?? setup.minLevel)
-    }
-
-    if (!item) return
-
-    item = { ...item }
-    if (itemMinLevel != null) item.minLevel = String(itemMinLevel)
-    if (itemMaterial != null) item.material = itemMaterial
-
-    const state = getTargetState(setup, gearSlot)
-
-    state.slots[gearSlot] = item
-    decodeItemAugments(item, augments, allAugments, state)
-    decodeItemCurse(item, curseName, allCurses, state)
-    decodeItemEssenceCrafting(item, essenceCrafting, state)
-    decodeSupplementaryProperties(item, state, allItems, {
-      nearlyFinished,
-      almostThere: almostThere ?? null,
-      finishingTouch: finishingTouch ?? null,
-      ritualTable,
-      lostPurpose,
-      filigrees,
-      unlockedFiligreeSlots,
-      slottedGemSetBonuses,
-      isFountainUpgraded,
-      isStormreaverUpgraded,
-      isZhentarimUpgraded,
-      reaperForge,
-      traceOfMadness: traceOfMadness ?? null
-    })
+    decodePermalinkItemPayload(itemPayload, setup, allItems, allAugments, allCurses)
   })
 
   return setup

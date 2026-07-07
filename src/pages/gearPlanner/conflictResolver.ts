@@ -76,7 +76,7 @@ export const getBonus = (bonus: RobustString): string => {
   return normalized === '' ? 'no type' : normalized
 }
 
-const isStackableBonus = (bonus: string): boolean => bonus === 'no type' || bonus === 'reaper'
+const isStackableBonus = (bonus: string): boolean => bonus === 'no type' || bonus === 'reaper' || bonus === 'mythic'
 
 /**
  * Parses a numeric value from a modifier string like "3", "+14%", or "2[W]".
@@ -156,11 +156,13 @@ export const resolveConflicts = (
     const isFountainUpgraded = itemUpgrade.fountainOfNecroticMight ?? false
     const isStormreaverUpgraded = itemUpgrade.stormreaverUpgrade ?? false
     const isZhentarimUpgraded = itemUpgrade.zhentarimAttuned ?? false
+    const mythicBoost = itemUpgrade.mythicBoost ?? null
     const baseEnchantments = getDisplayEnchantments(
       item,
       isFountainUpgraded,
       isStormreaverUpgraded,
-      isZhentarimUpgraded
+      isZhentarimUpgraded,
+      mythicBoost
     )
 
     if (Array.isArray(baseEnchantments)) {
@@ -297,7 +299,13 @@ const findMatchingInherent = (
   const isFountainUpgraded = itemUpgrade.fountainOfNecroticMight ?? false
   const isStormreaverUpgraded = itemUpgrade.stormreaverUpgrade ?? false
   const isZhentarimUpgraded = itemUpgrade.zhentarimAttuned ?? false
-  const baseEnchantments = getDisplayEnchantments(item, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
+  const baseEnchantments = getDisplayEnchantments(
+    item,
+    isFountainUpgraded,
+    isStormreaverUpgraded,
+    isZhentarimUpgraded,
+    itemUpgrade.mythicBoost ?? null
+  )
 
   if (Array.isArray(baseEnchantments)) {
     baseEnchantments

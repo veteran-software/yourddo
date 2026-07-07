@@ -226,11 +226,13 @@ const appendEnchantments = (
   style: ExportTextStyle
 ) => {
   const itemUpgrade = getItemUpgradeView(itemUpgrades, item.id)
+  const mythicBoost = itemUpgrade.mythicBoost ?? null
   const baseEnchantments = getDisplayEnchantments(
     item,
     itemUpgrade.fountainOfNecroticMight ?? false,
     itemUpgrade.stormreaverUpgrade ?? false,
-    itemUpgrade.zhentarimAttuned ?? false
+    itemUpgrade.zhentarimAttuned ?? false,
+    mythicBoost
   )
   const filtered = getFilteredEnchantments(
     baseEnchantments,

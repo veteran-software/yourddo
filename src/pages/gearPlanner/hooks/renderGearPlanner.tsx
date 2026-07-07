@@ -13,6 +13,7 @@ import FountainOfNecroticMightSelector from '../components/FountainOfNecroticMig
 import GemSetBonusSelector from '../components/GetSetBonusSelector'
 import ItemSetBonusDisplay from '../components/ItemSetBonusDisplay'
 import LostPurposeSelector from '../components/LostPurposeSelector'
+import MythicBoostSelector from '../components/MythicBoostSelector'
 import NearlyFinishedSelector from '../components/NearlyFinishedSelector'
 import ReaperForgeSelector from '../components/ReaperForgeSelector'
 import RitualTableSelector from '../components/RitualTableSelector'
@@ -106,6 +107,7 @@ interface SlotCardState {
   currentSlottedFountainOfNecroticMight: Record<string, boolean>
   currentSlottedStormreaverUpgrade: Record<string, boolean>
   currentSlottedZhentarimAttuned: Record<string, boolean>
+  currentSlottedMythicBoost: Record<string, LootEnchantment | null>
   currentSlottedReaperForge: Record<string, string | null>
   currentSlottedRitualTable: Record<string, LootEnchantment | null>
   currentSlottedLostPurpose: Record<string, LootEnchantment | null>
@@ -139,6 +141,7 @@ export const renderGearPlanner = (props: Props) => {
     setFountainOfNecroticMight,
     setStormreaverUpgrade,
     setZhentarimAttuned,
+    setMythicBoost,
     setReaperForge,
     isItemCardCollapsed,
     toggleItemCardCollapsed
@@ -339,6 +342,18 @@ export const renderGearPlanner = (props: Props) => {
                 wrapperStyle={detailSectionStyle}
               />
 
+              <MythicBoostSelector
+                item={state.selectedItem}
+                slot={state.slot}
+                selectedEnchantment={state.currentSlottedMythicBoost[state.selectedItem.id] ?? null}
+                onSelect={(enchantment: LootEnchantment | null) => {
+                  setMythicBoost(state.selectedItem.id, enchantment, state.slot)
+                }}
+                entityState={state.entityState}
+                wrapperClassName={detailSectionClassName}
+                wrapperStyle={detailSectionStyle}
+              />
+
               <ReaperForgeSelector
                 item={state.selectedItem}
                 slot={state.slot}
@@ -474,15 +489,23 @@ export const renderGearPlanner = (props: Props) => {
     const currentSlottedFountainOfNecroticMight = entityState.slottedFountainOfNecroticMight
     const currentSlottedStormreaverUpgrade = entityState.slottedStormreaverUpgrade
     const currentSlottedZhentarimAttuned = entityState.slottedZhentarimAttuned
+    const currentSlottedMythicBoost = entityState.slottedMythicBoost
     const currentSlottedReaperForge = entityState.slottedReaperForge
     const itemCardCollapsed = selectedItem ? isItemCardCollapsed(selectedItem.id) : false
 
     const isFountainUpgraded = selectedItem ? currentSlottedFountainOfNecroticMight[selectedItem.id] : false
     const isStormreaverUpgraded = selectedItem ? currentSlottedStormreaverUpgrade[selectedItem.id] : false
     const isZhentarimUpgraded = selectedItem ? currentSlottedZhentarimAttuned[selectedItem.id] : false
+    const mythicBoost = selectedItem ? (currentSlottedMythicBoost[selectedItem.id] ?? null) : null
 
     const displayEnchantments: LootEnchantment[] = selectedItem
-      ? getDisplayEnchantments(selectedItem, isFountainUpgraded, isStormreaverUpgraded, isZhentarimUpgraded)
+      ? getDisplayEnchantments(
+          selectedItem,
+          isFountainUpgraded,
+          isStormreaverUpgraded,
+          isZhentarimUpgraded,
+          mythicBoost
+        )
       : []
 
     const nfAddedAugments = selectedItem ? nearlyFinishedNFUpgradedAugments[selectedItem.name] : undefined
@@ -541,6 +564,7 @@ export const renderGearPlanner = (props: Props) => {
       currentSlottedFountainOfNecroticMight,
       currentSlottedStormreaverUpgrade,
       currentSlottedZhentarimAttuned,
+      currentSlottedMythicBoost,
       currentSlottedReaperForge,
       currentSlottedRitualTable,
       currentSlottedLostPurpose,
@@ -577,6 +601,7 @@ interface Props {
   setFountainOfNecroticMight: (itemId: string, active: boolean, slot?: GearSlot) => void
   setStormreaverUpgrade: (itemId: string, active: boolean, slot?: GearSlot) => void
   setZhentarimAttuned: (itemId: string, active: boolean, slot?: GearSlot) => void
+  setMythicBoost: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setReaperForge: (itemId: string, effectId: string | null, slot?: GearSlot) => void
   isItemCardCollapsed: (itemId: string) => boolean
   toggleItemCardCollapsed: (itemId: string) => void

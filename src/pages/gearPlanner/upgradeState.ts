@@ -8,6 +8,7 @@ export interface ItemUpgradeState {
   ritualTable?: LootEnchantment | null
   lostPurpose?: LootEnchantment | null
   traceOfMadness?: LootEnchantment | null
+  mythicBoost?: LootEnchantment | null
   fountainOfNecroticMight?: boolean
   stormreaverUpgrade?: boolean
   zhentarimAttuned?: boolean
@@ -37,6 +38,7 @@ type EnchantmentViewKey = keyof Pick<
   | 'slottedRitualTable'
   | 'slottedLostPurpose'
   | 'slottedTraceOfMadness'
+  | 'slottedMythicBoost'
 >
 type BooleanViewKey = keyof Pick<
   UpgradeViews,
@@ -50,6 +52,7 @@ export interface UpgradeViews {
   slottedRitualTable: Record<string, LootEnchantment | null>
   slottedLostPurpose: Record<string, LootEnchantment | null>
   slottedTraceOfMadness: Record<string, LootEnchantment | null>
+  slottedMythicBoost: Record<string, LootEnchantment | null>
   slottedFountainOfNecroticMight: Record<string, boolean>
   slottedStormreaverUpgrade: Record<string, boolean>
   slottedZhentarimAttuned: Record<string, boolean>
@@ -96,6 +99,7 @@ export const createUpgradeViews = (itemUpgrades: ItemUpgrades | undefined): Upgr
     slottedRitualTable: {},
     slottedLostPurpose: {},
     slottedTraceOfMadness: {},
+    slottedMythicBoost: {},
     slottedFountainOfNecroticMight: {},
     slottedStormreaverUpgrade: {},
     slottedZhentarimAttuned: {},
@@ -113,7 +117,8 @@ export const createUpgradeViews = (itemUpgrades: ItemUpgrades | undefined): Upgr
     { kind: 'finishingTouch', view: 'slottedFinishingTouch' },
     { kind: 'ritualTable', view: 'slottedRitualTable' },
     { kind: 'lostPurpose', view: 'slottedLostPurpose' },
-    { kind: 'traceOfMadness', view: 'slottedTraceOfMadness' }
+    { kind: 'traceOfMadness', view: 'slottedTraceOfMadness' },
+    { kind: 'mythicBoost', view: 'slottedMythicBoost' }
   ]
 
   const booleanKinds: {
@@ -160,6 +165,7 @@ export interface LegacySlottedProperties {
   slottedRitualTable?: LegacyLootEnchantmentMap
   slottedLostPurpose?: LegacyLootEnchantmentMap
   slottedTraceOfMadness?: LegacyTraceOfMadnessMap
+  slottedMythicBoost?: LegacyLootEnchantmentMap
   slottedFountainOfNecroticMight?: LegacyBooleanUpgradeMap
   slottedStormreaverUpgrade?: LegacyBooleanUpgradeMap
   slottedZhentarimAttuned?: LegacyBooleanUpgradeMap
@@ -191,6 +197,10 @@ export const migrateLegacyItemUpgrades = (
   })
   applyEntries(source.slottedLostPurpose, (itemId, value) => {
     setItemUpgradeState(target, itemId, 'lostPurpose', value)
+  })
+
+  applyEntries(source.slottedMythicBoost, (itemId, value) => {
+    setItemUpgradeState(target, itemId, 'mythicBoost', value)
   })
 
   for (const [itemId, value] of Object.entries(source.slottedTraceOfMadness ?? {})) {

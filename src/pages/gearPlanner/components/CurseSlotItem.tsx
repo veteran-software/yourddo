@@ -64,6 +64,7 @@ const CurseSlotItem = (props: Props) => {
               Array.isArray(curse.enchantments) &&
               curse.enchantments.map((ench) =>
                 checkPotentialConflict(ench, currentEquipped, slot, {
+                  itemUpgrades: entityState.itemUpgrades,
                   slottedAugments: currentSlottedAugments,
                   slottedNearlyFinished: currentSlottedNearlyFinished,
                   slottedRitualTable: currentSlottedRitualTable,

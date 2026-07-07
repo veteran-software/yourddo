@@ -10,6 +10,7 @@ const EnchantmentList = (props: Props) => {
   const {
     conflicts,
     equipped: equippedItems,
+    itemUpgrades,
     slottedAugments,
     slottedNearlyFinished,
     slottedRitualTable,
@@ -43,6 +44,7 @@ const EnchantmentList = (props: Props) => {
                 equippedItems.filter((i) => i.id !== (browsingSlot ? entityState.slots[browsingSlot]?.id : null)),
                 browsingSlot ?? undefined,
                 {
+                  itemUpgrades,
                   slottedAugments,
                   slottedNearlyFinished,
                   slottedRitualTable,
