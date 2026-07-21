@@ -694,6 +694,13 @@ func parseTemplateSoundproof() *api.Enchantment {
 	}
 }
 
+func parseTemplateTheMummysGift() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "The Mummy's Gift",
+		Notes: new("Being struck in melee has a small chance to return some lost Hitpoints and Spellpoints to you. Offensive spells have a chance to grant 100 temporary spellpoints. This has a one minute cooldown."),
+	}
+}
+
 func parseTemplateSpellResistance(rawSRValue string) *api.Enchantment {
 	const prefix = "{{SpellResistance|"
 	const suffix = "}}"
@@ -838,6 +845,89 @@ func parseTemplateSpellCritDamage(rawSCDValue string) []*api.Enchantment {
 				Element:   element,
 			})
 		}
+	}
+
+	return enchantments
+}
+
+func parseTemplateSpellIntensity(raw string) []*api.Enchantment {
+	const prefix = "{{SpellIntensity|"
+	const suffix = "}}"
+
+	if !strings.HasPrefix(raw, prefix) || !strings.HasSuffix(raw, suffix) {
+		return nil
+	}
+
+	parts := strings.Split(raw[len(prefix):len(raw)-len(suffix)], "|")
+	if len(parts) < 2 {
+		return nil
+	}
+
+	amount := stripBrackets(parts[1])
+	if amount == "" {
+		return nil
+	}
+
+	bonusType := "Equipment"
+	if len(parts) >= 3 && stripBrackets(parts[2]) != "" {
+		bonusType = stripBrackets(parts[2])
+	}
+
+	powersByGroup := map[string][]string{
+		"combustion":            {"Fire"},
+		"fire":                  {"Fire"},
+		"corrosion":             {"Acid"},
+		"acid":                  {"Acid"},
+		"devotion":              {"Positive Energy"},
+		"healing":               {"Positive Energy"},
+		"glaciation":            {"Cold"},
+		"ice":                   {"Cold"},
+		"force":                 {"Force", "Piercing", "Slashing", "Bludgeoning"},
+		"kenetic":               {"Force", "Piercing", "Slashing", "Bludgeoning"},
+		"kinetic":               {"Force", "Piercing", "Slashing", "Bludgeoning"},
+		"impulse":               {"Force", "Piercing", "Slashing", "Bludgeoning"},
+		"lightning":             {"Electric"},
+		"magnetism":             {"Electric"},
+		"negative":              {"Negative Energy", "Poison"},
+		"nullification":         {"Negative Energy", "Poison"},
+		"void":                  {"Negative Energy", "Poison"},
+		"light":                 {"Light", "Chaos", "Evil", "Good", "Lawful"},
+		"radiance":              {"Light", "Chaos", "Evil", "Good", "Lawful"},
+		"repair":                {"Repair", "Rust"},
+		"reconstruction":        {"Repair", "Rust"},
+		"sonic":                 {"Sonic"},
+		"resonance":             {"Sonic"},
+		"purifying flame":       {"Fire", "Light"},
+		"frozen storm":          {"Cold", "Electric"},
+		"creeping dust":         {"Cold", "Acid"},
+		"firestorm":             {"Fire", "Electric"},
+		"silver flame":          {"Positive Energy", "Light", "Chaos", "Evil", "Good", "Lawful"},
+		"blighted":              {"Acid", "Negative Energy", "Poison", "Evil"},
+		"moonlit haunt":         {"Negative Energy", "Force", "Poison"},
+		"winter's impertenence": {"Force", "Negative Energy"},
+		"summer's impertenence": {"Fire", "Light"},
+		"frozen depths":         {"Negative Energy", "Poison", "Cold"},
+		"thunderstorm":          {"Sonic", "Electric"},
+		"tunderstorm":           {"Sonic", "Electric"},
+		"sacred ground":         {"Acid", "Light", "Chaos", "Evil", "Good", "Lawful"},
+		"dark restoration":      {"Negative Energy", "Poison", "Positive Energy"},
+		"flames of darkness":    {"Fire", "Negative Energy", "Poison"},
+	}
+
+	group := strings.ToLower(stripBrackets(parts[0]))
+	powers, ok := powersByGroup[group]
+	if !ok || group == "universal" {
+		powers = elementsMap["Potency"]
+	}
+
+	enchantments := make([]*api.Enchantment, 0, len(powers))
+	for _, power := range powers {
+		enchantments = append(enchantments, &api.Enchantment{
+			Name:      "Spell Critical Damage: " + power,
+			Amount:    amount,
+			BonusType: bonusType,
+			Element:   power,
+		})
 	}
 
 	return enchantments

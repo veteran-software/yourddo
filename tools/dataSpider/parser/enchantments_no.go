@@ -406,6 +406,37 @@ func parseTemplateNearlyFinished() *api.Enchantment {
 	}
 }
 
+func parseTemplateNearlyComplete(raw string) *api.Enchantment {
+	const prefix = "{{NearlyComplete"
+	const suffix = "}}"
+
+	s := strings.TrimSpace(raw)
+	if !strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix) {
+		return nil
+	}
+
+	upgradeType := strings.TrimSpace(strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix))
+	upgradeType = strings.TrimSpace(strings.TrimPrefix(upgradeType, "|"))
+
+	typeNames := map[string]string{
+		"ability":        "Ability Score",
+		"hamp":           "Healing Amplification",
+		"insability":     "Insightful Ability Score",
+		"qualityability": "Quality Ability Score",
+		"skill":          "Skill",
+		"spellfocus":     "Spell Focus",
+	}
+
+	name := "Nearly Complete"
+	if typeName := typeNames[strings.ToLower(upgradeType)]; typeName != "" {
+		name += ": " + typeName
+	}
+
+	return &api.Enchantment{
+		Name:  name,
+		Notes: new("This item isn't quite finished, but it's only a step away from completion. Bring it to the forges on the upper floor of Gravenhollow and combine it with melted materials to restore this item to its full potential."),
+	}
+}
 
 func parseTemplateNightsinger() *api.Enchantment {
 	return &api.Enchantment{

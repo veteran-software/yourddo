@@ -40,6 +40,7 @@ const PageRoutes = () => {
         <Route path='/reavers-fate' element={<Mastermind />} />
         <Route path='/total-chaos' element={<TotalChaos />} />
         <Route path='/the-key-to-the-mythal' element={<Navigate to='/reavers-fate' replace />} />
+        <Route path='/toxic-treatment' element={<Navigate to='/monastery-of-the-scorpion' replace />} />
         <Route path='/the-shadow-crypt' element={<TheShadowCrypt />} />
         <Route path='/the-shroud' element={<Shroud />} />
       </Route>
