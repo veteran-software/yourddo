@@ -53,3 +53,43 @@ func TestParseTemplateSpellFocus(t *testing.T) {
 		})
 	}
 }
+
+func TestParseEnchantmentsSpellIntensity(t *testing.T) {
+	tests := []struct {
+		name string
+		raw  string
+		want []api.Enchantment
+	}{
+		{
+			name: "physical spell powers use the default bonus",
+			raw:  "{{SpellIntensity|Kinetic|15}}",
+			want: []api.Enchantment{
+				{Name: "Spell Critical Damage: Force", Amount: "15", BonusType: "Equipment", Element: "Force"},
+				{Name: "Spell Critical Damage: Piercing", Amount: "15", BonusType: "Equipment", Element: "Piercing"},
+				{Name: "Spell Critical Damage: Slashing", Amount: "15", BonusType: "Equipment", Element: "Slashing"},
+				{Name: "Spell Critical Damage: Bludgeoning", Amount: "15", BonusType: "Equipment", Element: "Bludgeoning"},
+			},
+		},
+		{
+			name: "compound group emits every spell power",
+			raw:  "{{SpellIntensity|Silver Flame|30|Quality}}",
+			want: []api.Enchantment{
+				{Name: "Spell Critical Damage: Positive Energy", Amount: "30", BonusType: "Quality", Element: "Positive Energy"},
+				{Name: "Spell Critical Damage: Light", Amount: "30", BonusType: "Quality", Element: "Light"},
+				{Name: "Spell Critical Damage: Chaos", Amount: "30", BonusType: "Quality", Element: "Chaos"},
+				{Name: "Spell Critical Damage: Evil", Amount: "30", BonusType: "Quality", Element: "Evil"},
+				{Name: "Spell Critical Damage: Good", Amount: "30", BonusType: "Quality", Element: "Good"},
+				{Name: "Spell Critical Damage: Lawful", Amount: "30", BonusType: "Quality", Element: "Lawful"},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := ParseEnchantments(tt.raw, "")
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("ParseEnchantments() = %#v, want %#v", got, tt.want)
+			}
+		})
+	}
+}

@@ -972,6 +972,7 @@ var enchMultiHandlers = map[string]func(string) []*api.Enchantment{
 	"Resistance":                  func(t string) []*api.Enchantment { return parseTemplateResistance(t) },
 	"ElementalManipulation":       func(_ string) []*api.Enchantment { return parseTemplateElementalManipulation() },
 	"SpellCritDamage":             func(t string) []*api.Enchantment { return parseTemplateSpellCritDamage(t) },
+	"SpellIntensity":              func(t string) []*api.Enchantment { return parseTemplateSpellIntensity(t) },
 	"Stunning":                    func(t string) []*api.Enchantment { return parseTemplateStunning(t) },
 	"Vertigo":                     func(t string) []*api.Enchantment { return parseTemplateVertigo(t) },
 	"WeaponPower":                 func(t string) []*api.Enchantment { return parseTemplateWeaponPower(t) },
