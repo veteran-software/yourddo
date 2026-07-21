@@ -7,6 +7,11 @@ export const menuItems: NavDropdownType[] = [
     active: true
   },
   {
+    label: 'Toxic Treatment',
+    image: '',
+    active: true
+  },
+  {
     label: 'Reavers Fate',
     image: '',
     active: true
