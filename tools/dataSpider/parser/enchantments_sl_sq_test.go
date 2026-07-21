@@ -93,3 +93,15 @@ func TestParseEnchantmentsSpellIntensity(t *testing.T) {
 		})
 	}
 }
+
+func TestParseEnchantmentsTheMummysGift(t *testing.T) {
+	want := []api.Enchantment{{
+		Name:  "The Mummy's Gift",
+		Notes: new("Being struck in melee has a small chance to return some lost Hitpoints and Spellpoints to you. Offensive spells have a chance to grant 100 temporary spellpoints. This has a one minute cooldown."),
+	}}
+
+	got := ParseEnchantments("{{TheMummysGift}}", "")
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("ParseEnchantments() = %#v, want %#v", got, want)
+	}
+}

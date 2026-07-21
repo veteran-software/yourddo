@@ -694,6 +694,13 @@ func parseTemplateSoundproof() *api.Enchantment {
 	}
 }
 
+func parseTemplateTheMummysGift() *api.Enchantment {
+	return &api.Enchantment{
+		Name:  "The Mummy's Gift",
+		Notes: new("Being struck in melee has a small chance to return some lost Hitpoints and Spellpoints to you. Offensive spells have a chance to grant 100 temporary spellpoints. This has a one minute cooldown."),
+	}
+}
+
 func parseTemplateSpellResistance(rawSRValue string) *api.Enchantment {
 	const prefix = "{{SpellResistance|"
 	const suffix = "}}"
