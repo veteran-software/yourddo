@@ -671,6 +671,7 @@ var enchSingleHandlers = map[string]func(string) *api.Enchantment{
 	"ExtraLayOnHands":               func(t string) *api.Enchantment { return parseTemplateExtraLayOnHands(t) },
 	"CannithCombatInfusion":         func(_ string) *api.Enchantment { return parseTemplateCannithCombatInfusion() },
 	"NearlyFinished":                func(_ string) *api.Enchantment { return parseTemplateNearlyFinished() },
+	"NearlyComplete":                func(t string) *api.Enchantment { return parseTemplateNearlyComplete(t) },
 	"Fearsome":                      func(_ string) *api.Enchantment { return parseTemplateFearsome() },
 	"Diehard":                       func(_ string) *api.Enchantment { return parseTemplateDiehard() },
 	"SymbioticFlexibility":          func(_ string) *api.Enchantment { return parseTemplateSymbioticFlexibility() },
@@ -1212,4 +1213,3 @@ func processEnchText(s string) string {
 
 	return stripWikitext(s)
 }
-
