@@ -1297,7 +1297,40 @@ func parseTemplateWrathOfTheZealot(raw string) *api.Enchantment {
 // parseTemplateMedusaFury parses `{{MedusaFury}}`.
 
 func parseTemplateWildFrenzy(raw string) *api.Enchantment {
-	return parseSimpleTemplate(raw, "{{WildFrenzy", "Wild Frenzy", "This weapon has a tendency to drive those it strikes insane. On an attack roll of 20 which is confirmed as a critical hit the target will go wild and attack its own allies for 15 seconds if it fails a Will DC: 25 save. Enemies driven wild in this way, however, have a chance of coming to their senses if damaged.")
+	const prefix = "{{WildFrenzy"
+	const suffix = "}}"
+	const baseNotes = "This weapon has a tendency to drive those it strikes insane. On an attack roll of 20 which is confirmed as a critical hit the target will go wild and attack its own allies for 15 seconds if it fails a Will DC: 25 save. Enemies driven wild in this way, however, have a chance of coming to their senses if damaged."
+
+	s := strings.TrimSpace(raw)
+	if !strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix) {
+		return nil
+	}
+
+	content := strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix)
+	if content == "" {
+		return &api.Enchantment{Name: "Wild Frenzy", Notes: new(baseNotes)}
+	}
+	if !strings.HasPrefix(content, "|") {
+		return nil
+	}
+
+	parts := splitParams(strings.TrimPrefix(content, "|"))
+	version := strings.TrimSpace(parts[0])
+	if !strings.EqualFold(version, "custom") {
+		return &api.Enchantment{Name: "Wild Frenzy", Notes: new(baseNotes)}
+	}
+
+	if len(parts) < 2 {
+		return nil
+	}
+	dc := strings.TrimSpace(parts[1])
+	if dc == "" {
+		return nil
+	}
+
+	name := "Wild Frenzy +" + dc
+	notes := "This weapon has a tendency to drive those it strikes insane. On an attack roll of 20 which is confirmed as a critical hit the target will go wild and attack its own allies for 15 seconds if it fails a Will DC: " + dc + " save. Enemies driven wild in this way, however, have a chance of coming to their senses if damaged."
+	return &api.Enchantment{Name: name, Notes: new(notes)}
 }
 
 // parseTemplateUnbalancing parses `{{Unbalancing}}`.

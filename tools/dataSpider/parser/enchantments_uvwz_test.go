@@ -143,3 +143,76 @@ func TestParseTemplateWeaponEffectFixedTypes(t *testing.T) {
 		})
 	}
 }
+
+func TestParseTemplateWildFrenzy(t *testing.T) {
+	const baseNotes = "This weapon has a tendency to drive those it strikes insane. On an attack roll of 20 which is confirmed as a critical hit the target will go wild and attack its own allies for 15 seconds if it fails a Will DC: 25 save. Enemies driven wild in this way, however, have a chance of coming to their senses if damaged."
+
+	tests := []struct {
+		name string
+		raw  string
+		want *api.Enchantment
+	}{
+		{
+			name: "default",
+			raw:  "{{WildFrenzy}}",
+			want: &api.Enchantment{Name: "Wild Frenzy", Notes: new(baseNotes)},
+		},
+		{
+			name: "explicit basic",
+			raw:  "{{WildFrenzy|Basic}}",
+			want: &api.Enchantment{Name: "Wild Frenzy", Notes: new(baseNotes)},
+		},
+		{
+			name: "custom",
+			raw:  "{{WildFrenzy|Custom|50}}",
+			want: &api.Enchantment{
+				Name:  "Wild Frenzy +50",
+				Notes: new("This weapon has a tendency to drive those it strikes insane. On an attack roll of 20 which is confirmed as a critical hit the target will go wild and attack its own allies for 15 seconds if it fails a Will DC: 50 save. Enemies driven wild in this way, however, have a chance of coming to their senses if damaged."),
+			},
+		},
+		{
+			name: "custom is case insensitive",
+			raw:  "{{WildFrenzy| custom | 42 }}",
+			want: &api.Enchantment{
+				Name:  "Wild Frenzy +42",
+				Notes: new("This weapon has a tendency to drive those it strikes insane. On an attack roll of 20 which is confirmed as a critical hit the target will go wild and attack its own allies for 15 seconds if it fails a Will DC: 42 save. Enemies driven wild in this way, however, have a chance of coming to their senses if damaged."),
+			},
+		},
+		{
+			name: "unknown version uses wiki default",
+			raw:  "{{WildFrenzy|Legacy}}",
+			want: &api.Enchantment{Name: "Wild Frenzy", Notes: new(baseNotes)},
+		},
+		{
+			name: "custom requires DC",
+			raw:  "{{WildFrenzy|Custom}}",
+			want: nil,
+		},
+		{
+			name: "rejects similarly named template",
+			raw:  "{{WildFrenzyOther}}",
+			want: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := parseTemplateWildFrenzy(tt.raw)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Fatalf("parseTemplateWildFrenzy(%q) = %#v, want %#v", tt.raw, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestParseEnchantmentsWildFrenzyCustom(t *testing.T) {
+	want := []api.Enchantment{{
+		Name:  "Wild Frenzy +50",
+		Notes: new("This weapon has a tendency to drive those it strikes insane. On an attack roll of 20 which is confirmed as a critical hit the target will go wild and attack its own allies for 15 seconds if it fails a Will DC: 50 save. Enemies driven wild in this way, however, have a chance of coming to their senses if damaged."),
+	}}
+
+	got := ParseEnchantments("{{WildFrenzy|Custom|50}}", "")
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("ParseEnchantments() = %#v, want %#v", got, want)
+	}
+}
