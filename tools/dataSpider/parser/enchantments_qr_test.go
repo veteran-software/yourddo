@@ -6,6 +6,70 @@ import (
 	"testing"
 )
 
+func TestParseTemplateRaging(t *testing.T) {
+	tests := []struct {
+		name string
+		raw  string
+		want *api.Enchantment
+	}{
+		{
+			name: "documented strength bonus",
+			raw:  "{{Raging|Strength|3}}",
+			want: &api.Enchantment{Name: "Raging Strength III", Amount: "3", BonusType: "Rage"},
+		},
+		{
+			name: "negative amount is a penalty",
+			raw:  "{{Raging|Dexterity|-2}}",
+			want: &api.Enchantment{Name: "Raging Dexterity II", Amount: "-2", BonusType: "Penalty"},
+		},
+		{
+			name: "surrounding whitespace is ignored",
+			raw:  "  {{Raging| Constitution | 4 }}  ",
+			want: &api.Enchantment{Name: "Raging Constitution IV", Amount: "4", BonusType: "Rage"},
+		},
+		{
+			name: "missing ability is rejected",
+			raw:  "{{Raging||3}}",
+			want: nil,
+		},
+		{
+			name: "missing amount is rejected",
+			raw:  "{{Raging|Strength|}}",
+			want: nil,
+		},
+		{
+			name: "nonnumeric amount is rejected",
+			raw:  "{{Raging|Strength|high}}",
+			want: nil,
+		},
+		{
+			name: "missing required parameter is rejected",
+			raw:  "{{Raging|Strength}}",
+			want: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := parseTemplateRaging(tt.raw)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("parseTemplateRaging() = %#v, want %#v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestParseEnchantmentsRaging(t *testing.T) {
+	want := []api.Enchantment{
+		{Name: "Raging Strength III", Amount: "3", BonusType: "Rage"},
+	}
+
+	got := ParseEnchantments("{{Raging|Strength|3}}", "Bracers")
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("ParseEnchantments() = %#v, want %#v", got, want)
+	}
+}
+
 func TestParseTemplateResistance(t *testing.T) {
 	tests := []struct {
 		name string

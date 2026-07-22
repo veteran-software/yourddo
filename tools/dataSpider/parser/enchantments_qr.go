@@ -725,8 +725,14 @@ func parseTemplateRaging(raw string) *api.Enchantment {
 
 	ability := strings.TrimSpace(parts[0])
 	amountRaw := strings.TrimSpace(parts[1])
+	if ability == "" || amountRaw == "" {
+		return nil
+	}
 
-	amountInt, _ := strconv.Atoi(amountRaw)
+	amountInt, err := strconv.Atoi(amountRaw)
+	if err != nil {
+		return nil
+	}
 	bonusType := "Rage"
 	if amountInt < 0 {
 		bonusType = "Penalty"
