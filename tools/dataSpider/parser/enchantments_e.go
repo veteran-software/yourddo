@@ -268,7 +268,6 @@ func parseTemplateEnhancedKi(rawEKValue string) *api.Enchantment {
 func parseTemplateEfficientMetamagic(rawEMValue string) *api.Enchantment {
 	const prefix = "{{EfficientMetamagic|"
 	const suffix = "}}"
-	const baseName = "Efficient Metamagic"
 
 	if !strings.HasPrefix(rawEMValue, prefix) || !strings.HasSuffix(rawEMValue, suffix) {
 		return nil
@@ -288,16 +287,32 @@ func parseTemplateEfficientMetamagic(rawEMValue string) *api.Enchantment {
 		return nil
 	}
 
-	var magnitude int
 	var title string
 	var info string
 	var name string
 
 	// 2. Magnitude (Required, Index 1) - Roman numeral I to IV
-	if len(parts) >= 2 {
-		magnitude = romanToInt(stripBrackets(parts[1]))
-	} else {
-		return nil // Magnitude is required
+	if len(parts) < 2 {
+		return nil
+	}
+
+	var reduction int
+	switch strings.ToLower(stripBrackets(parts[1])) {
+	case "i":
+		reduction = 1
+	case "ii":
+		reduction = 2
+	case "iii":
+		reduction = 3
+	case "iv":
+		reduction = 4
+	default:
+		return nil
+	}
+
+	// Maximize and Quicken use the template's larger reduction scale (2/4/6/8).
+	if strings.EqualFold(metamagic, "Maximize") || strings.EqualFold(metamagic, "Quicken") {
+		reduction *= 2
 	}
 
 	// 3. Title (Optional, Index 2)
@@ -322,11 +337,9 @@ func parseTemplateEfficientMetamagic(rawEMValue string) *api.Enchantment {
 	return &api.Enchantment{
 		Name:      name,
 		BonusType: "Enhancement",
-		Amount:    strconv.Itoa(magnitude),
-		// Amount is implicitly the SP cost reduction, which we don't have a direct number for, so we leave it empty.
-		// Bonus Type is also not applicable.
+		Amount:    strconv.Itoa(reduction),
 
-		// Consolidate 'Info' text into AdditionalText
+		// Consolidate the template's optional Info text into Notes.
 		Notes: &info,
 	}
 }
