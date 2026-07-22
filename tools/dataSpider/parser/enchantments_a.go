@@ -1493,8 +1493,22 @@ func parseTemplateAntimagicSpike(raw string) *api.Enchantment {
 		return nil
 	}
 
+	inner := strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix)
+	inner = strings.TrimPrefix(inner, "|")
+	parts := splitParams(inner)
+
 	name := "Antimagic Spike"
-	notes := "When scoring a critical hit on an enemy with your ranged or melee weapons, the target must make a Fortitude DC: 28 save or be unable to cast spells for a brief duration."
+	notes := "This item was made from powerful antimagic materials. When scoring a critical hit on an enemy with your ranged or melee weapons, the target must make a Fortitude DC: 28 save or be unable to cast spells for a brief duration."
+
+	if len(parts) >= 1 && strings.EqualFold(strings.TrimSpace(parts[0]), "custom") {
+		dc := ""
+		if len(parts) >= 2 {
+			dc = strings.TrimSpace(parts[1])
+		}
+
+		name += " +" + dc
+		notes = "This item was made from powerful antimagic materials. When scoring a critical hit on an enemy, it must make a Fortitude DC: " + dc + " save or be unable to cast spells for a brief duration."
+	}
 
 	return &api.Enchantment{
 		Name:  name,
