@@ -508,9 +508,14 @@ func parseTemplatePoison(raw string) *api.Enchantment {
 		magnitude = strings.TrimSpace(parts[2])
 	}
 
+	dieCountOrDC := ""
+	if len(parts) >= 4 {
+		dieCountOrDC = strings.TrimSpace(parts[3])
+	}
+
 	dieCount := "1"
-	if len(parts) >= 4 && strings.TrimSpace(parts[3]) != "" {
-		dieCount = strings.TrimSpace(parts[3])
+	if dieCountOrDC != "" {
+		dieCount = dieCountOrDC
 	}
 
 	title := ""
@@ -553,6 +558,9 @@ func parseTemplatePoison(raw string) *api.Enchantment {
 	case "nightshade venom":
 		name = "Nightshade Venom"
 		notes = "Any creature struck by this weapon must succeed on a Fortitude DC 22 save or fall unconscious. The target may attempt a new save to end the effect every several seconds; otherwise the sleep lasts for 20 seconds."
+	case "nightshade venom new":
+		name = "Nightshade Venom +" + dieCountOrDC
+		notes = fmt.Sprintf("This weapon contains a sinister, powerful poison. Struck enemies have a chance to be poisoned, and must succeed on a Fortitude DC: %s save or fall unconscious. The target may attempt a new save to end the effect every several seconds; otherwise the sleep lasts for 20 seconds.", dieCountOrDC)
 	case "twining hemlock":
 		name = "Twining Hemlock"
 		notes = "This weapon is poisoned with a deadly strain of flowering plant. Hits by this weapon have a chance of putting your foe to sleep."

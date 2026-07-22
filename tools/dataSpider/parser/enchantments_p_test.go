@@ -87,3 +87,50 @@ func TestParseEnchantmentsParalyzingCustomDC(t *testing.T) {
 		t.Fatalf("ParseEnchantments() = %#v, want %#v", got, want)
 	}
 }
+
+func TestParseTemplatePoisonNightshadeVenomNew(t *testing.T) {
+	const notes = "This weapon contains a sinister, powerful poison. Struck enemies have a chance to be poisoned, and must succeed on a Fortitude DC: 45 save or fall unconscious. The target may attempt a new save to end the effect every several seconds; otherwise the sleep lasts for 20 seconds."
+
+	tests := []struct {
+		name string
+		raw  string
+		want *api.Enchantment
+	}{
+		{
+			name: "documented DC",
+			raw:  "{{Poison|Nightshade Venom New|||45}}",
+			want: &api.Enchantment{Name: "Nightshade Venom +45", Notes: new(notes)},
+		},
+		{
+			name: "switch is case insensitive",
+			raw:  "{{Poison|NIGHTSHADE VENOM NEW||| 45 }}",
+			want: &api.Enchantment{Name: "Nightshade Venom +45", Notes: new(notes)},
+		},
+		{
+			name: "custom title",
+			raw:  "{{Poison|Nightshade Venom New|||45|Sinister Nightshade}}",
+			want: &api.Enchantment{Name: "Sinister Nightshade", Notes: new(notes)},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := parseTemplatePoison(tt.raw)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Fatalf("parseTemplatePoison(%q) = %#v, want %#v", tt.raw, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestParseEnchantmentsPoisonNightshadeVenomNew(t *testing.T) {
+	want := []api.Enchantment{{
+		Name:  "Nightshade Venom +45",
+		Notes: new("This weapon contains a sinister, powerful poison. Struck enemies have a chance to be poisoned, and must succeed on a Fortitude DC: 45 save or fall unconscious. The target may attempt a new save to end the effect every several seconds; otherwise the sleep lasts for 20 seconds."),
+	}}
+
+	got := ParseEnchantments("{{Poison|Nightshade Venom New|||45}}", "")
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("ParseEnchantments() = %#v, want %#v", got, want)
+	}
+}
