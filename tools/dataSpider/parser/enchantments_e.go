@@ -9,10 +9,10 @@ import (
 	api "compendium-crawler-go/api"
 )
 
-func parseTemplateElementalAbsorb(rawAbsorbValue string) *api.Enchantment {
+func parseTemplateElementalAbsorb(rawAbsorbValue string) []*api.Enchantment {
 	const prefix = "{{ElementalAbsorb|"
 	const suffix = "}}"
-	const defaultBonusType = "Enhancement" // Default from documentation
+	const defaultBonusType = "Enhancement"
 
 	if !strings.HasPrefix(rawAbsorbValue, prefix) || !strings.HasSuffix(rawAbsorbValue, suffix) {
 		return nil
@@ -23,55 +23,78 @@ func parseTemplateElementalAbsorb(rawAbsorbValue string) *api.Enchantment {
 
 	// Documentation: (Element)|(Enhancement Amount)|(Title)|(Bonus Type)
 
-	// Ensure minimum required field (Element) is present
-	if len(parts) < 1 {
-		return nil
-	}
-
 	element := stripBrackets(parts[0])
 	if element == "" {
 		return nil
 	}
 
-	if element == "Electricity" || element == "Electrical" {
-		element = "Electric"
-	}
-
-	var amount string
-	var name string
-	var bonusType string
-
-	// 2. Enhancement Amount (Required for percentage, Index 1)
+	amount := ""
 	if len(parts) >= 2 {
-		amount = stripBrackets(parts[1]) + "%"
+		amount = stripBrackets(parts[1])
 	}
 
-	// 3. Title (Optional, Index 2)
-	if len(parts) >= 3 && stripBrackets(parts[2]) != "" {
-		name = stripBrackets(parts[2]) // Use custom title
-	} else {
-		// Default name format: "[Element] Absorption"
-		name = element + " Absorption"
+	title := ""
+	if len(parts) >= 3 {
+		title = stripBrackets(parts[2])
 	}
 
-	// 4. Bonus Type (Optional, Index 3 - defaults to Enhancement)
+	bonusType := defaultBonusType
 	if len(parts) >= 4 {
-		value := stripBrackets(parts[3])
-		if value == "" {
-			bonusType = defaultBonusType
-		} else {
+		if value := stripBrackets(parts[3]); value != "" {
 			bonusType = value
 		}
-	} else {
-		bonusType = defaultBonusType // Default value
 	}
 
-	return &api.Enchantment{
-		Name:      name,
-		Amount:    amount,
-		BonusType: bonusType,
-		Element:   element,
+	elements := []string{element}
+
+	// Keep these cases aligned with the template's #switch and emit one
+	// standardized enchantment for every absorption type granted.
+	switch strings.ToLower(element) {
+	case "all":
+		elements = []string{"Acid", "Cold", "Fire", "Electric"}
+	case "alls":
+		elements = []string{"Acid", "Cold", "Electric", "Fire", "Sonic"}
+	case "chitinous":
+		elements = []string{"Fire"}
+		amount = "19"
+	case "legendary chitinous":
+		elements = []string{"Fire"}
+		amount = "34"
+	case "hound's bones":
+		elements = []string{"Acid", "Evil"}
+	case "devil's bones":
+		elements = []string{"Fire", "Evil"}
+	case "firecold":
+		elements = []string{"Fire", "Cold"}
+	case "electricityacid":
+		elements = []string{"Electric", "Acid"}
+	default:
+		if strings.EqualFold(element, "Electricity") || strings.EqualFold(element, "Electrical") {
+			elements[0] = "Electric"
+		}
 	}
+
+	// Chitinous variants supply fixed values in the template. Every other
+	// branch interpolates parameter 2 and is invalid when it is absent.
+	if amount == "" {
+		return nil
+	}
+
+	results := make([]*api.Enchantment, 0, len(elements))
+	for _, absorbedElement := range elements {
+		name := absorbedElement + " Absorption"
+		if title != "" && len(elements) == 1 && !strings.EqualFold(element, "Chitinous") && !strings.EqualFold(element, "Legendary Chitinous") {
+			name = title
+		}
+		results = append(results, &api.Enchantment{
+			Name:      name,
+			Amount:    amount + "%",
+			BonusType: bonusType,
+			Element:   absorbedElement,
+		})
+	}
+
+	return results
 }
 
 
