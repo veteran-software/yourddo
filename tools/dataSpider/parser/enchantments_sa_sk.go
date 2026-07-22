@@ -815,25 +815,30 @@ func parseTemplateSirocco(raw string) *api.Enchantment {
 		return nil
 	}
 
-	content := strings.TrimPrefix(s, prefix)
-	content = strings.TrimSuffix(content, suffix)
+	content := strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix)
+	content = strings.TrimPrefix(content, "|")
+	parts := splitParams(content)
 
-	siroType := ""
-	if strings.HasPrefix(content, "|") {
-		siroType = strings.TrimSpace(strings.TrimPrefix(content, "|"))
-	}
+	siroType := strings.TrimSpace(parts[0])
 
 	name := "Sirocco"
-	var notes string
+	notes := "A critical hit with this weapon causes a whirlwind of desert sand to swirl about the target, temporarily blinding it. A successful Reflex DC: 20 save prevents the effect."
 
-	if strings.EqualFold(siroType, "Legendary") {
+	switch {
+	case strings.EqualFold(siroType, "Legendary"):
 		name = "Legendary Sirocco"
 		notes = "On hit, this has a chance of blinding your enemies with whirling sand. Struck enemies must make a Fortitude DC: 100 save or be blinded."
-	} else if strings.EqualFold(siroType, "Greater") {
+	case strings.EqualFold(siroType, "Custom"):
+		if len(parts) >= 2 {
+			dc := strings.TrimSpace(parts[1])
+			name = "Sirocco +" + dc
+			notes = "On a critical hit, a creature struck by this weapon must succeed on a Reflex DC: " + dc + " save or be blinded for 6 seconds."
+		}
+	case strings.EqualFold(siroType, "Greater"):
 		name = "Greater Sirocco"
-		notes = "A critical hit with this weapon causes a whirlwind of desert sand to swirl about the target, temporarily blinding it. A successful Reflex DC: 38 save prevents the effect"
-	} else {
-		notes = "A critical hit with this weapon causes a whirlwind of desert sand to swirl about the target, temporarily blinding it. A successful Reflex DC: 20 save prevents the effect"
+		notes = "A critical hit with this weapon causes a whirlwind of desert sand to swirl about the target, temporarily blinding it. A successful Reflex DC: 38 save prevents the effect."
+	case siroType != "":
+		name = siroType + " Sirocco"
 	}
 
 	return &api.Enchantment{

@@ -295,76 +295,58 @@ func parseTemplateProofAgainstDisease(rawPDValue string) []*api.Enchantment {
 }
 
 
-// Template:Paralyzing
-// Usage examples from docs:
-//
-//	{{Paralyzing}}                -> Regular version (Will DC 17)
-//	{{Paralyzing|Improved}}       -> Improved version (Will DC 25)
-//	{{Paralyzing|Legendary}}      -> Legendary version (DC not specified in docs screenshot)
-//
-// Output: single standard enchantment with BonusType "On-hit" and Amount set to DC when known.
 func parseTemplateParalyzing(raw string) *api.Enchantment {
 	const name = "Paralyzing"
-	const prefix = "{{" + name
+	const prefix = "{{" + name + "|"
 	const suffix = "}}"
 
 	s := strings.TrimSpace(raw)
-	if !strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix) {
+	if s != "{{Paralyzing}}" && (!strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix)) {
 		return nil
 	}
 
-	// Extract inner params
-	inner := strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix)
-	inner = strings.TrimSpace(inner)
-	if strings.HasPrefix(inner, "|") {
-		inner = strings.TrimPrefix(inner, "|")
-	}
-
-	version := "Regular"
-	if inner != "" {
-		parts := strings.Split(inner, "|")
+	version := ""
+	customDC := ""
+	if s != "{{Paralyzing}}" {
+		inner := strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix)
+		parts := splitParams(inner)
 		if len(parts) >= 1 {
-			v := stripBrackets(parts[0])
-			if v != "" {
-				version = v
-			}
+			version = stripBrackets(parts[0])
+		}
+		if len(parts) >= 2 {
+			customDC = strings.TrimSpace(parts[1])
 		}
 	}
 
-	// Map versions to DCs when known
-	var dc string
+	dc := "17"
+	saveType := "Will"
 	switch strings.ToLower(strings.TrimSpace(version)) {
-	case "", "regular":
-		dc = "17"
-		version = "Regular"
 	case "improved":
 		dc = "25"
-		version = "Improved"
-	default:
-		// Unknown or Legendary – keep name prefix, leave dc blank
-		// version will be title-cased by caller in name formatting below
+	case "legendary":
+		dc = "100"
+		saveType = "Fortitude"
+	}
+	if customDC != "" {
+		dc = customDC
 	}
 
-	// Build output name
 	outName := name
-	if version != "Regular" {
+	if version != "" {
 		outName = version + " " + name
 	}
+	if customDC != "" {
+		outName += " +" + customDC
+	}
 
-	// Optional notes about the saving throw
-	// Keeping concise; consumer may render this or ignore it.
-	notes := new("Will save or be paralyzed")
+	notes := "Any creature struck by this weapon must succeed on a " + saveType + " DC: " + dc + " save or be paralyzed. The target may attempt a new save to end the effect every several seconds; otherwise the paralysis lasts for 1 minute. Certain creatures, such as the Undead and Constructs, cannot be paralyzed."
 
-	e := &api.Enchantment{
+	return &api.Enchantment{
 		Name:      outName,
+		Amount:    dc,
 		BonusType: "On-hit",
-		Notes:     notes,
+		Notes:     new(notes),
 	}
-	if dc != "" {
-		// Store just the numeric DC in Amount for consistency with other DC-style outputs
-		e.Amount = dc
-	}
-	return e
 }
 
 
@@ -526,9 +508,14 @@ func parseTemplatePoison(raw string) *api.Enchantment {
 		magnitude = strings.TrimSpace(parts[2])
 	}
 
+	dieCountOrDC := ""
+	if len(parts) >= 4 {
+		dieCountOrDC = strings.TrimSpace(parts[3])
+	}
+
 	dieCount := "1"
-	if len(parts) >= 4 && strings.TrimSpace(parts[3]) != "" {
-		dieCount = strings.TrimSpace(parts[3])
+	if dieCountOrDC != "" {
+		dieCount = dieCountOrDC
 	}
 
 	title := ""
@@ -571,6 +558,9 @@ func parseTemplatePoison(raw string) *api.Enchantment {
 	case "nightshade venom":
 		name = "Nightshade Venom"
 		notes = "Any creature struck by this weapon must succeed on a Fortitude DC 22 save or fall unconscious. The target may attempt a new save to end the effect every several seconds; otherwise the sleep lasts for 20 seconds."
+	case "nightshade venom new":
+		name = "Nightshade Venom +" + dieCountOrDC
+		notes = fmt.Sprintf("This weapon contains a sinister, powerful poison. Struck enemies have a chance to be poisoned, and must succeed on a Fortitude DC: %s save or fall unconscious. The target may attempt a new save to end the effect every several seconds; otherwise the sleep lasts for 20 seconds.", dieCountOrDC)
 	case "twining hemlock":
 		name = "Twining Hemlock"
 		notes = "This weapon is poisoned with a deadly strain of flowering plant. Hits by this weapon have a chance of putting your foe to sleep."

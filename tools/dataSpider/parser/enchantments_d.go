@@ -980,7 +980,7 @@ func parseTemplateDust(raw string) *api.Enchantment {
 // Usage: {{Ash|(Type)|(Title)}}
 
 // Template: Disintegration
-// Usage: {{Disintegration|(Type)}}
+// Usage: {{Disintegration|(Type)|(Enhancement Amount)}}
 func parseTemplateDisintegration(raw string) *api.Enchantment {
 	const prefix = "{{Disintegration"
 	const suffix = "}}"
@@ -996,16 +996,33 @@ func parseTemplateDisintegration(raw string) *api.Enchantment {
 
 	parts := splitParams(inner)
 	disType := ""
+	enhancementAmount := ""
 	if len(parts) >= 1 {
 		disType = strings.TrimSpace(parts[0])
+	}
+	if len(parts) >= 2 {
+		enhancementAmount = strings.TrimSpace(parts[1])
 	}
 
 	name := "Disintegration"
 	note := "This weapon has a dark, insidious power deep within. Occasionally, this power lashes out violently at enemies and attempts to disintegrate them."
 
-	if strings.EqualFold(disType, "Utter") {
+	switch {
+	case strings.EqualFold(disType, "Utter"):
 		name = "Utter Disintegration"
 		note = "This weapon has a dark, insidious power deep within. Occasionally, this power lashes out violently at enemies and attempts to disintegrate them. This disintegrate is incredibly powerful, and will utterly destroy weaker foes."
+	case strings.EqualFold(disType, "damage"):
+		amount, err := strconv.Atoi(enhancementAmount)
+		if err != nil {
+			return nil
+		}
+
+		name = "Disintigrate +" + enhancementAmount
+		note = fmt.Sprintf(
+			"Strikes with this weapon have a small chance to call forth a spike of entropic force, dealing %sd20+%d untyped damage.",
+			enhancementAmount,
+			(amount+1)*9,
+		)
 	}
 
 	return &api.Enchantment{

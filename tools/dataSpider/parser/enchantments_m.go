@@ -670,6 +670,7 @@ func parseTemplateMindTurbulence(raw string) *api.Enchantment {
 
 // parseTemplateLifedrinker parses `{{Lifedrinker}}`.
 
+// parseTemplateMagmaSurge parses `{{MagmaSurge|(Type)|(Enhancement Amount)}}`.
 func parseTemplateMagmaSurge(raw string) *api.Enchantment {
 	const prefix = "{{MagmaSurge"
 	const suffix = "}}"
@@ -682,21 +683,43 @@ func parseTemplateMagmaSurge(raw string) *api.Enchantment {
 	content := strings.TrimPrefix(s, prefix)
 	content = strings.TrimSuffix(content, suffix)
 
-	magmaType := ""
+	var magmaType, enhancementAmount string
 	if strings.HasPrefix(content, "|") {
-		magmaType = strings.TrimSpace(strings.TrimPrefix(content, "|"))
+		parts := strings.Split(strings.TrimPrefix(content, "|"), "|")
+		magmaType = strings.TrimSpace(parts[0])
+		if len(parts) >= 2 {
+			enhancementAmount = strings.TrimSpace(parts[1])
+		}
 	}
 
-	name := "Magma Surge"
-	if strings.EqualFold(magmaType, "Legendary") {
-		name = "Legendary Magma Surge"
-	}
+	const defaultNotes = "This weapon stores the immeasurable heat of the planet's molten mantle. When this weapon is used, superheated magma occasionally surges to the surface, slowing an enemy down and inflicting massive fire damage over time."
 
-	notes := "This weapon stores the immeasurable heat of the planet's molten mantle. When this weapon is used, superheated magma occasionally surges to the surface, slowing an enemy down and inflicting massive fire damage over time."
+	switch strings.ToLower(magmaType) {
+	case "legendary":
+		return &api.Enchantment{
+			Name:  "Legendary Magma Surge",
+			Notes: new(defaultNotes),
+		}
+	case "damage":
+		amount, err := strconv.Atoi(enhancementAmount)
+		if err != nil {
+			return nil
+		}
 
-	return &api.Enchantment{
-		Name:  name,
-		Notes: new(notes),
+		notes := fmt.Sprintf(
+			"Strikes with this weapon have a small chance to call forth a surge of superheated magma, dealing %sd20+%d fire damage.",
+			enhancementAmount,
+			(amount+1)*9,
+		)
+		return &api.Enchantment{
+			Name:  "Magma Surge +" + enhancementAmount,
+			Notes: new(notes),
+		}
+	default:
+		return &api.Enchantment{
+			Name:  "Magma Surge",
+			Notes: new(defaultNotes),
+		}
 	}
 }
 

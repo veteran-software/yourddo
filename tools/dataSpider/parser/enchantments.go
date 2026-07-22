@@ -702,7 +702,6 @@ var enchSingleHandlers = map[string]func(string) *api.Enchantment{
 	"Save":                          func(t string) *api.Enchantment { return parseTemplateSave(t) },
 	"JetPropulsion":                 func(t string) *api.Enchantment { return parseTemplateJetPropulsion(t) },
 	"RuneArmBlast":                  func(t string) *api.Enchantment { return parseTemplateRuneArmBlast(t) },
-	"ElementalAbsorb":               func(t string) *api.Enchantment { return parseTemplateElementalAbsorb(t) },
 	"Skill":                         func(t string) *api.Enchantment { return parseTemplateSkill(t) },
 	"ElementalResistance":           func(t string) *api.Enchantment { return parseTemplateElementalResistance(t) },
 	"Ability":                       func(t string) *api.Enchantment { return parseTemplateAbility(t) },
@@ -932,6 +931,7 @@ var enchSingleHandlers = map[string]func(string) *api.Enchantment{
 }
 
 var enchMultiHandlers = map[string]func(string) []*api.Enchantment{
+	"ElementalAbsorb":           func(t string) []*api.Enchantment { return parseTemplateElementalAbsorb(t) },
 	"CasterLevel":               func(t string) []*api.Enchantment { return parseTemplateCasterLevel(t) },
 	"Dazing":                    func(t string) []*api.Enchantment { return parseTemplateDazing(t) },
 	"DreamVision":               func(t string) []*api.Enchantment { return parseTemplateDreamVision(t) },

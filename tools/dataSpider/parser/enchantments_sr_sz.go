@@ -1,11 +1,11 @@
 package parser
 
 import (
+	api "compendium-crawler-go/api"
 	"fmt"
-	"strings"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
-	api "compendium-crawler-go/api"
+	"strings"
 )
 
 func parseTemplateStrikethrough(rawSTValue string) *api.Enchantment {
@@ -59,7 +59,6 @@ func parseTemplateStrikethrough(rawSTValue string) *api.Enchantment {
 		// No other fields are needed.
 	}
 }
-
 
 func parseTemplateStunning(rawStunValue string) []*api.Enchantment {
 	const prefix = "{{Stunning|"
@@ -115,7 +114,6 @@ func parseTemplateStunning(rawStunValue string) []*api.Enchantment {
 	return enchantments
 }
 
-
 // Template:Steam
 // Usage: {{Steam|(Type)|(Title)}}
 // Behavior: output only the enchantment name. If Title is provided, use it.
@@ -162,7 +160,6 @@ func parseTemplateSteam(raw string) *api.Enchantment {
 	}
 }
 
-
 // Template:Striding
 // Usage: {{Striding|(Enhancement Amount)|(Public Area)}}
 func parseTemplateStriding(raw string) *api.Enchantment {
@@ -204,14 +201,12 @@ func parseTemplateStriding(raw string) *api.Enchantment {
 	}
 }
 
-
 func parseTemplateSuppressed() *api.Enchantment {
 	return &api.Enchantment{
 		Name:  "Suppressed",
 		Notes: new("This psionic item is powerful, but you sense that it has not unlocked all of its secrets to you at this time."),
 	}
 }
-
 
 // Template: StormreaverUpgrade
 // Usage: {{StormreaverUpgrade}}
@@ -232,7 +227,6 @@ func parseTemplateStormreaverUpgrade(raw string) *api.Enchantment {
 	}
 }
 
-
 // Template: SuppressMadness
 // Usage: {{SuppressMadness}}
 func parseTemplateSuppressMadness(raw string) *api.Enchantment {
@@ -252,7 +246,6 @@ func parseTemplateSuppressMadness(raw string) *api.Enchantment {
 	}
 }
 
-
 func parseTemplateStaggeringBlow(raw string) *api.Enchantment {
 	const template = "StaggeringBlow"
 	const prefix = "{{" + template
@@ -268,17 +261,24 @@ func parseTemplateStaggeringBlow(raw string) *api.Enchantment {
 	inner = strings.TrimSpace(inner)
 
 	parts := splitParams(inner)
-	isUnstoppable := false
-	if len(parts) >= 1 && strings.EqualFold(strings.TrimSpace(parts[0]), "Unstoppable") {
-		isUnstoppable = true
+	staggeringType := ""
+	if len(parts) >= 1 {
+		staggeringType = strings.TrimSpace(parts[0])
 	}
 
 	name := "Staggering Blow"
-	notes := "Staggering Blow: This item is enchanted to make your attacks send enemies reeling. When you roll a natural 20 on an attack with a melee weapon you will knock the target down unless it makes a DC 17 Balance check."
+	notes := "This item is enchanted to make your attacks send enemies reeling. When you roll a natural 20 on an attack with a melee weapon you will knock the target down unless it makes a DC 17 Balance check."
 
-	if isUnstoppable {
-		name = "Unstoppable Staggering Blow"
-		notes = "Unstoppable Staggering Blow: On a natural 20 that is confirmed as a critical hit, this weapon will trip your opponent, forcing them to fall prone. There is no save against this effect."
+	switch {
+	case strings.EqualFold(staggeringType, "Unstoppable"):
+		name = staggeringType + " Staggering Blow"
+		notes = "On a natural 20 that is confirmed as a critical hit, this weapon will trip your opponent, forcing them to fall prone. There is no save against this effect."
+	case strings.EqualFold(staggeringType, "Custom") && len(parts) >= 2:
+		dc := strings.TrimSpace(parts[1])
+		name = "Staggering +" + dc
+		notes = "This item is enchanted to make your attacks send enemies realing. On an attack roll of 20 which is confirmed as a critical hit you will knock the target down unless it makes a Reflex DC: " + dc + " saving throw."
+	case staggeringType != "":
+		name = staggeringType + " Staggering Blow"
 	}
 
 	return &api.Enchantment{
@@ -287,14 +287,12 @@ func parseTemplateStaggeringBlow(raw string) *api.Enchantment {
 	}
 }
 
-
 func parseTemplateSymbioticFlexibility() *api.Enchantment {
 	return &api.Enchantment{
 		Name:  "Symbiotic Flexibility",
 		Notes: new("A suit of armor that has this property has a maximum Dexterity bonus 4 higher than normal, and its armor check penalty is reduced by 4."),
 	}
 }
-
 
 func parseTemplateSymbioticBacklash() *api.Enchantment {
 	return &api.Enchantment{
@@ -303,14 +301,12 @@ func parseTemplateSymbioticBacklash() *api.Enchantment {
 	}
 }
 
-
 func parseTemplateSwimLikeAFish() *api.Enchantment {
 	return &api.Enchantment{
 		Name:  "Swim like a Fish",
 		Notes: new("While this item is equipped and you are swimming, you gain the Evasion feat. Evasion causes you to take no damage on a successful Reflex saving throw against an effect which would normally allow half damage on a successful Reflex save."),
 	}
 }
-
 
 func parseTemplateSunAndStars() *api.Enchantment {
 	name := "Sun and Stars"
@@ -321,7 +317,6 @@ func parseTemplateSunAndStars() *api.Enchantment {
 		Notes: new(notes),
 	}
 }
-
 
 func parseTemplateStonePrisonGuard(raw string) *api.Enchantment {
 	const template = "StonePrisonGuard"
@@ -357,14 +352,12 @@ func parseTemplateStonePrisonGuard(raw string) *api.Enchantment {
 	}
 }
 
-
 func parseTemplateSubtleTarget() *api.Enchantment {
 	return &api.Enchantment{
 		Name:  "Subtle Target",
 		Notes: new("Once per minute, when you use Diplomacy, you gain a -100% Profane bonus to threat generation with weapon strikes for 20 seconds."),
 	}
 }
-
 
 func parseTemplateStickyGooGuard() *api.Enchantment {
 	return &api.Enchantment{
@@ -373,14 +366,12 @@ func parseTemplateStickyGooGuard() *api.Enchantment {
 	}
 }
 
-
 func parseTemplateStormreaverThunderclap() *api.Enchantment {
 	return &api.Enchantment{
 		Name:  "Stormreaver's Thunderclap",
 		Notes: new("On a Melee strike of a Natural 20 that is confirmed as a critical hit, this item will strike your foe with tremendous burst of lightning. A Reflex DC: 100 save will prevent half of this damage."),
 	}
 }
-
 
 func parseTemplateStability(raw string) *api.Enchantment {
 	const template = "Stability"
@@ -422,7 +413,6 @@ func parseTemplateStability(raw string) *api.Enchantment {
 		Notes: new(notes),
 	}
 }
-
 
 func parseTemplateStumbling(raw string) *api.Enchantment {
 	const prefix = "{{Stumbling"
@@ -507,7 +497,6 @@ func parseTemplateSundering(raw string) *api.Enchantment {
 	}
 }
 
-
 func parseTemplateStealerOfSouls(raw string) *api.Enchantment {
 	const prefix = "{{StealerOfSouls"
 	const suffix = "}}"
@@ -588,8 +577,7 @@ func parseTemplateStonePrison(raw string) *api.Enchantment {
 	}
 }
 
-// parseTemplateTheReaver parses `{{TheReaver|Type}}`.
-
+// parseTemplateSunBurst parses `{{SunBurst|Type|DC Amount|Title}}`.
 func parseTemplateSunBurst(raw string) *api.Enchantment {
 	const prefix = "{{SunBurst"
 	const suffix = "}}"
@@ -602,14 +590,17 @@ func parseTemplateSunBurst(raw string) *api.Enchantment {
 	content := strings.TrimPrefix(s, prefix)
 	content = strings.TrimSuffix(content, suffix)
 
-	var sbType, title string
+	var sbType, dc, title string
 	if strings.HasPrefix(content, "|") {
 		parts := strings.Split(strings.TrimPrefix(content, "|"), "|")
 		if len(parts) > 0 {
 			sbType = strings.TrimSpace(parts[0])
 		}
 		if len(parts) > 1 {
-			title = strings.TrimSpace(parts[1])
+			dc = strings.TrimSpace(parts[1])
+		}
+		if len(parts) > 2 {
+			title = strings.TrimSpace(parts[2])
 		}
 	}
 
@@ -622,7 +613,10 @@ func parseTemplateSunBurst(raw string) *api.Enchantment {
 		} else {
 			name = "Lesser Sun Burst"
 		}
-		notes = "Occasionally, this power comes to the surface, unleashing a nova of light which will blind the struck enemy, dealing severe light damage to it and any other nearby foes."
+		notes = "This weapon/shield blazes with the eternal fury at the heart of a sun. Occasionally, this power comes to the surface, unleashing a nova of light which will blind the struck enemy, dealing severe light damage to it and any other nearby foes."
+	} else if strings.EqualFold(sbType, "Custom") {
+		name = "Sun Burst +" + dc
+		notes = "This weapon blazes with the eternal fury at the heart of a sun. Occassionally, this power comes to the surface, unleashing a nova of light which will blind the struck enemey for 6 seconds unless it succeeds on a Reflex DC: " + dc + " saving throw."
 	} else {
 		notes = "This weapon flashes an intense burst of sunlight on any critical hit. The target is blasted for 6d6 of light damage and is blinded as well. Oozes and Undead take 12d6 light damage. A successful Reflex DC: 22 save reduces the damage by half and negates the blindness."
 	}

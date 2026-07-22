@@ -194,53 +194,48 @@ func parseTemplateFreezingIce(rawFIValue string) *api.Enchantment {
 	const suffix = "}}"
 	const baseName = "Freezing Ice"
 
-	// Handle argument-less case, which defaults to "Regular"
-	if strings.TrimSpace(rawFIValue) == "{{FreezingIce}}" {
-		return &api.Enchantment{Name: baseName + " (Regular)", Element: "Cold"}
-	}
-
-	if !strings.HasPrefix(rawFIValue, prefix) || !strings.HasSuffix(rawFIValue, suffix) {
+	s := strings.TrimSpace(rawFIValue)
+	if s != "{{FreezingIce}}" && (!strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix)) {
 		return nil
 	}
 
-	paramList := rawFIValue[len(prefix) : len(rawFIValue)-len(suffix)]
-	parts := strings.Split(paramList, "|")
-
-	// Docs: (version)
-
-	var version = "Regular" // Default type
-
-	// 1. Version (Index 0)
-	if len(parts) >= 1 {
-		val := stripBrackets(parts[0])
-		if val != "" {
-			version = val
+	version := ""
+	dc := ""
+	if s != "{{FreezingIce}}" {
+		paramList := strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix)
+		parts := splitParams(paramList)
+		if len(parts) >= 1 {
+			version = stripBrackets(parts[0])
+		}
+		if len(parts) >= 2 {
+			dc = strings.TrimSpace(parts[1])
 		}
 	}
 
-	// --- CRITICAL NAME FORMATTING ---
+	name := baseName
+	notes := "While you are wearing this item, your melee, ranged, and unarmed attacks gain the Freezing Ice ability. (When the weapon is used, an icy power occasionally comes to the surface, attempting to freeze an enemy solid and encase them in ice.)"
 
-	var name string
-	normalizedVersion := strings.ToLower(version)
-
-	if normalizedVersion == "regular" {
-		name = baseName + " (Regular)"
-	} else if normalizedVersion == "minor" {
-		name = "Minor " + baseName
-	} else if normalizedVersion == "lesser" {
-		name = "Lesser " + baseName
-	} else if strings.Contains(normalizedVersion, "weapon") {
-		// Weapon type has a different description but same effect principle
-		name = baseName + " (Weapon)"
-	} else {
-		// Catch-all: "Legendary Weapon", "Legendary Ice", etc.
-		name = strings.Title(normalizedVersion) + " " + baseName
+	switch strings.ToLower(version) {
+	case "minor", "lesser":
+		name = version + " " + baseName
+		notes = "While you are wearing this item, your melee, ranged, and unarmed attacks gain the " + version + " Freezing Ice ability. (When the weapon is used, an icy power occasionally comes to the surface, attempting to freeze an enemy solid and encase them in ice.)"
+	case "weapon":
+		notes = "Your weapon stores the pitiless, immovable power of the ice deep within. When this weapon is used, this power occasionally comes to the surface, attempting to freeze an enemy solid and encase them in ice."
+	case "legendary weapon":
+		name = "Legendary Freezing Ice"
+		notes = "On hit, this has a chance of freezing your enemies in solid ice. Struck enemies must make a Fortitude DC: 100 save for be frozen solid."
+	case "legendary ice":
+		name = "Legendary Ice"
+		notes = "Your attacks and offensive spells have a chance to freeze an enemy in a block of ice."
+	case "new":
+		name += " +" + dc
+		notes = "Strikes with this weapon have a small chance to force the enemy to succeed against a Fortitude DC: " + dc + " save or be frozen in ice."
 	}
 
 	return &api.Enchantment{
 		Name:    name,
-		Element: "Cold", // The base element of the effect
-		// All other fields remain empty.
+		Element: "Cold",
+		Notes:   new(notes),
 	}
 }
 
@@ -808,8 +803,6 @@ func parseTemplateFeeding(raw string) *api.Enchantment {
 		Notes: new(notes),
 	}
 }
-
-// parseTemplateMagmaSurge parses `{{MagmaSurge|(Type)}}`.
 
 func parseTemplateForgedLightning() *api.Enchantment {
 	return &api.Enchantment{

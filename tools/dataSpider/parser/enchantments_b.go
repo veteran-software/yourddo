@@ -284,37 +284,52 @@ func parseTemplateBanishing(raw string) *api.Enchantment {
 	const prefix = "{{" + template
 	const suffix = "}}"
 
-	if !strings.HasPrefix(raw, prefix) || !strings.HasSuffix(raw, suffix) {
+	s := strings.TrimSpace(raw)
+	if !strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix) {
 		return nil
 	}
 
-	inner := strings.TrimSuffix(strings.TrimPrefix(raw, prefix), suffix)
+	inner := strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix)
 	inner = strings.TrimPrefix(inner, "|")
 	inner = strings.TrimSpace(inner)
 
-	var bonusType string
-	if inner != "" {
-		parts := strings.Split(inner, "|")
-		bonusType = stripBrackets(parts[0])
+	parts := splitParams(inner)
+	banishingType := ""
+	if len(parts) >= 1 {
+		banishingType = stripBrackets(parts[0])
 	}
 
 	var name string
 	var amount string
 
-	normalizedType := strings.ToLower(bonusType)
+	normalizedType := strings.ToLower(banishingType)
 	switch normalizedType {
 	case "improved":
 		name = "Improved Banishing"
 		amount = "150"
 	case "sovereign":
 		name = "Sovereign Banishing"
-		amount = "250"
+		amount = "300"
 	case "weapons":
 		name = "Banishing Weapons"
 		amount = "150"
 	case "fists":
 		name = "Banishing Fists"
-		amount = "150"
+		amount = "100"
+	case "custom":
+		name = "Banishing"
+		if len(parts) >= 2 {
+			enhancementAmount := stripBrackets(parts[1])
+			if enhancementAmount != "" {
+				name += " +" + enhancementAmount
+			}
+		}
+		if len(parts) >= 3 {
+			dieCount := stripBrackets(parts[2])
+			if dieCount != "" {
+				amount = ParseTemplateDice(fmt.Sprintf("{{Dice||%s|20}}", dieCount)).Raw
+			}
+		}
 	default:
 		name = "Banishing"
 		amount = "100"

@@ -207,9 +207,13 @@ func parseTemplateTheWarbladesWrath() *api.Enchantment {
 // Usage: {{TaintOfShavarath|(Legendary)}}
 // Legendary param → "Legendary Taint of Shavarath"; default → "Taint of Shavarath".
 func parseTemplateTaintOfShavarath(raw string) *api.Enchantment {
-	const prefix = "{{TaintOfShavarath"
-	const suffix = "}}"
-	const baseName = "Taint of Shavarath"
+	const (
+		prefix         = "{{TaintOfShavarath"
+		suffix         = "}}"
+		baseName       = "Taint of Shavarath"
+		defaultNotes   = "Green Steel items thirst for pain and suffering. While weapons can sate their bloodlust on opponents, accessories and clothing cannot. Wearing multiple items that bear the taint of Shavarath creates dangerous imbalances of energy as the items feed upon the wearer. Perhaps there is a way to cleanse this item..."
+		legendaryNotes = "Green Steel items thirst for pain and suffering. While weapons feed their bloodlust on enemies, accessories and clothing cannot. Wearing multiple items that bear Legendary Taint of Shavarath creates dangerous imbalances of energy as the items feed more and more upon the wielder. Perhaps there is a way to appease them..."
+	)
 
 	s := strings.TrimSpace(raw)
 	if !strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix) {
@@ -224,11 +228,13 @@ func parseTemplateTaintOfShavarath(raw string) *api.Enchantment {
 	}
 
 	name := baseName
+	notes := defaultNotes
 	if strings.ToLower(typ) == "legendary" {
 		name = legendaryPrefix + baseName
+		notes = legendaryNotes
 	}
 
-	return &api.Enchantment{Name: name}
+	return &api.Enchantment{Name: name, Notes: new(notes)}
 }
 
 // Template:TouchoftheMournlands
@@ -814,7 +820,7 @@ func parseTemplateTheReaver(raw string) *api.Enchantment {
 	}
 }
 
-// parseTemplateSlicingWinds parses `{{SlicingWinds|(Type)}}`.
+// parseTemplateTelekinetic parses `{{Telekinetic|Type|DC Amount}}`.
 
 func parseTemplateTelekinetic(raw string) *api.Enchantment {
 	const prefix = "{{Telekinetic"
@@ -828,9 +834,15 @@ func parseTemplateTelekinetic(raw string) *api.Enchantment {
 	content := strings.TrimPrefix(s, prefix)
 	content = strings.TrimSuffix(content, suffix)
 
-	teleType := ""
+	var teleType, dc string
 	if strings.HasPrefix(content, "|") {
-		teleType = strings.TrimSpace(strings.TrimPrefix(content, "|"))
+		parts := strings.Split(strings.TrimPrefix(content, "|"), "|")
+		if len(parts) > 0 {
+			teleType = strings.TrimSpace(parts[0])
+		}
+		if len(parts) > 1 {
+			dc = strings.TrimSpace(parts[1])
+		}
 	}
 
 	name := "Telekinetic"
@@ -839,16 +851,20 @@ func parseTemplateTelekinetic(raw string) *api.Enchantment {
 	if strings.EqualFold(teleType, "Legendary") {
 		name = "Legendary Telekinetic"
 		notes = "On hit, this has a chance of knocking your enemies off their feet. Struck enemies must make a Reflex DC: 100 save or be knocked down."
+	} else if strings.EqualFold(teleType, "Custom") {
+		name = "Telekinetic +" + dc
+		notes = "Targets that suffer a critical hit from a Telekinetic weapons must make a Reflex DC: " + dc + " saving throw or be knocked down."
 	} else if strings.EqualFold(teleType, "Epic") {
 		name = "Epic Telekinetic"
-		notes = "Targets that suffer a critical hit from a telekinetic weapon must make a DC Strength or Dexterity DC: 35 check or be knocked down. The target will then be force to make Balance DC: 16 checks to recover from the effect."
+		notes = "Targets that suffer a critical hit from a telekinetic weapon must make a DC Strength or Dexterity DC: 35. The target will then be force to make Balance DC: 16 checks to recover from the effect."
+	} else if strings.EqualFold(teleType, "Greater") {
+		name = "Greater Telekinetic"
+		notes = "Targets that suffer a critical hit from a telekinetic weapon must make a Strength or Dexterity DC: 28 check or be knocked down. The target will then be force to make Balance DC: 16 checks to recover from the effect."
 	} else {
-		// Greater is mentioned in documentation but no example text provided.
-		// "All others are normal" suggests we use the default text for Greater as well.
-		if strings.EqualFold(teleType, "Greater") {
-			name = "Greater Telekinetic"
+		if teleType != "" {
+			name = teleType + " Telekinetic"
 		}
-		notes = "Targets that suffer a critical hit from a telekinetic weapon must make a DC Strength or Dexterity DC: 17 check or be knocked down. The target will then be force to make Balance DC: 16 checks to recover from the effect."
+		notes = "Targets that suffer a critical hit from a telekinetic weapon must make a Balance DC: 17 check or be knocked down."
 	}
 
 	return &api.Enchantment{
@@ -856,8 +872,6 @@ func parseTemplateTelekinetic(raw string) *api.Enchantment {
 		Notes: new(notes),
 	}
 }
-
-// parseTemplateSunBurst parses `{{SunBurst|(Type)|(Title)}}`.
 
 func parseTemplateTheMoralCompass(raw string) *api.Enchantment {
 	return parseSimpleTemplate(raw, "{{TheMoralCompass", "The Moral Compass", "An oft repeated mantra of the Shintao is written on these sacred handwraps:\n\n\"True strength comes from within, and true power comes from rising above.\" While wearing these Handwraps, Monks will gain additional power and bonuses based on their Philosophy.")

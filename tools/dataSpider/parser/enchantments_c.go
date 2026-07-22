@@ -140,13 +140,6 @@ func parseTemplateClickie(rawClickieValue string) *api.Enchantment {
 func parseTemplateConcealment(rawConcValue string) *api.Enchantment {
 	const prefix = "{{Concealment|"
 	const suffix = "}}"
-	const baseName = "Concealment"
-
-	// Handle argument-less case
-	if strings.TrimSpace(rawConcValue) == "{{Concealment}}" {
-		// Default (no type specified) can mean standard 20% concealment.
-		return &api.Enchantment{Name: baseName}
-	}
 
 	if !strings.HasPrefix(rawConcValue, prefix) || !strings.HasSuffix(rawConcValue, suffix) {
 		return nil
@@ -155,31 +148,52 @@ func parseTemplateConcealment(rawConcValue string) *api.Enchantment {
 	paramList := rawConcValue[len(prefix) : len(rawConcValue)-len(suffix)]
 	parts := strings.Split(paramList, "|")
 
-	// Docs: (Type)
-
-	var concType = ""
-
-	// 1. Type (Index 0)
-	if len(parts) >= 1 {
-		concType = stripBrackets(parts[0])
+	// Docs: (Type)|(Enhancement Amount)|(Bonus Type)|(Title)
+	if len(parts) < 1 {
+		return nil
 	}
 
-	var amount string
-	// --- CRITICAL NAME FORMATTING ---
-	if concType == "Blurry" {
+	concType := strings.ToLower(stripBrackets(parts[0]))
+	name := ""
+	amount := ""
+	bonusType := ""
+
+	switch concType {
+	case "blurry":
+		name = "Blurry"
 		amount = "20%"
-	} else if concType == "Dusk" {
+	case "dusk":
+		name = "Dusk"
 		amount = "10%"
-	} else if concType == "Lesser Displacement" || concType == "LesserDisplacement" {
+	case "lesserdisplacement", "lesser displacement":
+		name = "Lesser Displacement"
 		amount = "25%"
-	} else if concType == "Smoke Screen" || concType == "SmokeScreen" {
+	case "smokescreen", "smoke screen":
+		name = "Smoke Screen"
 		amount = "20%"
+	case "custom":
+		if len(parts) < 2 || stripBrackets(parts[1]) == "" {
+			return nil
+		}
+
+		name = "Concealment"
+		amount = stripBrackets(parts[1]) + "%"
+		bonusType = "Enhancement"
+		if len(parts) >= 3 && stripBrackets(parts[2]) != "" {
+			bonusType = stripBrackets(parts[2])
+		}
+	default:
+		return nil
+	}
+
+	if len(parts) >= 4 && stripBrackets(parts[3]) != "" {
+		name = stripBrackets(parts[3])
 	}
 
 	return &api.Enchantment{
-		Name:   "Incorporeal Miss Chance",
-		Amount: amount,
-		// All other fields remain empty.
+		Name:      name,
+		Amount:    amount,
+		BonusType: bonusType,
 	}
 }
 
