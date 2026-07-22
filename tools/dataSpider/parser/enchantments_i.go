@@ -144,7 +144,6 @@ func parseTemplateImmune(rawImmuneValue string) *api.Enchantment {
 func parseTemplateIncite(rawIncValue string, itemType string) []*api.Enchantment {
 	const prefix = "{{Incite|"
 	const suffix = "}}"
-	const defaultAttackType = "Melee" // Default from documentation
 
 	if !strings.HasPrefix(rawIncValue, prefix) || !strings.HasSuffix(rawIncValue, suffix) {
 		return nil
@@ -153,7 +152,7 @@ func parseTemplateIncite(rawIncValue string, itemType string) []*api.Enchantment
 	paramList := rawIncValue[len(prefix) : len(rawIncValue)-len(suffix)]
 	parts := strings.Split(paramList, "|")
 
-	// Docs: (Enhancement Amount)|(Attack Type)|(Title)|(Bonus Type)
+	// Docs: (Enhancement Amount)|(Attack Type)|(Bonus Type)|(Title)
 
 	// 1. Enhancement Amount (Required, Index 0)
 	if len(parts) < 1 {
@@ -164,46 +163,57 @@ func parseTemplateIncite(rawIncValue string, itemType string) []*api.Enchantment
 		return nil
 	}
 
-	var attackStyle string
-	var title string
+	attackStyle := "Melee"
 	var bonusType string
+	var title string
 
 	// 2. Attack Type (Optional, Index 1 - defaults to Melee)
 	if len(parts) >= 2 {
-		attackStyle = stripBrackets(parts[1])
-	} else {
-		attackStyle = defaultAttackType
+		if value := stripBrackets(parts[1]); value != "" {
+			attackStyle = value
+		}
 	}
 
-	// 3. Title (Optional, Index 2)
+	// 3. Bonus Type (Optional, Index 2)
 	if len(parts) >= 3 {
-		title = stripBrackets(parts[2])
+		bonusType = stripBrackets(parts[2])
 	}
 
-	// 4. Bonus Type (Optional, Index 3 - if not specified, amount is a percent)
+	// 4. Title (Optional, Index 3)
 	if len(parts) >= 4 {
-		bonusType = stripBrackets(parts[3])
+		title = stripBrackets(parts[3])
 	}
 
 	// --- CRITICAL PROCESSING ---
 
 	var enchantments []*api.Enchantment
-	normalizedStyle := strings.Title(strings.ToLower(attackStyle))
+	finalAmount := amountRaw + "%"
 
-	// 1. Determine the final amount string (with % if Bonus Type is missing)
-	finalAmount := amountRaw
-	isPercentage := false
-	if bonusType == "" {
-		finalAmount = amountRaw + "%"
-		isPercentage = true
-	}
-
-	// 2. Determine base names for threat effects
+	// Determine base names for threat effects.
 	baseThreatName := "Threat Generation"
 
-	styleFlags, exists := diversionStyles[normalizedStyle]
-	if !exists {
-		styleFlags = diversionStyles[defaultAttackType] // Fallback
+	styleFlags := struct {
+		Melee  bool
+		Ranged bool
+		Spell  bool
+	}{}
+	switch strings.ToLower(attackStyle) {
+	case "ranged":
+		styleFlags.Ranged = true
+	case "spell":
+		styleFlags.Spell = true
+	case "spellmelee":
+		styleFlags.Melee = true
+		styleFlags.Spell = true
+	case "spellranged":
+		styleFlags.Ranged = true
+		styleFlags.Spell = true
+	case "all":
+		styleFlags.Melee = true
+		styleFlags.Ranged = true
+		styleFlags.Spell = true
+	default:
+		styleFlags.Melee = true
 	}
 
 	// Generator function for split enchantments
@@ -211,23 +221,12 @@ func parseTemplateIncite(rawIncValue string, itemType string) []*api.Enchantment
 		finalName := title
 		if finalName == "" {
 			finalName = styleName + " " + baseThreatName
-		} else {
-			// If custom title is used, we append the style for differentiation
-			finalName = fmt.Sprintf("%s (%s)", finalName, styleName)
-		}
-
-		// Use a standard bonus type if the amount is numerical (not a percentage)
-		// If it's a percentage, the Bonus field usually reflects the effect type (e.g., Profane, Insight)
-		enchBonusType := bonusType
-		if isPercentage {
-			// For simple percentage bonuses, the Bonus Type is left empty or set to Enhancement
-			// to indicate it's not Insight/Quality etc., but since we need a string, we keep the original.
 		}
 
 		return &api.Enchantment{
 			Name:      finalName,
-			Amount:    finalAmount + "%",
-			BonusType: enchBonusType,
+			Amount:    finalAmount,
+			BonusType: bonusType,
 			// AdditionalText could potentially be used for the base attack style if needed.
 		}
 	}
