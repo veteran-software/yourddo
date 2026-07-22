@@ -30,6 +30,20 @@ func parseTemplateSpellFocus(rawFocusValue string) []*api.Enchantment {
 		return nil
 	}
 
+	// Equipoised is a fixed special case in the wiki template. It does not use
+	// the amount, bonus type, or title parameters from the generic form.
+	if strings.EqualFold(school, "Equipoised") {
+		var enchantments []*api.Enchantment
+		for _, schoolName := range spellSchools {
+			enchantments = append(enchantments, &api.Enchantment{
+				Name:      fmt.Sprintf("Spell DC: %s", schoolName),
+				Amount:    "2",
+				BonusType: "Exceptional",
+			})
+		}
+		return enchantments
+	}
+
 	var amount string
 	var bonusType string
 	var title string

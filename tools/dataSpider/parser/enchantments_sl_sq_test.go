@@ -42,6 +42,21 @@ func TestParseTemplateSpellFocus(t *testing.T) {
 				{Name: "Rune Arm: DC", Amount: "1", BonusType: "Artifact"},
 			},
 		},
+		{
+			name: "Equipoised",
+			raw:  "{{SpellFocus|Equipoised}}",
+			expected: func() []*api.Enchantment {
+				out := make([]*api.Enchantment, 0, len(spellSchools))
+				for _, school := range spellSchools {
+					out = append(out, &api.Enchantment{
+						Name:      fmt.Sprintf("Spell DC: %s", school),
+						Amount:    "2",
+						BonusType: "Exceptional",
+					})
+				}
+				return out
+			}(),
+		},
 	}
 
 	for _, tt := range tests {
