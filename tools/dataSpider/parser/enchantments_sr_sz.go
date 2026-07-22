@@ -588,8 +588,7 @@ func parseTemplateStonePrison(raw string) *api.Enchantment {
 	}
 }
 
-// parseTemplateTheReaver parses `{{TheReaver|Type}}`.
-
+// parseTemplateSunBurst parses `{{SunBurst|Type|DC Amount|Title}}`.
 func parseTemplateSunBurst(raw string) *api.Enchantment {
 	const prefix = "{{SunBurst"
 	const suffix = "}}"
@@ -602,14 +601,17 @@ func parseTemplateSunBurst(raw string) *api.Enchantment {
 	content := strings.TrimPrefix(s, prefix)
 	content = strings.TrimSuffix(content, suffix)
 
-	var sbType, title string
+	var sbType, dc, title string
 	if strings.HasPrefix(content, "|") {
 		parts := strings.Split(strings.TrimPrefix(content, "|"), "|")
 		if len(parts) > 0 {
 			sbType = strings.TrimSpace(parts[0])
 		}
 		if len(parts) > 1 {
-			title = strings.TrimSpace(parts[1])
+			dc = strings.TrimSpace(parts[1])
+		}
+		if len(parts) > 2 {
+			title = strings.TrimSpace(parts[2])
 		}
 	}
 
@@ -622,7 +624,10 @@ func parseTemplateSunBurst(raw string) *api.Enchantment {
 		} else {
 			name = "Lesser Sun Burst"
 		}
-		notes = "Occasionally, this power comes to the surface, unleashing a nova of light which will blind the struck enemy, dealing severe light damage to it and any other nearby foes."
+		notes = "This weapon/shield blazes with the eternal fury at the heart of a sun. Occasionally, this power comes to the surface, unleashing a nova of light which will blind the struck enemy, dealing severe light damage to it and any other nearby foes."
+	} else if strings.EqualFold(sbType, "Custom") {
+		name = "Sun Burst +" + dc
+		notes = "This weapon blazes with the eternal fury at the heart of a sun. Occassionally, this power comes to the surface, unleashing a nova of light which will blind the struck enemey for 6 seconds unless it succeeds on a Reflex DC: " + dc + " saving throw."
 	} else {
 		notes = "This weapon flashes an intense burst of sunlight on any critical hit. The target is blasted for 6d6 of light damage and is blinded as well. Oozes and Undead take 12d6 light damage. A successful Reflex DC: 22 save reduces the damage by half and negates the blindness."
 	}

@@ -857,8 +857,6 @@ func parseTemplateTelekinetic(raw string) *api.Enchantment {
 	}
 }
 
-// parseTemplateSunBurst parses `{{SunBurst|(Type)|(Title)}}`.
-
 func parseTemplateTheMoralCompass(raw string) *api.Enchantment {
 	return parseSimpleTemplate(raw, "{{TheMoralCompass", "The Moral Compass", "An oft repeated mantra of the Shintao is written on these sacred handwraps:\n\n\"True strength comes from within, and true power comes from rising above.\" While wearing these Handwraps, Monks will gain additional power and bonuses based on their Philosophy.")
 }
