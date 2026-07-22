@@ -248,7 +248,7 @@ func parseTemplateWeaponEffect(rawWEValue string) *api.Enchantment {
 	}
 
 	paramList := rawWEValue[len(prefix) : len(rawWEValue)-len(suffix)]
-	parts := strings.Split(paramList, "|")
+	parts := splitParams(paramList)
 
 	// Docs: (Type)|(die count)|(Effect name)|(Title)|(Sides)
 
@@ -261,17 +261,11 @@ func parseTemplateWeaponEffect(rawWEValue string) *api.Enchantment {
 		return nil
 	}
 
-	var dieCount string
-	var effectName string
-	var title string
-	var dieSides string
-	var name string
+	var dieCount, effectName, title, dieSides string
 
-	// 2. Die Count (Required, Index 1)
+	// 2. Die Count (required by the default branch, but not by fixed effects)
 	if len(parts) >= 2 {
 		dieCount = stripBrackets(parts[1])
-	} else {
-		return nil // Die Count is required
 	}
 
 	// 3. Effect name (Index 2)
@@ -284,43 +278,138 @@ func parseTemplateWeaponEffect(rawWEValue string) *api.Enchantment {
 		title = stripBrackets(parts[3])
 	}
 
-	// 5. Sides (Index 4) - defaults to d6 if not specified
+	// 5. Sides (Index 4) - defaults to 6 if not specified
 	if len(parts) >= 5 {
 		dieSides = stripBrackets(parts[4])
 	}
 	if dieSides == "" {
-		dieSides = "d6"
+		dieSides = "6"
 	}
 
-	// --- MAPPING AND NAME FORMATTING ---
+	name := title
+	normalizedType := strings.ToLower(effectType)
 
-	// Set Name based on Title, or Effect Name
-	if title != "" {
-		name = title // Use custom title
-	} else if effectName != "" {
-		// Use the effect name (e.g., Reverberating, Impactful)
-		name = effectName
-	} else {
-		// Default based on the Type (e.g., Sonic, Force)
-		name = effectType + " Damage"
+	// These effects have dedicated branches in Template:WeaponEffect and do not
+	// use the generic dice parameters. Keep their fixed behavior available to
+	// the data spider even when only the type is supplied.
+	var amount, element, notes string
+	switch normalizedType {
+	case "flameblade":
+		if name == "" {
+			name = "Flameblade"
+		}
+		notes = "This blade is made of pure fire and is surprisingly light to the touch. It innately bypasses the Incorporeal chances of Ethereal monsters."
+	case "frostblade":
+		if name == "" {
+			name = "Frostblade"
+		}
+		notes = "This blade is made of pure ice and is surprisingly light to the touch. It innately bypasses the Incorporeal chances of Ethereal monsters."
+	case "antipodal":
+		if name == "" {
+			name = "Antipodal"
+		}
+		notes = "Deals 1d6 Good damage to non-Good enemies, 1d6 Evil damage to non-Evil enemies, 1d6 Law damage to non-Lawful enemies, and 1d6 Chaotic damage to non-Chaotic enemies."
+	case "bone paws", "bonepaws":
+		if name == "" {
+			name = "Bone Paws"
+		}
+		notes = "While in any Wild Shape, your weapons gain Piercing damage bypass and +1W."
+	case "strength sapping", "strengthsapping":
+		if name == "" {
+			name = "Strength Sapping"
+		}
+		notes = "On damage, the target must succeed on a DC 15 Fortitude save or become exhausted."
+	case "murderous edge":
+		if name == "" {
+			name = "Murderous Edge"
+		}
+		amount = "16d6"
+		element = "Slashing"
+		notes = "On hit: Slashing damage. This item is considered Metalline, bypassing all kinds of material damage resistance."
+	case "life-devouring":
+		if name == "" {
+			name = "Life-Devouring"
+		}
+		notes = "On an attack roll of 20, the target must make a DC 28 Fortitude save or take a -6 penalty to all stats; Greater Restoration is cast on you at the same time."
+	case "disease: unholy tear", "diseaseunholytear":
+		if name == "" {
+			name = "Disease: Unholy Tear"
+		}
+		amount = "10d6"
+		element = "Evil"
+		notes = "Deals Evil damage on each hit to Good enemies and can spread a disease that reduces Armor Class and Positive Healing Amplification."
+	case "shield spikes":
+		if dieCount == "" {
+			return nil
+		}
+		if name == "" {
+			name = "Shield Spikes"
+		}
+		amount = formatWeaponEffectDice(dieCount, dieSides)
+		element = "Piercing"
+		notes = "Deals extra piercing damage when used to shield bash."
+	case "tidal burst":
+		if name == "" {
+			if effectName != "" {
+				name = effectName
+			} else {
+				name = "Tidal Burst"
+			}
+		}
+		amount = "1d4"
+		notes = "Deals extra damage on each hit. Critical hits also deal 1d8, 2d8, or 3d8 damage for weapons with a x2, x3, or x4 critical multiplier; creatures with the Fire trait take double damage."
+	default:
+		if dieCount == "" {
+			return nil
+		}
+		if name == "" {
+			if effectName != "" {
+				name = effectName
+			} else {
+				name = effectType + " Damage"
+			}
+		}
+		amount = formatWeaponEffectDice(dieCount, dieSides)
+		element = weaponEffectElement(normalizedType)
 	}
 
-	// Combine Dice information for a single amount/text field if possible, or use AdditionalText
-	diceRoll := fmt.Sprintf("%s%s", dieCount, dieSides)
-
-	return &api.Enchantment{
-		Name: name,
-
-		// Use Amount for the die roll to make it searchable
-		Amount: diceRoll,
-
-		// Use BlastType for the specific effect type (for future complex parsing)
+	enchantment := &api.Enchantment{
+		Name:      name,
+		Amount:    amount,
+		Element:   element,
 		BlastType: effectType,
-
-		// All other fields remain empty.
 	}
+	if notes != "" {
+		enchantment.Notes = new(notes)
+	}
+	return enchantment
 }
 
+func formatWeaponEffectDice(count, sides string) string {
+	sides = strings.TrimPrefix(strings.TrimPrefix(strings.TrimSpace(sides), "d"), "D")
+	return fmt.Sprintf("%sd%s", strings.TrimSpace(count), sides)
+}
+
+func weaponEffectElement(effectType string) string {
+	switch effectType {
+	case "force", "force critical":
+		return "Force"
+	case "sonic":
+		return "Sonic"
+	case "bludgeon", "bludgeon critical", "smashing":
+		return "Bludgeoning"
+	case "coruscating critical":
+		return "Light"
+	case "coruscating":
+		return "Coruscating"
+	case "slashing", "slashing critical":
+		return "Slashing"
+	case "piercing", "stabbing", "stabbing critical":
+		return "Piercing"
+	default:
+		return ""
+	}
+}
 
 // Template:Venomscale
 // No parameters. According to docs/screenshot it:
