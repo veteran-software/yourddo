@@ -355,7 +355,6 @@ func parseTemplateReinforcedFists(rawRFValue string) *api.Enchantment {
 func parseTemplateResistance(rawResValue string) []*api.Enchantment {
 	const prefix = "{{Resistance|"
 	const suffix = "}}"
-	const defaultBonusType = "Resistance" // Default from documentation
 
 	if !strings.HasPrefix(rawResValue, prefix) || !strings.HasSuffix(rawResValue, suffix) {
 		return nil
@@ -376,41 +375,45 @@ func parseTemplateResistance(rawResValue string) []*api.Enchantment {
 	}
 
 	var bonusType string
-	var resType string // The custom type (Curse, Enchantment, or blank)
 
-	// 2. Bonus Type (Optional, Index 1 - defaults to Resistance)
+	// 2. Bonus Type (Optional, Index 1)
 	if len(parts) >= 2 {
-		value := stripBrackets(parts[1])
-		if value == "" {
-			bonusType = defaultBonusType
-		} else {
-			if value == "Insightful" {
-				value = "Insight"
-			}
-
-			bonusType = value
+		bonusType = stripBrackets(parts[1])
+		if strings.EqualFold(bonusType, "Insightful") {
+			bonusType = "Insight"
 		}
-	} else {
-		bonusType = defaultBonusType // Default value
 	}
 
-	// 3. Resistance Type (Optional, Index 2 - affects final name/description)
+	// 3. Resistance Type (Optional, Index 2). The wiki template's switch is
+	// case-insensitive and falls back to ordinary saves for unknown values.
+	resistanceType := ""
 	if len(parts) >= 3 {
-		resType = stripBrackets(parts[2])
+		switch strings.ToLower(stripBrackets(parts[2])) {
+		case "curse":
+			resistanceType = "Curse"
+		case "enchantment":
+			resistanceType = "Enchantment"
+		case "illusion":
+			resistanceType = "Illusion"
+		}
+	}
+
+	// The Curse branch in the wiki template defaults to Enhancement. All other
+	// branches, including the default branch, default to Resistance.
+	if bonusType == "" {
+		if resistanceType == "Curse" {
+			bonusType = "Enhancement"
+		} else {
+			bonusType = "Resistance"
+		}
 	}
 
 	var enchantments []*api.Enchantment
 
-	// --- CRITICAL: Generate Three Separate Saves ---
 	for _, save := range saves {
-		var name string
-
-		// If ResType is provided, the naming convention changes (e.g., "Curse Resistance")
-		if resType != "" {
-			name = fmt.Sprintf("%s (%s) Saving Throws", save, resType)
-			name = save + "(" + resType + ")" + " Saving Throws"
-		} else {
-			name = fmt.Sprintf("%s Saving Throws", save)
+		name := fmt.Sprintf("%s Saving Throws", save)
+		if resistanceType != "" {
+			name = fmt.Sprintf("%s (%s) Saving Throws", save, resistanceType)
 		}
 
 		enchantments = append(enchantments, &api.Enchantment{
