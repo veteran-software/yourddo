@@ -809,8 +809,6 @@ func parseTemplateFeeding(raw string) *api.Enchantment {
 	}
 }
 
-// parseTemplateMagmaSurge parses `{{MagmaSurge|(Type)}}`.
-
 func parseTemplateForgedLightning() *api.Enchantment {
 	return &api.Enchantment{
 		Name:  "Forged Lightning",
