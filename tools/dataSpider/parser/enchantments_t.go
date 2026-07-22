@@ -207,9 +207,13 @@ func parseTemplateTheWarbladesWrath() *api.Enchantment {
 // Usage: {{TaintOfShavarath|(Legendary)}}
 // Legendary param → "Legendary Taint of Shavarath"; default → "Taint of Shavarath".
 func parseTemplateTaintOfShavarath(raw string) *api.Enchantment {
-	const prefix = "{{TaintOfShavarath"
-	const suffix = "}}"
-	const baseName = "Taint of Shavarath"
+	const (
+		prefix         = "{{TaintOfShavarath"
+		suffix         = "}}"
+		baseName       = "Taint of Shavarath"
+		defaultNotes   = "Green Steel items thirst for pain and suffering. While weapons can sate their bloodlust on opponents, accessories and clothing cannot. Wearing multiple items that bear the taint of Shavarath creates dangerous imbalances of energy as the items feed upon the wearer. Perhaps there is a way to cleanse this item..."
+		legendaryNotes = "Green Steel items thirst for pain and suffering. While weapons feed their bloodlust on enemies, accessories and clothing cannot. Wearing multiple items that bear Legendary Taint of Shavarath creates dangerous imbalances of energy as the items feed more and more upon the wielder. Perhaps there is a way to appease them..."
+	)
 
 	s := strings.TrimSpace(raw)
 	if !strings.HasPrefix(s, prefix) || !strings.HasSuffix(s, suffix) {
@@ -224,11 +228,13 @@ func parseTemplateTaintOfShavarath(raw string) *api.Enchantment {
 	}
 
 	name := baseName
+	notes := defaultNotes
 	if strings.ToLower(typ) == "legendary" {
 		name = legendaryPrefix + baseName
+		notes = legendaryNotes
 	}
 
-	return &api.Enchantment{Name: name}
+	return &api.Enchantment{Name: name, Notes: new(notes)}
 }
 
 // Template:TouchoftheMournlands

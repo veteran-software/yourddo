@@ -71,3 +71,64 @@ func TestParseEnchantmentsTelekineticCustom(t *testing.T) {
 		t.Fatalf("ParseEnchantments() = %#v, want %#v", got, want)
 	}
 }
+
+func TestParseTemplateTaintOfShavarath(t *testing.T) {
+	const (
+		defaultNotes   = "Green Steel items thirst for pain and suffering. While weapons can sate their bloodlust on opponents, accessories and clothing cannot. Wearing multiple items that bear the taint of Shavarath creates dangerous imbalances of energy as the items feed upon the wearer. Perhaps there is a way to cleanse this item..."
+		legendaryNotes = "Green Steel items thirst for pain and suffering. While weapons feed their bloodlust on enemies, accessories and clothing cannot. Wearing multiple items that bear Legendary Taint of Shavarath creates dangerous imbalances of energy as the items feed more and more upon the wielder. Perhaps there is a way to appease them..."
+	)
+
+	tests := []struct {
+		name string
+		raw  string
+		want *api.Enchantment
+	}{
+		{
+			name: "default",
+			raw:  "{{TaintOfShavarath}}",
+			want: &api.Enchantment{Name: "Taint of Shavarath", Notes: new(defaultNotes)},
+		},
+		{
+			name: "legendary",
+			raw:  "{{TaintOfShavarath|Legendary}}",
+			want: &api.Enchantment{Name: "Legendary Taint of Shavarath", Notes: new(legendaryNotes)},
+		},
+		{
+			name: "switch is case insensitive",
+			raw:  "{{TaintOfShavarath|legendary}}",
+			want: &api.Enchantment{Name: "Legendary Taint of Shavarath", Notes: new(legendaryNotes)},
+		},
+		{
+			name: "unknown value uses default",
+			raw:  "{{TaintOfShavarath|Heroic}}",
+			want: &api.Enchantment{Name: "Taint of Shavarath", Notes: new(defaultNotes)},
+		},
+		{
+			name: "invalid template",
+			raw:  "TaintOfShavarath",
+			want: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := parseTemplateTaintOfShavarath(tt.raw)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Fatalf("parseTemplateTaintOfShavarath(%q) = %#v, want %#v", tt.raw, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestParseEnchantmentsTaintOfShavarath(t *testing.T) {
+	const legendaryNotes = "Green Steel items thirst for pain and suffering. While weapons feed their bloodlust on enemies, accessories and clothing cannot. Wearing multiple items that bear Legendary Taint of Shavarath creates dangerous imbalances of energy as the items feed more and more upon the wielder. Perhaps there is a way to appease them..."
+	want := []api.Enchantment{{
+		Name:  "Legendary Taint of Shavarath",
+		Notes: new(legendaryNotes),
+	}}
+
+	got := ParseEnchantments("{{TaintOfShavarath|Legendary}}", "")
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("ParseEnchantments() = %#v, want %#v", got, want)
+	}
+}
