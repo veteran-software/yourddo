@@ -1538,5 +1538,125 @@
     "id": "626276d6-73f8-4696-8025-e1d20bf8abc7",
     "name": "A Light in the Attic (L)",
     "sagas": ["chill-of-ravenloft-legendary"]
+  },
+  {
+    "id": "",
+    "name": "Demon in the Rough (H)",
+    "sagas": ["terror-of-demogorgon-heroic"]
+  },
+  {
+    "id": "",
+    "name": "Tower of Vengeance (H)",
+    "sagas": ["terror-of-demogorgon-heroic"]
+  },
+  {
+    "id": "",
+    "name": "A Blood Pact (H)",
+    "sagas": ["terror-of-demogorgon-heroic"]
+  },
+  {
+    "id": "",
+    "name": "Hideous to Behold (H)",
+    "sagas": ["terror-of-demogorgon-heroic"]
+  },
+  {
+    "id": "",
+    "name": "The Price of an Egg (H)",
+    "sagas": ["terror-of-demogorgon-heroic"]
+  },
+  {
+    "id": "",
+    "name": "For Want of a Heart (H)",
+    "sagas": ["terror-of-demogorgon-heroic"]
+  },
+  {
+    "id": "",
+    "name": "Flocked Together (H)",
+    "sagas": ["terror-of-demogorgon-heroic"]
+  },
+  {
+    "id": "",
+    "name": "The Fetid Wedding (H)",
+    "sagas": ["terror-of-demogorgon-heroic"]
+  },
+  {
+    "id": "",
+    "name": "Stealing from Sorcere (H)",
+    "sagas": ["terror-of-demogorgon-heroic"]
+  },
+  {
+    "id": "",
+    "name": "Back to the Abyss (H)",
+    "sagas": ["terror-of-demogorgon-heroic"]
+  },
+  {
+    "id": "",
+    "name": "A Long Way to Mushrooms (H)",
+    "sagas": ["terror-of-demogorgon-heroic"]
+  },
+  {
+    "id": "",
+    "name": "If It Wasn't For Bad Luck (H)",
+    "sagas": ["terror-of-demogorgon-heroic"]
+  },
+  {
+    "id": "",
+    "name": "Demon in the Rough (L)",
+    "sagas": ["terror-of-demogorgon-legendary"]
+  },
+  {
+    "id": "",
+    "name": "Tower of Vengeance (L)",
+    "sagas": ["terror-of-demogorgon-legendary"]
+  },
+  {
+    "id": "",
+    "name": "A Blood Pact (L)",
+    "sagas": ["terror-of-demogorgon-legendary"]
+  },
+  {
+    "id": "",
+    "name": "Hideous to Behold (L)",
+    "sagas": ["terror-of-demogorgon-legendary"]
+  },
+  {
+    "id": "",
+    "name": "The Price of an Egg (L)",
+    "sagas": ["terror-of-demogorgon-legendary"]
+  },
+  {
+    "id": "",
+    "name": "For Want of a Heart (L)",
+    "sagas": ["terror-of-demogorgon-legendary"]
+  },
+  {
+    "id": "",
+    "name": "Flocked Together (L)",
+    "sagas": ["terror-of-demogorgon-legendary"]
+  },
+  {
+    "id": "",
+    "name": "The Fetid Wedding (L)",
+    "sagas": ["terror-of-demogorgon-legendary"]
+  },
+  {
+    "id": "",
+    "name": "Stealing from Sorcere (L)",
+    "sagas": ["terror-of-demogorgon-legendary"]
+  },
+  {
+    "id": "",
+    "name": "Back to the Abyss (L)",
+    "sagas": ["terror-of-demogorgon-legendary"]
+  },
+  {
+    "id": "",
+    "name": "A Long Way to Mushrooms (L)",
+    "sagas": ["terror-of-demogorgon-legendary"]
+  },
+  {
+    "id": "",
+    "name": "If It Wasn't For Bad Luck (L)",
+    "sagas": ["terror-of-demogorgon-legendary"]
   }
 ]

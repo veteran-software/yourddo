@@ -172,5 +172,17 @@
     "name": "Chill of Ravenloft (L)",
     "levelRange": "36",
     "npc": "Bertrand Gustavson"
+  },
+  {
+    "id": "terror-of-demogorgon-heroic",
+    "name": "Terror of Demogorgon (H)",
+    "levelRange": "11",
+    "npc": "Haruhak Deepgiftd"
+  },
+  {
+    "id": "terror-of-demogorgon-legendary",
+    "name": "Terror of Demogorgon (L)",
+    "levelRange": "37",
+    "npc": "Erumura Orefinder"
   }
 ]
