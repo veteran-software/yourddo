@@ -36,6 +36,12 @@
     "npc": "Livius Lanston"
   },
   {
+    "id": "terror-of-demogorgon-heroic",
+    "name": "Terror of Demogorgon (H)",
+    "levelRange": "11",
+    "npc": "Haruhak Deepgiftd"
+  },
+  {
     "id": "myth-drannor-heroic",
     "name": "Myth Drannor (H)",
     "levelRange": "13",
@@ -172,12 +178,6 @@
     "name": "Chill of Ravenloft (L)",
     "levelRange": "36",
     "npc": "Bertrand Gustavson"
-  },
-  {
-    "id": "terror-of-demogorgon-heroic",
-    "name": "Terror of Demogorgon (H)",
-    "levelRange": "11",
-    "npc": "Haruhak Deepgiftd"
   },
   {
     "id": "terror-of-demogorgon-legendary",
