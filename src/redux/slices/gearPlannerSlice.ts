@@ -22,6 +22,7 @@ import {
   migrateLegacyItemUpgrades,
   setItemUpgradeState
 } from '../../pages/gearPlanner/upgradeState'
+import { MAX_CHARACTER_LEVEL } from '../../utils/constants'
 
 export interface GearPlannerState {
   characterSetups: GearSetup[]
@@ -237,9 +238,11 @@ const gearPlannerSlice = createSlice({
       if (setup) {
         Object.assign(setup, action.payload)
 
-        // Enforce level range 1-34 and relationship minLevel <= maxLevel
-        setup.minLevel = Number.isNaN(setup.minLevel) ? 1 : Math.max(1, Math.min(34, setup.minLevel))
-        setup.maxLevel = Number.isNaN(setup.maxLevel) ? 34 : Math.max(1, Math.min(34, setup.maxLevel))
+        // Enforce the character level range and relationship minLevel <= maxLevel
+        setup.minLevel = Number.isNaN(setup.minLevel) ? 1 : Math.max(1, Math.min(MAX_CHARACTER_LEVEL, setup.minLevel))
+        setup.maxLevel = Number.isNaN(setup.maxLevel)
+          ? MAX_CHARACTER_LEVEL
+          : Math.max(1, Math.min(MAX_CHARACTER_LEVEL, setup.maxLevel))
 
         if (setup.minLevel > setup.maxLevel) {
           if (action.payload.minLevel !== undefined && action.payload.maxLevel === undefined) {

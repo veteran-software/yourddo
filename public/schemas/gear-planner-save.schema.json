@@ -77,12 +77,12 @@
         "minLevel": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 34
+          "maximum": 36
         },
         "maxLevel": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 34
+          "maximum": 36
         },
         "classes": {
           "type": "array",

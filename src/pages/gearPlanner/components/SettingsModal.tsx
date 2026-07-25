@@ -1,6 +1,7 @@
 import { Accordion, Button, Col, Form, Modal, Row, Stack } from 'react-bootstrap'
 import { updateSetup as updateSetupAction } from '../../../redux/slices/gearPlannerSlice'
 import type { AppDispatch } from '../../../redux/store'
+import { MAX_CHARACTER_LEVEL } from '../../../utils/constants'
 import { ARMOR_TYPES, GEAR_CLASSES, type GearSetup, SHIELD_TYPES, WEAPON_TYPES } from '../types'
 import WeaponCategory from './WeaponCategory'
 
@@ -48,7 +49,7 @@ const SettingsModal = ({ show, onHide, activeSetup, dispatch, updateClassProfici
                   <Form.Control
                     type='number'
                     min={1}
-                    max={34}
+                    max={MAX_CHARACTER_LEVEL}
                     value={activeSetup.minLevel}
                     className='bg-light text-dark'
                     onChange={(e) => {
@@ -70,7 +71,7 @@ const SettingsModal = ({ show, onHide, activeSetup, dispatch, updateClassProfici
                   <Form.Control
                     type='number'
                     min={1}
-                    max={34}
+                    max={MAX_CHARACTER_LEVEL}
                     value={activeSetup.maxLevel}
                     className='bg-light text-dark'
                     onChange={(e) => {

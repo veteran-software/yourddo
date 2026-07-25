@@ -25,7 +25,7 @@ describe('permalink V2 payload helpers', () => {
     expect(payload.setup).toMatchObject({
       name: 'Setup 1',
       minLevel: 1,
-      maxLevel: 34
+      maxLevel: 36
     })
     expect(payload.items).toHaveLength(1)
     expect(payload.items[0]).toMatchObject({
@@ -49,6 +49,8 @@ describe('permalink V2 payload helpers', () => {
     const decoded = decodePermalinkPayloadV2(payload, [mockItem], [], [])
 
     expect(decoded.name).toBe('Setup 1')
+    expect(decoded.minLevel).toBe(1)
+    expect(decoded.maxLevel).toBe(36)
     expect(decoded.slots[GearSlot.MainHand]?.id).toBe(mockItem.id)
     expect(decoded.slots[GearSlot.MainHand]?.material).toBe(mockItem.material)
     expect(decoded.itemUpgrades[mockItem.id].reaperForge).toBe('reaper-ring-boost-3')

@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { shields } from '../../../data/basics/armor.ts'
 import { meleeWeapons, rangedWeapons, throwingWeapons } from '../../../data/basics/weapons.ts'
+import { MAX_CHARACTER_LEVEL } from '../../../utils/constants.ts'
 import { type EssenceEnchantment } from '../dataLoader.ts'
 import { type EntityGearState, type GearItem, type GearSetup, GearSlot, type LootEnchantment } from '../types.ts'
 import EnchantmentList from './EnchantmentList.tsx'
@@ -271,7 +272,7 @@ const EssenceCraftingSelector = (props: Props) => {
         <div className='d-flex gap-2 mb-1'>
           <div className='flex-grow-1'>
             <div className='text-dark mb-0' style={{ fontSize: '0.65rem' }}>
-              Min Level (1-34)
+              Min Level (1-{MAX_CHARACTER_LEVEL})
             </div>
             <Dropdown className='w-100 mb-2'>
               <Dropdown.Toggle
@@ -294,7 +295,7 @@ const EssenceCraftingSelector = (props: Props) => {
                   overflowY: 'auto'
                 }}
               >
-                {Array.from({ length: 34 }, (_, i) => i + 1).map((lvl) => (
+                {Array.from({ length: MAX_CHARACTER_LEVEL }, (_, i) => i + 1).map((lvl) => (
                   <Dropdown.Item
                     key={lvl}
                     onClick={() => {
