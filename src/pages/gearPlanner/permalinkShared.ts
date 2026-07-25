@@ -2,7 +2,7 @@ import traceOfMadnessData from '../../data/traceOfMadness.json'
 import { getSlotOwner } from './conflictResolver'
 import { canApplyCurse } from './helpers'
 import type { Curse, GearAugment, GearItem, GearSetup, LootEnchantment, PetState, UpgradeEntry } from './types'
-import { setItemUpgradeState } from './upgradeState'
+import { type NearlyCompleteSelection, setItemUpgradeState } from './upgradeState'
 
 export const getTargetState = (setup: GearSetup, gearSlot: string): GearSetup | PetState => {
   const owner = getSlotOwner(gearSlot)
@@ -81,6 +81,7 @@ export const decodeItemEssenceCrafting = (
 }
 
 interface DecodeSupplementaryPropertiesOptions {
+  nearlyComplete?: NearlyCompleteSelection | null
   nearlyFinished: LootEnchantment | null
   almostThere: LootEnchantment | null
   finishingTouch: LootEnchantment | null
@@ -134,6 +135,7 @@ export const decodeSupplementaryProperties = (
   options: DecodeSupplementaryPropertiesOptions
 ): void => {
   const {
+    nearlyComplete,
     nearlyFinished,
     almostThere,
     finishingTouch,
@@ -150,6 +152,7 @@ export const decodeSupplementaryProperties = (
     reaperForge
   } = options
 
+  if (nearlyComplete) setItemUpgradeState(state.itemUpgrades, item.id, 'nearlyComplete', nearlyComplete)
   if (nearlyFinished) setItemUpgradeState(state.itemUpgrades, item.id, 'nearlyFinished', nearlyFinished)
   if (almostThere) setItemUpgradeState(state.itemUpgrades, item.id, 'almostThere', almostThere)
   if (finishingTouch) setItemUpgradeState(state.itemUpgrades, item.id, 'finishingTouch', finishingTouch)

@@ -1,7 +1,13 @@
 import traceOfMadnessData from '../../data/traceOfMadness.json'
 import type { LootEnchantment } from './types'
 
+export interface NearlyCompleteSelection {
+  name: string
+  effectsAdded: LootEnchantment[]
+}
+
 export interface ItemUpgradeState {
+  nearlyComplete?: NearlyCompleteSelection | null
   nearlyFinished?: LootEnchantment | null
   almostThere?: LootEnchantment | null
   finishingTouch?: LootEnchantment | null
@@ -24,7 +30,7 @@ export type LegacyTraceOfMadnessMap = Record<string, LootEnchantment | null | st
 export type LegacyBooleanUpgradeMap = Record<string, boolean>
 type EnchantmentUpgradeKind = Exclude<
   ItemUpgradeKind,
-  'fountainOfNecroticMight' | 'stormreaverUpgrade' | 'zhentarimAttuned' | 'reaperForge'
+  'nearlyComplete' | 'fountainOfNecroticMight' | 'stormreaverUpgrade' | 'zhentarimAttuned' | 'reaperForge'
 >
 type BooleanUpgradeKind = Extract<
   ItemUpgradeKind,

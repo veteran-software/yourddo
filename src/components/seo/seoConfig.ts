@@ -51,6 +51,11 @@ const ROUTE_SEO_DATA = [
     'Plan Incredible Potential item upgrades, materials, and results.'
   ],
   [
+    '/nearly-complete',
+    'Nearly Complete | YourDDO',
+    'Review Nearly Complete crafting choices and Duergar Completion Forge requirements.'
+  ],
+  [
     '/nearly-finished',
     'Nearly Finished | YourDDO',
     'Track Nearly Finished crafting choices, upgrade paths, and item outcomes.'

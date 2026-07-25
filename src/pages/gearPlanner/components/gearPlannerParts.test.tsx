@@ -186,6 +186,7 @@ describe('Gear planner extracted UI parts', () => {
       },
       equipped: [],
       conflicts: {},
+      itemUpgrades: {},
       slottedAugments: {},
       slottedNearlyFinished: {},
       slottedAlmostThere: {},
@@ -219,6 +220,7 @@ describe('Gear planner extracted UI parts', () => {
         setSlottedAugment: vi.fn(),
         setSlottedCurse: vi.fn(),
         setEssenceEnchantment: vi.fn(),
+        setNearlyCompleteSelection: vi.fn(),
         setNearlyFinishedEnchantment: vi.fn(),
         setAlmostThereEnchantment: vi.fn(),
         setFinishingTouchEnchantment: vi.fn(),
@@ -445,6 +447,8 @@ describe('Gear planner extracted UI parts', () => {
     await user.clear(screen.getByLabelText('Setup Name'))
     await user.type(screen.getByLabelText('Setup Name'), 'New Setup')
     expect(dispatch).toHaveBeenCalled()
+    expect(screen.getByLabelText('Min Level')).toHaveAttribute('max', '36')
+    expect(screen.getByLabelText('Max Level')).toHaveAttribute('max', '36')
 
     await user.selectOptions(screen.getAllByRole('combobox')[0], 'Fighter')
     expect(updateClassProficiencies).toHaveBeenCalled()

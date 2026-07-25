@@ -46,6 +46,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://yourddo.com/nearly-complete</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://yourddo.com/nearly-finished</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

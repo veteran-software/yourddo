@@ -173,6 +173,14 @@ const groups: ToolGroup[] = [
         to: '/nearly-finished',
         icon: <FaBookOpen />,
         tone: 'gold'
+      },
+      {
+        id: 'nearly-complete',
+        title: 'Nearly Complete',
+        description: 'Review Heroic and Legendary Duergar Completion Forge choices and requirements.',
+        to: '/nearly-complete',
+        icon: <FaBookOpen />,
+        tone: 'gold'
       }
     ]
   },

@@ -1,7 +1,6 @@
-import {
-  filterIngredientsMap
-} from '../../components/filters/helpers/filterUtils.ts'
+import { filterIngredientsMap } from '../../components/filters/helpers/filterUtils.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
+import { MAX_CHARACTER_LEVEL } from '../../utils/constants.ts'
 import {
   ACCESSORY_SLOT_KEYS,
   type AffixKind,
@@ -42,9 +41,7 @@ export const getAffixOptions = (slotKey: string, affix: AffixKind): string[] => 
 
     // if any token matches our slot tokens, include this enhancement
     const matches = allowed.some((token) =>
-      dataTokensForSlot.some(
-        (slotToken) => slotToken.toLowerCase() === token.trim().toLowerCase()
-      )
+      dataTokensForSlot.some((slotToken) => slotToken.toLowerCase() === token.trim().toLowerCase())
     )
     if (matches) {
       if (entry.name) {
@@ -59,8 +56,7 @@ export const getAffixOptions = (slotKey: string, affix: AffixKind): string[] => 
 export const isHandHeld = (slotKey: string) =>
   ['mainHand', 'offHand', 'shield', 'orb', 'runeArm', 'artificerPetWeapon', 'druidPetWeapon'].includes(slotKey)
 export const isShield = (slotKey: string) => slotKey === 'shield'
-export const isArmor = (slotKey: string) =>
-  ['armor', 'artificerPetArmor', 'druidPetArmor'].includes(slotKey)
+export const isArmor = (slotKey: string) => ['armor', 'artificerPetArmor', 'druidPetArmor'].includes(slotKey)
 export const isOffHandNonWeapon = (slotKey: string) =>
   slotKey === 'orb' || slotKey === 'runeArm' || slotKey === 'shield'
 
@@ -95,7 +91,7 @@ export const allowedAugmentColorsForSlot = (slotKey: string): string[] => {
 
 export const STORAGE_KEY = 'essenceCraftingState'
 
-export const ML_OPTIONS: number[] = Array.from({ length: 34 }, (_, i) => i + 1)
+export const ML_OPTIONS: number[] = Array.from({ length: MAX_CHARACTER_LEVEL }, (_, i) => i + 1)
 
 export const filterAugmentOptions = (
   options: Record<string, Ingredient[]>,

@@ -19,6 +19,7 @@ const ROUTES = [
   { path: '/green-steel', priority: '0.8', changefreq: 'monthly' },
   { path: '/legendary-green-steel', priority: '0.8', changefreq: 'monthly' },
   { path: '/incredible-potential', priority: '0.8', changefreq: 'monthly' },
+  { path: '/nearly-complete', priority: '0.8', changefreq: 'monthly' },
   { path: '/nearly-finished', priority: '0.8', changefreq: 'monthly' },
   { path: '/viktranium-experiment', priority: '0.8', changefreq: 'monthly' },
   { path: '/monastery-of-the-scorpion', priority: '0.6', changefreq: 'monthly' },

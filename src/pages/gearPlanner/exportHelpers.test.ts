@@ -51,6 +51,7 @@ const richTestItem = {
     { name: 'Visible Bonus', modifier: 2, bonus: 'Enhancement' },
     { name: 'Zhentarim Attuned', modifier: 1, bonus: 'Enhancement' },
     { name: 'Nearly Finished', modifier: 1, bonus: 'Enhancement' },
+    { name: 'Nearly Complete: Ability Score', modifier: 1, bonus: 'Enhancement' },
     { name: 'Sealed in Fire', modifier: 1, bonus: 'Enhancement' },
     { name: 'Lost Purpose', modifier: 1, bonus: 'Enhancement' },
     { name: 'Trace of Madness', modifier: 1, bonus: 'Enhancement' }
@@ -152,6 +153,10 @@ const createRichSetup = (): GearSetup => ({
       stormreaverUpgrade: true,
       zhentarimAttuned: true,
       mythicBoost: { name: 'Melee Power', modifier: 2, bonus: 'Mythic' },
+      nearlyComplete: {
+        name: 'Strength +15',
+        effectsAdded: [{ name: 'Strength', modifier: '15', bonus: 'Enhancement' }]
+      },
       nearlyFinished: { name: 'Nearly Finished Bonus' },
       almostThere: { name: '__active__' },
       finishingTouch: { name: '__active__' },
@@ -193,11 +198,20 @@ describe('gear planner exports', () => {
 
   it('renders upgrade, crafting, filigree, gem set, and hidden enchantment branches', () => {
     const setup = createRichSetup()
+    setup.artificerPet.itemUpgrades[petItem.id] = {
+      nearlyComplete: {
+        name: 'Pet Strength +6',
+        effectsAdded: [{ name: 'Strength', modifier: '6', bonus: 'Enhancement' }]
+      }
+    }
     const bbcode = generateBBCodeExport(setup, richEssenceEnchantments, setup.artificerPet, setup.druidPet)
     const markdown = generateDiscordMarkdownExport(setup, richEssenceEnchantments, setup.artificerPet, setup.druidPet)
 
     expect(bbcode).toContain('[indent][b][color=cyan]Fountain of Necrotic Might Upgrade[/color][/b][/indent]')
     expect(bbcode).toContain('[indent][b][color=orange]Almost There upgrade applied[/color][/b][/indent]')
+    expect(bbcode).toContain('[color=orange]Nearly Complete:[/color][/b] Strength +15')
+    expect(bbcode).toContain('Strength +15 (Enhancement)')
+    expect(bbcode).toContain('Pet Strength +6')
     expect(bbcode).toContain('[indent][b][color=cyan]Essence Crafting:[/color][/b][/indent]')
     expect(bbcode).toContain('[indent][b][color=yellow]Filigrees:[/color][/b][/indent]')
     expect(bbcode).toContain('[indent][b][color=green]Gem Set Bonuses:[/color][/b] Gem Set Alpha[/indent]')
@@ -209,6 +223,7 @@ describe('gear planner exports', () => {
     expect(bbcode).toContain('Visible Bonus')
     expect(bbcode).not.toContain('Zhentarim Attuned +1 (Enhancement)')
     expect(bbcode).not.toContain('Nearly Finished +1 (Enhancement)')
+    expect(bbcode).not.toContain('Nearly Complete: Ability Score +1 (Enhancement)')
     expect(bbcode).not.toContain('Sealed in Fire +1 (Enhancement)')
     expect(bbcode).not.toContain('Lost Purpose +1 (Enhancement)')
     expect(bbcode).not.toContain('Trace of Madness +1 (Enhancement)')
@@ -216,6 +231,9 @@ describe('gear planner exports', () => {
 
     expect(markdown).toContain('- **Fountain of Necrotic Might Upgrade**')
     expect(markdown).toContain('- **Almost There upgrade applied**')
+    expect(markdown).toContain('- **Nearly Complete:** Strength +15')
+    expect(markdown).toContain('Strength +15 (Enhancement)')
+    expect(markdown).toContain('Pet Strength +6')
     expect(markdown).toContain('- **Essence Crafting:**')
     expect(markdown).toContain('- **Filigrees:**')
     expect(markdown).toContain('- **Gem Set Bonuses:** Gem Set Alpha')
@@ -227,6 +245,7 @@ describe('gear planner exports', () => {
     expect(markdown).toContain('Visible Bonus')
     expect(markdown).not.toContain('Zhentarim Attuned +1 (Enhancement)')
     expect(markdown).not.toContain('Nearly Finished +1 (Enhancement)')
+    expect(markdown).not.toContain('Nearly Complete: Ability Score +1 (Enhancement)')
     expect(markdown).not.toContain('Sealed in Fire +1 (Enhancement)')
     expect(markdown).not.toContain('Lost Purpose +1 (Enhancement)')
     expect(markdown).not.toContain('Trace of Madness +1 (Enhancement)')

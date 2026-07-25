@@ -239,15 +239,24 @@ export const getDisplayEnchantments = (
   }
 
   if (isFountainUpgraded) {
-    return resolveUpgradeEnchantments(findFountainUpgradeData(item.name, item.pageTitle)) ?? item.enchantments ?? []
+    return (
+      resolveUpgradeEnchantments(findFountainUpgradeData(item.name, item.pageTitle)) ??
+      withMythicBoost(item.enchantments ?? [])
+    )
   }
 
   if (isStormreaverUpgraded) {
-    return resolveUpgradeEnchantments(findStormreaverUpgradeData(item.name, item.pageTitle)) ?? item.enchantments ?? []
+    return (
+      resolveUpgradeEnchantments(findStormreaverUpgradeData(item.name, item.pageTitle)) ??
+      withMythicBoost(item.enchantments ?? [])
+    )
   }
 
   if (isZhentarimUpgraded) {
-    return resolveUpgradeEnchantments(findZhentarimUpgradeData(item.name, item.pageTitle)) ?? item.enchantments ?? []
+    return (
+      resolveUpgradeEnchantments(findZhentarimUpgradeData(item.name, item.pageTitle)) ??
+      withMythicBoost(item.enchantments ?? [])
+    )
   }
 
   return withMythicBoost(item.enchantments ?? [])
@@ -435,6 +444,10 @@ export const aggregateEnchantmentEntries = (
   addReforgingStageEffects(nfStored, nfIsToggle)
   addReforgingStageEffects(atStored, atIsToggle)
   addReforgingStageEffects(ftStored, ftIsToggle)
+
+  itemUpgrade.nearlyComplete?.effectsAdded.forEach((enchantment) => {
+    entries.push({ ench: { ...enchantment }, sourceName: item.name })
+  })
 
   const ritualTable = itemUpgrade.ritualTable
   if (ritualTable) {

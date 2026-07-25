@@ -128,6 +128,43 @@ describe('conflictResolver Bugs', () => {
       expect(result.currentMax).toBe(2)
       expect(result.isOverpowered).toBe(true)
     })
+
+    it('includes every effect from a Nearly Complete selection', () => {
+      const item = {
+        id: 'nearly-complete-item',
+        name: 'Nearly Complete Item',
+        slot: GearSlot.Head,
+        enchantments: [{ name: 'Nearly Complete: Skill' }]
+      } as unknown as GearItem
+
+      const conflicts = resolveConflicts(
+        [
+          item,
+          {
+            id: 'skill-item',
+            name: 'Skill Item',
+            slot: GearSlot.Cloak,
+            enchantments: [{ name: 'Skill: Jump', modifier: '5', bonus: 'Exceptional' }]
+          } as unknown as GearItem
+        ],
+        {
+          itemUpgrades: {
+            [item.id]: {
+              nearlyComplete: {
+                name: 'Strength Skills +6',
+                effectsAdded: [
+                  { name: 'Skill: Jump', modifier: '6', bonus: 'Exceptional' },
+                  { name: 'Skill: Swim', modifier: '6', bonus: 'Exceptional' }
+                ]
+              }
+            }
+          }
+        }
+      )
+
+      expect(conflicts['skill: jump'][0].items).toHaveLength(2)
+      expect(conflicts['skill: jump'][0].items.find((entry) => entry.itemId === item.id)?.isEffective).toBe(true)
+    })
   })
 
   describe('normalizeString', () => {

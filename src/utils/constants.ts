@@ -1,7 +1,6 @@
-import {
-  GearSlot,
-  type GearSlot as GearSlotType
-} from '../pages/gearPlanner/types.ts'
+import { GearSlot, type GearSlot as GearSlotType } from '../pages/gearPlanner/types.ts'
+
+export const MAX_CHARACTER_LEVEL = 36
 
 export const BASIC_ELEMENTS: string[] = ['Air', 'Earth', 'Fire', 'Water', 'Positive Energy', 'Negative Energy']
 

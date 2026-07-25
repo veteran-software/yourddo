@@ -172,6 +172,7 @@ const useGearPlanner = (props: Props) => {
     setSlottedAugment: actions.setSlottedAugment,
     setSlottedCurse: actions.setSlottedCurse,
     setEssenceEnchantment: actions.setEssenceEnchantment,
+    setNearlyCompleteSelection: actions.setNearlyCompleteSelection,
     setNearlyFinishedEnchantment: actions.setNearlyFinishedEnchantment,
     setAlmostThereEnchantment: actions.setAlmostThereEnchantment,
     setFinishingTouchEnchantment: actions.setFinishingTouchEnchantment,

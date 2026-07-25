@@ -186,6 +186,10 @@ export const resolveConflicts = (
         })
     }
 
+    itemUpgrade.nearlyComplete?.effectsAdded.forEach((enchantment) => {
+      pushUpgradeEnchantment(enchantment, item, owner)
+    })
+
     const nearlyFinished = upgradeViews.slottedNearlyFinished[item.id]
     if (nearlyFinished) pushUpgradeEnchantment(nearlyFinished, item, owner)
 
@@ -346,6 +350,27 @@ const findMatchingNearlyFinished = (
   return -Infinity
 }
 
+const findMatchingNearlyComplete = (
+  itemId: string,
+  normalizedTargetName: string,
+  normalizedTargetBonus: string,
+  itemUpgrades?: import('./upgradeState').ItemUpgrades
+) => {
+  const effects = getItemUpgradeView(itemUpgrades, itemId).nearlyComplete?.effectsAdded ?? []
+  let max = -Infinity
+
+  for (const enchantment of effects) {
+    if (
+      normalizeString(enchantment.name) === normalizedTargetName &&
+      getBonus(enchantment.bonus) === normalizedTargetBonus
+    ) {
+      max = Math.max(max, parseModifierValue(enchantment.modifier))
+    }
+  }
+
+  return max
+}
+
 const findMatchingRitualTable = (
   itemId: string,
   normalizedTargetName: string,
@@ -452,6 +477,7 @@ const getItemEnchantmentMax = (
 
   if (
     normalizedTargetName === 'nearly finished' ||
+    normalizedTargetName.startsWith('nearly complete') ||
     normalizedTargetName === 'lost purpose' ||
     normalizedTargetName === 'trace of madness' ||
     normalizedTargetName === 'ritual table' ||
@@ -478,6 +504,7 @@ const getItemEnchantmentMax = (
 
   return Math.max(
     findMatchingInherent(item, normalizedTargetName, normalizedTargetBonus, resolvedItemUpgrades),
+    findMatchingNearlyComplete(item.id, normalizedTargetName, normalizedTargetBonus, resolvedItemUpgrades),
     findMatchingNearlyFinished(item.id, normalizedTargetName, normalizedTargetBonus, resolvedItemUpgrades),
     findMatchingRitualTable(item.id, normalizedTargetName, normalizedTargetBonus, resolvedItemUpgrades),
     augMax,
@@ -518,6 +545,7 @@ export const checkPotentialConflict = (
   // Skip conflict check for upgrade placeholder enchantments and base item enhancement bonuses
   if (
     normalizedTargetName === 'nearly finished' ||
+    normalizedTargetName.startsWith('nearly complete') ||
     normalizedTargetName === 'lost purpose' ||
     normalizedTargetName === 'trace of madness' ||
     normalizedTargetName === 'ritual table' ||

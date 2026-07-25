@@ -16,7 +16,7 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
     id: 'test-setup-id',
     name: 'Test Setup',
     minLevel: 1,
-    maxLevel: 32,
+    maxLevel: 36,
     classes: [],
     weaponFilters: [],
     armorFilters: [],
@@ -55,6 +55,8 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
 
     expect(result.ok).toBe(true)
     if (result.ok) {
+      expect(result.data.minLevel).toBe(1)
+      expect(result.data.maxLevel).toBe(36)
       expect(result.data.slots[GearSlot.MainHand]?.id).toBe(mockItem.id)
     }
   })
@@ -91,6 +93,7 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
 
     expect(result.ok).toBe(true)
     if (result.ok) {
+      expect(result.data.maxLevel).toBe(32)
       expect(result.data.slots[GearSlot.MainHand]?.id).toBe(mockItem.id)
     }
   })

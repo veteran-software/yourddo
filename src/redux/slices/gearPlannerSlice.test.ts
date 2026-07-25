@@ -6,7 +6,8 @@ import gearPlannerReducer, {
   removeSetup,
   setCurse,
   setItemMaterial,
-  setItemUpgrade
+  setItemUpgrade,
+  updateSetup
 } from './gearPlannerSlice'
 
 describe('gearPlannerSlice reducers', () => {
@@ -45,6 +46,20 @@ describe('gearPlannerSlice reducers', () => {
     const nextState: GearPlannerState = gearPlannerReducer(initialState, removeSetup('someOtherId'))
 
     expect(nextState.activeSetupId).toBe('setup2')
+  })
+
+  it('allows level 36 and clamps higher setup levels', () => {
+    const initialState: GearPlannerState = {
+      characterSetups: [createDefaultSetup('setup1', 'Setup 1')],
+      activeSetupId: 'setup1'
+    }
+
+    const level36State = gearPlannerReducer(initialState, updateSetup({ id: 'setup1', minLevel: 36, maxLevel: 36 }))
+    expect(level36State.characterSetups[0].minLevel).toBe(36)
+    expect(level36State.characterSetups[0].maxLevel).toBe(36)
+
+    const clampedState = gearPlannerReducer(level36State, updateSetup({ id: 'setup1', maxLevel: 37 }))
+    expect(clampedState.characterSetups[0].maxLevel).toBe(36)
   })
 
   it('Bug #2: metadata should be isolated between different slots even if the item is the same type', () => {

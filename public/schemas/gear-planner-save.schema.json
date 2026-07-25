@@ -1,0 +1,942 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yourddo.com/schemas/gear-planner-save.schema.json",
+  "title": "YourDDO Gear Planner Save File v1",
+  "description": "The complete format produced by the YourDDO Gear Planner JSON export.",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "number",
+      "const": 1
+    },
+    "exportedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+    },
+    "setups": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/__schema0"
+      }
+    }
+  },
+  "required": [
+    "version",
+    "exportedAt",
+    "setups"
+  ],
+  "$defs": {
+    "__schema0": {
+      "type": "object",
+      "properties": {
+        "slots": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/__schema1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "slottedAugments": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "slottedCurses": {
+          "$ref": "#/$defs/__schema6"
+        },
+        "slottedFiligrees": {
+          "$ref": "#/$defs/__schema7"
+        },
+        "unlockedFiligreeSlots": {
+          "$ref": "#/$defs/__schema8"
+        },
+        "slottedGemSetBonuses": {
+          "$ref": "#/$defs/__schema9"
+        },
+        "slottedEssenceEnchantments": {
+          "$ref": "#/$defs/__schema10"
+        },
+        "itemUpgrades": {
+          "$ref": "#/$defs/__schema11"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "minLevel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 36
+        },
+        "maxLevel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 36
+        },
+        "classes": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "weaponFilters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "armorFilters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "shieldFilters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowMetalWithDruid": {
+          "type": "boolean"
+        },
+        "artificerPet": {
+          "$ref": "#/$defs/__schema12"
+        },
+        "druidPet": {
+          "$ref": "#/$defs/__schema12"
+        }
+      },
+      "required": [
+        "slots",
+        "slottedAugments",
+        "slottedCurses",
+        "slottedFiligrees",
+        "unlockedFiligreeSlots",
+        "slottedGemSetBonuses",
+        "slottedEssenceEnchantments",
+        "itemUpgrades",
+        "id",
+        "name",
+        "minLevel",
+        "maxLevel",
+        "classes",
+        "weaponFilters",
+        "armorFilters",
+        "shieldFilters",
+        "allowMetalWithDruid",
+        "artificerPet",
+        "druidPet"
+      ]
+    },
+    "__schema1": {
+      "type": "object",
+      "properties": {
+        "pageTitle": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "minLevel": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "absoluteMinLevel": {
+          "type": "string"
+        },
+        "binding": {
+          "$ref": "#/$defs/__schema2"
+        },
+        "restriction": {
+          "type": "string"
+        },
+        "material": {
+          "type": "string"
+        },
+        "hardness": {
+          "type": "string"
+        },
+        "durability": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "string"
+        },
+        "baseValue": {
+          "type": "object",
+          "properties": {
+            "platinum": {
+              "type": "string"
+            },
+            "gold": {
+              "type": "string"
+            },
+            "silver": {
+              "type": "string"
+            },
+            "copper": {
+              "type": "string"
+            }
+          }
+        },
+        "artifactType": {
+          "type": "string"
+        },
+        "capacity": {
+          "type": "string"
+        },
+        "maxStackSize": {
+          "type": "string"
+        },
+        "dropLocations": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "sourceType": {
+                    "type": "string"
+                  },
+                  "questWildernessChain": {
+                    "type": "string"
+                  },
+                  "whichChestPerson": {
+                    "type": "string"
+                  },
+                  "difficulty": {
+                    "type": "string"
+                  },
+                  "vendorTable": {
+                    "type": "object",
+                    "properties": {
+                      "vendorsRaw": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "vendorsRaw"
+                    ]
+                  },
+                  "isCraftOnly": {
+                    "type": "boolean"
+                  },
+                  "vipMonths": {
+                    "type": "string"
+                  },
+                  "adventurePack": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "sourceType"
+                ],
+                "additionalProperties": {}
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "update": {
+          "type": "string"
+        },
+        "details": {
+          "type": "string"
+        },
+        "upgradeable": {
+          "type": "string"
+        },
+        "upgradedFrom": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "enchantments": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/__schema3"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "augments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "augmentType": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "augmentType"
+            ]
+          }
+        },
+        "essenceSlots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "setBonus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema4"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "slot": {
+          "type": "string"
+        },
+        "augmentType": {
+          "type": "string"
+        },
+        "minimumLevel": {
+          "type": "number"
+        },
+        "effectsAdded": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema3"
+          }
+        },
+        "grouping": {
+          "type": "string"
+        },
+        "isEssenceCrafted": {
+          "type": "boolean"
+        },
+        "normalizedName": {
+          "type": "string"
+        },
+        "normalizedEnchantments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "pageTitle",
+        "name",
+        "type",
+        "description",
+        "minLevel",
+        "restriction",
+        "material",
+        "hardness",
+        "durability",
+        "weight",
+        "dropLocations",
+        "update",
+        "details",
+        "upgradeable",
+        "upgradedFrom",
+        "icon",
+        "image",
+        "id",
+        "slot"
+      ]
+    },
+    "__schema2": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "to",
+        "from"
+      ]
+    },
+    "__schema3": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "statModified": {
+          "type": "string"
+        },
+        "modifier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "bonus": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "stats": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "__schema4": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "enhancements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "ability": {
+                "type": "string"
+              },
+              "basePriceModifier": {
+                "type": "object",
+                "properties": {
+                  "randomLoot": {
+                    "type": "number"
+                  },
+                  "essenceCrafting": {
+                    "type": "number"
+                  }
+                }
+              },
+              "bonus": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "damage": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "description": {
+                "type": "string"
+              },
+              "minLevelIncrease": {
+                "type": "object",
+                "properties": {
+                  "noMinimumLevel": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "minimumLevel": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  }
+                }
+              },
+              "modifier": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "Prefix",
+                  "Suffix",
+                  "Extra",
+                  "--Crafting"
+                ]
+              },
+              "notes": {
+                "type": "string"
+              },
+              "charges": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "rechargePerDay": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "numPiecesEquipped": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        },
+        "numPiecesEquipped": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "__schema5": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "propertyNames": {
+          "type": "string"
+        },
+        "additionalProperties": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "augmentType": {
+                  "type": "string"
+                },
+                "minLevel": {
+                  "type": "number"
+                },
+                "binding": {
+                  "$ref": "#/$defs/__schema2"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "foundIn": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "image": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "number"
+                },
+                "update": {
+                  "type": "number"
+                },
+                "effectsAdded": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/__schema3"
+                  }
+                },
+                "setBonus": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/__schema4"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "augmentType",
+                "minLevel"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "__schema6": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "enchantments": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/__schema3"
+                }
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "__schema7": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/__schema1"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "__schema8": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "__schema9": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "__schema10": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "propertyNames": {
+          "type": "string"
+        },
+        "additionalProperties": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "__schema11": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "nearlyComplete": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "effectsAdded": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/__schema3"
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "effectsAdded"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nearlyFinished": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/__schema3"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "almostThere": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/__schema3"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "finishingTouch": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/__schema3"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ritualTable": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/__schema3"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lostPurpose": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/__schema3"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "traceOfMadness": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/__schema3"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "mythicBoost": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/__schema3"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "fountainOfNecroticMight": {
+            "type": "boolean"
+          },
+          "stormreaverUpgrade": {
+            "type": "boolean"
+          },
+          "zhentarimAttuned": {
+            "type": "boolean"
+          },
+          "reaperForge": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "__schema12": {
+      "type": "object",
+      "properties": {
+        "slots": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/__schema1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "slottedAugments": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "slottedCurses": {
+          "$ref": "#/$defs/__schema6"
+        },
+        "slottedFiligrees": {
+          "$ref": "#/$defs/__schema7"
+        },
+        "unlockedFiligreeSlots": {
+          "$ref": "#/$defs/__schema8"
+        },
+        "slottedGemSetBonuses": {
+          "$ref": "#/$defs/__schema9"
+        },
+        "slottedEssenceEnchantments": {
+          "$ref": "#/$defs/__schema10"
+        },
+        "itemUpgrades": {
+          "$ref": "#/$defs/__schema11"
+        }
+      },
+      "required": [
+        "slots",
+        "slottedAugments",
+        "slottedCurses",
+        "slottedFiligrees",
+        "unlockedFiligreeSlots",
+        "slottedGemSetBonuses",
+        "slottedEssenceEnchantments",
+        "itemUpgrades"
+      ]
+    }
+  }
+}

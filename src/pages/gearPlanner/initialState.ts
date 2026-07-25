@@ -1,3 +1,4 @@
+import { MAX_CHARACTER_LEVEL } from '../../utils/constants'
 import { type GearItem, type GearSetup, GearSlot, type PetState } from './types'
 import { createEmptyItemUpgrades } from './upgradeState'
 
@@ -16,7 +17,7 @@ export const createDefaultSetup = (id: string, name: string): GearSetup => ({
   id,
   name,
   minLevel: 1,
-  maxLevel: 34,
+  maxLevel: MAX_CHARACTER_LEVEL,
   classes: [null, null, null],
   weaponFilters: [],
   armorFilters: [],
