@@ -13,7 +13,8 @@ import {
   getItemUpgradeView,
   type LegacyBooleanUpgradeMap,
   type LegacyLootEnchantmentMap,
-  type LegacyTraceOfMadnessMap
+  type LegacyTraceOfMadnessMap,
+  type NearlyCompleteSelection
 } from './upgradeState'
 
 const ALWAYS_HIDDEN_ENCHANTMENTS = new Set([
@@ -81,6 +82,7 @@ const formatEnchantment = (ench: {
 
 const getFilteredEnchantments = (
   enchantments: LootEnchantment[],
+  nearlyComplete?: NearlyCompleteSelection,
   nearlyFinished?: LootEnchantment,
   ritualTable?: LootEnchantment,
   lostPurpose?: LootEnchantment,
@@ -88,6 +90,7 @@ const getFilteredEnchantments = (
 ) => {
   return enchantments.filter((ench) => {
     if (ALWAYS_HIDDEN_ENCHANTMENTS.has(ench.name)) return false
+    if (nearlyComplete && ench.name.startsWith('Nearly Complete')) return false
     if (nearlyFinished && ench.name === 'Nearly Finished') return false
     if (ritualTable && (ench.name === 'Sealed in Fire' || ench.name === 'Sealed in Undeath')) return false
     if (lostPurpose && ench.name === 'Lost Purpose') return false
@@ -173,6 +176,7 @@ interface SlotFormatters {
     fountainUpgraded: boolean,
     stormreaverUpgraded: boolean,
     zhentarimUpgraded: boolean,
+    nearlyComplete: NearlyCompleteSelection | null,
     nearlyFinished: LootEnchantment | null,
     ritualTable: LootEnchantment | null,
     lostPurpose: LootEnchantment | null,
@@ -219,6 +223,17 @@ const pushIf = (lines: string[], ...parts: (string | null | undefined)[]) => {
   })
 }
 
+const formatNearlyCompleteUpgrade = (
+  style: ExportTextStyle,
+  selection: NearlyCompleteSelection | null
+): string | undefined => {
+  if (!selection) return undefined
+
+  const effects = selection.effectsAdded.map(formatEnchantment).join(', ')
+  const value = effects ? `${selection.name} — ${effects}` : selection.name
+  return style.upgradeLine('orange', 'Nearly Complete', value)
+}
+
 const appendEnchantments = (
   lines: string[],
   item: GearItem,
@@ -236,6 +251,7 @@ const appendEnchantments = (
   )
   const filtered = getFilteredEnchantments(
     baseEnchantments,
+    itemUpgrade.nearlyComplete ?? undefined,
     itemUpgrade.nearlyFinished ?? undefined,
     itemUpgrade.ritualTable ?? undefined,
     itemUpgrade.lostPurpose ?? undefined,
@@ -257,6 +273,7 @@ const appendUpgradeLines = (
   fountainUpgraded: boolean,
   stormreaverUpgraded: boolean,
   zhentarimUpgraded: boolean,
+  nearlyComplete: NearlyCompleteSelection | null,
   nearlyFinished: LootEnchantment | null,
   ritualTable: LootEnchantment | null,
   lostPurpose: LootEnchantment | null,
@@ -267,6 +284,7 @@ const appendUpgradeLines = (
   if (fountainUpgraded) lines.push(style.upgradeLine('cyan', 'Fountain of Necrotic Might Upgrade'))
   if (stormreaverUpgraded) lines.push(style.upgradeLine('cyan', 'Stormreaver Monument Upgrade'))
   if (zhentarimUpgraded) lines.push(style.upgradeLine('cyan', 'Zhentarim Attuned Upgrade'))
+  pushIf(lines, formatNearlyCompleteUpgrade(style, nearlyComplete))
   if (nearlyFinished) lines.push(style.upgradeLine('orange', 'Nearly Finished', formatEnchantment(nearlyFinished)))
   if (almostThere)
     lines.push(
@@ -464,6 +482,7 @@ const buildRenderSlot =
     const state = isPetSlot && petState ? petState : setup
     const itemUpgrade = getItemUpgradeView(state.itemUpgrades, item.id)
     const nearlyFinished = itemUpgrade.nearlyFinished ?? null
+    const nearlyComplete = itemUpgrade.nearlyComplete ?? null
     const almostThere = itemUpgrade.almostThere ?? null
     const finishingTouch = itemUpgrade.finishingTouch ?? null
     const ritualTable = itemUpgrade.ritualTable ?? null
@@ -482,6 +501,7 @@ const buildRenderSlot =
       fountainUpgraded,
       stormreaverUpgraded,
       zhentarimUpgraded,
+      nearlyComplete,
       nearlyFinished ?? null,
       ritualTable ?? null,
       lostPurpose ?? null,

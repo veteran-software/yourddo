@@ -64,8 +64,17 @@ describe('Gear Planner save file validation', () => {
     const itemId = 'test-main-hand-null-enchantments'
     setup.itemUpgrades[itemId] = {
       reaperForge: 'reaper-ring-boost-3',
-      mythicBoost: { name: 'Mythic Weapon Boost', modifier: 2, bonus: 'Mythic' }
+      mythicBoost: { name: 'Mythic Weapon Boost', modifier: 2, bonus: 'Mythic' },
+      nearlyComplete: {
+        name: 'Strength Skills +6',
+        effectsAdded: [
+          { name: 'Skill: Jump', modifier: '6', bonus: 'Exceptional' },
+          { name: 'Skill: Swim', modifier: '6', bonus: 'Exceptional' }
+        ]
+      }
     }
+    setup.artificerPet.itemUpgrades['pet-upgrade'] = setup.itemUpgrades[itemId]
+    setup.druidPet.itemUpgrades['pet-upgrade'] = setup.itemUpgrades[itemId]
 
     const file = new File(
       [
@@ -92,6 +101,9 @@ describe('Gear Planner save file validation', () => {
       modifier: 2,
       bonus: 'Mythic'
     })
+    expect(imported[0].itemUpgrades[itemId].nearlyComplete?.effectsAdded).toHaveLength(2)
+    expect(imported[0].artificerPet.itemUpgrades['pet-upgrade'].nearlyComplete?.name).toBe('Strength Skills +6')
+    expect(imported[0].druidPet.itemUpgrades['pet-upgrade'].nearlyComplete?.name).toBe('Strength Skills +6')
   })
 
   it('normalizes older save files that omit newer planner fields', async () => {

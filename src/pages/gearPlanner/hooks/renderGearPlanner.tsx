@@ -14,6 +14,7 @@ import GemSetBonusSelector from '../components/GetSetBonusSelector'
 import ItemSetBonusDisplay from '../components/ItemSetBonusDisplay'
 import LostPurposeSelector from '../components/LostPurposeSelector'
 import MythicBoostSelector from '../components/MythicBoostSelector'
+import NearlyCompleteSelector from '../components/NearlyCompleteSelector'
 import NearlyFinishedSelector from '../components/NearlyFinishedSelector'
 import ReaperForgeSelector from '../components/ReaperForgeSelector'
 import RitualTableSelector from '../components/RitualTableSelector'
@@ -35,6 +36,7 @@ import {
   type LootDropLocation,
   type LootEnchantment
 } from '../types'
+import { getItemUpgradeView, type NearlyCompleteSelection } from '../upgradeState'
 import { FiligreeLabel } from './useGearPlannerHelpers'
 
 const getApplicableAugments = (augmentSlot: GearAugmentSlot, allAugments: GearAugment[]) => {
@@ -132,6 +134,7 @@ export const renderGearPlanner = (props: Props) => {
     setSlottedAugment,
     setSlottedCurse,
     setEssenceEnchantment,
+    setNearlyCompleteSelection,
     setNearlyFinishedEnchantment,
     setAlmostThereEnchantment,
     setFinishingTouchEnchantment,
@@ -279,6 +282,20 @@ export const renderGearPlanner = (props: Props) => {
                 selectedEnchantment={state.currentSlottedNearlyFinished[state.selectedItem.id] ?? null}
                 onSelect={(enchantment: LootEnchantment | null) => {
                   setNearlyFinishedEnchantment(state.selectedItem.id, enchantment, state.slot)
+                }}
+                entityState={state.entityState}
+                wrapperClassName={detailSectionClassName}
+                wrapperStyle={detailSectionStyle}
+              />
+
+              <NearlyCompleteSelector
+                item={state.selectedItem}
+                slot={state.slot}
+                selectedUpgrade={
+                  getItemUpgradeView(state.entityState.itemUpgrades, state.selectedItem.id).nearlyComplete ?? null
+                }
+                onSelect={(selection) => {
+                  setNearlyCompleteSelection(state.selectedItem.id, selection, state.slot)
                 }}
                 entityState={state.entityState}
                 wrapperClassName={detailSectionClassName}
@@ -592,6 +609,7 @@ interface Props {
   setSlottedAugment: (itemId: string, slotIndex: number, augment: GearAugment | null, slot?: GearSlot) => void
   setSlottedCurse: (itemId: string, curse: Curse | null, slot?: GearSlot) => void
   setEssenceEnchantment: (itemId: string, slotName: string, enchantmentId: string | null, slot?: GearSlot) => void
+  setNearlyCompleteSelection: (itemId: string, selection: NearlyCompleteSelection | null, slot?: GearSlot) => void
   setNearlyFinishedEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setAlmostThereEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void
   setFinishingTouchEnchantment: (itemId: string, enchantment: LootEnchantment | null, slot?: GearSlot) => void

@@ -18,7 +18,12 @@ import {
   type LootEnchantment,
   type PetState
 } from './types'
-import { createEmptyItemUpgrades, createUpgradeViews } from './upgradeState'
+import {
+  createEmptyItemUpgrades,
+  createUpgradeViews,
+  getItemUpgradeView,
+  type NearlyCompleteSelection
+} from './upgradeState'
 
 export interface PermalinkSetupPayloadV2 {
   name: string
@@ -38,6 +43,7 @@ export interface PermalinkItemPayloadV2 {
   augments: [number, string][]
   curseName: string | null
   essenceCrafting: [string, string][] | null
+  nearlyComplete?: NearlyCompleteSelection | null
   nearlyFinished: LootEnchantment | null
   almostThere: LootEnchantment | null
   finishingTouch: LootEnchantment | null
@@ -78,6 +84,7 @@ const decodePermalinkItemPayload = (
     augments,
     curseName,
     essenceCrafting,
+    nearlyComplete,
     nearlyFinished,
     almostThere,
     finishingTouch,
@@ -120,6 +127,7 @@ const decodePermalinkItemPayload = (
   decodeItemCurse(item, curseName, allCurses, state)
   decodeItemEssenceCrafting(item, essenceCrafting, state)
   decodeSupplementaryProperties(item, state, allItems, {
+    nearlyComplete: nearlyComplete ?? null,
     nearlyFinished,
     almostThere: almostThere ?? null,
     finishingTouch: finishingTouch ?? null,
@@ -170,6 +178,7 @@ export const buildPermalinkItemPayloadV2 = (
     augments,
     curseName: canApplyCurse(item) ? (state.slottedCurses[item.id]?.name ?? null) : null,
     essenceCrafting: essenceCrafting.length > 0 ? essenceCrafting : null,
+    nearlyComplete: getItemUpgradeView(state.itemUpgrades, item.id).nearlyComplete ?? null,
     nearlyFinished: itemUpgrade.slottedNearlyFinished[item.id] ?? null,
     almostThere: itemUpgrade.slottedAlmostThere[item.id] ?? null,
     finishingTouch: itemUpgrade.slottedFinishingTouch[item.id] ?? null,

@@ -6,6 +6,12 @@ import { LootEnchantmentSchema } from './lootEnchantment'
 
 const ItemUpgradeStateSchema = z
   .object({
+    nearlyComplete: z
+      .object({
+        name: z.string().trim(),
+        effectsAdded: z.array(LootEnchantmentSchema).min(1)
+      })
+      .nullable(),
     nearlyFinished: LootEnchantmentSchema.nullable(),
     almostThere: LootEnchantmentSchema.nullable(),
     finishingTouch: LootEnchantmentSchema.nullable(),

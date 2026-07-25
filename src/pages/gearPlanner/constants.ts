@@ -1,6 +1,13 @@
 export const UPGRADE_PLACEHOLDER_ENCHANTMENTS = new Set([
   'Craftable Rune Arm',
   'Nearly Finished',
+  'Nearly Complete',
+  'Nearly Complete: Ability Score',
+  'Nearly Complete: Healing Amplification',
+  'Nearly Complete: Insightful Ability Score',
+  'Nearly Complete: Quality Ability Score',
+  'Nearly Complete: Skill',
+  'Nearly Complete: Spell Focus',
   'Almost There',
   'Finishing Touch',
   'Lost Purpose',

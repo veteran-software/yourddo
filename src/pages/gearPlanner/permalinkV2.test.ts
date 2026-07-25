@@ -40,6 +40,10 @@ describe('permalink V2 payload helpers', () => {
     const setup = createDefaultSetup('setup-1', 'Setup 1')
     setup.slots[GearSlot.MainHand] = mockItem
     setItemUpgradeState(setup.itemUpgrades, mockItem.id, 'reaperForge', 'reaper-ring-boost-3')
+    setItemUpgradeState(setup.itemUpgrades, mockItem.id, 'nearlyComplete', {
+      name: 'Strength +15',
+      effectsAdded: [{ name: 'Strength', modifier: '15', bonus: 'Enhancement' }]
+    })
 
     const payload = buildPermalinkPayloadV2(setup)
 
@@ -54,6 +58,10 @@ describe('permalink V2 payload helpers', () => {
     expect(decoded.slots[GearSlot.MainHand]?.id).toBe(mockItem.id)
     expect(decoded.slots[GearSlot.MainHand]?.material).toBe(mockItem.material)
     expect(decoded.itemUpgrades[mockItem.id].reaperForge).toBe('reaper-ring-boost-3')
+    expect(decoded.itemUpgrades[mockItem.id].nearlyComplete).toEqual({
+      name: 'Strength +15',
+      effectsAdded: [{ name: 'Strength', modifier: '15', bonus: 'Enhancement' }]
+    })
   })
 
   it('omits quiver curses from the V2 payload and decode path', () => {
@@ -74,5 +82,29 @@ describe('permalink V2 payload helpers', () => {
 
     const decoded = decodePermalinkPayloadV2(payload, [quiverItem], [], [curse])
     expect(decoded.slottedCurses[quiverItem.id]).toBeUndefined()
+  })
+
+  it('round-trips Nearly Complete selections on pet equipment', () => {
+    const petItem = {
+      ...mockItem,
+      id: 'pet-nearly-complete',
+      name: 'Pet Nearly Complete Item',
+      slot: GearSlot.ArtificerPetWeapon
+    }
+    const setup = createDefaultSetup('setup-1', 'Setup 1')
+    setup.artificerPet.slots[GearSlot.ArtificerPetWeapon] = petItem
+    setItemUpgradeState(setup.artificerPet.itemUpgrades, petItem.id, 'nearlyComplete', {
+      name: 'Strength Skills +6',
+      effectsAdded: [
+        { name: 'Skill: Jump', modifier: '6', bonus: 'Exceptional' },
+        { name: 'Skill: Swim', modifier: '6', bonus: 'Exceptional' }
+      ]
+    })
+
+    const payload = buildPermalinkPayloadV2(setup)
+    const decoded = decodePermalinkPayloadV2(payload, [petItem], [], [])
+
+    expect(decoded.artificerPet.itemUpgrades[petItem.id].nearlyComplete?.name).toBe('Strength Skills +6')
+    expect(decoded.artificerPet.itemUpgrades[petItem.id].nearlyComplete?.effectsAdded).toHaveLength(2)
   })
 })

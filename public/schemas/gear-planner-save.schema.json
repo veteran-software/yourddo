@@ -768,6 +768,32 @@
       "additionalProperties": {
         "type": "object",
         "properties": {
+          "nearlyComplete": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "effectsAdded": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/__schema3"
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "effectsAdded"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "nearlyFinished": {
             "anyOf": [
               {

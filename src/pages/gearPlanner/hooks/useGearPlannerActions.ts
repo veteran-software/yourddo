@@ -29,7 +29,7 @@ import {
   type LootItem,
   type PetState
 } from '../types'
-import type { ItemUpgradeKind } from '../upgradeState'
+import type { ItemUpgradeKind, NearlyCompleteSelection } from '../upgradeState'
 
 interface UseGearPlannerActionsProps {
   setups: GearSetup[]
@@ -247,6 +247,10 @@ export const useGearPlannerActions = ({
     setItemUpgrade(itemId, 'nearlyFinished', enchantment, slot)
   }
 
+  const setNearlyCompleteSelection = (itemId: string, selection: NearlyCompleteSelection | null, slot?: GearSlot) => {
+    setItemUpgrade(itemId, 'nearlyComplete', selection, slot)
+  }
+
   const setAlmostThereEnchantment = (
     itemId: string,
     enchantment: import('../types').LootEnchantment | null,
@@ -332,6 +336,7 @@ export const useGearPlannerActions = ({
     setUnlockedFiligreeSlots,
     setEssenceEnchantment,
     setItemMinLevel,
+    setNearlyCompleteSelection,
     setNearlyFinishedEnchantment,
     setAlmostThereEnchantment,
     setFinishingTouchEnchantment,
