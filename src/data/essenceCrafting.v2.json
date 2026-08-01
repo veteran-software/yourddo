@@ -20751,6 +20751,7 @@
   },
   {
     "name": "Earthwarded",
+    "minItemLevel": 20,
     "bound": {
       "recipeId": 2030301344,
       "level": 400,
