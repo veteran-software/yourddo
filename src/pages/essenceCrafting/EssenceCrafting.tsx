@@ -1131,6 +1131,13 @@ const EssenceCrafting = () => {
                   Known Issues / Bug Reports <FaArrowUpRightFromSquare size={10} />
                 </a>
               </small>
+              <small className='d-block opacity-75'>
+                Crafting data assistance provided by{' '}
+                <a href='https://dungeonhelper.com' target='_blank' rel='noreferrer'>
+                  Dungeon Helper
+                </a>
+                .
+              </small>
             </div>
             <div className='d-flex align-items-center justify-content-center gap-2 position-md-absolute end-0 me-3'>
               <Button
