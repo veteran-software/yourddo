@@ -13261,6 +13261,7 @@
   },
   {
     "name": "Natural Armor",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228081,
       "level": 175,
@@ -13331,6 +13332,7 @@
   },
   {
     "name": "Insightful Fire Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228118,
       "level": 175,
@@ -13402,6 +13404,7 @@
   },
   {
     "name": "Insightful Cold Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228091,
       "level": 175,
@@ -13473,6 +13476,7 @@
   },
   {
     "name": "Insightful Acid Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228083,
       "level": 175,
@@ -13544,6 +13548,7 @@
   },
   {
     "name": "Insightful Electric Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228128,
       "level": 175,
@@ -13615,6 +13620,7 @@
   },
   {
     "name": "Insightful Sonic Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228075,
       "level": 175,
@@ -13686,6 +13692,7 @@
   },
   {
     "name": "Insightful Light Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228167,
       "level": 175,
@@ -13757,6 +13764,7 @@
   },
   {
     "name": "Insightful Negative Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228112,
       "level": 175,
@@ -13828,6 +13836,7 @@
   },
   {
     "name": "Insightful Poison Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228054,
       "level": 175,
@@ -13899,6 +13908,7 @@
   },
   {
     "name": "Insightful Balance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228163,
       "level": 175,
@@ -13970,6 +13980,7 @@
   },
   {
     "name": "Insightful Bluff",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228183,
       "level": 175,
@@ -14041,6 +14052,7 @@
   },
   {
     "name": "Insightful Concentration",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228178,
       "level": 175,
@@ -14112,6 +14124,7 @@
   },
   {
     "name": "Insightful Diplomacy",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228172,
       "level": 175,
@@ -14183,6 +14196,7 @@
   },
   {
     "name": "Insightful Disable Device",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228173,
       "level": 175,
@@ -14254,6 +14268,7 @@
   },
   {
     "name": "Insightful Haggle",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228187,
       "level": 175,
@@ -14325,6 +14340,7 @@
   },
   {
     "name": "Insightful Heal",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228182,
       "level": 175,
@@ -14396,6 +14412,7 @@
   },
   {
     "name": "Insightful Hide",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228176,
       "level": 175,
@@ -14467,6 +14484,7 @@
   },
   {
     "name": "Insightful Intimidate",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228185,
       "level": 175,
@@ -14538,6 +14556,7 @@
   },
   {
     "name": "Insightful Jump",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228190,
       "level": 175,
@@ -14609,6 +14628,7 @@
   },
   {
     "name": "Insightful Listen",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228177,
       "level": 175,
