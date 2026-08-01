@@ -19004,6 +19004,7 @@
   },
   {
     "name": "Insightful Constitution",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228162,
       "level": 275,
@@ -19075,6 +19076,7 @@
   },
   {
     "name": "Insightful Charisma",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228142,
       "level": 275,
@@ -19146,6 +19148,7 @@
   },
   {
     "name": "Insightful Intelligence",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228148,
       "level": 275,
@@ -19217,6 +19220,7 @@
   },
   {
     "name": "Insightful Wisdom",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228088,
       "level": 275,
@@ -19288,6 +19292,7 @@
   },
   {
     "name": "Insightful Physical Sheltering",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228157,
       "level": 275,
@@ -19359,6 +19364,7 @@
   },
   {
     "name": "Insightful Magical Sheltering",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228127,
       "level": 275,
@@ -19430,6 +19436,7 @@
   },
   {
     "name": "Insightful Assassinate",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227871,
       "level": 275,
@@ -19501,6 +19508,7 @@
   },
   {
     "name": "Insightful Combat Mastery",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226786,
       "level": 275,
@@ -19656,6 +19664,7 @@
   },
   {
     "name": "Insightful Spell Saves",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228171,
       "level": 275,
@@ -19727,6 +19736,7 @@
   },
   {
     "name": "Airwarded",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030301381,
       "level": 400,
