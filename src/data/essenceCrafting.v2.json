@@ -9370,6 +9370,7 @@
   },
   {
     "name": "Wisdom",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030224436,
       "level": 100,
@@ -9440,6 +9441,7 @@
   },
   {
     "name": "Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228082,
       "level": 100,
@@ -9594,6 +9596,7 @@
   },
   {
     "name": "Doublestrike",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226649,
       "level": 100,
@@ -9664,6 +9667,7 @@
   },
   {
     "name": "Doubleshot",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226961,
       "level": 100,
@@ -9734,6 +9738,7 @@
   },
   {
     "name": "Spell Focus Mastery",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227110,
       "level": 100,
@@ -10056,6 +10061,7 @@
   },
   {
     "name": "Insightful Spell Focus Mastery",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227489,
       "level": 275,
@@ -10379,6 +10385,7 @@
   },
   {
     "name": "Assassinate",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226949,
       "level": 100,
@@ -10449,6 +10456,7 @@
   },
   {
     "name": "Combat Mastery",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227488,
       "level": 100,
@@ -10603,6 +10611,7 @@
   },
   {
     "name": "Strength Damaging Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227845,
       "level": 100,
@@ -10673,6 +10682,7 @@
   },
   {
     "name": "Dexterity Damaging Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227487,
       "level": 100,
