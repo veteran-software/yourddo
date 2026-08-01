@@ -2173,6 +2173,7 @@
   },
   {
     "name": "Search",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228101,
       "level": 1,
@@ -2243,6 +2244,7 @@
   },
   {
     "name": "Spot",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228133,
       "level": 1,
@@ -2313,6 +2315,7 @@
   },
   {
     "name": "Swim",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228131,
       "level": 1,
@@ -2383,6 +2386,7 @@
   },
   {
     "name": "Tumble",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228097,
       "level": 1,
@@ -2453,6 +2457,7 @@
   },
   {
     "name": "Spellsight",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228111,
       "level": 1,
@@ -2523,6 +2528,7 @@
   },
   {
     "name": "Fortification",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227346,
       "level": 1,
@@ -2593,6 +2599,7 @@
   },
   {
     "name": "Incite",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226805,
       "level": 1,
@@ -2663,6 +2670,7 @@
   },
   {
     "name": "Diversion",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226580,
       "level": 1,
@@ -2733,6 +2741,7 @@
   },
   {
     "name": "Acid Absorption",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228139,
       "level": 50,
@@ -2803,6 +2812,7 @@
   },
   {
     "name": "Cold Absorption",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228166,
       "level": 50,
@@ -2873,6 +2883,7 @@
   },
   {
     "name": "Electricity Absorption",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228165,
       "level": 50,
@@ -2943,6 +2954,7 @@
   },
   {
     "name": "Fire Absorption",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228144,
       "level": 50,
@@ -3013,6 +3025,7 @@
   },
   {
     "name": "Sonic Absorption",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228089,
       "level": 50,
@@ -3041,48 +3054,49 @@
         "name": "Sonic Absorption",
         "bonus": "Enhancement",
         "modifiers": [
-          {"level": 1, "value": 11},
-          {"level": 2, "value": 13},
-          {"level": 3, "value": 13},
-          {"level": 4, "value": 15},
-          {"level": 5, "value": 16},
-          {"level": 6, "value": 17},
-          {"level": 7, "value": 18},
-          {"level": 8, "value": 18},
-          {"level": 9, "value": 19},
-          {"level": 10, "value": 20},
-          {"level": 11, "value": 21},
-          {"level": 12, "value": 21},
-          {"level": 13, "value": 22},
-          {"level": 14, "value": 23},
-          {"level": 15, "value": 24},
-          {"level": 16, "value": 24},
-          {"level": 17, "value": 25},
-          {"level": 18, "value": 26},
-          {"level": 19, "value": 27},
-          {"level": 20, "value": 27},
-          {"level": 21, "value": 28},
-          {"level": 22, "value": 29},
-          {"level": 23, "value": 30},
-          {"level": 24, "value": 30},
-          {"level": 25, "value": 31},
-          {"level": 26, "value": 32},
-          {"level": 27, "value": 33},
-          {"level": 28, "value": 33},
-          {"level": 29, "value": 34},
-          {"level": 30, "value": 35},
-          {"level": 31, "value": 36},
-          {"level": 32, "value": 36},
-          {"level": 33, "value": 37},
-          {"level": 34, "value": 38},
-          {"level": 35, "value": 39},
-          {"level": 36, "value": 39}
+          {"level": 1, "value": 0.11},
+          {"level": 2, "value": 0.13},
+          {"level": 3, "value": 0.13},
+          {"level": 4, "value": 0.15},
+          {"level": 5, "value": 0.16},
+          {"level": 6, "value": 0.17},
+          {"level": 7, "value": 0.18},
+          {"level": 8, "value": 0.18},
+          {"level": 9, "value": 0.19},
+          {"level": 10, "value": 0.20},
+          {"level": 11, "value": 0.21},
+          {"level": 12, "value": 0.21},
+          {"level": 13, "value": 0.22},
+          {"level": 14, "value": 0.23},
+          {"level": 15, "value": 0.24},
+          {"level": 16, "value": 0.24},
+          {"level": 17, "value": 0.25},
+          {"level": 18, "value": 0.26},
+          {"level": 19, "value": 0.27},
+          {"level": 20, "value": 0.27},
+          {"level": 21, "value": 0.28},
+          {"level": 22, "value": 0.29},
+          {"level": 23, "value": 0.30},
+          {"level": 24, "value": 0.30},
+          {"level": 25, "value": 0.31},
+          {"level": 26, "value": 0.32},
+          {"level": 27, "value": 0.33},
+          {"level": 28, "value": 0.33},
+          {"level": 29, "value": 0.34},
+          {"level": 30, "value": 0.35},
+          {"level": 31, "value": 0.36},
+          {"level": 32, "value": 0.36},
+          {"level": 33, "value": 0.37},
+          {"level": 34, "value": 0.38},
+          {"level": 35, "value": 0.39},
+          {"level": 36, "value": 0.39}
         ]
       }
     ]
   },
   {
     "name": "Enchantment Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228092,
       "level": 50,
@@ -3153,6 +3167,7 @@
   },
   {
     "name": "Illusion Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228150,
       "level": 50,
@@ -3223,6 +3238,7 @@
   },
   {
     "name": "Parrying",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228159,
       "level": 50,
@@ -3419,6 +3435,7 @@
   },
   {
     "name": "Dodge Bonus",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228137,
       "level": 50,
@@ -3489,6 +3506,7 @@
   },
   {
     "name": "Spell Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228090,
       "level": 50,
@@ -3559,6 +3577,7 @@
   },
   {
     "name": "Sheltering",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228160,
       "level": 50,
@@ -3671,6 +3690,7 @@
   },
   {
     "name": "Accuracy",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227119,
       "level": 50,
@@ -3741,6 +3761,7 @@
   },
   {
     "name": "Deadly",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226731,
       "level": 50,
@@ -3811,6 +3832,7 @@
   },
   {
     "name": "Seeker",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226746,
       "level": 50,
@@ -3881,6 +3903,7 @@
   },
   {
     "name": "Shield Bashing",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227516,
       "level": 50,
@@ -3909,48 +3932,49 @@
         "name": "Offhand Shield Bash Chance",
         "bonus": "Enhancement",
         "modifiers": [
-          {"level": 1, "value": 2},
-          {"level": 2, "value": 3},
-          {"level": 3, "value": 4},
-          {"level": 4, "value": 5},
-          {"level": 5, "value": 6},
-          {"level": 6, "value": 6},
-          {"level": 7, "value": 7},
-          {"level": 8, "value": 8},
-          {"level": 9, "value": 8},
-          {"level": 10, "value": 9},
-          {"level": 11, "value": 9},
-          {"level": 12, "value": 10},
-          {"level": 13, "value": 11},
-          {"level": 14, "value": 11},
-          {"level": 15, "value": 12},
-          {"level": 16, "value": 12},
-          {"level": 17, "value": 13},
-          {"level": 18, "value": 14},
-          {"level": 19, "value": 14},
-          {"level": 20, "value": 15},
-          {"level": 21, "value": 15},
-          {"level": 22, "value": 16},
-          {"level": 23, "value": 17},
-          {"level": 24, "value": 17},
-          {"level": 25, "value": 18},
-          {"level": 26, "value": 18},
-          {"level": 27, "value": 19},
-          {"level": 28, "value": 20},
-          {"level": 29, "value": 20},
-          {"level": 30, "value": 21},
-          {"level": 31, "value": 21},
-          {"level": 32, "value": 22},
-          {"level": 33, "value": 23},
-          {"level": 34, "value": 23},
-          {"level": 35, "value": 24},
-          {"level": 36, "value": 24}
+          {"level": 1, "value": 0.02},
+          {"level": 2, "value": 0.03},
+          {"level": 3, "value": 0.04},
+          {"level": 4, "value": 0.05},
+          {"level": 5, "value": 0.06},
+          {"level": 6, "value": 0.06},
+          {"level": 7, "value": 0.07},
+          {"level": 8, "value": 0.08},
+          {"level": 9, "value": 0.08},
+          {"level": 10, "value": 0.09},
+          {"level": 11, "value": 0.09},
+          {"level": 12, "value": 0.10},
+          {"level": 13, "value": 0.11},
+          {"level": 14, "value": 0.11},
+          {"level": 15, "value": 0.12},
+          {"level": 16, "value": 0.12},
+          {"level": 17, "value": 0.13},
+          {"level": 18, "value": 0.14},
+          {"level": 19, "value": 0.14},
+          {"level": 20, "value": 0.15},
+          {"level": 21, "value": 0.15},
+          {"level": 22, "value": 0.16},
+          {"level": 23, "value": 0.17},
+          {"level": 24, "value": 0.17},
+          {"level": 25, "value": 0.18},
+          {"level": 26, "value": 0.18},
+          {"level": 27, "value": 0.19},
+          {"level": 28, "value": 0.20},
+          {"level": 29, "value": 0.20},
+          {"level": 30, "value": 0.21},
+          {"level": 31, "value": 0.21},
+          {"level": 32, "value": 0.22},
+          {"level": 33, "value": 0.23},
+          {"level": 34, "value": 0.23},
+          {"level": 35, "value": 0.24},
+          {"level": 36, "value": 0.24}
         ]
       }
     ]
   },
   {
     "name": "Armor-Piercing",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226833,
       "level": 50,
@@ -3979,48 +4003,49 @@
         "name": "Fortification Bypass",
         "bonus": "Enhancement",
         "modifiers": [
-          {"level": 1, "value": 2},
-          {"level": 2, "value": 3},
-          {"level": 3, "value": 4},
-          {"level": 4, "value": 5},
-          {"level": 5, "value": 6},
-          {"level": 6, "value": 6},
-          {"level": 7, "value": 7},
-          {"level": 8, "value": 8},
-          {"level": 9, "value": 8},
-          {"level": 10, "value": 9},
-          {"level": 11, "value": 9},
-          {"level": 12, "value": 10},
-          {"level": 13, "value": 11},
-          {"level": 14, "value": 11},
-          {"level": 15, "value": 12},
-          {"level": 16, "value": 12},
-          {"level": 17, "value": 13},
-          {"level": 18, "value": 14},
-          {"level": 19, "value": 14},
-          {"level": 20, "value": 15},
-          {"level": 21, "value": 15},
-          {"level": 22, "value": 16},
-          {"level": 23, "value": 17},
-          {"level": 24, "value": 17},
-          {"level": 25, "value": 18},
-          {"level": 26, "value": 18},
-          {"level": 27, "value": 19},
-          {"level": 28, "value": 20},
-          {"level": 29, "value": 20},
-          {"level": 30, "value": 21},
-          {"level": 31, "value": 21},
-          {"level": 32, "value": 22},
-          {"level": 33, "value": 23},
-          {"level": 34, "value": 23},
-          {"level": 35, "value": 24},
-          {"level": 36, "value": 24}
+          {"level": 1, "value": 0.02},
+          {"level": 2, "value": 0.03},
+          {"level": 3, "value": 0.04},
+          {"level": 4, "value": 0.05},
+          {"level": 5, "value": 0.06},
+          {"level": 6, "value": 0.06},
+          {"level": 7, "value": 0.07},
+          {"level": 8, "value": 0.08},
+          {"level": 9, "value": 0.08},
+          {"level": 10, "value": 0.09},
+          {"level": 11, "value": 0.09},
+          {"level": 12, "value": 0.10},
+          {"level": 13, "value": 0.11},
+          {"level": 14, "value": 0.11},
+          {"level": 15, "value": 0.12},
+          {"level": 16, "value": 0.12},
+          {"level": 17, "value": 0.13},
+          {"level": 18, "value": 0.14},
+          {"level": 19, "value": 0.14},
+          {"level": 20, "value": 0.15},
+          {"level": 21, "value": 0.15},
+          {"level": 22, "value": 0.16},
+          {"level": 23, "value": 0.17},
+          {"level": 24, "value": 0.17},
+          {"level": 25, "value": 0.18},
+          {"level": 26, "value": 0.18},
+          {"level": 27, "value": 0.19},
+          {"level": 28, "value": 0.20},
+          {"level": 29, "value": 0.20},
+          {"level": 30, "value": 0.21},
+          {"level": 31, "value": 0.21},
+          {"level": 32, "value": 0.22},
+          {"level": 33, "value": 0.23},
+          {"level": 34, "value": 0.23},
+          {"level": 35, "value": 0.24},
+          {"level": 36, "value": 0.24}
         ]
       }
     ]
   },
   {
     "name": "Spell Penetration",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226624,
       "level": 50,
@@ -4091,6 +4116,7 @@
   },
   {
     "name": "Evocation Focus",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227785,
       "level": 50,
@@ -4161,6 +4187,7 @@
   },
   {
     "name": "Illusion Focus",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226577,
       "level": 50,
@@ -4231,6 +4258,7 @@
   },
   {
     "name": "Necromancy Focus",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227076,
       "level": 50,
@@ -4301,6 +4329,7 @@
   },
   {
     "name": "Abjuration Focus",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227417,
       "level": 50,
@@ -4371,6 +4400,7 @@
   },
   {
     "name": "Enchantment Focus",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227446,
       "level": 50,
@@ -4441,6 +4471,7 @@
   },
   {
     "name": "Transmutation Focus",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227093,
       "level": 50,
@@ -4511,6 +4542,7 @@
   },
   {
     "name": "Conjuration Focus",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227809,
       "level": 50,
@@ -4581,6 +4613,7 @@
   },
   {
     "name": "Vertigo",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227977,
       "level": 50,
@@ -4651,6 +4684,7 @@
   },
   {
     "name": "Stunning",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227758,
       "level": 50,
@@ -4721,6 +4755,7 @@
   },
   {
     "name": "Shatter",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227596,
       "level": 50,
@@ -4791,6 +4826,7 @@
   },
   {
     "name": "Tendon Slice",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227600,
       "level": 50,
@@ -4861,6 +4897,7 @@
   },
   {
     "name": "Repair Amplification",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227055,
       "level": 50,
@@ -4931,6 +4968,7 @@
   },
   {
     "name": "Healing Amplification",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227043,
       "level": 50,
@@ -5001,6 +5039,7 @@
   },
   {
     "name": "Negative Amplification",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227923,
       "level": 50,
@@ -5071,6 +5110,7 @@
   },
   {
     "name": "Corrosion",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227148,
       "level": 50,
@@ -5183,6 +5223,7 @@
   },
   {
     "name": "Glaciation",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227652,
       "level": 50,
@@ -5295,6 +5336,7 @@
   },
   {
     "name": "Magnetism",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227866,
       "level": 50,
@@ -5407,6 +5449,7 @@
   },
   {
     "name": "Combustion",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227366,
       "level": 50,
@@ -5519,6 +5562,7 @@
   },
   {
     "name": "Resonance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226866,
       "level": 50,
@@ -5631,6 +5675,7 @@
   },
   {
     "name": "Impulse",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227819,
       "level": 50,
@@ -5785,6 +5830,7 @@
   },
   {
     "name": "Radiance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227437,
       "level": 50,
@@ -5897,6 +5943,7 @@
   },
   {
     "name": "Devotion",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226874,
       "level": 50,
@@ -6009,6 +6056,7 @@
   },
   {
     "name": "Nullification",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226641,
       "level": 50,
@@ -6121,6 +6169,7 @@
   },
   {
     "name": "Reconstruction",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227705,
       "level": 50,
@@ -6233,6 +6282,7 @@
   },
   {
     "name": "Bludgeon Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227253,
       "level": 50,
@@ -6304,6 +6354,7 @@
   },
   {
     "name": "Piercing Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226758,
       "level": 50,
@@ -6375,6 +6426,7 @@
   },
   {
     "name": "Slashing Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226780,
       "level": 50,
@@ -6446,6 +6498,7 @@
   },
   {
     "name": "Acid Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226965,
       "level": 50,
@@ -6517,6 +6570,7 @@
   },
   {
     "name": "Cold Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226970,
       "level": 50,
@@ -6588,6 +6642,7 @@
   },
   {
     "name": "Electric Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226901,
       "level": 50,
@@ -6659,6 +6714,7 @@
   },
   {
     "name": "Fire Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226633,
       "level": 50,
@@ -6730,6 +6786,7 @@
   },
   {
     "name": "Sonic Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227494,
       "level": 50,
@@ -6801,6 +6858,7 @@
   },
   {
     "name": "Light Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226934,
       "level": 50,
@@ -6872,6 +6930,7 @@
   },
   {
     "name": "Force Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227544,
       "level": 50,
@@ -6943,6 +7002,7 @@
   },
   {
     "name": "Negative Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227447,
       "level": 50,
@@ -7014,6 +7074,7 @@
   },
   {
     "name": "Poison Effect",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227354,
       "level": 50,
@@ -7085,6 +7146,7 @@
   },
   {
     "name": "Shield Spikes",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226626,
       "level": 50,
@@ -7156,6 +7218,7 @@
   },
   {
     "name": "Bashing",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227189,
       "level": 50,
@@ -7227,6 +7290,7 @@
   },
   {
     "name": "Aberration Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226867,
       "level": 50,
@@ -7298,6 +7362,7 @@
   },
   {
     "name": "Animal Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227198,
       "level": 50,
@@ -7369,6 +7434,7 @@
   },
   {
     "name": "Construct Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227918,
       "level": 50,
@@ -7440,6 +7506,7 @@
   },
   {
     "name": "Dragon Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227356,
       "level": 50,
@@ -7511,6 +7578,7 @@
   },
   {
     "name": "Elemental Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227245,
       "level": 50,
@@ -7581,6 +7649,7 @@
   },
   {
     "name": "Giant Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226880,
       "level": 50,
@@ -7652,6 +7721,7 @@
   },
   {
     "name": "Dwarf Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226968,
       "level": 50,
@@ -7723,6 +7793,7 @@
   },
   {
     "name": "Elf Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227151,
       "level": 50,
@@ -7794,6 +7865,7 @@
   },
   {
     "name": "Goblinoid Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226946,
       "level": 50,
