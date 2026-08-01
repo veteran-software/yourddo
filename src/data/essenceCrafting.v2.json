@@ -18360,6 +18360,7 @@
   },
   {
     "name": "Eternal Faith",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228859,
       "level": 250,
@@ -18386,6 +18387,7 @@
   },
   {
     "name": "Everbright",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228963,
       "level": 250,
@@ -18413,6 +18415,7 @@
   },
   {
     "name": "Fearsome",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228900,
       "level": 250,
@@ -18440,6 +18443,7 @@
   },
   {
     "name": "Feather Fall",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228914,
       "level": 1,
@@ -18467,6 +18471,7 @@
   },
   {
     "name": "Ghost Touch",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228947,
       "level": 250,
@@ -18494,6 +18499,7 @@
   },
   {
     "name": "Invulnerability",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228924,
       "level": 250,
@@ -18521,6 +18527,7 @@
   },
   {
     "name": "Lesser Arcane Spell Dexterity",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228858,
       "level": 250,
@@ -18548,6 +18555,7 @@
   },
   {
     "name": "Metalline",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228880,
       "level": 250,
@@ -18575,6 +18583,7 @@
   },
   {
     "name": "Persuasion",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228928,
       "level": 250,
@@ -18601,6 +18610,7 @@
   },
   {
     "name": "Regeneration",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228936,
       "level": 250,
