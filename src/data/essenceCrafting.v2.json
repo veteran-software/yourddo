@@ -18638,6 +18638,7 @@
   },
   {
     "name": "Sacred",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228856,
       "level": 250,
@@ -18664,6 +18665,7 @@
   },
   {
     "name": "Silver Flame",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228889,
       "level": 250,
@@ -18690,6 +18692,7 @@
   },
   {
     "name": "Songblade",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228955,
       "level": 250,
@@ -18717,6 +18720,7 @@
   },
   {
     "name": "True Seeing",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228896,
       "level": 250,
@@ -18744,6 +18748,7 @@
   },
   {
     "name": "Twilight",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228937,
       "level": 250,
@@ -18771,6 +18776,7 @@
   },
   {
     "name": "Unbalancing",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228862,
       "level": 250,
@@ -18798,6 +18804,7 @@
   },
   {
     "name": "Underwater Action",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228878,
       "level": 1,
@@ -18825,6 +18832,7 @@
   },
   {
     "name": "Vengeful",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228962,
       "level": 250,
@@ -18852,6 +18860,7 @@
   },
   {
     "name": "Insightful Strength",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228077,
       "level": 275,
@@ -18923,6 +18932,7 @@
   },
   {
     "name": "Insightful Dexterity",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228113,
       "level": 275,
