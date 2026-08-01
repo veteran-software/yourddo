@@ -7937,6 +7937,7 @@
   },
   {
     "name": "Gnoll Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226927,
       "level": 50,
@@ -8008,6 +8009,7 @@
   },
   {
     "name": "Halfling Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227178,
       "level": 50,
@@ -8079,6 +8081,7 @@
   },
   {
     "name": "Human Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227856,
       "level": 50,
@@ -8150,6 +8153,7 @@
   },
   {
     "name": "Orc Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226933,
       "level": 50,
@@ -8221,6 +8225,7 @@
   },
   {
     "name": "Reptilian Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226862,
       "level": 50,
@@ -8292,6 +8297,7 @@
   },
   {
     "name": "Monstrous Humanoid Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226779,
       "level": 50,
@@ -8363,6 +8369,7 @@
   },
   {
     "name": "Ooze Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227231,
       "level": 50,
@@ -8434,6 +8441,7 @@
   },
   {
     "name": "Chaotic Outsider Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228060,
       "level": 50,
@@ -8505,6 +8513,7 @@
   },
   {
     "name": "Evil Outsider Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227145,
       "level": 50,
@@ -8576,6 +8585,7 @@
   },
   {
     "name": "Lawful Outsider Bane",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227067,
       "level": 50,
