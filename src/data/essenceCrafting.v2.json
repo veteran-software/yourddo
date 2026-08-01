@@ -23,7 +23,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Neck", "Armor", "Rings", "Waist", "Shield", "Trinket", "Runearm"],
+    "suffix": ["Neck", "Armor", "Rings", "Waist", "Shield", "Trinket", "Runearm", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -94,7 +94,7 @@
       ]
     },
     "prefix": ["Head", "Rings", "Hands", "Trinket"],
-    "suffix": ["Shield", "Trinket"],
+    "suffix": ["Shield", "Trinket", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -562,7 +562,7 @@
       ]
     },
     "prefix": ["Cloak", "Trinket"],
-    "suffix": ["Rings", "Armor", "Shield", "Trinket"],
+    "suffix": ["Rings", "Armor", "Shield", "Trinket", "Orb"],
     "extra": ["Head"],
     "enchantments": [
       {
@@ -633,7 +633,7 @@
       ]
     },
     "prefix": ["Cloak", "Trinket"],
-    "suffix": ["Rings", "Armor", "Shield", "Trinket"],
+    "suffix": ["Rings", "Armor", "Shield", "Trinket", "Orb"],
     "extra": ["Head"],
     "enchantments": [
       {
@@ -704,7 +704,7 @@
       ]
     },
     "prefix": ["Cloak", "Trinket"],
-    "suffix": ["Rings", "Armor", "Shield", "Trinket"],
+    "suffix": ["Rings", "Armor", "Shield", "Trinket", "Orb"],
     "extra": ["Head"],
     "enchantments": [
       {
@@ -775,7 +775,7 @@
       ]
     },
     "prefix": ["Cloak", "Trinket"],
-    "suffix": ["Rings", "Armor", "Shield", "Trinket"],
+    "suffix": ["Rings", "Armor", "Shield", "Trinket", "Orb"],
     "extra": ["Head"],
     "enchantments": [
       {
@@ -846,7 +846,7 @@
       ]
     },
     "prefix": ["Cloak", "Trinket"],
-    "suffix": ["Rings", "Armor", "Shield", "Trinket"],
+    "suffix": ["Rings", "Armor", "Shield", "Trinket", "Orb"],
     "extra": ["Head"],
     "enchantments": [
       {
@@ -917,7 +917,7 @@
       ]
     },
     "prefix": ["Cloak", "Trinket"],
-    "suffix": ["Rings", "Armor", "Shield", "Trinket"],
+    "suffix": ["Rings", "Armor", "Shield", "Trinket", "Orb"],
     "extra": ["Head"],
     "enchantments": [
       {
@@ -988,7 +988,7 @@
       ]
     },
     "prefix": ["Cloak", "Trinket"],
-    "suffix": ["Rings", "Armor", "Shield", "Trinket"],
+    "suffix": ["Rings", "Armor", "Shield", "Trinket", "Orb"],
     "extra": ["Head"],
     "enchantments": [
       {
@@ -1059,7 +1059,7 @@
       ]
     },
     "prefix": ["Cloak", "Trinket"],
-    "suffix": ["Rings", "Armor", "Shield", "Trinket"],
+    "suffix": ["Rings", "Armor", "Shield", "Trinket", "Orb"],
     "extra": ["Head"],
     "enchantments": [
       {
@@ -1698,7 +1698,7 @@
       ]
     },
     "prefix": ["Head", "Trinket", "Runearm"],
-    "suffix": ["Wrists", "Cloak", "Hands", "Armor", "Shield", "Trinket"],
+    "suffix": ["Wrists", "Cloak", "Hands", "Armor", "Shield", "Trinket", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -1911,7 +1911,7 @@
       ]
     },
     "prefix": ["Waist", "Feet", "Trinket", "Runearm"],
-    "suffix": ["Wrists", "Armor", "Shield", "Trinket"],
+    "suffix": ["Wrists", "Armor", "Shield", "Trinket", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -2549,7 +2549,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Head", "Armor", "Shield", "Trinket"],
+    "prefix": ["Head", "Armor", "Shield", "Trinket", "Orb"],
     "suffix": ["Wrists", "Trinket"],
     "extra": [],
     "enchantments": [
@@ -2762,7 +2762,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Rings", "Armor", "Shield", "Trinket", "Runearm"],
+    "prefix": ["Rings", "Armor", "Shield", "Trinket", "Runearm", "Orb"],
     "suffix": ["Cloak", "Trinket"],
     "extra": [],
     "enchantments": [
@@ -2833,7 +2833,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Rings", "Armor", "Shield", "Trinket", "Runearm"],
+    "prefix": ["Rings", "Armor", "Shield", "Trinket", "Runearm", "Orb"],
     "suffix": ["Cloak", "Trinket"],
     "extra": [],
     "enchantments": [
@@ -2904,7 +2904,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Rings", "Armor", "Shield", "Trinket", "Runearm"],
+    "prefix": ["Rings", "Armor", "Shield", "Trinket", "Runearm", "Orb"],
     "suffix": ["Cloak", "Trinket"],
     "extra": [],
     "enchantments": [
@@ -2975,7 +2975,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Rings", "Armor", "Shield", "Trinket", "Runearm"],
+    "prefix": ["Rings", "Armor", "Shield", "Trinket", "Runearm", "Orb"],
     "suffix": ["Cloak", "Trinket"],
     "extra": [],
     "enchantments": [
@@ -3046,7 +3046,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Rings", "Armor", "Shield", "Trinket", "Runearm"],
+    "prefix": ["Rings", "Armor", "Shield", "Trinket", "Runearm", "Orb"],
     "suffix": ["Cloak", "Trinket"],
     "extra": [],
     "enchantments": [
@@ -3261,7 +3261,7 @@
     },
     "prefix": [],
     "suffix": ["Head", "Waist", "Feet", "Trinket"],
-    "extra": ["Armor", "Shield", "Wrists"],
+    "extra": ["Armor", "Shield", "Wrists", "Orb"],
     "enchantments": [
       {
         "name": "Fortitude Save",
@@ -3599,7 +3599,7 @@
       ]
     },
     "prefix": ["Head", "Trinket"],
-    "suffix": ["Shield", "Neck", "Rings", "Feet", "Trinket"],
+    "suffix": ["Shield", "Neck", "Rings", "Feet", "Trinket", "Orb"],
     "extra": ["Wrists"],
     "enchantments": [
       {
@@ -3925,7 +3925,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Hands", "Shield", "Trinket"],
+    "suffix": ["Hands", "Shield", "Trinket", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -4137,7 +4137,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Neck", "Eyes", "Trinket", "Runearm"],
+    "prefix": ["Neck", "Eyes", "Trinket", "Runearm", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": [
@@ -4208,7 +4208,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Neck", "Eyes", "Trinket", "Runearm"],
+    "prefix": ["Neck", "Eyes", "Trinket", "Runearm", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": [
@@ -4279,7 +4279,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Neck", "Eyes", "Trinket", "Runearm"],
+    "prefix": ["Neck", "Eyes", "Trinket", "Runearm", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": [
@@ -4350,7 +4350,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Neck", "Eyes", "Trinket", "Runearm"],
+    "prefix": ["Neck", "Eyes", "Trinket", "Runearm", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": [
@@ -4421,7 +4421,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Neck", "Eyes", "Trinket", "Runearm"],
+    "prefix": ["Neck", "Eyes", "Trinket", "Runearm", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": [
@@ -4492,7 +4492,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Neck", "Eyes", "Trinket", "Runearm"],
+    "prefix": ["Neck", "Eyes", "Trinket", "Runearm", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": [
@@ -4563,7 +4563,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Neck", "Eyes", "Trinket", "Runearm"],
+    "prefix": ["Neck", "Eyes", "Trinket", "Runearm", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": [
@@ -5131,7 +5131,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket"],
+    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket", "Orb"],
     "suffix": ["Neck", "Rings", "Trinket", "Runearm"],
     "extra": [],
     "enchantments": [
@@ -5244,7 +5244,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket"],
+    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket", "Orb"],
     "suffix": ["Neck", "Rings", "Trinket", "Runearm"],
     "extra": [],
     "enchantments": [
@@ -5357,7 +5357,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket"],
+    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket", "Orb"],
     "suffix": ["Neck", "Rings", "Trinket", "Runearm"],
     "extra": [],
     "enchantments": [
@@ -5470,7 +5470,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket"],
+    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket", "Orb"],
     "suffix": ["Neck", "Rings", "Trinket", "Runearm"],
     "extra": [],
     "enchantments": [
@@ -5583,7 +5583,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket"],
+    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket", "Orb"],
     "suffix": ["Neck", "Rings", "Trinket", "Runearm"],
     "extra": [],
     "enchantments": [
@@ -5696,7 +5696,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket"],
+    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket", "Orb"],
     "suffix": ["Neck", "Rings", "Trinket", "Runearm"],
     "extra": [],
     "enchantments": [
@@ -5851,7 +5851,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket"],
+    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket", "Orb"],
     "suffix": ["Neck", "Rings", "Trinket", "Runearm"],
     "extra": [],
     "enchantments": [
@@ -5964,7 +5964,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket"],
+    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket", "Orb"],
     "suffix": ["Neck", "Rings", "Trinket", "Runearm"],
     "extra": [],
     "enchantments": [
@@ -6077,7 +6077,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket"],
+    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket", "Orb"],
     "suffix": ["Neck", "Rings", "Trinket", "Runearm"],
     "extra": [],
     "enchantments": [
@@ -6190,7 +6190,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket"],
+    "prefix": ["Hands", "Armor", "Shield", "Weapon", "Trinket", "Orb"],
     "suffix": ["Neck", "Rings", "Trinket", "Runearm"],
     "extra": [],
     "enchantments": [
@@ -6303,8 +6303,8 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Weapon"],
-    "suffix": [],
+    "prefix": [],
+    "suffix": ["Weapon"],
     "extra": [],
     "enchantments": [
       {
@@ -6375,8 +6375,8 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Weapon"],
-    "suffix": [],
+    "prefix": [],
+    "suffix": ["Weapon"],
     "extra": [],
     "enchantments": [
       {
@@ -6447,8 +6447,8 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Weapon"],
-    "suffix": [],
+    "prefix": [],
+    "suffix": ["Weapon"],
     "extra": [],
     "enchantments": [
       {
@@ -7168,7 +7168,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Shield"],
+    "suffix": ["Shield", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -7240,7 +7240,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Shield"],
+    "suffix": ["Shield", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -9107,8 +9107,8 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Waist", "Neck", "Rings", "Armor", "Shield", "Trinket"],
-    "suffix": [],
+    "prefix": ["Waist", "Neck", "Rings", "Armor", "Shield", "Trinket", "Orb"],
+    "suffix": ["Bracers", "Trinket"],
     "extra": [],
     "enchantments": [
       {
@@ -10477,7 +10477,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Feet", "Armor", "Shield", "Trinket"],
+    "prefix": ["Feet", "Armor", "Shield", "Trinket", "Orb"],
     "suffix": ["Trinket"],
     "extra": [],
     "enchantments": [
@@ -11129,7 +11129,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Weapon"],
+    "prefix": ["Weapon", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": [
@@ -11201,7 +11201,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Weapon"],
+    "prefix": ["Weapon", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": [
@@ -11273,7 +11273,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Weapon"],
+    "prefix": ["Weapon", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": [
@@ -11345,7 +11345,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 2}
       ]
     },
-    "prefix": ["Weapon"],
+    "prefix": ["Weapon", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": [
@@ -11417,7 +11417,7 @@
       ]
     },
     "prefix": ["Rings", "Trinket", "Runearm"],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -11488,7 +11488,7 @@
       ]
     },
     "prefix": ["Rings", "Trinket", "Runearm"],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -11559,7 +11559,7 @@
       ]
     },
     "prefix": ["Rings", "Trinket", "Runearm"],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -11630,7 +11630,7 @@
       ]
     },
     "prefix": ["Rings", "Trinket", "Runearm"],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -11701,7 +11701,7 @@
       ]
     },
     "prefix": ["Rings", "Trinket", "Runearm"],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -11772,7 +11772,7 @@
       ]
     },
     "prefix": ["Rings", "Trinket", "Runearm"],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -11843,7 +11843,7 @@
       ]
     },
     "prefix": ["Rings", "Trinket", "Runearm"],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -11914,7 +11914,7 @@
       ]
     },
     "prefix": ["Rings", "Trinket", "Runearm"],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -11985,7 +11985,7 @@
       ]
     },
     "prefix": ["Rings", "Trinket", "Runearm"],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -12056,7 +12056,7 @@
       ]
     },
     "prefix": ["Rings", "Trinket", "Runearm"],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -13356,7 +13356,7 @@
     },
     "prefix": ["Wrists"],
     "suffix": ["Cloak"],
-    "extra": ["Armor", "Shield", "Trinket"],
+    "extra": ["Armor", "Shield", "Trinket", "Orb"],
     "enchantments": [
       {
         "name": "Fire Resistance",
@@ -13428,7 +13428,7 @@
     },
     "prefix": ["Wrists"],
     "suffix": ["Cloak"],
-    "extra": ["Armor", "Shield", "Trinket"],
+    "extra": ["Armor", "Shield", "Trinket", "Orb"],
     "enchantments": [
       {
         "name": "Cold Resistance",
@@ -13500,7 +13500,7 @@
     },
     "prefix": ["Wrists"],
     "suffix": ["Cloak"],
-    "extra": ["Armor", "Shield", "Trinket"],
+    "extra": ["Armor", "Shield", "Trinket", "Orb"],
     "enchantments": [
       {
         "name": "Acid Resistance",
@@ -13644,7 +13644,7 @@
     },
     "prefix": ["Wrists"],
     "suffix": ["Cloak"],
-    "extra": ["Armor", "Shield", "Trinket"],
+    "extra": ["Armor", "Shield", "Trinket", "Orb"],
     "enchantments": [
       {
         "name": "Insightful Sonic Resistance",
@@ -13716,7 +13716,7 @@
     },
     "prefix": ["Wrists"],
     "suffix": ["Cloak"],
-    "extra": ["Armor", "Shield", "Trinket"],
+    "extra": ["Armor", "Shield", "Trinket", "Orb"],
     "enchantments": [
       {
         "name": "Insightful Light Resistance",
@@ -13788,7 +13788,7 @@
     },
     "prefix": ["Wrists"],
     "suffix": ["Cloak"],
-    "extra": ["Armor", "Shield", "Trinket"],
+    "extra": ["Armor", "Shield", "Trinket", "Orb"],
     "enchantments": [
       {
         "name": "Negative Resistance",
@@ -13860,7 +13860,7 @@
     },
     "prefix": ["Wrists"],
     "suffix": ["Cloak"],
-    "extra": ["Armor", "Shield", "Trinket"],
+    "extra": ["Armor", "Shield", "Trinket", "Orb"],
     "enchantments": [
       {
         "name": "Poison Resistance",
@@ -13932,7 +13932,7 @@
     },
     "prefix": [],
     "suffix": ["Feet", "Rings"],
-    "extra": ["Cloak", "Waist", "Armor", "Shield", "Trinket", "Runearm"],
+    "extra": ["Cloak", "Waist", "Armor", "Shield", "Trinket", "Runearm", "Orb"],
     "enchantments": [
       {
         "name": "Balance",
@@ -14508,7 +14508,7 @@
     },
     "prefix": [],
     "suffix": ["Neck", "Head"],
-    "extra": ["Wrists", "Armor", "Shield", "Trinket", "Runearm"],
+    "extra": ["Wrists", "Armor", "Shield", "Trinket", "Runearm", "Orb"],
     "enchantments": [
       {
         "name": "Intimidate",
@@ -14724,7 +14724,7 @@
     },
     "prefix": [],
     "suffix": [],
-    "extra": ["Waist", "Feet", "Armor", "Shield", "Trinket", "Runearm"],
+    "extra": ["Waist", "Feet", "Armor", "Shield", "Trinket", "Runearm", "Orb"],
     "enchantments": [
       {
         "name": "Move Silently",
@@ -16232,7 +16232,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Eyes", "Runearm"],
+    "suffix": ["Eyes", "Runearm", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -16304,7 +16304,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Eyes", "Runearm"],
+    "suffix": ["Eyes", "Runearm", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -16376,7 +16376,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Eyes", "Runearm"],
+    "suffix": ["Eyes", "Runearm", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -16448,7 +16448,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Eyes", "Runearm"],
+    "suffix": ["Eyes", "Runearm", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -16592,7 +16592,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Eyes", "Runearm"],
+    "suffix": ["Eyes", "Runearm", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -16664,7 +16664,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Eyes", "Runearm"],
+    "suffix": ["Eyes", "Runearm", "Orb"],
     "extra": [],
     "enchantments": [
       {
@@ -17024,7 +17024,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": ["Hands", "Ring", "Trinket", "Runearm"],
     "enchantments": [
       {
@@ -17138,7 +17138,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": ["Hands", "Ring", "Trinket", "Runearm"],
     "enchantments": [
       {
@@ -17252,7 +17252,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": ["Hands", "Ring", "Trinket", "Runearm"],
     "enchantments": [
       {
@@ -17366,7 +17366,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": ["Hands", "Ring", "Trinket", "Runearm"],
     "enchantments": [
       {
@@ -17480,7 +17480,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": ["Hands", "Ring", "Trinket", "Runearm"],
     "enchantments": [
       {
@@ -17594,7 +17594,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": ["Hands", "Ring", "Trinket", "Runearm"],
     "enchantments": [
       {
@@ -17708,7 +17708,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": ["Hands", "Ring", "Trinket", "Runearm"],
     "enchantments": [
       {
@@ -17822,7 +17822,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": ["Hands", "Ring", "Trinket", "Runearm"],
     "enchantments": [
       {
@@ -17936,7 +17936,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": ["Hands", "Ring", "Trinket", "Runearm"],
     "enchantments": [
       {
@@ -18050,7 +18050,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Weapon"],
+    "suffix": ["Weapon", "Orb"],
     "extra": ["Hands", "Ring", "Trinket", "Runearm"],
     "enchantments": [
       {
@@ -18219,7 +18219,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Waist", "Armor", "Shield"],
+    "suffix": ["Waist", "Armor", "Shield", "Orb"],
     "extra": [],
     "enchantments": []
   },
@@ -18381,7 +18381,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Head", "Armor", "Rings", "Trinket", "Neck", "Weapon", "Shield", "Runearm"],
+    "suffix": ["Head", "Armor", "Rings", "Trinket", "Neck", "Weapon", "Shield", "Runearm", "Orb"],
     "extra": [],
     "enchantments": []
   },
@@ -18658,7 +18658,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 10}
       ]
     },
-    "prefix": ["Head", "Armor", "Rings", "Trinket", "Neck", "Weapon", "Shield"],
+    "prefix": ["Head", "Armor", "Rings", "Trinket", "Neck", "Weapon", "Shield", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": []
@@ -18685,7 +18685,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 10}
       ]
     },
-    "prefix": ["Weapon", "Hands", "Trinket", "Runearm"],
+    "prefix": ["Weapon", "Hands", "Trinket", "Runearm", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": []
@@ -18713,7 +18713,7 @@
         {"name": "Purified Eberron Dragonshard Fragment", "quantity": 10}
       ]
     },
-    "prefix": ["Weapon", "Shield"],
+    "prefix": ["Weapon", "Shield", "Orb"],
     "suffix": [],
     "extra": [],
     "enchantments": []
@@ -19531,7 +19531,7 @@
       ]
     },
     "prefix": [],
-    "suffix": ["Hands", "Armor", "Shield"],
+    "suffix": ["Hands", "Armor", "Shield", "Orb"],
     "extra": ["Feet", "Trinket"],
     "enchantments": [
       {

@@ -7,7 +7,7 @@ import {
   ALLOWED_AUGMENT_KEYS,
   type CoreChoice,
   DATASET,
-  type EssencePhase1Entry,
+  type EssenceCraftingEntry,
   type ItemAugmentSlotState,
   type ItemState,
   SLOT_KEY_TO_DATA_TOKENS
@@ -22,22 +22,9 @@ export const getAffixOptions = (slotKey: string, affix: AffixKind): string[] => 
 
   const options = new Set<string>()
 
-  DATASET.forEach((entry: EssencePhase1Entry) => {
+  DATASET.forEach((entry: EssenceCraftingEntry) => {
     const raw = entry[fieldName]
-    if (raw == null) {
-      return
-    }
-
-    let allowed: string[]
-
-    if (Array.isArray(raw)) {
-      allowed = raw.map((value) => value.trim()).filter(Boolean)
-    } else {
-      allowed = raw
-        .split(',')
-        .map((value) => value.trim())
-        .filter(Boolean)
-    }
+    const allowed = raw.map((value) => value.trim()).filter(Boolean)
 
     // if any token matches our slot tokens, include this enhancement
     const matches = allowed.some((token) =>
@@ -144,12 +131,6 @@ export const iterateItemsOnLevelChange = (
     const currentItem = items[key]
     const effectiveML = currentItem.minLevelOverride ?? masterMinLevel
 
-    if (effectiveML >= 10) {
-      nextItems[key] = currentItem
-
-      continue
-    }
-
     let prefix: CoreChoice = currentItem.prefix
     let suffix: CoreChoice = currentItem.suffix
     let extra: CoreChoice = currentItem.extra
@@ -192,6 +173,10 @@ export const sanitizeAugmentsOnItems = (parsed: {
   const sanitizedItems: Record<string, ItemState> = {}
 
   Object.entries(parsed.items).forEach(([savedSlotKey, savedItem]) => {
+    const prefixOptions = new Set(getAffixOptions(savedSlotKey, 'prefix'))
+    const suffixOptions = new Set(getAffixOptions(savedSlotKey, 'suffix'))
+    const extraOptions = new Set(getAffixOptions(savedSlotKey, 'extra'))
+
     // Sanitize augment slots and per-slot filters without using any
     const sanitizedAugmentSlots: ItemAugmentSlotState[] = savedItem.augmentSlots
       .filter((slot: ItemAugmentSlotState) => ALLOWED_AUGMENT_KEYS.has(slot.slotType))
@@ -241,6 +226,9 @@ export const sanitizeAugmentsOnItems = (parsed: {
 
     sanitizedItems[savedSlotKey] = {
       ...savedItem,
+      prefix: savedItem.prefix && prefixOptions.has(savedItem.prefix) ? savedItem.prefix : null,
+      suffix: savedItem.suffix && suffixOptions.has(savedItem.suffix) ? savedItem.suffix : null,
+      extra: savedItem.extra && extraOptions.has(savedItem.extra) ? savedItem.extra : null,
       augmentSlots: sanitizedAugmentSlots,
       // ensure the new field exists; keep the existing value if present
       minLevelOverride: savedItem.minLevelOverride ?? null,

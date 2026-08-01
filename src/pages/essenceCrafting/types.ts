@@ -1,44 +1,44 @@
-import essencePhase1 from '../../data/essenceCrafting/essenceEnhancements.phase1.json'
+import essenceCraftingV2 from '../../data/essenceCrafting.v2.json'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 
 export type CoreChoice = string | null
 
-// ----- Strict types for Essence Phase 1 dataset -----
-export interface Phase1CollectibleRow {
+export interface EssenceCollectible {
   name: string
-  qty: number
+  quantity: number
 }
 
-export interface Phase1Materials {
-  level?: number | null
-  essence?: number | null
-  purified?: number | null
-  collectible?: Phase1CollectibleRow[] | null
+export interface EssenceRecipe {
+  recipeId: number
+  level: number
+  essence: number
+  collectible: EssenceCollectible[]
 }
 
-export interface Phase1EnchantmentMeta {
-  name?: string
-  bonus?: string
+export interface EssenceModifier {
+  level: number
+  value: number
 }
 
-export type TAffix = string[] | string | null
-
-export interface EssencePhase1Entry {
+export interface EssenceEnchantment {
   name: string
-  enchantments?: Phase1EnchantmentMeta[]
-  bound?: Phase1Materials | null
-  unbound?: Phase1Materials | null
-  prefixTitle?: string | null
-  suffixTitle?: string | null
-  // Although normalized to arrays, keep a tolerant type for safety
-  prefix?: TAffix
-  suffix?: TAffix
-  extra?: TAffix
-  group?: string | null
-  stat?: (number | string)[]
+  bonus: string | null
+  modifierDice?: string
+  modifiers?: EssenceModifier[]
 }
 
-export const DATASET = essencePhase1 as unknown as EssencePhase1Entry[]
+export interface EssenceCraftingEntry {
+  name: string
+  minItemLevel: number
+  bound: EssenceRecipe
+  unbound: EssenceRecipe
+  prefix: string[]
+  suffix: string[]
+  extra: string[]
+  enchantments: EssenceEnchantment[]
+}
+
+export const DATASET = essenceCraftingV2 as EssenceCraftingEntry[]
 
 export interface ItemAugmentSlotState {
   id: string
@@ -61,27 +61,27 @@ export interface ItemState {
   bindingOverride?: boolean | null
 }
 
-// Utility: map UI slot keys to dataset item tokens used in the phase1 JSON
+// Utility: map UI slot keys to equipment names used in the v2 JSON.
 export const SLOT_KEY_TO_DATA_TOKENS: Record<string, string[]> = {
-  mainHand: ['Weapon (Melee)', 'Weapon (Ranged)', 'Weapon'],
-  offHand: ['Weapon (Melee)', 'Weapon (Ranged)', 'Weapon', 'Off-hand Weapon', 'Shield', 'Orb', 'Rune Arm'],
-  artificerPetArmor: ['Armor', 'Robe', 'Docent'],
-  druidPetArmor: ['Armor', 'Robe', 'Docent'],
-  artificerPetWeapon: ['Weapon (Melee)', 'Weapon'],
-  druidPetWeapon: ['Weapon (Melee)', 'Weapon'],
-  runeArm: ['Runearm', 'Rune Arm'],
+  mainHand: ['Weapon'],
+  offHand: ['Weapon'],
+  artificerPetArmor: ['Armor'],
+  druidPetArmor: ['Armor'],
+  artificerPetWeapon: ['Weapon'],
+  druidPetWeapon: ['Weapon'],
+  runeArm: ['Runearm'],
   orb: ['Orb'],
-  armor: ['Armor', 'Robe', 'Docent'],
-  belt: ['Belt'],
-  boots: ['Boots', 'Boot'],
-  bracers: ['Bracers', 'Bracer'],
+  armor: ['Armor'],
+  belt: ['Belt', 'Waist'],
+  boots: ['Boots', 'Feet'],
+  bracers: ['Bracers', 'Wrists'],
   cloak: ['Cloak'],
-  gloves: ['Gloves', 'Glove'],
-  goggles: ['Goggles', 'Goggle'],
-  helmet: ['Helm', 'Helmet', 'Head'],
+  gloves: ['Gloves', 'Hands', 'Hand'],
+  goggles: ['Goggles', 'Eyes'],
+  helmet: ['Head', 'Headgear'],
   necklace: ['Necklace', 'Neck'],
-  ring1: ['Ring'],
-  ring2: ['Ring'],
+  ring1: ['Ring', 'Rings', 'Fingers'],
+  ring2: ['Ring', 'Rings', 'Fingers'],
   trinket: ['Trinket'],
   shield: ['Shield']
 }
