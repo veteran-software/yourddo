@@ -16857,6 +16857,7 @@
   },
   {
     "name": "Insightful Shatter",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226659,
       "level": 225,
@@ -16928,6 +16929,7 @@
   },
   {
     "name": "Insightful Tendon Slice",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227782,
       "level": 225,
@@ -16999,6 +17001,7 @@
   },
   {
     "name": "Insightful Corrosion",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227154,
       "level": 225,
@@ -17112,6 +17115,7 @@
   },
   {
     "name": "Insightful Glaciation",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226807,
       "level": 225,
@@ -17225,6 +17229,7 @@
   },
   {
     "name": "Insightful Magnetism",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227543,
       "level": 225,
@@ -17338,6 +17343,7 @@
   },
   {
     "name": "Insightful Combustion",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226989,
       "level": 225,
@@ -17451,6 +17457,7 @@
   },
   {
     "name": "Insightful Resonance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227996,
       "level": 225,
@@ -17564,6 +17571,7 @@
   },
   {
     "name": "Insightful Impulse",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227396,
       "level": 225,
@@ -17677,6 +17685,7 @@
   },
   {
     "name": "Insightful Radiance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227078,
       "level": 225,
@@ -17790,6 +17799,7 @@
   },
   {
     "name": "Insightful Devotion",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030227381,
       "level": 225,
@@ -17903,6 +17913,7 @@
   },
   {
     "name": "Insightful Nullification",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228001,
       "level": 225,
@@ -18016,6 +18027,7 @@
   },
   {
     "name": "Insightful Reconstruction",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030226785,
       "level": 225,
@@ -18129,6 +18141,7 @@
   },
   {
     "name": "Aligned",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228918,
       "level": 250,
@@ -18156,6 +18169,7 @@
   },
   {
     "name": "Blindness Immunity",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228873,
       "level": 250,
@@ -18183,6 +18197,7 @@
   },
   {
     "name": "Deathblock",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228851,
       "level": 1,
@@ -18210,6 +18225,7 @@
   },
   {
     "name": "Efficient Metamagic - Empower",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228857,
       "level": 250,
@@ -18236,6 +18252,7 @@
   },
   {
     "name": "Efficient Metamagic - Enlarge",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228925,
       "level": 250,
@@ -18262,6 +18279,7 @@
   },
   {
     "name": "Efficient Metamagic - Extend",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228961,
       "level": 250,
@@ -18288,6 +18306,7 @@
   },
   {
     "name": "Efficient Metamagic - Empower Healing",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228927,
       "level": 250,
@@ -18314,6 +18333,7 @@
   },
   {
     "name": "Efficient Metamagic - Maximize",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228920,
       "level": 250,
