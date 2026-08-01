@@ -1,6 +1,7 @@
 [
   {
     "name": "False Life",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228107,
       "level": 1,
@@ -71,6 +72,7 @@
   },
   {
     "name": "Wizardry",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228076,
       "level": 1,
@@ -141,6 +143,7 @@
   },
   {
     "name": "Poison Ward",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228094,
       "level": 1,
@@ -253,6 +256,7 @@
   },
   {
     "name": "Disease Ward",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228155,
       "level": 1,
@@ -323,6 +327,7 @@
   },
   {
     "name": "Will",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228079,
       "level": 1,
@@ -393,6 +398,7 @@
   },
   {
     "name": "Reflex",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228161,
       "level": 1,
@@ -463,6 +469,7 @@
   },
   {
     "name": "Fortitude",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228149,
       "level": 1,
@@ -533,6 +540,7 @@
   },
   {
     "name": "Fire Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228169,
       "level": 1,
@@ -603,6 +611,7 @@
   },
   {
     "name": "Cold Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228119,
       "level": 1,
@@ -673,6 +682,7 @@
   },
   {
     "name": "Acid Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228116,
       "level": 1,
@@ -743,6 +753,7 @@
   },
   {
     "name": "Electric Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228130,
       "level": 1,
@@ -813,6 +824,7 @@
   },
   {
     "name": "Sonic Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228153,
       "level": 1,
@@ -883,6 +895,7 @@
   },
   {
     "name": "Light Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228129,
       "level": 1,
@@ -953,6 +966,7 @@
   },
   {
     "name": "Negative Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228168,
       "level": 1,
@@ -1023,6 +1037,7 @@
   },
   {
     "name": "Poison Resistance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228053,
       "level": 1,
@@ -1093,6 +1108,7 @@
   },
   {
     "name": "Balance",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228141,
       "level": 1,
@@ -1163,6 +1179,7 @@
   },
   {
     "name": "Bluff",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228143,
       "level": 1,
@@ -1233,6 +1250,7 @@
   },
   {
     "name": "Concentration",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228086,
       "level": 1,
@@ -1303,6 +1321,7 @@
   },
   {
     "name": "Diplomacy",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228125,
       "level": 1,
@@ -1373,6 +1392,7 @@
   },
   {
     "name": "Disable Device",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228122,
       "level": 1,
@@ -1443,6 +1463,7 @@
   },
   {
     "name": "Haggle",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228170,
       "level": 1,
@@ -1513,6 +1534,7 @@
   },
   {
     "name": "Heal",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228108,
       "level": 1,
@@ -1583,6 +1605,7 @@
   },
   {
     "name": "Hide",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228106,
       "level": 1,
@@ -1653,6 +1676,7 @@
   },
   {
     "name": "Intimidate",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228095,
       "level": 1,
@@ -1723,6 +1747,7 @@
   },
   {
     "name": "Jump",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228140,
       "level": 1,
@@ -1793,6 +1818,7 @@
   },
   {
     "name": "Listen",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228136,
       "level": 1,
@@ -1863,6 +1889,7 @@
   },
   {
     "name": "Move Silently",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228132,
       "level": 1,
@@ -1933,6 +1960,7 @@
   },
   {
     "name": "Open Lock",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228123,
       "level": 1,
@@ -2003,6 +2031,7 @@
   },
   {
     "name": "Perform",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228124,
       "level": 1,
@@ -2073,6 +2102,7 @@
   },
   {
     "name": "Repair",
+    "minItemLevel": 1,
     "bound": {
       "recipeId": 2030228145,
       "level": 1,
