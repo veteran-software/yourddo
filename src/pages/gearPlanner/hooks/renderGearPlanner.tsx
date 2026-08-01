@@ -3,6 +3,7 @@ import { Button, Card, Col } from 'react-bootstrap'
 import { FaChevronDown, FaChevronRight, FaMagnifyingGlass } from 'react-icons/fa6'
 import type { ItemRollup } from '../../../components/trove/types.ts'
 import { SLOT_GROUPS } from '../../../utils/augmentUtils.ts'
+import type { EssenceCraftingEntry } from '../../essenceCrafting/types'
 import AlmostThereSelector from '../components/AlmostThereSelector'
 import AugmentSlotItem from '../components/AugmentSlotItem'
 import CurseSlotItem from '../components/CurseSlotItem'
@@ -23,7 +24,7 @@ import TraceOfMadnessSelector from '../components/TraceOfMadnessSelector'
 import TroveBadge from '../components/TroveBadge'
 import ZhentarimAttunedSelector from '../components/ZhentarimAttunedSelector'
 import { getSlotOwner } from '../conflictResolver'
-import { type EssenceEnchantment, nearlyFinishedNFUpgradedAugments } from '../dataLoader'
+import { nearlyFinishedNFUpgradedAugments } from '../dataLoader'
 import { getDisplayEnchantments, getMaxFiligreeSlots, isMinorArtifact } from '../helpers'
 import {
   type Curse,
@@ -597,7 +598,7 @@ interface Props {
   getEntityState: (owner: string) => EntityGearState
   setItemMinLevel: (itemId: string, minLevel: number, slot?: GearSlot) => void
   setItemMaterial: (itemId: string, material: string, slot?: GearSlot) => void
-  essenceEnchantments: EssenceEnchantment[]
+  essenceEnchantments: EssenceCraftingEntry[]
   troveData: ItemRollup | null
   allAugments: GearAugment[]
   allCurses: Curse[]

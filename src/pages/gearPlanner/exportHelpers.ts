@@ -1,12 +1,13 @@
-import type { EssenceEnchantment } from './dataLoader.ts'
+import type { EssenceCraftingEntry } from '../essenceCrafting/types.ts'
 import {
   getActiveSetEnhancements,
   getDisplayEnchantments,
+  getEssenceCraftingLevel,
   getReaperForgeEnchantments,
   getScaledEssenceEnchantments
 } from './helpers'
 import { pickPlannerSetupMetadata } from './plannerStateFields'
-import type { GearAugment, GearItem, GearSetup, GearSlot, LootEnchantment, LootItem, PetState } from './types'
+import type { Curse, GearAugment, GearItem, GearSetup, GearSlot, LootEnchantment, LootItem, PetState } from './types'
 import { ARTIFICER_PET_SLOTS, DRUID_PET_SLOTS, GEAR_SLOTS } from './types'
 import {
   createUpgradeViews,
@@ -25,12 +26,12 @@ const ALWAYS_HIDDEN_ENCHANTMENTS = new Set([
 
 const renderSlots = (
   slots: readonly GearSlot[],
-  allEssenceEnchantments: EssenceEnchantment[],
+  allEssenceEnchantments: EssenceCraftingEntry[],
   setup: GearSetup,
   renderSlot: (
     slot: GearSlot,
     item: GearItem,
-    allEssenceEnchantments: EssenceEnchantment[],
+    allEssenceEnchantments: EssenceCraftingEntry[],
     isPetSlot?: boolean,
     petState?: PetState
   ) => void,
@@ -187,7 +188,8 @@ interface SlotFormatters {
   essenceCrafting: (
     item: GearItem,
     essenceCrafting: Record<string, string | null> | undefined,
-    allEssenceEnchantments: EssenceEnchantment[]
+    allEssenceEnchantments: EssenceCraftingEntry[],
+    curse: Curse | null | undefined
   ) => void
   filigrees: (filigrees: (LootItem | null)[] | undefined) => void
   gemSets: (gemSets: (string | null)[] | undefined) => void
@@ -307,7 +309,8 @@ const appendEssenceCraftingLines = (
   lines: string[],
   item: GearItem,
   essenceCrafting: Record<string, string | null> | undefined,
-  allEssenceEnchantments: EssenceEnchantment[],
+  allEssenceEnchantments: EssenceCraftingEntry[],
+  curse: Curse | null | undefined,
   style: ExportTextStyle
 ) => {
   if (!essenceCrafting || !Object.values(essenceCrafting).some((v) => v !== null)) return
@@ -315,13 +318,13 @@ const appendEssenceCraftingLines = (
   lines.push(style.sectionHeading('Essence Crafting:'))
   pushIf(lines, style.sectionStart)
 
-  const minLevel = Number.parseInt(String(item.minLevel)) || 1
-  Object.entries(essenceCrafting).forEach(([slotName, enchId]) => {
-    if (!enchId) return
-    const ench = allEssenceEnchantments.find((e) => e.id === enchId)
-    if (!ench) return
+  const effectiveLevel = getEssenceCraftingLevel(item, curse)
+  Object.entries(essenceCrafting).forEach(([slotName, entryName]) => {
+    if (!entryName) return
+    const entry = allEssenceEnchantments.find((candidate) => candidate.name === entryName)
+    if (!entry) return
 
-    getScaledEssenceEnchantments(ench, minLevel).forEach((innerEnch) => {
+    getScaledEssenceEnchantments(entry, effectiveLevel).forEach((innerEnch) => {
       lines.push(style.essenceLine(slotName, formatEnchantment(innerEnch)))
     })
   })
@@ -370,7 +373,7 @@ const appendActiveSetLines = (
 const renderGearSections = (
   lines: string[],
   setup: GearSetup,
-  allEssenceEnchantments: EssenceEnchantment[],
+  allEssenceEnchantments: EssenceCraftingEntry[],
   renderSlot: Parameters<typeof renderSlots>[3],
   formatHeading: (text: string) => string,
   artificerPet?: PetState,
@@ -475,7 +478,7 @@ const buildRenderSlot =
   (
     slot: GearSlot,
     item: GearItem,
-    allEssenceEnchantments: EssenceEnchantment[],
+    allEssenceEnchantments: EssenceCraftingEntry[],
     isPetSlot = false,
     petState?: PetState
   ): void => {
@@ -509,7 +512,12 @@ const buildRenderSlot =
       almostThere ?? null,
       finishingTouch ?? null
     )
-    fmt.essenceCrafting(item, state.slottedEssenceEnchantments[item.id], allEssenceEnchantments)
+    fmt.essenceCrafting(
+      item,
+      state.slottedEssenceEnchantments[item.id],
+      allEssenceEnchantments,
+      state.slottedCurses[item.id]
+    )
     fmt.filigrees(state.slottedFiligrees[item.id])
     fmt.gemSets(state.slottedGemSetBonuses[item.id])
     fmt.separator()
@@ -517,7 +525,7 @@ const buildRenderSlot =
 
 export const generateBBCodeExport = (
   setup: GearSetup,
-  allEssenceEnchantments: EssenceEnchantment[],
+  allEssenceEnchantments: EssenceCraftingEntry[],
   artificerPet?: PetState,
   druidPet?: PetState,
   permalinkUrl?: string
@@ -540,8 +548,8 @@ export const generateBBCodeExport = (
       appendUpgradeLines(lines, BB_CODE_STYLE, ...args)
     },
 
-    essenceCrafting: (item, essenceCrafting, allEssenceEnchantments) => {
-      appendEssenceCraftingLines(lines, item, essenceCrafting, allEssenceEnchantments, BB_CODE_STYLE)
+    essenceCrafting: (item, essenceCrafting, allEssenceEnchantments, curse) => {
+      appendEssenceCraftingLines(lines, item, essenceCrafting, allEssenceEnchantments, curse, BB_CODE_STYLE)
     },
 
     filigrees: (filigrees) => {
@@ -567,7 +575,7 @@ export const generateBBCodeExport = (
 
 export const generateDiscordMarkdownExport = (
   setup: GearSetup,
-  allEssenceEnchantments: EssenceEnchantment[],
+  allEssenceEnchantments: EssenceCraftingEntry[],
   artificerPet?: PetState,
   druidPet?: PetState,
   permalinkUrl?: string
@@ -590,8 +598,8 @@ export const generateDiscordMarkdownExport = (
       appendUpgradeLines(lines, DISCORD_STYLE, ...args)
     },
 
-    essenceCrafting: (item, essenceCrafting, allEssenceEnchantments) => {
-      appendEssenceCraftingLines(lines, item, essenceCrafting, allEssenceEnchantments, DISCORD_STYLE)
+    essenceCrafting: (item, essenceCrafting, allEssenceEnchantments, curse) => {
+      appendEssenceCraftingLines(lines, item, essenceCrafting, allEssenceEnchantments, curse, DISCORD_STYLE)
     },
 
     filigrees: (filigrees) => {

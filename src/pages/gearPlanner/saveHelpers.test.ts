@@ -62,6 +62,11 @@ describe('Gear Planner save file validation', () => {
       minimumLevel: 1
     }
     const itemId = 'test-main-hand-null-enchantments'
+    setup.slottedEssenceEnchantments[itemId] = {
+      prefix: 'Healthy',
+      suffix: 'False Life',
+      extra: null
+    }
     setup.itemUpgrades[itemId] = {
       reaperForge: 'reaper-ring-boost-3',
       mythicBoost: { name: 'Mythic Weapon Boost', modifier: 2, bonus: 'Mythic' },
@@ -95,6 +100,11 @@ describe('Gear Planner save file validation', () => {
     expect(imported[0].minLevel).toBe(1)
     expect(imported[0].maxLevel).toBe(36)
     expect(imported[0].slots[GearSlot.MainHand]?.id).toBe('test-main-hand-null-enchantments')
+    expect(imported[0].slottedEssenceEnchantments[itemId]).toEqual({
+      prefix: 'Healthy',
+      suffix: 'False Life',
+      extra: null
+    })
     expect(imported[0].itemUpgrades[itemId].reaperForge).toBe('reaper-ring-boost-3')
     expect(imported[0].itemUpgrades[itemId].mythicBoost).toEqual({
       name: 'Mythic Weapon Boost',

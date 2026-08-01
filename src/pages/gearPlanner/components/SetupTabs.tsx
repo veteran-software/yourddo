@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react'
 import { Button, Row, Stack, Tab, Tabs } from 'react-bootstrap'
 import { FaChevronDown, FaXmark } from 'react-icons/fa6'
-import type { EssenceEnchantment } from '../dataLoader'
+import type { EssenceCraftingEntry } from '../../essenceCrafting/types'
 import {
   ARTIFICER_PET_SLOTS,
   DRUID_PET_SLOTS,
@@ -25,7 +25,7 @@ interface SetupTabsProps {
   allAugments: GearAugment[]
   allCurses: import('../types').Curse[]
   allFiligrees: GearItem[]
-  essenceEnchantments: EssenceEnchantment[]
+  essenceEnchantments: EssenceCraftingEntry[]
   renderSlot: (slot: GearSlot, setup: GearSetup) => React.ReactNode
   getEntityState: (owner: 'artificer_pet' | 'druid_pet') => EntityGearState
   openSetBonusBrowser: (setName: string | null, slot?: GearSlot | null) => void
@@ -71,7 +71,7 @@ const SetupSummaryBlocks = ({
   allAugments: GearAugment[]
   allCurses: import('../types').Curse[]
   allFiligrees: GearItem[]
-  essenceEnchantments: EssenceEnchantment[]
+  essenceEnchantments: EssenceCraftingEntry[]
   openSetBonusBrowser: (setName: string | null, slot?: GearSlot | null) => void
   onBonusClick: (name: string, bonusType: string) => void
 }) => (
@@ -121,7 +121,7 @@ interface GearSectionProps {
   renderSlot: (slot: GearSlot, setup: GearSetup) => React.ReactNode
   openSetBonusBrowser: (setName: string | null, slot?: GearSlot | null) => void
   onBonusClick: (name: string, bonusType: string) => void
-  essenceEnchantments: EssenceEnchantment[]
+  essenceEnchantments: EssenceCraftingEntry[]
   allItems: GearItem[]
   allAugments: GearAugment[]
   allCurses: import('../types').Curse[]

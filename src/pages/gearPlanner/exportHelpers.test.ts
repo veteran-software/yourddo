@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { setBonuses } from '../../data/setBonuses'
-import type { EssenceEnchantment } from './dataLoader'
+import type { EssenceCraftingEntry } from '../essenceCrafting/types'
 import { generateBBCodeExport, generateDiscordMarkdownExport } from './exportHelpers'
 import { initialPetState } from './initialState'
 import { type GearItem, type GearSetup, GearSlot } from './types'
@@ -81,19 +81,38 @@ const richFiligree = {
   enchantments: [{ name: 'Filigree Bonus', modifier: 1, bonus: 'Artifact' }]
 } as unknown as GearItem
 
-const richEssenceEnchantments: EssenceEnchantment[] = [
+const richEssenceEnchantments: EssenceCraftingEntry[] = [
   {
-    id: 'essence-1',
-    sourceType: 'test',
-    effectId: 'effect-1',
-    enchantmentName: 'Essence Power',
-    bonusType: 'Enhancement',
-    slotId: 'prefix',
-    affixType: 'prefix',
-    group: 'test',
-    bonus: 'Enhancement',
-    scalingStats: [1, 2, 3],
-    enchantments: [{ name: 'Essence Power', bonus: 'Enhancement' }]
+    name: 'Essence Power Shard',
+    minItemLevel: 1,
+    bound: { recipeId: 1, level: 1, essence: 1, collectible: [] },
+    unbound: { recipeId: 2, level: 1, essence: 1, collectible: [] },
+    prefix: ['Weapon'],
+    suffix: [],
+    extra: [],
+    enchantments: [
+      {
+        name: 'Essence Power',
+        bonus: 'Enhancement',
+        modifiers: [
+          { level: 1, value: 1 },
+          { level: 2, value: 2 },
+          { level: 3, value: 3 },
+          { level: 30, value: 3 }
+        ]
+      },
+      {
+        name: 'Elemental Absorption',
+        bonus: 'Enhancement',
+        modifiers: [{ level: 30, value: 0.3 }]
+      },
+      {
+        name: 'Bane Damage',
+        bonus: null,
+        modifierDice: 'd10',
+        modifiers: [{ level: 30, value: 6 }]
+      }
+    ]
   }
 ]
 
@@ -144,7 +163,7 @@ const createRichSetup = (): GearSetup => ({
   },
   slottedEssenceEnchantments: {
     [richTestItem.id]: {
-      prefix: 'essence-1'
+      prefix: 'Essence Power Shard'
     }
   },
   itemUpgrades: {
@@ -218,6 +237,8 @@ describe('gear planner exports', () => {
     expect(bbcode).toContain('prefix:')
     expect(bbcode).toContain('Melee Power +2 (Mythic)')
     expect(bbcode).toContain('Essence Power +3 (Enhancement)')
+    expect(bbcode).toContain('Elemental Absorption +30% (Enhancement)')
+    expect(bbcode).toContain('Bane Damage +6d10')
     expect(bbcode).toContain('Filigree One')
     expect(bbcode).toContain('Filigree Bonus +1 (Artifact)')
     expect(bbcode).toContain('Visible Bonus')
@@ -240,6 +261,8 @@ describe('gear planner exports', () => {
     expect(markdown).toContain('prefix:')
     expect(markdown).toContain('Melee Power +2 (Mythic)')
     expect(markdown).toContain('Essence Power +3 (Enhancement)')
+    expect(markdown).toContain('Elemental Absorption +30% (Enhancement)')
+    expect(markdown).toContain('Bane Damage +6d10')
     expect(markdown).toContain('Filigree One')
     expect(markdown).toContain('Filigree Bonus +1 (Artifact)')
     expect(markdown).toContain('Visible Bonus')

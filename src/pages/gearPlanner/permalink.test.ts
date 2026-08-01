@@ -61,6 +61,30 @@ describe('Bug #4: Fragile Item Reconstruction in Permalinks', () => {
     }
   })
 
+  it('round-trips v2 essence entry names through the public permalink codec', () => {
+    const setupWithEssence: GearSetup = {
+      ...mockSetup,
+      slottedEssenceEnchantments: {
+        [mockItem.id]: {
+          prefix: "Champion's",
+          suffix: 'Keen/Impact',
+          extra: null
+        }
+      }
+    }
+
+    const encoded = encodeGearPermalink(setupWithEssence)
+    const result = tryDecodeGearPermalink(encoded, [mockItem], [], [])
+
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.data.slottedEssenceEnchantments[mockItem.id]).toEqual({
+        prefix: "Champion's",
+        suffix: 'Keen/Impact'
+      })
+    }
+  })
+
   it('should fallback to itemName if itemId is missing (compatibility with old permalinks)', () => {
     // Manually construct a payload where itemId is absent/null so itemName fallback is exercised.
     const legacyItemPayload = [

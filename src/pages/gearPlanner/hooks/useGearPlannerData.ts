@@ -1,13 +1,8 @@
 import { useEffect, useState } from 'react'
+import essenceCraftingV2 from '../../../data/essenceCrafting.v2.json'
+import type { EssenceCraftingEntry } from '../../essenceCrafting/types'
 import { normalizeString } from '../conflictResolver'
-import {
-  type EssenceEnchantment,
-  loadCurses,
-  loadEssenceEnchantments,
-  loadFiligreeSets,
-  loadGearData,
-  loadSetBonusIndex
-} from '../dataLoader'
+import { loadCurses, loadFiligreeSets, loadGearData, loadSetBonusIndex } from '../dataLoader'
 import {
   type Curse,
   type GearAugment,
@@ -17,13 +12,14 @@ import {
   type SetBonusIndexEntry
 } from '../types'
 
+const essenceEnchantments = essenceCraftingV2 as EssenceCraftingEntry[]
+
 export const useGearPlannerData = () => {
   const [allItems, setAllItems] = useState<GearItem[]>([])
   const [allAugments, setAllAugments] = useState<GearAugment[]>([])
   const [allCurses, setAllCurses] = useState<Curse[]>([])
   const [allFiligrees, setAllFiligrees] = useState<GearItem[]>([])
   const [allFiligreeSetNames, setAllFiligreeSetNames] = useState<string[]>([])
-  const [essenceEnchantments, setEssenceEnchantments] = useState<EssenceEnchantment[]>([])
   const [itemSetBonusIndex, setItemSetBonusIndex] = useState<SetBonusIndex>({})
   const [filigreeSetBonusIndex, setFiligreeSetBonusIndex] = useState<SetBonusIndex>({})
   const [loading, setLoading] = useState(true)
@@ -51,9 +47,6 @@ export const useGearPlannerData = () => {
           .map((set: { name: string }) => set.name)
           .sort((a: string, b: string) => a.localeCompare(b))
         setAllFiligreeSetNames(filigreeSetNames)
-
-        const essenceEnchants: EssenceEnchantment[] = await loadEssenceEnchantments()
-        setEssenceEnchantments(essenceEnchants)
 
         const filigreeSetBonusIndexLocal: SetBonusIndex = {}
 

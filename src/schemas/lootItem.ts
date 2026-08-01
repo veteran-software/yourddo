@@ -35,8 +35,7 @@ export const LootItemSchema = z.object({
   image: z.string().trim(),
   enchantments: z
     .array(LootEnchantmentSchema)
-    .nullable()
-    .optional()
+    .nullish()
     .transform((v) => v ?? undefined),
   augments: z.array(GearAugmentSlotSchema).optional(),
   essenceSlots: z.array(z.string().trim()).optional(),
