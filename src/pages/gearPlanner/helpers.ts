@@ -5,8 +5,9 @@ import { findSetBonus } from '../../data/setBonuses.ts'
 import stormreaverUpgradeData from '../../data/stormreaverUpgrade.json'
 import zhentarimData from '../../data/zhentarimAttuned.json'
 import type { SetBonus } from '../../types/crafting.ts'
+import { MAX_CHARACTER_LEVEL } from '../../utils/constants.ts'
+import { type EssenceCraftingEntry } from '../essenceCrafting/types.ts'
 import { UPGRADE_PLACEHOLDER_ENCHANTMENTS } from './constants'
-import type { EssenceEnchantment } from './dataLoader.ts'
 import { nearlyFinishedUpgradeItems } from './dataLoader.ts'
 import { getMythicBoostEnchantments } from './mythicBoost'
 import {
@@ -289,30 +290,50 @@ export const createEssenceCraftedItem = (type: string, name: string, slot: GearS
   isEssenceCrafted: true
 })
 
-export const getScaledEssenceEnchantments = (ench: EssenceEnchantment, minLevel: number): LootEnchantment[] => {
-  const idx = Math.max(0, Math.min((ench.scalingStats?.length ?? 1) - 1, minLevel - 1))
-  const scalingValue = ench.scalingStats?.[idx]
+export const getEssenceCraftingLevel = (item: GearItem, curse?: Curse | null): number => {
+  const minLevel = Number.parseInt(String(item.minLevel), 10) || 1
+  let curseBoost = 0
+  if (curse?.name === 'Curse of Major Masterworks') {
+    curseBoost = 2
+  } else if (curse?.name === 'Curse of Minor Masterworks') {
+    curseBoost = 1
+  }
 
-  const results: LootEnchantment[] = []
-  const effects =
-    Array.isArray(ench.enchantments) && ench.enchantments.length > 0
-      ? ench.enchantments
-      : ([{ name: ench.enchantmentName, bonus: ench.bonus }] as LootEnchantment[])
+  return Math.min(MAX_CHARACTER_LEVEL, minLevel + curseBoost)
+}
 
-  effects.forEach((innerEnch) => {
-    const rawDisplayName = (innerEnch.statModified ?? innerEnch.name) || ench.enchantmentName
-    const displayNames: string[] = Array.isArray(rawDisplayName) ? rawDisplayName : [rawDisplayName]
+export const getScaledEssenceEnchantments = (
+  entry: EssenceCraftingEntry,
+  effectiveLevel: number
+): LootEnchantment[] => {
+  if (effectiveLevel < entry.minItemLevel) {
+    return []
+  }
 
-    displayNames.forEach((name) => {
-      results.push({
-        ...innerEnch,
-        name: name.trim(),
-        modifier: scalingValue ?? innerEnch.modifier ?? undefined,
-        bonus: ench.bonus ?? innerEnch.bonus
-      })
-    })
+  if (entry.enchantments.length === 0) {
+    return [{ name: entry.name }]
+  }
+
+  return entry.enchantments.map((enchantment) => {
+    const modifier = enchantment.modifiers?.find((candidate) => candidate.level === effectiveLevel)
+    let displayModifier: string | number | undefined
+
+    if (modifier) {
+      if (enchantment.modifierDice) {
+        displayModifier = `${String(modifier.value)}${enchantment.modifierDice}`
+      } else if (modifier.value !== 0 && Math.abs(modifier.value) < 1) {
+        displayModifier = `${String(Number((modifier.value * 100).toFixed(10)))}%`
+      } else {
+        displayModifier = modifier.value
+      }
+    }
+
+    return {
+      name: enchantment.name,
+      modifier: displayModifier,
+      bonus: enchantment.bonus ?? undefined
+    }
   })
-  return results
 }
 
 export const reconstructEssenceCraftedItem = (name: string, slot: GearSlot, minLevel: number): GearItem => {
@@ -359,7 +380,7 @@ export const sortItemsByValue = (a: { value: number }, b: { value: number }) => 
 
 interface AggregateEnchantmentEntriesOptions {
   slottedEssenceEnchantments?: Record<string, Record<string, string | null>>
-  essenceEnchantments?: EssenceEnchantment[]
+  essenceEnchantments?: EssenceCraftingEntry[]
   activeSetEnhancements?: { ench: LootEnchantment; sourceName: string }[]
   itemUpgrades?: import('./upgradeState').ItemUpgrades
   slottedNearlyFinished?: LegacyLootEnchantmentMap
@@ -483,7 +504,7 @@ export const aggregateEnchantmentEntries = (
   addAugmentEntries(entries, item.name, itemAugs)
   addCurseEntries(entries, item.name, curse)
   addFiligreeEntries(entries, item.name, filigrees)
-  addEssenceCraftingEntries(entries, item, slottedEssenceEnchantments?.[item.id], essenceEnchantments)
+  addEssenceCraftingEntries(entries, item, curse, slottedEssenceEnchantments?.[item.id], essenceEnchantments)
 
   if (activeSetEnhancements) {
     entries.push(...activeSetEnhancements)
@@ -671,16 +692,16 @@ const addFiligreeEntries = (
 }
 
 const iterateEnchantments = (
-  opt: EssenceEnchantment,
-  minLevel: number,
+  entry: EssenceCraftingEntry,
+  effectiveLevel: number,
   entries: { ench: LootEnchantment; sourceName: string }[],
   item: GearItem
 ) => {
-  const scaledEnchantments = getScaledEssenceEnchantments(opt, minLevel)
+  const scaledEnchantments = getScaledEssenceEnchantments(entry, effectiveLevel)
   scaledEnchantments.forEach((ench) => {
     entries.push({
       ench,
-      sourceName: `${item.name} (Essence: ${opt.shardName ?? 'UNKNOWN'})`
+      sourceName: `${item.name} (Essence: ${entry.name})`
     })
   })
 }
@@ -688,19 +709,20 @@ const iterateEnchantments = (
 const addEssenceCraftingEntries = (
   entries: { ench: LootEnchantment; sourceName: string }[],
   item: GearItem,
+  curse: Curse | null | undefined,
   itemEssenceEnchantments: Record<string, string | null> | undefined,
-  essenceEnchantments?: EssenceEnchantment[]
+  essenceEnchantments?: EssenceCraftingEntry[]
 ) => {
   if (!itemEssenceEnchantments || !essenceEnchantments) return
 
-  const minLevel = Number.parseInt(String(item.minLevel), 10) || 1
+  const effectiveLevel = getEssenceCraftingLevel(item, curse)
 
-  for (const enchantmentId of Object.values(itemEssenceEnchantments)) {
-    if (enchantmentId) {
-      const opt = essenceEnchantments.find((e) => e.id === enchantmentId)
+  for (const entryName of Object.values(itemEssenceEnchantments)) {
+    if (entryName) {
+      const entry = essenceEnchantments.find((candidate) => candidate.name === entryName)
 
-      if (opt) {
-        iterateEnchantments(opt, minLevel, entries, item)
+      if (entry) {
+        iterateEnchantments(entry, effectiveLevel, entries, item)
       }
     }
   }

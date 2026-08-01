@@ -1,8 +1,8 @@
 import { memo, useMemo } from 'react'
 import { Accordion, Col, Row } from 'react-bootstrap'
 import { FaListUl } from 'react-icons/fa6'
+import type { EssenceCraftingEntry } from '../../essenceCrafting/types.ts'
 import { getBonus, normalizeString, parseModifierValue } from '../conflictResolver.ts'
-import type { EssenceEnchantment } from '../dataLoader.ts'
 import { aggregateEnchantmentEntries, getActiveSetEnhancements, sortItemsByValue } from '../helpers.ts'
 import type { Curse, GearAugment, GearItem, LootEnchantment } from '../types.ts'
 import GenericBadge from './badges/GenericBadge.tsx'
@@ -81,7 +81,9 @@ const EnchantmentsSummary = (props: Props) => {
     })
 
     essenceEnchantments?.forEach((ee) => {
-      ee.enchantments?.forEach(processEnch)
+      ee.enchantments.forEach((enchantment) => {
+        processEnch({ name: enchantment.name, bonus: enchantment.bonus ?? undefined })
+      })
     })
 
     return map
@@ -354,7 +356,7 @@ interface Props {
   slottedGemSetBonuses: Record<string, (string | null)[]>
   slottedEssenceEnchantments: Record<string, Record<string, string | null>>
   itemUpgrades?: import('../upgradeState').ItemUpgrades
-  essenceEnchantments?: EssenceEnchantment[]
+  essenceEnchantments?: EssenceCraftingEntry[]
   slottedNearlyFinished: Record<string, import('../types.ts').LootEnchantment | null>
   slottedAlmostThere: Record<string, import('../types.ts').LootEnchantment | null>
   slottedFinishingTouch: Record<string, import('../types.ts').LootEnchantment | null>

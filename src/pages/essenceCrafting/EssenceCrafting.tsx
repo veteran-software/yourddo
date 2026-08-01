@@ -18,7 +18,6 @@ import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFilterableDropdown.tsx'
-import EssenceCraftingWarning from '../../components/common/EssenceCraftingWarning.tsx'
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
 import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
@@ -42,10 +41,9 @@ import {
   ALLOWED_AUGMENT_KEYS,
   AVAILABLE_AUGMENT_TYPES,
   DATASET,
-  type EssencePhase1Entry,
+  type EssenceCraftingEntry,
   type ItemAugmentSlotState,
-  type ItemState,
-  type Phase1EnchantmentMeta
+  type ItemState
 } from './types.ts'
 import {
   allowedAugmentColorsForSlot,
@@ -85,10 +83,10 @@ const EssenceCrafting = () => {
     // Attempt initial load immediately during construction
     const { cc } = readCcFromUrl(location)
     if (cc) {
-      const v2 = tryDecodeEssencePermalink(cc)
+      const decoded = tryDecodeEssencePermalink(cc)
 
-      if (v2.ok) {
-        return sanitizeAugmentsOnItems(v2.data satisfies PermalinkStatePayload)
+      if (decoded.ok) {
+        return sanitizeAugmentsOnItems(decoded.data satisfies PermalinkStatePayload)
       }
     }
 
@@ -108,10 +106,10 @@ const EssenceCrafting = () => {
   const [activeKeys, setActiveKeys] = useState<string[]>(() => {
     const { cc } = readCcFromUrl(location)
     if (cc) {
-      const v2 = tryDecodeEssencePermalink(cc)
+      const decoded = tryDecodeEssencePermalink(cc)
 
-      if (v2.ok) {
-        return v2.data.activeKeys
+      if (decoded.ok) {
+        return decoded.data.activeKeys
       }
     }
 
@@ -132,10 +130,10 @@ const EssenceCrafting = () => {
     const { cc } = readCcFromUrl(location)
 
     if (cc) {
-      const v2 = tryDecodeEssencePermalink(cc)
+      const decoded = tryDecodeEssencePermalink(cc)
 
-      if (v2.ok) {
-        return v2.data.masterMinLevel ?? 1
+      if (decoded.ok) {
+        return decoded.data.masterMinLevel ?? 1
       }
     }
 
@@ -176,10 +174,10 @@ const EssenceCrafting = () => {
   const [collapsedKeys, setCollapsedKeys] = useState<string[]>(() => {
     const { cc } = readCcFromUrl(location)
     if (cc) {
-      const v2 = tryDecodeEssencePermalink(cc)
+      const decoded = tryDecodeEssencePermalink(cc)
 
-      if (v2.ok) {
-        return Array.isArray(v2.data.collapsedKeys) ? v2.data.collapsedKeys : []
+      if (decoded.ok) {
+        return Array.isArray(decoded.data.collapsedKeys) ? decoded.data.collapsedKeys : []
       }
     }
 
@@ -237,41 +235,16 @@ const EssenceCrafting = () => {
 
   // Build a lookup map for dataset entries by name for quick access when rendering scaled values
   const enhancementByName = useMemo(() => {
-    const enhancementMap = new Map<string, EssencePhase1Entry>()
+    const enhancementMap = new Map<string, EssenceCraftingEntry>()
 
-    DATASET.forEach((entry: EssencePhase1Entry) => {
+    DATASET.forEach((entry: EssenceCraftingEntry) => {
       enhancementMap.set(entry.name, entry)
     })
 
     return enhancementMap
   }, [])
 
-  // Helper: determine if an enhancement is "Insightful" for ML gating
-  const isInsightfulEnhancement = useCallback(
-    (name: string | null): boolean => {
-      if (!name) {
-        return false
-      }
-
-      const entry = enhancementByName.get(name)
-      const nameLower = name.toLowerCase()
-      const nameSuggestsInsight = nameLower.startsWith('insightful ')
-
-      // Parrying is explicitly included in this restriction
-      const isParrying = nameLower.includes('parrying')
-      const enchantmentSuggestsInsight = Array.isArray(entry?.enchantments)
-        ? entry.enchantments.some(
-            (enchantMeta: Phase1EnchantmentMeta) => (enchantMeta.bonus ?? '').toLowerCase() === 'insight'
-          )
-        : false
-
-      return nameSuggestsInsight || enchantmentSuggestsInsight || isParrying
-    },
-    [enhancementByName]
-  )
-
-  // Rule: Insightful effects (including Parrying) cannot be applied if effective ML < 10.
-  // Also, any enchantment with a value of -1 at the current level is not craftable.
+  // The dataset's minItemLevel is authoritative even when a modifier is absent for the current level.
   const isEnhancementAllowedAtML = useCallback(
     (name: string | null, effectiveML: number): boolean => {
       if (!name) {
@@ -279,22 +252,9 @@ const EssenceCrafting = () => {
       }
 
       const entry = enhancementByName.get(name)
-      if (entry) {
-        const stats = Array.isArray(entry.stat) ? entry.stat : []
-
-        if (stats.length > 0) {
-          const idx: number = Math.max(0, Math.min(stats.length - 1, (effectiveML || 1) - 1))
-          const value: string | number = stats[idx]
-
-          if (value === -1) {
-            return false
-          }
-        }
-      }
-
-      return !(isInsightfulEnhancement(name) && (effectiveML || 1) < 10)
+      return entry != null && effectiveML >= entry.minItemLevel
     },
-    [enhancementByName, isInsightfulEnhancement]
+    [enhancementByName]
   )
 
   // Load from permalink (if present) or sessionStorage once
@@ -328,7 +288,7 @@ const EssenceCrafting = () => {
     }
   }, [items, activeKeys, masterMinLevel, masterBindingBound, collapsedKeys])
 
-  // Enforce item constraints (Insightful effects at ML < 10, Augment color ML floors)
+  // Enforce item constraints (dataset minimum levels and Augment color ML floors)
   // We do this during render phase to avoid multiple re-renders and ESLint warnings.
   const { constrainedItems, needsFix } = useMemo(() => {
     let current = items
@@ -354,18 +314,18 @@ const EssenceCrafting = () => {
       current = nextAfterAugments
     }
 
-    // 2. Insightful effects: clear if effective ML < 10
-    const nextAfterInsightful: Record<string, ItemState> = {}
-    const insightfulChanged = iterateItemsOnLevelChange(
+    // 2. Clear effects below their dataset minimum level
+    const nextAfterMinLevel: Record<string, ItemState> = {}
+    const minLevelChanged = iterateItemsOnLevelChange(
       current,
       masterMinLevel,
-      nextAfterInsightful,
+      nextAfterMinLevel,
       isEnhancementAllowedAtML,
       false
     )
-    if (insightfulChanged) {
+    if (minLevelChanged) {
       anyChanged = true
-      current = nextAfterInsightful
+      current = nextAfterMinLevel
     }
 
     return { constrainedItems: anyChanged ? current : items, needsFix: anyChanged }
@@ -601,147 +561,34 @@ const EssenceCrafting = () => {
       return null
     }
 
-    const stats = Array.isArray(entry.stat) ? entry.stat : []
-
-    if (stats.length === 0) {
-      return null
-    }
-
-    // ML is 1-based; array index is 0-based; clamp to available range
-    const idx = Math.max(0, Math.min(stats.length - 1, (effectiveML || 1) - 1))
-    const value = stats[idx]
-
-    const isStatic = (entry.group ?? '').toLowerCase() === 'static' || stats.length === 1
-
-    // Format logic:
-    // - numeric values: show as +N
-    // - string values (e.g., "1d10" or description): show as raw text following the name
-    if (isStatic) {
-      if (typeof value === 'number') return `${name} +${String(value)}`
-      return `${name}: ${value}`
-    }
-
-    if (typeof value === 'number') return `${name} +${String(value)}`
-
-    return `${name} ${value}`
-  }
-
-  // Helper to compute only the value portion (e.g., "+3" or "1d10" or description) for headers
-  const getEnhancementValueOnly = (name: string | null, effectiveML: number): string | null => {
-    if (!name) {
-      return null
-    }
-
-    const entry = enhancementByName.get(name)
-
-    if (!entry) {
-      return null
-    }
-
-    const stats = Array.isArray(entry.stat) ? entry.stat : []
-
-    if (stats.length === 0) {
-      return null
-    }
-
-    const idx = Math.max(0, Math.min(stats.length - 1, (effectiveML || 1) - 1))
-    const value = stats[idx]
-    const isStatic = (entry.group ?? '').toLowerCase() === 'static' || stats.length === 1
-
-    if (isStatic) {
-      if (typeof value === 'number') {
-        return `+${String(value)}`
+    const effects = entry.enchantments.flatMap((enchantment) => {
+      const modifier = enchantment.modifiers?.find((candidate) => candidate.level === effectiveML)
+      if (!modifier) {
+        return []
       }
 
-      return value
-    }
+      const value = modifier.value
+      let displayValue: string
+      if (enchantment.modifierDice) {
+        displayValue = `${String(value)}${enchantment.modifierDice}`
+      } else if (value !== 0 && Math.abs(value) < 1) {
+        displayValue = `${String(Number((value * 100).toFixed(10)))}%`
+      } else {
+        displayValue = value > 0 ? `+${String(value)}` : String(value)
+      }
 
-    if (typeof value === 'number') {
-      return `+${String(value)}`
-    }
+      return [{ name: enchantment.name, value: displayValue }]
+    })
 
-    return value
-  }
-
-  // ----- Combined shard helpers -----
-  // Certain shard names represent a combination of two effects. When one of these shards is selected,
-  // we should display both effects with their ML-scaled values in the accordion header.
-  const COMBINED_SHARDS: Record<string, [string, string]> = {
-    "Champion's": ['Speed (Striding)', 'Combat Mastery'],
-    "Initiate's": ['Spell Penetration', 'Wizardry'],
-    Warded: ['Curse Resistance', 'Protection from Evil']
-    // Note: "Sabotaging", "Silver Flame's", and "Watchful" can be added here once their effect pairs are defined
-  }
-
-  const isCombinedShard = (name: string | null): name is keyof typeof COMBINED_SHARDS => {
-    if (!name) {
-      return false
-    }
-
-    return Object.hasOwn(COMBINED_SHARDS, name)
-  }
-
-  // Detect if a selected dataset entry represents a combined shard based on its own metadata
-  const isCombinedEntry = (name: string | null): boolean => {
-    if (!name) {
-      return false
-    }
-
-    const entry = enhancementByName.get(name)
-
-    if (!entry || !Array.isArray(entry.enchantments)) {
-      return false
-    }
-
-    // A combined shard will list multiple component effects under `enchantments`
-    return entry.enchantments.length >= 2
-  }
-
-  // Build a combined header string using the component effect names found in the selected entry's `enchantments` array.
-  // For each component name, we pull the ML-scaled stat from the single-effect dataset entry via getEnhancementDisplay.
-  const getCombinedDisplayFromEntry = (name: string, effectiveML: number): string => {
-    const entry = enhancementByName.get(name)
-
-    if (!entry || !Array.isArray(entry.enchantments) || entry.enchantments.length === 0) {
+    if (effects.length === 0) {
       return name
     }
 
-    // Take the first two components if more are present
-    const componentNames: string[] = entry.enchantments
-      .map((meta: Phase1EnchantmentMeta) => meta.name)
-      .filter((n): n is string => typeof n === 'string' && !!n)
-      .slice(0, 2)
-
-    const parts: string[] = []
-
-    for (const compName of componentNames) {
-      const enhancementDisplay: string | null = getEnhancementDisplay(compName, effectiveML)
-      if (enhancementDisplay) {
-        parts.push(enhancementDisplay)
-      }
+    if (entry.enchantments.length === 1) {
+      return `${name} ${effects[0].value}`
     }
 
-    return parts.length ? parts.join('; ') : name
-  }
-
-  const getCombinedDisplay = (name: string, effectiveML: number): string => {
-    const pair = COMBINED_SHARDS[name]
-
-    const [a, b] = pair
-    const aDisplay = getEnhancementDisplay(a, effectiveML)
-    const bDisplay = getEnhancementDisplay(b, effectiveML)
-    const parts: string[] = []
-
-    if (aDisplay) {
-      parts.push(aDisplay)
-    }
-
-    if (bDisplay) {
-      parts.push(bDisplay)
-    }
-
-    // Fallback to shard name if neither part resolved
-    return parts.length ? parts.join('; ') : name
+    return effects.map((effect) => `${effect.name} ${effect.value}`).join('; ')
   }
 
   // Build rows data (icon | name | qty) and shard level for a given enhancement name
@@ -765,39 +612,24 @@ const EssenceCrafting = () => {
 
       const materialsForBinding = bound ? entry.bound : entry.unbound
 
-      if (!materialsForBinding) {
-        return null
-      }
-
-      const shardLevel: number | null = typeof materialsForBinding.level === 'number' ? materialsForBinding.level : null
-      const essenceQty: number | null =
-        typeof materialsForBinding.essence === 'number' ? materialsForBinding.essence : null
-      const purifiedQty: number | null = materialsForBinding.purified ?? null
-      const collectibles: { name: string; qty: number }[] = Array.isArray(materialsForBinding.collectible)
-        ? materialsForBinding.collectible
-        : []
+      const shardLevel = materialsForBinding.level
+      const essenceQty = materialsForBinding.essence
+      const collectibles = materialsForBinding.collectible
 
       const rows: { name: string; qty: number }[] = []
 
-      if (essenceQty != null && essenceQty > 0) {
+      if (essenceQty > 0) {
         rows.push({
           name: toSingularName('Magic Item Essences'),
           qty: essenceQty
         })
       }
 
-      if (purifiedQty != null && purifiedQty > 0) {
-        rows.push({
-          name: toSingularName('Purified Eberron Dragonshard Fragments'),
-          qty: purifiedQty
-        })
-      }
-
       collectibles.forEach((collectible) => {
-        if (collectible.qty > 0 && collectible.name)
+        if (collectible.quantity > 0 && collectible.name)
           rows.push({
             name: toSingularName(collectible.name),
-            qty: collectible.qty
+            qty: collectible.quantity
           })
       })
 
@@ -987,25 +819,8 @@ const EssenceCrafting = () => {
     // Build list of accordion items to render
     const itemsToRender = selections
       .map((selection) => {
-        // Combined detection prefers dataset metadata, falls back to short-name mapping
-        const combinedByEntry = isCombinedEntry(selection.name)
-        const combinedByShortName = isCombinedShard(selection.name)
-        const combined = combinedByEntry || combinedByShortName
-
-        let display: string | null
-        if (selection.isMinLevel) {
-          display = `Minimum Level ${String(effectiveML)} Shard`
-        } else if (combinedByEntry) {
-          display = getCombinedDisplayFromEntry(selection.name ?? '', effectiveML)
-        } else if (combinedByShortName) {
-          display = getCombinedDisplay(selection.name ?? '', effectiveML)
-        } else {
-          display = getEnhancementDisplay(selection.name, effectiveML)
-        }
-
         return {
           ...selection,
-          isCombined: combined,
           // build both material sets; body will render both
           boundData: selection.isMinLevel
             ? buildMinLevelMaterials(effectiveML, true)
@@ -1013,11 +828,12 @@ const EssenceCrafting = () => {
           unboundData: selection.isMinLevel
             ? buildMinLevelMaterials(effectiveML, false)
             : buildMaterials(selection.name, false),
-          valueOnly: getEnhancementValueOnly(selection.name, effectiveML),
-          display: display
+          display: selection.isMinLevel
+            ? `Minimum Level ${String(effectiveML)} Shard`
+            : getEnhancementDisplay(selection.name, effectiveML)
         }
       })
-      // Apply ML gating: hide Insightful effects when effective ML < 10
+      // Apply the dataset's minimum item level.
       .filter(
         (entry) =>
           (entry.isMinLevel ?? entry.name) && (entry.isMinLevel ?? isEnhancementAllowedAtML(entry.name, effectiveML))
@@ -1025,7 +841,6 @@ const EssenceCrafting = () => {
       key: string
       label: string
       name: string
-      isCombined: boolean
       isMinLevel?: boolean
       boundData: {
         shardLevel: number
@@ -1035,7 +850,6 @@ const EssenceCrafting = () => {
         shardLevel: number
         rows: { name: string; qty: number }[]
       }
-      valueOnly: string | null
       display: string | null
     }[]
 
@@ -1317,6 +1131,13 @@ const EssenceCrafting = () => {
                   Known Issues / Bug Reports <FaArrowUpRightFromSquare size={10} />
                 </a>
               </small>
+              <small className='d-block opacity-75'>
+                Crafting data assistance provided by{' '}
+                <a href='https://dungeonhelper.com' target='_blank' rel='noreferrer'>
+                  Dungeon Helper
+                </a>
+                .
+              </small>
             </div>
             <div className='d-flex align-items-center justify-content-center gap-2 position-md-absolute end-0 me-3'>
               <Button
@@ -1344,8 +1165,6 @@ const EssenceCrafting = () => {
         </Card.Header>
 
         <Card.Body>
-          <EssenceCraftingWarning className='mb-3' />
-
           <Row>
             <Col lg={3} className='mb-3'>
               <Form.Group className='mb-3' controlId='master-min-level'>

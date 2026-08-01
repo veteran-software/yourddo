@@ -16,6 +16,11 @@ describe('permalink V2 payload helpers', () => {
   it('builds a versioned payload with setup metadata and items', () => {
     const setup = createDefaultSetup('setup-1', 'Setup 1')
     setup.slots[GearSlot.MainHand] = mockItem
+    setup.slottedEssenceEnchantments[mockItem.id] = {
+      prefix: 'Healthy',
+      suffix: 'False Life',
+      extra: null
+    }
     setup.artificerPet = initialPetState()
     setup.druidPet = initialPetState()
 
@@ -39,6 +44,10 @@ describe('permalink V2 payload helpers', () => {
   it('recognizes and decodes the V2 payload shape', () => {
     const setup = createDefaultSetup('setup-1', 'Setup 1')
     setup.slots[GearSlot.MainHand] = mockItem
+    setup.slottedEssenceEnchantments[mockItem.id] = {
+      prefix: 'Healthy',
+      suffix: 'False Life'
+    }
     setItemUpgradeState(setup.itemUpgrades, mockItem.id, 'reaperForge', 'reaper-ring-boost-3')
     setItemUpgradeState(setup.itemUpgrades, mockItem.id, 'nearlyComplete', {
       name: 'Strength +15',
@@ -57,6 +66,10 @@ describe('permalink V2 payload helpers', () => {
     expect(decoded.maxLevel).toBe(36)
     expect(decoded.slots[GearSlot.MainHand]?.id).toBe(mockItem.id)
     expect(decoded.slots[GearSlot.MainHand]?.material).toBe(mockItem.material)
+    expect(decoded.slottedEssenceEnchantments[mockItem.id]).toEqual({
+      prefix: 'Healthy',
+      suffix: 'False Life'
+    })
     expect(decoded.itemUpgrades[mockItem.id].reaperForge).toBe('reaper-ring-boost-3')
     expect(decoded.itemUpgrades[mockItem.id].nearlyComplete).toEqual({
       name: 'Strength +15',

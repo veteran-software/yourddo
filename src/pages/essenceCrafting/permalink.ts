@@ -9,12 +9,8 @@ import {
 import { ALL_SLOT_KEYS, DATASET, type ItemState } from './types.ts'
 
 // ----- Internal: runtime dictionaries and constants (computed once per module load) -----
-const ENHANCEMENT_NAME_TO_ID: Map<string, number> = (() => {
-  const names = DATASET.map((e) => e.name).toSorted((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }))
-  const map = new Map<string, number>()
-  names.forEach((n, i) => map.set(n, i))
-  return map
-})()
+const ENHANCEMENT_NAME_TO_RECIPE_ID = new Map(DATASET.map((entry) => [entry.name, entry.bound.recipeId]))
+const ENHANCEMENT_RECIPE_ID_TO_NAME = new Map(DATASET.map((entry) => [entry.bound.recipeId, entry.name]))
 
 const AUGMENT_NAME_TO_ID: Map<string, number> = (() => {
   const names = augmentMaster.map((a) => a.name).toSorted((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }))
@@ -49,23 +45,23 @@ const COLOR_FROM_CODE: string[] = Object.entries(COLOR_CODE)
   .sort((a, b) => a[1] - b[1])
   .map(([k]) => k)
 
-// ----- Types for compact v2 payload -----
-type V2ItemSlot = [
+// ----- Types for compact v3 payload -----
+type V3ItemSlot = [
   s: number, // slot index
   ml: number, // 0 = inherit, else explicit ML
   mark: 0 | 1, // hasCannithMark
-  p: number, // 0 = none, else enhancementId+1
-  su: number, // 0 = none, else enhancementId+1
-  x: number, // 0 = none, else enhancementId+1
+  p: number, // 0 = none, else bound recipeId
+  su: number, // 0 = none, else bound recipeId
+  x: number, // 0 = none, else bound recipeId
   aug: [color: number, augId: number, mode: 0 | 1, filters?: number[]][]
 ]
 
-interface V2Payload {
-  v: 2
+interface V3Payload {
+  v: 3
   ml: number
   a: number[] // active slot indices
   c: number[] // collapsed slot indices
-  i: V2ItemSlot[]
+  i: V3ItemSlot[]
 }
 
 export interface PermalinkStatePayload {
@@ -94,9 +90,9 @@ export const encodeEssencePermalink = (args: {
   const active = activeKeys.map((k) => SLOT_INDEX.get(k) ?? -1).filter((i) => i >= 0)
   const collapsed = collapsedKeys.map((k) => SLOT_INDEX.get(k) ?? -1).filter((i) => i >= 0)
 
-  const encEnh = (name: string | null): number => (name ? (ENHANCEMENT_NAME_TO_ID.get(name) ?? -1) + 1 : 0)
+  const encEnh = (name: string | null): number => (name ? (ENHANCEMENT_NAME_TO_RECIPE_ID.get(name) ?? 0) : 0)
 
-  const itemSlots: V2ItemSlot[] = active.map((slotIdx) => {
+  const itemSlots: V3ItemSlot[] = active.map((slotIdx) => {
     const slotKey = ALL_SLOT_KEYS[slotIdx].key
     const it = items[slotKey]
     const ml = it.minLevelOverride ?? 0
@@ -104,7 +100,7 @@ export const encodeEssencePermalink = (args: {
     const p = encEnh(it.prefix)
     const su = encEnh(it.suffix)
     const x = encEnh(it.hasCannithMark ? it.extra : null)
-    const aug: V2ItemSlot[6] = it.augmentSlots.map((s) => {
+    const aug: V3ItemSlot[6] = it.augmentSlots.map((s) => {
       const color = COLOR_CODE[s.slotType] ?? 0
       const augId = s.selectedAugment ? (AUGMENT_NAME_TO_ID.get(s.selectedAugment.name) ?? -1) + 1 : 0
       const mode: 0 | 1 = s.filterMode === 'AND' ? 1 : 0
@@ -114,28 +110,24 @@ export const encodeEssencePermalink = (args: {
     return [slotIdx, ml, mark, p, su, x, aug]
   })
 
-  const payload: V2Payload = { v: 2, ml: masterMinLevel, a: active, c: collapsed, i: itemSlots }
+  const payload: V3Payload = { v: 3, ml: masterMinLevel, a: active, c: collapsed, i: itemSlots }
   return LZString.compressToEncodedURIComponent(JSON.stringify(payload))
 }
 
 // ----- Decoding -----
 
-// Force reload
 export const tryDecodeEssencePermalink = (cc: string): { ok: true; data: PermalinkStatePayload } | { ok: false } => {
   try {
     const text = LZString.decompressFromEncodedURIComponent(cc)
     if (!text) return { ok: false }
     const obj = JSON.parse(text) as unknown
     const v = (obj as { v?: number }).v
-    if (v !== 2) return { ok: false }
-    const p = obj as V2Payload
+    if (v !== 3) return { ok: false }
+    const p = obj as V3Payload
 
     const activeKeysDecoded = p.a.map((i) => ALL_SLOT_KEYS[i]?.key).filter(Boolean)
     const collapsedDecoded = p.c.map((i) => ALL_SLOT_KEYS[i]?.key).filter(Boolean)
 
-    const enhById = new Map<number, string>(
-      Array.from(ENHANCEMENT_NAME_TO_ID.entries()).map(([name, id]) => [id, name])
-    )
     const augById = new Map<number, string>(Array.from(AUGMENT_NAME_TO_ID.entries()).map(([name, id]) => [id, name]))
     const effectById = new Map<number, string>(Array.from(EFFECT_NAME_TO_ID.entries()).map(([name, id]) => [id, name]))
 
@@ -145,7 +137,7 @@ export const tryDecodeEssencePermalink = (cc: string): { ok: true; data: Permali
       const slotKey = ALL_SLOT_KEYS[slotIdx]?.key
       if (!slotKey) return
 
-      const decodeEnh = (n: number): string | null => (n > 0 ? (enhById.get(n - 1) ?? null) : null)
+      const decodeEnh = (n: number): string | null => (n > 0 ? (ENHANCEMENT_RECIPE_ID_TO_NAME.get(n) ?? null) : null)
       const item: ItemState = {
         slotKey,
         prefix: decodeEnh(pId),

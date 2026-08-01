@@ -15,37 +15,12 @@ import {
   WEAPON_TYPES
 } from './types'
 
-export interface EssenceEnchantment {
-  id: string
-  sourceType: string
-  effectId: string
-  enchantmentName: string
-  bonusType: string
-  slotId: string
-  affixType: string
-  group: string
-  enchantments?: LootEnchantment[]
-  scalingStats?: (number | string)[]
-  statModified?: string | string[]
-  bonus?: string
-  shardName?: string
-}
-
 // Use Vite's glob import to gather all runtime JSON files from the generator output.
 // Note: Vite requires a literal string here (no template strings/variables).
 // Path is relative to this file: src/pages/gearPlanner -> src/data/loot/runtime
-const dataModules = import.meta.glob(
-  [
-    '../../data/loot/runtime/*.json',
-    '../../data/deckOfManyCurses.json',
-    '../../data/essenceCrafting/runtime/planner_entries.json',
-    '../../data/essenceCrafting/runtime/enchantments.json',
-    '../../data/essenceCrafting/essenceEnhancements.phase1.json'
-  ],
-  {
-    eager: true
-  }
-)
+const dataModules = import.meta.glob(['../../data/loot/runtime/*.json', '../../data/deckOfManyCurses.json'], {
+  eager: true
+})
 
 const nfRecipeStation = (nearlyFinishedRecipesData as { reforgingStation: { item: string }[] }).reforgingStation
 const nfItemNamesSet = new Set(nfRecipeStation.map((r) => r.item))
@@ -113,124 +88,6 @@ export const loadFiligreeSets = (): Promise<{ name: string }[]> => {
     return Promise.resolve(module.default as { name: string }[])
   }
 
-  return Promise.resolve([])
-}
-
-export const loadEssenceEnchantments = (): Promise<EssenceEnchantment[]> => {
-  const plannerModule = dataModules['../../data/essenceCrafting/runtime/planner_entries.json']
-  const enchantmentsModule = dataModules['../../data/essenceCrafting/runtime/enchantments.json']
-  const phase1Module = dataModules['../../data/essenceCrafting/essenceEnhancements.phase1.json']
-
-  if (
-    plannerModule &&
-    typeof plannerModule === 'object' &&
-    'default' in plannerModule &&
-    enchantmentsModule &&
-    typeof enchantmentsModule === 'object' &&
-    'default' in enchantmentsModule &&
-    phase1Module &&
-    typeof phase1Module === 'object' &&
-    'default' in phase1Module
-  ) {
-    const entries = plannerModule.default as EssenceEnchantment[]
-    const enchantments = enchantmentsModule.default as {
-      effectId: string
-      name: string
-      bonus?: string | number
-    }[]
-
-    const phase1Data = phase1Module.default as {
-      name: string
-      stat?: (number | string)[]
-      enchantments?: {
-        name: string
-        statModified?: string
-        bonus?: string
-        stats?: (number | string)[]
-      }[]
-    }[]
-
-    const phase1Map = new Map<
-      string,
-      {
-        stat: (number | string)[]
-        statModified?: string
-        bonus?: string
-        shardName?: string
-        allEnchantments?: {
-          name: string
-          statModified?: string
-          bonus?: string
-          stats?: (number | string)[]
-        }[]
-      }
-    >()
-
-    const normalizeEffectName = (name: string): string => {
-      return name
-        .toLowerCase()
-        .replaceAll("'s", '-s') // match "champion-s"
-        .replaceAll('&', ' ')
-        .replaceAll(/[^a-z0-9]/g, ' ')
-        .split(' ')
-        .filter((s) => s.length > 0)
-        .join('-')
-    }
-
-    phase1Data.forEach((d) => {
-      if (d.stat) {
-        const info = {
-          stat: d.stat,
-          statModified: d.enchantments?.[0]?.statModified,
-          bonus: d.enchantments?.[0]?.bonus,
-          shardName: d.name,
-          allEnchantments: d.enchantments
-        }
-
-        phase1Map.set(d.name.toLowerCase(), info)
-        phase1Map.set(normalizeEffectName(d.name), info)
-      }
-    })
-
-    // Map the simple effect names to LootEnchantment objects
-    return Promise.resolve(
-      entries.map((entry) => {
-        const matchingEnchantments = enchantments.filter((e) => e.effectId === entry.effectId)
-        const phase1Info =
-          phase1Map.get(entry.effectId.toLowerCase()) ??
-          phase1Map.get(normalizeEffectName(entry.effectId)) ??
-          phase1Map.get(entry.enchantmentName.toLowerCase()) ??
-          phase1Map.get(normalizeEffectName(entry.enchantmentName))
-
-        const scalingStats = phase1Info?.stat
-        const statModified = phase1Info?.statModified ?? entry.statModified
-        const bonus = phase1Info?.bonus ?? entry.bonus
-        const shardName = phase1Info?.shardName ?? entry.shardName
-
-        const finalEnchantments =
-          phase1Info?.allEnchantments && phase1Info.allEnchantments.length > 0
-            ? phase1Info.allEnchantments.map((e) => ({
-                name: e.name,
-                bonus: e.bonus,
-                statModified: e.statModified,
-                stats: e.stats
-              }))
-            : matchingEnchantments.map((e) => ({
-                name: e.name,
-                bonus: e.bonus
-              }))
-
-        return {
-          ...entry,
-          enchantments: finalEnchantments,
-          scalingStats,
-          statModified,
-          bonus,
-          shardName
-        }
-      })
-    )
-  }
   return Promise.resolve([])
 }
 

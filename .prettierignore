@@ -6,3 +6,4 @@ coverage
 .pnp.*
 yarn.lock
 public
+essenceCrafting.v2.json
