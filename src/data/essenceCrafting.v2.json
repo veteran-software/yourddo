@@ -19736,7 +19736,7 @@
   },
   {
     "name": "Airwarded",
-    "minItemLevel": 1,
+    "minItemLevel": 20,
     "bound": {
       "recipeId": 2030301381,
       "level": 400,
@@ -19813,6 +19813,7 @@
   },
   {
     "name": "Anchored",
+    "minItemLevel": 20,
     "bound": {
       "recipeId": 2030301413,
       "level": 400,
@@ -19889,6 +19890,7 @@
   },
   {
     "name": "Annihilating",
+    "minItemLevel": 20,
     "bound": {
       "recipeId": 2030301358,
       "level": 400,
@@ -19966,6 +19968,7 @@
   },
   {
     "name": "Arcanist's",
+    "minItemLevel": 20,
     "bound": {
       "recipeId": 2030301282,
       "level": 400,
@@ -20042,6 +20045,7 @@
   },
   {
     "name": "Armor Destroying",
+    "minItemLevel": 20,
     "bound": {
       "recipeId": 2030301262,
       "level": 400,
@@ -20072,29 +20076,30 @@
         "name": "Fortification Bypass",
         "bonus": "Enhancement",
         "modifiers": [
-          {"level": 20, "value": 15},
-          {"level": 21, "value": 15},
-          {"level": 22, "value": 16},
-          {"level": 23, "value": 17},
-          {"level": 24, "value": 17},
-          {"level": 25, "value": 18},
-          {"level": 26, "value": 18},
-          {"level": 27, "value": 19},
-          {"level": 28, "value": 20},
-          {"level": 29, "value": 20},
-          {"level": 30, "value": 21},
-          {"level": 31, "value": 21},
-          {"level": 32, "value": 22},
-          {"level": 33, "value": 23},
-          {"level": 34, "value": 23},
-          {"level": 35, "value": 24},
-          {"level": 36, "value": 24}
+          {"level": 20, "value": 0.15},
+          {"level": 21, "value": 0.15},
+          {"level": 22, "value": 0.16},
+          {"level": 23, "value": 0.17},
+          {"level": 24, "value": 0.17},
+          {"level": 25, "value": 0.18},
+          {"level": 26, "value": 0.18},
+          {"level": 27, "value": 0.19},
+          {"level": 28, "value": 0.20},
+          {"level": 29, "value": 0.20},
+          {"level": 30, "value": 0.21},
+          {"level": 31, "value": 0.21},
+          {"level": 32, "value": 0.22},
+          {"level": 33, "value": 0.23},
+          {"level": 34, "value": 0.23},
+          {"level": 35, "value": 0.24},
+          {"level": 36, "value": 0.24}
         ]
       }
     ]
   },
   {
     "name": "Blasphemous",
+    "minItemLevel": 20,
     "bound": {
       "recipeId": 2030301294,
       "level": 400,
@@ -20173,6 +20178,7 @@
   },
   {
     "name": "Bullying",
+    "minItemLevel": 20,
     "bound": {
       "recipeId": 2030301389,
       "level": 400,
@@ -20203,23 +20209,23 @@
         "name": "Melee Threat",
         "bonus": "Enhancement",
         "modifiers": [
-          {"level": 20, "value": 0.91},
-          {"level": 21, "value": 0.94},
-          {"level": 22, "value": 0.98},
-          {"level": 23, "value": 1.01},
-          {"level": 24, "value": 1.04},
-          {"level": 25, "value": 1.07},
-          {"level": 26, "value": 1.11},
-          {"level": 27, "value": 1.14},
-          {"level": 28, "value": 1.17},
-          {"level": 29, "value": 1.20},
-          {"level": 30, "value": 1.24},
-          {"level": 31, "value": 1.27},
-          {"level": 32, "value": 1.30},
-          {"level": 33, "value": 1.33},
-          {"level": 34, "value": 1.37},
-          {"level": 35, "value": 1.40},
-          {"level": 36, "value": 1.43}
+          {"level": 20, "value": 0.0091},
+          {"level": 21, "value": 0.0094},
+          {"level": 22, "value": 0.0098},
+          {"level": 23, "value": 0.0101},
+          {"level": 24, "value": 0.0104},
+          {"level": 25, "value": 0.0107},
+          {"level": 26, "value": 0.0111},
+          {"level": 27, "value": 0.0114},
+          {"level": 28, "value": 0.0117},
+          {"level": 29, "value": 0.0120},
+          {"level": 30, "value": 0.0124},
+          {"level": 31, "value": 0.0127},
+          {"level": 32, "value": 0.0130},
+          {"level": 33, "value": 0.0133},
+          {"level": 34, "value": 0.0137},
+          {"level": 35, "value": 0.0140},
+          {"level": 36, "value": 0.0143}
         ]
       },
       {
@@ -20249,6 +20255,7 @@
   },
   {
     "name": "Celebrated",
+    "minItemLevel": 20,
     "bound": {
       "recipeId": 2030301397,
       "level": 400,
@@ -20440,6 +20447,7 @@
   },
   {
     "name": "Champion's",
+    "minItemLevel": 20,
     "bound": {
       "recipeId": 2030301283,
       "level": 400,
@@ -20585,6 +20593,7 @@
   },
   {
     "name": "Crusading",
+    "minItemLevel": 20,
     "bound": {
       "recipeId": 2030301401,
       "level": 400,
@@ -20663,6 +20672,7 @@
   },
   {
     "name": "Destroying",
+    "minItemLevel": 20,
     "bound": {
       "recipeId": 2030301278,
       "level": 400,
