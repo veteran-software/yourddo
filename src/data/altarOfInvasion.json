@@ -1,0 +1,3711 @@
+[
+  {
+    "recipeId": 2030078607,
+    "name": "Inferior Focus of Earth",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Shavarath Low Energy Cell",
+      "Small Glowing Arrowhead",
+      "Small Gnawed Bone",
+      "Small Length of Infernal Chain",
+      "Small Twisted Shrapnel"
+    ],
+    "removed": null,
+    "added": null,
+    "produces": "Inferior Focus of Earth",
+    "productEffect": "An extremely heavy stone-like object that is reminiscent of a miniature mountain, this rock appears to contain many different minerals and substances.  This item is humming like the Altar of Invasion.",
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078608,
+    "name": "Inferior Focus of Air",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Shavarath Low Energy Cell",
+      "Small Glowing Arrowhead",
+      "Small Gnawed Bone",
+      "Small Sulfurous Stone",
+      "Small Twisted Shrapnel"
+    ],
+    "removed": null,
+    "added": null,
+    "produces": "Inferior Focus of Air",
+    "productEffect": "Like a flighty, swirling, miniature tornado, this object sounds like the wind and is very difficult to hold onto.  This item is humming like the Altar of Invasion.",
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078609,
+    "name": "Inferior Focus of Fire",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Shavarath Low Energy Cell",
+      "Small Devil Scales",
+      "Small Glowing Arrowhead",
+      "Small Gnawed Bone",
+      "Small Twisted Shrapnel"
+    ],
+    "removed": null,
+    "added": null,
+    "produces": "Inferior Focus of Fire",
+    "productEffect": "Alternating between pleasantly warm and hot enough to burn, this object is like an inextinguishable flame that pops and crackles occasionally.  This item is humming like the Altar of Invasion.",
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078610,
+    "name": "Inferior Focus of Water",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Shavarath Low Energy Cell",
+      "Small Devil Scales",
+      "Small Glowing Arrowhead",
+      "Small Gnawed Bone",
+      "Small Length of Infernal Chain"
+    ],
+    "removed": null,
+    "added": null,
+    "produces": "Inferior Focus of Water",
+    "productEffect": "A swirling, dynamic, miniature whirlpool, this object has a lot of power and inertia and seems to resist being moved around.  This item is humming like the Altar of Invasion.",
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078611,
+    "name": "Inferior Focus of Positive Energy",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Shavarath Low Energy Cell",
+      "Small Devil Scales",
+      "Small Glowing Arrowhead",
+      "Small Gnawed Bone",
+      "Small Sulfurous Stone"
+    ],
+    "removed": null,
+    "added": null,
+    "produces": "Inferior Focus of Positive Energy",
+    "productEffect": "This bright, heavenly point of light is almost too bright to look at, but is easy to hold and exudes a wonderfully pleasant, uplifting energy.  This item is humming like the Altar of Invasion.",
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078612,
+    "name": "Inferior Focus of Negative Energy",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Shavarath Low Energy Cell",
+      "Small Glowing Arrowhead",
+      "Small Length of Infernal Chain",
+      "Small Sulfurous Stone",
+      "Small Twisted Shrapnel"
+    ],
+    "removed": null,
+    "added": null,
+    "produces": "Inferior Focus of Negative Energy",
+    "productEffect": "This small, inky miasma seems to drip with negativity.  If you look too long at the center, you begin to feel slightly sick.  This item is humming like the Altar of Invasion.",
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078613,
+    "name": "Diluted Material Essence",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Shavarath Low Energy Cell",
+      "Small Devil Scales",
+      "Small Glowing Arrowhead",
+      "Small Sulfurous Stone",
+      "Small Twisted Shrapnel"
+    ],
+    "removed": null,
+    "added": null,
+    "produces": "Diluted Material Essence",
+    "productEffect": "This roughly spherical, dark gray lump of matter takes on the rough impression of any object that brushes close by.  This item is humming like the Altar of Invasion.",
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078614,
+    "name": "Diluted Ethereal Essence",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Shavarath Low Energy Cell",
+      "Small Devil Scales",
+      "Small Glowing Arrowhead",
+      "Small Length of Infernal Chain",
+      "Small Sulfurous Stone"
+    ],
+    "removed": null,
+    "added": null,
+    "produces": "Diluted Ethereal Essence",
+    "productEffect": "An amorphous, hazy, cloud-like thing with tendrils and wisps that are constantly moving about.  If you try to study the object closely, you find you can no longer maintain your concentration and must shift your focus.  This item is humming like the Altar of Invasion.",
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078615,
+    "name": "Cloudy Gem of Dominion",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Shavarath Low Energy Cell",
+      "Small Devil Scales",
+      "Small Gnawed Bone",
+      "Small Length of Infernal Chain",
+      "Small Twisted Shrapnel"
+    ],
+    "removed": null,
+    "added": null,
+    "produces": "Cloudy Gem of Dominion",
+    "productEffect": "This smoothly polished gem is a swirling crimson color and has a glistening black star in the center.  Tightly grasping this gem makes you feel powerful and confident.  This item is humming like the Altar of Invasion.",
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078616,
+    "name": "Cloudy Gem of Opposition",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Shavarath Low Energy Cell",
+      "Small Devil Scales",
+      "Small Gnawed Bone",
+      "Small Length of Infernal Chain",
+      "Small Sulfurous Stone"
+    ],
+    "removed": null,
+    "added": null,
+    "produces": "Cloudy Gem of Opposition",
+    "productEffect": "This smoothly polished gem is a pale blue color and has a silvery star in the center.  Tightly grasping this gem makes you feel stalwart and resolute.  This item is humming like the Altar of Invasion.",
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078617,
+    "name": "Cloudy Gem of Escalation",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Shavarath Low Energy Cell",
+      "Small Devil Scales",
+      "Small Length of Infernal Chain",
+      "Small Sulfurous Stone",
+      "Small Twisted Shrapnel"
+    ],
+    "removed": null,
+    "added": null,
+    "produces": "Cloudy Gem of Escalation",
+    "productEffect": "This smoothly polished gem is yellow in color but occasionally glints with bright orange and has a fiery star in the center.  Tightly grasping this gem fills you with ambition and makes you feel rather light-headed.  This item is humming like the Altar of Invasion.",
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078618,
+    "name": "Material Earth Dominion Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Dominion",
+      "Diluted Material Essence",
+      "Inferior Focus of Earth",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Earth Dominion"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078619,
+    "name": "Material Earth Opposition Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Opposition",
+      "Diluted Material Essence",
+      "Inferior Focus of Earth",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Earth Opposition"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078620,
+    "name": "Material Earth Escalation Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Escalation",
+      "Diluted Material Essence",
+      "Inferior Focus of Earth",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Earth Escalation"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078621,
+    "name": "Ethereal Earth Dominion Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Dominion",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Earth",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Earth Dominion"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078622,
+    "name": "Ethereal Earth Opposition Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Opposition",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Earth",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Earth Opposition"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078623,
+    "name": "Ethereal Earth Escalation Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Escalation",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Earth",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Earth Escalation"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078624,
+    "name": "Material Air Dominion Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Dominion",
+      "Diluted Material Essence",
+      "Inferior Focus of Air",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Air Dominion"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078625,
+    "name": "Material Air Opposition Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Opposition",
+      "Diluted Material Essence",
+      "Inferior Focus of Air",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Air Opposition"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078626,
+    "name": "Material Air Escalation Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Escalation",
+      "Diluted Material Essence",
+      "Inferior Focus of Air",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Air Escalation"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078627,
+    "name": "Ethereal Air Dominion Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Dominion",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Air",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Air Dominion"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078628,
+    "name": "Ethereal Air Opposition Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Opposition",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Air",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Air Opposition"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078629,
+    "name": "Ethereal Air Escalation Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Escalation",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Air",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Air Escalation"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078630,
+    "name": "Material Fire Dominion Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Dominion",
+      "Diluted Material Essence",
+      "Inferior Focus of Fire",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Fire Dominion"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078631,
+    "name": "Material Fire Opposition Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Opposition",
+      "Diluted Material Essence",
+      "Inferior Focus of Fire",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Fire Opposition"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078632,
+    "name": "Material Fire Escalation Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Escalation",
+      "Diluted Material Essence",
+      "Inferior Focus of Fire",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Fire Escalation"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078633,
+    "name": "Ethereal Fire Dominion Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Dominion",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Fire",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Fire Dominion"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078634,
+    "name": "Ethereal Fire Opposition Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Opposition",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Fire",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Fire Opposition"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078635,
+    "name": "Ethereal Fire Escalation Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Escalation",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Fire",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Fire Escalation"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078636,
+    "name": "Material Water Dominion Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Dominion",
+      "Diluted Material Essence",
+      "Inferior Focus of Water",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Water Dominion"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078637,
+    "name": "Material Water Opposition Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Opposition",
+      "Diluted Material Essence",
+      "Inferior Focus of Water",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Water Opposition"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078638,
+    "name": "Material Water Escalation Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Escalation",
+      "Diluted Material Essence",
+      "Inferior Focus of Water",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Water Escalation"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078639,
+    "name": "Ethereal Water Dominion Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Dominion",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Water",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Water Dominion"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078640,
+    "name": "Ethereal Water Opposition Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Opposition",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Water",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Water Opposition"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078641,
+    "name": "Ethereal Water Escalation Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Escalation",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Water",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Water Escalation"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078642,
+    "name": "Material Positive Energy Dominion Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Dominion",
+      "Diluted Material Essence",
+      "Inferior Focus of Positive Energy",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Positive Energy Dominion"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078643,
+    "name": "Material Positive Energy Opposition Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Opposition",
+      "Diluted Material Essence",
+      "Inferior Focus of Positive Energy",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Positive Energy Opposition"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078644,
+    "name": "Material Positive Energy Escalation Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Escalation",
+      "Diluted Material Essence",
+      "Inferior Focus of Positive Energy",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Positive Energy Escalation"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078645,
+    "name": "Ethereal Positive Energy Dominion Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Dominion",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Positive Energy",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Positive Energy Dominion"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078646,
+    "name": "Ethereal Positive Energy Opposition Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Opposition",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Positive Energy",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Positive Energy Opposition"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078647,
+    "name": "Ethereal Positive Energy Escalation Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Escalation",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Positive Energy",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Positive Energy Escalation"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078648,
+    "name": "Material Negative Energy Dominion Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Dominion",
+      "Diluted Material Essence",
+      "Inferior Focus of Negative Energy",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Negative Energy Dominion"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078649,
+    "name": "Material Negative Energy Opposition Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Opposition",
+      "Diluted Material Essence",
+      "Inferior Focus of Negative Energy",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Negative Energy Opposition"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078650,
+    "name": "Material Negative Energy Escalation Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Escalation",
+      "Diluted Material Essence",
+      "Inferior Focus of Negative Energy",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Material Negative Energy Escalation"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078651,
+    "name": "Ethereal Negative Energy Dominion Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Dominion",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Negative Energy",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Negative Energy Dominion"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078652,
+    "name": "Ethereal Negative Energy Opposition Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Opposition",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Negative Energy",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Negative Energy Opposition"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078653,
+    "name": "Ethereal Negative Energy Escalation Shard of Power",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Cloudy Gem of Escalation",
+      "Diluted Ethereal Essence",
+      "Inferior Focus of Negative Energy",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Unimbued Dormant Shard",
+    "added": [
+      {
+        "name": "Ethereal Negative Energy Escalation"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078654,
+    "name": "Material Earth Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Earth Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Acid"
+      },
+      {
+        "name": "Earth Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078655,
+    "name": "Material Earth Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Earth Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Acid Absorption",
+        "modifier": -10
+      },
+      {
+        "name": "Earth Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078656,
+    "name": "Material Earth Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Earth Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Constitution",
+        "modifier": 6
+      },
+      {
+        "name": "Earth Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078657,
+    "name": "Ethereal Earth Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Earth Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Corrosion"
+      },
+      {
+        "name": "Earth Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078658,
+    "name": "Ethereal Earth Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Earth Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Heightened Awareness",
+        "modifier": 1
+      },
+      {
+        "name": "Earth Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078659,
+    "name": "Ethereal Earth Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Earth Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Wisdom",
+        "modifier": 6
+      },
+      {
+        "name": "Earth Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078660,
+    "name": "Material Air Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Air Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Shock"
+      },
+      {
+        "name": "Air Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078661,
+    "name": "Material Air Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Air Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Electricity Absorption",
+        "modifier": -10
+      },
+      {
+        "name": "Air Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078662,
+    "name": "Material Air Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Air Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Dexterity",
+        "modifier": 6
+      },
+      {
+        "name": "Air Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078663,
+    "name": "Ethereal Air Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Air Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Magnetism"
+      },
+      {
+        "name": "Air Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078664,
+    "name": "Ethereal Air Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Air Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Heightened Awareness",
+        "modifier": 1
+      },
+      {
+        "name": "Air Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078665,
+    "name": "Ethereal Air Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Air Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Charisma",
+        "modifier": 6
+      },
+      {
+        "name": "Air Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078666,
+    "name": "Material Fire Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Fire Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Flaming"
+      },
+      {
+        "name": "Fire Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078667,
+    "name": "Material Fire Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Fire Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Fire Absorption",
+        "modifier": -10
+      },
+      {
+        "name": "Fire Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078668,
+    "name": "Material Fire Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Fire Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Dexterity",
+        "modifier": 6
+      },
+      {
+        "name": "Fire Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078669,
+    "name": "Ethereal Fire Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Fire Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Combustion"
+      },
+      {
+        "name": "Fire Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078670,
+    "name": "Ethereal Fire Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Fire Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Heightened Awareness",
+        "modifier": 1
+      },
+      {
+        "name": "Fire Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078671,
+    "name": "Ethereal Fire Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Fire Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Intelligence",
+        "modifier": 6
+      },
+      {
+        "name": "Fire Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078672,
+    "name": "Material Water Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Water Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Frost"
+      },
+      {
+        "name": "Water Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078673,
+    "name": "Material Water Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Water Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Cold Absorption",
+        "modifier": -10
+      },
+      {
+        "name": "Water Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078674,
+    "name": "Material Water Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Water Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Strength",
+        "modifier": 6
+      },
+      {
+        "name": "Water Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078675,
+    "name": "Ethereal Water Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Water Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Glaciation"
+      },
+      {
+        "name": "Water Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078676,
+    "name": "Ethereal Water Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Water Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Heightened Awareness",
+        "modifier": 1
+      },
+      {
+        "name": "Water Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078677,
+    "name": "Ethereal Water Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Water Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Wisdom",
+        "modifier": 6
+      },
+      {
+        "name": "Water Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078678,
+    "name": "Material Positive Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Positive Energy Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Holy"
+      },
+      {
+        "name": "Positive Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078679,
+    "name": "Material Positive Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Positive Energy Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Healing Amplification: +20",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Positive Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078680,
+    "name": "Material Positive Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Positive Energy Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Constitution",
+        "modifier": 6
+      },
+      {
+        "name": "Positive Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078681,
+    "name": "Ethereal Positive Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Positive Energy Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Devotion"
+      },
+      {
+        "name": "Positive Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078682,
+    "name": "Ethereal Positive Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Positive Energy Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Heightened Awareness",
+        "modifier": 1
+      },
+      {
+        "name": "Positive Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078683,
+    "name": "Ethereal Positive Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Positive Energy Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Charisma",
+        "modifier": 6
+      },
+      {
+        "name": "Positive Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078684,
+    "name": "Material Negative Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Negative Energy Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Unholy"
+      },
+      {
+        "name": "Negative Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078685,
+    "name": "Material Negative Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Negative Energy Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Negative Energy Absorption:",
+        "modifier": 30
+      },
+      {
+        "name": "Negative Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078686,
+    "name": "Material Negative Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Negative Energy Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Strength",
+        "modifier": 6
+      },
+      {
+        "name": "Negative Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078687,
+    "name": "Ethereal Negative Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Negative Energy Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Nullification"
+      },
+      {
+        "name": "Negative Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078688,
+    "name": "Ethereal Negative Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Negative Energy Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Heightened Awareness",
+        "modifier": 1
+      },
+      {
+        "name": "Negative Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078689,
+    "name": "Ethereal Negative Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Negative Energy Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Intelligence",
+        "modifier": 6
+      },
+      {
+        "name": "Negative Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078985,
+    "name": "Material Earth Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Earth Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Minor Acid Guard"
+      },
+      {
+        "name": "Earth Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078986,
+    "name": "Material Earth Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Earth Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Greater Acid Resistance"
+      },
+      {
+        "name": "Earth Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078987,
+    "name": "Material Earth Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Earth Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Elemental Energy"
+      },
+      {
+        "name": "Constitution Skills -",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Earth Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078988,
+    "name": "Ethereal Earth Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Earth Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Acid Lore III"
+      },
+      {
+        "name": "Earth Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078989,
+    "name": "Ethereal Earth Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Earth Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Fortitude Save",
+        "modifier": 5
+      },
+      {
+        "name": "Earth Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078990,
+    "name": "Ethereal Earth Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Earth Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Wizardry VI"
+      },
+      {
+        "name": "Wisdom Skills -",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Earth Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078991,
+    "name": "Material Air Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Air Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Minor Lightning Guard"
+      },
+      {
+        "name": "Air Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078992,
+    "name": "Material Air Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Air Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Greater Lightning Resistance"
+      },
+      {
+        "name": "Air Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078993,
+    "name": "Material Air Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Air Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Elemental Energy"
+      },
+      {
+        "name": "Dexterity Skills -",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Air Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078994,
+    "name": "Ethereal Air Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Air Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Lightning Lore III"
+      },
+      {
+        "name": "Air Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078995,
+    "name": "Ethereal Air Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Air Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Reflex Save",
+        "modifier": 5
+      },
+      {
+        "name": "Air Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078996,
+    "name": "Ethereal Air Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Air Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Wizardry VI"
+      },
+      {
+        "name": "Charisma Skills -",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Air Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078997,
+    "name": "Material Fire Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Fire Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Minor Fire Guard"
+      },
+      {
+        "name": "Fire Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078998,
+    "name": "Material Fire Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Fire Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Greater Fire Resistance"
+      },
+      {
+        "name": "Fire Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030078999,
+    "name": "Material Fire Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Fire Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Elemental Energy"
+      },
+      {
+        "name": "Dexterity Skills -",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Fire Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030079000,
+    "name": "Ethereal Fire Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Fire Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Fire Lore III"
+      },
+      {
+        "name": "Fire Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030079001,
+    "name": "Ethereal Fire Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Fire Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Reflex Save",
+        "modifier": 5
+      },
+      {
+        "name": "Fire Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080279,
+    "name": "Ethereal Fire Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Fire Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Wizardry VI"
+      },
+      {
+        "name": "Intelligence Skills -",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Fire Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080280,
+    "name": "Material Water Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Water Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Minor Ice Guard"
+      },
+      {
+        "name": "Water Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080281,
+    "name": "Material Water Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Water Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Greater Cold Resistance"
+      },
+      {
+        "name": "Water Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080282,
+    "name": "Material Water Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Water Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Elemental Energy"
+      },
+      {
+        "name": "Strength Skills -",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Water Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080283,
+    "name": "Ethereal Water Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Water Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Ice Lore III"
+      },
+      {
+        "name": "Water Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080284,
+    "name": "Ethereal Water Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Water Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Will Save",
+        "modifier": 5
+      },
+      {
+        "name": "Water Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080285,
+    "name": "Ethereal Water Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Water Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Wizardry VI"
+      },
+      {
+        "name": "Wisdom Skills -",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Water Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080286,
+    "name": "Material Positive Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Positive Energy Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Minor Good Guard"
+      },
+      {
+        "name": "Positive Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080287,
+    "name": "Material Positive Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Positive Energy Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Lesser Regeneration"
+      },
+      {
+        "name": "Positive Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080288,
+    "name": "Material Positive Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Positive Energy Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Elemental Energy"
+      },
+      {
+        "name": "Constitution Skills -",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Positive Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080289,
+    "name": "Ethereal Positive Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Positive Energy Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Healing Lore III"
+      },
+      {
+        "name": "Positive Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080290,
+    "name": "Ethereal Positive Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Positive Energy Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Will Save",
+        "modifier": 5
+      },
+      {
+        "name": "Positive Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080291,
+    "name": "Ethereal Positive Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Positive Energy Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Wizardry VI"
+      },
+      {
+        "name": "Charisma Skills -",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Positive Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080292,
+    "name": "Material Negative Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Negative Energy Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Minor Evil Guard"
+      },
+      {
+        "name": "Negative Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080293,
+    "name": "Material Negative Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Negative Energy Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Blindness Immunity"
+      },
+      {
+        "name": "Proof Against Disease",
+        "modifier": 6
+      },
+      {
+        "name": "Negative Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080294,
+    "name": "Material Negative Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Material Negative Energy Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Elemental Energy"
+      },
+      {
+        "name": "Strength Skills -",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Negative Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080295,
+    "name": "Ethereal Negative Dominion Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Negative Energy Dominion Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Void Lore III"
+      },
+      {
+        "name": "Negative Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080296,
+    "name": "Ethereal Negative Opposition Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Negative Energy Opposition Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Fortitude Save",
+        "modifier": 5
+      },
+      {
+        "name": "Negative Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  },
+  {
+    "recipeId": 2030080297,
+    "name": "Ethereal Negative Escalation Weapon Upgrade",
+    "deviceId": 2030078461,
+    "device": "Altar of Invasion",
+    "ingredients": [
+      "Ethereal Negative Energy Escalation Shard of Power",
+      "Shard of Power",
+      "Shavarath Low Energy Cell"
+    ],
+    "removed": "Upgrade 0",
+    "added": [
+      {
+        "name": "Upgrade",
+        "modifier": 1
+      },
+      {
+        "name": "Wizardry VI"
+      },
+      {
+        "name": "Intelligence Skills -",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Negative Energy Affinity"
+      },
+      {
+        "name": "Bound on Acquire"
+      }
+    ],
+    "produces": null,
+    "productEffect": null,
+    "essenceCraftingLevel": null,
+    "craftingSchool": null,
+    "minItemLevel": null,
+    "grants": []
+  }
+]
