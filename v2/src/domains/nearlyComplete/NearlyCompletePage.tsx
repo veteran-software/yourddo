@@ -1,6 +1,7 @@
 import {
   Alert,
   Badge,
+  Button,
   Center,
   Divider,
   Group,
@@ -18,18 +19,21 @@ import ToolLayout from '../../shared/layout/ToolLayout.tsx'
 import { getNearlyCompleteItems, loadNearlyCompleteItems, type NearlyCompleteDataset } from './data.ts'
 import { getRecipeCategories, getRecipes, type RecipeTier } from './recipes.ts'
 
+type ItemsState =
+  { status: 'loading' } | { status: 'loaded'; items: NearlyCompleteDataset } | { status: 'error'; cause: unknown }
+
 const NearlyCompletePage = () => {
   const [tier, setTier] = useState<RecipeTier>('Heroic')
   const [category, setCategory] = useState('Ability Score')
   const [selectedName, setSelectedName] = useState<string | null>(null)
-  const [items, setItems] = useState<NearlyCompleteDataset | null>(null)
-  const [itemsError, setItemsError] = useState<string | null>(null)
+  const [itemsState, setItemsState] = useState<ItemsState>({ status: 'loading' })
+  const [loadAttempt, setLoadAttempt] = useState(0)
 
   const categories = useMemo(() => getRecipeCategories(tier), [tier])
   const recipes = useMemo(() => getRecipes(tier, category), [category, tier])
   const eligibleItems = useMemo(
-    () => (items ? getNearlyCompleteItems(items, tier, category) : []),
-    [category, items, tier]
+    () => (itemsState.status === 'loaded' ? getNearlyCompleteItems(itemsState.items, tier, category) : []),
+    [category, itemsState, tier]
   )
   const selectedRecipe = recipes.find((recipe) => recipe.name === selectedName)
 
@@ -38,17 +42,17 @@ const NearlyCompletePage = () => {
 
     loadNearlyCompleteItems()
       .then((loadedItems) => {
-        if (active) setItems(loadedItems)
+        if (active) setItemsState({ status: 'loaded', items: loadedItems })
       })
       .catch((cause: unknown) => {
         if (!active) return
-        setItemsError(cause instanceof Error ? cause.message : 'Unable to load eligible items')
+        setItemsState({ status: 'error', cause })
       })
 
     return () => {
       active = false
     }
-  }, [])
+  }, [loadAttempt])
 
   const changeTier = (value: string | null) => {
     if (value !== 'Heroic' && value !== 'Legendary') return
@@ -172,7 +176,7 @@ const NearlyCompletePage = () => {
             <Title order={2} size='h3'>
               Select a completed property
             </Title>
-            <Text c='dimmed'>The recipe requirements and resulting effects will appear here.</Text>
+            <Text c='dimmed'>Select a Completed Property above to view its requirements and resulting effects.</Text>
           </Stack>
         )}
       </Paper>
@@ -187,18 +191,43 @@ const NearlyCompletePage = () => {
           Items matching the selected tier and Nearly Complete property.
         </Text>
 
-        {itemsError ? (
-          <Alert color='red' title='Unable to load eligible items'>
-            {itemsError}
-          </Alert>
-        ) : items === null ? (
-          <Center py='md'>
-            <Loader size='sm' />
+        {itemsState.status === 'loading' ? (
+          <Center mih={104} role='status' aria-live='polite'>
+            <Stack gap='xs' align='center'>
+              <Loader size='sm' />
+              <Text c='dimmed' size='sm'>
+                Loading eligible items…
+              </Text>
+            </Stack>
           </Center>
+        ) : itemsState.status === 'error' ? (
+          <Alert color='red' title='Eligible items are unavailable'>
+            <Stack gap='sm' align='flex-start'>
+              <Text size='sm'>
+                We could not load the data needed to find eligible items. Check your connection and try again.
+              </Text>
+              {import.meta.env.DEV && (
+                <Text c='dimmed' size='xs'>
+                  {itemsState.cause instanceof Error ? itemsState.cause.message : String(itemsState.cause)}
+                </Text>
+              )}
+              <Button
+                size='sm'
+                variant='light'
+                onClick={() => {
+                  setItemsState({ status: 'loading' })
+                  setLoadAttempt((attempt) => attempt + 1)
+                }}
+              >
+                Retry
+              </Button>
+            </Stack>
+          </Alert>
         ) : eligibleItems.length === 0 ? (
-          <Text c='dimmed' size='sm'>
-            No matching items found.
-          </Text>
+          <Alert color='yellow' title='No eligible items found'>
+            The loaded item data does not contain a {tier} item with Nearly Complete: {category}. Try another item tier
+            or property.
+          </Alert>
         ) : (
           <List spacing='xs' size='sm'>
             {eligibleItems.map((item) => (
