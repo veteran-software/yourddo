@@ -72,7 +72,7 @@
     "eslint": "^10.8.0",
     "eslint-plugin-sonarjs": "^4.2.0",
     "eslint-plugin-zod": "^4.9.0",
-    "globals": "^17.8.0",
+    "globals": "^17.9.0",
     "jsdom": "^30.0.1",
     "prettier": "^3.9.6",
     "sass": "^1.102.0",

@@ -23,6 +23,11 @@ export default defineConfig({
       strict: true
     },
     proxy: {
+      '/data-cdn': {
+        target: 'https://cdn.yourddo.com',
+        changeOrigin: true,
+        rewrite: (path: string) => path.replace(/^\/data-cdn/, '')
+      },
       '/api/dc': {
         target: 'https://gls.ddo.com/',
         changeOrigin: true,

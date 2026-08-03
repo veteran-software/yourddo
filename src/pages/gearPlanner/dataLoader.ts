@@ -1,4 +1,11 @@
+import cursesData from '../../data/deckOfManyCurses.json'
 import nearlyFinishedRecipesData from '../../data/nearlyFinished/recipes.json'
+import {
+  loadGearPlannerAugments,
+  loadGearPlannerFiligreeSets,
+  loadGearPlannerItems,
+  loadGearPlannerSetBonusIndex
+} from '../../data/releaseClient.ts'
 import { SLOT_MAP } from '../../utils/constants.ts'
 import {
   ARMOR_TYPES,
@@ -15,13 +22,6 @@ import {
   WEAPON_TYPES
 } from './types'
 
-// Use Vite's glob import to gather all runtime JSON files from the generator output.
-// Note: Vite requires a literal string here (no template strings/variables).
-// Path is relative to this file: src/pages/gearPlanner -> src/data/loot/runtime
-const dataModules = import.meta.glob(['../../data/loot/runtime/*.json', '../../data/deckOfManyCurses.json'], {
-  eager: true
-})
-
 const nfRecipeStation = (nearlyFinishedRecipesData as { reforgingStation: { item: string }[] }).reforgingStation
 const nfItemNamesSet = new Set(nfRecipeStation.map((r) => r.item))
 
@@ -35,61 +35,43 @@ interface NearlyFinishedUpgradeEntry {
   augments: GearAugmentSlot[]
 }
 
-export const nearlyFinishedUpgradeItems: Record<string, NearlyFinishedUpgradeEntry> = (() => {
-  const result: Record<string, NearlyFinishedUpgradeEntry> = {}
-  Object.keys(SLOT_MAP).forEach((fileName) => {
-    const path = `../../data/loot/runtime/${fileName}`
-    const module = dataModules[path]
-    if (module && typeof module === 'object' && 'default' in module && Array.isArray(module.default)) {
-      const data = module.default as LootItem[]
-      data.forEach((item: LootItem) => {
-        if (isNearlyFinishedUpgradeTier(item)) {
-          result[item.pageTitle] = {
-            enchantments: item.enchantments ?? [],
-            augments: item.augments ?? []
-          }
-        }
-      })
-    }
-  })
-  return result
-})()
+export const nearlyFinishedUpgradeItems: Record<string, NearlyFinishedUpgradeEntry> = {}
 
 // Maps item name → augment slots from the (Nearly Finished Upgraded) tier.
 // Only populated for items whose NF upgrade adds new augment slots.
-export const nearlyFinishedNFUpgradedAugments: Record<string, GearAugmentSlot[]> = Object.fromEntries(
-  Object.entries(nearlyFinishedUpgradeItems)
-    .filter(([key, entry]) => key.endsWith('(Nearly Finished Upgraded)') && entry.augments.length > 0)
-    .map(([key, entry]) => [key.replace(' (Nearly Finished Upgraded)', ''), entry.augments])
-)
+export const nearlyFinishedNFUpgradedAugments: Record<string, GearAugmentSlot[]> = {}
+
+const indexNearlyFinishedUpgrades = (dataByFile: Map<string, LootItem[]>) => {
+  for (const key of Object.keys(nearlyFinishedUpgradeItems)) Reflect.deleteProperty(nearlyFinishedUpgradeItems, key)
+  for (const key of Object.keys(nearlyFinishedNFUpgradedAugments))
+    Reflect.deleteProperty(nearlyFinishedNFUpgradedAugments, key)
+
+  dataByFile.forEach((items) => {
+    items.forEach((item) => {
+      if (isNearlyFinishedUpgradeTier(item)) {
+        nearlyFinishedUpgradeItems[item.pageTitle] = {
+          enchantments: item.enchantments ?? [],
+          augments: item.augments ?? []
+        }
+      }
+    })
+  })
+
+  Object.entries(nearlyFinishedUpgradeItems).forEach(([key, entry]) => {
+    if (key.endsWith('(Nearly Finished Upgraded)') && entry.augments.length > 0) {
+      nearlyFinishedNFUpgradedAugments[key.replace(' (Nearly Finished Upgraded)', '')] = entry.augments
+    }
+  })
+}
 
 export const loadCurses = (): Promise<Curse[]> => {
-  const module = dataModules['../../data/deckOfManyCurses.json']
-  if (module && typeof module === 'object' && 'default' in module) {
-    const curses = module.default as Curse[]
-    return Promise.resolve([...curses].sort((a, b) => a.name.localeCompare(b.name)))
-  }
-
-  return Promise.resolve([])
+  const curses = cursesData as Curse[]
+  return Promise.resolve([...curses].sort((a, b) => a.name.localeCompare(b.name)))
 }
 
-export const loadSetBonusIndex = (): Promise<SetBonusIndex> => {
-  const module = dataModules['../../data/loot/runtime/setBonusIndex.json']
-  if (module && typeof module === 'object' && 'default' in module) {
-    return Promise.resolve(module.default as SetBonusIndex)
-  }
+export const loadSetBonusIndex = (): Promise<SetBonusIndex> => loadGearPlannerSetBonusIndex<SetBonusIndex>()
 
-  return Promise.resolve({})
-}
-
-export const loadFiligreeSets = (): Promise<{ name: string }[]> => {
-  const module = dataModules['../../data/loot/runtime/filigreeSets.json']
-  if (module && typeof module === 'object' && 'default' in module) {
-    return Promise.resolve(module.default as { name: string }[])
-  }
-
-  return Promise.resolve([])
-}
+export const loadFiligreeSets = (): Promise<{ name: string }[]> => loadGearPlannerFiligreeSets<{ name: string }[]>()
 
 const inferSetBonuses = (item: GearItem | GearAugment) => {
   if (item.setBonus && item.setBonus.length > 0) {
@@ -167,7 +149,7 @@ export const generateItemId = (
   return `${slot}|${item.name}|${String(item.minLevel || 1)}|${fileName}`
 }
 
-export const loadGearData = (): Promise<{
+export const loadGearData = async (): Promise<{
   items: GearItem[]
   augments: GearAugment[]
   filigrees: GearItem[]
@@ -176,6 +158,14 @@ export const loadGearData = (): Promise<{
   const allAugments: GearAugment[] = []
   const allFiligrees: GearItem[] = []
   const seenKeys = new Set<string>()
+  const fileNames = Object.keys(SLOT_MAP)
+  const [augmentData, ...itemDatasets] = await Promise.all([
+    loadGearPlannerAugments<RawAugment[]>(),
+    ...fileNames.map((fileName) => loadGearPlannerItems<LootItem[]>(fileName))
+  ])
+  const dataByFile = new Map(fileNames.map((fileName, index) => [fileName, itemDatasets[index]]))
+
+  indexNearlyFinishedUpgrades(dataByFile)
 
   const isWeaponType = (item: GearItem) =>
     Object.values(WEAPON_TYPES).flat().includes(item.type) || item.type === 'Handwraps' || item.type === 'Weapon'
@@ -228,84 +218,74 @@ export const loadGearData = (): Promise<{
   }
 
   // Process Augments
-  const augModule = dataModules['../../data/loot/runtime/augment.json']
-  if (augModule && typeof augModule === 'object' && 'default' in augModule) {
-    const augments = augModule.default as RawAugment[]
+  augmentData.forEach((aug: RawAugment) => {
+    const augmentItem: GearAugment = {
+      name: aug.name,
+      augmentType: aug.augmentType ?? '',
+      minLevel: aug.minLevel ?? 1,
+      description: aug.description ?? '',
+      binding: aug.binding,
+      foundIn: aug.foundIn,
+      image: aug.image ?? '',
+      weight: aug.weight,
+      update: aug.update,
+      effectsAdded:
+        aug.effectsAdded?.map((e) => ({
+          name: e.name ?? '',
+          modifier: e.modifier ?? undefined,
+          bonus: e.bonus ?? undefined
+        })) ?? [],
+      setBonus: aug.setBonus?.map((sb) => ({ name: sb.name }))
+    }
 
-    augments.forEach((aug: RawAugment) => {
-      const augmentItem: GearAugment = {
-        name: aug.name,
-        augmentType: aug.augmentType ?? '',
-        minLevel: aug.minLevel ?? 1,
-        description: aug.description ?? '',
-        binding: aug.binding,
-        foundIn: aug.foundIn,
-        image: aug.image ?? '',
-        weight: aug.weight,
-        update: aug.update,
-        effectsAdded:
-          aug.effectsAdded?.map((e) => ({
-            name: e.name ?? '',
-            modifier: e.modifier ?? undefined,
-            bonus: e.bonus ?? undefined
-          })) ?? [],
-        setBonus: aug.setBonus?.map((sb) => ({ name: sb.name }))
-      }
+    inferSetBonuses(augmentItem)
 
-      inferSetBonuses(augmentItem)
-
-      allAugments.push(augmentItem)
-    })
-  }
+    allAugments.push(augmentItem)
+  })
 
   // Process Loot Files
   Object.entries(SLOT_MAP).forEach(([fileName, slots]) => {
-    const path = `../../data/loot/runtime/${fileName}`
-    const module = dataModules[path]
+    const data = dataByFile.get(fileName) ?? []
 
-    if (module && typeof module === 'object' && 'default' in module && Array.isArray(module.default)) {
-      const data = module.default as LootItem[]
+    data.forEach((item: LootItem) => {
+      // Special-case: Some items in collar.json are actually pet armors, not weapons
+      let effectiveSlots = slots
 
-      data.forEach((item: LootItem) => {
-        // Special-case: Some items in collar.json are actually pet armors, not weapons
-        let effectiveSlots = slots
+      if (fileName === 'collar.json') {
+        // These collars are actually pet armors
+        const armorNames = new Set<string>([
+          'Allegience of the Wild Hunt',
+          'Legendary Allegience of the Wild Hunt',
+          'Kindred Spirit',
+          'Legendary Kindred Spirit'
+        ])
 
-        if (fileName === 'collar.json') {
-          // These collars are actually pet armors
-          const armorNames = new Set<string>([
-            'Allegience of the Wild Hunt',
-            'Legendary Allegience of the Wild Hunt',
-            'Kindred Spirit',
-            'Legendary Kindred Spirit'
-          ])
+        if (armorNames.has(item.name)) {
+          effectiveSlots = [GearSlot.ArtificerPetArmor, GearSlot.DruidPetArmor]
+        } else {
+          effectiveSlots = [GearSlot.ArtificerPetWeapon, GearSlot.DruidPetWeapon]
+        }
+      }
 
-          if (armorNames.has(item.name)) {
-            effectiveSlots = [GearSlot.ArtificerPetArmor, GearSlot.DruidPetArmor]
-          } else {
-            effectiveSlots = [GearSlot.ArtificerPetWeapon, GearSlot.DruidPetWeapon]
-          }
+      effectiveSlots.forEach((slot: GearSlot) => {
+        const gearItem: GearItem = {
+          ...item,
+          id: generateItemId(item, slot, fileName),
+          slot: slot,
+          minLevel: item.minLevel || '1',
+          minimumLevel: Number.parseInt(String(item.minLevel || 1), 10),
+          absoluteMinLevel: (item.absoluteMinLevel ?? String(item.minLevel)) || '1'
         }
 
-        effectiveSlots.forEach((slot: GearSlot) => {
-          const gearItem: GearItem = {
-            ...item,
-            id: generateItemId(item, slot, fileName),
-            slot: slot,
-            minLevel: item.minLevel || '1',
-            minimumLevel: Number.parseInt(String(item.minLevel || 1), 10),
-            absoluteMinLevel: (item.absoluteMinLevel ?? String(item.minLevel)) || '1'
-          }
-
-          inferSetBonuses(gearItem)
-          addItem(gearItem)
-        })
+        inferSetBonuses(gearItem)
+        addItem(gearItem)
       })
-    }
+    })
   })
 
-  return Promise.resolve({
+  return {
     items: allItems,
     augments: allAugments,
     filigrees: allFiligrees
-  })
+  }
 }

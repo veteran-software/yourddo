@@ -6,14 +6,13 @@ import {
   type AffixKind,
   ALLOWED_AUGMENT_KEYS,
   type CoreChoice,
-  DATASET,
   type EssenceCraftingEntry,
   type ItemAugmentSlotState,
   type ItemState,
   SLOT_KEY_TO_DATA_TOKENS
 } from './types.ts'
 
-export const getAffixOptions = (slotKey: string, affix: AffixKind): string[] => {
+export const getAffixOptions = (slotKey: string, affix: AffixKind, dataset: EssenceCraftingEntry[]): string[] => {
   const dataTokensForSlot = SLOT_KEY_TO_DATA_TOKENS[slotKey] ?? []
 
   if (dataTokensForSlot.length === 0) return []
@@ -22,7 +21,7 @@ export const getAffixOptions = (slotKey: string, affix: AffixKind): string[] => 
 
   const options = new Set<string>()
 
-  DATASET.forEach((entry: EssenceCraftingEntry) => {
+  dataset.forEach((entry: EssenceCraftingEntry) => {
     const raw = entry[fieldName]
     const allowed = raw.map((value) => value.trim()).filter(Boolean)
 
@@ -163,19 +162,22 @@ export const iterateItemsOnLevelChange = (
   return changed
 }
 
-export const sanitizeAugmentsOnItems = (parsed: {
-  items: Record<string, ItemState>
-  activeKeys: string[]
-  masterMinLevel?: number
-  masterBindingBound?: boolean
-  collapsedKeys?: string[]
-}) => {
+export const sanitizeAugmentsOnItems = (
+  parsed: {
+    items: Record<string, ItemState>
+    activeKeys: string[]
+    masterMinLevel?: number
+    masterBindingBound?: boolean
+    collapsedKeys?: string[]
+  },
+  dataset: EssenceCraftingEntry[]
+) => {
   const sanitizedItems: Record<string, ItemState> = {}
 
   Object.entries(parsed.items).forEach(([savedSlotKey, savedItem]) => {
-    const prefixOptions = new Set(getAffixOptions(savedSlotKey, 'prefix'))
-    const suffixOptions = new Set(getAffixOptions(savedSlotKey, 'suffix'))
-    const extraOptions = new Set(getAffixOptions(savedSlotKey, 'extra'))
+    const prefixOptions = new Set(getAffixOptions(savedSlotKey, 'prefix', dataset))
+    const suffixOptions = new Set(getAffixOptions(savedSlotKey, 'suffix', dataset))
+    const extraOptions = new Set(getAffixOptions(savedSlotKey, 'extra', dataset))
 
     // Sanitize augment slots and per-slot filters without using any
     const sanitizedAugmentSlots: ItemAugmentSlotState[] = savedItem.augmentSlots

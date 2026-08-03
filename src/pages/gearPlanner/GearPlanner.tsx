@@ -126,6 +126,14 @@ const GearPlanner = () => {
     }
   }, [])
 
+  if (gpHook.error) {
+    return (
+      <Container className='py-4'>
+        <Alert variant='danger'>{gpHook.error}</Alert>
+      </Container>
+    )
+  }
+
   if (gpHook.loading || !gpHook.dataReady) {
     return (
       <Container className='py-4 text-center'>

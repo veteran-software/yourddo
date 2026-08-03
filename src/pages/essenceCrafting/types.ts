@@ -1,4 +1,3 @@
-import essenceCraftingV2 from '../../data/essenceCrafting.v2.json'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 
 export type CoreChoice = string | null
@@ -37,8 +36,6 @@ export interface EssenceCraftingEntry {
   extra: string[]
   enchantments: EssenceEnchantment[]
 }
-
-export const DATASET = essenceCraftingV2 as EssenceCraftingEntry[]
 
 export interface ItemAugmentSlotState {
   id: string
