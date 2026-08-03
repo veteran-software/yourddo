@@ -1,23 +1,29 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-const manifestUrl = 'https://cdn.yourddo.com/releases/81.0.1/1785743584/manifest.json'
+const latest = {
+  gameVersion: '81.0.1',
+  dataVersion: 1785745211,
+  baseUrl: '/releases/81.0.1/1785745211'
+}
 
 const generatedFile = {
   domain: 'nearly-complete',
   path: 'nearly-complete/items.json',
   sizeBytes: 106699,
-  sha256: '4bbcd24998df309a0cf5c6e75f7fffb0b1f9d6bf6b18a314df6bc5aae894c3a9'
+  sha256: 'items'
 }
 
 const manualPayload = {
   name: 'nearlyComplete.recipes',
   path: 'manual/nearlyComplete.recipes.json',
   sizeBytes: 28289,
-  sha256: 'e89c561e5c570c917d860367f72b316478ca75bfb4d061f9028fd9a1ac31e3af'
+  sha256: 'recipes'
 }
 
 const manifest = {
   schemaVersion: 2,
+  gameVersion: latest.gameVersion,
+  dataVersion: latest.dataVersion,
   generatedFiles: [generatedFile],
   manualPayloads: [manualPayload]
 }
@@ -30,9 +36,9 @@ const requestFailures: [string, () => Promise<Response>][] = [
   ['HTTP failure', () => Promise.resolve(new Response(null, { status: 503, statusText: 'Unavailable' }))]
 ]
 
-const importLoader = async (url = manifestUrl) => {
+const importLoader = async (development = true) => {
   vi.resetModules()
-  vi.stubEnv('VITE_DATA_MANIFEST_URL', url)
+  vi.stubEnv('DEV', development)
   return import('./loadDataset.ts')
 }
 
@@ -42,10 +48,11 @@ afterEach(() => {
 })
 
 describe('loadDataset', () => {
-  it('loads the single file matching the requested domain', async () => {
+  it('resolves the latest release and loads a generated dataset through the development proxy', async () => {
     const payload = [{ name: 'Nearly Complete Item' }]
     const fetchMock = vi
       .fn<typeof fetch>()
+      .mockResolvedValueOnce(jsonResponse(latest))
       .mockResolvedValueOnce(jsonResponse(manifest))
       .mockResolvedValueOnce(jsonResponse(payload))
     vi.stubGlobal('fetch', fetchMock)
@@ -53,59 +60,103 @@ describe('loadDataset', () => {
 
     await expect(loadDataset<{ name: string }[]>('nearly-complete')).resolves.toEqual(payload)
     expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
-      manifestUrl,
-      'https://cdn.yourddo.com/releases/81.0.1/1785743584/nearly-complete/items.json'
+      '/data-cdn/latest.json',
+      '/data-cdn/releases/81.0.1/1785745211/manifest.json',
+      '/data-cdn/releases/81.0.1/1785745211/nearly-complete/items.json'
     ])
+    expect(fetchMock.mock.calls[0]?.[1]).toEqual({ cache: 'no-cache' })
   })
 
-  it('loads the single manual payload matching the requested name', async () => {
+  it('loads a manual payload directly from the production CDN', async () => {
     const payload = [{ name: 'Strength +6' }]
     const fetchMock = vi
       .fn<typeof fetch>()
+      .mockResolvedValueOnce(jsonResponse(latest))
       .mockResolvedValueOnce(jsonResponse(manifest))
       .mockResolvedValueOnce(jsonResponse(payload))
     vi.stubGlobal('fetch', fetchMock)
-    const { loadManualPayload } = await importLoader()
+    const { loadManualPayload } = await importLoader(false)
 
     await expect(loadManualPayload<{ name: string }[]>('nearlyComplete.recipes')).resolves.toEqual(payload)
     expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
-      manifestUrl,
-      'https://cdn.yourddo.com/releases/81.0.1/1785743584/manual/nearlyComplete.recipes.json'
+      'https://cdn.yourddo.com/latest.json',
+      'https://cdn.yourddo.com/releases/81.0.1/1785745211/manifest.json',
+      'https://cdn.yourddo.com/releases/81.0.1/1785745211/manual/nearlyComplete.recipes.json'
     ])
   })
 
-  it('resolves a root-relative manifest URL against the browser origin', async () => {
-    vi.stubGlobal('location', { href: 'https://yourddo.com/nearly-complete' })
+  it('reuses one release lookup across dataset loads', async () => {
     const fetchMock = vi
       .fn<typeof fetch>()
+      .mockResolvedValueOnce(jsonResponse(latest))
+      .mockResolvedValueOnce(jsonResponse(manifest))
+      .mockResolvedValueOnce(jsonResponse([]))
+      .mockResolvedValueOnce(jsonResponse([]))
+    vi.stubGlobal('fetch', fetchMock)
+    const { loadDataset, loadManualPayload } = await importLoader()
+
+    await Promise.all([loadDataset('nearly-complete'), loadManualPayload('nearlyComplete.recipes')])
+
+    expect(fetchMock).toHaveBeenCalledTimes(4)
+    expect(fetchMock.mock.calls.filter(([url]) => url === '/data-cdn/latest.json')).toHaveLength(1)
+    expect(
+      fetchMock.mock.calls.filter(([url]) => url === '/data-cdn/releases/81.0.1/1785745211/manifest.json')
+    ).toHaveLength(1)
+  })
+
+  it('retries release discovery after a failed request', async () => {
+    const fetchMock = vi
+      .fn<typeof fetch>()
+      .mockRejectedValueOnce(new TypeError('Network error'))
+      .mockResolvedValueOnce(jsonResponse(latest))
       .mockResolvedValueOnce(jsonResponse(manifest))
       .mockResolvedValueOnce(jsonResponse([]))
     vi.stubGlobal('fetch', fetchMock)
-    const { loadDataset } = await importLoader('/data-cdn/releases/81.0.1/1785743584/manifest.json')
+    const { loadDataset } = await importLoader()
 
-    await loadDataset('nearly-complete')
-
-    expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
-      '/data-cdn/releases/81.0.1/1785743584/manifest.json',
-      'https://yourddo.com/data-cdn/releases/81.0.1/1785743584/nearly-complete/items.json'
-    ])
+    await expect(loadDataset('nearly-complete')).rejects.toThrow('Latest release request failed')
+    await expect(loadDataset('nearly-complete')).resolves.toEqual([])
   })
 
-  it('rejects a missing manifest environment variable', async () => {
-    const { loadDataset } = await importLoader('')
+  it.each(requestFailures)('rejects a latest release %s', async (_name, createResponse) => {
+    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockReturnValueOnce(createResponse()))
+    const { loadDataset } = await importLoader()
 
-    await expect(loadDataset('nearly-complete')).rejects.toThrow('VITE_DATA_MANIFEST_URL is not configured')
+    await expect(loadDataset('nearly-complete')).rejects.toThrow('Latest release request failed')
+  })
+
+  it('rejects invalid latest release JSON', async () => {
+    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValueOnce(new Response('{')))
+    const { loadDataset } = await importLoader()
+
+    await expect(loadDataset('nearly-complete')).rejects.toThrow('Invalid latest release response: expected valid JSON')
+  })
+
+  it.each([
+    ['non-object response', null, 'expected an object'],
+    ['missing release metadata', { gameVersion: '81.0.1' }, 'invalid release metadata']
+  ])('rejects an invalid latest release: %s', async (_name, value, message) => {
+    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(value)))
+    const { loadDataset } = await importLoader()
+
+    await expect(loadDataset('nearly-complete')).rejects.toThrow(message)
   })
 
   it.each(requestFailures)('rejects a manifest %s', async (_name, createResponse) => {
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockReturnValueOnce(createResponse()))
+    vi.stubGlobal(
+      'fetch',
+      vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(latest)).mockReturnValueOnce(createResponse())
+    )
     const { loadDataset } = await importLoader()
 
     await expect(loadDataset('nearly-complete')).rejects.toThrow('Manifest request failed')
   })
 
   it('rejects invalid manifest JSON', async () => {
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValueOnce(new Response('{')))
+    vi.stubGlobal(
+      'fetch',
+      vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(latest)).mockResolvedValueOnce(new Response('{'))
+    )
     const { loadDataset } = await importLoader()
 
     await expect(loadDataset('nearly-complete')).rejects.toThrow('Invalid data manifest response: expected valid JSON')
@@ -114,112 +165,137 @@ describe('loadDataset', () => {
   it.each([
     ['unsupported schema', { ...manifest, schemaVersion: 3 }, 'expected schemaVersion 2'],
     ['non-object response', null, 'expected an object'],
-    ['missing generated files', { schemaVersion: 2, manualPayloads: [] }, 'invalid generatedFiles'],
+    [
+      'missing release metadata',
+      { schemaVersion: 2, generatedFiles: [], manualPayloads: [] },
+      'invalid release metadata'
+    ],
+    ['missing generated files', { ...manifest, generatedFiles: undefined }, 'invalid generatedFiles'],
     [
       'invalid generated file',
-      { schemaVersion: 2, generatedFiles: [{ domain: 'nearly-complete' }], manualPayloads: [] },
+      { ...manifest, generatedFiles: [{ domain: 'nearly-complete' }] },
       'invalid generatedFiles'
     ],
-    ['missing manual payloads', { schemaVersion: 2, generatedFiles: [] }, 'invalid manualPayloads'],
+    ['missing manual payloads', { ...manifest, manualPayloads: undefined }, 'invalid manualPayloads'],
     [
       'invalid manual payload',
-      { schemaVersion: 2, generatedFiles: [], manualPayloads: [{ name: 'nearlyComplete.recipes' }] },
+      { ...manifest, manualPayloads: [{ name: 'nearlyComplete.recipes' }] },
       'invalid manualPayloads'
     ]
   ])('rejects an invalid manifest: %s', async (_name, value, message) => {
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(value)))
+    vi.stubGlobal(
+      'fetch',
+      vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(latest)).mockResolvedValueOnce(jsonResponse(value))
+    )
     const { loadDataset } = await importLoader()
 
     await expect(loadDataset('nearly-complete')).rejects.toThrow(message)
   })
 
-  it('rejects an unknown domain', async () => {
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(manifest)))
-    const { loadDataset } = await importLoader()
-
-    await expect(loadDataset('nearly-finished')).rejects.toThrow('Unknown dataset domain: nearly-finished')
-  })
-
-  it('rejects multiple files for one domain', async () => {
+  it('rejects a release identity mismatch', async () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn<typeof fetch>().mockResolvedValueOnce(
-        jsonResponse({
-          ...manifest,
-          generatedFiles: [generatedFile, { ...generatedFile, path: 'nearly-complete/other.json' }]
-        })
-      )
+      vi
+        .fn<typeof fetch>()
+        .mockResolvedValueOnce(jsonResponse(latest))
+        .mockResolvedValueOnce(jsonResponse({ ...manifest, dataVersion: 1 }))
     )
     const { loadDataset } = await importLoader()
 
-    await expect(loadDataset('nearly-complete')).rejects.toThrow(
+    await expect(loadDataset('nearly-complete')).rejects.toThrow('Data release mismatch')
+  })
+
+  it('rejects an unknown or duplicated domain', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(latest)).mockResolvedValueOnce(jsonResponse(manifest))
+    )
+    const { loadDataset } = await importLoader()
+
+    await expect(loadDataset('nearly-finished')).rejects.toThrow('Unknown dataset domain: nearly-finished')
+
+    vi.resetModules()
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn<typeof fetch>()
+        .mockResolvedValueOnce(jsonResponse(latest))
+        .mockResolvedValueOnce(
+          jsonResponse({
+            ...manifest,
+            generatedFiles: [generatedFile, { ...generatedFile, path: 'nearly-complete/other.json' }]
+          })
+        )
+    )
+    const duplicateLoader = await import('./loadDataset.ts')
+
+    await expect(duplicateLoader.loadDataset('nearly-complete')).rejects.toThrow(
       'Data manifest contains multiple files for domain: nearly-complete'
     )
   })
 
-  it('rejects an unknown manual payload', async () => {
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(manifest)))
-    const { loadManualPayload } = await importLoader()
-
-    await expect(loadManualPayload('missing')).rejects.toThrow('Unknown manual payload: missing')
-  })
-
-  it('rejects multiple manual payloads with one name', async () => {
+  it('rejects an unknown or duplicated manual payload', async () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn<typeof fetch>().mockResolvedValueOnce(
-        jsonResponse({
-          ...manifest,
-          manualPayloads: [manualPayload, { ...manualPayload, path: 'manual/other.json' }]
-        })
-      )
+      vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(latest)).mockResolvedValueOnce(jsonResponse(manifest))
     )
     const { loadManualPayload } = await importLoader()
 
-    await expect(loadManualPayload('nearlyComplete.recipes')).rejects.toThrow(
+    await expect(loadManualPayload('missing')).rejects.toThrow('Unknown manual payload: missing')
+
+    vi.resetModules()
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn<typeof fetch>()
+        .mockResolvedValueOnce(jsonResponse(latest))
+        .mockResolvedValueOnce(
+          jsonResponse({
+            ...manifest,
+            manualPayloads: [manualPayload, { ...manualPayload, path: 'manual/other.json' }]
+          })
+        )
+    )
+    const duplicateLoader = await import('./loadDataset.ts')
+
+    await expect(duplicateLoader.loadManualPayload('nearlyComplete.recipes')).rejects.toThrow(
       'Data manifest contains multiple manual payloads: nearlyComplete.recipes'
     )
   })
 
-  it.each(requestFailures)('rejects a dataset %s', async (_name, createResponse) => {
+  it.each([
+    ['dataset', 'nearly-complete', 'Dataset request failed'],
+    ['manual payload', 'nearlyComplete.recipes', 'Manual payload request failed']
+  ])('rejects a %s request failure', async (kind, value, message) => {
     vi.stubGlobal(
       'fetch',
-      vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(manifest)).mockReturnValueOnce(createResponse())
+      vi
+        .fn<typeof fetch>()
+        .mockResolvedValueOnce(jsonResponse(latest))
+        .mockResolvedValueOnce(jsonResponse(manifest))
+        .mockResolvedValueOnce(new Response(null, { status: 503, statusText: 'Unavailable' }))
     )
-    const { loadDataset } = await importLoader()
+    const loader = await importLoader()
 
-    await expect(loadDataset('nearly-complete')).rejects.toThrow('Dataset request failed')
+    const promise = kind === 'dataset' ? loader.loadDataset(value) : loader.loadManualPayload(value)
+    await expect(promise).rejects.toThrow(message)
   })
 
-  it.each(requestFailures)('rejects a manual payload %s', async (_name, createResponse) => {
+  it.each([
+    ['dataset', 'nearly-complete'],
+    ['manual payload', 'nearlyComplete.recipes']
+  ])('rejects invalid %s JSON', async (kind, value) => {
     vi.stubGlobal(
       'fetch',
-      vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(manifest)).mockReturnValueOnce(createResponse())
+      vi
+        .fn<typeof fetch>()
+        .mockResolvedValueOnce(jsonResponse(latest))
+        .mockResolvedValueOnce(jsonResponse(manifest))
+        .mockResolvedValueOnce(new Response('{'))
     )
-    const { loadManualPayload } = await importLoader()
+    const loader = await importLoader()
 
-    await expect(loadManualPayload('nearlyComplete.recipes')).rejects.toThrow('Manual payload request failed')
-  })
-
-  it('rejects invalid dataset JSON', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(manifest)).mockResolvedValueOnce(new Response('{'))
-    )
-    const { loadDataset } = await importLoader()
-
-    await expect(loadDataset('nearly-complete')).rejects.toThrow('Invalid dataset response: expected valid JSON')
-  })
-
-  it('rejects invalid manual payload JSON', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(manifest)).mockResolvedValueOnce(new Response('{'))
-    )
-    const { loadManualPayload } = await importLoader()
-
-    await expect(loadManualPayload('nearlyComplete.recipes')).rejects.toThrow(
-      'Invalid dataset response: expected valid JSON'
-    )
+    const promise = kind === 'dataset' ? loader.loadDataset(value) : loader.loadManualPayload(value)
+    await expect(promise).rejects.toThrow('Invalid dataset response: expected valid JSON')
   })
 })

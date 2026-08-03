@@ -12,11 +12,21 @@ interface ManualPayload {
   sha256: string
 }
 
+interface LatestRelease {
+  gameVersion: string
+  dataVersion: number
+  baseUrl: string
+}
+
 interface DataManifest {
   schemaVersion: 2
+  gameVersion: string
+  dataVersion: number
   generatedFiles: GeneratedFile[]
   manualPayloads: ManualPayload[]
 }
+
+const cdnBaseUrl = import.meta.env.DEV ? '/data-cdn' : 'https://cdn.yourddo.com'
 
 const isManifestFile = (value: unknown): value is Omit<GeneratedFile, 'domain'> => {
   if (typeof value !== 'object' || value === null) return false
@@ -31,14 +41,36 @@ const isGeneratedFile = (value: unknown): value is GeneratedFile =>
 const isManualPayload = (value: unknown): value is ManualPayload =>
   isManifestFile(value) && typeof (value as Record<string, unknown>).name === 'string'
 
-const parseManifest = async (response: Response): Promise<DataManifest> => {
-  let value: unknown
-
+const parseJson = async (response: Response, label: string): Promise<unknown> => {
   try {
-    value = await response.json()
+    return await response.json()
   } catch (cause) {
-    throw new Error('Invalid data manifest response: expected valid JSON', { cause })
+    throw new Error(`Invalid ${label} response: expected valid JSON`, { cause })
   }
+}
+
+const parseLatestRelease = async (response: Response): Promise<LatestRelease> => {
+  const value = await parseJson(response, 'latest release')
+
+  if (typeof value !== 'object' || value === null) {
+    throw new Error('Invalid latest release response: expected an object')
+  }
+
+  const latest = value as Record<string, unknown>
+
+  if (
+    typeof latest.gameVersion !== 'string' ||
+    typeof latest.dataVersion !== 'number' ||
+    typeof latest.baseUrl !== 'string'
+  ) {
+    throw new Error('Invalid latest release response: invalid release metadata')
+  }
+
+  return latest as unknown as LatestRelease
+}
+
+const parseManifest = async (response: Response): Promise<DataManifest> => {
+  const value = await parseJson(response, 'data manifest')
 
   if (typeof value !== 'object' || value === null) {
     throw new Error('Invalid data manifest response: expected an object')
@@ -48,6 +80,10 @@ const parseManifest = async (response: Response): Promise<DataManifest> => {
 
   if (manifest.schemaVersion !== 2) {
     throw new Error('Invalid data manifest response: expected schemaVersion 2')
+  }
+
+  if (typeof manifest.gameVersion !== 'string' || typeof manifest.dataVersion !== 'number') {
+    throw new Error('Invalid data manifest response: invalid release metadata')
   }
 
   if (!Array.isArray(manifest.generatedFiles) || !manifest.generatedFiles.every(isGeneratedFile)) {
@@ -61,11 +97,11 @@ const parseManifest = async (response: Response): Promise<DataManifest> => {
   return manifest as unknown as DataManifest
 }
 
-const fetchResponse = async (url: string, label: string): Promise<Response> => {
+const fetchResponse = async (url: string, label: string, init?: RequestInit): Promise<Response> => {
   let response: Response
 
   try {
-    response = await fetch(url)
+    response = await fetch(url, init)
   } catch (cause) {
     throw new Error(`${label} request failed: ${url}`, { cause })
   }
@@ -85,35 +121,45 @@ const parseDataset = async <T>(response: Response): Promise<T> => {
   }
 }
 
-interface ResolvedManifest {
+interface ResolvedRelease {
   manifest: DataManifest
-  manifestUrl: string
+  baseUrl: string
 }
 
-const loadManifest = async (): Promise<ResolvedManifest> => {
-  const configuredManifestUrl: unknown = import.meta.env.VITE_DATA_MANIFEST_URL
+let releasePromise: Promise<ResolvedRelease> | undefined
 
-  if (typeof configuredManifestUrl !== 'string' || !configuredManifestUrl.trim()) {
-    throw new Error('VITE_DATA_MANIFEST_URL is not configured')
-  }
+const joinUrl = (baseUrl: string, path: string): string => `${baseUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
 
-  const manifestUrl = configuredManifestUrl.trim()
-  const manifestResponse = await fetchResponse(manifestUrl, 'Manifest')
+const resolveRelease = async (): Promise<ResolvedRelease> => {
+  const latestResponse = await fetchResponse(joinUrl(cdnBaseUrl, 'latest.json'), 'Latest release', {
+    cache: 'no-cache'
+  })
+  const latest = await parseLatestRelease(latestResponse)
+  const baseUrl = joinUrl(cdnBaseUrl, latest.baseUrl)
+  const manifestResponse = await fetchResponse(joinUrl(baseUrl, 'manifest.json'), 'Manifest')
   const manifest = await parseManifest(manifestResponse)
 
-  return { manifest, manifestUrl }
+  if (manifest.gameVersion !== latest.gameVersion || manifest.dataVersion !== latest.dataVersion) {
+    throw new Error(
+      `Data release mismatch: latest is ${latest.gameVersion}/${latest.dataVersion.toString()}, ` +
+        `but manifest is ${manifest.gameVersion}/${manifest.dataVersion.toString()}`
+    )
+  }
+
+  return { manifest, baseUrl }
 }
 
-const resolveManifestPath = (manifestUrl: string, path: string): string => {
-  const manifestBaseUrl = URL.canParse(manifestUrl)
-    ? new URL(manifestUrl)
-    : new URL(manifestUrl, globalThis.location.href)
+const loadRelease = (): Promise<ResolvedRelease> => {
+  releasePromise ??= resolveRelease().catch((cause: unknown) => {
+    releasePromise = undefined
+    throw cause
+  })
 
-  return new URL(path, manifestBaseUrl).toString()
+  return releasePromise
 }
 
 export const loadDataset = async <T>(domain: string): Promise<T> => {
-  const { manifest, manifestUrl } = await loadManifest()
+  const { manifest, baseUrl } = await loadRelease()
   const matches = manifest.generatedFiles.filter((file) => file.domain === domain)
 
   if (matches.length === 0) {
@@ -124,14 +170,14 @@ export const loadDataset = async <T>(domain: string): Promise<T> => {
     throw new Error(`Data manifest contains multiple files for domain: ${domain}`)
   }
 
-  const datasetUrl = resolveManifestPath(manifestUrl, matches[0].path)
+  const datasetUrl = joinUrl(baseUrl, matches[0].path)
   const datasetResponse = await fetchResponse(datasetUrl, 'Dataset')
 
   return parseDataset<T>(datasetResponse)
 }
 
 export const loadManualPayload = async <T>(name: string): Promise<T> => {
-  const { manifest, manifestUrl } = await loadManifest()
+  const { manifest, baseUrl } = await loadRelease()
   const matches = manifest.manualPayloads.filter((payload) => payload.name === name)
 
   if (matches.length === 0) {
@@ -142,7 +188,7 @@ export const loadManualPayload = async <T>(name: string): Promise<T> => {
     throw new Error(`Data manifest contains multiple manual payloads: ${name}`)
   }
 
-  const payloadUrl = resolveManifestPath(manifestUrl, matches[0].path)
+  const payloadUrl = joinUrl(baseUrl, matches[0].path)
   const payloadResponse = await fetchResponse(payloadUrl, 'Manual payload')
 
   return parseDataset<T>(payloadResponse)
