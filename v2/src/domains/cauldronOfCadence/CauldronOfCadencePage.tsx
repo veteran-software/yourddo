@@ -36,6 +36,8 @@ type RecipesState =
   | { status: 'error'; cause: unknown }
   | { status: 'invalid' }
 
+const secondaryTextColor = 'light-dark(var(--mantine-color-gray-7), var(--mantine-color-gray-3))'
+
 const formatBinding = ({ type, to, from }: CauldronRecipes[number]['binding']): string =>
   `${type}${to ? ` to ${to}` : ''}${from ? ` on ${from}` : ''}`
 
@@ -120,7 +122,9 @@ const CauldronOfCadencePage = () => {
             Known issues / bug reports
           </Anchor>
         </Group>
-        <Text c='dimmed'>Choose an item you have or an effect you want to find its Cauldron set augment recipe.</Text>
+        <Text c={secondaryTextColor}>
+          Choose an item you have or an effect you want to find its Cauldron set augment recipe.
+        </Text>
       </Stack>
 
       <Alert color='blue' title='Minimum level 30'>
@@ -131,7 +135,7 @@ const CauldronOfCadencePage = () => {
         <Center mih={180} role='status' aria-live='polite'>
           <Stack gap='xs' align='center'>
             <Loader size='sm' />
-            <Text c='dimmed' size='sm'>
+            <Text c={secondaryTextColor} size='sm'>
               Loading Cauldron recipes…
             </Text>
           </Stack>
@@ -141,7 +145,7 @@ const CauldronOfCadencePage = () => {
           <Stack gap='sm' align='flex-start'>
             <Text size='sm'>We could not load the recipe data. Check your connection and try again.</Text>
             {import.meta.env.DEV && (
-              <Text c='dimmed' size='xs'>
+              <Text c={secondaryTextColor} size='xs'>
                 {recipesState.cause instanceof Error ? recipesState.cause.message : String(recipesState.cause)}
               </Text>
             )}
@@ -170,7 +174,7 @@ const CauldronOfCadencePage = () => {
               <Title order={2} size='h3'>
                 Item Selection
               </Title>
-              <Text c='dimmed' size='sm'>
+              <Text c={secondaryTextColor} size='sm'>
                 Select the named item required by a Cauldron recipe.
               </Text>
               <Select
@@ -188,7 +192,7 @@ const CauldronOfCadencePage = () => {
               <Title order={2} size='h3'>
                 Upgrade Effect Selection
               </Title>
-              <Text c='dimmed' size='sm'>
+              <Text c={secondaryTextColor} size='sm'>
                 Choose an effect directly, or select an item first to show its available effect.
               </Text>
               <Select
@@ -211,7 +215,7 @@ const CauldronOfCadencePage = () => {
                 <Group justify='space-between' align='flex-start' wrap='wrap'>
                   <Stack gap={4}>
                     <Title order={2}>{selectedRecipe.name}</Title>
-                    <Text c='dimmed' size='sm'>
+                    <Text c={secondaryTextColor} size='sm'>
                       {selectedRecipe.description}
                     </Text>
                   </Stack>
@@ -286,7 +290,7 @@ const CauldronOfCadencePage = () => {
                 <Title order={2} size='h3'>
                   Select an upgrade effect
                 </Title>
-                <Text c='dimmed'>
+                <Text c={secondaryTextColor}>
                   {findRecipeByItem(recipes, selectedItem)
                     ? `Choose the available effect for ${selectedItem} to view its set augment recipe.`
                     : 'The selected item is not available in the loaded recipe data.'}
@@ -297,7 +301,7 @@ const CauldronOfCadencePage = () => {
                 <Title order={2} size='h3'>
                   Select an item or effect
                 </Title>
-                <Text c='dimmed'>Choose either selection above to begin.</Text>
+                <Text c={secondaryTextColor}>Choose either selection above to begin.</Text>
               </Stack>
             )}
           </Paper>
