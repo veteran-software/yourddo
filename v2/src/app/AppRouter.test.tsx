@@ -7,6 +7,10 @@ import { MemoryRouter } from 'react-router-dom'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import AppRouter from './AppRouter'
 
+vi.mock('../domains/cauldronOfCadence/CauldronOfCadencePage.tsx', () => ({
+  default: () => <h1>Cauldron of Cadence domain</h1>
+}))
+
 vi.mock('../domains/nearlyComplete/NearlyCompletePage.tsx', () => ({
   default: () => <h1>Nearly Complete domain</h1>
 }))
@@ -64,6 +68,26 @@ afterAll(() => {
 })
 
 describe('AppRouter', () => {
+  it('renders the Cauldron of Cadence domain at its preserved public route', () => {
+    renderRoute('/cauldron-of-cadence')
+
+    expect(screen.getByRole('heading', { name: 'Cauldron of Cadence domain' })).toBeTruthy()
+
+    const link = screen.getByRole('link', { name: 'Cauldron of Cadence' })
+    expect(link.getAttribute('href')).toBe('/cauldron-of-cadence')
+    expect(link.getAttribute('aria-current')).toBe('page')
+  })
+
+  it('loads the Cauldron route directly after a remount', () => {
+    const firstRender = renderRoute('/cauldron-of-cadence')
+    expect(screen.getByRole('heading', { name: 'Cauldron of Cadence domain' })).toBeTruthy()
+
+    firstRender.unmount()
+    renderRoute('/cauldron-of-cadence')
+
+    expect(screen.getByRole('heading', { name: 'Cauldron of Cadence domain' })).toBeTruthy()
+  })
+
   it('renders the Nearly Complete domain at its public route', () => {
     renderRoute('/nearly-complete')
 
@@ -96,7 +120,7 @@ describe('AppRouter', () => {
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
     expect(screen.getByRole('button', { name: 'Close navigation' })).toBeTruthy()
 
-    const link = screen.getByRole('link', { name: 'Nearly Complete' })
+    const link = screen.getByRole('link', { name: 'Cauldron of Cadence' })
     link.focus()
     await user.keyboard('{Enter}')
 
@@ -129,15 +153,15 @@ describe('AppRouter', () => {
     expect(screen.queryByRole('menuitem', { name: 'Light' })).toBeNull()
   })
 
-  it('keeps the route available in light, dark, and system themes', async () => {
+  it('keeps the Cauldron route available in light, dark, and system themes', async () => {
     const user = userEvent.setup()
-    renderRoute('/nearly-complete')
+    renderRoute('/cauldron-of-cadence')
 
     const chooseTheme = async (current: string, next: string) => {
       await user.click(screen.getByRole('button', { name: `Theme: ${current}` }))
       await user.click(screen.getByRole('menuitem', { name: next }))
       expect(screen.getByRole('button', { name: `Theme: ${next}` })).toBeTruthy()
-      expect(screen.getByRole('heading', { name: 'Nearly Complete domain' })).toBeTruthy()
+      expect(screen.getByRole('heading', { name: 'Cauldron of Cadence domain' })).toBeTruthy()
     }
 
     await chooseTheme('System', 'Light')

@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
+import CauldronOfCadencePage from '../domains/cauldronOfCadence/CauldronOfCadencePage.tsx'
 import HomePage from '../domains/home/HomePage.tsx'
 import NearlyCompletePage from '../domains/nearlyComplete/NearlyCompletePage.tsx'
 import NotFoundPage from '../shared/ui/NotFoundPage.tsx'
@@ -8,6 +9,7 @@ const AppRouter = () => (
   <Routes>
     <Route element={<AppLayout />}>
       <Route path='/' element={<HomePage />} />
+      <Route path='/cauldron-of-cadence' element={<CauldronOfCadencePage />} />
       <Route path='/nearly-complete' element={<NearlyCompletePage />} />
       <Route path='*' element={<NotFoundPage />} />
     </Route>
