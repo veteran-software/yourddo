@@ -6,7 +6,6 @@ import {
   Button,
   Group,
   Paper,
-  Select,
   SimpleGrid,
   Stack,
   Text,
@@ -27,27 +26,27 @@ import {
 } from '../../shared/lightsOut/lightsOutSolver.ts'
 import type { Board, Config, Presses } from '../../shared/lightsOut/types.ts'
 
-const ROWS = 4
+const ROWS = 3
 const COLUMNS = 5
+const MASK = [
+  [true, false, true, false, true],
+  [true, false, true, false, true],
+  [true, true, true, true, true]
+]
+const CONFIG: Config = { rows: ROWS, cols: COLUMNS, mask: MASK }
 
-type EditAction = 'toggle' | 'remove'
 type SolverStatus = 'idle' | 'random' | 'solution' | 'complete' | 'no-solution'
-
-const createMask = (): boolean[][] => Array.from({ length: ROWS }, () => Array(COLUMNS).fill(true) as boolean[])
 
 const countPresses = (presses: number[][]): number => presses.flat().filter((press) => press === 1).length
 
-const MonasteryOfTheScorpionPage = () => {
-  const [mask, setMask] = useState(createMask)
-  const [board, setBoard] = useState<Board>(() => initBoard({ rows: ROWS, cols: COLUMNS, mask }))
+const TotalChaosPage = () => {
+  const [board, setBoard] = useState<Board>(() => initBoard(CONFIG))
   const [solution, setSolution] = useState<Presses>(null)
   const [markedSolution, setMarkedSolution] = useState<Presses>(null)
   const [editMode, setEditMode] = useState(true)
-  const [editAction, setEditAction] = useState<EditAction>('toggle')
   const [showSolution, setShowSolution] = useState(false)
   const [solverStatus, setSolverStatus] = useState<SolverStatus>('idle')
 
-  const config: Config = { rows: ROWS, cols: COLUMNS, mask }
   const recommendedPresses = solution && showSolution ? countPresses(solution) : 0
 
   const clearSolution = () => {
@@ -57,14 +56,19 @@ const MonasteryOfTheScorpionPage = () => {
     setSolverStatus('idle')
   }
 
-  const resetForMask = (nextMask: boolean[][]) => {
-    setMask(nextMask)
-    setBoard(initBoard({ rows: ROWS, cols: COLUMNS, mask: nextMask }))
-    clearSolution()
+  const handleRandom = () => {
+    const presses = randomPresses(CONFIG)
+
+    setBoard(applyPresses(initBoard(CONFIG), CONFIG, presses))
+    setSolution(presses)
+    setMarkedSolution(presses.map((row) => row.map(() => 0)))
+    setEditMode(false)
+    setShowSolution(false)
+    setSolverStatus('random')
   }
 
   const handleSolve = () => {
-    const { presses, marked } = solveBoard(board, config)
+    const { presses, marked } = solveBoard(board, CONFIG)
 
     setEditMode(false)
     setSolution(presses)
@@ -73,25 +77,16 @@ const MonasteryOfTheScorpionPage = () => {
     setSolverStatus(presses === null ? 'no-solution' : countPresses(presses) === 0 ? 'complete' : 'solution')
   }
 
-  const handleRandom = () => {
-    const presses = randomPresses(config)
-
-    setBoard(applyPresses(initBoard(config), config, presses))
-    setSolution(presses)
-    setMarkedSolution(presses.map((row) => row.map(() => 0)))
-    setEditMode(false)
-    setShowSolution(false)
-    setSolverStatus('random')
-  }
-
   const handleClear = () => {
-    resetForMask(createMask())
+    setBoard(initBoard(CONFIG))
+    clearSolution()
+    setEditMode(true)
   }
 
-  const handleEditCell = (row: number, column: number) => {
-    if (!mask[row][column]) return
+  const handleCellClick = (row: number, column: number) => {
+    if (!MASK[row][column]) return
 
-    if (editAction === 'toggle') {
+    if (editMode) {
       const nextBoard = board.map((boardRow) => boardRow.slice())
       nextBoard[row][column] = nextBoard[row][column] ? 0 : 1
       setBoard(nextBoard)
@@ -99,12 +94,6 @@ const MonasteryOfTheScorpionPage = () => {
       return
     }
 
-    const nextMask = mask.map((maskRow) => maskRow.slice())
-    nextMask[row][column] = false
-    resetForMask(nextMask)
-  }
-
-  const handlePlayCell = (row: number, column: number) => {
     if (solution && showSolution && solution[row][column] === 1 && markedSolution?.[row][column] === 0) {
       const nextMarked = markedSolution.map((markedRow) => markedRow.slice())
       nextMarked[row][column] = 1
@@ -116,15 +105,7 @@ const MonasteryOfTheScorpionPage = () => {
       if (!remaining) setSolverStatus('complete')
     }
 
-    setBoard((currentBoard) => toggleCell(currentBoard, config, row, column))
-  }
-
-  const handleCellClick = (row: number, column: number) => {
-    if (editMode) {
-      handleEditCell(row, column)
-    } else {
-      handlePlayCell(row, column)
-    }
+    setBoard((currentBoard) => toggleCell(currentBoard, CONFIG, row, column))
   }
 
   return (
@@ -132,8 +113,8 @@ const MonasteryOfTheScorpionPage = () => {
       <Stack gap='xs'>
         <Group justify='space-between' align='flex-start' wrap='wrap'>
           <Stack gap={2}>
-            <Title order={1}>Monastery of the Scorpion</Title>
-            <Text c='dimmed'>The Reaver&apos;s Reach</Text>
+            <Title order={1}>Total Chaos</Title>
+            <Text c='dimmed'>Keep on the Borderlands</Text>
           </Stack>
           <Anchor
             href='https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Puzzle%20Solvers%22'
@@ -145,8 +126,8 @@ const MonasteryOfTheScorpionPage = () => {
           </Anchor>
         </Group>
         <Text>
-          In Edit mode, match the tiles and burned-out positions in game. Switch to Play to test moves, then solve to
-          mark the recommended presses. Removed positions still affect present neighbors in Play mode.
+          In Edit mode, match the active tiles in game. Switch to Play to test moves, then solve to mark the recommended
+          presses. Empty positions are fixed and cannot be pressed.
         </Text>
       </Stack>
 
@@ -179,64 +160,58 @@ const MonasteryOfTheScorpionPage = () => {
             </Group>
           </Group>
 
-          {editMode && (
-            <Select
-              label='Tile action'
-              value={editAction}
-              onChange={(value) => {
-                if (value === 'toggle' || value === 'remove') setEditAction(value)
-              }}
-              data={[
-                { value: 'toggle', label: 'Toggle On/Off' },
-                { value: 'remove', label: 'Remove (Burn Out)' }
-              ]}
-              allowDeselect={false}
-              maw={240}
-            />
-          )}
-
-          <Box role='group' aria-label='Monastery 4 by 5 puzzle board'>
-            <SimpleGrid cols={COLUMNS} spacing={0} w='100%' maw={320} mx='auto'>
+          <Box role='group' aria-label='Total Chaos 3 by 5 puzzle board'>
+            <SimpleGrid cols={COLUMNS} spacing={0} w='100%' maw={328} mx='auto' p={4}>
               {Array.from({ length: ROWS }).flatMap((_, row) =>
                 Array.from({ length: COLUMNS }).map((__, column) => {
-                  const removed = !mask[row][column]
+                  const masked = !MASK[row][column]
                   const on = board[row][column] === 1
                   const recommended = solution && showSolution ? solution[row][column] === 1 : false
                   const completed = markedSolution ? markedSolution[row][column] === 1 : false
+                  const backgroundImage = masked ? emptyTileImage : on ? activeTileImage : inactiveTileImage
+                  const tileStyle = {
+                    aspectRatio: '1 / 1',
+                    backgroundImage: `url(${backgroundImage})`,
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
+                    border: recommended
+                      ? completed
+                        ? '2px solid var(--mantine-color-yellow-6)'
+                        : '4px solid var(--mantine-color-green-6)'
+                      : '1px solid var(--mantine-color-default-border)',
+                    position: 'relative' as const
+                  }
+
+                  if (masked) {
+                    return (
+                      <Box
+                        key={`${String(row)}-${String(column)}`}
+                        role='img'
+                        aria-label={`Row ${String(row + 1)}, column ${String(column + 1)}, masked position`}
+                        w='100%'
+                        style={tileStyle}
+                      />
+                    )
+                  }
+
                   const state = on ? 'on' : 'off'
-                  const presence = removed ? 'removed' : 'present'
                   const recommendation = recommended
                     ? completed
                       ? 'recommended solution press completed'
                       : 'recommended solution press not completed'
                     : 'not a recommended solution press'
-                  const label = `Row ${String(row + 1)}, column ${String(column + 1)}, ${state}, ${presence}, ${recommendation}`
-                  const backgroundImage = removed ? emptyTileImage : on ? activeTileImage : inactiveTileImage
 
                   return (
                     <UnstyledButton
                       key={`${String(row)}-${String(column)}`}
                       type='button'
-                      aria-label={label}
+                      aria-label={`Row ${String(row + 1)}, column ${String(column + 1)}, ${state}, ${recommendation}`}
                       aria-pressed={on}
-                      disabled={editMode && removed}
                       onClick={() => {
                         handleCellClick(row, column)
                       }}
                       w='100%'
-                      opacity={removed ? 0.4 : 1}
-                      style={{
-                        aspectRatio: '1 / 1',
-                        backgroundImage: `url(${backgroundImage})`,
-                        backgroundPosition: 'center',
-                        backgroundSize: 'cover',
-                        border: recommended
-                          ? completed
-                            ? '2px solid var(--mantine-color-yellow-6)'
-                            : '4px solid var(--mantine-color-green-6)'
-                          : '1px solid var(--mantine-color-default-border)',
-                        position: 'relative'
-                      }}
+                      style={tileStyle}
                     >
                       {recommended && (
                         <Box
@@ -282,11 +257,11 @@ const MonasteryOfTheScorpionPage = () => {
       )}
       {solverStatus === 'no-solution' && (
         <Alert color='red' title='No solution exists' role='alert'>
-          This board and burned-out tile arrangement has no solution. Check the board in game and edit it again.
+          This board has no solution. Check the active tiles in game and edit it again.
         </Alert>
       )}
     </ToolLayout>
   )
 }
 
-export default MonasteryOfTheScorpionPage
+export default TotalChaosPage

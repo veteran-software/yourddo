@@ -23,6 +23,10 @@ vi.mock('../domains/monasteryOfTheScorpion/MonasteryOfTheScorpionPage.tsx', () =
   default: () => <h1>Monastery domain</h1>
 }))
 
+vi.mock('../domains/totalChaos/TotalChaosPage.tsx', () => ({
+  default: () => <h1>Total Chaos domain</h1>
+}))
+
 const renderRoute = (path: string) =>
   render(
     <MantineProvider env='test' defaultColorScheme='auto'>
@@ -159,6 +163,23 @@ describe('AppRouter', () => {
     expect(screen.getByRole('link', { name: 'Monastery of the Scorpion' }).getAttribute('aria-current')).toBe('page')
   })
 
+  it('renders Total Chaos at its preserved public route and supports a direct remount', () => {
+    const firstRender = renderRoute('/total-chaos')
+
+    expect(screen.getByRole('heading', { name: 'Total Chaos domain' })).toBeTruthy()
+    const link = screen.getByRole('link', { name: 'Total Chaos' })
+    expect(link.getAttribute('href')).toBe('/total-chaos')
+    expect(link.getAttribute('aria-current')).toBe('page')
+    const sidebarViewport = screen.getByRole('navigation').querySelector<HTMLElement>('[data-scrollarea-viewport]')
+    expect(sidebarViewport?.style.overflowY).toBe('scroll')
+
+    firstRender.unmount()
+    renderRoute('/total-chaos')
+
+    expect(screen.getByRole('heading', { name: 'Total Chaos domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Total Chaos' }).getAttribute('aria-current')).toBe('page')
+  })
+
   it('renders the not-found page for an unknown route', () => {
     renderRoute('/unknown-tool')
 
@@ -209,6 +230,20 @@ describe('AppRouter', () => {
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Monastery domain' })).toBeTruthy()
+    expect(link.getAttribute('aria-current')).toBe('page')
+  })
+
+  it('closes mobile navigation after selecting the Total Chaos route', async () => {
+    const user = userEvent.setup()
+    renderRoute('/')
+
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
+    const link = screen.getByRole('link', { name: 'Total Chaos' })
+    link.focus()
+    await user.keyboard('{Enter}')
+
+    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Total Chaos domain' })).toBeTruthy()
     expect(link.getAttribute('aria-current')).toBe('page')
   })
 

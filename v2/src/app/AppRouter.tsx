@@ -4,6 +4,7 @@ import HomePage from '../domains/home/HomePage.tsx'
 import MastermindPage from '../domains/mastermind/MastermindPage.tsx'
 import MonasteryOfTheScorpionPage from '../domains/monasteryOfTheScorpion/MonasteryOfTheScorpionPage.tsx'
 import NearlyCompletePage from '../domains/nearlyComplete/NearlyCompletePage.tsx'
+import TotalChaosPage from '../domains/totalChaos/TotalChaosPage.tsx'
 import NotFoundPage from '../shared/ui/NotFoundPage.tsx'
 import AppLayout from './AppLayout'
 
@@ -15,6 +16,7 @@ const AppRouter = () => (
       <Route path='/nearly-complete' element={<NearlyCompletePage />} />
       <Route path='/reavers-fate' element={<MastermindPage />} />
       <Route path='/monastery-of-the-scorpion' element={<MonasteryOfTheScorpionPage />} />
+      <Route path='/total-chaos' element={<TotalChaosPage />} />
       <Route path='/the-key-to-the-mythal' element={<Navigate to='/reavers-fate' replace />} />
       <Route path='/toxic-treatment' element={<Navigate to='/monastery-of-the-scorpion' replace />} />
       <Route path='*' element={<NotFoundPage />} />
