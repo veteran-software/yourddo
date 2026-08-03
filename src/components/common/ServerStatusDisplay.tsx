@@ -10,7 +10,7 @@ const ServerStatusDisplay = (props: Props) => {
     }
 
     if (isGhost) {
-      return up ? <FaGhost size={15} color={'green'} /> : <FaGhost size={15} color={'red'} />
+      return up ? <FaGhost size={15} color={'green'} /> : <FaGhost size={15} color={'blue'} />
     }
 
     return up ? <FaRegCircleUp size={15} color={'green'} /> : <FaRegCircleDown size={15} color={'red'} />

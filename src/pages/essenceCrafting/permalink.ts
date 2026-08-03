@@ -6,11 +6,7 @@ import {
   readQueryParamFromLocation,
   removeQueryParamFromLocation
 } from '../../utils/urlHelpers.ts'
-import { ALL_SLOT_KEYS, DATASET, type ItemState } from './types.ts'
-
-// ----- Internal: runtime dictionaries and constants (computed once per module load) -----
-const ENHANCEMENT_NAME_TO_RECIPE_ID = new Map(DATASET.map((entry) => [entry.name, entry.bound.recipeId]))
-const ENHANCEMENT_RECIPE_ID_TO_NAME = new Map(DATASET.map((entry) => [entry.bound.recipeId, entry.name]))
+import { ALL_SLOT_KEYS, type EssenceCraftingEntry, type ItemState } from './types.ts'
 
 const AUGMENT_NAME_TO_ID: Map<string, number> = (() => {
   const names = augmentMaster.map((a) => a.name).toSorted((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }))
@@ -79,18 +75,22 @@ const genId = (): string =>
   `cc-${Date.now().toString()}-${(nextGeneratedId++).toString(36)}`
 
 // ----- Encoding -----
-export const encodeEssencePermalink = (args: {
-  items: Record<string, ItemState>
-  activeKeys: string[]
-  collapsedKeys: string[]
-  masterMinLevel: number
-}): string => {
+export const encodeEssencePermalink = (
+  args: {
+    items: Record<string, ItemState>
+    activeKeys: string[]
+    collapsedKeys: string[]
+    masterMinLevel: number
+  },
+  dataset: EssenceCraftingEntry[]
+): string => {
   const { items, activeKeys, collapsedKeys, masterMinLevel } = args
+  const enhancementNameToRecipeId = new Map(dataset.map((entry) => [entry.name, entry.bound.recipeId]))
 
   const active = activeKeys.map((k) => SLOT_INDEX.get(k) ?? -1).filter((i) => i >= 0)
   const collapsed = collapsedKeys.map((k) => SLOT_INDEX.get(k) ?? -1).filter((i) => i >= 0)
 
-  const encEnh = (name: string | null): number => (name ? (ENHANCEMENT_NAME_TO_RECIPE_ID.get(name) ?? 0) : 0)
+  const encEnh = (name: string | null): number => (name ? (enhancementNameToRecipeId.get(name) ?? 0) : 0)
 
   const itemSlots: V3ItemSlot[] = active.map((slotIdx) => {
     const slotKey = ALL_SLOT_KEYS[slotIdx].key
@@ -116,8 +116,12 @@ export const encodeEssencePermalink = (args: {
 
 // ----- Decoding -----
 
-export const tryDecodeEssencePermalink = (cc: string): { ok: true; data: PermalinkStatePayload } | { ok: false } => {
+export const tryDecodeEssencePermalink = (
+  cc: string,
+  dataset: EssenceCraftingEntry[]
+): { ok: true; data: PermalinkStatePayload } | { ok: false } => {
   try {
+    const enhancementRecipeIdToName = new Map(dataset.map((entry) => [entry.bound.recipeId, entry.name]))
     const text = LZString.decompressFromEncodedURIComponent(cc)
     if (!text) return { ok: false }
     const obj = JSON.parse(text) as unknown
@@ -137,7 +141,7 @@ export const tryDecodeEssencePermalink = (cc: string): { ok: true; data: Permali
       const slotKey = ALL_SLOT_KEYS[slotIdx]?.key
       if (!slotKey) return
 
-      const decodeEnh = (n: number): string | null => (n > 0 ? (ENHANCEMENT_RECIPE_ID_TO_NAME.get(n) ?? null) : null)
+      const decodeEnh = (n: number): string | null => (n > 0 ? (enhancementRecipeIdToName.get(n) ?? null) : null)
       const item: ItemState = {
         slotKey,
         prefix: decodeEnh(pId),

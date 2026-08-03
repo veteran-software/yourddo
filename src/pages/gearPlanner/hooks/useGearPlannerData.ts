@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import essenceCraftingV2 from '../../../data/essenceCrafting.v2.json'
+import { loadEssenceCraftingData } from '../../../data/releaseClient.ts'
 import type { EssenceCraftingEntry } from '../../essenceCrafting/types'
 import { normalizeString } from '../conflictResolver'
 import { loadCurses, loadFiligreeSets, loadGearData, loadSetBonusIndex } from '../dataLoader'
@@ -12,8 +12,6 @@ import {
   type SetBonusIndexEntry
 } from '../types'
 
-const essenceEnchantments = essenceCraftingV2 as EssenceCraftingEntry[]
-
 export const useGearPlannerData = () => {
   const [allItems, setAllItems] = useState<GearItem[]>([])
   const [allAugments, setAllAugments] = useState<GearAugment[]>([])
@@ -22,8 +20,10 @@ export const useGearPlannerData = () => {
   const [allFiligreeSetNames, setAllFiligreeSetNames] = useState<string[]>([])
   const [itemSetBonusIndex, setItemSetBonusIndex] = useState<SetBonusIndex>({})
   const [filigreeSetBonusIndex, setFiligreeSetBonusIndex] = useState<SetBonusIndex>({})
+  const [essenceEnchantments, setEssenceEnchantments] = useState<EssenceCraftingEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [dataReady, setDataReady] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const [allItemsBySlot, setAllItemsBySlot] = useState<Map<GearSlot, GearItem[]>>(() => new Map())
   const [itemToSetsMap, setItemToSetsMap] = useState<Map<string, string[]>>(() => new Map())
@@ -31,18 +31,19 @@ export const useGearPlannerData = () => {
   useEffect(() => {
     const run = async () => {
       try {
-        const { items, augments, filigrees } = await loadGearData()
+        const [{ items, augments, filigrees }, sbi, curses, filigreeSetsData, essenceData] = await Promise.all([
+          loadGearData(),
+          loadSetBonusIndex(),
+          loadCurses(),
+          loadFiligreeSets(),
+          loadEssenceCraftingData<EssenceCraftingEntry[]>()
+        ])
         setAllItems(items)
         setAllAugments(augments)
         setAllFiligrees(filigrees)
-
-        const sbi: SetBonusIndex = await loadSetBonusIndex()
         setItemSetBonusIndex(sbi)
-
-        const curses: Curse[] = await loadCurses()
         setAllCurses(curses)
-
-        const filigreeSetsData: { name: string }[] = await loadFiligreeSets()
+        setEssenceEnchantments(essenceData)
         const filigreeSetNames: string[] = filigreeSetsData
           .map((set: { name: string }) => set.name)
           .sort((a: string, b: string) => a.localeCompare(b))
@@ -101,6 +102,7 @@ export const useGearPlannerData = () => {
         setFiligreeSetBonusIndex(filigreeSetBonusIndexLocal)
       } catch (err) {
         console.error('Error loading gear data:', err)
+        setError('Production data could not be loaded. Please try again later.')
       } finally {
         setLoading(false)
       }
@@ -110,7 +112,7 @@ export const useGearPlannerData = () => {
   }, [])
 
   useEffect(() => {
-    if (loading) {
+    if (loading || error) {
       return
     }
 
@@ -206,7 +208,7 @@ export const useGearPlannerData = () => {
         clearTimeout(timeoutId_2)
       }
     }
-  }, [allItems, allFiligrees, itemSetBonusIndex, filigreeSetBonusIndex, loading])
+  }, [allItems, allFiligrees, itemSetBonusIndex, filigreeSetBonusIndex, loading, error])
 
   return {
     allItems,
@@ -219,6 +221,7 @@ export const useGearPlannerData = () => {
     filigreeSetBonusIndex,
     loading,
     dataReady,
+    error,
     allItemsBySlot,
     itemToSetsMap
   }

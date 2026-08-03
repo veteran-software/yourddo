@@ -50,6 +50,7 @@ const useGearPlanner = (props: Props) => {
     filigreeSetBonusIndex,
     loading,
     dataReady,
+    error,
     allItemsBySlot,
     itemToSetsMap
   } = useGearPlannerData()
@@ -226,6 +227,7 @@ const useGearPlanner = (props: Props) => {
     deleteSetup: actions.deleteSetup,
     druidEquipped,
     essenceEnchantments,
+    error,
     filteredFiligreeSets,
     filteredItemSets,
     filteredItems,

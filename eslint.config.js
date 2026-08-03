@@ -14,7 +14,8 @@ export default [
       '**/*.svg',
       './eslint.config.js',
       'src/pages/gearPlannerv2/**',
-      'src/redux/slices/gearPlanner.slice.ts'
+      'src/redux/slices/gearPlanner.slice.ts',
+      'v2/**'
     ]
   },
   js.configs.recommended,

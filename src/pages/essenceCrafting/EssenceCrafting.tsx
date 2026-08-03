@@ -2,6 +2,7 @@ import type { ReactElement } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Accordion,
+  Alert,
   Badge,
   Button,
   Card,
@@ -21,6 +22,7 @@ import AugmentSlotFilterableDropdown from '../../components/common/AugmentSlotFi
 import PermalinkModal from '../../components/common/PermalinkModal.tsx'
 import type { ShoppingListTotals } from '../../components/common/ShoppingListDrawer.tsx'
 import ShoppingListDrawer from '../../components/common/ShoppingListDrawer.tsx'
+import { loadEssenceCraftingData } from '../../data/releaseClient.ts'
 import { useAppSelector } from '../../redux/hooks.ts'
 import type { AugmentItem } from '../../types/augmentItem.ts'
 import type { Ingredient } from '../../types/ingredients.ts'
@@ -40,7 +42,6 @@ import {
   ALL_SLOT_KEYS,
   ALLOWED_AUGMENT_KEYS,
   AVAILABLE_AUGMENT_TYPES,
-  DATASET,
   type EssenceCraftingEntry,
   type ItemAugmentSlotState,
   type ItemState
@@ -73,128 +74,112 @@ const getShardLevelLabel = (boundLv: number | undefined, unboundLv: number | und
   return ''
 }
 
+interface InitialEssenceCraftingState {
+  items: Record<string, ItemState>
+  activeKeys: string[]
+  masterMinLevel: number
+  masterBindingBound: boolean
+  collapsedKeys: string[]
+}
+
+const readInitialState = (
+  location: Parameters<typeof readCcFromUrl>[0],
+  dataset: EssenceCraftingEntry[]
+): InitialEssenceCraftingState => {
+  const emptyState: InitialEssenceCraftingState = {
+    items: {},
+    activeKeys: [],
+    masterMinLevel: 1,
+    masterBindingBound: true,
+    collapsedKeys: []
+  }
+  const { cc } = readCcFromUrl(location)
+
+  if (cc) {
+    const decoded = tryDecodeEssencePermalink(cc, dataset)
+
+    if (decoded.ok) {
+      return {
+        ...emptyState,
+        ...decoded.data,
+        items: sanitizeAugmentsOnItems(decoded.data, dataset),
+        masterMinLevel: decoded.data.masterMinLevel ?? 1
+      }
+    }
+  }
+
+  const loadedText = readSessionStorageItem(STORAGE_KEY)
+  if (!loadedText) {
+    return emptyState
+  }
+
+  try {
+    const parsed = JSON.parse(loadedText) as Omit<PermalinkStatePayload, 'collapsedKeys'> & {
+      collapsedKeys?: string[]
+      masterBindingBound?: boolean
+    }
+
+    return {
+      items: sanitizeAugmentsOnItems(parsed, dataset),
+      activeKeys: parsed.activeKeys,
+      masterMinLevel: parsed.masterMinLevel ?? 1,
+      masterBindingBound: parsed.masterBindingBound ?? true,
+      collapsedKeys: parsed.collapsedKeys ?? []
+    }
+  } catch (err) {
+    console.warn('EssenceCrafting: failed to load initial state.', err)
+    return emptyState
+  }
+}
+
 const EssenceCrafting = () => {
   // Router utilities (work for both BrowserRouter and HashRouter)
   const location = useLocation()
   const navigate = useNavigate()
   // Trove integration: get uploaded inventory from a localStorage-backed Redux slice
   const { troveData } = useAppSelector((state) => state.app, shallowEqual)
-  const [items, setItems] = useState<Record<string, ItemState>>(() => {
-    // Attempt initial load immediately during construction
-    const { cc } = readCcFromUrl(location)
-    if (cc) {
-      const decoded = tryDecodeEssencePermalink(cc)
+  const [dataset, setDataset] = useState<EssenceCraftingEntry[]>([])
+  const [dataLoading, setDataLoading] = useState(true)
+  const [dataError, setDataError] = useState<string | null>(null)
+  const [items, setItems] = useState<Record<string, ItemState>>({})
+  const [activeKeys, setActiveKeys] = useState<string[]>([])
+  const [masterMinLevel, setMasterMinLevel] = useState(1)
+  const [masterBindingBound, setMasterBindingBound] = useState(true)
+  const [collapsedKeys, setCollapsedKeys] = useState<string[]>([])
+  const initializedRef = useRef(false)
 
-      if (decoded.ok) {
-        return sanitizeAugmentsOnItems(decoded.data satisfies PermalinkStatePayload)
-      }
+  useEffect(() => {
+    if (initializedRef.current) {
+      return
     }
 
-    const loadedText: string | null = readSessionStorageItem(STORAGE_KEY)
-    if (loadedText) {
-      try {
-        const parsed = JSON.parse(loadedText) as PermalinkStatePayload
+    let cancelled = false
 
-        return sanitizeAugmentsOnItems(parsed)
-      } catch (err) {
-        console.warn('EssenceCrafting: failed to load initial state.', err)
-      }
+    void loadEssenceCraftingData<EssenceCraftingEntry[]>()
+      .then((loadedDataset) => {
+        if (cancelled) return
+
+        const initialState = readInitialState(location, loadedDataset)
+        initializedRef.current = true
+        setDataset(loadedDataset)
+        setItems(initialState.items)
+        setActiveKeys(initialState.activeKeys)
+        setMasterMinLevel(initialState.masterMinLevel)
+        setMasterBindingBound(initialState.masterBindingBound)
+        setCollapsedKeys(initialState.collapsedKeys)
+        setDataLoading(false)
+      })
+      .catch((err: unknown) => {
+        if (cancelled) return
+        console.error('Error loading essence crafting data:', err)
+        setDataError('Production data could not be loaded. Please try again later.')
+        setDataLoading(false)
+      })
+
+    return () => {
+      cancelled = true
     }
-    return {}
-  })
-
-  const [activeKeys, setActiveKeys] = useState<string[]>(() => {
-    const { cc } = readCcFromUrl(location)
-    if (cc) {
-      const decoded = tryDecodeEssencePermalink(cc)
-
-      if (decoded.ok) {
-        return decoded.data.activeKeys
-      }
-    }
-
-    const loadedText = readSessionStorageItem(STORAGE_KEY)
-    if (loadedText) {
-      try {
-        const parsed = JSON.parse(loadedText) as {
-          activeKeys: string[]
-        }
-        return parsed.activeKeys
-      } catch {
-        // Fallback below
-      }
-    }
-    return []
-  })
-  const [masterMinLevel, setMasterMinLevel] = useState(() => {
-    const { cc } = readCcFromUrl(location)
-
-    if (cc) {
-      const decoded = tryDecodeEssencePermalink(cc)
-
-      if (decoded.ok) {
-        return decoded.data.masterMinLevel ?? 1
-      }
-    }
-
-    const loadedText: string | null = readSessionStorageItem(STORAGE_KEY)
-    if (loadedText) {
-      try {
-        const parsed = JSON.parse(loadedText) as {
-          masterMinLevel?: number
-        }
-
-        return typeof parsed.masterMinLevel === 'number' ? parsed.masterMinLevel : 1
-      } catch {
-        // Fallback below
-      }
-    }
-    return 1
-  })
-
-  // Binding selection removed from UI; keep state for backward-compatible permalink/session payloads (unused in logic)
-  const [masterBindingBound] = useState(() => {
-    const loadedText = readSessionStorageItem(STORAGE_KEY)
-
-    if (loadedText) {
-      try {
-        const parsed = JSON.parse(loadedText) as {
-          masterBindingBound?: boolean
-        }
-
-        return typeof parsed.masterBindingBound === 'boolean' ? parsed.masterBindingBound : true
-      } catch {
-        // Fallback below
-      }
-    }
-    return true
-  })
-
-  // track which item cards are collapsed (default open -> not present in this set)
-  const [collapsedKeys, setCollapsedKeys] = useState<string[]>(() => {
-    const { cc } = readCcFromUrl(location)
-    if (cc) {
-      const decoded = tryDecodeEssencePermalink(cc)
-
-      if (decoded.ok) {
-        return Array.isArray(decoded.data.collapsedKeys) ? decoded.data.collapsedKeys : []
-      }
-    }
-
-    const loadedText = readSessionStorageItem(STORAGE_KEY)
-    if (loadedText) {
-      try {
-        const parsed = JSON.parse(loadedText) as {
-          collapsedKeys?: string[]
-        }
-
-        return Array.isArray(parsed.collapsedKeys) ? parsed.collapsedKeys : []
-      } catch {
-        // Fallback below
-      }
-    }
-    return []
-  })
+  }, [location])
 
   // Permalink modal visibility
   const [showPermalink, setShowPermalink] = useState(false)
@@ -237,12 +222,12 @@ const EssenceCrafting = () => {
   const enhancementByName = useMemo(() => {
     const enhancementMap = new Map<string, EssenceCraftingEntry>()
 
-    DATASET.forEach((entry: EssenceCraftingEntry) => {
+    dataset.forEach((entry: EssenceCraftingEntry) => {
       enhancementMap.set(entry.name, entry)
     })
 
     return enhancementMap
-  }, [])
+  }, [dataset])
 
   // The dataset's minItemLevel is authoritative even when a modifier is absent for the current level.
   const isEnhancementAllowedAtML = useCallback(
@@ -261,7 +246,7 @@ const EssenceCrafting = () => {
   const didLoadRef = useRef(false)
 
   useEffect(() => {
-    if (didLoadRef.current) {
+    if (dataLoading || dataError || didLoadRef.current) {
       return
     }
 
@@ -271,10 +256,14 @@ const EssenceCrafting = () => {
       didLoadRef.current = true
       removeCcFromUrl(navigate, location, source).catch(console.error)
     }
-  }, [location, navigate])
+  }, [dataError, dataLoading, location, navigate])
 
   // Persist on change
   useEffect(() => {
+    if (dataLoading || dataError) {
+      return
+    }
+
     const payload = JSON.stringify({
       items,
       activeKeys,
@@ -286,7 +275,7 @@ const EssenceCrafting = () => {
     if (typeof sessionStorage !== 'undefined') {
       sessionStorage.setItem(STORAGE_KEY, payload)
     }
-  }, [items, activeKeys, masterMinLevel, masterBindingBound, collapsedKeys])
+  }, [items, activeKeys, masterMinLevel, masterBindingBound, collapsedKeys, dataLoading, dataError])
 
   // Enforce item constraints (dataset minimum levels and Augment color ML floors)
   // We do this during render phase to avoid multiple re-renders and ESLint warnings.
@@ -503,14 +492,14 @@ const EssenceCrafting = () => {
       const slotKeyForOptions = slotDef.key
 
       optionsBySlot[slotKeyForOptions] = {
-        prefix: getAffixOptions(slotKeyForOptions, 'prefix'),
-        suffix: getAffixOptions(slotKeyForOptions, 'suffix'),
-        extra: getAffixOptions(slotKeyForOptions, 'extra')
+        prefix: getAffixOptions(slotKeyForOptions, 'prefix', dataset),
+        suffix: getAffixOptions(slotKeyForOptions, 'suffix', dataset),
+        extra: getAffixOptions(slotKeyForOptions, 'extra', dataset)
       }
     })
 
     return optionsBySlot
-  }, [])
+  }, [dataset])
 
   const renderAffixSelect = (
     slotKey: string,
@@ -1114,6 +1103,23 @@ const EssenceCrafting = () => {
     )
   }
 
+  if (dataError) {
+    return <Alert variant='danger'>{dataError}</Alert>
+  }
+
+  if (dataLoading) {
+    return (
+      <Container className='py-4 text-center'>
+        <output className='spinner-border text-primary'>
+          <span className='visually-hidden'>Loading Essence Crafting Data...</span>
+        </output>
+        <p className='mt-2' aria-hidden='true'>
+          Loading Essence Crafting Data...
+        </p>
+      </Container>
+    )
+  }
+
   return (
     <Container className='px-0'>
       <Card>
@@ -1318,12 +1324,15 @@ const EssenceCrafting = () => {
         }}
         buildUrl={() =>
           buildPermalinkUrl(
-            encodeEssencePermalink({
-              items,
-              activeKeys,
-              collapsedKeys,
-              masterMinLevel
-            }),
+            encodeEssencePermalink(
+              {
+                items,
+                activeKeys,
+                collapsedKeys,
+                masterMinLevel
+              },
+              dataset
+            ),
             location
           )
         }
