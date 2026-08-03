@@ -15,6 +15,10 @@ vi.mock('../domains/nearlyComplete/NearlyCompletePage.tsx', () => ({
   default: () => <h1>Nearly Complete domain</h1>
 }))
 
+vi.mock('../domains/mastermind/MastermindPage.tsx', () => ({
+  default: () => <h1>Mastermind domain</h1>
+}))
+
 const renderRoute = (path: string) =>
   render(
     <MantineProvider env='test' defaultColorScheme='auto'>
@@ -103,6 +107,30 @@ describe('AppRouter', () => {
     expect(screen.getByRole('link', { name: 'Total Chaos' })).toBeTruthy()
   })
 
+  it('renders Mastermind at its preserved public route and supports a direct remount', () => {
+    const firstRender = renderRoute('/reavers-fate')
+
+    expect(screen.getByRole('heading', { name: 'Mastermind domain' })).toBeTruthy()
+    const link = screen.getByRole('link', { name: "The Reaver's Fate" })
+    expect(link.getAttribute('href')).toBe('/reavers-fate')
+    expect(link.getAttribute('aria-current')).toBe('page')
+    const sidebarViewport = screen.getByRole('navigation').querySelector<HTMLElement>('[data-scrollarea-viewport]')
+    expect(sidebarViewport?.style.overflowY).toBe('scroll')
+
+    firstRender.unmount()
+    renderRoute('/reavers-fate')
+
+    expect(screen.getByRole('heading', { name: 'Mastermind domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: "The Reaver's Fate" }).getAttribute('aria-current')).toBe('page')
+  })
+
+  it('preserves the legacy Mastermind route alias', async () => {
+    renderRoute('/the-key-to-the-mythal')
+
+    expect(await screen.findByRole('heading', { name: 'Mastermind domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: "The Reaver's Fate" }).getAttribute('aria-current')).toBe('page')
+  })
+
   it('renders the not-found page for an unknown route', () => {
     renderRoute('/unknown-tool')
 
@@ -125,6 +153,20 @@ describe('AppRouter', () => {
     await user.keyboard('{Enter}')
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
+    expect(link.getAttribute('aria-current')).toBe('page')
+  })
+
+  it('closes mobile navigation after selecting the Mastermind route', async () => {
+    const user = userEvent.setup()
+    renderRoute('/')
+
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
+    const link = screen.getByRole('link', { name: "The Reaver's Fate" })
+    link.focus()
+    await user.keyboard('{Enter}')
+
+    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Mastermind domain' })).toBeTruthy()
     expect(link.getAttribute('aria-current')).toBe('page')
   })
 

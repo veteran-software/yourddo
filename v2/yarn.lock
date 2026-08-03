@@ -560,17 +560,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mantine/dropzone@npm:^9.5.0":
-  version: 9.5.0
-  resolution: "@mantine/dropzone@npm:9.5.0"
+"@mantine/dropzone@npm:^9.5.1":
+  version: 9.5.1
+  resolution: "@mantine/dropzone@npm:9.5.1"
   dependencies:
     react-dropzone: "npm:15.0.0"
   peerDependencies:
-    "@mantine/core": 9.5.0
-    "@mantine/hooks": 9.5.0
+    "@mantine/core": 9.5.1
+    "@mantine/hooks": 9.5.1
     react: ^19.2.0
     react-dom: ^19.2.0
-  checksum: 10c0/c243e0d08ebc594ad41ba4c20c61f7bfb2cc7b0e68e65b52d6e94002e23870cc1f7581d95c3ba21a046db7491f910fab68e3c45aee98d5d751fd460f6f627e5d
+  checksum: 10c0/e45f85a112f19ade6e76e2574f1f6f58a495b894173ba05de45979e7822598e78facebd9619dbbcd2a8d06453f08dfe39374074cb0d623b77c0d36d21a0a6a33
   languageName: node
   linkType: hard
 
@@ -2386,7 +2386,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.9.0":
+"prettier@npm:^3.9.6":
   version: 3.9.6
   resolution: "prettier@npm:3.9.6"
   bin:
@@ -3041,7 +3041,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^4.1.0":
+"vitest@npm:^4.1.10":
   version: 4.1.10
   resolution: "vitest@npm:4.1.10"
   dependencies:
@@ -3236,7 +3236,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:^10.0.1"
     "@mantine/core": "npm:^9.5.1"
-    "@mantine/dropzone": "npm:^9.5.0"
+    "@mantine/dropzone": "npm:^9.5.1"
     "@mantine/form": "npm:^9.5.1"
     "@mantine/hooks": "npm:^9.5.1"
     "@mantine/modals": "npm:^9.5.1"
@@ -3256,14 +3256,14 @@ __metadata:
     postcss: "npm:^8.5.25"
     postcss-preset-mantine: "npm:^1.18.0"
     postcss-simple-vars: "npm:^7.0.1"
-    prettier: "npm:^3.9.0"
+    prettier: "npm:^3.9.6"
     react: "npm:^19.2.8"
     react-dom: "npm:^19.2.8"
     react-router-dom: "npm:^7.18.2"
     typescript: "npm:~6.0.3"
     typescript-eslint: "npm:^8.65.0"
     vite: "npm:^8.2.0"
-    vitest: "npm:^4.1.0"
+    vitest: "npm:^4.1.10"
   languageName: unknown
   linkType: soft
 
