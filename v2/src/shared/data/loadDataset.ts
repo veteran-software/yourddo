@@ -5,22 +5,31 @@ interface GeneratedFile {
   sha256: string
 }
 
+interface ManualPayload {
+  name: string
+  path: string
+  sizeBytes: number
+  sha256: string
+}
+
 interface DataManifest {
   schemaVersion: 2
   generatedFiles: GeneratedFile[]
+  manualPayloads: ManualPayload[]
 }
 
-const isGeneratedFile = (value: unknown): value is GeneratedFile => {
+const isManifestFile = (value: unknown): value is Omit<GeneratedFile, 'domain'> => {
   if (typeof value !== 'object' || value === null) return false
 
   const file = value as Record<string, unknown>
-  return (
-    typeof file.domain === 'string' &&
-    typeof file.path === 'string' &&
-    typeof file.sizeBytes === 'number' &&
-    typeof file.sha256 === 'string'
-  )
+  return typeof file.path === 'string' && typeof file.sizeBytes === 'number' && typeof file.sha256 === 'string'
 }
+
+const isGeneratedFile = (value: unknown): value is GeneratedFile =>
+  isManifestFile(value) && typeof (value as Record<string, unknown>).domain === 'string'
+
+const isManualPayload = (value: unknown): value is ManualPayload =>
+  isManifestFile(value) && typeof (value as Record<string, unknown>).name === 'string'
 
 const parseManifest = async (response: Response): Promise<DataManifest> => {
   let value: unknown
@@ -43,6 +52,10 @@ const parseManifest = async (response: Response): Promise<DataManifest> => {
 
   if (!Array.isArray(manifest.generatedFiles) || !manifest.generatedFiles.every(isGeneratedFile)) {
     throw new Error('Invalid data manifest response: invalid generatedFiles')
+  }
+
+  if (!Array.isArray(manifest.manualPayloads) || !manifest.manualPayloads.every(isManualPayload)) {
+    throw new Error('Invalid data manifest response: invalid manualPayloads')
   }
 
   return manifest as unknown as DataManifest
@@ -72,7 +85,12 @@ const parseDataset = async <T>(response: Response): Promise<T> => {
   }
 }
 
-export const loadDataset = async <T>(domain: string): Promise<T> => {
+interface ResolvedManifest {
+  manifest: DataManifest
+  manifestUrl: string
+}
+
+const loadManifest = async (): Promise<ResolvedManifest> => {
   const configuredManifestUrl: unknown = import.meta.env.VITE_DATA_MANIFEST_URL
 
   if (typeof configuredManifestUrl !== 'string' || !configuredManifestUrl.trim()) {
@@ -82,6 +100,20 @@ export const loadDataset = async <T>(domain: string): Promise<T> => {
   const manifestUrl = configuredManifestUrl.trim()
   const manifestResponse = await fetchResponse(manifestUrl, 'Manifest')
   const manifest = await parseManifest(manifestResponse)
+
+  return { manifest, manifestUrl }
+}
+
+const resolveManifestPath = (manifestUrl: string, path: string): string => {
+  const manifestBaseUrl = URL.canParse(manifestUrl)
+    ? new URL(manifestUrl)
+    : new URL(manifestUrl, globalThis.location.href)
+
+  return new URL(path, manifestBaseUrl).toString()
+}
+
+export const loadDataset = async <T>(domain: string): Promise<T> => {
+  const { manifest, manifestUrl } = await loadManifest()
   const matches = manifest.generatedFiles.filter((file) => file.domain === domain)
 
   if (matches.length === 0) {
@@ -92,11 +124,26 @@ export const loadDataset = async <T>(domain: string): Promise<T> => {
     throw new Error(`Data manifest contains multiple files for domain: ${domain}`)
   }
 
-  const manifestBaseUrl = URL.canParse(manifestUrl)
-    ? new URL(manifestUrl)
-    : new URL(manifestUrl, globalThis.location.href)
-  const datasetUrl = new URL(matches[0].path, manifestBaseUrl).toString()
+  const datasetUrl = resolveManifestPath(manifestUrl, matches[0].path)
   const datasetResponse = await fetchResponse(datasetUrl, 'Dataset')
 
   return parseDataset<T>(datasetResponse)
+}
+
+export const loadManualPayload = async <T>(name: string): Promise<T> => {
+  const { manifest, manifestUrl } = await loadManifest()
+  const matches = manifest.manualPayloads.filter((payload) => payload.name === name)
+
+  if (matches.length === 0) {
+    throw new Error(`Unknown manual payload: ${name}`)
+  }
+
+  if (matches.length > 1) {
+    throw new Error(`Data manifest contains multiple manual payloads: ${name}`)
+  }
+
+  const payloadUrl = resolveManifestPath(manifestUrl, matches[0].path)
+  const payloadResponse = await fetchResponse(payloadUrl, 'Manual payload')
+
+  return parseDataset<T>(payloadResponse)
 }

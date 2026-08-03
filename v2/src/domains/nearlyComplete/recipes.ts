@@ -1,4 +1,4 @@
-import recipesData from './recipes.json'
+import { loadManualPayload } from '../../shared/data/loadDataset.ts'
 
 export type RecipeTier = 'Heroic' | 'Legendary'
 
@@ -23,7 +23,10 @@ export interface NearlyCompleteRecipe {
   requirements: NearlyCompleteRequirement[]
 }
 
-export const nearlyCompleteRecipes = recipesData as NearlyCompleteRecipe[]
+export type NearlyCompleteRecipes = NearlyCompleteRecipe[]
+
+export const loadNearlyCompleteRecipes = (): Promise<NearlyCompleteRecipes> =>
+  loadManualPayload<NearlyCompleteRecipes>('nearlyComplete.recipes')
 
 export const getRecipeCategory = (recipe: NearlyCompleteRecipe): string =>
   recipe.effectsRemoved[0].name.replace('Nearly Complete: ', '')
@@ -31,12 +34,16 @@ export const getRecipeCategory = (recipe: NearlyCompleteRecipe): string =>
 export const getRecipeTier = (recipe: NearlyCompleteRecipe): RecipeTier =>
   recipe.requirements[0]?.name.startsWith('Legendary ') ? 'Legendary' : 'Heroic'
 
-export const getRecipeCategories = (tier: RecipeTier): string[] =>
-  [...new Set(nearlyCompleteRecipes.filter((recipe) => getRecipeTier(recipe) === tier).map(getRecipeCategory))].sort(
-    (a, b) => a.localeCompare(b)
+export const getRecipeCategories = (recipes: NearlyCompleteRecipes, tier: RecipeTier): string[] =>
+  [...new Set(recipes.filter((recipe) => getRecipeTier(recipe) === tier).map(getRecipeCategory))].sort((a, b) =>
+    a.localeCompare(b)
   )
 
-export const getRecipes = (tier: RecipeTier, category: string): NearlyCompleteRecipe[] =>
-  nearlyCompleteRecipes
+export const getRecipes = (
+  recipes: NearlyCompleteRecipes,
+  tier: RecipeTier,
+  category: string
+): NearlyCompleteRecipe[] =>
+  recipes
     .filter((recipe) => getRecipeTier(recipe) === tier && getRecipeCategory(recipe) === category)
     .toSorted((a, b) => a.name.localeCompare(b.name))

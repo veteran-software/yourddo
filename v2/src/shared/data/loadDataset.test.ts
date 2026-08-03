@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-const manifestUrl = 'https://cdn.yourddo.com/releases/81.0.1/1785709673/manifest.json'
+const manifestUrl = 'https://cdn.yourddo.com/releases/81.0.1/1785743584/manifest.json'
 
 const generatedFile = {
   domain: 'nearly-complete',
@@ -9,9 +9,17 @@ const generatedFile = {
   sha256: '4bbcd24998df309a0cf5c6e75f7fffb0b1f9d6bf6b18a314df6bc5aae894c3a9'
 }
 
+const manualPayload = {
+  name: 'nearlyComplete.recipes',
+  path: 'manual/nearlyComplete.recipes.json',
+  sizeBytes: 28289,
+  sha256: 'e89c561e5c570c917d860367f72b316478ca75bfb4d061f9028fd9a1ac31e3af'
+}
+
 const manifest = {
   schemaVersion: 2,
-  generatedFiles: [generatedFile]
+  generatedFiles: [generatedFile],
+  manualPayloads: [manualPayload]
 }
 
 const jsonResponse = (value: unknown, init?: ResponseInit): Response =>
@@ -46,7 +54,23 @@ describe('loadDataset', () => {
     await expect(loadDataset<{ name: string }[]>('nearly-complete')).resolves.toEqual(payload)
     expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
       manifestUrl,
-      'https://cdn.yourddo.com/releases/81.0.1/1785709673/nearly-complete/items.json'
+      'https://cdn.yourddo.com/releases/81.0.1/1785743584/nearly-complete/items.json'
+    ])
+  })
+
+  it('loads the single manual payload matching the requested name', async () => {
+    const payload = [{ name: 'Strength +6' }]
+    const fetchMock = vi
+      .fn<typeof fetch>()
+      .mockResolvedValueOnce(jsonResponse(manifest))
+      .mockResolvedValueOnce(jsonResponse(payload))
+    vi.stubGlobal('fetch', fetchMock)
+    const { loadManualPayload } = await importLoader()
+
+    await expect(loadManualPayload<{ name: string }[]>('nearlyComplete.recipes')).resolves.toEqual(payload)
+    expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
+      manifestUrl,
+      'https://cdn.yourddo.com/releases/81.0.1/1785743584/manual/nearlyComplete.recipes.json'
     ])
   })
 
@@ -57,13 +81,13 @@ describe('loadDataset', () => {
       .mockResolvedValueOnce(jsonResponse(manifest))
       .mockResolvedValueOnce(jsonResponse([]))
     vi.stubGlobal('fetch', fetchMock)
-    const { loadDataset } = await importLoader('/data-cdn/releases/81.0.1/1785709673/manifest.json')
+    const { loadDataset } = await importLoader('/data-cdn/releases/81.0.1/1785743584/manifest.json')
 
     await loadDataset('nearly-complete')
 
     expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
-      '/data-cdn/releases/81.0.1/1785709673/manifest.json',
-      'https://yourddo.com/data-cdn/releases/81.0.1/1785709673/nearly-complete/items.json'
+      '/data-cdn/releases/81.0.1/1785743584/manifest.json',
+      'https://yourddo.com/data-cdn/releases/81.0.1/1785743584/nearly-complete/items.json'
     ])
   })
 
@@ -90,11 +114,17 @@ describe('loadDataset', () => {
   it.each([
     ['unsupported schema', { ...manifest, schemaVersion: 3 }, 'expected schemaVersion 2'],
     ['non-object response', null, 'expected an object'],
-    ['missing generated files', { schemaVersion: 2 }, 'invalid generatedFiles'],
+    ['missing generated files', { schemaVersion: 2, manualPayloads: [] }, 'invalid generatedFiles'],
     [
       'invalid generated file',
-      { schemaVersion: 2, generatedFiles: [{ domain: 'nearly-complete' }] },
+      { schemaVersion: 2, generatedFiles: [{ domain: 'nearly-complete' }], manualPayloads: [] },
       'invalid generatedFiles'
+    ],
+    ['missing manual payloads', { schemaVersion: 2, generatedFiles: [] }, 'invalid manualPayloads'],
+    [
+      'invalid manual payload',
+      { schemaVersion: 2, generatedFiles: [], manualPayloads: [{ name: 'nearlyComplete.recipes' }] },
+      'invalid manualPayloads'
     ]
   ])('rejects an invalid manifest: %s', async (_name, value, message) => {
     vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(value)))
@@ -127,6 +157,30 @@ describe('loadDataset', () => {
     )
   })
 
+  it('rejects an unknown manual payload', async () => {
+    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(manifest)))
+    const { loadManualPayload } = await importLoader()
+
+    await expect(loadManualPayload('missing')).rejects.toThrow('Unknown manual payload: missing')
+  })
+
+  it('rejects multiple manual payloads with one name', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn<typeof fetch>().mockResolvedValueOnce(
+        jsonResponse({
+          ...manifest,
+          manualPayloads: [manualPayload, { ...manualPayload, path: 'manual/other.json' }]
+        })
+      )
+    )
+    const { loadManualPayload } = await importLoader()
+
+    await expect(loadManualPayload('nearlyComplete.recipes')).rejects.toThrow(
+      'Data manifest contains multiple manual payloads: nearlyComplete.recipes'
+    )
+  })
+
   it.each(requestFailures)('rejects a dataset %s', async (_name, createResponse) => {
     vi.stubGlobal(
       'fetch',
@@ -137,6 +191,16 @@ describe('loadDataset', () => {
     await expect(loadDataset('nearly-complete')).rejects.toThrow('Dataset request failed')
   })
 
+  it.each(requestFailures)('rejects a manual payload %s', async (_name, createResponse) => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(manifest)).mockReturnValueOnce(createResponse())
+    )
+    const { loadManualPayload } = await importLoader()
+
+    await expect(loadManualPayload('nearlyComplete.recipes')).rejects.toThrow('Manual payload request failed')
+  })
+
   it('rejects invalid dataset JSON', async () => {
     vi.stubGlobal(
       'fetch',
@@ -145,5 +209,17 @@ describe('loadDataset', () => {
     const { loadDataset } = await importLoader()
 
     await expect(loadDataset('nearly-complete')).rejects.toThrow('Invalid dataset response: expected valid JSON')
+  })
+
+  it('rejects invalid manual payload JSON', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(manifest)).mockResolvedValueOnce(new Response('{'))
+    )
+    const { loadManualPayload } = await importLoader()
+
+    await expect(loadManualPayload('nearlyComplete.recipes')).rejects.toThrow(
+      'Invalid dataset response: expected valid JSON'
+    )
   })
 })

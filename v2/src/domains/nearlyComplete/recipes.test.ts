@@ -1,45 +1,69 @@
-import { describe, expect, it } from 'vitest'
-import { getRecipeCategories, getRecipeCategory, getRecipes, getRecipeTier, nearlyCompleteRecipes } from './recipes.ts'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { loadManualPayload } from '../../shared/data/loadDataset.ts'
+import {
+  getRecipeCategories,
+  getRecipeCategory,
+  getRecipes,
+  getRecipeTier,
+  loadNearlyCompleteRecipes,
+  type NearlyCompleteRecipe
+} from './recipes.ts'
+
+vi.mock('../../shared/data/loadDataset.ts', () => ({
+  loadManualPayload: vi.fn()
+}))
+
+const recipe = (name: string, category: string, requirementName: string, effectName = name): NearlyCompleteRecipe => ({
+  name,
+  quantity: 1,
+  craftedIn: 'Duergar Completion Forge',
+  effectsAdded: [{ name: effectName, modifier: '6', bonus: 'Exceptional' }],
+  effectsRemoved: [{ name: `Nearly Complete: ${category}` }],
+  requirements: [
+    { name: requirementName, quantity: 1, requirements: [] },
+    { name: 'Abyssal Gem', quantity: 25, requirements: [] }
+  ]
+})
+
+const recipes = [
+  recipe('Strength +6', 'Ability Score', 'Heroic Item with Nearly Complete: Ability Score'),
+  recipe('Charisma +6', 'Ability Score', 'Heroic Item with Nearly Complete: Ability Score'),
+  recipe('Strength Skills +6', 'Skill', 'Heroic Item with Nearly Complete: Skill', 'Skill: Jump'),
+  recipe('Abjuration Focus +13', 'Spell Focus', 'Legendary Item with Nearly Complete: Spell Focus')
+]
+
+beforeEach(() => {
+  vi.mocked(loadManualPayload).mockReset()
+})
 
 describe('Nearly Complete recipes', () => {
-  it('preserves the complete Heroic and Legendary recipe sets', () => {
-    expect(nearlyCompleteRecipes).toHaveLength(68)
+  it('loads the recipes manual payload from the manifest', async () => {
+    vi.mocked(loadManualPayload).mockResolvedValue(recipes)
 
-    for (const tier of ['Heroic', 'Legendary'] as const) {
-      expect(getRecipeCategories(tier)).toEqual([
-        'Ability Score',
-        'Healing Amplification',
-        'Insightful Ability Score',
-        'Quality Ability Score',
-        'Skill',
-        'Spell Focus'
-      ])
-      expect(getRecipes(tier, 'Spell Focus')).toHaveLength(7)
-      expect(getRecipes(tier, 'Healing Amplification')).toHaveLength(3)
-      expect(getRecipes(tier, 'Skill')).toHaveLength(6)
+    await expect(loadNearlyCompleteRecipes()).resolves.toEqual(recipes)
+    expect(loadManualPayload).toHaveBeenCalledWith('nearlyComplete.recipes')
+  })
 
-      const abilityScores = getRecipes(tier, 'Ability Score').map(({ name }) => name)
-      expect(abilityScores).toEqual(abilityScores.toSorted((a, b) => a.localeCompare(b)))
-    }
+  it('derives sorted categories and recipes from the loaded payload', () => {
+    expect(getRecipeCategories(recipes, 'Heroic')).toEqual(['Ability Score', 'Skill'])
+    expect(getRecipeCategories(recipes, 'Legendary')).toEqual(['Spell Focus'])
+    expect(getRecipes(recipes, 'Heroic', 'Ability Score').map(({ name }) => name)).toEqual([
+      'Charisma +6',
+      'Strength +6'
+    ])
   })
 
   it('derives the tier and category from recipe requirements and removed effects', () => {
-    const heroic = nearlyCompleteRecipes.find((recipe) => recipe.name === 'Abjuration Focus +4')
-    const legendary = nearlyCompleteRecipes.find((recipe) => recipe.name === 'Abjuration Focus +13')
-
-    expect(heroic && getRecipeTier(heroic)).toBe('Heroic')
-    expect(legendary && getRecipeTier(legendary)).toBe('Legendary')
-    expect(heroic && getRecipeCategory(heroic)).toBe('Spell Focus')
+    expect(getRecipeTier(recipes[0])).toBe('Heroic')
+    expect(getRecipeTier(recipes[3])).toBe('Legendary')
+    expect(getRecipeCategory(recipes[3])).toBe('Spell Focus')
   })
 
   it('preserves resulting effects and forge requirements', () => {
-    const recipe = nearlyCompleteRecipes.find((entry) => entry.name === 'Strength Skills +6')
+    const selected = recipes[2]
 
-    expect(recipe?.craftedIn).toBe('Duergar Completion Forge')
-    expect(recipe?.effectsAdded).toEqual([
-      { name: 'Skill: Jump', modifier: '6', bonus: 'Exceptional' },
-      { name: 'Skill: Swim', modifier: '6', bonus: 'Exceptional' }
-    ])
-    expect(recipe?.requirements[1]).toMatchObject({ name: 'Abyssal Gem', quantity: 25 })
+    expect(selected.craftedIn).toBe('Duergar Completion Forge')
+    expect(selected.effectsAdded).toEqual([{ name: 'Skill: Jump', modifier: '6', bonus: 'Exceptional' }])
+    expect(selected.requirements[1]).toMatchObject({ name: 'Abyssal Gem', quantity: 25 })
   })
 })

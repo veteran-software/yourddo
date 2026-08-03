@@ -3,10 +3,10 @@
 import { MantineProvider } from '@mantine/core'
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadNearlyCompleteItems, type NearlyCompleteItem } from './data.ts'
 import NearlyCompletePage from './NearlyCompletePage.tsx'
-import { getRecipeCategory, getRecipeTier, nearlyCompleteRecipes } from './recipes.ts'
+import { loadNearlyCompleteRecipes, type NearlyCompleteRecipe } from './recipes.ts'
 
 vi.mock('./data.ts', async (importOriginal) => {
   const data = await importOriginal<typeof import('./data.ts')>()
@@ -16,6 +16,51 @@ vi.mock('./data.ts', async (importOriginal) => {
     loadNearlyCompleteItems: vi.fn()
   }
 })
+
+vi.mock('./recipes.ts', async (importOriginal) => {
+  const recipes = await importOriginal<typeof import('./recipes.ts')>()
+
+  return {
+    ...recipes,
+    loadNearlyCompleteRecipes: vi.fn()
+  }
+})
+
+const recipes: NearlyCompleteRecipe[] = [
+  {
+    name: 'Strength +6',
+    quantity: 1,
+    craftedIn: 'Duergar Completion Forge',
+    effectsAdded: [{ name: 'Strength', modifier: '6', bonus: 'Exceptional' }],
+    effectsRemoved: [{ name: 'Nearly Complete: Ability Score' }],
+    requirements: [
+      { name: 'Heroic Item with Nearly Complete: Ability Score', quantity: 1, requirements: [] },
+      { name: 'Abyssal Gem', quantity: 25, requirements: [] }
+    ]
+  },
+  {
+    name: 'Strength Skills +6',
+    quantity: 1,
+    craftedIn: 'Duergar Completion Forge',
+    effectsAdded: [{ name: 'Skill: Jump', modifier: '6', bonus: 'Exceptional' }],
+    effectsRemoved: [{ name: 'Nearly Complete: Skill' }],
+    requirements: [
+      { name: 'Heroic Item with Nearly Complete: Skill', quantity: 1, requirements: [] },
+      { name: 'Abyssal Gem', quantity: 25, requirements: [] }
+    ]
+  },
+  {
+    name: 'Strength +15',
+    quantity: 1,
+    craftedIn: 'Duergar Completion Forge',
+    effectsAdded: [{ name: 'Strength', modifier: '15', bonus: 'Exceptional' }],
+    effectsRemoved: [{ name: 'Nearly Complete: Ability Score' }],
+    requirements: [
+      { name: 'Legendary Item with Nearly Complete: Ability Score', quantity: 1, requirements: [] },
+      { name: 'Abyssal Gem', quantity: 25, requirements: [] }
+    ]
+  }
+]
 
 const item = (name: string, property = 'Ability Score'): NearlyCompleteItem => ({
   pageTitle: name,
@@ -33,7 +78,7 @@ const renderPage = () =>
   )
 
 const selectOption = async (user: ReturnType<typeof userEvent.setup>, label: string, option: string) => {
-  await user.click(screen.getByRole('combobox', { name: label }))
+  await user.click(await screen.findByRole('combobox', { name: label }))
   await user.click(await screen.findByRole('option', { name: option }))
 }
 
@@ -67,9 +112,14 @@ beforeAll(() => {
   )
 })
 
+beforeEach(() => {
+  vi.mocked(loadNearlyCompleteRecipes).mockResolvedValue(recipes)
+})
+
 afterEach(() => {
   cleanup()
   vi.mocked(loadNearlyCompleteItems).mockReset()
+  vi.mocked(loadNearlyCompleteRecipes).mockReset()
 })
 
 afterAll(() => {
@@ -89,8 +139,8 @@ describe('NearlyCompletePage', () => {
     renderPage()
 
     expect(screen.getByRole('heading', { name: 'Nearly Complete' })).toBeTruthy()
-    expect(screen.getByRole('combobox', { name: 'Completed Property' })).toBeTruthy()
-    expect(screen.getByText('Loading eligible items…')).toBeTruthy()
+    expect(await screen.findByRole('combobox', { name: 'Completed Property' })).toBeTruthy()
+    expect(await screen.findByText('Loading eligible items…')).toBeTruthy()
 
     await act(async () => {
       resolveItems([item('Astral Spore Pendant')])
@@ -98,6 +148,43 @@ describe('NearlyCompletePage', () => {
     })
 
     expect(await screen.findByText(/Astral Spore Pendant/)).toBeTruthy()
+  })
+
+  it('shows a recipe loading state before rendering the controls', async () => {
+    let resolveRecipes: (value: NearlyCompleteRecipe[]) => void = () => undefined
+    vi.mocked(loadNearlyCompleteRecipes).mockReturnValue(
+      new Promise((resolve) => {
+        resolveRecipes = resolve
+      })
+    )
+    vi.mocked(loadNearlyCompleteItems).mockResolvedValue([])
+
+    renderPage()
+
+    expect(screen.getByText('Loading recipes…')).toBeTruthy()
+    expect(screen.queryByRole('combobox', { name: 'Completed Property' })).toBeNull()
+
+    await act(async () => {
+      resolveRecipes(recipes)
+      await Promise.resolve()
+    })
+
+    expect(await screen.findByRole('combobox', { name: 'Completed Property' })).toBeTruthy()
+  })
+
+  it('shows a friendly recipe failure and recovers on retry', async () => {
+    const cause = new Error('Manual payload request failed: 503 Unavailable')
+    vi.mocked(loadNearlyCompleteRecipes).mockRejectedValueOnce(cause).mockResolvedValueOnce(recipes)
+    vi.mocked(loadNearlyCompleteItems).mockResolvedValue([])
+
+    renderPage()
+
+    expect(await screen.findByText('Recipes are unavailable')).toBeTruthy()
+    expect(screen.getByText(cause.message)).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Retry' }))
+
+    expect(await screen.findByRole('combobox', { name: 'Completed Property' })).toBeTruthy()
+    expect(screen.queryByText('Recipes are unavailable')).toBeNull()
   })
 
   it.each(['Manifest request failed: 503 Unavailable', 'Dataset request failed: 503 Unavailable'])(
@@ -170,34 +257,20 @@ describe('NearlyCompletePage', () => {
     expect(screen.getByRole('heading', { name: 'Strength +6' })).toBeTruthy()
   })
 
-  it.each(nearlyCompleteRecipes)(
-    'renders the requirements and effects for $name',
-    async (recipe) => {
-      const user = userEvent.setup()
-      const tier = getRecipeTier(recipe)
-      const category = getRecipeCategory(recipe)
-      vi.mocked(loadNearlyCompleteItems).mockResolvedValue([])
+  it('renders requirements and effects from a loaded recipe', async () => {
+    const user = userEvent.setup()
+    vi.mocked(loadNearlyCompleteItems).mockResolvedValue([])
 
-      renderPage()
+    renderPage()
 
-      if (tier !== 'Heroic') await selectOption(user, 'Item Tier', tier)
-      if (category !== 'Ability Score') await selectOption(user, 'Nearly Complete Property', category)
-      await selectOption(user, 'Completed Property', recipe.name)
+    await selectOption(user, 'Completed Property', 'Strength +6')
 
-      expect(screen.getByRole('heading', { name: recipe.name })).toBeTruthy()
-      expect(screen.getByText(`Crafted in: ${recipe.craftedIn}`)).toBeTruthy()
-
-      for (const requirement of recipe.requirements) {
-        expect(screen.getByText(requirement.name)).toBeTruthy()
-        expect(screen.getAllByText(`×${(requirement.quantity ?? 1).toString()}`).length).toBeGreaterThan(0)
-      }
-
-      for (const effect of recipe.effectsAdded) {
-        expect(screen.getByText(effect.name)).toBeTruthy()
-        expect(screen.getAllByText(effect.modifier != null ? `+${effect.modifier}` : '—').length).toBeGreaterThan(0)
-        if (effect.bonus) expect(screen.getAllByText(effect.bonus).length).toBeGreaterThan(0)
-      }
-    },
-    10_000
-  )
+    expect(screen.getByRole('heading', { name: 'Strength +6' })).toBeTruthy()
+    expect(screen.getByText('Crafted in: Duergar Completion Forge')).toBeTruthy()
+    expect(screen.getByText('Heroic Item with Nearly Complete: Ability Score')).toBeTruthy()
+    expect(screen.getByText('Abyssal Gem')).toBeTruthy()
+    expect(screen.getByText('Strength')).toBeTruthy()
+    expect(screen.getByText('+6')).toBeTruthy()
+    expect(screen.getByText('Exceptional')).toBeTruthy()
+  })
 })
