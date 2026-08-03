@@ -162,6 +162,19 @@ describe('loadDataset', () => {
     await expect(loadDataset('nearly-complete')).rejects.toThrow('Invalid data manifest response: expected valid JSON')
   })
 
+  it('reports an unsupported manifest schema with a typed error', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn<typeof fetch>()
+        .mockResolvedValueOnce(jsonResponse(latest))
+        .mockResolvedValueOnce(jsonResponse({ ...manifest, schemaVersion: 3 }))
+    )
+    const { loadDataset, UnsupportedManifestSchemaError } = await importLoader()
+
+    await expect(loadDataset('nearly-complete')).rejects.toBeInstanceOf(UnsupportedManifestSchemaError)
+  })
+
   it.each([
     ['unsupported schema', { ...manifest, schemaVersion: 3 }, 'expected schemaVersion 2'],
     ['non-object response', null, 'expected an object'],

@@ -15,6 +15,10 @@ vi.mock('../domains/nearlyComplete/NearlyCompletePage.tsx', () => ({
   default: () => <h1>Nearly Complete domain</h1>
 }))
 
+vi.mock('../domains/nearlyFinished/NearlyFinishedPage.tsx', () => ({
+  default: () => <h1>Nearly Finished domain</h1>
+}))
+
 vi.mock('../domains/mastermind/MastermindPage.tsx', () => ({
   default: () => <h1>Mastermind domain</h1>
 }))
@@ -113,6 +117,28 @@ describe('AppRouter', () => {
     const sidebarViewport = screen.getByRole('navigation').querySelector<HTMLElement>('[data-scrollarea-viewport]')
     expect(sidebarViewport?.style.overflowY).toBe('scroll')
     expect(screen.getByRole('link', { name: 'Total Chaos' })).toBeTruthy()
+  })
+
+  it('renders the Nearly Finished domain at its preserved public route', () => {
+    renderRoute('/nearly-finished')
+
+    expect(screen.getByRole('heading', { name: 'Nearly Finished domain' })).toBeTruthy()
+
+    const link = screen.getByRole('link', { name: 'Nearly Finished' })
+    expect(link.getAttribute('href')).toBe('/nearly-finished')
+    expect(link.getAttribute('aria-current')).toBe('page')
+  })
+
+  it('closes mobile navigation after selecting Nearly Finished', async () => {
+    const user = userEvent.setup()
+    renderRoute('/')
+
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
+    await user.click(screen.getByRole('link', { name: 'Nearly Finished' }))
+
+    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Nearly Finished domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Nearly Finished' }).getAttribute('aria-current')).toBe('page')
   })
 
   it('renders Mastermind at its preserved public route and supports a direct remount', () => {

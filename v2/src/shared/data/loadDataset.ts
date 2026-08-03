@@ -26,6 +26,13 @@ interface DataManifest {
   manualPayloads: ManualPayload[]
 }
 
+export class UnsupportedManifestSchemaError extends Error {
+  constructor(schemaVersion: unknown) {
+    super(`Invalid data manifest response: expected schemaVersion 2, received ${String(schemaVersion)}`)
+    this.name = 'UnsupportedManifestSchemaError'
+  }
+}
+
 const cdnBaseUrl = import.meta.env.DEV ? '/data-cdn' : 'https://cdn.yourddo.com'
 
 const isManifestFile = (value: unknown): value is Omit<GeneratedFile, 'domain'> => {
@@ -79,7 +86,7 @@ const parseManifest = async (response: Response): Promise<DataManifest> => {
   const manifest = value as Record<string, unknown>
 
   if (manifest.schemaVersion !== 2) {
-    throw new Error('Invalid data manifest response: expected schemaVersion 2')
+    throw new UnsupportedManifestSchemaError(manifest.schemaVersion)
   }
 
   if (typeof manifest.gameVersion !== 'string' || typeof manifest.dataVersion !== 'number') {
