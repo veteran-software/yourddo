@@ -17,6 +17,9 @@ describe('Nearly Complete recipes', () => {
       expect(getRecipes(tier, 'Spell Focus')).toHaveLength(7)
       expect(getRecipes(tier, 'Healing Amplification')).toHaveLength(3)
       expect(getRecipes(tier, 'Skill')).toHaveLength(6)
+
+      const abilityScores = getRecipes(tier, 'Ability Score').map(({ name }) => name)
+      expect(abilityScores).toEqual(abilityScores.toSorted((a, b) => a.localeCompare(b)))
     }
   })
 

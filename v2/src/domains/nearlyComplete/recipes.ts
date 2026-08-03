@@ -10,7 +10,7 @@ export interface NearlyCompleteRecipeEffect {
 
 export interface NearlyCompleteRequirement {
   name: string
-  quantity: number
+  quantity?: number
   requirements: NearlyCompleteRequirement[]
 }
 
@@ -29,7 +29,7 @@ export const getRecipeCategory = (recipe: NearlyCompleteRecipe): string =>
   recipe.effectsRemoved[0].name.replace('Nearly Complete: ', '')
 
 export const getRecipeTier = (recipe: NearlyCompleteRecipe): RecipeTier =>
-  recipe.requirements.some((requirement) => requirement.name.startsWith('Legendary ')) ? 'Legendary' : 'Heroic'
+  recipe.requirements[0]?.name.startsWith('Legendary ') ? 'Legendary' : 'Heroic'
 
 export const getRecipeCategories = (tier: RecipeTier): string[] =>
   [...new Set(nearlyCompleteRecipes.filter((recipe) => getRecipeTier(recipe) === tier).map(getRecipeCategory))].sort(
