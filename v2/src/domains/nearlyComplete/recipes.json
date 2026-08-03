@@ -1,0 +1,2104 @@
+[
+  {
+    "name": "Abjuration Focus +4",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Abjuration",
+        "modifier": "4",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Conjuration Focus +4",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Conjuration",
+        "modifier": "4",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Enchantment Focus +4",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Enchantment",
+        "modifier": "4",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Evocation Focus +4",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Evocation",
+        "modifier": "4",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Illusion Focus +4",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Illusion",
+        "modifier": "4",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Necromancy Focus +4",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Necromancy",
+        "modifier": "4",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Transmutation Focus +4",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Transmutation",
+        "modifier": "4",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Positive Healing Amplification +24",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Positive Healing Amplification",
+        "modifier": "24",
+        "bonus": "Competence"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Healing Amplification"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Healing Amplification",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Negative Healing Amplification +24",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Negative Healing Amplification",
+        "modifier": "24",
+        "bonus": "Profane"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Healing Amplification"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Healing Amplification",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Repair Healing Amplification +24",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Repair Amplification",
+        "modifier": "24",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Healing Amplification"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Healing Amplification",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Strength Skills +6",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Skill: Jump",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Swim",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Skill"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Skill",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Dexterity Skills +6",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Skill: Balance",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Hide",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Move Silently",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Open Lock",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Tumble",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Skill"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Skill",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Constitution Skills +6",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Skill: Concentration",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Skill"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Skill",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Intelligence Skills +6",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Skill: Disable Device",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Repair",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Search",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Skill"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Skill",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Wisdom Skills +6",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Skill: Heal",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Listen",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Spot",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Skill"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Skill",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Charisma Skills +6",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Skill: Bluff",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Diplomacy",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Haggle",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Intimidate",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Perform",
+        "modifier": "6",
+        "bonus": "Exceptional"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Skill"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Skill",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Strength +6",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Strength",
+        "modifier": "6",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Dexterity +6",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Dexterity",
+        "modifier": "6",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Constitution +6",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Constitution",
+        "modifier": "6",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Intelligence +6",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Intelligence",
+        "modifier": "6",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Wisdom +6",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Wisdom",
+        "modifier": "6",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Charisma +6",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Charisma",
+        "modifier": "6",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Insightful Strength +2",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Strength",
+        "modifier": "2",
+        "bonus": "Insight"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Insightful Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Insightful Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Insightful Dexterity +2",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Dexterity",
+        "modifier": "2",
+        "bonus": "Insight"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Insightful Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Insightful Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Insightful Constitution +2",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Constitution",
+        "modifier": "2",
+        "bonus": "Insight"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Insightful Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Insightful Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Insightful Intelligence +2",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Intelligence",
+        "modifier": "2",
+        "bonus": "Insight"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Insightful Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Insightful Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Insightful Wisdom +2",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Wisdom",
+        "modifier": "2",
+        "bonus": "Insight"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Insightful Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Insightful Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Insightful Charisma +2",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Charisma",
+        "modifier": "2",
+        "bonus": "Insight"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Insightful Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Insightful Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Quality Strength +1",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Strength",
+        "modifier": "1",
+        "bonus": "Quality"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Quality Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Quality Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Quality Dexterity +1",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Dexterity",
+        "modifier": "1",
+        "bonus": "Quality"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Quality Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Quality Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Quality Constitution +1",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Constitution",
+        "modifier": "1",
+        "bonus": "Quality"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Quality Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Quality Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Quality Intelligence +1",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Intelligence",
+        "modifier": "1",
+        "bonus": "Quality"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Quality Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Quality Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Quality Wisdom +1",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Wisdom",
+        "modifier": "1",
+        "bonus": "Quality"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Quality Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Quality Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Quality Charisma +1",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Charisma",
+        "modifier": "1",
+        "bonus": "Quality"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Quality Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Heroic Item with Nearly Complete: Quality Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Abjuration Focus +13",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Abjuration",
+        "modifier": "13",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Conjuration Focus +13",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Conjuration",
+        "modifier": "13",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Enchantment Focus +13",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Enchantment",
+        "modifier": "13",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Evocation Focus +13",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Evocation",
+        "modifier": "13",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Illusion Focus +13",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Illusion",
+        "modifier": "13",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Necromancy Focus +13",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Necromancy",
+        "modifier": "13",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Transmutation Focus +13",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Spell DC: Transmutation",
+        "modifier": "13",
+        "bonus": "Equipment"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Spell Focus"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Spell Focus",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Positive Healing Amplification +62",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Positive Healing Amplification",
+        "modifier": "62",
+        "bonus": "Competence"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Healing Amplification"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Healing Amplification",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Negative Healing Amplification +62",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Negative Healing Amplification",
+        "modifier": "62",
+        "bonus": "Profane"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Healing Amplification"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Healing Amplification",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Repair Healing Amplification +62",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Repair Amplification",
+        "modifier": "62",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Healing Amplification"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Healing Amplification",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Strength Skills +11",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Skill: Jump",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Swim",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Skill"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Skill",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Dexterity Skills +11",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Skill: Balance",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Hide",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Move Silently",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Open Lock",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Tumble",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Skill"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Skill",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Constitution Skills +11",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Skill: Concentration",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Skill"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Skill",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Intelligence Skills +11",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Skill: Disable Device",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Repair",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Search",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Skill"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Skill",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Wisdom Skills +11",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Skill: Heal",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Listen",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Spot",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Skill"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Skill",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Charisma Skills +11",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Skill: Bluff",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Diplomacy",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Haggle",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Intimidate",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Perform",
+        "modifier": "11",
+        "bonus": "Exceptional"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Skill"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Skill",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Strength +15",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Strength",
+        "modifier": "15",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Dexterity +15",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Dexterity",
+        "modifier": "15",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Constitution +15",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Constitution",
+        "modifier": "15",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Intelligence +15",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Intelligence",
+        "modifier": "15",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Wisdom +15",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Wisdom",
+        "modifier": "15",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Charisma +15",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Charisma",
+        "modifier": "15",
+        "bonus": "Enhancement"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Insightful Strength +7",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Strength",
+        "modifier": "7",
+        "bonus": "Insight"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Insightful Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Insightful Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Insightful Dexterity +7",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Dexterity",
+        "modifier": "7",
+        "bonus": "Insight"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Insightful Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Insightful Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Insightful Constitution +7",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Constitution",
+        "modifier": "7",
+        "bonus": "Insight"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Insightful Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Insightful Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Insightful Intelligence +7",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Intelligence",
+        "modifier": "7",
+        "bonus": "Insight"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Insightful Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Insightful Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Insightful Wisdom +7",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Wisdom",
+        "modifier": "7",
+        "bonus": "Insight"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Insightful Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Insightful Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Insightful Charisma +7",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Charisma",
+        "modifier": "7",
+        "bonus": "Insight"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Insightful Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Insightful Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Quality Strength +3",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Strength",
+        "modifier": "3",
+        "bonus": "Quality"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Quality Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Quality Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Quality Dexterity +3",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Dexterity",
+        "modifier": "3",
+        "bonus": "Quality"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Quality Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Quality Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Quality Constitution +3",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Constitution",
+        "modifier": "3",
+        "bonus": "Quality"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Quality Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Quality Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Quality Intelligence +3",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Intelligence",
+        "modifier": "3",
+        "bonus": "Quality"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Quality Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Quality Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Quality Wisdom +3",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Wisdom",
+        "modifier": "3",
+        "bonus": "Quality"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Quality Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Quality Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  },
+  {
+    "name": "Quality Charisma +3",
+    "quantity": 1,
+    "craftedIn": "Duergar Completion Forge",
+    "effectsAdded": [
+      {
+        "name": "Charisma",
+        "modifier": "3",
+        "bonus": "Quality"
+      }
+    ],
+    "effectsRemoved": [
+      {
+        "name": "Nearly Complete: Quality Ability Score"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Legendary Item with Nearly Complete: Quality Ability Score",
+        "quantity": 1,
+        "requirements": []
+      },
+      {
+        "name": "Abyssal Gem",
+        "quantity": 25,
+        "requirements": []
+      }
+    ]
+  }
+]
