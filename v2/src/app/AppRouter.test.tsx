@@ -19,6 +19,10 @@ vi.mock('../domains/mastermind/MastermindPage.tsx', () => ({
   default: () => <h1>Mastermind domain</h1>
 }))
 
+vi.mock('../domains/monasteryOfTheScorpion/MonasteryOfTheScorpionPage.tsx', () => ({
+  default: () => <h1>Monastery domain</h1>
+}))
+
 const renderRoute = (path: string) =>
   render(
     <MantineProvider env='test' defaultColorScheme='auto'>
@@ -131,6 +135,30 @@ describe('AppRouter', () => {
     expect(screen.getByRole('link', { name: "The Reaver's Fate" }).getAttribute('aria-current')).toBe('page')
   })
 
+  it('renders Monastery at its preserved public route and supports a direct remount', () => {
+    const firstRender = renderRoute('/monastery-of-the-scorpion')
+
+    expect(screen.getByRole('heading', { name: 'Monastery domain' })).toBeTruthy()
+    const link = screen.getByRole('link', { name: 'Monastery of the Scorpion' })
+    expect(link.getAttribute('href')).toBe('/monastery-of-the-scorpion')
+    expect(link.getAttribute('aria-current')).toBe('page')
+    const sidebarViewport = screen.getByRole('navigation').querySelector<HTMLElement>('[data-scrollarea-viewport]')
+    expect(sidebarViewport?.style.overflowY).toBe('scroll')
+
+    firstRender.unmount()
+    renderRoute('/monastery-of-the-scorpion')
+
+    expect(screen.getByRole('heading', { name: 'Monastery domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Monastery of the Scorpion' }).getAttribute('aria-current')).toBe('page')
+  })
+
+  it('preserves the legacy Toxic Treatment route alias', async () => {
+    renderRoute('/toxic-treatment')
+
+    expect(await screen.findByRole('heading', { name: 'Monastery domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Monastery of the Scorpion' }).getAttribute('aria-current')).toBe('page')
+  })
+
   it('renders the not-found page for an unknown route', () => {
     renderRoute('/unknown-tool')
 
@@ -167,6 +195,20 @@ describe('AppRouter', () => {
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Mastermind domain' })).toBeTruthy()
+    expect(link.getAttribute('aria-current')).toBe('page')
+  })
+
+  it('closes mobile navigation after selecting the Monastery route', async () => {
+    const user = userEvent.setup()
+    renderRoute('/')
+
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
+    const link = screen.getByRole('link', { name: 'Monastery of the Scorpion' })
+    link.focus()
+    await user.keyboard('{Enter}')
+
+    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Monastery domain' })).toBeTruthy()
     expect(link.getAttribute('aria-current')).toBe('page')
   })
 
