@@ -24,9 +24,21 @@ const AppLayout = () => {
       <AppShell.Header>
         <Group h='100%' px='md' justify='space-between'>
           <Group gap='sm'>
-            <Burger opened={mobileOpened} onClick={mobile.toggle} hiddenFrom='lg' size='sm' />
+            <Burger
+              opened={mobileOpened}
+              onClick={mobile.toggle}
+              aria-label={mobileOpened ? 'Close navigation' : 'Open navigation'}
+              hiddenFrom='lg'
+              size='sm'
+            />
 
-            <Burger opened={desktopOpened} onClick={desktop.toggle} visibleFrom='lg' size='sm' />
+            <Burger
+              opened={desktopOpened}
+              onClick={desktop.toggle}
+              aria-label={desktopOpened ? 'Collapse navigation' : 'Expand navigation'}
+              visibleFrom='lg'
+              size='sm'
+            />
 
             <Text fw={700}>YourDDO</Text>
           </Group>

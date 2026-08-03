@@ -7,14 +7,6 @@ export default defineConfig({
   test: {
     environment: 'node'
   },
-  css: {
-    devSourcemap: false,
-    preprocessorOptions: {
-      scss: {
-        silenceDeprecations: ['color-functions', 'global-builtin', 'import', 'if-function']
-      }
-    }
-  },
   plugins: [react()],
   server: {
     fs: {

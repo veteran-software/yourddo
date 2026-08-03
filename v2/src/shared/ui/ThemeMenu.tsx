@@ -1,4 +1,4 @@
-import { Menu, UnstyledButton, useMantineColorScheme } from '@mantine/core'
+import { Button, Menu, useMantineColorScheme } from '@mantine/core'
 
 const ThemeMenu = () => {
   const { colorScheme, setColorScheme } = useMantineColorScheme()
@@ -8,7 +8,9 @@ const ThemeMenu = () => {
   return (
     <Menu position='bottom-end'>
       <Menu.Target>
-        <UnstyledButton>{label}</UnstyledButton>
+        <Button variant='subtle' size='compact-sm'>
+          Theme: {label}
+        </Button>
       </Menu.Target>
 
       <Menu.Dropdown>

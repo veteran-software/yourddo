@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { MantineProvider } from '@mantine/core'
-import { cleanup, render, screen } from '@testing-library/react'
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
@@ -20,15 +20,22 @@ const renderRoute = (path: string) =>
     </MantineProvider>
   )
 
+let systemDark = false
+const colorSchemeListeners = new Set<(event: MediaQueryListEvent) => void>()
+
 beforeAll(() => {
   vi.stubGlobal(
     'matchMedia',
     vi.fn((query: string) => ({
-      matches: false,
+      matches: query === '(prefers-color-scheme: dark)' && systemDark,
       media: query,
       onchange: null,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
+      addEventListener: vi.fn((event: string, listener: (event: MediaQueryListEvent) => void) => {
+        if (event === 'change') colorSchemeListeners.add(listener)
+      }),
+      removeEventListener: vi.fn((event: string, listener: (event: MediaQueryListEvent) => void) => {
+        if (event === 'change') colorSchemeListeners.delete(listener)
+      }),
       addListener: vi.fn(),
       removeListener: vi.fn(),
       dispatchEvent: vi.fn()
@@ -45,7 +52,12 @@ beforeAll(() => {
   )
 })
 
-afterEach(cleanup)
+afterEach(() => {
+  cleanup()
+  localStorage.clear()
+  systemDark = false
+  colorSchemeListeners.clear()
+})
 
 afterAll(() => {
   vi.unstubAllGlobals()
@@ -60,6 +72,7 @@ describe('AppRouter', () => {
     const link = screen.getByRole('link', { name: 'Nearly Complete' })
     expect(link.getAttribute('href')).toBe('/nearly-complete')
     expect(link.getAttribute('aria-current')).toBe('page')
+    expect(screen.getAllByRole('main')).toHaveLength(1)
 
     const sidebarViewport = screen.getByRole('navigation').querySelector<HTMLElement>('[data-scrollarea-viewport]')
     expect(sidebarViewport?.style.overflowY).toBe('scroll')
@@ -77,25 +90,43 @@ describe('AppRouter', () => {
     const user = userEvent.setup()
     renderRoute('/')
 
-    const burgers = Array.from(document.querySelectorAll('button')).filter((button) =>
-      button.querySelector('[data-reduce-motion]')
-    )
-    const [mobileBurger, desktopBurger] = burgers
+    await user.click(screen.getByRole('button', { name: 'Collapse navigation' }))
+    expect(screen.getByRole('button', { name: 'Expand navigation' })).toBeTruthy()
 
-    expect(burgers).toHaveLength(2)
-    expect(desktopBurger.querySelector('[data-opened]')).toBeTruthy()
-
-    await user.click(desktopBurger)
-    expect(desktopBurger.querySelector('[data-opened]')).toBeNull()
-
-    await user.click(mobileBurger)
-    expect(mobileBurger.querySelector('[data-opened]')).toBeTruthy()
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
+    expect(screen.getByRole('button', { name: 'Close navigation' })).toBeTruthy()
 
     const link = screen.getByRole('link', { name: 'Nearly Complete' })
-    await user.click(link)
+    link.focus()
+    await user.keyboard('{Enter}')
 
-    expect(mobileBurger.querySelector('[data-opened]')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
     expect(link.getAttribute('aria-current')).toBe('page')
+  })
+
+  it('exposes navigation and theme controls to the keyboard with Mantine focus styles', async () => {
+    const user = userEvent.setup()
+    renderRoute('/nearly-complete')
+
+    const mobileNavigation = screen.getByRole('button', { name: 'Open navigation' })
+    const desktopNavigation = screen.getByRole('button', { name: 'Collapse navigation' })
+    const themeMenu = screen.getByRole('button', { name: 'Theme: System' })
+
+    await user.tab()
+    expect(document.activeElement).toBe(mobileNavigation)
+    expect(mobileNavigation.className).toContain('mantine-focus-auto')
+
+    await user.tab()
+    expect(document.activeElement).toBe(desktopNavigation)
+
+    await user.tab()
+    expect(document.activeElement).toBe(themeMenu)
+    expect(themeMenu.className).toContain('mantine-focus-auto')
+
+    await user.keyboard('{Enter}')
+    expect(await screen.findByRole('menuitem', { name: 'Light' })).toBeTruthy()
+    await user.keyboard('{Escape}')
+    expect(screen.queryByRole('menuitem', { name: 'Light' })).toBeNull()
   })
 
   it('keeps the route available in light, dark, and system themes', async () => {
@@ -103,14 +134,31 @@ describe('AppRouter', () => {
     renderRoute('/nearly-complete')
 
     const chooseTheme = async (current: string, next: string) => {
-      await user.click(screen.getByRole('button', { name: current }))
+      await user.click(screen.getByRole('button', { name: `Theme: ${current}` }))
       await user.click(screen.getByRole('menuitem', { name: next }))
-      expect(screen.getByRole('button', { name: next })).toBeTruthy()
+      expect(screen.getByRole('button', { name: `Theme: ${next}` })).toBeTruthy()
       expect(screen.getByRole('heading', { name: 'Nearly Complete domain' })).toBeTruthy()
     }
 
     await chooseTheme('System', 'Light')
     await chooseTheme('Light', 'Dark')
     await chooseTheme('Dark', 'System')
+  })
+
+  it('tracks system color-scheme changes while the application is open', async () => {
+    renderRoute('/nearly-complete')
+
+    expect(document.documentElement.getAttribute('data-mantine-color-scheme')).toBe('light')
+
+    act(() => {
+      systemDark = true
+      for (const listener of colorSchemeListeners) {
+        listener({ matches: true, media: '(prefers-color-scheme: dark)' } as MediaQueryListEvent)
+      }
+    })
+
+    await waitFor(() => {
+      expect(document.documentElement.getAttribute('data-mantine-color-scheme')).toBe('dark')
+    })
   })
 })
