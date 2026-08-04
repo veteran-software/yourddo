@@ -7,9 +7,7 @@ import {
   Button,
   Center,
   Container,
-  Divider,
   Group,
-  List,
   Loader,
   MultiSelect,
   Paper,
@@ -25,19 +23,12 @@ import AugmentSelect from '../../shared/augments/AugmentSelect.tsx'
 import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
-import IconImage from '../../shared/ui/IconImage.tsx'
+import { ArtifactAbilityScoreNotice, ColorAugmentLevelNotice } from './components/BuildNotices.tsx'
+import EffectList from './components/EffectList.tsx'
+import ItemIcon from './components/ItemIcon.tsx'
+import ItemSummary from './components/ItemSummary.tsx'
 import { InvalidDinosaurBoneDataError, loadDinosaurBoneData } from './data.ts'
-import type {
-  ClassifiedDinosaurBoneItem,
-  CumulativeIngredient,
-  DinosaurBoneAugment,
-  DinosaurBoneData,
-  DinosaurBoneEffect,
-  DinosaurBoneRequirement,
-  FinishedDinosaurBoneItem,
-  ItemFamily,
-  SelectedAugments
-} from './dinosaurBone.types'
+import type { DinosaurBoneAugment, DinosaurBoneData, ItemFamily, SelectedAugments } from './dinosaurBone.types'
 import {
   adjustEffectForArtifact,
   calculateCumulativeIngredients,
@@ -46,18 +37,18 @@ import {
   formatEffect,
   getAugmentEffectNames,
   getAvailableSlots,
-  getColorAugmentMinimumLevelIncrease,
   getCompatibleAugments,
   getEffectNames,
   getFamilyLabel,
   getFilterOptions,
   getItemsForFamily,
   getSelectedAugments,
-  isAbilityScoreEffect,
-  isArtifactItem,
   isColorSlot,
   itemFamilies
 } from './logic.ts'
+import CraftingBreakdownTool from './tools/CraftingBreakdownTool.tsx'
+import FinishedItemTool from './tools/FinishedItemTool.tsx'
+import IngredientsTool from './tools/IngredientsTool.tsx'
 
 type DataState =
   { status: 'loading' } | { status: 'loaded'; data: DinosaurBoneData } | { status: 'error'; cause: unknown }
@@ -65,406 +56,6 @@ type DataState =
 const initialFamily: ItemFamily = 'crafted-weapons'
 const knownIssuesUrl =
   'https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Dinosaur%20Bone%22'
-
-const ItemIcon = ({ item, size, alt = '' }: { item: ClassifiedDinosaurBoneItem; size: number; alt?: string }) => (
-  <IconImage alt={alt} name={item.name} source={item.icon ?? item.image} size={size} />
-)
-
-const EffectList = ({ effects, empty = 'None published.' }: { effects: readonly string[]; empty?: string }) =>
-  effects.length > 0 ? (
-    <List spacing='xs' size='sm'>
-      {effects.map((effect, index) => (
-        <List.Item key={`${effect}-${String(index)}`} style={{ overflowWrap: 'anywhere' }}>
-          {effect}
-        </List.Item>
-      ))}
-    </List>
-  ) : (
-    <Text c='dimmed' size='sm'>
-      {empty}
-    </Text>
-  )
-
-const formatBinding = (binding: Readonly<Record<string, string>> | undefined) =>
-  binding ? Object.values(binding).join(' · ') : undefined
-
-const ArtifactAbilityScoreNotice = ({
-  item,
-  effects
-}: {
-  item: ClassifiedDinosaurBoneItem
-  effects: readonly DinosaurBoneEffect[]
-}) => {
-  const abilityScores = [
-    ...new Set(
-      effects
-        .filter(isAbilityScoreEffect)
-        .map(({ name }) => name.split(' +')[0])
-        .filter((name): name is string => Boolean(name))
-    )
-  ]
-  if (!isArtifactItem(item) || abilityScores.length === 0) return null
-
-  return (
-    <Alert
-      color='yellow'
-      variant='light'
-      title='Artifact ability score bonus'
-      role='status'
-      p='xs'
-      styles={{ title: { fontSize: 'var(--mantine-font-size-sm)' } }}
-    >
-      <Text size='xs'>
-        This {item.artifactType} Artifact increases {abilityScores.join(', ')} by 1. The adjusted value is shown below.
-      </Text>
-    </Alert>
-  )
-}
-
-const ColorAugmentLevelNotice = ({
-  item,
-  slots
-}: {
-  item: ClassifiedDinosaurBoneItem
-  slots: FinishedDinosaurBoneItem['slots']
-}) => {
-  const increase = getColorAugmentMinimumLevelIncrease(item, slots)
-  if (!increase) return null
-
-  return (
-    <Alert
-      color='blue'
-      variant='light'
-      title='Color augment minimum level'
-      role='status'
-      p='xs'
-      styles={{ title: { fontSize: 'var(--mantine-font-size-sm)' } }}
-    >
-      <Text size='xs'>
-        A selected color augment raises the item’s minimum level from {String(increase.itemLevel)} to{' '}
-        {String(increase.minimumLevel)}.
-      </Text>
-    </Alert>
-  )
-}
-
-const ItemSummary = ({ item }: { item: ClassifiedDinosaurBoneItem }) => {
-  const metadata = [
-    item.type,
-    item.minLevel !== undefined ? `Minimum level ${String(item.minLevel)}` : undefined,
-    formatBinding(item.binding),
-    item.material,
-    item.craftedIn
-  ].filter((value): value is string => Boolean(value))
-  return (
-    <Paper withBorder p='md'>
-      <Stack gap='sm'>
-        <Group justify='space-between' align='flex-start' wrap='wrap'>
-          <Group align='flex-start' wrap='nowrap' style={{ minWidth: 0 }}>
-            <ItemIcon item={item} size={72} alt={`${item.name} icon`} />
-            <Box style={{ minWidth: 0 }}>
-              <Title order={2} size='h3' style={{ overflowWrap: 'anywhere' }}>
-                {item.name}
-              </Title>
-              <Text c='dimmed' size='sm'>
-                {metadata.join(' · ')}
-              </Text>
-            </Box>
-          </Group>
-          <Group gap='xs'>
-            <Badge variant='light'>{getFamilyLabel(item.family)}</Badge>
-            {isArtifactItem(item) ? (
-              <Badge variant='light' color='grape'>
-                {item.artifactType} Artifact
-              </Badge>
-            ) : null}
-          </Group>
-        </Group>
-        {item.description ? <Text size='sm'>{item.description}</Text> : null}
-        <Divider />
-        <SimpleGrid cols={{ base: 1, sm: 2 }}>
-          <Box>
-            <Text fw={600} size='sm' mb={4}>
-              Base effects
-            </Text>
-            <EffectList effects={[...(item.effectsAdded ?? []), ...(item.enchantments ?? [])].map(formatEffect)} />
-          </Box>
-          <Stack gap={4}>
-            <Text size='sm'>Configurable slots: {String(item.augments.length)}</Text>
-            {item.restrictions?.map((restriction) => (
-              <Text size='sm' key={restriction}>
-                Restriction: {restriction}
-              </Text>
-            ))}
-            {item.notes?.map((note) => (
-              <Text size='sm' key={note}>
-                Note: {note}
-              </Text>
-            ))}
-          </Stack>
-        </SimpleGrid>
-      </Stack>
-    </Paper>
-  )
-}
-
-const FinishedItemTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) => {
-  if (!finished.item) {
-    return (
-      <Alert color='blue' title='No item selected' m='md'>
-        Select an item to review the finished build.
-      </Alert>
-    )
-  }
-  const selectedUpgradeEffects = finished.slots.flatMap(({ augment }) => augment?.effectsAdded ?? [])
-  const minimumLevelIncrease = getColorAugmentMinimumLevelIncrease(finished.item, finished.slots)
-  const displayedMinimumLevel = minimumLevelIncrease?.minimumLevel ?? finished.item.minLevel
-  return (
-    <Stack gap='md' p='md'>
-      <Box>
-        <Title order={3} style={{ overflowWrap: 'anywhere' }}>
-          {finished.item.name}
-        </Title>
-        <Text c='dimmed' size='sm'>
-          {finished.item.type}
-          {displayedMinimumLevel !== undefined ? ` · Minimum level ${String(displayedMinimumLevel)}` : ''}
-        </Text>
-      </Box>
-      {finished.warnings.length > 0 ? (
-        <Alert color='red' title='Build validation' role='alert'>
-          <EffectList effects={finished.warnings} />
-        </Alert>
-      ) : null}
-      <Box>
-        <Text fw={600} mb='xs'>
-          Original effects
-        </Text>
-        <EffectList effects={finished.originalEffects.map(formatEffect)} />
-      </Box>
-      <Divider />
-      <Box>
-        <Text fw={600} mb='xs'>
-          Crafted additions by slot
-        </Text>
-        <Stack gap='xs'>
-          <ArtifactAbilityScoreNotice item={finished.item} effects={selectedUpgradeEffects} />
-          <ColorAugmentLevelNotice item={finished.item} slots={finished.slots} />
-        </Stack>
-        {finished.slots.some(({ augment }) => augment) ? (
-          <Stack
-            gap='md'
-            mt={
-              (isArtifactItem(finished.item) && selectedUpgradeEffects.some(isAbilityScoreEffect)) ||
-              minimumLevelIncrease
-                ? 'sm'
-                : 0
-            }
-          >
-            {finished.slots
-              .filter(({ augment }) => augment)
-              .map(({ slot, augment }) => (
-                <Box key={slot.id}>
-                  <Text fw={600} size='sm' style={{ overflowWrap: 'anywhere' }}>
-                    {slot.label}: {augment?.name}
-                  </Text>
-                  <EffectList
-                    effects={(augment?.effectsAdded ?? []).map((effect) =>
-                      formatEffect(adjustEffectForArtifact(effect, finished.item))
-                    )}
-                    empty='No effect text published.'
-                  />
-                </Box>
-              ))}
-          </Stack>
-        ) : (
-          <Text c='dimmed' size='sm'>
-            No augments selected.
-          </Text>
-        )}
-      </Box>
-      {finished.setBonuses.length > 0 ? (
-        <Box>
-          <Text fw={600} mb='xs'>
-            Set bonuses
-          </Text>
-          <List size='sm'>
-            {finished.setBonuses.map((bonus, index) => (
-              <List.Item key={`${bonus.name}-${String(index)}`}>{bonus.name}</List.Item>
-            ))}
-          </List>
-        </Box>
-      ) : null}
-      <Box>
-        <Text fw={600} mb='xs'>
-          Empty configurable slots
-        </Text>
-        {finished.emptySlots.length > 0 ? (
-          <List size='sm'>
-            {finished.emptySlots.map((slot) => (
-              <List.Item key={slot.id}>{slot.label}</List.Item>
-            ))}
-          </List>
-        ) : (
-          <Text size='sm'>All configurable slots are filled.</Text>
-        )}
-      </Box>
-      {[...(finished.item.restrictions ?? []), ...(finished.item.notes ?? [])].map((note) => (
-        <Text key={note} size='sm'>
-          {note}
-        </Text>
-      ))}
-    </Stack>
-  )
-}
-
-const IngredientsTool = ({
-  item,
-  ingredients
-}: {
-  item?: ClassifiedDinosaurBoneItem
-  ingredients: CumulativeIngredient[]
-}) => {
-  if (!item) {
-    return (
-      <Alert color='blue' title='No item selected' m='md'>
-        Select an item to review cumulative ingredients.
-      </Alert>
-    )
-  }
-  return (
-    <Stack gap='md' p='md'>
-      <Text size='sm'>Cumulative requirements for {item.name} and all selected augments.</Text>
-      {ingredients.length === 0 ? (
-        <Alert color='green' title='No material cost'>
-          This valid configuration has no published material requirements.
-        </Alert>
-      ) : (
-        <List spacing='sm'>
-          {ingredients.map((ingredient) => (
-            <List.Item key={ingredient.name}>
-              <Group component='span' justify='space-between' align='flex-start' wrap='nowrap'>
-                <Box component='span' style={{ minWidth: 0 }}>
-                  <Text component='span' size='sm' style={{ overflowWrap: 'anywhere' }}>
-                    {ingredient.name}
-                  </Text>
-                  {ingredient.foundIn?.map((location) => (
-                    <Text component='span' display='block' c='dimmed' size='xs' key={location}>
-                      {location}
-                    </Text>
-                  ))}
-                </Box>
-                <Badge component='span' variant='light' color='gray'>
-                  ×{String(ingredient.quantity)}
-                </Badge>
-              </Group>
-            </List.Item>
-          ))}
-        </List>
-      )}
-    </Stack>
-  )
-}
-
-const RequirementList = ({ requirements }: { requirements: readonly DinosaurBoneRequirement[] }) => {
-  if (requirements.length === 0) {
-    return (
-      <Text c='dimmed' size='xs'>
-        No published crafting requirements.
-      </Text>
-    )
-  }
-
-  return (
-    <List spacing='xs' size='sm'>
-      {requirements.map((requirement, index) => (
-        <List.Item key={`${requirement.name}-${String(index)}`}>
-          <Group component='span' justify='space-between' align='flex-start' wrap='nowrap'>
-            <Box component='span' style={{ minWidth: 0 }}>
-              <Text component='span' size='sm' style={{ overflowWrap: 'anywhere' }}>
-                {requirement.name}
-              </Text>
-              {requirement.foundIn?.map((location) => (
-                <Text component='span' display='block' c='dimmed' size='xs' key={location}>
-                  {location}
-                </Text>
-              ))}
-            </Box>
-            <Badge component='span' variant='light' color='gray'>
-              ×{String(requirement.quantity)}
-            </Badge>
-          </Group>
-          {requirement.requirements && requirement.requirements.length > 0 ? (
-            <Box mt='xs' ml='sm'>
-              <Text c='dimmed' size='xs' mb={4}>
-                Component requirements
-              </Text>
-              <RequirementList requirements={requirement.requirements} />
-            </Box>
-          ) : null}
-        </List.Item>
-      ))}
-    </List>
-  )
-}
-
-const CraftingBreakdownTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) => {
-  if (!finished.item) {
-    return (
-      <Alert color='blue' title='No item selected' m='md'>
-        Select an item to review individual crafting requirements.
-      </Alert>
-    )
-  }
-
-  const recipes = [
-    {
-      id: 'base-item',
-      name: finished.item.name,
-      label: 'Base item',
-      requirements: finished.item.requirements,
-      craftedIn: finished.item.craftedIn
-    },
-    ...finished.slots.flatMap(({ slot, augment }) =>
-      augment && (augment.requirements.length > 0 || augment.craftedIn)
-        ? [
-            {
-              id: slot.id,
-              name: augment.name,
-              label: slot.label,
-              requirements: augment.requirements,
-              craftedIn: augment.craftedIn
-            }
-          ]
-        : []
-    )
-  ]
-
-  return (
-    <Stack gap='md' p='md'>
-      <Text size='sm'>Requirements are kept separate for each crafted part of this build.</Text>
-      {recipes.map((recipe) => (
-        <Paper component='section' aria-label={`${recipe.name} requirements`} withBorder p='sm' key={recipe.id}>
-          <Stack gap='xs'>
-            <Group justify='space-between' align='flex-start' wrap='nowrap'>
-              <Title order={4} size='h5' style={{ overflowWrap: 'anywhere' }}>
-                {recipe.name}
-              </Title>
-              <Badge variant='light' color={recipe.id === 'base-item' ? 'blue' : 'gray'}>
-                {recipe.label}
-              </Badge>
-            </Group>
-            {recipe.craftedIn ? (
-              <Text c='dimmed' size='xs'>
-                Crafted at {recipe.craftedIn}
-              </Text>
-            ) : null}
-            <RequirementList requirements={recipe.requirements} />
-          </Stack>
-        </Paper>
-      ))}
-    </Stack>
-  )
-}
 
 const errorTitle = (cause: unknown) => {
   if (cause instanceof UnsupportedManifestSchemaError) return 'Unsupported data version'
