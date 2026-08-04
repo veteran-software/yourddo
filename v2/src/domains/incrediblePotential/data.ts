@@ -16,6 +16,10 @@ export interface IncrediblePotentialRing {
   setName: string
 }
 
+interface PublishedIncrediblePotentialRing extends Omit<IncrediblePotentialRing, 'setName'> {
+  setBonus: { name: string }[]
+}
+
 export interface AltarRecipe {
   recipeId: number
   name: string
@@ -57,7 +61,9 @@ const isEffect = (value: unknown): value is IncrediblePotentialEffect => {
   )
 }
 
-const isRing = (value: unknown): value is Omit<IncrediblePotentialRing, 'setName'> =>
+const isSetBonus = (value: unknown): value is { name: string } => isRecord(value) && typeof value.name === 'string'
+
+const isRing = (value: unknown): value is PublishedIncrediblePotentialRing =>
   isRecord(value) &&
   typeof value.pageTitle === 'string' &&
   typeof value.name === 'string' &&
@@ -65,7 +71,9 @@ const isRing = (value: unknown): value is Omit<IncrediblePotentialRing, 'setName
   typeof value.type === 'string' &&
   typeof value.minLevel === 'string' &&
   Array.isArray(value.enchantments) &&
-  value.enchantments.every(isEffect)
+  value.enchantments.every(isEffect) &&
+  Array.isArray(value.setBonus) &&
+  value.setBonus.every(isSetBonus)
 
 const isRecipe = (value: unknown): value is AltarRecipe =>
   isRecord(value) &&
@@ -88,7 +96,7 @@ const assertUnique = (values: string[] | number[], label: string) => {
   }
 }
 
-export const parseRings = (value: unknown): Omit<IncrediblePotentialRing, 'setName'>[] => {
+export const parseRings = (value: unknown): IncrediblePotentialRing[] => {
   if (!Array.isArray(value) || !value.every(isRing)) throw new InvalidIncrediblePotentialDataError('Invalid ring data.')
 
   assertUnique(
@@ -101,6 +109,16 @@ export const parseRings = (value: unknown): Omit<IncrediblePotentialRing, 'setNa
       throw new InvalidIncrediblePotentialDataError(`Invalid minimum level for ${ring.name}.`)
     }
 
+    if (ring.setBonus.length !== 1) {
+      throw new InvalidIncrediblePotentialDataError(
+        `Expected one set bonus for ${ring.name}, found ${ring.setBonus.length.toString()}.`
+      )
+    }
+
+    if (ring.setBonus[0].name.trim().length === 0) {
+      throw new InvalidIncrediblePotentialDataError(`Invalid set bonus for ${ring.name}.`)
+    }
+
     const placeholders = ring.enchantments.filter(({ name }) => name === 'Incredible Potential')
     if (placeholders.length !== 1) {
       throw new InvalidIncrediblePotentialDataError(
@@ -109,7 +127,14 @@ export const parseRings = (value: unknown): Omit<IncrediblePotentialRing, 'setNa
     }
   }
 
-  return value
+  return value.map(({ pageTitle, name, type, minLevel, enchantments, setBonus }) => ({
+    pageTitle,
+    name,
+    type,
+    minLevel,
+    enchantments,
+    setName: setBonus[0].name
+  }))
 }
 
 export const parseRecipes = (value: unknown): AltarRecipe[] => {
@@ -162,55 +187,15 @@ export const parseIngredients = (value: unknown): IngredientMetadata[] => {
   return ingredients
 }
 
-export const parseItemSetIndex = (value: unknown): Record<string, { name: string; minLevel: number }[]> => {
-  if (!isRecord(value)) throw new InvalidIncrediblePotentialDataError('Invalid item-set index data.')
-
-  for (const entries of Object.values(value)) {
-    if (
-      !Array.isArray(entries) ||
-      !entries.every(
-        (entry) =>
-          isRecord(entry) &&
-          typeof entry.name === 'string' &&
-          typeof entry.minLevel === 'number' &&
-          Number.isFinite(entry.minLevel)
-      )
-    ) {
-      throw new InvalidIncrediblePotentialDataError('Invalid item-set index data.')
-    }
-  }
-
-  return value as Record<string, { name: string; minLevel: number }[]>
-}
-
-export const joinRingSets = (
-  rings: Omit<IncrediblePotentialRing, 'setName'>[],
-  itemSets: Record<string, { name: string; minLevel: number }[]>
-): IncrediblePotentialRing[] =>
-  rings.map((ring) => {
-    const matches = Object.entries(itemSets).filter(([, items]) =>
-      items.some(({ name, minLevel }) => name === ring.name && minLevel === Number(ring.minLevel))
-    )
-
-    if (matches.length !== 1) {
-      throw new InvalidIncrediblePotentialDataError(
-        `Expected one item-set match for ${ring.name}, found ${matches.length.toString()}.`
-      )
-    }
-
-    return { ...ring, setName: matches[0][0] }
-  })
-
 export const loadIncrediblePotentialData = async (): Promise<IncrediblePotentialData> => {
-  const [ringsValue, recipesValue, itemSetsValue, ingredientsValue] = await Promise.all([
+  const [ringsValue, recipesValue, ingredientsValue] = await Promise.all([
     loadDataset<unknown>('incredible-potential'),
     loadManualPayload<unknown>('altarOfSubjugation.recipes'),
-    loadDataset<unknown>('item-sets'),
     loadManualPayload<unknown>('ingredients')
   ])
 
   return {
-    rings: joinRingSets(parseRings(ringsValue), parseItemSetIndex(itemSetsValue)),
+    rings: parseRings(ringsValue),
     recipes: parseRecipes(recipesValue),
     ingredients: parseIngredients(ingredientsValue)
   }

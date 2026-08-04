@@ -196,8 +196,7 @@ export const buildCraftingPlan = (
   const shardName = upgrade.ingredients.find((name) => name.endsWith(' Shard of Great Power'))
   if (!shardName) throw new MissingUpgradeIngredientError(upgrade.name)
 
-  expand(shardName, 1, [], upgrade.name)
-  for (const requirement of upgrade.ingredients.filter((name) => name !== shardName)) {
+  for (const requirement of upgrade.ingredients) {
     expand(requirement, quantityFor(requirement), [], upgrade.name)
   }
 
@@ -248,19 +247,5 @@ export const validateIncrediblePotentialData = (data: IncrediblePotentialData): 
     assertValidMaterials(plan.rawMaterials)
     assertValidMaterials(plan.craftedMaterials)
     for (const step of plan.steps) assertValidMaterials(step.requirements)
-  }
-
-  const ringOptions = getFilterOptions(data.rings, getRingFilterValues)
-  for (const option of ringOptions) {
-    if (!data.rings.some((ring) => getRingFilterValues(ring).includes(option))) {
-      throw new Error(`Ring filter option does not match a ring: ${option}`)
-    }
-  }
-
-  const upgradeOptions = getFilterOptions(upgrades, getUpgradeFilterValues)
-  for (const option of upgradeOptions) {
-    if (!upgrades.some((upgrade) => getUpgradeFilterValues(upgrade).includes(option))) {
-      throw new Error(`Upgrade filter option does not match an upgrade: ${option}`)
-    }
   }
 }

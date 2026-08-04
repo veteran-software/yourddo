@@ -11,6 +11,7 @@ import {
   getRingUpgrades,
   getUpgradeFilterValues,
   MissingAltarRecipeError,
+  MissingUpgradeIngredientError,
   validateIncrediblePotentialData
 } from './incrediblePotential.logic.ts'
 
@@ -112,6 +113,20 @@ describe('Incredible Potential logic', () => {
     expect(plan.rawMaterials.find(({ name }) => name === 'Shavarath Medium Energy Cell')?.quantity).toBe(5)
   })
 
+  it('aggregates every repeated upgrade requirement', () => {
+    const repeatedShardUpgrade = {
+      ...upgrade,
+      ingredients: [shard.name, shard.name, 'Shavarath Trophy of War']
+    }
+    const plan = buildCraftingPlan(repeatedShardUpgrade, [...recipes, repeatedShardUpgrade], [])
+
+    expect(plan.craftedMaterials.find(({ name }) => name === shard.name)?.quantity).toBe(2)
+    expect(plan.craftedMaterials.find(({ name }) => name === focus.name)?.quantity).toBe(2)
+    expect(plan.rawMaterials.find(({ name }) => name === 'Medium Devil Scales')?.quantity).toBe(6)
+    expect(plan.rawMaterials.find(({ name }) => name === 'Shavarath Medium Energy Cell')?.quantity).toBe(8)
+    expect(plan.rawMaterials.find(({ name }) => name === 'Shavarath Trophy of War')?.quantity).toBe(9)
+  })
+
   it('detects reachable duplicate recipes and cycles without rejecting unrelated duplicates', () => {
     expect(() => buildCraftingPlan(upgrade, [...recipes, { ...focus, recipeId: 10 }], [])).toThrow(
       DuplicateAltarRecipeError
@@ -139,6 +154,12 @@ describe('Incredible Potential logic', () => {
     expect(() => buildCraftingPlan(upgrade, [gem, essence, shard, upgrade], [])).toThrow(
       new MissingAltarRecipeError(shard.name, focus.name)
     )
+  })
+
+  it('rejects a ring upgrade without an Imbued Shard of Great Power', () => {
+    const upgradeWithoutShard = { ...upgrade, ingredients: ['Shavarath Trophy of War'] }
+
+    expect(() => buildCraftingPlan(upgradeWithoutShard, recipes, [])).toThrow(MissingUpgradeIngredientError)
   })
 
   it('suppresses legacy item placeholders because the selected ring is listed separately', () => {
@@ -228,6 +249,29 @@ describe('Incredible Potential logic', () => {
       getFilterOptions(upgrades, getUpgradeFilterValues).every((option) =>
         upgrades.some((candidate) => getUpgradeFilterValues(candidate).includes(option))
       )
+    ).toBe(true)
+
+    const rings = [
+      {
+        enchantments: [{ name: 'Wisdom' }, { name: 'Incredible Potential' }],
+        setName: 'Exorcist of the Silver Flame'
+      },
+      {
+        enchantments: [{ name: 'Dexterity' }, { name: 'Incredible Potential' }],
+        setName: 'Assassin'
+      }
+    ] as IncrediblePotentialRing[]
+    const ringOptions = getFilterOptions(rings, getRingFilterValues)
+
+    expect(ringOptions).toEqual([
+      'Assassin',
+      'Dexterity',
+      'Exorcist of the Silver Flame',
+      'Incredible Potential',
+      'Wisdom'
+    ])
+    expect(
+      ringOptions.every((option) => rings.some((candidate) => getRingFilterValues(candidate).includes(option)))
     ).toBe(true)
   })
 })

@@ -247,6 +247,7 @@ describe('IncrediblePotentialPage', () => {
 
     expect(screen.getByText('1 of 2 rings shown.')).toBeTruthy()
     expect(screen.getByRole('heading', { name: "Amara's Band" })).toBeTruthy()
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Base ring' }).value).toContain("Amara's Band")
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Upgrade effect' }).value).toContain('Flaming Burst')
 
     await selectOption(user, 'Ring effects and item sets', 'Wisdom')
@@ -257,6 +258,7 @@ describe('IncrediblePotentialPage', () => {
     expect(screen.getByRole('heading', { name: "Amara's Band" })).toBeTruthy()
 
     await selectOption(user, 'Upgrade effects', 'Dexterity')
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Upgrade effect' }).value).toContain('Flaming Burst')
     await selectOption(user, 'Upgrade effects', 'Flaming Burst')
     expect(screen.getByText('No upgrades match')).toBeTruthy()
   })

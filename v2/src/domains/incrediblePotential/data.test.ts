@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadDataset, loadManualPayload } from '../../shared/data/loadDataset.ts'
 import {
   InvalidIncrediblePotentialDataError,
-  joinRingSets,
   loadIncrediblePotentialData,
   parseIngredients,
   parseRecipes,
@@ -19,7 +18,17 @@ const ring = {
   name: "Amara's Band",
   type: 'Ring',
   minLevel: '18',
-  enchantments: [{ name: 'Wisdom', modifier: '6', bonus: 'Enhancement' }, { name: 'Incredible Potential' }]
+  enchantments: [{ name: 'Wisdom', modifier: '6', bonus: 'Enhancement' }, { name: 'Incredible Potential' }],
+  setBonus: [{ name: 'Exorcist of the Silver Flame' }]
+}
+
+const normalizedRing = {
+  pageTitle: ring.pageTitle,
+  name: ring.name,
+  type: ring.type,
+  minLevel: ring.minLevel,
+  enchantments: ring.enchantments,
+  setName: ring.setBonus[0].name
 }
 
 const recipe = {
@@ -37,69 +46,51 @@ beforeEach(() => {
 })
 
 describe('Incredible Potential data', () => {
-  it('loads each published contract and joins a ring to its exact item set', async () => {
-    vi.mocked(loadDataset).mockImplementation((domain) =>
-      Promise.resolve(
-        domain === 'incredible-potential'
-          ? [ring]
-          : { 'Exorcist of the Silver Flame': [{ name: "Amara's Band", minLevel: 18 }] }
-      )
-    )
+  it("loads each published contract and uses the ring's embedded set bonus", async () => {
+    const ringSource = [structuredClone(ring)]
+    const recipeSource = [structuredClone(recipe)]
+    const ingredientSource = [{ name: 'Medium Devil Scales' }]
+    const sourceSnapshot = structuredClone({ ringSource, recipeSource, ingredientSource })
+
+    vi.mocked(loadDataset).mockResolvedValue(ringSource)
     vi.mocked(loadManualPayload).mockImplementation((name) =>
-      Promise.resolve(name === 'altarOfSubjugation.recipes' ? [recipe] : [{ name: 'Medium Devil Scales' }])
+      Promise.resolve(name === 'altarOfSubjugation.recipes' ? recipeSource : ingredientSource)
     )
 
     await expect(loadIncrediblePotentialData()).resolves.toEqual({
-      rings: [{ ...ring, setName: 'Exorcist of the Silver Flame' }],
+      rings: [normalizedRing],
       recipes: [recipe],
       ingredients: [{ name: 'Medium Devil Scales', foundIn: [] }]
     })
     expect(loadDataset).toHaveBeenCalledWith('incredible-potential')
-    expect(loadDataset).toHaveBeenCalledWith('item-sets')
+    expect(loadDataset).toHaveBeenCalledTimes(1)
     expect(loadManualPayload).toHaveBeenCalledWith('altarOfSubjugation.recipes')
     expect(loadManualPayload).toHaveBeenCalledWith('ingredients')
+    expect({ ringSource, recipeSource, ingredientSource }).toEqual(sourceSnapshot)
   })
 
-  it('requires exactly one item-set match for every ring', () => {
-    expect(() => joinRingSets([ring], {})).toThrow('Expected one item-set match')
-    expect(() =>
-      joinRingSets([ring], {
-        'First set': [{ name: ring.name, minLevel: 18 }],
-        'Second set': [{ name: ring.name, minLevel: 18 }]
-      })
-    ).toThrow('found 2')
+  it('requires exactly one named set bonus for every ring', () => {
+    expect(() => parseRings([{ ...ring, setBonus: [] }])).toThrow('Expected one set bonus')
+    expect(() => parseRings([{ ...ring, setBonus: [{ name: 'First set' }, { name: 'Second set' }] }])).toThrow(
+      'found 2'
+    )
+    expect(() => parseRings([{ ...ring, setBonus: [{ name: '   ' }] }])).toThrow('Invalid set bonus')
   })
 
-  it.each([
-    ['ring dataset', 'incredible-potential'],
-    ['item-set dataset', 'item-sets']
-  ])('reports a missing %s from the shared loader', async (_, missingDomain) => {
-    vi.mocked(loadDataset).mockImplementation((domain) => {
-      if (domain === missingDomain) return Promise.reject(new Error(`Unknown dataset domain: ${domain}`))
-      return Promise.resolve(
-        domain === 'incredible-potential'
-          ? [ring]
-          : { 'Exorcist of the Silver Flame': [{ name: ring.name, minLevel: 18 }] }
-      )
-    })
+  it('reports a missing ring dataset from the shared loader', async () => {
+    vi.mocked(loadDataset).mockRejectedValue(new Error('Unknown dataset domain: incredible-potential'))
     vi.mocked(loadManualPayload).mockImplementation((name) =>
       Promise.resolve(name === 'altarOfSubjugation.recipes' ? [recipe] : [{ name: 'Medium Devil Scales' }])
     )
 
-    await expect(loadIncrediblePotentialData()).rejects.toThrow(`Unknown dataset domain: ${missingDomain}`)
+    await expect(loadIncrediblePotentialData()).rejects.toThrow('Unknown dataset domain: incredible-potential')
   })
 
   it.each([
     ['recipe payload', 'altarOfSubjugation.recipes'],
     ['ingredient payload', 'ingredients']
   ])('reports a missing %s from the shared loader', async (_, missingPayload) => {
-    vi.mocked(loadDataset).mockImplementation((domain) =>
-      Promise.resolve(
-        domain === 'incredible-potential'
-          ? [ring]
-          : { 'Exorcist of the Silver Flame': [{ name: ring.name, minLevel: 18 }] }
-      )
-    )
+    vi.mocked(loadDataset).mockResolvedValue([ring])
     vi.mocked(loadManualPayload).mockImplementation((name) => {
       if (name === missingPayload) return Promise.reject(new Error(`Unknown manual payload: ${name}`))
       return Promise.resolve(name === 'altarOfSubjugation.recipes' ? [recipe] : [{ name: 'Medium Devil Scales' }])
@@ -110,6 +101,7 @@ describe('Incredible Potential data', () => {
 
   it('rejects malformed and unexpectedly duplicated source records', () => {
     expect(() => parseRings([{ ...ring, minLevel: 18 }])).toThrow(InvalidIncrediblePotentialDataError)
+    expect(() => parseRings([{ ...ring, setBonus: undefined }])).toThrow(InvalidIncrediblePotentialDataError)
     expect(() => parseRings([ring, ring])).toThrow('Duplicate ring name')
     expect(() => parseRings([{ ...ring, enchantments: ring.enchantments.slice(0, 1) }])).toThrow(
       'Expected one Incredible Potential placeholder'
