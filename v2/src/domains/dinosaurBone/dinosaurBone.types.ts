@@ -32,6 +32,7 @@ export interface DinosaurBoneItem {
   description?: string
   image?: string
   icon?: string
+  artifactType?: string
   minLevel?: string | number
   binding?: Readonly<Record<string, string>>
   material?: string

@@ -82,6 +82,10 @@ describe('Dinosaur Bone data', () => {
     ).toThrow('requirements missing for crafted augment Crafted Horn')
   })
 
+  it('retains artifact identity from the published item payload', () => {
+    expect(parseItems([{ ...item, artifactType: 'Minor' }])[0]?.artifactType).toBe('Minor')
+  })
+
   it('rejects unsupported manual schema, missing joins, and invalid quantities', async () => {
     expect(() => parseCraftingRequirements({ ...recipe, schemaVersion: 2 })).toThrow(
       'unsupported crafting requirements payload'

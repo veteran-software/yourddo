@@ -63,6 +63,14 @@ const items: ClassifiedDinosaurBoneItem[] = [
     family: 'crafted-weapons',
     augments: [],
     requirements: [{ name: 'Bone', quantity: 25 }]
+  },
+  {
+    name: 'Dinosaur Bone Test Artifact',
+    type: 'Belt',
+    family: 'crafted-weapons',
+    artifactType: 'Minor',
+    augments: slots,
+    requirements: [{ name: 'Bone', quantity: 25 }]
   }
 ]
 const dinosaurAugments: DinosaurBoneAugment[] = [
@@ -174,6 +182,29 @@ describe('DinosaurBonePage', () => {
 
     await user.click(screen.getByRole('combobox', { name: 'Isle of Dread: Claw (Weapon) augment' }))
     expect(await screen.findByRole('option', { name: /Claw One/ })).toBeTruthy()
+  })
+
+  it('badges artifacts and shows their adjusted ability score upgrade with a contextual notice', async () => {
+    loadMock.mockResolvedValue(data)
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })
+    await chooseItem(user, 'Dinosaur Bone Test Artifact')
+
+    expect(screen.getAllByText('Crafted Weapons')).toHaveLength(2)
+    expect(screen.getByText('Minor Artifact')).toBeTruthy()
+
+    await user.click(screen.getByRole('combobox', { name: 'Isle of Dread: Claw (Weapon) augment' }))
+    await user.click(await screen.findByRole('option', { name: /Claw One/ }))
+
+    expect(screen.getByText('Artifact ability score bonus')).toBeTruthy()
+    expect(screen.getByText(/This Minor Artifact increases Strength by 1/)).toBeTruthy()
+    expect(screen.getByText('Strength (3)')).toBeTruthy()
+
+    await user.click(screen.getByRole('button', { name: 'Finished Item' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Finished Item' })
+    expect(within(dialog).getByText('Artifact ability score bonus')).toBeTruthy()
+    expect(within(dialog).getByText('Strength (3)')).toBeTruthy()
   })
 
   it('uses separate workspace tools and preserves configuration while switching them', async () => {

@@ -32,11 +32,13 @@ import type {
   CumulativeIngredient,
   DinosaurBoneAugment,
   DinosaurBoneData,
+  DinosaurBoneEffect,
   FinishedDinosaurBoneItem,
   ItemFamily,
   SelectedAugments
 } from './dinosaurBone.types'
 import {
+  adjustEffectForArtifact,
   calculateCumulativeIngredients,
   calculateFinishedItem,
   filterRecords,
@@ -49,6 +51,8 @@ import {
   getFilterOptions,
   getItemsForFamily,
   getSelectedAugments,
+  isAbilityScoreEffect,
+  isArtifactItem,
   isColorSlot,
   itemFamilies
 } from './logic.ts'
@@ -82,6 +86,39 @@ const EffectList = ({ effects, empty = 'None published.' }: { effects: readonly 
 const formatBinding = (binding: Readonly<Record<string, string>> | undefined) =>
   binding ? Object.values(binding).join(' · ') : undefined
 
+const ArtifactAbilityScoreNotice = ({
+  item,
+  effects
+}: {
+  item: ClassifiedDinosaurBoneItem
+  effects: readonly DinosaurBoneEffect[]
+}) => {
+  const abilityScores = [
+    ...new Set(
+      effects
+        .filter(isAbilityScoreEffect)
+        .map(({ name }) => name.split(' +')[0])
+        .filter((name): name is string => Boolean(name))
+    )
+  ]
+  if (!isArtifactItem(item) || abilityScores.length === 0) return null
+
+  return (
+    <Alert
+      color='yellow'
+      variant='light'
+      title='Artifact ability score bonus'
+      role='status'
+      p='xs'
+      styles={{ title: { fontSize: 'var(--mantine-font-size-sm)' } }}
+    >
+      <Text size='xs'>
+        This {item.artifactType} Artifact increases {abilityScores.join(', ')} by 1. The adjusted value is shown below.
+      </Text>
+    </Alert>
+  )
+}
+
 const ItemSummary = ({ item }: { item: ClassifiedDinosaurBoneItem }) => {
   const metadata = [
     item.type,
@@ -105,7 +142,14 @@ const ItemSummary = ({ item }: { item: ClassifiedDinosaurBoneItem }) => {
               </Text>
             </Box>
           </Group>
-          <Badge variant='light'>{getFamilyLabel(item.family)}</Badge>
+          <Group gap='xs'>
+            <Badge variant='light'>{getFamilyLabel(item.family)}</Badge>
+            {isArtifactItem(item) ? (
+              <Badge variant='light' color='grape'>
+                {item.artifactType} Artifact
+              </Badge>
+            ) : null}
+          </Group>
         </Group>
         {item.description ? <Text size='sm'>{item.description}</Text> : null}
         <Divider />
@@ -143,6 +187,7 @@ const FinishedItemTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) 
       </Alert>
     )
   }
+  const selectedUpgradeEffects = finished.slots.flatMap(({ augment }) => augment?.effectsAdded ?? [])
   return (
     <Stack gap='md' p='md'>
       <Box>
@@ -170,8 +215,12 @@ const FinishedItemTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) 
         <Text fw={600} mb='xs'>
           Crafted additions by slot
         </Text>
+        <ArtifactAbilityScoreNotice item={finished.item} effects={selectedUpgradeEffects} />
         {finished.slots.some(({ augment }) => augment) ? (
-          <Stack gap='md'>
+          <Stack
+            gap='md'
+            mt={isArtifactItem(finished.item) && selectedUpgradeEffects.some(isAbilityScoreEffect) ? 'sm' : 0}
+          >
             {finished.slots
               .filter(({ augment }) => augment)
               .map(({ slot, augment }) => (
@@ -180,7 +229,9 @@ const FinishedItemTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) 
                     {slot.label}: {augment?.name}
                   </Text>
                   <EffectList
-                    effects={(augment?.effectsAdded ?? []).map(formatEffect)}
+                    effects={(augment?.effectsAdded ?? []).map((effect) =>
+                      formatEffect(adjustEffectForArtifact(effect, finished.item))
+                    )}
                     empty='No effect text published.'
                   />
                 </Box>
@@ -361,6 +412,10 @@ const DinosaurBonePage = () => {
   const selectedAugmentObjects = useMemo(
     () => (data ? getSelectedAugments(selectedItem, selectedAugments, data.indexes) : {}),
     [data, selectedAugments, selectedItem]
+  )
+  const selectedUpgradeEffects = useMemo(
+    () => Object.values(selectedAugmentObjects).flatMap(({ effectsAdded }) => effectsAdded ?? []),
+    [selectedAugmentObjects]
   )
   const finished = useMemo(
     () =>
@@ -629,6 +684,7 @@ const DinosaurBonePage = () => {
                               </Paper>
                             ) : null}
                           </SimpleGrid>
+                          <ArtifactAbilityScoreNotice item={selectedItem} effects={selectedUpgradeEffects} />
                           <Accordion variant='separated' multiple defaultValue={slots.slice(0, 1).map(({ id }) => id)}>
                             {slots.map((slot) => {
                               const options = filteredOptionsBySlot.get(slot.id) ?? []
@@ -667,7 +723,9 @@ const DinosaurBonePage = () => {
                                             {selectedAugment.name}
                                           </Text>
                                           <EffectList
-                                            effects={(selectedAugment.effectsAdded ?? []).map(formatEffect)}
+                                            effects={(selectedAugment.effectsAdded ?? []).map((effect) =>
+                                              formatEffect(adjustEffectForArtifact(effect, selectedItem))
+                                            )}
                                             empty='No effect text published.'
                                           />
                                           {selectedAugment.description ? (

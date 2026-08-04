@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { ClassifiedDinosaurBoneItem, DinosaurBoneAugment, DinosaurBoneItem } from './dinosaurBone.types'
 import {
+  adjustEffectForArtifact,
   buildDinosaurBoneIndexes,
   calculateCumulativeIngredients,
   calculateFinishedItem,
@@ -8,7 +9,9 @@ import {
   filterRecords,
   getAvailableSlots,
   getCompatibleAugments,
-  getSelectedAugments
+  getSelectedAugments,
+  isAbilityScoreEffect,
+  isArtifactItem
 } from './logic.ts'
 
 const slot = (augmentType: string) => ({ id: augmentType, augmentType, label: augmentType.replace(' Slot', '') })
@@ -88,6 +91,25 @@ describe('Dinosaur Bone logic', () => {
       'three'
     ])
     expect(filterRecords(values, ['Fire', 'Cold'], 'AND', getEffects).map(({ name }) => name)).toEqual(['two'])
+  })
+
+  it('increases only numeric ability score upgrades on artifacts without mutating the source effect', () => {
+    const artifact = { ...item, artifactType: 'Minor' }
+    const strength = { name: 'Strength +14', modifier: 14, bonus: 'Enhancement' }
+
+    expect(isArtifactItem(artifact)).toBe(true)
+    expect(isAbilityScoreEffect(strength)).toBe(true)
+    expect(adjustEffectForArtifact(strength, artifact)).toEqual({
+      name: 'Strength +15',
+      modifier: 15,
+      bonus: 'Enhancement'
+    })
+    expect(adjustEffectForArtifact({ name: 'Accuracy +21', modifier: 21 }, artifact)).toEqual({
+      name: 'Accuracy +21',
+      modifier: 21
+    })
+    expect(adjustEffectForArtifact(strength, item)).toBe(strength)
+    expect(strength).toEqual({ name: 'Strength +14', modifier: 14, bonus: 'Enhancement' })
   })
 
   it('indexes and resolves explicit color and Dinosaur Bone compatibility without duplicate options', () => {

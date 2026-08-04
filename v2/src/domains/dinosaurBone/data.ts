@@ -166,6 +166,7 @@ export const parseItems = (value: unknown): DinosaurBoneItem[] => {
       ...(typeof item.description === 'string' ? { description: item.description } : {}),
       ...(nonEmptyString(item.image) ? { image: item.image } : {}),
       ...(nonEmptyString(item.icon) ? { icon: item.icon } : {}),
+      ...(nonEmptyString(item.artifactType) ? { artifactType: item.artifactType } : {}),
       ...(typeof item.minLevel === 'string' || typeof item.minLevel === 'number' ? { minLevel: item.minLevel } : {}),
       ...(parseBinding(item.binding, itemName) ? { binding: parseBinding(item.binding, itemName) } : {}),
       ...(typeof item.material === 'string' ? { material: item.material } : {}),

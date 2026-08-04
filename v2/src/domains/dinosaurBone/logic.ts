@@ -89,6 +89,28 @@ export const getEffectNames = (item: DinosaurBoneItem): string[] =>
 export const getAugmentEffectNames = (augment: DinosaurBoneAugment): string[] =>
   (augment.effectsAdded ?? []).map(({ name }) => name)
 
+const abilityScoreEffectPattern =
+  /^(Strength|Dexterity|Constitution|Intelligence|Wisdom|Charisma)(?: \+(-?\d+(?:\.\d+)?))?$/
+
+export const isArtifactItem = (item: DinosaurBoneItem): boolean => Boolean(item.artifactType?.trim())
+
+export const isAbilityScoreEffect = (effect: DinosaurBoneEffect): boolean => abilityScoreEffectPattern.test(effect.name)
+
+export const adjustEffectForArtifact = (effect: DinosaurBoneEffect, item: DinosaurBoneItem): DinosaurBoneEffect => {
+  if (!isArtifactItem(item) || !isAbilityScoreEffect(effect)) return effect
+
+  const modifier = typeof effect.modifier === 'number' ? effect.modifier : Number(effect.modifier)
+  if (!Number.isFinite(modifier)) return effect
+
+  const adjustedModifier = modifier + 1
+  const nameMatch = abilityScoreEffectPattern.exec(effect.name)
+  return {
+    ...effect,
+    name: nameMatch?.[2] ? `${nameMatch[1]} +${String(adjustedModifier)}` : effect.name,
+    modifier: adjustedModifier
+  }
+}
+
 export const getFilterOptions = <T>(items: readonly T[], getValues: (item: T) => readonly string[]): string[] =>
   [...new Set(items.flatMap((item) => [...getValues(item)]))].sort((a, b) => a.localeCompare(b))
 
