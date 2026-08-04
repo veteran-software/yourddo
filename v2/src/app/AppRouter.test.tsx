@@ -11,6 +11,10 @@ vi.mock('../domains/cauldronOfCadence/CauldronOfCadencePage.tsx', () => ({
   default: () => <h1>Cauldron of Cadence domain</h1>
 }))
 
+vi.mock('../domains/dinosaurBone/DinosaurBonePage.tsx', () => ({
+  default: () => <h1>Dinosaur Bone domain</h1>
+}))
+
 vi.mock('../domains/incrediblePotential/IncrediblePotentialPage.tsx', () => ({
   default: () => <h1>Incredible Potential domain</h1>
 }))
@@ -88,6 +92,13 @@ afterAll(() => {
 })
 
 describe('AppRouter', () => {
+  it('renders Dinosaur Bone at its preserved public route', () => {
+    renderRoute('/dinosaur-bone')
+
+    expect(screen.getByRole('heading', { name: 'Dinosaur Bone domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Dinosaur Bone Crafting' }).getAttribute('aria-current')).toBe('page')
+  })
+
   it('renders Incredible Potential at its preserved public route', () => {
     renderRoute('/incredible-potential')
 

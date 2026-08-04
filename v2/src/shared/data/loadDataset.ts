@@ -183,6 +183,19 @@ export const loadDataset = async <T>(domain: string): Promise<T> => {
   return parseDataset<T>(datasetResponse)
 }
 
+export const loadDatasetFile = async <T>(path: string): Promise<T> => {
+  const { manifest, baseUrl } = await loadRelease()
+  const match = manifest.generatedFiles.find((file) => file.path === path)
+
+  if (!match) {
+    throw new Error(`Unknown dataset file: ${path}`)
+  }
+
+  const datasetResponse = await fetchResponse(joinUrl(baseUrl, match.path), 'Dataset')
+
+  return parseDataset<T>(datasetResponse)
+}
+
 export const loadManualPayload = async <T>(name: string): Promise<T> => {
   const { manifest, baseUrl } = await loadRelease()
   const matches = manifest.manualPayloads.filter((payload) => payload.name === name)

@@ -48,6 +48,38 @@ afterEach(() => {
 })
 
 describe('loadDataset', () => {
+  it('loads a generated dataset by its manifest path when a domain has multiple files', async () => {
+    const multiFileManifest = {
+      ...manifest,
+      generatedFiles: [generatedFile, { ...generatedFile, domain: 'master', path: 'master/augment.json' }]
+    }
+    const payload = [{ name: 'Red Augment' }]
+    const fetchMock = vi
+      .fn<typeof fetch>()
+      .mockResolvedValueOnce(jsonResponse(latest))
+      .mockResolvedValueOnce(jsonResponse(multiFileManifest))
+      .mockResolvedValueOnce(jsonResponse(payload))
+    vi.stubGlobal('fetch', fetchMock)
+    const { loadDatasetFile } = await importLoader()
+
+    await expect(loadDatasetFile<{ name: string }[]>('master/augment.json')).resolves.toEqual(payload)
+    expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
+      '/data-cdn/latest.json',
+      '/data-cdn/releases/81.0.1/1785745211/manifest.json',
+      '/data-cdn/releases/81.0.1/1785745211/master/augment.json'
+    ])
+  })
+
+  it('rejects an unknown generated dataset path', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn<typeof fetch>().mockResolvedValueOnce(jsonResponse(latest)).mockResolvedValueOnce(jsonResponse(manifest))
+    )
+    const { loadDatasetFile } = await importLoader()
+
+    await expect(loadDatasetFile('master/missing.json')).rejects.toThrow('Unknown dataset file: master/missing.json')
+  })
+
   it('resolves the latest release and loads a generated dataset through the development proxy', async () => {
     const payload = [{ name: 'Nearly Complete Item' }]
     const fetchMock = vi
