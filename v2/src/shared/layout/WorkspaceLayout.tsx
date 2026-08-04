@@ -80,6 +80,7 @@ const WorkspaceLayout = ({
   const panelTool = panelToolId ? resolvedTools.find((tool) => tool.id === panelToolId) : undefined
   const panelId = `${layoutId}-tool-panel`
   const panelWidth = toCssSize(toolPanelWidth)
+  const railWidth = railExpanded ? expandedRailWidth : collapsedRailWidth
 
   // Keep the local ID in sync when a parent removes the active tool.
   useEffect(() => {
@@ -131,6 +132,12 @@ const WorkspaceLayout = ({
           h={36}
           px='xs'
           radius='sm'
+          style={{ minWidth: 0, overflow: 'hidden' }}
+          styles={{
+            inner: { minWidth: 0 },
+            label: { minWidth: 0, display: 'flex', alignItems: 'center' },
+            section: { width: '1.5rem', minWidth: '1.5rem', flex: '0 0 1.5rem', justifyContent: 'center' }
+          }}
           aria-label={label}
           aria-pressed={active}
           aria-expanded={active}
@@ -140,7 +147,19 @@ const WorkspaceLayout = ({
             select(event.currentTarget)
           }}
         >
-          {tool.label}
+          <Box
+            component='span'
+            w='100%'
+            style={{
+              display: 'block',
+              minWidth: 0,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {tool.label}
+          </Box>
         </Button>
       )
     }
@@ -173,7 +192,12 @@ const WorkspaceLayout = ({
   const mobileTools = !desktop && resolvedTools.length > 0
 
   return (
-    <Flex data-testid='workspace-layout' h='calc(100dvh - var(--app-shell-header-height, 56px))' mih={0}>
+    <Flex
+      data-testid='workspace-layout'
+      h='calc(100dvh - var(--app-shell-header-height, 56px))'
+      mih={0}
+      style={{ overflow: 'hidden' }}
+    >
       <Box component='section' aria-label='Workspace' data-testid='workspace-main' flex={1} miw={0} mih={0}>
         <ScrollArea h='100%' type='auto'>
           {mobileTools ? (
@@ -249,14 +273,21 @@ const WorkspaceLayout = ({
           component='nav'
           aria-label='Workspace tools'
           data-testid='workspace-tool-rail'
-          w={railExpanded ? expandedRailWidth : collapsedRailWidth}
           mih={0}
-          flex='0 0 auto'
+          style={{
+            width: railWidth,
+            minWidth: railWidth,
+            maxWidth: railWidth,
+            flex: `0 0 ${railWidth}`,
+            overflow: 'hidden'
+          }}
         >
           <Divider orientation='vertical' />
-          <Stack gap={0} flex={1} mih={0} p={4}>
-            <ScrollArea type='auto' scrollbars='y' flex={1} mih={0}>
-              <Stack gap={2}>{resolvedTools.map((tool, index) => toolButton(tool, index))}</Stack>
+          <Stack gap={0} flex={1} miw={0} mih={0} p={4}>
+            <ScrollArea type='auto' scrollbars='y' flex={1} w='100%' miw={0} mih={0}>
+              <Stack gap={2} miw={0}>
+                {resolvedTools.map((tool, index) => toolButton(tool, index))}
+              </Stack>
             </ScrollArea>
             <Divider my={4} />
             <Tooltip

@@ -7,7 +7,6 @@ import type { ReactNode } from 'react'
 import { useEffect } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import WorkspaceLayout, { type WorkspaceTool } from './WorkspaceLayout'
-import WorkspaceLayout from './WorkspaceLayout'
 
 let desktopViewport = false
 
@@ -174,6 +173,41 @@ describe('WorkspaceLayout', () => {
     expect(screen.getByRole('button', { name: 'Collapse workspace tool labels' }).getAttribute('aria-expanded')).toBe(
       'true'
     )
+  })
+
+  it('contains expanded labels within the fixed-width rail', async () => {
+    desktopViewport = true
+    const longLabelTools: readonly WorkspaceTool[] = [
+      ...tools,
+      {
+        id: 'breakdown',
+        label: 'A crafting breakdown label that is wider than the rail',
+        icon: <span>B</span>,
+        content: <p>Breakdown content</p>
+      }
+    ]
+    renderLayout({ tools: longLabelTools })
+
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Expand workspace tool labels' }))
+
+    const layout = screen.getByTestId('workspace-layout')
+    const expandedRail = screen.getByTestId('workspace-tool-rail')
+    const longLabelButton = within(expandedRail).getByRole('button', { name: longLabelTools[3].label })
+    const buttonLabel = longLabelButton.querySelector<HTMLElement>('.mantine-Button-label')
+    const labelText = buttonLabel?.firstElementChild as HTMLElement | undefined
+    const iconSections = Array.from(expandedRail.querySelectorAll<HTMLElement>('.mantine-Button-section'))
+
+    expect(layout.style.overflow).toBe('hidden')
+    expect(expandedRail.style.width).toBe('11rem')
+    expect(expandedRail.style.minWidth).toBe('11rem')
+    expect(expandedRail.style.maxWidth).toBe('11rem')
+    expect(expandedRail.style.overflow).toBe('hidden')
+    expect(longLabelButton.style.minWidth).toBe('0px')
+    expect(buttonLabel?.style.display).toBe('flex')
+    expect(buttonLabel?.style.alignItems).toBe('center')
+    expect(labelText?.style.textOverflow).toBe('ellipsis')
+    expect(iconSections).toHaveLength(longLabelTools.length)
+    expect(iconSections.every((section) => section.style.width === '1.5rem')).toBe(true)
   })
 
   it('expands and collapses rail labels without changing the active tool', async () => {
