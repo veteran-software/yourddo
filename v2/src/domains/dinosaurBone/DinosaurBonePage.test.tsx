@@ -248,11 +248,20 @@ describe('DinosaurBonePage', () => {
     dialog = await screen.findByRole('dialog', { name: 'Ingredients' })
     expect(within(dialog).getByText('Tooth')).toBeTruthy()
     expect(within(dialog).getByText('×100')).toBeTruthy()
+
+    await user.click(within(dialog).getByRole('button', { name: 'Crafting Breakdown' }))
+    dialog = await screen.findByRole('dialog', { name: 'Crafting Breakdown' })
+    const baseRecipe = within(dialog).getByRole('region', { name: 'Dinosaur Bone Test Sword requirements' })
+    const clawRecipe = within(dialog).getByRole('region', { name: 'Claw One requirements' })
+    expect(within(baseRecipe).getByText('Bone')).toBeTruthy()
+    expect(within(baseRecipe).getByText('×25')).toBeTruthy()
+    expect(within(clawRecipe).getByText('Tooth')).toBeTruthy()
+    expect(within(clawRecipe).getByText('×100')).toBeTruthy()
     expect(inputValue(screen.getByRole('combobox', { name: 'Isle of Dread: Claw (Weapon) augment' }))).toBe('Claw One')
     expect(loadMock).toHaveBeenCalledOnce()
   })
 
-  it('passes both tools to the desktop WorkspaceLayout rail and switches active content', async () => {
+  it('passes all tools to the desktop WorkspaceLayout rail and switches active content', async () => {
     desktopViewport = true
     loadMock.mockResolvedValue(data)
     const user = userEvent.setup()
@@ -262,16 +271,22 @@ describe('DinosaurBonePage', () => {
     const rail = screen.getByTestId('workspace-tool-rail')
     const finishedButton = within(rail).getByRole('button', { name: 'Finished Item' })
     const ingredientsButton = within(rail).getByRole('button', { name: 'Ingredients' })
+    const breakdownButton = within(rail).getByRole('button', { name: 'Crafting Breakdown' })
     expect(finishedButton).toBeTruthy()
     expect(ingredientsButton).toBeTruthy()
+    expect(breakdownButton).toBeTruthy()
     expect(finishedButton.querySelector('svg')).not.toBeNull()
     expect(ingredientsButton.querySelector('svg')).not.toBeNull()
+    expect(breakdownButton.querySelector('svg')).not.toBeNull()
 
     await user.click(finishedButton)
     expect(screen.getByRole('complementary', { name: 'Finished Item' })).toBeTruthy()
     await user.click(ingredientsButton)
     expect(screen.getByRole('complementary', { name: 'Ingredients' })).toBeTruthy()
     expect(screen.queryByRole('complementary', { name: 'Finished Item' })).toBeNull()
+    await user.click(breakdownButton)
+    expect(screen.getByRole('complementary', { name: 'Crafting Breakdown' })).toBeTruthy()
+    expect(screen.queryByRole('complementary', { name: 'Ingredients' })).toBeNull()
   })
 
   it('clears stale augment and tool output when the item changes and resets exact domain state', async () => {
@@ -302,6 +317,9 @@ describe('DinosaurBonePage', () => {
     await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })
     await user.click(screen.getByRole('button', { name: 'Finished Item' }))
     expect(await screen.findByText('Select an item to review the finished build.')).toBeTruthy()
+    const dialog = screen.getByRole('dialog', { name: 'Finished Item' })
+    await user.click(within(dialog).getByRole('button', { name: 'Crafting Breakdown' }))
+    expect(await screen.findByText('Select an item to review individual crafting requirements.')).toBeTruthy()
   })
 
   it('shows a retryable loading failure and retries without a page remount', async () => {
