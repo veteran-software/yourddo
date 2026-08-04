@@ -11,6 +11,10 @@ vi.mock('../domains/cauldronOfCadence/CauldronOfCadencePage.tsx', () => ({
   default: () => <h1>Cauldron of Cadence domain</h1>
 }))
 
+vi.mock('../domains/incrediblePotential/IncrediblePotentialPage.tsx', () => ({
+  default: () => <h1>Incredible Potential domain</h1>
+}))
+
 vi.mock('../domains/nearlyComplete/NearlyCompletePage.tsx', () => ({
   default: () => <h1>Nearly Complete domain</h1>
 }))
@@ -84,6 +88,39 @@ afterAll(() => {
 })
 
 describe('AppRouter', () => {
+  it('renders Incredible Potential at its preserved public route', () => {
+    renderRoute('/incredible-potential')
+
+    expect(screen.getByRole('heading', { name: 'Incredible Potential domain' })).toBeTruthy()
+    const link = screen.getByRole('link', { name: 'Incredible Potential' })
+    expect(link.getAttribute('href')).toBe('/incredible-potential')
+    expect(link.getAttribute('aria-current')).toBe('page')
+  })
+
+  it('loads Incredible Potential directly after a remount', () => {
+    const firstRender = renderRoute('/incredible-potential')
+    expect(screen.getByRole('heading', { name: 'Incredible Potential domain' })).toBeTruthy()
+
+    firstRender.unmount()
+    renderRoute('/incredible-potential')
+
+    expect(screen.getByRole('heading', { name: 'Incredible Potential domain' })).toBeTruthy()
+  })
+
+  it('closes mobile navigation after selecting Incredible Potential', async () => {
+    const user = userEvent.setup()
+    renderRoute('/')
+
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
+    const link = screen.getByRole('link', { name: 'Incredible Potential' })
+    link.focus()
+    await user.keyboard('{Enter}')
+
+    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Incredible Potential domain' })).toBeTruthy()
+    expect(link.getAttribute('aria-current')).toBe('page')
+  })
+
   it('renders the Cauldron of Cadence domain at its preserved public route', () => {
     renderRoute('/cauldron-of-cadence')
 

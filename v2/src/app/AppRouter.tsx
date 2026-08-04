@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import CauldronOfCadencePage from '../domains/cauldronOfCadence/CauldronOfCadencePage.tsx'
 import HomePage from '../domains/home/HomePage.tsx'
+import IncrediblePotentialPage from '../domains/incrediblePotential/IncrediblePotentialPage.tsx'
 import MastermindPage from '../domains/mastermind/MastermindPage.tsx'
 import MonasteryOfTheScorpionPage from '../domains/monasteryOfTheScorpion/MonasteryOfTheScorpionPage.tsx'
 import NearlyCompletePage from '../domains/nearlyComplete/NearlyCompletePage.tsx'
@@ -14,6 +15,7 @@ const AppRouter = () => (
     <Route element={<AppLayout />}>
       <Route path='/' element={<HomePage />} />
       <Route path='/cauldron-of-cadence' element={<CauldronOfCadencePage />} />
+      <Route path='/incredible-potential' element={<IncrediblePotentialPage />} />
       <Route path='/nearly-complete' element={<NearlyCompletePage />} />
       <Route path='/nearly-finished' element={<NearlyFinishedPage />} />
       <Route path='/reavers-fate' element={<MastermindPage />} />

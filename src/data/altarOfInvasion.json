@@ -3059,7 +3059,22 @@
         "name": "Wizardry VI"
       },
       {
-        "name": "Intelligence Skills -",
+        "name": "Skill: Disable Device",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Repair",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Search",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Spellcraft",
         "modifier": 2,
         "bonus": "Exceptional"
       },
@@ -3690,7 +3705,22 @@
         "name": "Wizardry VI"
       },
       {
-        "name": "Intelligence Skills -",
+        "name": "Skill: Disable Device",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Repair",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Search",
+        "modifier": 2,
+        "bonus": "Exceptional"
+      },
+      {
+        "name": "Skill: Spellcraft",
         "modifier": 2,
         "bonus": "Exceptional"
       },

@@ -21,6 +21,7 @@ export const navigation: NavigationGroup[] = [
     items: [
       { label: 'Essence Crafting', path: '/essence-crafting' },
       { label: 'Cauldron of Cadence', path: '/cauldron-of-cadence' },
+      { label: 'Incredible Potential', path: '/incredible-potential' },
       { label: 'Nearly Complete', path: '/nearly-complete' },
       { label: 'Nearly Finished', path: '/nearly-finished' },
       { label: 'Dinosaur Bone Crafting', path: '/dinosaur-bone' },
