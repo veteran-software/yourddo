@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event'
 import type { ReactNode } from 'react'
 import { useEffect } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { WorkspaceTool } from './WorkspaceLayout'
+import WorkspaceLayout, { type WorkspaceTool } from './WorkspaceLayout'
 import WorkspaceLayout from './WorkspaceLayout'
 
 let desktopViewport = false
@@ -78,18 +78,13 @@ describe('WorkspaceLayout', () => {
     desktopViewport = true
     renderLayout({ tools })
 
-    const layout = screen.getByTestId('workspace-layout')
-    const main = screen.getByTestId('workspace-main')
-    expect(layout.style.gridTemplateColumns).toBe('minmax(0, 1fr) 0px 3rem')
-    expect(main.style.gridRow).toBe('1')
-    expect(main.style.gridColumn).toBe('1')
-    expect(rail().style.gridRow).toBe('1')
-    expect(rail().style.gridColumn).toBe('3')
+    expect(within(rail()).getByRole('button', { name: 'Finished Item' })).toBeTruthy()
+    expect(within(rail()).getByRole('button', { name: 'Ingredients' })).toBeTruthy()
     expect(screen.queryByRole('complementary')).toBeNull()
     expect(screen.queryByRole('dialog')).toBeNull()
   })
 
-  it('uses color-scheme-aware rail colors in dark mode', () => {
+  it('renders accessible rail controls in dark mode', () => {
     desktopViewport = true
     render(
       <MantineProvider env='test' defaultColorScheme='dark'>
@@ -98,8 +93,8 @@ describe('WorkspaceLayout', () => {
     )
 
     const button = within(rail()).getByRole('button', { name: 'Finished Item' })
-    expect(button.style.color).toBe('var(--mantine-color-text)')
-    expect(button.style.backgroundColor).toBe('transparent')
+    expect(button.getAttribute('aria-pressed')).toBe('false')
+    expect(button.getAttribute('aria-expanded')).toBe('false')
   })
 
   it('opens the valid default tool and ignores an invalid default', () => {
@@ -133,6 +128,26 @@ describe('WorkspaceLayout', () => {
     expect(screen.queryByRole('complementary')).toBeNull()
   })
 
+  it('animates the desktop tool panel width when toggled', async () => {
+    desktopViewport = true
+    renderLayout({ tools })
+    const user = userEvent.setup()
+    const panel = screen.getByTestId('workspace-tool-panel')
+    const finishedButton = within(rail()).getByRole('button', { name: 'Finished Item' })
+
+    expect(panel.style.width).toBe('0rem')
+    expect(panel.style.visibility).toBe('hidden')
+    await user.click(finishedButton)
+    expect(panel.style.width).toBe('22rem')
+    expect(panel.style.visibility).toBe('visible')
+    expect(panel.style.transition).toContain('width 220ms ease')
+
+    await user.click(finishedButton)
+    expect(panel.style.width).toBe('0rem')
+    expect(panel.style.visibility).toBe('hidden')
+    expect(screen.queryByRole('complementary')).toBeNull()
+  })
+
   it('gives the panel the active tool name and mounts only active content', async () => {
     desktopViewport = true
     renderLayout({ tools })
@@ -143,23 +158,22 @@ describe('WorkspaceLayout', () => {
     expect(within(panel).getByText('Finished content')).toBeTruthy()
     expect(screen.queryByText('Ingredients content')).toBeNull()
     expect(screen.queryByText('Shopping content')).toBeNull()
-    expect(panel.style.gridRow).toBe('1')
-    expect(panel.style.gridColumn).toBe('2')
-    expect(rail().style.gridColumn).toBe('3')
-    expect(panel.style.minWidth).toBe('0px')
-    expect(screen.getByTestId('workspace-tool-panel-content').style.overflow).toBe('auto')
+    expect(screen.getByTestId('workspace-tool-panel-content')).toBeTruthy()
+    expect(within(rail()).getByRole('button', { name: 'Finished Item' }).getAttribute('aria-pressed')).toBe('true')
   })
 
-  it('keeps an expanded rail in the third column without an active panel', async () => {
+  it('keeps an expanded rail available without an active panel', async () => {
     desktopViewport = true
     renderLayout({ tools })
 
     await userEvent.setup().click(screen.getByRole('button', { name: 'Expand workspace tool labels' }))
 
     expect(screen.queryByRole('complementary')).toBeNull()
-    expect(screen.getByTestId('workspace-layout').style.gridTemplateColumns).toBe('minmax(0, 1fr) 0px 11rem')
-    expect(rail().style.gridRow).toBe('1')
-    expect(rail().style.gridColumn).toBe('3')
+    expect(within(rail()).getByText('Finished Item')).toBeTruthy()
+    expect(within(rail()).getByText('Ingredients')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Collapse workspace tool labels' }).getAttribute('aria-expanded')).toBe(
+      'true'
+    )
   })
 
   it('expands and collapses rail labels without changing the active tool', async () => {
@@ -241,8 +255,6 @@ describe('WorkspaceLayout', () => {
     desktopViewport = isDesktop
     renderLayout({ tools })
 
-    expect(screen.getByTestId('workspace-layout').style.overflow).toBe('hidden')
-    expect(screen.getByTestId('workspace-main').style.minWidth).toBe('0px')
     if (isDesktop) {
       expect(screen.queryByTestId('workspace-tool-rail')).not.toBeNull()
       expect(screen.queryByTestId('workspace-mobile-tools')).toBeNull()

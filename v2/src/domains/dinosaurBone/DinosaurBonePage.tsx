@@ -19,10 +19,12 @@ import {
   Text,
   Title
 } from '@mantine/core'
+import { IconFileInfo, IconListCheck } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
 import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
+import IconImage from '../../shared/ui/IconImage.tsx'
 import { InvalidDinosaurBoneDataError, loadDinosaurBoneData } from './data.ts'
 import type {
   ClassifiedDinosaurBoneItem,
@@ -56,18 +58,8 @@ const initialFamily: ItemFamily = 'crafted-weapons'
 const knownIssuesUrl =
   'https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Dinosaur%20Bone%22'
 
-const FinishedItemIcon = () => (
-  <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' aria-hidden>
-    <path d='M6 3h9l3 3v15H6z' />
-    <path d='M14 3v4h4M9 12h6M9 16h6' />
-  </svg>
-)
-
-const IngredientsIcon = () => (
-  <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' aria-hidden>
-    <path d='M8 6h13M8 12h13M8 18h13' />
-    <path d='M3 6h.01M3 12h.01M3 18h.01' strokeWidth='3' strokeLinecap='round' />
-  </svg>
+const ItemIcon = ({ item, size, alt = '' }: { item: ClassifiedDinosaurBoneItem; size: number; alt?: string }) => (
+  <IconImage alt={alt} name={item.name} source={item.icon ?? item.image} size={size} />
 )
 
 const EffectList = ({ effects, empty = 'None published.' }: { effects: readonly string[]; empty?: string }) =>
@@ -100,14 +92,17 @@ const ItemSummary = ({ item }: { item: ClassifiedDinosaurBoneItem }) => {
     <Paper withBorder p='md'>
       <Stack gap='sm'>
         <Group justify='space-between' align='flex-start' wrap='wrap'>
-          <Box style={{ minWidth: 0 }}>
-            <Title order={2} size='h3' style={{ overflowWrap: 'anywhere' }}>
-              {item.name}
-            </Title>
-            <Text c='dimmed' size='sm'>
-              {metadata.join(' · ')}
-            </Text>
-          </Box>
+          <Group align='flex-start' wrap='nowrap' style={{ minWidth: 0 }}>
+            <ItemIcon item={item} size={72} alt={`${item.name} icon`} />
+            <Box style={{ minWidth: 0 }}>
+              <Title order={2} size='h3' style={{ overflowWrap: 'anywhere' }}>
+                {item.name}
+              </Title>
+              <Text c='dimmed' size='sm'>
+                {metadata.join(' · ')}
+              </Text>
+            </Box>
+          </Group>
           <Badge variant='light'>{getFamilyLabel(item.family)}</Badge>
         </Group>
         {item.description ? <Text size='sm'>{item.description}</Text> : null}
@@ -356,13 +351,13 @@ const DinosaurBonePage = () => {
       {
         id: 'finished-item',
         label: 'Finished Item',
-        icon: <FinishedItemIcon />,
+        icon: selectedItem ? <ItemIcon item={selectedItem} size={20} /> : <IconFileInfo stroke={2} />,
         content: <FinishedItemTool finished={finished} />
       },
       {
         id: 'ingredients',
         label: 'Ingredients',
-        icon: <IngredientsIcon />,
+        icon: <IconListCheck stroke={2} />,
         content: <IngredientsTool item={selectedItem} ingredients={ingredients} />
       }
     ],

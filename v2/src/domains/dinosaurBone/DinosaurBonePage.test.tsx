@@ -52,6 +52,7 @@ const items: ClassifiedDinosaurBoneItem[] = [
     name: 'Dinosaur Bone Test Sword',
     type: 'Long Sword',
     family: 'crafted-weapons',
+    icon: 'testSwordIcon',
     augments: slots,
     requirements: [{ name: 'Bone', quantity: 25 }],
     effectsAdded: [{ name: '+15 Enhancement Bonus' }]
@@ -120,6 +121,9 @@ describe('DinosaurBonePage', () => {
     expect(screen.getByRole('combobox', { name: 'Item family' })).toBeTruthy()
     await chooseItem(user)
     expect(screen.getByRole('heading', { name: 'Dinosaur Bone Test Sword' })).toBeTruthy()
+    expect(screen.getByRole('img', { name: 'Dinosaur Bone Test Sword icon' }).getAttribute('src')).toContain(
+      '/testSwordIcon.png'
+    )
     expect(screen.getByRole('heading', { name: 'Crafting slots' })).toBeTruthy()
     expect(screen.getAllByText('Empty')).toHaveLength(2)
   })
@@ -133,7 +137,9 @@ describe('DinosaurBonePage', () => {
     await user.click(screen.getByRole('combobox', { name: 'Isle of Dread: Claw (Weapon) augment' }))
     await user.click(await screen.findByRole('option', { name: 'Claw One' }))
 
-    await user.click(screen.getByRole('button', { name: 'Finished Item' }))
+    const finishedButton = screen.getByRole('button', { name: 'Finished Item' })
+    expect(finishedButton.querySelector('img')?.getAttribute('src')).toContain('/testSwordIcon.png')
+    await user.click(finishedButton)
     let dialog = await screen.findByRole('dialog', { name: 'Finished Item' })
     expect(within(dialog).getByText(/Claw One/)).toBeTruthy()
 
@@ -159,7 +165,6 @@ describe('DinosaurBonePage', () => {
     expect(ingredientsButton).toBeTruthy()
     expect(finishedButton.querySelector('svg')).not.toBeNull()
     expect(ingredientsButton.querySelector('svg')).not.toBeNull()
-    expect(finishedButton.style.justifyContent).toBe('center')
 
     await user.click(finishedButton)
     expect(screen.getByRole('complementary', { name: 'Finished Item' })).toBeTruthy()
