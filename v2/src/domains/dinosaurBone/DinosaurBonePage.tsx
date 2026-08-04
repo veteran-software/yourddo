@@ -3,6 +3,7 @@ import {
   Alert,
   Anchor,
   Badge,
+  Box,
   Button,
   Center,
   Container,
@@ -15,57 +16,67 @@ import {
   Select,
   SimpleGrid,
   Stack,
-  Tabs,
   Text,
   Title
 } from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
 import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
+import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { InvalidDinosaurBoneDataError, loadDinosaurBoneData } from './data.ts'
 import type {
   ClassifiedDinosaurBoneItem,
+  CumulativeIngredient,
   DinosaurBoneAugment,
   DinosaurBoneData,
+  FinishedDinosaurBoneItem,
   ItemFamily,
   SelectedAugments
 } from './dinosaurBone.types'
 import {
-  filterItems,
+  calculateCumulativeIngredients,
+  calculateFinishedItem,
+  filterRecords,
   formatEffect,
   getAugmentEffectNames,
   getAvailableSlots,
   getCompatibleAugments,
-  getCumulativeIngredients,
   getEffectNames,
   getFamilyLabel,
   getFilterOptions,
-  getFinishedEffects,
   getItemsForFamily,
   getSelectedAugments,
-  itemFamilies,
-  retainSelectedAugments
+  itemFamilies
 } from './logic.ts'
 
 type DataState =
   { status: 'loading' } | { status: 'loaded'; data: DinosaurBoneData } | { status: 'error'; cause: unknown }
 
+const initialFamily: ItemFamily = 'crafted-weapons'
 const knownIssuesUrl =
   'https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Dinosaur%20Bone%22'
 
-const formatItemMetadata = (item: ClassifiedDinosaurBoneItem): string[] =>
-  [
-    item.type,
-    item.minLevel !== undefined ? `Minimum level ${String(item.minLevel)}` : '',
-    item.material ?? '',
-    item.craftedIn ?? ''
-  ].filter(Boolean)
+const FinishedItemIcon = () => (
+  <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' aria-hidden>
+    <path d='M6 3h9l3 3v15H6z' />
+    <path d='M14 3v4h4M9 12h6M9 16h6' />
+  </svg>
+)
 
-const EffectList = ({ effects, empty = 'None' }: { effects: string[]; empty?: string }) =>
+const IngredientsIcon = () => (
+  <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' aria-hidden>
+    <path d='M8 6h13M8 12h13M8 18h13' />
+    <path d='M3 6h.01M3 12h.01M3 18h.01' strokeWidth='3' strokeLinecap='round' />
+  </svg>
+)
+
+const EffectList = ({ effects, empty = 'None published.' }: { effects: readonly string[]; empty?: string }) =>
   effects.length > 0 ? (
     <List spacing='xs' size='sm'>
-      {effects.map((effect) => (
-        <List.Item key={effect}>{effect}</List.Item>
+      {effects.map((effect, index) => (
+        <List.Item key={`${effect}-${String(index)}`} style={{ overflowWrap: 'anywhere' }}>
+          {effect}
+        </List.Item>
       ))}
     </List>
   ) : (
@@ -74,170 +85,215 @@ const EffectList = ({ effects, empty = 'None' }: { effects: string[]; empty?: st
     </Text>
   )
 
-const ItemSummary = ({ item }: { item: ClassifiedDinosaurBoneItem }) => (
-  <Paper withBorder p='md'>
-    <Stack gap='sm'>
-      <Group justify='space-between' align='flex-start' wrap='wrap'>
-        <Stack gap={4}>
-          <Title order={2} size='h3'>
-            {item.name}
-          </Title>
-          <Text c='dimmed' size='sm'>
-            {formatItemMetadata(item).join(' · ')}
-          </Text>
-        </Stack>
-        <Badge variant='light'>{getFamilyLabel(item.family)}</Badge>
-      </Group>
-      {item.description && <Text size='sm'>{item.description}</Text>}
-      <Divider />
-      <Stack gap='xs'>
-        <Title order={3} size='h4'>
-          Base effects
-        </Title>
-        <EffectList effects={getEffectNames(item)} />
-      </Stack>
-    </Stack>
-  </Paper>
-)
+const formatBinding = (binding: Readonly<Record<string, string>> | undefined) =>
+  binding ? Object.values(binding).join(' · ') : undefined
 
-const ItemPreview = ({
-  item,
-  selectedAugments
-}: {
-  item: ClassifiedDinosaurBoneItem
-  selectedAugments: Record<string, DinosaurBoneAugment>
-}) => {
-  const finished = getFinishedEffects(item, selectedAugments)
+const ItemSummary = ({ item }: { item: ClassifiedDinosaurBoneItem }) => {
+  const metadata = [
+    item.type,
+    item.minLevel !== undefined ? `Minimum level ${String(item.minLevel)}` : undefined,
+    formatBinding(item.binding),
+    item.material,
+    item.craftedIn
+  ].filter((value): value is string => Boolean(value))
   return (
     <Paper withBorder p='md'>
       <Stack gap='sm'>
-        <Title order={2} size='h3'>
-          Finished item
-        </Title>
-        <Text fw={600}>{item.name}</Text>
-        <Stack gap='xs'>
-          <Title order={3} size='h4'>
-            Base effects
-          </Title>
-          <EffectList effects={finished.base.map(formatEffect)} />
-        </Stack>
-        <Stack gap='xs'>
-          <Title order={3} size='h4'>
-            Selected augments
-          </Title>
-          {finished.selected.length > 0 ? (
-            <Stack gap='sm'>
-              {finished.selected.map(({ slot, augment }) => (
-                <Stack key={slot} gap={2}>
-                  <Text size='sm' fw={600}>
-                    {slot}: {augment.name}
-                  </Text>
-                  <EffectList effects={(augment.effectsAdded ?? []).map(formatEffect)} />
-                </Stack>
-              ))}
-            </Stack>
-          ) : (
+        <Group justify='space-between' align='flex-start' wrap='wrap'>
+          <Box style={{ minWidth: 0 }}>
+            <Title order={2} size='h3' style={{ overflowWrap: 'anywhere' }}>
+              {item.name}
+            </Title>
             <Text c='dimmed' size='sm'>
-              No augments selected.
+              {metadata.join(' · ')}
             </Text>
-          )}
-        </Stack>
-      </Stack>
-    </Paper>
-  )
-}
-
-const IngredientSummary = ({
-  item,
-  selectedAugments
-}: {
-  item: ClassifiedDinosaurBoneItem
-  selectedAugments: Record<string, DinosaurBoneAugment>
-}) => {
-  const ingredients = getCumulativeIngredients(item, selectedAugments)
-  return (
-    <Paper withBorder p='md'>
-      <Stack gap='sm'>
-        <Title order={2} size='h3'>
-          Ingredients
-        </Title>
-        {ingredients.length === 0 ? (
-          <Text c='dimmed' size='sm'>
-            No ingredient requirements are published for this configuration.
-          </Text>
-        ) : (
-          <List spacing='xs'>
-            {ingredients.map(({ name, quantity }) => (
-              <List.Item key={name}>
-                <Group component='span' gap='xs'>
-                  <Text component='span' size='sm'>
-                    {name}
-                  </Text>
-                  <Badge component='span' variant='light' color='gray' size='sm'>
-                    ×{quantity}
-                  </Badge>
-                </Group>
-              </List.Item>
+          </Box>
+          <Badge variant='light'>{getFamilyLabel(item.family)}</Badge>
+        </Group>
+        {item.description ? <Text size='sm'>{item.description}</Text> : null}
+        <Divider />
+        <SimpleGrid cols={{ base: 1, sm: 2 }}>
+          <Box>
+            <Text fw={600} size='sm' mb={4}>
+              Base effects
+            </Text>
+            <EffectList effects={[...(item.effectsAdded ?? []), ...(item.enchantments ?? [])].map(formatEffect)} />
+          </Box>
+          <Stack gap={4}>
+            <Text size='sm'>Configurable slots: {String(item.augments.length)}</Text>
+            {item.restrictions?.map((restriction) => (
+              <Text size='sm' key={restriction}>
+                Restriction: {restriction}
+              </Text>
             ))}
-          </List>
-        )}
+            {item.notes?.map((note) => (
+              <Text size='sm' key={note}>
+                Note: {note}
+              </Text>
+            ))}
+          </Stack>
+        </SimpleGrid>
       </Stack>
     </Paper>
   )
 }
 
-const InspectorContent = ({
-  item,
-  selectedAugments,
-  activeTab,
-  onTabChange
-}: {
-  item: ClassifiedDinosaurBoneItem | undefined
-  selectedAugments: Record<string, DinosaurBoneAugment>
-  activeTab: 'finished' | 'ingredients'
-  onTabChange: (value: 'finished' | 'ingredients') => void
-}) => {
-  if (!item) {
+const FinishedItemTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) => {
+  if (!finished.item) {
     return (
-      <Alert color='blue' title='Build summary'>
-        Select an item to preview the finished build and required ingredients.
+      <Alert color='blue' title='No item selected' m='md'>
+        Select an item to review the finished build.
       </Alert>
     )
   }
-
   return (
-    <Tabs
-      value={activeTab}
-      onChange={(value) => {
-        if (value === 'finished' || value === 'ingredients') onTabChange(value)
-      }}
-      keepMounted={false}
-    >
-      <Tabs.List>
-        <Tabs.Tab value='finished'>Finished Item</Tabs.Tab>
-        <Tabs.Tab value='ingredients'>Ingredients</Tabs.Tab>
-      </Tabs.List>
-      <Tabs.Panel value='finished' pt='md'>
-        <ItemPreview item={item} selectedAugments={selectedAugments} />
-      </Tabs.Panel>
-      <Tabs.Panel value='ingredients' pt='md'>
-        <IngredientSummary item={item} selectedAugments={selectedAugments} />
-      </Tabs.Panel>
-    </Tabs>
+    <Stack gap='md' p='md'>
+      <Box>
+        <Title order={3} style={{ overflowWrap: 'anywhere' }}>
+          {finished.item.name}
+        </Title>
+        <Text c='dimmed' size='sm'>
+          {finished.item.type}
+          {finished.item.minLevel !== undefined ? ` · Minimum level ${String(finished.item.minLevel)}` : ''}
+        </Text>
+      </Box>
+      {finished.warnings.length > 0 ? (
+        <Alert color='red' title='Build validation' role='alert'>
+          <EffectList effects={finished.warnings} />
+        </Alert>
+      ) : null}
+      <Box>
+        <Text fw={600} mb='xs'>
+          Original effects
+        </Text>
+        <EffectList effects={finished.originalEffects.map(formatEffect)} />
+      </Box>
+      <Divider />
+      <Box>
+        <Text fw={600} mb='xs'>
+          Crafted additions by slot
+        </Text>
+        {finished.slots.some(({ augment }) => augment) ? (
+          <Stack gap='md'>
+            {finished.slots
+              .filter(({ augment }) => augment)
+              .map(({ slot, augment }) => (
+                <Box key={slot.id}>
+                  <Text fw={600} size='sm' style={{ overflowWrap: 'anywhere' }}>
+                    {slot.label}: {augment?.name}
+                  </Text>
+                  <EffectList
+                    effects={(augment?.effectsAdded ?? []).map(formatEffect)}
+                    empty='No effect text published.'
+                  />
+                </Box>
+              ))}
+          </Stack>
+        ) : (
+          <Text c='dimmed' size='sm'>
+            No augments selected.
+          </Text>
+        )}
+      </Box>
+      {finished.setBonuses.length > 0 ? (
+        <Box>
+          <Text fw={600} mb='xs'>
+            Set bonuses
+          </Text>
+          <List size='sm'>
+            {finished.setBonuses.map((bonus, index) => (
+              <List.Item key={`${bonus.name}-${String(index)}`}>{bonus.name}</List.Item>
+            ))}
+          </List>
+        </Box>
+      ) : null}
+      <Box>
+        <Text fw={600} mb='xs'>
+          Empty configurable slots
+        </Text>
+        {finished.emptySlots.length > 0 ? (
+          <List size='sm'>
+            {finished.emptySlots.map((slot) => (
+              <List.Item key={slot.id}>{slot.label}</List.Item>
+            ))}
+          </List>
+        ) : (
+          <Text size='sm'>All configurable slots are filled.</Text>
+        )}
+      </Box>
+      {[...(finished.item.restrictions ?? []), ...(finished.item.notes ?? [])].map((note) => (
+        <Text key={note} size='sm'>
+          {note}
+        </Text>
+      ))}
+    </Stack>
   )
+}
+
+const IngredientsTool = ({
+  item,
+  ingredients
+}: {
+  item?: ClassifiedDinosaurBoneItem
+  ingredients: CumulativeIngredient[]
+}) => {
+  if (!item) {
+    return (
+      <Alert color='blue' title='No item selected' m='md'>
+        Select an item to review cumulative ingredients.
+      </Alert>
+    )
+  }
+  return (
+    <Stack gap='md' p='md'>
+      <Text size='sm'>Cumulative requirements for {item.name} and all selected augments.</Text>
+      {ingredients.length === 0 ? (
+        <Alert color='green' title='No material cost'>
+          This valid configuration has no published material requirements.
+        </Alert>
+      ) : (
+        <List spacing='sm'>
+          {ingredients.map((ingredient) => (
+            <List.Item key={ingredient.name}>
+              <Group component='span' justify='space-between' align='flex-start' wrap='nowrap'>
+                <Box component='span' style={{ minWidth: 0 }}>
+                  <Text component='span' size='sm' style={{ overflowWrap: 'anywhere' }}>
+                    {ingredient.name}
+                  </Text>
+                  {ingredient.foundIn?.map((location) => (
+                    <Text component='span' display='block' c='dimmed' size='xs' key={location}>
+                      {location}
+                    </Text>
+                  ))}
+                </Box>
+                <Badge component='span' variant='light' color='gray'>
+                  ×{String(ingredient.quantity)}
+                </Badge>
+              </Group>
+            </List.Item>
+          ))}
+        </List>
+      )}
+    </Stack>
+  )
+}
+
+const errorTitle = (cause: unknown) => {
+  if (cause instanceof UnsupportedManifestSchemaError) return 'Unsupported data version'
+  if (cause instanceof InvalidDinosaurBoneDataError) return 'Dinosaur Bone data is invalid'
+  return 'Dinosaur Bone data is unavailable'
 }
 
 const DinosaurBonePage = () => {
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
   const [loadAttempt, setLoadAttempt] = useState(0)
-  const [family, setFamily] = useState<ItemFamily>('crafted-weapons')
+  const [family, setFamily] = useState<ItemFamily>(initialFamily)
   const [selectedItemName, setSelectedItemName] = useState<string | null>(null)
   const [itemFilters, setItemFilters] = useState<string[]>([])
   const [itemFilterMode, setItemFilterMode] = useState<'OR' | 'AND'>('AND')
   const [selectedAugments, setSelectedAugments] = useState<SelectedAugments>({})
   const [augmentFilters, setAugmentFilters] = useState<string[]>([])
   const [augmentFilterMode, setAugmentFilterMode] = useState<'OR' | 'AND'>('OR')
-  const [activeInspectorTab, setActiveInspectorTab] = useState<'finished' | 'ingredients'>('finished')
 
   useEffect(() => {
     let active = true
@@ -254,45 +310,67 @@ const DinosaurBonePage = () => {
   }, [loadAttempt])
 
   const data = dataState.status === 'loaded' ? dataState.data : undefined
-  const familyItems = useMemo(() => (data ? getItemsForFamily(data.items, family) : []), [data, family])
+  const familyItems = useMemo(() => (data ? getItemsForFamily(data.indexes, family) : []), [data, family])
   const itemFilterOptions = useMemo(() => getFilterOptions(familyItems, getEffectNames), [familyItems])
   const filteredItems = useMemo(
-    () => filterItems(familyItems, itemFilters, itemFilterMode, getEffectNames),
+    () => filterRecords(familyItems, itemFilters, itemFilterMode, getEffectNames),
     [familyItems, itemFilterMode, itemFilters]
   )
-  const selectedItem = data?.items.find((item) => item.name === selectedItemName)
+  const selectedItem = selectedItemName ? data?.indexes.itemByName.get(selectedItemName) : undefined
   const slots = useMemo(() => (selectedItem ? getAvailableSlots(selectedItem) : []), [selectedItem])
   const optionsBySlot = useMemo(() => {
-    if (!data || !selectedItem) return new Map<string, DinosaurBoneAugment[]>()
-    return new Map(slots.map((slot) => [slot, getCompatibleAugments(slot, data.dinosaurAugments, data.colorAugments)]))
+    if (!data || !selectedItem) return new Map<string, readonly DinosaurBoneAugment[]>()
+    return new Map(slots.map((slot) => [slot.id, getCompatibleAugments(slot.augmentType, data.indexes)]))
   }, [data, selectedItem, slots])
-  const filteredOptionsBySlot = useMemo(() => {
-    const result = new Map<string, DinosaurBoneAugment[]>()
-    optionsBySlot.forEach((options, slot) => {
-      result.set(slot, filterItems(options, augmentFilters, augmentFilterMode, getAugmentEffectNames))
-    })
-    return result
-  }, [augmentFilterMode, augmentFilters, optionsBySlot])
-  const retainedAugments = useMemo(
-    () => retainSelectedAugments(selectedItem, selectedAugments, optionsBySlot),
-    [optionsBySlot, selectedAugments, selectedItem]
-  )
-  const augmentByName = useMemo(() => {
-    const values = [...(data?.dinosaurAugments ?? []), ...(data?.colorAugments ?? [])]
-    return new Map(values.map((augment) => [augment.name, augment]))
-  }, [data])
-  const selectedAugmentObjects = useMemo(
-    () => getSelectedAugments(slots, retainedAugments, augmentByName),
-    [augmentByName, retainedAugments, slots]
-  )
   const augmentFilterOptions = useMemo(
     () => getFilterOptions([...optionsBySlot.values()].flat(), getAugmentEffectNames),
     [optionsBySlot]
   )
-  const isComplete = slots.length > 0 && slots.every((slot) => Boolean(retainedAugments[slot]))
+  const filteredOptionsBySlot = useMemo(
+    () =>
+      new Map(
+        [...optionsBySlot.entries()].map(([slotId, options]) => [
+          slotId,
+          filterRecords(options, augmentFilters, augmentFilterMode, getAugmentEffectNames)
+        ])
+      ),
+    [augmentFilterMode, augmentFilters, optionsBySlot]
+  )
+  const selectedAugmentObjects = useMemo(
+    () => (data ? getSelectedAugments(selectedItem, selectedAugments, data.indexes) : {}),
+    [data, selectedAugments, selectedItem]
+  )
+  const finished = useMemo(
+    () =>
+      data
+        ? calculateFinishedItem(selectedItem, selectedAugments, data.indexes)
+        : { originalEffects: [], slots: [], emptySlots: [], setBonuses: [], warnings: [] },
+    [data, selectedAugments, selectedItem]
+  )
+  const ingredients = useMemo(
+    () => calculateCumulativeIngredients(selectedItem, selectedAugmentObjects),
+    [selectedAugmentObjects, selectedItem]
+  )
+  const tools = useMemo<readonly WorkspaceTool[]>(
+    () => [
+      {
+        id: 'finished-item',
+        label: 'Finished Item',
+        icon: <FinishedItemIcon />,
+        content: <FinishedItemTool finished={finished} />
+      },
+      {
+        id: 'ingredients',
+        label: 'Ingredients',
+        icon: <IngredientsIcon />,
+        content: <IngredientsTool item={selectedItem} ingredients={ingredients} />
+      }
+    ],
+    [finished, ingredients, selectedItem]
+  )
 
   const reset = () => {
-    setFamily('crafted-weapons')
+    setFamily(initialFamily)
     setSelectedItemName(null)
     setItemFilters([])
     setItemFilterMode('AND')
@@ -313,230 +391,233 @@ const DinosaurBonePage = () => {
     setSelectedAugments({})
   }
 
-  const inspector =
-    dataState.status === 'loaded' ? (
-      <InspectorContent
-        item={selectedItem}
-        selectedAugments={selectedAugmentObjects}
-        activeTab={activeInspectorTab}
-        onTabChange={setActiveInspectorTab}
-      />
-    ) : undefined
+  const isComplete = slots.length > 0 && slots.every(({ id }) => Boolean(selectedAugments[id]))
 
   return (
-    <WorkspaceLayout inspector={inspector} inspectorTitle='Build summary'>
-      <Container size='xl' py='lg'>
-        <Group justify='space-between' align='flex-start' wrap='wrap'>
-          <Stack gap={4}>
-            <Title order={1}>Dinosaur Bone Crafting</Title>
-            <Text c='dimmed'>Configure a Dinosaur Bone item and review its finished effects and materials.</Text>
-            <Anchor href={knownIssuesUrl} target='_blank' rel='noreferrer' size='sm'>
-              Known issues and bug reports ↗
-            </Anchor>
-          </Stack>
-          <Button variant='subtle' size='sm' onClick={reset}>
-            Reset
-          </Button>
-        </Group>
+    <WorkspaceLayout tools={tools} toolPanelWidth='24rem'>
+      <Container size='xl' py={{ base: 'md', sm: 'lg' }} px={{ base: 'md', sm: 'lg' }}>
+        <Stack gap='lg'>
+          <Group justify='space-between' align='flex-start' wrap='wrap'>
+            <Stack gap={4} style={{ minWidth: 0 }}>
+              <Title order={1}>Dinosaur Bone Crafting</Title>
+              <Text c='dimmed'>Choose an item, configure its slots, and review the finished build and materials.</Text>
+              <Anchor href={knownIssuesUrl} target='_blank' rel='noreferrer' size='sm'>
+                Known issues and bug reports ↗
+              </Anchor>
+            </Stack>
+            <Button variant='subtle' size='sm' onClick={reset}>
+              Reset build
+            </Button>
+          </Group>
 
-        {dataState.status === 'loading' ? (
-          <Center mih={180} role='status' aria-live='polite'>
-            <Stack align='center' gap='xs'>
-              <Loader size='sm' />
-              <Text c='dimmed' size='sm'>
-                Loading Dinosaur Bone data…
-              </Text>
-            </Stack>
-          </Center>
-        ) : dataState.status === 'error' ? (
-          <Alert
-            color='red'
-            title={
-              dataState.cause instanceof UnsupportedManifestSchemaError
-                ? 'Unsupported data version'
-                : dataState.cause instanceof InvalidDinosaurBoneDataError
-                  ? 'Dinosaur Bone data is invalid'
-                  : 'Dinosaur Bone data is unavailable'
-            }
-          >
-            <Stack gap='sm' align='flex-start'>
-              <Text size='sm'>
-                The published Dinosaur Bone data could not be loaded. Check your connection and try again.
-              </Text>
-              <Button
-                size='sm'
-                variant='light'
-                onClick={() => {
-                  setDataState({ status: 'loading' })
-                  setLoadAttempt((attempt) => attempt + 1)
-                }}
-              >
-                Retry
-              </Button>
-            </Stack>
-          </Alert>
-        ) : data?.items.length === 0 ? (
-          <Alert color='yellow' title='No Dinosaur Bone items published'>
-            No selectable Dinosaur Bone items are available.
-          </Alert>
-        ) : (
-          <>
-            <Paper withBorder p='md'>
-              <Stack gap='md'>
-                <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                  <Select
-                    label='Item family'
-                    data={itemFamilies.map((value) => ({ value, label: getFamilyLabel(value) }))}
-                    value={family}
-                    onChange={changeFamily}
-                    allowDeselect={false}
-                  />
-                  <Select
-                    label='Item'
-                    placeholder='Search for an item…'
-                    data={filteredItems.map((item) => item.name)}
-                    value={selectedItemName}
-                    onChange={changeItem}
-                    searchable
-                    clearable
-                    nothingFoundMessage='No matching items'
-                  />
-                </SimpleGrid>
-                <MultiSelect
-                  label='Item effect filters'
-                  placeholder='Filter by effects'
-                  data={itemFilterOptions}
-                  value={itemFilters}
-                  onChange={setItemFilters}
-                  searchable
-                  clearable
-                  hidePickedOptions
-                />
-                <Group gap='xs' role='group' aria-label='Item filter mode'>
-                  <Button
-                    variant={itemFilterMode === 'OR' ? 'filled' : 'default'}
-                    size='compact-sm'
-                    onClick={() => {
-                      setItemFilterMode('OR')
-                    }}
-                  >
-                    OR
-                  </Button>
-                  <Button
-                    variant={itemFilterMode === 'AND' ? 'filled' : 'default'}
-                    size='compact-sm'
-                    onClick={() => {
-                      setItemFilterMode('AND')
-                    }}
-                  >
-                    AND
-                  </Button>
-                  <Text size='xs' c='dimmed'>
-                    {filteredItems.length} matching items
-                  </Text>
-                </Group>
+          {dataState.status === 'loading' ? (
+            <Center mih={220} role='status' aria-live='polite'>
+              <Stack align='center' gap='xs'>
+                <Loader size='sm' />
+                <Text c='dimmed' size='sm'>
+                  Loading Dinosaur Bone data…
+                </Text>
               </Stack>
-            </Paper>
-
-            {!selectedItem ? (
-              <Alert color='blue' title='Select an item'>
-                Choose an item to configure its augment slots.
-              </Alert>
-            ) : (
-              <>
-                <ItemSummary item={selectedItem} />
-                <Paper withBorder p='md'>
-                  <Stack gap='md'>
-                    <Group justify='space-between' align='flex-start' wrap='wrap'>
-                      <Stack gap={4}>
-                        <Title order={2} size='h3'>
-                          Augment slots
-                        </Title>
-                        <Text c='dimmed' size='sm'>
-                          Select one compatible option for each slot.
-                        </Text>
-                      </Stack>
-                      {isComplete && <Badge color='green'>Configuration complete</Badge>}
-                    </Group>
-                    <MultiSelect
-                      label='Augment effect filters'
-                      placeholder='Filter compatible augments'
-                      data={augmentFilterOptions}
-                      value={augmentFilters}
-                      onChange={setAugmentFilters}
+            </Center>
+          ) : dataState.status === 'error' ? (
+            <Alert color='red' title={errorTitle(dataState.cause)} role='alert'>
+              <Stack gap='sm' align='flex-start'>
+                <Text size='sm'>The published Dinosaur Bone data could not be loaded. Try again shortly.</Text>
+                {import.meta.env.DEV && dataState.cause instanceof Error ? (
+                  <Text component='code' size='xs' style={{ overflowWrap: 'anywhere' }}>
+                    {dataState.cause.message}
+                  </Text>
+                ) : null}
+                <Button
+                  size='sm'
+                  variant='light'
+                  onClick={() => {
+                    setDataState({ status: 'loading' })
+                    setLoadAttempt((attempt) => attempt + 1)
+                  }}
+                >
+                  Retry
+                </Button>
+              </Stack>
+            </Alert>
+          ) : (
+            <>
+              <Paper withBorder p='md'>
+                <Stack gap='md'>
+                  <SimpleGrid cols={{ base: 1, sm: 2 }}>
+                    <Select
+                      label='Item family'
+                      data={itemFamilies.map((value) => ({ value, label: getFamilyLabel(value) }))}
+                      value={family}
+                      onChange={changeFamily}
+                      allowDeselect={false}
+                    />
+                    <Select
+                      label='Item'
+                      placeholder='Search for an item…'
+                      data={filteredItems.map(({ name }) => ({ value: name, label: name }))}
+                      value={selectedItemName}
+                      onChange={changeItem}
                       searchable
                       clearable
-                      hidePickedOptions
+                      maxDropdownHeight={300}
+                      nothingFoundMessage='No items match this search and filter selection.'
                     />
-                    <Group gap='xs' role='group' aria-label='Augment filter mode'>
+                  </SimpleGrid>
+                  <MultiSelect
+                    label='Item effect filters'
+                    placeholder='Filter by effects'
+                    data={itemFilterOptions}
+                    value={itemFilters}
+                    onChange={setItemFilters}
+                    searchable
+                    clearable
+                    hidePickedOptions
+                    maxDropdownHeight={260}
+                  />
+                  <Group gap='xs' role='group' aria-label='Item filter mode'>
+                    {(['OR', 'AND'] as const).map((mode) => (
                       <Button
-                        variant={augmentFilterMode === 'OR' ? 'filled' : 'default'}
+                        key={mode}
+                        variant={itemFilterMode === mode ? 'filled' : 'default'}
                         size='compact-sm'
+                        aria-pressed={itemFilterMode === mode}
                         onClick={() => {
-                          setAugmentFilterMode('OR')
+                          setItemFilterMode(mode)
                         }}
                       >
-                        OR
+                        {mode}
                       </Button>
-                      <Button
-                        variant={augmentFilterMode === 'AND' ? 'filled' : 'default'}
-                        size='compact-sm'
-                        onClick={() => {
-                          setAugmentFilterMode('AND')
-                        }}
-                      >
-                        AND
-                      </Button>
-                    </Group>
-                    {slots.length === 0 ? (
-                      <Text c='dimmed' size='sm'>
-                        No configurable augment slots are published for this item.
+                    ))}
+                    <Text size='xs' c='dimmed' aria-live='polite'>
+                      {String(filteredItems.length)} matching items
+                    </Text>
+                    {filteredItems.length === 0 ? (
+                      <Text size='xs' c='dimmed'>
+                        Clear filters to see this family’s items.
                       </Text>
-                    ) : (
-                      <Accordion variant='separated' multiple defaultValue={slots.slice(0, 1)}>
-                        {slots.map((slot) => {
-                          const options = filteredOptionsBySlot.get(slot) ?? []
-                          const allOptions = optionsBySlot.get(slot) ?? []
-                          return (
-                            <Accordion.Item key={slot} value={slot}>
-                              <Accordion.Control>
-                                {slot}
-                                {retainedAugments[slot] ? ` — ${retainedAugments[slot]}` : ''}
-                              </Accordion.Control>
-                              <Accordion.Panel>
-                                <Select
-                                  aria-label={`${slot} augment`}
-                                  placeholder={`Select ${slot}`}
-                                  data={options.map((augment) => ({ value: augment.name, label: augment.name }))}
-                                  value={retainedAugments[slot]}
-                                  onChange={(value) => {
-                                    setSelectedAugments((current) => ({ ...current, [slot]: value }))
-                                  }}
-                                  searchable
-                                  clearable
-                                  nothingFoundMessage={
-                                    allOptions.length === 0 ? 'No compatible options published' : 'No matching augments'
-                                  }
-                                />
-                                {retainedAugments[slot] && (
-                                  <Text size='sm' mt='xs'>
-                                    {(augmentByName.get(retainedAugments[slot])?.effectsAdded ?? [])
-                                      .map(formatEffect)
-                                      .join(', ') || 'No effects listed.'}
-                                  </Text>
-                                )}
-                              </Accordion.Panel>
-                            </Accordion.Item>
-                          )
-                        })}
-                      </Accordion>
-                    )}
-                  </Stack>
-                </Paper>
-              </>
-            )}
-          </>
-        )}
+                    ) : null}
+                  </Group>
+                </Stack>
+              </Paper>
+
+              {!selectedItem ? (
+                <Alert color='blue' title='Select an item'>
+                  Choose an item to review its base properties and configure its crafting slots.
+                </Alert>
+              ) : (
+                <>
+                  <ItemSummary item={selectedItem} />
+                  <Paper withBorder p='md'>
+                    <Stack gap='md'>
+                      <Group justify='space-between' align='flex-start' wrap='wrap'>
+                        <Box>
+                          <Title order={2} size='h3'>
+                            Crafting slots
+                          </Title>
+                          <Text c='dimmed' size='sm'>
+                            Search and select one compatible augment for each available slot.
+                          </Text>
+                        </Box>
+                        {isComplete ? <Badge color='green'>Configuration complete</Badge> : null}
+                      </Group>
+                      {slots.length === 0 ? (
+                        <Alert color='blue' title='No configurable slots'>
+                          This item has no configurable Dinosaur Bone slots.
+                        </Alert>
+                      ) : (
+                        <>
+                          <MultiSelect
+                            label='Augment effect filters'
+                            placeholder='Filter compatible augments'
+                            data={augmentFilterOptions}
+                            value={augmentFilters}
+                            onChange={setAugmentFilters}
+                            searchable
+                            clearable
+                            hidePickedOptions
+                            maxDropdownHeight={260}
+                          />
+                          <Group gap='xs' role='group' aria-label='Augment filter mode'>
+                            {(['OR', 'AND'] as const).map((mode) => (
+                              <Button
+                                key={mode}
+                                variant={augmentFilterMode === mode ? 'filled' : 'default'}
+                                size='compact-sm'
+                                aria-pressed={augmentFilterMode === mode}
+                                onClick={() => {
+                                  setAugmentFilterMode(mode)
+                                }}
+                              >
+                                {mode}
+                              </Button>
+                            ))}
+                          </Group>
+                          <Accordion variant='separated' multiple defaultValue={slots.slice(0, 1).map(({ id }) => id)}>
+                            {slots.map((slot) => {
+                              const options = filteredOptionsBySlot.get(slot.id) ?? []
+                              const selectedName = selectedAugments[slot.id]
+                              const selectedAugment = selectedName
+                                ? data?.indexes.augmentByName.get(selectedName)
+                                : undefined
+                              return (
+                                <Accordion.Item key={slot.id} value={slot.id}>
+                                  <Accordion.Control>
+                                    <Group justify='space-between' wrap='nowrap' pr='sm'>
+                                      <Text fw={600} style={{ overflowWrap: 'anywhere' }}>
+                                        {slot.label}
+                                      </Text>
+                                      <Badge variant='light' color={selectedName ? 'green' : 'gray'}>
+                                        {selectedName ? 'Configured' : 'Empty'}
+                                      </Badge>
+                                    </Group>
+                                  </Accordion.Control>
+                                  <Accordion.Panel>
+                                    <Stack gap='xs'>
+                                      <Select
+                                        label={`${slot.label} augment`}
+                                        placeholder={`Search ${slot.label} options…`}
+                                        data={options.map(({ name }) => ({ value: name, label: name }))}
+                                        value={selectedName}
+                                        onChange={(value) => {
+                                          setSelectedAugments((current) => ({ ...current, [slot.id]: value }))
+                                        }}
+                                        searchable
+                                        clearable
+                                        maxDropdownHeight={300}
+                                        nothingFoundMessage='No compatible augments match these filters.'
+                                      />
+                                      {selectedAugment ? (
+                                        <Box>
+                                          <Text size='sm' fw={600} style={{ overflowWrap: 'anywhere' }}>
+                                            {selectedAugment.name}
+                                          </Text>
+                                          <EffectList
+                                            effects={(selectedAugment.effectsAdded ?? []).map(formatEffect)}
+                                            empty='No effect text published.'
+                                          />
+                                          {selectedAugment.description ? (
+                                            <Text size='sm' mt='xs'>
+                                              {selectedAugment.description}
+                                            </Text>
+                                          ) : null}
+                                        </Box>
+                                      ) : null}
+                                    </Stack>
+                                  </Accordion.Panel>
+                                </Accordion.Item>
+                              )
+                            })}
+                          </Accordion>
+                        </>
+                      )}
+                    </Stack>
+                  </Paper>
+                </>
+              )}
+            </>
+          )}
+        </Stack>
       </Container>
     </WorkspaceLayout>
   )

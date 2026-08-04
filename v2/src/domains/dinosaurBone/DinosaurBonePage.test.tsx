@@ -1,55 +1,85 @@
 // @vitest-environment jsdom
 
 import { MantineProvider } from '@mantine/core'
-import { render, screen } from '@testing-library/react'
+import { cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { DinosaurBoneData } from './dinosaurBone.types'
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import type { ClassifiedDinosaurBoneItem, DinosaurBoneAugment, DinosaurBoneData } from './dinosaurBone.types'
 import DinosaurBonePage from './DinosaurBonePage.tsx'
+import { buildDinosaurBoneIndexes } from './logic.ts'
 
-vi.stubGlobal(
-  'matchMedia',
-  vi.fn((query: string) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    dispatchEvent: vi.fn()
-  }))
-)
+let desktopViewport = false
 
-vi.stubGlobal(
-  'ResizeObserver',
-  class {
-    observe = vi.fn()
-    unobserve = vi.fn()
-    disconnect = vi.fn()
+beforeAll(() => {
+  Element.prototype.scrollIntoView = vi.fn()
+  vi.stubGlobal(
+    'matchMedia',
+    vi.fn((query: string) => ({
+      matches: desktopViewport && query.includes('75em'),
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn()
+    }))
+  )
+  vi.stubGlobal(
+    'ResizeObserver',
+    class {
+      observe = vi.fn()
+      unobserve = vi.fn()
+      disconnect = vi.fn()
+    }
+  )
+})
+
+const slots = [
+  {
+    id: 'Red',
+    augmentType: 'Red',
+    label: 'Red'
+  },
+  {
+    id: 'Isle of Dread: Claw Slot (Weapon)',
+    augmentType: 'Isle of Dread: Claw Slot (Weapon)',
+    label: 'Isle of Dread: Claw (Weapon)'
   }
-)
-
+]
+const items: ClassifiedDinosaurBoneItem[] = [
+  {
+    name: 'Dinosaur Bone Test Sword',
+    type: 'Long Sword',
+    family: 'crafted-weapons',
+    augments: slots,
+    requirements: [{ name: 'Bone', quantity: 25 }],
+    effectsAdded: [{ name: '+15 Enhancement Bonus' }]
+  },
+  {
+    name: 'Dinosaur Bone Test Axe',
+    type: 'Battle Axe',
+    family: 'crafted-weapons',
+    augments: [],
+    requirements: [{ name: 'Bone', quantity: 25 }]
+  }
+]
+const dinosaurAugments: DinosaurBoneAugment[] = [
+  {
+    name: 'Claw One',
+    augmentType: 'Isle of Dread: Claw (Weapon)',
+    effectsAdded: [{ name: 'Strength', modifier: 2 }],
+    requirements: [{ name: 'Tooth', quantity: 100 }]
+  }
+]
+const colorAugments: DinosaurBoneAugment[] = [
+  { name: 'Red One', augmentType: 'Red', effectsAdded: [{ name: 'Fire' }], requirements: [] }
+]
 const data: DinosaurBoneData = {
-  items: [
-    {
-      name: 'Dinosaur Bone Test Sword',
-      type: 'Long Sword',
-      family: 'crafted-weapons',
-      augments: [{ augmentType: 'Red' }, { augmentType: 'Isle of Dread: Claw Slot (Weapon)' }],
-      requirements: [{ name: 'Bone', quantity: 25 }],
-      effectsAdded: [{ name: '+15 Enhancement Bonus' }]
-    }
-  ],
-  dinosaurAugments: [
-    {
-      name: 'Claw One',
-      augmentType: 'Isle of Dread: Claw (Weapon)',
-      effectsAdded: [{ name: 'Strength', modifier: 2 }],
-      requirements: [{ name: 'Tooth', quantity: 100 }]
-    }
-  ],
-  colorAugments: [{ name: 'Red One', augmentType: 'Red', effectsAdded: [{ name: 'Fire' }] }]
+  items,
+  dinosaurAugments,
+  colorAugments,
+  indexes: buildDinosaurBoneIndexes(items, dinosaurAugments, colorAugments)
 }
 
 const loadMock = vi.hoisted(() => vi.fn())
@@ -58,41 +88,122 @@ vi.mock('./data.ts', async (importOriginal) => {
   return { ...actual, loadDinosaurBoneData: loadMock }
 })
 
+const renderPage = () =>
+  render(
+    <MantineProvider env='test'>
+      <DinosaurBonePage />
+    </MantineProvider>
+  )
+
+const inputValue = (element: HTMLElement) => {
+  if (!(element instanceof HTMLInputElement)) throw new TypeError('Expected an input element')
+  return element.value
+}
+
+const chooseItem = async (user: ReturnType<typeof userEvent.setup>, name = 'Dinosaur Bone Test Sword') => {
+  await user.click(screen.getByRole('combobox', { name: 'Item' }))
+  await user.click(await screen.findByRole('option', { name }))
+}
+
 afterEach(() => {
+  cleanup()
   vi.clearAllMocks()
+  desktopViewport = false
 })
 
 describe('DinosaurBonePage', () => {
-  it('loads the data and presents the refreshed selection workflow', async () => {
+  it('loads data and presents the family, searchable item, summary, and slot workflow', async () => {
     loadMock.mockResolvedValue(data)
     const user = userEvent.setup()
-    render(
-      <MantineProvider env='test'>
-        <DinosaurBonePage />
-      </MantineProvider>
-    )
-
+    renderPage()
     expect(await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })).toBeTruthy()
     expect(screen.getByRole('combobox', { name: 'Item family' })).toBeTruthy()
-    const itemSelect = screen.getByRole('combobox', { name: 'Item' })
-    await user.click(itemSelect)
-    await user.click(await screen.findByRole('option', { name: 'Dinosaur Bone Test Sword' }))
-
-    expect(screen.getByRole('heading', { name: 'Augment slots' })).toBeTruthy()
-    await user.click(screen.getByRole('button', { name: 'Open inspector' }))
-    expect(await screen.findByText('Finished item')).toBeTruthy()
-    await user.click(screen.getByRole('tab', { name: 'Ingredients' }))
-    expect(screen.getByRole('heading', { name: 'Ingredients' })).toBeTruthy()
+    await chooseItem(user)
+    expect(screen.getByRole('heading', { name: 'Dinosaur Bone Test Sword' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Crafting slots' })).toBeTruthy()
+    expect(screen.getAllByText('Empty')).toHaveLength(2)
   })
 
-  it('shows a retryable loading failure', async () => {
-    loadMock.mockRejectedValue(new Error('request failed'))
-    render(
-      <MantineProvider env='test'>
-        <DinosaurBonePage />
-      </MantineProvider>
-    )
+  it('uses separate workspace tools and preserves configuration while switching them', async () => {
+    loadMock.mockResolvedValue(data)
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })
+    await chooseItem(user)
+    await user.click(screen.getByRole('combobox', { name: 'Isle of Dread: Claw (Weapon) augment' }))
+    await user.click(await screen.findByRole('option', { name: 'Claw One' }))
 
-    expect(await screen.findByRole('button', { name: 'Retry' })).toBeTruthy()
+    await user.click(screen.getByRole('button', { name: 'Finished Item' }))
+    let dialog = await screen.findByRole('dialog', { name: 'Finished Item' })
+    expect(within(dialog).getByText(/Claw One/)).toBeTruthy()
+
+    await user.click(within(dialog).getByRole('button', { name: 'Ingredients' }))
+    dialog = await screen.findByRole('dialog', { name: 'Ingredients' })
+    expect(within(dialog).getByText('Tooth')).toBeTruthy()
+    expect(within(dialog).getByText('×100')).toBeTruthy()
+    expect(inputValue(screen.getByRole('combobox', { name: 'Isle of Dread: Claw (Weapon) augment' }))).toBe('Claw One')
+    expect(loadMock).toHaveBeenCalledOnce()
+  })
+
+  it('passes both tools to the desktop WorkspaceLayout rail and switches active content', async () => {
+    desktopViewport = true
+    loadMock.mockResolvedValue(data)
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })
+
+    const rail = screen.getByTestId('workspace-tool-rail')
+    const finishedButton = within(rail).getByRole('button', { name: 'Finished Item' })
+    const ingredientsButton = within(rail).getByRole('button', { name: 'Ingredients' })
+    expect(finishedButton).toBeTruthy()
+    expect(ingredientsButton).toBeTruthy()
+    expect(finishedButton.querySelector('svg')).not.toBeNull()
+    expect(ingredientsButton.querySelector('svg')).not.toBeNull()
+    expect(finishedButton.style.justifyContent).toBe('center')
+
+    await user.click(finishedButton)
+    expect(screen.getByRole('complementary', { name: 'Finished Item' })).toBeTruthy()
+    await user.click(ingredientsButton)
+    expect(screen.getByRole('complementary', { name: 'Ingredients' })).toBeTruthy()
+    expect(screen.queryByRole('complementary', { name: 'Finished Item' })).toBeNull()
+  })
+
+  it('clears stale augment and tool output when the item changes and resets exact domain state', async () => {
+    loadMock.mockResolvedValue(data)
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })
+    await chooseItem(user)
+    await user.click(screen.getByRole('combobox', { name: 'Isle of Dread: Claw (Weapon) augment' }))
+    await user.click(await screen.findByRole('option', { name: 'Claw One' }))
+    await user.click(screen.getByRole('combobox', { name: 'Item' }))
+    await user.click(await screen.findByRole('option', { name: 'Dinosaur Bone Test Axe' }))
+    expect(screen.queryByText('Claw One')).toBeNull()
+    expect(screen.getByText('This item has no configurable Dinosaur Bone slots.')).toBeTruthy()
+
+    await user.click(screen.getByRole('button', { name: 'Reset build' }))
+    expect(inputValue(screen.getByRole('combobox', { name: 'Item' }))).toBe('')
+    expect(inputValue(screen.getByRole('combobox', { name: 'Item family' }))).toBe('Crafted Weapons')
+    expect(
+      screen.getByText('Choose an item to review its base properties and configure its crafting slots.')
+    ).toBeTruthy()
+  })
+
+  it('shows tool empty states before an item is selected', async () => {
+    loadMock.mockResolvedValue(data)
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })
+    await user.click(screen.getByRole('button', { name: 'Finished Item' }))
+    expect(await screen.findByText('Select an item to review the finished build.')).toBeTruthy()
+  })
+
+  it('shows a retryable loading failure and retries without a page remount', async () => {
+    loadMock.mockRejectedValueOnce(new Error('request failed')).mockResolvedValueOnce(data)
+    const user = userEvent.setup()
+    renderPage()
+    await user.click(await screen.findByRole('button', { name: 'Retry' }))
+    expect(await screen.findByRole('combobox', { name: 'Item' })).toBeTruthy()
+    expect(loadMock).toHaveBeenCalledTimes(2)
   })
 })

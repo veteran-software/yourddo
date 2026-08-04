@@ -99,6 +99,29 @@ describe('AppRouter', () => {
     expect(screen.getByRole('link', { name: 'Dinosaur Bone Crafting' }).getAttribute('aria-current')).toBe('page')
   })
 
+  it('loads Dinosaur Bone directly after a remount', () => {
+    const firstRender = renderRoute('/dinosaur-bone')
+    expect(screen.getByRole('heading', { name: 'Dinosaur Bone domain' })).toBeTruthy()
+
+    firstRender.unmount()
+    renderRoute('/dinosaur-bone')
+
+    expect(screen.getByRole('heading', { name: 'Dinosaur Bone domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Dinosaur Bone Crafting' }).getAttribute('aria-current')).toBe('page')
+  })
+
+  it('closes mobile navigation after selecting Dinosaur Bone', async () => {
+    const user = userEvent.setup()
+    renderRoute('/')
+
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
+    await user.click(screen.getByRole('link', { name: 'Dinosaur Bone Crafting' }))
+
+    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Dinosaur Bone domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Dinosaur Bone Crafting' }).getAttribute('aria-current')).toBe('page')
+  })
+
   it('renders Incredible Potential at its preserved public route', () => {
     renderRoute('/incredible-potential')
 

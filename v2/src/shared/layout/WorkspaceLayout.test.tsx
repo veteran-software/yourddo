@@ -1,45 +1,60 @@
 // @vitest-environment jsdom
 
 import { MantineProvider } from '@mantine/core'
-import { cleanup, render, screen, waitFor, within } from '@testing-library/react'
+import { cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { ComponentProps } from 'react'
+import type { ReactNode } from 'react'
+import { useEffect } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { WorkspaceTool } from './WorkspaceLayout'
 import WorkspaceLayout from './WorkspaceLayout'
 
 let desktopViewport = false
 
-const matchMedia = vi.fn((query: string) => {
-  const listeners = new Set<(event: MediaQueryListEvent) => void>()
-  return {
-    matches: desktopViewport && query.includes('75em'),
-    media: query,
-    onchange: null,
-    addEventListener: (_event: string, listener: (event: MediaQueryListEvent) => void) => {
-      listeners.add(listener)
-    },
-    removeEventListener: (_event: string, listener: (event: MediaQueryListEvent) => void) => {
-      listeners.delete(listener)
-    },
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    dispatchEvent: vi.fn()
-  }
-})
+const matchMedia = vi.fn((query: string) => ({
+  matches: desktopViewport && query.includes('75em'),
+  media: query,
+  onchange: null,
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+  addListener: vi.fn(),
+  removeListener: vi.fn(),
+  dispatchEvent: vi.fn()
+}))
 
-type WorkspaceLayoutTestProps = Omit<ComponentProps<typeof WorkspaceLayout>, 'children'> & {
-  children?: ComponentProps<typeof WorkspaceLayout>['children']
-}
+const tools: readonly WorkspaceTool[] = [
+  { id: 'finished', label: 'Finished Item', icon: <span>F</span>, content: <p>Finished content</p> },
+  { id: 'ingredients', label: 'Ingredients', icon: <span>I</span>, content: <p>Ingredients content</p> },
+  { id: 'shopping', label: 'Shopping List', icon: <span>S</span>, content: <p>Shopping content</p> }
+]
 
-const renderLayout = (props: WorkspaceLayoutTestProps = {}) =>
+const renderLayout = (
+  props: { children?: ReactNode; tools?: readonly WorkspaceTool[]; defaultActiveToolId?: string } = {}
+) =>
   render(
     <MantineProvider env='test'>
       <WorkspaceLayout {...props}>{props.children ?? <button type='button'>Main action</button>}</WorkspaceLayout>
     </MantineProvider>
   )
 
+const rail = () => screen.getByRole('navigation', { name: 'Workspace tools' })
+
 beforeEach(() => {
   vi.stubGlobal('matchMedia', matchMedia)
+  vi.stubGlobal(
+    'ResizeObserver',
+    class {
+      observe() {
+        return undefined
+      }
+      unobserve() {
+        return undefined
+      }
+      disconnect() {
+        return undefined
+      }
+    }
+  )
 })
 
 afterEach(() => {
@@ -49,93 +64,168 @@ afterEach(() => {
 })
 
 describe('WorkspaceLayout', () => {
-  it('renders main content', () => {
+  it('renders main content without tools', () => {
     renderLayout()
 
     expect(screen.getByRole('button', { name: 'Main action' })).toBeTruthy()
     expect(screen.getByRole('region', { name: 'Workspace' })).toBeTruthy()
-  })
-
-  it('renders without an inspector', () => {
-    renderLayout({ children: <p>Only the workspace</p> })
-
-    expect(screen.getByText('Only the workspace')).toBeTruthy()
+    expect(screen.queryByRole('navigation', { name: 'Workspace tools' })).toBeNull()
     expect(screen.queryByRole('complementary')).toBeNull()
     expect(screen.queryByRole('dialog')).toBeNull()
   })
 
-  it('keeps the desktop inspector closed by default', () => {
+  it('renders the desktop rail and closes the panel by default', () => {
     desktopViewport = true
-    renderLayout({ inspector: <button type='button'>Inspector action</button>, inspectorTitle: 'Summary' })
+    renderLayout({ tools })
 
-    expect(screen.getByRole('button', { name: 'Open inspector' })).toBeTruthy()
+    const layout = screen.getByTestId('workspace-layout')
+    const main = screen.getByTestId('workspace-main')
+    expect(layout.style.gridTemplateColumns).toBe('minmax(0, 1fr) 0px 3rem')
+    expect(main.style.gridRow).toBe('1')
+    expect(main.style.gridColumn).toBe('1')
+    expect(rail().style.gridRow).toBe('1')
+    expect(rail().style.gridColumn).toBe('3')
     expect(screen.queryByRole('complementary')).toBeNull()
     expect(screen.queryByRole('dialog')).toBeNull()
   })
 
-  it('opens the desktop inspector from its toggle', async () => {
-    const user = userEvent.setup()
+  it('uses color-scheme-aware rail colors in dark mode', () => {
     desktopViewport = true
-    renderLayout({ inspector: <button type='button'>Inspector action</button>, inspectorTitle: 'Summary' })
+    render(
+      <MantineProvider env='test' defaultColorScheme='dark'>
+        <WorkspaceLayout tools={tools}>Workspace</WorkspaceLayout>
+      </MantineProvider>
+    )
 
-    await user.click(screen.getByRole('button', { name: 'Open inspector' }))
-
-    expect(await screen.findByRole('complementary', { name: 'Summary' })).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Inspector action' })).toBeTruthy()
-    expect(screen.getByRole('dialog', { name: 'Summary' })).toBeTruthy()
+    const button = within(rail()).getByRole('button', { name: 'Finished Item' })
+    expect(button.style.color).toBe('var(--mantine-color-text)')
+    expect(button.style.backgroundColor).toBe('transparent')
   })
 
-  it('opens a controlled mobile Drawer with an accessible title', async () => {
-    renderLayout({
-      inspector: <button type='button'>Inspector action</button>,
-      inspectorTitle: 'Summary',
-      mobileInspectorOpened: true
-    })
+  it('opens the valid default tool and ignores an invalid default', () => {
+    desktopViewport = true
+    const { unmount } = renderLayout({ tools, defaultActiveToolId: 'ingredients' })
+    expect(screen.getByRole('complementary', { name: 'Ingredients' })).toBeTruthy()
+    expect(screen.getByText('Ingredients content')).toBeTruthy()
 
-    expect(await screen.findByRole('dialog', { name: 'Summary' })).toBeTruthy()
-    expect(screen.getAllByRole('button', { name: 'Inspector action' })).toHaveLength(1)
-    expect(screen.getByRole('complementary', { name: 'Summary' })).toBeTruthy()
-  })
-
-  it('calls the mobile close handler', async () => {
-    const user = userEvent.setup()
-    const onClose = vi.fn()
-    renderLayout({
-      inspector: <p>Inspector content</p>,
-      inspectorTitle: 'Summary',
-      mobileInspectorOpened: true,
-      onMobileInspectorClose: onClose
-    })
-
-    const dialog = screen.getByRole('dialog', { name: 'Summary' })
-    await user.click(within(dialog).getByRole('button', { name: 'Close inspector' }))
-    expect(onClose).toHaveBeenCalledOnce()
-  })
-
-  it('does not duplicate or leave hidden inspector controls tabbable on mobile', async () => {
-    renderLayout({
-      inspector: <button type='button'>Inspector action</button>,
-      inspectorTitle: 'Summary',
-      mobileInspectorOpened: false
-    })
-
-    await waitFor(() => {
-      expect(screen.queryByRole('button', { name: 'Inspector action' })).toBeNull()
-    })
+    unmount()
+    renderLayout({ tools, defaultActiveToolId: 'missing' })
     expect(screen.queryByRole('complementary')).toBeNull()
   })
 
-  it('uses safe independent overflow styles for the workspace and desktop inspector', async () => {
+  it('opens, switches, and closes desktop tools', async () => {
     desktopViewport = true
-    renderLayout({ inspector: <p>Long inspector content</p>, inspectorTitle: 'Summary' })
+    renderLayout({ tools })
+    const user = userEvent.setup()
+    const desktopButtons = within(rail()).getAllByRole('button')
 
-    const main = screen.getByRole('region', { name: 'Workspace' })
-    await userEvent.setup().click(screen.getByRole('button', { name: 'Open inspector' }))
-    const aside = await screen.findByRole('complementary', { name: 'Summary' })
-    expect(main.style.overflow).toBe('auto')
-    expect(aside.style.overflow).toBe('auto')
-    expect(main.style.minWidth).toBe('0px')
-    expect(aside.style.minHeight).toBe('0px')
+    await user.click(desktopButtons[0])
+    expect(screen.getByRole('complementary', { name: 'Finished Item' })).toBeTruthy()
+    await user.click(desktopButtons[1])
+    expect(screen.getByRole('complementary', { name: 'Ingredients' })).toBeTruthy()
+    expect(screen.queryByText('Finished content')).toBeNull()
+    expect(screen.getByText('Ingredients content')).toBeTruthy()
+    await user.click(desktopButtons[1])
+    expect(screen.queryByRole('complementary')).toBeNull()
+
+    await user.click(desktopButtons[2])
+    await user.click(screen.getByRole('button', { name: 'Close Shopping List' }))
+    expect(screen.queryByRole('complementary')).toBeNull()
+  })
+
+  it('gives the panel the active tool name and mounts only active content', async () => {
+    desktopViewport = true
+    renderLayout({ tools })
+    await userEvent.setup().click(within(rail()).getAllByRole('button')[0])
+
+    const panel = screen.getByRole('complementary', { name: 'Finished Item' })
+    expect(panel).toBeTruthy()
+    expect(within(panel).getByText('Finished content')).toBeTruthy()
+    expect(screen.queryByText('Ingredients content')).toBeNull()
+    expect(screen.queryByText('Shopping content')).toBeNull()
+    expect(panel.style.gridRow).toBe('1')
+    expect(panel.style.gridColumn).toBe('2')
+    expect(rail().style.gridColumn).toBe('3')
+    expect(panel.style.minWidth).toBe('0px')
+    expect(screen.getByTestId('workspace-tool-panel-content').style.overflow).toBe('auto')
+  })
+
+  it('keeps an expanded rail in the third column without an active panel', async () => {
+    desktopViewport = true
+    renderLayout({ tools })
+
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Expand workspace tool labels' }))
+
+    expect(screen.queryByRole('complementary')).toBeNull()
+    expect(screen.getByTestId('workspace-layout').style.gridTemplateColumns).toBe('minmax(0, 1fr) 0px 11rem')
+    expect(rail().style.gridRow).toBe('1')
+    expect(rail().style.gridColumn).toBe('3')
+  })
+
+  it('expands and collapses rail labels without changing the active tool', async () => {
+    desktopViewport = true
+    renderLayout({ tools, defaultActiveToolId: 'ingredients' })
+    const user = userEvent.setup()
+    const toggle = () => screen.getByRole('button', { name: /workspace tool labels/ })
+
+    expect(within(rail()).queryByText('Ingredients')).toBeNull()
+    await user.click(toggle())
+    expect(within(rail()).getByText('Ingredients')).toBeTruthy()
+    expect(screen.getByRole('complementary', { name: 'Ingredients' })).toBeTruthy()
+    await user.click(toggle())
+    expect(within(rail()).queryByText('Ingredients')).toBeNull()
+    expect(within(rail()).getAllByRole('button')[1].getAttribute('aria-label')).toBe('Ingredients')
+  })
+
+  it('preserves tool order and handles duplicate IDs deterministically', () => {
+    desktopViewport = true
+    const duplicateTools: readonly WorkspaceTool[] = [
+      { id: 'same', label: 'First', icon: <span>1</span>, content: <p>First content</p> },
+      { id: 'same', label: 'Second', icon: <span>2</span>, content: <p>Second content</p> }
+    ]
+    renderLayout({ tools: duplicateTools, defaultActiveToolId: 'same' })
+
+    const buttons = within(rail()).getAllByRole('button')
+    expect(buttons[0].getAttribute('aria-label')).toBe('First')
+    expect(buttons[1].getAttribute('aria-label')).toBe('Second')
+    expect(screen.getByText('First content')).toBeTruthy()
+    expect(screen.queryByText('Second content')).toBeNull()
+  })
+
+  it('opens and switches the mobile Drawer without duplicating content', async () => {
+    renderLayout({ tools })
+    const user = userEvent.setup()
+    const strip = screen.getByTestId('workspace-mobile-tools')
+    const openingButton = within(strip).getByRole('button', { name: 'Finished Item' })
+    expect(within(strip).getByText('Finished Item')).toBeTruthy()
+    expect(within(strip).getByText('Ingredients')).toBeTruthy()
+
+    await user.click(openingButton)
+    expect(await screen.findByRole('dialog', { name: 'Finished Item' })).toBeTruthy()
+    expect(screen.getAllByText('Finished content')).toHaveLength(1)
+
+    const dialog = screen.getByRole('dialog', { name: 'Finished Item' })
+    await user.click(within(dialog).getByRole('button', { name: 'Ingredients' }))
+    expect(await screen.findByRole('dialog', { name: 'Ingredients' })).toBeTruthy()
+    expect(screen.getAllByText('Ingredients content')).toHaveLength(1)
+    expect(screen.queryByText('Finished content')).toBeNull()
+
+    await user.click(within(dialog).getByRole('button', { name: 'Ingredients' }))
+    expect(screen.getByRole('dialog', { name: 'Ingredients' })).toBeTruthy()
+  })
+
+  it('clears mobile state and returns focus to the opening trigger', async () => {
+    renderLayout({ tools })
+    const user = userEvent.setup()
+    const openingButton = within(screen.getByTestId('workspace-mobile-tools')).getByRole('button', {
+      name: 'Finished Item'
+    })
+    await user.click(openingButton)
+    const dialog = await screen.findByRole('dialog', { name: 'Finished Item' })
+    await user.click(within(dialog).getByRole('button', { name: 'Close workspace tool' }))
+
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(document.activeElement).toBe(openingButton)
   })
 
   it.each([
@@ -143,55 +233,82 @@ describe('WorkspaceLayout', () => {
     [768, 1024, false],
     [1366, 768, true],
     [1920, 1080, true]
-  ])('keeps the layout single-width and responsive at %ix%i', async (width, height, isDesktop) => {
+  ])('uses the expected responsive mode at %ix%i', (width, height, isDesktop) => {
     Object.defineProperties(window, {
       innerWidth: { configurable: true, value: width },
       innerHeight: { configurable: true, value: height }
     })
     desktopViewport = isDesktop
-
-    renderLayout({ inspector: <p>Inspector content</p>, inspectorTitle: 'Summary' })
+    renderLayout({ tools })
 
     expect(screen.getByTestId('workspace-layout').style.overflow).toBe('hidden')
     expect(screen.getByTestId('workspace-main').style.minWidth).toBe('0px')
     if (isDesktop) {
-      await userEvent.setup().click(screen.getByRole('button', { name: 'Open inspector' }))
-      expect(await screen.findByRole('complementary', { name: 'Summary' })).toBeTruthy()
+      expect(screen.queryByTestId('workspace-tool-rail')).not.toBeNull()
+      expect(screen.queryByTestId('workspace-mobile-tools')).toBeNull()
     } else {
-      expect(screen.queryByRole('complementary')).toBeNull()
-      expect(screen.queryByRole('dialog')).toBeNull()
+      expect(screen.queryByTestId('workspace-tool-rail')).toBeNull()
+      expect(screen.queryByTestId('workspace-mobile-tools')).not.toBeNull()
     }
   })
 
-  it('has exactly one main landmark', () => {
-    render(
+  it('handles removed active tools safely and retains one main landmark', () => {
+    desktopViewport = true
+    const { rerender } = render(
       <MantineProvider env='test'>
         <main>
-          <WorkspaceLayout>Workspace</WorkspaceLayout>
+          <WorkspaceLayout tools={tools} defaultActiveToolId='finished'>
+            Workspace
+          </WorkspaceLayout>
         </main>
       </MantineProvider>
     )
-
+    expect(screen.getByRole('complementary', { name: 'Finished Item' })).toBeTruthy()
+    rerender(
+      <MantineProvider env='test'>
+        <main>
+          <WorkspaceLayout tools={tools.slice(1)} defaultActiveToolId='finished'>
+            Workspace
+          </WorkspaceLayout>
+        </main>
+      </MantineProvider>
+    )
+    expect(screen.queryByRole('complementary')).toBeNull()
     expect(screen.getAllByRole('main')).toHaveLength(1)
   })
 
-  it('remains compatible with Mantine theme changes', () => {
+  it('does not remount workspace content when tools switch or the theme changes', async () => {
+    desktopViewport = true
+    const onMount = vi.fn()
+    const onUnmount = vi.fn()
+    const MainProbe = () => {
+      useEffect(() => {
+        onMount()
+        return onUnmount
+      }, [])
+      return <p>Main workspace</p>
+    }
     const { rerender } = render(
       <MantineProvider env='test' defaultColorScheme='light'>
-        <WorkspaceLayout inspector={<p>Inspector</p>} inspectorTitle='Summary'>
-          Workspace
+        <WorkspaceLayout tools={tools}>
+          <MainProbe />
         </WorkspaceLayout>
       </MantineProvider>
     )
-
+    const user = userEvent.setup()
+    await user.click(within(rail()).getAllByRole('button')[0])
+    await user.click(within(rail()).getAllByRole('button')[1])
+    expect(onMount).toHaveBeenCalledOnce()
+    expect(onUnmount).not.toHaveBeenCalled()
     rerender(
       <MantineProvider env='test' defaultColorScheme='dark'>
-        <WorkspaceLayout inspector={<p>Inspector</p>} inspectorTitle='Summary'>
-          Workspace
+        <WorkspaceLayout tools={tools}>
+          <MainProbe />
         </WorkspaceLayout>
       </MantineProvider>
     )
-
-    expect(screen.getByText('Workspace')).toBeTruthy()
+    expect(onMount).toHaveBeenCalledOnce()
+    expect(onUnmount).not.toHaveBeenCalled()
+    expect(screen.getByText('Main workspace')).toBeTruthy()
   })
 })

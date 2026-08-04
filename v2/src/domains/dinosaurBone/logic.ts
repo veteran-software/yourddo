@@ -1,32 +1,40 @@
 import type {
   ClassifiedDinosaurBoneItem,
+  CumulativeIngredient,
   DinosaurBoneAugment,
   DinosaurBoneEffect,
+  DinosaurBoneIndexes,
   DinosaurBoneItem,
   DinosaurBoneRequirement,
+  FinishedDinosaurBoneItem,
   ItemFamily,
   SelectedAugments
 } from './dinosaurBone.types'
 
-const familyLabels: Record<ItemFamily, string> = {
+const familyLabels: Readonly<Record<ItemFamily, string>> = {
   'crafted-weapons': 'Crafted Weapons',
   'attuned-weapons': 'Attuned Weapons',
   'armor-accessories': 'Armor & Accessories',
   'named-items': 'Named Items'
 }
 
+export const itemFamilies: readonly ItemFamily[] = [
+  'crafted-weapons',
+  'attuned-weapons',
+  'armor-accessories',
+  'named-items'
+]
+
 export const getFamilyLabel = (family: ItemFamily): string => familyLabels[family]
 
-export const itemFamilies: ItemFamily[] = ['crafted-weapons', 'attuned-weapons', 'armor-accessories', 'named-items']
-
-const hasLocation = (item: DinosaurBoneItem, text: string): boolean =>
-  item.dropLocations?.some((location) => JSON.stringify(location).toLowerCase().includes(text.toLowerCase())) ?? false
-
-export const classifyItem = (item: DinosaurBoneItem): ClassifiedDinosaurBoneItem => {
-  if (hasLocation(item, 'Dinosaur Bone Crafting')) return { ...item, family: 'crafted-weapons' }
+export const classifyItem = (
+  item: DinosaurBoneItem,
+  craftedItemNames: ReadonlySet<string>
+): ClassifiedDinosaurBoneItem => {
+  if (craftedItemNames.has(item.name)) return { ...item, family: 'crafted-weapons' }
   if (item.name.startsWith('Attuned Bone ')) return { ...item, family: 'attuned-weapons' }
   if (
-    item.name.startsWith('Dinosaur Bone') ||
+    item.name.startsWith('Dinosaur Bone ') ||
     item.name === 'Dinosaur Plate Armor' ||
     item.name === 'Dinosaur Scale Plate'
   ) {
@@ -35,30 +43,56 @@ export const classifyItem = (item: DinosaurBoneItem): ClassifiedDinosaurBoneItem
   return { ...item, family: 'named-items' }
 }
 
-export const classifyItems = (items: DinosaurBoneItem[]): ClassifiedDinosaurBoneItem[] => items.map(classifyItem)
+export const classifyItems = (
+  items: readonly DinosaurBoneItem[],
+  craftedItemNames: ReadonlySet<string>
+): ClassifiedDinosaurBoneItem[] => items.map((item) => classifyItem(item, craftedItemNames))
+
+export const buildDinosaurBoneIndexes = (
+  items: readonly ClassifiedDinosaurBoneItem[],
+  dinosaurAugments: readonly DinosaurBoneAugment[],
+  colorAugments: readonly DinosaurBoneAugment[]
+): DinosaurBoneIndexes => {
+  const itemsByFamily = new Map<ItemFamily, ClassifiedDinosaurBoneItem[]>(itemFamilies.map((family) => [family, []]))
+  for (const item of items) itemsByFamily.get(item.family)?.push(item)
+
+  const allAugments = [...dinosaurAugments, ...colorAugments]
+  const augmentsByType = new Map<string, DinosaurBoneAugment[]>()
+  for (const augment of allAugments) {
+    const values = augmentsByType.get(augment.augmentType) ?? []
+    values.push(augment)
+    augmentsByType.set(augment.augmentType, values)
+  }
+  for (const values of augmentsByType.values()) values.sort((a, b) => a.name.localeCompare(b.name))
+
+  return {
+    itemByName: new Map(items.map((item) => [item.name, item])),
+    itemsByFamily,
+    augmentByName: new Map(allAugments.map((augment) => [augment.name, augment])),
+    augmentsByType
+  }
+}
 
 export const getItemsForFamily = (
-  items: ClassifiedDinosaurBoneItem[],
+  indexes: DinosaurBoneIndexes,
   family: ItemFamily
-): ClassifiedDinosaurBoneItem[] => items.filter((item) => item.family === family)
+): readonly ClassifiedDinosaurBoneItem[] => indexes.itemsByFamily.get(family) ?? []
 
 export const getEffectNames = (item: DinosaurBoneItem): string[] =>
-  [...(item.effectsAdded ?? []), ...(item.enchantments ?? [])]
-    .map(({ name }) => name)
-    .filter((name): name is string => Boolean(name))
+  [...(item.effectsAdded ?? []), ...(item.enchantments ?? [])].map(({ name }) => name)
 
 export const getAugmentEffectNames = (augment: DinosaurBoneAugment): string[] =>
-  (augment.effectsAdded ?? []).map(({ name }) => name).filter((name): name is string => Boolean(name))
+  (augment.effectsAdded ?? []).map(({ name }) => name)
 
-export const getFilterOptions = <T>(items: T[], getValues: (item: T) => string[]): string[] =>
-  [...new Set(items.flatMap(getValues))].sort((a, b) => a.localeCompare(b))
+export const getFilterOptions = <T>(items: readonly T[], getValues: (item: T) => readonly string[]): string[] =>
+  [...new Set(items.flatMap((item) => [...getValues(item)]))].sort((a, b) => a.localeCompare(b))
 
-export const filterItems = <T>(
-  items: T[],
-  filters: string[],
+export const filterRecords = <T>(
+  items: readonly T[],
+  filters: readonly string[],
   mode: 'OR' | 'AND',
-  getValues: (item: T) => string[]
-): T[] => {
+  getValues: (item: T) => readonly string[]
+): readonly T[] => {
   if (filters.length === 0) return items
   return items.filter((item) => {
     const values = getValues(item)
@@ -68,12 +102,13 @@ export const filterItems = <T>(
   })
 }
 
-const normaliseSlot = (slot: string): string => slot.replace(/ Slot(?= |$)/, '')
+export const normaliseSlotType = (slot: string): string => slot.replace(/ Slot(?= |$)/, '')
 
-export const isColorSlot = (slot: string): boolean =>
-  ['Red', 'Blue', 'Yellow', 'Purple', 'Orange', 'Green', 'Colorless'].includes(normaliseSlot(slot))
+const colorTypes = new Set(['Red', 'Blue', 'Yellow', 'Purple', 'Orange', 'Green', 'Colorless'])
 
-const supportedSpecialSlots = new Set([
+export const isColorSlot = (slot: string): boolean => colorTypes.has(normaliseSlotType(slot))
+
+export const supportedSpecialSlotTypes = new Set([
   'Isle of Dread: Claw (Weapon)',
   'Isle of Dread: Fang (Weapon)',
   'Isle of Dread: Horn (Weapon)',
@@ -87,90 +122,135 @@ const supportedSpecialSlots = new Set([
   'Isle of Dread: Set Bonus'
 ])
 
-export const getAvailableSlots = (item: DinosaurBoneItem): string[] => {
-  const slots = item.augments.map(({ augmentType }) => augmentType)
-  return [...slots.filter((slot) => !isColorSlot(slot)), ...slots.filter(isColorSlot)]
-}
+export const getAvailableSlots = (item: DinosaurBoneItem) => [
+  ...item.augments.filter(({ augmentType }) => !isColorSlot(augmentType)),
+  ...item.augments.filter(({ augmentType }) => isColorSlot(augmentType))
+]
 
 export const getCompatibleAugments = (
-  slot: string,
-  dinosaurAugments: DinosaurBoneAugment[],
-  colorAugments: DinosaurBoneAugment[]
-): DinosaurBoneAugment[] => {
-  const family = normaliseSlot(slot)
-  const isColor = isColorSlot(slot)
-  const source = isColor ? colorAugments : dinosaurAugments
-  const compatible = source.filter((augment) => augment.augmentType === family)
-  if (!isColor && !supportedSpecialSlots.has(family)) {
-    throw new Error(`Unknown Dinosaur Bone slot contract: ${slot}`)
+  slotType: string,
+  indexes: DinosaurBoneIndexes
+): readonly DinosaurBoneAugment[] => {
+  const type = normaliseSlotType(slotType)
+  if (!isColorSlot(type) && !supportedSpecialSlotTypes.has(type)) {
+    throw new Error(`Unknown Dinosaur Bone slot contract: ${slotType}`)
   }
-  return compatible.toSorted((a, b) => a.name.localeCompare(b.name))
+  return indexes.augmentsByType.get(type) ?? []
 }
 
 export const getSelectedAugments = (
-  slots: string[],
-  selected: SelectedAugments,
-  byName: Map<string, DinosaurBoneAugment>
-): Record<string, DinosaurBoneAugment> =>
-  Object.fromEntries(
-    slots.flatMap((slot) => {
-      const name = selected[slot]
-      const augment = name ? byName.get(name) : undefined
-      return augment ? [[slot, augment]] : []
-    })
-  )
-
-export const retainSelectedAugments = (
   item: DinosaurBoneItem | undefined,
   selected: SelectedAugments,
-  optionsBySlot: Map<string, DinosaurBoneAugment[]>
-): SelectedAugments => {
+  indexes: DinosaurBoneIndexes
+): Readonly<Record<string, DinosaurBoneAugment>> => {
   if (!item) return {}
   return Object.fromEntries(
-    getAvailableSlots(item).map((slot) => {
-      const name = selected[slot]
-      const valid = name && optionsBySlot.get(slot)?.some((augment) => augment.name === name)
-      return [slot, valid ? name : null]
+    getAvailableSlots(item).flatMap((slot) => {
+      const name = selected[slot.id]
+      const augment = name ? indexes.augmentByName.get(name) : undefined
+      return augment && getCompatibleAugments(slot.augmentType, indexes).includes(augment)
+        ? [[slot.id, augment] as const]
+        : []
     })
   )
 }
 
-export const getFinishedEffects = (
-  item: DinosaurBoneItem | undefined,
-  selectedAugments: Record<string, DinosaurBoneAugment>
-): { base: DinosaurBoneEffect[]; selected: { slot: string; augment: DinosaurBoneAugment }[] } => ({
-  base: [...(item?.effectsAdded ?? []), ...(item?.enchantments ?? [])],
-  selected: Object.entries(selectedAugments).map(([slot, augment]) => ({ slot, augment }))
-})
+const effectKey = ({ name, modifier, bonus, notes }: DinosaurBoneEffect) =>
+  JSON.stringify([name, modifier ?? null, bonus ?? null, notes ?? null])
 
-const addRequirements = (requirements: DinosaurBoneRequirement[], totals: Record<string, number>) => {
-  for (const requirement of requirements) {
-    if (!Number.isFinite(requirement.quantity) || requirement.quantity <= 0) {
-      throw new Error(`Invalid Dinosaur Bone requirement quantity for ${requirement.name}`)
-    }
-    totals[requirement.name] = (totals[requirement.name] ?? 0) + requirement.quantity
-    if (requirement.requirements) addRequirements(requirement.requirements, totals)
+const uniqueEffects = (effects: readonly DinosaurBoneEffect[]): DinosaurBoneEffect[] => {
+  const seen = new Set<string>()
+  return effects.filter((effect) => {
+    const key = effectKey(effect)
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+}
+
+export const calculateFinishedItem = (
+  item: ClassifiedDinosaurBoneItem | undefined,
+  selected: SelectedAugments,
+  indexes: DinosaurBoneIndexes
+): FinishedDinosaurBoneItem => {
+  if (!item) return { originalEffects: [], slots: [], emptySlots: [], setBonuses: [], warnings: [] }
+
+  const slots = getAvailableSlots(item).map((slot) => {
+    const selectedName = selected[slot.id]
+    const augment = selectedName ? indexes.augmentByName.get(selectedName) : undefined
+    const compatible = augment ? getCompatibleAugments(slot.augmentType, indexes).includes(augment) : true
+    return { slot, ...(augment && compatible ? { augment } : {}) }
+  })
+  const warnings = getAvailableSlots(item).flatMap((slot) => {
+    const selectedName = selected[slot.id]
+    if (!selectedName) return []
+    const augment = indexes.augmentByName.get(selectedName)
+    if (!augment) return [`${slot.label}: selected augment “${selectedName}” is missing.`]
+    return getCompatibleAugments(slot.augmentType, indexes).includes(augment)
+      ? []
+      : [`${slot.label}: “${selectedName}” is not compatible.`]
+  })
+  const selectedBonuses = slots.flatMap(({ augment }) => augment?.setBonus ?? [])
+
+  return {
+    item,
+    originalEffects: uniqueEffects([...(item.effectsAdded ?? []), ...(item.enchantments ?? [])]),
+    slots,
+    emptySlots: slots.filter(({ augment }) => !augment).map(({ slot }) => slot),
+    setBonuses: [...(item.setBonus ?? []), ...selectedBonuses],
+    warnings
   }
 }
 
-export const getCumulativeIngredients = (
-  item: DinosaurBoneItem | undefined,
-  selectedAugments: Record<string, DinosaurBoneAugment>
-): { name: string; quantity: number }[] => {
-  const totals: Record<string, number> = {}
-  if (item) addRequirements(item.requirements, totals)
+interface IngredientAccumulator {
+  quantity: number
+  ingredientType?: string
+  foundIn: Set<string>
+}
+
+const addRequirements = (
+  requirements: readonly DinosaurBoneRequirement[],
+  totals: Map<string, IngredientAccumulator>,
+  multiplier = 1
+) => {
+  for (const requirement of requirements) {
+    const quantity = requirement.quantity * multiplier
+    if (!Number.isFinite(quantity) || quantity <= 0) {
+      throw new Error(`Invalid Dinosaur Bone requirement quantity for ${requirement.name}`)
+    }
+    const current = totals.get(requirement.name) ?? { quantity: 0, foundIn: new Set<string>() }
+    current.quantity += quantity
+    current.ingredientType ??= requirement.ingredientType
+    requirement.foundIn?.forEach((location) => current.foundIn.add(location))
+    totals.set(requirement.name, current)
+    if (requirement.requirements) addRequirements(requirement.requirements, totals, quantity)
+  }
+}
+
+export const calculateCumulativeIngredients = (
+  item: ClassifiedDinosaurBoneItem | undefined,
+  selectedAugments: Readonly<Record<string, DinosaurBoneAugment>>
+): CumulativeIngredient[] => {
+  if (!item) return []
+  const totals = new Map<string, IngredientAccumulator>()
+  addRequirements(item.requirements, totals)
   Object.values(selectedAugments).forEach((augment) => {
-    addRequirements(augment.requirements ?? [], totals)
+    addRequirements(augment.requirements, totals)
   })
-  return Object.entries(totals)
-    .map(([name, quantity]) => ({ name, quantity }))
+  return [...totals.entries()]
+    .map(([name, value]) => ({
+      name,
+      quantity: value.quantity,
+      ...(value.ingredientType ? { ingredientType: value.ingredientType } : {}),
+      ...(value.foundIn.size > 0 ? { foundIn: [...value.foundIn].sort() } : {})
+    }))
     .sort((a, b) => a.name.localeCompare(b.name))
 }
 
 export const formatEffect = ({ name, modifier, bonus, notes }: DinosaurBoneEffect): string =>
-  `${name}${modifier !== undefined ? ` (+${String(modifier)}${bonus ? ` ${bonus}` : ''})` : ''}${notes ? ` — ${notes}` : ''}`
+  `${name}${modifier !== undefined ? ` (${String(modifier)}${bonus ? ` ${bonus}` : ''})` : ''}${notes ? ` — ${notes}` : ''}`
 
-export const validateUniqueNames = (records: { name: string }[], label: string) => {
+export const validateUniqueNames = (records: readonly { name: string }[], label: string) => {
   const names = new Set<string>()
   records.forEach(({ name }) => {
     if (names.has(name)) throw new Error(`Duplicate ${label}: ${name}`)
