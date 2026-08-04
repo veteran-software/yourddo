@@ -21,6 +21,7 @@ import {
 } from '@mantine/core'
 import { IconFileInfo, IconListCheck } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
+import AugmentSelect from '../../shared/augments/AugmentSelect.tsx'
 import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
@@ -48,6 +49,7 @@ import {
   getFilterOptions,
   getItemsForFamily,
   getSelectedAugments,
+  isColorSlot,
   itemFamilies
 } from './logic.ts'
 
@@ -287,8 +289,10 @@ const DinosaurBonePage = () => {
   const [itemFilters, setItemFilters] = useState<string[]>([])
   const [itemFilterMode, setItemFilterMode] = useState<'OR' | 'AND'>('AND')
   const [selectedAugments, setSelectedAugments] = useState<SelectedAugments>({})
-  const [augmentFilters, setAugmentFilters] = useState<string[]>([])
-  const [augmentFilterMode, setAugmentFilterMode] = useState<'OR' | 'AND'>('OR')
+  const [iodAugmentFilters, setIodAugmentFilters] = useState<string[]>([])
+  const [iodAugmentFilterMode, setIodAugmentFilterMode] = useState<'OR' | 'AND'>('OR')
+  const [colorAugmentFilters, setColorAugmentFilters] = useState<string[]>([])
+  const [colorAugmentFilterMode, setColorAugmentFilterMode] = useState<'OR' | 'AND'>('OR')
 
   useEffect(() => {
     let active = true
@@ -317,19 +321,42 @@ const DinosaurBonePage = () => {
     if (!data || !selectedItem) return new Map<string, readonly DinosaurBoneAugment[]>()
     return new Map(slots.map((slot) => [slot.id, getCompatibleAugments(slot.augmentType, data.indexes)]))
   }, [data, selectedItem, slots])
-  const augmentFilterOptions = useMemo(
-    () => getFilterOptions([...optionsBySlot.values()].flat(), getAugmentEffectNames),
-    [optionsBySlot]
+  const iodSlots = useMemo(() => slots.filter(({ augmentType }) => !isColorSlot(augmentType)), [slots])
+  const colorSlots = useMemo(() => slots.filter(({ augmentType }) => isColorSlot(augmentType)), [slots])
+  const iodAugmentFilterOptions = useMemo(
+    () =>
+      getFilterOptions(
+        iodSlots.flatMap(({ id }) => optionsBySlot.get(id) ?? []),
+        getAugmentEffectNames
+      ),
+    [iodSlots, optionsBySlot]
+  )
+  const colorAugmentFilterOptions = useMemo(
+    () =>
+      getFilterOptions(
+        colorSlots.flatMap(({ id }) => optionsBySlot.get(id) ?? []),
+        getAugmentEffectNames
+      ),
+    [colorSlots, optionsBySlot]
   )
   const filteredOptionsBySlot = useMemo(
     () =>
       new Map(
-        [...optionsBySlot.entries()].map(([slotId, options]) => [
-          slotId,
-          filterRecords(options, augmentFilters, augmentFilterMode, getAugmentEffectNames)
-        ])
+        slots.map((slot) => {
+          const options = optionsBySlot.get(slot.id) ?? []
+          const colorSlot = isColorSlot(slot.augmentType)
+          return [
+            slot.id,
+            filterRecords(
+              options,
+              colorSlot ? colorAugmentFilters : iodAugmentFilters,
+              colorSlot ? colorAugmentFilterMode : iodAugmentFilterMode,
+              getAugmentEffectNames
+            )
+          ] as const
+        })
       ),
-    [augmentFilterMode, augmentFilters, optionsBySlot]
+    [colorAugmentFilterMode, colorAugmentFilters, iodAugmentFilterMode, iodAugmentFilters, optionsBySlot, slots]
   )
   const selectedAugmentObjects = useMemo(
     () => (data ? getSelectedAugments(selectedItem, selectedAugments, data.indexes) : {}),
@@ -370,8 +397,10 @@ const DinosaurBonePage = () => {
     setItemFilters([])
     setItemFilterMode('AND')
     setSelectedAugments({})
-    setAugmentFilters([])
-    setAugmentFilterMode('OR')
+    setIodAugmentFilters([])
+    setIodAugmentFilterMode('OR')
+    setColorAugmentFilters([])
+    setColorAugmentFilterMode('OR')
   }
 
   const changeFamily = (value: string | null) => {
@@ -522,32 +551,84 @@ const DinosaurBonePage = () => {
                         </Alert>
                       ) : (
                         <>
-                          <MultiSelect
-                            label='Augment effect filters'
-                            placeholder='Filter compatible augments'
-                            data={augmentFilterOptions}
-                            value={augmentFilters}
-                            onChange={setAugmentFilters}
-                            searchable
-                            clearable
-                            hidePickedOptions
-                            maxDropdownHeight={260}
-                          />
-                          <Group gap='xs' role='group' aria-label='Augment filter mode'>
-                            {(['OR', 'AND'] as const).map((mode) => (
-                              <Button
-                                key={mode}
-                                variant={augmentFilterMode === mode ? 'filled' : 'default'}
-                                size='compact-sm'
-                                aria-pressed={augmentFilterMode === mode}
-                                onClick={() => {
-                                  setAugmentFilterMode(mode)
-                                }}
-                              >
-                                {mode}
-                              </Button>
-                            ))}
-                          </Group>
+                          <SimpleGrid cols={{ base: 1, md: 2 }}>
+                            {iodSlots.length > 0 ? (
+                              <Paper withBorder p='sm'>
+                                <Stack gap='xs'>
+                                  <Box>
+                                    <Text fw={600}>Isle of Dread (IoD) augment filters</Text>
+                                    <Text c='dimmed' size='xs'>
+                                      Applies only to IoD crafting slots.
+                                    </Text>
+                                  </Box>
+                                  <MultiSelect
+                                    label='IoD augment effect filters'
+                                    placeholder='Filter IoD augments'
+                                    data={iodAugmentFilterOptions}
+                                    value={iodAugmentFilters}
+                                    onChange={setIodAugmentFilters}
+                                    searchable
+                                    clearable
+                                    hidePickedOptions
+                                    maxDropdownHeight={260}
+                                  />
+                                  <Group gap='xs' role='group' aria-label='IoD augment filter mode'>
+                                    {(['OR', 'AND'] as const).map((mode) => (
+                                      <Button
+                                        key={mode}
+                                        variant={iodAugmentFilterMode === mode ? 'filled' : 'default'}
+                                        size='compact-sm'
+                                        aria-pressed={iodAugmentFilterMode === mode}
+                                        onClick={() => {
+                                          setIodAugmentFilterMode(mode)
+                                        }}
+                                      >
+                                        {mode}
+                                      </Button>
+                                    ))}
+                                  </Group>
+                                </Stack>
+                              </Paper>
+                            ) : null}
+                            {colorSlots.length > 0 ? (
+                              <Paper withBorder p='sm'>
+                                <Stack gap='xs'>
+                                  <Box>
+                                    <Text fw={600}>Color augment filters</Text>
+                                    <Text c='dimmed' size='xs'>
+                                      Applies only to color augment slots.
+                                    </Text>
+                                  </Box>
+                                  <MultiSelect
+                                    label='Color augment effect filters'
+                                    placeholder='Filter color augments'
+                                    data={colorAugmentFilterOptions}
+                                    value={colorAugmentFilters}
+                                    onChange={setColorAugmentFilters}
+                                    searchable
+                                    clearable
+                                    hidePickedOptions
+                                    maxDropdownHeight={260}
+                                  />
+                                  <Group gap='xs' role='group' aria-label='Color augment filter mode'>
+                                    {(['OR', 'AND'] as const).map((mode) => (
+                                      <Button
+                                        key={mode}
+                                        variant={colorAugmentFilterMode === mode ? 'filled' : 'default'}
+                                        size='compact-sm'
+                                        aria-pressed={colorAugmentFilterMode === mode}
+                                        onClick={() => {
+                                          setColorAugmentFilterMode(mode)
+                                        }}
+                                      >
+                                        {mode}
+                                      </Button>
+                                    ))}
+                                  </Group>
+                                </Stack>
+                              </Paper>
+                            ) : null}
+                          </SimpleGrid>
                           <Accordion variant='separated' multiple defaultValue={slots.slice(0, 1).map(({ id }) => id)}>
                             {slots.map((slot) => {
                               const options = filteredOptionsBySlot.get(slot.id) ?? []
@@ -569,17 +650,15 @@ const DinosaurBonePage = () => {
                                   </Accordion.Control>
                                   <Accordion.Panel>
                                     <Stack gap='xs'>
-                                      <Select
+                                      <AugmentSelect
                                         label={`${slot.label} augment`}
+                                        slotType={slot.augmentType}
                                         placeholder={`Search ${slot.label} options…`}
-                                        data={options.map(({ name }) => ({ value: name, label: name }))}
+                                        options={options}
                                         value={selectedName}
                                         onChange={(value) => {
                                           setSelectedAugments((current) => ({ ...current, [slot.id]: value }))
                                         }}
-                                        searchable
-                                        clearable
-                                        maxDropdownHeight={300}
                                         nothingFoundMessage='No compatible augments match these filters.'
                                       />
                                       {selectedAugment ? (

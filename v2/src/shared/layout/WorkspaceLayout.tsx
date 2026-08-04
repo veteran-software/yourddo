@@ -198,6 +198,7 @@ const WorkspaceLayout = ({
           miw={0}
           mih={0}
           flex='0 0 auto'
+          pos='relative'
           style={{
             opacity: activeTool ? 1 : 0,
             overflow: 'hidden',
@@ -212,30 +213,33 @@ const WorkspaceLayout = ({
           }}
         >
           {panelTool ? (
-            <Stack w={panelWidth} h='100%' gap={0}>
-              <Group p='xs' gap={8} wrap='nowrap' miw={0}>
-                {panelTool.icon}
-                <Text component='h2' m={0} flex={1} miw={0} fz='h2' lh='h2' fw={700} truncate>
-                  {panelTool.label}
-                </Text>
-                <Tooltip label={`Close ${panelTool.label}`} position='left'>
-                  <ActionIcon
-                    variant='subtle'
-                    color='gray'
-                    size={36}
-                    radius='sm'
-                    aria-label={`Close ${panelTool.label}`}
-                    onClick={closeTool}
-                  >
-                    ×
-                  </ActionIcon>
-                </Tooltip>
-              </Group>
-              <Divider />
-              <ScrollArea data-testid='workspace-tool-panel-content' type='auto' flex={1} miw={0} mih={0}>
-                {panelTool.content}
-              </ScrollArea>
-            </Stack>
+            <>
+              <Divider orientation='vertical' pos='absolute' left={0} top={0} bottom={0} />
+              <Stack w={panelWidth} h='100%' gap={0}>
+                <Group p='xs' gap={8} wrap='nowrap' miw={0}>
+                  {panelTool.icon}
+                  <Text component='h2' m={0} flex={1} miw={0} fz='h2' lh='h2' fw={700} truncate>
+                    {panelTool.label}
+                  </Text>
+                  <Tooltip label={`Close ${panelTool.label}`} position='left'>
+                    <ActionIcon
+                      variant='subtle'
+                      color='gray'
+                      size={36}
+                      radius='sm'
+                      aria-label={`Close ${panelTool.label}`}
+                      onClick={closeTool}
+                    >
+                      ×
+                    </ActionIcon>
+                  </Tooltip>
+                </Group>
+                <Divider />
+                <ScrollArea data-testid='workspace-tool-panel-content' type='auto' flex={1} miw={0} mih={0}>
+                  {panelTool.content}
+                </ScrollArea>
+              </Stack>
+            </>
           ) : null}
         </Box>
       ) : null}

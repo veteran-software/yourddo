@@ -1,3 +1,8 @@
+import {
+  getCompatibleAugmentTypes,
+  isColorAugmentSlot,
+  normaliseAugmentSlotType
+} from '../../shared/augments/compatibility.ts'
 import type {
   ClassifiedDinosaurBoneItem,
   CumulativeIngredient,
@@ -102,11 +107,9 @@ export const filterRecords = <T>(
   })
 }
 
-export const normaliseSlotType = (slot: string): string => slot.replace(/ Slot(?= |$)/, '')
+export const normaliseSlotType = normaliseAugmentSlotType
 
-const colorTypes = new Set(['Red', 'Blue', 'Yellow', 'Purple', 'Orange', 'Green', 'Colorless'])
-
-export const isColorSlot = (slot: string): boolean => colorTypes.has(normaliseSlotType(slot))
+export const isColorSlot = isColorAugmentSlot
 
 export const supportedSpecialSlotTypes = new Set([
   'Isle of Dread: Claw (Weapon)',
@@ -135,7 +138,7 @@ export const getCompatibleAugments = (
   if (!isColorSlot(type) && !supportedSpecialSlotTypes.has(type)) {
     throw new Error(`Unknown Dinosaur Bone slot contract: ${slotType}`)
   }
-  return indexes.augmentsByType.get(type) ?? []
+  return getCompatibleAugmentTypes(type).flatMap((augmentType) => indexes.augmentsByType.get(augmentType) ?? [])
 }
 
 export const getSelectedAugments = (

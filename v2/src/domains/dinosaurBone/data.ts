@@ -1,3 +1,4 @@
+import { colorAugmentTypes } from '../../shared/augments/compatibility.ts'
 import { loadDatasetFile, loadManualPayload } from '../../shared/data/loadDataset.ts'
 import type {
   CraftingRequirementsPayload,
@@ -233,7 +234,7 @@ export const parseColorAugments = (value: unknown): DinosaurBoneAugment[] => {
   if (!Array.isArray(value) || value.length === 0) {
     throw new InvalidDinosaurBoneDataError('master augment payload must be a non-empty array')
   }
-  const compatibleTypes = new Set(['Red', 'Blue', 'Yellow', 'Purple', 'Orange', 'Green', 'Colorless'])
+  const compatibleTypes = new Set<string>(colorAugmentTypes)
   const colorValues = value.filter(
     (augment) =>
       isRecord(augment) && typeof augment.augmentType === 'string' && compatibleTypes.has(augment.augmentType)

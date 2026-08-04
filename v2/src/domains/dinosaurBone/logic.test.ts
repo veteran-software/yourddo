@@ -26,13 +26,31 @@ const red: DinosaurBoneAugment = {
   effectsAdded: [{ name: 'Fire' }],
   requirements: []
 }
+const yellow: DinosaurBoneAugment = {
+  name: 'Yellow One',
+  augmentType: 'Yellow',
+  minimumLevel: 20,
+  requirements: []
+}
+const orange: DinosaurBoneAugment = {
+  name: 'Orange One',
+  augmentType: 'Orange',
+  minimumLevel: 28,
+  requirements: []
+}
+const colorless: DinosaurBoneAugment = {
+  name: 'Colorless One',
+  augmentType: 'Colorless',
+  minimumLevel: 8,
+  requirements: []
+}
 const claw: DinosaurBoneAugment = {
   name: 'Claw One',
   augmentType: 'Isle of Dread: Claw (Weapon)',
   effectsAdded: [{ name: 'Strength', modifier: 2 }],
   requirements: [{ name: 'Tooth', quantity: 100 }]
 }
-const indexes = buildDinosaurBoneIndexes([item], [claw], [red])
+const indexes = buildDinosaurBoneIndexes([item], [claw], [red, yellow, orange, colorless])
 
 describe('Dinosaur Bone logic', () => {
   it('classifies each approved family deterministically', () => {
@@ -73,9 +91,11 @@ describe('Dinosaur Bone logic', () => {
   })
 
   it('indexes and resolves explicit color and Dinosaur Bone compatibility without duplicate options', () => {
-    expect(getCompatibleAugments('Red', indexes)).toEqual([red])
+    const redOptions = getCompatibleAugments('Red', indexes)
+    expect(redOptions).toEqual([red, colorless])
+    expect(getCompatibleAugments('Orange Slot', indexes)).toEqual([orange, red, yellow, colorless])
     expect(getCompatibleAugments('Isle of Dread: Claw Slot (Weapon)', indexes)).toEqual([claw])
-    expect(new Set(getCompatibleAugments('Red', indexes).map(({ name }) => name)).size).toBe(1)
+    expect(new Set(redOptions.map(({ name }) => name)).size).toBe(redOptions.length)
   })
 
   it('rejects an unknown slot contract', () => {

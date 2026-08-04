@@ -74,7 +74,8 @@ const dinosaurAugments: DinosaurBoneAugment[] = [
   }
 ]
 const colorAugments: DinosaurBoneAugment[] = [
-  { name: 'Red One', augmentType: 'Red', effectsAdded: [{ name: 'Fire' }], requirements: [] }
+  { name: 'Red One', augmentType: 'Red', minimumLevel: 20, effectsAdded: [{ name: 'Fire' }], requirements: [] },
+  { name: 'Colorless One', augmentType: 'Colorless', minimumLevel: 8, requirements: [] }
 ]
 const data: DinosaurBoneData = {
   items,
@@ -128,6 +129,53 @@ describe('DinosaurBonePage', () => {
     expect(screen.getAllByText('Empty')).toHaveLength(2)
   })
 
+  it('groups derived colors and shows minimum levels in the searchable augment list', async () => {
+    loadMock.mockResolvedValue(data)
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })
+    await chooseItem(user)
+
+    await user.click(screen.getByRole('button', { name: 'Red Empty' }))
+    await user.click(await screen.findByRole('combobox', { name: 'Red augment' }))
+
+    expect(await screen.findByText('Red Augments')).toBeTruthy()
+    expect(screen.getByText('Colorless Augments')).toBeTruthy()
+    expect(screen.getByLabelText('Minimum level 20')).toBeTruthy()
+    expect(screen.getByLabelText('Minimum level 8')).toBeTruthy()
+  })
+
+  it('separates IoD and color effect filters and applies each only to its matching slots', async () => {
+    loadMock.mockResolvedValue(data)
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })
+    await chooseItem(user)
+
+    expect(screen.getByText('Isle of Dread (IoD) augment filters')).toBeTruthy()
+    expect(screen.getByText('Color augment filters')).toBeTruthy()
+
+    await user.click(screen.getByRole('combobox', { name: 'IoD augment effect filters' }))
+    expect(await screen.findByRole('option', { name: 'Strength' })).toBeTruthy()
+    expect(screen.queryByRole('option', { name: 'Fire' })).toBeNull()
+    await user.click(screen.getByRole('option', { name: 'Strength' }))
+    await user.keyboard('{Escape}')
+
+    await user.click(screen.getByRole('button', { name: 'Red Empty' }))
+    await user.click(await screen.findByRole('combobox', { name: 'Red augment' }))
+    expect(await screen.findByRole('option', { name: /Red One/ })).toBeTruthy()
+    await user.keyboard('{Escape}')
+
+    await user.click(screen.getByRole('combobox', { name: 'Color augment effect filters' }))
+    expect(await screen.findByRole('option', { name: 'Fire' })).toBeTruthy()
+    expect(screen.queryByRole('option', { name: 'Strength' })).toBeNull()
+    await user.click(screen.getByRole('option', { name: 'Fire' }))
+    await user.keyboard('{Escape}')
+
+    await user.click(screen.getByRole('combobox', { name: 'Isle of Dread: Claw (Weapon) augment' }))
+    expect(await screen.findByRole('option', { name: /Claw One/ })).toBeTruthy()
+  })
+
   it('uses separate workspace tools and preserves configuration while switching them', async () => {
     loadMock.mockResolvedValue(data)
     const user = userEvent.setup()
@@ -135,7 +183,7 @@ describe('DinosaurBonePage', () => {
     await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })
     await chooseItem(user)
     await user.click(screen.getByRole('combobox', { name: 'Isle of Dread: Claw (Weapon) augment' }))
-    await user.click(await screen.findByRole('option', { name: 'Claw One' }))
+    await user.click(await screen.findByRole('option', { name: /Claw One/ }))
 
     const finishedButton = screen.getByRole('button', { name: 'Finished Item' })
     expect(finishedButton.querySelector('img')?.getAttribute('src')).toContain('/testSwordIcon.png')
@@ -180,7 +228,7 @@ describe('DinosaurBonePage', () => {
     await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })
     await chooseItem(user)
     await user.click(screen.getByRole('combobox', { name: 'Isle of Dread: Claw (Weapon) augment' }))
-    await user.click(await screen.findByRole('option', { name: 'Claw One' }))
+    await user.click(await screen.findByRole('option', { name: /Claw One/ }))
     await user.click(screen.getByRole('combobox', { name: 'Item' }))
     await user.click(await screen.findByRole('option', { name: 'Dinosaur Bone Test Axe' }))
     expect(screen.queryByText('Claw One')).toBeNull()
