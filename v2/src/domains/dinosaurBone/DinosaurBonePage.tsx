@@ -45,6 +45,7 @@ import {
   formatEffect,
   getAugmentEffectNames,
   getAvailableSlots,
+  getColorAugmentMinimumLevelIncrease,
   getCompatibleAugments,
   getEffectNames,
   getFamilyLabel,
@@ -119,6 +120,33 @@ const ArtifactAbilityScoreNotice = ({
   )
 }
 
+const ColorAugmentLevelNotice = ({
+  item,
+  slots
+}: {
+  item: ClassifiedDinosaurBoneItem
+  slots: FinishedDinosaurBoneItem['slots']
+}) => {
+  const increase = getColorAugmentMinimumLevelIncrease(item, slots)
+  if (!increase) return null
+
+  return (
+    <Alert
+      color='blue'
+      variant='light'
+      title='Color augment minimum level'
+      role='status'
+      p='xs'
+      styles={{ title: { fontSize: 'var(--mantine-font-size-sm)' } }}
+    >
+      <Text size='xs'>
+        A selected color augment raises the item’s minimum level from {String(increase.itemLevel)} to{' '}
+        {String(increase.minimumLevel)}.
+      </Text>
+    </Alert>
+  )
+}
+
 const ItemSummary = ({ item }: { item: ClassifiedDinosaurBoneItem }) => {
   const metadata = [
     item.type,
@@ -188,6 +216,8 @@ const FinishedItemTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) 
     )
   }
   const selectedUpgradeEffects = finished.slots.flatMap(({ augment }) => augment?.effectsAdded ?? [])
+  const minimumLevelIncrease = getColorAugmentMinimumLevelIncrease(finished.item, finished.slots)
+  const displayedMinimumLevel = minimumLevelIncrease?.minimumLevel ?? finished.item.minLevel
   return (
     <Stack gap='md' p='md'>
       <Box>
@@ -196,7 +226,7 @@ const FinishedItemTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) 
         </Title>
         <Text c='dimmed' size='sm'>
           {finished.item.type}
-          {finished.item.minLevel !== undefined ? ` · Minimum level ${String(finished.item.minLevel)}` : ''}
+          {displayedMinimumLevel !== undefined ? ` · Minimum level ${String(displayedMinimumLevel)}` : ''}
         </Text>
       </Box>
       {finished.warnings.length > 0 ? (
@@ -215,11 +245,19 @@ const FinishedItemTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) 
         <Text fw={600} mb='xs'>
           Crafted additions by slot
         </Text>
-        <ArtifactAbilityScoreNotice item={finished.item} effects={selectedUpgradeEffects} />
+        <Stack gap='xs'>
+          <ArtifactAbilityScoreNotice item={finished.item} effects={selectedUpgradeEffects} />
+          <ColorAugmentLevelNotice item={finished.item} slots={finished.slots} />
+        </Stack>
         {finished.slots.some(({ augment }) => augment) ? (
           <Stack
             gap='md'
-            mt={isArtifactItem(finished.item) && selectedUpgradeEffects.some(isAbilityScoreEffect) ? 'sm' : 0}
+            mt={
+              (isArtifactItem(finished.item) && selectedUpgradeEffects.some(isAbilityScoreEffect)) ||
+              minimumLevelIncrease
+                ? 'sm'
+                : 0
+            }
           >
             {finished.slots
               .filter(({ augment }) => augment)
@@ -684,7 +722,10 @@ const DinosaurBonePage = () => {
                               </Paper>
                             ) : null}
                           </SimpleGrid>
-                          <ArtifactAbilityScoreNotice item={selectedItem} effects={selectedUpgradeEffects} />
+                          <Stack gap='xs'>
+                            <ArtifactAbilityScoreNotice item={selectedItem} effects={selectedUpgradeEffects} />
+                            <ColorAugmentLevelNotice item={selectedItem} slots={finished.slots} />
+                          </Stack>
                           <Accordion variant='separated' multiple defaultValue={slots.slice(0, 1).map(({ id }) => id)}>
                             {slots.map((slot) => {
                               const options = filteredOptionsBySlot.get(slot.id) ?? []

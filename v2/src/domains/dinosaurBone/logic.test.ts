@@ -8,6 +8,7 @@ import {
   classifyItems,
   filterRecords,
   getAvailableSlots,
+  getColorAugmentMinimumLevelIncrease,
   getCompatibleAugments,
   getSelectedAugments,
   isAbilityScoreEffect,
@@ -110,6 +111,21 @@ describe('Dinosaur Bone logic', () => {
     })
     expect(adjustEffectForArtifact(strength, item)).toBe(strength)
     expect(strength).toEqual({ name: 'Strength +14', modifier: 14, bonus: 'Enhancement' })
+  })
+
+  it('calculates minimum level increases from selected color augments only', () => {
+    const levelFifteenItem = { ...item, minLevel: 15 }
+    expect(
+      getColorAugmentMinimumLevelIncrease(levelFifteenItem, [
+        { slot: slot('Red'), augment: { ...red, minimumLevel: 20 } },
+        { slot: slot('Isle of Dread: Claw Slot (Weapon)'), augment: { ...claw, minimumLevel: 30 } }
+      ])
+    ).toEqual({ itemLevel: 15, minimumLevel: 20 })
+    expect(
+      getColorAugmentMinimumLevelIncrease(levelFifteenItem, [
+        { slot: slot('Red'), augment: { ...red, minimumLevel: 8 } }
+      ])
+    ).toBeUndefined()
   })
 
   it('indexes and resolves explicit color and Dinosaur Bone compatibility without duplicate options', () => {

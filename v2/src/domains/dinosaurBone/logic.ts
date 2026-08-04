@@ -12,6 +12,7 @@ import type {
   DinosaurBoneItem,
   DinosaurBoneRequirement,
   FinishedDinosaurBoneItem,
+  FinishedSlot,
   ItemFamily,
   SelectedAugments
 } from './dinosaurBone.types'
@@ -109,6 +110,31 @@ export const adjustEffectForArtifact = (effect: DinosaurBoneEffect, item: Dinosa
     name: nameMatch?.[2] ? `${nameMatch[1]} +${String(adjustedModifier)}` : effect.name,
     modifier: adjustedModifier
   }
+}
+
+const numericMinimumLevel = (value: string | number | undefined): number | undefined => {
+  if (typeof value === 'string' && !value.trim()) return undefined
+  const level = Number(value)
+  return Number.isFinite(level) ? level : undefined
+}
+
+export const getColorAugmentMinimumLevelIncrease = (
+  item: DinosaurBoneItem,
+  slots: readonly FinishedSlot[]
+): { itemLevel: number; minimumLevel: number } | undefined => {
+  const itemLevel = numericMinimumLevel(item.minLevel)
+  if (itemLevel === undefined) return undefined
+
+  const minimumLevel = Math.max(
+    itemLevel,
+    ...slots.flatMap(({ slot, augment }) => {
+      if (!augment || !isColorAugmentSlot(slot.augmentType)) return []
+      const augmentLevel = numericMinimumLevel(augment.minimumLevel)
+      return augmentLevel !== undefined ? [augmentLevel] : []
+    })
+  )
+
+  return minimumLevel > itemLevel ? { itemLevel, minimumLevel } : undefined
 }
 
 export const getFilterOptions = <T>(items: readonly T[], getValues: (item: T) => readonly string[]): string[] =>

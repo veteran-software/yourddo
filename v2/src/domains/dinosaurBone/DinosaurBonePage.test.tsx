@@ -53,6 +53,7 @@ const items: ClassifiedDinosaurBoneItem[] = [
     type: 'Long Sword',
     family: 'crafted-weapons',
     icon: 'testSwordIcon',
+    minLevel: 15,
     augments: slots,
     requirements: [{ name: 'Bone', quantity: 25 }],
     effectsAdded: [{ name: '+15 Enhancement Bonus' }]
@@ -205,6 +206,27 @@ describe('DinosaurBonePage', () => {
     const dialog = await screen.findByRole('dialog', { name: 'Finished Item' })
     expect(within(dialog).getByText('Artifact ability score bonus')).toBeTruthy()
     expect(within(dialog).getByText('Strength (3)')).toBeTruthy()
+  })
+
+  it('notes when a selected color augment raises the item minimum level', async () => {
+    loadMock.mockResolvedValue(data)
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })
+    await chooseItem(user)
+
+    expect(screen.queryByText('Color augment minimum level')).toBeNull()
+    await user.click(screen.getByRole('button', { name: 'Red Empty' }))
+    await user.click(await screen.findByRole('combobox', { name: 'Red augment' }))
+    await user.click(await screen.findByRole('option', { name: /Red One/ }))
+
+    expect(screen.getByText('Color augment minimum level')).toBeTruthy()
+    expect(screen.getByText(/raises the item’s minimum level from 15 to 20/)).toBeTruthy()
+
+    await user.click(screen.getByRole('button', { name: 'Finished Item' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Finished Item' })
+    expect(within(dialog).getByText(/Minimum level 20/)).toBeTruthy()
+    expect(within(dialog).getByText('Color augment minimum level')).toBeTruthy()
   })
 
   it('uses separate workspace tools and preserves configuration while switching them', async () => {
