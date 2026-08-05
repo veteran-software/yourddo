@@ -1,19 +1,13 @@
 // @vitest-environment jsdom
 
-import { Input, MantineProvider } from '@mantine/core'
+import { MantineProvider } from '@mantine/core'
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { validateViktraniumDataset } from '../data.ts'
-import {
-  calculateFinishedItem,
-  calculateIngredients,
-  getSelectedAugments
-} from '../logic.ts'
+import { calculateFinishedItem, calculateIngredients, getSelectedAugments } from '../logic.ts'
 import { createViktraniumTestPayload } from '../test-fixture.ts'
 import ExportTool from './ExportTool.tsx'
-import Error = Input.Error
-import Error = Input.Error
 
 beforeAll(() => {
   Element.prototype.scrollIntoView = vi.fn()

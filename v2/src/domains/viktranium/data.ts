@@ -1,4 +1,3 @@
-import { Input } from '@mantine/core'
 import { getCompatibleAugmentTypes } from '../../shared/augments/compatibility.ts'
 import { loadDataset } from '../../shared/data/loadDataset.ts'
 import {
@@ -25,7 +24,6 @@ import type {
   ViktraniumRequirement,
   ViktraniumSlot
 } from './viktranium.types.ts'
-import Error = Input.Error
 
 export class InvalidViktraniumDataError extends Error {
   constructor(message: string) {

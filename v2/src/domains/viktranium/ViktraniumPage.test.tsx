@@ -1,22 +1,12 @@
 // @vitest-environment jsdom
 
-import { Input, MantineProvider } from '@mantine/core'
-import { useOrientation } from '@mantine/hooks'
-import {
-  cleanup,
-  render,
-  screen,
-  waitFor,
-  within
-} from '@testing-library/react'
+import { MantineProvider } from '@mantine/core'
+import { cleanup, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { validateViktraniumDataset } from './data.ts'
 import { createViktraniumTestPayload } from './test-fixture.ts'
 import ViktraniumPage from './ViktraniumPage.tsx'
-import Error = Input.Error
-import ReturnType = useOrientation.ReturnType
-import Error = Input.Error
 
 let desktopViewport = false
 const loadMock = vi.hoisted(() => vi.fn())

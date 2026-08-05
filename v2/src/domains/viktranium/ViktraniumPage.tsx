@@ -8,7 +8,6 @@ import {
   Center,
   Container,
   Group,
-  Input,
   Loader,
   MultiSelect,
   Paper,
@@ -19,17 +18,10 @@ import {
   Text,
   Title
 } from '@mantine/core'
-import {
-  IconFileExport,
-  IconFileInfo,
-  IconListCheck,
-  IconListDetails
-} from '@tabler/icons-react'
+import { IconFileExport, IconFileInfo, IconListCheck, IconListDetails } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
 import AugmentSelect from '../../shared/augments/AugmentSelect.tsx'
-import {
-  UnsupportedManifestSchemaError
-} from '../../shared/data/loadDataset.ts'
+import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
 import EffectList from '../../shared/items/EffectList.tsx'
 import ItemIcon from '../../shared/items/ItemIcon.tsx'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
@@ -54,12 +46,7 @@ import CraftingBreakdownTool from './tools/CraftingBreakdownTool.tsx'
 import ExportTool from './tools/ExportTool.tsx'
 import FinishedItemTool from './tools/FinishedItemTool.tsx'
 import IngredientsTool from './tools/IngredientsTool.tsx'
-import type {
-  SelectedAugments,
-  ViktraniumData,
-  ViktraniumFamily
-} from './viktranium.types.ts'
-import Error = Input.Error
+import type { SelectedAugments, ViktraniumData, ViktraniumFamily } from './viktranium.types.ts'
 
 type DataState =
   { status: 'loading' } | { status: 'loaded'; data: ViktraniumData } | { status: 'error'; cause: unknown }

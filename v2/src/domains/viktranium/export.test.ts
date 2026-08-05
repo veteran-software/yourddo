@@ -1,10 +1,8 @@
-import { Input } from '@mantine/core'
 import { describe, expect, it } from 'vitest'
 import { validateViktraniumDataset } from './data.ts'
 import { formatViktraniumExport } from './export.ts'
 import { calculateFinishedItem, calculateIngredients, getSelectedAugments } from './logic.ts'
 import { createViktraniumTestPayload } from './test-fixture.ts'
-import Error = Input.Error
 
 const required = <T>(value: T | undefined): T => {
   if (value === undefined) throw new Error('Missing test fixture value')

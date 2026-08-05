@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
 
-import { Input, MantineProvider } from '@mantine/core'
+import { MantineProvider } from '@mantine/core'
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import AugmentSelect from './AugmentSelect.tsx'
-import Error = Input.Error
 
 beforeAll(() => {
   Element.prototype.scrollIntoView = vi.fn()

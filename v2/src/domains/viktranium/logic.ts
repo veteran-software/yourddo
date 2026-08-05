@@ -1,4 +1,3 @@
-import { Input } from '@mantine/core'
 import { getCompatibleAugmentTypes, isColorAugmentSlot } from '../../shared/augments/compatibility.ts'
 import type {
   CumulativeIngredient,
@@ -14,8 +13,6 @@ import type {
   ViktraniumRequirement,
   ViktraniumSlot
 } from './viktranium.types.ts'
-import Error = Input.Error
-import Error = Input.Error
 
 export const itemFamilies: readonly ViktraniumFamily[] = [
   'heroic-crafted-weapons',

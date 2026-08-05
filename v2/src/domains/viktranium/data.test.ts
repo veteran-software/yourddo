@@ -1,15 +1,7 @@
-import { Input } from '@mantine/core'
-import { useOrientation } from '@mantine/hooks'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadDataset } from '../../shared/data/loadDataset.ts'
 import { InvalidViktraniumDataError, loadViktraniumData, validateViktraniumDataset } from './data.ts'
 import { createViktraniumTestPayload } from './test-fixture.ts'
-import Error = Input.Error
-import ReturnType = useOrientation.ReturnType
-import ReturnType = useOrientation.ReturnType
-import ReturnType = useOrientation.ReturnType
-import ReturnType = useOrientation.ReturnType
-import ReturnType = useOrientation.ReturnType
 
 vi.mock('../../shared/data/loadDataset.ts', () => ({ loadDataset: vi.fn() }))
 

@@ -7,6 +7,7 @@ import MastermindPage from '../domains/mastermind/MastermindPage.tsx'
 import MonasteryOfTheScorpionPage from '../domains/monasteryOfTheScorpion/MonasteryOfTheScorpionPage.tsx'
 import NearlyCompletePage from '../domains/nearlyComplete/NearlyCompletePage.tsx'
 import NearlyFinishedPage from '../domains/nearlyFinished/NearlyFinishedPage.tsx'
+import SagaTrackerPage from '../domains/sagaTracker/SagaTrackerPage.tsx'
 import TotalChaosPage from '../domains/totalChaos/TotalChaosPage.tsx'
 import ViktraniumPage from '../domains/viktranium/ViktraniumPage.tsx'
 import NotFoundPage from '../shared/ui/NotFoundPage.tsx'
@@ -22,6 +23,7 @@ const AppRouter = () => (
       <Route path='/nearly-complete' element={<NearlyCompletePage />} />
       <Route path='/nearly-finished' element={<NearlyFinishedPage />} />
       <Route path='/reavers-fate' element={<MastermindPage />} />
+      <Route path='/saga-tracker' element={<SagaTrackerPage />} />
       <Route path='/monastery-of-the-scorpion' element={<MonasteryOfTheScorpionPage />} />
       <Route path='/total-chaos' element={<TotalChaosPage />} />
       <Route path='/viktranium-experiment' element={<ViktraniumPage />} />

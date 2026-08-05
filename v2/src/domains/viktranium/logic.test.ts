@@ -1,4 +1,3 @@
-import { Input } from '@mantine/core'
 import { describe, expect, it } from 'vitest'
 import { validateViktraniumDataset } from './data.ts'
 import {
@@ -11,7 +10,6 @@ import {
   getSelectedAugments
 } from './logic.ts'
 import { createViktraniumTestPayload } from './test-fixture.ts'
-import Error = Input.Error
 
 const setup = () => validateViktraniumDataset(createViktraniumTestPayload())
 const required = <T>(value: T | undefined): T => {

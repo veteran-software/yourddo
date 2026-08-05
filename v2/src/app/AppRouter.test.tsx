@@ -3,7 +3,6 @@
 import { MantineProvider } from '@mantine/core'
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { document } from 'postcss'
 import { MemoryRouter } from 'react-router-dom'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import AppRouter from './AppRouter'
@@ -26,6 +25,10 @@ vi.mock('../domains/nearlyComplete/NearlyCompletePage.tsx', () => ({
 
 vi.mock('../domains/nearlyFinished/NearlyFinishedPage.tsx', () => ({
   default: () => <h1>Nearly Finished domain</h1>
+}))
+
+vi.mock('../domains/sagaTracker/SagaTrackerPage.tsx', () => ({
+  default: () => <h1>Saga Tracker domain</h1>
 }))
 
 vi.mock('../domains/mastermind/MastermindPage.tsx', () => ({
@@ -97,6 +100,25 @@ afterAll(() => {
 })
 
 describe('AppRouter', () => {
+  it('renders Saga Tracker at its preserved route with active navigation and direct remount support', () => {
+    const firstRender = renderRoute('/saga-tracker')
+    expect(screen.getByRole('heading', { name: 'Saga Tracker domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Saga Tracker' }).getAttribute('aria-current')).toBe('page')
+
+    firstRender.unmount()
+    renderRoute('/saga-tracker')
+    expect(screen.getByRole('heading', { name: 'Saga Tracker domain' })).toBeTruthy()
+  })
+
+  it('closes mobile navigation after selecting Saga Tracker', async () => {
+    const user = userEvent.setup()
+    renderRoute('/')
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
+    await user.click(screen.getByRole('link', { name: 'Saga Tracker' }))
+    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Saga Tracker domain' })).toBeTruthy()
+  })
+
   it('renders Viktranium at its preserved route and supports a direct remount', () => {
     const firstRender = renderRoute('/viktranium-experiment')
     expect(screen.getByRole('heading', { name: 'Viktranium domain' })).toBeTruthy()
