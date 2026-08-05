@@ -8,6 +8,7 @@ import MonasteryOfTheScorpionPage from '../domains/monasteryOfTheScorpion/Monast
 import NearlyCompletePage from '../domains/nearlyComplete/NearlyCompletePage.tsx'
 import NearlyFinishedPage from '../domains/nearlyFinished/NearlyFinishedPage.tsx'
 import TotalChaosPage from '../domains/totalChaos/TotalChaosPage.tsx'
+import ViktraniumPage from '../domains/viktranium/ViktraniumPage.tsx'
 import NotFoundPage from '../shared/ui/NotFoundPage.tsx'
 import AppLayout from './AppLayout'
 
@@ -23,6 +24,7 @@ const AppRouter = () => (
       <Route path='/reavers-fate' element={<MastermindPage />} />
       <Route path='/monastery-of-the-scorpion' element={<MonasteryOfTheScorpionPage />} />
       <Route path='/total-chaos' element={<TotalChaosPage />} />
+      <Route path='/viktranium-experiment' element={<ViktraniumPage />} />
       <Route path='/the-key-to-the-mythal' element={<Navigate to='/reavers-fate' replace />} />
       <Route path='/toxic-treatment' element={<Navigate to='/monastery-of-the-scorpion' replace />} />
       <Route path='*' element={<NotFoundPage />} />

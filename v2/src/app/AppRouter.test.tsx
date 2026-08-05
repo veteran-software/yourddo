@@ -3,6 +3,7 @@
 import { MantineProvider } from '@mantine/core'
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { document } from 'postcss'
 import { MemoryRouter } from 'react-router-dom'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import AppRouter from './AppRouter'
@@ -37,6 +38,10 @@ vi.mock('../domains/monasteryOfTheScorpion/MonasteryOfTheScorpionPage.tsx', () =
 
 vi.mock('../domains/totalChaos/TotalChaosPage.tsx', () => ({
   default: () => <h1>Total Chaos domain</h1>
+}))
+
+vi.mock('../domains/viktranium/ViktraniumPage.tsx', () => ({
+  default: () => <h1>Viktranium domain</h1>
 }))
 
 const renderRoute = (path: string) =>
@@ -92,6 +97,25 @@ afterAll(() => {
 })
 
 describe('AppRouter', () => {
+  it('renders Viktranium at its preserved route and supports a direct remount', () => {
+    const firstRender = renderRoute('/viktranium-experiment')
+    expect(screen.getByRole('heading', { name: 'Viktranium domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Viktranium Experiment' }).getAttribute('aria-current')).toBe('page')
+
+    firstRender.unmount()
+    renderRoute('/viktranium-experiment')
+    expect(screen.getByRole('heading', { name: 'Viktranium domain' })).toBeTruthy()
+  })
+
+  it('closes mobile navigation after selecting Viktranium', async () => {
+    const user = userEvent.setup()
+    renderRoute('/')
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
+    await user.click(screen.getByRole('link', { name: 'Viktranium Experiment' }))
+    expect(screen.getByRole('heading', { name: 'Viktranium domain' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
+  })
+
   it('renders Dinosaur Bone at its preserved public route', () => {
     renderRoute('/dinosaur-bone')
 

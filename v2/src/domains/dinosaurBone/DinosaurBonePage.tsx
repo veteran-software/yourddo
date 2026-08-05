@@ -8,6 +8,7 @@ import {
   Center,
   Container,
   Group,
+  Input,
   Loader,
   MultiSelect,
   Paper,
@@ -17,18 +18,32 @@ import {
   Text,
   Title
 } from '@mantine/core'
-import { IconFileInfo, IconListCheck, IconListDetails } from '@tabler/icons-react'
+import {
+  IconFileInfo,
+  IconListCheck,
+  IconListDetails
+} from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
 import AugmentSelect from '../../shared/augments/AugmentSelect.tsx'
-import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
+import {
+  UnsupportedManifestSchemaError
+} from '../../shared/data/loadDataset.ts'
+import EffectList from '../../shared/items/EffectList.tsx'
+import ItemIcon from '../../shared/items/ItemIcon.tsx'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
-import { ArtifactAbilityScoreNotice, ColorAugmentLevelNotice } from './components/BuildNotices.tsx'
-import EffectList from './components/EffectList.tsx'
-import ItemIcon from './components/ItemIcon.tsx'
+import {
+  ArtifactAbilityScoreNotice,
+  ColorAugmentLevelNotice
+} from './components/BuildNotices.tsx'
 import ItemSummary from './components/ItemSummary.tsx'
 import { InvalidDinosaurBoneDataError, loadDinosaurBoneData } from './data.ts'
-import type { DinosaurBoneAugment, DinosaurBoneData, ItemFamily, SelectedAugments } from './dinosaurBone.types'
+import type {
+  DinosaurBoneAugment,
+  DinosaurBoneData,
+  ItemFamily,
+  SelectedAugments
+} from './dinosaurBone.types'
 import {
   adjustEffectForArtifact,
   calculateCumulativeIngredients,
@@ -49,6 +64,7 @@ import {
 import CraftingBreakdownTool from './tools/CraftingBreakdownTool.tsx'
 import FinishedItemTool from './tools/FinishedItemTool.tsx'
 import IngredientsTool from './tools/IngredientsTool.tsx'
+import Error = Input.Error
 
 type DataState =
   { status: 'loading' } | { status: 'loaded'; data: DinosaurBoneData } | { status: 'error'; cause: unknown }

@@ -1,6 +1,6 @@
 import { Alert, Box, Divider, List, Stack, Text, Title } from '@mantine/core'
+import EffectList from '../../../shared/items/EffectList.tsx'
 import { ArtifactAbilityScoreNotice, ColorAugmentLevelNotice } from '../components/BuildNotices.tsx'
-import EffectList from '../components/EffectList.tsx'
 import type { FinishedDinosaurBoneItem } from '../dinosaurBone.types.ts'
 import {
   adjustEffectForArtifact,

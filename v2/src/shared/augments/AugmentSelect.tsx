@@ -3,7 +3,9 @@ import { useMemo } from 'react'
 import { getCompatibleAugmentTypes } from './compatibility.ts'
 
 export interface AugmentSelectOption {
-  name: string
+  value?: string
+  label?: string
+  name?: string
   augmentType: string
   minimumLevel?: string | number
   minLevel?: string | number
@@ -24,6 +26,9 @@ const minimumLevel = (augment: AugmentSelectOption): string => {
   return value === undefined || value === '' ? 'unknown' : String(value)
 }
 
+const optionValue = (augment: AugmentSelectOption): string => augment.value ?? augment.name ?? ''
+const optionLabel = (augment: AugmentSelectOption): string => augment.label ?? augment.name ?? augment.value ?? ''
+
 const AugmentSelect = <T extends AugmentSelectOption>({
   label,
   slotType,
@@ -38,8 +43,8 @@ const AugmentSelect = <T extends AugmentSelectOption>({
     () => options.filter((augment) => compatibleTypes.includes(augment.augmentType)),
     [compatibleTypes, options]
   )
-  const optionsByName = useMemo(
-    () => new Map(compatibleOptions.map((augment) => [augment.name, augment])),
+  const optionsByValue = useMemo(
+    () => new Map(compatibleOptions.map((augment) => [optionValue(augment), augment])),
     [compatibleOptions]
   )
   const selectData = useMemo(
@@ -47,7 +52,7 @@ const AugmentSelect = <T extends AugmentSelectOption>({
       compatibleTypes.flatMap((augmentType) => {
         const items = compatibleOptions
           .filter((augment) => augment.augmentType === augmentType)
-          .map((augment) => ({ value: augment.name, label: augment.name }))
+          .map((augment) => ({ value: optionValue(augment), label: optionLabel(augment) }))
         return items.length > 0 ? [{ group: `${augmentType} Augments`, items }] : []
       }),
     [compatibleOptions, compatibleTypes]
@@ -65,7 +70,7 @@ const AugmentSelect = <T extends AugmentSelectOption>({
       maxDropdownHeight={300}
       nothingFoundMessage={nothingFoundMessage}
       renderOption={({ option }) => {
-        const augment = optionsByName.get(option.value)
+        const augment = optionsByValue.get(option.value)
         const level = augment ? minimumLevel(augment) : 'unknown'
         return (
           <Group justify='space-between' wrap='nowrap' w='100%'>
