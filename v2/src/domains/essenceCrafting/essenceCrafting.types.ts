@@ -120,6 +120,7 @@ export interface EssenceRules {
 
 export interface EssenceCraftingIndexes {
   enhancementById: ReadonlyMap<string, EssenceEnhancement>
+  enhancementsByPlacement: ReadonlyMap<EssenceAffixPosition, ReadonlyMap<string, readonly EssenceEnhancement[]>>
   ingredientById: ReadonlyMap<string, EssenceIngredient>
   augmentById: ReadonlyMap<string, EssenceAugment>
   minimumLevelRecipeByLevel: ReadonlyMap<number, Readonly<Record<EssenceBinding, EssenceMinimumLevelRecipe>>>

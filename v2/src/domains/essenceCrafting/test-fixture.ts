@@ -2,7 +2,10 @@ export const createEssenceCraftingTestPayload = () => ({
   schemaVersion: 1,
   itemCategories: [
     { id: 'weapon', displayName: 'Weapon' },
-    { id: 'ring', displayName: 'Ring' }
+    { id: 'ring', displayName: 'Ring' },
+    { id: 'helmet', displayName: 'Helmet' },
+    { id: 'trinket', displayName: 'Trinket' },
+    { id: 'armor', displayName: 'Armor' }
   ],
   augmentTypes: [
     { id: 'red', displayName: 'Red' },
@@ -38,6 +41,54 @@ export const createEssenceCraftingTestPayload = () => ({
           modifier: { kind: 'fixed', unit: 'percent', value: 5 }
         }
       ],
+      recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
+    },
+    {
+      id: 'enhancement-alpha-prefix',
+      displayName: 'Alpha Prefix',
+      minimumItemLevel: 1,
+      placements: [{ position: 'prefix', itemCategoryIds: ['weapon'] }],
+      effects: [{ id: 'effect-alpha-prefix', displayName: 'Alpha Prefix Effect' }],
+      recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
+    },
+    {
+      id: 'enhancement-zebra-prefix',
+      displayName: 'Zebra Prefix',
+      minimumItemLevel: 1,
+      placements: [{ position: 'prefix', itemCategoryIds: ['weapon'] }],
+      effects: [{ id: 'effect-zebra-prefix', displayName: 'Zebra Prefix Effect' }],
+      recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
+    },
+    {
+      id: 'enhancement-level-two-suffix',
+      displayName: 'Level Two Suffix',
+      minimumItemLevel: 2,
+      placements: [{ position: 'suffix', itemCategoryIds: ['weapon'] }],
+      effects: [{ id: 'effect-level-two-suffix', displayName: 'Level Two Suffix Effect' }],
+      recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
+    },
+    {
+      id: 'enhancement-ring-extra',
+      displayName: 'Ring Extra',
+      minimumItemLevel: 1,
+      placements: [{ position: 'extra', itemCategoryIds: ['ring'] }],
+      effects: [{ id: 'effect-ring-extra', displayName: 'Ring Extra Effect' }],
+      recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
+    },
+    {
+      id: 'enhancement-headgear-extra',
+      displayName: 'Headgear Extra',
+      minimumItemLevel: 1,
+      placements: [{ position: 'extra', itemCategoryIds: ['helmet'] }],
+      effects: [{ id: 'effect-headgear-extra', displayName: 'Headgear Extra Effect' }],
+      recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
+    },
+    {
+      id: 'enhancement-trinket-extra',
+      displayName: 'Trinket Extra',
+      minimumItemLevel: 1,
+      placements: [{ position: 'extra', itemCategoryIds: ['trinket'] }],
+      effects: [{ id: 'effect-trinket-extra', displayName: 'Trinket Extra Effect' }],
       recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
     }
   ],

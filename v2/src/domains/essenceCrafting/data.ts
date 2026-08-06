@@ -383,6 +383,21 @@ const buildIndexes = (
   maximum: number
 ): EssenceCraftingIndexes => {
   const enhancementById = new Map(enhancements.map((enhancement) => [enhancement.id, enhancement]))
+  const enhancementsByPlacement = new Map<EssenceAffixPosition, Map<string, EssenceEnhancement[]>>()
+  for (const enhancement of enhancements) {
+    for (const placement of enhancement.placements) {
+      let enhancementsByCategory = enhancementsByPlacement.get(placement.position)
+      if (!enhancementsByCategory) {
+        enhancementsByCategory = new Map()
+        enhancementsByPlacement.set(placement.position, enhancementsByCategory)
+      }
+      for (const itemCategoryId of placement.itemCategoryIds) {
+        const placementEnhancements = enhancementsByCategory.get(itemCategoryId)
+        if (placementEnhancements) placementEnhancements.push(enhancement)
+        else enhancementsByCategory.set(itemCategoryId, [enhancement])
+      }
+    }
+  }
   const ingredientById = new Map(ingredients.map((ingredient) => [ingredient.id, ingredient]))
   const augmentById = new Map(augments.map((augment) => [augment.id, augment]))
   const recipeById = new Map(recipes.map((recipe) => [recipe.id, recipe]))
@@ -425,7 +440,7 @@ const buildIndexes = (
       invalid(`unreferenced minimum-level recipe: ${recipe.id}`)
     }
   }
-  return { enhancementById, ingredientById, augmentById, minimumLevelRecipeByLevel }
+  return { enhancementById, enhancementsByPlacement, ingredientById, augmentById, minimumLevelRecipeByLevel }
 }
 
 export const validateEssenceCraftingDataset = (value: unknown): EssenceCraftingData => {
