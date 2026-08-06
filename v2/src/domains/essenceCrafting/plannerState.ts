@@ -1,3 +1,4 @@
+import type { AugmentEffectFilterMode } from './augmentRules.ts'
 import type { EquipmentSlotId } from './equipment.ts'
 import type { EssenceCraftingData } from './essenceCrafting.types.ts'
 
@@ -7,6 +8,8 @@ export interface PlannedAugmentSlot {
   id: PlannedAugmentSlotId
   augmentSlotTypeId: string
   augmentId: string | null
+  selectedEffectNames: string[]
+  filterMode: AugmentEffectFilterMode
 }
 
 export interface PlannedItem {
