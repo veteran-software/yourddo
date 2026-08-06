@@ -90,6 +90,75 @@ export const createEssenceCraftingTestPayload = () => ({
       placements: [{ position: 'extra', itemCategoryIds: ['trinket'] }],
       effects: [{ id: 'effect-trinket-extra', displayName: 'Trinket Extra Effect' }],
       recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
+    },
+    {
+      id: 'enhancement-display-fixed',
+      displayName: 'Display Fixed',
+      minimumItemLevel: 1,
+      placements: [{ position: 'suffix', itemCategoryIds: ['armor'] }],
+      effects: [
+        {
+          id: 'effect-display-fixed',
+          displayName: 'Fixed Effect',
+          bonusTypeId: 'bonus-enhancement',
+          modifier: { kind: 'fixed', unit: 'number', value: 3 }
+        }
+      ],
+      recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
+    },
+    {
+      id: 'enhancement-display-scaled',
+      displayName: 'Display Scaled',
+      minimumItemLevel: 1,
+      placements: [{ position: 'suffix', itemCategoryIds: ['armor'] }],
+      effects: [
+        {
+          id: 'effect-display-scaled',
+          displayName: 'Scaled Effect',
+          modifier: {
+            kind: 'by-item-level',
+            unit: 'number',
+            bands: [
+              { minimumItemLevel: 1, maximumItemLevel: 1, value: 1 },
+              { minimumItemLevel: 2, maximumItemLevel: 2, value: 2 }
+            ]
+          }
+        }
+      ],
+      recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
+    },
+    {
+      id: 'enhancement-display-mixed',
+      displayName: 'Display Mixed',
+      minimumItemLevel: 1,
+      placements: [{ position: 'suffix', itemCategoryIds: ['armor'] }],
+      effects: [
+        {
+          id: 'effect-display-negative',
+          displayName: 'Negative Effect',
+          modifier: { kind: 'fixed', unit: 'number', value: -2 }
+        },
+        {
+          id: 'effect-display-fractional',
+          displayName: 'Fractional Effect',
+          modifier: { kind: 'fixed', unit: 'number', value: 0.125 }
+        },
+        {
+          id: 'effect-display-dice',
+          displayName: 'Dice Effect',
+          modifier: { kind: 'fixed', unit: 'dice', value: 3, die: 'd6' }
+        },
+        {
+          id: 'effect-display-missing-level',
+          displayName: 'Missing Level Effect',
+          modifier: {
+            kind: 'by-item-level',
+            unit: 'number',
+            bands: [{ minimumItemLevel: 1, maximumItemLevel: 1, value: 9 }]
+          }
+        }
+      ],
+      recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
     }
   ],
   ingredients: [
