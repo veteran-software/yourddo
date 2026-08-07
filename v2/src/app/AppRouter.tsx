@@ -9,6 +9,7 @@ import MonasteryOfTheScorpionPage from '../domains/monasteryOfTheScorpion/Monast
 import NearlyCompletePage from '../domains/nearlyComplete/NearlyCompletePage.tsx'
 import NearlyFinishedPage from '../domains/nearlyFinished/NearlyFinishedPage.tsx'
 import SagaTrackerPage from '../domains/sagaTracker/SagaTrackerPage.tsx'
+import ShadowCryptPage from '../domains/shadowCrypt/ShadowCryptPage.tsx'
 import ShroudPage from '../domains/shroud/ShroudPage.tsx'
 import TotalChaosPage from '../domains/totalChaos/TotalChaosPage.tsx'
 import ViktraniumPage from '../domains/viktranium/ViktraniumPage.tsx'
@@ -28,6 +29,7 @@ const AppRouter = () => (
       <Route path='/reavers-fate' element={<MastermindPage />} />
       <Route path='/saga-tracker' element={<SagaTrackerPage />} />
       <Route path='/monastery-of-the-scorpion' element={<MonasteryOfTheScorpionPage />} />
+      <Route path='/the-shadow-crypt' element={<ShadowCryptPage />} />
       <Route path='/the-shroud' element={<ShroudPage />} />
       <Route path='/total-chaos' element={<TotalChaosPage />} />
       <Route path='/viktranium-experiment' element={<ViktraniumPage />} />

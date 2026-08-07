@@ -35,6 +35,10 @@ vi.mock('../domains/sagaTracker/SagaTrackerPage.tsx', () => ({
   default: () => <h1>Saga Tracker domain</h1>
 }))
 
+vi.mock('../domains/shadowCrypt/ShadowCryptPage.tsx', () => ({
+  default: () => <h1>Shadow Crypt domain</h1>
+}))
+
 vi.mock('../domains/mastermind/MastermindPage.tsx', () => ({
   default: () => <h1>Mastermind domain</h1>
 }))
@@ -376,6 +380,20 @@ describe('AppRouter', () => {
     firstRender.unmount()
     renderRoute('/the-shroud')
     expect(screen.getByRole('heading', { name: 'Shroud domain' })).toBeTruthy()
+  })
+
+  it('renders The Shadow Crypt at its preserved public route without falling through to not found', () => {
+    const firstRender = renderRoute('/the-shadow-crypt')
+
+    expect(screen.getByRole('heading', { name: 'Shadow Crypt domain' })).toBeTruthy()
+    expect(screen.queryByRole('heading', { name: 'Page not found' })).toBeNull()
+    const link = screen.getByRole('link', { name: 'The Shadow Crypt' })
+    expect(link.getAttribute('href')).toBe('/the-shadow-crypt')
+    expect(link.getAttribute('aria-current')).toBe('page')
+
+    firstRender.unmount()
+    renderRoute('/the-shadow-crypt')
+    expect(screen.getByRole('heading', { name: 'Shadow Crypt domain' })).toBeTruthy()
   })
 
   it('renders the not-found page for an unknown route', () => {
