@@ -15,6 +15,10 @@ vi.mock('../domains/dinosaurBone/DinosaurBonePage.tsx', () => ({
   default: () => <h1>Dinosaur Bone domain</h1>
 }))
 
+vi.mock('../domains/essenceCrafting/EssenceCraftingPage.tsx', () => ({
+  default: () => <h1>Essence Crafting domain</h1>
+}))
+
 vi.mock('../domains/incrediblePotential/IncrediblePotentialPage.tsx', () => ({
   default: () => <h1>Incredible Potential domain</h1>
 }))
@@ -100,6 +104,15 @@ afterAll(() => {
 })
 
 describe('AppRouter', () => {
+  it('renders Essence Crafting at its public route with active navigation', () => {
+    renderRoute('/essence-crafting')
+
+    expect(screen.getByRole('heading', { name: 'Essence Crafting domain' })).toBeTruthy()
+    const link = screen.getByRole('link', { name: 'Essence Crafting' })
+    expect(link.getAttribute('href')).toBe('/essence-crafting')
+    expect(link.getAttribute('aria-current')).toBe('page')
+  })
+
   it('renders Saga Tracker at its preserved route with active navigation and direct remount support', () => {
     const firstRender = renderRoute('/saga-tracker')
     expect(screen.getByRole('heading', { name: 'Saga Tracker domain' })).toBeTruthy()

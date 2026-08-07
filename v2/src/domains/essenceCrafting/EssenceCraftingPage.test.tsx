@@ -1,10 +1,11 @@
 // @vitest-environment jsdom
 
 import { MantineProvider } from '@mantine/core'
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadEssenceCraftingData, validateEssenceCraftingDataset } from './data.ts'
+import { EQUIPMENT_SLOTS } from './equipment.ts'
 import EssenceCraftingPage from './EssenceCraftingPage.tsx'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
 
@@ -44,9 +45,9 @@ const selectOption = async (user: ReturnType<typeof userEvent.setup>, label: str
 
 const getSelect = (label: string) => screen.getByRole<HTMLInputElement>('combobox', { name: label })
 
-const activateMainHand = async (user: ReturnType<typeof userEvent.setup>) => {
-  await user.click(await screen.findByRole('button', { name: 'Plan a Main Hand' }))
-  await screen.findByRole('heading', { name: 'Main Hand' })
+const activateSlot = async (user: ReturnType<typeof userEvent.setup>, slotLabel: string) => {
+  await user.click(await screen.findByRole('button', { name: `Plan ${slotLabel}` }))
+  await screen.findByTestId(`planned-item-${slotLabel.toLowerCase().replaceAll(' ', '-')}`)
 }
 
 beforeAll(() => {
@@ -115,13 +116,17 @@ describe('EssenceCraftingPage', () => {
     expect(await screen.findByRole('combobox', { name: 'Master minimum level' })).toBeTruthy()
   })
 
-  it('renders the loaded page title without requiring a route', async () => {
+  it('renders every supported equipment slot in a responsive main-workspace selector', async () => {
     renderPage()
 
-    expect(await screen.findByTestId('workspace-layout')).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Essence Crafting' })).toBeTruthy()
-    expect(screen.getByText(/Plan one crafted item/)).toBeTruthy()
-    expect(screen.getByRole('combobox', { name: 'Master minimum level' })).toBeTruthy()
+    const selector = await screen.findByTestId('equipment-slot-selector')
+    expect(selector.tagName).toBe('DIV')
+    expect(screen.queryByRole('complementary')).toBeNull()
+    expect(within(selector).getAllByRole('button')).toHaveLength(EQUIPMENT_SLOTS.length)
+    for (const slot of EQUIPMENT_SLOTS) {
+      const control = within(selector).getByRole('button', { name: `Plan ${slot.label}` })
+      expect(control.getAttribute('aria-pressed')).toBe('false')
+    }
   })
 
   it('retries a failed CDN load', async () => {
@@ -138,92 +143,131 @@ describe('EssenceCraftingPage', () => {
     expect(vi.mocked(loadEssenceCraftingData)).toHaveBeenCalledTimes(2)
   })
 
-  it('updates the master minimum level', async () => {
+  it('activates multiple slots and keeps cards in catalog order regardless of activation order', async () => {
     const user = userEvent.setup()
     renderPage()
 
+    await activateSlot(user, 'Ring 2')
+    await activateSlot(user, 'Main Hand')
+    await activateSlot(user, 'Off Hand')
+
+    expect(screen.getAllByTestId(/^planned-item-/).map((card) => card.dataset.testid)).toEqual([
+      'planned-item-main-hand',
+      'planned-item-off-hand',
+      'planned-item-ring-2'
+    ])
+    expect(screen.getByRole('button', { name: 'Remove Ring 2' }).getAttribute('aria-pressed')).toBe('true')
+  })
+
+  it('keeps Ring 1 and Ring 2 independently configurable', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Ring 1')
+    await activateSlot(user, 'Ring 2')
+    await selectOption(user, 'Minimum level for Ring 1', '2')
+
+    expect(getSelect('Minimum level for Ring 1').value).toBe('2')
+    expect(getSelect('Minimum level for Ring 2').value).toBe('Inherit master minimum level (1)')
+    expect(screen.getByRole('heading', { name: 'Ring 1 planned item' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Ring 2 planned item' })).toBeTruthy()
+  })
+
+  it('deactivates one slot only after confirmation without changing other items', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await activateSlot(user, 'Off Hand')
+    await user.click(screen.getByRole('button', { name: 'Remove Off Hand' }))
+
+    expect(screen.getByRole('dialog', { name: 'Remove Off Hand?' })).toBeTruthy()
+    await user.click(screen.getByRole('button', { name: 'Remove item' }))
+
+    expect(screen.getByTestId('planned-item-main-hand')).toBeTruthy()
+    expect(screen.queryByTestId('planned-item-off-hand')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Plan Off Hand' }).getAttribute('aria-pressed')).toBe('false')
+  })
+
+  it('collapses and expands an individual item card accessibly', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    const collapse = screen.getByRole('button', { name: 'Collapse Main Hand planned item' })
+    await user.click(collapse)
+
+    expect(collapse.getAttribute('aria-expanded')).toBe('false')
+    expect(screen.queryByRole('combobox', { name: 'Prefix for Main Hand' })).toBeNull()
+
+    const expand = screen.getByRole('button', { name: 'Expand Main Hand planned item' })
+    await user.click(expand)
+    expect(expand.getAttribute('aria-expanded')).toBe('true')
+    expect(screen.getByRole('combobox', { name: 'Prefix for Main Hand' })).toBeTruthy()
+  })
+
+  it('inherits the master minimum level until an item override is selected', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
     await selectOption(user, 'Master minimum level', '2')
+    expect(screen.getByText('Effective minimum level: 2')).toBeTruthy()
 
-    expect(getSelect('Master minimum level').value).toBe('2')
-  })
-
-  it('activates the intentionally limited Main Hand slot', async () => {
-    const user = userEvent.setup()
-    renderPage()
-
-    await activateMainHand(user)
-
-    expect(screen.queryByText(/only a Main Hand item/)).toBeNull()
-    expect(screen.getByRole('combobox', { name: 'Prefix' })).toBeTruthy()
-    expect(screen.queryByRole('button', { name: 'Plan a Main Hand' })).toBeNull()
-  })
-
-  it('selects a prefix by stable enhancement ID', async () => {
-    const user = userEvent.setup()
-    renderPage()
-
-    await activateMainHand(user)
-    await selectOption(user, 'Prefix', 'Alpha Prefix')
-
-    expect(getSelect('Prefix').value).toBe('Alpha Prefix')
-  })
-
-  it('selects an eligible suffix after raising the master minimum level', async () => {
-    const user = userEvent.setup()
-    renderPage()
-
-    await activateMainHand(user)
-    await selectOption(user, 'Master minimum level', '2')
-    await selectOption(user, 'Suffix', 'Level Two Suffix')
-
-    expect(getSelect('Suffix').value).toBe('Level Two Suffix')
-  })
-
-  it('enables Extra when the Mark of House Cannith is selected', async () => {
-    const user = userEvent.setup()
-    renderPage()
-
-    await activateMainHand(user)
-    expect(getSelect('Extra').disabled).toBe(true)
-
-    await user.click(screen.getByRole('switch', { name: 'Mark of House Cannith' }))
-
-    expect(getSelect('Extra').disabled).toBe(false)
-    await selectOption(user, 'Extra', 'Main Hand Extra')
-    expect(getSelect('Extra').value).toBe('Main Hand Extra')
-  })
-
-  it('clears Extra when the Mark of House Cannith is disabled', async () => {
-    const user = userEvent.setup()
-    renderPage()
-
-    await activateMainHand(user)
-    const mark = screen.getByRole('switch', { name: 'Mark of House Cannith' })
-    await user.click(mark)
-    await selectOption(user, 'Extra', 'Main Hand Extra')
-    await user.click(mark)
-
-    expect(getSelect('Extra').disabled).toBe(true)
-    expect(getSelect('Extra').value).toBe('')
-  })
-
-  it('shows the effective item minimum level', async () => {
-    const user = userEvent.setup()
-    renderPage()
-
-    await activateMainHand(user)
-    await selectOption(user, 'Master minimum level', '2')
-
+    await selectOption(user, 'Master minimum level', '1')
+    await selectOption(user, 'Minimum level for Main Hand', '2')
     expect(screen.getByText('Effective minimum level: 2')).toBeTruthy()
   })
 
-  it('renders a split-prefix enhancement as one prefix option', async () => {
+  it('resets one item without deactivating it or changing other active items', async () => {
     const user = userEvent.setup()
     renderPage()
 
-    await activateMainHand(user)
-    await user.click(screen.getByRole('combobox', { name: 'Prefix' }))
+    await activateSlot(user, 'Main Hand')
+    await activateSlot(user, 'Off Hand')
+    await selectOption(user, 'Minimum level for Main Hand', '2')
+    await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
+    await user.click(screen.getByRole('button', { name: 'Reset Main Hand planned item' }))
 
-    expect(await screen.findAllByRole('option', { name: 'Split Prefix Test' })).toHaveLength(1)
+    expect(screen.getByTestId('planned-item-main-hand')).toBeTruthy()
+    expect(screen.getByTestId('planned-item-off-hand')).toBeTruthy()
+    expect(getSelect('Minimum level for Main Hand').value).toBe('Inherit master minimum level (1)')
+    expect(getSelect('Prefix for Main Hand').value).toBe('')
+  })
+
+  it('requires confirmation before resetting the complete plan', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await user.click(screen.getByRole('button', { name: 'Reset plan' }))
+
+    const dialog = screen.getByRole('dialog', { name: 'Reset the entire plan?' })
+    expect(dialog).toBeTruthy()
+    await user.keyboard('{Escape}')
+    expect(screen.getByTestId('planned-item-main-hand')).toBeTruthy()
+
+    await user.click(screen.getByRole('button', { name: 'Reset plan' }))
+    await user.click(
+      within(screen.getByRole('dialog', { name: 'Reset the entire plan?' })).getByRole('button', { name: 'Reset plan' })
+    )
+    expect(screen.queryByTestId('planned-item-main-hand')).toBeNull()
+    expect(screen.getByText('Select an equipment slot to begin crafting.')).toBeTruthy()
+  })
+
+  it('uses the pure transition engine for Mark and affix changes without render-phase corrections', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    expect(getSelect('Extra for Main Hand').disabled).toBe(true)
+
+    await user.click(screen.getByRole('switch', { name: 'Mark of House Cannith for Main Hand' }))
+    expect(getSelect('Extra for Main Hand').disabled).toBe(false)
+    await selectOption(user, 'Extra for Main Hand', 'Main Hand Extra')
+    await user.click(screen.getByRole('switch', { name: 'Mark of House Cannith for Main Hand' }))
+
+    expect(getSelect('Extra for Main Hand').disabled).toBe(true)
+    expect(getSelect('Extra for Main Hand').value).toBe('')
   })
 })

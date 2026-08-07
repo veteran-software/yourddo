@@ -1,7 +1,22 @@
-import { Alert, Box, Button, Center, Loader, Paper, Select, Stack, Text, Title } from '@mantine/core'
+import {
+  Alert,
+  Box,
+  Button,
+  Center,
+  Group,
+  Loader,
+  Modal,
+  Paper,
+  Select,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title
+} from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { InvalidEssenceCraftingDataError, loadEssenceCraftingData } from './data.ts'
+import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
 import type { EssenceCraftingData } from './essenceCrafting.types.ts'
 import PlannedItemEditor from './PlannedItemEditor.tsx'
 import { createEmptyEssencePlan, type EssencePlanState } from './plannerState.ts'
@@ -11,6 +26,9 @@ type DataState =
   | { status: 'loading' }
   | { status: 'loaded'; data: EssenceCraftingData; plan: EssencePlanState }
   | { status: 'error'; kind: 'load' | 'invalid'; cause: unknown }
+
+type Confirmation =
+  { type: 'deactivate-equipment-slot'; equipmentSlotId: EquipmentSlotId } | { type: 'reset-plan' } | null
 
 const getErrorContent = (kind: Extract<DataState, { status: 'error' }>['kind']) =>
   kind === 'invalid'
@@ -26,6 +44,7 @@ const getErrorContent = (kind: Extract<DataState, { status: 'error' }>['kind']) 
 const EssenceCraftingPage = () => {
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
   const [loadAttempt, setLoadAttempt] = useState(0)
+  const [confirmation, setConfirmation] = useState<Confirmation>(null)
   const minimumLevelOptions = useMemo(() => {
     if (dataState.status !== 'loaded') return []
 
@@ -71,7 +90,18 @@ const EssenceCraftingPage = () => {
     setLoadAttempt((attempt) => attempt + 1)
   }
 
-  const mainHandItem = dataState.status === 'loaded' ? dataState.plan.itemsBySlotId['main-hand'] : undefined
+  const confirm = () => {
+    if (confirmation?.type === 'deactivate-equipment-slot') {
+      dispatch({ type: 'deactivate-equipment-slot', equipmentSlotId: confirmation.equipmentSlotId })
+    }
+    if (confirmation?.type === 'reset-plan') dispatch({ type: 'reset-plan' })
+    setConfirmation(null)
+  }
+
+  const confirmationSlot =
+    confirmation?.type === 'deactivate-equipment-slot'
+      ? EQUIPMENT_SLOTS.find(({ id }) => id === confirmation.equipmentSlotId)
+      : undefined
 
   return (
     <WorkspaceLayout>
@@ -79,7 +109,7 @@ const EssenceCraftingPage = () => {
         <Stack gap='lg'>
           <Stack gap={4}>
             <Title order={1}>Essence Crafting</Title>
-            <Text c='dimmed'>Plan one crafted item by choosing its minimum level and eligible affixes.</Text>
+            <Text c='dimmed'>Choose equipment slots, then configure the eligible affixes for each planned item.</Text>
           </Stack>
 
           {dataState.status === 'loading' ? (
@@ -114,53 +144,140 @@ const EssenceCraftingPage = () => {
               <Paper withBorder p={{ base: 'md', sm: 'lg' }}>
                 <Stack gap='md'>
                   <Title order={2} size='h3'>
-                    Item minimum level
+                    Plan settings
                   </Title>
-                  <Select
-                    label='Master minimum level'
-                    data={minimumLevelOptions}
-                    value={String(dataState.plan.masterMinimumLevel)}
-                    onChange={(value) => {
-                      const minimumLevel = Number(value)
-                      if (Number.isInteger(minimumLevel)) {
-                        dispatch({ type: 'set-master-minimum-level', minimumLevel })
-                      }
-                    }}
-                    allowDeselect={false}
-                  />
+                  <Group align='end' justify='space-between' wrap='wrap'>
+                    <Select
+                      label='Master minimum level'
+                      data={minimumLevelOptions}
+                      value={String(dataState.plan.masterMinimumLevel)}
+                      onChange={(value) => {
+                        const minimumLevel = Number(value)
+                        if (Number.isInteger(minimumLevel)) {
+                          dispatch({ type: 'set-master-minimum-level', minimumLevel })
+                        }
+                      }}
+                      allowDeselect={false}
+                      w={{ base: '100%', sm: 260 }}
+                    />
+                    <Button
+                      color='red'
+                      variant='light'
+                      disabled={dataState.plan.activeSlotIds.length === 0}
+                      onClick={() => {
+                        setConfirmation({ type: 'reset-plan' })
+                      }}
+                    >
+                      Reset plan
+                    </Button>
+                  </Group>
                 </Stack>
               </Paper>
 
-              {mainHandItem ? (
-                <PlannedItemEditor
-                  data={dataState.data}
-                  item={mainHandItem}
-                  masterMinimumLevel={dataState.plan.masterMinimumLevel}
-                  onAction={dispatch}
-                />
-              ) : (
-                <Paper withBorder p={{ base: 'md', sm: 'lg' }}>
-                  <Stack gap='sm' align='flex-start'>
+              <Paper withBorder p={{ base: 'md', sm: 'lg' }}>
+                <Stack gap='md'>
+                  <Stack gap={4}>
                     <Title order={2} size='h3'>
-                      Start a planned item
+                      Equipment slots
                     </Title>
                     <Text c='dimmed' size='sm'>
-                      This first slice intentionally supports only a Main Hand item.
+                      Select every equipment position you want to plan. Each position has an independent item.
                     </Text>
-                    <Button
-                      onClick={() => {
-                        dispatch({ type: 'activate-equipment-slot', equipmentSlotId: 'main-hand' })
-                      }}
-                    >
-                      Plan a Main Hand
-                    </Button>
                   </Stack>
-                </Paper>
-              )}
+                  <SimpleGrid
+                    cols={{ base: 2, xs: 3, sm: 4, lg: 5 }}
+                    spacing='xs'
+                    data-testid='equipment-slot-selector'
+                  >
+                    {EQUIPMENT_SLOTS.map((slot) => {
+                      const active = dataState.plan.activeSlotIds.includes(slot.id)
+                      return (
+                        <Button
+                          key={slot.id}
+                          variant={active ? 'filled' : 'light'}
+                          aria-label={`${active ? 'Remove' : 'Plan'} ${slot.label}`}
+                          aria-pressed={active}
+                          onClick={() => {
+                            if (active) {
+                              setConfirmation({ type: 'deactivate-equipment-slot', equipmentSlotId: slot.id })
+                            } else {
+                              dispatch({ type: 'activate-equipment-slot', equipmentSlotId: slot.id })
+                            }
+                          }}
+                        >
+                          {slot.label}
+                        </Button>
+                      )
+                    })}
+                  </SimpleGrid>
+                </Stack>
+              </Paper>
+
+              <Stack gap='md' data-testid='active-planned-items'>
+                {dataState.plan.activeSlotIds.length === 0 ? (
+                  <Paper withBorder p={{ base: 'md', sm: 'lg' }}>
+                    <Text c='dimmed'>Select an equipment slot to begin crafting.</Text>
+                  </Paper>
+                ) : null}
+
+                {dataState.plan.activeSlotIds.map((equipmentSlotId) => {
+                  const item = dataState.plan.itemsBySlotId[equipmentSlotId]
+                  if (!item) return null
+
+                  return (
+                    <PlannedItemEditor
+                      key={equipmentSlotId}
+                      data={dataState.data}
+                      equipmentSlotId={equipmentSlotId}
+                      item={item}
+                      masterMinimumLevel={dataState.plan.masterMinimumLevel}
+                      collapsed={dataState.plan.collapsedSlotIds.includes(equipmentSlotId)}
+                      onAction={dispatch}
+                      onRequestDeactivate={(slotId) => {
+                        setConfirmation({ type: 'deactivate-equipment-slot', equipmentSlotId: slotId })
+                      }}
+                    />
+                  )
+                })}
+              </Stack>
             </>
           ) : null}
         </Stack>
       </Box>
+
+      <Modal
+        opened={confirmation !== null}
+        onClose={() => {
+          setConfirmation(null)
+        }}
+        title={
+          confirmation?.type === 'reset-plan'
+            ? 'Reset the entire plan?'
+            : `Remove ${confirmationSlot?.label ?? 'item'}?`
+        }
+        centered
+      >
+        <Stack gap='md'>
+          <Text>
+            {confirmation?.type === 'reset-plan'
+              ? 'This removes every planned item and all of their selections.'
+              : `This removes the ${confirmationSlot?.label ?? 'selected'} item and all of its selections.`}
+          </Text>
+          <Group justify='flex-end'>
+            <Button
+              variant='default'
+              onClick={() => {
+                setConfirmation(null)
+              }}
+            >
+              Cancel
+            </Button>
+            <Button color='red' onClick={confirm}>
+              {confirmation?.type === 'reset-plan' ? 'Reset plan' : 'Remove item'}
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </WorkspaceLayout>
   )
 }
