@@ -1,4 +1,26 @@
-import { Alert, Badge, Button, Group, Paper, Select, SimpleGrid, Stack, Switch, Text, Title } from '@mantine/core'
+import {
+  Alert,
+  Badge,
+  Button,
+  Group,
+  MultiSelect,
+  Paper,
+  Radio,
+  Select,
+  SimpleGrid,
+  Stack,
+  Switch,
+  Text,
+  Title
+} from '@mantine/core'
+import AugmentSelect from '../../shared/augments/AugmentSelect.tsx'
+import {
+  filterCompatibleAugmentsByEffects,
+  getAugmentSlotMinimumItemLevel,
+  getAvailableAugmentEffectNames,
+  getAvailableAugmentSlotTypes,
+  isSelectedAugmentStillValid
+} from './augmentRules.ts'
 import { getAvailableEnhancementChoices, hasCannithMarkExtraAffixPermission } from './enhancementEligibility.ts'
 import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
 import type { EssenceCraftingData, EssenceEnhancement } from './essenceCrafting.types.ts'
@@ -37,6 +59,62 @@ const PlannedItemEditor = ({
   const suffixChoices = getAvailableEnhancementChoices(data, equipmentSlotId, 'suffix', effectiveMinimumLevel)
   const extraChoices = getAvailableEnhancementChoices(data, equipmentSlotId, 'extra', effectiveMinimumLevel)
   const extraEnabled = hasCannithMarkExtraAffixPermission(data, item.hasCannithMark)
+  const availableAugmentSlotTypes = getAvailableAugmentSlotTypes(
+    data,
+    equipmentSlotId,
+    item.augmentSlots.map(({ augmentSlotTypeId }) => augmentSlotTypeId)
+  )
+  const augmentTypeDisplayNameById = new Map(data.augmentTypes.map(({ id, displayName }) => [id, displayName]))
+  const augmentSlotEditors = item.augmentSlots.flatMap((augmentSlot) => {
+    const augmentSlotType = data.rules.augmentSlotTypes.find(({ id }) => id === augmentSlot.augmentSlotTypeId)
+    const minimumItemLevel = getAugmentSlotMinimumItemLevel(data, augmentSlot.augmentSlotTypeId)
+    if (!augmentSlotType || minimumItemLevel === undefined) return []
+
+    const selectedAugmentIsValid = isSelectedAugmentStillValid(
+      data,
+      augmentSlot.augmentId,
+      equipmentSlotId,
+      augmentSlot.augmentSlotTypeId,
+      effectiveMinimumLevel
+    )
+    const filteredCompatibleAugments = filterCompatibleAugmentsByEffects(
+      data,
+      augmentSlot.augmentSlotTypeId,
+      augmentSlot.selectedEffectNames,
+      augmentSlot.filterMode
+    ).filter((augment) =>
+      isSelectedAugmentStillValid(
+        data,
+        augment.id,
+        equipmentSlotId,
+        augmentSlot.augmentSlotTypeId,
+        effectiveMinimumLevel
+      )
+    )
+    const selectedAugment = selectedAugmentIsValid
+      ? data.indexes.augmentById.get(augmentSlot.augmentId ?? '')
+      : undefined
+    const compatibleAugments =
+      selectedAugment && !filteredCompatibleAugments.some(({ id }) => id === selectedAugment.id)
+        ? [...filteredCompatibleAugments, selectedAugment]
+        : filteredCompatibleAugments
+
+    return [
+      {
+        augmentSlot,
+        augmentSlotType,
+        minimumItemLevel,
+        effectNames: getAvailableAugmentEffectNames(data, augmentSlot.augmentSlotTypeId),
+        selectedAugmentIsValid,
+        options: compatibleAugments.map((augment) => ({
+          value: augment.id,
+          label: augment.displayName,
+          augmentType: augmentTypeDisplayNameById.get(augment.augmentTypeId) ?? augment.augmentTypeId,
+          minimumLevel: augment.minimumItemLevel
+        }))
+      }
+    ]
+  })
   const { minimum, maximum } = data.rules.supportedItemLevels
   const minimumLevelOptions = [
     { value: 'inherit', label: `Inherit master minimum level (${String(masterMinimumLevel)})` },
@@ -175,6 +253,150 @@ const PlannedItemEditor = ({
                 disabled={!extraEnabled}
               />
             </SimpleGrid>
+
+            <Stack gap='sm'>
+              <Stack gap={4}>
+                <Title order={3} size='h4'>
+                  Augment slots
+                </Title>
+                <Text c='dimmed' size='sm'>
+                  Add each eligible slot color once, then choose a compatible augment.
+                </Text>
+              </Stack>
+
+              <Select
+                label={`Add an augment slot to ${label}`}
+                placeholder={
+                  availableAugmentSlotTypes.length > 0
+                    ? 'Choose a slot color'
+                    : 'All eligible slot colors have been added'
+                }
+                data={availableAugmentSlotTypes.map(({ id, displayName }) => ({ value: id, label: displayName }))}
+                value={null}
+                onChange={(augmentSlotTypeId) => {
+                  if (augmentSlotTypeId !== null) {
+                    onAction({ type: 'add-augment-slot', equipmentSlotId, augmentSlotTypeId })
+                  }
+                }}
+                disabled={availableAugmentSlotTypes.length === 0}
+                searchable
+                w={{ base: '100%', sm: 320 }}
+              />
+
+              {augmentSlotEditors.length === 0 ? (
+                <Text c='dimmed' size='sm' role='status'>
+                  No augment slots have been added for {label}.
+                </Text>
+              ) : null}
+
+              {augmentSlotEditors.map(
+                ({ augmentSlot, augmentSlotType, minimumItemLevel, effectNames, options, selectedAugmentIsValid }) => {
+                  const slotLabel = `${augmentSlotType.displayName} augment slot`
+
+                  return (
+                    <Paper key={augmentSlot.id} withBorder p='sm' data-testid={`augment-slot-editor-${augmentSlot.id}`}>
+                      <Stack gap='sm'>
+                        <Group justify='space-between' align='flex-start' wrap='wrap' gap='xs'>
+                          <Stack gap={2}>
+                            <Title order={4} size='h5'>
+                              {slotLabel}
+                            </Title>
+                            <Text c='dimmed' size='xs'>
+                              This slot requires minimum level {minimumItemLevel}. The effective minimum level is{' '}
+                              {effectiveMinimumLevel}.
+                            </Text>
+                          </Stack>
+                          <Button
+                            color='red'
+                            variant='subtle'
+                            size='xs'
+                            aria-label={`Remove ${slotLabel} from ${label}`}
+                            onClick={() => {
+                              onAction({ type: 'remove-augment-slot', equipmentSlotId, augmentSlotId: augmentSlot.id })
+                            }}
+                          >
+                            Remove slot
+                          </Button>
+                        </Group>
+
+                        <SimpleGrid cols={{ base: 1, sm: 2 }} spacing='sm'>
+                          <Stack gap='xs'>
+                            <MultiSelect
+                              label={`Filter effects for ${slotLabel} on ${label}`}
+                              placeholder='Filter by effects'
+                              data={effectNames}
+                              value={augmentSlot.selectedEffectNames}
+                              onChange={(effectNames) => {
+                                onAction({
+                                  type: 'set-augment-filters',
+                                  equipmentSlotId,
+                                  augmentSlotId: augmentSlot.id,
+                                  effectNames
+                                })
+                              }}
+                              searchable
+                              clearable
+                              nothingFoundMessage='No compatible effects found.'
+                            />
+                            <Radio.Group
+                              label={`Filter mode for ${slotLabel} on ${label}`}
+                              value={augmentSlot.filterMode}
+                              onChange={(filterMode) => {
+                                onAction({
+                                  type: 'set-augment-filter-mode',
+                                  equipmentSlotId,
+                                  augmentSlotId: augmentSlot.id,
+                                  filterMode
+                                })
+                              }}
+                            >
+                              <Group gap='md' mt={4}>
+                                <Radio value='or' label='Match any effect' />
+                                <Radio value='and' label='Match all effects' />
+                              </Group>
+                            </Radio.Group>
+                          </Stack>
+
+                          <Stack gap='xs'>
+                            <AugmentSelect
+                              label={`Augment for ${slotLabel} on ${label}`}
+                              slotType={augmentSlotType.displayName}
+                              options={options}
+                              value={selectedAugmentIsValid ? augmentSlot.augmentId : null}
+                              onChange={(augmentId) => {
+                                onAction(
+                                  augmentId === null
+                                    ? { type: 'clear-augment', equipmentSlotId, augmentSlotId: augmentSlot.id }
+                                    : {
+                                        type: 'select-augment',
+                                        equipmentSlotId,
+                                        augmentSlotId: augmentSlot.id,
+                                        augmentId
+                                      }
+                                )
+                              }}
+                              nothingFoundMessage='No compatible augments match these filters and minimum level.'
+                            />
+                            <Button
+                              variant='subtle'
+                              size='xs'
+                              w='fit-content'
+                              disabled={augmentSlot.augmentId === null}
+                              aria-label={`Clear augment for ${slotLabel} on ${label}`}
+                              onClick={() => {
+                                onAction({ type: 'clear-augment', equipmentSlotId, augmentSlotId: augmentSlot.id })
+                              }}
+                            >
+                              Clear selected augment
+                            </Button>
+                          </Stack>
+                        </SimpleGrid>
+                      </Stack>
+                    </Paper>
+                  )
+                }
+              )}
+            </Stack>
           </Stack>
         ) : null}
       </Stack>

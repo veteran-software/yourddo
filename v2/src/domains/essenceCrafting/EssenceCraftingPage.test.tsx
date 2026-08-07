@@ -20,6 +20,12 @@ vi.mock('./data.ts', async (importOriginal) => {
 
 const createPageData = () => {
   const payload = createEssenceCraftingTestPayload()
+  const augmentEffect = (id: string, displayName: string) => ({
+    id,
+    displayName,
+    bonusTypeId: 'bonus-enhancement',
+    modifier: { kind: 'fixed' as const, unit: 'number' as const, value: 1 }
+  })
   payload.enhancements.push({
     id: 'enhancement-main-hand-extra',
     displayName: 'Main Hand Extra',
@@ -28,6 +34,32 @@ const createPageData = () => {
     effects: [{ id: 'effect-main-hand-extra', displayName: 'Main Hand Extra Effect' }],
     recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
   })
+  payload.augments.push(
+    {
+      id: 'augment-colorless-utility',
+      displayName: 'Colorless Utility',
+      augmentTypeId: 'colorless',
+      minimumItemLevel: 1,
+      effects: [augmentEffect('effect-utility', 'Utility')]
+    },
+    {
+      id: 'augment-red-strength',
+      displayName: 'Ruby of Strength +1',
+      augmentTypeId: 'red',
+      minimumItemLevel: 2,
+      effects: [augmentEffect('effect-strength', 'Strength')]
+    },
+    {
+      id: 'augment-red-versatility',
+      displayName: 'Ruby of Versatility +1',
+      augmentTypeId: 'red',
+      minimumItemLevel: 2,
+      effects: [
+        augmentEffect('effect-versatility-charisma', 'Charisma'),
+        augmentEffect('effect-versatility-strength', 'Strength')
+      ]
+    }
+  )
   return validateEssenceCraftingDataset(payload)
 }
 
@@ -38,7 +70,7 @@ const renderPage = () =>
     </MantineProvider>
   )
 
-const selectOption = async (user: ReturnType<typeof userEvent.setup>, label: string, option: string) => {
+const selectOption = async (user: ReturnType<typeof userEvent.setup>, label: string, option: string | RegExp) => {
   await user.click(await screen.findByRole('combobox', { name: label }))
   await user.click(await screen.findByRole('option', { name: option }))
 }
@@ -48,6 +80,10 @@ const getSelect = (label: string) => screen.getByRole<HTMLInputElement>('combobo
 const activateSlot = async (user: ReturnType<typeof userEvent.setup>, slotLabel: string) => {
   await user.click(await screen.findByRole('button', { name: `Plan ${slotLabel}` }))
   await screen.findByTestId(`planned-item-${slotLabel.toLowerCase().replaceAll(' ', '-')}`)
+}
+
+const addAugmentSlot = async (user: ReturnType<typeof userEvent.setup>, slotLabel: string, slotColor: string) => {
+  await selectOption(user, `Add an augment slot to ${slotLabel}`, slotColor)
 }
 
 beforeAll(() => {
@@ -269,5 +305,66 @@ describe('EssenceCraftingPage', () => {
 
     expect(getSelect('Extra for Main Hand').disabled).toBe(true)
     expect(getSelect('Extra for Main Hand').value).toBe('')
+  })
+
+  it('adds one eligible augment slot, prevents a duplicate color, explains its level impact, and removes it', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    expect(screen.getByRole('status').textContent).toBe('No augment slots have been added for Main Hand.')
+
+    await addAugmentSlot(user, 'Main Hand', 'Red')
+
+    expect(screen.getByTestId('augment-slot-editor-augment-slot:red')).toBeTruthy()
+    expect(screen.getByText('This slot requires minimum level 2. The effective minimum level is 2.')).toBeTruthy()
+    expect(screen.getByText('Effective minimum level: 2')).toBeTruthy()
+    expect(getSelect('Add an augment slot to Main Hand').disabled).toBe(true)
+    expect(screen.getByRole('combobox', { name: 'Augment for Red augment slot on Main Hand' })).toBeTruthy()
+    expect(screen.getByRole('combobox', { name: 'Filter effects for Red augment slot on Main Hand' })).toBeTruthy()
+    expect(screen.getByText('Filter mode for Red augment slot on Main Hand')).toBeTruthy()
+
+    await user.click(screen.getByRole('button', { name: 'Remove Red augment slot from Main Hand' }))
+    expect(screen.getByRole('status').textContent).toBe('No augment slots have been added for Main Hand.')
+  })
+
+  it('selects a compatible augment by stable ID and clears it through the shared selector', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await addAugmentSlot(user, 'Main Hand', 'Red')
+    const augmentLabel = 'Augment for Red augment slot on Main Hand'
+
+    await selectOption(user, augmentLabel, /Ruby of Charisma \+1/)
+    expect(getSelect(augmentLabel).value).toBe('Ruby of Charisma +1')
+
+    await user.click(screen.getByRole('button', { name: 'Clear augment for Red augment slot on Main Hand' }))
+    expect(getSelect(augmentLabel).value).toBe('')
+  })
+
+  it('filters compatible augments by effects in OR and AND modes', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await addAugmentSlot(user, 'Main Hand', 'Red')
+    const filterLabel = 'Filter effects for Red augment slot on Main Hand'
+    const augmentLabel = 'Augment for Red augment slot on Main Hand'
+
+    await selectOption(user, filterLabel, 'Charisma')
+    await selectOption(user, filterLabel, 'Strength')
+
+    await user.click(getSelect(augmentLabel))
+    expect(await screen.findByRole('option', { name: /Ruby of Charisma \+1/ })).toBeTruthy()
+    expect(screen.getByRole('option', { name: /Ruby of Strength \+1/ })).toBeTruthy()
+    expect(screen.getByRole('option', { name: /Ruby of Versatility \+1/ })).toBeTruthy()
+    await user.keyboard('{Escape}')
+
+    await user.click(screen.getByRole('radio', { name: 'Match all effects' }))
+    await user.click(getSelect(augmentLabel))
+    expect(await screen.findByRole('option', { name: /Ruby of Versatility \+1/ })).toBeTruthy()
+    expect(screen.queryByRole('option', { name: /Ruby of Charisma \+1/ })).toBeNull()
+    expect(screen.queryByRole('option', { name: /Ruby of Strength \+1/ })).toBeNull()
   })
 })
