@@ -122,7 +122,8 @@ describe('AppRouter', () => {
     renderRoute('/')
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('link', { name: 'Essence Crafting' }))
+    await user.click(screen.getByRole('button', { name: 'Crafting' }))
+    await user.click(screen.getByRole('link', { name: 'Essence Crafting', hidden: true }))
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Essence Crafting domain' })).toBeTruthy()
@@ -143,7 +144,8 @@ describe('AppRouter', () => {
     const user = userEvent.setup()
     renderRoute('/')
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('link', { name: 'Saga Tracker' }))
+    await user.click(screen.getByRole('button', { name: 'Tools' }))
+    await user.click(screen.getByRole('link', { name: 'Saga Tracker', hidden: true }))
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Saga Tracker domain' })).toBeTruthy()
   })
@@ -162,7 +164,8 @@ describe('AppRouter', () => {
     const user = userEvent.setup()
     renderRoute('/')
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('link', { name: 'Viktranium Experiment' }))
+    await user.click(screen.getByRole('button', { name: 'Crafting' }))
+    await user.click(screen.getByRole('link', { name: 'Viktranium Experiment', hidden: true }))
     expect(screen.getByRole('heading', { name: 'Viktranium domain' })).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
   })
@@ -190,7 +193,8 @@ describe('AppRouter', () => {
     renderRoute('/')
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('link', { name: 'Dinosaur Bone Crafting' }))
+    await user.click(screen.getByRole('button', { name: 'Crafting' }))
+    await user.click(screen.getByRole('link', { name: 'Dinosaur Bone Crafting', hidden: true }))
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Dinosaur Bone domain' })).toBeTruthy()
@@ -221,7 +225,8 @@ describe('AppRouter', () => {
     renderRoute('/')
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    const link = screen.getByRole('link', { name: 'Incredible Potential' })
+    await user.click(screen.getByRole('button', { name: 'Crafting' }))
+    const link = screen.getByRole('link', { name: 'Incredible Potential', hidden: true })
     link.focus()
     await user.keyboard('{Enter}')
 
@@ -262,7 +267,7 @@ describe('AppRouter', () => {
 
     const sidebarViewport = screen.getByRole('navigation').querySelector<HTMLElement>('[data-scrollarea-viewport]')
     expect(sidebarViewport?.style.overflowY).toBe('scroll')
-    expect(screen.getByRole('link', { name: 'Total Chaos' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Puzzle Solvers' })).toBeTruthy()
   })
 
   it('renders the Nearly Finished domain at its preserved public route', () => {
@@ -280,7 +285,8 @@ describe('AppRouter', () => {
     renderRoute('/')
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('link', { name: 'Nearly Finished' }))
+    await user.click(screen.getByRole('button', { name: 'Crafting' }))
+    await user.click(screen.getByRole('link', { name: 'Nearly Finished', hidden: true }))
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Nearly Finished domain' })).toBeTruthy()
@@ -308,7 +314,9 @@ describe('AppRouter', () => {
     renderRoute('/the-key-to-the-mythal')
 
     expect(await screen.findByRole('heading', { name: 'Mastermind domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: "The Reaver's Fate" }).getAttribute('aria-current')).toBe('page')
+    expect(screen.getByRole('link', { name: "The Reaver's Fate", hidden: true }).getAttribute('aria-current')).toBe(
+      'page'
+    )
   })
 
   it('renders Monastery at its preserved public route and supports a direct remount', () => {
@@ -369,7 +377,8 @@ describe('AppRouter', () => {
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
     expect(screen.getByRole('button', { name: 'Close navigation' })).toBeTruthy()
 
-    const link = screen.getByRole('link', { name: 'Cauldron of Cadence' })
+    await user.click(screen.getByRole('button', { name: 'Crafting' }))
+    const link = screen.getByRole('link', { name: 'Cauldron of Cadence', hidden: true })
     link.focus()
     await user.keyboard('{Enter}')
 
@@ -382,7 +391,8 @@ describe('AppRouter', () => {
     renderRoute('/')
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    const link = screen.getByRole('link', { name: "The Reaver's Fate" })
+    await user.click(screen.getByRole('button', { name: 'Puzzle Solvers' }))
+    const link = screen.getByRole('link', { name: "The Reaver's Fate", hidden: true })
     link.focus()
     await user.keyboard('{Enter}')
 
@@ -396,7 +406,8 @@ describe('AppRouter', () => {
     renderRoute('/')
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    const link = screen.getByRole('link', { name: 'Monastery of the Scorpion' })
+    await user.click(screen.getByRole('button', { name: 'Puzzle Solvers' }))
+    const link = screen.getByRole('link', { name: 'Monastery of the Scorpion', hidden: true })
     link.focus()
     await user.keyboard('{Enter}')
 
@@ -410,7 +421,8 @@ describe('AppRouter', () => {
     renderRoute('/')
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    const link = screen.getByRole('link', { name: 'Total Chaos' })
+    await user.click(screen.getByRole('button', { name: 'Puzzle Solvers' }))
+    const link = screen.getByRole('link', { name: 'Total Chaos', hidden: true })
     link.focus()
     await user.keyboard('{Enter}')
 
