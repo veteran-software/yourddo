@@ -13,14 +13,20 @@ import {
   Text,
   Title
 } from '@mantine/core'
+import { IconBasket, IconFileExport, IconListDetails } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
+import WorkspaceLayout, { type WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { InvalidEssenceCraftingDataError, loadEssenceCraftingData } from './data.ts'
 import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
 import type { EssenceCraftingData } from './essenceCrafting.types.ts'
-import PlannedItemEditor from './PlannedItemEditor.tsx'
+import ExportTool from './ExportTool.tsx'
+import IngredientsTool from './IngredientsTool.tsx'
+import { calculatePlanMaterials } from './materialCalculations.ts'
+import { PlannedItemEditor } from './PlannedItemEditor.tsx'
 import { createEmptyEssencePlan, type EssencePlanState } from './plannerState.ts'
 import { type EssencePlanAction, transitionEssencePlan } from './plannerTransitions.ts'
+import RecipesTool from './RecipesTool.tsx'
 
 type DataState =
   | { status: 'loading' }
@@ -45,6 +51,7 @@ const EssenceCraftingPage = () => {
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
   const [loadAttempt, setLoadAttempt] = useState(0)
   const [confirmation, setConfirmation] = useState<Confirmation>(null)
+  const [binding, setBinding] = useState<'bound' | 'unbound'>('bound')
   const minimumLevelOptions = useMemo(() => {
     if (dataState.status !== 'loaded') return []
 
@@ -54,6 +61,59 @@ const EssenceCraftingPage = () => {
       return { value: String(minimumLevel), label: String(minimumLevel) }
     })
   }, [dataState])
+  const planMaterials = useMemo(
+    () => (dataState.status === 'loaded' ? calculatePlanMaterials(dataState.data, dataState.plan, binding) : undefined),
+    [binding, dataState]
+  )
+  const tools = useMemo<readonly WorkspaceTool[]>(
+    () =>
+      dataState.status === 'loaded' && planMaterials
+        ? [
+            {
+              id: 'recipes',
+              label: 'Recipes',
+              icon: <IconListDetails stroke={2} />,
+              content: (
+                <RecipesTool
+                  binding={binding}
+                  data={dataState.data}
+                  plan={dataState.plan}
+                  planMaterials={planMaterials}
+                  onBindingChange={setBinding}
+                />
+              )
+            },
+            {
+              id: 'ingredients',
+              label: 'Ingredients',
+              icon: <IconBasket stroke={2} />,
+              content: (
+                <IngredientsTool
+                  binding={binding}
+                  data={dataState.data}
+                  plan={dataState.plan}
+                  planMaterials={planMaterials}
+                  onBindingChange={setBinding}
+                />
+              )
+            },
+            {
+              id: 'export',
+              label: 'Export',
+              icon: <IconFileExport stroke={2} />,
+              content: (
+                <ExportTool
+                  binding={binding}
+                  data={dataState.data}
+                  plan={dataState.plan}
+                  planMaterials={planMaterials}
+                />
+              )
+            }
+          ]
+        : [],
+    [binding, dataState, planMaterials]
+  )
 
   useEffect(() => {
     let active = true
@@ -104,7 +164,7 @@ const EssenceCraftingPage = () => {
       : undefined
 
   return (
-    <WorkspaceLayout>
+    <WorkspaceLayout tools={tools}>
       <Box p={{ base: 'md', sm: 'xl' }}>
         <Stack gap='lg'>
           <Stack gap={4}>

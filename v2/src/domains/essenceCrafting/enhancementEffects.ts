@@ -110,6 +110,14 @@ const getEffectDisplayData = (
   }
 }
 
+/** Resolves arbitrary effect records for compact display at an item's effective minimum level. */
+export const resolveEssenceEffects = (
+  data: EssenceCraftingData,
+  effects: readonly EssenceEffect[],
+  effectiveItemMinimumLevel: number
+): readonly EssenceEffectDisplayData[] =>
+  effects.map((effect) => getEffectDisplayData(data, effect, effectiveItemMinimumLevel))
+
 /**
  * Resolves an enhancement into display-ready data without applying placement,
  * availability, planner, or recipe rules. Split prefixes remain one result
@@ -126,7 +134,7 @@ export const resolveEnhancementEffects = (
   return {
     status: 'resolved',
     enhancement: { id: enhancement.id, displayName: enhancement.displayName },
-    effects: enhancement.effects.map((effect) => getEffectDisplayData(data, effect, effectiveItemMinimumLevel))
+    effects: resolveEssenceEffects(data, enhancement.effects, effectiveItemMinimumLevel)
   }
 }
 

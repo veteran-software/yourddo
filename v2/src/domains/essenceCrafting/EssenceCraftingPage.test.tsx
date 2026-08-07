@@ -18,6 +18,8 @@ vi.mock('./data.ts', async (importOriginal) => {
   }
 })
 
+let desktopViewport = false
+
 const createPageData = () => {
   const payload = createEssenceCraftingTestPayload()
   const augmentEffect = (id: string, displayName: string) => ({
@@ -86,6 +88,26 @@ const addAugmentSlot = async (user: ReturnType<typeof userEvent.setup>, slotLabe
   await selectOption(user, `Add an augment slot to ${slotLabel}`, slotColor)
 }
 
+const openTool = async (user: ReturnType<typeof userEvent.setup>, name: 'Recipes' | 'Ingredients' | 'Export') => {
+  await screen.findByRole('combobox', { name: 'Master minimum level' })
+
+  if (desktopViewport) {
+    await user.click(within(screen.getByTestId('workspace-tool-rail')).getByRole('button', { name }))
+    return screen.findByRole('complementary', { name })
+  }
+
+  await user.click(within(screen.getByTestId('workspace-mobile-tools')).getByRole('button', { name }))
+  return screen.findByRole('dialog', { name })
+}
+
+const openIngredients = (user: ReturnType<typeof userEvent.setup>) => openTool(user, 'Ingredients')
+const openRecipes = (user: ReturnType<typeof userEvent.setup>) => openTool(user, 'Recipes')
+
+const totalQuantity = (ingredientId: string) =>
+  within(screen.getByTestId(`ingredients-total-materials-${ingredientId}`)).getByRole('cell', {
+    name: /\d+/
+  }).textContent
+
 beforeAll(() => {
   Object.defineProperty(Element.prototype, 'scrollIntoView', {
     configurable: true,
@@ -95,7 +117,7 @@ beforeAll(() => {
   vi.stubGlobal(
     'matchMedia',
     vi.fn((query: string) => ({
-      matches: false,
+      matches: desktopViewport && query.includes('75em'),
       media: query,
       onchange: null,
       addEventListener: vi.fn(),
@@ -122,6 +144,7 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup()
+  desktopViewport = false
   vi.mocked(loadEssenceCraftingData).mockReset()
 })
 
@@ -163,6 +186,227 @@ describe('EssenceCraftingPage', () => {
       const control = within(selector).getByRole('button', { name: `Plan ${slot.label}` })
       expect(control.getAttribute('aria-pressed')).toBe('false')
     }
+  })
+
+  it('registers Recipes, Ingredients, and Export as desktop workspace tools and opens and closes their panels', async () => {
+    desktopViewport = true
+    const user = userEvent.setup()
+    renderPage()
+
+    await screen.findByRole('combobox', { name: 'Master minimum level' })
+    const rail = within(screen.getByTestId('workspace-tool-rail'))
+    expect(rail.getByRole('button', { name: 'Recipes' })).toBeTruthy()
+    expect(rail.getByRole('button', { name: 'Ingredients' })).toBeTruthy()
+    expect(rail.getByRole('button', { name: 'Export' })).toBeTruthy()
+    const tool = await openRecipes(user)
+    expect(tool).toBeTruthy()
+    expect(screen.getByText('No planned items')).toBeTruthy()
+
+    await user.click(screen.getByRole('button', { name: 'Close Recipes' }))
+    expect(screen.queryByRole('complementary', { name: 'Recipes' })).toBeNull()
+
+    await openTool(user, 'Export')
+    expect(screen.getByRole('button', { name: 'Download JSON' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Copy BBCode' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Copy Discord Markdown' })).toBeTruthy()
+  })
+
+  it('announces the empty Ingredients plan and opens it in the mobile workspace drawer', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    const tool = await openIngredients(user)
+    expect(tool).toBeTruthy()
+    expect(screen.getByRole('status').textContent).toContain('Add an equipment slot')
+    expect(screen.getByRole('radio', { name: 'Bound' })).toBeTruthy()
+
+    await user.click(screen.getByRole('button', { name: 'Close workspace tool' }))
+    expect(screen.queryByRole('dialog', { name: 'Ingredients' })).toBeNull()
+  })
+
+  it('shows aggregate bound and unbound total requirements for active items', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await openIngredients(user)
+    expect(totalQuantity('ingredient-essence')).toBe('10')
+    expect(screen.queryByText('ingredient-essence')).toBeNull()
+
+    await user.click(screen.getByRole('radio', { name: 'Unbound' }))
+    expect(totalQuantity('ingredient-essence')).toBe('100')
+    expect(screen.getByText(/whole crafting plan/)).toBeTruthy()
+  })
+
+  it('aggregates multiple active items and respects an item-level override', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await activateSlot(user, 'Off Hand')
+    await openIngredients(user)
+    expect(totalQuantity('ingredient-essence')).toBe('20')
+
+    await selectOption(user, 'Minimum level for Main Hand', '2')
+    expect(totalQuantity('ingredient-essence')).toBe('30')
+  })
+
+  it('includes a selected Extra and its Mark in aggregate totals', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await user.click(screen.getByRole('switch', { name: 'Mark of House Cannith for Main Hand' }))
+    await selectOption(user, 'Extra for Main Hand', 'Main Hand Extra')
+    await openIngredients(user)
+
+    expect(totalQuantity('ingredient-essence')).toBe('20')
+    expect(totalQuantity('ingredient-mark')).toBe('1')
+    expect(screen.queryByText('Breakdown by planned item')).toBeNull()
+    expect(screen.queryByText('Recipe ID:')).toBeNull()
+
+    await openRecipes(user)
+    expect(screen.getByText('Extra shard: Main Hand Extra')).toBeTruthy()
+    expect(screen.getAllByText('Mark of House Cannith')).toHaveLength(2)
+  })
+
+  it('shows a split prefix exactly once in the detailed Recipes plan', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await selectOption(user, 'Prefix for Main Hand', 'Split Prefix Test')
+    await openRecipes(user)
+
+    expect(screen.getByText('Prefix shard: Split Prefix Test')).toBeTruthy()
+    expect(screen.getAllByText('Prefix shard: Split Prefix Test')).toHaveLength(1)
+  })
+
+  it('shows bound recipe identity, crafting level, requirements, and the minimum-level shard in Recipes', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
+    await openRecipes(user)
+
+    expect(screen.getByText('Minimum Level shard')).toBeTruthy()
+    expect(screen.getByText('Prefix shard: Alpha Prefix')).toBeTruthy()
+    expect(screen.getByText(/recipe-enhancement-bound.*Crafting level 100.*Bound/)).toBeTruthy()
+    expect(within(screen.getByTestId('recipes-step-main-hand-prefix')).getByText('Magic Item Essence')).toBeTruthy()
+  })
+
+  it('uses the shared unbound selection in Recipes and Ingredients', async () => {
+    desktopViewport = true
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
+    await openRecipes(user)
+    await user.click(screen.getByRole('radio', { name: 'Unbound' }))
+    expect(screen.getByText(/recipe-enhancement-unbound.*Crafting level 120.*Unbound/)).toBeTruthy()
+
+    await openIngredients(user)
+    const unboundRadio = screen.getByRole<HTMLInputElement>('radio', { name: 'Unbound' })
+    expect(unboundRadio.checked).toBe(true)
+    expect(totalQuantity('ingredient-essence')).toBe('120')
+  })
+
+  it('switches and closes workspace tools without changing the planner state', async () => {
+    desktopViewport = true
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
+    await openRecipes(user)
+    await user.click(screen.getByRole('button', { name: 'Close Recipes' }))
+    await openIngredients(user)
+    await user.click(screen.getByRole('button', { name: 'Close Ingredients' }))
+
+    expect(getSelect('Prefix for Main Hand').value).toBe('Alpha Prefix')
+    expect(screen.getByTestId('planned-item-main-hand')).toBeTruthy()
+  })
+
+  it('shows multiple active items and an item minimum-level override in Recipes', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await activateSlot(user, 'Off Hand')
+    await selectOption(user, 'Minimum level for Main Hand', '2')
+    await openRecipes(user)
+
+    expect(screen.getByTestId('recipes-item-main-hand').textContent).toContain('Minimum level 2')
+    expect(screen.getByTestId('recipes-item-off-hand').textContent).toContain('Minimum level 1')
+  })
+
+  it('does not include an Extra or Mark recipe step unless Mark is enabled', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await user.click(screen.getByRole('switch', { name: 'Mark of House Cannith for Main Hand' }))
+    await selectOption(user, 'Extra for Main Hand', 'Main Hand Extra')
+    await user.click(screen.getByRole('switch', { name: 'Mark of House Cannith for Main Hand' }))
+    await openRecipes(user)
+
+    expect(screen.queryByText('Extra shard: Main Hand Extra')).toBeNull()
+    expect(screen.queryByText('Mark of House Cannith')).toBeNull()
+  })
+
+  it('shows all selected enhancement effects and resolves their values at the effective minimum level', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await selectOption(user, 'Prefix for Main Hand', 'Split Prefix Test')
+    expect(screen.getByText('Light Spell Power: +1 (Enhancement)')).toBeTruthy()
+    expect(screen.getByText('Spellcasting Implement: +5%')).toBeTruthy()
+
+    await selectOption(user, 'Minimum level for Main Hand', '2')
+    expect(screen.getByText('Light Spell Power: +2 (Enhancement)')).toBeTruthy()
+    expect(screen.queryByText('Light Spell Power: +1 (Enhancement)')).toBeNull()
+  })
+
+  it('shows selected effects without modifiers or bonus types without placeholder text', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
+
+    expect(screen.getByText('Alpha Prefix Effect')).toBeTruthy()
+    expect(screen.queryByText(/modifier not defined/i)).toBeNull()
+  })
+
+  it('warns when the selected binding variant is unavailable', async () => {
+    const data = createPageData()
+    const enhancement = data.indexes.enhancementById.get('enhancement-alpha-prefix')
+    if (!enhancement) throw new Error('Expected Alpha Prefix test enhancement')
+    vi.mocked(loadEssenceCraftingData).mockResolvedValue({
+      ...data,
+      indexes: {
+        ...data.indexes,
+        enhancementById: new Map(data.indexes.enhancementById).set('enhancement-alpha-prefix', {
+          ...enhancement,
+          recipes: { ...enhancement.recipes, unboundRecipeId: 'missing-unbound-recipe' }
+        })
+      }
+    })
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
+    await openIngredients(user)
+    await user.click(screen.getByRole('radio', { name: 'Unbound' }))
+
+    expect(screen.getByRole('alert').textContent).toContain('Alpha Prefix has no unbound recipe variant.')
+    await user.click(screen.getByRole('button', { name: 'Close workspace tool' }))
+    await openRecipes(user)
+    expect(screen.getByRole('alert').textContent).toContain('Alpha Prefix has no unbound recipe variant.')
   })
 
   it('retries a failed CDN load', async () => {
@@ -338,9 +582,11 @@ describe('EssenceCraftingPage', () => {
 
     await selectOption(user, augmentLabel, /Ruby of Charisma \+1/)
     expect(getSelect(augmentLabel).value).toBe('Ruby of Charisma +1')
+    expect(screen.getByText('Charisma: +1 (Enhancement)')).toBeTruthy()
 
     await user.click(screen.getByRole('button', { name: 'Clear augment for Red augment slot on Main Hand' }))
     expect(getSelect(augmentLabel).value).toBe('')
+    expect(screen.queryByText('Charisma: +1 (Enhancement)')).toBeNull()
   })
 
   it('filters compatible augments by effects in OR and AND modes', async () => {

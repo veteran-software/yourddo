@@ -3,12 +3,15 @@ import {
   filterCompatibleAugmentsByAllEffects,
   filterCompatibleAugmentsByAnyEffect,
   filterCompatibleAugmentsByEffects,
+  filterCompatibleAugmentsByEffectsFromCompatibleAugments,
   getAugmentSlotMinimumItemLevel,
   getAvailableAugmentEffectNames,
+  getAvailableAugmentEffectNamesFromCompatibleAugments,
   getAvailableAugmentSlotTypes,
   getCompatibleAugments,
   isAugmentSlotTypeAvailable,
-  isSelectedAugmentStillValid
+  isSelectedAugmentStillValid,
+  isSelectedAugmentStillValidFromCompatibleAugments
 } from './augmentRules.ts'
 import { validateEssenceCraftingDataset } from './data.ts'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
@@ -175,6 +178,7 @@ describe('Essence Crafting pure augment rules', () => {
 
   it('offers unique compatible effects and applies exact-name OR and AND filters', () => {
     const data = createAugmentRuleFixture()
+    const compatibleAugments = getCompatibleAugments(data, 'purple')
 
     expect(getAvailableAugmentEffectNames(data, 'purple')).toEqual([
       'Charisma',
@@ -185,6 +189,9 @@ describe('Essence Crafting pure augment rules', () => {
       'Utility',
       'Vitality'
     ])
+    expect(getAvailableAugmentEffectNamesFromCompatibleAugments(compatibleAugments)).toEqual(
+      getAvailableAugmentEffectNames(data, 'purple')
+    )
     expect(filterCompatibleAugmentsByAnyEffect(data, 'purple', ['Strength', 'Fortitude']).map(({ id }) => id)).toEqual([
       'augment-red-warrior',
       'augment-blue-guardian',
@@ -199,10 +206,17 @@ describe('Essence Crafting pure augment rules', () => {
     expect(filterCompatibleAugmentsByEffects(data, 'purple', ['Strength', 'Fortitude'], 'and')).toEqual(
       filterCompatibleAugmentsByAllEffects(data, 'purple', ['Strength', 'Fortitude'])
     )
+    expect(
+      filterCompatibleAugmentsByEffectsFromCompatibleAugments(compatibleAugments, ['Strength', 'Fortitude'], 'or')
+    ).toEqual(filterCompatibleAugmentsByEffects(data, 'purple', ['Strength', 'Fortitude'], 'or'))
+    expect(
+      filterCompatibleAugmentsByEffectsFromCompatibleAugments(compatibleAugments, ['Strength', 'Fortitude'], 'and')
+    ).toEqual(filterCompatibleAugmentsByEffects(data, 'purple', ['Strength', 'Fortitude'], 'and'))
   })
 
   it('invalidates missing, incompatible, category-ineligible, slot-floor, and augment-level selections', () => {
     const data = createAugmentRuleFixture()
+    const compatibleAugments = getCompatibleAugments(data, 'red')
 
     expect(isSelectedAugmentStillValid(data, null, 'armor', 'blue', 1)).toBe(true)
     expect(isSelectedAugmentStillValid(data, 'augment-red-charisma', 'main-hand', 'red', 1)).toBe(false)
@@ -212,6 +226,16 @@ describe('Essence Crafting pure augment rules', () => {
     expect(isSelectedAugmentStillValid(data, 'augment-red-charisma', 'armor', 'blue', 2)).toBe(false)
     expect(isSelectedAugmentStillValid(data, 'augment-red-charisma', 'armor', 'red', 2)).toBe(false)
     expect(isSelectedAugmentStillValid(data, 'missing-augment', 'main-hand', 'red', 2)).toBe(false)
+    expect(
+      isSelectedAugmentStillValidFromCompatibleAugments(
+        data,
+        'augment-red-charisma',
+        'main-hand',
+        'red',
+        2,
+        compatibleAugments
+      )
+    ).toBe(isSelectedAugmentStillValid(data, 'augment-red-charisma', 'main-hand', 'red', 2))
   })
 
   it('does not mutate decoded data or the caller-provided filter and added-color arrays', () => {

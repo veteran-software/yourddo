@@ -134,44 +134,63 @@ export const getCompatibleAugments = (
     .sort(compareByDisplayNameAndId)
 }
 
-const getCompatibleAugmentEffects = (data: EssenceCraftingData, augmentSlotTypeId: string): readonly EssenceEffect[] =>
-  getCompatibleAugments(data, augmentSlotTypeId).flatMap(({ effects }) => effects)
+const getCompatibleAugmentEffects = (compatibleAugments: readonly EssenceAugment[]): readonly EssenceEffect[] =>
+  compatibleAugments.flatMap(({ effects }) => effects)
+
+/** Returns unique effect names from an already-computed compatible augment list. */
+export const getAvailableAugmentEffectNamesFromCompatibleAugments = (
+  compatibleAugments: readonly EssenceAugment[]
+): readonly string[] =>
+  [...new Set(getCompatibleAugmentEffects(compatibleAugments).map(({ displayName }) => displayName))].sort(
+    (left, right) => left.localeCompare(right, undefined, { sensitivity: 'base' })
+  )
 
 /** Returns unique compatible effect names in stable alphabetical display order. */
 export const getAvailableAugmentEffectNames = (
   data: EssenceCraftingData,
   augmentSlotTypeId: string
 ): readonly string[] =>
-  [...new Set(getCompatibleAugmentEffects(data, augmentSlotTypeId).map(({ displayName }) => displayName))].sort(
-    (left, right) => left.localeCompare(right, undefined, { sensitivity: 'base' })
+  getAvailableAugmentEffectNamesFromCompatibleAugments(getCompatibleAugments(data, augmentSlotTypeId))
+
+/** Applies an effect filter to an already-computed compatible augment list. */
+export const filterCompatibleAugmentsByEffectsFromCompatibleAugments = (
+  compatibleAugments: readonly EssenceAugment[],
+  selectedEffectNames: readonly string[],
+  mode: AugmentEffectFilterMode
+): readonly EssenceAugment[] => {
+  if (selectedEffectNames.length === 0) return compatibleAugments
+
+  const selected = new Set(selectedEffectNames)
+  return compatibleAugments.filter((augment) =>
+    mode === 'or'
+      ? augment.effects.some(({ displayName }) => selected.has(displayName))
+      : [...selected].every((effectName) => augment.effects.some(({ displayName }) => displayName === effectName))
   )
+}
 
 /** Keeps a compatible augment when it has at least one selected effect name. */
 export const filterCompatibleAugmentsByAnyEffect = (
   data: EssenceCraftingData,
   augmentSlotTypeId: string,
   selectedEffectNames: readonly string[]
-): readonly EssenceAugment[] => {
-  if (selectedEffectNames.length === 0) return getCompatibleAugments(data, augmentSlotTypeId)
-  const selected = new Set(selectedEffectNames)
-  return getCompatibleAugments(data, augmentSlotTypeId).filter((augment) =>
-    augment.effects.some(({ displayName }) => selected.has(displayName))
+): readonly EssenceAugment[] =>
+  filterCompatibleAugmentsByEffectsFromCompatibleAugments(
+    getCompatibleAugments(data, augmentSlotTypeId),
+    selectedEffectNames,
+    'or'
   )
-}
 
 /** Keeps a compatible augment only when it has every selected effect name. */
 export const filterCompatibleAugmentsByAllEffects = (
   data: EssenceCraftingData,
   augmentSlotTypeId: string,
   selectedEffectNames: readonly string[]
-): readonly EssenceAugment[] => {
-  if (selectedEffectNames.length === 0) return getCompatibleAugments(data, augmentSlotTypeId)
-  const selected = new Set(selectedEffectNames)
-  return getCompatibleAugments(data, augmentSlotTypeId).filter((augment) => {
-    const names = new Set(augment.effects.map(({ displayName }) => displayName))
-    return [...selected].every((effectName) => names.has(effectName))
-  })
-}
+): readonly EssenceAugment[] =>
+  filterCompatibleAugmentsByEffectsFromCompatibleAugments(
+    getCompatibleAugments(data, augmentSlotTypeId),
+    selectedEffectNames,
+    'and'
+  )
 
 export const filterCompatibleAugmentsByEffects = (
   data: EssenceCraftingData,
@@ -179,9 +198,11 @@ export const filterCompatibleAugmentsByEffects = (
   selectedEffectNames: readonly string[],
   mode: AugmentEffectFilterMode
 ): readonly EssenceAugment[] =>
-  mode === 'or'
-    ? filterCompatibleAugmentsByAnyEffect(data, augmentSlotTypeId, selectedEffectNames)
-    : filterCompatibleAugmentsByAllEffects(data, augmentSlotTypeId, selectedEffectNames)
+  filterCompatibleAugmentsByEffectsFromCompatibleAugments(
+    getCompatibleAugments(data, augmentSlotTypeId),
+    selectedEffectNames,
+    mode
+  )
 
 const isSupportedItemLevel = (data: EssenceCraftingData, minimumItemLevel: number): boolean =>
   Number.isInteger(minimumItemLevel) &&
@@ -200,6 +221,30 @@ export const isSelectedAugmentStillValid = (
   itemMinimumLevel: number
 ): boolean => {
   if (selectedAugmentId === null) return true
+
+  return isSelectedAugmentStillValidFromCompatibleAugments(
+    data,
+    selectedAugmentId,
+    equipmentSlotId,
+    augmentSlotTypeId,
+    itemMinimumLevel,
+    getCompatibleAugments(data, augmentSlotTypeId)
+  )
+}
+
+/**
+ * Validates a selection against an already-computed compatible augment list.
+ * The caller must pass the list for the same slot type.
+ */
+export const isSelectedAugmentStillValidFromCompatibleAugments = (
+  data: EssenceCraftingData,
+  selectedAugmentId: string | null,
+  equipmentSlotId: string,
+  augmentSlotTypeId: string,
+  itemMinimumLevel: number,
+  compatibleAugments: readonly EssenceAugment[]
+): boolean => {
+  if (selectedAugmentId === null) return true
   if (!isSupportedItemLevel(data, itemMinimumLevel)) return false
   if (!isAugmentSlotTypeAvailable(data, equipmentSlotId, augmentSlotTypeId)) return false
 
@@ -210,6 +255,6 @@ export const isSelectedAugmentStillValid = (
     slotMinimumItemLevel !== undefined &&
     itemMinimumLevel >= slotMinimumItemLevel &&
     itemMinimumLevel >= augment.minimumItemLevel &&
-    getCompatibleAugments(data, augmentSlotTypeId).some(({ id }) => id === selectedAugmentId)
+    compatibleAugments.some(({ id }) => id === selectedAugmentId)
   )
 }

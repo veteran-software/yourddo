@@ -15,12 +15,20 @@ import {
 } from '@mantine/core'
 import AugmentSelect from '../../shared/augments/AugmentSelect.tsx'
 import {
-  filterCompatibleAugmentsByEffects,
+  filterCompatibleAugmentsByEffectsFromCompatibleAugments,
   getAugmentSlotMinimumItemLevel,
-  getAvailableAugmentEffectNames,
+  getAvailableAugmentEffectNamesFromCompatibleAugments,
   getAvailableAugmentSlotTypes,
-  isSelectedAugmentStillValid
+  getCompatibleAugments,
+  isAugmentSlotTypeAvailable,
+  isSelectedAugmentStillValidFromCompatibleAugments
 } from './augmentRules.ts'
+import {
+  type EssenceEffectDisplayData,
+  formatResolvedEffectModifier,
+  resolveEnhancementEffects,
+  resolveEssenceEffects
+} from './enhancementEffects.ts'
 import { getAvailableEnhancementChoices, hasCannithMarkExtraAffixPermission } from './enhancementEligibility.ts'
 import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
 import type { EssenceCraftingData, EssenceEnhancement } from './essenceCrafting.types.ts'
@@ -40,6 +48,27 @@ interface PlannedItemEditorProps {
 const toSelectData = (enhancements: readonly EssenceEnhancement[]) =>
   enhancements.map(({ id, displayName }) => ({ value: id, label: displayName }))
 
+const formatEffectDisplay = ({ effect, modifier, bonusType }: EssenceEffectDisplayData): string => {
+  const formattedModifier = formatResolvedEffectModifier(modifier)
+  return `${effect.displayName}${formattedModifier ? `: ${formattedModifier}` : ''}${
+    bonusType ? ` (${bonusType.displayName})` : ''
+  }`
+}
+
+const EffectDetails = ({ effects }: { effects: readonly EssenceEffectDisplayData[] }) => {
+  if (effects.length === 0) return null
+
+  return (
+    <Stack gap={2}>
+      {effects.map((effect) => (
+        <Text key={effect.effect.id} c='dimmed' size='xs'>
+          {formatEffectDisplay(effect)}
+        </Text>
+      ))}
+    </Stack>
+  )
+}
+
 const PlannedItemEditor = ({
   data,
   equipmentSlotId,
@@ -58,6 +87,11 @@ const PlannedItemEditor = ({
   const prefixChoices = getAvailableEnhancementChoices(data, equipmentSlotId, 'prefix', effectiveMinimumLevel)
   const suffixChoices = getAvailableEnhancementChoices(data, equipmentSlotId, 'suffix', effectiveMinimumLevel)
   const extraChoices = getAvailableEnhancementChoices(data, equipmentSlotId, 'extra', effectiveMinimumLevel)
+  const resolveSelectedEnhancementEffects = (enhancementId: string | null) =>
+    enhancementId === null ? [] : resolveEnhancementEffects(data, enhancementId, effectiveMinimumLevel).effects
+  const prefixEffects = resolveSelectedEnhancementEffects(item.prefixEnhancementId)
+  const suffixEffects = resolveSelectedEnhancementEffects(item.suffixEnhancementId)
+  const extraEffects = resolveSelectedEnhancementEffects(item.extraEnhancementId)
   const extraEnabled = hasCannithMarkExtraAffixPermission(data, item.hasCannithMark)
   const availableAugmentSlotTypes = getAvailableAugmentSlotTypes(
     data,
@@ -70,31 +104,33 @@ const PlannedItemEditor = ({
     const minimumItemLevel = getAugmentSlotMinimumItemLevel(data, augmentSlot.augmentSlotTypeId)
     if (!augmentSlotType || minimumItemLevel === undefined) return []
 
-    const selectedAugmentIsValid = isSelectedAugmentStillValid(
+    const compatibleAugments = getCompatibleAugments(data, augmentSlot.augmentSlotTypeId)
+    const selectedAugmentIsValid = isSelectedAugmentStillValidFromCompatibleAugments(
       data,
       augmentSlot.augmentId,
       equipmentSlotId,
       augmentSlot.augmentSlotTypeId,
-      effectiveMinimumLevel
+      effectiveMinimumLevel,
+      compatibleAugments
     )
-    const filteredCompatibleAugments = filterCompatibleAugmentsByEffects(
-      data,
-      augmentSlot.augmentSlotTypeId,
+    const augmentSlotIsEligible =
+      Number.isInteger(effectiveMinimumLevel) &&
+      effectiveMinimumLevel >= data.rules.supportedItemLevels.minimum &&
+      effectiveMinimumLevel <= data.rules.supportedItemLevels.maximum &&
+      effectiveMinimumLevel >= minimumItemLevel &&
+      isAugmentSlotTypeAvailable(data, equipmentSlotId, augmentSlot.augmentSlotTypeId)
+    const eligibleAugments = augmentSlotIsEligible
+      ? compatibleAugments.filter((augment) => augment.minimumItemLevel <= effectiveMinimumLevel)
+      : []
+    const filteredCompatibleAugments = filterCompatibleAugmentsByEffectsFromCompatibleAugments(
+      eligibleAugments,
       augmentSlot.selectedEffectNames,
       augmentSlot.filterMode
-    ).filter((augment) =>
-      isSelectedAugmentStillValid(
-        data,
-        augment.id,
-        equipmentSlotId,
-        augmentSlot.augmentSlotTypeId,
-        effectiveMinimumLevel
-      )
     )
     const selectedAugment = selectedAugmentIsValid
       ? data.indexes.augmentById.get(augmentSlot.augmentId ?? '')
       : undefined
-    const compatibleAugments =
+    const augmentOptions =
       selectedAugment && !filteredCompatibleAugments.some(({ id }) => id === selectedAugment.id)
         ? [...filteredCompatibleAugments, selectedAugment]
         : filteredCompatibleAugments
@@ -104,9 +140,10 @@ const PlannedItemEditor = ({
         augmentSlot,
         augmentSlotType,
         minimumItemLevel,
-        effectNames: getAvailableAugmentEffectNames(data, augmentSlot.augmentSlotTypeId),
+        effectNames: getAvailableAugmentEffectNamesFromCompatibleAugments(compatibleAugments),
         selectedAugmentIsValid,
-        options: compatibleAugments.map((augment) => ({
+        effects: selectedAugment ? resolveEssenceEffects(data, selectedAugment.effects, effectiveMinimumLevel) : [],
+        options: augmentOptions.map((augment) => ({
           value: augment.id,
           label: augment.displayName,
           augmentType: augmentTypeDisplayNameById.get(augment.augmentTypeId) ?? augment.augmentTypeId,
@@ -199,29 +236,35 @@ const PlannedItemEditor = ({
                 allowDeselect={false}
               />
 
-              <Select
-                label={`Prefix for ${label}`}
-                placeholder='Choose a prefix'
-                data={toSelectData(prefixChoices)}
-                value={item.prefixEnhancementId}
-                onChange={(enhancementId) => {
-                  onAction({ type: 'select-prefix-enhancement', equipmentSlotId, enhancementId })
-                }}
-                clearable
-                searchable
-              />
+              <Stack gap={4}>
+                <Select
+                  label={`Prefix for ${label}`}
+                  placeholder='Choose a prefix'
+                  data={toSelectData(prefixChoices)}
+                  value={item.prefixEnhancementId}
+                  onChange={(enhancementId) => {
+                    onAction({ type: 'select-prefix-enhancement', equipmentSlotId, enhancementId })
+                  }}
+                  clearable
+                  searchable
+                />
+                <EffectDetails effects={prefixEffects} />
+              </Stack>
 
-              <Select
-                label={`Suffix for ${label}`}
-                placeholder='Choose a suffix'
-                data={toSelectData(suffixChoices)}
-                value={item.suffixEnhancementId}
-                onChange={(enhancementId) => {
-                  onAction({ type: 'select-suffix-enhancement', equipmentSlotId, enhancementId })
-                }}
-                clearable
-                searchable
-              />
+              <Stack gap={4}>
+                <Select
+                  label={`Suffix for ${label}`}
+                  placeholder='Choose a suffix'
+                  data={toSelectData(suffixChoices)}
+                  value={item.suffixEnhancementId}
+                  onChange={(enhancementId) => {
+                    onAction({ type: 'select-suffix-enhancement', equipmentSlotId, enhancementId })
+                  }}
+                  clearable
+                  searchable
+                />
+                <EffectDetails effects={suffixEffects} />
+              </Stack>
 
               <Stack gap='xs' justify='flex-end'>
                 <Switch
@@ -240,18 +283,21 @@ const PlannedItemEditor = ({
                 </Text>
               </Stack>
 
-              <Select
-                label={`Extra for ${label}`}
-                placeholder={extraEnabled ? 'Choose an extra affix' : 'Enable the Mark to choose an extra affix'}
-                data={toSelectData(extraChoices)}
-                value={item.extraEnhancementId}
-                onChange={(enhancementId) => {
-                  onAction({ type: 'select-extra-enhancement', equipmentSlotId, enhancementId })
-                }}
-                clearable
-                searchable
-                disabled={!extraEnabled}
-              />
+              <Stack gap={4}>
+                <Select
+                  label={`Extra for ${label}`}
+                  placeholder={extraEnabled ? 'Choose an extra affix' : 'Enable the Mark to choose an extra affix'}
+                  data={toSelectData(extraChoices)}
+                  value={item.extraEnhancementId}
+                  onChange={(enhancementId) => {
+                    onAction({ type: 'select-extra-enhancement', equipmentSlotId, enhancementId })
+                  }}
+                  clearable
+                  searchable
+                  disabled={!extraEnabled}
+                />
+                <EffectDetails effects={extraEffects} />
+              </Stack>
             </SimpleGrid>
 
             <Stack gap='sm'>
@@ -290,7 +336,15 @@ const PlannedItemEditor = ({
               ) : null}
 
               {augmentSlotEditors.map(
-                ({ augmentSlot, augmentSlotType, minimumItemLevel, effectNames, options, selectedAugmentIsValid }) => {
+                ({
+                  augmentSlot,
+                  augmentSlotType,
+                  minimumItemLevel,
+                  effectNames,
+                  effects,
+                  options,
+                  selectedAugmentIsValid
+                }) => {
                   const slotLabel = `${augmentSlotType.displayName} augment slot`
 
                   return (
@@ -377,6 +431,7 @@ const PlannedItemEditor = ({
                               }}
                               nothingFoundMessage='No compatible augments match these filters and minimum level.'
                             />
+                            <EffectDetails effects={effects} />
                             <Button
                               variant='subtle'
                               size='xs'
@@ -404,4 +459,5 @@ const PlannedItemEditor = ({
   )
 }
 
+export { PlannedItemEditor }
 export default PlannedItemEditor

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { validateEssenceCraftingDataset } from './data.ts'
-import { formatResolvedEffectModifier, resolveEnhancementEffects } from './enhancementEffects.ts'
+import { formatResolvedEffectModifier, resolveEnhancementEffects, resolveEssenceEffects } from './enhancementEffects.ts'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
 
 const data = () => validateEssenceCraftingDataset(createEssenceCraftingTestPayload())
@@ -80,6 +80,20 @@ describe('Essence Crafting enhancement effect resolution', () => {
       enhancementId: 'missing-enhancement',
       effects: []
     })
+  })
+
+  it('uses the same resolution path for augment effects', () => {
+    const fixture = data()
+    const augment = fixture.indexes.augmentById.get('augment-red-charisma')
+    if (!augment) throw new Error('Expected Charisma augment')
+
+    expect(resolveEssenceEffects(fixture, augment.effects, 2)).toMatchObject([
+      {
+        effect: { id: 'effect-charisma', displayName: 'Charisma' },
+        modifier: { status: 'resolved', value: 1, representation: 'number' },
+        bonusType: { id: 'bonus-enhancement', displayName: 'Enhancement' }
+      }
+    ])
   })
 
   it('does not mutate decoded domain records while resolving effects', () => {
