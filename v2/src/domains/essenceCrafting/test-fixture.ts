@@ -3,7 +3,7 @@ export const createEssenceCraftingTestPayload = () => ({
   itemCategories: [
     { id: 'weapon', displayName: 'Weapon' },
     { id: 'ring', displayName: 'Ring' },
-    { id: 'helmet', displayName: 'Helmet' },
+    { id: 'head', displayName: 'Helmet' },
     { id: 'trinket', displayName: 'Trinket' },
     { id: 'armor', displayName: 'Armor' }
   ],
@@ -79,7 +79,7 @@ export const createEssenceCraftingTestPayload = () => ({
       id: 'enhancement-headgear-extra',
       displayName: 'Headgear Extra',
       minimumItemLevel: 1,
-      placements: [{ position: 'extra', itemCategoryIds: ['helmet'] }],
+      placements: [{ position: 'extra', itemCategoryIds: ['head'] }],
       effects: [{ id: 'effect-headgear-extra', displayName: 'Headgear Extra Effect' }],
       recipes: { boundRecipeId: 'recipe-enhancement-bound', unboundRecipeId: 'recipe-enhancement-unbound' }
     },

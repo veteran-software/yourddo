@@ -15,7 +15,7 @@ export const EQUIPMENT_SLOTS = [
   { id: 'cloak', label: 'Cloak', itemCategoryIds: ['cloak'] },
   { id: 'gloves', label: 'Gloves', itemCategoryIds: ['gloves'] },
   { id: 'goggles', label: 'Goggles', itemCategoryIds: ['goggles'] },
-  { id: 'helmet', label: 'Helmet', itemCategoryIds: ['helmet'] },
+  { id: 'helmet', label: 'Helmet', itemCategoryIds: ['head'] },
   { id: 'necklace', label: 'Necklace', itemCategoryIds: ['necklace'] },
   { id: 'ring-1', label: 'Ring 1', itemCategoryIds: ['ring'] },
   { id: 'ring-2', label: 'Ring 2', itemCategoryIds: ['ring'] },

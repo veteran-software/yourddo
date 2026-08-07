@@ -16,7 +16,7 @@ const expectedSlots = [
   ['cloak', 'Cloak', ['cloak']],
   ['gloves', 'Gloves', ['gloves']],
   ['goggles', 'Goggles', ['goggles']],
-  ['helmet', 'Helmet', ['helmet']],
+  ['helmet', 'Helmet', ['head']],
   ['necklace', 'Necklace', ['necklace']],
   ['ring-1', 'Ring 1', ['ring']],
   ['ring-2', 'Ring 2', ['ring']],
