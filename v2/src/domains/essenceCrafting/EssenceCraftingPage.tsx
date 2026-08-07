@@ -13,8 +13,8 @@ import {
   Text,
   Title
 } from '@mantine/core'
-import { IconBasket, IconFileExport, IconListDetails } from '@tabler/icons-react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { IconBasket, IconFileExport, IconLink, IconListDetails } from '@tabler/icons-react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import WorkspaceLayout, { type WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import { InvalidEssenceCraftingDataError, loadEssenceCraftingData } from './data.ts'
 import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
@@ -22,6 +22,13 @@ import type { EssenceCraftingData } from './essenceCrafting.types.ts'
 import ExportTool from './ExportTool.tsx'
 import IngredientsTool from './IngredientsTool.tsx'
 import { calculatePlanMaterials } from './materialCalculations.ts'
+import {
+  decodeEssenceCraftingPermalink,
+  type EssenceCraftingPermalinkDecodeFailure,
+  readEssenceCraftingPermalinkFromSearch,
+  removeEssenceCraftingPermalinkFromCurrentUrl
+} from './permalink.ts'
+import PermalinkTool from './PermalinkTool.tsx'
 import { PlannedItemEditor } from './PlannedItemEditor.tsx'
 import type { EssencePlanState } from './plannerState.ts'
 import { loadEssenceCraftingPlan, saveEssenceCraftingPlan } from './plannerStorage.ts'
@@ -47,11 +54,18 @@ const getErrorContent = (kind: Extract<DataState, { status: 'error' }>['kind']) 
         message: 'We could not load the crafting data. Check your connection and try again.'
       }
 
+const getPermalinkErrorMessage = (reason: EssenceCraftingPermalinkDecodeFailure): string =>
+  reason === 'unsupported-version'
+    ? 'This Essence Crafting link uses a permalink version that is not supported. Your current plan was kept.'
+    : 'This Essence Crafting link is invalid or damaged. Your current plan was kept.'
+
 const EssenceCraftingPage = () => {
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
   const [loadAttempt, setLoadAttempt] = useState(0)
   const [confirmation, setConfirmation] = useState<Confirmation>(null)
   const [binding, setBinding] = useState<'bound' | 'unbound'>('bound')
+  const [permalinkError, setPermalinkError] = useState<string | null>(null)
+  const permalinkToImportRef = useRef(readEssenceCraftingPermalinkFromSearch())
   const hydrationCompleteRef = useRef(false)
   const minimumLevelOptions = useMemo(() => {
     if (dataState.status !== 'loaded') return []
@@ -110,6 +124,12 @@ const EssenceCraftingPage = () => {
                   planMaterials={planMaterials}
                 />
               )
+            },
+            {
+              id: 'permalink',
+              label: 'Permalink',
+              icon: <IconLink stroke={2} />,
+              content: <PermalinkTool data={dataState.data} plan={dataState.plan} />
             }
           ]
         : [],
@@ -122,7 +142,16 @@ const EssenceCraftingPage = () => {
     loadEssenceCraftingData()
       .then((data) => {
         if (!active) return
-        const { plan } = loadEssenceCraftingPlan(data)
+        const storedPlan = loadEssenceCraftingPlan(data).plan
+        const encodedPermalink = permalinkToImportRef.current
+        const decodedPermalink = encodedPermalink ? decodeEssenceCraftingPermalink(data, encodedPermalink) : undefined
+        const plan = decodedPermalink?.ok ? decodedPermalink.plan : storedPlan
+        if (decodedPermalink?.ok) {
+          removeEssenceCraftingPermalinkFromCurrentUrl()
+          setPermalinkError(null)
+        } else if (decodedPermalink) {
+          setPermalinkError(getPermalinkErrorMessage(decodedPermalink.reason))
+        }
         hydrationCompleteRef.current = true
         setDataState({ status: 'loaded', data, plan })
       })
@@ -145,13 +174,17 @@ const EssenceCraftingPage = () => {
     saveEssenceCraftingPlan(dataState.plan)
   }, [dataState])
 
-  const dispatch = (action: EssencePlanAction) => {
+  const dispatch = useCallback((action: EssencePlanAction) => {
     setDataState((current) =>
       current.status === 'loaded'
         ? { ...current, plan: transitionEssencePlan(current.data, current.plan, action) }
         : current
     )
-  }
+  }, [])
+
+  const requestDeactivate = useCallback((equipmentSlotId: EquipmentSlotId) => {
+    setConfirmation({ type: 'deactivate-equipment-slot', equipmentSlotId })
+  }, [])
 
   const retry = () => {
     setDataState({ status: 'loading' })
@@ -209,6 +242,12 @@ const EssenceCraftingPage = () => {
 
           {dataState.status === 'loaded' ? (
             <>
+              {permalinkError ? (
+                <Alert color='yellow' title='Permalink could not be loaded' role='status'>
+                  {permalinkError}
+                </Alert>
+              ) : null}
+
               <Paper withBorder p={{ base: 'md', sm: 'lg' }}>
                 <Stack gap='md'>
                   <Title order={2} size='h3'>
@@ -301,9 +340,7 @@ const EssenceCraftingPage = () => {
                       masterMinimumLevel={dataState.plan.masterMinimumLevel}
                       collapsed={dataState.plan.collapsedSlotIds.includes(equipmentSlotId)}
                       onAction={dispatch}
-                      onRequestDeactivate={(slotId) => {
-                        setConfirmation({ type: 'deactivate-equipment-slot', equipmentSlotId: slotId })
-                      }}
+                      onRequestDeactivate={requestDeactivate}
                     />
                   )
                 })}

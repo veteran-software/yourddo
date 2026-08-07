@@ -104,13 +104,29 @@ afterAll(() => {
 })
 
 describe('AppRouter', () => {
-  it('renders Essence Crafting at its public route with active navigation', () => {
-    renderRoute('/essence-crafting')
+  it('renders Essence Crafting at its public route with active navigation and direct remount support', () => {
+    const firstRender = renderRoute('/essence-crafting')
 
     expect(screen.getByRole('heading', { name: 'Essence Crafting domain' })).toBeTruthy()
     const link = screen.getByRole('link', { name: 'Essence Crafting' })
     expect(link.getAttribute('href')).toBe('/essence-crafting')
     expect(link.getAttribute('aria-current')).toBe('page')
+
+    firstRender.unmount()
+    renderRoute('/essence-crafting')
+    expect(screen.getByRole('heading', { name: 'Essence Crafting domain' })).toBeTruthy()
+  })
+
+  it('closes mobile navigation after selecting Essence Crafting', async () => {
+    const user = userEvent.setup()
+    renderRoute('/')
+
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
+    await user.click(screen.getByRole('link', { name: 'Essence Crafting' }))
+
+    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Essence Crafting domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Essence Crafting' }).getAttribute('aria-current')).toBe('page')
   })
 
   it('renders Saga Tracker at its preserved route with active navigation and direct remount support', () => {

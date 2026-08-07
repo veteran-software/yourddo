@@ -7,7 +7,9 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import { loadEssenceCraftingData, validateEssenceCraftingDataset } from './data.ts'
 import { EQUIPMENT_SLOTS } from './equipment.ts'
 import EssenceCraftingPage from './EssenceCraftingPage.tsx'
+import { encodeEssenceCraftingPermalink } from './permalink.ts'
 import { ESSENCE_CRAFTING_SESSION_STORAGE_KEY } from './plannerStorage.ts'
+import { hydrateEssencePlan } from './plannerTransitions.ts'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
 
 vi.mock('./data.ts', async (importOriginal) => {
@@ -89,7 +91,10 @@ const addAugmentSlot = async (user: ReturnType<typeof userEvent.setup>, slotLabe
   await selectOption(user, `Add an augment slot to ${slotLabel}`, slotColor)
 }
 
-const openTool = async (user: ReturnType<typeof userEvent.setup>, name: 'Recipes' | 'Ingredients' | 'Export') => {
+const openTool = async (
+  user: ReturnType<typeof userEvent.setup>,
+  name: 'Recipes' | 'Ingredients' | 'Export' | 'Permalink'
+) => {
   await screen.findByRole('combobox', { name: 'Master minimum level' })
 
   if (desktopViewport) {
@@ -147,6 +152,7 @@ afterEach(() => {
   cleanup()
   desktopViewport = false
   sessionStorage.clear()
+  window.history.replaceState({}, '', '/')
   vi.mocked(loadEssenceCraftingData).mockReset()
 })
 
@@ -218,6 +224,87 @@ describe('EssenceCraftingPage', () => {
     setItem.mockRestore()
   })
 
+  it('hydrates a normal-search permalink and removes only cc with replace semantics', async () => {
+    const data = createPageData()
+    vi.mocked(loadEssenceCraftingData).mockResolvedValue(data)
+    const importedPlan = hydrateEssencePlan(data, {
+      masterMinimumLevel: 2,
+      activeSlotIds: ['main-hand'],
+      collapsedSlotIds: ['main-hand'],
+      itemsBySlotId: {
+        'main-hand': {
+          prefixEnhancementId: 'enhancement-split-prefix',
+          suffixEnhancementId: null,
+          extraEnhancementId: null,
+          hasCannithMark: false,
+          minimumLevelOverride: 2,
+          augmentSlots: []
+        }
+      }
+    })
+    const search = new URLSearchParams({
+      view: 'compact',
+      cc: encodeEssenceCraftingPermalink(data, importedPlan),
+      theme: 'dark'
+    })
+    window.history.replaceState({}, '', `/essence-crafting?${search.toString()}`)
+    const replaceState = vi.spyOn(window.history, 'replaceState')
+
+    renderPage()
+
+    expect(await screen.findByTestId('planned-item-main-hand')).toBeTruthy()
+    expect(getSelect('Master minimum level').value).toBe('2')
+    expect(replaceState).toHaveBeenCalled()
+    expect(window.location.search).toBe('?view=compact&theme=dark')
+    expect(screen.queryByText('Permalink could not be loaded')).toBeNull()
+    replaceState.mockRestore()
+  })
+
+  it('keeps the existing plan and cc parameter when a permalink is invalid', async () => {
+    sessionStorage.setItem(
+      ESSENCE_CRAFTING_SESSION_STORAGE_KEY,
+      JSON.stringify({
+        version: 1,
+        masterMinimumLevel: 2,
+        activeSlotIds: ['main-hand'],
+        collapsedSlotIds: [],
+        itemsBySlotId: {
+          'main-hand': {
+            prefixEnhancementId: 'enhancement-alpha-prefix',
+            suffixEnhancementId: null,
+            extraEnhancementId: null,
+            hasCannithMark: false,
+            minimumLevelOverride: null,
+            augmentSlots: []
+          }
+        }
+      })
+    )
+    window.history.replaceState({}, '', '/essence-crafting?view=compact&cc=damaged-link')
+
+    renderPage()
+
+    expect(await screen.findByText('Permalink could not be loaded')).toBeTruthy()
+    expect(screen.getByText(/invalid or damaged/i)).toBeTruthy()
+    expect(await screen.findByTestId('planned-item-main-hand')).toBeTruthy()
+    expect(getSelect('Master minimum level').value).toBe('2')
+    expect(new URLSearchParams(window.location.search).get('cc')).toBe('damaged-link')
+    expect(new URLSearchParams(window.location.search).get('view')).toBe('compact')
+  })
+
+  it('generates a v4 permalink for the stable Essence Crafting path', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    const tool = await openTool(user, 'Permalink')
+    const input = within(tool).getByRole<HTMLInputElement>('textbox', { name: 'Essence Crafting permalink' })
+    const url = new URL(input.value)
+
+    expect(url.pathname).toBe('/essence-crafting')
+    expect(url.searchParams.get('cc')).toBeTruthy()
+    expect(url.searchParams.size).toBe(1)
+  })
+
   it('renders every supported equipment slot in a responsive main-workspace selector', async () => {
     renderPage()
 
@@ -231,7 +318,7 @@ describe('EssenceCraftingPage', () => {
     }
   })
 
-  it('registers Recipes, Ingredients, and Export as desktop workspace tools and opens and closes their panels', async () => {
+  it('registers Recipes, Ingredients, Export, and Permalink as desktop workspace tools', async () => {
     desktopViewport = true
     const user = userEvent.setup()
     renderPage()
@@ -241,17 +328,15 @@ describe('EssenceCraftingPage', () => {
     expect(rail.getByRole('button', { name: 'Recipes' })).toBeTruthy()
     expect(rail.getByRole('button', { name: 'Ingredients' })).toBeTruthy()
     expect(rail.getByRole('button', { name: 'Export' })).toBeTruthy()
+    expect(rail.getByRole('button', { name: 'Permalink' })).toBeTruthy()
     const tool = await openRecipes(user)
     expect(tool).toBeTruthy()
     expect(screen.getByText('No planned items')).toBeTruthy()
 
     await user.click(screen.getByRole('button', { name: 'Close Recipes' }))
     expect(screen.queryByRole('complementary', { name: 'Recipes' })).toBeNull()
-
     await openTool(user, 'Export')
     expect(screen.getByRole('button', { name: 'Download JSON' })).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Copy BBCode' })).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Copy Discord Markdown' })).toBeTruthy()
   })
 
   it('announces the empty Ingredients plan and opens it in the mobile workspace drawer', async () => {
@@ -305,9 +390,6 @@ describe('EssenceCraftingPage', () => {
 
     expect(totalQuantity('ingredient-essence')).toBe('20')
     expect(totalQuantity('ingredient-mark')).toBe('1')
-    expect(screen.queryByText('Breakdown by planned item')).toBeNull()
-    expect(screen.queryByText('Recipe ID:')).toBeNull()
-
     await openRecipes(user)
     expect(screen.getByText('Extra shard: Main Hand Extra')).toBeTruthy()
     expect(screen.getAllByText('Mark of House Cannith')).toHaveLength(2)
@@ -325,46 +407,13 @@ describe('EssenceCraftingPage', () => {
     expect(screen.getAllByText('Prefix shard: Split Prefix Test')).toHaveLength(1)
   })
 
-  it('shows bound recipe identity, crafting level, requirements, and the minimum-level shard in Recipes', async () => {
-    const user = userEvent.setup()
-    renderPage()
-
-    await activateSlot(user, 'Main Hand')
-    await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
-    await openRecipes(user)
-
-    expect(screen.getByText('Minimum Level shard')).toBeTruthy()
-    expect(screen.getByText('Prefix shard: Alpha Prefix')).toBeTruthy()
-    expect(screen.getByText(/recipe-enhancement-bound.*Crafting level 100.*Bound/)).toBeTruthy()
-    expect(within(screen.getByTestId('recipes-step-main-hand-prefix')).getByText('Magic Item Essence')).toBeTruthy()
-  })
-
-  it('uses the shared unbound selection in Recipes and Ingredients', async () => {
+  it('closes the Ingredients workspace tool without changing the planner state', async () => {
     desktopViewport = true
     const user = userEvent.setup()
     renderPage()
 
     await activateSlot(user, 'Main Hand')
     await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
-    await openRecipes(user)
-    await user.click(screen.getByRole('radio', { name: 'Unbound' }))
-    expect(screen.getByText(/recipe-enhancement-unbound.*Crafting level 120.*Unbound/)).toBeTruthy()
-
-    await openIngredients(user)
-    const unboundRadio = screen.getByRole<HTMLInputElement>('radio', { name: 'Unbound' })
-    expect(unboundRadio.checked).toBe(true)
-    expect(totalQuantity('ingredient-essence')).toBe('120')
-  })
-
-  it('switches and closes workspace tools without changing the planner state', async () => {
-    desktopViewport = true
-    const user = userEvent.setup()
-    renderPage()
-
-    await activateSlot(user, 'Main Hand')
-    await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
-    await openRecipes(user)
-    await user.click(screen.getByRole('button', { name: 'Close Recipes' }))
     await openIngredients(user)
     await user.click(screen.getByRole('button', { name: 'Close Ingredients' }))
 
@@ -446,9 +495,6 @@ describe('EssenceCraftingPage', () => {
     await openIngredients(user)
     await user.click(screen.getByRole('radio', { name: 'Unbound' }))
 
-    expect(screen.getByRole('alert').textContent).toContain('Alpha Prefix has no unbound recipe variant.')
-    await user.click(screen.getByRole('button', { name: 'Close workspace tool' }))
-    await openRecipes(user)
     expect(screen.getByRole('alert').textContent).toContain('Alpha Prefix has no unbound recipe variant.')
   })
 

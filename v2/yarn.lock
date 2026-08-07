@@ -3280,6 +3280,7 @@ __metadata:
     globals: "npm:^17.9.0"
     idb-keyval: "npm:^6.3.0"
     jsdom: "npm:^30.0.1"
+    lz-string: "npm:^1.5.0"
     postcss: "npm:^8.5.25"
     postcss-preset-mantine: "npm:^1.18.0"
     postcss-simple-vars: "npm:^7.0.1"
