@@ -1,7 +1,7 @@
 import { NavLink, Stack } from '@mantine/core'
 import { useEffect, useReducer } from 'react'
 import { NavLink as RouterNavLink, useLocation } from 'react-router-dom'
-import { navigation, type NavigationGroup } from './navigation'
+import { homeNavigationItem, navigation, type NavigationGroup } from './navigation'
 
 interface SidebarNavigationProps {
   onNavigate: () => void
@@ -40,33 +40,45 @@ const SidebarNavigation = ({ onNavigate }: SidebarNavigationProps) => {
 
   return (
     <Stack gap='md'>
-      <NavLink component={RouterNavLink} to='/' label='Home' active={pathname === '/'} onClick={onNavigate} />
+      <NavLink
+        component={RouterNavLink}
+        to={homeNavigationItem.path}
+        label={homeNavigationItem.label}
+        leftSection={<homeNavigationItem.icon size={20} stroke={1.75} />}
+        active={pathname === homeNavigationItem.path}
+        onClick={onNavigate}
+      />
 
-      {navigation.map((group) => (
-        <Stack key={group.label} gap={4}>
-          <NavLink
-            component='button'
-            type='button'
-            label={group.label}
-            opened={expandedGroups[group.label]}
-            onChange={(opened) => {
-              dispatchExpandedGroups({ type: 'set', groupLabel: group.label, opened })
-            }}
-            aria-expanded={expandedGroups[group.label]}
-          >
-            {sortItemsByLabel(group).map((item) => (
-              <NavLink
-                key={item.path}
-                component={RouterNavLink}
-                to={item.path}
-                label={item.label}
-                active={pathname === item.path}
-                onClick={onNavigate}
-              />
-            ))}
-          </NavLink>
-        </Stack>
-      ))}
+      {navigation.map((group) => {
+        const GroupIcon = group.icon
+
+        return (
+          <Stack key={group.label} gap={4}>
+            <NavLink
+              component='button'
+              type='button'
+              label={group.label}
+              leftSection={<GroupIcon size={20} stroke={1.75} />}
+              opened={expandedGroups[group.label]}
+              onChange={(opened) => {
+                dispatchExpandedGroups({ type: 'set', groupLabel: group.label, opened })
+              }}
+              aria-expanded={expandedGroups[group.label]}
+            >
+              {sortItemsByLabel(group).map((item) => (
+                <NavLink
+                  key={item.path}
+                  component={RouterNavLink}
+                  to={item.path}
+                  label={item.label}
+                  active={pathname === item.path}
+                  onClick={onNavigate}
+                />
+              ))}
+            </NavLink>
+          </Stack>
+        )
+      })}
     </Stack>
   )
 }
