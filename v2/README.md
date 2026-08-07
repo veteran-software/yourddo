@@ -126,4 +126,4 @@ extraction.
 - Keep shopping totals correct and label Trove reconciliation as unavailable until v2 actually provides it.
 - Build the page with Mantine and verify keyboard use, loading and error announcements, responsive layouts, and light,
   dark, and system themes.
-- Run Prettier, ESLint, TypeScript, the full test suite, and the production build.
+- Run Prettier, OxLint, TypeScript, the full test suite, and the production build.

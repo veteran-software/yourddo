@@ -79,7 +79,7 @@ const isMeltingRecipe = (value: unknown): value is MeltingRecipe =>
 const isAugment = (value: unknown): value is { orange?: null; purple?: null } =>
   isRecord(value) &&
   Object.keys(value).length > 0 &&
-  Object.entries(value).every(([slot, value]) => (slot === 'orange' || slot === 'purple') && value === null)
+  Object.entries(value).every(([slot, slotValue]) => (slot === 'orange' || slot === 'purple') && slotValue === null)
 
 const isReforgingEntry = (value: unknown): value is ReforgingEntry =>
   isRecord(value) &&

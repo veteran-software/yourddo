@@ -43,6 +43,10 @@ vi.mock('../domains/monasteryOfTheScorpion/MonasteryOfTheScorpionPage.tsx', () =
   default: () => <h1>Monastery domain</h1>
 }))
 
+vi.mock('../domains/shroud/ShroudPage.tsx', () => ({
+  default: () => <h1>Shroud domain</h1>
+}))
+
 vi.mock('../domains/totalChaos/TotalChaosPage.tsx', () => ({
   default: () => <h1>Total Chaos domain</h1>
 }))
@@ -358,6 +362,20 @@ describe('AppRouter', () => {
 
     expect(screen.getByRole('heading', { name: 'Total Chaos domain' })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Total Chaos' }).getAttribute('aria-current')).toBe('page')
+  })
+
+  it('renders The Shroud at its canonical route without falling through to not found', () => {
+    const firstRender = renderRoute('/the-shroud')
+
+    expect(screen.getByRole('heading', { name: 'Shroud domain' })).toBeTruthy()
+    expect(screen.queryByRole('heading', { name: 'Page not found' })).toBeNull()
+    const link = screen.getByRole('link', { name: 'The Shroud' })
+    expect(link.getAttribute('href')).toBe('/the-shroud')
+    expect(link.getAttribute('aria-current')).toBe('page')
+
+    firstRender.unmount()
+    renderRoute('/the-shroud')
+    expect(screen.getByRole('heading', { name: 'Shroud domain' })).toBeTruthy()
   })
 
   it('renders the not-found page for an unknown route', () => {

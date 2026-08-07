@@ -87,6 +87,23 @@ describe('SidebarNavigation', () => {
     expect(screen.getByRole('link', { name: 'Essence Crafting' }).getAttribute('aria-current')).toBe('page')
   })
 
+  it('lists The Shroud alphabetically under Puzzle Solvers and activates it at its canonical route', () => {
+    renderSidebar({ pathname: '/the-shroud' })
+
+    expect(screen.getByRole('button', { name: 'Puzzle Solvers' }).getAttribute('aria-expanded')).toBe('true')
+    const shroud = screen.getByRole('link', { name: 'The Shroud' })
+    expect(shroud.getAttribute('href')).toBe('/the-shroud')
+    expect(shroud.getAttribute('aria-current')).toBe('page')
+    expect(screen.getAllByRole('link').map((link) => link.textContent)).toEqual([
+      'Home',
+      'Monastery of the Scorpion',
+      "The Reaver's Fate",
+      'The Shadow Crypt',
+      'The Shroud',
+      'Total Chaos'
+    ])
+  })
+
   it('expands and collapses an individual menu without navigating', async () => {
     const user = userEvent.setup()
     const onNavigate = renderSidebar()

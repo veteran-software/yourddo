@@ -391,12 +391,12 @@ const PlannedItemEditor = memo(
                                 placeholder='Filter by effects'
                                 data={effectNames}
                                 value={augmentSlot.selectedEffectNames}
-                                onChange={(effectNames) => {
+                                onChange={(effectNameList) => {
                                   onAction({
                                     type: 'set-augment-filters',
                                     equipmentSlotId,
                                     augmentSlotId: augmentSlot.id,
-                                    effectNames
+                                    effectNames: effectNameList
                                   })
                                 }}
                                 searchable

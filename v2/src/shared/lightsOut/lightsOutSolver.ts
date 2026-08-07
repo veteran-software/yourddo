@@ -1,10 +1,12 @@
 import {
   applyPlusToggle,
+  applyWrapToggle,
   backSubstitute,
   buildAugmentedMatrix,
   buildNeighborLists,
   buildRhs,
   forwardEliminate,
+  getRingPositions,
   initBoard
 } from './helpers.ts'
 import type { Board, Config, Presses } from './types.ts'
@@ -56,7 +58,11 @@ const solve = (board: Board, config: Config): Presses => {
 
 export const toggleCell = (board: Board, config: Config, row: number, column: number): Board => {
   const copy = board.map((boardRow) => boardRow.slice())
-  applyPlusToggle(copy, config, row, column)
+  if (config.wrap) {
+    applyWrapToggle(copy, config.mask, row, column, getRingPositions(config))
+  } else {
+    applyPlusToggle(copy, config, row, column)
+  }
   return copy
 }
 
@@ -90,4 +96,4 @@ export const solveBoard = (board: Board, config: Config): { presses: Presses; ma
   return { presses, marked }
 }
 
-export { initBoard }
+export { initBoard, makeCircular4x4Config, makeRectConfig } from './helpers.ts'

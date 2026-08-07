@@ -1,5 +1,24 @@
 import type { Board, Config } from './types.ts'
 
+export const makeRectConfig = (rows: number, cols: number): Config => ({
+  rows,
+  cols,
+  mask: Array.from({ length: rows }, () => Array(cols).fill(true) as boolean[]),
+  wrap: false
+})
+
+export const makeCircular4x4Config = (): Config => ({
+  rows: 4,
+  cols: 4,
+  mask: [
+    [false, true, true, false],
+    [true, false, false, true],
+    [true, false, false, true],
+    [false, true, true, false]
+  ],
+  wrap: true
+})
+
 const findPivot = (matrix: boolean[][], column: number, startRow: number): number => {
   for (let row = startRow; row < matrix.length; row++) {
     if (matrix[row][column]) return row
@@ -88,7 +107,62 @@ export const applyPlusToggle = (board: Board, config: Config, row: number, colum
   }
 }
 
+export const getRingPositions = (config: Config): [number, number][] => {
+  const ring: [number, number][] = []
+
+  for (let column = 0; column < config.cols; column++) {
+    if (config.mask[0][column]) ring.push([0, column])
+  }
+
+  for (let row = 1; row < config.rows; row++) {
+    if (config.mask[row][config.cols - 1]) ring.push([row, config.cols - 1])
+  }
+
+  for (let column = config.cols - 2; column >= 0; column--) {
+    if (config.mask[config.rows - 1][column]) ring.push([config.rows - 1, column])
+  }
+
+  for (let row = config.rows - 2; row >= 1; row--) {
+    if (config.mask[row][0]) ring.push([row, 0])
+  }
+
+  return ring
+}
+
+export const applyWrapToggle = (
+  board: Board,
+  mask: boolean[][],
+  row: number,
+  column: number,
+  ring: [number, number][]
+): void => {
+  const index = ring.findIndex(([ringRow, ringColumn]) => ringRow === row && ringColumn === column)
+  if (index < 0) return
+
+  const ringLength = ring.length
+  for (const ringIndex of [index, (index - 1 + ringLength) % ringLength, (index + 1) % ringLength]) {
+    const [nextRow, nextColumn] = ring[ringIndex]
+    if (mask[nextRow][nextColumn]) board[nextRow][nextColumn] ^= 1
+  }
+}
+
+const buildWrapNeighborLists = (config: Config, indexOf: number[][]): number[][] => {
+  const ring = getRingPositions(config)
+  const lists: number[][] = Array.from({ length: ring.length }, () => [])
+
+  ring.forEach(([row, column], ringIndex) => {
+    const current = indexOf[row][column]
+    const [previousRow, previousColumn] = ring[(ringIndex - 1 + ring.length) % ring.length]
+    const [nextRow, nextColumn] = ring[(ringIndex + 1) % ring.length]
+    lists[current] = [current, indexOf[previousRow][previousColumn], indexOf[nextRow][nextColumn]]
+  })
+
+  return lists
+}
+
 export const buildNeighborLists = (config: Config, indexOf: number[][]): number[][] => {
+  if (config.wrap) return buildWrapNeighborLists(config, indexOf)
+
   const offsets: readonly [number, number][] = [
     [0, 0],
     [-1, 0],
