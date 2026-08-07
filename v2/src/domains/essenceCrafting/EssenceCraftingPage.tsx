@@ -14,9 +14,8 @@ import {
   Title
 } from '@mantine/core'
 import { IconBasket, IconFileExport, IconListDetails } from '@tabler/icons-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import WorkspaceLayout, { type WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
-import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { InvalidEssenceCraftingDataError, loadEssenceCraftingData } from './data.ts'
 import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
 import type { EssenceCraftingData } from './essenceCrafting.types.ts'
@@ -24,7 +23,8 @@ import ExportTool from './ExportTool.tsx'
 import IngredientsTool from './IngredientsTool.tsx'
 import { calculatePlanMaterials } from './materialCalculations.ts'
 import { PlannedItemEditor } from './PlannedItemEditor.tsx'
-import { createEmptyEssencePlan, type EssencePlanState } from './plannerState.ts'
+import type { EssencePlanState } from './plannerState.ts'
+import { loadEssenceCraftingPlan, saveEssenceCraftingPlan } from './plannerStorage.ts'
 import { type EssencePlanAction, transitionEssencePlan } from './plannerTransitions.ts'
 import RecipesTool from './RecipesTool.tsx'
 
@@ -52,6 +52,7 @@ const EssenceCraftingPage = () => {
   const [loadAttempt, setLoadAttempt] = useState(0)
   const [confirmation, setConfirmation] = useState<Confirmation>(null)
   const [binding, setBinding] = useState<'bound' | 'unbound'>('bound')
+  const hydrationCompleteRef = useRef(false)
   const minimumLevelOptions = useMemo(() => {
     if (dataState.status !== 'loaded') return []
 
@@ -121,7 +122,9 @@ const EssenceCraftingPage = () => {
     loadEssenceCraftingData()
       .then((data) => {
         if (!active) return
-        setDataState({ status: 'loaded', data, plan: createEmptyEssencePlan(data) })
+        const { plan } = loadEssenceCraftingPlan(data)
+        hydrationCompleteRef.current = true
+        setDataState({ status: 'loaded', data, plan })
       })
       .catch((cause: unknown) => {
         if (!active) return
@@ -136,6 +139,11 @@ const EssenceCraftingPage = () => {
       active = false
     }
   }, [loadAttempt])
+
+  useEffect(() => {
+    if (dataState.status !== 'loaded' || !hydrationCompleteRef.current) return
+    saveEssenceCraftingPlan(dataState.plan)
+  }, [dataState])
 
   const dispatch = (action: EssencePlanAction) => {
     setDataState((current) =>

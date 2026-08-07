@@ -7,6 +7,7 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import { loadEssenceCraftingData, validateEssenceCraftingDataset } from './data.ts'
 import { EQUIPMENT_SLOTS } from './equipment.ts'
 import EssenceCraftingPage from './EssenceCraftingPage.tsx'
+import { ESSENCE_CRAFTING_SESSION_STORAGE_KEY } from './plannerStorage.ts'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
 
 vi.mock('./data.ts', async (importOriginal) => {
@@ -145,6 +146,7 @@ beforeEach(() => {
 afterEach(() => {
   cleanup()
   desktopViewport = false
+  sessionStorage.clear()
   vi.mocked(loadEssenceCraftingData).mockReset()
 })
 
@@ -173,6 +175,47 @@ describe('EssenceCraftingPage', () => {
     })
 
     expect(await screen.findByRole('combobox', { name: 'Master minimum level' })).toBeTruthy()
+  })
+
+  it('hydrates the stored plan before writing, so the empty initial plan cannot overwrite it', async () => {
+    let resolveData: (value: ReturnType<typeof createPageData>) => void = () => undefined
+    vi.mocked(loadEssenceCraftingData).mockReturnValue(
+      new Promise((resolve) => {
+        resolveData = resolve
+      })
+    )
+    sessionStorage.setItem(
+      ESSENCE_CRAFTING_SESSION_STORAGE_KEY,
+      JSON.stringify({
+        version: 1,
+        masterMinimumLevel: 2,
+        activeSlotIds: ['main-hand'],
+        collapsedSlotIds: [],
+        itemsBySlotId: {
+          'main-hand': {
+            prefixEnhancementId: 'enhancement-alpha-prefix',
+            suffixEnhancementId: null,
+            extraEnhancementId: null,
+            hasCannithMark: false,
+            minimumLevelOverride: null,
+            augmentSlots: []
+          }
+        }
+      })
+    )
+    const setItem = vi.spyOn(Storage.prototype, 'setItem')
+
+    renderPage()
+
+    expect(setItem).not.toHaveBeenCalled()
+    await act(async () => {
+      resolveData(createPageData())
+      await Promise.resolve()
+    })
+
+    expect(await screen.findByTestId('planned-item-main-hand')).toBeTruthy()
+    expect(getSelect('Master minimum level').value).toBe('2')
+    setItem.mockRestore()
   })
 
   it('renders every supported equipment slot in a responsive main-workspace selector', async () => {
