@@ -23,6 +23,10 @@ vi.mock('../domains/incrediblePotential/IncrediblePotentialPage.tsx', () => ({
   default: () => <h1>Incredible Potential domain</h1>
 }))
 
+vi.mock('../domains/heroicGreenSteel/HeroicGreenSteelPage.tsx', () => ({
+  default: () => <h1>Heroic Green Steel domain</h1>
+}))
+
 vi.mock('../domains/nearlyComplete/NearlyCompletePage.tsx', () => ({
   default: () => <h1>Nearly Complete domain</h1>
 }))
@@ -112,6 +116,15 @@ afterAll(() => {
 })
 
 describe('AppRouter', () => {
+  it('renders Heroic Green Steel at its preserved public route', () => {
+    renderRoute('/green-steel')
+
+    expect(screen.getByRole('heading', { name: 'Heroic Green Steel domain' })).toBeTruthy()
+    const link = screen.getByRole('link', { name: 'Heroic Green Steel' })
+    expect(link.getAttribute('href')).toBe('/green-steel')
+    expect(link.getAttribute('aria-current')).toBe('page')
+  })
+
   it('renders Essence Crafting at its public route with active navigation and direct remount support', () => {
     const firstRender = renderRoute('/essence-crafting')
 
