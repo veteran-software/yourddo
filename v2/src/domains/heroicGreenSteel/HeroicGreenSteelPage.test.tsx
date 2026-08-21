@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { MantineProvider } from '@mantine/core'
-import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import {
@@ -61,6 +61,7 @@ const spell: HgsSpell = {
   charges: 2,
   rechargePerDay: 2
 }
+const alarm: HgsSpell = { ...spell, id: 4, name: 'Alarm' }
 const weapon: HgsBaseItem = {
   id: 10,
   name: 'Green Steel Dagger',
@@ -109,8 +110,8 @@ const focused = option(41, { requiresAspect: 'Mineral', shardType: 'compound', f
 const tier1Air = option(21, { focus: 'Air', effectIds: [2] })
 const tier1Fire = option(22, { focus: 'Fire', effectIds: [3] })
 const tier1Equipment = option(23, { type: 'equipment' })
-const tier2Air = option(31, { focus: 'Air', requiresFocus: 'Air', aspect: 'Mineral', spellId: 2, effectIds: [2] })
-const tier2Fire = option(32, { focus: 'Fire', requiresFocus: 'Fire', aspect: 'Ash', spellId: 2, effectIds: [3] })
+const tier2Air = option(31, { focus: 'Air', requiresFocus: 'Air', aspect: 'Mineral', spellId: 4, effectIds: [2] })
+const tier2Fire = option(32, { focus: 'Fire', requiresFocus: 'Fire', aspect: 'Ash', effectIds: [3] })
 const basicAir = option(42, { focus: 'Air', effectIds: [2] })
 const basicFire = option(43, { focus: 'Fire', effectIds: [3] })
 const focusedAir = option(44, {
@@ -184,13 +185,16 @@ const initialData: HgsInitialData = {
 }
 const tier2Data: HgsTier2Data = {
   tier2: [tier2Fire, tier2, tier2Air],
-  spells: [spell],
+  spells: [spell, alarm],
   tier2ById: new Map([
     [tier2.id, tier2],
     [tier2Air.id, tier2Air],
     [tier2Fire.id, tier2Fire]
   ]),
-  spellById: new Map([[spell.id, spell]])
+  spellById: new Map([
+    [spell.id, spell],
+    [alarm.id, alarm]
+  ])
 }
 const tier3Data: HgsTier3Data = {
   tier3Basic: [basicFire, basic, basicAir],
@@ -316,15 +320,15 @@ describe('HeroicGreenSteelPage', () => {
     await screen.findByRole('combobox', { name: 'Green Steel base item' })
 
     expect(screen.getAllByRole('heading', { level: 2 }).map(({ textContent }) => textContent)).toEqual([
-      '1. Base Item',
-      '2. Tier 1',
-      '3. Tier 2',
-      '4. Tier 3'
+      'Eldritch Altar of Fecundity',
+      'Altar of Invasion',
+      'Altar of Subjugation',
+      'Altar of Devastation'
     ])
     const tierGrid = screen.getByTestId('hgs-tier-grid')
-    expect(tierGrid.contains(screen.getByRole('heading', { name: '2. Tier 1' }))).toBe(true)
-    expect(tierGrid.contains(screen.getByRole('heading', { name: '3. Tier 2' }))).toBe(true)
-    expect(tierGrid.contains(screen.getByRole('heading', { name: '4. Tier 3' }))).toBe(true)
+    expect(tierGrid.contains(screen.getByRole('heading', { name: 'Altar of Invasion' }))).toBe(true)
+    expect(tierGrid.contains(screen.getByRole('heading', { name: 'Altar of Subjugation' }))).toBe(true)
+    expect(tierGrid.contains(screen.getByRole('heading', { name: 'Altar of Devastation' }))).toBe(true)
   })
 
   it('progresses through Tier 2 spells and both Tier 3 modes, invalidates downstream choices, and resets', async () => {
@@ -351,7 +355,7 @@ describe('HeroicGreenSteelPage', () => {
 
     await user.click(screen.getByRole('button', { name: 'Reset build' }))
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Green Steel base item' }).value).toBe('')
-    expect(screen.getAllByText('Select a base item first.')).toHaveLength(3)
+    expect(screen.getAllByText('Select a base item first.')).toHaveLength(4)
   })
 
   it('preserves the full pre-em-dash base-item label while selecting the original base item', async () => {
@@ -436,6 +440,42 @@ describe('HeroicGreenSteelPage', () => {
     await user.click(screen.getByText('Focused'))
     await user.click(await screen.findByRole('combobox', { name: 'Tier 3 Focused upgrade' }))
     expect(optionLabels()).toEqual(tierOptionLabels)
+  })
+
+  it('shows deduplicated, alphabetical desired spells and filters the altars when selected first', async () => {
+    mockLoadedData()
+    const user = userEvent.setup()
+    renderPage()
+
+    await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
+    await user.click(await screen.findByRole('combobox', { name: 'Desired Spell' }))
+    expect(optionLabels()).toEqual(['Alarm', 'Earthgrab'])
+    await user.click(screen.getByRole('option', { name: 'Earthgrab' }))
+
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Desired Spell' }).value).toBe('Earthgrab')
+    await user.click(screen.getByRole('combobox', { name: 'Desired Spell' }))
+    expect(optionLabels()).toEqual(['Alarm', 'Earthgrab'])
+    await user.keyboard('{Escape}')
+    await user.click(screen.getByRole('combobox', { name: 'Tier 1 upgrade' }))
+    expect(optionLabels()).toEqual(['Electric Spell Critical Chance +14%'])
+    await user.keyboard('{Escape}')
+    await user.click(screen.getByRole('combobox', { name: 'Tier 2 upgrade' }))
+    expect(optionLabels()).toEqual(['Electric Spell Critical Chance +14%'])
+  })
+
+  it('reflects the Tier 2 spell in Desired Spell and leaves it empty for a spell-less Tier 2 upgrade', async () => {
+    mockLoadedData()
+    const user = userEvent.setup()
+    renderPage()
+
+    await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
+    await choose(user, 'Tier 2 upgrade', /^Electric Spell Critical Chance \+14%$/)
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Desired Spell' }).value).toBe('Earthgrab')
+
+    await user.click(screen.getByRole('button', { name: 'Reset build' }))
+    await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
+    await choose(user, 'Tier 2 upgrade', /^Greater Disruption$/)
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Desired Spell' }).value).toBe('')
   })
 
   it('keeps reverse-filtered options alphabetical when Tier 3 is selected first', async () => {
@@ -525,8 +565,9 @@ describe('HeroicGreenSteelPage', () => {
     await user.click(screen.getByRole('button', { name: 'Ingredients' }))
     expect(await screen.findByText('Large Devil Scale')).toBeTruthy()
     await user.click(screen.getByRole('button', { name: 'Crafting Breakdown' }))
-    expect(await screen.findByText('Eldritch Altar of Fecundity')).toBeTruthy()
-    expect(screen.getByText('Recipe 100')).toBeTruthy()
+    const breakdown = await screen.findByRole('complementary', { name: 'Crafting Breakdown' })
+    expect(within(breakdown).getByText('Eldritch Altar of Fecundity')).toBeTruthy()
+    expect(within(breakdown).getByText('Recipe 100')).toBeTruthy()
   })
 
   it('exposes workspace tools as accessible mobile controls', async () => {

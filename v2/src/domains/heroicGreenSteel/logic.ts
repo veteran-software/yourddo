@@ -31,6 +31,7 @@ export class CyclicHeroicGreenSteelRecipeError extends Error {
 
 export const emptyHgsSelection: HgsSelection = {
   selectedBaseItemId: null,
+  selectedSpellId: null,
   selectedTier1Id: null,
   selectedTier2Id: null,
   selectedTier3Mode: null,
@@ -58,6 +59,7 @@ export const createHgsValidCombinations = (
             type: tier1.type,
             tier1Id: tier1.id,
             tier2Id: tier2.id,
+            spellId: tier2.spellId ?? null,
             tier3Mode: 'basic',
             tier3Id: tier3.id
           })
@@ -70,6 +72,7 @@ export const createHgsValidCombinations = (
             type: tier1.type,
             tier1Id: tier1.id,
             tier2Id: tier2.id,
+            spellId: tier2.spellId ?? null,
             tier3Mode: 'focused',
             tier3Id: tier3.id
           })
@@ -81,7 +84,7 @@ export const createHgsValidCombinations = (
   return combinations
 }
 
-type HgsOmittedConstraint = 'tier1' | 'tier2' | 'tier3'
+type HgsOmittedConstraint = 'spell' | 'tier1' | 'tier2' | 'tier3'
 
 const matchesHgsSelection = (
   combination: HgsValidCombination,
@@ -93,6 +96,7 @@ const matchesHgsSelection = (
 
   return (
     (!baseItem || combination.type === baseItem.type) &&
+    (omitted === 'spell' || selection.selectedSpellId === null || combination.spellId === selection.selectedSpellId) &&
     (omitted === 'tier1' || selection.selectedTier1Id === null || combination.tier1Id === selection.selectedTier1Id) &&
     (omitted === 'tier2' || selection.selectedTier2Id === null || combination.tier2Id === selection.selectedTier2Id) &&
     (selection.selectedTier3Mode === null || combination.tier3Mode === selection.selectedTier3Mode) &&
@@ -111,9 +115,12 @@ export const getAvailableHgsOptionIds = (
   selection: HgsSelection,
   baseItemById: ReadonlyMap<number, HgsBaseItem>
 ): HgsAvailableOptionIds => {
-  const available: HgsAvailableOptionIds = { tier1: new Set(), tier2: new Set(), tier3: new Set() }
+  const available: HgsAvailableOptionIds = { spell: new Set(), tier1: new Set(), tier2: new Set(), tier3: new Set() }
 
   for (const combination of combinations) {
+    if (combination.spellId !== null && matchesHgsSelection(combination, selection, baseItemById, 'spell')) {
+      available.spell.add(combination.spellId)
+    }
     if (matchesHgsSelection(combination, selection, baseItemById, 'tier1')) available.tier1.add(combination.tier1Id)
     if (matchesHgsSelection(combination, selection, baseItemById, 'tier2')) available.tier2.add(combination.tier2Id)
     if (matchesHgsSelection(combination, selection, baseItemById, 'tier3')) available.tier3.add(combination.tier3Id)
@@ -130,10 +137,14 @@ export const applyHgsSelection = <K extends keyof HgsSelection>(
   baseItemById: ReadonlyMap<number, HgsBaseItem>
 ): HgsSelection => {
   const next: HgsSelection = { ...selection, [field]: value }
+  if (field === 'selectedTier2Id' && value !== null) {
+    next.selectedSpellId = combinations.find((combination) => combination.tier2Id === value)?.spellId ?? null
+  }
   const pinned: HgsSelection = {
     ...emptyHgsSelection,
     selectedTier3Mode: next.selectedTier3Mode,
     ...(field === 'selectedBaseItemId' ? { selectedBaseItemId: next.selectedBaseItemId } : {}),
+    ...(field === 'selectedSpellId' || field === 'selectedTier2Id' ? { selectedSpellId: next.selectedSpellId } : {}),
     ...(field === 'selectedTier1Id' ? { selectedTier1Id: next.selectedTier1Id } : {}),
     ...(field === 'selectedTier2Id' ? { selectedTier2Id: next.selectedTier2Id } : {}),
     ...(field === 'selectedTier3Id' ? { selectedTier3Id: next.selectedTier3Id } : {})
@@ -141,8 +152,8 @@ export const applyHgsSelection = <K extends keyof HgsSelection>(
 
   const candidates: (keyof Pick<
     HgsSelection,
-    'selectedBaseItemId' | 'selectedTier1Id' | 'selectedTier2Id' | 'selectedTier3Id'
-  >)[] = ['selectedBaseItemId', 'selectedTier1Id', 'selectedTier2Id', 'selectedTier3Id']
+    'selectedBaseItemId' | 'selectedSpellId' | 'selectedTier1Id' | 'selectedTier2Id' | 'selectedTier3Id'
+  >)[] = ['selectedBaseItemId', 'selectedSpellId', 'selectedTier1Id', 'selectedTier2Id', 'selectedTier3Id']
 
   for (const candidate of candidates) {
     if (candidate === field || next[candidate] === null) continue

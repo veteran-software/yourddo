@@ -62,10 +62,11 @@ const tier1Options = [
   option(4, { type: 'equipment', focus: 'Earth' })
 ]
 const tier2Options = [
-  option(11, { requiresFocus: 'Earth', aspect: 'Mineral' }),
-  option(12, { requiresFocus: 'Earth', aspect: 'Mineral', gem: 'Opposition' }),
-  option(13, { requiresFocus: 'Air', aspect: 'Lightning' }),
+  option(11, { requiresFocus: 'Earth', aspect: 'Mineral', spellId: 201 }),
+  option(12, { requiresFocus: 'Earth', aspect: 'Mineral', gem: 'Opposition', spellId: 201 }),
+  option(13, { requiresFocus: 'Air', aspect: 'Lightning', spellId: 202 }),
   option(14, { requiresFocus: 'Air', aspect: 'Mineral' }),
+  option(16, { requiresFocus: 'Air', aspect: 'Mineral', spellId: 202 }),
   option(15, { type: 'equipment', requiresFocus: 'Earth', aspect: 'Mineral' })
 ]
 const tier3BasicOptions = [option(21), option(22, { type: 'equipment' })]
@@ -97,6 +98,7 @@ describe('Heroic Green Steel logic', () => {
       type: 'weapon',
       tier1Id: 1,
       tier2Id: 11,
+      spellId: 201,
       tier3Mode: 'focused',
       tier3Id: 31
     })
@@ -124,13 +126,63 @@ describe('Heroic Green Steel logic', () => {
     expect(available.tier3).toEqual(new Set([21, 31]))
   })
 
+  it('treats desired spells as deduplicated first-class compatibility constraints', () => {
+    let current = applyHgsSelection(selection(), 'selectedSpellId', 201, combinations, baseItemById)
+    const available = getAvailableHgsOptionIds(combinations, current, baseItemById)
+
+    expect(current.selectedSpellId).toBe(201)
+    expect(available.tier1).toEqual(new Set([1, 2]))
+    expect(available.tier2).toEqual(new Set([11, 12]))
+    expect(available.tier3).toEqual(new Set([21, 31]))
+
+    current = applyHgsSelection(current, 'selectedTier2Id', 11, combinations, baseItemById)
+    expect(current).toMatchObject({ selectedSpellId: 201, selectedTier2Id: 11 })
+  })
+
+  it('does not self-filter available desired spells and deduplicates shared spell IDs', () => {
+    const current = selection({ selectedTier3Mode: 'focused', selectedTier3Id: 31, selectedSpellId: 201 })
+
+    expect(getAvailableHgsOptionIds(combinations, current, baseItemById).spell).toEqual(new Set([201, 202]))
+  })
+
+  it('reflects a Tier 2 spell, clears it for a spell-less Tier 2 option, and lets the new Tier 2 win', () => {
+    let current = applyHgsSelection(selection(), 'selectedTier2Id', 11, combinations, baseItemById)
+    expect(current.selectedSpellId).toBe(201)
+
+    current = applyHgsSelection(current, 'selectedTier2Id', 13, combinations, baseItemById)
+    expect(current).toMatchObject({ selectedTier2Id: 13, selectedSpellId: 202 })
+
+    current = applyHgsSelection(current, 'selectedTier2Id', 14, combinations, baseItemById)
+    expect(current).toMatchObject({ selectedTier2Id: 14, selectedSpellId: null })
+  })
+
+  it('clears an incompatible desired spell without clearing other compatible altar selections', () => {
+    const current = applyHgsSelection(
+      selection({ selectedSpellId: 201, selectedTier3Mode: 'focused', selectedTier3Id: 31 }),
+      'selectedTier1Id',
+      3,
+      combinations,
+      baseItemById
+    )
+
+    expect(current).toMatchObject({ selectedTier1Id: 3, selectedSpellId: null, selectedTier3Id: 31 })
+  })
+
+  it('removes only the desired-spell constraint when it is cleared', () => {
+    const complete = selection({ selectedSpellId: 201, selectedTier1Id: 1, selectedTier2Id: 11 })
+    const current = applyHgsSelection(complete, 'selectedSpellId', null, combinations, baseItemById)
+
+    expect(current).toMatchObject({ selectedSpellId: null, selectedTier1Id: 1, selectedTier2Id: 11 })
+    expect(getAvailableHgsOptionIds(combinations, current, baseItemById).tier2).toEqual(new Set([11, 12]))
+  })
+
   it('starts at Tier 3 and derives compatible earlier tiers', () => {
     const current = selection({ selectedTier3Mode: 'focused', selectedTier3Id: 31 })
     const available = getAvailableHgsOptionIds(combinations, current, baseItemById)
 
     expect(current.selectedTier3Id).toBe(31)
     expect(available.tier1).toEqual(new Set([1, 2, 3]))
-    expect(available.tier2).toEqual(new Set([11, 12, 14]))
+    expect(available.tier2).toEqual(new Set([11, 12, 14, 16]))
   })
 
   it('retains Tier 3 then Tier 2 and filters Tier 1', () => {
@@ -207,7 +259,7 @@ describe('Heroic Green Steel logic', () => {
     const available = getAvailableHgsOptionIds(combinations, emptyHgsSelection, baseItemById)
 
     expect(available.tier1).toEqual(new Set([1, 2, 3, 4]))
-    expect(available.tier2).toEqual(new Set([11, 12, 13, 14, 15]))
+    expect(available.tier2).toEqual(new Set([11, 12, 13, 14, 16, 15]))
     expect(available.tier3).toEqual(new Set([21, 31, 32, 22, 33]))
   })
 

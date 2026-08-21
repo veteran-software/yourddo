@@ -25,6 +25,7 @@ import {
 import type {
   HgsInitialData,
   HgsSelection,
+  HgsSpell,
   HgsTier2Data,
   HgsTier3Data,
   HgsTierOption
@@ -46,6 +47,13 @@ type LoadState<T> = { status: 'idle' | 'loading' } | { status: 'loaded'; data: T
 
 const issuesUrl =
   'https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Heroic%20Green%20Steel%22'
+
+const altarLabels = {
+  base: 'Eldritch Altar of Fecundity',
+  tier1: 'Altar of Invasion',
+  tier2: 'Altar of Subjugation',
+  tier3: 'Altar of Devastation'
+} as const
 
 const Loading = ({ children }: { children: string }) => (
   <Center mih={120} role='status' aria-live='polite'>
@@ -161,6 +169,15 @@ const HeroicGreenSteelPage = () => {
         ? getAvailableHgsOptionIds(validCombinations, selection, initial.baseItemById)
         : null,
     [initial, selection, validCombinations]
+  )
+  const spellOptions = useMemo(
+    () =>
+      tier2Data && availableOptionIds
+        ? [...availableOptionIds.spell]
+            .map((id) => resolveSpell(id, tier2Data.spellById))
+            .filter((spell): spell is HgsSpell => spell !== undefined)
+        : [],
+    [availableOptionIds, tier2Data]
   )
   const tier1Options = useMemo(
     () =>
@@ -290,7 +307,7 @@ const HeroicGreenSteelPage = () => {
             <Paper component='section' aria-labelledby='hgs-base-title' withBorder p='md'>
               <Stack gap='sm'>
                 <Title order={2} size='h3' id='hgs-base-title'>
-                  1. Base Item
+                  {altarLabels.base}
                 </Title>
                 <Select
                   label='Green Steel base item'
@@ -330,12 +347,52 @@ const HeroicGreenSteelPage = () => {
               </Stack>
             </Paper>
 
+            <Paper component='section' aria-label='Desired Spell' withBorder p='md'>
+              <Stack gap='sm'>
+                {!baseItem ? (
+                  <Text c='dimmed' size='sm'>
+                    Select a base item first.
+                  </Text>
+                ) : tier2State.status === 'loading' ||
+                  tier2State.status === 'idle' ||
+                  tier3State.status === 'loading' ||
+                  tier3State.status === 'idle' ? (
+                  <Loading>Loading available spells…</Loading>
+                ) : tier2State.status === 'error' ? (
+                  <LoadError
+                    message='Available spells could not be loaded.'
+                    cause={tier2State.cause}
+                    retry={() => {
+                      setTier2State({ status: 'loading' })
+                      setTier2Attempt((value) => value + 1)
+                    }}
+                  />
+                ) : tier3State.status === 'error' ? (
+                  <Alert color='yellow'>Spell compatibility is unavailable until Tier 3 data loads.</Alert>
+                ) : (
+                  <Select
+                    label='Desired Spell'
+                    placeholder='Select a spell...'
+                    searchable
+                    clearable
+                    w='100%'
+                    maw={520}
+                    data={toHgsSelectOptions(spellOptions, (spellOption) => spellOption.name)}
+                    value={selection.selectedSpellId?.toString() ?? null}
+                    onChange={(value) => {
+                      updateSelection('selectedSpellId', value ? Number(value) : null)
+                    }}
+                  />
+                )}
+              </Stack>
+            </Paper>
+
             <Grid gap='md' data-testid='hgs-tier-grid'>
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <Paper component='section' aria-labelledby='hgs-tier1-title' withBorder p='md'>
                   <Stack gap='sm'>
                     <Title order={2} size='h3' id='hgs-tier1-title'>
-                      2. Tier 1
+                      {altarLabels.tier1}
                     </Title>
                     {!baseItem ? (
                       <Text c='dimmed' size='sm'>
@@ -370,7 +427,7 @@ const HeroicGreenSteelPage = () => {
                 <Paper component='section' aria-labelledby='hgs-tier2-title' withBorder p='md'>
                   <Stack gap='sm'>
                     <Title order={2} size='h3' id='hgs-tier2-title'>
-                      3. Tier 2
+                      {altarLabels.tier2}
                     </Title>
                     {!baseItem ? (
                       <Text c='dimmed' size='sm'>
@@ -430,7 +487,7 @@ const HeroicGreenSteelPage = () => {
                 <Paper component='section' aria-labelledby='hgs-tier3-title' withBorder p='md'>
                   <Stack gap='sm'>
                     <Title order={2} size='h3' id='hgs-tier3-title'>
-                      4. Tier 3
+                      {altarLabels.tier3}
                     </Title>
                     {!baseItem ? (
                       <Text c='dimmed' size='sm'>

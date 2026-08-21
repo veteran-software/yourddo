@@ -161,6 +161,7 @@ export interface HgsRecipeData {
 
 export interface HgsSelection {
   selectedBaseItemId: number | null
+  selectedSpellId: number | null
   selectedTier1Id: number | null
   selectedTier2Id: number | null
   selectedTier3Mode: HgsTier3Mode | null
@@ -171,11 +172,13 @@ export interface HgsValidCombination {
   type: HgsItemType
   tier1Id: number
   tier2Id: number
+  spellId: number | null
   tier3Mode: HgsTier3Mode
   tier3Id: number
 }
 
 export interface HgsAvailableOptionIds {
+  spell: Set<number>
   tier1: Set<number>
   tier2: Set<number>
   tier3: Set<number>
