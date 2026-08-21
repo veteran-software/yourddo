@@ -238,7 +238,7 @@ describe('HeroicGreenSteelPage', () => {
     const user = userEvent.setup()
     renderPage()
 
-    await choose(user, 'Green Steel base item', /Green Steel Longsword/)
+    await choose(user, 'Green Steel base item', /^Longsword$/)
     expect(screen.getByText('A crafted sword.')).toBeTruthy()
     await choose(user, 'Tier 1 upgrade', /Earth · Material · Dominion/)
     expect(await screen.findByRole('combobox', { name: 'Tier 2 upgrade' })).toBeTruthy()
@@ -257,14 +257,60 @@ describe('HeroicGreenSteelPage', () => {
 
     await user.click(screen.getByRole('button', { name: 'Reset build' }))
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Green Steel base item' }).value).toBe('')
-    expect(screen.getByText('Select a base item first.')).toBeTruthy()
+    expect(screen.getAllByText('Select a base item first.')).toHaveLength(3)
+  })
+
+  it('uses concise base-item labels while selecting the original base item', async () => {
+    mockLoadedData()
+    const user = userEvent.setup()
+    renderPage()
+
+    const baseItemSelector = await screen.findByRole<HTMLInputElement>('combobox', { name: 'Green Steel base item' })
+    await user.click(baseItemSelector)
+
+    const optionLabels = screen.getAllByRole('option').map((option) => option.textContent)
+    expect(optionLabels).toEqual(expect.arrayContaining(['Longsword', 'Green Steel Goggles']))
+    expect(optionLabels.join('')).not.toContain('—')
+    expect(optionLabels).not.toContain(weapon.name)
+
+    await user.click(screen.getByRole('option', { name: 'Longsword' }))
+
+    expect(baseItemSelector.value).toBe('Longsword')
+    expect(screen.getByText(weapon.description)).toBeTruthy()
+  })
+
+  it('allows Tier 2 to be selected before Tier 1', async () => {
+    mockLoadedData()
+    const user = userEvent.setup()
+    renderPage()
+
+    await choose(user, 'Green Steel base item', /^Longsword$/)
+    await choose(user, 'Tier 2 upgrade', /Earth · Material · Dominion/)
+
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 2 upgrade' }).value).not.toBe('')
+    expect(screen.getByRole('combobox', { name: 'Tier 1 upgrade' })).toBeTruthy()
+    expect(screen.getByText('Focused')).toBeTruthy()
+  })
+
+  it('allows Tier 3 to be selected before Tier 1 and Tier 2', async () => {
+    mockLoadedData()
+    const user = userEvent.setup()
+    renderPage()
+
+    await choose(user, 'Green Steel base item', /^Longsword$/)
+    await user.click(await screen.findByText('Focused'))
+    await choose(user, 'Tier 3 Focused upgrade', /Earth · Material · Dominion/)
+
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 3 Focused upgrade' }).value).not.toBe('')
+    expect(screen.getByRole('combobox', { name: 'Tier 1 upgrade' })).toBeTruthy()
+    expect(screen.getByRole('combobox', { name: 'Tier 2 upgrade' })).toBeTruthy()
   })
 
   it('renders Build Summary and lazily mounts Ingredients and Crafting Breakdown tools', async () => {
     mockLoadedData()
     const user = userEvent.setup()
     renderPage()
-    await choose(user, 'Green Steel base item', /Green Steel Longsword/)
+    await choose(user, 'Green Steel base item', /^Longsword$/)
     await user.click(screen.getByRole('button', { name: 'Build Summary' }))
     expect(screen.getByRole('complementary', { name: 'Build Summary' })).toBeTruthy()
     expect(screen.getByText('Tier 1 is incomplete.')).toBeTruthy()

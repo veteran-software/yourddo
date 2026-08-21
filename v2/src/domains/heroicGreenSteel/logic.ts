@@ -1,4 +1,5 @@
 import type {
+  HgsAvailableOptionIds,
   HgsBaseItem,
   HgsEffect,
   HgsIngredientPlan,
@@ -10,8 +11,8 @@ import type {
   HgsSelection,
   HgsShardType,
   HgsSpell,
-  HgsTier3Mode,
-  HgsTierOption
+  HgsTierOption,
+  HgsValidCombination
 } from './heroicGreenSteel.types.ts'
 
 export class InvalidHeroicGreenSteelReferenceError extends Error {
@@ -36,57 +37,121 @@ export const emptyHgsSelection: HgsSelection = {
   selectedTier3Id: null
 }
 
-export const selectBaseItem = (selection: HgsSelection, id: number | null): HgsSelection => ({
-  ...selection,
-  selectedBaseItemId: id,
-  selectedTier1Id: null,
-  selectedTier2Id: null,
-  selectedTier3Mode: null,
-  selectedTier3Id: null
-})
-
-export const selectTier1 = (selection: HgsSelection, id: number | null): HgsSelection => ({
-  ...selection,
-  selectedTier1Id: id,
-  selectedTier2Id: null,
-  selectedTier3Mode: null,
-  selectedTier3Id: null
-})
-
-export const selectTier2 = (selection: HgsSelection, id: number | null): HgsSelection => ({
-  ...selection,
-  selectedTier2Id: id,
-  selectedTier3Mode: null,
-  selectedTier3Id: null
-})
-
-export const selectTier3Mode = (
-  selection: HgsSelection,
-  mode: HgsTier3Mode,
-  validOptionIds: ReadonlySet<number>
-): HgsSelection => ({
-  ...selection,
-  selectedTier3Mode: mode,
-  selectedTier3Id:
-    selection.selectedTier3Id !== null && validOptionIds.has(selection.selectedTier3Id)
-      ? selection.selectedTier3Id
-      : null
-})
-
 export const classifyBaseItems = (items: readonly HgsBaseItem[], type: HgsItemType): HgsBaseItem[] =>
   items.filter((item) => item.type === type)
 
-export const getCompatibleTier1 = (options: readonly HgsTierOption[], baseItem: HgsBaseItem): HgsTierOption[] =>
-  options.filter((option) => option.type === baseItem.type)
+export const createHgsValidCombinations = (
+  tier1Options: readonly HgsTierOption[],
+  tier2Options: readonly HgsTierOption[],
+  tier3BasicOptions: readonly HgsTierOption[],
+  tier3FocusedOptions: readonly HgsTierOption[]
+): HgsValidCombination[] => {
+  const combinations: HgsValidCombination[] = []
 
-export const getCompatibleTier2 = (options: readonly HgsTierOption[], tier1: HgsTierOption): HgsTierOption[] =>
-  options.filter((option) => option.type === tier1.type && option.requiresFocus === tier1.focus)
+  for (const tier1 of tier1Options) {
+    for (const tier2 of tier2Options) {
+      if (tier1.type !== tier2.type || tier1.focus !== tier2.requiresFocus) continue
 
-export const getCompatibleTier3Basic = (options: readonly HgsTierOption[], tier2: HgsTierOption): HgsTierOption[] =>
-  options.filter((option) => option.type === tier2.type)
+      for (const tier3 of tier3BasicOptions) {
+        if (tier3.type === tier2.type) {
+          combinations.push({
+            type: tier1.type,
+            tier1Id: tier1.id,
+            tier2Id: tier2.id,
+            tier3Mode: 'basic',
+            tier3Id: tier3.id
+          })
+        }
+      }
 
-export const getCompatibleTier3Focused = (options: readonly HgsTierOption[], tier2: HgsTierOption): HgsTierOption[] =>
-  options.filter((option) => option.type === tier2.type && option.requiresAspect === tier2.aspect)
+      for (const tier3 of tier3FocusedOptions) {
+        if (tier3.type === tier2.type && tier3.requiresAspect === tier2.aspect) {
+          combinations.push({
+            type: tier1.type,
+            tier1Id: tier1.id,
+            tier2Id: tier2.id,
+            tier3Mode: 'focused',
+            tier3Id: tier3.id
+          })
+        }
+      }
+    }
+  }
+
+  return combinations
+}
+
+type HgsOmittedConstraint = 'tier1' | 'tier2' | 'tier3'
+
+const matchesHgsSelection = (
+  combination: HgsValidCombination,
+  selection: HgsSelection,
+  baseItemById: ReadonlyMap<number, HgsBaseItem>,
+  omitted?: HgsOmittedConstraint
+) => {
+  const baseItem = selection.selectedBaseItemId === null ? undefined : baseItemById.get(selection.selectedBaseItemId)
+
+  return (
+    (!baseItem || combination.type === baseItem.type) &&
+    (omitted === 'tier1' || selection.selectedTier1Id === null || combination.tier1Id === selection.selectedTier1Id) &&
+    (omitted === 'tier2' || selection.selectedTier2Id === null || combination.tier2Id === selection.selectedTier2Id) &&
+    (selection.selectedTier3Mode === null || combination.tier3Mode === selection.selectedTier3Mode) &&
+    (omitted === 'tier3' || selection.selectedTier3Id === null || combination.tier3Id === selection.selectedTier3Id)
+  )
+}
+
+export const isHgsSelectionCompatible = (
+  combinations: readonly HgsValidCombination[],
+  selection: HgsSelection,
+  baseItemById: ReadonlyMap<number, HgsBaseItem>
+): boolean => combinations.some((combination) => matchesHgsSelection(combination, selection, baseItemById))
+
+export const getAvailableHgsOptionIds = (
+  combinations: readonly HgsValidCombination[],
+  selection: HgsSelection,
+  baseItemById: ReadonlyMap<number, HgsBaseItem>
+): HgsAvailableOptionIds => {
+  const available: HgsAvailableOptionIds = { tier1: new Set(), tier2: new Set(), tier3: new Set() }
+
+  for (const combination of combinations) {
+    if (matchesHgsSelection(combination, selection, baseItemById, 'tier1')) available.tier1.add(combination.tier1Id)
+    if (matchesHgsSelection(combination, selection, baseItemById, 'tier2')) available.tier2.add(combination.tier2Id)
+    if (matchesHgsSelection(combination, selection, baseItemById, 'tier3')) available.tier3.add(combination.tier3Id)
+  }
+
+  return available
+}
+
+export const applyHgsSelection = <K extends keyof HgsSelection>(
+  selection: HgsSelection,
+  field: K,
+  value: HgsSelection[K],
+  combinations: readonly HgsValidCombination[],
+  baseItemById: ReadonlyMap<number, HgsBaseItem>
+): HgsSelection => {
+  const next: HgsSelection = { ...selection, [field]: value }
+  const pinned: HgsSelection = {
+    ...emptyHgsSelection,
+    selectedTier3Mode: next.selectedTier3Mode,
+    ...(field === 'selectedBaseItemId' ? { selectedBaseItemId: next.selectedBaseItemId } : {}),
+    ...(field === 'selectedTier1Id' ? { selectedTier1Id: next.selectedTier1Id } : {}),
+    ...(field === 'selectedTier2Id' ? { selectedTier2Id: next.selectedTier2Id } : {}),
+    ...(field === 'selectedTier3Id' ? { selectedTier3Id: next.selectedTier3Id } : {})
+  }
+
+  const candidates: (keyof Pick<
+    HgsSelection,
+    'selectedBaseItemId' | 'selectedTier1Id' | 'selectedTier2Id' | 'selectedTier3Id'
+  >)[] = ['selectedBaseItemId', 'selectedTier1Id', 'selectedTier2Id', 'selectedTier3Id']
+
+  for (const candidate of candidates) {
+    if (candidate === field || next[candidate] === null) continue
+    const candidateSelection = { ...pinned, [candidate]: next[candidate] }
+    if (!isHgsSelectionCompatible(combinations, candidateSelection, baseItemById)) next[candidate] = null
+  }
+
+  return next
+}
 
 export const filterFocusedByShardType = (options: readonly HgsTierOption[], shardType: HgsShardType): HgsTierOption[] =>
   options.filter((option) => option.shardType === shardType)

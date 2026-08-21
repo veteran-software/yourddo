@@ -167,6 +167,20 @@ export interface HgsSelection {
   selectedTier3Id: number | null
 }
 
+export interface HgsValidCombination {
+  type: HgsItemType
+  tier1Id: number
+  tier2Id: number
+  tier3Mode: HgsTier3Mode
+  tier3Id: number
+}
+
+export interface HgsAvailableOptionIds {
+  tier1: Set<number>
+  tier2: Set<number>
+  tier3: Set<number>
+}
+
 export interface HgsIngredientTotal {
   ingredient: HgsIngredient
   quantity: number

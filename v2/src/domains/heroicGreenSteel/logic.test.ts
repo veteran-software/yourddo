@@ -4,28 +4,25 @@ import type {
   HgsEffect,
   HgsIngredient,
   HgsRecipe,
+  HgsSelection,
   HgsSpell,
   HgsTierOption
 } from './heroicGreenSteel.types.ts'
 import {
+  applyHgsSelection,
   classifyBaseItems,
+  createHgsValidCombinations,
   CyclicHeroicGreenSteelRecipeError,
   emptyHgsSelection,
   expandIngredientRequirements,
   filterFocusedByShardType,
   formatMechanic,
   formatProc,
-  getCompatibleTier1,
-  getCompatibleTier2,
-  getCompatibleTier3Basic,
-  getCompatibleTier3Focused,
+  getAvailableHgsOptionIds,
   InvalidHeroicGreenSteelReferenceError,
+  isHgsSelectionCompatible,
   resolveEffects,
   resolveSpell,
-  selectBaseItem,
-  selectTier1,
-  selectTier2,
-  selectTier3Mode,
   stripDdoMarkup
 } from './logic.ts'
 
@@ -50,6 +47,40 @@ const option = (id: number, overrides: Partial<HgsTierOption> = {}): HgsTierOpti
   ...overrides
 })
 
+const weapon = base(100, 'weapon')
+const equipment = base(101, 'equipment')
+const secondWeapon = base(102, 'weapon')
+const baseItemById = new Map([
+  [weapon.id, weapon],
+  [equipment.id, equipment],
+  [secondWeapon.id, secondWeapon]
+])
+const tier1Options = [
+  option(1, { focus: 'Earth' }),
+  option(2, { focus: 'Earth', gem: 'Opposition' }),
+  option(3, { focus: 'Air' }),
+  option(4, { type: 'equipment', focus: 'Earth' })
+]
+const tier2Options = [
+  option(11, { requiresFocus: 'Earth', aspect: 'Mineral' }),
+  option(12, { requiresFocus: 'Earth', aspect: 'Mineral', gem: 'Opposition' }),
+  option(13, { requiresFocus: 'Air', aspect: 'Lightning' }),
+  option(14, { requiresFocus: 'Air', aspect: 'Mineral' }),
+  option(15, { type: 'equipment', requiresFocus: 'Earth', aspect: 'Mineral' })
+]
+const tier3BasicOptions = [option(21), option(22, { type: 'equipment' })]
+const tier3FocusedOptions = [
+  option(31, { requiresAspect: 'Mineral', shardType: 'single' }),
+  option(32, { requiresAspect: 'Lightning', shardType: 'compound' }),
+  option(33, { type: 'equipment', requiresAspect: 'Mineral', shardType: 'single' })
+]
+const combinations = createHgsValidCombinations(tier1Options, tier2Options, tier3BasicOptions, tier3FocusedOptions)
+const selection = (overrides: Partial<HgsSelection> = {}): HgsSelection => ({
+  ...emptyHgsSelection,
+  selectedBaseItemId: weapon.id,
+  ...overrides
+})
+
 describe('Heroic Green Steel logic', () => {
   it('classifies the published 45-item shape by structured type', () => {
     const items = [
@@ -61,54 +92,123 @@ describe('Heroic Green Steel logic', () => {
     expect(classifyBaseItems(items, 'equipment')).toHaveLength(8)
   })
 
-  it('uses only structured compatibility fields for every tier', () => {
-    const tier1 = [option(1), option(2, { type: 'equipment' })]
-    expect(getCompatibleTier1(tier1, base(1, 'weapon')).map(({ id }) => id)).toEqual([1])
-
-    const selectedTier1 = option(3, { focus: 'Earth' })
-    const tier2 = Array.from({ length: 36 }, (_, id) => option(id, { requiresFocus: 'Earth', aspect: 'Mineral' }))
-    tier2.push(option(100, { requiresFocus: 'Air', aspect: 'Lightning' }))
-    expect(getCompatibleTier2(tier2, selectedTier1)).toHaveLength(36)
-
-    const selectedTier2 = option(4, { aspect: 'Mineral' })
-    const basic = Array.from({ length: 36 }, (_, id) => option(id))
-    basic.push(option(101, { type: 'equipment' }))
-    expect(getCompatibleTier3Basic(basic, selectedTier2)).toHaveLength(36)
-
-    const focused = [
-      ...Array.from({ length: 6 }, (_, id) =>
-        option(id, { requiresAspect: 'Mineral', shardType: id < 2 ? 'single' : 'compound' })
-      ),
-      option(200, { requiresAspect: 'Radiance', shardType: 'compound' })
-    ]
-    const compatible = getCompatibleTier3Focused(focused, selectedTier2)
-    expect(compatible).toHaveLength(6)
-    expect(filterFocusedByShardType(compatible, 'single')).toHaveLength(2)
-    expect(filterFocusedByShardType(compatible, 'compound')).toHaveLength(4)
+  it('builds complete combinations only from structured compatibility fields', () => {
+    expect(combinations).toContainEqual({
+      type: 'weapon',
+      tier1Id: 1,
+      tier2Id: 11,
+      tier3Mode: 'focused',
+      tier3Id: 31
+    })
+    expect(combinations).not.toContainEqual(expect.objectContaining({ tier1Id: 1, tier2Id: 13 }))
+    expect(combinations).not.toContainEqual(expect.objectContaining({ tier2Id: 11, tier3Id: 32 }))
+    expect(filterFocusedByShardType(tier3FocusedOptions, 'single').map(({ id }) => id)).toEqual([31, 33])
   })
 
-  it('resets every downstream selection explicitly', () => {
-    const complete = {
-      selectedBaseItemId: 1,
-      selectedTier1Id: 2,
-      selectedTier2Id: 3,
-      selectedTier3Mode: 'basic' as const,
-      selectedTier3Id: 4
-    }
-    expect(selectBaseItem(complete, 9)).toEqual({ ...emptyHgsSelection, selectedBaseItemId: 9 })
-    expect(selectTier1(complete, 8)).toMatchObject({
-      selectedTier1Id: 8,
+  it('supports the traditional Tier 1, Tier 2, Tier 3 sequence', () => {
+    let current = applyHgsSelection(selection(), 'selectedTier1Id', 1, combinations, baseItemById)
+    current = applyHgsSelection(current, 'selectedTier2Id', 11, combinations, baseItemById)
+    current = applyHgsSelection(current, 'selectedTier3Mode', 'focused', combinations, baseItemById)
+    current = applyHgsSelection(current, 'selectedTier3Id', 31, combinations, baseItemById)
+
+    expect(current).toMatchObject({ selectedTier1Id: 1, selectedTier2Id: 11, selectedTier3Id: 31 })
+    expect(isHgsSelectionCompatible(combinations, current, baseItemById)).toBe(true)
+  })
+
+  it('starts at Tier 2 and derives compatible Tier 1 and Tier 3 options', () => {
+    const current = applyHgsSelection(selection(), 'selectedTier2Id', 11, combinations, baseItemById)
+    const available = getAvailableHgsOptionIds(combinations, current, baseItemById)
+
+    expect(current.selectedTier2Id).toBe(11)
+    expect([...available.tier1]).toEqual([1, 2])
+    expect(available.tier3).toEqual(new Set([21, 31]))
+  })
+
+  it('starts at Tier 3 and derives compatible earlier tiers', () => {
+    const current = selection({ selectedTier3Mode: 'focused', selectedTier3Id: 31 })
+    const available = getAvailableHgsOptionIds(combinations, current, baseItemById)
+
+    expect(current.selectedTier3Id).toBe(31)
+    expect(available.tier1).toEqual(new Set([1, 2, 3]))
+    expect(available.tier2).toEqual(new Set([11, 12, 14]))
+  })
+
+  it('retains Tier 3 then Tier 2 and filters Tier 1', () => {
+    let current = selection({ selectedTier3Mode: 'focused', selectedTier3Id: 31 })
+    current = applyHgsSelection(current, 'selectedTier2Id', 11, combinations, baseItemById)
+
+    expect(current).toMatchObject({ selectedTier2Id: 11, selectedTier3Id: 31 })
+    expect(getAvailableHgsOptionIds(combinations, current, baseItemById).tier1).toEqual(new Set([1, 2]))
+  })
+
+  it('retains Tier 2 then Tier 1 and filters Tier 3', () => {
+    let current = selection({ selectedTier2Id: 11 })
+    current = applyHgsSelection(current, 'selectedTier1Id', 1, combinations, baseItemById)
+
+    expect(current).toMatchObject({ selectedTier1Id: 1, selectedTier2Id: 11 })
+    expect(getAvailableHgsOptionIds(combinations, current, baseItemById).tier3).toEqual(new Set([21, 31]))
+  })
+
+  it('preserves later selections when an earlier change remains compatible', () => {
+    const complete = selection({
+      selectedTier1Id: 1,
+      selectedTier2Id: 11,
+      selectedTier3Mode: 'focused',
+      selectedTier3Id: 31
+    })
+    const current = applyHgsSelection(complete, 'selectedTier1Id', 2, combinations, baseItemById)
+
+    expect(current).toMatchObject({ selectedTier1Id: 2, selectedTier2Id: 11, selectedTier3Id: 31 })
+  })
+
+  it('clears only selections invalidated by a new constraint', () => {
+    const complete = selection({
+      selectedTier1Id: 1,
+      selectedTier2Id: 11,
+      selectedTier3Mode: 'focused',
+      selectedTier3Id: 31
+    })
+    const current = applyHgsSelection(complete, 'selectedTier1Id', 3, combinations, baseItemById)
+
+    expect(current).toMatchObject({ selectedTier1Id: 3, selectedTier2Id: null, selectedTier3Id: 31 })
+    expect(isHgsSelectionCompatible(combinations, current, baseItemById)).toBe(true)
+  })
+
+  it('preserves altar selections across compatible base changes', () => {
+    const complete = selection({
+      selectedTier1Id: 1,
+      selectedTier2Id: 11,
+      selectedTier3Mode: 'focused',
+      selectedTier3Id: 31
+    })
+
+    expect(
+      applyHgsSelection(complete, 'selectedBaseItemId', secondWeapon.id, combinations, baseItemById)
+    ).toMatchObject({ selectedTier1Id: 1, selectedTier2Id: 11, selectedTier3Id: 31 })
+    expect(applyHgsSelection(complete, 'selectedBaseItemId', equipment.id, combinations, baseItemById)).toMatchObject({
+      selectedTier1Id: null,
       selectedTier2Id: null,
-      selectedTier3Mode: null,
       selectedTier3Id: null
     })
-    expect(selectTier2(complete, 7)).toMatchObject({
-      selectedTier2Id: 7,
-      selectedTier3Mode: null,
-      selectedTier3Id: null
+  })
+
+  it('does not self-filter the altar being changed', () => {
+    const current = selection({
+      selectedTier1Id: 1,
+      selectedTier2Id: 11,
+      selectedTier3Mode: 'focused',
+      selectedTier3Id: 31
     })
-    expect(selectTier3Mode(complete, 'focused', new Set([4])).selectedTier3Id).toBe(4)
-    expect(selectTier3Mode(complete, 'focused', new Set([5])).selectedTier3Id).toBeNull()
+
+    expect(getAvailableHgsOptionIds(combinations, current, baseItemById).tier2).toEqual(new Set([11, 12]))
+  })
+
+  it('treats empty selections as no constraints', () => {
+    const available = getAvailableHgsOptionIds(combinations, emptyHgsSelection, baseItemById)
+
+    expect(available.tier1).toEqual(new Set([1, 2, 3, 4]))
+    expect(available.tier2).toEqual(new Set([11, 12, 13, 14, 15]))
+    expect(available.tier3).toEqual(new Set([21, 31, 32, 22, 33]))
   })
 
   it('resolves effects and optional spells and rejects missing references', () => {

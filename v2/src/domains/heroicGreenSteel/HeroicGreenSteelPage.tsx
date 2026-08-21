@@ -26,21 +26,15 @@ import type {
   HgsSelection,
   HgsTier2Data,
   HgsTier3Data,
-  HgsTier3Mode,
   HgsTierOption
 } from './heroicGreenSteel.types.ts'
 import {
+  applyHgsSelection,
+  createHgsValidCombinations,
   emptyHgsSelection,
-  getCompatibleTier1,
-  getCompatibleTier2,
-  getCompatibleTier3Basic,
-  getCompatibleTier3Focused,
+  getAvailableHgsOptionIds,
   resolveEffects,
-  resolveSpell,
-  selectBaseItem,
-  selectTier1,
-  selectTier2,
-  selectTier3Mode
+  resolveSpell
 } from './logic.ts'
 import BuildSummaryTool from './tools/BuildSummaryTool.tsx'
 import CraftingBreakdownTool from './tools/CraftingBreakdownTool.tsx'
@@ -105,6 +99,7 @@ const HeroicGreenSteelPage = () => {
     selection.selectedTier3Mode === 'basic'
       ? tier3Data?.tier3BasicById.get(selection.selectedTier3Id ?? -1)
       : tier3Data?.tier3FocusedById.get(selection.selectedTier3Id ?? -1)
+  const hasSelection = Object.values(selection).some((value) => value !== null)
 
   useEffect(() => {
     let active = true
@@ -121,7 +116,7 @@ const HeroicGreenSteelPage = () => {
   }, [initialAttempt])
 
   useEffect(() => {
-    if (selection.selectedTier1Id === null || tier2State.status === 'loaded') return
+    if (selection.selectedBaseItemId === null || tier2State.status === 'loaded') return
     let active = true
     setTier2State({ status: 'loading' })
     loadHeroicGreenSteelTier2Data()
@@ -134,10 +129,10 @@ const HeroicGreenSteelPage = () => {
     return () => {
       active = false
     }
-  }, [selection.selectedTier1Id, tier2Attempt, tier2State.status])
+  }, [selection.selectedBaseItemId, tier2Attempt, tier2State.status])
 
   useEffect(() => {
-    if (selection.selectedTier2Id === null || tier3State.status === 'loaded') return
+    if (selection.selectedBaseItemId === null || tier3State.status === 'loaded') return
     let active = true
     setTier3State({ status: 'loading' })
     loadHeroicGreenSteelTier3Data()
@@ -150,23 +145,52 @@ const HeroicGreenSteelPage = () => {
     return () => {
       active = false
     }
-  }, [selection.selectedTier2Id, tier3Attempt, tier3State.status])
+  }, [selection.selectedBaseItemId, tier3Attempt, tier3State.status])
 
+  const validCombinations = useMemo(
+    () =>
+      initial && tier2Data && tier3Data
+        ? createHgsValidCombinations(initial.tier1, tier2Data.tier2, tier3Data.tier3Basic, tier3Data.tier3Focused)
+        : null,
+    [initial, tier2Data, tier3Data]
+  )
+  const availableOptionIds = useMemo(
+    () =>
+      initial && validCombinations
+        ? getAvailableHgsOptionIds(validCombinations, selection, initial.baseItemById)
+        : null,
+    [initial, selection, validCombinations]
+  )
   const tier1Options = useMemo(
-    () => (initial && baseItem ? getCompatibleTier1(initial.tier1, baseItem) : []),
-    [baseItem, initial]
+    () =>
+      initial && baseItem
+        ? initial.tier1.filter(
+            (option) =>
+              option.type === baseItem.type && (!availableOptionIds || availableOptionIds.tier1.has(option.id))
+          )
+        : [],
+    [availableOptionIds, baseItem, initial]
   )
   const tier2Options = useMemo(
-    () => (tier2Data && tier1 ? getCompatibleTier2(tier2Data.tier2, tier1) : []),
-    [tier1, tier2Data]
+    () =>
+      tier2Data && availableOptionIds
+        ? tier2Data.tier2.filter((option) => availableOptionIds.tier2.has(option.id))
+        : [],
+    [availableOptionIds, tier2Data]
   )
   const basicOptions = useMemo(
-    () => (tier3Data && tier2 ? getCompatibleTier3Basic(tier3Data.tier3Basic, tier2) : []),
-    [tier2, tier3Data]
+    () =>
+      tier3Data && availableOptionIds
+        ? tier3Data.tier3Basic.filter((option) => availableOptionIds.tier3.has(option.id))
+        : [],
+    [availableOptionIds, tier3Data]
   )
   const focusedOptions = useMemo(
-    () => (tier3Data && tier2 ? getCompatibleTier3Focused(tier3Data.tier3Focused, tier2) : []),
-    [tier2, tier3Data]
+    () =>
+      tier3Data && availableOptionIds
+        ? tier3Data.tier3Focused.filter((option) => availableOptionIds.tier3.has(option.id))
+        : [],
+    [availableOptionIds, tier3Data]
   )
   const tier3Options = selection.selectedTier3Mode === 'basic' ? basicOptions : focusedOptions
 
@@ -182,9 +206,12 @@ const HeroicGreenSteelPage = () => {
     [baseItem, tier1, tier2, tier3]
   )
 
-  const setTier3Mode = (mode: HgsTier3Mode) => {
-    const options = mode === 'basic' ? basicOptions : focusedOptions
-    setSelection((current) => selectTier3Mode(current, mode, new Set(options.map(({ id }) => id))))
+  const updateSelection = <K extends keyof HgsSelection>(field: K, value: HgsSelection[K]) => {
+    setSelection((current) =>
+      initial && validCombinations
+        ? applyHgsSelection(current, field, value, validCombinations, initial.baseItemById)
+        : { ...current, [field]: value }
+    )
   }
 
   const tools = initial
@@ -236,7 +263,7 @@ const HeroicGreenSteelPage = () => {
           <Button
             variant='subtle'
             color='gray'
-            disabled={!baseItem}
+            disabled={!hasSelection}
             onClick={() => {
               setSelection(emptyHgsSelection)
             }}
@@ -276,7 +303,7 @@ const HeroicGreenSteelPage = () => {
                         .filter(({ type }) => type === 'weapon')
                         .map((item) => ({
                           value: item.id.toString(),
-                          label: `${item.name} — ${item.weaponType ?? 'Weapon'}`
+                          label: item.weaponType ?? item.name
                         }))
                     },
                     {
@@ -291,7 +318,7 @@ const HeroicGreenSteelPage = () => {
                   ]}
                   value={selection.selectedBaseItemId?.toString() ?? null}
                   onChange={(value) => {
-                    setSelection((current) => selectBaseItem(current, value ? Number(value) : null))
+                    updateSelection('selectedBaseItemId', value ? Number(value) : null)
                   }}
                 />
                 {baseItem ? (
@@ -330,7 +357,7 @@ const HeroicGreenSteelPage = () => {
                     }))}
                     value={selection.selectedTier1Id?.toString() ?? null}
                     onChange={(value) => {
-                      setSelection((current) => selectTier1(current, value ? Number(value) : null))
+                      updateSelection('selectedTier1Id', value ? Number(value) : null)
                     }}
                   />
                 )}
@@ -351,11 +378,14 @@ const HeroicGreenSteelPage = () => {
                 <Title order={2} size='h3' id='hgs-tier2-title'>
                   3. Tier 2
                 </Title>
-                {!tier1 ? (
+                {!baseItem ? (
                   <Text c='dimmed' size='sm'>
-                    Select a Tier 1 upgrade first.
+                    Select a base item first.
                   </Text>
-                ) : tier2State.status === 'loading' || tier2State.status === 'idle' ? (
+                ) : tier2State.status === 'loading' ||
+                  tier2State.status === 'idle' ||
+                  tier3State.status === 'loading' ||
+                  tier3State.status === 'idle' ? (
                   <Loading>Loading Tier 2 upgrades and spells…</Loading>
                 ) : tier2State.status === 'error' ? (
                   <LoadError
@@ -366,8 +396,10 @@ const HeroicGreenSteelPage = () => {
                       setTier2Attempt((value) => value + 1)
                     }}
                   />
+                ) : tier3State.status === 'error' ? (
+                  <Alert color='yellow'>Tier 2 compatibility is unavailable until Tier 3 data loads.</Alert>
                 ) : tier2Options.length === 0 ? (
-                  <Alert color='yellow'>No compatible Tier 2 options were published for this Tier 1 focus.</Alert>
+                  <Alert color='yellow'>No Tier 2 options are compatible with the current selections.</Alert>
                 ) : (
                   <Select
                     label='Tier 2 upgrade'
@@ -380,7 +412,7 @@ const HeroicGreenSteelPage = () => {
                     }))}
                     value={selection.selectedTier2Id?.toString() ?? null}
                     onChange={(value) => {
-                      setSelection((current) => selectTier2(current, value ? Number(value) : null))
+                      updateSelection('selectedTier2Id', value ? Number(value) : null)
                     }}
                   />
                 )}
@@ -410,11 +442,14 @@ const HeroicGreenSteelPage = () => {
                 <Title order={2} size='h3' id='hgs-tier3-title'>
                   4. Tier 3
                 </Title>
-                {!tier2 ? (
+                {!baseItem ? (
                   <Text c='dimmed' size='sm'>
-                    Select a Tier 2 upgrade first.
+                    Select a base item first.
                   </Text>
-                ) : tier3State.status === 'loading' || tier3State.status === 'idle' ? (
+                ) : tier3State.status === 'loading' ||
+                  tier3State.status === 'idle' ||
+                  tier2State.status === 'loading' ||
+                  tier2State.status === 'idle' ? (
                   <Loading>Loading Tier 3 upgrades…</Loading>
                 ) : tier3State.status === 'error' ? (
                   <LoadError
@@ -425,13 +460,15 @@ const HeroicGreenSteelPage = () => {
                       setTier3Attempt((value) => value + 1)
                     }}
                   />
+                ) : tier2State.status === 'error' ? (
+                  <Alert color='yellow'>Tier 3 compatibility is unavailable until Tier 2 data loads.</Alert>
                 ) : (
                   <>
                     <SegmentedControl
                       aria-label='Tier 3 mode'
                       value={selection.selectedTier3Mode ?? ''}
                       onChange={(value) => {
-                        if (value === 'basic' || value === 'focused') setTier3Mode(value)
+                        if (value === 'basic' || value === 'focused') updateSelection('selectedTier3Mode', value)
                       }}
                       data={[
                         { label: 'Basic', value: 'basic' },
@@ -457,7 +494,7 @@ const HeroicGreenSteelPage = () => {
                         }))}
                         value={selection.selectedTier3Id?.toString() ?? null}
                         onChange={(value) => {
-                          setSelection((current) => ({ ...current, selectedTier3Id: value ? Number(value) : null }))
+                          updateSelection('selectedTier3Id', value ? Number(value) : null)
                         }}
                       />
                     )}
