@@ -36,6 +36,7 @@ import {
   resolveEffects,
   resolveSpell
 } from './logic.ts'
+import { toHgsSelectOptions } from './selectOptions.ts'
 import BuildSummaryTool from './tools/BuildSummaryTool.tsx'
 import CraftingBreakdownTool from './tools/CraftingBreakdownTool.tsx'
 import IngredientsTool from './tools/IngredientsTool.tsx'
@@ -299,21 +300,17 @@ const HeroicGreenSteelPage = () => {
                   data={[
                     {
                       group: 'Weapons',
-                      items: initial.baseItems
-                        .filter(({ type }) => type === 'weapon')
-                        .map((item) => ({
-                          value: item.id.toString(),
-                          label: item.weaponType ?? item.name
-                        }))
+                      items: toHgsSelectOptions(
+                        initial.baseItems.filter(({ type }) => type === 'weapon'),
+                        (item) => item.name
+                      )
                     },
                     {
                       group: 'Equipment',
-                      items: initial.baseItems
-                        .filter(({ type }) => type === 'equipment')
-                        .map((item) => ({
-                          value: item.id.toString(),
-                          label: item.name
-                        }))
+                      items: toHgsSelectOptions(
+                        initial.baseItems.filter(({ type }) => type === 'equipment'),
+                        (item) => item.name
+                      )
                     }
                   ]}
                   value={selection.selectedBaseItemId?.toString() ?? null}
@@ -351,10 +348,7 @@ const HeroicGreenSteelPage = () => {
                     placeholder='Choose focus, essence, and gem…'
                     searchable
                     clearable
-                    data={tier1Options.map((option) => ({
-                      value: option.id.toString(),
-                      label: optionLabel(option, initial)
-                    }))}
+                    data={toHgsSelectOptions(tier1Options, (option) => optionLabel(option, initial))}
                     value={selection.selectedTier1Id?.toString() ?? null}
                     onChange={(value) => {
                       updateSelection('selectedTier1Id', value ? Number(value) : null)
@@ -406,10 +400,7 @@ const HeroicGreenSteelPage = () => {
                     placeholder='Choose a compatible upgrade…'
                     searchable
                     clearable
-                    data={tier2Options.map((option) => ({
-                      value: option.id.toString(),
-                      label: optionLabel(option, initial)
-                    }))}
+                    data={toHgsSelectOptions(tier2Options, (option) => optionLabel(option, initial))}
                     value={selection.selectedTier2Id?.toString() ?? null}
                     onChange={(value) => {
                       updateSelection('selectedTier2Id', value ? Number(value) : null)
@@ -488,10 +479,7 @@ const HeroicGreenSteelPage = () => {
                         placeholder='Choose a final upgrade…'
                         searchable
                         clearable
-                        data={tier3Options.map((option) => ({
-                          value: option.id.toString(),
-                          label: optionLabel(option, initial)
-                        }))}
+                        data={toHgsSelectOptions(tier3Options, (option) => optionLabel(option, initial))}
                         value={selection.selectedTier3Id?.toString() ?? null}
                         onChange={(value) => {
                           updateSelection('selectedTier3Id', value ? Number(value) : null)
