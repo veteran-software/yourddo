@@ -75,11 +75,10 @@ const LoadError = ({ message, cause, retry }: { message: string; cause: unknown;
 )
 
 const optionLabel = (option: HgsTierOption, data: HgsInitialData) => {
-  const effects = option.effectIds
+  return option.effectIds
     .map((id) => data.effectById.get(id)?.displayName)
     .filter(Boolean)
     .join(', ')
-  return `${option.focus} · ${option.essence} · ${option.gem}${option.aspect ? ` · ${option.aspect}` : ''}${effects ? ` — ${effects}` : ''}`
 }
 
 const HeroicGreenSteelPage = () => {

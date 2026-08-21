@@ -181,28 +181,47 @@ export const stripDdoMarkup = (value: string): string =>
 
 const formatDice = ({ count, sides }: { count: number; sides: number }) => `${count.toString()}d${sides.toString()}`
 
+const withBonusType = (effect: string, bonusType: string | undefined): string =>
+  bonusType ? `${effect} (${bonusType})` : effect
+
 export const formatMechanic = (mechanic: HgsMechanic): string => {
   const name = mechanic.name ?? mechanic.type ?? 'Published effect'
-  const bonus = mechanic.bonusType ? `${mechanic.bonusType} ` : ''
   const unit = mechanic.unit === 'percent' ? '%' : mechanic.unit ? ` ${mechanic.unit}` : ''
 
   if (mechanic.type === 'damage' && mechanic.dice) {
-    return `${formatDice(mechanic.dice)} ${mechanic.damageType ?? ''} damage`.trim()
+    return withBonusType(`${formatDice(mechanic.dice)} ${mechanic.damageType ?? ''} damage`.trim(), mechanic.bonusType)
   }
-  if (mechanic.type === 'immunity') return `Immunity: ${mechanic.traits?.join(', ') ?? 'published traits'}`
+  if (mechanic.type === 'immunity') {
+    return withBonusType(`Immunity: ${mechanic.traits?.join(', ') ?? 'published traits'}`, mechanic.bonusType)
+  }
   if (mechanic.type === 'damageReductionBypass') {
-    return `Damage reduction bypass: ${mechanic.materials?.join(', ') ?? 'published materials'}`
+    return withBonusType(
+      `Damage reduction bypass: ${mechanic.materials?.join(', ') ?? 'published materials'}`,
+      mechanic.bonusType
+    )
   }
-  if (mechanic.type === 'criticalThreatRange') return `Critical threat range multiplier ×${String(mechanic.multiplier)}`
+  if (mechanic.type === 'criticalThreatRange') {
+    return withBonusType(`Critical threat range multiplier ×${String(mechanic.multiplier)}`, mechanic.bonusType)
+  }
   if (mechanic.type === 'speedModifier') {
-    return `${bonus}${mechanic.target ?? 'speed'} ${String((mechanic.rawModifier ?? 0) * 100)}%`.trim()
+    return withBonusType(
+      `${mechanic.target ?? 'speed'} ${String((mechanic.rawModifier ?? 0) * 100)}%`,
+      mechanic.bonusType
+    )
   }
   if (mechanic.type === 'negativeLevels' && mechanic.amount) {
-    return `${formatDice(mechanic.amount.dice)} negative levels${mechanic.durationType ? ` (${mechanic.durationType})` : ''}`
+    return withBonusType(
+      `${formatDice(mechanic.amount.dice)} negative levels${mechanic.durationType ? ` (${mechanic.durationType})` : ''}`,
+      mechanic.bonusType
+    )
   }
-  if (mechanic.type === 'summon') return `Summon ${mechanic.name ?? 'published creature'}`
+  if (mechanic.type === 'summon')
+    return withBonusType(`Summon ${mechanic.name ?? 'published creature'}`, mechanic.bonusType)
   if (mechanic.type === 'status') {
-    return `${mechanic.name ?? 'Status'}${mechanic.save ? ` (${mechanic.save.type} DC ${mechanic.save.dc.toString()})` : ''}`
+    return withBonusType(
+      `${mechanic.name ?? 'Status'}${mechanic.save ? ` (${mechanic.save.type} DC ${mechanic.save.dc.toString()})` : ''}`,
+      mechanic.bonusType
+    )
   }
   if (mechanic.type === 'regeneration') {
     const value =
@@ -211,13 +230,20 @@ export const formatMechanic = (mechanic: HgsMechanic): string => {
         : mechanic.value
           ? formatDice(mechanic.value.dice)
           : 'Published amount'
-    return `${value} regeneration${mechanic.intervalSeconds ? ` every ${mechanic.intervalSeconds.toString()} seconds` : ''}`
+    return withBonusType(
+      `${value} regeneration${mechanic.intervalSeconds ? ` every ${mechanic.intervalSeconds.toString()} seconds` : ''}`,
+      mechanic.bonusType
+    )
   }
-  if (mechanic.dice) return `${name}: ${formatDice(mechanic.dice)}`
+  if (mechanic.dice) return withBonusType(`${name}: ${formatDice(mechanic.dice)}`, mechanic.bonusType)
   if (typeof mechanic.value === 'number')
-    return `${bonus}${name} ${mechanic.value >= 0 ? '+' : ''}${mechanic.value.toString()}${unit}`
-  if (mechanic.rawModifier !== undefined) return `${bonus}${name}: ${String(mechanic.rawModifier)}`
-  return name
+    return withBonusType(
+      `${name} ${mechanic.value >= 0 ? '+' : ''}${mechanic.value.toString()}${unit}`,
+      mechanic.bonusType
+    )
+  if (mechanic.rawModifier !== undefined)
+    return withBonusType(`${name}: ${String(mechanic.rawModifier)}`, mechanic.bonusType)
+  return withBonusType(name, mechanic.bonusType)
 }
 
 const triggerLabels: Record<string, string> = {

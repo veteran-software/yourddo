@@ -34,9 +34,23 @@ vi.mock('./data.ts', () => ({
 
 const effect: HgsEffect = {
   id: 1,
-  displayName: 'Keen',
-  description: 'Doubles the critical threat range.',
-  enchantments: [{ type: 'criticalThreatRange', multiplier: 2 }],
+  displayName: 'Electric Spell Critical Chance +14%',
+  description: 'Raises your electric spell critical chance.',
+  enchantments: [{ name: 'Electric Spell Critical Chance', value: 14, unit: 'percent', bonusType: 'Equipment' }],
+  procs: []
+}
+const acidResistance: HgsEffect = {
+  id: 2,
+  displayName: 'Acid Resistance +10%',
+  description: '',
+  enchantments: [{ name: 'Acid Resistance', value: 10, unit: 'percent' }],
+  procs: []
+}
+const greaterDisruption: HgsEffect = {
+  id: 3,
+  displayName: 'Greater Disruption',
+  description: '',
+  enchantments: [],
   procs: []
 }
 const spell: HgsSpell = {
@@ -92,15 +106,27 @@ const tier1 = option(20)
 const tier2 = option(30, { requiresFocus: 'Earth', aspect: 'Mineral', spellId: 2 })
 const basic = option(40)
 const focused = option(41, { requiresAspect: 'Mineral', shardType: 'compound', focuses: ['Earth', 'Positive Energy'] })
-const tier1Air = option(21, { focus: 'Air' })
-const tier1Fire = option(22, { focus: 'Fire' })
+const tier1Air = option(21, { focus: 'Air', effectIds: [2] })
+const tier1Fire = option(22, { focus: 'Fire', effectIds: [3] })
 const tier1Equipment = option(23, { type: 'equipment' })
-const tier2Air = option(31, { focus: 'Air', requiresFocus: 'Air', aspect: 'Mineral', spellId: 2 })
-const tier2Fire = option(32, { focus: 'Fire', requiresFocus: 'Fire', aspect: 'Ash', spellId: 2 })
-const basicAir = option(42, { focus: 'Air' })
-const basicFire = option(43, { focus: 'Fire' })
-const focusedAir = option(44, { focus: 'Air', requiresAspect: 'Mineral', shardType: 'compound', focuses: ['Air'] })
-const focusedFire = option(45, { focus: 'Fire', requiresAspect: 'Ash', shardType: 'compound', focuses: ['Fire'] })
+const tier2Air = option(31, { focus: 'Air', requiresFocus: 'Air', aspect: 'Mineral', spellId: 2, effectIds: [2] })
+const tier2Fire = option(32, { focus: 'Fire', requiresFocus: 'Fire', aspect: 'Ash', spellId: 2, effectIds: [3] })
+const basicAir = option(42, { focus: 'Air', effectIds: [2] })
+const basicFire = option(43, { focus: 'Fire', effectIds: [3] })
+const focusedAir = option(44, {
+  focus: 'Air',
+  requiresAspect: 'Mineral',
+  shardType: 'compound',
+  focuses: ['Air'],
+  effectIds: [2]
+})
+const focusedFire = option(45, {
+  focus: 'Fire',
+  requiresAspect: 'Ash',
+  shardType: 'compound',
+  focuses: ['Fire'],
+  effectIds: [3]
+})
 
 const manifest = {
   schemaVersion: 1 as const,
@@ -135,7 +161,7 @@ const manifest = {
 const initialData: HgsInitialData = {
   manifest,
   baseItems: [longsword, equipment, weapon, belt, greatAxe],
-  effects: [effect],
+  effects: [effect, acidResistance, greaterDisruption],
   tier1: [tier1Fire, tier1, tier1Equipment, tier1Air],
   baseItemById: new Map([
     [weapon.id, weapon],
@@ -144,7 +170,11 @@ const initialData: HgsInitialData = {
     [longsword.id, longsword],
     [belt.id, belt]
   ]),
-  effectById: new Map([[effect.id, effect]]),
+  effectById: new Map([
+    [effect.id, effect],
+    [acidResistance.id, acidResistance],
+    [greaterDisruption.id, greaterDisruption]
+  ]),
   tier1ById: new Map([
     [tier1.id, tier1],
     [tier1Air.id, tier1Air],
@@ -212,10 +242,7 @@ const choose = async (user: ReturnType<typeof userEvent.setup>, label: string, o
 
 const optionLabels = () => screen.getAllByRole('option').map((optionElement) => optionElement.textContent)
 
-const tierOptionLabels = (focuses: string[]) => focuses.map((focus) => `${focus} · Material · Dominion — Keen`)
-
-const tier2OptionLabels = (options: [string, string][]) =>
-  options.map(([focus, aspect]) => `${focus} · Material · Dominion · ${aspect} — Keen`)
+const tierOptionLabels = ['Acid Resistance +10%', 'Electric Spell Critical Chance +14%', 'Greater Disruption']
 
 beforeAll(() => {
   vi.stubGlobal(
@@ -307,19 +334,19 @@ describe('HeroicGreenSteelPage', () => {
 
     await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
     expect(screen.getByText('A crafted sword.')).toBeTruthy()
-    await choose(user, 'Tier 1 upgrade', /Earth · Material · Dominion/)
+    await choose(user, 'Tier 1 upgrade', /^Electric Spell Critical Chance \+14%$/)
     expect(await screen.findByRole('combobox', { name: 'Tier 2 upgrade' })).toBeTruthy()
-    await choose(user, 'Tier 2 upgrade', /Earth · Material · Dominion/)
+    await choose(user, 'Tier 2 upgrade', /^Electric Spell Critical Chance \+14%$/)
     expect((await screen.findAllByText('Earthgrab')).length).toBeGreaterThan(0)
     expect(screen.getAllByText(/Caster level 16/).length).toBeGreaterThan(0)
 
     await user.click(await screen.findByText('Basic'))
-    await choose(user, 'Tier 3 Basic upgrade', /Earth · Material · Dominion/)
+    await choose(user, 'Tier 3 Basic upgrade', /^Electric Spell Critical Chance \+14%$/)
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 3 Basic upgrade' }).value).not.toBe('')
     await user.click(screen.getByText('Focused'))
     const focusedInput = await screen.findByRole<HTMLInputElement>('combobox', { name: 'Tier 3 Focused upgrade' })
     expect(focusedInput.value).toBe('')
-    await choose(user, 'Tier 3 Focused upgrade', /Earth · Material · Dominion/)
+    await choose(user, 'Tier 3 Focused upgrade', /^Electric Spell Critical Chance \+14%$/)
     expect(screen.getAllByText('compound shard').length).toBeGreaterThan(0)
 
     await user.click(screen.getByRole('button', { name: 'Reset build' }))
@@ -346,6 +373,37 @@ describe('HeroicGreenSteelPage', () => {
     expect(screen.getByText(weapon.description)).toBeTruthy()
   })
 
+  it('uses effect-only labels while retaining the selected option details and bonus type', async () => {
+    mockLoadedData()
+    const user = userEvent.setup()
+    renderPage()
+
+    await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
+    await choose(user, 'Tier 1 upgrade', /^Electric Spell Critical Chance \+14%$/)
+
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 1 upgrade' }).value).toBe(
+      'Electric Spell Critical Chance +14%'
+    )
+    expect(screen.getByText('Earth')).toBeTruthy()
+    expect(screen.getByText('Material')).toBeTruthy()
+    expect(screen.getByText('Dominion')).toBeTruthy()
+    await user.click(screen.getByRole('button', { name: 'Electric Spell Critical Chance +14%' }))
+    expect(screen.getByText('Electric Spell Critical Chance +14% (Equipment)')).toBeTruthy()
+  })
+
+  it('does not render empty bonus-type parentheses in selected effect details', async () => {
+    mockLoadedData()
+    const user = userEvent.setup()
+    renderPage()
+
+    await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
+    await choose(user, 'Tier 1 upgrade', /^Acid Resistance \+10%$/)
+
+    await user.click(screen.getByRole('button', { name: 'Acid Resistance +10%' }))
+    expect(screen.getAllByText('Acid Resistance +10%').length).toBeGreaterThan(0)
+    expect(screen.queryByText('Acid Resistance +10% ()')).toBeNull()
+  })
+
   it('sorts base item and all tier option lists by their visible labels', async () => {
     mockLoadedData()
     const user = userEvent.setup()
@@ -362,27 +420,22 @@ describe('HeroicGreenSteelPage', () => {
     await user.click(screen.getByRole('option', { name: 'Green Steel Dagger' }))
 
     await user.click(await screen.findByRole('combobox', { name: 'Tier 1 upgrade' }))
-    expect(optionLabels()).toEqual(tierOptionLabels(['Air', 'Earth', 'Fire']))
+    expect(optionLabels()).toEqual(tierOptionLabels)
+    expect(optionLabels().join(' ')).not.toMatch(/Earth|Material|Dominion/)
     await user.keyboard('{Escape}')
 
     await user.click(await screen.findByRole('combobox', { name: 'Tier 2 upgrade' }))
-    expect(optionLabels()).toEqual(
-      tier2OptionLabels([
-        ['Air', 'Mineral'],
-        ['Earth', 'Mineral'],
-        ['Fire', 'Ash']
-      ])
-    )
+    expect(optionLabels()).toEqual(tierOptionLabels)
     await user.keyboard('{Escape}')
 
     await user.click(screen.getByText('Basic'))
     await user.click(await screen.findByRole('combobox', { name: 'Tier 3 Basic upgrade' }))
-    expect(optionLabels()).toEqual(tierOptionLabels(['Air', 'Earth', 'Fire']))
+    expect(optionLabels()).toEqual(tierOptionLabels)
     await user.keyboard('{Escape}')
 
     await user.click(screen.getByText('Focused'))
     await user.click(await screen.findByRole('combobox', { name: 'Tier 3 Focused upgrade' }))
-    expect(optionLabels()).toEqual(tierOptionLabels(['Air', 'Earth', 'Fire']))
+    expect(optionLabels()).toEqual(tierOptionLabels)
   })
 
   it('keeps reverse-filtered options alphabetical when Tier 3 is selected first', async () => {
@@ -392,19 +445,14 @@ describe('HeroicGreenSteelPage', () => {
 
     await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
     await user.click(await screen.findByText('Focused'))
-    await choose(user, 'Tier 3 Focused upgrade', /^Air · Material · Dominion/)
+    await choose(user, 'Tier 3 Focused upgrade', /^Acid Resistance \+10%$/)
 
     await user.click(screen.getByRole('combobox', { name: 'Tier 1 upgrade' }))
-    expect(optionLabels()).toEqual(tierOptionLabels(['Air', 'Earth']))
+    expect(optionLabels()).toEqual(['Acid Resistance +10%', 'Electric Spell Critical Chance +14%'])
     await user.keyboard('{Escape}')
 
     await user.click(screen.getByRole('combobox', { name: 'Tier 2 upgrade' }))
-    expect(optionLabels()).toEqual(
-      tier2OptionLabels([
-        ['Air', 'Mineral'],
-        ['Earth', 'Mineral']
-      ])
-    )
+    expect(optionLabels()).toEqual(['Acid Resistance +10%', 'Electric Spell Critical Chance +14%'])
   })
 
   it('preserves a valid selection when another altar recomputes its option list', async () => {
@@ -413,17 +461,17 @@ describe('HeroicGreenSteelPage', () => {
     renderPage()
 
     await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
-    await choose(user, 'Tier 1 upgrade', /^Earth · Material · Dominion/)
-    await choose(user, 'Tier 2 upgrade', /^Earth · Material · Dominion/)
+    await choose(user, 'Tier 1 upgrade', /^Electric Spell Critical Chance \+14%$/)
+    await choose(user, 'Tier 2 upgrade', /^Electric Spell Critical Chance \+14%$/)
 
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 1 upgrade' }).value).toBe(
-      'Earth · Material · Dominion — Keen'
+      'Electric Spell Critical Chance +14%'
     )
     await user.click(screen.getByRole('combobox', { name: 'Tier 1 upgrade' }))
-    expect(optionLabels()).toEqual(tierOptionLabels(['Earth']))
+    expect(optionLabels()).toEqual(['Electric Spell Critical Chance +14%'])
   })
 
-  it('uses IDs as a deterministic tie-breaker for equal visible labels', () => {
+  it('keeps mechanically distinct duplicate effect labels and orders them by ID', () => {
     expect(
       sortHgsSelectOptions([
         { value: '20', label: 'same label' },
@@ -443,7 +491,7 @@ describe('HeroicGreenSteelPage', () => {
     renderPage()
 
     await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
-    await choose(user, 'Tier 2 upgrade', /Earth · Material · Dominion/)
+    await choose(user, 'Tier 2 upgrade', /^Electric Spell Critical Chance \+14%$/)
 
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 2 upgrade' }).value).not.toBe('')
     expect(screen.getByRole('combobox', { name: 'Tier 1 upgrade' })).toBeTruthy()
@@ -457,7 +505,7 @@ describe('HeroicGreenSteelPage', () => {
 
     await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
     await user.click(await screen.findByText('Focused'))
-    await choose(user, 'Tier 3 Focused upgrade', /Earth · Material · Dominion/)
+    await choose(user, 'Tier 3 Focused upgrade', /^Electric Spell Critical Chance \+14%$/)
 
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 3 Focused upgrade' }).value).not.toBe('')
     expect(screen.getByRole('combobox', { name: 'Tier 1 upgrade' })).toBeTruthy()

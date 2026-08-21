@@ -233,6 +233,10 @@ describe('Heroic Green Steel logic', () => {
     expect(
       formatMechanic({ name: 'Fortification', type: 'criticalHitResistance', unit: 'percent', value: 100 })
     ).toContain('100%')
+    expect(
+      formatMechanic({ name: 'Electric Spell Critical Chance', unit: 'percent', value: 14, bonusType: 'Equipment' })
+    ).toBe('Electric Spell Critical Chance +14% (Equipment)')
+    expect(formatMechanic({ name: 'Acid Resistance', unit: 'percent', value: 10 })).toBe('Acid Resistance +10%')
     expect(formatProc({ trigger: 'onHit', procChance: 0.04, outcomes: [{ type: 'status', name: 'Earthgrab' }] })).toBe(
       'On hit (4% chance): Earthgrab'
     )
