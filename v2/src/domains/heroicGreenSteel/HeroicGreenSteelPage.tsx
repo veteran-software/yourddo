@@ -3,6 +3,7 @@ import {
   Anchor,
   Button,
   Center,
+  Grid,
   Group,
   Loader,
   Paper,
@@ -297,6 +298,8 @@ const HeroicGreenSteelPage = () => {
                   placeholder='Search weapons and equipment…'
                   searchable
                   clearable
+                  w='100%'
+                  maw={520}
                   data={[
                     {
                       group: 'Weapons',
@@ -328,174 +331,173 @@ const HeroicGreenSteelPage = () => {
               </Stack>
             </Paper>
 
-            <Text c='dimmed' ta='center' aria-hidden>
-              ↓
-            </Text>
-            <Paper component='section' aria-labelledby='hgs-tier1-title' withBorder p='md'>
-              <Stack gap='sm'>
-                <Title order={2} size='h3' id='hgs-tier1-title'>
-                  2. Tier 1
-                </Title>
-                {!baseItem ? (
-                  <Text c='dimmed' size='sm'>
-                    Select a base item first.
-                  </Text>
-                ) : tier1Options.length === 0 ? (
-                  <Alert color='yellow'>No compatible Tier 1 options were published for this item.</Alert>
-                ) : (
-                  <Select
-                    label='Tier 1 upgrade'
-                    placeholder='Choose focus, essence, and gem…'
-                    searchable
-                    clearable
-                    data={toHgsSelectOptions(tier1Options, (option) => optionLabel(option, initial))}
-                    value={selection.selectedTier1Id?.toString() ?? null}
-                    onChange={(value) => {
-                      updateSelection('selectedTier1Id', value ? Number(value) : null)
-                    }}
-                  />
-                )}
-                {tier1 ? (
-                  <>
-                    <OptionBadges option={tier1} />
-                    <EffectDetails effects={tier1Effects} />
-                  </>
-                ) : null}
-              </Stack>
-            </Paper>
-
-            <Text c='dimmed' ta='center' aria-hidden>
-              ↓
-            </Text>
-            <Paper component='section' aria-labelledby='hgs-tier2-title' withBorder p='md'>
-              <Stack gap='sm'>
-                <Title order={2} size='h3' id='hgs-tier2-title'>
-                  3. Tier 2
-                </Title>
-                {!baseItem ? (
-                  <Text c='dimmed' size='sm'>
-                    Select a base item first.
-                  </Text>
-                ) : tier2State.status === 'loading' ||
-                  tier2State.status === 'idle' ||
-                  tier3State.status === 'loading' ||
-                  tier3State.status === 'idle' ? (
-                  <Loading>Loading Tier 2 upgrades and spells…</Loading>
-                ) : tier2State.status === 'error' ? (
-                  <LoadError
-                    message='Tier 2 upgrades could not be loaded.'
-                    cause={tier2State.cause}
-                    retry={() => {
-                      setTier2State({ status: 'loading' })
-                      setTier2Attempt((value) => value + 1)
-                    }}
-                  />
-                ) : tier3State.status === 'error' ? (
-                  <Alert color='yellow'>Tier 2 compatibility is unavailable until Tier 3 data loads.</Alert>
-                ) : tier2Options.length === 0 ? (
-                  <Alert color='yellow'>No Tier 2 options are compatible with the current selections.</Alert>
-                ) : (
-                  <Select
-                    label='Tier 2 upgrade'
-                    placeholder='Choose a compatible upgrade…'
-                    searchable
-                    clearable
-                    data={toHgsSelectOptions(tier2Options, (option) => optionLabel(option, initial))}
-                    value={selection.selectedTier2Id?.toString() ?? null}
-                    onChange={(value) => {
-                      updateSelection('selectedTier2Id', value ? Number(value) : null)
-                    }}
-                  />
-                )}
-                {tier2 ? (
-                  <>
-                    <OptionBadges option={tier2} />
-                    <EffectDetails effects={tier2Effects} />
-                    {spell ? (
-                      <Paper withBorder p='sm'>
-                        <SpellDetails spell={spell} />
-                      </Paper>
-                    ) : (
+            <Grid gap='md' data-testid='hgs-tier-grid'>
+              <Grid.Col span={{ base: 12, md: 6 }}>
+                <Paper component='section' aria-labelledby='hgs-tier1-title' withBorder p='md'>
+                  <Stack gap='sm'>
+                    <Title order={2} size='h3' id='hgs-tier1-title'>
+                      2. Tier 1
+                    </Title>
+                    {!baseItem ? (
                       <Text c='dimmed' size='sm'>
-                        No associated spell.
+                        Select a base item first.
                       </Text>
-                    )}
-                  </>
-                ) : null}
-              </Stack>
-            </Paper>
-
-            <Text c='dimmed' ta='center' aria-hidden>
-              ↓
-            </Text>
-            <Paper component='section' aria-labelledby='hgs-tier3-title' withBorder p='md'>
-              <Stack gap='sm'>
-                <Title order={2} size='h3' id='hgs-tier3-title'>
-                  4. Tier 3
-                </Title>
-                {!baseItem ? (
-                  <Text c='dimmed' size='sm'>
-                    Select a base item first.
-                  </Text>
-                ) : tier3State.status === 'loading' ||
-                  tier3State.status === 'idle' ||
-                  tier2State.status === 'loading' ||
-                  tier2State.status === 'idle' ? (
-                  <Loading>Loading Tier 3 upgrades…</Loading>
-                ) : tier3State.status === 'error' ? (
-                  <LoadError
-                    message='Tier 3 upgrades could not be loaded.'
-                    cause={tier3State.cause}
-                    retry={() => {
-                      setTier3State({ status: 'loading' })
-                      setTier3Attempt((value) => value + 1)
-                    }}
-                  />
-                ) : tier2State.status === 'error' ? (
-                  <Alert color='yellow'>Tier 3 compatibility is unavailable until Tier 2 data loads.</Alert>
-                ) : (
-                  <>
-                    <SegmentedControl
-                      aria-label='Tier 3 mode'
-                      value={selection.selectedTier3Mode ?? ''}
-                      onChange={(value) => {
-                        if (value === 'basic' || value === 'focused') updateSelection('selectedTier3Mode', value)
-                      }}
-                      data={[
-                        { label: 'Basic', value: 'basic' },
-                        { label: 'Focused', value: 'focused' }
-                      ]}
-                      fullWidth
-                    />
-                    {!selection.selectedTier3Mode ? (
-                      <Text c='dimmed' size='sm'>
-                        Choose Basic or Focused to see compatible Tier 3 upgrades.
-                      </Text>
-                    ) : tier3Options.length === 0 ? (
-                      <Alert color='yellow'>No compatible Tier 3 options were published for this mode.</Alert>
+                    ) : tier1Options.length === 0 ? (
+                      <Alert color='yellow'>No compatible Tier 1 options were published for this item.</Alert>
                     ) : (
                       <Select
-                        label={`Tier 3 ${selection.selectedTier3Mode === 'basic' ? 'Basic' : 'Focused'} upgrade`}
-                        placeholder='Choose a final upgrade…'
+                        label='Tier 1 upgrade'
+                        placeholder='Choose focus, essence, and gem…'
                         searchable
                         clearable
-                        data={toHgsSelectOptions(tier3Options, (option) => optionLabel(option, initial))}
-                        value={selection.selectedTier3Id?.toString() ?? null}
+                        data={toHgsSelectOptions(tier1Options, (option) => optionLabel(option, initial))}
+                        value={selection.selectedTier1Id?.toString() ?? null}
                         onChange={(value) => {
-                          updateSelection('selectedTier3Id', value ? Number(value) : null)
+                          updateSelection('selectedTier1Id', value ? Number(value) : null)
                         }}
                       />
                     )}
-                  </>
-                )}
-                {tier3 ? (
-                  <>
-                    <OptionBadges option={tier3} />
-                    <EffectDetails effects={tier3Effects} />
-                  </>
-                ) : null}
-              </Stack>
-            </Paper>
+                    {tier1 ? (
+                      <>
+                        <OptionBadges option={tier1} />
+                        <EffectDetails effects={tier1Effects} />
+                      </>
+                    ) : null}
+                  </Stack>
+                </Paper>
+              </Grid.Col>
+
+              <Grid.Col span={{ base: 12, md: 6 }}>
+                <Paper component='section' aria-labelledby='hgs-tier2-title' withBorder p='md'>
+                  <Stack gap='sm'>
+                    <Title order={2} size='h3' id='hgs-tier2-title'>
+                      3. Tier 2
+                    </Title>
+                    {!baseItem ? (
+                      <Text c='dimmed' size='sm'>
+                        Select a base item first.
+                      </Text>
+                    ) : tier2State.status === 'loading' ||
+                      tier2State.status === 'idle' ||
+                      tier3State.status === 'loading' ||
+                      tier3State.status === 'idle' ? (
+                      <Loading>Loading Tier 2 upgrades and spells…</Loading>
+                    ) : tier2State.status === 'error' ? (
+                      <LoadError
+                        message='Tier 2 upgrades could not be loaded.'
+                        cause={tier2State.cause}
+                        retry={() => {
+                          setTier2State({ status: 'loading' })
+                          setTier2Attempt((value) => value + 1)
+                        }}
+                      />
+                    ) : tier3State.status === 'error' ? (
+                      <Alert color='yellow'>Tier 2 compatibility is unavailable until Tier 3 data loads.</Alert>
+                    ) : tier2Options.length === 0 ? (
+                      <Alert color='yellow'>No Tier 2 options are compatible with the current selections.</Alert>
+                    ) : (
+                      <Select
+                        label='Tier 2 upgrade'
+                        placeholder='Choose a compatible upgrade…'
+                        searchable
+                        clearable
+                        data={toHgsSelectOptions(tier2Options, (option) => optionLabel(option, initial))}
+                        value={selection.selectedTier2Id?.toString() ?? null}
+                        onChange={(value) => {
+                          updateSelection('selectedTier2Id', value ? Number(value) : null)
+                        }}
+                      />
+                    )}
+                    {tier2 ? (
+                      <>
+                        <OptionBadges option={tier2} />
+                        <EffectDetails effects={tier2Effects} />
+                        {spell ? (
+                          <Paper withBorder p='sm'>
+                            <SpellDetails spell={spell} />
+                          </Paper>
+                        ) : (
+                          <Text c='dimmed' size='sm'>
+                            No associated spell.
+                          </Text>
+                        )}
+                      </>
+                    ) : null}
+                  </Stack>
+                </Paper>
+              </Grid.Col>
+
+              <Grid.Col span={12}>
+                <Paper component='section' aria-labelledby='hgs-tier3-title' withBorder p='md'>
+                  <Stack gap='sm'>
+                    <Title order={2} size='h3' id='hgs-tier3-title'>
+                      4. Tier 3
+                    </Title>
+                    {!baseItem ? (
+                      <Text c='dimmed' size='sm'>
+                        Select a base item first.
+                      </Text>
+                    ) : tier3State.status === 'loading' ||
+                      tier3State.status === 'idle' ||
+                      tier2State.status === 'loading' ||
+                      tier2State.status === 'idle' ? (
+                      <Loading>Loading Tier 3 upgrades…</Loading>
+                    ) : tier3State.status === 'error' ? (
+                      <LoadError
+                        message='Tier 3 upgrades could not be loaded.'
+                        cause={tier3State.cause}
+                        retry={() => {
+                          setTier3State({ status: 'loading' })
+                          setTier3Attempt((value) => value + 1)
+                        }}
+                      />
+                    ) : tier2State.status === 'error' ? (
+                      <Alert color='yellow'>Tier 3 compatibility is unavailable until Tier 2 data loads.</Alert>
+                    ) : (
+                      <>
+                        <SegmentedControl
+                          aria-label='Tier 3 mode'
+                          value={selection.selectedTier3Mode ?? ''}
+                          onChange={(value) => {
+                            if (value === 'basic' || value === 'focused') updateSelection('selectedTier3Mode', value)
+                          }}
+                          data={[
+                            { label: 'Basic', value: 'basic' },
+                            { label: 'Focused', value: 'focused' }
+                          ]}
+                          fullWidth
+                        />
+                        {!selection.selectedTier3Mode ? (
+                          <Text c='dimmed' size='sm'>
+                            Choose Basic or Focused to see compatible Tier 3 upgrades.
+                          </Text>
+                        ) : tier3Options.length === 0 ? (
+                          <Alert color='yellow'>No compatible Tier 3 options were published for this mode.</Alert>
+                        ) : (
+                          <Select
+                            label={`Tier 3 ${selection.selectedTier3Mode === 'basic' ? 'Basic' : 'Focused'} upgrade`}
+                            placeholder='Choose a final upgrade…'
+                            searchable
+                            clearable
+                            data={toHgsSelectOptions(tier3Options, (option) => optionLabel(option, initial))}
+                            value={selection.selectedTier3Id?.toString() ?? null}
+                            onChange={(value) => {
+                              updateSelection('selectedTier3Id', value ? Number(value) : null)
+                            }}
+                          />
+                        )}
+                      </>
+                    )}
+                    {tier3 ? (
+                      <>
+                        <OptionBadges option={tier3} />
+                        <EffectDetails effects={tier3Effects} />
+                      </>
+                    ) : null}
+                  </Stack>
+                </Paper>
+              </Grid.Col>
+            </Grid>
           </Stack>
         ) : null}
       </Stack>

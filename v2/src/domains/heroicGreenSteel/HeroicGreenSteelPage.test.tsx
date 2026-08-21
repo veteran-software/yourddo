@@ -282,6 +282,24 @@ describe('HeroicGreenSteelPage', () => {
     expect(loadHeroicGreenSteelInitialData).toHaveBeenCalledTimes(2)
   })
 
+  it('keeps all altar papers in source order beneath the full-width base-item paper', async () => {
+    mockLoadedData()
+    renderPage()
+
+    await screen.findByRole('combobox', { name: 'Green Steel base item' })
+
+    expect(screen.getAllByRole('heading', { level: 2 }).map(({ textContent }) => textContent)).toEqual([
+      '1. Base Item',
+      '2. Tier 1',
+      '3. Tier 2',
+      '4. Tier 3'
+    ])
+    const tierGrid = screen.getByTestId('hgs-tier-grid')
+    expect(tierGrid.contains(screen.getByRole('heading', { name: '2. Tier 1' }))).toBe(true)
+    expect(tierGrid.contains(screen.getByRole('heading', { name: '3. Tier 2' }))).toBe(true)
+    expect(tierGrid.contains(screen.getByRole('heading', { name: '4. Tier 3' }))).toBe(true)
+  })
+
   it('progresses through Tier 2 spells and both Tier 3 modes, invalidates downstream choices, and resets', async () => {
     mockLoadedData()
     const user = userEvent.setup()
