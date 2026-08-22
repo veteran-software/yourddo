@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { MantineProvider } from '@mantine/core'
-import { cleanup, render, screen, waitFor, within } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import {
@@ -23,7 +23,17 @@ import type {
   HgsTierOption
 } from './heroicGreenSteel.types.ts'
 import HeroicGreenSteelPage from './HeroicGreenSteelPage.tsx'
+import { emptyHgsSelection } from './logic.ts'
 import { sortHgsSelectOptions } from './selectOptions.ts'
+import { formatHgsJsonBuild } from './sharing.ts'
+
+const browserMocks = vi.hoisted(() => ({ copyText: vi.fn().mockResolvedValue(undefined) }))
+
+vi.mock('../../shared/serialization/browser.ts', () => ({
+  copyText: browserMocks.copyText,
+  downloadTextFile: vi.fn(),
+  readTextFile: vi.fn()
+}))
 
 vi.mock('./data.ts', () => ({
   loadHeroicGreenSteelInitialData: vi.fn(),
@@ -313,7 +323,7 @@ describe('HeroicGreenSteelPage', () => {
     expect(loadHeroicGreenSteelInitialData).toHaveBeenCalledTimes(2)
   })
 
-  it('keeps all altar papers in source order beneath the full-width base-item paper', async () => {
+  it('keeps Desired Spell between the base item and altar grid', async () => {
     mockLoadedData()
     renderPage()
 
@@ -321,6 +331,7 @@ describe('HeroicGreenSteelPage', () => {
 
     expect(screen.getAllByRole('heading', { level: 2 }).map(({ textContent }) => textContent)).toEqual([
       'Eldritch Altar of Fecundity',
+      'Desired Spell',
       'Altar of Invasion',
       'Altar of Subjugation',
       'Altar of Devastation'
@@ -448,12 +459,15 @@ describe('HeroicGreenSteelPage', () => {
     renderPage()
 
     await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
-    await user.click(await screen.findByRole('combobox', { name: 'Desired Spell' }))
+    await user.click(await screen.findByRole('combobox', { name: 'Spell' }))
     expect(optionLabels()).toEqual(['Alarm', 'Earthgrab'])
     await user.click(screen.getByRole('option', { name: 'Earthgrab' }))
 
-    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Desired Spell' }).value).toBe('Earthgrab')
-    await user.click(screen.getByRole('combobox', { name: 'Desired Spell' }))
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Spell' }).value).toBe('Earthgrab')
+    const desiredSpellSection = screen.getByRole('region', { name: 'Desired Spell' })
+    expect(within(desiredSpellSection).getByText('Earthgrab', { selector: 'p' })).toBeTruthy()
+    expect(within(screen.getByRole('region', { name: 'Altar of Subjugation' })).queryByText('Earthgrab')).toBeNull()
+    await user.click(screen.getByRole('combobox', { name: 'Spell' }))
     expect(optionLabels()).toEqual(['Alarm', 'Earthgrab'])
     await user.keyboard('{Escape}')
     await user.click(screen.getByRole('combobox', { name: 'Tier 1 upgrade' }))
@@ -463,6 +477,22 @@ describe('HeroicGreenSteelPage', () => {
     expect(optionLabels()).toEqual(['Electric Spell Critical Chance +14%'])
   })
 
+  it('shows selected spell details and a subdued empty state in the Desired Spell section', async () => {
+    mockLoadedData()
+    const user = userEvent.setup()
+    renderPage()
+
+    await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
+    await screen.findByRole('combobox', { name: 'Spell' })
+    const desiredSpellSection = screen.getByRole('region', { name: 'Desired Spell' })
+    expect(within(desiredSpellSection).getByText('Select a spell to view its details.')).toBeTruthy()
+
+    await choose(user, 'Spell', /^Earthgrab$/)
+    expect(within(desiredSpellSection).getByText('Earthgrab', { selector: 'p' })).toBeTruthy()
+    expect(within(desiredSpellSection).getByText(/Caster level 16/)).toBeTruthy()
+    expect(within(screen.getByRole('region', { name: 'Altar of Subjugation' })).queryByText(/Caster level 16/)).toBeNull()
+  })
+
   it('reflects the Tier 2 spell in Desired Spell and leaves it empty for a spell-less Tier 2 upgrade', async () => {
     mockLoadedData()
     const user = userEvent.setup()
@@ -470,12 +500,15 @@ describe('HeroicGreenSteelPage', () => {
 
     await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
     await choose(user, 'Tier 2 upgrade', /^Electric Spell Critical Chance \+14%$/)
-    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Desired Spell' }).value).toBe('Earthgrab')
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Spell' }).value).toBe('Earthgrab')
+    expect(
+      within(screen.getByRole('region', { name: 'Desired Spell' })).getByText('Earthgrab', { selector: 'p' })
+    ).toBeTruthy()
 
     await user.click(screen.getByRole('button', { name: 'Reset build' }))
     await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
     await choose(user, 'Tier 2 upgrade', /^Greater Disruption$/)
-    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Desired Spell' }).value).toBe('')
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Spell' }).value).toBe('')
   })
 
   it('keeps reverse-filtered options alphabetical when Tier 3 is selected first', async () => {
@@ -578,5 +611,38 @@ describe('HeroicGreenSteelPage', () => {
       expect(screen.getByRole('navigation', { name: 'Workspace tools' })).toBeTruthy()
     })
     expect(screen.getByRole('button', { name: 'Ingredients' })).toBeTruthy()
+  })
+
+  it('shares, exports, and atomically imports builds through the Tools window', async () => {
+    mockLoadedData()
+    const user = userEvent.setup()
+    renderPage()
+
+    await choose(user, 'Green Steel base item', /^Green Steel Dagger$/)
+    await choose(user, 'Tier 1 upgrade', /^Electric Spell Critical Chance \+14%$/)
+    await choose(user, 'Tier 2 upgrade', /^Electric Spell Critical Chance \+14%$/)
+    await user.click(await screen.findByText('Basic'))
+    await choose(user, 'Tier 3 Basic upgrade', /^Electric Spell Critical Chance \+14%$/)
+    await user.click(screen.getByRole('button', { name: 'Tools' }))
+    const tools = await screen.findByRole('complementary', { name: 'Tools' })
+
+    await user.click(within(tools).getByRole('button', { name: 'Copy JSON' }))
+    await user.click(within(tools).getByRole('button', { name: 'Copy Permalink' }))
+    await user.click(within(tools).getByRole('button', { name: 'Copy Forum' }))
+    await user.click(within(tools).getByRole('button', { name: 'Copy Discord' }))
+    expect(browserMocks.copyText).toHaveBeenCalledTimes(4)
+
+    const input = within(tools).getByRole('textbox', { name: 'Paste HGS JSON' })
+    fireEvent.change(input, { target: { value: '{bad' } })
+    await user.click(within(tools).getByRole('button', { name: 'Load Build' }))
+    expect(within(tools).getByRole('alert').textContent).toContain('Invalid HGS JSON')
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Green Steel base item' }).value).toBe('Green Steel Dagger')
+
+    fireEvent.change(input, { target: { value: formatHgsJsonBuild({ ...emptyHgsSelection, selectedBaseItemId: weapon.id }) } })
+    await user.click(within(tools).getByRole('button', { name: 'Load Build' }))
+    await waitFor(() => {
+      expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Green Steel base item' }).value).toBe('Green Steel Dagger')
+    })
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 1 upgrade' }).value).toBe('')
   })
 })

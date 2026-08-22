@@ -12,6 +12,7 @@ import type {
   HgsRecipeData,
   HgsRecipeIngredient,
   HgsSpell,
+  HgsTargetEligibility,
   HgsTier2Data,
   HgsTier3Data,
   HgsTierOption
@@ -33,6 +34,7 @@ const isNumber = (value: unknown): value is number => typeof value === 'number' 
 const isOptionalNumber = (value: unknown): value is number | undefined => value === undefined || isNumber(value)
 const isStringArray = (value: unknown): value is string[] => Array.isArray(value) && value.every(isString)
 const isNumberArray = (value: unknown): value is number[] => Array.isArray(value) && value.every(isNumber)
+const isHexMask = (value: unknown): value is string => isString(value) && /^0x[\da-f]+$/i.test(value)
 
 const parsePath = (value: unknown, label: string): string => {
   if (
@@ -176,6 +178,24 @@ const mechanicTypes = new Set([
   'summon'
 ])
 
+const parseTargetEligibility = (value: unknown, label: string): HgsTargetEligibility => {
+  if (!isRecord(value)) throw new InvalidHeroicGreenSteelDataError(`invalid target eligibility for ${label}`)
+  const eligibility: HgsTargetEligibility = {}
+  for (const key of ['excludedCreatureTraits', 'includedGenus', 'excludedGenus'] as const) {
+    if (value[key] !== undefined && !isStringArray(value[key])) {
+      throw new InvalidHeroicGreenSteelDataError(`invalid target eligibility ${key} for ${label}`)
+    }
+    if (isStringArray(value[key])) eligibility[key] = [...value[key]]
+  }
+  for (const key of ['unknownIncludedGenusMask', 'unknownExcludedGenusMask'] as const) {
+    if (value[key] !== undefined && !isHexMask(value[key])) {
+      throw new InvalidHeroicGreenSteelDataError(`invalid target eligibility ${key} for ${label}`)
+    }
+    if (isHexMask(value[key])) eligibility[key] = value[key]
+  }
+  return eligibility
+}
+
 const parseMechanic = (value: unknown, label: string): HgsMechanic => {
   if (!isRecord(value) || (value.type === undefined && !isString(value.name))) {
     throw new InvalidHeroicGreenSteelDataError(`invalid mechanic for ${label}`)
@@ -217,6 +237,8 @@ const parseMechanic = (value: unknown, label: string): HgsMechanic => {
     }
     if (isStringArray(value[key])) mechanic[key] = [...value[key]]
   }
+  if (value.targetEligibility !== undefined)
+    mechanic.targetEligibility = parseTargetEligibility(value.targetEligibility, label)
   if (value.dice !== undefined) mechanic.dice = parseDice(value.dice, label)
   if (value.save !== undefined) {
     if (!isRecord(value.save) || !isNumber(value.save.dc) || !isString(value.save.type)) {

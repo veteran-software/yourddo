@@ -46,6 +46,14 @@ export interface HgsSave {
   type: string
 }
 
+export interface HgsTargetEligibility {
+  excludedCreatureTraits?: string[]
+  includedGenus?: string[]
+  excludedGenus?: string[]
+  unknownIncludedGenusMask?: string
+  unknownExcludedGenusMask?: string
+}
+
 export interface HgsMechanic {
   type?: string
   name?: string
@@ -64,6 +72,7 @@ export interface HgsMechanic {
   save?: HgsSave
   durationType?: string
   entityId?: number
+  targetEligibility?: HgsTargetEligibility
 }
 
 export interface HgsProc {

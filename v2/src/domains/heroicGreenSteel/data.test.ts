@@ -116,6 +116,42 @@ describe('Heroic Green Steel data', () => {
     )
   })
 
+  it('preserves structured outcome eligibility for the presentation layer', () => {
+    const parsed = parseEffects([
+      {
+        ...effects[0],
+        procs: [
+          {
+            trigger: 'onHit',
+            outcomes: [
+              {
+                type: 'damage',
+                damageType: 'Bane',
+                dice: { count: 1, sides: 4 },
+                traits: ['Bleed'],
+                targetEligibility: {
+                  excludedCreatureTraits: ['Incorporeal'],
+                  includedGenus: ['Outsider'],
+                  excludedGenus: ['Undead'],
+                  unknownIncludedGenusMask: '0x0000000000000008',
+                  unknownExcludedGenusMask: '0x0000002000000000'
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ])
+
+    expect(parsed[0].procs[0].outcomes[0].targetEligibility).toEqual({
+      excludedCreatureTraits: ['Incorporeal'],
+      includedGenus: ['Outsider'],
+      excludedGenus: ['Undead'],
+      unknownIncludedGenusMask: '0x0000000000000008',
+      unknownExcludedGenusMask: '0x0000002000000000'
+    })
+  })
+
   it('loads only manifest, base items, effects, and Tier 1 initially', async () => {
     mockFiles()
     const data = await loadHeroicGreenSteelInitialData()

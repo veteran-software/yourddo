@@ -263,9 +263,40 @@ const triggerLabels: Record<string, string> = {
   onVorpal: 'On vorpal'
 }
 
-export const formatProc = (proc: HgsProc): string => {
+export const formatProcTrigger = (proc: Pick<HgsProc, 'trigger' | 'procChance'>): string => {
   const chance = proc.procChance === undefined ? '' : ` (${String(proc.procChance * 100)}% chance)`
-  return `${triggerLabels[proc.trigger] ?? proc.trigger}${chance}: ${proc.outcomes.map(formatMechanic).join('; ')}`
+  return `${triggerLabels[proc.trigger] ?? proc.trigger}${chance}`
+}
+
+export const formatProc = (proc: HgsProc): string => {
+  return `${formatProcTrigger(proc)}: ${proc.outcomes.map(formatMechanic).join('; ')}`
+}
+
+const genusLabels: Record<string, string> = {
+  Elemental_Air: 'Air Elemental',
+  Elemental_Earth: 'Earth Elemental',
+  Elemental_Fire: 'Fire Elemental',
+  Elemental_Water: 'Water Elemental',
+  Humanoid_Goblinoid: 'Goblinoid Humanoid',
+  LivingConstruct: 'Living Construct'
+}
+
+const pluralGenusLabels: Record<string, string> = {
+  Construct: 'Constructs',
+  Elemental_Air: 'Air Elementals',
+  Elemental_Earth: 'Earth Elementals',
+  Elemental_Fire: 'Fire Elementals',
+  Elemental_Water: 'Water Elementals',
+  Humanoid_Goblinoid: 'Goblinoid Humanoids',
+  LivingConstruct: 'Living Constructs',
+  Outsider: 'Outsiders',
+  Plant: 'Plants'
+}
+
+export const formatGenus = (genus: string, plural = true): string => {
+  if (plural && pluralGenusLabels[genus]) return pluralGenusLabels[genus]
+  if (genusLabels[genus]) return genusLabels[genus]
+  return genus.replaceAll('_', ' ')
 }
 
 export const expandIngredientRequirements = (

@@ -13,8 +13,8 @@ import {
   Text,
   Title
 } from '@mantine/core'
-import { IconFileInfo, IconListCheck, IconListDetails } from '@tabler/icons-react'
-import { useEffect, useMemo, useState } from 'react'
+import { IconFileInfo, IconListCheck, IconListDetails, IconTools } from '@tabler/icons-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { EffectDetails, OptionBadges, SpellDetails } from './components/EffectDetails.tsx'
 import {
@@ -39,9 +39,11 @@ import {
   resolveSpell
 } from './logic.ts'
 import { toHgsSelectOptions } from './selectOptions.ts'
+import { decodeHgsPermalink, HGS_PERMALINK_QUERY_PARAMETER, validateHgsBuild } from './sharing.ts'
 import BuildSummaryTool from './tools/BuildSummaryTool.tsx'
 import CraftingBreakdownTool from './tools/CraftingBreakdownTool.tsx'
 import IngredientsTool from './tools/IngredientsTool.tsx'
+import SharingTool from './tools/SharingTool.tsx'
 
 type LoadState<T> = { status: 'idle' | 'loading' } | { status: 'loaded'; data: T } | { status: 'error'; cause: unknown }
 
@@ -97,6 +99,12 @@ const HeroicGreenSteelPage = () => {
   const [tier2Attempt, setTier2Attempt] = useState(0)
   const [tier3Attempt, setTier3Attempt] = useState(0)
   const [selection, setSelection] = useState<HgsSelection>(emptyHgsSelection)
+  const [permalinkError, setPermalinkError] = useState<string | null>(null)
+  const handledPermalink = useRef<string | null>(null)
+  const permalink =
+    typeof window === 'undefined'
+      ? null
+      : new URLSearchParams(window.location.search).get(HGS_PERMALINK_QUERY_PARAMETER)
 
   const initial = initialState.status === 'loaded' ? initialState.data : null
   const tier2Data = tier2State.status === 'loaded' ? tier2State.data : null
@@ -125,7 +133,7 @@ const HeroicGreenSteelPage = () => {
   }, [initialAttempt])
 
   useEffect(() => {
-    if (selection.selectedBaseItemId === null || tier2State.status === 'loaded') return
+    if ((selection.selectedBaseItemId === null && !permalink) || tier2State.status === 'loaded') return
     let active = true
     setTier2State({ status: 'loading' })
     loadHeroicGreenSteelTier2Data()
@@ -138,10 +146,10 @@ const HeroicGreenSteelPage = () => {
     return () => {
       active = false
     }
-  }, [selection.selectedBaseItemId, tier2Attempt, tier2State.status])
+  }, [permalink, selection.selectedBaseItemId, tier2Attempt, tier2State.status])
 
   useEffect(() => {
-    if (selection.selectedBaseItemId === null || tier3State.status === 'loaded') return
+    if ((selection.selectedBaseItemId === null && !permalink) || tier3State.status === 'loaded') return
     let active = true
     setTier3State({ status: 'loading' })
     loadHeroicGreenSteelTier3Data()
@@ -154,7 +162,7 @@ const HeroicGreenSteelPage = () => {
     return () => {
       active = false
     }
-  }, [selection.selectedBaseItemId, tier3Attempt, tier3State.status])
+  }, [permalink, selection.selectedBaseItemId, tier3Attempt, tier3State.status])
 
   const validCombinations = useMemo(
     () =>
@@ -216,6 +224,7 @@ const HeroicGreenSteelPage = () => {
   const tier2Effects = initial && tier2 ? resolveEffects(tier2.effectIds, initial.effectById) : []
   const tier3Effects = initial && tier3 ? resolveEffects(tier3.effectIds, initial.effectById) : []
   const spell = tier2Data && tier2 ? resolveSpell(tier2.spellId, tier2Data.spellById) : undefined
+  const desiredSpell = tier2Data ? resolveSpell(selection.selectedSpellId ?? undefined, tier2Data.spellById) : undefined
   const recipeIds = useMemo(
     () =>
       [baseItem?.recipeId, tier1?.recipeId, tier2?.recipeId, tier3?.recipeId].filter(
@@ -232,8 +241,48 @@ const HeroicGreenSteelPage = () => {
     )
   }
 
+  useEffect(() => {
+    if (
+      !permalink ||
+      handledPermalink.current === permalink ||
+      !initial ||
+      !tier2Data ||
+      !tier3Data ||
+      !validCombinations
+    )
+      return
+    handledPermalink.current = permalink
+    try {
+      setSelection(
+        validateHgsBuild(decodeHgsPermalink(permalink), {
+          initial,
+          tier2: tier2Data,
+          tier3: tier3Data,
+          combinations: validCombinations
+        })
+      )
+    } catch (cause) {
+      setPermalinkError(cause instanceof Error ? cause.message : 'Invalid HGS permalink')
+    }
+  }, [initial, permalink, tier2Data, tier3Data, validCombinations])
+
   const tools = initial
     ? [
+        {
+          id: 'tools',
+          label: 'Tools',
+          icon: <IconTools size={20} />,
+          content: (
+            <SharingTool
+              selection={selection}
+              initial={initial}
+              tier2={tier2Data ?? undefined}
+              tier3={tier3Data ?? undefined}
+              combinations={validCombinations ?? undefined}
+              onImport={setSelection}
+            />
+          )
+        },
         {
           id: 'summary',
           label: 'Build Summary',
@@ -304,6 +353,11 @@ const HeroicGreenSteelPage = () => {
           />
         ) : initial ? (
           <Stack gap='md'>
+            {permalinkError ? (
+              <Alert color='red' title='Build link could not be loaded'>
+                {permalinkError}
+              </Alert>
+            ) : null}
             <Paper component='section' aria-labelledby='hgs-base-title' withBorder p='md'>
               <Stack gap='sm'>
                 <Title order={2} size='h3' id='hgs-base-title'>
@@ -347,43 +401,60 @@ const HeroicGreenSteelPage = () => {
               </Stack>
             </Paper>
 
-            <Paper component='section' aria-label='Desired Spell' withBorder p='md'>
+            <Paper component='section' aria-labelledby='hgs-spell-title' withBorder p='md'>
               <Stack gap='sm'>
-                {!baseItem ? (
-                  <Text c='dimmed' size='sm'>
-                    Select a base item first.
-                  </Text>
-                ) : tier2State.status === 'loading' ||
-                  tier2State.status === 'idle' ||
-                  tier3State.status === 'loading' ||
-                  tier3State.status === 'idle' ? (
-                  <Loading>Loading available spells…</Loading>
-                ) : tier2State.status === 'error' ? (
-                  <LoadError
-                    message='Available spells could not be loaded.'
-                    cause={tier2State.cause}
-                    retry={() => {
-                      setTier2State({ status: 'loading' })
-                      setTier2Attempt((value) => value + 1)
-                    }}
-                  />
-                ) : tier3State.status === 'error' ? (
-                  <Alert color='yellow'>Spell compatibility is unavailable until Tier 3 data loads.</Alert>
-                ) : (
-                  <Select
-                    label='Desired Spell'
-                    placeholder='Select a spell...'
-                    searchable
-                    clearable
-                    w='100%'
-                    maw={520}
-                    data={toHgsSelectOptions(spellOptions, (spellOption) => spellOption.name)}
-                    value={selection.selectedSpellId?.toString() ?? null}
-                    onChange={(value) => {
-                      updateSelection('selectedSpellId', value ? Number(value) : null)
-                    }}
-                  />
-                )}
+                <Title order={2} size='h3' id='hgs-spell-title'>
+                  Desired Spell
+                </Title>
+                <Grid gap='md'>
+                  <Grid.Col span={{ base: 12, md: 5 }}>
+                    {!baseItem ? (
+                      <Text c='dimmed' size='sm'>
+                        Select a base item first.
+                      </Text>
+                    ) : tier2State.status === 'loading' ||
+                      tier2State.status === 'idle' ||
+                      tier3State.status === 'loading' ||
+                      tier3State.status === 'idle' ? (
+                      <Loading>Loading available spells…</Loading>
+                    ) : tier2State.status === 'error' ? (
+                      <LoadError
+                        message='Available spells could not be loaded.'
+                        cause={tier2State.cause}
+                        retry={() => {
+                          setTier2State({ status: 'loading' })
+                          setTier2Attempt((value) => value + 1)
+                        }}
+                      />
+                    ) : tier3State.status === 'error' ? (
+                      <Alert color='yellow'>Spell compatibility is unavailable until Tier 3 data loads.</Alert>
+                    ) : (
+                      <Select
+                        label='Spell'
+                        placeholder='Select a spell...'
+                        searchable
+                        clearable
+                        w='100%'
+                        data={toHgsSelectOptions(spellOptions, (spellOption) => spellOption.name)}
+                        value={selection.selectedSpellId?.toString() ?? null}
+                        onChange={(value) => {
+                          updateSelection('selectedSpellId', value ? Number(value) : null)
+                        }}
+                      />
+                    )}
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, md: 7 }}>
+                    {desiredSpell ? (
+                      <Paper withBorder p='sm'>
+                        <SpellDetails spell={desiredSpell} />
+                      </Paper>
+                    ) : (
+                      <Text c='dimmed' size='sm'>
+                        Select a spell to view its details.
+                      </Text>
+                    )}
+                  </Grid.Col>
+                </Grid>
               </Stack>
             </Paper>
 
@@ -468,15 +539,6 @@ const HeroicGreenSteelPage = () => {
                       <>
                         <OptionBadges option={tier2} />
                         <EffectDetails effects={tier2Effects} />
-                        {spell ? (
-                          <Paper withBorder p='sm'>
-                            <SpellDetails spell={spell} />
-                          </Paper>
-                        ) : (
-                          <Text c='dimmed' size='sm'>
-                            No associated spell.
-                          </Text>
-                        )}
                       </>
                     ) : null}
                   </Stack>
