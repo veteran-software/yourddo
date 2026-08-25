@@ -19,6 +19,10 @@ vi.mock('../domains/essenceCrafting/EssenceCraftingPage.tsx', () => ({
   default: () => <h1>Essence Crafting domain</h1>
 }))
 
+vi.mock('../domains/gearPlanner/GearPlannerPage.tsx', () => ({
+  default: () => <h1>Gear Planner domain</h1>
+}))
+
 vi.mock('../domains/incrediblePotential/IncrediblePotentialPage.tsx', () => ({
   default: () => <h1>Incredible Potential domain</h1>
 }))
@@ -120,6 +124,13 @@ afterAll(() => {
 })
 
 describe('AppRouter', () => {
+  it('renders Gear Planner at its registered navigation route', () => {
+    renderRoute('/gear-planner')
+
+    expect(screen.getByRole('heading', { name: 'Gear Planner domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Gear Planner' }).getAttribute('aria-current')).toBe('page')
+  })
+
   it('renders Legendary Green Steel at its reserved public route', () => {
     renderRoute('/legendary-green-steel')
 

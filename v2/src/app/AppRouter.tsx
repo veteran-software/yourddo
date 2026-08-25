@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import CauldronOfCadencePage from '../domains/cauldronOfCadence/CauldronOfCadencePage.tsx'
 import DinosaurBonePage from '../domains/dinosaurBone/DinosaurBonePage.tsx'
 import EssenceCraftingPage from '../domains/essenceCrafting/EssenceCraftingPage.tsx'
+import GearPlannerPage from '../domains/gearPlanner/GearPlannerPage.tsx'
 import HeroicGreenSteelPage from '../domains/heroicGreenSteel/HeroicGreenSteelPage.tsx'
 import HomePage from '../domains/home/HomePage.tsx'
 import IncrediblePotentialPage from '../domains/incrediblePotential/IncrediblePotentialPage.tsx'
@@ -25,6 +26,7 @@ const AppRouter = () => (
       <Route path='/cauldron-of-cadence' element={<CauldronOfCadencePage />} />
       <Route path='/dinosaur-bone' element={<DinosaurBonePage />} />
       <Route path='/essence-crafting' element={<EssenceCraftingPage />} />
+      <Route path='/gear-planner' element={<GearPlannerPage />} />
       <Route path='/green-steel' element={<HeroicGreenSteelPage />} />
       <Route path='/legendary-green-steel' element={<LegendaryGreenSteelPage />} />
       <Route path='/incredible-potential' element={<IncrediblePotentialPage />} />

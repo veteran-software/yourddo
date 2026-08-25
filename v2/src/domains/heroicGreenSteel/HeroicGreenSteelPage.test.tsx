@@ -490,7 +490,9 @@ describe('HeroicGreenSteelPage', () => {
     await choose(user, 'Spell', /^Earthgrab$/)
     expect(within(desiredSpellSection).getByText('Earthgrab', { selector: 'p' })).toBeTruthy()
     expect(within(desiredSpellSection).getByText(/Caster level 16/)).toBeTruthy()
-    expect(within(screen.getByRole('region', { name: 'Altar of Subjugation' })).queryByText(/Caster level 16/)).toBeNull()
+    expect(
+      within(screen.getByRole('region', { name: 'Altar of Subjugation' })).queryByText(/Caster level 16/)
+    ).toBeNull()
   })
 
   it('reflects the Tier 2 spell in Desired Spell and leaves it empty for a spell-less Tier 2 upgrade', async () => {
@@ -636,12 +638,18 @@ describe('HeroicGreenSteelPage', () => {
     fireEvent.change(input, { target: { value: '{bad' } })
     await user.click(within(tools).getByRole('button', { name: 'Load Build' }))
     expect(within(tools).getByRole('alert').textContent).toContain('Invalid HGS JSON')
-    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Green Steel base item' }).value).toBe('Green Steel Dagger')
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Green Steel base item' }).value).toBe(
+      'Green Steel Dagger'
+    )
 
-    fireEvent.change(input, { target: { value: formatHgsJsonBuild({ ...emptyHgsSelection, selectedBaseItemId: weapon.id }) } })
+    fireEvent.change(input, {
+      target: { value: formatHgsJsonBuild({ ...emptyHgsSelection, selectedBaseItemId: weapon.id }) }
+    })
     await user.click(within(tools).getByRole('button', { name: 'Load Build' }))
     await waitFor(() => {
-      expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Green Steel base item' }).value).toBe('Green Steel Dagger')
+      expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Green Steel base item' }).value).toBe(
+        'Green Steel Dagger'
+      )
     })
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 1 upgrade' }).value).toBe('')
   })
