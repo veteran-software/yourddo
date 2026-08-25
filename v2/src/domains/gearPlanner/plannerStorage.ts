@@ -3,11 +3,13 @@ import {
   gearPlannerAugmentIdentity,
   isCompatibleGearPlannerAugment
 } from './augments.ts'
+import { canApplyGearPlannerCurse, collectSelectedGearPlannerCurses, gearPlannerCurseIdentity } from './curses.ts'
 import { collectSelectedGearPlannerFiligrees, getGearPlannerMaxFiligreeSlots } from './filigrees.ts'
 import { gearPlannerCharacterSlots, type GearPlannerData } from './gearPlanner.types.ts'
 import {
   createEmptyGearPlannerEquipment,
   setGearPlannerSlottedAugment,
+  setGearPlannerSlottedCurse,
   setGearPlannerSlottedFiligree,
   setGearPlannerUnlockedFiligreeSlots
 } from './planner.ts'
@@ -42,6 +44,11 @@ export interface PersistedGearPlannerFiligreeV1 {
   filigreeId: string
 }
 
+export interface PersistedGearPlannerCurseV1 {
+  itemId: string
+  curseId: string
+}
+
 export interface PersistedGearPlannerUnlockedFiligreeSlotsV1 {
   itemId: string
   count: number
@@ -54,6 +61,7 @@ export interface PersistedGearPlannerSetupV1 {
   maximumLevel: number
   equipment: Record<(typeof gearPlannerCharacterSlots)[number], string | null>
   selectedAugments: readonly PersistedGearPlannerAugmentV1[]
+  selectedCurses?: readonly PersistedGearPlannerCurseV1[]
   selectedFiligrees?: readonly PersistedGearPlannerFiligreeV1[]
   unlockedFiligreeSlots?: readonly PersistedGearPlannerUnlockedFiligreeSlotsV1[]
 }
@@ -72,6 +80,9 @@ export interface GearPlannerRestoreIssue {
     | 'missing-augment'
     | 'orphaned-augment'
     | 'incompatible-augment'
+    | 'missing-curse'
+    | 'orphaned-curse'
+    | 'ineligible-curse'
     | 'missing-filigree'
     | 'orphaned-filigree'
     | 'invalid-filigree-slot'
@@ -177,6 +188,21 @@ const parseSelectedFiligrees = (value: unknown, path: string): readonly Persiste
   })
 }
 
+const parseSelectedCurses = (value: unknown, path: string): readonly PersistedGearPlannerCurseV1[] => {
+  if (value === undefined) return []
+  if (!Array.isArray(value)) throw new InvalidGearPlannerStateError(`${path} must be an array`)
+  const seen = new Set<string>()
+  return value.map((entry, index) => {
+    const entryPath = `${path}[${String(index)}]`
+    const record = requiredRecord(entry, entryPath)
+    const itemId = requiredString(record.itemId, `${entryPath}.itemId`)
+    const curseId = requiredString(record.curseId, `${entryPath}.curseId`)
+    if (seen.has(itemId)) throw new InvalidGearPlannerStateError(`${path} contains duplicate item IDs`)
+    seen.add(itemId)
+    return { itemId, curseId }
+  })
+}
+
 const parseUnlockedFiligreeSlots = (
   value: unknown,
   path: string
@@ -213,6 +239,9 @@ const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 
     maximumLevel,
     equipment: parseEquipment(record.equipment, `${path}.equipment`),
     selectedAugments: parseSelectedAugments(record.selectedAugments, `${path}.selectedAugments`),
+    ...(record.selectedCurses === undefined
+      ? {}
+      : { selectedCurses: parseSelectedCurses(record.selectedCurses, `${path}.selectedCurses`) }),
     ...(record.selectedFiligrees === undefined
       ? {}
       : { selectedFiligrees: parseSelectedFiligrees(record.selectedFiligrees, `${path}.selectedFiligrees`) }),
@@ -275,6 +304,9 @@ export const serializeGearPlannerState = (state: GearPlannerSetupsState): Persis
         augmentId: gearPlannerAugmentIdentity(augment)
       }))
       .toSorted((left, right) => left.itemId.localeCompare(right.itemId) || left.slotIndex - right.slotIndex),
+    selectedCurses: collectSelectedGearPlannerCurses(setup.equipment, setup.slottedCurses)
+      .map(({ item, curse }) => ({ itemId: item.id, curseId: gearPlannerCurseIdentity(curse) }))
+      .toSorted((left, right) => left.itemId.localeCompare(right.itemId)),
     selectedFiligrees: collectSelectedGearPlannerFiligrees(setup.equipment, setup.slottedFiligrees)
       .map(({ item, slotIndex, filigree }) => ({ itemId: item.id, slotIndex, filigreeId: filigree.id }))
       .toSorted((left, right) => left.itemId.localeCompare(right.itemId) || left.slotIndex - right.slotIndex),
@@ -297,6 +329,7 @@ export const restorePersistedGearPlannerState = (
 ): RestoredGearPlannerState => {
   const itemsById = new Map(data.items.map((item) => [item.id, item]))
   const augmentsById = new Map(data.augments.map((augment) => [gearPlannerAugmentIdentity(augment), augment]))
+  const cursesById = new Map(data.curses.map((curse) => [gearPlannerCurseIdentity(curse), curse]))
   const filigreesById = new Map(data.filigrees.map((filigree) => [filigree.id, filigree]))
   const issues: GearPlannerRestoreIssue[] = []
   const setups = persisted.setups.map((savedSetup) => {
@@ -337,6 +370,23 @@ export const restorePersistedGearPlannerState = (
         continue
       }
       const selection = setGearPlannerSlottedAugment(setup, item.id, savedAugment.slotIndex, augment)
+      setup = selection === setup ? setup : { ...setup, ...selection }
+    }
+    for (const savedCurse of savedSetup.selectedCurses ?? []) {
+      const item = findEquippedItem(setup, savedCurse.itemId)
+      if (!item) {
+        issues.push({ kind: 'orphaned-curse', message: `${savedSetup.name}: curse host item is not equipped` })
+        continue
+      }
+      if (!canApplyGearPlannerCurse(item)) {
+        issues.push({ kind: 'ineligible-curse', message: `${savedSetup.name}: curses cannot be applied to Quiver` })
+        continue
+      }
+      if (!cursesById.has(savedCurse.curseId)) {
+        issues.push({ kind: 'missing-curse', message: `${savedSetup.name}: selected curse is no longer available` })
+        continue
+      }
+      const selection = setGearPlannerSlottedCurse(setup, item.id, savedCurse.curseId, data.curses)
       setup = selection === setup ? setup : { ...setup, ...selection }
     }
     for (const savedUnlockedSlots of savedSetup.unlockedFiligreeSlots ?? []) {

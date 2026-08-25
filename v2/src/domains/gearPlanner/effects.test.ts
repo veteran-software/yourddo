@@ -5,10 +5,12 @@ import {
   conflictEligibleEffectSources,
   normalizeBonusType,
   parseEffectModifier,
+  previewPotentialEffectConflict,
   resolveEffectConflicts
 } from './effects.ts'
 import {
   type GearPlannerAugment,
+  type GearPlannerCurse,
   type GearPlannerFiligree,
   type GearPlannerItem,
   gearPlannerSlots
@@ -20,6 +22,7 @@ import {
   equipGearPlannerItemInSelection,
   type GearPlannerCharacterSlot,
   setGearPlannerSlottedAugment,
+  setGearPlannerSlottedCurse,
   setGearPlannerSlottedFiligree,
   setGearPlannerUnlockedFiligreeSlots
 } from './planner.ts'
@@ -55,6 +58,14 @@ const augment = (
   minLevel: 1,
   effectsAdded,
   source: { name, augmentType, minLevel: 1, effectsAdded }
+})
+
+const curse = (name: string, enchantments: GearPlannerCurse['enchantments']): GearPlannerCurse => ({
+  id: name,
+  name,
+  type: 'Common',
+  enchantments,
+  source: { name, type: 'Common', enchantments }
 })
 
 describe('Gear Planner equipped effect sources', () => {
@@ -318,5 +329,95 @@ describe('Gear Planner filigree effect sources', () => {
     expect(collectEquippedEffects(selection.equipment, selection.slottedAugments, selection.slottedFiligrees)).toEqual(
       []
     )
+  })
+})
+
+describe('Gear Planner curse effect sources', () => {
+  it('adds every selected curse effect with host provenance, summary normalization, and no normal conflict participation', () => {
+    const head = item('head', gearPlannerSlots.head, 'Cursed Helm', [
+      { name: 'Strength', modifier: '+10', bonus: 'Fortune' }
+    ])
+    const selected = curse('Curse of Testing', [
+      { name: 'Strength', modifier: '+2%', bonus: 'Fortune' },
+      { name: 'Ghostly' }
+    ])
+    let selection = equipGearPlannerItemInSelection(createEmptyGearPlannerSelectionState(), gearPlannerSlots.head, head)
+    selection = setGearPlannerSlottedCurse(selection, head.id, selected.id, [selected])
+    const sources = collectEquippedEffects(
+      selection.equipment,
+      selection.slottedAugments,
+      selection.slottedFiligrees,
+      selection.slottedCurses
+    )
+    const curseSources = sources.filter(({ category }) => category === 'curse')
+
+    expect(curseSources).toMatchObject([
+      {
+        category: 'curse',
+        curseId: selected.id,
+        curseName: 'Curse of Testing',
+        itemId: head.id,
+        itemName: 'Cursed Helm',
+        slot: 'Head',
+        effect: { name: 'Strength', modifier: '+2%', bonus: 'Fortune' }
+      },
+      { category: 'curse', effect: { name: 'Ghostly' } }
+    ])
+    expect(aggregateEffectSummary(sources).find(({ name }) => name === 'Strength')?.groups[0].effectiveDisplay).toBe(
+      '+10'
+    )
+    expect(aggregateEffectSummary(sources).find(({ name }) => name === 'Ghostly')?.isNumeric).toBe(false)
+    expect(
+      resolveEffectConflicts(conflictEligibleEffectSources(sources)).bySourceId[curseSources[0].id]
+    ).toBeUndefined()
+
+    selection = setGearPlannerSlottedCurse(selection, head.id, null, [selected])
+    expect(
+      collectEquippedEffects(
+        selection.equipment,
+        selection.slottedAugments,
+        selection.slottedFiligrees,
+        selection.slottedCurses
+      )
+    ).toHaveLength(1)
+    selection = setGearPlannerSlottedCurse(selection, head.id, selected.id, [selected])
+    selection = equipGearPlannerItemInSelection(selection, gearPlannerSlots.head, null)
+    expect(
+      collectEquippedEffects(
+        selection.equipment,
+        selection.slottedAugments,
+        selection.slottedFiligrees,
+        selection.slottedCurses
+      )
+    ).toEqual([])
+  })
+
+  it('matches legacy candidate preview semantics without making selected curses conflict sources', () => {
+    const fortuneTen = item('fortune-ten', gearPlannerSlots.head, 'Fortune Ten', [
+      { name: 'Strength', modifier: '+10', bonus: 'Fortune' }
+    ])
+    const fortuneOne = item('fortune-one', gearPlannerSlots.head, 'Fortune One', [
+      { name: 'Strength', modifier: '+1', bonus: 'Fortune' }
+    ])
+    const lesser = { name: 'Strength', modifier: '+1', bonus: 'Fortune' }
+    const greater = { name: 'Strength', modifier: '+2', bonus: 'Fortune' }
+
+    expect(
+      previewPotentialEffectConflict(lesser, collectEquippedEffects(equipped(fortuneTen)), fortuneTen.id)
+    ).toMatchObject({
+      isConflict: false
+    })
+    expect(
+      previewPotentialEffectConflict(lesser, collectEquippedEffects(equipped(fortuneTen)), 'new-host')
+    ).toMatchObject({
+      isConflict: true,
+      isOverpowered: true
+    })
+    expect(
+      previewPotentialEffectConflict(greater, collectEquippedEffects(equipped(fortuneOne)), 'new-host')
+    ).toMatchObject({
+      isConflict: true,
+      isUpgrade: true
+    })
   })
 })

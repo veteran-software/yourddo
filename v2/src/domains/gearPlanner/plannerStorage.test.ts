@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { gearPlannerAugmentIdentity, isCompatibleGearPlannerAugment } from './augments.ts'
+import { gearPlannerCurseDefinitions, gearPlannerCurseIdentity } from './curses.ts'
 import { loadGearPlannerData } from './data.ts'
 import { collectEquippedEffects } from './effects.ts'
 import { normalizeGearPlannerFiligreeName } from './filigrees.ts'
@@ -7,6 +8,7 @@ import {
   allGearPlannerSlots,
   type GearPlannerAugment,
   gearPlannerCharacterSlots,
+  type GearPlannerCurse,
   type GearPlannerData,
   type GearPlannerFiligree,
   type GearPlannerItem,
@@ -32,6 +34,7 @@ import {
   equipGearPlannerSetupItem,
   type GearPlannerSetupsState,
   setGearPlannerSetupAugment,
+  setGearPlannerSetupCurse,
   setGearPlannerSetupFiligree,
   setGearPlannerSetupUnlockedFiligreeSlots
 } from './setups.ts'
@@ -56,15 +59,25 @@ const augment = (name = 'Ruby', augmentType = 'Red'): GearPlannerAugment => ({
   source: { name, augmentType, minLevel: 1, effectsAdded: [{ name: 'Strength', modifier: 2 }] }
 })
 
+const curse = (name: string): GearPlannerCurse => ({
+  id: name,
+  name,
+  type: 'Common',
+  enchantments: [{ name: 'Strength', modifier: 1, bonus: 'Fortune' }],
+  source: { name, type: 'Common' }
+})
+
 const data = (
   items: readonly GearPlannerItem[],
   augments: readonly GearPlannerAugment[] = [],
-  filigrees: readonly GearPlannerFiligree[] = []
+  filigrees: readonly GearPlannerFiligree[] = [],
+  curses: readonly GearPlannerCurse[] = []
 ): GearPlannerData => ({
   sourceDatasets: [],
   items,
   augments,
   filigrees,
+  curses,
   filigreeSetDefinitions: [],
   filigreeSetDefinitionByName: new Map(),
   itemsBySlot: Object.fromEntries(
@@ -233,6 +246,76 @@ describe('Gear Planner local and JSON persistence', () => {
   })
 })
 
+describe('Gear Planner curse persistence', () => {
+  it('round-trips identity references through local and JSON persistence without serializing curse objects', () => {
+    const head = item('cursed-head', gearPlannerSlots.head, 'Cursed Helm')
+    const selected = curse('Curse of Strength')
+    let state = equipGearPlannerSetupItem(createDefaultGearPlannerState(), gearPlannerSlots.head, head)
+    state = setGearPlannerSetupCurse(state, head.id, selected.id, [selected])
+    const payload = serializeGearPlannerState(state)
+    const text = JSON.stringify(payload)
+    const restored = restorePersistedGearPlannerState(payload, data([head], [], [], [selected]))
+
+    expect(payload.setups[0].selectedCurses).toEqual([{ itemId: head.id, curseId: selected.id }])
+    expect(text).not.toContain('enchantments')
+    expect(restored.issues).toEqual([])
+    expect(restored.state.setups[0].slottedCurses[head.id]).toBe(selected)
+    expect(
+      importGearPlannerState(JSON.stringify(createGearPlannerExport(state)), data([head], [], [], [selected])).state
+        .setups[0].slottedCurses[head.id]
+    ).toBe(selected)
+  })
+
+  it('keeps prior v1 payloads valid and skips only missing, orphaned, or Quiver curse selections', () => {
+    const head = item('cursed-head', gearPlannerSlots.head, 'Cursed Helm')
+    const quiver = item('quiver', gearPlannerSlots.quiver, 'Cursed Quiver')
+    const selected = curse('Curse of Strength')
+    let state = equipGearPlannerSetupItem(createDefaultGearPlannerState(), gearPlannerSlots.head, head)
+    state = setGearPlannerSetupCurse(state, head.id, selected.id, [selected])
+    const previousV1 = structuredClone(serializeGearPlannerState(state))
+    delete previousV1.setups[0].selectedCurses
+    expect(parsePersistedGearPlannerState(previousV1).version).toBe(GEAR_PLANNER_PERSISTED_VERSION)
+    expect(restorePersistedGearPlannerState(previousV1, data([head], [], [], [selected])).issues).toEqual([])
+
+    const missing = structuredClone(serializeGearPlannerState(state))
+    missing.setups[0].selectedCurses = [{ itemId: head.id, curseId: 'missing' }]
+    const missingRestored = restorePersistedGearPlannerState(missing, data([head], [], [], [selected]))
+    expect(missingRestored.state.setups[0].equipment.Head).toBe(head)
+    expect(missingRestored.state.setups[0].slottedCurses).toEqual({})
+    expect(missingRestored.issues.map(({ kind }) => kind)).toContain('missing-curse')
+
+    const orphaned = structuredClone(serializeGearPlannerState(state))
+    orphaned.setups[0].selectedCurses = [{ itemId: 'missing-host', curseId: selected.id }]
+    expect(
+      restorePersistedGearPlannerState(orphaned, data([head], [], [], [selected])).issues.map(({ kind }) => kind)
+    ).toContain('orphaned-curse')
+
+    const quiverState = equipGearPlannerSetupItem(createDefaultGearPlannerState(), gearPlannerSlots.quiver, quiver)
+    const malformedQuiver = structuredClone(serializeGearPlannerState(quiverState))
+    malformedQuiver.setups[0].selectedCurses = [{ itemId: quiver.id, curseId: selected.id }]
+    const quiverRestored = restorePersistedGearPlannerState(malformedQuiver, data([quiver], [], [], [selected]))
+    expect(quiverRestored.state.setups[0].equipment.Quiver).toBe(quiver)
+    expect(quiverRestored.state.setups[0].slottedCurses).toEqual({})
+    expect(quiverRestored.issues.map(({ kind }) => kind)).toContain('ineligible-curse')
+  })
+
+  it('persists both Masterworks identities unchanged without applying crafting behavior', () => {
+    const head = item('masterwork-host', gearPlannerSlots.head, 'Masterwork Helm')
+    for (const name of ['Curse of Minor Masterworks', 'Curse of Major Masterworks']) {
+      const selected = gearPlannerCurseDefinitions.find((candidate) => candidate.name === name)
+      expect(selected).toBeDefined()
+      if (!selected) continue
+      let state = equipGearPlannerSetupItem(createDefaultGearPlannerState(), gearPlannerSlots.head, head)
+      state = setGearPlannerSetupCurse(state, head.id, gearPlannerCurseIdentity(selected), [selected])
+      const restored = restorePersistedGearPlannerState(
+        serializeGearPlannerState(state),
+        data([head], [], [], [selected])
+      )
+      expect(restored.state.setups[0].slottedCurses[head.id]?.id).toBe(name)
+    }
+  })
+})
+
 describe('Gear Planner filigree persistence', () => {
   const host = (): GearPlannerItem => ({
     ...item('sentient-host', gearPlannerSlots.mainHand, 'Sentient Host'),
@@ -294,6 +377,46 @@ describe('Gear Planner filigree persistence', () => {
 })
 
 describe('Gear Planner production persistence', () => {
+  it.runIf(import.meta.env.VITE_GEAR_PLANNER_CDN === '1')(
+    'selects a curated multi-effect curse on a production item and round-trips it',
+    async () => {
+      const currentData = await (async () => {
+        const nativeFetch = globalThis.fetch
+        vi.stubGlobal('fetch', (input: string | URL | Request, init?: RequestInit) => {
+          const requestedUrl = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
+          return nativeFetch(requestedUrl.replace('/data-cdn/', 'https://cdn.yourddo.com/'), init)
+        })
+        try {
+          return await loadGearPlannerData()
+        } finally {
+          vi.unstubAllGlobals()
+        }
+      })()
+      const host = currentData.items.find((candidate) => candidate.slot === gearPlannerSlots.head)
+      const selected = currentData.curses.find((candidate) => candidate.name === 'Curse of Minor Prowess')
+      expect(host).toBeDefined()
+      expect(selected).toBeDefined()
+      if (!host || !selected) return
+
+      let state = equipGearPlannerSetupItem(createDefaultGearPlannerState(), gearPlannerSlots.head, host)
+      state = setGearPlannerSetupCurse(state, host.id, gearPlannerCurseIdentity(selected), currentData.curses)
+      const restored = restorePersistedGearPlannerState(serializeGearPlannerState(state), currentData)
+      const sources = collectEquippedEffects(
+        restored.state.setups[0].equipment,
+        restored.state.setups[0].slottedAugments,
+        restored.state.setups[0].slottedFiligrees,
+        restored.state.setups[0].slottedCurses
+      )
+
+      expect(restored.issues).toEqual([])
+      expect(restored.state.setups[0].slottedCurses[host.id]).toBe(selected)
+      expect(sources.filter(({ category }) => category === 'curse')).toHaveLength(selected.enchantments.length)
+      console.info(
+        JSON.stringify({ item: host.source.name, curse: selected.name, effects: selected.enchantments.length })
+      )
+    }
+  )
+
   it.runIf(import.meta.env.VITE_GEAR_PLANNER_CDN === '1')(
     'round-trips current CDN items, compatible augments, and an active standard set across two setups',
     async () => {

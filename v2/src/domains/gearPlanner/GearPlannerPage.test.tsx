@@ -7,6 +7,7 @@ import { loadGearPlannerData } from './data.ts'
 import {
   allGearPlannerSlots,
   gearPlannerCharacterSlots,
+  type GearPlannerCurse,
   type GearPlannerData,
   type GearPlannerFiligree,
   type GearPlannerFiligreeSetDefinition,
@@ -15,6 +16,7 @@ import {
   gearPlannerSlots
 } from './gearPlanner.types.ts'
 import GearPlannerPage from './GearPlannerPage.tsx'
+import { GEAR_PLANNER_STORAGE_KEY } from './plannerStorage.ts'
 
 vi.mock('./data.ts', () => ({
   InvalidGearPlannerDataError: class InvalidGearPlannerDataError extends Error {},
@@ -26,6 +28,7 @@ const data: GearPlannerData = {
   items: [],
   itemsBySlot: {} as GearPlannerData['itemsBySlot'],
   augments: [],
+  curses: [],
   filigrees: [],
   filigreeSetDefinitions: [],
   filigreeSetDefinitionByName: new Map(),
@@ -61,11 +64,13 @@ const dataWithItems = (
   items: readonly GearPlannerItem[],
   augments: GearPlannerData['augments'] = [],
   filigrees: readonly GearPlannerFiligree[] = [],
-  filigreeSetDefinitions: readonly GearPlannerFiligreeSetDefinition[] = []
+  filigreeSetDefinitions: readonly GearPlannerFiligreeSetDefinition[] = [],
+  curses: GearPlannerData['curses'] = []
 ): GearPlannerData => ({
   ...data,
   items,
   augments,
+  curses,
   filigrees,
   filigreeSetDefinitions,
   filigreeSetDefinitionByName: new Map(filigreeSetDefinitions.map((definition) => [definition.name, definition])),
@@ -490,6 +495,113 @@ describe('GearPlannerPage', () => {
     expect(await screen.findByText('Test Filigree Set')).toBeTruthy()
     expect(screen.getByText('Filigree Set')).toBeTruthy()
     expect(screen.getByText('Main Hand: Filigree A on Sentient Dagger / Filigree slot 1')).toBeTruthy()
+  })
+
+  it('shows Deck of Many Curses controls only for eligible items and keeps selections in summaries and setups', async () => {
+    const lesser: GearPlannerCurse = {
+      id: 'Curse of Lesser Strength',
+      name: 'Curse of Lesser Strength',
+      type: 'Common',
+      enchantments: [{ name: 'Strength', modifier: '+1', bonus: 'Fortune' }],
+      source: { name: 'Curse of Lesser Strength', type: 'Common' }
+    }
+    const greater: GearPlannerCurse = {
+      id: 'Curse of Greater Strength',
+      name: 'Curse of Greater Strength',
+      type: 'Rare',
+      enchantments: [{ name: 'Strength', modifier: '+2', bonus: 'Fortune' }, { name: 'Ghostly' }],
+      source: { name: 'Curse of Greater Strength', type: 'Rare' }
+    }
+    await renderReadyPage(
+      dataWithItems(
+        [
+          item('head', gearPlannerSlots.head, 'Cursed Helm'),
+          item('ring', gearPlannerSlots.firstFinger, 'Fortune Ring', 10, [
+            { name: 'Strength', modifier: '+1', bonus: 'Fortune' }
+          ]),
+          item('quiver', gearPlannerSlots.quiver, 'Plain Quiver')
+        ],
+        [],
+        [],
+        [],
+        [lesser, greater]
+      )
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Cursed Helm' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Select First Finger' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Fortune Ring' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Quiver' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Plain Quiver' }))
+
+    expect(screen.getByRole('button', { name: 'Manage curses for Cursed Helm' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'Manage curses for Plain Quiver' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Manage curses for Cursed Helm' }))
+    expect(await screen.findByText('Rare')).toBeTruthy()
+    expect(screen.getByText('Strength +2 (Fortune)')).toBeTruthy()
+    expect(screen.getByText('Upgrade')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Select Curse of Greater Strength' }))
+
+    expect(screen.getByTestId('selected-curse-head').textContent).toContain('Curse of Greater Strength')
+    expect(screen.getByTestId('selected-curse-head').textContent).toContain('Ghostly')
+    fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
+    expect(
+      (await screen.findAllByText(/Deck of Many Curses · Curse of Greater Strength on Head: Cursed Helm/)).length
+    ).toBe(2)
+    fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
+
+    fireEvent.click(screen.getByRole('button', { name: 'Manage curses for Cursed Helm' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Select Curse of Lesser Strength' }))
+    expect(screen.getByTestId('selected-curse-head').textContent).toContain('Curse of Lesser Strength')
+    fireEvent.click(screen.getByRole('button', { name: 'Clear curse' }))
+    expect(screen.queryByTestId('selected-curse-head')).toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Manage curses for Cursed Helm' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Select Curse of Greater Strength' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Add setup' }))
+    expect(screen.queryByTestId('selected-curse-head')).toBeNull()
+    fireEvent.click(screen.getByRole('tab', { name: 'Default Setup' }))
+    expect(screen.getByTestId('selected-curse-head').textContent).toContain('Curse of Greater Strength')
+  })
+
+  it('restores a persisted curse selection into its item card and Enchantments Workspace', async () => {
+    const selected: GearPlannerCurse = {
+      id: 'Curse of Restoration',
+      name: 'Curse of Restoration',
+      type: 'Uncommon',
+      enchantments: [{ name: 'Strength', modifier: '+2', bonus: 'Fortune' }],
+      source: { name: 'Curse of Restoration', type: 'Uncommon' }
+    }
+    const head = item('restored-head', gearPlannerSlots.head, 'Restored Helm')
+    const equipment = Object.fromEntries(gearPlannerCharacterSlots.map((slot) => [slot, null])) as Record<
+      (typeof gearPlannerCharacterSlots)[number],
+      string | null
+    >
+    equipment.Head = head.id
+    localStorage.setItem(
+      GEAR_PLANNER_STORAGE_KEY,
+      JSON.stringify({
+        version: 1,
+        activeSetupId: 'restored',
+        setups: [
+          {
+            id: 'restored',
+            name: 'Restored setup',
+            minimumLevel: 1,
+            maximumLevel: 36,
+            equipment,
+            selectedAugments: [],
+            selectedCurses: [{ itemId: head.id, curseId: selected.id }]
+          }
+        ]
+      })
+    )
+
+    await renderReadyPage(dataWithItems([head], [], [], [], [selected]))
+    expect(screen.getByTestId('selected-curse-restored-head').textContent).toContain('Curse of Restoration')
+    fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
+    expect(await screen.findByText(/Deck of Many Curses · Curse of Restoration on Head: Restored Helm/)).toBeTruthy()
   })
 
   it('rejects a second minor artifact in the browser and keeps the original equipped', async () => {

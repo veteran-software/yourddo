@@ -40,7 +40,9 @@ import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { downloadTextFile, readTextFile } from '../../shared/serialization/browser.ts'
 import AugmentSlotSelector from './components/AugmentSlotSelector.tsx'
+import CurseSelector from './components/CurseSelector.tsx'
 import FiligreeSlotSelector from './components/FiligreeSlotSelector.tsx'
+import { canApplyGearPlannerCurse } from './curses.ts'
 import { InvalidGearPlannerDataError, loadGearPlannerData } from './data.ts'
 import {
   aggregateEffectSummary,
@@ -83,6 +85,7 @@ import {
   renameGearPlannerSetup,
   selectGearPlannerSetup,
   setGearPlannerSetupAugment,
+  setGearPlannerSetupCurse,
   setGearPlannerSetupFiligree,
   setGearPlannerSetupUnlockedFiligreeSlots,
   updateGearPlannerSetupLevels
@@ -120,13 +123,16 @@ interface EquipmentSlotCardProps {
   item: GearPlannerItem | null
   data: GearPlannerData
   effects: readonly GearPlannerEffectSource[]
+  conflictSources: readonly GearPlannerEffectSource[]
   conflicts: GearPlannerEffectConflictResolution
   slottedAugments: import('./planner.ts').GearPlannerSlottedAugments
+  slottedCurses: import('./planner.ts').GearPlannerSlottedCurses
   slottedFiligrees: GearPlannerSlottedFiligrees
   unlockedFiligreeSlots: GearPlannerUnlockedFiligreeSlots
   openBrowser: (slot: GearPlannerCharacterSlot) => void
   clearSlot: (slot: GearPlannerCharacterSlot) => void
   setAugment: (itemId: string, slotIndex: number, augment: GearPlannerData['augments'][number] | null) => void
+  setCurse: (itemId: string, curseId: string | null) => void
   setFiligree: (itemId: string, slotIndex: number, filigree: GearPlannerData['filigrees'][number] | null) => void
   setUnlockedFiligreeSlots: (itemId: string, count: number) => void
 }
@@ -136,13 +142,16 @@ const EquipmentSlotCard = ({
   item,
   data,
   effects,
+  conflictSources,
   conflicts,
   slottedAugments,
+  slottedCurses,
   slottedFiligrees,
   unlockedFiligreeSlots,
   openBrowser,
   clearSlot,
   setAugment,
+  setCurse,
   setFiligree,
   setUnlockedFiligreeSlots
 }: EquipmentSlotCardProps) => (
@@ -207,6 +216,17 @@ const EquipmentSlotCard = ({
           }}
         />
       ))}
+      {item && canApplyGearPlannerCurse(item) ? (
+        <CurseSelector
+          item={item}
+          curses={data.curses}
+          selected={slottedCurses[item.id] ?? null}
+          conflictSources={conflictSources}
+          onChange={(curseId) => {
+            setCurse(item.id, curseId)
+          }}
+        />
+      ) : null}
       {item && supportsGearPlannerFiligrees(item) ? (
         <FiligreeSlotSelector
           item={item}
@@ -423,18 +443,19 @@ const GearPlannerPage = () => {
   const [feedback, setFeedback] = useState<{ kind: 'success' | 'error'; message: string } | null>(null)
   const importInputRef = useRef<HTMLInputElement>(null)
   const activeSetup = activeGearPlannerSetup(plannerState)
-  const { equipment, slottedAugments, slottedFiligrees, unlockedFiligreeSlots } = activeSetup
+  const { equipment, slottedAugments, slottedCurses, slottedFiligrees, unlockedFiligreeSlots } = activeSetup
   const filigreeDefinitions = dataState.status === 'ready' ? dataState.data.filigreeSetDefinitionByName : undefined
   const baseEffects = useMemo(
-    () => collectEquippedEffects(equipment, slottedAugments, slottedFiligrees),
-    [equipment, slottedAugments, slottedFiligrees]
+    () => collectEquippedEffects(equipment, slottedAugments, slottedFiligrees, slottedCurses),
+    [equipment, slottedAugments, slottedCurses, slottedFiligrees]
   )
   const setState = useMemo(
     () => resolveGearPlannerSetState(equipment, slottedAugments, undefined, slottedFiligrees, filigreeDefinitions),
     [equipment, filigreeDefinitions, slottedAugments, slottedFiligrees]
   )
   const effects = useMemo(() => [...baseEffects, ...collectActiveSetEffectSources(setState)], [baseEffects, setState])
-  const conflicts = useMemo(() => resolveEffectConflicts(conflictEligibleEffectSources(effects)), [effects])
+  const conflictSources = useMemo(() => conflictEligibleEffectSources(baseEffects), [baseEffects])
+  const conflicts = useMemo(() => resolveEffectConflicts(conflictSources), [conflictSources])
   const summary = useMemo(() => aggregateEffectSummary(effects), [effects])
   const tools = useMemo<readonly WorkspaceTool[]>(
     () => [
@@ -746,8 +767,10 @@ const GearPlannerPage = () => {
                     item={equipment[slot]}
                     data={dataState.data}
                     effects={effects.filter((effect) => effect.slot === slot && effect.category === 'equipped-item')}
+                    conflictSources={conflictSources}
                     conflicts={conflicts}
                     slottedAugments={slottedAugments}
+                    slottedCurses={slottedCurses}
                     slottedFiligrees={slottedFiligrees}
                     unlockedFiligreeSlots={unlockedFiligreeSlots}
                     openBrowser={setBrowsingSlot}
@@ -756,6 +779,11 @@ const GearPlannerPage = () => {
                     }}
                     setAugment={(itemId, slotIndex, augment) => {
                       applySetupState((current) => setGearPlannerSetupAugment(current, itemId, slotIndex, augment))
+                    }}
+                    setCurse={(itemId, curseId) => {
+                      applySetupState((current) =>
+                        setGearPlannerSetupCurse(current, itemId, curseId, dataState.data.curses)
+                      )
                     }}
                     setFiligree={(itemId, slotIndex, filigree) => {
                       applySetupState((current) => setGearPlannerSetupFiligree(current, itemId, slotIndex, filigree))

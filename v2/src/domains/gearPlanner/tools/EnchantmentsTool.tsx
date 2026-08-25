@@ -23,9 +23,9 @@ const sourceProvenance = (source: GearPlannerEffectSource): string =>
       ? `${source.augmentName ?? 'Augment'} slotted in ${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'} / ${source.augmentSlotName ?? `Augment slot ${String((source.augmentSlotIndex ?? 0) + 1)}`}`
       : source.category === 'curse'
         ? `Deck of Many Curses · ${source.curseName ?? 'Curse'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
-      : source.category === 'filigree'
-        ? `${source.filigreeName ?? 'Filigree'} on ${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'} / Filigree slot ${String((source.filigreeSlotIndex ?? 0) + 1)}`
-        : `${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'}`
+        : source.category === 'filigree'
+          ? `${source.filigreeName ?? 'Filigree'} on ${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'} / Filigree slot ${String((source.filigreeSlotIndex ?? 0) + 1)}`
+          : `${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'}`
 
 const groupValue = (group: GearPlannerEffectSummary['groups'][number]) =>
   group.effectiveValue === 0 ? group.effectiveDisplay || 'Active' : `+${String(group.effectiveValue)}`
