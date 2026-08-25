@@ -115,6 +115,10 @@ export interface GearPlannerItem {
   minimumLevel: number
   absoluteMinimumLevel?: number
   source: GearPlannerSourceItem
+  essenceCrafting?: {
+    kind: string
+    itemCategoryId: string
+  }
 }
 
 export interface GearPlannerFiligree {

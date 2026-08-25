@@ -39,8 +39,11 @@ import ItemIcon from '../../shared/items/ItemIcon.tsx'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { downloadTextFile, readTextFile } from '../../shared/serialization/browser.ts'
+import { InvalidEssenceCraftingDataError, loadEssenceCraftingData } from '../essenceCrafting/data.ts'
+import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import AugmentSlotSelector from './components/AugmentSlotSelector.tsx'
 import CurseSelector from './components/CurseSelector.tsx'
+import EssenceCraftingSelector from './components/EssenceCraftingSelector.tsx'
 import FiligreeSlotSelector from './components/FiligreeSlotSelector.tsx'
 import { canApplyGearPlannerCurse } from './curses.ts'
 import { InvalidGearPlannerDataError, loadGearPlannerData } from './data.ts'
@@ -52,6 +55,7 @@ import {
   type GearPlannerEffectSource,
   resolveEffectConflicts
 } from './effects.ts'
+import { getEssenceCraftedGearPlannerItems, isEssenceCraftedGearPlannerItem } from './essenceCrafting.ts'
 import { supportsGearPlannerFiligrees } from './filigrees.ts'
 import { type GearPlannerData, type GearPlannerItem, gearPlannerSlotGridColumns } from './gearPlanner.types.ts'
 import {
@@ -86,6 +90,7 @@ import {
   selectGearPlannerSetup,
   setGearPlannerSetupAugment,
   setGearPlannerSetupCurse,
+  setGearPlannerSetupEssenceCraftingConfiguration,
   setGearPlannerSetupFiligree,
   setGearPlannerSetupUnlockedFiligreeSlots,
   updateGearPlannerSetupLevels
@@ -94,7 +99,9 @@ import EnchantmentsTool, { EquippedEnchantmentList } from './tools/EnchantmentsT
 import SetBonusesTool from './tools/SetBonusesTool.tsx'
 
 type DataState =
-  { status: 'loading' } | { status: 'ready'; data: GearPlannerData } | { status: 'error'; cause: unknown }
+  | { status: 'loading' }
+  | { status: 'ready'; data: GearPlannerData; essenceData: EssenceCraftingData }
+  | { status: 'error'; cause: unknown }
 
 const pageSize = 50
 
@@ -116,12 +123,16 @@ const characterSlotLayout = [
   'Quiver'
 ] as const satisfies readonly GearPlannerCharacterSlot[]
 
-const itemMetadata = (item: GearPlannerItem) => `ML ${String(item.minimumLevel)} · ${gearPlannerItemType(item)}`
+const itemMetadata = (item: GearPlannerItem, essenceMinimumLevel?: number) =>
+  `ML ${String(essenceMinimumLevel ?? item.minimumLevel)} · ${
+    isEssenceCraftedGearPlannerItem(item) ? 'Essence Crafted' : gearPlannerItemType(item)
+  }`
 
 interface EquipmentSlotCardProps {
   slot: GearPlannerCharacterSlot
   item: GearPlannerItem | null
   data: GearPlannerData
+  essenceData: EssenceCraftingData
   effects: readonly GearPlannerEffectSource[]
   conflictSources: readonly GearPlannerEffectSource[]
   conflicts: GearPlannerEffectConflictResolution
@@ -129,18 +140,21 @@ interface EquipmentSlotCardProps {
   slottedCurses: import('./planner.ts').GearPlannerSlottedCurses
   slottedFiligrees: GearPlannerSlottedFiligrees
   unlockedFiligreeSlots: GearPlannerUnlockedFiligreeSlots
+  essenceCrafting: import('./essenceCrafting.ts').GearPlannerEssenceCraftingConfigurations
   openBrowser: (slot: GearPlannerCharacterSlot) => void
   clearSlot: (slot: GearPlannerCharacterSlot) => void
   setAugment: (itemId: string, slotIndex: number, augment: GearPlannerData['augments'][number] | null) => void
   setCurse: (itemId: string, curseId: string | null) => void
   setFiligree: (itemId: string, slotIndex: number, filigree: GearPlannerData['filigrees'][number] | null) => void
   setUnlockedFiligreeSlots: (itemId: string, count: number) => void
+  setEssenceConfiguration: (itemId: string, update: import('./planner.ts').GearPlannerEssenceCraftingUpdate) => void
 }
 
 const EquipmentSlotCard = ({
   slot,
   item,
   data,
+  essenceData,
   effects,
   conflictSources,
   conflicts,
@@ -148,12 +162,14 @@ const EquipmentSlotCard = ({
   slottedCurses,
   slottedFiligrees,
   unlockedFiligreeSlots,
+  essenceCrafting,
   openBrowser,
   clearSlot,
   setAugment,
   setCurse,
   setFiligree,
-  setUnlockedFiligreeSlots
+  setUnlockedFiligreeSlots,
+  setEssenceConfiguration
 }: EquipmentSlotCardProps) => (
   <Paper withBorder p='sm' mih={132} style={{ position: 'relative' }} data-testid={`gear-slot-${slot}`}>
     <Stack gap='xs' h='100%'>
@@ -192,7 +208,7 @@ const EquipmentSlotCard = ({
                 {item.source.name}
               </Text>
               <Text c='dimmed' size='xs'>
-                {itemMetadata(item)}
+                {itemMetadata(item, essenceCrafting[item.id]?.minimumLevel)}
               </Text>
               <EquippedEnchantmentList sources={effects} conflicts={conflicts} />
             </Stack>
@@ -224,6 +240,23 @@ const EquipmentSlotCard = ({
           conflictSources={conflictSources}
           onChange={(curseId) => {
             setCurse(item.id, curseId)
+          }}
+        />
+      ) : null}
+      {item && isEssenceCraftedGearPlannerItem(item) && essenceCrafting[item.id] ? (
+        <EssenceCraftingSelector
+          item={item}
+          data={essenceData}
+          configuration={essenceCrafting[item.id]}
+          curse={slottedCurses[item.id] ?? null}
+          onMinimumLevelChange={(minimumLevel) => {
+            setEssenceConfiguration(item.id, { kind: 'minimum-level', minimumLevel })
+          }}
+          onMaterialChange={(material) => {
+            setEssenceConfiguration(item.id, { kind: 'material', material })
+          }}
+          onAffixChange={(position, enhancementId) => {
+            setEssenceConfiguration(item.id, { kind: 'affix', position, enhancementId })
           }}
         />
       ) : null}
@@ -273,8 +306,14 @@ const ItemBrowser = ({
   const [setName, setSetName] = useState<string | null>(null)
   const [visibleCount, setVisibleCount] = useState(pageSize)
   const candidates = useMemo(
-    () => (slot ? prepareGearPlannerCandidates(data.itemsBySlot[slot]) : []),
-    [data.itemsBySlot, slot]
+    () =>
+      slot
+        ? prepareGearPlannerCandidates([
+            ...getEssenceCraftedGearPlannerItems(slot, minimumLevel),
+            ...data.itemsBySlot[slot]
+          ])
+        : [],
+    [data.itemsBySlot, minimumLevel, slot]
   )
   const types = useMemo(
     () => [...new Set(candidates.map((candidate) => candidate.type))].sort((a, b) => a.localeCompare(b)),
@@ -443,11 +482,20 @@ const GearPlannerPage = () => {
   const [feedback, setFeedback] = useState<{ kind: 'success' | 'error'; message: string } | null>(null)
   const importInputRef = useRef<HTMLInputElement>(null)
   const activeSetup = activeGearPlannerSetup(plannerState)
-  const { equipment, slottedAugments, slottedCurses, slottedFiligrees, unlockedFiligreeSlots } = activeSetup
+  const { equipment, slottedAugments, slottedCurses, slottedFiligrees, unlockedFiligreeSlots, essenceCrafting } =
+    activeSetup
   const filigreeDefinitions = dataState.status === 'ready' ? dataState.data.filigreeSetDefinitionByName : undefined
   const baseEffects = useMemo(
-    () => collectEquippedEffects(equipment, slottedAugments, slottedFiligrees, slottedCurses),
-    [equipment, slottedAugments, slottedCurses, slottedFiligrees]
+    () =>
+      collectEquippedEffects(
+        equipment,
+        slottedAugments,
+        slottedFiligrees,
+        slottedCurses,
+        dataState.status === 'ready' ? dataState.essenceData : undefined,
+        essenceCrafting
+      ),
+    [dataState, equipment, essenceCrafting, slottedAugments, slottedCurses, slottedFiligrees]
   )
   const setState = useMemo(
     () => resolveGearPlannerSetState(equipment, slottedAugments, undefined, slottedFiligrees, filigreeDefinitions),
@@ -485,16 +533,16 @@ const GearPlannerPage = () => {
 
   useEffect(() => {
     let active = true
-    loadGearPlannerData()
-      .then((data) => {
+    Promise.all([loadGearPlannerData(), loadEssenceCraftingData()])
+      .then(([data, essenceData]) => {
         if (!active) return
-        const restored = loadGearPlannerState(data)
+        const restored = loadGearPlannerState(data, essenceData)
         if (import.meta.env.DEV && restored.issues.length > 0) {
           console.warn('Gear Planner persistence restore issues:', restored.issues)
         }
         setPlannerState(restored.state)
         setPersistenceEnabled(restored.source !== 'invalid')
-        setDataState({ status: 'ready', data })
+        setDataState({ status: 'ready', data, essenceData })
       })
       .catch((cause: unknown) => {
         if (active) setDataState({ status: 'error', cause })
@@ -519,7 +567,8 @@ const GearPlannerPage = () => {
   }
 
   const equip = (slot: GearPlannerCharacterSlot, item: GearPlannerItem | null) => {
-    setPlannerState((current) => equipGearPlannerSetupItem(current, slot, item))
+    if (dataState.status !== 'ready') return
+    setPlannerState((current) => equipGearPlannerSetupItem(current, slot, item, dataState.essenceData))
     setPersistenceEnabled(true)
   }
 
@@ -535,7 +584,7 @@ const GearPlannerPage = () => {
   const importState = async (file: File) => {
     if (dataState.status !== 'ready') return
     try {
-      const restored = importGearPlannerState(await readTextFile(file), dataState.data)
+      const restored = importGearPlannerState(await readTextFile(file), dataState.data, dataState.essenceData)
       setPlannerState(restored.state)
       setPersistenceEnabled(true)
       logRestoreIssues(restored.issues)
@@ -577,7 +626,8 @@ const GearPlannerPage = () => {
           <Alert
             color='red'
             title={
-              dataState.cause instanceof InvalidGearPlannerDataError
+              dataState.cause instanceof InvalidGearPlannerDataError ||
+              dataState.cause instanceof InvalidEssenceCraftingDataError
                 ? 'Gear Planner data is invalid'
                 : 'Gear Planner data is unavailable'
             }
@@ -766,13 +816,18 @@ const GearPlannerPage = () => {
                     slot={slot}
                     item={equipment[slot]}
                     data={dataState.data}
-                    effects={effects.filter((effect) => effect.slot === slot && effect.category === 'equipped-item')}
+                    essenceData={dataState.essenceData}
+                    effects={effects.filter(
+                      (effect) =>
+                        effect.slot === slot && (effect.category === 'equipped-item' || effect.category === 'essence')
+                    )}
                     conflictSources={conflictSources}
                     conflicts={conflicts}
                     slottedAugments={slottedAugments}
                     slottedCurses={slottedCurses}
                     slottedFiligrees={slottedFiligrees}
                     unlockedFiligreeSlots={unlockedFiligreeSlots}
+                    essenceCrafting={essenceCrafting}
                     openBrowser={setBrowsingSlot}
                     clearSlot={(currentSlot) => {
                       equip(currentSlot, null)
@@ -790,6 +845,11 @@ const GearPlannerPage = () => {
                     }}
                     setUnlockedFiligreeSlots={(itemId, count) => {
                       applySetupState((current) => setGearPlannerSetupUnlockedFiligreeSlots(current, itemId, count))
+                    }}
+                    setEssenceConfiguration={(itemId, update) => {
+                      applySetupState((current) =>
+                        setGearPlannerSetupEssenceCraftingConfiguration(current, itemId, update, dataState.essenceData)
+                      )
                     }}
                   />
                 ))}

@@ -1,9 +1,17 @@
+import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import {
   collectSelectedGearPlannerAugments,
   gearPlannerAugmentIdentity,
   isCompatibleGearPlannerAugment
 } from './augments.ts'
 import { canApplyGearPlannerCurse, collectSelectedGearPlannerCurses, gearPlannerCurseIdentity } from './curses.ts'
+import {
+  type GearPlannerEssenceCraftingConfiguration,
+  isEssenceCraftedGearPlannerItem,
+  isGearPlannerEssenceAffixValid,
+  isGearPlannerEssenceCraftingMaterial,
+  resolveEssenceCraftedGearPlannerItem
+} from './essenceCrafting.ts'
 import { collectSelectedGearPlannerFiligrees, getGearPlannerMaxFiligreeSlots } from './filigrees.ts'
 import { gearPlannerCharacterSlots, type GearPlannerData } from './gearPlanner.types.ts'
 import {
@@ -54,6 +62,15 @@ export interface PersistedGearPlannerUnlockedFiligreeSlotsV1 {
   count: number
 }
 
+export interface PersistedGearPlannerEssenceCraftingV1 {
+  itemId: string
+  minimumLevel: number
+  material: string
+  prefixId: string | null
+  suffixId: string | null
+  extraId: string | null
+}
+
 export interface PersistedGearPlannerSetupV1 {
   id: string
   name: string
@@ -64,6 +81,7 @@ export interface PersistedGearPlannerSetupV1 {
   selectedCurses?: readonly PersistedGearPlannerCurseV1[]
   selectedFiligrees?: readonly PersistedGearPlannerFiligreeV1[]
   unlockedFiligreeSlots?: readonly PersistedGearPlannerUnlockedFiligreeSlotsV1[]
+  selectedEssenceCrafting?: readonly PersistedGearPlannerEssenceCraftingV1[]
 }
 
 export interface PersistedGearPlannerStateV1 {
@@ -86,6 +104,10 @@ export interface GearPlannerRestoreIssue {
     | 'missing-filigree'
     | 'orphaned-filigree'
     | 'invalid-filigree-slot'
+    | 'missing-essence-data'
+    | 'orphaned-essence'
+    | 'ineligible-essence'
+    | 'missing-essence-enhancement'
   message: string
 }
 
@@ -223,6 +245,40 @@ const parseUnlockedFiligreeSlots = (
   })
 }
 
+const nullableSelectionId = (value: unknown, path: string): string | null => {
+  if (value === null) return null
+  if (typeof value !== 'string' || !value.trim()) {
+    throw new InvalidGearPlannerStateError(`${path} must be an enhancement ID or null`)
+  }
+  return value
+}
+
+const parseSelectedEssenceCrafting = (
+  value: unknown,
+  path: string
+): readonly PersistedGearPlannerEssenceCraftingV1[] => {
+  if (value === undefined) return []
+  if (!Array.isArray(value)) throw new InvalidGearPlannerStateError(`${path} must be an array`)
+  const seen = new Set<string>()
+  return value.map((entry, index) => {
+    const entryPath = `${path}[${String(index)}]`
+    const record = requiredRecord(entry, entryPath)
+    const itemId = requiredString(record.itemId, `${entryPath}.itemId`)
+    if (seen.has(itemId)) throw new InvalidGearPlannerStateError(`${path} contains duplicate item IDs`)
+    seen.add(itemId)
+    if (typeof record.material !== 'string')
+      throw new InvalidGearPlannerStateError(`${entryPath}.material must be a string`)
+    return {
+      itemId,
+      minimumLevel: requiredLevel(record.minimumLevel, `${entryPath}.minimumLevel`),
+      material: record.material,
+      prefixId: nullableSelectionId(record.prefixId, `${entryPath}.prefixId`),
+      suffixId: nullableSelectionId(record.suffixId, `${entryPath}.suffixId`),
+      extraId: nullableSelectionId(record.extraId, `${entryPath}.extraId`)
+    }
+  })
+}
+
 const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 => {
   const path = `setups[${String(index)}]`
   const record = requiredRecord(value, path)
@@ -251,6 +307,14 @@ const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 
           unlockedFiligreeSlots: parseUnlockedFiligreeSlots(
             record.unlockedFiligreeSlots,
             `${path}.unlockedFiligreeSlots`
+          )
+        }),
+    ...(record.selectedEssenceCrafting === undefined
+      ? {}
+      : {
+          selectedEssenceCrafting: parseSelectedEssenceCrafting(
+            record.selectedEssenceCrafting,
+            `${path}.selectedEssenceCrafting`
           )
         })
   }
@@ -316,6 +380,24 @@ export const serializeGearPlannerState = (state: GearPlannerSetupsState): Persis
         itemId: item.id,
         count: Math.max(0, Math.min(getGearPlannerMaxFiligreeSlots(item), setup.unlockedFiligreeSlots[item.id] ?? 0))
       }))
+      .toSorted((left, right) => left.itemId.localeCompare(right.itemId)),
+    selectedEssenceCrafting: Object.values(setup.equipment)
+      .filter(isEssenceCraftedGearPlannerItem)
+      .flatMap((item) => {
+        const configuration = setup.essenceCrafting[item.id]
+        return configuration
+          ? [
+              {
+                itemId: item.id,
+                minimumLevel: configuration.minimumLevel,
+                material: configuration.material,
+                prefixId: configuration.prefixId,
+                suffixId: configuration.suffixId,
+                extraId: configuration.extraId
+              }
+            ]
+          : []
+      })
       .toSorted((left, right) => left.itemId.localeCompare(right.itemId))
   }))
 })
@@ -325,7 +407,8 @@ const findEquippedItem = (setup: GearPlannerSetup, itemId: string) =>
 
 export const restorePersistedGearPlannerState = (
   persisted: PersistedGearPlannerStateV1,
-  data: GearPlannerData
+  data: GearPlannerData,
+  essenceData?: EssenceCraftingData
 ): RestoredGearPlannerState => {
   const itemsById = new Map(data.items.map((item) => [item.id, item]))
   const augmentsById = new Map(data.augments.map((augment) => [gearPlannerAugmentIdentity(augment), augment]))
@@ -337,7 +420,7 @@ export const restorePersistedGearPlannerState = (
     for (const slot of gearPlannerCharacterSlots) {
       const itemId = savedSetup.equipment[slot]
       if (itemId === null) continue
-      const item = itemsById.get(itemId)
+      const item = itemsById.get(itemId) ?? resolveEssenceCraftedGearPlannerItem(itemId, slot)
       if (!item || item.slot !== slot) {
         issues.push({ kind: 'missing-item', message: `${savedSetup.name}: ${slot} item is no longer available` })
         continue
@@ -388,6 +471,81 @@ export const restorePersistedGearPlannerState = (
       }
       const selection = setGearPlannerSlottedCurse(setup, item.id, savedCurse.curseId, data.curses)
       setup = selection === setup ? setup : { ...setup, ...selection }
+    }
+    for (const savedEssence of savedSetup.selectedEssenceCrafting ?? []) {
+      const item = findEquippedItem(setup, savedEssence.itemId)
+      if (!item) {
+        issues.push({
+          kind: 'orphaned-essence',
+          message: `${savedSetup.name}: Essence Crafted host item is not equipped`
+        })
+        continue
+      }
+      if (!isEssenceCraftedGearPlannerItem(item)) {
+        issues.push({ kind: 'ineligible-essence', message: `${savedSetup.name}: item is not Essence Crafted` })
+        continue
+      }
+      if (!essenceData) {
+        issues.push({
+          kind: 'missing-essence-data',
+          message: `${savedSetup.name}: Essence Crafting data is unavailable`
+        })
+        continue
+      }
+      if (
+        savedEssence.minimumLevel < essenceData.rules.supportedItemLevels.minimum ||
+        savedEssence.minimumLevel > essenceData.rules.supportedItemLevels.maximum
+      ) {
+        issues.push({
+          kind: 'ineligible-essence',
+          message: `${savedSetup.name}: Essence Crafted minimum level is invalid`
+        })
+        continue
+      }
+      const configuration: GearPlannerEssenceCraftingConfiguration = {
+        minimumLevel: savedEssence.minimumLevel,
+        material: isGearPlannerEssenceCraftingMaterial(savedEssence.material) ? savedEssence.material : '',
+        prefixId: null,
+        suffixId: null,
+        extraId: null
+      }
+      if (!isGearPlannerEssenceCraftingMaterial(savedEssence.material)) {
+        issues.push({ kind: 'ineligible-essence', message: `${savedSetup.name}: Essence Crafted material is invalid` })
+      }
+      for (const [position, enhancementId] of [
+        ['prefix', savedEssence.prefixId],
+        ['suffix', savedEssence.suffixId],
+        ['extra', savedEssence.extraId]
+      ] as const) {
+        if (enhancementId === null) continue
+        if (!essenceData.indexes.enhancementById.has(enhancementId)) {
+          issues.push({
+            kind: 'missing-essence-enhancement',
+            message: `${savedSetup.name}: Essence enhancement is unavailable`
+          })
+          continue
+        }
+        if (
+          !isGearPlannerEssenceAffixValid(
+            essenceData,
+            item,
+            configuration,
+            setup.slottedCurses[item.id],
+            position,
+            enhancementId
+          )
+        ) {
+          issues.push({
+            kind: 'ineligible-essence',
+            message: `${savedSetup.name}: Essence enhancement is no longer eligible`
+          })
+          continue
+        }
+        if (position === 'prefix') configuration.prefixId = enhancementId
+        else if (position === 'suffix') configuration.suffixId = enhancementId
+        else configuration.extraId = enhancementId
+      }
+      setup = { ...setup, essenceCrafting: { ...setup.essenceCrafting, [item.id]: configuration } }
     }
     for (const savedUnlockedSlots of savedSetup.unlockedFiligreeSlots ?? []) {
       const item = findEquippedItem(setup, savedUnlockedSlots.itemId)
@@ -442,13 +600,25 @@ const browserStorage = (): GearPlannerStorage | undefined => {
 
 export const loadGearPlannerState = (
   data: GearPlannerData,
-  storage: GearPlannerStorage | undefined = browserStorage()
+  essenceDataOrStorage?: EssenceCraftingData | GearPlannerStorage,
+  suppliedStorage?: GearPlannerStorage
 ): LoadedGearPlannerState => {
+  const essenceData =
+    essenceDataOrStorage && 'rules' in essenceDataOrStorage && 'indexes' in essenceDataOrStorage
+      ? essenceDataOrStorage
+      : undefined
+  const storage =
+    essenceData === undefined
+      ? ((essenceDataOrStorage as GearPlannerStorage | undefined) ?? browserStorage())
+      : (suppliedStorage ?? browserStorage())
   if (!storage) return { source: 'empty', state: createDefaultGearPlannerState(), issues: [] }
   try {
     const raw = storage.getItem(GEAR_PLANNER_STORAGE_KEY)
     if (raw === null) return { source: 'empty', state: createDefaultGearPlannerState(), issues: [] }
-    return { source: 'v2', ...restorePersistedGearPlannerState(parsePersistedGearPlannerState(JSON.parse(raw)), data) }
+    return {
+      source: 'v2',
+      ...restorePersistedGearPlannerState(parsePersistedGearPlannerState(JSON.parse(raw)), data, essenceData)
+    }
   } catch (error) {
     return {
       source: 'invalid',
@@ -481,5 +651,9 @@ export const createGearPlannerExport = (state: GearPlannerSetupsState): Persiste
   exportedAt: new Date().toISOString()
 })
 
-export const importGearPlannerState = (text: string, data: GearPlannerData): RestoredGearPlannerState =>
-  restorePersistedGearPlannerState(parsePersistedGearPlannerState(JSON.parse(text)), data)
+export const importGearPlannerState = (
+  text: string,
+  data: GearPlannerData,
+  essenceData?: EssenceCraftingData
+): RestoredGearPlannerState =>
+  restorePersistedGearPlannerState(parsePersistedGearPlannerState(JSON.parse(text)), data, essenceData)

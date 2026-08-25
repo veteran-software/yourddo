@@ -1,5 +1,7 @@
+import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { collectSelectedGearPlannerAugments } from './augments.ts'
 import { collectSelectedGearPlannerCurses } from './curses.ts'
+import { type GearPlannerEssenceCraftingConfigurations, resolveGearPlannerEssenceAffixes } from './essenceCrafting.ts'
 import { collectSelectedGearPlannerFiligrees } from './filigrees.ts'
 import type { GearPlannerEffect, GearPlannerItem } from './gearPlanner.types.ts'
 import type {
@@ -9,7 +11,7 @@ import type {
   GearPlannerSlottedFiligrees
 } from './planner.ts'
 
-export type GearPlannerEffectSourceCategory = 'equipped-item' | 'augment' | 'curse' | 'filigree' | 'set'
+export type GearPlannerEffectSourceCategory = 'equipped-item' | 'augment' | 'curse' | 'essence' | 'filigree' | 'set'
 
 export interface GearPlannerEffectSource {
   id: string
@@ -23,6 +25,9 @@ export interface GearPlannerEffectSource {
   augmentSlotName?: string
   curseId?: string
   curseName?: string
+  essenceEnhancementId?: string
+  essenceEnhancementName?: string
+  essenceAffixPosition?: 'prefix' | 'suffix' | 'extra'
   filigreeName?: string
   filigreeSlotIndex?: number
   setName?: string
@@ -108,7 +113,9 @@ export const collectEquippedEffects = (
   equipment: GearPlannerEquipment,
   slottedAugments: GearPlannerSlottedAugments = {},
   slottedFiligrees: GearPlannerSlottedFiligrees = {},
-  slottedCurses: GearPlannerSlottedCurses = {}
+  slottedCurses: GearPlannerSlottedCurses = {},
+  essenceData?: EssenceCraftingData,
+  essenceCrafting: GearPlannerEssenceCraftingConfigurations = {}
 ): readonly GearPlannerEffectSource[] => [
   ...equippedItems(equipment).flatMap((item) =>
     (item.source.enchantments ?? []).flatMap((effect, index) =>
@@ -161,6 +168,29 @@ export const collectEquippedEffects = (
       comparisonValue: parseEffectModifier(effect.modifier)
     }))
   ),
+  ...(essenceData
+    ? equippedItems(equipment).flatMap((item) => {
+        const configuration = essenceCrafting[item.id]
+        if (!configuration) return []
+        return resolveGearPlannerEssenceAffixes(essenceData, item, configuration, slottedCurses[item.id]).flatMap(
+          ({ position, enhancement, effects: essenceEffects }) =>
+            essenceEffects.map((effect, effectIndex) => ({
+              id: `${item.id}:essence:${position}:${encodeURIComponent(enhancement.id)}:${String(effectIndex)}`,
+              effect,
+              itemId: item.id,
+              itemName: item.source.name,
+              slot: item.slot,
+              category: 'essence' as const,
+              essenceEnhancementId: enhancement.id,
+              essenceEnhancementName: enhancement.displayName,
+              essenceAffixPosition: position,
+              normalizedName: normalizeEffectName(effect.name),
+              normalizedBonusType: normalizeBonusType(effect.bonus),
+              comparisonValue: parseEffectModifier(effect.modifier)
+            }))
+        )
+      })
+    : []),
   ...collectSelectedGearPlannerFiligrees(equipment, slottedFiligrees).flatMap(({ item, slotIndex, filigree }) =>
     (filigree.source.enchantments ?? []).map((effect, effectIndex) => ({
       id: `${item.id}:filigree:${String(slotIndex)}:${String(effectIndex)}`,

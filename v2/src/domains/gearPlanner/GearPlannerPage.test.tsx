@@ -3,6 +3,8 @@
 import { MantineProvider } from '@mantine/core'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
+import { createEssenceCraftingTestPayload } from '../essenceCrafting/test-fixture.ts'
 import { loadGearPlannerData } from './data.ts'
 import {
   allGearPlannerSlots,
@@ -18,9 +20,19 @@ import {
 import GearPlannerPage from './GearPlannerPage.tsx'
 import { GEAR_PLANNER_STORAGE_KEY } from './plannerStorage.ts'
 
+const essenceData = {
+  rules: { supportedItemLevels: { minimum: 1, maximum: 36 } },
+  indexes: {}
+} as EssenceCraftingData
+
 vi.mock('./data.ts', () => ({
   InvalidGearPlannerDataError: class InvalidGearPlannerDataError extends Error {},
   loadGearPlannerData: vi.fn()
+}))
+
+vi.mock('../essenceCrafting/data.ts', () => ({
+  InvalidEssenceCraftingDataError: class InvalidEssenceCraftingDataError extends Error {},
+  loadEssenceCraftingData: vi.fn()
 }))
 
 const data: GearPlannerData = {
@@ -80,8 +92,10 @@ const dataWithItems = (
   normalizedItemCount: items.length
 })
 
-const renderReadyPage = async (plannerData: GearPlannerData) => {
+const renderReadyPage = async (plannerData: GearPlannerData, essence = essenceData) => {
   vi.mocked(loadGearPlannerData).mockResolvedValue(plannerData)
+  const { loadEssenceCraftingData } = await import('../essenceCrafting/data.ts')
+  vi.mocked(loadEssenceCraftingData).mockResolvedValue(essence)
   render(
     <MantineProvider env='test'>
       <GearPlannerPage />
@@ -194,6 +208,25 @@ describe('GearPlannerPage', () => {
     }
   })
 
+  it('equips and configures a synthetic Essence Crafted item with current v2 effect data', async () => {
+    const { validateEssenceCraftingDataset } =
+      await vi.importActual<typeof import('../essenceCrafting/data.ts')>('../essenceCrafting/data.ts')
+    const currentEssenceData = validateEssenceCraftingDataset(createEssenceCraftingTestPayload())
+    await renderReadyPage(dataWithItems([]), currentEssenceData)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Select Main Hand' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Essence Crafted Weapon (Melee)' }))
+    expect(screen.getByTestId('gear-slot-Main Hand').textContent).toContain('Essence Crafted Weapon (Melee)')
+    expect(screen.getByRole('combobox', { name: 'Essence minimum level' })).toBeTruthy()
+    expect(screen.getByRole('combobox', { name: 'Material' })).toBeTruthy()
+    expect(screen.getByRole('combobox', { name: 'Prefix' })).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('combobox', { name: 'Prefix' }))
+    fireEvent.click(await screen.findByRole('option', { name: /Split Prefix Test/ }))
+    fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
+    expect((await screen.findAllByText(/Essence Crafting · prefix: Split Prefix Test/)).length).toBe(2)
+  })
+
   it('equips, replaces, and clears an item without altering another slot', async () => {
     await renderReadyPage(
       dataWithItems([
@@ -230,8 +263,8 @@ describe('GearPlannerPage', () => {
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
-    expect((await screen.findAllByRole('button', { name: /Equip Result/ })).length).toBe(50)
-    fireEvent.click(screen.getByRole('button', { name: 'Show 1 more' }))
+    expect((await screen.findAllByRole('button', { name: /Equip Result/ })).length).toBe(49)
+    fireEvent.click(screen.getByRole('button', { name: 'Show 2 more' }))
     expect((await screen.findAllByRole('button', { name: /Equip Result/ })).length).toBe(51)
   })
 

@@ -1,5 +1,12 @@
+import type { EssenceAffixPosition, EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { isCompatibleGearPlannerAugment } from './augments.ts'
 import { canApplyGearPlannerCurse, gearPlannerCurseIdentity } from './curses.ts'
+import {
+  type GearPlannerEssenceCraftingConfigurations,
+  isEssenceCraftedGearPlannerItem,
+  isGearPlannerEssenceAffixValid,
+  isGearPlannerEssenceCraftingMaterial
+} from './essenceCrafting.ts'
 import {
   getGearPlannerMaxFiligreeSlots,
   isGearPlannerMinorArtifact,
@@ -23,6 +30,7 @@ export interface GearPlannerSelectionState {
   slottedCurses: GearPlannerSlottedCurses
   slottedFiligrees: GearPlannerSlottedFiligrees
   unlockedFiligreeSlots: GearPlannerUnlockedFiligreeSlots
+  essenceCrafting: GearPlannerEssenceCraftingConfigurations
 }
 
 export interface GearPlannerFilters {
@@ -55,7 +63,8 @@ export const createEmptyGearPlannerSelectionState = (): GearPlannerSelectionStat
   slottedAugments: {},
   slottedCurses: {},
   slottedFiligrees: {},
-  unlockedFiligreeSlots: {}
+  unlockedFiligreeSlots: {},
+  essenceCrafting: {}
 })
 
 export const equipGearPlannerItem = (
@@ -115,7 +124,61 @@ export const equipGearPlannerItemInSelection = (
     previousItem && previousItem.id !== item?.id
       ? withoutItemRecord(state.unlockedFiligreeSlots, previousItem.id)
       : state.unlockedFiligreeSlots
-  return { equipment, slottedAugments, slottedCurses, slottedFiligrees, unlockedFiligreeSlots }
+  const essenceCrafting =
+    previousItem && previousItem.id !== item?.id
+      ? withoutItemRecord(state.essenceCrafting, previousItem.id)
+      : state.essenceCrafting
+  return { equipment, slottedAugments, slottedCurses, slottedFiligrees, unlockedFiligreeSlots, essenceCrafting }
+}
+
+export type GearPlannerEssenceCraftingUpdate =
+  | { kind: 'minimum-level'; minimumLevel: number }
+  | { kind: 'material'; material: string }
+  | { kind: 'affix'; position: EssenceAffixPosition; enhancementId: string | null }
+
+export const setGearPlannerEssenceCraftingConfiguration = (
+  state: GearPlannerSelectionState,
+  itemId: string,
+  update: GearPlannerEssenceCraftingUpdate,
+  data: EssenceCraftingData
+): GearPlannerSelectionState => {
+  const item = equippedItemById(state.equipment, itemId)
+  const configuration = state.essenceCrafting[itemId]
+  if (!item || !configuration) return state
+
+  if (update.kind === 'minimum-level') {
+    if (
+      !Number.isInteger(update.minimumLevel) ||
+      update.minimumLevel < data.rules.supportedItemLevels.minimum ||
+      update.minimumLevel > data.rules.supportedItemLevels.maximum ||
+      update.minimumLevel === configuration.minimumLevel
+    ) {
+      return state
+    }
+    return {
+      ...state,
+      essenceCrafting: { ...state.essenceCrafting, [itemId]: { ...configuration, minimumLevel: update.minimumLevel } }
+    }
+  }
+
+  if (update.kind === 'material') {
+    if (!isGearPlannerEssenceCraftingMaterial(update.material) || update.material === configuration.material)
+      return state
+    return {
+      ...state,
+      essenceCrafting: { ...state.essenceCrafting, [itemId]: { ...configuration, material: update.material } }
+    }
+  }
+
+  const curse = state.slottedCurses[itemId]
+  if (!isGearPlannerEssenceAffixValid(data, item, configuration, curse, update.position, update.enhancementId))
+    return state
+  const field = update.position === 'prefix' ? 'prefixId' : update.position === 'suffix' ? 'suffixId' : 'extraId'
+  if (configuration[field] === update.enhancementId) return state
+  return {
+    ...state,
+    essenceCrafting: { ...state.essenceCrafting, [itemId]: { ...configuration, [field]: update.enhancementId } }
+  }
 }
 
 export const setGearPlannerSlottedAugment = (
@@ -265,6 +328,9 @@ export const filterGearPlannerCandidates = (
       )
     })
     .toSorted((a, b) => {
+      const syntheticDifference =
+        Number(isEssenceCraftedGearPlannerItem(b.item)) - Number(isEssenceCraftedGearPlannerItem(a.item))
+      if (syntheticDifference !== 0) return syntheticDifference
       if (a.item.minimumLevel !== b.item.minimumLevel) return b.item.minimumLevel - a.item.minimumLevel
       const byName = a.item.source.name.localeCompare(b.item.source.name)
       return byName || a.item.id.localeCompare(b.item.id)

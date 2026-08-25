@@ -1,13 +1,17 @@
+import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
+import { createGearPlannerEssenceCraftingConfiguration, isEssenceCraftedGearPlannerItem } from './essenceCrafting.ts'
 import type { GearPlannerAugment, GearPlannerCurse, GearPlannerFiligree, GearPlannerItem } from './gearPlanner.types.ts'
 import type { GearPlannerCharacterSlot } from './planner.ts'
 import {
   createEmptyGearPlannerSelectionState,
   equipGearPlannerItemInSelection,
-  setGearPlannerSlottedFiligree,
-  setGearPlannerSlottedCurse,
-  setGearPlannerUnlockedFiligreeSlots,
+  type GearPlannerEssenceCraftingUpdate,
   type GearPlannerSelectionState,
-  setGearPlannerSlottedAugment
+  setGearPlannerEssenceCraftingConfiguration,
+  setGearPlannerSlottedAugment,
+  setGearPlannerSlottedCurse,
+  setGearPlannerSlottedFiligree,
+  setGearPlannerUnlockedFiligreeSlots
 } from './planner.ts'
 
 export const gearPlannerMinimumLevel = 1
@@ -116,11 +120,22 @@ export const updateGearPlannerSetupLevels = (
 export const equipGearPlannerSetupItem = (
   state: GearPlannerSetupsState,
   slot: GearPlannerCharacterSlot,
-  item: GearPlannerItem | null
+  item: GearPlannerItem | null,
+  essenceData?: EssenceCraftingData
 ): GearPlannerSetupsState =>
   replaceSetup(state, state.activeSetupId, (setup) => {
     const selection = equipGearPlannerItemInSelection(setup, slot, item)
-    return selection === setup ? setup : { ...setup, ...selection }
+    if (selection === setup) return setup
+    const next = { ...setup, ...selection }
+    return item && essenceData && isEssenceCraftedGearPlannerItem(item) && setup.equipment[slot]?.id !== item.id
+      ? {
+          ...next,
+          essenceCrafting: {
+            ...next.essenceCrafting,
+            [item.id]: createGearPlannerEssenceCraftingConfiguration(essenceData, setup.minimumLevel)
+          }
+        }
+      : next
   })
 
 export const setGearPlannerSetupAugment = (
@@ -163,5 +178,16 @@ export const setGearPlannerSetupUnlockedFiligreeSlots = (
 ): GearPlannerSetupsState =>
   replaceSetup(state, state.activeSetupId, (setup) => {
     const selection = setGearPlannerUnlockedFiligreeSlots(setup, itemId, count)
+    return selection === setup ? setup : { ...setup, ...selection }
+  })
+
+export const setGearPlannerSetupEssenceCraftingConfiguration = (
+  state: GearPlannerSetupsState,
+  itemId: string,
+  update: GearPlannerEssenceCraftingUpdate,
+  data: EssenceCraftingData
+): GearPlannerSetupsState =>
+  replaceSetup(state, state.activeSetupId, (setup) => {
+    const selection = setGearPlannerEssenceCraftingConfiguration(setup, itemId, update, data)
     return selection === setup ? setup : { ...setup, ...selection }
   })

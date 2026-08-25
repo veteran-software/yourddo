@@ -8,10 +8,48 @@ const isApprovedAffixPosition = (position: string): position is EssenceAffixPosi
 
 const getEquipmentSlot = (equipmentSlotId: string) => EQUIPMENT_SLOTS.find(({ id }) => id === equipmentSlotId)
 
-const isSupportedItemLevel = (data: EssenceCraftingData, minimumLevel: number): boolean =>
+export const isSupportedEssenceItemLevel = (data: EssenceCraftingData, minimumLevel: number): boolean =>
   Number.isInteger(minimumLevel) &&
   minimumLevel >= data.rules.supportedItemLevels.minimum &&
   minimumLevel <= data.rules.supportedItemLevels.maximum
+
+const compareEnhancementsForDisplay = (left: EssenceEnhancement, right: EssenceEnhancement): number =>
+  left.displayName.localeCompare(right.displayName, undefined, { sensitivity: 'base' }) ||
+  left.id.localeCompare(right.id)
+
+/** Returns placement- and level-eligible choices for normalized item categories. */
+export const getAvailableEnhancementChoicesForItemCategories = (
+  data: EssenceCraftingData,
+  itemCategoryIds: readonly string[],
+  position: string,
+  minimumLevel: number
+): readonly EssenceEnhancement[] => {
+  if (!isSupportedEssenceItemLevel(data, minimumLevel) || !isApprovedAffixPosition(position)) return []
+  const enhancementsByCategory = data.indexes.enhancementsByPlacement.get(position)
+  if (!enhancementsByCategory) return []
+
+  const matches = new Map<string, EssenceEnhancement>()
+  for (const itemCategoryId of itemCategoryIds) {
+    for (const enhancement of enhancementsByCategory.get(itemCategoryId) ?? []) {
+      if (minimumLevel >= enhancement.minimumItemLevel) matches.set(enhancement.id, enhancement)
+    }
+  }
+  return [...matches.values()].sort(compareEnhancementsForDisplay)
+}
+
+/** Checks normalized category placement and minimum-level eligibility together. */
+export const isEnhancementEligibleForItemCategories = (
+  data: EssenceCraftingData,
+  enhancementId: string,
+  itemCategoryIds: readonly string[],
+  position: string,
+  minimumLevel: number
+): boolean =>
+  isSupportedEssenceItemLevel(data, minimumLevel) &&
+  isApprovedAffixPosition(position) &&
+  getAvailableEnhancementChoicesForItemCategories(data, itemCategoryIds, position, minimumLevel).some(
+    ({ id }) => id === enhancementId
+  )
 
 /**
  * Returns the normalized-placement matches in generated-data source order.
@@ -59,7 +97,7 @@ export const isEnhancementAvailableAtMinimumLevel = (
   const enhancement = data.indexes.enhancementById.get(enhancementId)
   return (
     enhancement !== undefined &&
-    isSupportedItemLevel(data, minimumLevel) &&
+    isSupportedEssenceItemLevel(data, minimumLevel) &&
     minimumLevel >= enhancement.minimumItemLevel
   )
 }
@@ -76,10 +114,6 @@ export const isSelectedEnhancementStillValid = (
   (isEnhancementPlacementEligible(data, selectedEnhancementId, equipmentSlotId, position) &&
     isEnhancementAvailableAtMinimumLevel(data, selectedEnhancementId, minimumLevel))
 
-const compareEnhancementsForDisplay = (left: EssenceEnhancement, right: EssenceEnhancement): number =>
-  left.displayName.localeCompare(right.displayName, undefined, { sensitivity: 'base' }) ||
-  left.id.localeCompare(right.id)
-
 /** Returns placement- and level-eligible choices in stable alphabetical display order. */
 export const getAvailableEnhancementChoices = (
   data: EssenceCraftingData,
@@ -87,10 +121,10 @@ export const getAvailableEnhancementChoices = (
   position: string,
   minimumLevel: number
 ): readonly EssenceEnhancement[] => {
-  if (!isSupportedItemLevel(data, minimumLevel)) return []
-  return getPlacementEligibleEnhancements(data, equipmentSlotId, position)
-    .filter((enhancement) => minimumLevel >= enhancement.minimumItemLevel)
-    .sort(compareEnhancementsForDisplay)
+  const equipmentSlot = getEquipmentSlot(equipmentSlotId)
+  return equipmentSlot
+    ? getAvailableEnhancementChoicesForItemCategories(data, equipmentSlot.itemCategoryIds, position, minimumLevel)
+    : []
 }
 
 /**

@@ -1,8 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
+import { validateEssenceCraftingDataset } from '../essenceCrafting/data.ts'
+import { createEssenceCraftingTestPayload } from '../essenceCrafting/test-fixture.ts'
 import { gearPlannerAugmentIdentity, isCompatibleGearPlannerAugment } from './augments.ts'
 import { gearPlannerCurseDefinitions, gearPlannerCurseIdentity } from './curses.ts'
 import { loadGearPlannerData } from './data.ts'
 import { collectEquippedEffects } from './effects.ts'
+import { getEssenceCraftedGearPlannerItems } from './essenceCrafting.ts'
 import { normalizeGearPlannerFiligreeName } from './filigrees.ts'
 import {
   allGearPlannerSlots,
@@ -35,6 +38,7 @@ import {
   type GearPlannerSetupsState,
   setGearPlannerSetupAugment,
   setGearPlannerSetupCurse,
+  setGearPlannerSetupEssenceCraftingConfiguration,
   setGearPlannerSetupFiligree,
   setGearPlannerSetupUnlockedFiligreeSlots
 } from './setups.ts'
@@ -178,6 +182,176 @@ describe('Gear Planner setup serialization', () => {
     expect(incompatible.state.setups[0].equipment['First Finger']).toBe(incompatibleItems[0])
     expect(incompatible.state.setups[0].slottedAugments).toEqual({})
     expect(incompatible.issues.map(({ kind }) => kind)).toContain('incompatible-augment')
+  })
+
+  it('round-trips synthetic Essence Crafted items and compact setup-owned configuration', () => {
+    const essenceData = validateEssenceCraftingDataset(createEssenceCraftingTestPayload())
+    const crafted = getEssenceCraftedGearPlannerItems(gearPlannerSlots.mainHand, 1)[0]
+    expect(crafted).toBeDefined()
+    if (!crafted) return
+
+    let state = equipGearPlannerSetupItem(
+      createDefaultGearPlannerState(),
+      gearPlannerSlots.mainHand,
+      crafted,
+      essenceData
+    )
+    state = setGearPlannerSetupEssenceCraftingConfiguration(
+      state,
+      crafted.id,
+      { kind: 'minimum-level', minimumLevel: 2 },
+      essenceData
+    )
+    state = setGearPlannerSetupEssenceCraftingConfiguration(
+      state,
+      crafted.id,
+      { kind: 'material', material: 'Mithral' },
+      essenceData
+    )
+    state = setGearPlannerSetupEssenceCraftingConfiguration(
+      state,
+      crafted.id,
+      {
+        kind: 'affix',
+        position: 'prefix',
+        enhancementId: 'enhancement-split-prefix'
+      },
+      essenceData
+    )
+    const payload = serializeGearPlannerState(state)
+    const restored = restorePersistedGearPlannerState(payload, data([]), essenceData)
+    const saved = payload.setups[0].selectedEssenceCrafting
+
+    expect(payload.setups[0].equipment['Main Hand']).toBe(crafted.id)
+    expect(saved).toEqual([
+      {
+        itemId: crafted.id,
+        minimumLevel: 2,
+        material: 'Mithral',
+        prefixId: 'enhancement-split-prefix',
+        suffixId: null,
+        extraId: null
+      }
+    ])
+    expect(JSON.stringify(payload)).not.toContain('sourceFile')
+    expect(restored.issues).toEqual([])
+    expect(restored.state.setups[0].equipment['Main Hand']?.id).toBe(crafted.id)
+    expect(restored.state.setups[0].essenceCrafting[crafted.id]).toEqual({
+      minimumLevel: 2,
+      material: 'Mithral',
+      prefixId: 'enhancement-split-prefix',
+      suffixId: null,
+      extraId: null
+    })
+
+    const previousV1 = structuredClone(payload)
+    delete previousV1.setups[0].selectedEssenceCrafting
+    const restoredPreviousV1 = restorePersistedGearPlannerState(previousV1, data([]), essenceData)
+    expect(restoredPreviousV1.issues).toEqual([])
+    expect(restoredPreviousV1.state.setups[0].equipment['Main Hand']?.id).toBe(crafted.id)
+    expect(restoredPreviousV1.state.setups[0].essenceCrafting).toEqual({})
+  })
+
+  it('keeps synthetic hosts and valid affixes when stale Essence selections are skipped on restore', () => {
+    const essenceData = validateEssenceCraftingDataset(createEssenceCraftingTestPayload())
+    const crafted = getEssenceCraftedGearPlannerItems(gearPlannerSlots.firstFinger, 1)[0]
+    expect(crafted).toBeDefined()
+    if (!crafted) return
+
+    let state = equipGearPlannerSetupItem(
+      createDefaultGearPlannerState(),
+      gearPlannerSlots.firstFinger,
+      crafted,
+      essenceData
+    )
+    state = setGearPlannerSetupEssenceCraftingConfiguration(
+      state,
+      crafted.id,
+      { kind: 'minimum-level', minimumLevel: 2 },
+      essenceData
+    )
+    state = setGearPlannerSetupEssenceCraftingConfiguration(
+      state,
+      crafted.id,
+      { kind: 'material', material: 'Mithral' },
+      essenceData
+    )
+    state = setGearPlannerSetupEssenceCraftingConfiguration(
+      state,
+      crafted.id,
+      {
+        kind: 'affix',
+        position: 'suffix',
+        enhancementId: 'enhancement-split-prefix'
+      },
+      essenceData
+    )
+    const payload = serializeGearPlannerState(state)
+    payload.setups[0].selectedEssenceCrafting = [
+      {
+        itemId: crafted.id,
+        minimumLevel: 2,
+        material: 'Mithral',
+        prefixId: 'enhancement-level-two-suffix',
+        suffixId: 'enhancement-split-prefix',
+        extraId: 'enhancement-ring-extra'
+      }
+    ]
+
+    const restored = restorePersistedGearPlannerState(payload, data([]), essenceData)
+    expect(restored.state.setups[0].equipment['First Finger']?.id).toBe(crafted.id)
+    expect(restored.state.setups[0].essenceCrafting[crafted.id]).toEqual({
+      minimumLevel: 2,
+      material: 'Mithral',
+      prefixId: null,
+      suffixId: 'enhancement-split-prefix',
+      extraId: null
+    })
+    expect(restored.issues.map(({ kind }) => kind)).toEqual(['ineligible-essence', 'ineligible-essence'])
+  })
+
+  it('keeps Masterworks-scaled Essence effects through JSON export and import', () => {
+    const essenceData = validateEssenceCraftingDataset(createEssenceCraftingTestPayload())
+    const crafted = getEssenceCraftedGearPlannerItems(gearPlannerSlots.mainHand, 1)[0]
+    const minorMasterworks = curse('Curse of Minor Masterworks')
+    expect(crafted).toBeDefined()
+    if (!crafted) return
+
+    let state = equipGearPlannerSetupItem(
+      createDefaultGearPlannerState(),
+      gearPlannerSlots.mainHand,
+      crafted,
+      essenceData
+    )
+    state = setGearPlannerSetupEssenceCraftingConfiguration(
+      state,
+      crafted.id,
+      {
+        kind: 'affix',
+        position: 'prefix',
+        enhancementId: 'enhancement-split-prefix'
+      },
+      essenceData
+    )
+    state = setGearPlannerSetupCurse(state, crafted.id, minorMasterworks.id, [minorMasterworks])
+    const restored = importGearPlannerState(
+      JSON.stringify(createGearPlannerExport(state)),
+      data([], [], [], [minorMasterworks]),
+      essenceData
+    )
+    const setup = restored.state.setups[0]
+    const essenceEffect = collectEquippedEffects(
+      setup.equipment,
+      setup.slottedAugments,
+      setup.slottedFiligrees,
+      setup.slottedCurses,
+      essenceData,
+      setup.essenceCrafting
+    ).find(({ category, effect }) => category === 'essence' && effect.name === 'Light Spell Power')
+
+    expect(restored.issues).toEqual([])
+    expect(setup.slottedCurses[crafted.id]).toBe(minorMasterworks)
+    expect(essenceEffect?.effect.modifier).toBe('+2')
   })
 })
 
