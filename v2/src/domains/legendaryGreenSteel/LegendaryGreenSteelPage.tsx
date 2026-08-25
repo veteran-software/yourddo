@@ -7,12 +7,16 @@ import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { InvalidLgsDataError, loadLgsData } from './data.ts'
 import type { LgsActiveAugment, LgsBaseItem, LgsData, LgsPlan, LgsTierAugment } from './legendaryGreenSteel.types.ts'
 import {
-  compatibleTierOptions,
+  applyLgsSelection,
   emptyLgsPlan,
   expandLgsRequirements,
   formatLgsEffect,
+  getCompatibleBonusEffects,
+  getCompatibleTier1,
+  getCompatibleTier2,
+  getCompatibleTier3,
   groupLgsBaseItems,
-  reconcileLgsPlan
+  type LgsPlanField
 } from './logic.ts'
 import { decodeLgsPermalink, LGS_PERMALINK_QUERY_PARAMETER, validateLgsBuild } from './sharing.ts'
 import CraftingBreakdownTool from './tools/CraftingBreakdownTool.tsx'
@@ -168,12 +172,13 @@ const LegendaryGreenSteelPage = () => {
   }, [data, permalink])
   const baseItem = data ? selected(data.baseItems, plan.baseItemName) : undefined
   const bonusEffect = data ? selected(data.bonusEffects, plan.bonusEffectName) : undefined
-  const tier1Options = data ? compatibleTierOptions(data.tier1, baseItem?.ingredientType, bonusEffect) : []
-  const tier2Options = data ? compatibleTierOptions(data.tier2, baseItem?.ingredientType, bonusEffect) : []
-  const tier3Options = data ? compatibleTierOptions(data.tier3, baseItem?.ingredientType, bonusEffect) : []
-  const tier1 = selected(tier1Options, plan.tier1Name)
-  const tier2 = selected(tier2Options, plan.tier2Name)
-  const tier3 = selected(tier3Options, plan.tier3Name)
+  const tier1Options = data ? getCompatibleTier1(data, plan) : []
+  const tier2Options = data ? getCompatibleTier2(data, plan) : []
+  const tier3Options = data ? getCompatibleTier3(data, plan) : []
+  const bonusEffectOptions = data ? getCompatibleBonusEffects(data, plan) : []
+  const tier1 = data ? selected(data.tier1, plan.tier1Name) : undefined
+  const tier2 = data ? selected(data.tier2, plan.tier2Name) : undefined
+  const tier3 = data ? selected(data.tier3, plan.tier3Name) : undefined
   const activeAugment = data ? selected(data.activeAugments, plan.activeAugmentName) : undefined
   const hasSelection = Object.values(plan).some((value) => value !== null)
   const ingredientPlan = useMemo(
@@ -221,9 +226,9 @@ const LegendaryGreenSteelPage = () => {
       )
     ]
   }, [activeAugment, baseItem, bonusEffect, data, ingredientPlan, plan, tier1, tier2, tier3])
-  const updatePlan = (change: Partial<LgsPlan>) => {
+  const updatePlan = <Field extends LgsPlanField>(field: Field, value: LgsPlan[Field]) => {
     if (!data) return
-    setPlan((current) => reconcileLgsPlan(data, { ...current, ...change }))
+    setPlan((current) => applyLgsSelection(data, current, field, value))
   }
   const retry = () => {
     setDataState({ status: 'loading' })
@@ -300,7 +305,7 @@ const LegendaryGreenSteelPage = () => {
                   data={baseData(data.baseItems)}
                   value={plan.baseItemName}
                   onChange={(baseItemName) => {
-                    updatePlan({ baseItemName })
+                    updatePlan('baseItemName', baseItemName)
                   }}
                   searchable
                   clearable
@@ -328,7 +333,7 @@ const LegendaryGreenSteelPage = () => {
                       options={tier1Options}
                       tier={tier1}
                       onChange={(tier1Name) => {
-                        updatePlan({ tier1Name })
+                        updatePlan('tier1Name', tier1Name)
                       }}
                     />
                   </Grid.Col>
@@ -340,7 +345,7 @@ const LegendaryGreenSteelPage = () => {
                       options={tier2Options}
                       tier={tier2}
                       onChange={(tier2Name) => {
-                        updatePlan({ tier2Name })
+                        updatePlan('tier2Name', tier2Name)
                       }}
                     />
                   </Grid.Col>
@@ -352,7 +357,7 @@ const LegendaryGreenSteelPage = () => {
                       options={tier3Options}
                       tier={tier3}
                       onChange={(tier3Name) => {
-                        updatePlan({ tier3Name })
+                        updatePlan('tier3Name', tier3Name)
                       }}
                     />
                   </Grid.Col>
@@ -378,12 +383,10 @@ const LegendaryGreenSteelPage = () => {
                     <Select
                       label='Bonus Effect'
                       placeholder='Search bonus effects…'
-                      data={[...data.bonusEffects]
-                        .sort((left, right) => left.name.localeCompare(right.name))
-                        .map(({ name }) => ({ value: name, label: name }))}
+                      data={bonusEffectOptions.map(({ name }) => ({ value: name, label: name }))}
                       value={plan.bonusEffectName}
                       onChange={(bonusEffectName) => {
-                        updatePlan({ bonusEffectName })
+                        updatePlan('bonusEffectName', bonusEffectName)
                       }}
                       searchable
                       clearable
@@ -404,7 +407,7 @@ const LegendaryGreenSteelPage = () => {
                       data={activeData(data.activeAugments)}
                       value={plan.activeAugmentName}
                       onChange={(activeAugmentName) => {
-                        updatePlan({ activeAugmentName })
+                        updatePlan('activeAugmentName', activeAugmentName)
                       }}
                       searchable
                       clearable

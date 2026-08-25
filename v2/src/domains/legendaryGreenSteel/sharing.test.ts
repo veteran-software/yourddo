@@ -63,7 +63,7 @@ const data: LgsData = {
     {
       name: 'Air Fire Bonus',
       description: 'Air and fire synergy.',
-      lowerFoci: ['Air'],
+      lowerFoci: ['Air', 'Air'],
       tier3Foci: ['Air', 'Fire'],
       source: {}
     },

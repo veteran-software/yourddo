@@ -142,7 +142,7 @@ const data: LgsData = {
     {
       name: 'Air Fire Bonus',
       description: 'Air and fire description.',
-      lowerFoci: ['Air'],
+      lowerFoci: ['Air', 'Air'],
       tier3Foci: ['Air', 'Fire'],
       source: {}
     }
@@ -245,6 +245,41 @@ describe('LegendaryGreenSteelPage', () => {
     await user.click(screen.getByRole('combobox', { name: 'Tier 1 upgrade' }))
     expect(await screen.findByRole('option', { name: /Air · Ethereal · Dominion/ })).toBeTruthy()
     expect(screen.queryByRole('option', { name: /Tier 1 Equipment/ })).toBeNull()
+  })
+
+  it('supports tier and bonus selection in every order after choosing a base item', async () => {
+    vi.mocked(loadLgsData).mockResolvedValue(data)
+    const user = userEvent.setup()
+    renderPage()
+
+    const reset = async () => {
+      await user.click(screen.getByRole('button', { name: 'Reset plan' }))
+      await choose(user, 'Legendary Green Steel base item', /^Weapon Base$/)
+    }
+
+    await choose(user, 'Legendary Green Steel base item', /^Weapon Base$/)
+    await choose(user, 'Tier 3 upgrade', /^Electric Critical Damage/)
+    await choose(user, 'Bonus Effect', /^Air Fire Bonus$/)
+    await choose(user, 'Tier 1 upgrade', /^Electric Spell Power/)
+    await choose(user, 'Tier 2 upgrade', /^Electric Lore/)
+
+    await reset()
+    await choose(user, 'Tier 2 upgrade', /^Electric Lore/)
+    await choose(user, 'Tier 1 upgrade', /^Electric Spell Power/)
+    await choose(user, 'Bonus Effect', /^Air Fire Bonus$/)
+    await choose(user, 'Tier 3 upgrade', /^Electric Critical Damage/)
+
+    await reset()
+    await choose(user, 'Bonus Effect', /^Air Fire Bonus$/)
+    await choose(user, 'Tier 2 upgrade', /^Electric Lore/)
+    await choose(user, 'Tier 3 upgrade', /^Electric Critical Damage/)
+    await choose(user, 'Tier 1 upgrade', /^Electric Spell Power/)
+
+    await reset()
+    await choose(user, 'Tier 1 upgrade', /^Electric Spell Power/)
+    await choose(user, 'Tier 3 upgrade', /^Electric Critical Damage/)
+    await choose(user, 'Tier 2 upgrade', /^Electric Lore/)
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Bonus Effect' }).value).toBe('')
   })
 
   it('shows ingredients and details through Workspace mobile drawers, then resets selections', async () => {
