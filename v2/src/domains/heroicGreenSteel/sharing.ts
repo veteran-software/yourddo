@@ -1,4 +1,5 @@
 import { createPermalinkChecksum } from '../../shared/serialization/checksum.ts'
+import { escapeBbCode, escapeMarkdown } from '../../shared/serialization/forumText.ts'
 import { decodeStableId, encodeStableId } from '../../shared/serialization/stableId.ts'
 import type {
   HgsInitialData,
@@ -231,9 +232,6 @@ export const resolveHgsBuildView = (
     )
   }
 }
-
-const escapeBbCode = (value: string): string => value.replaceAll('[', '&#91;').replaceAll(']', '&#93;')
-const escapeMarkdown = (value: string): string => value.replace(/[\\`*_~]/g, '\\$&')
 
 export const formatHgsBbCode = (view: ResolvedHgsBuildView): string => {
   const lines = ['[b]Heroic Green Steel[/b]']

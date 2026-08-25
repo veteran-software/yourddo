@@ -5,6 +5,7 @@ import EssenceCraftingPage from '../domains/essenceCrafting/EssenceCraftingPage.
 import HeroicGreenSteelPage from '../domains/heroicGreenSteel/HeroicGreenSteelPage.tsx'
 import HomePage from '../domains/home/HomePage.tsx'
 import IncrediblePotentialPage from '../domains/incrediblePotential/IncrediblePotentialPage.tsx'
+import LegendaryGreenSteelPage from '../domains/legendaryGreenSteel/LegendaryGreenSteelPage.tsx'
 import MastermindPage from '../domains/mastermind/MastermindPage.tsx'
 import MonasteryOfTheScorpionPage from '../domains/monasteryOfTheScorpion/MonasteryOfTheScorpionPage.tsx'
 import NearlyCompletePage from '../domains/nearlyComplete/NearlyCompletePage.tsx'
@@ -25,6 +26,7 @@ const AppRouter = () => (
       <Route path='/dinosaur-bone' element={<DinosaurBonePage />} />
       <Route path='/essence-crafting' element={<EssenceCraftingPage />} />
       <Route path='/green-steel' element={<HeroicGreenSteelPage />} />
+      <Route path='/legendary-green-steel' element={<LegendaryGreenSteelPage />} />
       <Route path='/incredible-potential' element={<IncrediblePotentialPage />} />
       <Route path='/nearly-complete' element={<NearlyCompletePage />} />
       <Route path='/nearly-finished' element={<NearlyFinishedPage />} />

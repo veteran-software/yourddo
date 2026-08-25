@@ -27,6 +27,10 @@ vi.mock('../domains/heroicGreenSteel/HeroicGreenSteelPage.tsx', () => ({
   default: () => <h1>Heroic Green Steel domain</h1>
 }))
 
+vi.mock('../domains/legendaryGreenSteel/LegendaryGreenSteelPage.tsx', () => ({
+  default: () => <h1>Legendary Green Steel domain</h1>
+}))
+
 vi.mock('../domains/nearlyComplete/NearlyCompletePage.tsx', () => ({
   default: () => <h1>Nearly Complete domain</h1>
 }))
@@ -116,6 +120,13 @@ afterAll(() => {
 })
 
 describe('AppRouter', () => {
+  it('renders Legendary Green Steel at its reserved public route', () => {
+    renderRoute('/legendary-green-steel')
+
+    expect(screen.getByRole('heading', { name: 'Legendary Green Steel domain' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Legendary Green Steel' }).getAttribute('aria-current')).toBe('page')
+  })
+
   it('renders Heroic Green Steel at its preserved public route', () => {
     renderRoute('/green-steel')
 
