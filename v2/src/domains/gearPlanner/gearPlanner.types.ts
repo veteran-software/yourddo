@@ -95,6 +95,7 @@ export interface GearPlannerSourceItem {
   dropLocations?: readonly Record<string, unknown>[] | null
   artifactType?: string
   upgradeable?: string
+  grouping?: string
   [key: string]: unknown
 }
 
@@ -116,6 +117,33 @@ export interface GearPlannerItem {
   source: GearPlannerSourceItem
 }
 
+export interface GearPlannerFiligree {
+  id: string
+  name: string
+  minimumLevel: number
+  grouping?: string
+  source: GearPlannerSourceItem
+}
+
+export interface GearPlannerCurse {
+  id: string
+  name: string
+  type: string
+  enchantments: readonly GearPlannerEffect[]
+  source: Readonly<Record<string, unknown>>
+}
+
+export interface GearPlannerFiligreeSetThreshold {
+  threshold: number
+  effects: readonly GearPlannerEffect[]
+}
+
+export interface GearPlannerFiligreeSetDefinition {
+  name: string
+  thresholds: readonly GearPlannerFiligreeSetThreshold[]
+  source: Readonly<Record<string, unknown>>
+}
+
 export interface GearPlannerSourceDataset {
   fileName: string
   records: readonly GearPlannerSourceItem[]
@@ -126,6 +154,10 @@ export interface GearPlannerData {
   items: readonly GearPlannerItem[]
   itemsBySlot: Readonly<Record<GearPlannerSlot, readonly GearPlannerItem[]>>
   augments: readonly GearPlannerAugment[]
+  curses: readonly GearPlannerCurse[]
+  filigrees: readonly GearPlannerFiligree[]
+  filigreeSetDefinitions: readonly GearPlannerFiligreeSetDefinition[]
+  filigreeSetDefinitionByName: ReadonlyMap<string, GearPlannerFiligreeSetDefinition>
   rawItemCount: number
   normalizedItemCount: number
   rejectedItemCount: number

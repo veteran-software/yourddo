@@ -1,14 +1,22 @@
 import { describe, expect, it, vi } from 'vitest'
 import { loadGearPlannerData } from './data.ts'
 import { aggregateEffectSummary, conflictEligibleEffectSources, resolveEffectConflicts } from './effects.ts'
-import { type GearPlannerAugment, type GearPlannerItem, gearPlannerSlots } from './gearPlanner.types.ts'
+import {
+  type GearPlannerAugment,
+  type GearPlannerFiligree,
+  type GearPlannerFiligreeSetDefinition,
+  type GearPlannerItem,
+  gearPlannerSlots
+} from './gearPlanner.types.ts'
 import {
   createEmptyGearPlannerEquipment,
   createEmptyGearPlannerSelectionState,
   equipGearPlannerItem,
   equipGearPlannerItemInSelection,
   type GearPlannerCharacterSlot,
-  setGearPlannerSlottedAugment
+  setGearPlannerSlottedAugment,
+  setGearPlannerSlottedFiligree,
+  setGearPlannerUnlockedFiligreeSlots
 } from './planner.ts'
 import { collectActiveSetEffectSources, resolveGearPlannerSetState } from './sets.ts'
 import {
@@ -216,6 +224,149 @@ describe('Gear Planner standard set activation', () => {
 
     expect(aggregateEffectSummary(allSources).find(({ name }) => name === 'Strength')?.groups[0].effectiveValue).toBe(2)
     expect(resolveEffectConflicts(conflictEligibleEffectSources(allSources)).conflicts).toEqual([])
+  })
+})
+
+describe('Gear Planner filigree set memberships', () => {
+  const filigreeDefinitions = new Map<string, GearPlannerFiligreeSetDefinition>([
+    [
+      'Filigree Set',
+      {
+        name: 'Filigree Set',
+        thresholds: [
+          { threshold: 2, effects: [{ name: 'Melee Power', modifier: 5 }] },
+          { threshold: 3, effects: [{ name: 'Doublestrike', modifier: '2%' }] }
+        ],
+        source: { name: 'Filigree Set' }
+      }
+    ]
+  ])
+  const filigree = (id: string, name: string): GearPlannerFiligree => ({
+    id,
+    name,
+    minimumLevel: 1,
+    grouping: 'Filigree Set',
+    source: { name, pageTitle: id, type: 'Common', enchantments: [{ name: 'Strength', modifier: 1 }] }
+  })
+  const filigreeHost = (id: string, slot: GearPlannerCharacterSlot): GearPlannerItem => ({
+    ...item(id, slot, id, []),
+    minimumLevel: 30,
+    source: { name: id, type: 'Dagger' }
+  })
+
+  it('counts global unique names per grouping, retains partial progress, and activates each reached threshold', () => {
+    const main = filigreeHost('main', gearPlannerSlots.mainHand)
+    const off = filigreeHost('off', gearPlannerSlots.offHand)
+    const first = filigree('first', 'First')
+    const duplicate = filigree('duplicate', 'First')
+    const second = filigree('second', 'Second')
+    let selection = equipGearPlannerItemInSelection(
+      createEmptyGearPlannerSelectionState(),
+      gearPlannerSlots.mainHand,
+      main
+    )
+    selection = equipGearPlannerItemInSelection(selection, gearPlannerSlots.offHand, off)
+    selection = setGearPlannerUnlockedFiligreeSlots(selection, main.id, 2)
+    selection = setGearPlannerUnlockedFiligreeSlots(selection, off.id, 2)
+    selection = setGearPlannerSlottedFiligree(selection, main.id, 0, first)
+    selection = setGearPlannerSlottedFiligree(selection, off.id, 0, duplicate)
+
+    let resolved = resolveGearPlannerSetState(
+      selection.equipment,
+      selection.slottedAugments,
+      definitions,
+      selection.slottedFiligrees,
+      filigreeDefinitions
+    )
+    expect(resolved.sets).toMatchObject([
+      { name: 'Filigree Set', category: 'filigree', count: 1, thresholds: [{ isActive: false }, { isActive: false }] }
+    ])
+    expect(resolved.sets[0].memberships).toHaveLength(1)
+
+    selection = setGearPlannerSlottedFiligree(selection, main.id, 1, second)
+    resolved = resolveGearPlannerSetState(
+      selection.equipment,
+      selection.slottedAugments,
+      definitions,
+      selection.slottedFiligrees,
+      filigreeDefinitions
+    )
+    expect(resolved.sets[0].thresholds.map(({ isActive }) => isActive)).toEqual([true, false])
+    expect(collectActiveSetEffectSources(resolved)).toMatchObject([
+      { category: 'set', setCategory: 'filigree', setName: 'Filigree Set', setThreshold: 2 }
+    ])
+    selection = setGearPlannerSlottedFiligree(selection, main.id, 1, null)
+    expect(
+      resolveGearPlannerSetState(
+        selection.equipment,
+        selection.slottedAugments,
+        definitions,
+        selection.slottedFiligrees,
+        filigreeDefinitions
+      ).sets[0].count
+    ).toBe(1)
+  })
+
+  it('keeps unresolved filigree definitions safe and countable', () => {
+    const host = filigreeHost('main', gearPlannerSlots.mainHand)
+    const unknown = { ...filigree('unknown', 'Unknown'), grouping: 'Unknown Filigree Set' }
+    let selection = equipGearPlannerItemInSelection(
+      createEmptyGearPlannerSelectionState(),
+      gearPlannerSlots.mainHand,
+      host
+    )
+    selection = setGearPlannerUnlockedFiligreeSlots(selection, host.id, 1)
+    selection = setGearPlannerSlottedFiligree(selection, host.id, 0, unknown)
+    const resolved = resolveGearPlannerSetState(
+      selection.equipment,
+      selection.slottedAugments,
+      definitions,
+      selection.slottedFiligrees,
+      filigreeDefinitions
+    )
+    expect(resolved.sets).toMatchObject([
+      { name: 'Unknown Filigree Set', category: 'filigree', count: 1, thresholds: [] }
+    ])
+    expect(resolved.unresolvedDefinitionNames).toEqual(['Unknown Filigree Set'])
+  })
+
+  it('keeps item and filigree definitions separate when names coincide', () => {
+    const standardItem = item('head', gearPlannerSlots.head, 'Set A Helm', ['Set A'])
+    const host = filigreeHost('main', gearPlannerSlots.mainHand)
+    const selected = { ...filigree('set-a', 'Set A Filigree'), grouping: 'Set A' }
+    const sameNameFiligreeDefinitions = new Map([
+      ...filigreeDefinitions,
+      [
+        'Set A',
+        {
+          name: 'Set A',
+          thresholds: [{ threshold: 1, effects: [{ name: 'Filigree Power', modifier: 1 }] }],
+          source: {}
+        }
+      ]
+    ])
+    let selection = equipGearPlannerItemInSelection(
+      createEmptyGearPlannerSelectionState(),
+      gearPlannerSlots.head,
+      standardItem
+    )
+    selection = equipGearPlannerItemInSelection(selection, gearPlannerSlots.mainHand, host)
+    selection = setGearPlannerUnlockedFiligreeSlots(selection, host.id, 1)
+    selection = setGearPlannerSlottedFiligree(selection, host.id, 0, selected)
+
+    const sets = resolveGearPlannerSetState(
+      selection.equipment,
+      selection.slottedAugments,
+      definitions,
+      selection.slottedFiligrees,
+      sameNameFiligreeDefinitions
+    ).sets
+    const itemSet = sets.find(({ category }) => category === 'item')
+    const filigreeSet = sets.find(({ category }) => category === 'filigree')
+    expect(itemSet).toMatchObject({ name: 'Set A', count: 1 })
+    expect(itemSet?.thresholds[0]).toMatchObject({ threshold: 2, isActive: false })
+    expect(filigreeSet).toMatchObject({ name: 'Set A', count: 1 })
+    expect(filigreeSet?.thresholds[0]).toMatchObject({ threshold: 1, isActive: true })
   })
 })
 

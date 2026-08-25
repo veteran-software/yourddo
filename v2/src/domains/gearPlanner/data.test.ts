@@ -3,10 +3,16 @@ import {
   InvalidGearPlannerDataError,
   loadGearPlannerData,
   parseGearPlannerAugmentDataset,
+  parseGearPlannerFiligreeSetDataset,
   parseGearPlannerItemDataset
 } from './data.ts'
 import { gearPlannerSlots, type GearPlannerSourceItem } from './gearPlanner.types.ts'
-import { gearPlannerItemId, normalizeGearPlannerSources } from './normalize.ts'
+import {
+  gearPlannerFiligreeId,
+  gearPlannerItemId,
+  normalizeGearPlannerFiligrees,
+  normalizeGearPlannerSources
+} from './normalize.ts'
 
 const item = (name: string, type?: string): GearPlannerSourceItem => ({
   name,
@@ -77,6 +83,24 @@ describe('Gear Planner data validation', () => {
     ])
 
     expect(augment.augmentType).toBe('')
+  })
+
+  it('normalizes filigree sets without losing name-only source effects', () => {
+    const [set] = parseGearPlannerFiligreeSetDataset([
+      {
+        name: 'Test Filigree Set',
+        bonuses: [
+          { threshold: 2, enhancements: [{ description: 'Permanent Test Effect' }, { name: 'Strength', modifier: 1 }] }
+        ]
+      }
+    ])
+    expect(set.thresholds[0]).toEqual({
+      threshold: 2,
+      effects: [
+        { description: 'Permanent Test Effect', name: 'Permanent Test Effect' },
+        { name: 'Strength', modifier: 1 }
+      ]
+    })
   })
 })
 
@@ -155,6 +179,20 @@ describe('Gear Planner source normalization', () => {
     expect(source).toEqual(before)
     expect(gearPlannerItemId('ring.json', source, gearPlannerSlots.firstFinger)).toContain('First%20Finger')
   })
+
+  it('uses page title rather than duplicate display names for filigree identity', () => {
+    const first: GearPlannerSourceItem = { name: 'Duplicated name', pageTitle: 'First source page', grouping: 'Set A' }
+    const second: GearPlannerSourceItem = {
+      name: 'Duplicated name',
+      pageTitle: 'Second source page',
+      grouping: 'Set A'
+    }
+    expect(gearPlannerFiligreeId(first)).not.toBe(gearPlannerFiligreeId(second))
+    expect(normalizeGearPlannerFiligrees([first, second]).map(({ id }) => id)).toEqual([
+      gearPlannerFiligreeId(first),
+      gearPlannerFiligreeId(second)
+    ])
+  })
 })
 
 describe('Gear Planner production CDN validation', () => {
@@ -167,6 +205,13 @@ describe('Gear Planner production CDN validation', () => {
     })
     try {
       const data = await loadGearPlannerData()
+      const filigreeNameCounts = new Map<string, number>()
+      for (const { name } of data.filigrees) filigreeNameCounts.set(name, (filigreeNameCounts.get(name) ?? 0) + 1)
+      const duplicateFiligreeDisplayNameGroups = [...filigreeNameCounts.values()].filter((count) => count > 1).length
+      const duplicateFiligreeDisplayNameRecords = [...filigreeNameCounts.values()].reduce(
+        (total, count) => total + Math.max(0, count - 1),
+        0
+      )
       console.info(
         JSON.stringify({
           sources: data.sourceDatasets.map(({ fileName, records }) => [fileName, records.length]),
@@ -174,10 +219,37 @@ describe('Gear Planner production CDN validation', () => {
           rawItemCount: data.rawItemCount,
           normalizedItemCount: data.normalizedItemCount,
           rejectedItemCount: data.rejectedItemCount,
-          augmentCount: data.augments.length
+          augmentCount: data.augments.length,
+          filigreeCount: data.filigrees.length,
+          distinctFiligreeIds: new Set(data.filigrees.map(({ id }) => id)).size,
+          duplicateFiligreeDisplayNameGroups,
+          duplicateFiligreeDisplayNameRecords,
+          filigreeSetDefinitionCount: data.filigreeSetDefinitions.length,
+          filigreeSetNames: data.filigreeSetDefinitions.length,
+          unresolvedFiligreeSetNames: [
+            ...new Set(
+              data.filigrees.flatMap(({ grouping }) =>
+                (grouping ?? '')
+                  .split('/')
+                  .map((name) => name.trim())
+                  .filter(Boolean)
+              )
+            )
+          ].filter((name) => !data.filigreeSetDefinitionByName.has(name)),
+          examples: {
+            sentient: data.items.find(({ source, minimumLevel }) => source.type === 'Dagger' && minimumLevel >= 20)
+              ?.source.name,
+            minorArtifact: data.items.find(({ source }) => (source.artifactType?.trim().length ?? 0) > 0)?.source.name,
+            directEffect: data.filigrees.find(({ source }) => (source.enchantments?.length ?? 0) > 0)?.name,
+            grouped: data.filigrees.find(({ grouping }) => grouping)?.name,
+            thresholds: data.filigreeSetDefinitions[0]?.thresholds.map(({ threshold }) => threshold)
+          }
         })
       )
       expect(data.items.length).toBe(data.normalizedItemCount)
+      expect(data.filigrees.length).toBeGreaterThan(0)
+      expect(new Set(data.filigrees.map(({ id }) => id)).size).toBe(data.filigrees.length)
+      expect(data.filigreeSetDefinitions.length).toBeGreaterThan(0)
     } finally {
       vi.unstubAllGlobals()
     }

@@ -1,18 +1,22 @@
 import { loadDatasetFile } from '../../shared/data/loadDataset.ts'
+import { gearPlannerCurseDefinitions } from './curses.ts'
 import type {
   GearPlannerAugment,
   GearPlannerAugmentSlot,
   GearPlannerBinding,
   GearPlannerEffect,
+  GearPlannerFiligreeSetDefinition,
   GearPlannerSetBonus,
   GearPlannerSourceDataset,
   GearPlannerSourceItem
 } from './gearPlanner.types.ts'
-import { normalizeGearPlannerSources } from './normalize.ts'
+import { normalizeGearPlannerFiligrees, normalizeGearPlannerSources } from './normalize.ts'
 import { gearPlannerItemSources } from './sourceMapping.ts'
 
 const datasetRoot = 'gear-planner'
 const augmentPath = `${datasetRoot}/augment.json`
+const filigreePath = `${datasetRoot}/filigrees.json`
+const filigreeSetPath = `${datasetRoot}/filigreeSets.json`
 
 export class InvalidGearPlannerDataError extends Error {
   constructor(message: string) {
@@ -91,7 +95,16 @@ const parseBinding = (value: unknown, path: string): GearPlannerBinding => {
 const parseSourceItem = (value: unknown, path: string): GearPlannerSourceItem => {
   const record = recordAt(value, path)
   if (!isNonEmptyString(record.name)) invalid(`${path}.name`, 'expected non-empty string')
-  for (const key of ['pageTitle', 'type', 'icon', 'image', 'material', 'artifactType', 'upgradeable'] as const) {
+  for (const key of [
+    'pageTitle',
+    'type',
+    'icon',
+    'image',
+    'material',
+    'artifactType',
+    'upgradeable',
+    'grouping'
+  ] as const) {
     optionalString(record, key, path)
   }
   for (const key of ['minLevel', 'absoluteMinLevel'] as const) {
@@ -158,15 +171,76 @@ export const parseGearPlannerAugmentDataset = (value: unknown): readonly GearPla
   })
 }
 
-export const loadGearPlannerData = async () => {
+const parseFiligreeSetEffect = (value: unknown, path: string): GearPlannerEffect => {
+  const record = recordAt(value, path)
+  const name = isNonEmptyString(record.name)
+    ? record.name
+    : isNonEmptyString(record.description)
+      ? record.description
+      : isNonEmptyString(record.notes)
+        ? record.notes
+        : 'Unnamed Enhancement'
+  if (record.notes !== undefined && !isString(record.notes)) invalid(`${path}.notes`, 'expected string')
+  for (const key of ['modifier', 'bonus'] as const) {
+    if (record[key] !== undefined && !isStringOrNumber(record[key]))
+      invalid(`${path}.${key}`, 'expected string or number')
+  }
+  return { ...record, name }
+}
+
+export const parseGearPlannerFiligreeSetDataset = (value: unknown): readonly GearPlannerFiligreeSetDefinition[] => {
+  const names = new Set<string>()
+  return arrayAt(value, 'filigreeSets.json').map((entry, index) => {
+    const path = `filigreeSets.json[${index.toString()}]`
+    const record = recordAt(entry, path)
+    if (!isNonEmptyString(record.name)) invalid(`${path}.name`, 'expected non-empty string')
+    const name = record.name as string
+    if (names.has(name)) invalid(`${path}.name`, 'must be unique')
+    names.add(name)
+    const bonuses = arrayAt(record.bonuses, `${path}.bonuses`)
+    return {
+      name,
+      thresholds: bonuses.map((bonus, bonusIndex) => {
+        const bonusPath = `${path}.bonuses[${bonusIndex.toString()}]`
+        const bonusRecord = recordAt(bonus, bonusPath)
+        if (!Number.isInteger(bonusRecord.threshold) || (bonusRecord.threshold as number) < 1) {
+          invalid(`${bonusPath}.threshold`, 'expected positive integer')
+        }
+        const enhancements =
+          bonusRecord.enhancements === null || bonusRecord.enhancements === undefined
+            ? []
+            : arrayAt(bonusRecord.enhancements, `${bonusPath}.enhancements`)
+        return {
+          threshold: bonusRecord.threshold as number,
+          effects: enhancements.map((effect, effectIndex) =>
+            parseFiligreeSetEffect(effect, `${bonusPath}.enhancements[${effectIndex.toString()}]`)
+          )
+        }
+      }),
+      source: { ...record }
+    }
+  })
+}
+
+export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types.ts').GearPlannerData> => {
   const fileNames = Object.keys(gearPlannerItemSources)
-  const [rawAugments, ...rawItems] = await Promise.all([
+  const [rawAugments, rawFiligrees, rawFiligreeSets, ...rawItems] = await Promise.all([
     loadDatasetFile<unknown>(augmentPath),
+    loadDatasetFile<unknown>(filigreePath),
+    loadDatasetFile<unknown>(filigreeSetPath),
     ...fileNames.map((fileName) => loadDatasetFile<unknown>(`${datasetRoot}/${fileName}`))
   ])
   const sourceDatasets: GearPlannerSourceDataset[] = fileNames.map((fileName, index) => ({
     fileName,
     records: parseGearPlannerItemDataset(rawItems[index], fileName)
   }))
-  return normalizeGearPlannerSources(sourceDatasets, parseGearPlannerAugmentDataset(rawAugments))
+  const normalized = normalizeGearPlannerSources(sourceDatasets, parseGearPlannerAugmentDataset(rawAugments))
+  const filigreeSetDefinitions = parseGearPlannerFiligreeSetDataset(rawFiligreeSets)
+  return {
+    ...normalized,
+    curses: gearPlannerCurseDefinitions,
+    filigrees: normalizeGearPlannerFiligrees(parseGearPlannerItemDataset(rawFiligrees, 'filigrees.json')),
+    filigreeSetDefinitions,
+    filigreeSetDefinitionByName: new Map(filigreeSetDefinitions.map((definition) => [definition.name, definition]))
+  }
 }

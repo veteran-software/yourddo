@@ -1,8 +1,11 @@
-import type { GearPlannerAugment, GearPlannerItem } from './gearPlanner.types.ts'
+import type { GearPlannerAugment, GearPlannerCurse, GearPlannerFiligree, GearPlannerItem } from './gearPlanner.types.ts'
 import type { GearPlannerCharacterSlot } from './planner.ts'
 import {
   createEmptyGearPlannerSelectionState,
   equipGearPlannerItemInSelection,
+  setGearPlannerSlottedFiligree,
+  setGearPlannerSlottedCurse,
+  setGearPlannerUnlockedFiligreeSlots,
   type GearPlannerSelectionState,
   setGearPlannerSlottedAugment
 } from './planner.ts'
@@ -128,5 +131,37 @@ export const setGearPlannerSetupAugment = (
 ): GearPlannerSetupsState =>
   replaceSetup(state, state.activeSetupId, (setup) => {
     const selection = setGearPlannerSlottedAugment(setup, itemId, slotIndex, augment)
+    return selection === setup ? setup : { ...setup, ...selection }
+  })
+
+export const setGearPlannerSetupFiligree = (
+  state: GearPlannerSetupsState,
+  itemId: string,
+  slotIndex: number,
+  filigree: GearPlannerFiligree | null
+): GearPlannerSetupsState =>
+  replaceSetup(state, state.activeSetupId, (setup) => {
+    const selection = setGearPlannerSlottedFiligree(setup, itemId, slotIndex, filigree)
+    return selection === setup ? setup : { ...setup, ...selection }
+  })
+
+export const setGearPlannerSetupCurse = (
+  state: GearPlannerSetupsState,
+  itemId: string,
+  curseId: string | null,
+  curses: readonly GearPlannerCurse[]
+): GearPlannerSetupsState =>
+  replaceSetup(state, state.activeSetupId, (setup) => {
+    const selection = setGearPlannerSlottedCurse(setup, itemId, curseId, curses)
+    return selection === setup ? setup : { ...setup, ...selection }
+  })
+
+export const setGearPlannerSetupUnlockedFiligreeSlots = (
+  state: GearPlannerSetupsState,
+  itemId: string,
+  count: number
+): GearPlannerSetupsState =>
+  replaceSetup(state, state.activeSetupId, (setup) => {
+    const selection = setGearPlannerUnlockedFiligreeSlots(setup, itemId, count)
     return selection === setup ? setup : { ...setup, ...selection }
   })

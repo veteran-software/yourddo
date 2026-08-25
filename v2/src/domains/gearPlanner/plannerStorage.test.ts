@@ -2,11 +2,13 @@ import { describe, expect, it, vi } from 'vitest'
 import { gearPlannerAugmentIdentity, isCompatibleGearPlannerAugment } from './augments.ts'
 import { loadGearPlannerData } from './data.ts'
 import { collectEquippedEffects } from './effects.ts'
+import { normalizeGearPlannerFiligreeName } from './filigrees.ts'
 import {
   allGearPlannerSlots,
   type GearPlannerAugment,
   gearPlannerCharacterSlots,
   type GearPlannerData,
+  type GearPlannerFiligree,
   type GearPlannerItem,
   gearPlannerSlots
 } from './gearPlanner.types.ts'
@@ -29,7 +31,9 @@ import {
   createDefaultGearPlannerState,
   equipGearPlannerSetupItem,
   type GearPlannerSetupsState,
-  setGearPlannerSetupAugment
+  setGearPlannerSetupAugment,
+  setGearPlannerSetupFiligree,
+  setGearPlannerSetupUnlockedFiligreeSlots
 } from './setups.ts'
 import { standardGearPlannerSetDefinitionByName } from './standardSetDefinitions.ts'
 
@@ -52,10 +56,17 @@ const augment = (name = 'Ruby', augmentType = 'Red'): GearPlannerAugment => ({
   source: { name, augmentType, minLevel: 1, effectsAdded: [{ name: 'Strength', modifier: 2 }] }
 })
 
-const data = (items: readonly GearPlannerItem[], augments: readonly GearPlannerAugment[] = []): GearPlannerData => ({
+const data = (
+  items: readonly GearPlannerItem[],
+  augments: readonly GearPlannerAugment[] = [],
+  filigrees: readonly GearPlannerFiligree[] = []
+): GearPlannerData => ({
   sourceDatasets: [],
   items,
   augments,
+  filigrees,
+  filigreeSetDefinitions: [],
+  filigreeSetDefinitionByName: new Map(),
   itemsBySlot: Object.fromEntries(
     allGearPlannerSlots.map((slot) => [slot, items.filter((candidate) => candidate.slot === slot)])
   ) as unknown as GearPlannerData['itemsBySlot'],
@@ -222,6 +233,66 @@ describe('Gear Planner local and JSON persistence', () => {
   })
 })
 
+describe('Gear Planner filigree persistence', () => {
+  const host = (): GearPlannerItem => ({
+    ...item('sentient-host', gearPlannerSlots.mainHand, 'Sentient Host'),
+    minimumLevel: 30,
+    source: { name: 'Sentient Host', type: 'Dagger' }
+  })
+  const filigree = (): GearPlannerFiligree => ({
+    id: 'filigree-a',
+    name: 'Filigree A',
+    minimumLevel: 1,
+    grouping: 'Test Filigree Set',
+    source: { name: 'Filigree A', pageTitle: 'Filigree A', enchantments: [{ name: 'Strength', modifier: 1 }] }
+  })
+
+  it('round-trips stable filigree references and unlocked slots while old v1 payloads remain valid', () => {
+    const sentient = host()
+    const selected = filigree()
+    let state = equipGearPlannerSetupItem(createDefaultGearPlannerState(), gearPlannerSlots.mainHand, sentient)
+    state = setGearPlannerSetupUnlockedFiligreeSlots(state, sentient.id, 2)
+    state = setGearPlannerSetupFiligree(state, sentient.id, 1, selected)
+    const payload = serializeGearPlannerState(state)
+    const restored = restorePersistedGearPlannerState(payload, data([sentient], [], [selected]))
+
+    expect(payload.setups[0].selectedFiligrees).toEqual([
+      { itemId: sentient.id, slotIndex: 1, filigreeId: selected.id }
+    ])
+    expect(payload.setups[0].unlockedFiligreeSlots).toEqual([{ itemId: sentient.id, count: 2 }])
+    expect(restored.issues).toEqual([])
+    expect(restored.state.setups[0].slottedFiligrees[sentient.id]?.[1]).toBe(selected)
+    expect(restored.state.setups[0].unlockedFiligreeSlots[sentient.id]).toBe(2)
+
+    const previousV1 = structuredClone(payload)
+    delete previousV1.setups[0].selectedFiligrees
+    delete previousV1.setups[0].unlockedFiligreeSlots
+    expect(parsePersistedGearPlannerState(previousV1).version).toBe(GEAR_PLANNER_PERSISTED_VERSION)
+    expect(restorePersistedGearPlannerState(previousV1, data([sentient], [], [selected])).issues).toEqual([])
+  })
+
+  it('skips only missing filigrees and invalid restored slots', () => {
+    const sentient = host()
+    const selected = filigree()
+    let state = equipGearPlannerSetupItem(createDefaultGearPlannerState(), gearPlannerSlots.mainHand, sentient)
+    state = setGearPlannerSetupUnlockedFiligreeSlots(state, sentient.id, 2)
+    state = setGearPlannerSetupFiligree(state, sentient.id, 1, selected)
+    const missing = structuredClone(serializeGearPlannerState(state))
+    missing.setups[0].selectedFiligrees = [{ itemId: sentient.id, slotIndex: 1, filigreeId: 'missing' }]
+    const missingRestored = restorePersistedGearPlannerState(missing, data([sentient], [], [selected]))
+    expect(missingRestored.state.setups[0].equipment['Main Hand']).toBe(sentient)
+    expect(missingRestored.state.setups[0].slottedFiligrees).toEqual({})
+    expect(missingRestored.issues.map(({ kind }) => kind)).toContain('missing-filigree')
+
+    const invalid = structuredClone(serializeGearPlannerState(state))
+    invalid.setups[0].selectedFiligrees = [{ itemId: sentient.id, slotIndex: 10, filigreeId: selected.id }]
+    const invalidRestored = restorePersistedGearPlannerState(invalid, data([sentient], [], [selected]))
+    expect(invalidRestored.state.setups[0].equipment['Main Hand']).toBe(sentient)
+    expect(invalidRestored.state.setups[0].slottedFiligrees).toEqual({})
+    expect(invalidRestored.issues.map(({ kind }) => kind)).toContain('invalid-filigree-slot')
+  })
+})
+
 describe('Gear Planner production persistence', () => {
   it.runIf(import.meta.env.VITE_GEAR_PLANNER_CDN === '1')(
     'round-trips current CDN items, compatible augments, and an active standard set across two setups',
@@ -312,6 +383,98 @@ describe('Gear Planner production persistence', () => {
           augment: socketed.augment.name,
           set: activeSet.name,
           setupB: secondSetupItem.source.name
+        })
+      )
+    }
+  )
+
+  it.runIf(import.meta.env.VITE_GEAR_PLANNER_CDN === '1')(
+    'selects production filigrees, activates a filigree set, persists them, and isolates another setup',
+    async () => {
+      const currentData = await (async () => {
+        const nativeFetch = globalThis.fetch
+        vi.stubGlobal('fetch', (input: string | URL | Request, init?: RequestInit) => {
+          const requestedUrl = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
+          return nativeFetch(requestedUrl.replace('/data-cdn/', 'https://cdn.yourddo.com/'), init)
+        })
+        try {
+          return await loadGearPlannerData()
+        } finally {
+          vi.unstubAllGlobals()
+        }
+      })()
+      const characterItems = currentData.items.filter(isCharacterItem)
+      const sentient = characterItems.find(
+        (plannerItem) => plannerItem.source.type === 'Dagger' && plannerItem.minimumLevel >= 20
+      )
+      const minorArtifact = characterItems.find(
+        (plannerItem) => (plannerItem.source.artifactType?.trim().length ?? 0) > 0
+      )
+      const filigreeSet = currentData.filigreeSetDefinitions.find((definition) => {
+        const uniqueNames = new Set(
+          currentData.filigrees
+            .filter(({ grouping }) =>
+              (grouping ?? '')
+                .split('/')
+                .map((name) => name.trim())
+                .includes(definition.name)
+            )
+            .map(({ name }) => name)
+        )
+        return uniqueNames.size >= definition.thresholds[0].threshold
+      })
+      expect(sentient).toBeDefined()
+      expect(minorArtifact).toBeDefined()
+      expect(filigreeSet).toBeDefined()
+      if (!sentient || !minorArtifact || !filigreeSet) return
+
+      const selectedFiligrees = [
+        ...new Map(
+          currentData.filigrees
+            .filter(({ grouping }) =>
+              (grouping ?? '')
+                .split('/')
+                .map((name) => name.trim())
+                .includes(filigreeSet.name)
+            )
+            .map((filigree) => [normalizeGearPlannerFiligreeName(filigree.name), filigree])
+        ).values()
+      ].slice(0, filigreeSet.thresholds[0].threshold)
+      let state = equipGearPlannerSetupItem(createDefaultGearPlannerState(), sentient.slot, sentient)
+      state = setGearPlannerSetupUnlockedFiligreeSlots(state, sentient.id, selectedFiligrees.length)
+      selectedFiligrees.forEach((filigree, slotIndex) => {
+        state = setGearPlannerSetupFiligree(state, sentient.id, slotIndex, filigree)
+      })
+      const activeFiligreeSets = resolveGearPlannerSetState(
+        state.setups[0].equipment,
+        state.setups[0].slottedAugments,
+        undefined,
+        state.setups[0].slottedFiligrees,
+        currentData.filigreeSetDefinitionByName
+      )
+      expect(activeFiligreeSets.sets.find(({ name }) => name === filigreeSet.name)?.thresholds[0].isActive).toBe(true)
+      expect(
+        collectEquippedEffects(
+          state.setups[0].equipment,
+          state.setups[0].slottedAugments,
+          state.setups[0].slottedFiligrees
+        ).filter(({ category }) => category === 'filigree').length
+      ).toBeGreaterThan(0)
+      state = addGearPlannerSetup(state, 'production-filigree-b', 'Production Filigree B')
+      state = equipGearPlannerSetupItem(state, minorArtifact.slot, minorArtifact)
+      const restored = restorePersistedGearPlannerState(serializeGearPlannerState(state), currentData)
+
+      expect(restored.issues).toEqual([])
+      expect(restored.state.setups[0].slottedFiligrees[sentient.id]).toBeDefined()
+      expect(restored.state.setups[1].equipment[minorArtifact.slot]).toBe(minorArtifact)
+      expect(restored.state.setups[1].slottedFiligrees).toEqual({})
+      console.info(
+        JSON.stringify({
+          sentient: sentient.source.name,
+          minorArtifact: minorArtifact.source.name,
+          filigrees: selectedFiligrees.map(({ name }) => name),
+          set: filigreeSet.name,
+          threshold: filigreeSet.thresholds[0].threshold
         })
       )
     }

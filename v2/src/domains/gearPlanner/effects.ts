@@ -1,8 +1,15 @@
 import { collectSelectedGearPlannerAugments } from './augments.ts'
+import { collectSelectedGearPlannerCurses } from './curses.ts'
+import { collectSelectedGearPlannerFiligrees } from './filigrees.ts'
 import type { GearPlannerEffect, GearPlannerItem } from './gearPlanner.types.ts'
-import type { GearPlannerEquipment, GearPlannerSlottedAugments } from './planner.ts'
+import type {
+  GearPlannerEquipment,
+  GearPlannerSlottedAugments,
+  GearPlannerSlottedCurses,
+  GearPlannerSlottedFiligrees
+} from './planner.ts'
 
-export type GearPlannerEffectSourceCategory = 'equipped-item' | 'augment' | 'set'
+export type GearPlannerEffectSourceCategory = 'equipped-item' | 'augment' | 'curse' | 'filigree' | 'set'
 
 export interface GearPlannerEffectSource {
   id: string
@@ -14,8 +21,13 @@ export interface GearPlannerEffectSource {
   augmentName?: string
   augmentSlotIndex?: number
   augmentSlotName?: string
+  curseId?: string
+  curseName?: string
+  filigreeName?: string
+  filigreeSlotIndex?: number
   setName?: string
   setThreshold?: number
+  setCategory?: 'item' | 'filigree'
   normalizedName: string
   normalizedBonusType: string
   comparisonValue: number
@@ -94,7 +106,9 @@ const equippedItems = (equipment: GearPlannerEquipment): readonly GearPlannerIte
 
 export const collectEquippedEffects = (
   equipment: GearPlannerEquipment,
-  slottedAugments: GearPlannerSlottedAugments = {}
+  slottedAugments: GearPlannerSlottedAugments = {},
+  slottedFiligrees: GearPlannerSlottedFiligrees = {},
+  slottedCurses: GearPlannerSlottedCurses = {}
 ): readonly GearPlannerEffectSource[] => [
   ...equippedItems(equipment).flatMap((item) =>
     (item.source.enchantments ?? []).flatMap((effect, index) =>
@@ -131,6 +145,36 @@ export const collectEquippedEffects = (
         normalizedBonusType: normalizeBonusType(effect.bonus),
         comparisonValue: parseEffectModifier(effect.modifier)
       }))
+  ),
+  ...collectSelectedGearPlannerCurses(equipment, slottedCurses).flatMap(({ item, curse }) =>
+    curse.enchantments.map((effect, effectIndex) => ({
+      id: `${item.id}:curse:${encodeURIComponent(curse.id)}:${String(effectIndex)}`,
+      effect,
+      itemId: item.id,
+      itemName: item.source.name,
+      slot: item.slot,
+      category: 'curse' as const,
+      curseId: curse.id,
+      curseName: curse.name,
+      normalizedName: normalizeEffectName(effect.name),
+      normalizedBonusType: normalizeBonusType(effect.bonus),
+      comparisonValue: parseEffectModifier(effect.modifier)
+    }))
+  ),
+  ...collectSelectedGearPlannerFiligrees(equipment, slottedFiligrees).flatMap(({ item, slotIndex, filigree }) =>
+    (filigree.source.enchantments ?? []).map((effect, effectIndex) => ({
+      id: `${item.id}:filigree:${String(slotIndex)}:${String(effectIndex)}`,
+      effect: { ...effect, bonus: 'Filigree' },
+      itemId: item.id,
+      itemName: item.source.name,
+      slot: item.slot,
+      category: 'filigree' as const,
+      filigreeName: filigree.name,
+      filigreeSlotIndex: slotIndex,
+      normalizedName: normalizeEffectName(effect.name),
+      normalizedBonusType: normalizeBonusType('Filigree'),
+      comparisonValue: parseEffectModifier(effect.modifier)
+    }))
   )
 ]
 
@@ -195,10 +239,60 @@ export const aggregateEffectSummary = (
     .toSorted((left, right) => left.name.localeCompare(right.name))
 }
 
-// Legacy set effects participate in the displayed aggregate but not item/augment conflict resolution.
+// Legacy curse, filigree, and set effects participate in display aggregation, never normal item/augment conflicts.
 export const conflictEligibleEffectSources = (
   sources: readonly GearPlannerEffectSource[]
-): readonly GearPlannerEffectSource[] => sources.filter(({ category }) => category !== 'set')
+): readonly GearPlannerEffectSource[] =>
+  sources.filter(({ category }) => category === 'equipped-item' || category === 'augment')
+
+export interface GearPlannerPotentialEffectConflict {
+  isConflict: boolean
+  currentMax: number
+  isRedundant: boolean
+  isUpgrade?: boolean
+  isOverpowered?: boolean
+}
+
+// Matches legacy checkPotentialConflict for a candidate effect. The host item's base effects are ignored;
+// its selected augments remain eligible, and selected curses never become permanent conflict sources.
+export const previewPotentialEffectConflict = (
+  effect: GearPlannerEffect,
+  sources: readonly GearPlannerEffectSource[],
+  hostItemId: string
+): GearPlannerPotentialEffectConflict => {
+  const normalizedName = normalizeEffectName(effect.name)
+  const normalizedBonusType = normalizeBonusType(effect.bonus)
+  if (
+    stackableBonusTypes.has(normalizedBonusType) ||
+    normalizedName === 'nearly finished' ||
+    normalizedName.startsWith('nearly complete') ||
+    normalizedName === 'lost purpose' ||
+    normalizedName === 'trace of madness' ||
+    normalizedName === 'ritual table' ||
+    normalizedName === 'zhentarim attuned' ||
+    (normalizedName.includes('enhancement bonus') && !normalizedName.includes('to '))
+  ) {
+    return { isConflict: false, currentMax: 0, isRedundant: false }
+  }
+
+  const matches = conflictEligibleEffectSources(sources).filter(
+    (source) =>
+      (source.itemId !== hostItemId || source.category === 'augment') &&
+      source.normalizedName === normalizedName &&
+      source.normalizedBonusType === normalizedBonusType
+  )
+  if (!matches.length) return { isConflict: false, currentMax: 0, isRedundant: false }
+
+  const currentMax = Math.max(...matches.map((source) => source.comparisonValue))
+  const candidateValue = parseEffectModifier(effect.modifier)
+  return {
+    isConflict: true,
+    currentMax,
+    isRedundant: candidateValue === currentMax,
+    isUpgrade: candidateValue > currentMax,
+    isOverpowered: candidateValue < currentMax
+  }
+}
 
 export const resolveEffectConflicts = (
   sources: readonly GearPlannerEffectSource[]

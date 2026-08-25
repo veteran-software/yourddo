@@ -4,7 +4,9 @@ import { formatGearPlannerSetEffect, type GearPlannerSetMembership, type GearPla
 const membershipLabel = (membership: GearPlannerSetMembership): string =>
   membership.category === 'augment'
     ? `${membership.slot}: ${membership.augmentName ?? 'Augment'} on ${membership.itemName}`
-    : `${membership.slot}: ${membership.itemName}`
+    : membership.category === 'filigree'
+      ? `${membership.slot}: ${membership.filigreeName ?? 'Filigree'} on ${membership.itemName} / Filigree slot ${String((membership.filigreeSlotIndex ?? 0) + 1)}`
+      : `${membership.slot}: ${membership.itemName}`
 
 const contributionLabel = (count: number): string =>
   `${String(count)} ${count === 1 ? 'contribution' : 'contributions'}`
@@ -25,17 +27,22 @@ const SetBonusesTool = ({ setState }: { setState: GearPlannerSetState }) => {
           Set Bonuses
         </Title>
         <Text c='dimmed' size='xs'>
-          Current equipped-item and selected-augment set contributions.
+          Current equipped-item, selected-augment, and filigree set contributions.
         </Text>
       </Stack>
-      {setState.sets.map(({ name, count, memberships, definition, thresholds }) => (
+      {setState.sets.map(({ name, count, category, memberships, definition, thresholds }) => (
         <Paper key={name} withBorder p='sm'>
           <Stack gap='xs'>
             <Group justify='space-between' align='flex-start' gap='xs' wrap='nowrap'>
               <Text fw={700} size='sm' style={{ overflowWrap: 'anywhere' }}>
                 {name}
               </Text>
-              <Badge variant='light'>{contributionLabel(count)}</Badge>
+              <Group gap={4} wrap='nowrap'>
+                <Badge color={category === 'filigree' ? 'violet' : 'blue'} variant='light'>
+                  {category === 'filigree' ? 'Filigree Set' : 'Item Set'}
+                </Badge>
+                <Badge variant='light'>{contributionLabel(count)}</Badge>
+              </Group>
             </Group>
             <Stack gap={2}>
               {memberships.map((membership) => (
@@ -46,7 +53,8 @@ const SetBonusesTool = ({ setState }: { setState: GearPlannerSetState }) => {
             </Stack>
             {definition === undefined ? (
               <Alert color='yellow' variant='light' title='Effect definition unavailable'>
-                This membership is counted, but its standard set effects are not in the curated definition data.
+                This membership is counted, but its {category === 'filigree' ? 'filigree' : 'item'} set effects are
+                unavailable.
               </Alert>
             ) : (
               thresholds.map(({ id, threshold, effects, isActive }) => {

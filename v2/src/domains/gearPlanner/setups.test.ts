@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { type GearPlannerAugment, type GearPlannerItem, gearPlannerSlots } from './gearPlanner.types.ts'
+import {
+  type GearPlannerAugment,
+  type GearPlannerFiligree,
+  type GearPlannerItem,
+  gearPlannerSlots
+} from './gearPlanner.types.ts'
 import {
   activeGearPlannerSetup,
   addGearPlannerSetup,
@@ -10,6 +15,8 @@ import {
   renameGearPlannerSetup,
   selectGearPlannerSetup,
   setGearPlannerSetupAugment,
+  setGearPlannerSetupFiligree,
+  setGearPlannerSetupUnlockedFiligreeSlots,
   updateGearPlannerSetupLevels
 } from './setups.ts'
 
@@ -83,6 +90,38 @@ describe('Gear Planner setups', () => {
     state = selectGearPlannerSetup(state, 'setup-two')
     expect(activeGearPlannerSetup(state).equipment.Head).toBe(secondHead)
     expect(activeGearPlannerSetup(state).slottedAugments).toEqual({})
+  })
+
+  it('keeps filigree selections isolated per setup and clears only the chosen setup', () => {
+    const first = {
+      ...item('first-weapon', gearPlannerSlots.mainHand),
+      minimumLevel: 30,
+      source: { name: 'First', type: 'Dagger' }
+    }
+    const second = {
+      ...item('second-weapon', gearPlannerSlots.mainHand),
+      minimumLevel: 30,
+      source: { name: 'Second', type: 'Dagger' }
+    }
+    const filigree: GearPlannerFiligree = {
+      id: 'filigree',
+      name: 'Test Filigree',
+      minimumLevel: 1,
+      source: { name: 'Test Filigree', pageTitle: 'Test Filigree' }
+    }
+    let state = equipGearPlannerSetupItem(createDefaultGearPlannerState(), gearPlannerSlots.mainHand, first)
+    state = setGearPlannerSetupUnlockedFiligreeSlots(state, first.id, 2)
+    state = setGearPlannerSetupFiligree(state, first.id, 1, filigree)
+    state = addGearPlannerSetup(state, 'setup-two')
+    state = equipGearPlannerSetupItem(state, gearPlannerSlots.mainHand, second)
+    state = selectGearPlannerSetup(state, 'default')
+
+    expect(activeGearPlannerSetup(state).slottedFiligrees[first.id]?.[1]).toBe(filigree)
+    state = selectGearPlannerSetup(state, 'setup-two')
+    expect(activeGearPlannerSetup(state).slottedFiligrees).toEqual({})
+    state = clearGearPlannerSetup(state, 'default')
+    expect(state.setups[0].slottedFiligrees).toEqual({})
+    expect(state.setups[1].equipment['Main Hand']).toBe(second)
   })
 
   it('deletes inactive and active setups deterministically but never leaves zero setups', () => {

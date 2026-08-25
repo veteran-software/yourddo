@@ -1,6 +1,7 @@
 import {
   allGearPlannerSlots,
   type GearPlannerData,
+  type GearPlannerFiligree,
   type GearPlannerItem,
   type GearPlannerSlot,
   type GearPlannerSourceDataset,
@@ -24,6 +25,21 @@ export const gearPlannerItemId = (sourceFile: string, item: GearPlannerSourceIte
   [slot, sourceFile, item.pageTitle ?? item.name, item.name, numericLevel(item.minLevel)]
     .map(encodeURIComponent)
     .join('|')
+
+// Production display names are not unique. Page title is the stable corpus identity.
+export const gearPlannerFiligreeId = (item: GearPlannerSourceItem): string =>
+  [item.pageTitle ?? '', item.name, item.type ?? '', item.grouping ?? ''].map(encodeURIComponent).join('|')
+
+export const normalizeGearPlannerFiligrees = (
+  records: readonly GearPlannerSourceItem[]
+): readonly GearPlannerFiligree[] =>
+  records.map((source) => ({
+    id: gearPlannerFiligreeId(source),
+    name: source.name,
+    minimumLevel: numericLevel(source.minLevel),
+    ...(source.grouping?.trim() ? { grouping: source.grouping.trim() } : {}),
+    source
+  }))
 
 export const normalizeGearPlannerSources = (
   sourceDatasets: readonly GearPlannerSourceDataset[],
@@ -63,6 +79,10 @@ export const normalizeGearPlannerSources = (
     items,
     itemsBySlot,
     augments,
+    curses: [],
+    filigrees: [],
+    filigreeSetDefinitions: [],
+    filigreeSetDefinitionByName: new Map(),
     rawItemCount,
     normalizedItemCount: items.length,
     rejectedItemCount

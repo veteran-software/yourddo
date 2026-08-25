@@ -2,18 +2,26 @@ import { describe, expect, it } from 'vitest'
 import {
   aggregateEffectSummary,
   collectEquippedEffects,
+  conflictEligibleEffectSources,
   normalizeBonusType,
   parseEffectModifier,
   resolveEffectConflicts
 } from './effects.ts'
-import { type GearPlannerAugment, type GearPlannerItem, gearPlannerSlots } from './gearPlanner.types.ts'
+import {
+  type GearPlannerAugment,
+  type GearPlannerFiligree,
+  type GearPlannerItem,
+  gearPlannerSlots
+} from './gearPlanner.types.ts'
 import {
   createEmptyGearPlannerEquipment,
   createEmptyGearPlannerSelectionState,
   equipGearPlannerItem,
   equipGearPlannerItemInSelection,
   type GearPlannerCharacterSlot,
-  setGearPlannerSlottedAugment
+  setGearPlannerSlottedAugment,
+  setGearPlannerSlottedFiligree,
+  setGearPlannerUnlockedFiligreeSlots
 } from './planner.ts'
 
 const item = (
@@ -261,5 +269,54 @@ describe('Gear Planner augment effect sources', () => {
     state = setGearPlannerSlottedAugment(state, head.id, 0, ruby)
     state = equipGearPlannerItemInSelection(state, gearPlannerSlots.head, null)
     expect(collectEquippedEffects(state.equipment, state.slottedAugments)).toEqual([])
+  })
+})
+
+describe('Gear Planner filigree effect sources', () => {
+  it('adds selected filigree effects with item and slot provenance but excludes them from conflicts', () => {
+    const host = item('host', gearPlannerSlots.mainHand, 'Sentient Dagger', [
+      { name: 'Strength', modifier: 10, bonus: 'Enhancement' }
+    ])
+    host.minimumLevel = 30
+    host.source.type = 'Dagger'
+    const filigree: GearPlannerFiligree = {
+      id: 'filigree-strength',
+      name: 'Strength Filigree',
+      minimumLevel: 1,
+      source: { name: 'Strength Filigree', enchantments: [{ name: 'Strength', modifier: '+12%' }, { name: 'Ghostly' }] }
+    }
+    let selection = equipGearPlannerItemInSelection(
+      createEmptyGearPlannerSelectionState(),
+      gearPlannerSlots.mainHand,
+      host
+    )
+    selection = setGearPlannerUnlockedFiligreeSlots(selection, host.id, 1)
+    selection = setGearPlannerSlottedFiligree(selection, host.id, 0, filigree)
+    const sources = collectEquippedEffects(selection.equipment, selection.slottedAugments, selection.slottedFiligrees)
+    const filigreeSource = sources.find(({ category }) => category === 'filigree')
+
+    expect(filigreeSource).toMatchObject({
+      id: 'host:filigree:0:0',
+      category: 'filigree',
+      filigreeName: 'Strength Filigree',
+      filigreeSlotIndex: 0,
+      itemName: 'Sentient Dagger',
+      slot: 'Main Hand',
+      effect: { name: 'Strength', modifier: '+12%', bonus: 'Filigree' }
+    })
+    expect(aggregateEffectSummary(sources).find(({ name }) => name === 'Ghostly')?.isNumeric).toBe(false)
+    expect(
+      resolveEffectConflicts(conflictEligibleEffectSources(sources)).bySourceId['host:filigree:0:0']
+    ).toBeUndefined()
+
+    selection = setGearPlannerSlottedFiligree(selection, host.id, 0, null)
+    expect(
+      collectEquippedEffects(selection.equipment, selection.slottedAugments, selection.slottedFiligrees)
+    ).toHaveLength(1)
+    selection = setGearPlannerSlottedFiligree(selection, host.id, 0, filigree)
+    selection = equipGearPlannerItemInSelection(selection, gearPlannerSlots.mainHand, null)
+    expect(collectEquippedEffects(selection.equipment, selection.slottedAugments, selection.slottedFiligrees)).toEqual(
+      []
+    )
   })
 })

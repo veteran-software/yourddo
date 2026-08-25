@@ -3,8 +3,14 @@ import {
   gearPlannerAugmentIdentity,
   isCompatibleGearPlannerAugment
 } from './augments.ts'
+import { collectSelectedGearPlannerFiligrees, getGearPlannerMaxFiligreeSlots } from './filigrees.ts'
 import { gearPlannerCharacterSlots, type GearPlannerData } from './gearPlanner.types.ts'
-import { createEmptyGearPlannerEquipment, setGearPlannerSlottedAugment } from './planner.ts'
+import {
+  createEmptyGearPlannerEquipment,
+  setGearPlannerSlottedAugment,
+  setGearPlannerSlottedFiligree,
+  setGearPlannerUnlockedFiligreeSlots
+} from './planner.ts'
 import {
   createDefaultGearPlannerState,
   createGearPlannerSetup,
@@ -15,6 +21,7 @@ import {
 } from './setups.ts'
 
 export const GEAR_PLANNER_STORAGE_KEY = 'yourddo:gear-planner:v2'
+// V1 accepts additive optional fields, so filigree references keep prior v2 saves compatible.
 export const GEAR_PLANNER_PERSISTED_VERSION = 1 as const
 export const GEAR_PLANNER_EXPORT_FILENAME = 'yourddo-gear-planner-v2.json'
 
@@ -29,6 +36,17 @@ export interface PersistedGearPlannerAugmentV1 {
   augmentId: string
 }
 
+export interface PersistedGearPlannerFiligreeV1 {
+  itemId: string
+  slotIndex: number
+  filigreeId: string
+}
+
+export interface PersistedGearPlannerUnlockedFiligreeSlotsV1 {
+  itemId: string
+  count: number
+}
+
 export interface PersistedGearPlannerSetupV1 {
   id: string
   name: string
@@ -36,6 +54,8 @@ export interface PersistedGearPlannerSetupV1 {
   maximumLevel: number
   equipment: Record<(typeof gearPlannerCharacterSlots)[number], string | null>
   selectedAugments: readonly PersistedGearPlannerAugmentV1[]
+  selectedFiligrees?: readonly PersistedGearPlannerFiligreeV1[]
+  unlockedFiligreeSlots?: readonly PersistedGearPlannerUnlockedFiligreeSlotsV1[]
 }
 
 export interface PersistedGearPlannerStateV1 {
@@ -46,7 +66,15 @@ export interface PersistedGearPlannerStateV1 {
 }
 
 export interface GearPlannerRestoreIssue {
-  kind: 'invalid-state' | 'missing-item' | 'missing-augment' | 'orphaned-augment' | 'incompatible-augment'
+  kind:
+    | 'invalid-state'
+    | 'missing-item'
+    | 'missing-augment'
+    | 'orphaned-augment'
+    | 'incompatible-augment'
+    | 'missing-filigree'
+    | 'orphaned-filigree'
+    | 'invalid-filigree-slot'
   message: string
 }
 
@@ -129,6 +157,46 @@ const parseSelectedAugments = (value: unknown, path: string): readonly Persisted
   })
 }
 
+const parseSelectedFiligrees = (value: unknown, path: string): readonly PersistedGearPlannerFiligreeV1[] => {
+  if (value === undefined) return []
+  if (!Array.isArray(value)) throw new InvalidGearPlannerStateError(`${path} must be an array`)
+  const seen = new Set<string>()
+  return value.map((entry, index) => {
+    const entryPath = `${path}[${String(index)}]`
+    const record = requiredRecord(entry, entryPath)
+    const itemId = requiredString(record.itemId, `${entryPath}.itemId`)
+    const filigreeId = requiredString(record.filigreeId, `${entryPath}.filigreeId`)
+    if (!Number.isInteger(record.slotIndex) || (record.slotIndex as number) < 0) {
+      throw new InvalidGearPlannerStateError(`${entryPath}.slotIndex must be a non-negative integer`)
+    }
+    const slotIndex = record.slotIndex as number
+    const identity = `${itemId}\u0000${String(slotIndex)}`
+    if (seen.has(identity)) throw new InvalidGearPlannerStateError(`${path} contains duplicate filigree selections`)
+    seen.add(identity)
+    return { itemId, slotIndex, filigreeId }
+  })
+}
+
+const parseUnlockedFiligreeSlots = (
+  value: unknown,
+  path: string
+): readonly PersistedGearPlannerUnlockedFiligreeSlotsV1[] => {
+  if (value === undefined) return []
+  if (!Array.isArray(value)) throw new InvalidGearPlannerStateError(`${path} must be an array`)
+  const seen = new Set<string>()
+  return value.map((entry, index) => {
+    const entryPath = `${path}[${String(index)}]`
+    const record = requiredRecord(entry, entryPath)
+    const itemId = requiredString(record.itemId, `${entryPath}.itemId`)
+    if (!Number.isInteger(record.count) || (record.count as number) < 0) {
+      throw new InvalidGearPlannerStateError(`${entryPath}.count must be a non-negative integer`)
+    }
+    if (seen.has(itemId)) throw new InvalidGearPlannerStateError(`${path} contains duplicate item IDs`)
+    seen.add(itemId)
+    return { itemId, count: record.count as number }
+  })
+}
+
 const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 => {
   const path = `setups[${String(index)}]`
   const record = requiredRecord(value, path)
@@ -144,7 +212,18 @@ const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 
     minimumLevel,
     maximumLevel,
     equipment: parseEquipment(record.equipment, `${path}.equipment`),
-    selectedAugments: parseSelectedAugments(record.selectedAugments, `${path}.selectedAugments`)
+    selectedAugments: parseSelectedAugments(record.selectedAugments, `${path}.selectedAugments`),
+    ...(record.selectedFiligrees === undefined
+      ? {}
+      : { selectedFiligrees: parseSelectedFiligrees(record.selectedFiligrees, `${path}.selectedFiligrees`) }),
+    ...(record.unlockedFiligreeSlots === undefined
+      ? {}
+      : {
+          unlockedFiligreeSlots: parseUnlockedFiligreeSlots(
+            record.unlockedFiligreeSlots,
+            `${path}.unlockedFiligreeSlots`
+          )
+        })
   }
 }
 
@@ -195,7 +274,17 @@ export const serializeGearPlannerState = (state: GearPlannerSetupsState): Persis
         slotIndex,
         augmentId: gearPlannerAugmentIdentity(augment)
       }))
-      .toSorted((left, right) => left.itemId.localeCompare(right.itemId) || left.slotIndex - right.slotIndex)
+      .toSorted((left, right) => left.itemId.localeCompare(right.itemId) || left.slotIndex - right.slotIndex),
+    selectedFiligrees: collectSelectedGearPlannerFiligrees(setup.equipment, setup.slottedFiligrees)
+      .map(({ item, slotIndex, filigree }) => ({ itemId: item.id, slotIndex, filigreeId: filigree.id }))
+      .toSorted((left, right) => left.itemId.localeCompare(right.itemId) || left.slotIndex - right.slotIndex),
+    unlockedFiligreeSlots: Object.values(setup.equipment)
+      .filter((item): item is NonNullable<typeof item> => item !== null && getGearPlannerMaxFiligreeSlots(item) > 0)
+      .map((item) => ({
+        itemId: item.id,
+        count: Math.max(0, Math.min(getGearPlannerMaxFiligreeSlots(item), setup.unlockedFiligreeSlots[item.id] ?? 0))
+      }))
+      .toSorted((left, right) => left.itemId.localeCompare(right.itemId))
   }))
 })
 
@@ -208,6 +297,7 @@ export const restorePersistedGearPlannerState = (
 ): RestoredGearPlannerState => {
   const itemsById = new Map(data.items.map((item) => [item.id, item]))
   const augmentsById = new Map(data.augments.map((augment) => [gearPlannerAugmentIdentity(augment), augment]))
+  const filigreesById = new Map(data.filigrees.map((filigree) => [filigree.id, filigree]))
   const issues: GearPlannerRestoreIssue[] = []
   const setups = persisted.setups.map((savedSetup) => {
     const equipment = createEmptyGearPlannerEquipment()
@@ -248,6 +338,44 @@ export const restorePersistedGearPlannerState = (
       }
       const selection = setGearPlannerSlottedAugment(setup, item.id, savedAugment.slotIndex, augment)
       setup = selection === setup ? setup : { ...setup, ...selection }
+    }
+    for (const savedUnlockedSlots of savedSetup.unlockedFiligreeSlots ?? []) {
+      const item = findEquippedItem(setup, savedUnlockedSlots.itemId)
+      if (!item) {
+        issues.push({ kind: 'orphaned-filigree', message: `${savedSetup.name}: filigree host item is not equipped` })
+        continue
+      }
+      if (getGearPlannerMaxFiligreeSlots(item) === 0) continue
+      const selection = setGearPlannerUnlockedFiligreeSlots(setup, item.id, savedUnlockedSlots.count)
+      setup = selection === setup ? setup : { ...setup, ...selection }
+    }
+    for (const savedFiligree of savedSetup.selectedFiligrees ?? []) {
+      const item = findEquippedItem(setup, savedFiligree.itemId)
+      if (!item) {
+        issues.push({ kind: 'orphaned-filigree', message: `${savedSetup.name}: filigree host item is not equipped` })
+        continue
+      }
+      const filigree = filigreesById.get(savedFiligree.filigreeId)
+      if (!filigree) {
+        issues.push({
+          kind: 'missing-filigree',
+          message: `${savedSetup.name}: selected filigree is no longer available`
+        })
+        continue
+      }
+      if (savedFiligree.slotIndex >= getGearPlannerMaxFiligreeSlots(item)) {
+        issues.push({
+          kind: 'invalid-filigree-slot',
+          message: `${savedSetup.name}: filigree slot is no longer available`
+        })
+        continue
+      }
+      const selection = setGearPlannerSlottedFiligree(setup, item.id, savedFiligree.slotIndex, filigree)
+      if (selection === setup) {
+        issues.push({ kind: 'invalid-filigree-slot', message: `${savedSetup.name}: filigree slot is not unlocked` })
+        continue
+      }
+      setup = { ...setup, ...selection }
     }
     return setup
   })

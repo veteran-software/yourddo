@@ -40,6 +40,7 @@ import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { downloadTextFile, readTextFile } from '../../shared/serialization/browser.ts'
 import AugmentSlotSelector from './components/AugmentSlotSelector.tsx'
+import FiligreeSlotSelector from './components/FiligreeSlotSelector.tsx'
 import { InvalidGearPlannerDataError, loadGearPlannerData } from './data.ts'
 import {
   aggregateEffectSummary,
@@ -49,12 +50,16 @@ import {
   type GearPlannerEffectSource,
   resolveEffectConflicts
 } from './effects.ts'
+import { supportsGearPlannerFiligrees } from './filigrees.ts'
 import { type GearPlannerData, type GearPlannerItem, gearPlannerSlotGridColumns } from './gearPlanner.types.ts'
 import {
   filterGearPlannerCandidates,
   type GearPlannerCharacterSlot,
   type GearPlannerEquipment,
   gearPlannerItemType,
+  type GearPlannerSlottedFiligrees,
+  type GearPlannerUnlockedFiligreeSlots,
+  hasOtherGearPlannerMinorArtifact,
   prepareGearPlannerCandidates
 } from './planner.ts'
 import {
@@ -78,6 +83,8 @@ import {
   renameGearPlannerSetup,
   selectGearPlannerSetup,
   setGearPlannerSetupAugment,
+  setGearPlannerSetupFiligree,
+  setGearPlannerSetupUnlockedFiligreeSlots,
   updateGearPlannerSetupLevels
 } from './setups.ts'
 import EnchantmentsTool, { EquippedEnchantmentList } from './tools/EnchantmentsTool.tsx'
@@ -115,9 +122,13 @@ interface EquipmentSlotCardProps {
   effects: readonly GearPlannerEffectSource[]
   conflicts: GearPlannerEffectConflictResolution
   slottedAugments: import('./planner.ts').GearPlannerSlottedAugments
+  slottedFiligrees: GearPlannerSlottedFiligrees
+  unlockedFiligreeSlots: GearPlannerUnlockedFiligreeSlots
   openBrowser: (slot: GearPlannerCharacterSlot) => void
   clearSlot: (slot: GearPlannerCharacterSlot) => void
   setAugment: (itemId: string, slotIndex: number, augment: GearPlannerData['augments'][number] | null) => void
+  setFiligree: (itemId: string, slotIndex: number, filigree: GearPlannerData['filigrees'][number] | null) => void
+  setUnlockedFiligreeSlots: (itemId: string, count: number) => void
 }
 
 const EquipmentSlotCard = ({
@@ -127,9 +138,13 @@ const EquipmentSlotCard = ({
   effects,
   conflicts,
   slottedAugments,
+  slottedFiligrees,
+  unlockedFiligreeSlots,
   openBrowser,
   clearSlot,
-  setAugment
+  setAugment,
+  setFiligree,
+  setUnlockedFiligreeSlots
 }: EquipmentSlotCardProps) => (
   <Paper withBorder p='sm' mih={132} style={{ position: 'relative' }} data-testid={`gear-slot-${slot}`}>
     <Stack gap='xs' h='100%'>
@@ -192,6 +207,20 @@ const EquipmentSlotCard = ({
           }}
         />
       ))}
+      {item && supportsGearPlannerFiligrees(item) ? (
+        <FiligreeSlotSelector
+          item={item}
+          filigrees={data.filigrees}
+          slottedFiligrees={slottedFiligrees}
+          unlockedFiligreeSlots={unlockedFiligreeSlots}
+          onChange={(slotIndex, filigree) => {
+            setFiligree(item.id, slotIndex, filigree)
+          }}
+          onUnlockedSlotCountChange={(count) => {
+            setUnlockedFiligreeSlots(item.id, count)
+          }}
+        />
+      ) : null}
     </Stack>
   </Paper>
 )
@@ -204,6 +233,7 @@ interface ItemBrowserProps {
   maximumLevel: number
   close: () => void
   equip: (slot: GearPlannerCharacterSlot, item: GearPlannerItem | null) => void
+  onMinorArtifactRejected: () => void
   updateLevels: (update: { minimumLevel?: number; maximumLevel?: number }) => void
 }
 
@@ -215,6 +245,7 @@ const ItemBrowser = ({
   maximumLevel,
   close,
   equip,
+  onMinorArtifactRejected,
   updateLevels
 }: ItemBrowserProps) => {
   const [search, setSearch] = useState('')
@@ -258,6 +289,10 @@ const ItemBrowser = ({
 
   const select = (item: GearPlannerItem | null) => {
     if (!slot || (item && item.slot !== slot)) return
+    if (item && hasOtherGearPlannerMinorArtifact(equipment, slot, item)) {
+      onMinorArtifactRejected()
+      return
+    }
     equip(slot, item)
     close()
   }
@@ -388,9 +423,16 @@ const GearPlannerPage = () => {
   const [feedback, setFeedback] = useState<{ kind: 'success' | 'error'; message: string } | null>(null)
   const importInputRef = useRef<HTMLInputElement>(null)
   const activeSetup = activeGearPlannerSetup(plannerState)
-  const { equipment, slottedAugments } = activeSetup
-  const baseEffects = useMemo(() => collectEquippedEffects(equipment, slottedAugments), [equipment, slottedAugments])
-  const setState = useMemo(() => resolveGearPlannerSetState(equipment, slottedAugments), [equipment, slottedAugments])
+  const { equipment, slottedAugments, slottedFiligrees, unlockedFiligreeSlots } = activeSetup
+  const filigreeDefinitions = dataState.status === 'ready' ? dataState.data.filigreeSetDefinitionByName : undefined
+  const baseEffects = useMemo(
+    () => collectEquippedEffects(equipment, slottedAugments, slottedFiligrees),
+    [equipment, slottedAugments, slottedFiligrees]
+  )
+  const setState = useMemo(
+    () => resolveGearPlannerSetState(equipment, slottedAugments, undefined, slottedFiligrees, filigreeDefinitions),
+    [equipment, filigreeDefinitions, slottedAugments, slottedFiligrees]
+  )
   const effects = useMemo(() => [...baseEffects, ...collectActiveSetEffectSources(setState)], [baseEffects, setState])
   const conflicts = useMemo(() => resolveEffectConflicts(conflictEligibleEffectSources(effects)), [effects])
   const summary = useMemo(() => aggregateEffectSummary(effects), [effects])
@@ -706,12 +748,20 @@ const GearPlannerPage = () => {
                     effects={effects.filter((effect) => effect.slot === slot && effect.category === 'equipped-item')}
                     conflicts={conflicts}
                     slottedAugments={slottedAugments}
+                    slottedFiligrees={slottedFiligrees}
+                    unlockedFiligreeSlots={unlockedFiligreeSlots}
                     openBrowser={setBrowsingSlot}
                     clearSlot={(currentSlot) => {
                       equip(currentSlot, null)
                     }}
                     setAugment={(itemId, slotIndex, augment) => {
                       applySetupState((current) => setGearPlannerSetupAugment(current, itemId, slotIndex, augment))
+                    }}
+                    setFiligree={(itemId, slotIndex, filigree) => {
+                      applySetupState((current) => setGearPlannerSetupFiligree(current, itemId, slotIndex, filigree))
+                    }}
+                    setUnlockedFiligreeSlots={(itemId, count) => {
+                      applySetupState((current) => setGearPlannerSetupUnlockedFiligreeSlots(current, itemId, count))
                     }}
                   />
                 ))}
@@ -729,6 +779,9 @@ const GearPlannerPage = () => {
               equip={equip}
               updateLevels={(update) => {
                 applySetupState((current) => updateGearPlannerSetupLevels(current, activeSetup.id, update))
+              }}
+              onMinorArtifactRejected={() => {
+                setFeedback({ kind: 'error', message: 'Only one minor artifact can be equipped at a time.' })
               }}
             />
             <Modal

@@ -8,6 +8,8 @@ import {
   allGearPlannerSlots,
   gearPlannerCharacterSlots,
   type GearPlannerData,
+  type GearPlannerFiligree,
+  type GearPlannerFiligreeSetDefinition,
   type GearPlannerItem,
   gearPlannerSlotGridColumns,
   gearPlannerSlots
@@ -24,6 +26,9 @@ const data: GearPlannerData = {
   items: [],
   itemsBySlot: {} as GearPlannerData['itemsBySlot'],
   augments: [],
+  filigrees: [],
+  filigreeSetDefinitions: [],
+  filigreeSetDefinitionByName: new Map(),
   rawItemCount: 0,
   normalizedItemCount: 0,
   rejectedItemCount: 0
@@ -54,11 +59,16 @@ const item = (
 
 const dataWithItems = (
   items: readonly GearPlannerItem[],
-  augments: GearPlannerData['augments'] = []
+  augments: GearPlannerData['augments'] = [],
+  filigrees: readonly GearPlannerFiligree[] = [],
+  filigreeSetDefinitions: readonly GearPlannerFiligreeSetDefinition[] = []
 ): GearPlannerData => ({
   ...data,
   items,
   augments,
+  filigrees,
+  filigreeSetDefinitions,
+  filigreeSetDefinitionByName: new Map(filigreeSetDefinitions.map((definition) => [definition.name, definition])),
   itemsBySlot: Object.fromEntries(
     allGearPlannerSlots.map((slot) => [slot, items.filter((plannerItem) => plannerItem.slot === slot)])
   ) as unknown as GearPlannerData['itemsBySlot'],
@@ -440,6 +450,72 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Select Neck' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Plain Necklace' }))
     expect(screen.queryByRole('combobox', { name: 'Ruby socket' })).toBeNull()
+  })
+
+  it('shows filigree controls only on capable items and wires selections into Enchantments and Set Bonuses', async () => {
+    const sentient = {
+      ...item('sentient', gearPlannerSlots.mainHand, 'Sentient Dagger', 30),
+      source: { ...item('sentient', gearPlannerSlots.mainHand, 'Sentient Dagger', 30).source, type: 'Dagger' }
+    }
+    const plain = item('plain', gearPlannerSlots.neck, 'Plain Necklace', 30)
+    const selected: GearPlannerFiligree = {
+      id: 'filigree-a',
+      name: 'Filigree A',
+      minimumLevel: 1,
+      grouping: 'Test Filigree Set',
+      source: { name: 'Filigree A', pageTitle: 'Filigree A', enchantments: [{ name: 'Strength', modifier: 2 }] }
+    }
+    const definition: GearPlannerFiligreeSetDefinition = {
+      name: 'Test Filigree Set',
+      thresholds: [{ threshold: 1, effects: [{ name: 'Melee Power', modifier: 5 }] }],
+      source: { name: 'Test Filigree Set' }
+    }
+    await renderReadyPage(dataWithItems([sentient, plain], [], [selected], [definition]))
+
+    fireEvent.click(screen.getByRole('button', { name: 'Select Neck' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Plain Necklace' }))
+    expect(screen.queryByRole('button', { name: 'Manage filigrees for Plain Necklace' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Select Main Hand' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Sentient Dagger' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Manage filigrees for Sentient Dagger' }))
+    expect(screen.getByText('0 / 10 slots unlocked')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Unlock slot' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Filigree slot 1' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Filigree A' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Close filigree selector' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
+    expect(await screen.findByText(/Filigree A on Sentient Dagger · Main Hand \/ Filigree slot 1/)).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Set Bonuses' }))
+    expect(await screen.findByText('Test Filigree Set')).toBeTruthy()
+    expect(screen.getByText('Filigree Set')).toBeTruthy()
+    expect(screen.getByText('Main Hand: Filigree A on Sentient Dagger / Filigree slot 1')).toBeTruthy()
+  })
+
+  it('rejects a second minor artifact in the browser and keeps the original equipped', async () => {
+    const first = {
+      ...item('artifact-a', gearPlannerSlots.firstFinger, 'First Artifact', 30),
+      source: {
+        ...item('artifact-a', gearPlannerSlots.firstFinger, 'First Artifact', 30).source,
+        artifactType: 'Minor'
+      }
+    }
+    const second = {
+      ...item('artifact-b', gearPlannerSlots.secondFinger, 'Second Artifact', 30),
+      source: {
+        ...item('artifact-b', gearPlannerSlots.secondFinger, 'Second Artifact', 30).source,
+        artifactType: 'Minor'
+      }
+    }
+    await renderReadyPage(dataWithItems([first, second]))
+
+    fireEvent.click(screen.getByRole('button', { name: 'Select First Finger' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip First Artifact' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Second Finger' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Second Artifact' }))
+    expect(await screen.findByText('Only one minor artifact can be equipped at a time.')).toBeTruthy()
+    expect(screen.getByTestId('gear-slot-First Finger').textContent).toContain('First Artifact')
+    expect(screen.getByTestId('gear-slot-Second Finger').textContent).toContain('Select an item')
   })
 
   it('adds, switches, renames, clears, and safely deletes compact setup tabs', async () => {
