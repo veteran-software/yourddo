@@ -10,8 +10,16 @@ import type {
   GearPlannerSlottedCurses,
   GearPlannerSlottedFiligrees
 } from './planner.ts'
+import {
+  getEffectiveGearPlannerAugmentSlotsByItem,
+  getGearPlannerEffectiveReforgingEffects,
+  type GearPlannerReforgingData,
+  type GearPlannerReforgingStage,
+  type GearPlannerReforgingState
+} from './reforging.ts'
 
-export type GearPlannerEffectSourceCategory = 'equipped-item' | 'augment' | 'curse' | 'essence' | 'filigree' | 'set'
+export type GearPlannerEffectSourceCategory =
+  'equipped-item' | 'reforging-tier' | 'reforging-choice' | 'augment' | 'curse' | 'essence' | 'filigree' | 'set'
 
 export interface GearPlannerEffectSource {
   id: string
@@ -30,6 +38,8 @@ export interface GearPlannerEffectSource {
   essenceAffixPosition?: 'prefix' | 'suffix' | 'extra'
   filigreeName?: string
   filigreeSlotIndex?: number
+  reforgingStage?: GearPlannerReforgingStage
+  reforgingChoiceLabel?: string
   setName?: string
   setThreshold?: number
   setCategory?: 'item' | 'filigree'
@@ -115,43 +125,69 @@ export const collectEquippedEffects = (
   slottedFiligrees: GearPlannerSlottedFiligrees = {},
   slottedCurses: GearPlannerSlottedCurses = {},
   essenceData?: EssenceCraftingData,
-  essenceCrafting: GearPlannerEssenceCraftingConfigurations = {}
+  essenceCrafting: GearPlannerEssenceCraftingConfigurations = {},
+  reforgingData?: GearPlannerReforgingData,
+  reforging: GearPlannerReforgingState = {}
 ): readonly GearPlannerEffectSource[] => [
-  ...equippedItems(equipment).flatMap((item) =>
-    (item.source.enchantments ?? []).flatMap((effect, index) =>
-      legacyUpgradePlaceholders.has(effect.name)
-        ? []
-        : [
-            {
-              id: `${item.id}:equipped-item:${String(index)}`,
-              effect,
-              itemId: item.id,
-              itemName: item.source.name,
-              slot: item.slot,
-              category: 'equipped-item' as const,
-              normalizedName: normalizeEffectName(effect.name),
-              normalizedBonusType: normalizeBonusType(effect.bonus),
-              comparisonValue: parseEffectModifier(effect.modifier)
-            }
-          ]
-    )
-  ),
-  ...collectSelectedGearPlannerAugments(equipment, slottedAugments).flatMap(
-    ({ item, slotIndex, augmentSlot, augment }) =>
-      augment.effectsAdded.map((effect, effectIndex) => ({
-        id: `${item.id}:augment:${String(slotIndex)}:${String(effectIndex)}`,
-        effect,
+  ...equippedItems(equipment).flatMap((item) => {
+    const effective = reforgingData
+      ? getGearPlannerEffectiveReforgingEffects(item, reforging[item.id], reforgingData)
+      : { enchantments: item.source.enchantments ?? [], tier: null, choices: [] }
+    const category: 'reforging-tier' | 'equipped-item' = effective.tier ? 'reforging-tier' : 'equipped-item'
+    const sourceId = category === 'reforging-tier' ? `reforging-tier:${effective.tier?.tier ?? ''}` : 'equipped-item'
+    return [
+      ...effective.enchantments.flatMap((effect, index) =>
+        legacyUpgradePlaceholders.has(effect.name)
+          ? []
+          : [
+              {
+                id: `${item.id}:${sourceId}:${String(index)}`,
+                effect,
+                itemId: item.id,
+                itemName: item.source.name,
+                slot: item.slot,
+                category,
+                ...(effective.tier ? { reforgingStage: effective.tier.stage } : {}),
+                normalizedName: normalizeEffectName(effect.name),
+                normalizedBonusType: normalizeBonusType(effect.bonus),
+                comparisonValue: parseEffectModifier(effect.modifier)
+              }
+            ]
+      ),
+      ...effective.choices.map(({ stage, choice }) => ({
+        id: `${item.id}:reforging-choice:${stage}:${encodeURIComponent(choice.id)}`,
+        effect: choice.effect,
         itemId: item.id,
         itemName: item.source.name,
         slot: item.slot,
-        category: 'augment' as const,
-        augmentName: augment.name,
-        augmentSlotIndex: slotIndex,
-        augmentSlotName: augmentSlot.name,
-        normalizedName: normalizeEffectName(effect.name),
-        normalizedBonusType: normalizeBonusType(effect.bonus),
-        comparisonValue: parseEffectModifier(effect.modifier)
+        category: 'reforging-choice' as const,
+        reforgingStage: stage,
+        reforgingChoiceLabel: choice.label,
+        normalizedName: normalizeEffectName(choice.effect.name),
+        normalizedBonusType: normalizeBonusType(choice.effect.bonus),
+        comparisonValue: parseEffectModifier(choice.effect.modifier)
       }))
+    ]
+  }),
+  ...collectSelectedGearPlannerAugments(
+    equipment,
+    slottedAugments,
+    reforgingData ? getEffectiveGearPlannerAugmentSlotsByItem(equipment, reforging, reforgingData) : {}
+  ).flatMap(({ item, slotIndex, augmentSlot, augment }) =>
+    augment.effectsAdded.map((effect, effectIndex) => ({
+      id: `${item.id}:augment:${String(slotIndex)}:${String(effectIndex)}`,
+      effect,
+      itemId: item.id,
+      itemName: item.source.name,
+      slot: item.slot,
+      category: 'augment' as const,
+      augmentName: augment.name,
+      augmentSlotIndex: slotIndex,
+      augmentSlotName: augmentSlot.name,
+      normalizedName: normalizeEffectName(effect.name),
+      normalizedBonusType: normalizeBonusType(effect.bonus),
+      comparisonValue: parseEffectModifier(effect.modifier)
+    }))
   ),
   ...collectSelectedGearPlannerCurses(equipment, slottedCurses).flatMap(({ item, curse }) =>
     curse.enchantments.map((effect, effectIndex) => ({
@@ -273,7 +309,12 @@ export const aggregateEffectSummary = (
 export const conflictEligibleEffectSources = (
   sources: readonly GearPlannerEffectSource[]
 ): readonly GearPlannerEffectSource[] =>
-  sources.filter(({ category }) => category === 'equipped-item' || category === 'augment')
+  sources.filter(
+    ({ category, reforgingStage }) =>
+      category === 'equipped-item' ||
+      category === 'augment' ||
+      (category === 'reforging-choice' && reforgingStage === 'nearly-finished')
+  )
 
 export interface GearPlannerPotentialEffectConflict {
   isConflict: boolean

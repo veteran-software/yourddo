@@ -1,4 +1,5 @@
-import { loadDatasetFile } from '../../shared/data/loadDataset.ts'
+import { loadDatasetFile, loadManualPayload } from '../../shared/data/loadDataset.ts'
+import { nearlyFinishedPayloadName, parseNearlyFinishedDataset } from '../nearlyFinished/nearlyFinished.logic.ts'
 import { gearPlannerCurseDefinitions } from './curses.ts'
 import type {
   GearPlannerAugment,
@@ -11,6 +12,7 @@ import type {
   GearPlannerSourceItem
 } from './gearPlanner.types.ts'
 import { normalizeGearPlannerFiligrees, normalizeGearPlannerSources } from './normalize.ts'
+import { createGearPlannerReforgingData } from './reforging.ts'
 import { gearPlannerItemSources } from './sourceMapping.ts'
 
 const datasetRoot = 'gear-planner'
@@ -224,7 +226,8 @@ export const parseGearPlannerFiligreeSetDataset = (value: unknown): readonly Gea
 
 export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types.ts').GearPlannerData> => {
   const fileNames = Object.keys(gearPlannerItemSources)
-  const [rawAugments, rawFiligrees, rawFiligreeSets, ...rawItems] = await Promise.all([
+  const [rawReforging, rawAugments, rawFiligrees, rawFiligreeSets, ...rawItems] = await Promise.all([
+    loadManualPayload<unknown>(nearlyFinishedPayloadName),
     loadDatasetFile<unknown>(augmentPath),
     loadDatasetFile<unknown>(filigreePath),
     loadDatasetFile<unknown>(filigreeSetPath),
@@ -234,10 +237,16 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
     fileName,
     records: parseGearPlannerItemDataset(rawItems[index], fileName)
   }))
-  const normalized = normalizeGearPlannerSources(sourceDatasets, parseGearPlannerAugmentDataset(rawAugments))
+  const reforgingEntries = parseNearlyFinishedDataset(rawReforging).reforgingStation
+  const normalized = normalizeGearPlannerSources(
+    sourceDatasets,
+    parseGearPlannerAugmentDataset(rawAugments),
+    new Set(reforgingEntries.map(({ item }) => item))
+  )
   const filigreeSetDefinitions = parseGearPlannerFiligreeSetDataset(rawFiligreeSets)
   return {
     ...normalized,
+    reforging: createGearPlannerReforgingData(reforgingEntries, sourceDatasets),
     curses: gearPlannerCurseDefinitions,
     filigrees: normalizeGearPlannerFiligrees(parseGearPlannerItemDataset(rawFiligrees, 'filigrees.json')),
     filigreeSetDefinitions,

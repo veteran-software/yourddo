@@ -14,6 +14,14 @@ import {
 } from './filigrees.ts'
 import type { GearPlannerAugment, GearPlannerCurse, GearPlannerFiligree, GearPlannerItem } from './gearPlanner.types.ts'
 import { gearPlannerCharacterSlots } from './gearPlanner.types.ts'
+import {
+  getEffectiveGearPlannerAugmentSlots,
+  isGearPlannerReforgingStageStateValid,
+  type GearPlannerReforgingData,
+  type GearPlannerReforgingStage,
+  type GearPlannerReforgingStageState,
+  type GearPlannerReforgingState
+} from './reforging.ts'
 
 export type GearPlannerCharacterSlot = (typeof gearPlannerCharacterSlots)[number]
 
@@ -31,6 +39,7 @@ export interface GearPlannerSelectionState {
   slottedFiligrees: GearPlannerSlottedFiligrees
   unlockedFiligreeSlots: GearPlannerUnlockedFiligreeSlots
   essenceCrafting: GearPlannerEssenceCraftingConfigurations
+  reforging: GearPlannerReforgingState
 }
 
 export interface GearPlannerFilters {
@@ -64,7 +73,8 @@ export const createEmptyGearPlannerSelectionState = (): GearPlannerSelectionStat
   slottedCurses: {},
   slottedFiligrees: {},
   unlockedFiligreeSlots: {},
-  essenceCrafting: {}
+  essenceCrafting: {},
+  reforging: {}
 })
 
 export const equipGearPlannerItem = (
@@ -128,7 +138,17 @@ export const equipGearPlannerItemInSelection = (
     previousItem && previousItem.id !== item?.id
       ? withoutItemRecord(state.essenceCrafting, previousItem.id)
       : state.essenceCrafting
-  return { equipment, slottedAugments, slottedCurses, slottedFiligrees, unlockedFiligreeSlots, essenceCrafting }
+  const reforging =
+    previousItem && previousItem.id !== item?.id ? withoutItemRecord(state.reforging, previousItem.id) : state.reforging
+  return {
+    equipment,
+    slottedAugments,
+    slottedCurses,
+    slottedFiligrees,
+    unlockedFiligreeSlots,
+    essenceCrafting,
+    reforging
+  }
 }
 
 export type GearPlannerEssenceCraftingUpdate =
@@ -185,10 +205,11 @@ export const setGearPlannerSlottedAugment = (
   state: GearPlannerSelectionState,
   itemId: string,
   slotIndex: number,
-  augment: GearPlannerAugment | null
+  augment: GearPlannerAugment | null,
+  augmentSlots?: readonly import('./gearPlanner.types.ts').GearPlannerAugmentSlot[]
 ): GearPlannerSelectionState => {
   const item = Object.values(state.equipment).find((equipped): equipped is GearPlannerItem => equipped?.id === itemId)
-  const augmentSlot = item?.source.augments?.[slotIndex]
+  const augmentSlot = augmentSlots?.[slotIndex] ?? item?.source.augments?.[slotIndex]
   if (!item || !augmentSlot || !Number.isInteger(slotIndex) || slotIndex < 0) return state
   if (augment && !isCompatibleGearPlannerAugment(augmentSlot, augment)) return state
 
@@ -202,6 +223,61 @@ export const setGearPlannerSlottedAugment = (
       ? { ...state.slottedAugments, [itemId]: itemAugments }
       : withoutSlottedAugments(state.slottedAugments, itemId)
   return { ...state, slottedAugments }
+}
+
+const sanitizeGearPlannerSlottedAugments = (
+  slottedAugments: GearPlannerSlottedAugments,
+  item: GearPlannerItem,
+  augmentSlots: readonly import('./gearPlanner.types.ts').GearPlannerAugmentSlot[]
+): GearPlannerSlottedAugments => {
+  const current = slottedAugments[item.id]
+  if (!current) return slottedAugments
+  const valid = Object.fromEntries(
+    Object.entries(current).filter(([index, augment]) => {
+      const slot = augmentSlots[Number(index)]
+      return (
+        Number.isInteger(Number(index)) && Number(index) >= 0 && slot && isCompatibleGearPlannerAugment(slot, augment)
+      )
+    })
+  ) as Readonly<Record<number, GearPlannerAugment>>
+  if (Object.keys(valid).length === Object.keys(current).length) return slottedAugments
+  return Object.keys(valid).length > 0
+    ? { ...slottedAugments, [item.id]: valid }
+    : withoutSlottedAugments(slottedAugments, item.id)
+}
+
+export const setGearPlannerItemReforgingState = (
+  state: GearPlannerSelectionState,
+  itemId: string,
+  stage: GearPlannerReforgingStage,
+  update: GearPlannerReforgingStageState | null,
+  data: GearPlannerReforgingData
+): GearPlannerSelectionState => {
+  const item = equippedItemById(state.equipment, itemId)
+  if (!item) return state
+  if (update !== null && !isGearPlannerReforgingStageStateValid(item, stage, update, data)) return state
+  const current = state.reforging[itemId] ?? {}
+  if (update === null && current[stage] === undefined) return state
+  if (
+    update !== null &&
+    current[stage]?.kind === update.kind &&
+    (update.kind === 'active' || (current[stage]?.kind === 'choice' && current[stage].choiceId === update.choiceId))
+  ) {
+    return state
+  }
+  const nextItemState = update
+    ? { ...current, [stage]: update }
+    : Object.fromEntries(Object.entries(current).filter(([candidate]) => candidate !== stage))
+  const reforging =
+    Object.keys(nextItemState).length > 0
+      ? { ...state.reforging, [itemId]: nextItemState }
+      : withoutItemRecord(state.reforging, itemId)
+  const slottedAugments = sanitizeGearPlannerSlottedAugments(
+    state.slottedAugments,
+    item,
+    getEffectiveGearPlannerAugmentSlots(item, reforging[itemId], data)
+  )
+  return { ...state, reforging, slottedAugments }
 }
 
 const equippedItemById = (equipment: GearPlannerEquipment, itemId: string): GearPlannerItem | undefined =>

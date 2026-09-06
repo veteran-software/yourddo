@@ -45,6 +45,7 @@ import AugmentSlotSelector from './components/AugmentSlotSelector.tsx'
 import CurseSelector from './components/CurseSelector.tsx'
 import EssenceCraftingSelector from './components/EssenceCraftingSelector.tsx'
 import FiligreeSlotSelector from './components/FiligreeSlotSelector.tsx'
+import ReforgingSelector from './components/ReforgingSelector.tsx'
 import { canApplyGearPlannerCurse } from './curses.ts'
 import { InvalidGearPlannerDataError, loadGearPlannerData } from './data.ts'
 import {
@@ -69,6 +70,12 @@ import {
   prepareGearPlannerCandidates
 } from './planner.ts'
 import {
+  getEffectiveGearPlannerAugmentSlotsByItem,
+  getGearPlannerEffectiveReforgingTier,
+  gearPlannerReforgingRecipeForStage,
+  gearPlannerReforgingStages
+} from './reforging.ts'
+import {
   createGearPlannerExport,
   GEAR_PLANNER_EXPORT_FILENAME,
   type GearPlannerRestoreIssue,
@@ -92,6 +99,7 @@ import {
   setGearPlannerSetupCurse,
   setGearPlannerSetupEssenceCraftingConfiguration,
   setGearPlannerSetupFiligree,
+  setGearPlannerSetupReforgingState,
   setGearPlannerSetupUnlockedFiligreeSlots,
   updateGearPlannerSetupLevels
 } from './setups.ts'
@@ -141,6 +149,8 @@ interface EquipmentSlotCardProps {
   slottedFiligrees: GearPlannerSlottedFiligrees
   unlockedFiligreeSlots: GearPlannerUnlockedFiligreeSlots
   essenceCrafting: import('./essenceCrafting.ts').GearPlannerEssenceCraftingConfigurations
+  reforging: import('./reforging.ts').GearPlannerReforgingState
+  effectiveAugmentSlots: Readonly<Record<string, readonly import('./gearPlanner.types.ts').GearPlannerAugmentSlot[]>>
   openBrowser: (slot: GearPlannerCharacterSlot) => void
   clearSlot: (slot: GearPlannerCharacterSlot) => void
   setAugment: (itemId: string, slotIndex: number, augment: GearPlannerData['augments'][number] | null) => void
@@ -148,6 +158,11 @@ interface EquipmentSlotCardProps {
   setFiligree: (itemId: string, slotIndex: number, filigree: GearPlannerData['filigrees'][number] | null) => void
   setUnlockedFiligreeSlots: (itemId: string, count: number) => void
   setEssenceConfiguration: (itemId: string, update: import('./planner.ts').GearPlannerEssenceCraftingUpdate) => void
+  setReforging: (
+    itemId: string,
+    stage: import('./reforging.ts').GearPlannerReforgingStage,
+    update: import('./reforging.ts').GearPlannerReforgingStageState | null
+  ) => void
 }
 
 const EquipmentSlotCard = ({
@@ -163,13 +178,16 @@ const EquipmentSlotCard = ({
   slottedFiligrees,
   unlockedFiligreeSlots,
   essenceCrafting,
+  reforging,
+  effectiveAugmentSlots,
   openBrowser,
   clearSlot,
   setAugment,
   setCurse,
   setFiligree,
   setUnlockedFiligreeSlots,
-  setEssenceConfiguration
+  setEssenceConfiguration,
+  setReforging
 }: EquipmentSlotCardProps) => (
   <Paper withBorder p='sm' mih={132} style={{ position: 'relative' }} data-testid={`gear-slot-${slot}`}>
     <Stack gap='xs' h='100%'>
@@ -219,19 +237,31 @@ const EquipmentSlotCard = ({
           </Text>
         )}
       </UnstyledButton>
-      {item?.source.augments?.map((augmentSlot, slotIndex) => (
-        <AugmentSlotSelector
-          key={`${item.id}-${String(slotIndex)}`}
+      {item ? (
+        <ReforgingSelector
           item={item}
-          slotIndex={slotIndex}
-          augmentSlot={augmentSlot}
-          augments={data.augments}
-          selected={slottedAugments[item.id]?.[slotIndex] ?? null}
-          onChange={(augment) => {
-            setAugment(item.id, slotIndex, augment)
+          data={data.reforging}
+          selected={reforging[item.id]}
+          onChange={(stage, update) => {
+            setReforging(item.id, stage, update)
           }}
         />
-      ))}
+      ) : null}
+      {item
+        ? (effectiveAugmentSlots[item.id] ?? []).map((augmentSlot, slotIndex) => (
+            <AugmentSlotSelector
+              key={`${item.id}-${String(slotIndex)}`}
+              item={item}
+              slotIndex={slotIndex}
+              augmentSlot={augmentSlot}
+              augments={data.augments}
+              selected={slottedAugments[item.id]?.[slotIndex] ?? null}
+              onChange={(augment) => {
+                setAugment(item.id, slotIndex, augment)
+              }}
+            />
+          ))
+        : null}
       {item && canApplyGearPlannerCurse(item) ? (
         <CurseSelector
           item={item}
@@ -482,9 +512,23 @@ const GearPlannerPage = () => {
   const [feedback, setFeedback] = useState<{ kind: 'success' | 'error'; message: string } | null>(null)
   const importInputRef = useRef<HTMLInputElement>(null)
   const activeSetup = activeGearPlannerSetup(plannerState)
-  const { equipment, slottedAugments, slottedCurses, slottedFiligrees, unlockedFiligreeSlots, essenceCrafting } =
-    activeSetup
+  const {
+    equipment,
+    slottedAugments,
+    slottedCurses,
+    slottedFiligrees,
+    unlockedFiligreeSlots,
+    essenceCrafting,
+    reforging
+  } = activeSetup
   const filigreeDefinitions = dataState.status === 'ready' ? dataState.data.filigreeSetDefinitionByName : undefined
+  const effectiveAugmentSlots = useMemo(
+    () =>
+      dataState.status === 'ready'
+        ? getEffectiveGearPlannerAugmentSlotsByItem(equipment, reforging, dataState.data.reforging)
+        : {},
+    [dataState, equipment, reforging]
+  )
   const baseEffects = useMemo(
     () =>
       collectEquippedEffects(
@@ -493,13 +537,23 @@ const GearPlannerPage = () => {
         slottedFiligrees,
         slottedCurses,
         dataState.status === 'ready' ? dataState.essenceData : undefined,
-        essenceCrafting
+        essenceCrafting,
+        dataState.status === 'ready' ? dataState.data.reforging : undefined,
+        reforging
       ),
-    [dataState, equipment, essenceCrafting, slottedAugments, slottedCurses, slottedFiligrees]
+    [dataState, equipment, essenceCrafting, reforging, slottedAugments, slottedCurses, slottedFiligrees]
   )
   const setState = useMemo(
-    () => resolveGearPlannerSetState(equipment, slottedAugments, undefined, slottedFiligrees, filigreeDefinitions),
-    [equipment, filigreeDefinitions, slottedAugments, slottedFiligrees]
+    () =>
+      resolveGearPlannerSetState(
+        equipment,
+        slottedAugments,
+        undefined,
+        slottedFiligrees,
+        filigreeDefinitions,
+        effectiveAugmentSlots
+      ),
+    [effectiveAugmentSlots, equipment, filigreeDefinitions, slottedAugments, slottedFiligrees]
   )
   const effects = useMemo(() => [...baseEffects, ...collectActiveSetEffectSources(setState)], [baseEffects, setState])
   const conflictSources = useMemo(() => conflictEligibleEffectSources(baseEffects), [baseEffects])
@@ -530,6 +584,22 @@ const GearPlannerPage = () => {
       )
     }
   }, [setState.unresolvedDefinitionNames])
+
+  useEffect(() => {
+    if (dataState.status !== 'ready' || !import.meta.env.DEV) return
+    for (const item of Object.values(equipment)) {
+      if (!item) continue
+      const selected = reforging[item.id]
+      const hasActiveToggle = gearPlannerReforgingStages.some(
+        (stage) =>
+          selected?.[stage]?.kind === 'active' &&
+          gearPlannerReforgingRecipeForStage(item, stage, dataState.data.reforging)?.kind === 'toggle'
+      )
+      if (hasActiveToggle && !getGearPlannerEffectiveReforgingTier(item, selected, dataState.data.reforging)) {
+        console.warn(`Gear Planner reforging tier unavailable for ${item.source.name}`)
+      }
+    }
+  }, [dataState, equipment, reforging])
 
   useEffect(() => {
     let active = true
@@ -819,7 +889,11 @@ const GearPlannerPage = () => {
                     essenceData={dataState.essenceData}
                     effects={effects.filter(
                       (effect) =>
-                        effect.slot === slot && (effect.category === 'equipped-item' || effect.category === 'essence')
+                        effect.slot === slot &&
+                        (effect.category === 'equipped-item' ||
+                          effect.category === 'reforging-tier' ||
+                          effect.category === 'reforging-choice' ||
+                          effect.category === 'essence')
                     )}
                     conflictSources={conflictSources}
                     conflicts={conflicts}
@@ -828,12 +902,16 @@ const GearPlannerPage = () => {
                     slottedFiligrees={slottedFiligrees}
                     unlockedFiligreeSlots={unlockedFiligreeSlots}
                     essenceCrafting={essenceCrafting}
+                    reforging={reforging}
+                    effectiveAugmentSlots={effectiveAugmentSlots}
                     openBrowser={setBrowsingSlot}
                     clearSlot={(currentSlot) => {
                       equip(currentSlot, null)
                     }}
                     setAugment={(itemId, slotIndex, augment) => {
-                      applySetupState((current) => setGearPlannerSetupAugment(current, itemId, slotIndex, augment))
+                      applySetupState((current) =>
+                        setGearPlannerSetupAugment(current, itemId, slotIndex, augment, dataState.data.reforging)
+                      )
                     }}
                     setCurse={(itemId, curseId) => {
                       applySetupState((current) =>
@@ -849,6 +927,11 @@ const GearPlannerPage = () => {
                     setEssenceConfiguration={(itemId, update) => {
                       applySetupState((current) =>
                         setGearPlannerSetupEssenceCraftingConfiguration(current, itemId, update, dataState.essenceData)
+                      )
+                    }}
+                    setReforging={(itemId, stage, update) => {
+                      applySetupState((current) =>
+                        setGearPlannerSetupReforgingState(current, itemId, stage, update, dataState.data.reforging)
                       )
                     }}
                   />

@@ -4,6 +4,7 @@ import type {
   GearPlannerEffectSource,
   GearPlannerEffectSummary
 } from '../effects.ts'
+import { gearPlannerReforgingStageLabel } from '../reforging.ts'
 
 const bonusTypeLabel = (bonusType: string) =>
   bonusType === 'no type' ? 'No type' : bonusType.replace(/\b\w/g, (letter) => letter.toUpperCase())
@@ -14,6 +15,9 @@ const sourceLabel = (source: GearPlannerEffectSource) => {
   return `${source.effect.name}${modifier}${bonus}`
 }
 
+const reforgingStageLabel = (source: GearPlannerEffectSource) =>
+  source.reforgingStage ? gearPlannerReforgingStageLabel[source.reforgingStage] : 'Reforging upgrade'
+
 const sourceProvenance = (source: GearPlannerEffectSource): string =>
   source.category === 'set'
     ? source.setCategory === 'filigree'
@@ -21,13 +25,17 @@ const sourceProvenance = (source: GearPlannerEffectSource): string =>
       : `${source.setName ?? 'Set bonus'} · ${String(source.setThreshold ?? 0)}-piece bonus`
     : source.category === 'augment'
       ? `${source.augmentName ?? 'Augment'} slotted in ${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'} / ${source.augmentSlotName ?? `Augment slot ${String((source.augmentSlotIndex ?? 0) + 1)}`}`
-      : source.category === 'curse'
-        ? `Deck of Many Curses · ${source.curseName ?? 'Curse'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
-        : source.category === 'essence'
-          ? `Essence Crafting · ${source.essenceAffixPosition ?? 'Affix'}: ${source.essenceEnhancementName ?? 'Enhancement'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
-          : source.category === 'filigree'
-            ? `${source.filigreeName ?? 'Filigree'} on ${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'} / Filigree slot ${String((source.filigreeSlotIndex ?? 0) + 1)}`
-            : `${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'}`
+      : source.category === 'reforging-tier'
+        ? `Reforging · ${reforgingStageLabel(source)} tier on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
+        : source.category === 'reforging-choice'
+          ? `Reforging · ${reforgingStageLabel(source)}: ${source.reforgingChoiceLabel ?? 'Selected choice'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
+          : source.category === 'curse'
+            ? `Deck of Many Curses · ${source.curseName ?? 'Curse'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
+            : source.category === 'essence'
+              ? `Essence Crafting · ${source.essenceAffixPosition ?? 'Affix'}: ${source.essenceEnhancementName ?? 'Enhancement'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
+              : source.category === 'filigree'
+                ? `${source.filigreeName ?? 'Filigree'} on ${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'} / Filigree slot ${String((source.filigreeSlotIndex ?? 0) + 1)}`
+                : `${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'}`
 
 const groupValue = (group: GearPlannerEffectSummary['groups'][number]) =>
   group.effectiveValue === 0 ? group.effectiveDisplay || 'Active' : `+${String(group.effectiveValue)}`

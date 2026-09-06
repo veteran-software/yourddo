@@ -19,6 +19,8 @@ import {
 } from './gearPlanner.types.ts'
 import GearPlannerPage from './GearPlannerPage.tsx'
 import { GEAR_PLANNER_STORAGE_KEY } from './plannerStorage.ts'
+import { createGearPlannerReforgingData, emptyGearPlannerReforgingData } from './reforging.ts'
+import type { ReforgingEntry } from '../nearlyFinished/nearlyFinished.types.ts'
 
 const essenceData = {
   rules: { supportedItemLevels: { minimum: 1, maximum: 36 } },
@@ -44,6 +46,7 @@ const data: GearPlannerData = {
   filigrees: [],
   filigreeSetDefinitions: [],
   filigreeSetDefinitionByName: new Map(),
+  reforging: emptyGearPlannerReforgingData,
   rawItemCount: 0,
   normalizedItemCount: 0,
   rejectedItemCount: 0
@@ -251,6 +254,53 @@ describe('GearPlannerPage', () => {
 
     expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Select an item')
     expect(screen.getByTestId('gear-slot-First Finger').textContent).toContain('Independent Ring')
+  })
+
+  it('updates effective reforging effects, Enchantments provenance, and augment controls in place', async () => {
+    const baseSource = {
+      name: 'Reforged Trinket',
+      pageTitle: 'Reforged Trinket',
+      minLevel: 10,
+      enchantments: [{ name: 'Strength', modifier: '+4', bonus: 'Enhancement' }]
+    }
+    const upgradedSource = {
+      name: 'Reforged Trinket',
+      pageTitle: 'Reforged Trinket (Nearly Finished Upgraded)',
+      minLevel: 10,
+      enchantments: [{ name: 'Strength', modifier: '+6', bonus: 'Enhancement' }],
+      augments: [{ augmentType: 'Blue', name: 'Reforged blue slot' }]
+    }
+    const sourceDatasets = [{ fileName: 'trinket.json', records: [baseSource, upgradedSource] }]
+    const recipes: ReforgingEntry[] = [
+      {
+        item: 'Reforged Trinket',
+        stage: 'Nearly Finished',
+        cost: [{ name: 'Thread of Fate', quantity: 1 }],
+        effectsAdded: []
+      }
+    ]
+    const reforging = createGearPlannerReforgingData(recipes, sourceDatasets)
+    const reforgedItem: GearPlannerItem = {
+      id: 'reforged-trinket',
+      slot: gearPlannerSlots.trinket,
+      sourceFile: 'trinket.json',
+      minimumLevel: 10,
+      source: baseSource
+    }
+    await renderReadyPage({ ...dataWithItems([reforgedItem]), sourceDatasets, reforging })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Select Trinket' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Reforged Trinket' }))
+    expect(screen.queryByTestId('augment-slot-reforged-trinket-0')).toBeNull()
+
+    fireEvent.click(screen.getByLabelText('Nearly Finished applied'))
+    expect(
+      screen.getByTestId('equipped-effect-reforged-trinket:reforging-tier:nearly-finished:0').textContent
+    ).toContain('+6')
+    expect(screen.getByTestId('augment-slot-reforged-trinket-0')).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
+    expect((await screen.findAllByText(/Reforging · Nearly Finished tier on Trinket: Reforged Trinket/)).length).toBe(1)
   })
 
   it('limits results to 50 until more are requested', async () => {

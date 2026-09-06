@@ -7,6 +7,7 @@ import {
   type GearPlannerSourceDataset,
   type GearPlannerSourceItem
 } from './gearPlanner.types.ts'
+import { emptyGearPlannerReforgingData, isGearPlannerReforgingUpgradeSource } from './reforging.ts'
 import { isAcceptedSourceItem, sourceSlotsForItem } from './sourceMapping.ts'
 
 const numericLevel = (value: string | number | undefined): number => {
@@ -43,7 +44,8 @@ export const normalizeGearPlannerFiligrees = (
 
 export const normalizeGearPlannerSources = (
   sourceDatasets: readonly GearPlannerSourceDataset[],
-  augments: GearPlannerData['augments']
+  augments: GearPlannerData['augments'],
+  reforgingItemNames: ReadonlySet<string> = new Set()
 ): GearPlannerData => {
   const itemsBySlot = Object.fromEntries(allGearPlannerSlots.map((slot) => [slot, [] as GearPlannerItem[]])) as Record<
     GearPlannerSlot,
@@ -55,6 +57,10 @@ export const normalizeGearPlannerSources = (
   for (const { fileName, records } of sourceDatasets) {
     rawItemCount += records.length
     for (const source of records) {
+      if (isGearPlannerReforgingUpgradeSource(source, reforgingItemNames)) {
+        rejectedItemCount += sourceSlotsForItem(fileName, source).length
+        continue
+      }
       const absoluteMinimumLevel = optionalNumericLevel(source.absoluteMinLevel)
       for (const slot of sourceSlotsForItem(fileName, source)) {
         if (!isAcceptedSourceItem(source, slot)) {
@@ -83,6 +89,7 @@ export const normalizeGearPlannerSources = (
     filigrees: [],
     filigreeSetDefinitions: [],
     filigreeSetDefinitionByName: new Map(),
+    reforging: emptyGearPlannerReforgingData,
     rawItemCount,
     normalizedItemCount: items.length,
     rejectedItemCount

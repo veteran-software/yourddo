@@ -162,6 +162,7 @@ export interface GearPlannerData {
   filigrees: readonly GearPlannerFiligree[]
   filigreeSetDefinitions: readonly GearPlannerFiligreeSetDefinition[]
   filigreeSetDefinitionByName: ReadonlyMap<string, GearPlannerFiligreeSetDefinition>
+  reforging: import('./reforging.ts').GearPlannerReforgingData
   rawItemCount: number
   normalizedItemCount: number
   rejectedItemCount: number

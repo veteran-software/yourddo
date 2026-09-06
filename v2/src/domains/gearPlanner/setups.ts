@@ -8,11 +8,18 @@ import {
   type GearPlannerEssenceCraftingUpdate,
   type GearPlannerSelectionState,
   setGearPlannerEssenceCraftingConfiguration,
+  setGearPlannerItemReforgingState,
   setGearPlannerSlottedAugment,
   setGearPlannerSlottedCurse,
   setGearPlannerSlottedFiligree,
   setGearPlannerUnlockedFiligreeSlots
 } from './planner.ts'
+import type {
+  GearPlannerReforgingData,
+  GearPlannerReforgingStage,
+  GearPlannerReforgingStageState
+} from './reforging.ts'
+import { getEffectiveGearPlannerAugmentSlots } from './reforging.ts'
 
 export const gearPlannerMinimumLevel = 1
 export const gearPlannerMaximumLevel = 36
@@ -142,10 +149,28 @@ export const setGearPlannerSetupAugment = (
   state: GearPlannerSetupsState,
   itemId: string,
   slotIndex: number,
-  augment: GearPlannerAugment | null
+  augment: GearPlannerAugment | null,
+  reforgingData?: GearPlannerReforgingData
 ): GearPlannerSetupsState =>
   replaceSetup(state, state.activeSetupId, (setup) => {
-    const selection = setGearPlannerSlottedAugment(setup, itemId, slotIndex, augment)
+    const item = Object.values(setup.equipment).find((equipped): equipped is GearPlannerItem => equipped?.id === itemId)
+    const augmentSlots =
+      item && reforgingData
+        ? getEffectiveGearPlannerAugmentSlots(item, setup.reforging[itemId], reforgingData)
+        : undefined
+    const selection = setGearPlannerSlottedAugment(setup, itemId, slotIndex, augment, augmentSlots)
+    return selection === setup ? setup : { ...setup, ...selection }
+  })
+
+export const setGearPlannerSetupReforgingState = (
+  state: GearPlannerSetupsState,
+  itemId: string,
+  stage: GearPlannerReforgingStage,
+  update: GearPlannerReforgingStageState | null,
+  data: GearPlannerReforgingData
+): GearPlannerSetupsState =>
+  replaceSetup(state, state.activeSetupId, (setup) => {
+    const selection = setGearPlannerItemReforgingState(setup, itemId, stage, update, data)
     return selection === setup ? setup : { ...setup, ...selection }
   })
 

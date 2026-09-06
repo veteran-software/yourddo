@@ -6,7 +6,12 @@ import {
   parseEffectModifier
 } from './effects.ts'
 import { collectSelectedGearPlannerFiligrees } from './filigrees.ts'
-import type { GearPlannerEffect, GearPlannerFiligreeSetDefinition, GearPlannerItem } from './gearPlanner.types.ts'
+import type {
+  GearPlannerAugmentSlot,
+  GearPlannerEffect,
+  GearPlannerFiligreeSetDefinition,
+  GearPlannerItem
+} from './gearPlanner.types.ts'
 import type { GearPlannerEquipment, GearPlannerSlottedAugments, GearPlannerSlottedFiligrees } from './planner.ts'
 import {
   type GearPlannerStandardSetDefinition,
@@ -71,10 +76,11 @@ export const collectEquippedItemSetMemberships = (
 export const collectGearPlannerSetMemberships = (
   equipment: GearPlannerEquipment,
   slottedAugments: GearPlannerSlottedAugments,
-  slottedFiligrees: GearPlannerSlottedFiligrees = {}
+  slottedFiligrees: GearPlannerSlottedFiligrees = {},
+  augmentSlotsByItem: Readonly<Record<string, readonly GearPlannerAugmentSlot[]>> = {}
 ): readonly GearPlannerSetMembership[] => [
   ...collectEquippedItemSetMemberships(equipment),
-  ...collectSelectedAugmentSetMemberships(equipment, slottedAugments).map(
+  ...collectSelectedAugmentSetMemberships(equipment, slottedAugments, augmentSlotsByItem).map(
     ({ item, slotIndex, augmentSlot, augment, setBonus }, membershipIndex) => ({
       id: `${item.id}:augment-set:${String(slotIndex)}:${String(membershipIndex)}`,
       setName: setBonus.name,
@@ -125,9 +131,10 @@ export const resolveGearPlannerSetState = (
   slottedAugments: GearPlannerSlottedAugments,
   definitions: ReadonlyMap<string, GearPlannerStandardSetDefinition> = standardGearPlannerSetDefinitionByName,
   slottedFiligrees: GearPlannerSlottedFiligrees = {},
-  filigreeDefinitions: ReadonlyMap<string, GearPlannerFiligreeSetDefinition> = new Map()
+  filigreeDefinitions: ReadonlyMap<string, GearPlannerFiligreeSetDefinition> = new Map(),
+  augmentSlotsByItem: Readonly<Record<string, readonly GearPlannerAugmentSlot[]>> = {}
 ): GearPlannerSetState => {
-  const memberships = collectGearPlannerSetMemberships(equipment, slottedAugments, slottedFiligrees)
+  const memberships = collectGearPlannerSetMemberships(equipment, slottedAugments, slottedFiligrees, augmentSlotsByItem)
   const membershipsBySet = new Map<string, GearPlannerSetMembership[]>()
   for (const membership of memberships) {
     const category = membership.category === 'filigree' ? 'filigree' : 'item'

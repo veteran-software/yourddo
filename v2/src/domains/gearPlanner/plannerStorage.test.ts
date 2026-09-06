@@ -43,6 +43,7 @@ import {
   setGearPlannerSetupUnlockedFiligreeSlots
 } from './setups.ts'
 import { standardGearPlannerSetDefinitionByName } from './standardSetDefinitions.ts'
+import { emptyGearPlannerReforgingData } from './reforging.ts'
 
 const item = (id: string, slot: GearPlannerItem['slot'], name = id, augmentType?: string): GearPlannerItem => ({
   id,
@@ -84,6 +85,7 @@ const data = (
   curses,
   filigreeSetDefinitions: [],
   filigreeSetDefinitionByName: new Map(),
+  reforging: emptyGearPlannerReforgingData,
   itemsBySlot: Object.fromEntries(
     allGearPlannerSlots.map((slot) => [slot, items.filter((candidate) => candidate.slot === slot)])
   ) as unknown as GearPlannerData['itemsBySlot'],

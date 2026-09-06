@@ -25,6 +25,31 @@ const normalize = (fileName: string, records: readonly GearPlannerSourceItem[]) 
   normalizeGearPlannerSources([{ fileName, records }], [])
 
 describe('Gear Planner data validation', () => {
+  it('keeps only base reforging items in normal browsing while retaining unrelated upgraded records', () => {
+    const normalized = normalizeGearPlannerSources(
+      [
+        {
+          fileName: 'dagger.json',
+          records: [
+            { name: 'Reforged Blade', pageTitle: 'Reforged Blade', minLevel: 10 },
+            {
+              name: 'Reforged Blade',
+              pageTitle: 'Reforged Blade (Nearly Finished Upgraded)',
+              minLevel: 10
+            },
+            { name: 'Other Upgrade', pageTitle: 'Other Upgrade (Upgraded)', minLevel: 10 }
+          ]
+        }
+      ],
+      [],
+      new Set(['Reforged Blade'])
+    )
+
+    expect(new Set(normalized.items.map(({ source }) => source.pageTitle))).toEqual(
+      new Set(['Reforged Blade', 'Other Upgrade (Upgraded)'])
+    )
+  })
+
   it('accepts current optional item omissions without discarding source metadata', () => {
     const [parsed] = parseGearPlannerItemDataset(
       [

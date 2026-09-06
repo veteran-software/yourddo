@@ -1,9 +1,5 @@
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
-import {
-  collectSelectedGearPlannerAugments,
-  gearPlannerAugmentIdentity,
-  isCompatibleGearPlannerAugment
-} from './augments.ts'
+import { gearPlannerAugmentIdentity, isCompatibleGearPlannerAugment } from './augments.ts'
 import { canApplyGearPlannerCurse, collectSelectedGearPlannerCurses, gearPlannerCurseIdentity } from './curses.ts'
 import {
   type GearPlannerEssenceCraftingConfiguration,
@@ -16,11 +12,20 @@ import { collectSelectedGearPlannerFiligrees, getGearPlannerMaxFiligreeSlots } f
 import { gearPlannerCharacterSlots, type GearPlannerData } from './gearPlanner.types.ts'
 import {
   createEmptyGearPlannerEquipment,
+  setGearPlannerItemReforgingState,
   setGearPlannerSlottedAugment,
   setGearPlannerSlottedCurse,
   setGearPlannerSlottedFiligree,
   setGearPlannerUnlockedFiligreeSlots
 } from './planner.ts'
+import {
+  getEffectiveGearPlannerAugmentSlots,
+  gearPlannerReforgingRecipeForStage,
+  gearPlannerReforgingStages,
+  isGearPlannerReforgingStageStateValid,
+  type GearPlannerItemReforgingState,
+  type GearPlannerReforgingStageState
+} from './reforging.ts'
 import {
   createDefaultGearPlannerState,
   createGearPlannerSetup,
@@ -71,6 +76,11 @@ export interface PersistedGearPlannerEssenceCraftingV1 {
   extraId: string | null
 }
 
+export interface PersistedGearPlannerReforgingV1 {
+  itemId: string
+  stages: GearPlannerItemReforgingState
+}
+
 export interface PersistedGearPlannerSetupV1 {
   id: string
   name: string
@@ -82,6 +92,7 @@ export interface PersistedGearPlannerSetupV1 {
   selectedFiligrees?: readonly PersistedGearPlannerFiligreeV1[]
   unlockedFiligreeSlots?: readonly PersistedGearPlannerUnlockedFiligreeSlotsV1[]
   selectedEssenceCrafting?: readonly PersistedGearPlannerEssenceCraftingV1[]
+  selectedReforging?: readonly PersistedGearPlannerReforgingV1[]
 }
 
 export interface PersistedGearPlannerStateV1 {
@@ -108,6 +119,9 @@ export interface GearPlannerRestoreIssue {
     | 'orphaned-essence'
     | 'ineligible-essence'
     | 'missing-essence-enhancement'
+    | 'orphaned-reforging'
+    | 'missing-reforging-recipe'
+    | 'invalid-reforging-selection'
   message: string
 }
 
@@ -279,6 +293,39 @@ const parseSelectedEssenceCrafting = (
   })
 }
 
+const parseReforgingStageState = (value: unknown, path: string): GearPlannerReforgingStageState => {
+  const record = requiredRecord(value, path)
+  if (record.kind === 'active') return { kind: 'active' }
+  if (record.kind === 'choice') return { kind: 'choice', choiceId: requiredString(record.choiceId, `${path}.choiceId`) }
+  throw new InvalidGearPlannerStateError(`${path}.kind must be active or choice`)
+}
+
+const parseSelectedReforging = (value: unknown, path: string): readonly PersistedGearPlannerReforgingV1[] => {
+  if (value === undefined) return []
+  if (!Array.isArray(value)) throw new InvalidGearPlannerStateError(`${path} must be an array`)
+  const seen = new Set<string>()
+  const stages = new Set<string>(gearPlannerReforgingStages)
+  return value.map((entry, index) => {
+    const entryPath = `${path}[${String(index)}]`
+    const record = requiredRecord(entry, entryPath)
+    const itemId = requiredString(record.itemId, `${entryPath}.itemId`)
+    if (seen.has(itemId)) throw new InvalidGearPlannerStateError(`${path} contains duplicate item IDs`)
+    seen.add(itemId)
+    const sourceStages = requiredRecord(record.stages, `${entryPath}.stages`)
+    const parsed: Partial<Record<(typeof gearPlannerReforgingStages)[number], GearPlannerReforgingStageState>> = {}
+    for (const [stage, state] of Object.entries(sourceStages)) {
+      if (!stages.has(stage)) throw new InvalidGearPlannerStateError(`${entryPath}.stages.${stage} is not supported`)
+      parsed[stage as (typeof gearPlannerReforgingStages)[number]] = parseReforgingStageState(
+        state,
+        `${entryPath}.stages.${stage}`
+      )
+    }
+    if (Object.keys(parsed).length === 0)
+      throw new InvalidGearPlannerStateError(`${entryPath}.stages must not be empty`)
+    return { itemId, stages: parsed }
+  })
+}
+
 const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 => {
   const path = `setups[${String(index)}]`
   const record = requiredRecord(value, path)
@@ -316,7 +363,10 @@ const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 
             record.selectedEssenceCrafting,
             `${path}.selectedEssenceCrafting`
           )
-        })
+        }),
+    ...(record.selectedReforging === undefined
+      ? {}
+      : { selectedReforging: parseSelectedReforging(record.selectedReforging, `${path}.selectedReforging`) })
   }
 }
 
@@ -361,12 +411,15 @@ export const serializeGearPlannerState = (state: GearPlannerSetupsState): Persis
     equipment: Object.fromEntries(
       gearPlannerCharacterSlots.map((slot) => [slot, setup.equipment[slot]?.id ?? null])
     ) as PersistedGearPlannerSetupV1['equipment'],
-    selectedAugments: collectSelectedGearPlannerAugments(setup.equipment, setup.slottedAugments)
-      .map(({ item, slotIndex, augment }) => ({
-        itemId: item.id,
-        slotIndex,
-        augmentId: gearPlannerAugmentIdentity(augment)
-      }))
+    selectedAugments: Object.values(setup.equipment)
+      .filter((item): item is NonNullable<typeof item> => item !== null)
+      .flatMap((item) =>
+        Object.entries(setup.slottedAugments[item.id] ?? {}).map(([slotIndex, augment]) => ({
+          itemId: item.id,
+          slotIndex: Number(slotIndex),
+          augmentId: gearPlannerAugmentIdentity(augment)
+        }))
+      )
       .toSorted((left, right) => left.itemId.localeCompare(right.itemId) || left.slotIndex - right.slotIndex),
     selectedCurses: collectSelectedGearPlannerCurses(setup.equipment, setup.slottedCurses)
       .map(({ item, curse }) => ({ itemId: item.id, curseId: gearPlannerCurseIdentity(curse) }))
@@ -397,6 +450,13 @@ export const serializeGearPlannerState = (state: GearPlannerSetupsState): Persis
               }
             ]
           : []
+      })
+      .toSorted((left, right) => left.itemId.localeCompare(right.itemId)),
+    selectedReforging: Object.values(setup.equipment)
+      .filter((item): item is NonNullable<typeof item> => item !== null)
+      .flatMap((item) => {
+        const stages = setup.reforging[item.id]
+        return stages && Object.keys(stages).length > 0 ? [{ itemId: item.id, stages: { ...stages } }] : []
       })
       .toSorted((left, right) => left.itemId.localeCompare(right.itemId))
   }))
@@ -433,6 +493,33 @@ export const restorePersistedGearPlannerState = (
       maximumLevel: savedSetup.maximumLevel,
       equipment
     }
+    for (const savedReforging of savedSetup.selectedReforging ?? []) {
+      const item = findEquippedItem(setup, savedReforging.itemId)
+      if (!item) {
+        issues.push({ kind: 'orphaned-reforging', message: `${savedSetup.name}: reforging host item is not equipped` })
+        continue
+      }
+      for (const stage of gearPlannerReforgingStages) {
+        const selected = savedReforging.stages[stage]
+        if (!selected) continue
+        if (!gearPlannerReforgingRecipeForStage(item, stage, data.reforging)) {
+          issues.push({
+            kind: 'missing-reforging-recipe',
+            message: `${savedSetup.name}: reforging recipe is unavailable`
+          })
+          continue
+        }
+        if (!isGearPlannerReforgingStageStateValid(item, stage, selected, data.reforging)) {
+          issues.push({
+            kind: 'invalid-reforging-selection',
+            message: `${savedSetup.name}: reforging selection is invalid`
+          })
+          continue
+        }
+        const selection = setGearPlannerItemReforgingState(setup, item.id, stage, selected, data.reforging)
+        setup = selection === setup ? setup : { ...setup, ...selection }
+      }
+    }
     for (const savedAugment of savedSetup.selectedAugments) {
       const item = findEquippedItem(setup, savedAugment.itemId)
       if (!item) {
@@ -444,7 +531,8 @@ export const restorePersistedGearPlannerState = (
         issues.push({ kind: 'missing-augment', message: `${savedSetup.name}: selected augment is no longer available` })
         continue
       }
-      const augmentSlot = item.source.augments?.[savedAugment.slotIndex]
+      const augmentSlots = getEffectiveGearPlannerAugmentSlots(item, setup.reforging[item.id], data.reforging)
+      const augmentSlot = augmentSlots[savedAugment.slotIndex]
       if (!augmentSlot || !isCompatibleGearPlannerAugment(augmentSlot, augment)) {
         issues.push({
           kind: 'incompatible-augment',
@@ -452,7 +540,7 @@ export const restorePersistedGearPlannerState = (
         })
         continue
       }
-      const selection = setGearPlannerSlottedAugment(setup, item.id, savedAugment.slotIndex, augment)
+      const selection = setGearPlannerSlottedAugment(setup, item.id, savedAugment.slotIndex, augment, augmentSlots)
       setup = selection === setup ? setup : { ...setup, ...selection }
     }
     for (const savedCurse of savedSetup.selectedCurses ?? []) {

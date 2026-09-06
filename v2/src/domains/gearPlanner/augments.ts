@@ -53,12 +53,13 @@ export interface GearPlannerSelectedAugment {
 
 export const collectSelectedGearPlannerAugments = (
   equipment: GearPlannerEquipment,
-  slottedAugments: GearPlannerSlottedAugments
+  slottedAugments: GearPlannerSlottedAugments,
+  augmentSlotsByItem: Readonly<Record<string, readonly GearPlannerAugmentSlot[]>> = {}
 ): readonly GearPlannerSelectedAugment[] =>
   equippedItems(equipment).flatMap((item) =>
     Object.entries(slottedAugments[item.id] ?? {}).flatMap(([slotIndex, augment]) => {
       const index = Number(slotIndex)
-      const augmentSlot = item.source.augments?.[index]
+      const augmentSlot = augmentSlotsByItem[item.id]?.[index] ?? item.source.augments?.[index]
       return augment && augmentSlot ? [{ item, slotIndex: index, augmentSlot, augment }] : []
     })
   )
@@ -69,8 +70,9 @@ export interface GearPlannerAugmentSetMembership extends GearPlannerSelectedAugm
 
 export const collectSelectedAugmentSetMemberships = (
   equipment: GearPlannerEquipment,
-  slottedAugments: GearPlannerSlottedAugments
+  slottedAugments: GearPlannerSlottedAugments,
+  augmentSlotsByItem: Readonly<Record<string, readonly GearPlannerAugmentSlot[]>> = {}
 ): readonly GearPlannerAugmentSetMembership[] =>
-  collectSelectedGearPlannerAugments(equipment, slottedAugments).flatMap((selection) =>
+  collectSelectedGearPlannerAugments(equipment, slottedAugments, augmentSlotsByItem).flatMap((selection) =>
     (selection.augment.setBonus ?? []).map((setBonus) => ({ ...selection, setBonus }))
   )
