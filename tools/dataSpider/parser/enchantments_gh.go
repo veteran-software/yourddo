@@ -8,7 +8,7 @@ import (
 	api "compendium-crawler-go/api"
 )
 
-func parseTemplateHealingAmp(rawAmpValue string) *api.Enchantment {
+func parseTemplateHealingAmp(rawAmpValue string) []*api.Enchantment {
 	const prefix = "{{HealingAmp|"
 	const suffix = "}}"
 	const defaultBonusType = "Enhancement" // Default from documentation
@@ -54,6 +54,14 @@ func parseTemplateHealingAmp(rawAmpValue string) *api.Enchantment {
 		bonusType = defaultBonusType // Default value
 	}
 
+	if strings.EqualFold(healingType, "lifeblood") {
+		return []*api.Enchantment{
+			{Name: "Positive Healing Amplification", Amount: amount, BonusType: "Competence"},
+			{Name: "Repair Amplification", Amount: amount, BonusType: "Competence"},
+			{Name: "Negative Healing Amplification", Amount: amount, BonusType: "Profane"},
+		}
+	}
+
 	// 4. Title (Optional, Index 3) - overrides the standard Name if present
 	if len(parts) >= 4 && stripBrackets(parts[3]) != "" {
 		name = stripBrackets(parts[3]) // Use custom title
@@ -68,11 +76,11 @@ func parseTemplateHealingAmp(rawAmpValue string) *api.Enchantment {
 		}
 	}
 
-	return &api.Enchantment{
+	return []*api.Enchantment{{
 		Name:      name,
 		Amount:    amount,
 		BonusType: bonusType,
-	}
+	}}
 }
 
 

@@ -486,67 +486,95 @@ func parseTemplate3rdDegreeBurns() *api.Enchantment {
 
 
 // Template:Vorpal
-// Supports the following forms:
-//
-//	{{Vorpal}}                                  -> Name: "Vorpal", Bonus: On-vorpal
-//	{{Vorpal|Effect Name}}                      -> Name: Effect Name, Bonus: On-vorpal
-//	{{Vorpal|Effect Name|{{Dice||X|Y}}}}        -> Name: Effect Name, Amount: dice, Bonus: On-vorpal
-//	{{Vorpal|Effect Name|flat or dice string}}  -> Name: Effect Name, Amount: raw, Bonus: On-vorpal
 func parseTemplateVorpal(raw string) *api.Enchantment {
 	const template = "Vorpal"
-	const open = "{{" + template
-	const close = "}}"
+	const prefix = "{{" + template
+	const suffix = "}}"
 
-	if !strings.HasPrefix(raw, open) || !strings.HasSuffix(raw, close) {
+	s := strings.TrimSpace(raw)
+	if s != "{{Vorpal}}" && (!strings.HasPrefix(s, prefix+"|") || !strings.HasSuffix(s, suffix)) {
 		return nil
 	}
 
-	inner := strings.TrimSuffix(strings.TrimPrefix(raw, open), close)
+	inner := strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix)
 	inner = strings.TrimPrefix(inner, "|")
-	inner = strings.TrimSpace(inner)
-
-	// No params
-	if inner == "" {
-		return &api.Enchantment{Name: template, BonusType: "On-vorpal"}
-	}
-
-	// Split parameters by pipe, but respect nested templates
-	var parts []string
-	var cur strings.Builder
-	depth := 0
-	for _, r := range inner {
-		if r == '{' {
-			depth++
-		} else if r == '}' {
-			if depth > 0 {
-				depth--
+	parts := splitParams(inner)
+	param := func(index int, fallback string) string {
+		if index < len(parts) {
+			if value := strings.TrimSpace(stripBrackets(parts[index])); value != "" {
+				return value
 			}
 		}
-		if r == '|' && depth == 0 {
-			parts = append(parts, strings.TrimSpace(cur.String()))
-			cur.Reset()
-		} else {
-			cur.WriteRune(r)
-		}
+		return fallback
 	}
-	parts = append(parts, strings.TrimSpace(cur.String()))
 
-	name := stripBrackets(parts[0])
-	var amount string
-	if len(parts) >= 2 {
-		rawAmount := strings.TrimSpace(parts[1])
-		dice := ParseTemplateDice(rawAmount)
-		if dice.Raw != "" {
-			amount = dice.Raw
-		} else {
-			amount = stripBrackets(rawAmount)
+	vorpalType := param(0, "")
+	title := param(5, "")
+	name := template
+	amount := ""
+	notes := ""
+
+	standardNotes := func(threshold, failDamage string) string {
+		return "Passive: +0.5[W] damage dice. On Vorpal Hit: If your target has fewer than " + threshold + " Hit Points, they are Instantly Slain. If your target has above " + threshold + " Hit Points, they take " + failDamage + " damage."
+	}
+	nightmareNotes := func(threshold string) string {
+		return "On Vorpal Hit: If your target has below " + threshold + " Hit Points, a burst of pure terror emanates from this weapon, snuffing out its life as if it were the subject of a Phantasmal Killer spell. If your target has above " + threshold + " Hit Points, they instead take significant Force damage."
+	}
+
+	switch strings.ToLower(vorpalType) {
+	case "custom":
+		name = param(1, "") + " Vorpal"
+		name = strings.TrimSpace(name)
+		amount = param(2, "0.5") + "[W]"
+		threshold := param(3, "1000")
+		failDamage := param(4, "100")
+		notes = "Passive: +" + amount + " damage dice. On Vorpal Hit: If your target has fewer than " + threshold + " Hit Points, they are instantly slain. If your target has above " + threshold + " Hit Points, they take " + failDamage + " damage."
+	case "sovereign":
+		name, amount, notes = "Sovereign Vorpal", "0.5[W]", standardNotes("3000", "300")
+	case "sovereignnightmares", "sovereign nightmares":
+		name, notes = "Sovereign Nightmares", nightmareNotes("5,000")
+	case "nightmares":
+		name, notes = "Nightmares", nightmareNotes("500")
+	case "greaternightmares", "greater nightmares":
+		name, notes = "Greater Nightmares", nightmareNotes("1,000")
+	case "improvednightmares", "improved nightmares":
+		name, notes = "Improved Nightmares", nightmareNotes("1,500")
+	case "superiornightmares", "superior nightmares":
+		name, notes = "Superior Nightmares", nightmareNotes("2,500")
+	case "lightbringer", "light bringer":
+		name = "Light Bringer"
+		notes = "On Vorpal Hit: If your target has fewer than 1,000 Hit Points, it is instantly slain. If the undead has above 1,000 Hit Points, it takes 100 damage."
+	case "superior":
+		name, amount, notes = "Superior Vorpal", "0.5[W]", standardNotes("2500", "250")
+	case "improved":
+		name, amount, notes = "Improved Vorpal", "0.5[W]", standardNotes("1500", "150")
+	case "greater":
+		name, amount, notes = "Greater Vorpal", "0.5[W]", standardNotes("2000", "200")
+	case "manslayer":
+		name = "Manslayer"
+		notes = "While wearing this item, your weapon attacks gain the devastating ability to defeat a humanoid opponent with a single decisive blow. On an attack roll of 20 which is confirmed as a critical hit a humanoid target will be killed. Powerful humanoids may resist the vorpal strike and instead take 100 points of damage until they have been sufficiently weakened."
+	case "legendarymanslayer", "legendary manslayer":
+		name = "Legendary Manslayer"
+		notes = "Unknown effect. No in-game text available."
+		title = ""
+	case "off with their heads":
+		name = "Off With Their Heads!"
+		notes = "While an enemy is under your Diplomacy skills, this weapon can behead them as if it were a Vorpal weapon."
+	default:
+		if vorpalType != "" {
+			name = vorpalType + " Vorpal"
 		}
+		amount, notes = "0.5[W]", standardNotes("1000", "100")
+	}
+	if title != "" {
+		name = title
 	}
 
 	return &api.Enchantment{
 		Name:      name,
 		Amount:    amount,
 		BonusType: "On-vorpal",
+		Notes:     new(notes),
 	}
 }
 

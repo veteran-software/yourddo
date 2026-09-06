@@ -46,7 +46,6 @@ func parseTemplateSpellFocus(rawFocusValue string) []*api.Enchantment {
 
 	var amount string
 	var bonusType string
-	var title string
 
 	// 2. Enhancement Amount (Required, Index 1)
 	if len(parts) >= 2 {
@@ -67,11 +66,6 @@ func parseTemplateSpellFocus(rawFocusValue string) []*api.Enchantment {
 		bonusType = defaultBonusType // Default value
 	}
 
-	// 4. Title (Optional, Index 3)
-	if len(parts) >= 4 {
-		title = stripBrackets(parts[3])
-	}
-
 	// --- MASTERY LOGIC ---
 	if strings.EqualFold(school, "Mastery") {
 		var enchantments []*api.Enchantment
@@ -83,19 +77,12 @@ func parseTemplateSpellFocus(rawFocusValue string) []*api.Enchantment {
 				BonusType: bonusType,
 			})
 		}
-		if title != "" {
-			for _, enchantment := range enchantments {
-				enchantment.Name = title
-			}
-		}
 		return enchantments
 	}
 
 	// --- Single School Logic ---
 	var name string
-	if title != "" {
-		name = title // Use custom title
-	} else if strings.EqualFold(school, "Rune Arm") {
+	if strings.EqualFold(school, "Rune Arm") {
 		name = "Rune Arm: DC"
 	} else {
 		name = fmt.Sprintf("Spell DC: %s", school)

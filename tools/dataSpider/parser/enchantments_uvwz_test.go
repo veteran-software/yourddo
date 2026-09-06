@@ -2,10 +2,58 @@ package parser
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 
 	"compendium-crawler-go/api"
 )
+
+func TestParseTemplateVorpal(t *testing.T) {
+	tests := []struct {
+		name       string
+		raw        string
+		wantName   string
+		wantAmount string
+		wantNote   string
+	}{
+		{name: "default", raw: "{{Vorpal}}", wantName: "Vorpal", wantAmount: "0.5[W]", wantNote: "fewer than 1000 Hit Points"},
+		{name: "improved", raw: "{{Vorpal|Improved}}", wantName: "Improved Vorpal", wantAmount: "0.5[W]", wantNote: "fewer than 1500 Hit Points"},
+		{name: "sovereign", raw: "{{Vorpal|Sovereign}}", wantName: "Sovereign Vorpal", wantAmount: "0.5[W]", wantNote: "fewer than 3000 Hit Points"},
+		{name: "greater", raw: "{{Vorpal|Greater}}", wantName: "Greater Vorpal", wantAmount: "0.5[W]", wantNote: "fewer than 2000 Hit Points"},
+		{name: "superior", raw: "{{Vorpal|Superior}}", wantName: "Superior Vorpal", wantAmount: "0.5[W]", wantNote: "fewer than 2500 Hit Points"},
+		{name: "sovereign nightmares alias", raw: "{{Vorpal|SovereignNightmares}}", wantName: "Sovereign Nightmares", wantNote: "below 5,000 Hit Points"},
+		{name: "nightmares", raw: "{{Vorpal|Nightmares}}", wantName: "Nightmares", wantNote: "below 500 Hit Points"},
+		{name: "greater nightmares alias", raw: "{{Vorpal|Greater Nightmares}}", wantName: "Greater Nightmares", wantNote: "below 1,000 Hit Points"},
+		{name: "improved nightmares alias", raw: "{{Vorpal|ImprovedNightmares}}", wantName: "Improved Nightmares", wantNote: "below 1,500 Hit Points"},
+		{name: "superior nightmares alias", raw: "{{Vorpal|Superior Nightmares}}", wantName: "Superior Nightmares", wantNote: "below 2,500 Hit Points"},
+		{name: "light bringer alias", raw: "{{Vorpal|LightBringer}}", wantName: "Light Bringer", wantNote: "If the undead has above 1,000 Hit Points"},
+		{name: "manslayer", raw: "{{Vorpal|Manslayer}}", wantName: "Manslayer", wantNote: "humanoid target will be killed"},
+		{name: "legendary manslayer alias", raw: "{{Vorpal|Legendary Manslayer}}", wantName: "Legendary Manslayer", wantNote: "Unknown effect"},
+		{name: "off with their heads", raw: "{{Vorpal|Off With Their Heads}}", wantName: "Off With Their Heads!", wantNote: "under your Diplomacy skills"},
+		{name: "custom", raw: "{{Vorpal|Custom|Customized|3.5|1249|393}}", wantName: "Customized Vorpal", wantAmount: "3.5[W]", wantNote: "above 1249 Hit Points, they take 393 damage"},
+		{name: "title override", raw: "{{Vorpal|Improved|||||Executioner}}", wantName: "Executioner", wantAmount: "0.5[W]", wantNote: "fewer than 1500 Hit Points"},
+		{name: "wiki default branch", raw: "{{Vorpal|Legacy}}", wantName: "Legacy Vorpal", wantAmount: "0.5[W]", wantNote: "fewer than 1000 Hit Points"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := parseTemplateVorpal(tt.raw)
+			if got == nil {
+				t.Fatalf("parseTemplateVorpal(%q) = nil", tt.raw)
+			}
+			if got.Name != tt.wantName || got.Amount != tt.wantAmount || got.BonusType != "On-vorpal" {
+				t.Fatalf("parseTemplateVorpal(%q) = %#v", tt.raw, got)
+			}
+			if got.Notes == nil || !strings.Contains(*got.Notes, tt.wantNote) {
+				t.Fatalf("parseTemplateVorpal(%q) notes = %v, want text containing %q", tt.raw, got.Notes, tt.wantNote)
+			}
+		})
+	}
+
+	if got := parseTemplateVorpal("{{VorpalOther}}"); got != nil {
+		t.Fatalf("parseTemplateVorpal() accepted another template: %#v", got)
+	}
+}
 
 func TestParseTemplateWeaponEffect(t *testing.T) {
 	tests := []struct {

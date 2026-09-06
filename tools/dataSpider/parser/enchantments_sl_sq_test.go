@@ -21,15 +21,15 @@ func TestParseTemplateSpellFocus(t *testing.T) {
 			},
 		},
 		{
-			name: "Mastery",
-			raw:  "{{SpellFocus|Mastery|3}}",
+			name: "Mastery ignores custom display title",
+			raw:  "{{SpellFocus|Mastery|1|Profane|Profane Spell Focus I}}",
 			expected: func() []*api.Enchantment {
 				out := make([]*api.Enchantment, 0, len(spellSchools))
 				for _, school := range spellSchools {
 					out = append(out, &api.Enchantment{
 						Name:      fmt.Sprintf("Spell DC: %s", school),
-						Amount:    "3",
-						BonusType: "Equipment",
+						Amount:    "1",
+						BonusType: "Profane",
 					})
 				}
 				return out

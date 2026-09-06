@@ -320,26 +320,38 @@ func parseTemplateParalyzing(raw string) *api.Enchantment {
 
 	dc := "17"
 	saveType := "Will"
-	switch strings.ToLower(strings.TrimSpace(version)) {
+	duration := "1 minute"
+	versionKey := strings.ToLower(strings.TrimSpace(version))
+	switch versionKey {
 	case "improved":
 		dc = "25"
 	case "legendary":
 		dc = "100"
+	case "legendary paralysis", "legendaryparalysis":
+		dc = "100"
 		saveType = "Fortitude"
+	case "short":
+		dc = "100"
+		duration = "10 seconds"
 	}
 	if customDC != "" {
 		dc = customDC
 	}
 
 	outName := name
-	if version != "" {
+	if versionKey == "legendary paralysis" || versionKey == "legendaryparalysis" {
+		outName = "Legendary Paralysis"
+	} else if version != "" {
 		outName = version + " " + name
 	}
 	if customDC != "" {
 		outName += " +" + customDC
 	}
 
-	notes := "Any creature struck by this weapon must succeed on a " + saveType + " DC: " + dc + " save or be paralyzed. The target may attempt a new save to end the effect every several seconds; otherwise the paralysis lasts for 1 minute. Certain creatures, such as the Undead and Constructs, cannot be paralyzed."
+	notes := "Any creature struck by this weapon must succeed on a " + saveType + " DC: " + dc + " save or be paralyzed. The target may attempt a new save to end the effect every several seconds; otherwise the paralysis lasts for " + duration + ". Certain creatures, such as the Undead and Constructs, cannot be paralyzed."
+	if versionKey == "legendary paralysis" || versionKey == "legendaryparalysis" {
+		notes = "On hit, this has a chance of paralyzing enemies. Struck enemies must make a " + saveType + " DC: " + dc + " save or be paralyzed."
+	}
 
 	return &api.Enchantment{
 		Name:      outName,

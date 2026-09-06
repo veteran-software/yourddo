@@ -97,6 +97,40 @@ func TestParseEnchantments(t *testing.T) {
 	}
 }
 
+func TestParseEnchantmentsHealingAmp(t *testing.T) {
+	tests := []struct {
+		name     string
+		raw      string
+		expected []api.Enchantment
+	}{
+		{
+			name: "existing healing type",
+			raw:  "{{HealingAmp|Positive|15|Exceptional}}",
+			expected: []api.Enchantment{
+				{Name: "Positive Healing Amplification", Amount: "15", BonusType: "Exceptional"},
+			},
+		},
+		{
+			name: "lifeblood",
+			raw:  "{{HealingAmp|Lifeblood|15}}",
+			expected: []api.Enchantment{
+				{Name: "Positive Healing Amplification", Amount: "15", BonusType: "Competence"},
+				{Name: "Repair Amplification", Amount: "15", BonusType: "Competence"},
+				{Name: "Negative Healing Amplification", Amount: "15", BonusType: "Profane"},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := ParseEnchantments(tt.raw, "Helmet")
+			if !reflect.DeepEqual(got, tt.expected) {
+				t.Errorf("ParseEnchantments() = %#v, want %#v", got, tt.expected)
+			}
+		})
+	}
+}
+
 func TestParseEnchantmentsNearlyComplete(t *testing.T) {
 	const notes = "This item isn't quite finished, but it's only a step away from completion. Bring it to the forges on the upper floor of Gravenhollow and combine it with melted materials to restore this item to its full potential."
 
