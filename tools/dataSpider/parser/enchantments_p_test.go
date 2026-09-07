@@ -35,7 +35,22 @@ func TestParseTemplateParalyzing(t *testing.T) {
 		{
 			name: "legendary",
 			raw:  "{{Paralyzing|Legendary}}",
-			want: &api.Enchantment{Name: "Legendary Paralyzing", Amount: "100", BonusType: "On-hit", Notes: notes("Fortitude", "100")},
+			want: &api.Enchantment{Name: "Legendary Paralyzing", Amount: "100", BonusType: "On-hit", Notes: notes("Will", "100")},
+		},
+		{
+			name: "legendary paralysis",
+			raw:  "{{Paralyzing|Legendary Paralysis}}",
+			want: &api.Enchantment{Name: "Legendary Paralysis", Amount: "100", BonusType: "On-hit", Notes: new("On hit, this has a chance of paralyzing enemies. Struck enemies must make a Fortitude DC: 100 save or be paralyzed.")},
+		},
+		{
+			name: "legendary paralysis compact alias",
+			raw:  "{{Paralyzing|legendaryparalysis}}",
+			want: &api.Enchantment{Name: "Legendary Paralysis", Amount: "100", BonusType: "On-hit", Notes: new("On hit, this has a chance of paralyzing enemies. Struck enemies must make a Fortitude DC: 100 save or be paralyzed.")},
+		},
+		{
+			name: "short",
+			raw:  "{{Paralyzing|Short}}",
+			want: &api.Enchantment{Name: "Short Paralyzing", Amount: "100", BonusType: "On-hit", Notes: new("Any creature struck by this weapon must succeed on a Will DC: 100 save or be paralyzed. The target may attempt a new save to end the effect every several seconds; otherwise the paralysis lasts for 10 seconds. Certain creatures, such as the Undead and Constructs, cannot be paralyzed.")},
 		},
 		{
 			name: "default with custom DC",
@@ -50,12 +65,12 @@ func TestParseTemplateParalyzing(t *testing.T) {
 		{
 			name: "legendary with custom DC",
 			raw:  "{{Paralyzing|Legendary|150}}",
-			want: &api.Enchantment{Name: "Legendary Paralyzing +150", Amount: "150", BonusType: "On-hit", Notes: notes("Fortitude", "150")},
+			want: &api.Enchantment{Name: "Legendary Paralyzing +150", Amount: "150", BonusType: "On-hit", Notes: notes("Will", "150")},
 		},
 		{
 			name: "switch is case insensitive",
 			raw:  "{{Paralyzing|legendary| 125 }}",
-			want: &api.Enchantment{Name: "legendary Paralyzing +125", Amount: "125", BonusType: "On-hit", Notes: notes("Fortitude", "125")},
+			want: &api.Enchantment{Name: "legendary Paralyzing +125", Amount: "125", BonusType: "On-hit", Notes: notes("Will", "125")},
 		},
 		{
 			name: "unknown version uses default save",

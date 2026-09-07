@@ -705,7 +705,6 @@ var enchSingleHandlers = map[string]func(string) *api.Enchantment{
 	"Skill":                         func(t string) *api.Enchantment { return parseTemplateSkill(t) },
 	"ElementalResistance":           func(t string) *api.Enchantment { return parseTemplateElementalResistance(t) },
 	"Ability":                       func(t string) *api.Enchantment { return parseTemplateAbility(t) },
-	"HealingAmp":                    func(t string) *api.Enchantment { return parseTemplateHealingAmp(t) },
 	"ItemMaterialDR":                func(t string) *api.Enchantment { return parseTemplateItemMaterialDR(t) },
 	"Aligned":                       func(t string) *api.Enchantment { return parseTemplateAligned(t) },
 	"PreslottedAugment":             func(_ string) *api.Enchantment { return nil },
@@ -931,6 +930,7 @@ var enchSingleHandlers = map[string]func(string) *api.Enchantment{
 }
 
 var enchMultiHandlers = map[string]func(string) []*api.Enchantment{
+	"HealingAmp":                func(t string) []*api.Enchantment { return parseTemplateHealingAmp(t) },
 	"ElementalAbsorb":           func(t string) []*api.Enchantment { return parseTemplateElementalAbsorb(t) },
 	"CasterLevel":               func(t string) []*api.Enchantment { return parseTemplateCasterLevel(t) },
 	"Dazing":                    func(t string) []*api.Enchantment { return parseTemplateDazing(t) },
