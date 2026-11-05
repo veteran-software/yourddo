@@ -208,7 +208,7 @@ const SagaRow = ({
             checked={item.completed}
             indeterminate={partial}
             onChange={onToggleSaga}
-            className='mb-0'
+            className='mb-0 saga-completion'
             ariaLabel={`Mark ${item.name} as completed`}
             label={<span className='d-md-none ms-2'>Done</span>}
           />
