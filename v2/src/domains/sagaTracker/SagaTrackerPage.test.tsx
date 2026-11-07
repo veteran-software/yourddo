@@ -149,6 +149,84 @@ describe('SagaTrackerPage', () => {
     expect(await screen.findByText('Saga Tracker progress was reset.')).toBeTruthy()
   })
 
+  it('keeps focus while using Space, Tab, and Shift+Tab through an expanded quest list', async () => {
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByText('Heroic Adventure')
+    const expand = screen.getByRole('button', { name: 'Show Quests' })
+    const newRun = screen.getByRole('button', { name: 'New Run' })
+    expand.focus()
+    await user.keyboard('{Enter}')
+    await user.tab()
+    expect(document.activeElement).toBe(newRun)
+    const quests = screen.getAllByRole<HTMLInputElement>('checkbox', { name: /^Mark quest / })
+    for (const quest of quests) {
+      await user.tab()
+      expect(document.activeElement).toBe(quest)
+      await user.keyboard('[Space]')
+      expect(quest.checked).toBe(true)
+      expect(document.activeElement).toBe(quest)
+    }
+    expect(screen.getByRole<HTMLInputElement>('checkbox', { name: 'Mark Heroic Adventure as completed' }).checked).toBe(
+      true
+    )
+    await user.tab()
+    expect(document.activeElement).not.toBe(quests.at(-1))
+    await user.tab({ shift: true })
+    expect(document.activeElement).toBe(quests.at(-1))
+    await user.keyboard('[Space]')
+    expect(quests.at(-1)?.checked).toBe(false)
+    expect(document.activeElement).toBe(quests.at(-1))
+    await user.tab({ shift: true })
+    expect(document.activeElement).toBe(quests[0])
+    await user.tab({ shift: true })
+    expect(document.activeElement).toBe(newRun)
+    await user.tab({ shift: true })
+    expect(document.activeElement).toBe(expand)
+    await user.keyboard('{Enter}')
+    expect(screen.queryByRole('checkbox', { name: /^Mark quest / })).toBeNull()
+    expect(document.activeElement).toBe(expand)
+    await user.tab()
+    expect(document.activeElement).toBe(newRun)
+  })
+
+  it('preserves keyboard focus and shared completion across filtered saga lists', async () => {
+    vi.mocked(loadSagaTrackerData).mockResolvedValue({
+      sagas: [...data.sagas, { id: 'other', name: 'Other Adventure', levelRange: '3', npcs: ['Other NPC'] }],
+      quests: data.quests.map((quest) =>
+        quest.id === 'alpha' ? { ...quest, sagas: [...quest.sagas, 'other'] } : quest
+      )
+    })
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByText('Heroic Adventure')
+    const search = screen.getByRole('textbox', { name: 'Search sagas and quests' })
+    await user.type(search, 'Alpha')
+    expect(document.activeElement).toBe(search)
+    const [first, shared] = screen.getAllByRole<HTMLInputElement>('checkbox', {
+      name: 'Mark quest Alpha [Quest] as completed'
+    })
+    first.focus()
+    await user.keyboard('[Space]')
+    expect(first.checked).toBe(true)
+    expect(shared.checked).toBe(true)
+    expect(document.activeElement).toBe(first)
+    await user.tab()
+    expect(document.activeElement).toBe(screen.getByRole('checkbox', { name: 'Mark Other Adventure as completed' }))
+    await user.tab({ shift: true })
+    expect(document.activeElement).toBe(first)
+    await user.keyboard('[Space]')
+    expect(first.checked).toBe(false)
+    expect(shared.checked).toBe(false)
+    expect(document.activeElement).toBe(first)
+    await user.clear(search)
+    await user.type(search, 'no such quest')
+    expect(screen.queryByRole('checkbox', { name: /^Mark quest / })).toBeNull()
+    expect(document.activeElement).toBe(search)
+    await user.tab()
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Clear search' }))
+  })
+
   it('searches after three characters, expands matching quests, highlights safely, and clears', async () => {
     const user = userEvent.setup()
     renderPage()

@@ -1,6 +1,7 @@
 import { Badge, Button, Checkbox, Group, Paper, SimpleGrid, Stack, Text } from '@mantine/core'
 import type { QuestDefinition, SagaCompletionState, SagaDefinition } from '../sagaTracker.types.ts'
 import HighlightedText from './HighlightedText.tsx'
+import classes from './SagaRow.module.css'
 
 interface SagaRowProps {
   saga: SagaDefinition
@@ -117,6 +118,7 @@ const SagaRow = ({
             visibleQuests.map((quest) => (
               <Checkbox
                 key={quest.id}
+                className={classes.quest}
                 id={`quest-complete-${saga.id}-${quest.id}`}
                 checked={isQuestComplete(quest.id)}
                 onChange={(event) => {
