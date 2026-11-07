@@ -8,7 +8,7 @@ const ThemeMenu = () => {
   return (
     <Menu position='bottom-end'>
       <Menu.Target>
-        <Button variant='subtle' size='compact-sm'>
+        <Button variant='subtle' size='compact-sm' color='gold.2'>
           Theme: {label}
         </Button>
       </Menu.Target>

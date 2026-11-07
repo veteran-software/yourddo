@@ -197,8 +197,19 @@ const ShroudPage = () => {
             maw={240}
           />
 
-          <Box role='group' aria-label={`The Shroud ${configName} puzzle board`}>
-            <SimpleGrid cols={config.cols} spacing={0} w='100%' maw={384} mx='auto' p={4}>
+          <Box
+            role='group'
+            aria-label={`The Shroud ${configName} puzzle board`}
+            style={{ containerType: 'inline-size' }}
+          >
+            <SimpleGrid
+              cols={config.cols}
+              spacing={0}
+              w='100%'
+              maw={`calc(${String(config.cols)} * var(--puzzle-tile-size) + 0.5rem)`}
+              mx='auto'
+              p={4}
+            >
               {Array.from({ length: config.rows }).flatMap((_, row) =>
                 Array.from({ length: config.cols }).map((__, column) => {
                   const masked = !config.mask[row][column]

@@ -32,7 +32,11 @@ const TrackerLayout = ({ title, description, summary, controls, actions, childre
             ) : null}
           </Flex>
 
-          {summary !== undefined ? <Paper p='md'>{summary}</Paper> : null}
+          {summary !== undefined ? (
+            <Paper p='md' style={{ boxShadow: 'inset 3px 0 0 var(--app-crimson)' }}>
+              {summary}
+            </Paper>
+          ) : null}
           {controls !== undefined ? <Box w='100%'>{controls}</Box> : null}
         </Stack>
       </Box>

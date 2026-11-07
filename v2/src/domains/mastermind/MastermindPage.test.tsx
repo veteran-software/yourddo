@@ -73,6 +73,35 @@ afterAll(() => {
 })
 
 describe('MastermindPage', () => {
+  it('uses matching dice faces instead of numerals for all six values in current and previous guesses', () => {
+    vi.mocked(useMastermindSolver).mockReturnValueOnce({
+      currentGuess: [1, 2, 3, 4],
+      possibleCount: 100,
+      guesses: [{ code: [3, 4, 5, 6], feedback: { black: 0, white: 0 } }],
+      finished: false,
+      reset: vi.fn(),
+      submitFeedback: vi.fn()
+    })
+    renderPage()
+
+    const current = screen.getByRole('img', { name: 'Next guess: Blue 1, Green 2, Orange 3, Pink 4' })
+    const previous = screen.getByRole('img', { name: 'Attempt 1 guess: Orange 3, Pink 4, Red 5, Yellow 6' })
+
+    for (const [group, values] of [
+      [current, [1, 2, 3, 4]],
+      [previous, [3, 4, 5, 6]]
+    ] as const) {
+      expect(group.textContent).toBe('')
+      const dice = group.querySelectorAll('svg')
+      expect(dice).toHaveLength(4)
+      values.forEach((value, index) => {
+        expect(dice[index].classList.contains(`tabler-icon-dice-${String(value)}-filled`)).toBe(true)
+        expect(dice[index].getAttribute('aria-hidden')).toBe('true')
+        expect(dice[index].getAttribute('focusable')).toBe('false')
+      })
+    }
+  })
+
   it('shows the initial guess, attempt, remaining possibilities, and accessible feedback controls', () => {
     renderPage()
 

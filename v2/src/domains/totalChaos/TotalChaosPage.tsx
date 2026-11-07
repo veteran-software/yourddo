@@ -160,8 +160,15 @@ const TotalChaosPage = () => {
             </Group>
           </Group>
 
-          <Box role='group' aria-label='Total Chaos 3 by 5 puzzle board'>
-            <SimpleGrid cols={COLUMNS} spacing={0} w='100%' maw={328} mx='auto' p={4}>
+          <Box role='group' aria-label='Total Chaos 3 by 5 puzzle board' style={{ containerType: 'inline-size' }}>
+            <SimpleGrid
+              cols={COLUMNS}
+              spacing={0}
+              w='100%'
+              maw={`calc(${String(COLUMNS)} * var(--puzzle-tile-size) + 0.5rem)`}
+              mx='auto'
+              p={4}
+            >
               {Array.from({ length: ROWS }).flatMap((_, row) =>
                 Array.from({ length: COLUMNS }).map((__, column) => {
                   const masked = !MASK[row][column]

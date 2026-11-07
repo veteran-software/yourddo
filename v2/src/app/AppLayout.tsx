@@ -1,4 +1,4 @@
-import { AppShell, Burger, Group, ScrollArea, Text } from '@mantine/core'
+import { AppShell, Burger, Group, Image, ScrollArea } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Outlet } from 'react-router-dom'
 import SidebarNavigation from '../shared/navigation/SidebarNavigation'
@@ -30,6 +30,7 @@ const AppLayout = () => {
               aria-label={mobileOpened ? 'Close navigation' : 'Open navigation'}
               hiddenFrom='lg'
               size='sm'
+              color='dark.1'
             />
 
             <Burger
@@ -38,9 +39,16 @@ const AppLayout = () => {
               aria-label={desktopOpened ? 'Collapse navigation' : 'Expand navigation'}
               visibleFrom='lg'
               size='sm'
+              color='dark.1'
             />
 
-            <Text fw={700}>YourDDO</Text>
+            <Image
+              src='/yourddo-logo.png'
+              alt='YourDDO'
+              w='clamp(7.5rem, calc(100vw - 13.75rem), 11.875rem)'
+              h={38}
+              fit='contain'
+            />
           </Group>
 
           <ThemeMenu />

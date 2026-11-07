@@ -202,7 +202,15 @@ const WorkspaceLayout = ({
         <ScrollArea h='100%' type='auto'>
           {mobileTools ? (
             <ScrollArea type='auto' offsetScrollbars scrollbarSize={6} data-testid='workspace-mobile-tools'>
-              <Group component='nav' aria-label='Workspace tools' wrap='nowrap' gap={4} miw='max-content' p='xs'>
+              <Group
+                component='nav'
+                aria-label='Workspace tools'
+                wrap='nowrap'
+                gap={4}
+                miw='max-content'
+                p='xs'
+                bg='var(--app-nav)'
+              >
                 {resolvedTools.map((tool, index) => toolButton(tool, index, true))}
               </Group>
             </ScrollArea>
@@ -223,6 +231,7 @@ const WorkspaceLayout = ({
           mih={0}
           flex='0 0 auto'
           pos='relative'
+          bg='var(--app-panel)'
           style={{
             opacity: activeTool ? 1 : 0,
             overflow: 'hidden',
@@ -273,6 +282,7 @@ const WorkspaceLayout = ({
           component='nav'
           aria-label='Workspace tools'
           data-testid='workspace-tool-rail'
+          bg='var(--app-nav)'
           mih={0}
           style={{
             width: railWidth,

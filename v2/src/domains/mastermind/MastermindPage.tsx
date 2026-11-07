@@ -16,6 +16,15 @@ import {
   Title,
   VisuallyHidden
 } from '@mantine/core'
+import {
+  type Icon,
+  IconDice1Filled,
+  IconDice2Filled,
+  IconDice3Filled,
+  IconDice4Filled,
+  IconDice5Filled,
+  IconDice6Filled
+} from '@tabler/icons-react'
 import { type SyntheticEvent, useState } from 'react'
 import ToolLayout from '../../shared/layout/ToolLayout.tsx'
 import useMastermindSolver, { type Color, type Feedback, type Guess } from './useMastermindSolver.ts'
@@ -23,13 +32,13 @@ import useMastermindSolver, { type Color, type Feedback, type Guess } from './us
 const MAX_ATTEMPTS = 10
 const INITIAL_GUESS: Color[] = [1, 1, 2, 2]
 
-const colors: Record<Color, { color: string; label: string }> = {
-  1: { color: 'blue', label: 'Blue' },
-  2: { color: 'green', label: 'Green' },
-  3: { color: 'orange', label: 'Orange' },
-  4: { color: 'pink', label: 'Pink' },
-  5: { color: 'red', label: 'Red' },
-  6: { color: 'yellow', label: 'Yellow' }
+const colors: Record<Color, { color: string; label: string; icon: Icon }> = {
+  1: { color: 'blue', label: 'Blue', icon: IconDice1Filled },
+  2: { color: 'green', label: 'Green', icon: IconDice2Filled },
+  3: { color: 'orange', label: 'Orange', icon: IconDice3Filled },
+  4: { color: 'pink', label: 'Pink', icon: IconDice4Filled },
+  5: { color: 'red', label: 'Red', icon: IconDice5Filled },
+  6: { color: 'yellow', label: 'Yellow', icon: IconDice6Filled }
 }
 
 const describeCode = (code: Color[]): string =>
@@ -37,19 +46,27 @@ const describeCode = (code: Color[]): string =>
 
 const CodePegs = ({ code, size = 46, label }: { code: Color[]; size?: number; label: string }) => (
   <Group gap='sm' wrap='nowrap' role='img' aria-label={`${label}: ${describeCode(code)}`}>
-    {code.map((color, index) => (
-      <ThemeIcon
-        key={`${String(color)}-${String(index)}`}
-        color={colors[color].color}
-        radius='xl'
-        size={size}
-        autoContrast
-      >
-        <Text component='span' fw={700} aria-hidden='true'>
-          {color}
-        </Text>
-      </ThemeIcon>
-    ))}
+    {code.map((color, index) => {
+      const DiceIcon = colors[color].icon
+
+      return (
+        <ThemeIcon
+          key={`${String(color)}-${String(index)}`}
+          color={colors[color].color}
+          radius='xl'
+          size={size}
+          autoContrast
+        >
+          <DiceIcon
+            size={size * 0.7}
+            color='var(--mantine-color-gold-0)'
+            style={{ backgroundColor: 'var(--mantine-color-dark-8)', borderRadius: '25%' }}
+            aria-hidden='true'
+            focusable='false'
+          />
+        </ThemeIcon>
+      )
+    })}
   </Group>
 )
 

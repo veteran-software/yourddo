@@ -195,8 +195,14 @@ const MonasteryOfTheScorpionPage = () => {
             />
           )}
 
-          <Box role='group' aria-label='Monastery 4 by 5 puzzle board'>
-            <SimpleGrid cols={COLUMNS} spacing={0} w='100%' maw={320} mx='auto'>
+          <Box role='group' aria-label='Monastery 4 by 5 puzzle board' style={{ containerType: 'inline-size' }}>
+            <SimpleGrid
+              cols={COLUMNS}
+              spacing={0}
+              w='100%'
+              maw={`calc(${String(COLUMNS)} * var(--puzzle-tile-size))`}
+              mx='auto'
+            >
               {Array.from({ length: ROWS }).flatMap((_, row) =>
                 Array.from({ length: COLUMNS }).map((__, column) => {
                   const removed = !mask[row][column]

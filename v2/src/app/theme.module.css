@@ -1,0 +1,42 @@
+.paper .paper {
+  --app-paper-surface: var(--app-raised);
+}
+
+.navLink {
+  &:hover {
+    background-color: var(--app-panel);
+  }
+
+  &[data-active] {
+    background-color: var(--app-active);
+    color: var(--app-active-text);
+    box-shadow: inset 3px 0 0 var(--app-accent);
+  }
+
+  &[aria-expanded='true'] {
+    color: var(--app-accent);
+  }
+}
+
+.input:not([data-variant='unstyled']):not(:disabled):not([data-disabled]) {
+  background-color: var(--app-input);
+
+  &:not([data-error]):not([data-success]):not(:focus):not(:focus-within) {
+    border-color: var(--app-border);
+  }
+}
+
+.tabList {
+  --tab-border-color: var(--app-border);
+}
+
+.tab {
+  &:hover {
+    background-color: var(--app-panel);
+  }
+
+  &[data-active] {
+    background-color: var(--app-active);
+    color: var(--app-active-text);
+  }
+}
