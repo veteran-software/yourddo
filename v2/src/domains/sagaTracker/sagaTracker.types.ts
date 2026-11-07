@@ -2,12 +2,14 @@ export interface SagaDefinition {
   id: string
   name: string
   levelRange: string
-  npc: string
+  npcs: string[]
 }
 
 export interface QuestDefinition {
   id: string
   name: string
+  level: number
+  chain?: string
   sagas: string[]
 }
 

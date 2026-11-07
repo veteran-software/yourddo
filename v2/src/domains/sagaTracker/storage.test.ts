@@ -14,10 +14,10 @@ import {
 } from './storage.ts'
 
 const sagas: SagaDefinition[] = [
-  { id: 'known', name: 'Known', levelRange: '3', npc: 'A' },
-  { id: 'new', name: 'New', levelRange: '31', npc: 'B' }
+  { id: 'known', name: 'Known', levelRange: '3', npcs: ['A'] },
+  { id: 'new', name: 'New', levelRange: '31', npcs: ['B'] }
 ]
-const quests: QuestDefinition[] = [{ id: 'known-quest', name: 'Quest', sagas: ['known'] }]
+const quests: QuestDefinition[] = [{ id: 'known-quest', name: 'Quest', level: 3, sagas: ['known'] }]
 
 const driver = (values: Record<string, unknown> = {}, fail = false) => ({
   getValue: vi.fn((key: string) =>
@@ -31,6 +31,51 @@ afterEach(() => {
 })
 
 describe('Saga Tracker storage', () => {
+  it.each(['IndexedDB', 'localStorage'])(
+    'preserves legacy Planeswalker progress from %s before pruning',
+    async (source) => {
+      const legacyId = 'the-planewalkers-path-epic'
+      const currentId = 'the-planeswalkers-path-epic'
+      const definitions = [{ ...sagas[0], id: currentId }]
+      const items = [{ id: legacyId, completed: true, turnedIn: true }]
+      const fake = driver(
+        source === 'IndexedDB'
+          ? {
+              [SAGA_ITEMS_KEY]: items,
+              [QUEST_DONE_AT_KEY]: { 'known-quest': 100 },
+              [TURNED_IN_AT_KEY]: { [legacyId]: 50 }
+            }
+          : {}
+      )
+      if (source === 'localStorage') {
+        localStorage.setItem(LOCAL_ITEMS_KEY, JSON.stringify(items))
+        localStorage.setItem(LOCAL_QUESTS_KEY, JSON.stringify([{ id: 'known-quest', lastDoneAt: 100 }]))
+        localStorage.setItem(LOCAL_TURNED_IN_KEY, JSON.stringify([{ id: legacyId, turnedInAt: 50 }]))
+      }
+      const { progress } = await loadProgress(definitions, quests, fake)
+      expect(progress.sagaStatus).toEqual({ [currentId]: { completed: true, turnedIn: true } })
+      expect(progress.turnedInAt).toEqual({ [currentId]: 50 })
+      expect(progress.questDoneAt).toEqual({ 'known-quest': 100 })
+      await saveProgress(definitions, progress, fake)
+      expect(fake.setValue).toHaveBeenLastCalledWith(TURNED_IN_AT_KEY, { [currentId]: 50 })
+    }
+  )
+
+  it('prefers canonical status and cleared cutoff over legacy values in storage', async () => {
+    const legacyId = 'the-planewalkers-path-epic'
+    const currentId = 'the-planeswalkers-path-epic'
+    const fake = driver({
+      [SAGA_ITEMS_KEY]: [
+        { id: currentId, completed: false, turnedIn: false },
+        { id: legacyId, completed: true, turnedIn: true }
+      ],
+      [TURNED_IN_AT_KEY]: { [legacyId]: 50, [currentId]: 0 }
+    })
+    const { progress } = await loadProgress([{ ...sagas[0], id: currentId }], quests, fake)
+    expect(progress.sagaStatus[currentId]).toEqual({ completed: false, turnedIn: false })
+    expect(progress.turnedInAt).toEqual({ [currentId]: 0 })
+  })
+
   it('loads IndexedDB, prunes unknown IDs, and defaults newly published sagas', async () => {
     const fake = driver({
       [SAGA_ITEMS_KEY]: [
