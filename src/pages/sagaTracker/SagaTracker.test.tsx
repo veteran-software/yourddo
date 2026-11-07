@@ -90,6 +90,85 @@ describe('Saga Tracker', () => {
     expect(checkbox).toBeChecked()
   })
 
+  it('keeps keyboard focus while toggling quests and moving through an expanded list', async () => {
+    const user = userEvent.setup()
+    render(<SagaTracker />)
+    const row = screen.getByText('The Pirates of the Thunder Sea (H)').closest('.saga-data-row')
+    if (!(row instanceof HTMLElement)) throw new Error('Missing Pirates saga row')
+    const expand = within(row).getByRole('button', { name: 'Show quests' })
+
+    expand.focus()
+    await user.keyboard('{Enter}')
+    await user.tab()
+    expect(within(row).getByRole('button', { name: 'New Run' })).toHaveFocus()
+    const quests = screen.getAllByRole('checkbox', { name: /^Mark quest / })
+    for (const quest of quests) {
+      await user.tab()
+      expect(quest).toHaveFocus()
+      await user.keyboard('[Space]')
+      expect(quest).toBeChecked()
+      expect(quest).toHaveFocus()
+    }
+    expect(screen.getByRole('checkbox', { name: 'Mark The Pirates of the Thunder Sea (H) as completed' })).toBeChecked()
+
+    await user.tab()
+    expect(screen.getByRole('checkbox', { name: 'Mark Fables of the Feywild (H) as completed' })).toHaveFocus()
+    await user.tab({ shift: true })
+    expect(quests.at(-1)).toHaveFocus()
+    await user.keyboard('[Space]')
+    expect(quests.at(-1)).not.toBeChecked()
+    expect(quests.at(-1)).toHaveFocus()
+    for (let i = quests.length - 2; i >= 0; i--) {
+      await user.tab({ shift: true })
+      expect(quests[i]).toHaveFocus()
+    }
+    await user.tab({ shift: true })
+    expect(within(row).getByRole('button', { name: 'New Run' })).toHaveFocus()
+    await user.tab({ shift: true })
+    expect(expand).toHaveFocus()
+    await user.keyboard('{Enter}')
+    expect(screen.queryByRole('checkbox', { name: /^Mark quest / })).not.toBeInTheDocument()
+    expect(expand).toHaveFocus()
+    await user.tab()
+    expect(within(row).getByRole('button', { name: 'New Run' })).toHaveFocus()
+  })
+
+  it('preserves focus and shared completion while navigating filtered sagas', async () => {
+    const user = userEvent.setup()
+    render(<SagaTracker />)
+    await user.click(screen.getByRole('tab', { name: 'Epic (21-30)' }))
+    const search = screen.getByRole('textbox', { name: 'Search quests' })
+    await user.type(search, 'Beyond the Rift')
+    const eberron = screen.getByRole('checkbox', {
+      name: 'Mark quest Beyond the Rift (E) as done for The End of Eberron (E)'
+    })
+    const planeswalker = screen.getByRole('checkbox', {
+      name: "Mark quest Beyond the Rift (E) as done for The Planeswalker's Path (E)"
+    })
+    expect(search).toHaveFocus()
+
+    eberron.focus()
+    await user.keyboard('[Space]')
+    expect(eberron).toBeChecked()
+    expect(planeswalker).toBeChecked()
+    expect(eberron).toHaveFocus()
+    await user.tab()
+    expect(screen.getByRole('checkbox', { name: "Mark The Planeswalker's Path (E) as completed" })).toHaveFocus()
+    await user.tab({ shift: true })
+    expect(eberron).toHaveFocus()
+    await user.keyboard('[Space]')
+    expect(eberron).not.toBeChecked()
+    expect(planeswalker).not.toBeChecked()
+    expect(eberron).toHaveFocus()
+
+    await user.clear(search)
+    await user.type(search, 'no such quest')
+    expect(screen.queryByRole('checkbox', { name: /^Mark quest / })).not.toBeInTheDocument()
+    expect(search).toHaveFocus()
+    await user.tab()
+    expect(screen.getByTitle('Search and expand sagas with matching quests')).toHaveFocus()
+  })
+
   it.each(['localStorage', 'IndexedDB'])('shows both contacts while restoring progress from %s', async (source) => {
     const user = userEvent.setup()
     const progress = [{ id: 'the-end-of-eberron-epic', completed: false, turnedIn: true }]
