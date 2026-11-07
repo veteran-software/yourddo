@@ -1,5 +1,11 @@
 /* Saga Tracker specific styles */
 
+.saga-quest-check .form-check-label {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
 .saga-completion .form-check-input {
     background-color: var(--bs-danger-bg-subtle);
     border-color: var(--bs-danger);
