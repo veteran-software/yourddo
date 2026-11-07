@@ -1,3 +1,5 @@
+import { withCompatibleSagaIds } from '../storage/withCompatibleSagaIds'
+
 export interface FixedSagaDef {
   id: string
   name: string
@@ -9,9 +11,9 @@ export interface LoadedSagaItem extends FixedSagaDef {
   turnedIn: boolean
 }
 
-type StoredSagaItem = Partial<Pick<LoadedSagaItem, 'id' | 'completed' | 'turnedIn'>> & Record<string, unknown>
+type StoredSagaItem = Partial<Pick<LoadedSagaItem, 'id' | 'completed' | 'turnedIn'>>
 
-const createStatusMap = (
+export const createStatusMap = (
   entries: StoredSagaItem[]
 ): Record<string, { completed: boolean; turnedIn: boolean } | undefined> => {
   const statusById: Record<string, { completed: boolean; turnedIn: boolean } | undefined> = {}
@@ -26,7 +28,7 @@ const createStatusMap = (
     }
   }
 
-  return statusById
+  return withCompatibleSagaIds(statusById)
 }
 
 const readStoredStatuses = (

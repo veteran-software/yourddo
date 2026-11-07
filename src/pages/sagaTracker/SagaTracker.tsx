@@ -2,10 +2,11 @@ import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'rea
 import { Badge, Button, Card, Col, Form, InputGroup, Row, Stack, Tab, Tabs } from 'react-bootstrap'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import IndeterminateCheck from './components/IndeterminateCheck'
-import { loadInitial } from './components/loadInitial'
+import { createStatusMap, loadInitial } from './components/loadInitial'
 import questsData from './quests.json'
 import sagas from './sagas.json'
 import './SagaTracker.css'
+import { withCompatibleSagaIds } from './storage/withCompatibleSagaIds'
 import {
   getQuestDoneAt as idbGetQuestDoneAt,
   getSagaItems as idbGetSagaItems,
@@ -20,7 +21,7 @@ interface SagaItem {
   id: string
   name: string
   levelRange: string
-  npc: string
+  npcs: string[]
   completed: boolean
   turnedIn: boolean
 }
@@ -50,12 +51,22 @@ const writeLocalStorageItem = (key: string, value: string) => {
   }
 }
 
-// Authoritative fixed list from JSON (no completion fields in file)
-const fixedSagas: Omit<SagaItem, 'completed' | 'turnedIn'>[] = sagas
+// Authoritative saga data with level ranges derived from all associated quests.
+const fixedSagas: Omit<SagaItem, 'completed' | 'turnedIn'>[] = sagas.map((saga) => {
+  const levels = questsData.filter((quest) => quest.sagas.includes(saga.id)).map((quest) => quest.level)
+  const minLevel = Math.min(...levels)
+  const maxLevel = Math.max(...levels)
+
+  return {
+    ...saga,
+    levelRange: minLevel === maxLevel ? String(minLevel) : `${String(minLevel)}-${String(maxLevel)}`
+  }
+})
 
 interface QuestDef {
   id: string
   name: string
+  level: number
   sagas: string[]
 }
 
@@ -223,7 +234,9 @@ const SagaRow = ({
           <span className='fw-bold fw-md-normal'>
             <HighlightedText text={item.name} query={searchQuery} />
           </span>
-          <span className='text-secondary small ms-4'>Contact: {item.npc}</span>
+          <span className='text-secondary small ms-4'>
+            Contact{item.npcs.length > 1 ? 's' : ''}: {item.npcs.join(', ')}
+          </span>
         </Col>
 
         {/* Level Range (order 3 on desktop) */}
@@ -296,16 +309,23 @@ const SagaRow = ({
                         key={q.id}
                         className='d-flex align-items-center justify-content-between py-1 border-bottom border-secondary-subtle last-child-no-border'
                       >
-                        <div className='d-flex align-items-center gap-2'>
+                        <div className='w-100'>
                           <Form.Check
                             type='checkbox'
-                            className='mb-0'
+                            className='mb-0 saga-quest-check'
                             id={`quest-${item.id}-${q.id}`}
                             checked={isQuestDone(item.id, q.id)}
                             onChange={() => {
                               onToggleQuest(item.id, q.id)
                             }}
-                            label={<HighlightedText text={q.name} query={searchQuery} />}
+                            label={
+                              <>
+                                <span className='text-truncate' title={q.name}>
+                                  <HighlightedText text={q.name} query={searchQuery} />
+                                </span>
+                                <small className='text-body-secondary text-nowrap flex-shrink-0'>Lv {q.level}</small>
+                              </>
+                            }
                             aria-label={`Mark quest ${q.name} as done for ${item.name}`}
                           />
                         </div>
@@ -401,6 +421,7 @@ const SagaList = ({
 
 const SagaTracker = () => {
   const [items, setItems] = useState<SagaItem[]>(() => loadInitial(fixedSagas, STORAGE_KEY_V2) as SagaItem[])
+  const [storageLoaded, setStorageLoaded] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState<string>(() => {
     return readLocalStorageItem(STORAGE_KEY_ACTIVE_TAB) ?? 'heroic'
@@ -413,7 +434,10 @@ const SagaTracker = () => {
 
   // per-saga turned-in time, used to determine if a quest counts for that saga
   const [turnedInAt, setTurnedInAt] = useState<Record<string, number>>(() =>
-    pruneTimestampMap(loadTimestampMap(STORAGE_KEY_TURNED_IN_AT_V1, 'turnedInAt'), new Set(fixedSagas.map((s) => s.id)))
+    pruneTimestampMap(
+      withCompatibleSagaIds(loadTimestampMap(STORAGE_KEY_TURNED_IN_AT_V1, 'turnedInAt')),
+      new Set(fixedSagas.map((s) => s.id))
+    )
   )
 
   // expand/collapse state per saga row
@@ -450,20 +474,22 @@ const SagaTracker = () => {
       }
 
       if (dbItems && Array.isArray(dbItems)) {
-        const status = new Map(dbItems.map((e) => [e.id, e]))
+        const status = createStatusMap(dbItems)
         setItems(
           fixedSagas.map((s) => ({
             ...s,
-            completed: Boolean(status.get(s.id)?.completed),
-            turnedIn: Boolean(status.get(s.id)?.turnedIn)
+            completed: Boolean(status[s.id]?.completed),
+            turnedIn: Boolean(status[s.id]?.turnedIn)
           }))
         )
       }
 
       if (Object.keys(dbQuests).length > 0) setQuestDoneAt(dbQuests)
-      if (Object.keys(dbTurned).length > 0) setTurnedInAt(dbTurned)
+      if (Object.keys(dbTurned).length > 0) setTurnedInAt(withCompatibleSagaIds(dbTurned))
     } catch (e) {
       console.error('IDB load/migration failed, relying on localStorage initial state', e)
+    } finally {
+      setStorageLoaded(true)
     }
   }
 
@@ -473,6 +499,7 @@ const SagaTracker = () => {
   }, [])
 
   useEffect(() => {
+    if (!storageLoaded) return
     // Persist a compact representation containing only statuses by id.
     try {
       const compact = items.map(({ id, completed, turnedIn }) => ({ id, completed, turnedIn }))
@@ -483,14 +510,14 @@ const SagaTracker = () => {
     } catch {
       // ignore storage errors
     }
-  }, [items])
+  }, [items, storageLoaded])
 
   // One-time sync: if a saga is already marked turnedIn (from older saves) but
   // we have no timestamp for it, initialize a cutoff so past quest runs don't count.
   const initialSyncRef = useRef(false)
 
   useEffect(() => {
-    if (initialSyncRef.current) return
+    if (!storageLoaded || initialSyncRef.current) return
     initialSyncRef.current = true
 
     // Use a small delay to avoid synchronous state update in effect
@@ -513,9 +540,10 @@ const SagaTracker = () => {
     return () => {
       clearTimeout(timeoutId)
     }
-  }, [items])
+  }, [items, storageLoaded])
 
   useEffect(() => {
+    if (!storageLoaded) return
     try {
       const compact = Object.entries(questDoneAt).map(([id, lastDoneAt]) => ({ id, lastDoneAt }))
       idbSetQuestDoneAt(questDoneAt).catch(console.error)
@@ -523,9 +551,10 @@ const SagaTracker = () => {
     } catch {
       // ignore
     }
-  }, [questDoneAt])
+  }, [questDoneAt, storageLoaded])
 
   useEffect(() => {
+    if (!storageLoaded) return
     try {
       const compact = Object.entries(turnedInAt).map(([id, t]) => ({ id, turnedInAt: t }))
       idbSetTurnedInAt(turnedInAt).catch(console.error)
@@ -533,7 +562,7 @@ const SagaTracker = () => {
     } catch {
       // ignore
     }
-  }, [turnedInAt])
+  }, [turnedInAt, storageLoaded])
 
   useEffect(() => {
     if (activeTab) {
@@ -641,9 +670,9 @@ const SagaTracker = () => {
       }
     }
 
-    // sort alphabetically by name for stability
+    // Sort by base level, then name.
     for (const sid of Object.keys(map)) {
-      map[sid].sort((a, b) => a.name.localeCompare(b.name))
+      map[sid].sort((a, b) => a.level - b.level || a.name.localeCompare(b.name))
     }
 
     return map
@@ -749,12 +778,12 @@ const SagaTracker = () => {
       }
       if (Array.isArray(data.items)) {
         // write both to state and idb
-        const status = new Map(data.items.map((e) => [e.id, e]))
+        const status = createStatusMap(data.items)
         setItems(
           fixedSagas.map((s) => ({
             ...s,
-            completed: Boolean(status.get(s.id)?.completed),
-            turnedIn: Boolean(status.get(s.id)?.turnedIn)
+            completed: Boolean(status[s.id]?.completed),
+            turnedIn: Boolean(status[s.id]?.turnedIn)
           }))
         )
         idbSetSagaItems(data.items).catch(console.error)
@@ -764,8 +793,9 @@ const SagaTracker = () => {
         idbSetQuestDoneAt(data.questDoneAt).catch(console.error)
       }
       if (data.turnedInAt && typeof data.turnedInAt === 'object') {
-        setTurnedInAt(data.turnedInAt)
-        idbSetTurnedInAt(data.turnedInAt).catch(console.error)
+        const compatible = withCompatibleSagaIds(data.turnedInAt)
+        setTurnedInAt(compatible)
+        idbSetTurnedInAt(compatible).catch(console.error)
       }
     } catch {
       // ignore
