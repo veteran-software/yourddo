@@ -1,4 +1,5 @@
 import { createStore, get, set } from 'idb-keyval'
+import { withCompatibleSagaIds } from './withCompatibleSagaIds.ts'
 import type {
   QuestDefinition,
   SagaDefinition,
@@ -96,16 +97,20 @@ const buildProgress = (
   questDoneAt: TimestampMap | undefined,
   turnedInAt: TimestampMap | undefined
 ): SagaTrackerProgress => {
-  const statusById = new Map(items?.map(({ id, completed, turnedIn }) => [id, { completed, turnedIn }]))
+  const statusById = withCompatibleSagaIds(
+    Object.fromEntries((items ?? []).map(({ id, completed, turnedIn }) => [id, { completed, turnedIn }]))
+  )
   const sagaStatus: SagaStatusMap = Object.fromEntries(
-    sagas.map(({ id }) => [id, statusById.get(id) ?? { completed: false, turnedIn: false }])
+    sagas.map(({ id }) => [id, statusById[id] ?? { completed: false, turnedIn: false }])
   )
   const questIds = new Set(quests.map(({ id }) => id))
   const sagaIds = new Set(sagas.map(({ id }) => id))
   return {
     sagaStatus,
     questDoneAt: Object.fromEntries(Object.entries(questDoneAt ?? {}).filter(([id]) => questIds.has(id))),
-    turnedInAt: Object.fromEntries(Object.entries(turnedInAt ?? {}).filter(([id]) => sagaIds.has(id)))
+    turnedInAt: Object.fromEntries(
+      Object.entries(withCompatibleSagaIds(turnedInAt ?? {})).filter(([id]) => sagaIds.has(id))
+    )
   }
 }
 

@@ -16,13 +16,13 @@ import {
 import type { QuestDefinition, SagaDefinition } from './sagaTracker.types.ts'
 
 const sagas: SagaDefinition[] = [
-  { id: 'h', name: 'Heroic Story', levelRange: '3-5', npc: 'H' },
-  { id: 'e', name: 'Epic Story', levelRange: '20-30', npc: 'E' },
-  { id: 'l', name: 'Legendary Story', levelRange: '31', npc: 'L' }
+  { id: 'h', name: 'Heroic Story', levelRange: '3-5', npcs: ['H'] },
+  { id: 'e', name: 'Epic Story', levelRange: '20-30', npcs: ['E'] },
+  { id: 'l', name: 'Legendary Story', levelRange: '31', npcs: ['L'] }
 ]
 const quests: QuestDefinition[] = [
-  { id: 'z', name: 'Zulu Quest', sagas: ['h', 'e'] },
-  { id: 'a', name: 'Alpha Quest', sagas: ['h'] }
+  { id: 'z', name: 'Zulu Quest', level: 3, sagas: ['h', 'e'] },
+  { id: 'a', name: 'Alpha Quest', level: 3, sagas: ['h'] }
 ]
 
 describe('Saga Tracker logic', () => {
@@ -33,9 +33,13 @@ describe('Saga Tracker logic', () => {
     expect(categorizeSaga('31')).toBe('legendary')
   })
 
-  it('groups quests across sagas and sorts each display list alphabetically', () => {
-    const grouped = groupQuestsBySaga(sagas, quests)
-    expect(grouped.h.map(({ id }) => id)).toEqual(['a', 'z'])
+  it('groups shared quests and sorts numerically by level, then alphabetically', () => {
+    const grouped = groupQuestsBySaga(sagas, [
+      ...quests,
+      { id: 'low', name: 'Zulu Low', level: 2, sagas: ['h'] },
+      { id: 'high', name: 'Alpha High', level: 10, sagas: ['h'] }
+    ])
+    expect(grouped.h.map(({ id }) => id)).toEqual(['low', 'a', 'z', 'high'])
     expect(grouped.e.map(({ id }) => id)).toEqual(['z'])
   })
 

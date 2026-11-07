@@ -6,6 +6,7 @@ import type {
   TimestampMap
 } from './sagaTracker.types.ts'
 import { progressItems } from './storage.ts'
+import { withCompatibleSagaIds } from './withCompatibleSagaIds.ts'
 
 export const BACKUP_FILENAME = 'yourddo-saga-backup.json'
 
@@ -30,7 +31,7 @@ export const createBackup = (sagas: readonly SagaDefinition[], progress: SagaTra
   turnedInAt: { ...progress.turnedInAt }
 })
 
-const parseTimestamps = (value: unknown, label: string, validIds: ReadonlySet<string>): TimestampMap => {
+const parseTimestamps = (value: unknown, label: string): TimestampMap => {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
     throw new InvalidSagaTrackerBackupError(`${label} must be an object`)
   }
@@ -39,7 +40,7 @@ const parseTimestamps = (value: unknown, label: string, validIds: ReadonlySet<st
     if (typeof timestamp !== 'number' || !Number.isFinite(timestamp) || timestamp < 0) {
       throw new InvalidSagaTrackerBackupError(`${label}.${id} must be a finite non-negative number`)
     }
-    if (validIds.has(id)) timestamps[id] = timestamp
+    timestamps[id] = timestamp
   }
   return timestamps
 }
@@ -68,16 +69,23 @@ export const parseBackup = (
     if (typeof item.completed !== 'boolean' || typeof item.turnedIn !== 'boolean') {
       throw new InvalidSagaTrackerBackupError(`item ${item.id} status values must be booleans`)
     }
-    if (sagaIds.has(item.id)) imported.set(item.id, { completed: item.completed, turnedIn: item.turnedIn })
+    imported.set(item.id, { completed: item.completed, turnedIn: item.turnedIn })
   }
 
+  const compatible = withCompatibleSagaIds(Object.fromEntries(imported))
   const sagaStatus: SagaStatusMap = Object.fromEntries(
-    sagas.map(({ id }) => [id, imported.get(id) ?? { completed: false, turnedIn: false }])
+    sagas.map(({ id }) => [id, compatible[id] ?? { completed: false, turnedIn: false }])
   )
   return {
     sagaStatus,
-    questDoneAt: parseTimestamps(backup.questDoneAt, 'questDoneAt', questIds),
-    turnedInAt: parseTimestamps(backup.turnedInAt, 'turnedInAt', sagaIds)
+    questDoneAt: Object.fromEntries(
+      Object.entries(parseTimestamps(backup.questDoneAt, 'questDoneAt')).filter(([id]) => questIds.has(id))
+    ),
+    turnedInAt: Object.fromEntries(
+      Object.entries(withCompatibleSagaIds(parseTimestamps(backup.turnedInAt, 'turnedInAt'))).filter(([id]) =>
+        sagaIds.has(id)
+      )
+    )
   }
 }
 

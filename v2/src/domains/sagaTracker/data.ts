@@ -25,7 +25,7 @@ const nonEmptyString = (value: unknown, label: string): string => {
   return value
 }
 
-export const parseSagas = (value: unknown): SagaDefinition[] => {
+export const parseSagas = (value: unknown): Omit<SagaDefinition, 'levelRange'>[] => {
   if (!Array.isArray(value)) throw new InvalidSagaTrackerDataError('saga payload must be an array')
   const ids = new Set<string>()
 
@@ -34,11 +34,13 @@ export const parseSagas = (value: unknown): SagaDefinition[] => {
     const id = nonEmptyString(item.id, `saga ${index.toString()} ID`)
     if (ids.has(id)) throw new InvalidSagaTrackerDataError(`duplicate saga ID: ${id}`)
     ids.add(id)
+    if (!Array.isArray(item.npcs) || item.npcs.length === 0) {
+      throw new InvalidSagaTrackerDataError(`saga ${id} NPCs must be a non-empty array`)
+    }
     return {
       id,
       name: nonEmptyString(item.name, `saga ${id} name`),
-      levelRange: nonEmptyString(item.levelRange, `saga ${id} level range`),
-      npc: nonEmptyString(item.npc, `saga ${id} NPC`)
+      npcs: item.npcs.map((npc) => nonEmptyString(npc, `saga ${id} NPC`))
     }
   })
 }
@@ -65,7 +67,16 @@ export const parseQuests = (value: unknown, sagaIds: ReadonlySet<string>): Quest
         throw new InvalidSagaTrackerDataError(`quest ${id} references unknown saga: ${sagaId}`)
       }
     }
-    return { id, name: nonEmptyString(item.name, `quest ${id} name`), sagas: [...sagas] }
+    if (typeof item.level !== 'number' || !Number.isInteger(item.level) || item.level <= 0) {
+      throw new InvalidSagaTrackerDataError(`quest ${id} level must be a positive integer`)
+    }
+    return {
+      id,
+      name: nonEmptyString(item.name, `quest ${id} name`),
+      level: item.level,
+      ...(item.chain === undefined ? {} : { chain: nonEmptyString(item.chain, `quest ${id} chain`) }),
+      sagas: [...sagas]
+    }
   })
 }
 
@@ -76,5 +87,14 @@ export const loadSagaTrackerData = async (): Promise<SagaTrackerData> => {
   ])
   const sagas = parseSagas(sagaPayload)
   const quests = parseQuests(questPayload, new Set(sagas.map(({ id }) => id)))
-  return { sagas, quests }
+  return {
+    sagas: sagas.map((saga) => {
+      const levels = quests.filter((quest) => quest.sagas.includes(saga.id)).map(({ level }) => level)
+      if (levels.length === 0) throw new InvalidSagaTrackerDataError(`saga ${saga.id} has no quests`)
+      const min = Math.min(...levels)
+      const max = Math.max(...levels)
+      return { ...saga, levelRange: min === max ? min.toString() : `${min.toString()}-${max.toString()}` }
+    }),
+    quests
+  }
 }

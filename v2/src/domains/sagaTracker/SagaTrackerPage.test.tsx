@@ -26,13 +26,13 @@ vi.mock('./storage.ts', async (importOriginal) => {
 
 const data = {
   sagas: [
-    { id: 'heroic', name: 'Heroic Adventure', levelRange: '3-5', npc: 'Hero NPC' },
-    { id: 'epic', name: 'Epic Adventure', levelRange: '20-22', npc: 'Epic NPC' },
-    { id: 'legendary', name: 'Legendary Adventure', levelRange: '31', npc: 'Legend NPC' }
+    { id: 'heroic', name: 'Heroic Adventure', levelRange: '3-5', npcs: ['Hero NPC', 'Second NPC'] },
+    { id: 'epic', name: 'Epic Adventure', levelRange: '20-22', npcs: ['Epic NPC'] },
+    { id: 'legendary', name: 'Legendary Adventure', levelRange: '31', npcs: ['Legend NPC'] }
   ],
   quests: [
-    { id: 'alpha', name: 'Alpha [Quest]', sagas: ['heroic', 'epic'] },
-    { id: 'beta', name: 'Beta Quest', sagas: ['heroic'] }
+    { id: 'alpha', name: 'Alpha [Quest]', level: 3, sagas: ['heroic', 'epic'] },
+    { id: 'beta', name: 'Beta Quest', level: 3, sagas: ['heroic'] }
   ]
 }
 
@@ -111,15 +111,22 @@ describe('SagaTrackerPage', () => {
     const user = userEvent.setup()
     renderPage()
     await screen.findByText('Heroic Adventure')
+    expect(screen.getByText('Contacts: Hero NPC, Second NPC')).toBeTruthy()
     const sagaCheckbox = screen.getByRole<HTMLInputElement>('checkbox', {
       name: 'Mark Heroic Adventure as completed'
     })
+    const completionColor = () =>
+      sagaCheckbox.closest<HTMLElement>('.mantine-Checkbox-root')?.style.getPropertyValue('--checkbox-color')
+    expect(completionColor()).toBe('var(--mantine-color-red-6)')
     await user.click(screen.getByRole('button', { name: 'Show Quests' }))
     expect(screen.getByRole('button', { name: 'Hide Quests' }).getAttribute('aria-expanded')).toBe('true')
+    expect(screen.getAllByText('Lv 3')).toHaveLength(2)
     await user.click(screen.getByRole('checkbox', { name: 'Mark quest Alpha [Quest] as completed' }))
     expect(sagaCheckbox.indeterminate).toBe(true)
+    expect(completionColor()).toBe('var(--mantine-color-yellow-6)')
     await user.click(screen.getByRole('checkbox', { name: 'Mark quest Beta Quest as completed' }))
     expect(sagaCheckbox.checked).toBe(true)
+    expect(completionColor()).toBe('var(--mantine-color-green-8)')
     await user.click(sagaCheckbox)
     expect(sagaCheckbox.checked).toBe(false)
   })

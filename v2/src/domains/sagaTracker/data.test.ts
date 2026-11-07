@@ -11,8 +11,8 @@ import {
 
 vi.mock('../../shared/data/loadDataset.ts', () => ({ loadDataset: vi.fn(), loadManualPayload: vi.fn() }))
 
-const saga = { id: 'heroic-saga', name: 'Heroic Saga', levelRange: '3-5', npc: 'The Contact' }
-const quest = { id: 'quest-1', name: 'A Quest', sagas: ['heroic-saga'] }
+const saga = { id: 'heroic-saga', name: 'Heroic Saga', npcs: ['The Contact'] }
+const quest = { id: 'quest-1', name: 'A Quest', level: 3, sagas: ['heroic-saga'] }
 
 beforeEach(() => {
   vi.mocked(loadDataset).mockReset()
@@ -24,7 +24,7 @@ describe('Saga Tracker data', () => {
     vi.mocked(loadManualPayload).mockImplementation((name) =>
       Promise.resolve(name === SAGA_LIST_PAYLOAD ? [saga] : [quest])
     )
-    await expect(loadSagaTrackerData()).resolves.toEqual({ sagas: [saga], quests: [quest] })
+    await expect(loadSagaTrackerData()).resolves.toEqual({ sagas: [{ ...saga, levelRange: '3' }], quests: [quest] })
     expect(loadManualPayload).toHaveBeenCalledWith(SAGA_LIST_PAYLOAD)
     expect(loadManualPayload).toHaveBeenCalledWith(QUEST_LIST_PAYLOAD)
     expect(loadManualPayload).toHaveBeenCalledTimes(2)
@@ -34,8 +34,8 @@ describe('Saga Tracker data', () => {
   it('rejects invalid saga and quest payloads', () => {
     expect(() => parseSagas({})).toThrow(InvalidSagaTrackerDataError)
     expect(() => parseSagas([{ ...saga, name: '' }])).toThrow('name')
-    expect(() => parseSagas([{ ...saga, levelRange: 3 }])).toThrow('level range')
-    expect(() => parseSagas([{ ...saga, npc: null }])).toThrow('NPC')
+    expect(() => parseSagas([{ ...saga, npcs: [] }])).toThrow('NPC')
+    expect(() => parseSagas([{ ...saga, npcs: [null] }])).toThrow('NPC')
     expect(() => parseQuests({}, new Set([saga.id]))).toThrow(InvalidSagaTrackerDataError)
     expect(() => parseQuests([{ ...quest, sagas: 'heroic-saga' }], new Set([saga.id]))).toThrow('array')
   })
@@ -47,5 +47,33 @@ describe('Saga Tracker data', () => {
       'duplicate saga references'
     )
     expect(() => parseQuests([{ ...quest, sagas: ['missing'] }], new Set([saga.id]))).toThrow('unknown saga')
+  })
+
+  it('requires positive integer quest levels and validates optional chain names', () => {
+    for (const level of [undefined, null, '3', 0, -1, 1.5, Infinity]) {
+      expect(() => parseQuests([{ ...quest, level }], new Set([saga.id]))).toThrow('positive integer')
+    }
+    expect(() => parseQuests([{ ...quest, chain: '' }], new Set([saga.id]))).toThrow('chain')
+    expect(parseQuests([{ ...quest, chain: 'Part One' }], new Set([saga.id]))[0].chain).toBe('Part One')
+  })
+
+  it('derives ranges from all associated quests and retains multiple contacts', async () => {
+    const metadata = { ...saga, npcs: ['First Contact', 'Second Contact'], levelRange: '99' }
+    const shared = { ...quest, id: 'shared', level: 12, sagas: [saga.id, 'second'] }
+    vi.mocked(loadManualPayload).mockImplementation((name) =>
+      Promise.resolve(
+        name === SAGA_LIST_PAYLOAD ? [metadata, { ...saga, id: 'second' }] : [{ ...quest, level: 10 }, shared]
+      )
+    )
+    const data = await loadSagaTrackerData()
+    expect(data.sagas.map(({ levelRange }) => levelRange)).toEqual(['10-12', '12'])
+    expect(data.sagas[0].npcs).toEqual(metadata.npcs)
+  })
+
+  it('accepts an empty dataset and rejects sagas with no quest-derived range', async () => {
+    vi.mocked(loadManualPayload).mockResolvedValue([])
+    await expect(loadSagaTrackerData()).resolves.toEqual({ sagas: [], quests: [] })
+    vi.mocked(loadManualPayload).mockImplementation((name) => Promise.resolve(name === SAGA_LIST_PAYLOAD ? [saga] : []))
+    await expect(loadSagaTrackerData()).rejects.toThrow('has no quests')
   })
 })

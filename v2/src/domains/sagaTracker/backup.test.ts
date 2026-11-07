@@ -3,10 +3,10 @@ import { createBackup, InvalidSagaTrackerBackupError, parseBackup } from './back
 import type { QuestDefinition, SagaDefinition } from './sagaTracker.types.ts'
 
 const sagas: SagaDefinition[] = [
-  { id: 'first', name: 'First', levelRange: '3', npc: 'A' },
-  { id: 'second', name: 'Second', levelRange: '20', npc: 'B' }
+  { id: 'first', name: 'First', levelRange: '3', npcs: ['A'] },
+  { id: 'second', name: 'Second', levelRange: '20', npcs: ['B'] }
 ]
-const quests: QuestDefinition[] = [{ id: 'quest', name: 'Quest', sagas: ['first'] }]
+const quests: QuestDefinition[] = [{ id: 'quest', name: 'Quest', level: 3, sagas: ['first'] }]
 const valid = {
   version: 2,
   items: [{ id: 'first', completed: true, turnedIn: false }],
@@ -15,6 +15,28 @@ const valid = {
 }
 
 describe('Saga Tracker backups', () => {
+  it.each([false, true])(
+    'imports legacy Planeswalker backups and prefers canonical values when present: %s',
+    (both) => {
+      const legacyId = 'the-planewalkers-path-epic'
+      const currentId = 'the-planeswalkers-path-epic'
+      const definitions = [{ ...sagas[0], id: currentId }]
+      const backup = {
+        ...valid,
+        items: [
+          ...(both ? [{ id: currentId, completed: false, turnedIn: false }] : []),
+          { id: legacyId, completed: true, turnedIn: true }
+        ],
+        turnedInAt: { [legacyId]: 5, ...(both ? { [currentId]: 0 } : {}) }
+      }
+      const progress = parseBackup(backup, definitions, quests)
+      expect(progress.sagaStatus).toEqual({ [currentId]: { completed: !both, turnedIn: !both } })
+      expect(progress.turnedInAt).toEqual({ [currentId]: both ? 0 : 5 })
+      expect(createBackup(definitions, progress).items[0].id).toBe(currentId)
+      expect(backup.items.at(-1)?.id).toBe(legacyId)
+    }
+  )
+
   it('exports version 2 items in authoritative saga order', () => {
     expect(
       createBackup(sagas, {

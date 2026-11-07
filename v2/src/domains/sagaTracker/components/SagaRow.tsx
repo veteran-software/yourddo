@@ -34,6 +34,8 @@ const SagaRow = ({
   onNewRun
 }: SagaRowProps) => {
   const completedQuests = quests.filter(({ id }) => isQuestComplete(id)).length
+  const completionColor =
+    completionState === 'complete' ? 'green.8' : completionState === 'indeterminate' ? 'yellow.6' : 'red.6'
 
   return (
     <Paper withBorder p={{ base: 'md', sm: 'sm' }}>
@@ -42,6 +44,14 @@ const SagaRow = ({
           <Checkbox
             id={`saga-complete-${saga.id}`}
             mt={3}
+            color={completionColor}
+            iconColor={completionState === 'indeterminate' ? 'dark.9' : 'white'}
+            styles={{
+              input: {
+                backgroundColor: 'var(--checkbox-color)',
+                borderColor: 'var(--checkbox-color)'
+              }
+            }}
             checked={completionState === 'complete'}
             indeterminate={completionState === 'indeterminate'}
             onChange={(event) => {
@@ -54,7 +64,7 @@ const SagaRow = ({
               <HighlightedText text={saga.name} query={query} />
             </Text>
             <Text size='sm' c='dimmed' style={{ overflowWrap: 'anywhere' }}>
-              Contact: {saga.npc}
+              {saga.npcs.length > 1 ? 'Contacts' : 'Contact'}: {saga.npcs.join(', ')}
             </Text>
           </Stack>
         </Group>
@@ -112,9 +122,23 @@ const SagaRow = ({
                 onChange={(event) => {
                   onToggleQuest(quest.id, event.currentTarget.checked)
                 }}
-                label={<HighlightedText text={quest.name} query={query} />}
+                label={
+                  <Group wrap='nowrap' gap='xs'>
+                    <Text
+                      component='span'
+                      size='sm'
+                      c='light-dark(var(--mantine-color-gray-7), var(--mantine-color-gray-4))'
+                      style={{ flexShrink: 0 }}
+                    >
+                      Lv {quest.level}
+                    </Text>
+                    <Text component='span' size='sm' truncate title={quest.name}>
+                      <HighlightedText text={quest.name} query={query} />
+                    </Text>
+                  </Group>
+                }
                 aria-label={`Mark quest ${quest.name} as completed`}
-                styles={{ label: { overflowWrap: 'anywhere' } }}
+                styles={{ body: { minWidth: 0 }, labelWrapper: { minWidth: 0 }, label: { minWidth: 0 } }}
               />
             ))
           ) : (

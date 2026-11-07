@@ -34,7 +34,7 @@ export const groupQuestsBySaga = (
     for (const sagaId of quest.sagas) grouped[sagaId].push(quest)
   }
   for (const sagaQuests of Object.values(grouped)) {
-    sagaQuests.sort((left, right) => left.name.localeCompare(right.name))
+    sagaQuests.sort((left, right) => left.level - right.level || left.name.localeCompare(right.name))
   }
   return grouped
 }
