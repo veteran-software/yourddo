@@ -228,7 +228,6 @@ const EquipmentSlotCard = ({
               <Text c='dimmed' size='xs'>
                 {itemMetadata(item, essenceCrafting[item.id]?.minimumLevel)}
               </Text>
-              <EquippedEnchantmentList sources={effects} conflicts={conflicts} />
             </Stack>
           </Group>
         ) : (
@@ -237,6 +236,9 @@ const EquipmentSlotCard = ({
           </Text>
         )}
       </UnstyledButton>
+      {item ? (
+        <EquippedEnchantmentList key={item.id} sources={effects} conflicts={conflicts} label={`${slot} enchantments`} />
+      ) : null}
       {item ? (
         <ReforgingSelector
           item={item}

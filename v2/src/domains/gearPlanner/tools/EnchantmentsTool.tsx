@@ -1,4 +1,5 @@
-import { Alert, Badge, Divider, Group, Paper, Stack, Text, Title } from '@mantine/core'
+import { Alert, Badge, Box, Divider, Group, Paper, ScrollArea, Stack, Text, Title } from '@mantine/core'
+import { useElementSize } from '@mantine/hooks'
 import type {
   GearPlannerEffectConflictResolution,
   GearPlannerEffectSource,
@@ -72,19 +73,43 @@ const EnchantmentSourceList = ({
 
 export const EquippedEnchantmentList = ({
   sources,
-  conflicts
+  conflicts,
+  label
 }: {
   sources: readonly GearPlannerEffectSource[]
   conflicts: GearPlannerEffectConflictResolution
-}) =>
-  sources.length ? (
+  label: string
+}) => {
+  const { ref, height } = useElementSize()
+
+  return sources.length ? (
     <Stack gap={2} mt='xs'>
       <Text c='dimmed' size='xs' fw={600}>
         Enchantments
       </Text>
-      <EnchantmentSourceList sources={sources} conflicts={conflicts} compact />
+      {sources.length > 4 ? (
+        <ScrollArea.Autosize
+          mah={height || undefined}
+          type='auto'
+          scrollbars='y'
+          scrollbarSize={6}
+          offsetScrollbars='y'
+          overscrollBehavior='contain'
+          viewportProps={{ role: 'region', 'aria-label': label, tabIndex: 0 }}
+        >
+          <Stack gap={2}>
+            <Box ref={ref}>
+              <EnchantmentSourceList sources={sources.slice(0, 4)} conflicts={conflicts} compact />
+            </Box>
+            <EnchantmentSourceList sources={sources.slice(4)} conflicts={conflicts} compact />
+          </Stack>
+        </ScrollArea.Autosize>
+      ) : (
+        <EnchantmentSourceList sources={sources} conflicts={conflicts} compact />
+      )}
     </Stack>
   ) : null
+}
 
 const EnchantmentsTool = ({ summary }: { summary: readonly GearPlannerEffectSummary[] }) => {
   if (!summary.length) {

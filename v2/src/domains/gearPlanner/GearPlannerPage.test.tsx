@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { MantineProvider } from '@mantine/core'
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { createEssenceCraftingTestPayload } from '../essenceCrafting/test-fixture.ts'
@@ -148,6 +148,35 @@ afterAll(() => {
 })
 
 describe('GearPlannerPage', () => {
+  it.each([0, 1, 4, 5, 8])(
+    'keeps all %i item enchantments and makes long lists independently focusable',
+    async (count) => {
+      const enchantments = Array.from({ length: count }, (_, index) => ({ name: `Effect ${String(index + 1)}` }))
+      await renderReadyPage(
+        dataWithItems([item('enchanted-head', gearPlannerSlots.head, 'Enchanted Helm', 10, enchantments)])
+      )
+
+      fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+      fireEvent.click(await screen.findByRole('button', { name: 'Equip Enchanted Helm' }))
+
+      const card = screen.getByTestId('gear-slot-Head')
+      enchantments.forEach(({ name }) => {
+        expect(within(card).getByText(name)).toBeTruthy()
+      })
+      if (count > 4) {
+        const region = within(card).getByRole('region', { name: 'Head enchantments' })
+        expect(region.getAttribute('tabindex')).toBe('0')
+        expect(region.closest('button')).toBeNull()
+        region.focus()
+        expect(document.activeElement).toBe(region)
+        fireEvent.click(region)
+        expect(screen.queryByRole('button', { name: 'Close item browser' })).toBeNull()
+      } else {
+        expect(within(card).queryByRole('region', { name: 'Head enchantments' })).toBeNull()
+      }
+    }
+  )
+
   it('renders character slots in legacy row-major order with responsive grid columns', async () => {
     await renderReadyPage(data)
 
