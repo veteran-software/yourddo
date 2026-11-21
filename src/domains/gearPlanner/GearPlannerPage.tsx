@@ -20,6 +20,7 @@ import FiligreeSetBrowser from './components/FiligreeSetBrowser'
 import { TroveOwnership, OwnedFilter, TroveImport } from './components/TroveInventory'
 import { createCandidateComparison, matchesGearEffect, type GearFindTarget } from './finding'
 import classes from '../../shared/layout/PlannerWorkspace.module.css'
+import workspace from '../../shared/layout/workspace.module.css'
 import ItemCraftingSelector from './components/ItemCraftingSelector.tsx'
 import {
   ActionIcon,
@@ -1442,9 +1443,9 @@ const GearPlannerWorkspace = () => {
   return (
     <WorkspaceLayout tools={tools} scrollMain={false}>
       <Stack className={classes.planner} gap='sm' p={{ base: 'xs', sm: 'md' }}>
-        <Group className={classes.masthead} justify='space-between'>
+        <Group className={`${workspace.banner} ${classes.masthead}`} justify='space-between'>
           <Group gap='sm' wrap='nowrap'>
-            <span className={classes.crest}>
+            <span className={`${workspace.crest} ${classes.crest}`}>
               <IconSwords size={23} stroke={1.6} aria-hidden />
             </span>
             <Title order={1} size='h2'>

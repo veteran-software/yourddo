@@ -168,15 +168,9 @@
   }
 }
 
-.masthead {
-  composes: banner from './workspace.module.css';
-}
 .planner .masthead {
   padding: 0.45rem 0.8rem;
   gap: 0.45rem;
-}
-.crest {
-  composes: crest from './workspace.module.css';
 }
 .workspace .paneHeading {
   background: linear-gradient(100deg, var(--app-raised), var(--app-panel));
