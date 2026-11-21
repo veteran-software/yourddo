@@ -55,8 +55,9 @@ export default function GearPlannerGuide() {
               Back up your setups
             </Title>
             <Text size='sm'>
-              Your setups are saved in this browser. Clearing site data removes that copy. Open <strong>Sharing</strong>{' '}
-              and choose <strong>Download JSON</strong> to save every setup in one file.
+              Your setups are saved in this browser. Clearing site data removes that copy. Open{' '}
+              <strong>Import / Export</strong> and choose <strong>Download JSON</strong> to save every setup in one
+              file.
             </Text>
           </Stack>
           <Stack gap={4}>
@@ -64,13 +65,13 @@ export default function GearPlannerGuide() {
               Restore a backup
             </Title>
             <Text size='sm'>
-              Restoring replaces all current setups. To keep a copy, download them first. In <strong>Sharing</strong>,
-              under <strong>Import JSON</strong>, select your backup file, or paste its contents and choose{' '}
-              <strong>Review backup</strong>. Confirm with <strong>Replace setups</strong>.
+              Restoring replaces all current setups. To keep a copy, download them first. In{' '}
+              <strong>Import / Export</strong>, under <strong>Import JSON</strong>, select your backup file, or paste
+              its contents and choose <strong>Review backup</strong>. Confirm with <strong>Replace setups</strong>.
             </Text>
             <Text size='sm' c='dimmed'>
-              To share a single setup, use <strong>Copy Permalink</strong>. Opening the link adds it to the recipient’s
-              planner.
+              To share a single setup, open Sharing and use <strong>Copy Permalink</strong>. Opening the link adds it to
+              the recipient’s planner.
             </Text>
           </Stack>
           <Divider />

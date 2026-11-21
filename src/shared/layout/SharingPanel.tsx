@@ -1,7 +1,9 @@
 import { Alert, Button, Divider, FileInput, NativeSelect, Notification, Stack, Text, Textarea } from '@mantine/core'
 import { IconAlertTriangle, IconCheck, IconCopy, IconDownload, IconLink, IconUpload } from '@tabler/icons-react'
-import { type ReactNode, useState } from 'react'
+import { type ReactNode, useContext, useState } from 'react'
 import { copyText, downloadTextFile, readTextFile } from '../serialization/browser.ts'
+
+import { BackupOnly } from './plannerView'
 
 interface SharingPanelProps {
   permalink?: string
@@ -32,6 +34,7 @@ export default function SharingPanel({
   jsonExport,
   jsonImport
 }: Readonly<SharingPanelProps>) {
+  const backupOnly = useContext(BackupOnly)
   const [status, setStatus] = useState<{
     section: 'share' | 'export' | 'import'
     error?: boolean
@@ -116,92 +119,94 @@ export default function SharingPanel({
       </Notification>
     ))
   return (
-    <Stack gap='lg' p='md'>
-      <Stack gap='xs'>
-        <Text fw={600}>Share</Text>
-        {shareHint && (
-          <Text size='sm' c='dimmed'>
-            {shareHint}
-          </Text>
-        )}
-        {permalink && (
-          <Button leftSection={<IconLink size={18} />} onClick={() => void copy(permalink, 'Permalink')}>
-            Copy Permalink
+    <Stack gap='lg' p={backupOnly ? 0 : 'md'}>
+      {!backupOnly && (
+        <Stack gap='xs'>
+          <Text fw={600}>Share</Text>
+          {shareHint && (
+            <Text size='sm' c='dimmed'>
+              {shareHint}
+            </Text>
+          )}
+          {permalink && (
+            <Button leftSection={<IconLink size={18} />} onClick={() => void copy(permalink, 'Permalink')}>
+              Copy Permalink
+            </Button>
+          )}
+          <Button
+            leftSection={<IconCopy size={18} />}
+            disabled={disableText}
+            onClick={() => void copy(discord, 'Discord Markdown')}
+          >
+            Copy Discord
           </Button>
-        )}
-        <Button
-          leftSection={<IconCopy size={18} />}
-          disabled={disableText}
-          onClick={() => void copy(discord, 'Discord Markdown')}
-        >
-          Copy Discord
-        </Button>
-        <Button
-          leftSection={<IconCopy size={18} />}
-          disabled={disableText}
-          onClick={() => void copy(forum, 'Forum BBCode')}
-        >
-          Copy Forum
-        </Button>
-        {preview && (
-          <details>
-            <summary>Preview share text</summary>
-            <Stack gap='xs' mt='xs'>
-              <NativeSelect
-                label='Preview format'
-                data={outputs.map((o) => o.label)}
-                value={previewFormat}
-                onChange={(e) => {
-                  setPreviewFormat(e.currentTarget.value)
-                }}
-              />
-              <Textarea
-                label='Share preview'
-                readOnly
-                rows={5}
-                value={outputs.find((o) => o.label === previewFormat)?.text ?? ''}
-                onFocus={(e) => {
-                  e.currentTarget.select()
-                }}
-              />
-            </Stack>
-          </details>
-        )}
-        {downloads && (
-          <details>
-            <summary>Download share text</summary>
-            <Stack gap='xs' mt='xs'>
-              <Button
-                variant='light'
-                leftSection={<IconDownload size={18} />}
-                onClick={() => {
-                  download(discord, downloads.discord, 'share')
-                }}
-              >
-                Download Discord Markdown
-              </Button>
-              <Button
-                variant='light'
-                leftSection={<IconDownload size={18} />}
-                onClick={() => {
-                  download(forum, downloads.forum, 'share')
-                }}
-              >
-                Download Forum BBCode
-              </Button>
-            </Stack>
-          </details>
-        )}
-        {downloads && discord.length > 2000 && (
-          <Text size='xs' c='dimmed'>
-            This setup exceeds 2,000 characters. Download the Discord Markdown to share it as an attachment.
-          </Text>
-        )}
-        {status?.section === 'share' && feedback}
-      </Stack>
+          <Button
+            leftSection={<IconCopy size={18} />}
+            disabled={disableText}
+            onClick={() => void copy(forum, 'Forum BBCode')}
+          >
+            Copy Forum
+          </Button>
+          {preview && (
+            <details>
+              <summary>Preview share text</summary>
+              <Stack gap='xs' mt='xs'>
+                <NativeSelect
+                  label='Preview format'
+                  data={outputs.map((o) => o.label)}
+                  value={previewFormat}
+                  onChange={(e) => {
+                    setPreviewFormat(e.currentTarget.value)
+                  }}
+                />
+                <Textarea
+                  label='Share preview'
+                  readOnly
+                  rows={5}
+                  value={outputs.find((o) => o.label === previewFormat)?.text ?? ''}
+                  onFocus={(e) => {
+                    e.currentTarget.select()
+                  }}
+                />
+              </Stack>
+            </details>
+          )}
+          {downloads && (
+            <details>
+              <summary>Download share text</summary>
+              <Stack gap='xs' mt='xs'>
+                <Button
+                  variant='light'
+                  leftSection={<IconDownload size={18} />}
+                  onClick={() => {
+                    download(discord, downloads.discord, 'share')
+                  }}
+                >
+                  Download Discord Markdown
+                </Button>
+                <Button
+                  variant='light'
+                  leftSection={<IconDownload size={18} />}
+                  onClick={() => {
+                    download(forum, downloads.forum, 'share')
+                  }}
+                >
+                  Download Forum BBCode
+                </Button>
+              </Stack>
+            </details>
+          )}
+          {downloads && discord.length > 2000 && (
+            <Text size='xs' c='dimmed'>
+              This setup exceeds 2,000 characters. Download the Discord Markdown to share it as an attachment.
+            </Text>
+          )}
+          {status?.section === 'share' && feedback}
+        </Stack>
+      )}
       {jsonExport && (
         <>
-          <Divider />
+          {!backupOnly && <Divider />}
           <Stack gap='xs'>
             <Text fw={600}>Export JSON</Text>
             {jsonExport.hint && (

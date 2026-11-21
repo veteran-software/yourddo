@@ -316,6 +316,31 @@ describe('EssenceCraftingPage', () => {
     }
   })
 
+  it('edits an affix in Grid and keeps it when switching to List', async () => {
+    const user = userEvent.setup()
+    renderPage()
+    expect((await screen.findByRole<HTMLInputElement>('radio', { name: 'List' })).checked).toBe(true)
+    await user.click(screen.getByText('Grid', { selector: 'span' }))
+    const board = within(screen.getByTestId('equipment-slot-selector'))
+    expect(board.getAllByRole('article')).toHaveLength(EQUIPMENT_SLOTS.length)
+    const hand = within(board.getByRole('article', { name: 'Main Hand crafting slot' }))
+    await user.click(screen.getByRole('button', { name: 'Plan Main Hand' }))
+    const prefix = await hand.findByRole('combobox', { name: 'Prefix for Main Hand' })
+    await user.click(prefix)
+    await user.click(await screen.findByRole('option', { name: 'Alpha Prefix' }))
+    await user.click(screen.getByRole('button', { name: 'Plan Ring 1' }))
+    expect(screen.getByRole('combobox', { name: 'Extra for Ring 1' })).toBeTruthy()
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Prefix for Main Hand' }).value).toBe('Alpha Prefix')
+    await user.click(screen.getByRole('button', { name: 'Collapse Ring 1 planned item' }))
+    await user.click(screen.getByText('List', { selector: 'span' }))
+    await user.click(screen.getByRole('button', { name: 'Edit Main Hand' }))
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Prefix for Main Hand' }).value).toBe('Alpha Prefix')
+    await user.click(screen.getByRole('button', { name: 'Import / Export' }))
+    const backup = within(await screen.findByRole('dialog', { name: 'Import / Export' }))
+    expect(backup.getByRole('button', { name: 'Download JSON' })).toBeTruthy()
+    expect(backup.getByRole('button', { name: 'Review backup' })).toBeTruthy()
+  })
+
   it('registers Recipes, Ingredients, and Sharing as desktop workspace tools', async () => {
     desktopViewport = true
     const user = userEvent.setup()

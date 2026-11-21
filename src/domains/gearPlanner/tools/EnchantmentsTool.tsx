@@ -1,3 +1,4 @@
+import layout from '../../../shared/layout/PlannerWorkspace.module.css'
 import EquippedEffect from '../components/EquippedEffect'
 import {
   ActionIcon,
@@ -13,7 +14,7 @@ import {
   Text,
   Title
 } from '@mantine/core'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { IconSearch } from '@tabler/icons-react'
 import type { GearFindTarget } from '../finding'
 import type { GearPlannerCandidate } from '../planner'
@@ -74,35 +75,68 @@ const groupValue = (group: GearPlannerEffectSummary['groups'][number]) =>
 export const EquippedEnchantmentList = ({
   sources,
   conflicts,
-  label
+  label,
+  compact = false
 }: {
+  compact?: boolean
   sources: readonly GearPlannerEffectSource[]
   conflicts: GearPlannerEffectConflictResolution
   label: string
-}) => (
-  <Stack gap={4} mt='xs'>
-    <Text c='dimmed' size='xs' fw={600}>
-      Enchantments
-    </Text>
-    <List aria-label={label} size='sm' spacing={3} listStyleType='disc' style={{ overflowWrap: 'anywhere' }}>
-      {sources.map((source) => {
-        const resolution = conflicts.bySourceId[source.id]
-        const lesser = resolution && !resolution.isEffective
-        const effectiveState = resolution ? 'effective' : 'none'
-        return (
-          <List.Item
-            key={source.id}
-            c={lesser ? 'dimmed' : undefined}
-            data-conflict-state={lesser ? 'lesser' : effectiveState}
-            data-testid={`equipped-effect-${source.id}`}
-          >
-            <EquippedEffect id={source.id} conflicts={conflicts} label={sourceLabel(source)} />
-          </List.Item>
-        )
-      })}
-    </List>
-  </Stack>
-)
+}) => {
+  const listRef = useRef<HTMLUListElement | HTMLOListElement>(null)
+  const scrollable = compact && sources.length > 5
+  useEffect(() => {
+    const list = listRef.current
+    if (!list || !scrollable) return
+    const rows = Array.from(list.children).slice(0, 5)
+    const measure = () => {
+      const height = rows[4].getBoundingClientRect().bottom - rows[0].getBoundingClientRect().top
+      if (height > 0) list.style.setProperty('--five-enchantments', Math.ceil(height).toString() + 'px')
+    }
+    measure()
+    const observer = new ResizeObserver(measure)
+    rows.forEach((row) => {
+      observer.observe(row)
+    })
+    return () => {
+      observer.disconnect()
+    }
+  }, [scrollable, sources])
+  return (
+    <Stack gap={4} mt='xs'>
+      <Text c='dimmed' size='xs' fw={600}>
+        Enchantments{compact ? ` (${String(sources.length)})` : ''}
+      </Text>
+      <List
+        ref={(element: HTMLUListElement | HTMLOListElement | null) => {
+          listRef.current = element
+        }}
+        className={scrollable ? layout.scrollEnchantments : undefined}
+        aria-label={label}
+        size='sm'
+        spacing={3}
+        listStyleType='disc'
+        style={{ overflowWrap: 'anywhere' }}
+      >
+        {sources.map((source) => {
+          const resolution = conflicts.bySourceId[source.id]
+          const lesser = resolution && !resolution.isEffective
+          const effectiveState = resolution ? 'effective' : 'none'
+          return (
+            <List.Item
+              key={source.id}
+              c={lesser ? 'dimmed' : undefined}
+              data-conflict-state={lesser ? 'lesser' : effectiveState}
+              data-testid={`equipped-effect-${source.id}`}
+            >
+              <EquippedEffect id={source.id} conflicts={conflicts} label={sourceLabel(source)} />
+            </List.Item>
+          )
+        })}
+      </List>
+    </Stack>
+  )
+}
 
 const EnchantmentsTool = ({
   summary,

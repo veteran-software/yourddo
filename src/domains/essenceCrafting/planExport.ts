@@ -9,6 +9,7 @@ import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
 import type { EssenceBinding, EssenceCraftingData } from './essenceCrafting.types.ts'
 import type { EssenceMaterialStep, EssencePlanMaterials } from './materialCalculations.ts'
 import { calculatePlanMaterials } from './materialCalculations.ts'
+import { hydrateEssencePlan } from './plannerTransitions'
 import type { EssencePlanState, PlannedItem } from './plannerState.ts'
 
 export const ESSENCE_PLAN_EXPORT_SCHEMA_VERSION = 1
@@ -17,7 +18,7 @@ export const ESSENCE_PLAN_BACKUP_FILENAME = 'yourddo-essence-crafting-plan.json'
 /**
  * A versioned, display-name-free backup of planner selections. Recipe data and
  * ingredient totals deliberately remain in the published dataset, where they
- * can be recalculated when a future restore feature is introduced.
+ * can be recalculated on restore.
  */
 export interface EssencePlanBackup {
   schemaVersion: typeof ESSENCE_PLAN_EXPORT_SCHEMA_VERSION
@@ -89,6 +90,74 @@ export const createEssencePlanBackup = (
       itemsBySlotId
     }
   }
+}
+
+const record = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value)
+
+function matchesBackup(expected: unknown, input: unknown): boolean {
+  if (Array.isArray(expected))
+    return (
+      Array.isArray(input) &&
+      expected.length === input.length &&
+      expected.every((entry: unknown, index: number) => matchesBackup(entry, input[index]))
+    )
+  if (record(expected))
+    return (
+      record(input) &&
+      Object.keys(expected).length === Object.keys(input).length &&
+      Object.entries(expected).every(([key, value]) => matchesBackup(value, input[key]))
+    )
+  return expected === input
+}
+
+export function readEssencePlanBackup(data: EssenceCraftingData, text: string) {
+  const backup: unknown = JSON.parse(text)
+  const invalid = () => new Error('This file is not a valid Essence Crafting backup.')
+  if (
+    !record(backup) ||
+    backup.schemaVersion !== ESSENCE_PLAN_EXPORT_SCHEMA_VERSION ||
+    (backup.recipeBinding !== 'bound' && backup.recipeBinding !== 'unbound') ||
+    !record(backup.plan)
+  )
+    throw invalid()
+  const { plan } = backup
+  if (
+    !Number.isInteger(plan.masterMinimumLevel) ||
+    !Array.isArray(plan.activeSlotIds) ||
+    !Array.isArray(plan.collapsedSlotIds) ||
+    !record(plan.itemsBySlotId)
+  )
+    throw invalid()
+  const effects = new Map(
+    data.augments.flatMap((augment) => augment.effects.map((effect) => [effect.id, effect.displayName] as const))
+  )
+  const itemsBySlotId = Object.fromEntries(
+    plan.activeSlotIds.map((id: unknown) => {
+      if (typeof id !== 'string' || !EQUIPMENT_SLOTS.some((slot) => slot.id === id) || !record(plan.itemsBySlotId))
+        throw invalid()
+      const item = plan.itemsBySlotId[id]
+      if (!record(item) || !Array.isArray(item.augmentSlots) || typeof item.hasCannithMark !== 'boolean')
+        throw invalid()
+      const augmentSlots = item.augmentSlots.map((slot: unknown) => {
+        if (!record(slot) || !Array.isArray(slot.selectedEffectIds)) throw invalid()
+        return {
+          ...slot,
+          selectedEffectNames: slot.selectedEffectIds.map((effectId: unknown) => {
+            const name = typeof effectId === 'string' && effects.get(effectId)
+            if (!name) throw invalid()
+            return name
+          })
+        }
+      })
+      return [id, { ...item, augmentSlots }]
+    })
+  )
+  const restored = hydrateEssencePlan(data, { ...plan, itemsBySlotId })
+  const normalized = createEssencePlanBackup(data, restored, backup.recipeBinding)
+  // Verify every exported field survived hydration, including augment selections.
+  if (!matchesBackup(normalized.plan, plan)) throw invalid()
+  return { plan: restored, binding: normalized.recipeBinding }
 }
 
 /** Formats the machine-readable backup consistently for download. */
