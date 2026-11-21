@@ -47,7 +47,13 @@ const icons = {
   shield: IconShield
 } satisfies Record<EquipmentSlotId, typeof IconSword>
 
+import { useSlotView } from '../../shared/layout/plannerView'
+import { PlannerViewToolbar } from '../../shared/layout/PlannerViewToolbar'
+import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout'
+import { getAvailableEnhancementChoices } from './enhancementEligibility'
+
 interface Props {
+  tools: readonly WorkspaceTool[]
   data: EssenceCraftingData
   plan: EssencePlanState
   onAction: (action: EssencePlanAction) => void
@@ -60,8 +66,10 @@ export default function EssencePlanWorkspace({
   plan,
   onAction,
   onRequestDeactivate,
-  onRequestReset
+  onRequestReset,
+  tools
 }: Readonly<Props>) {
+  const [view, setView] = useSlotView('essence')
   const [selected, setSelected] = useState<EquipmentSlotId>()
   const [showDetail, setShowDetail] = useState(false)
   const detailHeading = useRef<HTMLHeadingElement>(null)
@@ -72,7 +80,13 @@ export default function EssencePlanWorkspace({
   const levels = Array.from({ length: maximum - minimum + 1 }, (_, i) => String(minimum + i))
 
   function selectSlot(id: EquipmentSlotId) {
-    if (!plan.itemsBySlotId[id]) onAction({ type: 'activate-equipment-slot', equipmentSlotId: id })
+    if (!plan.itemsBySlotId[id]) {
+      onAction({ type: 'activate-equipment-slot', equipmentSlotId: id })
+      if (view === 'grid') {
+        setSelected(id)
+        return
+      }
+    }
     setSelected(id)
     setShowDetail(true)
     requestAnimationFrame(() => detailHeading.current?.focus({ preventScroll: true }))
@@ -107,7 +121,19 @@ export default function EssencePlanWorkspace({
           Reset plan
         </Button>
       </Group>
-      <div className={layout.columns} data-detail={showDetail && item ? true : undefined}>
+      <PlannerViewToolbar
+        tools={tools}
+        view={view}
+        changeView={(next) => {
+          setView(next)
+          setShowDetail(false)
+        }}
+      />
+      <div
+        className={layout.columns}
+        data-grid={view === 'grid' || undefined}
+        data-detail={showDetail && item ? true : undefined}
+      >
         <nav className={layout.slots} aria-label='Equipment slots'>
           <Group className={layout.paneHeading} justify='space-between'>
             <Title order={2} size='h4'>
@@ -125,32 +151,63 @@ export default function EssencePlanWorkspace({
                 planned &&
                 data.indexes.enhancementById.get(planned.prefixEnhancementId ?? planned.suffixEnhancementId ?? '')
               return (
-                <UnstyledButton
-                  type='button'
-                  key={id}
-                  className={layout.slot}
-                  aria-current={current === id ? true : undefined}
-                  aria-controls='essence-editor'
-                  aria-label={`${planned ? 'Edit' : 'Plan'} ${label}`}
-                  onClick={() => {
-                    selectSlot(id)
-                  }}
-                >
-                  <span className={layout.slotIcon} data-equipped={planned ? true : undefined}>
-                    <Icon size={19} stroke={1.6} aria-hidden />
-                  </span>
-                  <Stack gap={0} miw={0} flex={1}>
-                    <Text size='sm' fw={600}>
-                      {label}
-                    </Text>
-                    <Text size='xs' c='dimmed' truncate>
-                      {planned
-                        ? `ML ${String(planned.minimumLevelOverride ?? plan.masterMinimumLevel)} · ${affix?.displayName ?? 'Planned'}`
-                        : 'Not planned'}
-                    </Text>
-                  </Stack>
-                  <IconChevronRight size={14} aria-hidden />
-                </UnstyledButton>
+                <div key={id} className={layout.slotCell} data-filled={planned ? true : undefined}>
+                  <UnstyledButton
+                    type='button'
+                    className={layout.slot}
+                    aria-current={current === id ? true : undefined}
+                    aria-controls='essence-editor'
+                    aria-label={`${planned ? 'Edit' : 'Plan'} ${label}`}
+                    onClick={() => {
+                      selectSlot(id)
+                    }}
+                  >
+                    <span className={layout.slotIcon} data-equipped={planned ? true : undefined}>
+                      <Icon size={19} stroke={1.6} aria-hidden />
+                    </span>
+                    <Stack gap={0} miw={0} flex={1}>
+                      <Text size='sm' fw={600}>
+                        {label}
+                      </Text>
+                      <Text size='xs' c='dimmed' truncate>
+                        {planned
+                          ? `ML ${String(planned.minimumLevelOverride ?? plan.masterMinimumLevel)} · ${affix?.displayName ?? 'Planned'}`
+                          : 'Not planned'}
+                      </Text>
+                    </Stack>
+                    <IconChevronRight size={14} aria-hidden />
+                  </UnstyledButton>
+                  {view === 'grid' && planned && (
+                    <div className={layout.quickAffixes}>
+                      {(['prefix', 'suffix'] as const).map((position) => (
+                        <Select
+                          key={position}
+                          size='xs'
+                          searchable
+                          clearable
+                          label={position === 'prefix' ? 'Prefix' : 'Suffix'}
+                          classNames={{ root: layout.quickField, label: layout.quickLabel }}
+                          aria-label={`${position === 'prefix' ? 'Prefix' : 'Suffix'} for ${label} in grid`}
+                          placeholder='Choose…'
+                          data={getAvailableEnhancementChoices(
+                            data,
+                            id,
+                            position,
+                            planned.minimumLevelOverride ?? plan.masterMinimumLevel
+                          ).map((choice) => ({ value: choice.id, label: choice.displayName }))}
+                          value={position === 'prefix' ? planned.prefixEnhancementId : planned.suffixEnhancementId}
+                          onChange={(enhancementId) => {
+                            onAction({
+                              type: position === 'prefix' ? 'select-prefix-enhancement' : 'select-suffix-enhancement',
+                              equipmentSlotId: id,
+                              enhancementId
+                            })
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
               )
             })}
           </div>

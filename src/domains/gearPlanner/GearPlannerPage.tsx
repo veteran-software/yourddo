@@ -19,6 +19,8 @@ import ItemDropLocations from './components/ItemDropLocations'
 import FiligreeSetBrowser from './components/FiligreeSetBrowser'
 import { TroveOwnership, OwnedFilter, TroveImport } from './components/TroveInventory'
 import { createCandidateComparison, matchesGearEffect, type GearFindTarget } from './finding'
+import { useSlotView } from '../../shared/layout/plannerView'
+import { PlannerViewToolbar } from '../../shared/layout/PlannerViewToolbar'
 import classes from '../../shared/layout/PlannerWorkspace.module.css'
 import workspace from '../../shared/layout/workspace.module.css'
 import ItemCraftingSelector from './components/ItemCraftingSelector.tsx'
@@ -1034,6 +1036,7 @@ const GearPlannerWorkspace = () => {
   const finding = mode === 'find'
   const replacing = mode === 'replace'
   const [showConflicts, setShowConflicts] = useState(false)
+  const [view, setView] = useSlotView('gear-planner')
   const [detailOnMobile, setDetailOnMobile] = useState(false)
   const slotListRef = useRef<HTMLElement>(null)
   const detailHeadingRef = useRef<HTMLHeadingElement>(null)
@@ -1707,7 +1710,19 @@ const GearPlannerWorkspace = () => {
                 <ImportDetails issues={feedback.issues} />
               </Notification>
             )}
-            <div className={classes.columns} data-detail={detailOnMobile || undefined}>
+            <PlannerViewToolbar
+              tools={tools}
+              view={view}
+              changeView={(next) => {
+                setView(next)
+                setDetailOnMobile(false)
+              }}
+            />
+            <div
+              className={classes.columns}
+              data-grid={view === 'grid' || undefined}
+              data-detail={detailOnMobile || undefined}
+            >
               <nav className={classes.slots} ref={slotListRef} aria-label='Equipment slots'>
                 {owners.length > 1 && (
                   <Select
@@ -1758,6 +1773,21 @@ const GearPlannerWorkspace = () => {
                 <div className={classes.slotList}>
                   {slots.map((name) => {
                     const equipped = equipment[name]
+                    const config = equipped && essenceCrafting[equipped.id]
+                    const gridBonuses =
+                      view === 'grid' && equipped
+                        ? [
+                            ...(config
+                              ? [config.prefixId, config.suffixId, config.extraId].map(
+                                  (id) => id && dataState.essenceData.indexes.enhancementById.get(id)?.displayName
+                                )
+                              : []),
+                            ...(equipped.crafts ?? []).map((craft) => craft.label),
+                            ...(equipped.source.setBonus ?? []).map((set) => set.name)
+                          ]
+                            .filter(Boolean)
+                            .join(' · ')
+                        : ''
                     const SlotIcon = slotIcons[name]
                     return (
                       <UnstyledButton
@@ -1791,6 +1821,11 @@ const GearPlannerWorkspace = () => {
                           <Text size='xs' c='dimmed' truncate>
                             {equipped?.source.name ?? 'Empty'}
                           </Text>
+                          {gridBonuses && (
+                            <Text size='xs' className={classes.gridBonuses}>
+                              {gridBonuses}
+                            </Text>
+                          )}
                         </Stack>
                         <IconChevronRight aria-hidden size={14} />
                       </UnstyledButton>

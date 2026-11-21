@@ -5,7 +5,8 @@ import {
   ESSENCE_PLAN_EXPORT_SCHEMA_VERSION,
   formatEssencePlanBbCode,
   formatEssencePlanDiscordMarkdown,
-  formatEssencePlanJsonBackup
+  formatEssencePlanJsonBackup,
+  readEssencePlanBackup
 } from './planExport.ts'
 import type { EssencePlanState } from './plannerState.ts'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
@@ -47,6 +48,14 @@ const createPlan = (): EssencePlanState => ({
 const count = (value: string, match: string): number => value.split(match).length - 1
 
 describe('Essence Crafting plan export', () => {
+  it('restores an exported crafting plan with its augment filters and recipe binding', () => {
+    const catalog = data()
+    const plan = createPlan()
+    const json = formatEssencePlanJsonBackup(catalog, plan, 'unbound')
+    expect(readEssencePlanBackup(catalog, json)).toEqual({ plan, binding: 'unbound' })
+    expect(() => readEssencePlanBackup(catalog, json.replace('enhancement-alpha-prefix', 'missing-prefix'))).toThrow()
+  })
+
   it('creates a deterministic JSON backup with stable planner IDs and no derived recipe data', () => {
     const fixture = data()
     const plan = createPlan()

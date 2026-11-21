@@ -96,6 +96,10 @@ const EssenceCraftingPage = () => {
               icon: <IconShare stroke={2} />,
               content: (
                 <SharingTool
+                  onRestore={({ plan, binding: restoredBinding }) => {
+                    setBinding(restoredBinding)
+                    setDataState((current) => (current.status === 'loaded' ? { ...current, plan } : current))
+                  }}
                   binding={binding}
                   data={dataState.data}
                   plan={dataState.plan}
@@ -239,6 +243,7 @@ const EssenceCraftingPage = () => {
             ) : null}
 
             <EssencePlanWorkspace
+              tools={tools}
               data={dataState.data}
               plan={dataState.plan}
               onAction={dispatch}
