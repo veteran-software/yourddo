@@ -52,6 +52,8 @@ export const navigation: NavigationGroup[] = [
       },
       { label: 'The Shadow Crypt', path: '/the-shadow-crypt' },
       { label: 'The Shroud', path: '/the-shroud' },
+      { label: 'The Key to the Mythal', path: '/the-key-to-the-mythal' },
+      { label: 'Toxic Treatment', path: '/toxic-treatment' },
       { label: 'Total Chaos', path: '/total-chaos' }
     ]
   }

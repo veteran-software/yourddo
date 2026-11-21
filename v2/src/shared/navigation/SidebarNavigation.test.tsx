@@ -97,10 +97,12 @@ describe('SidebarNavigation', () => {
     expect(screen.getAllByRole('link').map((link) => link.textContent)).toEqual([
       'Home',
       'Monastery of the Scorpion',
+      'The Key to the Mythal',
       "The Reaver's Fate",
       'The Shadow Crypt',
       'The Shroud',
-      'Total Chaos'
+      'Total Chaos',
+      'Toxic Treatment'
     ])
   })
 

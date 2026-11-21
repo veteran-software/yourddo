@@ -1,9 +1,10 @@
+import { IconBrandDiscord, IconBrandGithub } from '@tabler/icons-react'
 import RouteSeo from '../shared/seo/RouteSeo'
 import { useEffect } from 'react'
 import { recordVisit } from '../domains/home/shelves'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { TroveImport, TroveProvider } from '../domains/gearPlanner/components/TroveInventory'
-import { AppShell, Burger, Group, Image, ScrollArea } from '@mantine/core'
+import { ActionIcon, AppShell, Burger, Group, Image, ScrollArea } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Outlet } from 'react-router-dom'
 import SidebarNavigation from '../shared/navigation/SidebarNavigation'
@@ -60,14 +61,16 @@ const AppLayout = () => {
                 color='dark.1'
               />
 
-              <Image
-                src='/yourddo-logo.png'
-                alt='YourDDO'
-                w='clamp(7.5rem, calc(100vw - 13.75rem), 11.875rem)'
-                miw={0}
-                h={38}
-                fit='contain'
-              />
+              <Link to='/' aria-label='YourDDO home' onClick={mobile.close}>
+                <Image
+                  src='/yourddo-logo.png'
+                  alt='YourDDO'
+                  w='clamp(7.5rem, calc(100vw - 13.75rem), 11.875rem)'
+                  miw={0}
+                  h={38}
+                  fit='contain'
+                />
+              </Link>
             </Group>
 
             <Group gap='xs' wrap='nowrap' style={{ flexShrink: 0 }}>
@@ -99,6 +102,26 @@ const AppLayout = () => {
           <AppShell.Section grow component={ScrollArea} p='sm' type='auto' offsetScrollbars>
             <SidebarNavigation onNavigate={mobile.close} />
           </AppShell.Section>
+          <Group px='sm' pb='xs' gap='xs'>
+            <ActionIcon
+              component='a'
+              variant='subtle'
+              href='https://github.com/veteran-software/yourddo'
+              aria-label='YourDDO on GitHub'
+              title='GitHub'
+            >
+              <IconBrandGithub size={18} />
+            </ActionIcon>
+            <ActionIcon
+              component='a'
+              variant='subtle'
+              href='https://discord.gg/jk3hYA5Jgv'
+              aria-label='YourDDO Discord community'
+              title='Discord'
+            >
+              <IconBrandDiscord size={18} />
+            </ActionIcon>
+          </Group>
           <ServerStatus {...status} />
         </AppShell.Navbar>
 

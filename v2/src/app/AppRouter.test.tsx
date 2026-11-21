@@ -525,6 +525,8 @@ describe('AppRouter', () => {
       expect(navigation.className).toContain('mantine-focus-auto')
 
       await user.tab()
+      expect(document.activeElement).toBe(screen.getByRole('link', { name: 'YourDDO home' }))
+      await user.tab()
       expect(document.activeElement).toBe(system)
       expect(system.checked).toBe(true)
 
