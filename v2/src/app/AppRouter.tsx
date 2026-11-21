@@ -28,9 +28,9 @@ function LegacyGearLink({ home = false }: { home?: boolean }) {
   return home ? <HomePage /> : <GearPlannerPage />
 }
 
-const AppRouter = () => (
+const AppRouter = ({ hostname = globalThis.window?.location.hostname ?? '' }: { hostname?: string } = {}) => (
   <Routes>
-    <Route element={<AppLayout />}>
+    <Route element={<AppLayout develop={hostname.startsWith('develop.')} />}>
       <Route path='/' element={<LegacyGearLink home />} />
       <Route path='/cauldron-of-cadence' element={<CauldronOfCadencePage />} />
       <Route path='/dinosaur-bone' element={<DinosaurBonePage />} />

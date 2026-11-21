@@ -33,7 +33,7 @@ export const render = (url: string, origin = DEFAULT_ORIGIN): PrerenderResult =>
   const html = renderToString(
     <MemoryRouter initialEntries={[url]}>
       <MantineProvider theme={theme} cssVariablesResolver={cssVariablesResolver} defaultColorScheme='auto'>
-        <App />
+        <App hostname={new URL(origin).hostname} />
       </MantineProvider>
     </MemoryRouter>
   )

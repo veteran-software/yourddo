@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { recordVisit } from '../domains/home/shelves'
 import { Link, useLocation } from 'react-router-dom'
 import { TroveImport, TroveProvider } from '../domains/gearPlanner/components/TroveInventory'
-import { ActionIcon, AppShell, Burger, Group, Image, ScrollArea } from '@mantine/core'
+import { ActionIcon, AppShell, Burger, Group, Image, ScrollArea, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Outlet } from 'react-router-dom'
 import SidebarNavigation from '../shared/navigation/SidebarNavigation'
@@ -12,7 +12,7 @@ import ServerStatus, { ServerStatusShortcut } from '../shared/serverStatus/Serve
 import { useServerStatus } from '../shared/serverStatus/useServerStatus'
 import ThemeSwitch from '../shared/ui/ThemeSwitch'
 
-const AppLayout = () => {
+const AppLayout = ({ develop }: { develop: boolean }) => {
   const [mobileOpened, mobile] = useDisclosure(false)
   const [desktopOpened, desktop] = useDisclosure(true)
 
@@ -28,7 +28,7 @@ const AppLayout = () => {
   return (
     <TroveProvider>
       <AppShell
-        header={{ height: 56 }}
+        header={{ height: develop ? 86 : 56 }}
         navbar={{
           width: 260,
           breakpoint: 'lg',
@@ -41,7 +41,12 @@ const AppLayout = () => {
       >
         <RouteSeo />
         <AppShell.Header>
-          <Group h='100%' px={{ base: 'xs', sm: 'md' }} gap='xs' wrap='nowrap' justify='space-between'>
+          {develop && (
+            <Text bg='orange.9' c='white' ta='center' h={30} lh='30px' size='xs' fw={600}>
+              Development preview · Verify plans before crafting in game.
+            </Text>
+          )}
+          <Group h={56} px={{ base: 'xs', sm: 'md' }} gap='xs' wrap='nowrap' justify='space-between'>
             <Group gap='sm' wrap='nowrap' miw={0}>
               <Burger
                 opened={mobileOpened}
