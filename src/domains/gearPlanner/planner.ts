@@ -1,7 +1,8 @@
 import type { EssenceAffixPosition, EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
+import { slaveLordsCraftGroups } from './slaveLordsCrafting'
 import { candidateSetDetails, matchesGearEffect } from './finding'
 import { ownsTroveItem, type TroveInventory } from './trove'
-import { isCompatibleGearPlannerAugment } from './augments.ts'
+import { getGearPlannerBaseAugmentSlots, isCompatibleGearPlannerAugment } from './augments.ts'
 import { canApplyGearPlannerCurse, gearPlannerCurseIdentity } from './curses.ts'
 import {
   createGearPlannerEssenceCraftingConfiguration,
@@ -249,7 +250,7 @@ export const setGearPlannerSlottedAugment = (
   augmentSlots?: readonly import('./gearPlanner.types.ts').GearPlannerAugmentSlot[]
 ): GearPlannerSelectionState => {
   const item = Object.values(state.equipment).find((equipped): equipped is GearPlannerItem => equipped?.id === itemId)
-  const augmentSlot = augmentSlots?.[slotIndex] ?? item?.source.augments?.[slotIndex]
+  const augmentSlot = item && (augmentSlots ?? getGearPlannerBaseAugmentSlots(item))[slotIndex]
   if (!item || !augmentSlot || !Number.isInteger(slotIndex) || slotIndex < 0) return state
   if (augment && !isCompatibleGearPlannerAugment(augmentSlot, augment)) return state
 
@@ -265,7 +266,7 @@ export const setGearPlannerSlottedAugment = (
   return { ...state, slottedAugments }
 }
 
-const sanitizeGearPlannerSlottedAugments = (
+export const sanitizeGearPlannerSlottedAugments = (
   slottedAugments: GearPlannerSlottedAugments,
   item: GearPlannerItem,
   augmentSlots: readonly import('./gearPlanner.types.ts').GearPlannerAugmentSlot[]
@@ -429,7 +430,7 @@ export const prepareGearPlannerCandidates = (
 ): readonly GearPlannerCandidate[] =>
   items.map((item) => {
     const { sets, craftGroups } = candidateSetDetails(item, data)
-    const effects = candidateEffects(item, essence)
+    const effects = candidateEffects(item, essence, data?.crafting.slaveLords)
     return {
       item,
       effects,
@@ -478,8 +479,23 @@ export const filterGearPlannerCandidates = (
     })
 }
 
-function candidateEffects(item: GearPlannerItem, essence: EssenceCraftingData | undefined) {
+function candidateEffects(
+  item: GearPlannerItem,
+  essence: EssenceCraftingData | undefined,
+  slaveLords: GearPlannerData['crafting']['slaveLords']
+) {
   let effects: GearPlannerCandidate['effects'] = item.source.enchantments ?? []
+  if (item.slaveLordsBase && slaveLords) {
+    const choices = slaveLordsCraftGroups(item.slaveLordsBase, item.slot, slaveLords)
+    return [
+      ...effects,
+      ...choices.flatMap((group) =>
+        group.choices.flatMap((choice) =>
+          (choice.effects ?? []).map((effect) => ({ ...effect, craft: group.label + ' · ' + choice.label }))
+        )
+      )
+    ]
+  }
   if (essence && isEssenceCraftedGearPlannerItem(item)) {
     const bonusTypeName = (id: string | null | undefined) =>
       essence.bonusTypes.find((type) => type.id === id)?.displayName

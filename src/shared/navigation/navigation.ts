@@ -38,6 +38,7 @@ export const navigation: NavigationGroup[] = [
       { label: 'Dinosaur Bone Crafting', path: '/dinosaur-bone' },
       { label: 'Heroic Green Steel', path: '/green-steel' },
       { label: 'Legendary Green Steel', path: '/legendary-green-steel' },
+      { label: 'Slave Lords Crafting', path: '/slave-lords' },
       { label: 'Viktranium Experiment', path: '/viktranium-experiment' }
     ]
   },

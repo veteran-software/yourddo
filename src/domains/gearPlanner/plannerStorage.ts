@@ -577,7 +577,12 @@ function restoreGearCrafts(
     const item = slot && equipment[slot]
     const group = item && gearCraftGroups(item, data.crafting).find((g) => g.system === system)
     if (slot && item && group) {
-      const updated = applyGearCraft(item, group, choiceId)
+      // Older exports used "Slave's Endurance" for the published Slaver's Endurance set.
+      const restoredChoice =
+        system === 'slave-lords' && item.slaveLordsBase
+          ? choiceId.replace("Slave's Endurance", "Slaver's Endurance")
+          : choiceId
+      const updated = applyGearCraft(item, group, restoredChoice)
       if (updated !== item) {
         equipment[slot] = updated
         continue

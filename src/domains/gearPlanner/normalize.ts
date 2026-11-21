@@ -1,3 +1,5 @@
+import type { SlaveLordsData } from '../slaveLords/data'
+import { slaveLordsBlankSlots } from './slaveLordsCrafting'
 import { emptyGearCraftingData } from './crafting.ts'
 import {
   allGearPlannerSlots,
@@ -82,12 +84,14 @@ const normalizeItem = (
 export const normalizeGearPlannerSources = (
   sourceDatasets: readonly GearPlannerSourceDataset[],
   augments: GearPlannerData['augments'],
-  reforgingItemNames: ReadonlySet<string> = new Set()
+  reforgingItemNames: ReadonlySet<string> = new Set(),
+  slaveLords?: SlaveLordsData
 ): GearPlannerData => {
   const itemsBySlot = Object.fromEntries(allGearPlannerSlots.map((slot) => [slot, [] as GearPlannerItem[]])) as Record<
     GearPlannerSlot,
     GearPlannerItem[]
   >
+  const bases = new Map(slaveLords?.bases.map((base) => [base.name, base]))
   let rawItemCount = 0
   let rejectedItemCount = 0
 
@@ -99,12 +103,17 @@ export const normalizeGearPlannerSources = (
         continue
       }
       const absoluteMinimumLevel = optionalNumericLevel(source.absoluteMinLevel)
-      for (const slot of sourceSlotsForItem(fileName, source)) {
+      const candidate = bases.get(source.pageTitle ?? source.name) ?? bases.get(source.name)
+      const base = candidate?.minimumLevel === numericLevel(source.minLevel) ? candidate : undefined
+      const slots = new Set([...sourceSlotsForItem(fileName, source), ...slaveLordsBlankSlots(base)])
+      for (const slot of slots) {
         if (!isAcceptedSourceItem(source, slot)) {
           rejectedItemCount += 1
           continue
         }
-        itemsBySlot[slot].push(normalizeItem(fileName, source, slot, absoluteMinimumLevel))
+        const item = normalizeItem(fileName, source, slot, absoluteMinimumLevel)
+        if (base) item.slaveLordsBase = base
+        itemsBySlot[slot].push(item)
       }
     }
   }
@@ -119,7 +128,7 @@ export const normalizeGearPlannerSources = (
     filigrees: [],
     filigreeSetDefinitions: [],
     filigreeSetDefinitionByName: new Map(),
-    crafting: emptyGearCraftingData,
+    crafting: slaveLords ? { ...emptyGearCraftingData, slaveLords } : emptyGearCraftingData,
     reforging: emptyGearPlannerReforgingData,
     rawItemCount,
     normalizedItemCount: items.length,

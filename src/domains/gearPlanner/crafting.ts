@@ -1,3 +1,5 @@
+import type { SlaveLordsData } from '../slaveLords/data'
+import { slaveLordsCraftGroups } from './slaveLordsCrafting'
 import rules from './craftingRules.json'
 import type { GearPlannerEffect, GearPlannerItem } from './gearPlanner.types.ts'
 import { heroicSlaveLordsSets, legendarySlaveLordsSets, slaveLordsMarker } from './slaveLords'
@@ -6,6 +8,7 @@ export interface CraftChoice {
   id: string
   label: string
   effects?: readonly GearPlannerEffect[]
+  augmentSlot?: import('./gearPlanner.types').GearPlannerAugmentSlot
   setName?: string
 }
 
@@ -22,6 +25,7 @@ export interface CraftGroup {
 }
 
 export interface GearCraftingData {
+  slaveLords?: SlaveLordsData
   nearlyComplete: readonly {
     name: string
     requirements: readonly { name: string }[]
@@ -102,7 +106,10 @@ export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): 
       label: 'Ritual Table',
       choices: ritual.map((r) => ({ id: r.name, label: r.name, effects: r.effects }))
     })
-  if (markers.has(slaveLordsMarker)) {
+  const publishedGroups =
+    item.slaveLordsBase && data.slaveLords ? slaveLordsCraftGroups(item.slaveLordsBase, item.slot, data.slaveLords) : []
+  groups.push(...publishedGroups)
+  if (!data.slaveLords && markers.has(slaveLordsMarker)) {
     const sets = item.minimumLevel >= 28 ? legendarySlaveLordsSets : heroicSlaveLordsSets
     groups.push({ system: 'slave-lords', label: 'Slave Lords set', choices: sets.map(({ name }) => setChoice(name)) })
   }
@@ -120,7 +127,7 @@ export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): 
   const mythic = rules.mythic.find(
     (r) => r.slots.includes(item.slot) && (!r.types.length || r.types.some((t) => type.includes(t)))
   )
-  if (mythic)
+  if (mythic && !publishedGroups.some((group) => group.system === 'mythic'))
     groups.push({
       system: 'mythic',
       label: 'Mythic Boost',

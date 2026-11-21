@@ -149,6 +149,7 @@ describe('SidebarNavigation', () => {
       'Legendary Green Steel',
       'Nearly Complete',
       'Nearly Finished',
+      'Slave Lords Crafting',
       'Viktranium Experiment'
     ])
   })
