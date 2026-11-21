@@ -914,7 +914,7 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('combobox', { name: 'Prefix' }))
     fireEvent.click(await screen.findByRole('option', { name: /Split Prefix Test/ }))
     fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
-    expect((await screen.findAllByText(/Essence Crafting · prefix: Split Prefix Test/)).length).toBe(2)
+    expect(await screen.findAllByText(/Essence Crafting · prefix: Split Prefix Test/)).toHaveLength(2)
   })
 
   it('applies and clears a Reaper Forge upgrade on the equipped card', async () => {
@@ -1002,7 +1002,7 @@ describe('GearPlannerPage', () => {
     expect(screen.getByTestId('augment-slot-reforged-trinket-0')).toBeTruthy()
 
     fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
-    expect((await screen.findAllByText(/Reforging · Nearly Finished tier on Trinket: Reforged Trinket/)).length).toBe(1)
+    expect(await screen.findAllByText(/Reforging · Nearly Finished tier on Trinket: Reforged Trinket/)).toHaveLength(1)
   })
 
   it('limits results to 50 until more are requested', async () => {
@@ -1015,9 +1015,9 @@ describe('GearPlannerPage', () => {
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
-    expect((await screen.findAllByRole('button', { name: /Equip Result/ })).length).toBe(49)
+    expect(await screen.findAllByRole('button', { name: /Equip Result/ })).toHaveLength(49)
     fireEvent.click(screen.getByRole('button', { name: 'Show 2 more' }))
-    expect((await screen.findAllByRole('button', { name: /Equip Result/ })).length).toBe(51)
+    expect(await screen.findAllByRole('button', { name: /Equip Result/ })).toHaveLength(51)
   })
 
   it('shows the Enchantments tool empty state before gear is equipped', async () => {
@@ -1474,8 +1474,8 @@ describe('GearPlannerPage', () => {
     expect(screen.getByTestId('selected-curse-head').textContent).toContain('Ghostly')
     fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
     expect(
-      (await screen.findAllByText(/Deck of Many Curses · Curse of Greater Strength on Head: Cursed Helm/)).length
-    ).toBe(2)
+      await screen.findAllByText(/Deck of Many Curses · Curse of Greater Strength on Head: Cursed Helm/)
+    ).toHaveLength(2)
     fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
 
     fireEvent.click(screen.getByRole('button', { name: 'Manage curses for Cursed Helm' }))

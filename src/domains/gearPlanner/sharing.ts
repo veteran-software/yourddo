@@ -5,7 +5,7 @@ import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.typ
 import { gearPlannerAugmentIdentity } from './augments'
 import type { GearPlannerEffectSource } from './effects'
 import { enabledOwners, ownerSlots, type GearOwner } from './character'
-import type { GearPlannerData, GearPlannerEffect } from './gearPlanner.types'
+import type { GearPlannerData, GearPlannerEffect, GearPlannerItem } from './gearPlanner.types'
 import {
   importGearPlannerState,
   parsePersistedGearPlannerState,
@@ -13,7 +13,7 @@ import {
   serializeGearPlannerState,
   type PersistedGearPlannerSetupV1
 } from './plannerStorage'
-import { formatGearPlannerSetEffect, type GearPlannerSetState } from './sets'
+import { formatGearPlannerSetEffect, type GearPlannerSetState, type GearPlannerSetMembership } from './sets'
 import {
   activeGearPlannerSetup,
   createGearPlannerSetupId,
@@ -83,23 +83,44 @@ const legacyTupleKeys = [
   'finishingTouch'
 ]
 const record = (x: unknown): x is Record<string, unknown> => x !== null && typeof x === 'object' && !Array.isArray(x)
+function readLegacySetup(value: unknown): { meta: unknown; items: unknown; tuple: boolean } {
+  if (Array.isArray(value)) {
+    const tuple: readonly unknown[] = value
+    const [name, minLevel, maxLevel, classes, weaponFilters, armorFilters, shieldFilters, allowMetalWithDruid, items] =
+      tuple
+    return {
+      meta: { name, minLevel, maxLevel, classes, weaponFilters, armorFilters, shieldFilters, allowMetalWithDruid },
+      items,
+      tuple: true
+    }
+  }
+  if (record(value) && value.version === 2) return { meta: value.setup, items: value.items, tuple: false }
+  throw new Error('Invalid Gear Planner permalink.')
+}
+
+function parseLegacyItem(entry: unknown, tuple: boolean) {
+  if (!tuple) return entry
+  if (!Array.isArray(entry) || entry.length < 15) throw new Error('Invalid legacy Gear Planner item.')
+  return Object.fromEntries(legacyTupleKeys.map((key, index) => [key, entry[index]]))
+}
+
+function selectionPairs(value: unknown) {
+  if (
+    !Array.isArray(value) ||
+    !value.every(
+      (pair: unknown) =>
+        Array.isArray(pair) &&
+        pair.length === 2 &&
+        (typeof pair[0] === 'string' || typeof pair[0] === 'number') &&
+        typeof pair[1] === 'string'
+    )
+  )
+    throw new Error('Invalid selections in Gear Planner permalink.')
+  return Object.fromEntries(value)
+}
+
 function legacyLinkSave(value: unknown) {
-  const tuple: readonly unknown[] | undefined = Array.isArray(value) ? value : undefined
-  const meta: unknown = tuple
-    ? {
-        name: tuple[0],
-        minLevel: tuple[1],
-        maxLevel: tuple[2],
-        classes: tuple[3],
-        weaponFilters: tuple[4],
-        armorFilters: tuple[5],
-        shieldFilters: tuple[6],
-        allowMetalWithDruid: tuple[7]
-      }
-    : record(value) && value.version === 2
-      ? value.setup
-      : undefined
-  const items: unknown = tuple ? tuple[8] : record(value) ? value.items : undefined
+  const { meta, items, tuple } = readLegacySetup(value)
   if (!record(meta) || typeof meta.name !== 'string' || !Array.isArray(items))
     throw new Error('Invalid Gear Planner permalink.')
   const slots = Object.create(null) as Record<string, unknown>
@@ -109,9 +130,7 @@ function legacyLinkSave(value: unknown) {
     selections[id] = v
   }
   for (const [i, entry] of items.entries()) {
-    if (tuple && (!Array.isArray(entry) || entry.length < 15)) throw new Error('Invalid legacy Gear Planner item.')
-    const row: unknown =
-      tuple && Array.isArray(entry) ? Object.fromEntries(legacyTupleKeys.map((k, n) => [k, entry[n]])) : entry
+    const row: unknown = parseLegacyItem(entry, tuple)
     if (
       !record(row) ||
       typeof row.slot !== 'string' ||
@@ -126,20 +145,7 @@ function legacyLinkSave(value: unknown) {
       ['essenceCrafting', 'slottedEssenceEnchantments']
     ]) {
       const pairs = row[from]
-      if (pairs != null) {
-        if (
-          !Array.isArray(pairs) ||
-          !pairs.every(
-            (p: unknown) =>
-              Array.isArray(p) &&
-              p.length === 2 &&
-              (typeof p[0] === 'string' || typeof p[0] === 'number') &&
-              typeof p[1] === 'string'
-          )
-        )
-          throw new Error('Invalid selections in Gear Planner permalink.')
-        put(to, id, Object.fromEntries(pairs))
-      }
+      if (pairs != null) put(to, id, selectionPairs(pairs))
     }
     put('slottedCurses', id, row.curseName)
     put('slottedFiligrees', id, row.filigrees)
@@ -184,6 +190,53 @@ function formatSharedEffect(effect: GearPlannerEffect) {
   return notes ? `${label} — ${notes}` : label
 }
 
+function craftDetails(
+  setup: GearPlannerSetup,
+  item: GearPlannerItem,
+  itemEffects: readonly GearPlannerEffectSource[],
+  memberships: readonly GearPlannerSetMembership[]
+) {
+  const details: string[] = []
+  const essence = setup.essenceCrafting[item.id]
+  if (essence?.material) details.push('Material: ' + essence.material)
+  for (const craft of item.crafts ?? []) {
+    if (craft.setName && memberships.some((m) => m.setName === craft.setName)) continue
+    details.push(craft.system === 'mythic' ? 'Mythic Boost ' + craft.label : craft.label)
+  }
+  for (const stage of Object.keys(setup.reforging[item.id] ?? {})) {
+    const choice = itemEffects.find((e) => e.reforgingStage === stage && e.reforgingChoiceLabel)?.reforgingChoiceLabel
+    details.push('Reforging: ' + stage.replaceAll('-', ' ') + (choice ? ' · ' + choice : ''))
+  }
+  return details
+}
+
+function sharedItemDetails(
+  setup: GearPlannerSetup,
+  item: GearPlannerItem,
+  effects: readonly GearPlannerEffectSource[],
+  setState?: GearPlannerSetState
+) {
+  const memberships = setState?.memberships.filter((m) => m.itemId === item.id && m.category === 'equipped-item') ?? []
+
+  const itemEffects = effects.filter((effect) => effect.itemId === item.id)
+  const details = craftDetails(setup, item, itemEffects, memberships)
+  for (const [index, aug] of Object.entries(setup.slottedAugments[item.id] ?? {}))
+    details.push(`Augment ${String(Number(index) + 1)}: ${aug.name}`)
+  const curse = setup.slottedCurses[item.id]
+  if (curse) details.push('Curse: ' + curse.name)
+  for (const [index, f] of Object.entries(setup.slottedFiligrees[item.id] ?? {}))
+    details.push(`Filigree ${String(Number(index) + 1)}: ${f.name}`)
+  for (const m of memberships) details.push('Set: ' + m.setName)
+  for (const source of itemEffects) {
+    const text = formatSharedEffect(source.effect)
+    details.push(
+      source.essenceEnhancementName
+        ? `${source.essenceAffixPosition ?? 'Affix'} · ${source.essenceEnhancementName}: ${text}`
+        : text
+    )
+  }
+  return details
+}
 export type GearShareFormat = 'Discord Markdown' | 'Forum BBCode'
 export function formatGearSetup(
   setup: GearPlannerSetup,
@@ -212,36 +265,7 @@ export function formatGearSetup(
         '',
         heading(slot) + ' · ' + escape(item.source.name) + ` (ML ${String(essence?.minimumLevel ?? item.minimumLevel)})`
       )
-      const details: string[] = []
-      if (essence?.material) details.push('Material: ' + essence.material)
-      const memberships =
-        setState?.memberships.filter((m) => m.itemId === item.id && m.category === 'equipped-item') ?? []
-      for (const craft of item.crafts ?? []) {
-        if (craft.setName && memberships.some((m) => m.setName === craft.setName)) continue
-        details.push(craft.system === 'mythic' ? 'Mythic Boost ' + craft.label : craft.label)
-      }
-      const itemEffects = effects.filter((e) => e.itemId === item.id)
-      for (const stage of Object.keys(setup.reforging[item.id] ?? {})) {
-        const choice = itemEffects.find(
-          (e) => e.reforgingStage === stage && e.reforgingChoiceLabel
-        )?.reforgingChoiceLabel
-        details.push('Reforging: ' + stage.replaceAll('-', ' ') + (choice ? ' · ' + choice : ''))
-      }
-      for (const [index, aug] of Object.entries(setup.slottedAugments[item.id] ?? {}))
-        details.push(`Augment ${String(Number(index) + 1)}: ${aug.name}`)
-      const curse = setup.slottedCurses[item.id]
-      if (curse) details.push('Curse: ' + curse.name)
-      for (const [index, f] of Object.entries(setup.slottedFiligrees[item.id] ?? {}))
-        details.push(`Filigree ${String(Number(index) + 1)}: ${f.name}`)
-      for (const m of memberships) details.push('Set: ' + m.setName)
-      for (const source of itemEffects) {
-        const text = formatSharedEffect(source.effect)
-        details.push(
-          source.essenceEnhancementName
-            ? `${source.essenceAffixPosition ?? 'Affix'} · ${source.essenceEnhancementName}: ${text}`
-            : text
-        )
-      }
+      const details = sharedItemDetails(setup, item, effects, setState)
       lines.push(...details.map((d) => (forum ? '• ' : '- ') + escape(d)))
     }
     const active = setState?.sets.flatMap((s) =>

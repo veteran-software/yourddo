@@ -279,7 +279,13 @@ describe('Gear Planner Essence Crafting behavior', () => {
       prefixId: 'enhancement-split-prefix'
     }
     const equipment = equipGearPlannerItem(createEmptyGearPlannerEquipment(), gearPlannerSlots.mainHand, weapon)
-    const sources = collectEquippedEffects(equipment, {}, {}, {}, current, { [weapon.id]: configuration })
+    const sources = collectEquippedEffects(
+      equipment,
+      {},
+      {},
+      {},
+      { essenceData: current, essenceCrafting: { [weapon.id]: configuration } }
+    )
 
     expect(sources.filter(({ category }) => category === 'essence')).toMatchObject([
       {

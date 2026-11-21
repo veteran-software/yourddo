@@ -7,14 +7,13 @@ export function createCraftingSelection<T>(initial: () => T) {
   const saved = new WeakMap<object, { value: T }>()
   return function useCraftingSelection() {
     const session = useContext(CraftingSession)
-    const state = useState(() => {
+    const [value, setValue] = useState(() => {
       const entry = session && saved.get(session)
       return entry ? entry.value : initial()
     })
-    const [value] = state
     useEffect(() => {
       if (session) saved.set(session, { value })
     }, [session, value])
-    return state
+    return [value, setValue] as const
   }
 }

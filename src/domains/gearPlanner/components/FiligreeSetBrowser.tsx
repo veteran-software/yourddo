@@ -18,6 +18,11 @@ interface FiligreeSetBrowserProps {
   initialQuery: string
 }
 
+function matchCount(count: number) {
+  if (count === 0) return 'No matching filigrees'
+  return count === 1 ? '1 matching filigree' : `${String(count)} matching filigrees`
+}
+
 export default function FiligreeSetBrowser({
   data,
   equipped,
@@ -103,11 +108,7 @@ export default function FiligreeSetBrowser({
           </Text>
         ))}
       <Text c='dimmed' size='sm' aria-live='polite'>
-        {visible.length === 0
-          ? 'No matching filigrees'
-          : visible.length === 1
-            ? '1 matching filigree'
-            : `${String(visible.length)} matching filigrees`}
+        {matchCount(visible.length)}
       </Text>
       <ul className={classes.results}>
         {visible.slice(0, limit).map(({ filigree, effects, sets }) => (

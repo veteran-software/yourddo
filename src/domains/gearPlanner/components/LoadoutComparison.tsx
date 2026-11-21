@@ -8,6 +8,12 @@ import { comparisonRows, loadoutSnapshot } from '../loadoutComparison'
 import type { GearPlannerSetup } from '../setups'
 import css from './LoadoutComparison.module.css'
 
+const tabLabels = {
+  Stats: { column: 'Effect', empty: 'No effective bonuses' },
+  Sets: { column: 'Set tier', empty: 'No active set tiers' },
+  Gear: { column: 'Equipment', empty: 'No equipment' }
+}
+
 export default function LoadoutComparison({
   setups,
   active,
@@ -47,110 +53,111 @@ export default function LoadoutComparison({
   )
   const visible = rows[tab].filter((r) => unchanged || r.changed)
   const options = setups.map((s) => ({ value: s.id, label: s.name }))
-  return (
-    <Modal opened onClose={onClose} title='Compare loadouts' size='52rem' centered>
-      {setups.length === 1 && duplicate ? (
+  if (setups.length === 1 && duplicate)
+    return (
+      <Modal opened onClose={onClose} title='Compare loadouts' size='52rem' centered>
         <Stack align='flex-start'>
           <Text>Duplicate {active.name}, change its gear, then compare the two setups here.</Text>
           <Button leftSection={<IconCopy size={16} />} onClick={duplicate}>
             Duplicate setup
           </Button>
         </Stack>
-      ) : (
-        <Stack gap='md'>
-          <div className={css.pair}>
-            <NativeSelect
-              label='Baseline'
-              value={a.id}
-              data={options}
-              onChange={(e) => {
-                const id = e.currentTarget.value
-                if (id === to) setTo(from)
-                setFrom(id)
-              }}
-            />
-            <IconArrowRight aria-hidden size={18} />
-            <NativeSelect
-              label='Compare to'
-              value={b.id}
-              data={options}
-              onChange={(e) => {
-                const id = e.currentTarget.value
-                if (id === from) setFrom(to)
-                setTo(id)
-              }}
-            />
-          </div>
-          {owners.length > 1 && (
-            <NativeSelect
-              label='Equipment for'
-              value={viewOwner}
-              data={owners}
-              onChange={(e) => {
-                setOwner(e.currentTarget.value as GearOwner)
-              }}
-            />
-          )}
-          <Group justify='space-between' gap='xs'>
-            <SegmentedControl
-              aria-label='Comparison category'
-              value={tab}
-              onChange={(v) => {
-                setTab(v)
-              }}
-              data={sections.map((s) => ({
-                value: s,
-                label: s + ' (' + String(rows[s].filter((r) => r.changed).length) + ')'
-              }))}
-            />
-            <Checkbox
-              size='xs'
-              checked={unchanged}
-              onChange={(e) => {
-                setUnchanged(e.currentTarget.checked)
-              }}
-              label='Show unchanged'
-            />
-          </Group>
-          {tab !== 'Gear' && (left.predictsProwessStack || right.predictsProwessStack) && (
-            <Text size='sm' c='dimmed'>
-              Prowess: Strength on two hosts is modeled as +2 Strength and two set pieces. In-game confirmation is
-              pending.
-            </Text>
-          )}
-          {visible.length ? (
-            <div className={css.results}>
-              <table aria-label={tab + ' comparison'}>
-                <thead>
-                  <tr>
-                    <th>{tab === 'Stats' ? 'Effect' : tab === 'Sets' ? 'Set tier' : 'Equipment'}</th>
-                    <th>Baseline</th>
-                    <th>Compare to</th>
-                    <th>Change</th>
+      </Modal>
+    )
+  return (
+    <Modal opened onClose={onClose} title='Compare loadouts' size='52rem' centered>
+      <Stack gap='md'>
+        <div className={css.pair}>
+          <NativeSelect
+            label='Baseline'
+            value={a.id}
+            data={options}
+            onChange={(e) => {
+              const id = e.currentTarget.value
+              if (id === to) setTo(from)
+              setFrom(id)
+            }}
+          />
+          <IconArrowRight aria-hidden size={18} />
+          <NativeSelect
+            label='Compare to'
+            value={b.id}
+            data={options}
+            onChange={(e) => {
+              const id = e.currentTarget.value
+              if (id === from) setFrom(to)
+              setTo(id)
+            }}
+          />
+        </div>
+        {owners.length > 1 && (
+          <NativeSelect
+            label='Equipment for'
+            value={viewOwner}
+            data={owners}
+            onChange={(e) => {
+              setOwner(e.currentTarget.value as GearOwner)
+            }}
+          />
+        )}
+        <Group justify='space-between' gap='xs'>
+          <SegmentedControl
+            aria-label='Comparison category'
+            value={tab}
+            onChange={(v) => {
+              setTab(v)
+            }}
+            data={sections.map((s) => ({
+              value: s,
+              label: s + ' (' + String(rows[s].filter((r) => r.changed).length) + ')'
+            }))}
+          />
+          <Checkbox
+            size='xs'
+            checked={unchanged}
+            onChange={(e) => {
+              setUnchanged(e.currentTarget.checked)
+            }}
+            label='Show unchanged'
+          />
+        </Group>
+        {tab !== 'Gear' && (left.predictsProwessStack || right.predictsProwessStack) && (
+          <Text size='sm' c='dimmed'>
+            Prowess: Strength on two hosts is modeled as +2 Strength and two set pieces. In-game confirmation is
+            pending.
+          </Text>
+        )}
+        {visible.length ? (
+          <div className={css.results}>
+            <table aria-label={tab + ' comparison'}>
+              <thead>
+                <tr>
+                  <th>{tabLabels[tab].column}</th>
+                  <th>Baseline</th>
+                  <th>Compare to</th>
+                  <th>Change</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visible.map((r) => (
+                  <tr key={r.label}>
+                    <th scope='row'>{r.label}</th>
+                    <td>{r.before}</td>
+                    <td>{r.after}</td>
+                    <td>
+                      <span data-direction={r.direction}>{r.delta}</span>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {visible.map((r) => (
-                    <tr key={r.label}>
-                      <th scope='row'>{r.label}</th>
-                      <td>{r.before}</td>
-                      <td>{r.after}</td>
-                      <td>
-                        <span data-direction={r.direction}>{r.delta}</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div className={css.empty}>
-              {tab === 'Sets' ? 'No active set tiers' : tab === 'Gear' ? 'No equipment' : 'No effective bonuses'}{' '}
-              {unchanged ? 'to display' : 'changed'}.
-            </div>
-          )}
-        </Stack>
-      )}
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className={css.empty}>
+            {tabLabels[tab].empty} {unchanged ? 'to display' : 'changed'}.
+          </div>
+        )}
+      </Stack>
     </Modal>
   )
 }

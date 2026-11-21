@@ -90,20 +90,25 @@ const AugmentSlotSelector = ({
   const label = augmentSlot.name ?? augmentSlot.augmentType
 
   const byId = useMemo(() => new Map(compatible.map((a) => [gearPlannerAugmentIdentity(a), a])), [compatible])
-  const renderAugment = (augment: GearPlannerAugment) => {
+  function compareAugment(augment: GearPlannerAugment) {
     const comparisons = new Map<keyof typeof comparisonColors, string[]>()
     for (const effect of augment.effectsAdded) {
       const sources = sourcesByEffect.get(normalizeEffectName(effect.name))
       if (!sources) continue
       const preview = previewPotentialEffectConflict(effect, sources, item.id)
       if (!preview.isConflict) continue
-      const status = preview.isUpgrade ? 'Upgrade' : preview.isOverpowered ? 'Overpowered' : 'Redundant'
+      const lesser = preview.isOverpowered ? 'Overpowered' : 'Redundant'
+      const status = preview.isUpgrade ? 'Upgrade' : lesser
       const detail =
         effectLabel(effect) + (preview.currentModifier != null ? ` · equipped ${String(preview.currentModifier)}` : '')
       const group = comparisons.get(status)
       if (group) group.push(detail)
       else comparisons.set(status, [detail])
     }
+    return comparisons
+  }
+  const renderAugment = (augment: GearPlannerAugment) => {
+    const comparisons = compareAugment(augment)
     return (
       <Stack gap={2} w='100%'>
         <Group justify='space-between' wrap='nowrap'>

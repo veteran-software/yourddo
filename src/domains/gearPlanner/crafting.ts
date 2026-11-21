@@ -40,6 +40,41 @@ export const emptyGearCraftingData: GearCraftingData = { nearlyComplete: [], upg
 const setChoice = (name: string): CraftChoice => ({ id: name, label: name, setName: name })
 export const craftItemKey = (title: string) => title.trim().replace(/\s+/g, ' ').toLowerCase()
 
+function gemSetGroups(source: GearPlannerItem['source']): CraftGroup[] {
+  if (!source.name.includes('Gem of Many Facets')) return []
+  const groups: CraftGroup[] = []
+  const gemGroups: Record<string, { label: string; setBonuses: string[] }[]> = rules.gems
+  const known = gemGroups[source.pageTitle ?? ''] ?? gemGroups[source.name]
+  // The Legendary Gem's CDN item lists four desert sets with the Epic prefix.
+  const legendary = source.name === 'Legendary Gem of Many Facets'
+  const available = source.setBonus?.map(({ name }) =>
+    legendary ? name.replace(/^The Epic Desert's /, "The Legendary Desert's ") : name
+  )
+  const pools = known ?? [1, 2].map((n) => ({ label: 'Random set ' + String(n), setBonuses: available ?? [] }))
+  pools.forEach((pool, i) => {
+    const names = available ? available.filter((name) => pool.setBonuses.includes(name)) : pool.setBonuses
+    if (names.length)
+      groups.push({
+        system: 'gem-set-' + String(i + 1),
+        label: pool.label,
+        choices: [...new Set(names)].sort((left, right) => left.localeCompare(right)).map(setChoice)
+      })
+  })
+  return groups
+}
+
+function nearlyCompleteGroup(item: GearPlannerItem, data: GearCraftingData): CraftGroup | undefined {
+  const placeholder = item.source.enchantments?.find(({ name }) => name.startsWith('Nearly Complete:'))?.name
+  if (!placeholder) return undefined
+  const requirement = `${item.minimumLevel >= 30 ? 'Legendary' : 'Heroic'} Item with ${placeholder}`
+  const choices = data.nearlyComplete
+    .filter(
+      (r) => r.effectsRemoved.some((e) => e.name === placeholder) && r.requirements.some((e) => e.name === requirement)
+    )
+    .map((r) => ({ id: r.name, label: r.name, effects: r.effectsAdded }))
+  return choices.length ? { system: 'nearly-complete', label: 'Nearly Complete', choices } : undefined
+}
+
 export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): CraftGroup[] {
   const groups: CraftGroup[] = []
   const source = item.source
@@ -51,17 +86,8 @@ export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): 
     if (effects)
       groups.push({ system, label, replacesEnchantments: true, choices: [{ id: 'applied', label, effects }] })
   }
-  const placeholder = source.enchantments?.find(({ name }) => name.startsWith('Nearly Complete:'))?.name
-  if (placeholder) {
-    const requirement = `${item.minimumLevel >= 30 ? 'Legendary' : 'Heroic'} Item with ${placeholder}`
-    const choices = data.nearlyComplete
-      .filter(
-        (r) =>
-          r.effectsRemoved.some((e) => e.name === placeholder) && r.requirements.some((e) => e.name === requirement)
-      )
-      .map((r) => ({ id: r.name, label: r.name, effects: r.effectsAdded }))
-    if (choices.length) groups.push({ system: 'nearly-complete', label: 'Nearly Complete', choices })
-  }
+  const nearlyComplete = nearlyCompleteGroup(item, data)
+  if (nearlyComplete) groups.push(nearlyComplete)
   if (markers.has('Trace of Madness')) {
     groups.push({
       system: 'trace-of-madness',
@@ -88,25 +114,7 @@ export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): 
       choices: rules.lost.filter((name) => name.startsWith('Legendary ') === legendary).map(setChoice)
     })
   }
-  if (source.name.includes('Gem of Many Facets')) {
-    const gemGroups: Record<string, { label: string; setBonuses: string[] }[]> = rules.gems
-    const known = gemGroups[source.pageTitle ?? ''] ?? gemGroups[source.name]
-    // The Legendary Gem's CDN item lists four desert sets with the Epic prefix.
-    const legendary = source.name === 'Legendary Gem of Many Facets'
-    const available = source.setBonus?.map(({ name }) =>
-      legendary ? name.replace(/^The Epic Desert's /, "The Legendary Desert's ") : name
-    )
-    const pools = known ?? [1, 2].map((n) => ({ label: 'Random set ' + String(n), setBonuses: available ?? [] }))
-    pools.forEach((pool, i) => {
-      const names = available ? available.filter((name) => pool.setBonuses.includes(name)) : pool.setBonuses
-      if (names.length)
-        groups.push({
-          system: 'gem-set-' + String(i + 1),
-          label: pool.label,
-          choices: [...new Set(names)].sort((left, right) => left.localeCompare(right)).map(setChoice)
-        })
-    })
-  }
+  groups.push(...gemSetGroups(source))
 
   const type = source.type ?? ''
   const mythic = rules.mythic.find(

@@ -142,6 +142,32 @@ const parseBinding = (value: unknown, owner: string): Record<string, string> | u
   return Object.fromEntries(Object.entries(value) as [string, string][])
 }
 
+function itemMetadata(item: Record<string, unknown>, itemName: string) {
+  const physicalProperties: Pick<DinosaurBoneItem, 'weight' | 'hardness' | 'durability'> = {}
+  for (const key of ['weight', 'hardness', 'durability'] as const) {
+    const value = item[key]
+    if (typeof value === 'string' || typeof value === 'number') physicalProperties[key] = value
+  }
+  const binding = parseBinding(item.binding, itemName)
+  return {
+    ...(typeof item.pageTitle === 'string' ? { pageTitle: item.pageTitle } : {}),
+    ...(typeof item.description === 'string' ? { description: item.description } : {}),
+    ...(nonEmptyString(item.image) ? { image: item.image } : {}),
+    ...(nonEmptyString(item.icon) ? { icon: item.icon } : {}),
+    ...(nonEmptyString(item.artifactType) ? { artifactType: item.artifactType } : {}),
+    ...(typeof item.minLevel === 'string' || typeof item.minLevel === 'number' ? { minLevel: item.minLevel } : {}),
+    ...(binding ? { binding } : {}),
+    ...(typeof item.material === 'string' ? { material: item.material } : {}),
+    ...physicalProperties
+  }
+}
+
+function collectItemNotes(single: unknown, multiple: unknown): string[] {
+  const notes = nonEmptyString(single) ? [single] : []
+  if (Array.isArray(multiple) && multiple.every(nonEmptyString)) notes.push(...multiple)
+  return notes
+}
+
 export const parseItems = (value: unknown): DinosaurBoneItem[] => {
   if (!Array.isArray(value) || value.length === 0) {
     throw new InvalidDinosaurBoneDataError('items payload must be a non-empty array')
@@ -151,30 +177,12 @@ export const parseItems = (value: unknown): DinosaurBoneItem[] => {
       throw new InvalidDinosaurBoneDataError('an item is missing name or type')
     }
     const itemName = item.name
-    const restrictions = [
-      ...(typeof item.restriction === 'string' && item.restriction.trim() ? [item.restriction] : []),
-      ...(Array.isArray(item.restrictions) && item.restrictions.every(nonEmptyString) ? item.restrictions : [])
-    ]
-    const notes = [
-      ...(typeof item.details === 'string' && item.details.trim() ? [item.details] : []),
-      ...(Array.isArray(item.notes) && item.notes.every(nonEmptyString) ? item.notes : [])
-    ]
+    const restrictions = collectItemNotes(item.restriction, item.restrictions)
+    const notes = collectItemNotes(item.details, item.notes)
     return {
       name: itemName,
       type: item.type,
-      ...(typeof item.pageTitle === 'string' ? { pageTitle: item.pageTitle } : {}),
-      ...(typeof item.description === 'string' ? { description: item.description } : {}),
-      ...(nonEmptyString(item.image) ? { image: item.image } : {}),
-      ...(nonEmptyString(item.icon) ? { icon: item.icon } : {}),
-      ...(nonEmptyString(item.artifactType) ? { artifactType: item.artifactType } : {}),
-      ...(typeof item.minLevel === 'string' || typeof item.minLevel === 'number' ? { minLevel: item.minLevel } : {}),
-      ...(parseBinding(item.binding, itemName) ? { binding: parseBinding(item.binding, itemName) } : {}),
-      ...(typeof item.material === 'string' ? { material: item.material } : {}),
-      ...(typeof item.weight === 'string' || typeof item.weight === 'number' ? { weight: item.weight } : {}),
-      ...(typeof item.hardness === 'string' || typeof item.hardness === 'number' ? { hardness: item.hardness } : {}),
-      ...(typeof item.durability === 'string' || typeof item.durability === 'number'
-        ? { durability: item.durability }
-        : {}),
+      ...itemMetadata(item, itemName),
       ...(Array.isArray(item.enchantments)
         ? { enchantments: item.enchantments.map((effect) => parseEffect(effect, itemName)) }
         : {}),
@@ -192,6 +200,8 @@ export const parseItems = (value: unknown): DinosaurBoneItem[] => {
   })
 }
 
+const readItemLevel = (value: unknown) => (typeof value === 'string' || typeof value === 'number' ? value : undefined)
+
 export const parseAugments = (value: unknown, label: string): DinosaurBoneAugment[] => {
   if (!Array.isArray(value) || value.length === 0) {
     throw new InvalidDinosaurBoneDataError(`${label} augment payload must be a non-empty array`)
@@ -203,16 +213,13 @@ export const parseAugments = (value: unknown, label: string): DinosaurBoneAugmen
     if (augment.requirements === null && nonEmptyString(augment.craftedIn)) {
       throw new InvalidDinosaurBoneDataError(`requirements missing for crafted augment ${augment.name}`)
     }
+    const minimumLevel = readItemLevel(augment.minimumLevel) ?? readItemLevel(augment.minLevel)
     const augmentName = augment.name
     return {
       name: augmentName,
       augmentType: augment.augmentType,
       ...(typeof augment.description === 'string' ? { description: augment.description } : {}),
-      ...(typeof augment.minimumLevel === 'string' || typeof augment.minimumLevel === 'number'
-        ? { minimumLevel: augment.minimumLevel }
-        : typeof augment.minLevel === 'string' || typeof augment.minLevel === 'number'
-          ? { minimumLevel: augment.minLevel }
-          : {}),
+      ...(minimumLevel === undefined ? {} : { minimumLevel }),
       ...(Array.isArray(augment.effectsAdded)
         ? { effectsAdded: augment.effectsAdded.map((effect) => parseEffect(effect, augmentName)) }
         : {}),

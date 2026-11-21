@@ -1,3 +1,4 @@
+import { keyedEntries } from '../../../shared/ui/keyedEntries'
 import { Accordion, Badge, Group, List, Stack, Text } from '@mantine/core'
 import type {
   HgsEffect,
@@ -98,8 +99,8 @@ export const OptionBadges = ({ option }: { option: HgsTierOption }) => (
         {option.shardType} shard
       </Badge>
     ) : null}
-    {option.focuses?.map((focus) => (
-      <Badge variant='outline' color='gray' key={focus}>
+    {keyedEntries(option.focuses ?? []).map(({ key, value: focus }) => (
+      <Badge variant='outline' color='gray' key={key}>
         {focus}
       </Badge>
     ))}
@@ -132,8 +133,8 @@ export const EffectDetails = ({ effects }: { effects: readonly HgsEffect[] }) =>
                     Passive enchantments
                   </Text>
                   <List size='sm' spacing={4}>
-                    {effect.enchantments.map((mechanic, index) => (
-                      <List.Item key={index}>
+                    {keyedEntries(effect.enchantments).map(({ key: mechanicKey, value: mechanic }) => (
+                      <List.Item key={mechanicKey}>
                         <EnchantmentDetails mechanic={mechanic} />
                       </List.Item>
                     ))}
@@ -146,11 +147,11 @@ export const EffectDetails = ({ effects }: { effects: readonly HgsEffect[] }) =>
                     Triggered effects
                   </Text>
                   <List size='sm' spacing={4}>
-                    {effect.procs.map((proc, index) => (
-                      <List.Item key={index}>
+                    {keyedEntries(effect.procs).map(({ key: procKey, value: proc }) => (
+                      <List.Item key={procKey}>
                         <Stack gap={4}>
-                          {proc.outcomes.map((outcome, outcomeIndex) => (
-                            <ProcOutcomeDetails key={outcomeIndex} proc={proc} outcome={outcome} />
+                          {keyedEntries(proc.outcomes).map(({ key: outcomeKey, value: outcome }) => (
+                            <ProcOutcomeDetails key={outcomeKey} proc={proc} outcome={outcome} />
                           ))}
                         </Stack>
                       </List.Item>

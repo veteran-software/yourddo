@@ -1,3 +1,4 @@
+import { keyedEntries } from '../../../shared/ui/keyedEntries'
 import type { createCandidateComparison } from '../finding'
 import { matchesGearEffect, statFamily } from '../finding'
 import type { GearPlannerItem } from '../gearPlanner.types'
@@ -16,15 +17,12 @@ export default function CandidateEnchantments({ item, comparison, query, bonusTy
   if (!effects?.length) return null
   const groups = Map.groupBy(effects, (effect) => String(effect.bonus ?? '').trim())
   return (
-    <div className={classes.statSheet} role='group' aria-label={`${item.source.name} enchantments`}>
+    <fieldset className={classes.statSheet} aria-label={`${item.source.name} enchantments`}>
       {[...groups].map(([bonus, group]) => {
-        const stats = group.map((effect, index) => {
+        const stats = keyedEntries(group).map(({ key, value: effect }) => {
           const result = comparison.compareEffect(item, effect)
-          const status = result?.isUpgrade
-            ? 'Upgrade from'
-            : result?.isOverpowered
-              ? 'Below equipped'
-              : 'Matches equipped'
+          const equippedStatus = result?.isOverpowered ? 'Below equipped' : 'Matches equipped'
+          const status = result?.isUpgrade ? 'Upgrade from' : equippedStatus
           const note = result?.isConflict
             ? [status, result.currentModifier].filter((part) => part != null).join(' ')
             : ''
@@ -33,7 +31,8 @@ export default function CandidateEnchantments({ item, comparison, query, bonusTy
             effect,
             familyName: family?.[1],
             scope: family?.[2],
-            key: family ? JSON.stringify([family[1], effect.modifier, note]) : index,
+            key: family ? JSON.stringify([family[1], effect.modifier, note]) : key,
+            effectKey: key,
             note,
             upgrade: result?.isUpgrade,
             matched: Boolean(query || bonusType) && matchesGearEffect(effect, query, bonusType, exact)
@@ -54,8 +53,8 @@ export default function CandidateEnchantments({ item, comparison, query, bonusTy
                       {nameMatches ? <mark>{name}</mark> : name}
                       {grouped && (
                         <span className={classes.statScope}>
-                          {entries.map(({ scope, matched }, index) => (
-                            <span key={index}>
+                          {entries.map(({ effectKey, scope, matched }, index) => (
+                            <span key={effectKey}>
                               {index > 0 && ', '}
                               {matched && !nameMatches ? <mark>{scope}</mark> : scope}
                             </span>
@@ -74,6 +73,6 @@ export default function CandidateEnchantments({ item, comparison, query, bonusTy
           </div>
         )
       })}
-    </div>
+    </fieldset>
   )
 }

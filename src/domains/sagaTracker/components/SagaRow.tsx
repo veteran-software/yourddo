@@ -19,6 +19,11 @@ interface SagaRowProps {
   onNewRun: () => void
 }
 
+const completionColors: Record<SagaCompletionState, string> = {
+  complete: 'green.8',
+  indeterminate: 'yellow.6',
+  incomplete: 'red.6'
+}
 const SagaRow = ({
   saga,
   quests,
@@ -35,8 +40,7 @@ const SagaRow = ({
   onNewRun
 }: SagaRowProps) => {
   const completedQuests = quests.filter(({ id }) => isQuestComplete(id)).length
-  const completionColor =
-    completionState === 'complete' ? 'green.8' : completionState === 'indeterminate' ? 'yellow.6' : 'red.6'
+  const completionColor = completionColors[completionState]
 
   return (
     <Paper withBorder p={{ base: 'md', sm: 'sm' }}>

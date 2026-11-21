@@ -88,11 +88,12 @@ export const EquippedEnchantmentList = ({
       {sources.map((source) => {
         const resolution = conflicts.bySourceId[source.id]
         const lesser = resolution && !resolution.isEffective
+        const effectiveState = resolution ? 'effective' : 'none'
         return (
           <List.Item
             key={source.id}
             c={lesser ? 'dimmed' : undefined}
-            data-conflict-state={resolution ? (lesser ? 'lesser' : 'effective') : 'none'}
+            data-conflict-state={lesser ? 'lesser' : effectiveState}
             data-testid={`equipped-effect-${source.id}`}
           >
             <EquippedEffect id={source.id} conflicts={conflicts} label={sourceLabel(source)} />

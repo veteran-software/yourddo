@@ -1,3 +1,4 @@
+import { keyedEntries } from '../../../shared/ui/keyedEntries'
 import { useEffect, useMemo, useState } from 'react'
 import {
   Badge,
@@ -55,7 +56,7 @@ export function UpgradePathsTool({
   )
   const [bonusType, setBonusType] = useState(initial?.bonusType)
   const [locked, setLocked] = useState<string[]>(initial?.locked ?? [])
-  const [protectedTiers, setProtected] = useState<string[]>(initial?.protectedTiers ?? [])
+  const [protectedTiers, setProtectedTiers] = useState<string[]>(initial?.protectedTiers ?? [])
   const [character, setCharacter] = useState(initial?.character ?? '')
   const { inventory } = useTroveInventory()
   const characters = useMemo(() => troveCharacterNames(inventory), [inventory])
@@ -151,7 +152,7 @@ export function UpgradePathsTool({
           placeholder='Choose tiers to retain'
           data={active}
           value={protectedTiers.filter((t) => active.includes(t))}
-          onChange={setProtected}
+          onChange={setProtectedTiers}
         />
       )}
       <Autocomplete
@@ -223,6 +224,7 @@ export function UpgradeResults({
     }
   }, [setup, owner, data, essence, request, inventory])
   const visible = paths?.filter((p) => !owned || p.availability === 'Owned' || p.availability === 'Collect')
+  const countLabel = visible?.length === 1 ? ' path' : ' paths'
   return (
     <Stack p='md' gap='sm'>
       <div>
@@ -241,9 +243,7 @@ export function UpgradeResults({
       </div>
       <Group justify='space-between'>
         <Text role='status' size='sm'>
-          {visible
-            ? String(visible.length) + (visible.length === 1 ? ' path' : ' paths')
-            : 'Checking loadout changes… ' + checked.toLocaleString()}
+          {visible ? String(visible.length) + countLabel : 'Checking loadout changes… ' + checked.toLocaleString()}
         </Text>
         {inventory.size > 0 && (
           <Checkbox
@@ -262,65 +262,67 @@ export function UpgradeResults({
             : 'No single equipment change or open socket meets this objective with the selected protections.'}
         </Text>
       )}
-      {visible?.slice(0, limit).map((path, index) => {
-        const copy = { ...path.setup, id: 'preview:' + setup.id, name: setup.name + ' · ' + path.name }
-        return (
-          <article className={css.path} key={index}>
-            <div className={css.gain}>
-              {path.delta}
-              {path.totals && (
-                <Text size='xs' c='dimmed'>
-                  {path.totals}
+      {keyedEntries(visible?.slice(0, limit) ?? [], (path) => JSON.stringify([path.slot, path.name, path.change])).map(
+        ({ value: path, key }) => {
+          const copy = { ...path.setup, id: 'preview:' + setup.id, name: setup.name + ' · ' + path.name }
+          return (
+            <article className={css.path} key={key}>
+              <div className={css.gain}>
+                {path.delta}
+                {path.totals && (
+                  <Text size='xs' c='dimmed'>
+                    {path.totals}
+                  </Text>
+                )}
+              </div>
+              <div className={css.details}>
+                <Text fw={700}>{path.name}</Text>
+                <Text size='sm'>
+                  {path.slot} · {path.change}
                 </Text>
-              )}
-            </div>
-            <div className={css.details}>
-              <Text fw={700}>{path.name}</Text>
-              <Text size='sm'>
-                {path.slot} · {path.change}
-              </Text>
-              {path.bonusChanges.length > 0 && <Text size='xs'>{path.bonusChanges.join(' · ')}</Text>}
+                {path.bonusChanges.length > 0 && <Text size='xs'>{path.bonusChanges.join(' · ')}</Text>}
+                <Group gap='xs'>
+                  <Badge
+                    variant='light'
+                    color={path.availability === 'Owned' || path.availability === 'Collect' ? 'teal' : 'gray'}
+                  >
+                    {path.availability}
+                  </Badge>
+                  <Text size='xs' c='dimmed'>
+                    {path.location}
+                  </Text>
+                </Group>
+                {path.losses.length > 0 && (
+                  <Text size='xs' c='orange'>
+                    Trade-offs · {path.losses.slice(0, 2).join(' · ')}
+                    {path.losses.length > 2 ? ' · +' + String(path.losses.length - 2) + ' more' : ''}
+                  </Text>
+                )}
+              </div>
               <Group gap='xs'>
-                <Badge
-                  variant='light'
-                  color={path.availability === 'Owned' || path.availability === 'Collect' ? 'teal' : 'gray'}
+                <Button
+                  size='compact-sm'
+                  variant='subtle'
+                  onClick={() => {
+                    setPreview(copy)
+                  }}
                 >
-                  {path.availability}
-                </Badge>
-                <Text size='xs' c='dimmed'>
-                  {path.location}
-                </Text>
+                  Preview
+                </Button>
+                <Button
+                  size='compact-sm'
+                  variant='light'
+                  onClick={() => {
+                    onSave(copy)
+                  }}
+                >
+                  Save as setup
+                </Button>
               </Group>
-              {path.losses.length > 0 && (
-                <Text size='xs' c='orange'>
-                  Trade-offs · {path.losses.slice(0, 2).join(' · ')}
-                  {path.losses.length > 2 ? ' · +' + String(path.losses.length - 2) + ' more' : ''}
-                </Text>
-              )}
-            </div>
-            <Group gap='xs'>
-              <Button
-                size='compact-sm'
-                variant='subtle'
-                onClick={() => {
-                  setPreview(copy)
-                }}
-              >
-                Preview
-              </Button>
-              <Button
-                size='compact-sm'
-                variant='light'
-                onClick={() => {
-                  onSave(copy)
-                }}
-              >
-                Save as setup
-              </Button>
-            </Group>
-          </article>
-        )
-      })}
+            </article>
+          )
+        }
+      )}
       {visible && visible.length > limit && (
         <Button
           variant='subtle'

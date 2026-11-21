@@ -92,6 +92,23 @@ function weaponFocusRule(value: unknown, path: string): WeaponFocusRule {
   return { tier1And2: pair('tier1And2'), tier3: pair('tier3') }
 }
 
+function indexRecipes(files: Record<Resource, unknown>) {
+  const recipes = new Map<number, Row>()
+  for (const stage of ['base', 'tier1', 'tier2', 'tier3', 'active'] as const) {
+    for (const [id, recipe] of indexed(files[`${stage}Recipes`], stage)) {
+      if (recipes.has(id) || recipe.device !== stage || recipe.quantity !== 1)
+        invalid(`invalid ${stage} recipe ${String(id)}`)
+      recipes.set(id, recipe)
+    }
+  }
+  return recipes
+}
+
+function bonusParagraphs(name: string, descriptions: readonly string[]) {
+  const paragraphs = descriptions.filter((text) => text !== name).flatMap((text) => text.split(/\n\s*\n/))
+  return [...new Set(paragraphs.map((paragraph) => paragraph.trim()).filter(Boolean))]
+}
+
 export function parseLgsResources(
   files: Record<Resource, unknown>,
   devices: Row,
@@ -102,14 +119,7 @@ export function parseLgsResources(
   const ingredients = indexed(files.ingredients, 'ingredients')
   const effectById = indexed(files.effects, 'effects')
   const spells = indexed(files.spells, 'spells')
-  const recipes = new Map<number, Row>()
-  for (const stage of ['base', 'tier1', 'tier2', 'tier3', 'active'] as const) {
-    for (const [id, recipe] of indexed(files[`${stage}Recipes`], stage)) {
-      if (recipes.has(id) || recipe.device !== stage || recipe.quantity !== 1)
-        invalid(`invalid ${stage} recipe ${String(id)}`)
-      recipes.set(id, recipe)
-    }
-  }
+  const recipes = indexRecipes(files)
   function crafted(item: Row, outputId: unknown): LgsRecipe {
     const id = integer(outputId, 'output item ID')
     const recipe = lookup(recipes, item.recipeId, 'recipeId')
@@ -205,18 +215,7 @@ export function parseLgsResources(
         requiredFocuses,
         group,
         discrepancies,
-        paragraphs: [
-          ...new Set(
-            [...effects, ...descriptions]
-              .filter((text) => text !== name)
-              .flatMap((text) =>
-                text
-                  .split(/\n\s*\n/)
-                  .map((paragraph) => paragraph.trim())
-                  .filter(Boolean)
-              )
-          )
-        ],
+        paragraphs: bonusParagraphs(name, [...effects, ...descriptions]),
         notes: [
           ...(item.activationReason === undefined ? [] : [str(item.activationReason, `${name}.activationReason`)]),
           ...unresolved,

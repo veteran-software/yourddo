@@ -144,11 +144,8 @@ export const formatResolvedEffectModifier = (modifier: EssenceEffectModifierDisp
   if (typeof modifier.value === 'string') return modifier.value
 
   const prefix = modifier.value > 0 ? '+' : ''
-  const suffix =
-    modifier.representation === 'percentage'
-      ? '%'
-      : modifier.representation === 'dice'
-        ? (modifier.diceSuffix ?? '')
-        : ''
+  let suffix = ''
+  if (modifier.representation === 'percentage') suffix = '%'
+  else if (modifier.representation === 'dice') suffix = modifier.diceSuffix ?? ''
   return `${prefix}${modifier.value.toString()}${suffix}`
 }

@@ -161,7 +161,7 @@ const SagaTrackerPage = () => {
     }
   }
 
-  const actions = data ? (
+  const actions = data && (
     <>
       <Button
         variant='default'
@@ -205,9 +205,9 @@ const SagaTrackerPage = () => {
         Reset Progress
       </Button>
     </>
-  ) : undefined
+  )
 
-  const controls = data ? (
+  const controls = data && (
     <TextInput
       label='Search sagas and quests'
       placeholder='Enter at least 3 characters'
@@ -216,7 +216,7 @@ const SagaTrackerPage = () => {
         setSearchQuery(event.currentTarget.value)
       }}
       rightSection={
-        searchQuery ? (
+        searchQuery.length > 0 && (
           <CloseButton
             aria-label='Clear search'
             onClick={() => {
@@ -224,10 +224,10 @@ const SagaTrackerPage = () => {
             }}
             size='sm'
           />
-        ) : null
+        )
       }
     />
-  ) : undefined
+  )
 
   let content
   if (initialization.status === 'loading') {
@@ -320,7 +320,7 @@ const SagaTrackerPage = () => {
         title='Saga Tracker'
         description='Track your DDO saga completion.'
         summary={
-          data ? (
+          data && (
             <Stack gap={4}>
               <Text size='sm' fw={600}>
                 {completedCount} / {data.sagas.length} completed
@@ -332,7 +332,7 @@ const SagaTrackerPage = () => {
                 value={data.sagas.length ? (completedCount / data.sagas.length) * 100 : 0}
               />
             </Stack>
-          ) : undefined
+          )
         }
         controls={controls}
         actions={actions}

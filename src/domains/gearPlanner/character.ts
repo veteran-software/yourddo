@@ -209,6 +209,13 @@ const metals = new Set([
 ])
 export const isMetalMaterial = (material?: string) => metals.has(material?.trim().toLowerCase() ?? '')
 
+function proficiencyGroup(slot: GearPlannerItem['slot'], shield: boolean) {
+  if (slot === 'Armor') return 'armor'
+  if (slot === 'Main Hand') return 'weapons'
+  if (slot === 'Off Hand') return shield ? 'shields' : 'weapons'
+  return null
+}
+
 export function characterAllowsItem(settings: CharacterSettings, item: GearPlannerItem) {
   if (item.essenceCrafting || slotOwner(item.slot) !== 'Character') return true
   const type = item.source.type ?? ''
@@ -220,16 +227,7 @@ export function characterAllowsItem(settings: CharacterSettings, item: GearPlann
     isMetalMaterial(item.source.material)
   )
     return false
-  const key =
-    item.slot === 'Armor'
-      ? 'armor'
-      : item.slot === 'Main Hand'
-        ? 'weapons'
-        : item.slot === 'Off Hand'
-          ? shield
-            ? 'shields'
-            : 'weapons'
-          : null
+  const key = proficiencyGroup(item.slot, shield)
   return (
     !key || !settings[key].length || settings[key].includes(type === 'Robe' || type === 'Outfit' ? 'Cloth Armor' : type)
   )

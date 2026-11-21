@@ -143,6 +143,7 @@ import {
   deleteGearPlannerSetup,
   type GearPlannerSetup,
   duplicateGearPlannerSetup,
+  nextSetupName,
   exchangeSetupAugments,
   equipGearPlannerSetupItem,
   gearPlannerMinimumLevel,
@@ -999,17 +1000,6 @@ function gearDetailTitle(
   return browsing ? `Select item for ${slot}` : slot
 }
 
-function nextSetupName(setups: readonly GearPlannerSetup[], base: string) {
-  const names = new Set(setups.map((setup) => setup.name))
-  let name = base
-  let suffix = 2
-  while (names.has(name)) {
-    name = `${base} ${String(suffix)}`
-    suffix += 1
-  }
-  return name
-}
-
 const GearPlannerWorkspace = () => {
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
   const [attempt, setAttempt] = useState(0)
@@ -1100,16 +1090,12 @@ const GearPlannerWorkspace = () => {
   )
   const allEffects = useMemo(
     () =>
-      collectEquippedEffects(
-        equipment,
-        slottedAugments,
-        slottedFiligrees,
-        slottedCurses,
-        dataState.status === 'ready' ? dataState.essenceData : undefined,
+      collectEquippedEffects(equipment, slottedAugments, slottedFiligrees, slottedCurses, {
+        essenceData: dataState.status === 'ready' ? dataState.essenceData : undefined,
         essenceCrafting,
-        dataState.status === 'ready' ? dataState.data.reforging : undefined,
+        reforgingData: dataState.status === 'ready' ? dataState.data.reforging : undefined,
         reforging
-      ),
+      }),
     [dataState, equipment, essenceCrafting, reforging, slottedAugments, slottedCurses, slottedFiligrees]
   )
   const ownerSets = useMemo(

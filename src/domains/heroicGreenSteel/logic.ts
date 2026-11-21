@@ -41,6 +41,38 @@ export const emptyHgsSelection: HgsSelection = {
 export const classifyBaseItems = (items: readonly HgsBaseItem[], type: HgsItemType): HgsBaseItem[] =>
   items.filter((item) => item.type === type)
 
+function createCombination(
+  tier1: HgsTierOption,
+  tier2: HgsTierOption,
+  tier3Mode: HgsValidCombination['tier3Mode'],
+  tier3: HgsTierOption
+): HgsValidCombination {
+  return {
+    type: tier1.type,
+    tier1Id: tier1.id,
+    tier2Id: tier2.id,
+    spellId: tier2.spellId ?? null,
+    tier3Mode,
+    tier3Id: tier3.id
+  }
+}
+
+function appendTier3Combinations(
+  combinations: HgsValidCombination[],
+  tier1: HgsTierOption,
+  tier2: HgsTierOption,
+  tier3BasicOptions: readonly HgsTierOption[],
+  tier3FocusedOptions: readonly HgsTierOption[]
+) {
+  for (const tier3 of tier3BasicOptions) {
+    if (tier3.type === tier2.type) combinations.push(createCombination(tier1, tier2, 'basic', tier3))
+  }
+  for (const tier3 of tier3FocusedOptions) {
+    if (tier3.type === tier2.type && tier3.requiresAspect === tier2.aspect)
+      combinations.push(createCombination(tier1, tier2, 'focused', tier3))
+  }
+}
+
 export const createHgsValidCombinations = (
   tier1Options: readonly HgsTierOption[],
   tier2Options: readonly HgsTierOption[],
@@ -53,31 +85,7 @@ export const createHgsValidCombinations = (
     for (const tier2 of tier2Options) {
       if (tier1.type !== tier2.type || tier1.focus !== tier2.requiresFocus) continue
 
-      for (const tier3 of tier3BasicOptions) {
-        if (tier3.type === tier2.type) {
-          combinations.push({
-            type: tier1.type,
-            tier1Id: tier1.id,
-            tier2Id: tier2.id,
-            spellId: tier2.spellId ?? null,
-            tier3Mode: 'basic',
-            tier3Id: tier3.id
-          })
-        }
-      }
-
-      for (const tier3 of tier3FocusedOptions) {
-        if (tier3.type === tier2.type && tier3.requiresAspect === tier2.aspect) {
-          combinations.push({
-            type: tier1.type,
-            tier1Id: tier1.id,
-            tier2Id: tier2.id,
-            spellId: tier2.spellId ?? null,
-            tier3Mode: 'focused',
-            tier3Id: tier3.id
-          })
-        }
-      }
+      appendTier3Combinations(combinations, tier1, tier2, tier3BasicOptions, tier3FocusedOptions)
     }
   }
 
@@ -187,7 +195,7 @@ export const resolveSpell = (
 export const stripDdoMarkup = (value: string): string =>
   value
     .replace(/<\/?rgb(?:=[^>]+)?>/gi, '')
-    .replaceAll('\\n', '\n')
+    .replaceAll(String.raw`\n`, '\n')
     .trim()
 
 const formatDice = ({ count, sides }: { count: number; sides: number }) => `${count.toString()}d${sides.toString()}`
@@ -195,67 +203,58 @@ const formatDice = ({ count, sides }: { count: number; sides: number }) => `${co
 const withBonusType = (effect: string, bonusType: string | undefined): string =>
   bonusType ? `${effect} (${bonusType})` : effect
 
-export const formatMechanic = (mechanic: HgsMechanic): string => {
+function mechanicValue(mechanic: HgsMechanic) {
   const name = mechanic.name ?? mechanic.type ?? 'Published effect'
-  const unit = mechanic.unit === 'percent' ? '%' : mechanic.unit ? ` ${mechanic.unit}` : ''
-
-  if (mechanic.type === 'damage' && mechanic.dice) {
-    return withBonusType(`${formatDice(mechanic.dice)} ${mechanic.damageType ?? ''} damage`.trim(), mechanic.bonusType)
+  if (mechanic.dice) return `${name}: ${formatDice(mechanic.dice)}`
+  if (typeof mechanic.value === 'number') {
+    let unit = ''
+    if (mechanic.unit === 'percent') unit = '%'
+    else if (mechanic.unit) unit = ' ' + mechanic.unit
+    return `${name} ${mechanic.value >= 0 ? '+' : ''}${mechanic.value.toString()}${unit}`
   }
-  if (mechanic.type === 'immunity') {
-    return withBonusType(`Immunity: ${mechanic.traits?.join(', ') ?? 'published traits'}`, mechanic.bonusType)
-  }
-  if (mechanic.type === 'damageReductionBypass') {
-    return withBonusType(
-      `Damage reduction bypass: ${mechanic.materials?.join(', ') ?? 'published materials'}`,
-      mechanic.bonusType
-    )
-  }
-  if (mechanic.type === 'criticalThreatRange') {
-    return withBonusType(`Critical threat range multiplier ×${String(mechanic.multiplier)}`, mechanic.bonusType)
-  }
-  if (mechanic.type === 'speedModifier') {
-    return withBonusType(
-      `${mechanic.target ?? 'speed'} ${String((mechanic.rawModifier ?? 0) * 100)}%`,
-      mechanic.bonusType
-    )
-  }
-  if (mechanic.type === 'negativeLevels' && mechanic.amount) {
-    return withBonusType(
-      `${formatDice(mechanic.amount.dice)} negative levels${mechanic.durationType ? ' (' + mechanic.durationType + ')' : ''}`,
-      mechanic.bonusType
-    )
-  }
-  if (mechanic.type === 'summon')
-    return withBonusType(`Summon ${mechanic.name ?? 'published creature'}`, mechanic.bonusType)
-  if (mechanic.type === 'status') {
-    return withBonusType(
-      `${mechanic.name ?? 'Status'}${mechanic.save ? ' (' + mechanic.save.type + ' DC ' + mechanic.save.dc.toString() + ')' : ''}`,
-      mechanic.bonusType
-    )
-  }
-  if (mechanic.type === 'regeneration') {
-    const value =
-      typeof mechanic.value === 'number'
-        ? mechanic.value.toString()
-        : mechanic.value
-          ? formatDice(mechanic.value.dice)
-          : 'Published amount'
-    return withBonusType(
-      `${value} regeneration${mechanic.intervalSeconds ? ' every ' + mechanic.intervalSeconds.toString() + ' seconds' : ''}`,
-      mechanic.bonusType
-    )
-  }
-  if (mechanic.dice) return withBonusType(`${name}: ${formatDice(mechanic.dice)}`, mechanic.bonusType)
-  if (typeof mechanic.value === 'number')
-    return withBonusType(
-      `${name} ${mechanic.value >= 0 ? '+' : ''}${mechanic.value.toString()}${unit}`,
-      mechanic.bonusType
-    )
-  if (mechanic.rawModifier !== undefined)
-    return withBonusType(`${name}: ${String(mechanic.rawModifier)}`, mechanic.bonusType)
-  return withBonusType(name, mechanic.bonusType)
+  if (mechanic.rawModifier !== undefined) return `${name}: ${String(mechanic.rawModifier)}`
+  return name
 }
+
+function regenerationAmount(value: HgsMechanic['value']) {
+  if (typeof value === 'number') return value.toString()
+  return value ? formatDice(value.dice) : 'Published amount'
+}
+
+function mechanicDescription(mechanic: HgsMechanic) {
+  switch (mechanic.type) {
+    case 'damage':
+      if (mechanic.dice) return `${formatDice(mechanic.dice)} ${mechanic.damageType ?? ''} damage`.trim()
+      break
+    case 'immunity':
+      return `Immunity: ${mechanic.traits?.join(', ') ?? 'published traits'}`
+    case 'damageReductionBypass':
+      return `Damage reduction bypass: ${mechanic.materials?.join(', ') ?? 'published materials'}`
+    case 'criticalThreatRange':
+      return `Critical threat range multiplier ×${String(mechanic.multiplier)}`
+    case 'speedModifier':
+      return `${mechanic.target ?? 'speed'} ${String((mechanic.rawModifier ?? 0) * 100)}%`
+    case 'negativeLevels': {
+      if (!mechanic.amount) break
+      const duration = mechanic.durationType ? ` (${mechanic.durationType})` : ''
+      return `${formatDice(mechanic.amount.dice)} negative levels${duration}`
+    }
+    case 'summon':
+      return `Summon ${mechanic.name ?? 'published creature'}`
+    case 'status': {
+      const save = mechanic.save ? ` (${mechanic.save.type} DC ${mechanic.save.dc.toString()})` : ''
+      return `${mechanic.name ?? 'Status'}${save}`
+    }
+    case 'regeneration': {
+      const interval = mechanic.intervalSeconds ? ` every ${mechanic.intervalSeconds.toString()} seconds` : ''
+      return `${regenerationAmount(mechanic.value)} regeneration${interval}`
+    }
+  }
+  return mechanicValue(mechanic)
+}
+
+export const formatMechanic = (mechanic: HgsMechanic): string =>
+  withBonusType(mechanicDescription(mechanic), mechanic.bonusType)
 
 const triggerLabels: Record<string, string> = {
   onHit: 'On hit',

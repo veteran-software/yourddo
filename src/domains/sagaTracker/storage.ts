@@ -64,24 +64,21 @@ const parseItems = (value: unknown): StoredSagaItem[] | undefined => {
   return items
 }
 
-const parseTimestampMap = (value: unknown, legacyField?: string): TimestampMap | undefined => {
-  if (Array.isArray(value) && legacyField) {
-    const result: TimestampMap = {}
-    for (const entry of value) {
-      if (typeof entry !== 'object' || entry === null) continue
-      const item = entry as Record<string, unknown>
-      const timestamp = item[legacyField]
-      if (
-        typeof item.id === 'string' &&
-        typeof timestamp === 'number' &&
-        Number.isFinite(timestamp) &&
-        timestamp >= 0
-      ) {
-        result[item.id] = timestamp
-      }
+function parseLegacyTimestamps(values: unknown[], legacyField: string): TimestampMap {
+  const result: TimestampMap = {}
+  for (const entry of values) {
+    if (typeof entry !== 'object' || entry === null) continue
+    const item = entry as Record<string, unknown>
+    const timestamp = item[legacyField]
+    if (typeof item.id === 'string' && typeof timestamp === 'number' && Number.isFinite(timestamp) && timestamp >= 0) {
+      result[item.id] = timestamp
     }
-    return result
   }
+  return result
+}
+
+const parseTimestampMap = (value: unknown, legacyField?: string): TimestampMap | undefined => {
+  if (Array.isArray(value) && legacyField) return parseLegacyTimestamps(value, legacyField)
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return undefined
   const result: TimestampMap = {}
   for (const [id, timestamp] of Object.entries(value)) {

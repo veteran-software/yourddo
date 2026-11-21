@@ -65,6 +65,20 @@ export const normalizeGearPlannerFiligrees = (
     }
   })
 
+const normalizeItem = (
+  fileName: string,
+  source: GearPlannerSourceItem,
+  slot: GearPlannerSlot,
+  absoluteMinimumLevel?: number
+): GearPlannerItem => ({
+  id: gearPlannerItemId(fileName, source, slot),
+  slot,
+  sourceFile: fileName,
+  minimumLevel: numericLevel(source.minLevel),
+  ...(absoluteMinimumLevel !== undefined ? { absoluteMinimumLevel } : {}),
+  source
+})
+
 export const normalizeGearPlannerSources = (
   sourceDatasets: readonly GearPlannerSourceDataset[],
   augments: GearPlannerData['augments'],
@@ -90,14 +104,7 @@ export const normalizeGearPlannerSources = (
           rejectedItemCount += 1
           continue
         }
-        itemsBySlot[slot].push({
-          id: gearPlannerItemId(fileName, source, slot),
-          slot,
-          sourceFile: fileName,
-          minimumLevel: numericLevel(source.minLevel),
-          ...(absoluteMinimumLevel !== undefined ? { absoluteMinimumLevel } : {}),
-          source
-        })
+        itemsBySlot[slot].push(normalizeItem(fileName, source, slot, absoluteMinimumLevel))
       }
     }
   }

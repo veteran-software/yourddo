@@ -8,7 +8,7 @@ import {
   parseEffectModifier,
   type GearPlannerEffectSummary
 } from './effects'
-import type { GearPlannerData } from './gearPlanner.types'
+import type { GearPlannerData, GearPlannerItem } from './gearPlanner.types'
 import { createEmptyGearPlannerEquipment } from './planner'
 import {
   gearPlannerReforgingStages,
@@ -16,7 +16,7 @@ import {
   gearPlannerReforgingChoiceForState,
   getEffectiveGearPlannerAugmentSlotsByItem
 } from './reforging'
-import { collectActiveSetEffectSources, resolveGearPlannerSetState } from './sets'
+import { collectActiveSetEffectSources, resolveGearPlannerSetState, type GearPlannerSetState } from './sets'
 import type { GearPlannerSetup } from './setups'
 
 interface Value {
@@ -61,33 +61,7 @@ export function loadoutSnapshot(
       const item = setup.equipment[slot]
       if (!item) continue
       equipment[slot] = item
-      gear.set(slot, { text: item.source.name })
-      const add = (label: string, text: string) => gear.set(slot + ' · ' + label, { text })
-      const id = item.id
-      for (const craft of item.crafts ?? []) add(craft.system, craft.label)
-      for (const [i, aug] of Object.entries(setup.slottedAugments[id] ?? {}))
-        add('Augment ' + String(Number(i) + 1), aug.name)
-      for (const [i, fil] of Object.entries(setup.slottedFiligrees[id] ?? {}))
-        add('Filigree ' + String(Number(i) + 1), fil.name)
-      if (setup.unlockedFiligreeSlots[id]) add('Unlocked sockets', String(setup.unlockedFiligreeSlots[id]))
-      if (setup.slottedCurses[id]) add('Curse', setup.slottedCurses[id].name)
-      const crafted = setup.essenceCrafting[id]
-      if (crafted) {
-        add('Minimum level', String(crafted.minimumLevel))
-        if (crafted.material) add('Material', crafted.material)
-        for (const position of ['prefix', 'suffix', 'extra'] as const) {
-          const choice = crafted[`${position}Id`]
-          if (choice) add(position, essence.indexes.enhancementById.get(choice)?.displayName ?? choice)
-        }
-      }
-      for (const stage of gearPlannerReforgingStages) {
-        const state = setup.reforging[id]?.[stage]
-        if (state)
-          add(
-            gearPlannerReforgingStageLabel[stage],
-            gearPlannerReforgingChoiceForState(item, stage, state, data.reforging)?.label ?? 'Active'
-          )
-      }
+      addItemDetails(gear, slot, item, setup, essence, data)
     }
   }
   const slots = getEffectiveGearPlannerAugmentSlotsByItem(equipment, setup.reforging, data.reforging)
@@ -104,10 +78,12 @@ export function loadoutSnapshot(
     setup.slottedAugments,
     setup.slottedFiligrees,
     setup.slottedCurses,
-    essence,
-    setup.essenceCrafting,
-    data.reforging,
-    setup.reforging
+    {
+      essenceData: essence,
+      essenceCrafting: setup.essenceCrafting,
+      reforgingData: data.reforging,
+      reforging: setup.reforging
+    }
   )
   const summaries = aggregateEffectSummary(
     [...effects, ...collectActiveSetEffectSources(sets)].map((source) => {
@@ -128,16 +104,67 @@ export function loadoutSnapshot(
   if (selected)
     for (const group of selected.groups)
       objectiveBonuses.set(group.bonusType, statValue({ ...selected, total: group.effectiveValue, groups: [group] }))
-  const tiers: Entries = new Map()
-  for (const set of sets.sets)
-    for (const tier of set.thresholds)
-      if (tier.isActive) tiers.set(`${set.name} · ${String(tier.threshold)}-piece`, { text: 'Active' })
+  const tiers: Entries = activeSetTiers(sets)
   return {
     Stats: stats,
     objectiveBonuses,
     Sets: tiers,
     Gear: gear,
     predictsProwessStack: new Set(effects.filter((e) => e.filigreeType === 71).map((e) => e.itemId)).size > 1
+  }
+}
+
+function activeSetTiers(sets: GearPlannerSetState) {
+  const tiers: Entries = new Map()
+  for (const set of sets.sets)
+    for (const tier of set.thresholds)
+      if (tier.isActive) tiers.set(`${set.name} · ${String(tier.threshold)}-piece`, { text: 'Active' })
+  return tiers
+}
+
+function addItemDetails(
+  gear: Entries,
+  slot: string,
+  item: GearPlannerItem,
+  setup: GearPlannerSetup,
+  essence: EssenceCraftingData,
+  data: GearPlannerData
+) {
+  gear.set(slot, { text: item.source.name })
+  const add = (label: string, text: string) => gear.set(slot + ' · ' + label, { text })
+  const id = item.id
+  for (const craft of item.crafts ?? []) add(craft.system, craft.label)
+  for (const [i, aug] of Object.entries(setup.slottedAugments[id] ?? {}))
+    add('Augment ' + String(Number(i) + 1), aug.name)
+  for (const [i, fil] of Object.entries(setup.slottedFiligrees[id] ?? {}))
+    add('Filigree ' + String(Number(i) + 1), fil.name)
+  if (setup.unlockedFiligreeSlots[id]) add('Unlocked sockets', String(setup.unlockedFiligreeSlots[id]))
+  if (setup.slottedCurses[id]) add('Curse', setup.slottedCurses[id].name)
+  addCraftedAttributes(setup, id, add, essence)
+  for (const stage of gearPlannerReforgingStages) {
+    const state = setup.reforging[id]?.[stage]
+    if (state)
+      add(
+        gearPlannerReforgingStageLabel[stage],
+        gearPlannerReforgingChoiceForState(item, stage, state, data.reforging)?.label ?? 'Active'
+      )
+  }
+}
+
+function addCraftedAttributes(
+  setup: GearPlannerSetup,
+  id: string,
+  add: (label: string, text: string) => Entries,
+  essence: EssenceCraftingData
+) {
+  const crafted = setup.essenceCrafting[id]
+  if (crafted) {
+    add('Minimum level', String(crafted.minimumLevel))
+    if (crafted.material) add('Material', crafted.material)
+    for (const position of ['prefix', 'suffix', 'extra'] as const) {
+      const choice = crafted[`${position}Id`]
+      if (choice) add(position, essence.indexes.enhancementById.get(choice)?.displayName ?? choice)
+    }
   }
 }
 
@@ -160,13 +187,10 @@ export function comparisonRows(before: Entries, after: Entries) {
         const difference = (b?.amount ?? 0) - (a?.amount ?? 0)
         delta = (difference > 0 ? '+' : '') + number.format(difference) + (b?.unit ?? a?.unit ?? '')
       }
-      const direction = !changed
-        ? 'same'
-        : !a || delta.startsWith('+')
-          ? 'gain'
-          : !b || delta.startsWith('-')
-            ? 'loss'
-            : 'changed'
+      let direction = 'changed'
+      if (!changed) direction = 'same'
+      else if (!a || delta.startsWith('+')) direction = 'gain'
+      else if (!b || delta.startsWith('-')) direction = 'loss'
       return { label, before: a?.text ?? '—', after: b?.text ?? '—', delta, direction, changed }
     })
 }

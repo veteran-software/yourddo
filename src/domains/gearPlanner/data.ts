@@ -198,13 +198,7 @@ export const parseGearPlannerAugmentDataset = (value: unknown): readonly GearPla
 
 const parseFiligreeSetEffect = (value: unknown, path: string): GearPlannerEffect => {
   const record = recordAt(value, path)
-  const name = isNonEmptyString(record.name)
-    ? record.name
-    : isNonEmptyString(record.description)
-      ? record.description
-      : isNonEmptyString(record.notes)
-        ? record.notes
-        : 'Unnamed Enhancement'
+  const name = [record.name, record.description, record.notes].find(isNonEmptyString) ?? 'Unnamed Enhancement'
   if (record.notes !== undefined && !isString(record.notes)) invalid(`${path}.notes`, 'expected string')
   for (const key of ['modifier', 'bonus'] as const) {
     if (record[key] !== undefined && !isStringOrNumber(record[key]))

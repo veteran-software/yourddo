@@ -1,3 +1,4 @@
+import { keyedEntries } from '../../../shared/ui/keyedEntries'
 import { Alert, Badge, Divider, Group, Stack, Text, Title } from '@mantine/core'
 import BonusDetails from '../BonusDetails.tsx'
 import DiscrepancyList from '../DiscrepancyList.tsx'
@@ -6,8 +7,8 @@ import type { LgsActiveAugment, LgsBaseItem, LgsBonusEffect, LgsTierAugment } fr
 
 const TierBadges = ({ tier }: { tier: LgsTierAugment }) => (
   <Group gap={6} wrap='wrap'>
-    {tier.focuses.map((focus, index) => (
-      <Badge key={index} variant='light'>
+    {keyedEntries(tier.focuses).map(({ key, value: focus }) => (
+      <Badge key={key} variant='light'>
         {focus}
       </Badge>
     ))}

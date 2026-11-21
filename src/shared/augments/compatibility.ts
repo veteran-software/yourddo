@@ -16,7 +16,11 @@ const compatibleColorsBySlot: Readonly<Record<ColorAugmentType, readonly ColorAu
   Colorless: ['Colorless']
 }
 
-export const normaliseAugmentSlotType = (slotType: string): string => slotType.replace(/\s+Slot(?=\s|\(|$)/i, '').trim()
+export function normaliseAugmentSlotType(slotType: string): string {
+  const slot = /\sSlot(?=\s|\(|$)/i.exec(slotType)
+  if (!slot) return slotType.trim()
+  return (slotType.slice(0, slot.index).trimEnd() + slotType.slice(slot.index + slot[0].length)).trim()
+}
 
 export const getColorAugmentType = (slotType: string): ColorAugmentType | undefined =>
   canonicalColorByLowerCase.get(normaliseAugmentSlotType(slotType).toLowerCase())

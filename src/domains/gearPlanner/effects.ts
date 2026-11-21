@@ -111,17 +111,19 @@ const legacyUpgradePlaceholders = new Set([
   'Upgradeable Item (Stormreaver)'
 ])
 
-export const normalizeEffectName = (value: string | number | undefined | null): string =>
+type EffectValue = string | number | undefined | null
+
+export const normalizeEffectName = (value: EffectValue): string =>
   value == null ? '' : String(value).trim().toLowerCase()
 
 // Preserve legacy getBonus behavior: absent, empty, and numeric values are no-type bonuses.
-export const normalizeBonusType = (value: string | number | undefined | null): string => {
+export const normalizeBonusType = (value: EffectValue): string => {
   const normalized = normalizeEffectName(value)
   return normalized === '' || !Number.isNaN(Number(normalized)) ? 'no type' : normalized
 }
 
 // Comparison-only legacy parser. Source modifier text remains untouched for display.
-export const parseEffectModifier = (value: string | number | undefined | null): number => {
+export const parseEffectModifier = (value: EffectValue): number => {
   if (value == null) return 0
   if (typeof value === 'number') return value
   const parsed = Number.parseFloat(value.replaceAll(/[+%[\]W]/g, ''))
@@ -139,10 +141,17 @@ export const collectEquippedEffects = (
   slottedAugments: GearPlannerSlottedAugments = {},
   slottedFiligrees: GearPlannerSlottedFiligrees = {},
   slottedCurses: GearPlannerSlottedCurses = {},
-  essenceData?: EssenceCraftingData,
-  essenceCrafting: GearPlannerEssenceCraftingConfigurations = {},
-  reforgingData?: GearPlannerReforgingData,
-  reforging: GearPlannerReforgingState = {}
+  {
+    essenceData,
+    essenceCrafting = {},
+    reforgingData,
+    reforging = {}
+  }: {
+    essenceData?: EssenceCraftingData
+    essenceCrafting?: GearPlannerEssenceCraftingConfigurations
+    reforgingData?: GearPlannerReforgingData
+    reforging?: GearPlannerReforgingState
+  } = {}
 ): readonly GearPlannerEffectSource[] => [
   ...equippedItems(equipment).flatMap((item) => {
     const effective = reforgingData

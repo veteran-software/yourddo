@@ -14,7 +14,7 @@ import {
 } from '@mantine/core'
 import { useReducedMotion } from '@mantine/hooks'
 import { IconChevronsLeft, IconChevronsRight } from '@tabler/icons-react'
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { useEffect, useId, useRef, useState } from 'react'
 import styles from './workspace.module.css'
 
@@ -42,6 +42,20 @@ const toolPanelTransitionDuration = 220
 
 const toCssSize = (size: string | number) => (typeof size === 'number' ? `${String(size)}px` : size)
 
+function panelStyle(open: boolean, reduceMotion: boolean): CSSProperties {
+  const duration = String(toolPanelTransitionDuration) + 'ms'
+  const visibility = open ? 'visibility 0s' : 'visibility 0s linear ' + duration
+  return {
+    opacity: Number(open),
+    overflow: 'hidden',
+    pointerEvents: open ? 'auto' : 'none',
+    transform: open ? 'translateX(0)' : 'translateX(0.5rem)',
+    transition: reduceMotion
+      ? 'none'
+      : `width ${duration} ease, opacity ${duration} ease, transform ${duration} ease, ${visibility}`,
+    visibility: open ? 'visible' : 'hidden'
+  }
+}
 const WorkspaceLayout = ({
   children,
   scrollMain = true,
@@ -77,11 +91,13 @@ const WorkspaceLayout = ({
           }
         ]
       : [])
-  const activeTool = activeToolId ? resolvedTools.find((tool) => tool.id === activeToolId) : undefined
+  const findTool = (id: string | undefined) => (id ? resolvedTools.find((tool) => tool.id === id) : undefined)
+  const activeTool = findTool(activeToolId)
   // Retain the last tool while its panel closes so the content moves with the panel.
-  const panelTool = panelToolId ? resolvedTools.find((tool) => tool.id === panelToolId) : undefined
+  const panelTool = findTool(panelToolId)
   const panelId = `${layoutId}-tool-panel`
   const panelWidth = toCssSize(toolPanelWidth)
+  const railLabel = railExpanded ? 'Collapse workspace tool labels' : 'Expand workspace tool labels'
   const railWidth = railExpanded ? expandedRailWidth : collapsedRailWidth
 
   // Keep the local ID in sync when a parent removes the active tool.
@@ -126,7 +142,8 @@ const WorkspaceLayout = ({
 
   const toolButton = (tool: WorkspaceTool, index: number, showLabel = railExpanded) => {
     const active = activeTool?.id === tool.id
-    const label = legacyInspector ? (active ? 'Close inspector' : 'Open inspector') : tool.label
+    const inspectorLabel = active ? 'Close inspector' : 'Open inspector'
+    const label = legacyInspector ? inspectorLabel : tool.label
     const select = (trigger: HTMLButtonElement) => {
       selectTool(tool.id, trigger)
     }
@@ -203,7 +220,7 @@ const WorkspaceLayout = ({
   const desktopTools = desktop && resolvedTools.length > 0
   const mobileTools = !desktop && resolvedTools.length > 0
 
-  const mobileNavigation = mobileTools ? (
+  const mobileNavigation = mobileTools && (
     <ScrollArea
       style={{ flexShrink: 0 }}
       type='auto'
@@ -223,7 +240,7 @@ const WorkspaceLayout = ({
         {resolvedTools.map((tool, index) => toolButton(tool, index, true))}
       </Group>
     </ScrollArea>
-  ) : null
+  )
 
   return (
     <Flex
@@ -247,7 +264,7 @@ const WorkspaceLayout = ({
         )}
       </Box>
 
-      {desktopTools ? (
+      {desktopTools && (
         <Box
           component='aside'
           id={panelId}
@@ -260,20 +277,9 @@ const WorkspaceLayout = ({
           flex='0 0 auto'
           pos='relative'
           bg='var(--app-panel)'
-          style={{
-            opacity: activeTool ? 1 : 0,
-            overflow: 'hidden',
-            pointerEvents: activeTool ? 'auto' : 'none',
-            transform: activeTool ? 'translateX(0)' : 'translateX(0.5rem)',
-            transition: reduceMotion
-              ? 'none'
-              : activeTool
-                ? `width ${String(toolPanelTransitionDuration)}ms ease, opacity ${String(toolPanelTransitionDuration)}ms ease, transform ${String(toolPanelTransitionDuration)}ms ease, visibility 0s`
-                : `width ${String(toolPanelTransitionDuration)}ms ease, opacity ${String(toolPanelTransitionDuration)}ms ease, transform ${String(toolPanelTransitionDuration)}ms ease, visibility 0s linear ${String(toolPanelTransitionDuration)}ms`,
-            visibility: activeTool ? 'visible' : 'hidden'
-          }}
+          style={panelStyle(Boolean(activeTool), reduceMotion)}
         >
-          {panelTool ? (
+          {panelTool && (
             <>
               <Divider orientation='vertical' pos='absolute' left={0} top={0} bottom={0} />
               <Stack w={panelWidth} h='100%' gap={0}>
@@ -301,11 +307,11 @@ const WorkspaceLayout = ({
                 </ScrollArea>
               </Stack>
             </>
-          ) : null}
+          )}
         </Box>
-      ) : null}
+      )}
 
-      {desktopTools ? (
+      {desktopTools && (
         <Flex
           component='nav'
           aria-label='Workspace tools'
@@ -328,17 +334,14 @@ const WorkspaceLayout = ({
               </Stack>
             </ScrollArea>
             <Divider my={4} />
-            <Tooltip
-              label={railExpanded ? 'Collapse workspace tool labels' : 'Expand workspace tool labels'}
-              position='left'
-            >
+            <Tooltip label={railLabel} position='left'>
               <ActionIcon
                 variant='subtle'
                 color='gray'
                 size={36}
                 mx='auto'
                 radius='sm'
-                aria-label={railExpanded ? 'Collapse workspace tool labels' : 'Expand workspace tool labels'}
+                aria-label={railLabel}
                 aria-expanded={railExpanded}
                 onClick={() => {
                   setRailExpanded((expanded) => !expanded)
@@ -349,9 +352,9 @@ const WorkspaceLayout = ({
             </Tooltip>
           </Stack>
         </Flex>
-      ) : null}
+      )}
 
-      {mobileTools ? (
+      {mobileTools && (
         <Drawer
           opened={Boolean(activeTool)}
           onClose={closeTool}
@@ -362,7 +365,7 @@ const WorkspaceLayout = ({
           styles={{ body: { padding: 0 } }}
           closeButtonProps={{ 'aria-label': 'Close workspace tool' }}
         >
-          {activeTool ? (
+          {activeTool && (
             <Stack data-testid='workspace-mobile-tool-content' gap={0} mih='100%'>
               <ScrollArea type='auto' offsetScrollbars scrollbarSize={6}>
                 <Group
@@ -381,9 +384,9 @@ const WorkspaceLayout = ({
                 {renderContent(activeTool)}
               </ScrollArea>
             </Stack>
-          ) : null}
+          )}
         </Drawer>
-      ) : null}
+      )}
     </Flex>
   )
 }

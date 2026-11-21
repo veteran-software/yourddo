@@ -12,16 +12,18 @@ import {
   isGearPlannerEssenceCraftingMaterial
 } from './essenceCrafting.ts'
 import { getGearPlannerMaxFiligreeSlots, isGearPlannerMinorArtifact, sameFiligreeType } from './filigrees.ts'
-import type {
-  GearPlannerAugment,
-  GearPlannerCurse,
-  GearPlannerEffect,
-  GearPlannerFiligree,
-  GearPlannerItem,
-  GearPlannerData
+import {
+  allGearPlannerSlots,
+  gearPlannerCharacterSlots,
+  type GearPlannerSlot,
+  type GearPlannerAugment,
+  type GearPlannerCurse,
+  type GearPlannerEffect,
+  type GearPlannerFiligree,
+  type GearPlannerItem,
+  type GearPlannerData
 } from './gearPlanner.types.ts'
 import { slotOwner } from './character'
-import { allGearPlannerSlots, gearPlannerCharacterSlots, type GearPlannerSlot } from './gearPlanner.types.ts'
 import {
   getEffectiveGearPlannerAugmentSlots,
   isGearPlannerReforgingStageStateValid,
@@ -231,7 +233,7 @@ export const setGearPlannerEssenceCraftingConfiguration = (
   const curse = state.slottedCurses[itemId]
   if (!isGearPlannerEssenceAffixValid(data, item, configuration, curse, update.position, update.enhancementId))
     return state
-  const field = update.position === 'prefix' ? 'prefixId' : update.position === 'suffix' ? 'suffixId' : 'extraId'
+  const field = `${update.position}Id` as const
   if (configuration[field] === update.enhancementId) return state
   return {
     ...state,
@@ -427,19 +429,7 @@ export const prepareGearPlannerCandidates = (
 ): readonly GearPlannerCandidate[] =>
   items.map((item) => {
     const { sets, craftGroups } = candidateSetDetails(item, data)
-    let effects: GearPlannerCandidate['effects'] = item.source.enchantments ?? []
-    if (essence && isEssenceCraftedGearPlannerItem(item)) {
-      const configuration = createGearPlannerEssenceCraftingConfiguration(essence, item.minimumLevel)
-      effects = (['prefix', 'suffix', 'extra'] as const).flatMap((position) =>
-        getGearPlannerEssenceEnhancementChoices(essence, item, configuration, null, position).flatMap((choice) =>
-          choice.effects.map((effect) => ({
-            name: effect.displayName,
-            bonus: essence.bonusTypes.find((type) => type.id === effect.bonusTypeId)?.displayName,
-            craft: position + ' · ' + choice.displayName
-          }))
-        )
-      )
-    }
+    const effects = candidateEffects(item, essence)
     return {
       item,
       effects,
@@ -486,4 +476,23 @@ export const filterGearPlannerCandidates = (
       const byName = a.item.source.name.localeCompare(b.item.source.name)
       return byName || a.item.id.localeCompare(b.item.id)
     })
+}
+
+function candidateEffects(item: GearPlannerItem, essence: EssenceCraftingData | undefined) {
+  let effects: GearPlannerCandidate['effects'] = item.source.enchantments ?? []
+  if (essence && isEssenceCraftedGearPlannerItem(item)) {
+    const bonusTypeName = (id: string | null | undefined) =>
+      essence.bonusTypes.find((type) => type.id === id)?.displayName
+    const configuration = createGearPlannerEssenceCraftingConfiguration(essence, item.minimumLevel)
+    effects = (['prefix', 'suffix', 'extra'] as const).flatMap((position) =>
+      getGearPlannerEssenceEnhancementChoices(essence, item, configuration, null, position).flatMap((choice) =>
+        choice.effects.map((effect) => ({
+          name: effect.displayName,
+          bonus: bonusTypeName(effect.bonusTypeId),
+          craft: position + ' · ' + choice.displayName
+        }))
+      )
+    )
+  }
+  return effects
 }

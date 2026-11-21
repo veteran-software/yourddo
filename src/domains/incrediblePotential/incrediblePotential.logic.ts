@@ -148,10 +148,11 @@ export const formatEffect = ({ name, modifier, bonus }: IncrediblePotentialEffec
   if (modifier !== undefined) {
     const numericModifier = typeof modifier === 'number' ? modifier : Number(modifier)
     if (Number.isFinite(numericModifier)) {
+      const sign = numericModifier >= 0 ? '+' : ''
       formattedModifier =
         Math.abs(numericModifier) > 0 && Math.abs(numericModifier) < 1
           ? `${(numericModifier * 100).toString()}%`
-          : `${numericModifier >= 0 ? '+' : ''}${numericModifier.toString()}`
+          : `${sign}${numericModifier.toString()}`
     } else {
       formattedModifier = modifier.toString()
     }

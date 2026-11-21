@@ -98,11 +98,7 @@ export const parseHgsJsonBuild = (text: string): CanonicalHgsBuildSnapshot => {
   }
 }
 
-export const validateHgsBuild = (
-  snapshot: CanonicalHgsBuildSnapshot,
-  { initial, tier2, tier3, combinations }: HgsValidationData
-): HgsSelection => {
-  const selection = snapshotFromSelection(snapshot)
+function validateKnownSelections(selection: HgsSelection, initial: HgsInitialData, tier2: HgsTier2Data) {
   if (selection.selectedBaseItemId !== null && !initial.baseItemById.has(selection.selectedBaseItemId)) {
     throw new InvalidHgsBuildError('Unknown base item')
   }
@@ -115,6 +111,14 @@ export const validateHgsBuild = (
   if (selection.selectedTier2Id !== null && !tier2.tier2ById.has(selection.selectedTier2Id)) {
     throw new InvalidHgsBuildError('Unknown Tier 2 selection')
   }
+}
+
+export const validateHgsBuild = (
+  snapshot: CanonicalHgsBuildSnapshot,
+  { initial, tier2, tier3, combinations }: HgsValidationData
+): HgsSelection => {
+  const selection = snapshotFromSelection(snapshot)
+  validateKnownSelections(selection, initial, tier2)
   const selectedTier2 = selection.selectedTier2Id === null ? undefined : tier2.tier2ById.get(selection.selectedTier2Id)
   if (selectedTier2 && (selectedTier2.spellId ?? null) !== selection.selectedSpellId) {
     throw new InvalidHgsBuildError('Tier 2 selection and desired spell are inconsistent')
@@ -142,10 +146,19 @@ const permalinkId = (value: number | null): string => (value === null ? '-' : en
 const decodePermalinkId = (value: string, field: string): number | null =>
   value === '-' ? null : fromEncodedId(value, field)
 
+const modeCodes: Readonly<Record<HgsTier3Mode, string>> = { basic: 'b', focused: 'f' }
+
+function decodeTier3Mode(value: string): HgsTier3Mode | null {
+  if (value === '-') return null
+  if (value === modeCodes.basic) return 'basic'
+  if (value === modeCodes.focused) return 'focused'
+  throw new InvalidHgsBuildError('Invalid Tier 3 permalink mode')
+}
+
 /** v1 fields: version, base, spell, Tier 1, Tier 2, Tier 3 mode (b/f/-), Tier 3, checksum. */
 export const encodeHgsPermalink = (selection: HgsSelection): string => {
   const snapshot = snapshotFromSelection(selection)
-  const mode = snapshot.selectedTier3Mode === 'basic' ? 'b' : snapshot.selectedTier3Mode === 'focused' ? 'f' : '-'
+  const mode = snapshot.selectedTier3Mode ? modeCodes[snapshot.selectedTier3Mode] : '-'
   const payload = [
     '1',
     permalinkId(snapshot.selectedBaseItemId),
@@ -164,8 +177,7 @@ export const decodeHgsPermalink = (value: string): CanonicalHgsBuildSnapshot => 
   const payload = fields.slice(0, -1).join('.')
   if (fields[7] !== createPermalinkChecksum(payload)) throw new InvalidHgsBuildError('Invalid HGS permalink checksum')
   if (fields[0] !== '1') throw new InvalidHgsBuildError('Unsupported HGS permalink version')
-  const mode = fields[5] === 'b' ? 'basic' : fields[5] === 'f' ? 'focused' : fields[5] === '-' ? null : undefined
-  if (mode === undefined) throw new InvalidHgsBuildError('Invalid Tier 3 permalink mode')
+  const mode = decodeTier3Mode(fields[5])
   return {
     selectedBaseItemId: decodePermalinkId(fields[1], 'base item'),
     selectedSpellId: decodePermalinkId(fields[2], 'desired spell'),
@@ -193,6 +205,7 @@ export const resolveHgsBuildView = (
     selection.selectedBaseItemId === null ? undefined : initial.baseItemById.get(selection.selectedBaseItemId)
   const desiredSpell =
     selection.selectedSpellId === null ? undefined : resolveSpell(selection.selectedSpellId, tier2.spellById)
+  const tier3ById = selection.selectedTier3Mode === 'basic' ? tier3.tier3BasicById : tier3.tier3FocusedById
   const options = [
     [
       'Altar of Invasion',
@@ -204,11 +217,7 @@ export const resolveHgsBuildView = (
     ],
     [
       `Altar of Devastation${selection.selectedTier3Mode ? ' (' + selection.selectedTier3Mode + ')' : ''}`,
-      selection.selectedTier3Id === null
-        ? undefined
-        : selection.selectedTier3Mode === 'basic'
-          ? tier3.tier3BasicById.get(selection.selectedTier3Id)
-          : tier3.tier3FocusedById.get(selection.selectedTier3Id)
+      selection.selectedTier3Id === null ? undefined : tier3ById.get(selection.selectedTier3Id)
     ] as const
   ] as const
   return {
@@ -242,8 +251,10 @@ export const formatHgsBbCode = (view: ResolvedHgsBuildView): string => {
     if (view.desiredSpell.description) lines.push(escapeBbCode(view.desiredSpell.description))
   }
   for (const altar of view.altars) {
-    lines.push('', `[b]${escapeBbCode(altar.label)}[/b]`, escapeBbCode(altar.selection))
     lines.push(
+      '',
+      `[b]${escapeBbCode(altar.label)}[/b]`,
+      escapeBbCode(altar.selection),
       `[i]Focus:[/i] ${escapeBbCode(altar.focus)} · [i]Gem:[/i] ${escapeBbCode(altar.gem)} · [i]Essence:[/i] ${escapeBbCode(altar.essence)}`
     )
     for (const effect of altar.effects) lines.push(`- ${escapeBbCode(effect)}`)
@@ -260,8 +271,10 @@ export const formatHgsDiscordMarkdown = (view: ResolvedHgsBuildView): string => 
     if (view.desiredSpell.description) lines.push(escapeMarkdown(view.desiredSpell.description))
   }
   for (const altar of view.altars) {
-    lines.push('', `**${escapeMarkdown(altar.label)}**`, escapeMarkdown(altar.selection))
     lines.push(
+      '',
+      `**${escapeMarkdown(altar.label)}**`,
+      escapeMarkdown(altar.selection),
       `Focus: ${escapeMarkdown(altar.focus)} · Gem: ${escapeMarkdown(altar.gem)} · Essence: ${escapeMarkdown(altar.essence)}`
     )
     for (const effect of altar.effects) lines.push(`- ${escapeMarkdown(effect)}`)

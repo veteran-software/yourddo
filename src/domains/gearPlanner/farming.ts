@@ -1,7 +1,7 @@
 import { enabledOwners, ownerSlots } from './character'
 import { gearDropLocations } from './dropLocations'
 import type { GearPlannerSetup } from './setups'
-import { TroveSnapshot, type TroveInventory } from './trove'
+import { TroveSnapshot, type TroveHolding, type TroveInventory } from './trove'
 
 type Source = ReturnType<typeof gearDropLocations>[number]
 interface Need {
@@ -21,7 +21,7 @@ export interface FarmTask {
   sources: Source[]
 }
 
-export function farmingList(setup: GearPlannerSetup, inventory: TroveInventory, character: string) {
+function equippedNeeds(setup: GearPlannerSetup) {
   const needs = new Map<string, Need>()
   function add(
     name: string,
@@ -54,65 +54,76 @@ export function farmingList(setup: GearPlannerSetup, inventory: TroveInventory, 
       for (const fil of Object.values(setup.slottedFiligrees[item.id] ?? {}))
         add(fil.name, slot + ' · Filigree', fil.source, undefined, true)
     }
+  return needs
+}
+
+export function farmingList(setup: GearPlannerSetup, inventory: TroveInventory, character: string) {
   const tasks: FarmTask[] = []
-  for (const [key, need] of needs) {
-    let remaining = need.uses.length
-    function task(status: FarmStatus, group: string, quantity: number, notes: string[] = []) {
-      const offset = need.uses.length - remaining
-      const uses = need.uses.slice(offset, offset + quantity)
-      const previous = tasks.find((t) => t.name === need.name && t.status === status && t.group === group)
-      if (previous) {
-        previous.quantity += quantity
-        previous.uses.push(...uses)
-      } else tasks.push({ ...need, uses, status, group, quantity, notes })
-      remaining -= quantity
-    }
-    const owners = inventory.get(key)
-    const holdings = inventory instanceof TroveSnapshot ? inventory.holdings.get(key) : undefined
-    // Earlier imports prove at least one copy at each named location.
-    const stock =
-      holdings ??
-      owners?.map((location) => ({
-        location,
-        character: /^(.*?) \(/.exec(location)?.[1] ?? '',
-        quantity: 1,
-        binding: 'unknown' as const
-      }))
-    const blocked: string[] = []
-    const target = character.trim().toLowerCase()
-    if (stock?.length) {
-      const available = stock.map((h) => {
-        const shared = /^Shared (?:Crafting )?Bank(?: ·|$)/.test(h.location)
-        if (!target) return { h, status: 'Owned' as const }
-        if (h.character?.toLowerCase() === target) return { h, status: 'Owned' as const }
-        if (h.binding === 'character' && h.character) return { h, status: 'bound' as const }
-        if (shared || (h.character && h.binding === 'transferable')) return { h, status: 'Collect' as const }
-        return { h, status: 'Check' as const }
-      })
-      for (const status of ['Owned', 'Collect', 'Check', 'bound'] as const) {
-        for (const { h, status: kind } of available) {
-          if (!remaining || kind !== status) continue
-          if (status === 'bound') {
-            blocked.push(h.location + ' · Character-bound')
-            continue
-          }
-          task(
-            status,
-            h.location || 'Location unavailable',
-            Math.min(remaining, h.quantity),
-            status === 'Check' ? ['Verify owner or binding in Trove.'] : []
-          )
+  const target = character.trim().toLowerCase()
+  for (const [key, need] of equippedNeeds(setup)) tasks.push(...farmingTasks(key, need, inventory, target))
+  return tasks
+}
+
+function farmingTasks(key: string, need: Need, inventory: TroveInventory, target: string) {
+  const tasks: FarmTask[] = []
+  let remaining = need.uses.length
+  function task(status: FarmStatus, group: string, quantity: number, notes: string[] = []) {
+    const offset = need.uses.length - remaining
+    const uses = need.uses.slice(offset, offset + quantity)
+    const previous = tasks.find((t) => t.name === need.name && t.status === status && t.group === group)
+    if (previous) {
+      previous.quantity += quantity
+      previous.uses.push(...uses)
+    } else tasks.push({ ...need, uses, status, group, quantity, notes })
+    remaining -= quantity
+  }
+  const owners = inventory.get(key)
+  const holdings = inventory instanceof TroveSnapshot ? inventory.holdings.get(key) : undefined
+  // Earlier imports prove at least one copy at each named location.
+  const stock =
+    holdings ??
+    owners?.map((location) => ({
+      location,
+      character: /^(.*?) \(/.exec(location)?.[1] ?? '',
+      quantity: 1,
+      binding: 'unknown' as const
+    }))
+  const blocked: string[] = []
+  function allocateStock(copies: readonly TroveHolding[]) {
+    const available = copies.map((h) => ({ h, status: availability(h, target) }))
+    for (const status of ['Owned', 'Collect', 'Check', 'bound'] as const) {
+      for (const { h, status: kind } of available) {
+        if (!remaining || kind !== status) continue
+        if (status === 'bound') {
+          blocked.push(h.location + ' · Character-bound')
+          continue
         }
+        task(
+          status,
+          h.location || 'Location unavailable',
+          Math.min(remaining, h.quantity),
+          status === 'Check' ? ['Verify owner or binding in Trove.'] : []
+        )
       }
     }
-    if (remaining && owners !== undefined && !holdings) {
-      task('Check', 'Earlier Trove import', remaining, [...owners, 'Reimport Trove to verify quantities and binding.'])
-    } else if (remaining && need.filigree && key.endsWith(' (rare)') && inventory.has(key.replace(/ \(rare\)$/, ''))) {
-      task('Check', 'Verify rare filigree', remaining, [
-        'Trove lists the base name only. Check the rarity before farming.'
-      ])
-    }
-    if (remaining) task('Farm', need.sources[0]?.title ?? 'Source unlisted', remaining, blocked)
   }
+  if (stock?.length) allocateStock(stock)
+  if (remaining && owners !== undefined && !holdings) {
+    task('Check', 'Earlier Trove import', remaining, [...owners, 'Reimport Trove to verify quantities and binding.'])
+  } else if (remaining && need.filigree && key.endsWith(' (rare)') && inventory.has(key.replace(/ \(rare\)$/, ''))) {
+    task('Check', 'Verify rare filigree', remaining, [
+      'Trove lists the base name only. Check the rarity before farming.'
+    ])
+  }
+  if (remaining) task('Farm', need.sources[0]?.title ?? 'Source unlisted', remaining, blocked)
   return tasks
+}
+
+function availability(h: TroveHolding, target: string) {
+  const shared = /^Shared (?:Crafting )?Bank(?: ·|$)/.test(h.location)
+  if (!target) return 'Owned'
+  if (h.character?.toLowerCase() === target) return 'Owned'
+  if (h.binding === 'character' && h.character) return 'bound'
+  if (shared || (h.character && h.binding === 'transferable')) return 'Collect'
+  return 'Check'
 }

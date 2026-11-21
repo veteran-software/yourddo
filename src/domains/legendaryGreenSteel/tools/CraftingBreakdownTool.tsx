@@ -1,6 +1,5 @@
 import RecipeDetails from '../../../shared/items/RecipeDetails'
-import { legendaryRecipeParts } from '../logic'
-import { expandLgsRequirements } from '../logic'
+import { legendaryRecipeParts, expandLgsRequirements } from '../logic'
 import ComponentFarmingLocations from '../../../shared/items/ComponentFarmingLocations'
 import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
 import IngredientStock from '../../../shared/items/IngredientStock'

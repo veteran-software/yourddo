@@ -1,3 +1,4 @@
+import { keyedEntries } from '../../../shared/ui/keyedEntries'
 import { Badge, Group, Text } from '@mantine/core'
 import { normaliseAugmentSlotType, augmentColors } from '../../../shared/augments/compatibility'
 import ItemMaterial from './ItemMaterial'
@@ -9,7 +10,7 @@ function craftingSources(item: GearPlannerItem) {
   let craftOnly = false
   for (const location of item.source.dropLocations ?? []) {
     const type = location.sourceType
-    if (location.isCraftOnly === true || type === 'CraftOnlyItem') craftOnly = true
+    craftOnly ||= location.isCraftOnly === true || type === 'CraftOnlyItem'
     if (typeof location.craftingLocation === 'string' && location.craftingLocation.trim()) {
       sources.add('Crafted at ' + location.craftingLocation.trim())
     } else if (type === 'GreenSteelCraftingPurchase') {
@@ -20,13 +21,8 @@ function craftingSources(item: GearPlannerItem) {
       )
     }
   }
-  if (sources.size) {
-    return [...sources]
-  }
-  if (craftOnly) {
-    return ['Craft only']
-  }
-  return []
+  if (!sources.size && craftOnly) sources.add('Craft only')
+  return [...sources]
 }
 
 export default function CandidateEquipmentDetails({
@@ -45,12 +41,12 @@ export default function CandidateEquipmentDetails({
       <ItemMaterial item={item} selectedMaterial={material} />
       {sockets.length > 0 && (
         <Group gap={4} role='group' aria-label='Augment sockets'>
-          {sockets.map(({ augmentType }, index) => {
+          {keyedEntries(sockets).map(({ key, value: { augmentType } }) => {
             const name = normaliseAugmentSlotType(augmentType)
             const malformed = /[{}|]/.test(name) || name === 'Yelloww'
             return (
               <Badge
-                key={index}
+                key={key}
                 variant='dot'
                 tt='none'
                 color={augmentColors[name] ?? 'gray'}

@@ -48,6 +48,8 @@ interface BuildSummaryToolProps {
   tier3Effects: readonly HgsEffect[]
 }
 
+const tier3Labels = { basic: 'Tier 3 · Basic', focused: 'Tier 3 · Focused' } as const
+
 const BuildSummaryTool = ({
   baseItem,
   tier1,
@@ -81,7 +83,7 @@ const BuildSummaryTool = ({
     <Stage label='Tier 2' option={tier2} effects={tier2Effects} incomplete='Tier 2 is incomplete.' spell={spell} />
     <Divider />
     <Stage
-      label={`Tier 3${tier3Mode ? ' · ' + (tier3Mode === 'basic' ? 'Basic' : 'Focused') : ''}`}
+      label={tier3Mode ? tier3Labels[tier3Mode] : 'Tier 3'}
       option={tier3}
       effects={tier3Effects}
       incomplete='Tier 3 is incomplete.'

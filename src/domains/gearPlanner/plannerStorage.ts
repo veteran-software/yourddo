@@ -216,7 +216,7 @@ const parseEquipment = (value: unknown, path: string): PersistedGearPlannerSetup
   }
   const equipment = {} as PersistedGearPlannerSetupV1['equipment']
   for (const slot of allGearPlannerSlots) {
-    if (!Object.hasOwn(record, slot) && gearPlannerPetSlots.some((p) => p === slot)) continue
+    if (!Object.hasOwn(record, slot) && (gearPlannerPetSlots as readonly GearPlannerSlot[]).includes(slot)) continue
     const itemId = record[slot]
     if (itemId !== null && (typeof itemId !== 'string' || !itemId.trim())) {
       throw new InvalidGearPlannerStateError(`${path}.${slot} must be an item ID or null`)

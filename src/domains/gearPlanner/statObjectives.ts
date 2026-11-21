@@ -9,12 +9,12 @@ const spellFamilies: Readonly<Partial<Record<string, string>>> = {
 
 export function spellObjective(name: string) {
   // The catalog contains both "Cold Spell Power" and "Spell Power: Cold".
-  const match =
-    /^(?:(?<prefix>.+?) )?(?<stat>Spell (?:Crit(?:ical)? (?:Damage|Chance)|Power|DCs?))(?::\s*(?<suffix>.*))?$/i.exec(
-      name.trim()
-    )
-  if (!match?.groups) return null
-  const { prefix, stat, suffix } = match.groups
+  const trimmed = name.trim()
+  const match = /(?:^| )(Spell (?:Crit(?:ical)? (?:Damage|Chance)|Power|DCs?))(?=:|$)/i.exec(trimmed)
+  if (!match) return null
+  const stat = match[1]
+  const prefix = trimmed.slice(0, match.index)
+  const suffix = trimmed.slice(match.index + match[0].length + 1).trimStart()
   const key = stat.toLowerCase().replace(/crit /, 'critical ').replace(/dcs$/, 'dc')
   const family = spellFamilies[key]
   if (!family) return null
@@ -22,7 +22,7 @@ export function spellObjective(name: string) {
     .trim()
     .toLowerCase()
     .replace(/\b\w/g, (letter) => letter.toUpperCase())
-  const base = family === 'Spell DCs' ? (subtype ? 'Spell DC' : 'Spell DCs') : family.replace('Crit ', 'Critical ')
+  const base = family === 'Spell DCs' && subtype ? 'Spell DC' : family.replace('Crit ', 'Critical ')
   return { family, subtype: subtype || 'General', name: subtype ? base + ': ' + subtype : base }
 }
 
@@ -34,17 +34,21 @@ export function objectiveEffect(effect: GearPlannerEffect): GearPlannerEffect {
 
 // Keep qualifications such as "(Level 9)" and damage-reduction bypass types intact.
 function stripObjectiveRank(effect: GearPlannerEffect): GearPlannerEffect {
-  const rank = /^(.*?)\s+([+-]?\d+(?:\.\d+)?)(%|\[W\])?$/i.exec(effect.name.trim())
+  const name = effect.name.trim()
+  const words = name.split(/\s+/u)
+  if (words.length < 2) return effect
+  const token = words[words.length - 1]
+  const rank = /^([+-]?\d+(?:\.\d+)?)(%|\[W\])?$/i.exec(token)
   if (!rank) return effect
   const modifier = String(effect.modifier ?? '').trim()
   const amount = /^([+-]?\d+(?:\.\d+)?)(%|\[W\])?$/i.exec(modifier)
   if (
     amount
-      ? Number(amount[1]) !== Number(rank[2]) || (amount[2] && rank[3] && amount[2] !== rank[3])
-      : modifier || !/^[+-]/.test(rank[2])
+      ? Number(amount[1]) !== Number(rank[1]) || (amount[2] && rank[2] && amount[2] !== rank[2])
+      : modifier || !/^[+-]/.test(rank[1])
   )
     return effect
-  return { ...effect, name: rank[1], modifier: rank[2] + (rank[3] ?? amount?.[2] ?? '') }
+  return { ...effect, name: name.slice(0, -token.length).trimEnd(), modifier: rank[1] + (rank[2] ?? amount?.[2] ?? '') }
 }
 
 export function objectiveCategory(name: string) {

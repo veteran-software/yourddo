@@ -3,15 +3,19 @@ import { IconBrandDiscord, IconBrandGithub } from '@tabler/icons-react'
 import RouteSeo from '../shared/seo/RouteSeo'
 import { useEffect, useState } from 'react'
 import { recordVisit } from '../domains/home/shelves'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { TroveImport, TroveProvider } from '../domains/gearPlanner/components/TroveInventory'
 import { ActionIcon, AppShell, Burger, Group, Image, ScrollArea, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { Outlet } from 'react-router-dom'
 import SidebarNavigation from '../shared/navigation/SidebarNavigation'
 import ServerStatus, { ServerStatusShortcut } from '../shared/serverStatus/ServerStatus'
 import { useServerStatus } from '../shared/serverStatus/useServerStatus'
 import ThemeSwitch from '../shared/ui/ThemeSwitch'
+
+function openStatus(openNav: () => void) {
+  openNav()
+  requestAnimationFrame(() => document.getElementById('server-status')?.focus({ preventScroll: true }))
+}
 
 const AppLayout = ({ develop }: { develop: boolean }) => {
   const [craftingSession] = useState(() => ({}))
@@ -32,10 +36,6 @@ const AppLayout = ({ develop }: { develop: boolean }) => {
     recordVisit(recentPath)
   }, [recentPath])
   const status = useServerStatus()
-  function openStatus(openNav: () => void) {
-    openNav()
-    requestAnimationFrame(() => document.getElementById('server-status')?.focus({ preventScroll: true }))
-  }
   return (
     <TroveProvider>
       <AppShell

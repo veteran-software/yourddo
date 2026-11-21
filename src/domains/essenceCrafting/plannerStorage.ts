@@ -141,17 +141,15 @@ export const saveEssenceCraftingPlan = (
   }
 }
 
+function legacyDisplayName(value: unknown) {
+  if (typeof value === 'string') return value
+  if (!isRecord(value)) return undefined
+  if (typeof value.name === 'string') return value.name
+  return typeof value.displayName === 'string' ? value.displayName : undefined
+}
+
 const resolveLegacyName = (value: unknown, records: readonly { id: string; displayName: string }[]): string | null => {
-  const name =
-    typeof value === 'string'
-      ? value
-      : isRecord(value)
-        ? typeof value.name === 'string'
-          ? value.name
-          : typeof value.displayName === 'string'
-            ? value.displayName
-            : undefined
-        : undefined
+  const name = legacyDisplayName(value)
   if (!name) return null
   const matches = records.filter(({ displayName }) => displayName === name)
   return matches.length === 1 ? matches[0].id : null
@@ -223,7 +221,7 @@ export const migrateLegacyEssenceCraftingPayload = (
   }
 
   return {
-    masterMinimumLevel: typeof legacyPayload.masterMinLevel === 'number' ? legacyPayload.masterMinLevel : NaN,
+    masterMinimumLevel: typeof legacyPayload.masterMinLevel === 'number' ? legacyPayload.masterMinLevel : Number.NaN,
     activeSlotIds,
     collapsedSlotIds: migrateCollapsedSlots(legacyPayload.collapsedKeys, activeSlotIds),
     itemsBySlotId

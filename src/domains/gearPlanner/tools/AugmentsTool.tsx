@@ -18,6 +18,16 @@ const typeOf = (s: LoadoutSocket) =>
   getColorAugmentType(s.slot.augmentType) ?? normaliseAugmentSlotType(s.slot.augmentType)
 const socketName = (s: LoadoutSocket) => s.item.source.name + ' · Socket ' + String(s.index + 1)
 
+function emptySocketMessage(source: boolean, wanted: boolean) {
+  if (source) return 'No compatible destinations for this augment.'
+  return wanted ? 'No compatible empty sockets in this loadout.' : 'All sockets are filled.'
+}
+
+function socketGroupLabel(filled: boolean, source: boolean, wanted: boolean) {
+  if (filled) return source ? 'Compatible swaps' : 'Filled sockets'
+  return source || wanted ? 'Compatible empty sockets' : 'Empty sockets'
+}
+
 export default function AugmentsTool({
   setup,
   slots,
@@ -180,11 +190,7 @@ export default function AugmentsTool({
       )}
       {!visible.length && (
         <Text c='dimmed' size='sm'>
-          {source
-            ? 'No compatible destinations for this augment.'
-            : wanted
-              ? 'No compatible empty sockets in this loadout.'
-              : 'All sockets are filled.'}
+          {emptySocketMessage(Boolean(source), Boolean(wanted))}
         </Text>
       )}
       {[false, true].map((filled) => {
@@ -192,15 +198,7 @@ export default function AugmentsTool({
         if (!rows.length) return null
         return (
           <section key={String(filled)}>
-            <h3>
-              {filled
-                ? source
-                  ? 'Compatible swaps'
-                  : 'Filled sockets'
-                : source || wanted
-                  ? 'Compatible empty sockets'
-                  : 'Empty sockets'}
-            </h3>
+            <h3>{socketGroupLabel(filled, Boolean(source), Boolean(wanted))}</h3>
             {[...Map.groupBy(rows, typeOf)]
               .sort(([a], [b]) => a.localeCompare(b))
               .map(([type, group]) => (
@@ -213,6 +211,7 @@ export default function AugmentsTool({
                   </h4>
                   {group.map((s) => {
                     const id = keyOf(s)
+                    const editAction = filled ? 'Edit' : 'Choose augment'
                     const incoming = source?.augment ?? wanted
                     const over = incoming && incoming.minLevel > hostLevel(s)
                     const reverseOver = source && s.augment && s.augment.minLevel > hostLevel(source)
@@ -234,7 +233,7 @@ export default function AugmentsTool({
                           </Text>
                         )}
                         <Group gap='xs'>
-                          {source ? (
+                          {source && (
                             <Button
                               size='compact-xs'
                               variant='light'
@@ -247,7 +246,8 @@ export default function AugmentsTool({
                             >
                               {filled ? 'Swap' : 'Move here'}
                             </Button>
-                          ) : wanted ? (
+                          )}
+                          {!source && wanted && (
                             <Button
                               variant='light'
                               size='compact-xs'
@@ -259,7 +259,8 @@ export default function AugmentsTool({
                             >
                               Slot here
                             </Button>
-                          ) : (
+                          )}
+                          {!source && !wanted && (
                             <>
                               <Button
                                 size='compact-xs'
@@ -269,7 +270,7 @@ export default function AugmentsTool({
                                   setEdit(id === edit ? '' : id)
                                 }}
                               >
-                                {id === edit ? 'Close' : filled ? 'Edit' : 'Choose augment'}
+                                {id === edit ? 'Close' : editAction}
                               </Button>
                               {filled && (
                                 <Button

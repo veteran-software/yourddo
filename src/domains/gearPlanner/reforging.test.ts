@@ -321,10 +321,7 @@ describe('Gear Planner reforging domain', () => {
       state.slottedAugments,
       {},
       {},
-      undefined,
-      {},
-      reforging,
-      state.reforging
+      { reforgingData: reforging, reforging: state.reforging }
     )
     expect(effectSources).toEqual(
       expect.arrayContaining([

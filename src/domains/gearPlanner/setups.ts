@@ -90,11 +90,20 @@ export const addGearPlannerSetup = (
   return { setups: [...state.setups, setup], activeSetupId: setup.id }
 }
 
+export function nextSetupName(setups: readonly GearPlannerSetup[], base: string) {
+  const names = new Set(setups.map((setup) => setup.name))
+  let name = base
+  let suffix = 2
+  while (names.has(name)) {
+    name = `${base} ${String(suffix)}`
+    suffix += 1
+  }
+  return name
+}
+
 export function duplicateGearPlannerSetup(state: GearPlannerSetupsState, id: string): GearPlannerSetupsState {
   const source = activeGearPlannerSetup(state)
-  const base = source.name + ' copy'
-  let name = base
-  for (let n = 2; state.setups.some((setup) => setup.name === name); n++) name = base + ' ' + String(n)
+  const name = nextSetupName(state.setups, source.name + ' copy')
   const copy = { ...source, id, name }
   return { setups: [...state.setups, copy], activeSetupId: id }
 }

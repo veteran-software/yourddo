@@ -8,6 +8,28 @@ function objectiveLabel(name: string) {
   return name.replace(/^skill:\s*/i, '')
 }
 
+function groupStats(matches: readonly string[], category: string) {
+  const families = new Map<string, { name: string; subtype: string }[]>()
+  const statsRows: string[] = []
+  for (const name of matches) {
+    const spell = category === 'Spellcasting' ? spellObjective(name) : null
+    if (spell) {
+      const members = families.get(spell.family)
+      const member = { name, subtype: spell.subtype }
+      if (members) members.push(member)
+      else families.set(spell.family, [member])
+    } else {
+      statsRows.push(name)
+    }
+  }
+  return { families, statsRows }
+}
+
+function backLabel(chosen: string | null, family: string) {
+  if (chosen) return family ? 'Back to ' + family : 'Back to stats'
+  return family ? 'Back to Spellcasting' : 'All categories'
+}
+
 export default function StatObjectivePicker({
   stats,
   equipped,
@@ -43,22 +65,11 @@ export default function StatObjectivePicker({
   const matches = names.filter(
     (name) => (!category || inCategory(name, category)) && words.every((word) => name.toLowerCase().includes(word))
   )
-  const families = new Map<string, { name: string; subtype: string }[]>()
-  const statsRows: string[] = []
-  for (const name of matches) {
-    const spell = category === 'Spellcasting' ? spellObjective(name) : null
-    if (spell) {
-      const members = families.get(spell.family)
-      const member = { name, subtype: spell.subtype }
-      if (members) members.push(member)
-      else families.set(spell.family, [member])
-    } else {
-      statsRows.push(name)
-    }
-  }
+  const { families, statsRows } = groupStats(matches, category)
   // Keep the spell groups together before the individually selectable stats.
   const rows = [...families.keys()].sort((left, right) => left.localeCompare(right)).concat(statsRows)
   const members = (families.get(family) ?? []).toSorted((a, b) => a.subtype.localeCompare(b.subtype))
+  const selectedBonus = bonus ? bonusLabel(bonus) : 'All bonus types'
   function pick(name: string, type?: string) {
     onSelect(name, type)
     setOpen(false)
@@ -93,7 +104,7 @@ export default function StatObjectivePicker({
           setOpen(true)
         }}
       >
-        {value ? objectiveLabel(value) + ' · ' + (bonus ? bonusLabel(bonus) : 'All bonus types') : 'Choose a stat'}
+        {value ? objectiveLabel(value) + ' · ' + selectedBonus : 'Choose a stat'}
       </Button>
       <Modal
         opened={open}
@@ -114,16 +125,10 @@ export default function StatObjectivePicker({
                 leftSection={<IconArrowLeft size={14} />}
                 onClick={back}
               >
-                {chosen
-                  ? family
-                    ? 'Back to ' + family
-                    : 'Back to stats'
-                  : family
-                    ? 'Back to Spellcasting'
-                    : 'All categories'}
+                {backLabel(chosen, family)}
               </Button>
             )}
-            {chosen ? (
+            {chosen && (
               <>
                 <Text fw={700}>{objectiveLabel(chosen)}</Text>
                 <div className={css.objectiveGrid}>
@@ -144,7 +149,8 @@ export default function StatObjectivePicker({
                   )}
                 </div>
               </>
-            ) : family ? (
+            )}
+            {!chosen && family && (
               <div className={css.objectiveGrid}>
                 {members.map(({ name, subtype }) => (
                   <UnstyledButton
@@ -159,7 +165,8 @@ export default function StatObjectivePicker({
                   </UnstyledButton>
                 ))}
               </div>
-            ) : (
+            )}
+            {!chosen && !family && (
               <>
                 <TextInput
                   data-autofocus

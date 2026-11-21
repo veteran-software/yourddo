@@ -1,3 +1,4 @@
+import { keyedEntries } from '../ui/keyedEntries'
 import { useState } from 'react'
 
 interface Part<Key> {
@@ -29,10 +30,10 @@ export default function RecipeDetails<Key extends string | number>({
       <summary aria-label={'Recipe for ' + name}>Recipe</summary>
       {opened && (
         <ul>
-          {parts.map((part, index) => {
+          {keyedEntries(parts, (part) => JSON.stringify([part.recipeKey, part.name])).map(({ value: part, key }) => {
             const quantity = count * part.quantity
             return (
-              <li key={index}>
+              <li key={key}>
                 {part.name} ×{quantity}
                 {part.recipeKey !== undefined && (
                   <RecipeDetails recipeKey={part.recipeKey} name={part.name} count={quantity} lookup={lookup} />

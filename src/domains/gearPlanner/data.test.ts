@@ -286,7 +286,7 @@ describe('Gear Planner production CDN validation', () => {
           }
         })
       )
-      expect(data.items.length).toBe(data.normalizedItemCount)
+      expect(data.items).toHaveLength(data.normalizedItemCount)
       expect(data.filigrees.length).toBeGreaterThan(0)
       expect(new Set(data.filigrees.map(({ id }) => id)).size).toBe(data.filigrees.length)
       expect(data.filigreeSetDefinitions.length).toBeGreaterThan(0)

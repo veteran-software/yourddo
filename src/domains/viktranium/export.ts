@@ -7,7 +7,7 @@ const attributionUrl = 'https://yourddo.com/viktranium-experiment'
 
 const plain = (value: string): string => value.replace(/[\r\n]+/g, ' ').trim()
 const bb = (value: string): string => plain(value).replaceAll('[', '&#91;').replaceAll(']', '&#93;')
-const md = (value: string): string => plain(value).replace(/([\\`*_{}[\]()#+.!|>-])/g, '\\$1')
+const md = (value: string): string => plain(value).replace(/([\\`*_{}[\]()#+.!|>-])/g, String.raw`\$1`)
 
 const ingredientLines = (ingredients: IngredientCalculation, format: ExportFormat): string[] => {
   const escape = format === 'forum' ? bb : md

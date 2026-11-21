@@ -26,6 +26,9 @@ export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetu
   const tasks = useMemo(() => farmingList(setup, inventory, character), [setup, inventory, character])
   const taskKey = (t: (typeof tasks)[number]) =>
     JSON.stringify([character.trim().toLowerCase(), t.name, t.status, t.group, t.quantity, t.uses])
+  function markTask(key: string, complete: boolean) {
+    setChecked((values) => (complete ? [...new Set([...values, key])] : values.filter((value) => value !== key)))
+  }
   const done = (t: (typeof tasks)[number]) => t.status === 'Owned' || checked.includes(taskKey(t))
   const total = (status: FarmStatus) =>
     tasks.filter((t) => t.status === status && !done(t)).reduce((n, t) => n + t.quantity, 0)
@@ -111,11 +114,7 @@ export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetu
                                 aria-label={'Mark ' + t.name + ' complete in ' + group}
                                 checked={done(t)}
                                 onChange={(e) => {
-                                  const complete = e.currentTarget.checked
-                                  const key = taskKey(t)
-                                  setChecked((values) =>
-                                    complete ? [...new Set([...values, key])] : values.filter((v) => v !== key)
-                                  )
+                                  markTask(taskKey(t), e.currentTarget.checked)
                                 }}
                               />
                             )}

@@ -6,7 +6,7 @@ const unknownIconUrl = `${iconBaseUrl}unknown.png`
 const toIconName = (value: string): string =>
   value
     .replace(/\.png$/i, '')
-    .replace(/[^a-zA-Z0-9]+(.)/g, (_match, character: string) => character.toUpperCase())
+    .replace(/(?<![^a-zA-Z0-9])[^a-zA-Z0-9]+(.)/g, (_match, character: string) => character.toUpperCase())
     .replace(/^./, (character) => character.toLowerCase())
 
 interface IconImageProps {

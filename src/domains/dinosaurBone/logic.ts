@@ -307,8 +307,12 @@ export const calculateCumulativeIngredients = (
     .sort((a, b) => a.name.localeCompare(b.name))
 }
 
-export const formatEffect = ({ name, modifier, bonus, notes }: DinosaurBoneEffect): string =>
-  `${name}${modifier !== undefined ? ' (' + String(modifier) + (bonus ? ' ' + bonus : '') + ')' : ''}${notes ? ' — ' + notes : ''}`
+export const formatEffect = ({ name, modifier, bonus, notes }: DinosaurBoneEffect): string => {
+  const bonusLabel = bonus ? ' ' + bonus : ''
+  const modifierLabel = modifier === undefined ? '' : ` (${String(modifier)}${bonusLabel})`
+  const note = notes ? ' — ' + notes : ''
+  return name + modifierLabel + note
+}
 
 export const validateUniqueNames = (records: readonly { name: string }[], label: string) => {
   const names = new Set<string>()

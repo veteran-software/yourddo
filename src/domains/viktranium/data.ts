@@ -398,6 +398,17 @@ const buildIndexes = (
   return { itemById, itemsByFamily, augmentById, augmentsByType, ingredientById }
 }
 
+function validateFilledAugments(item: ViktraniumItem, indexes: ViktraniumIndexes) {
+  for (const slot of item.slots) {
+    if (!slot.filledAugmentId) continue
+    const augment = indexes.augmentById.get(slot.filledAugmentId)
+    if (!augment) throw new InvalidViktraniumDataError(`missing filled augment reference for ${item.id}/${slot.id}`)
+    const compatibleTypes = slot.compatibleAugmentTypes ?? getCompatibleAugmentTypes(slot.augmentType)
+    if (!compatibleTypes.includes(augment.augmentType))
+      throw new InvalidViktraniumDataError(`incompatible filled augment for ${item.id}/${slot.id}`)
+  }
+}
+
 export const validateViktraniumDataset = (value: unknown): ViktraniumData => {
   if (!isRecord(value) || value.schemaVersion !== 1) {
     throw new InvalidViktraniumDataError(
@@ -416,20 +427,7 @@ export const validateViktraniumDataset = (value: unknown): ViktraniumData => {
   for (const recipe of recipes) {
     visitRequirements(recipe.requirements, indexes.ingredientById, new Set())
   }
-  for (const item of items) {
-    for (const slot of item.slots) {
-      if (slot.filledAugmentId) {
-        const augment = indexes.augmentById.get(slot.filledAugmentId)
-        if (!augment) {
-          throw new InvalidViktraniumDataError(`missing filled augment reference for ${item.id}/${slot.id}`)
-        }
-        const compatibleTypes = slot.compatibleAugmentTypes ?? getCompatibleAugmentTypes(slot.augmentType)
-        if (!compatibleTypes.includes(augment.augmentType)) {
-          throw new InvalidViktraniumDataError(`incompatible filled augment for ${item.id}/${slot.id}`)
-        }
-      }
-    }
-  }
+  for (const item of items) validateFilledAugments(item, indexes)
   return { schemaVersion: 1, items, augments, ingredients, indexes }
 }
 

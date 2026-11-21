@@ -13,7 +13,7 @@ import {
 } from '@mantine/core'
 import { IconCopy, IconFolderOpen, IconUpload } from '@tabler/icons-react'
 import { copyText } from '../../../shared/serialization/browser'
-import { useState, type ReactNode, type MouseEvent } from 'react'
+import { useMemo, useCallback, useState, type ReactNode, type MouseEvent } from 'react'
 import {
   getTroveOwners,
   parseTroveCsv,
@@ -31,17 +31,17 @@ export function TroveProvider({ children }: Readonly<{ children: ReactNode }>) {
     return { inventory: saved, importedAt: saved.importedAt }
   })
   const [ownedOnly, setOwnedOnly] = useState(false)
-  const replace = (next: TroveInventory) => {
+  const replace = useCallback((next: TroveInventory) => {
     const time = new Date().toISOString()
     setSnapshot({ inventory: next, importedAt: time })
     if (!next.size) setOwnedOnly(false)
     localStorage.setItem(troveStorageKey, serializeTroveInventory(next, time))
-  }
-  return (
-    <TroveContext.Provider value={{ inventory, importedAt, ownedOnly, setOwnedOnly, replace }}>
-      {children}
-    </TroveContext.Provider>
+  }, [])
+  const value = useMemo(
+    () => ({ inventory, importedAt, ownedOnly, setOwnedOnly, replace }),
+    [inventory, importedAt, ownedOnly, replace]
   )
+  return <TroveContext.Provider value={value}>{children}</TroveContext.Provider>
 }
 
 export function TroveOwnership({

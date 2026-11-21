@@ -229,8 +229,10 @@ export const formatLgsBbCode = (view: ResolvedLgsBuildView): string => {
   if (view.baseItem)
     lines.push(`[b]Base Item:[/b] ${escapeBbCode(view.baseItem.name)} (${escapeBbCode(view.baseItem.type)})`)
   for (const tier of view.tiers) {
-    lines.push('', `[b]${escapeBbCode(tier.label)}[/b]`, escapeBbCode(tier.selection))
     lines.push(
+      '',
+      `[b]${escapeBbCode(tier.label)}[/b]`,
+      escapeBbCode(tier.selection),
       `[i]Focus:[/i] ${escapeBbCode(tier.focus)} · [i]Gem:[/i] ${escapeBbCode(tier.gem)} · [i]Essence:[/i] ${escapeBbCode(tier.essence)}`
     )
     for (const effect of tier.effects) lines.push(`- ${escapeBbCode(effect)}`)
@@ -256,8 +258,10 @@ export const formatLgsDiscordMarkdown = (view: ResolvedLgsBuildView): string => 
   if (view.baseItem)
     lines.push(`**Base Item:** ${escapeMarkdown(view.baseItem.name)} (${escapeMarkdown(view.baseItem.type)})`)
   for (const tier of view.tiers) {
-    lines.push('', `**${escapeMarkdown(tier.label)}**`, escapeMarkdown(tier.selection))
     lines.push(
+      '',
+      `**${escapeMarkdown(tier.label)}**`,
+      escapeMarkdown(tier.selection),
       `Focus: ${escapeMarkdown(tier.focus)} · Gem: ${escapeMarkdown(tier.gem)} · Essence: ${escapeMarkdown(tier.essence)}`
     )
     for (const effect of tier.effects) lines.push(`- ${escapeMarkdown(effect)}`)

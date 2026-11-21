@@ -10,6 +10,11 @@ export interface TroveHolding {
   binding: 'character' | 'transferable' | 'unknown'
 }
 
+function bindingRestriction(binding: unknown): TroveHolding['binding'] {
+  if (binding === 'BtC' || binding === 'BoundToCharacter') return 'character'
+  return ['BtA', 'BoundToAccount', 'None', 'Unbound'].includes(String(binding)) ? 'transferable' : 'unknown'
+}
+
 export class TroveSnapshot extends Map<string, string[]> {
   importedAt?: string
   readonly holdings = new Map<string, TroveHolding[]>()
@@ -20,12 +25,7 @@ export class TroveSnapshot extends Map<string, string[]> {
     const entries = this.holdings.get(key) ?? []
     const shared = location.startsWith('Shared Bank') || location.startsWith('Shared Crafting Bank')
     const owner = !shared && typeof character === 'string' && !/^[-—–]$/.test(character.trim()) ? character.trim() : ''
-    const restriction =
-      binding === 'BtC' || binding === 'BoundToCharacter'
-        ? 'character'
-        : ['BtA', 'BoundToAccount', 'None', 'Unbound'].includes(String(binding))
-          ? 'transferable'
-          : 'unknown'
+    const restriction = bindingRestriction(binding)
     const match = entries.find((h) => h.location === location && h.character === owner && h.binding === restriction)
     if (match) match.quantity += quantity
     else entries.push({ location, character: owner, quantity, binding: restriction })
@@ -41,7 +41,7 @@ export function troveCharacterNames(inventory: TroveInventory) {
       if (name) characters.add(name)
     }
   if (inventory instanceof TroveSnapshot)
-    for (const list of inventory.holdings.values()) for (const h of list) if (h.character) characters.add(h.character)
+    for (const h of [...inventory.holdings.values()].flat()) if (h.character) characters.add(h.character)
   return [...characters].sort((a, b) => a.localeCompare(b))
 }
 
@@ -73,7 +73,8 @@ export function addTroveOwner(inventory: Map<string, string[]>, name: string, ow
 
 export function troveOwner(character: unknown, location: string, details: readonly string[] = []) {
   const shared = location === 'SharedBank' || location === 'SharedCrafting'
-  const container = shared ? (location === 'SharedBank' ? 'Shared Bank' : 'Shared Crafting Bank') : location
+  const labels: Readonly<Record<string, string>> = { SharedBank: 'Shared Bank', SharedCrafting: 'Shared Crafting Bank' }
+  const container = shared ? labels[location] : location
   const where = [container, ...details].filter(Boolean).join(' · ')
   if (shared) return where
   const name = typeof character === 'string' ? character.trim() : ''
@@ -90,74 +91,84 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
+function isHolding(h: unknown): h is TroveHolding {
+  return (
+    isRecord(h) &&
+    typeof h.location === 'string' &&
+    typeof h.character === 'string' &&
+    typeof h.quantity === 'number' &&
+    Number.isSafeInteger(h.quantity) &&
+    h.quantity > 0 &&
+    (h.binding === 'character' || h.binding === 'transferable' || h.binding === 'unknown')
+  )
+}
+
+function restoreEntry(inventory: TroveSnapshot, entry: unknown) {
+  // Earlier v2 imports kept only the item names.
+  if (typeof entry === 'string') {
+    addTroveOwner(inventory, entry, '')
+    return
+  }
+  if (!Array.isArray(entry)) return
+  const fields: readonly unknown[] = entry
+  const [name, owners, quantities] = fields
+  if (typeof name !== 'string' || !Array.isArray(owners)) return
+  addTroveOwner(inventory, name, '')
+  if (Array.isArray(quantities)) {
+    const holdings = quantities.filter(isHolding)
+    if (holdings.length) inventory.holdings.set(name, holdings)
+  }
+  for (const owner of owners) if (typeof owner === 'string') addTroveOwner(inventory, name, owner)
+}
+
+function restoreSnapshot(inventory: TroveSnapshot, saved: string) {
+  const payload: unknown = JSON.parse(saved)
+  const items = isRecord(payload) ? payload.items : payload
+  if (!Array.isArray(items)) return
+  if (isRecord(payload) && typeof payload.importedAt === 'string' && Number.isFinite(Date.parse(payload.importedAt))) {
+    inventory.importedAt = payload.importedAt
+  }
+  for (const entry of items) restoreEntry(inventory, entry)
+}
+
+function legacyRows(holdings: unknown): readonly unknown[] {
+  if (Array.isArray(holdings)) return holdings
+  if (!isRecord(holdings)) return []
+  return Object.entries(holdings).map(([character, locations]) => ({ character, locations }))
+}
+
+function restoreLegacyHoldings(inventory: TroveSnapshot, name: string, entry: unknown) {
+  const rows = legacyRows(isRecord(entry) ? entry.byCharacter : undefined)
+  if (!rows.length) addTroveOwner(inventory, name, '')
+  for (const row of rows) {
+    if (!isRecord(row) || !isRecord(row.locations)) continue
+    for (const [location, qty] of Object.entries(row.locations)) {
+      if (typeof qty === 'number' && qty > 0)
+        inventory.record(
+          name,
+          troveOwner(row.character, location),
+          row.character,
+          qty,
+          isRecord(entry) ? entry.binding : undefined
+        )
+    }
+  }
+}
+
 export function readTroveInventory(): TroveSnapshot {
   const inventory = new TroveSnapshot()
   try {
     const saved = localStorage.getItem(troveStorageKey)
+    let missing: Set<string> | undefined
     if (saved !== null) {
-      const payload: unknown = JSON.parse(saved)
-      const list = isRecord(payload) ? payload.items : payload
-      if (
-        isRecord(payload) &&
-        Array.isArray(list) &&
-        typeof payload.importedAt === 'string' &&
-        Number.isFinite(Date.parse(payload.importedAt))
-      ) {
-        inventory.importedAt = payload.importedAt
-      }
-      if (Array.isArray(list)) {
-        for (const entry of list) {
-          // Earlier v2 imports kept only the item names.
-          if (typeof entry === 'string') addTroveOwner(inventory, entry, '')
-          else if (Array.isArray(entry) && typeof entry[0] === 'string' && Array.isArray(entry[1])) {
-            addTroveOwner(inventory, entry[0], '')
-            if (Array.isArray(entry[2])) {
-              const holdings = entry[2].filter(
-                (h: unknown): h is TroveHolding =>
-                  isRecord(h) &&
-                  typeof h.location === 'string' &&
-                  typeof h.character === 'string' &&
-                  typeof h.quantity === 'number' &&
-                  Number.isSafeInteger(h.quantity) &&
-                  h.quantity > 0 &&
-                  (h.binding === 'character' || h.binding === 'transferable' || h.binding === 'unknown')
-              )
-              if (holdings.length) inventory.holdings.set(entry[0], holdings)
-            }
-            for (const owner of entry[1]) if (typeof owner === 'string') addTroveOwner(inventory, entry[0], owner)
-          }
-        }
-      }
-      if (![...inventory.values()].some((owners) => !owners.length)) return inventory
+      restoreSnapshot(inventory, saved)
+      missing = new Set([...inventory].filter(([, owners]) => !owners.length).map(([key]) => key))
+      if (!missing.size) return inventory
     }
-    // Older v2 snapshots stored only names. Recover matching holdings from the legacy save when available.
-    const missing =
-      saved === null ? null : new Set([...inventory].filter(([, owners]) => !owners.length).map(([key]) => key))
     const legacy: unknown = JSON.parse(localStorage.getItem('troveData') ?? 'null')
     if (isRecord(legacy)) {
-      for (const [name, entry] of Object.entries(legacy)) {
-        if (missing && !missing.has(itemKey(name))) continue
-        const holdings = isRecord(entry) ? entry.byCharacter : undefined
-        const rows = Array.isArray(holdings)
-          ? holdings
-          : isRecord(holdings)
-            ? Object.entries(holdings).map(([character, locations]) => ({ character, locations }))
-            : []
-        for (const row of rows) {
-          if (!isRecord(row) || !isRecord(row.locations)) continue
-          for (const [location, qty] of Object.entries(row.locations)) {
-            if (typeof qty === 'number' && qty > 0)
-              inventory.record(
-                name,
-                troveOwner(row.character, location),
-                row.character,
-                qty,
-                isRecord(entry) ? entry.binding : undefined
-              )
-          }
-        }
-        if (!rows.length) addTroveOwner(inventory, name, '')
-      }
+      for (const [name, entry] of Object.entries(legacy))
+        if (!missing || missing.has(itemKey(name))) restoreLegacyHoldings(inventory, name, entry)
     }
   } catch {
     // Ownership can still be imported when browser storage is unavailable.

@@ -365,8 +365,7 @@ describe('Gear Planner setup serialization', () => {
       setup.slottedAugments,
       setup.slottedFiligrees,
       setup.slottedCurses,
-      essenceData,
-      setup.essenceCrafting
+      { essenceData, essenceCrafting: setup.essenceCrafting }
     ).find(({ category, effect }) => category === 'essence' && effect.name === 'Light Spell Power')
 
     expect(restored.issues).toEqual([])

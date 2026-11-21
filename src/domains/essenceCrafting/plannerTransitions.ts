@@ -188,12 +188,7 @@ const selectEnhancement = (
     }
     if (position === 'extra' && !item.hasCannithMark && enhancementId !== null) return item
 
-    const field =
-      position === 'prefix'
-        ? 'prefixEnhancementId'
-        : position === 'suffix'
-          ? 'suffixEnhancementId'
-          : 'extraEnhancementId'
+    const field = `${position}EnhancementId` as const
     return item[field] === enhancementId ? item : { ...item, [field]: enhancementId }
   })
 

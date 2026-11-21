@@ -196,16 +196,28 @@ const parseTargetEligibility = (value: unknown, label: string): HgsTargetEligibi
   return eligibility
 }
 
-const parseMechanic = (value: unknown, label: string): HgsMechanic => {
-  if (!isRecord(value) || (value.type === undefined && !isString(value.name))) {
-    throw new InvalidHeroicGreenSteelDataError(`invalid mechanic for ${label}`)
+function readMechanicFields(mechanic: HgsMechanic, value: Record<string, unknown>, label: string) {
+  for (const key of ['bonusType', 'unit', 'target', 'damageType', 'durationType'] as const) {
+    const field = value[key]
+    if (field === undefined) continue
+    if (!isString(field)) throw new InvalidHeroicGreenSteelDataError(`invalid mechanic ${key} for ${label}`)
+    mechanic[key] = field
   }
-  if (value.type !== undefined && (typeof value.type !== 'string' || !mechanicTypes.has(value.type))) {
-    throw new InvalidHeroicGreenSteelDataError(`unknown mechanic type for ${label}: ${JSON.stringify(value.type)}`)
+  for (const key of ['rawModifier', 'intervalSeconds', 'multiplier', 'entityId'] as const) {
+    const field = value[key]
+    if (field === undefined) continue
+    if (!isNumber(field)) throw new InvalidHeroicGreenSteelDataError(`invalid mechanic ${key} for ${label}`)
+    mechanic[key] = field
   }
-  const mechanic: HgsMechanic = {}
-  if (typeof value.type === 'string') mechanic.type = value.type
-  if (isString(value.name)) mechanic.name = value.name
+  for (const key of ['traits', 'materials'] as const) {
+    const field = value[key]
+    if (field === undefined) continue
+    if (!isStringArray(field)) throw new InvalidHeroicGreenSteelDataError(`invalid mechanic ${key} for ${label}`)
+    mechanic[key] = [...field]
+  }
+}
+
+function readMechanicAmounts(mechanic: HgsMechanic, value: Record<string, unknown>, label: string) {
   if (isNumber(value.value)) mechanic.value = value.value
   else if (value.value !== undefined) {
     if (!isRecord(value.value) || value.value.dice === undefined) {
@@ -219,24 +231,53 @@ const parseMechanic = (value: unknown, label: string): HgsMechanic => {
     }
     mechanic.amount = { dice: parseDice(value.amount.dice, label) }
   }
-  for (const key of ['bonusType', 'unit', 'target', 'damageType', 'durationType'] as const) {
-    if (value[key] !== undefined && !isString(value[key])) {
-      throw new InvalidHeroicGreenSteelDataError(`invalid mechanic ${key} for ${label}`)
-    }
-    if (isString(value[key])) mechanic[key] = value[key]
+}
+
+function validateMechanic(mechanic: HgsMechanic, label: string) {
+  const requireField = (present: unknown, description: string) => {
+    if (!present) throw new InvalidHeroicGreenSteelDataError(`${description} is incomplete for ${label}`)
   }
-  for (const key of ['rawModifier', 'intervalSeconds', 'multiplier', 'entityId'] as const) {
-    if (value[key] !== undefined && !isNumber(value[key])) {
-      throw new InvalidHeroicGreenSteelDataError(`invalid mechanic ${key} for ${label}`)
-    }
-    if (isNumber(value[key])) mechanic[key] = value[key]
+  switch (mechanic.type) {
+    case 'damage':
+      requireField(mechanic.damageType && mechanic.dice, 'damage mechanic')
+      break
+    case 'immunity':
+      requireField(mechanic.traits?.length, 'immunity mechanic')
+      break
+    case 'damageReductionBypass':
+      requireField(mechanic.materials?.length, 'damage reduction bypass')
+      break
+    case 'criticalThreatRange':
+      requireField(mechanic.multiplier !== undefined, 'critical threat range')
+      break
+    case 'speedModifier':
+      requireField(mechanic.target && mechanic.rawModifier !== undefined, 'speed modifier')
+      break
+    case 'negativeLevels':
+      requireField(mechanic.amount, 'negative levels mechanic')
+      break
+    case 'status':
+      requireField(mechanic.name, 'status mechanic')
+      break
+    case 'summon':
+      requireField(mechanic.name, 'summon mechanic')
+      requireField(mechanic.entityId !== undefined, 'summon mechanic')
+      break
   }
-  for (const key of ['traits', 'materials'] as const) {
-    if (value[key] !== undefined && !isStringArray(value[key])) {
-      throw new InvalidHeroicGreenSteelDataError(`invalid mechanic ${key} for ${label}`)
-    }
-    if (isStringArray(value[key])) mechanic[key] = [...value[key]]
+}
+
+const parseMechanic = (value: unknown, label: string): HgsMechanic => {
+  if (!isRecord(value) || (value.type === undefined && !isString(value.name))) {
+    throw new InvalidHeroicGreenSteelDataError(`invalid mechanic for ${label}`)
   }
+  if (value.type !== undefined && (typeof value.type !== 'string' || !mechanicTypes.has(value.type))) {
+    throw new InvalidHeroicGreenSteelDataError(`unknown mechanic type for ${label}: ${JSON.stringify(value.type)}`)
+  }
+  const mechanic: HgsMechanic = {}
+  if (typeof value.type === 'string') mechanic.type = value.type
+  if (isString(value.name)) mechanic.name = value.name
+  readMechanicAmounts(mechanic, value, label)
+  readMechanicFields(mechanic, value, label)
   if (value.targetEligibility !== undefined)
     mechanic.targetEligibility = parseTargetEligibility(value.targetEligibility, label)
   if (value.dice !== undefined) mechanic.dice = parseDice(value.dice, label)
@@ -246,30 +287,7 @@ const parseMechanic = (value: unknown, label: string): HgsMechanic => {
     }
     mechanic.save = { dc: value.save.dc, type: value.save.type }
   }
-  if (mechanic.type === 'damage' && (!mechanic.damageType || !mechanic.dice)) {
-    throw new InvalidHeroicGreenSteelDataError(`damage mechanic is incomplete for ${label}`)
-  }
-  if (mechanic.type === 'immunity' && !mechanic.traits?.length) {
-    throw new InvalidHeroicGreenSteelDataError(`immunity mechanic is incomplete for ${label}`)
-  }
-  if (mechanic.type === 'damageReductionBypass' && !mechanic.materials?.length) {
-    throw new InvalidHeroicGreenSteelDataError(`damage reduction bypass is incomplete for ${label}`)
-  }
-  if (mechanic.type === 'criticalThreatRange' && mechanic.multiplier === undefined) {
-    throw new InvalidHeroicGreenSteelDataError(`critical threat range is incomplete for ${label}`)
-  }
-  if (mechanic.type === 'speedModifier' && (!mechanic.target || mechanic.rawModifier === undefined)) {
-    throw new InvalidHeroicGreenSteelDataError(`speed modifier is incomplete for ${label}`)
-  }
-  if (mechanic.type === 'negativeLevels' && !mechanic.amount) {
-    throw new InvalidHeroicGreenSteelDataError(`negative levels mechanic is incomplete for ${label}`)
-  }
-  if ((mechanic.type === 'status' || mechanic.type === 'summon') && !mechanic.name) {
-    throw new InvalidHeroicGreenSteelDataError(`${mechanic.type} mechanic is incomplete for ${label}`)
-  }
-  if (mechanic.type === 'summon' && mechanic.entityId === undefined) {
-    throw new InvalidHeroicGreenSteelDataError(`summon mechanic is incomplete for ${label}`)
-  }
+  validateMechanic(mechanic, label)
   return mechanic
 }
 
@@ -359,6 +377,26 @@ export const parseIngredients = (value: unknown): HgsIngredient[] => {
   return ingredients
 }
 
+function validateTierCompatibility(entry: Record<string, unknown>, name: string, tier: string) {
+  for (const key of ['aspect', 'requiresFocus', 'requiresAspect'] as const) {
+    if (entry[key] !== undefined && !isString(entry[key])) {
+      throw new InvalidHeroicGreenSteelDataError(`invalid ${key} for ${name}`)
+    }
+  }
+  if (entry.focuses !== undefined && !isStringArray(entry.focuses)) {
+    throw new InvalidHeroicGreenSteelDataError(`invalid focuses for ${name}`)
+  }
+  if (entry.shardType !== undefined && entry.shardType !== 'single' && entry.shardType !== 'compound') {
+    throw new InvalidHeroicGreenSteelDataError(`invalid shardType for ${name}`)
+  }
+  if (tier === 'tier2' && (!isString(entry.requiresFocus) || !isString(entry.aspect))) {
+    throw new InvalidHeroicGreenSteelDataError(`tier 2 compatibility fields missing for ${name}`)
+  }
+  if (tier === 'tier3-focused' && (!isString(entry.requiresAspect) || !entry.shardType)) {
+    throw new InvalidHeroicGreenSteelDataError(`focused compatibility fields missing for ${name}`)
+  }
+}
+
 export const parseTierOptions = (
   value: unknown,
   tier: 'tier1' | 'tier2' | 'tier3-basic' | 'tier3-focused'
@@ -378,23 +416,7 @@ export const parseTierOptions = (
     ) {
       throw new InvalidHeroicGreenSteelDataError(`invalid ${tier} option`)
     }
-    for (const key of ['aspect', 'requiresFocus', 'requiresAspect'] as const) {
-      if (entry[key] !== undefined && !isString(entry[key])) {
-        throw new InvalidHeroicGreenSteelDataError(`invalid ${key} for ${entry.name}`)
-      }
-    }
-    if (entry.focuses !== undefined && !isStringArray(entry.focuses)) {
-      throw new InvalidHeroicGreenSteelDataError(`invalid focuses for ${entry.name}`)
-    }
-    if (entry.shardType !== undefined && entry.shardType !== 'single' && entry.shardType !== 'compound') {
-      throw new InvalidHeroicGreenSteelDataError(`invalid shardType for ${entry.name}`)
-    }
-    if (tier === 'tier2' && (!isString(entry.requiresFocus) || !isString(entry.aspect))) {
-      throw new InvalidHeroicGreenSteelDataError(`tier 2 compatibility fields missing for ${entry.name}`)
-    }
-    if (tier === 'tier3-focused' && (!isString(entry.requiresAspect) || !entry.shardType)) {
-      throw new InvalidHeroicGreenSteelDataError(`focused compatibility fields missing for ${entry.name}`)
-    }
+    validateTierCompatibility(entry, entry.name, tier)
     return {
       id: entry.id,
       name: entry.name,

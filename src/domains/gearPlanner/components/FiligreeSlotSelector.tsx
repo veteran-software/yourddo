@@ -215,6 +215,7 @@ const FiligreeSlotSelector = ({
                 <Stack gap='xs'>
                   {visible.map((filigree) => {
                     const disabled = selectedInAnotherSlot(filigree)
+                    const slotAction = selected[activeSlotIndex] ? 'Clear slot first' : 'Select'
                     return (
                       <Paper key={filigree.id} withBorder p='xs'>
                         <Group justify='space-between' align='flex-start' wrap='nowrap'>
@@ -245,11 +246,7 @@ const FiligreeSlotSelector = ({
                               setSearch('')
                             }}
                           >
-                            {disabled
-                              ? 'Type already slotted'
-                              : selected[activeSlotIndex]
-                                ? 'Clear slot first'
-                                : 'Select'}
+                            {disabled ? 'Type already slotted' : slotAction}
                           </Button>
                         </Group>
                       </Paper>

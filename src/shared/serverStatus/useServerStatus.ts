@@ -46,7 +46,11 @@ export function readWorlds(xml: Document): World[] {
       const url = URL.parse(world.querySelector('StatusServerUrl')?.textContent.trim() ?? '')
       return [
         {
-          name: title.replace(/\s*\[(Old|US|EU)\]\s*/gi, ' ').trim(),
+          name: title
+            .split(/\[(?:Old|US|EU)\]/i)
+            .map((part) => part.trim())
+            .join(' ')
+            .trim(),
           legacy: /\[Old\]/i.test(title),
           region: /\[(US|EU)\]/i.exec(title)?.[1].toUpperCase(),
           statusKey: url?.searchParams.get('s') ?? null,
