@@ -27,3 +27,4 @@ dist-ssr
 coverage/
 /AGENTS.md
 /.mcp.json
+/old/
