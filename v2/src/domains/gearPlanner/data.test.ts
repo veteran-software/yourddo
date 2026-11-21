@@ -25,6 +25,21 @@ const normalize = (fileName: string, records: readonly GearPlannerSourceItem[]) 
   normalizeGearPlannerSources([{ fileName, records }], [])
 
 describe('Gear Planner data validation', () => {
+  it('distinguishes item-set percentage ratios from flat stat and weapon-dice modifiers', () => {
+    const enhancements = [
+      { name: 'Spell Critical Chance: Electric', modifier: 0.05 },
+      { name: 'Melee Threat', modifier: 1 },
+      { name: 'Spell Power: Electric', modifier: '25' },
+      { name: 'Damage Dice (W)', modifier: '0.5' },
+      { name: 'Doubleshot Chance', modifier: '15%' }
+    ]
+    const [set] = parseGearPlannerFiligreeSetDataset(
+      [{ name: 'Set', bonuses: [{ threshold: 3, enhancements }] }],
+      'itemSets.enchantments'
+    )
+    expect(set.thresholds[0].effects.map((effect) => effect.modifier)).toEqual(['5%', '100%', '25', '0.5', '15%'])
+  })
+
   it('keeps only base reforging items in normal browsing while retaining unrelated upgraded records', () => {
     const normalized = normalizeGearPlannerSources(
       [

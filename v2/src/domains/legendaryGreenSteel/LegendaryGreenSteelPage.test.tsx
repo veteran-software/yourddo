@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { MantineProvider } from '@mantine/core'
-import { IconFileInfo, IconListCheck, IconListDetails, IconTools } from '@tabler/icons-react'
+import { IconFileInfo, IconListCheck, IconListDetails, IconShare } from '@tabler/icons-react'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -92,7 +92,7 @@ describe('LegendaryGreenSteelPage', () => {
         .getAllByRole('button')
         .filter((button) => button.dataset.testid?.startsWith('workspace-tool-'))
         .map((button) => button.getAttribute('aria-label'))
-    ).toEqual(['Tools', 'Build Summary', 'Ingredients', 'Crafting Breakdown'])
+    ).toEqual(['Build Summary', 'Ingredients', 'Crafting Breakdown', 'Sharing'])
     expect(screen.queryByRole('button', { name: 'Effects & Details' })).toBeNull()
 
     expect(screen.getByText('Select a base item first.')).toBeTruthy()
@@ -261,20 +261,20 @@ describe('LegendaryGreenSteelPage', () => {
 
   it('matches HGS tool IDs, order, and icon components without inspecting SVG markup', () => {
     expect(lgsWorkspaceToolDefinitions.map(({ id, label }) => ({ id, label }))).toEqual([
-      { id: 'tools', label: 'Tools' },
+      { id: 'sharing', label: 'Sharing' },
       { id: 'summary', label: 'Build Summary' },
       { id: 'ingredients', label: 'Ingredients' },
       { id: 'breakdown', label: 'Crafting Breakdown' }
     ])
     expect(lgsWorkspaceToolDefinitions.map(({ Icon }) => Icon)).toEqual([
-      IconTools,
+      IconShare,
       IconFileInfo,
       IconListCheck,
       IconListDetails
     ])
   })
 
-  it('shows stage recipes separately from aggregated ingredients and round trips a complete plan through Tools', async () => {
+  it('shows stage recipes separately from aggregated ingredients and round trips a complete plan through Sharing', async () => {
     vi.mocked(loadLgsData).mockResolvedValue(data)
     const user = userEvent.setup()
     renderPage()
@@ -299,8 +299,8 @@ describe('LegendaryGreenSteelPage', () => {
     expect(within(ingredients).getByText('Component Raw')).toBeTruthy()
     expect(within(ingredients).queryByText('Tier 1 Weapon')).toBeNull()
 
-    await user.click(screen.getByRole('button', { name: 'Tools' }))
-    const tools = await screen.findByRole('complementary', { name: 'Tools' })
+    await user.click(screen.getByRole('button', { name: 'Sharing' }))
+    const tools = await screen.findByRole('complementary', { name: 'Sharing' })
     expect(
       within(tools)
         .getAllByRole('button')

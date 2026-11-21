@@ -213,6 +213,8 @@ const parseFiligreeSetEffect = (value: unknown, path: string): GearPlannerEffect
   return { ...record, name }
 }
 
+const itemSetPercent = new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 10 })
+
 export const parseGearPlannerFiligreeSetDataset = (
   value: unknown,
   sourceName = 'filigreeSets.json'
@@ -240,9 +242,13 @@ export const parseGearPlannerFiligreeSetDataset = (
             : arrayAt(bonusRecord.enhancements, `${bonusPath}.enhancements`)
         return {
           threshold: bonusRecord.threshold as number,
-          effects: enhancements.map((effect, effectIndex) =>
-            parseFiligreeSetEffect(effect, `${bonusPath}.enhancements[${effectIndex.toString()}]`)
-          )
+          effects: enhancements.map((rawEffect, effectIndex) => {
+            const effect = parseFiligreeSetEffect(rawEffect, `${bonusPath}.enhancements[${effectIndex.toString()}]`)
+            // The item-set feed encodes percentages as numeric ratios and flat modifiers as strings.
+            return sourceName === 'itemSets.enchantments' && typeof effect.modifier === 'number'
+              ? { ...effect, modifier: itemSetPercent.format(effect.modifier) }
+              : effect
+          })
         }
       }),
       source: { ...record }
@@ -282,19 +288,52 @@ const loadCraftingData = async (): Promise<GearCraftingData> => {
   }
 }
 
+export function parseGearPlannerSetIndex(value: unknown) {
+  const index = new Map<string, { setName: string; minimumLevel: number }[]>()
+  for (const [setName, rows] of Object.entries(recordAt(value, 'setBonusIndex.json'))) {
+    const path = 'setBonusIndex.json.' + setName
+    for (const entry of arrayAt(rows, path)) {
+      const { name, minLevel } = recordAt(entry, path)
+      if (
+        typeof name !== 'string' ||
+        !name.trim() ||
+        typeof minLevel !== 'number' ||
+        !Number.isInteger(minLevel) ||
+        minLevel < 0
+      ) {
+        throw new InvalidGearPlannerDataError(path + ': expected an item name and minimum level')
+      }
+      const matches = index.get(name) ?? []
+      matches.push({ setName, minimumLevel: minLevel })
+      index.set(name, matches)
+    }
+  }
+  return index
+}
+
 export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types.ts').GearPlannerData> => {
   const fileNames = Object.keys(gearPlannerItemSources)
-  const [crafting, rawCurses, rawSets, rawReforging, rawAugments, rawFiligrees, rawFiligreeSets, ...rawItems] =
-    await Promise.all([
-      loadCraftingData(),
-      loadManualPayload<unknown>('deckOfManyCurses'),
-      loadManualPayload<unknown>('itemSets.enchantments'),
-      loadManualPayload<unknown>(nearlyFinishedPayloadName),
-      loadDatasetFile<unknown>(augmentPath),
-      loadDatasetFile<unknown>(filigreePath),
-      loadDatasetFile<unknown>(filigreeSetPath),
-      ...fileNames.map((fileName) => loadDatasetFile<unknown>(`${datasetRoot}/${fileName}`))
-    ])
+  const [
+    crafting,
+    rawCurses,
+    rawSets,
+    rawReforging,
+    rawAugments,
+    rawFiligrees,
+    rawFiligreeSets,
+    rawSetIndex,
+    ...rawItems
+  ] = await Promise.all([
+    loadCraftingData(),
+    loadManualPayload<unknown>('deckOfManyCurses'),
+    loadManualPayload<unknown>('itemSets.enchantments'),
+    loadManualPayload<unknown>(nearlyFinishedPayloadName),
+    loadDatasetFile<unknown>(augmentPath),
+    loadDatasetFile<unknown>(filigreePath),
+    loadDatasetFile<unknown>(filigreeSetPath),
+    loadDatasetFile<unknown>(`${datasetRoot}/setBonusIndex.json`),
+    ...fileNames.map((fileName) => loadDatasetFile<unknown>(`${datasetRoot}/${fileName}`))
+  ])
   const sourceDatasets: GearPlannerSourceDataset[] = fileNames.map((fileName, index) => ({
     fileName,
     records: parseGearPlannerItemDataset(rawItems[index], fileName)
@@ -306,8 +345,11 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
     new Set(reforgingEntries.map(({ item }) => item))
   )
   const filigreeSetDefinitions = parseGearPlannerFiligreeSetDataset(rawFiligreeSets)
+  const filigreeSetDefinitionByName = new Map(filigreeSetDefinitions.map((definition) => [definition.name, definition]))
+  const setIndex = parseGearPlannerSetIndex(rawSetIndex)
   return {
     ...normalized,
+    setIndex,
     crafting,
     standardSets: new Map([
       ...standardGearPlannerSetDefinitionByName,
@@ -315,8 +357,12 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
     ]),
     reforging: createGearPlannerReforgingData(reforgingEntries, sourceDatasets),
     curses: parseGearPlannerCurseDataset(rawCurses),
-    filigrees: normalizeGearPlannerFiligrees(parseGearPlannerItemDataset(rawFiligrees, 'filigrees.json')),
+    filigrees: normalizeGearPlannerFiligrees(
+      parseGearPlannerItemDataset(rawFiligrees, 'filigrees.json'),
+      filigreeSetDefinitionByName,
+      setIndex
+    ),
     filigreeSetDefinitions,
-    filigreeSetDefinitionByName: new Map(filigreeSetDefinitions.map((definition) => [definition.name, definition]))
+    filigreeSetDefinitionByName
   }
 }

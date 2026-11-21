@@ -3,7 +3,7 @@ import { standardGearPlannerSetDefinitionByName, standardGearPlannerSetDefinitio
 
 describe('standard Gear Planner set definitions', () => {
   it('keeps the deterministic legacy standard lookup without filigree definitions', () => {
-    expect(standardGearPlannerSetDefinitions).toHaveLength(255)
+    expect(standardGearPlannerSetDefinitions).toHaveLength(261)
     expect([...standardGearPlannerSetDefinitionByName.keys()]).toEqual(
       standardGearPlannerSetDefinitions.map(({ name }) => name)
     )

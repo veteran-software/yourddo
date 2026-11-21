@@ -17,6 +17,7 @@ import {
   VisuallyHidden
 } from '@mantine/core'
 import {
+  IconSkull,
   type Icon,
   IconArrowDown,
   IconArrowLeft,
@@ -26,6 +27,8 @@ import {
   IconDoorExit
 } from '@tabler/icons-react'
 import { useState } from 'react'
+import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
+import styles from '../../shared/layout/workspace.module.css'
 import ToolLayout from '../../shared/layout/ToolLayout.tsx'
 import {
   advanceRouteProgress,
@@ -167,7 +170,13 @@ const RouteProgressPanel = ({
   const resetLabel = title === 'Group A' || title === 'Group B' ? `Reset ${title}` : 'Reset route'
 
   return (
-    <Paper component='section' withBorder p={{ base: 'md', sm: 'lg' }} aria-labelledby={headingId}>
+    <Paper
+      className={styles.surface}
+      component='section'
+      withBorder
+      p={{ base: 'md', sm: 'lg' }}
+      aria-labelledby={headingId}
+    >
       {!complete && (
         <VisuallyHidden role='status' aria-live='polite' aria-atomic='true'>
           {progressAnnouncement}
@@ -199,7 +208,13 @@ const RouteProgressPanel = ({
         />
 
         {currentStep ? (
-          <Paper withBorder p={{ base: 'md', sm: 'xl' }} radius='md' bg='var(--mantine-primary-color-light)'>
+          <Paper
+            className={styles.surface}
+            withBorder
+            p={{ base: 'md', sm: 'xl' }}
+            radius='md'
+            bg='var(--mantine-primary-color-light)'
+          >
             <Stack gap='xs' align='center' ta='center'>
               {CurrentStepIcon && (
                 <ThemeIcon
@@ -302,12 +317,11 @@ const ShadowCryptPage = () => {
   const selectedRoutes = selectedColor ? SHADOW_CRYPT_ROUTES[selectedColor] : null
   return (
     <ToolLayout>
-      <Stack gap='xs'>
-        <Group justify='space-between' align='flex-start' wrap='wrap'>
-          <Stack gap={2}>
-            <Title order={1}>The Shadow Crypt</Title>
-            <Text c='dimmed'>The Necropolis, Part II</Text>
-          </Stack>
+      <WorkspaceHeader
+        title='The Shadow Crypt'
+        icon={IconSkull}
+        description='The Necropolis, Part II'
+        actions={
           <Anchor
             href='https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Puzzle%20Solvers%22'
             target='_blank'
@@ -316,15 +330,15 @@ const ShadowCryptPage = () => {
           >
             Known issues / bug reports
           </Anchor>
-        </Group>
-        <Text>
-          For 12-Gear or Group A, choose the color in the first east room. Group B waits at the start. Then choose the
-          route type and follow the current instruction one step at a time.
-        </Text>
-      </Stack>
+        }
+      />
+      <Text size='sm'>
+        For 12-Gear or Group A, choose the color in the first east room. Group B waits at the start. Then choose the
+        route type and follow the current instruction one step at a time.
+      </Text>
 
-      <Paper withBorder p={{ base: 'md', sm: 'lg' }}>
-        <Stack gap='lg'>
+      <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'lg' }}>
+        <SimpleGrid cols={{ base: 1, md: 2 }} spacing='lg'>
           <Stack gap='xs' maw={520}>
             <Text id='starting-room-color-label' fw={600}>
               1. Starting-room color
@@ -355,11 +369,11 @@ const ShadowCryptPage = () => {
               fullWidth
             />
           </Stack>
-        </Stack>
+        </SimpleGrid>
       </Paper>
 
       {!selectedColor || !selectedRoutes ? (
-        <Paper withBorder p='lg'>
+        <Paper className={styles.surface} withBorder p='lg'>
           <Text fw={600}>Choose the starting-room color to show the next route instruction.</Text>
         </Paper>
       ) : selectedRouteType === 'twelve-gear' ? (

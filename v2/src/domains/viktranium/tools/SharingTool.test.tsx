@@ -7,7 +7,7 @@ import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { validateViktraniumDataset } from '../data.ts'
 import { calculateFinishedItem, calculateIngredients, getSelectedAugments } from '../logic.ts'
 import { createViktraniumTestPayload } from '../test-fixture.ts'
-import ExportTool from './ExportTool.tsx'
+import SharingTool from './SharingTool.tsx'
 
 beforeAll(() => {
   Element.prototype.scrollIntoView = vi.fn()
@@ -55,20 +55,20 @@ const build = () => {
   }
 }
 
-describe('ExportTool', () => {
+describe('SharingTool', () => {
   it('copies the derived forum export and announces success', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined)
     const user = userEvent.setup()
     Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } })
     render(
       <MantineProvider env='test'>
-        <ExportTool {...build()} />
+        <SharingTool {...build()} />
       </MantineProvider>
     )
 
-    await user.click(screen.getByRole('button', { name: 'Copy export' }))
+    await user.click(screen.getByRole('button', { name: 'Copy Forum' }))
     expect(writeText.mock.calls[0]?.[0]).toContain('[b]Cruel Baton[/b]')
-    expect((await screen.findByRole('status')).textContent).toContain('Build copied to the clipboard.')
+    expect((await screen.findByRole('status')).textContent).toContain('Forum BBCode copied.')
   })
 
   it('offers manual copying when clipboard access fails', async () => {
@@ -79,11 +79,11 @@ describe('ExportTool', () => {
     })
     render(
       <MantineProvider env='test'>
-        <ExportTool {...build()} />
+        <SharingTool {...build()} />
       </MantineProvider>
     )
 
-    await user.click(screen.getByRole('button', { name: 'Copy export' }))
+    await user.click(screen.getByRole('button', { name: 'Copy Forum' }))
     expect((await screen.findByRole('alert')).textContent).toContain('Copy failed')
   })
 })

@@ -17,8 +17,11 @@ import {
   Text,
   Title
 } from '@mantine/core'
+import { IconTools } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
 import { loadManualPayload, UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
+import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
+import styles from '../../shared/layout/workspace.module.css'
 import ToolLayout from '../../shared/layout/ToolLayout.tsx'
 import {
   buildCraftingPlan,
@@ -196,34 +199,29 @@ const NearlyFinishedPage = () => {
 
   return (
     <ToolLayout>
-      <Stack gap='xs'>
-        <Group justify='space-between' align='flex-start' wrap='wrap'>
-          <Stack gap={4}>
-            <Title order={1}>Nearly Finished Crafting</Title>
-            <Text c='dimmed'>
-              Plan Nearly Finished upgrades for Project Nemesis, Too Hot to Handle, and eligible Sharn items.
-            </Text>
-          </Stack>
-
-          <Anchor href={knownIssuesUrl} target='_blank' rel='noreferrer' size='sm'>
-            Known issues / bug reports
-          </Anchor>
-        </Group>
-
-        <Group justify='flex-end' gap='xs'>
-          <Button variant='subtle' color='gray' onClick={reset}>
-            Reset
-          </Button>
-          <Button
-            disabled={!selectedEntry || !plan}
-            onClick={() => {
-              setShoppingListOpened(true)
-            }}
-          >
-            Shopping List
-          </Button>
-        </Group>
-      </Stack>
+      <WorkspaceHeader
+        title='Nearly Finished Crafting'
+        icon={IconTools}
+        description='Plan Nearly Finished upgrades for Project Nemesis, Too Hot to Handle, and eligible Sharn items.'
+        actions={
+          <>
+            <Anchor href={knownIssuesUrl} target='_blank' rel='noreferrer' size='sm'>
+              Known issues / bug reports
+            </Anchor>
+            <Button variant='subtle' color='gray' onClick={reset}>
+              Reset
+            </Button>
+            <Button
+              disabled={!selectedEntry || !plan}
+              onClick={() => {
+                setShoppingListOpened(true)
+              }}
+            >
+              Shopping List
+            </Button>
+          </>
+        }
+      />
 
       {datasetState.status === 'loading' ? (
         <Center mih={240} role='status' aria-live='polite'>
@@ -253,12 +251,12 @@ const NearlyFinishedPage = () => {
           The loaded dataset does not contain any Nearly Finished reforging entries.
         </Alert>
       ) : (
-        <>
-          <Stack gap='md'>
+        <div className={styles.recipeDesk}>
+          <Stack className={styles.recipeControls} gap='md'>
             <Title order={2} size='h3'>
               Select an Item
             </Title>
-            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing='md'>
+            <Stack gap='sm'>
               <Select
                 label='Item category'
                 placeholder='Select a category…'
@@ -283,7 +281,7 @@ const NearlyFinishedPage = () => {
                 searchable
                 clearable
               />
-            </SimpleGrid>
+            </Stack>
 
             {choices.length > 1 && (
               <Select
@@ -299,7 +297,7 @@ const NearlyFinishedPage = () => {
           </Stack>
 
           {!category ? (
-            <Paper withBorder p={{ base: 'md', sm: 'xl' }}>
+            <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }}>
               <Title order={2} size='h3'>
                 Select an item category
               </Title>
@@ -310,7 +308,7 @@ const NearlyFinishedPage = () => {
               The loaded dataset does not contain any Nearly Finished items in this category.
             </Alert>
           ) : !selectedItem ? (
-            <Paper withBorder p={{ base: 'md', sm: 'xl' }}>
+            <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }}>
               <Title order={2} size='h3'>
                 Select an item
               </Title>
@@ -322,7 +320,7 @@ const NearlyFinishedPage = () => {
             </Alert>
           ) : (
             <Stack gap='xl'>
-              <Paper withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
+              <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
                 <Stack gap='lg'>
                   <Group justify='space-between' align='flex-start' wrap='wrap'>
                     <Stack gap={4}>
@@ -456,7 +454,7 @@ const NearlyFinishedPage = () => {
               </SimpleGrid>
             </Stack>
           )}
-        </>
+        </div>
       )}
 
       <Drawer

@@ -17,12 +17,14 @@ import {
   Text,
   Title
 } from '@mantine/core'
-import { IconFileInfo, IconListCheck, IconListDetails } from '@tabler/icons-react'
+import { IconBone, IconFileInfo, IconListCheck, IconListDetails } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
 import AugmentSelect from '../../shared/augments/AugmentSelect.tsx'
 import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
 import EffectList from '../../shared/items/EffectList.tsx'
 import ItemIcon from '../../shared/items/ItemIcon.tsx'
+import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
+import styles from '../../shared/layout/workspace.module.css'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { ArtifactAbilityScoreNotice, ColorAugmentLevelNotice } from './components/BuildNotices.tsx'
@@ -213,18 +215,21 @@ const DinosaurBonePage = () => {
     <WorkspaceLayout tools={tools} toolPanelWidth='24rem'>
       <Container size='xl' py={{ base: 'md', sm: 'lg' }} px={{ base: 'md', sm: 'lg' }}>
         <Stack gap='lg'>
-          <Group justify='space-between' align='flex-start' wrap='wrap'>
-            <Stack gap={4} style={{ minWidth: 0 }}>
-              <Title order={1}>Dinosaur Bone Crafting</Title>
-              <Text c='dimmed'>Choose an item, configure its slots, and review the finished build and materials.</Text>
-              <Anchor href={knownIssuesUrl} target='_blank' rel='noreferrer' size='sm'>
-                Known issues and bug reports ↗
-              </Anchor>
-            </Stack>
-            <Button variant='subtle' size='sm' onClick={reset}>
-              Reset build
-            </Button>
-          </Group>
+          <WorkspaceHeader
+            title='Dinosaur Bone Crafting'
+            icon={IconBone}
+            description='Choose an item, configure its slots, and review the finished build and materials.'
+            actions={
+              <>
+                <Anchor href={knownIssuesUrl} target='_blank' rel='noreferrer' size='sm'>
+                  Known issues and bug reports ↗
+                </Anchor>
+                <Button variant='subtle' size='sm' onClick={reset}>
+                  Reset build
+                </Button>
+              </>
+            }
+          />
 
           {dataState.status === 'loading' ? (
             <Center mih={220} role='status' aria-live='polite'>
@@ -258,7 +263,7 @@ const DinosaurBonePage = () => {
             </Alert>
           ) : (
             <>
-              <Paper withBorder p='md'>
+              <Paper className={styles.surface} withBorder p='md'>
                 <Stack gap='md'>
                   <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <Select
@@ -324,7 +329,7 @@ const DinosaurBonePage = () => {
               ) : (
                 <>
                   <ItemSummary item={selectedItem} />
-                  <Paper withBorder p='md'>
+                  <Paper className={styles.surface} withBorder p='md'>
                     <Stack gap='md'>
                       <Group justify='space-between' align='flex-start' wrap='wrap'>
                         <Box>

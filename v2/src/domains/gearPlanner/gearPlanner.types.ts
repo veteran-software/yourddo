@@ -40,8 +40,6 @@ export const gearPlannerCharacterSlots = [
   gearPlannerSlots.quiver
 ] as const satisfies readonly GearPlannerSlot[]
 
-export const gearPlannerSlotGridColumns = { base: 1, '37rem': 2, '56rem': 3, '75rem': 4 } as const
-
 export const gearPlannerPetSlots = [
   gearPlannerSlots.ironDefenderArmor,
   gearPlannerSlots.ironDefenderWeapon,
@@ -154,7 +152,10 @@ export interface GearPlannerSourceDataset {
   records: readonly GearPlannerSourceItem[]
 }
 
+export type GearPlannerSetIndex = ReadonlyMap<string, readonly { setName: string; minimumLevel: number }[]>
+
 export interface GearPlannerData {
+  setIndex?: GearPlannerSetIndex
   crafting: import('./crafting.ts').GearCraftingData
   standardSets?: ReadonlyMap<string, import('./standardSetDefinitions.ts').GearPlannerStandardSetDefinition>
   sourceDatasets: readonly GearPlannerSourceDataset[]

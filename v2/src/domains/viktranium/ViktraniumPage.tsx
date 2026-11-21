@@ -18,12 +18,14 @@ import {
   Text,
   Title
 } from '@mantine/core'
-import { IconFileExport, IconFileInfo, IconListCheck, IconListDetails } from '@tabler/icons-react'
+import { IconFlask2, IconShare, IconFileInfo, IconListCheck, IconListDetails } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
 import AugmentSelect from '../../shared/augments/AugmentSelect.tsx'
 import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
 import EffectList from '../../shared/items/EffectList.tsx'
 import ItemIcon from '../../shared/items/ItemIcon.tsx'
+import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
+import styles from '../../shared/layout/workspace.module.css'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import ViktraniumItemSummary from './components/ViktraniumItemSummary.tsx'
@@ -43,7 +45,7 @@ import {
   itemFamilies
 } from './logic.ts'
 import CraftingBreakdownTool from './tools/CraftingBreakdownTool.tsx'
-import ExportTool from './tools/ExportTool.tsx'
+import SharingTool from './tools/SharingTool.tsx'
 import FinishedItemTool from './tools/FinishedItemTool.tsx'
 import IngredientsTool from './tools/IngredientsTool.tsx'
 import type { SelectedAugments, ViktraniumData, ViktraniumFamily } from './viktranium.types.ts'
@@ -161,10 +163,10 @@ const ViktraniumPage = () => {
         content: <CraftingBreakdownTool item={selectedItem} slots={finished.slots} />
       },
       {
-        id: 'export',
-        label: 'Export',
-        icon: <IconFileExport stroke={2} />,
-        content: <ExportTool finished={finished} ingredients={ingredients} />
+        id: 'sharing',
+        label: 'Sharing',
+        icon: <IconShare stroke={2} />,
+        content: <SharingTool finished={finished} ingredients={ingredients} />
       }
     ],
     [finished, ingredients, selectedItem]
@@ -197,18 +199,21 @@ const ViktraniumPage = () => {
     <WorkspaceLayout tools={tools} toolPanelWidth='24rem'>
       <Container size='xl' py={{ base: 'md', sm: 'lg' }} px={{ base: 'md', sm: 'lg' }}>
         <Stack gap='lg'>
-          <Group justify='space-between' align='flex-start' wrap='wrap'>
-            <Stack gap={4} style={{ minWidth: 0 }}>
-              <Title order={1}>Viktranium Experiment Crafting</Title>
-              <Text c='dimmed'>Choose an item, configure every slot, and review or export the finished build.</Text>
-              <Anchor href={knownIssuesUrl} target='_blank' rel='noreferrer' size='sm'>
-                Known issues and bug reports ↗
-              </Anchor>
-            </Stack>
-            <Button variant='subtle' size='sm' onClick={reset}>
-              Reset build
-            </Button>
-          </Group>
+          <WorkspaceHeader
+            title='Viktranium Experiment Crafting'
+            icon={IconFlask2}
+            description='Choose an item, configure every slot, and review or export the finished build.'
+            actions={
+              <>
+                <Anchor href={knownIssuesUrl} target='_blank' rel='noreferrer' size='sm'>
+                  Known issues and bug reports ↗
+                </Anchor>
+                <Button variant='subtle' size='sm' onClick={reset}>
+                  Reset build
+                </Button>
+              </>
+            }
+          />
 
           {dataState.status === 'loading' ? (
             <Center mih={220} role='status' aria-live='polite'>
@@ -244,7 +249,7 @@ const ViktraniumPage = () => {
             </Alert>
           ) : (
             <>
-              <Paper withBorder p='md'>
+              <Paper className={styles.surface} withBorder p='md'>
                 <Stack gap='md'>
                   <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <Select
@@ -305,7 +310,7 @@ const ViktraniumPage = () => {
               {selectedItem ? (
                 <>
                   <ViktraniumItemSummary item={selectedItem} />
-                  <Paper withBorder p='md'>
+                  <Paper className={styles.surface} withBorder p='md'>
                     <Stack gap='md'>
                       <Group justify='space-between' align='center'>
                         <Title order={2} size='h3'>

@@ -5,7 +5,7 @@ import {
   normalizeEffectName,
   parseEffectModifier
 } from './effects.ts'
-import { collectSelectedGearPlannerFiligrees } from './filigrees.ts'
+import { collectSelectedGearPlannerFiligrees, filigreeSetNames } from './filigrees.ts'
 import type {
   GearPlannerAugmentSlot,
   GearPlannerEffect,
@@ -106,10 +106,7 @@ export const collectFiligreeSetMemberships = (
 ): readonly GearPlannerSetMembership[] => {
   const membershipsBySetAndName = new Map<string, Map<string, GearPlannerSetMembership>>()
   for (const { item, slotIndex, filigree } of collectSelectedGearPlannerFiligrees(equipment, slottedFiligrees)) {
-    for (const setName of (filigree.grouping ?? '')
-      .split('/')
-      .map((name) => name.trim())
-      .filter(Boolean)) {
+    for (const setName of filigreeSetNames(filigree)) {
       const byName = membershipsBySetAndName.get(setName) ?? new Map<string, GearPlannerSetMembership>()
       membershipsBySetAndName.set(setName, byName)
       if (!byName.has(filigree.name)) {

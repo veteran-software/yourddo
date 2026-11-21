@@ -3,6 +3,8 @@ import {
   allGearPlannerSlots,
   type GearPlannerData,
   type GearPlannerFiligree,
+  type GearPlannerFiligreeSetDefinition,
+  type GearPlannerSetIndex,
   type GearPlannerItem,
   type GearPlannerSlot,
   type GearPlannerSourceDataset,
@@ -33,15 +35,35 @@ export const gearPlannerFiligreeId = (item: GearPlannerSourceItem): string =>
   [item.pageTitle ?? '', item.name, item.type ?? '', item.grouping ?? ''].map(encodeURIComponent).join('|')
 
 export const normalizeGearPlannerFiligrees = (
-  records: readonly GearPlannerSourceItem[]
+  records: readonly GearPlannerSourceItem[],
+  definitions?: ReadonlyMap<string, GearPlannerFiligreeSetDefinition>,
+  index?: GearPlannerSetIndex
 ): readonly GearPlannerFiligree[] =>
-  records.map((source) => ({
-    id: gearPlannerFiligreeId(source),
-    name: source.name,
-    minimumLevel: numericLevel(source.minLevel),
-    ...(source.grouping?.trim() ? { grouping: source.grouping.trim() } : {}),
-    source
-  }))
+  records.map((source) => {
+    const sets = source.setBonus?.length
+      ? source.setBonus.map((s) => s.name)
+      : (index?.get(source.name)?.map((e) => e.setName) ?? (source.grouping ?? '').split('/'))
+    const grouping = [
+      ...new Set(
+        sets
+          .map((s) => s.trim())
+          .filter(Boolean)
+          .map((name) => {
+            if (!definitions || definitions.has(name)) return name
+            // Some dual-set records abbreviate a published set name.
+            const fullName = name === 'Keeper of the Curse' ? 'Keeper of Curses' : 'The ' + name
+            return definitions.has(fullName) ? fullName : name
+          })
+      )
+    ].join('/')
+    return {
+      id: gearPlannerFiligreeId(source),
+      name: source.name,
+      minimumLevel: numericLevel(source.minLevel),
+      ...(grouping ? { grouping } : {}),
+      source
+    }
+  })
 
 export const normalizeGearPlannerSources = (
   sourceDatasets: readonly GearPlannerSourceDataset[],

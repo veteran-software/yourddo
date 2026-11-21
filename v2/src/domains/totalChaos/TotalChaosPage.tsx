@@ -1,21 +1,11 @@
-import {
-  Alert,
-  Anchor,
-  Badge,
-  Box,
-  Button,
-  Group,
-  Paper,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title,
-  UnstyledButton
-} from '@mantine/core'
+import { Alert, Anchor, Badge, Box, Button, Paper, SimpleGrid, Stack, Text, UnstyledButton } from '@mantine/core'
+import { IconAtom } from '@tabler/icons-react'
 import { useState } from 'react'
 import activeTileImage from '../../../../src/assets/tile_active.png'
 import emptyTileImage from '../../../../src/assets/tile_empty.png'
 import inactiveTileImage from '../../../../src/assets/tile_inactive.png'
+import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
+import styles from '../../shared/layout/workspace.module.css'
 import ToolLayout from '../../shared/layout/ToolLayout.tsx'
 import {
   applyPresses,
@@ -110,12 +100,11 @@ const TotalChaosPage = () => {
 
   return (
     <ToolLayout>
-      <Stack gap='xs'>
-        <Group justify='space-between' align='flex-start' wrap='wrap'>
-          <Stack gap={2}>
-            <Title order={1}>Total Chaos</Title>
-            <Text c='dimmed'>Keep on the Borderlands</Text>
-          </Stack>
+      <WorkspaceHeader
+        title='Total Chaos'
+        icon={IconAtom}
+        description='Keep on the Borderlands'
+        actions={
           <Anchor
             href='https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Puzzle%20Solvers%22'
             target='_blank'
@@ -124,127 +113,123 @@ const TotalChaosPage = () => {
           >
             Known issues / bug reports
           </Anchor>
-        </Group>
-        <Text>
-          In Edit mode, match the active tiles in game. Switch to Play to test moves, then solve to mark the recommended
-          presses. Empty positions are fixed and cannot be pressed.
-        </Text>
-      </Stack>
+        }
+      />
 
-      <Paper withBorder p={{ base: 'md', sm: 'lg' }}>
-        <Stack gap='md'>
-          <Group justify='space-between' align='center' wrap='wrap'>
-            <Badge color={editMode ? 'yellow' : 'green'} variant='light' size='lg'>
-              Mode: {editMode ? 'Edit' : 'Play'}
-            </Badge>
+      <Paper withBorder className={styles.puzzle}>
+        <Stack className={styles.puzzleControls} gap='sm'>
+          <Badge color={editMode ? 'yellow' : 'green'} variant='light' size='lg'>
+            Mode: {editMode ? 'Edit' : 'Play'}
+          </Badge>
 
-            <Group gap='sm' wrap='wrap'>
-              <Button variant='light' onClick={handleRandom}>
-                Random
-              </Button>
-              <Button onClick={handleSolve} disabled={editMode}>
-                Solve
-              </Button>
-              <Button variant='default' onClick={handleClear}>
-                Clear
-              </Button>
-              <Button
-                color={editMode ? 'green' : 'yellow'}
-                variant='outline'
-                onClick={() => {
-                  setEditMode((currentMode) => !currentMode)
-                }}
-              >
-                {editMode ? 'Switch to Play' : 'Switch to Edit'}
-              </Button>
-            </Group>
-          </Group>
-
-          <Box role='group' aria-label='Total Chaos 3 by 5 puzzle board' style={{ containerType: 'inline-size' }}>
-            <SimpleGrid
-              cols={COLUMNS}
-              spacing={0}
-              w='100%'
-              maw={`calc(${String(COLUMNS)} * var(--puzzle-tile-size) + 0.5rem)`}
-              mx='auto'
-              p={4}
+          <Text size='sm'>
+            In Edit mode, match the active tiles in game. Switch to Play to test moves, then solve to mark the
+            recommended presses. Empty positions are fixed and cannot be pressed.
+          </Text>
+          <SimpleGrid cols={2} spacing='xs'>
+            <Button variant='light' onClick={handleRandom}>
+              Random
+            </Button>
+            <Button onClick={handleSolve} disabled={editMode}>
+              Solve
+            </Button>
+            <Button variant='default' onClick={handleClear}>
+              Clear
+            </Button>
+            <Button
+              variant='default'
+              onClick={() => {
+                setEditMode((currentMode) => !currentMode)
+              }}
             >
-              {Array.from({ length: ROWS }).flatMap((_, row) =>
-                Array.from({ length: COLUMNS }).map((__, column) => {
-                  const masked = !MASK[row][column]
-                  const on = board[row][column] === 1
-                  const recommended = solution && showSolution ? solution[row][column] === 1 : false
-                  const completed = markedSolution ? markedSolution[row][column] === 1 : false
-                  const backgroundImage = masked ? emptyTileImage : on ? activeTileImage : inactiveTileImage
-                  const tileStyle = {
-                    aspectRatio: '1 / 1',
-                    backgroundImage: `url(${backgroundImage})`,
-                    backgroundPosition: 'center',
-                    backgroundSize: 'cover',
-                    border: recommended
-                      ? completed
-                        ? '2px solid var(--mantine-color-yellow-6)'
-                        : '4px solid var(--mantine-color-green-6)'
-                      : '1px solid var(--mantine-color-default-border)',
-                    position: 'relative' as const
-                  }
-
-                  if (masked) {
-                    return (
-                      <Box
-                        key={`${String(row)}-${String(column)}`}
-                        role='img'
-                        aria-label={`Row ${String(row + 1)}, column ${String(column + 1)}, masked position`}
-                        w='100%'
-                        style={tileStyle}
-                      />
-                    )
-                  }
-
-                  const state = on ? 'on' : 'off'
-                  const recommendation = recommended
+              {editMode ? 'Switch to Play' : 'Switch to Edit'}
+            </Button>
+          </SimpleGrid>
+        </Stack>
+        <Box className={styles.board} role='group' aria-label='Total Chaos 3 by 5 puzzle board'>
+          <SimpleGrid
+            cols={COLUMNS}
+            spacing={0}
+            w='100%'
+            maw={`calc(${String(COLUMNS)} * var(--puzzle-tile-size) + 0.5rem)`}
+            mx='auto'
+            p={4}
+          >
+            {Array.from({ length: ROWS }).flatMap((_, row) =>
+              Array.from({ length: COLUMNS }).map((__, column) => {
+                const masked = !MASK[row][column]
+                const on = board[row][column] === 1
+                const recommended = solution && showSolution ? solution[row][column] === 1 : false
+                const completed = markedSolution ? markedSolution[row][column] === 1 : false
+                const backgroundImage = masked ? emptyTileImage : on ? activeTileImage : inactiveTileImage
+                const tileStyle = {
+                  aspectRatio: '1 / 1',
+                  backgroundImage: `url(${backgroundImage})`,
+                  backgroundPosition: 'center',
+                  backgroundSize: 'cover',
+                  border: recommended
                     ? completed
-                      ? 'recommended solution press completed'
-                      : 'recommended solution press not completed'
-                    : 'not a recommended solution press'
+                      ? '2px solid var(--mantine-color-yellow-6)'
+                      : '4px solid var(--mantine-color-green-6)'
+                    : '1px solid var(--mantine-color-default-border)',
+                  position: 'relative' as const
+                }
 
+                if (masked) {
                   return (
-                    <UnstyledButton
+                    <Box
                       key={`${String(row)}-${String(column)}`}
-                      type='button'
-                      aria-label={`Row ${String(row + 1)}, column ${String(column + 1)}, ${state}, ${recommendation}`}
-                      aria-pressed={on}
-                      onClick={() => {
-                        handleCellClick(row, column)
-                      }}
+                      role='img'
+                      aria-label={`Row ${String(row + 1)}, column ${String(column + 1)}, masked position`}
                       w='100%'
                       style={tileStyle}
-                    >
-                      {recommended && (
-                        <Box
-                          component='span'
-                          aria-hidden='true'
-                          pos='absolute'
-                          top={4}
-                          right={4}
-                          w={20}
-                          h={20}
-                          bg={completed ? 'yellow.6' : 'green.6'}
-                          c='black'
-                          fw={700}
-                          fz='sm'
-                          style={{ borderRadius: '50%', display: 'grid', placeItems: 'center' }}
-                        >
-                          {completed ? '✓' : '!'}
-                        </Box>
-                      )}
-                    </UnstyledButton>
+                    />
                   )
-                })
-              )}
-            </SimpleGrid>
-          </Box>
-        </Stack>
+                }
+
+                const state = on ? 'on' : 'off'
+                const recommendation = recommended
+                  ? completed
+                    ? 'recommended solution press completed'
+                    : 'recommended solution press not completed'
+                  : 'not a recommended solution press'
+
+                return (
+                  <UnstyledButton
+                    key={`${String(row)}-${String(column)}`}
+                    type='button'
+                    aria-label={`Row ${String(row + 1)}, column ${String(column + 1)}, ${state}, ${recommendation}`}
+                    aria-pressed={on}
+                    onClick={() => {
+                      handleCellClick(row, column)
+                    }}
+                    w='100%'
+                    style={tileStyle}
+                  >
+                    {recommended && (
+                      <Box
+                        component='span'
+                        aria-hidden='true'
+                        pos='absolute'
+                        top={4}
+                        right={4}
+                        w={20}
+                        h={20}
+                        bg={completed ? 'yellow.6' : 'green.6'}
+                        c='black'
+                        fw={700}
+                        fz='sm'
+                        style={{ borderRadius: '50%', display: 'grid', placeItems: 'center' }}
+                      >
+                        {completed ? '✓' : '!'}
+                      </Box>
+                    )}
+                  </UnstyledButton>
+                )
+              })
+            )}
+          </SimpleGrid>
+        </Box>
       </Paper>
 
       {solverStatus === 'random' && (

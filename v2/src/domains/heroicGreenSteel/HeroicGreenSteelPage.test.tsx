@@ -615,7 +615,7 @@ describe('HeroicGreenSteelPage', () => {
     expect(screen.getByRole('button', { name: 'Ingredients' })).toBeTruthy()
   })
 
-  it('shares, exports, and atomically imports builds through the Tools window', async () => {
+  it('shares, exports, and atomically imports builds through the Sharing panel', async () => {
     mockLoadedData()
     const user = userEvent.setup()
     renderPage()
@@ -625,8 +625,8 @@ describe('HeroicGreenSteelPage', () => {
     await choose(user, 'Tier 2 upgrade', /^Electric Spell Critical Chance \+14%$/)
     await user.click(await screen.findByText('Basic'))
     await choose(user, 'Tier 3 Basic upgrade', /^Electric Spell Critical Chance \+14%$/)
-    await user.click(screen.getByRole('button', { name: 'Tools' }))
-    const tools = await screen.findByRole('complementary', { name: 'Tools' })
+    await user.click(screen.getByRole('button', { name: 'Sharing' }))
+    const tools = await screen.findByRole('complementary', { name: 'Sharing' })
 
     await user.click(within(tools).getByRole('button', { name: 'Copy JSON' }))
     await user.click(within(tools).getByRole('button', { name: 'Copy Permalink' }))

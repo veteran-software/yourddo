@@ -1,5 +1,6 @@
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { collectSelectedGearPlannerAugments } from './augments.ts'
+import { slaveLordsMarker } from './slaveLords'
 import { collectSelectedGearPlannerCurses } from './curses.ts'
 import { type GearPlannerEssenceCraftingConfigurations, resolveGearPlannerEssenceAffixes } from './essenceCrafting.ts'
 import { collectSelectedGearPlannerFiligrees } from './filigrees.ts'
@@ -81,7 +82,7 @@ export interface GearPlannerEffectConflict {
 
 export interface GearPlannerEffectConflictResolution {
   conflicts: readonly GearPlannerEffectConflict[]
-  bySourceId: Readonly<Record<string, { isEffective: boolean }>>
+  bySourceId: Readonly<Record<string, { isEffective: boolean; entries: GearPlannerEffectConflict['entries'] }>>
 }
 
 const stackableBonusTypes = new Set(['no type', 'reaper', 'mythic'])
@@ -99,6 +100,7 @@ const legacyUpgradePlaceholders = new Set([
   'Almost There',
   'Finishing Touch',
   'Lost Purpose',
+  slaveLordsMarker,
   'Trace of Madness',
   'Ritual Table',
   'Sealed in Fire',
@@ -127,6 +129,9 @@ export const parseEffectModifier = (value: string | number | undefined | null): 
 
 const equippedItems = (equipment: GearPlannerEquipment): readonly GearPlannerItem[] =>
   Object.values(equipment).filter((item): item is GearPlannerItem => item !== null)
+
+export const augmentEffectId = (itemId: string, slotIndex: number, effectIndex: number) =>
+  `${itemId}:augment:${String(slotIndex)}:${String(effectIndex)}`
 
 export const collectEquippedEffects = (
   equipment: GearPlannerEquipment,
@@ -199,7 +204,7 @@ export const collectEquippedEffects = (
     reforgingData ? getEffectiveGearPlannerAugmentSlotsByItem(equipment, reforging, reforgingData) : {}
   ).flatMap(({ item, slotIndex, augmentSlot, augment }) =>
     augment.effectsAdded.map((effect, effectIndex) => ({
-      id: `${item.id}:augment:${String(slotIndex)}:${String(effectIndex)}`,
+      id: augmentEffectId(item.id, slotIndex, effectIndex),
       effect,
       itemId: item.id,
       itemName: item.source.name,
@@ -344,6 +349,7 @@ export const conflictEligibleEffectSources = (
 export interface GearPlannerPotentialEffectConflict {
   isConflict: boolean
   currentMax: number
+  currentModifier?: string | number
   isRedundant: boolean
   isUpgrade?: boolean
   isOverpowered?: boolean
@@ -379,11 +385,13 @@ export const previewPotentialEffectConflict = (
   )
   if (!matches.length) return { isConflict: false, currentMax: 0, isRedundant: false }
 
-  const currentMax = Math.max(...matches.map((source) => source.comparisonValue))
+  const strongest = matches.reduce((best, source) => (source.comparisonValue > best.comparisonValue ? source : best))
+  const currentMax = strongest.comparisonValue
   const candidateValue = parseEffectModifier(effect.modifier)
   return {
     isConflict: true,
     currentMax,
+    currentModifier: strongest.effect.modifier,
     isRedundant: candidateValue === currentMax,
     isUpgrade: candidateValue > currentMax,
     isOverpowered: candidateValue < currentMax
@@ -406,7 +414,7 @@ export const resolveEffectConflicts = (
     grouped.set(key, entries)
   }
 
-  const bySourceId: Record<string, { isEffective: boolean }> = {}
+  const bySourceId: Record<string, GearPlannerEffectConflictResolution['bySourceId'][string]> = {}
   const conflicts = [...grouped.values()].flatMap((entries): GearPlannerEffectConflict[] => {
     if (entries.length < 2) return []
     const effectiveValue = Math.max(...entries.map((entry) => entry.comparisonValue))
@@ -414,7 +422,8 @@ export const resolveEffectConflicts = (
       ...entry,
       isEffective: entry.comparisonValue === effectiveValue
     }))
-    for (const entry of resolvedEntries) bySourceId[entry.id] = { isEffective: entry.isEffective }
+    for (const entry of resolvedEntries)
+      bySourceId[entry.id] = { isEffective: entry.isEffective, entries: resolvedEntries }
     return [
       {
         name: entries[0].effect.name,

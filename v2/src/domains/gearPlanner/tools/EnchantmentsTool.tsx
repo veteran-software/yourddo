@@ -1,5 +1,23 @@
-import { Alert, Badge, Box, Divider, Group, Paper, ScrollArea, Stack, Text, Title } from '@mantine/core'
-import { useElementSize } from '@mantine/hooks'
+import EquippedEffect from '../components/EquippedEffect'
+import {
+  ActionIcon,
+  Alert,
+  Anchor,
+  Badge,
+  Button,
+  Divider,
+  Group,
+  List,
+  Paper,
+  Stack,
+  Text,
+  Title
+} from '@mantine/core'
+import { useMemo } from 'react'
+import { IconSearch } from '@tabler/icons-react'
+import type { GearFindTarget } from '../finding'
+import type { GearPlannerCandidate } from '../planner'
+import { normalizeBonusType, normalizeEffectName } from '../effects'
 import type {
   GearPlannerEffectConflictResolution,
   GearPlannerEffectSource,
@@ -43,36 +61,6 @@ const sourceProvenance = (source: GearPlannerEffectSource): string =>
 const groupValue = (group: GearPlannerEffectSummary['groups'][number]) =>
   group.effectiveValue === 0 ? group.effectiveDisplay || 'Active' : `+${String(group.effectiveValue)}`
 
-const EnchantmentSourceList = ({
-  sources,
-  conflicts,
-  compact = false
-}: {
-  sources: readonly GearPlannerEffectSource[]
-  conflicts: GearPlannerEffectConflictResolution
-  compact?: boolean
-}) =>
-  sources.length ? (
-    <Stack gap={2}>
-      {sources.map((source) => {
-        const resolution = conflicts.bySourceId[source.id]
-        return (
-          <Text
-            key={source.id}
-            c={resolution && !resolution.isEffective ? 'dimmed' : undefined}
-            data-conflict-state={resolution ? (resolution.isEffective ? 'effective' : 'lesser') : 'none'}
-            data-testid={`equipped-effect-${source.id}`}
-            size={compact ? 'xs' : 'sm'}
-            td={resolution && !resolution.isEffective ? 'line-through' : undefined}
-            style={{ overflowWrap: 'anywhere' }}
-          >
-            {sourceLabel(source)}
-          </Text>
-        )
-      })}
-    </Stack>
-  ) : null
-
 export const EquippedEnchantmentList = ({
   sources,
   conflicts,
@@ -81,39 +69,60 @@ export const EquippedEnchantmentList = ({
   sources: readonly GearPlannerEffectSource[]
   conflicts: GearPlannerEffectConflictResolution
   label: string
+}) => (
+  <Stack gap={4} mt='xs'>
+    <Text c='dimmed' size='xs' fw={600}>
+      Enchantments
+    </Text>
+    <List aria-label={label} size='sm' spacing={3} listStyleType='disc' style={{ overflowWrap: 'anywhere' }}>
+      {sources.map((source) => {
+        const resolution = conflicts.bySourceId[source.id]
+        const lesser = resolution && !resolution.isEffective
+        return (
+          <List.Item
+            key={source.id}
+            c={lesser ? 'dimmed' : undefined}
+            data-conflict-state={resolution ? (lesser ? 'lesser' : 'effective') : 'none'}
+            data-testid={`equipped-effect-${source.id}`}
+          >
+            <EquippedEffect id={source.id} conflicts={conflicts} label={sourceLabel(source)} />
+          </List.Item>
+        )
+      })}
+    </List>
+  </Stack>
+)
+
+const EnchantmentsTool = ({
+  summary,
+  candidates,
+  minimumLevel,
+  maximumLevel,
+  onFind
+}: {
+  summary: readonly GearPlannerEffectSummary[]
+  candidates: readonly GearPlannerCandidate[]
+  minimumLevel: number
+  maximumLevel: number
+  onFind: (target: GearFindTarget) => void
 }) => {
-  const { ref, height } = useElementSize()
+  const available = useMemo(() => {
+    const types = new Map<string, Set<string>>()
+    for (const { item, effects } of candidates) {
+      if (item.minimumLevel < minimumLevel || item.minimumLevel > maximumLevel) continue
+      for (const effect of effects) {
+        const name = normalizeEffectName(effect.name)
+        let bonuses = types.get(name)
+        if (!bonuses) {
+          bonuses = new Set()
+          types.set(name, bonuses)
+        }
+        bonuses.add(normalizeBonusType(effect.bonus))
+      }
+    }
+    return types
+  }, [candidates, minimumLevel, maximumLevel])
 
-  return sources.length ? (
-    <Stack gap={2} mt='xs'>
-      <Text c='dimmed' size='xs' fw={600}>
-        Enchantments
-      </Text>
-      {sources.length > 4 ? (
-        <ScrollArea.Autosize
-          mah={height || undefined}
-          type='auto'
-          scrollbars='y'
-          scrollbarSize={6}
-          offsetScrollbars='y'
-          overscrollBehavior='contain'
-          viewportProps={{ role: 'region', 'aria-label': label, tabIndex: 0 }}
-        >
-          <Stack gap={2}>
-            <Box ref={ref}>
-              <EnchantmentSourceList sources={sources.slice(0, 4)} conflicts={conflicts} compact />
-            </Box>
-            <EnchantmentSourceList sources={sources.slice(4)} conflicts={conflicts} compact />
-          </Stack>
-        </ScrollArea.Autosize>
-      ) : (
-        <EnchantmentSourceList sources={sources} conflicts={conflicts} compact />
-      )}
-    </Stack>
-  ) : null
-}
-
-const EnchantmentsTool = ({ summary }: { summary: readonly GearPlannerEffectSummary[] }) => {
   if (!summary.length) {
     return (
       <Alert color='blue' title='No enchantments yet' m='md'>
@@ -132,45 +141,107 @@ const EnchantmentsTool = ({ summary }: { summary: readonly GearPlannerEffectSumm
           Legacy-style display aggregate, not a character stat calculation.
         </Text>
       </Stack>
-      {summary.map((effect) => (
-        <Paper key={effect.normalizedName} withBorder p='sm'>
-          <Stack gap='xs'>
-            <Group justify='space-between' align='flex-start' gap='xs' wrap='nowrap'>
-              <Text fw={700} size='sm' style={{ overflowWrap: 'anywhere' }}>
-                {effect.name}
-              </Text>
-              {effect.isNumeric ? <Badge variant='light'>+{String(effect.total)}</Badge> : null}
-            </Group>
-            {effect.groups.map((group) => (
-              <Stack key={group.bonusType} gap={4}>
-                <Divider />
-                <Group justify='space-between' gap='xs'>
-                  <Text size='xs' fw={600}>
-                    {bonusTypeLabel(group.bonusType)}
-                  </Text>
-                  <Text size='xs' fw={600}>
-                    {groupValue(group)}
-                  </Text>
-                </Group>
-                <Stack gap={2}>
-                  {group.entries.map((entry) => (
-                    <Text
-                      key={entry.id}
-                      c={entry.isEffective ? undefined : 'dimmed'}
-                      data-effect-state={entry.isEffective ? 'effective' : 'lesser'}
-                      size='xs'
-                      td={entry.isEffective ? undefined : 'line-through'}
-                      style={{ overflowWrap: 'anywhere' }}
+      {summary.map((effect) => {
+        const choices = available.get(effect.normalizedName)
+        const missing = [...(choices ?? [])]
+          .filter((type) => !effect.groups.some((group) => group.bonusType === type))
+          .sort()
+        const search = (bonusType?: string) => {
+          onFind({ kind: 'effect', name: effect.name, bonusType })
+        }
+        return (
+          <Paper key={effect.normalizedName} withBorder p='sm'>
+            <Stack gap='xs'>
+              <Group justify='space-between' align='flex-start' gap='xs' wrap='nowrap'>
+                <Text fw={700} size='sm' style={{ overflowWrap: 'anywhere' }}>
+                  {effect.name}
+                </Text>
+                <Group gap={4} wrap='nowrap'>
+                  {effect.isNumeric ? <Badge variant='light'>+{String(effect.total)}</Badge> : null}
+                  {choices && (
+                    <ActionIcon
+                      variant='subtle'
+                      size='sm'
+                      aria-label={`Find gear with ${effect.name}`}
+                      title={`Find gear with ${effect.name}`}
+                      onClick={() => {
+                        search()
+                      }}
                     >
-                      {sourceProvenance(entry)}: {sourceLabel(entry)}
+                      <IconSearch size={15} />
+                    </ActionIcon>
+                  )}
+                </Group>
+              </Group>
+              {effect.groups.map((group) => (
+                <Stack key={group.bonusType} gap={4}>
+                  <Divider />
+                  <Group justify='space-between' gap='xs'>
+                    {choices?.has(group.bonusType) ? (
+                      <Anchor
+                        component='button'
+                        type='button'
+                        size='xs'
+                        fw={600}
+                        aria-label={`Find ${effect.name} with ${bonusTypeLabel(group.bonusType)} bonus`}
+                        onClick={() => {
+                          search(group.bonusType)
+                        }}
+                      >
+                        {bonusTypeLabel(group.bonusType)}
+                      </Anchor>
+                    ) : (
+                      <Text size='xs' fw={600}>
+                        {bonusTypeLabel(group.bonusType)}
+                      </Text>
+                    )}
+                    <Text size='xs' fw={600}>
+                      {groupValue(group)}
                     </Text>
-                  ))}
+                  </Group>
+                  <Stack gap={2}>
+                    {group.entries.map((entry) => (
+                      <Text
+                        key={entry.id}
+                        c={entry.isEffective ? undefined : 'dimmed'}
+                        data-effect-state={entry.isEffective ? 'effective' : 'lesser'}
+                        size='xs'
+                        td={entry.isEffective ? undefined : 'line-through'}
+                        style={{ overflowWrap: 'anywhere' }}
+                      >
+                        {sourceProvenance(entry)}: {sourceLabel(entry)}
+                      </Text>
+                    ))}
+                  </Stack>
                 </Stack>
-              </Stack>
-            ))}
-          </Stack>
-        </Paper>
-      ))}
+              ))}
+              {missing.length > 0 && (
+                <Stack gap={4}>
+                  <Divider />
+                  <Text size='xs' c='dimmed' fw={600}>
+                    Missing bonus types
+                  </Text>
+                  <Group gap={4}>
+                    {missing.map((type) => (
+                      <Button
+                        key={type}
+                        size='compact-xs'
+                        variant='light'
+                        aria-label={`Find ${effect.name} with ${bonusTypeLabel(type)} bonus`}
+                        onClick={() => {
+                          search(type)
+                        }}
+                      >
+                        {bonusTypeLabel(type)}
+                      </Button>
+                    ))}
+                  </Group>
+                </Stack>
+              )}
+            </Stack>
+          </Paper>
+        )
+      })}
     </Stack>
   )
 }

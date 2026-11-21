@@ -3,7 +3,8 @@ import {
   type GearPlannerAugment,
   type GearPlannerFiligree,
   type GearPlannerItem,
-  gearPlannerSlots
+  gearPlannerSlots,
+  allGearPlannerSlots
 } from './gearPlanner.types.ts'
 import {
   activeGearPlannerSetup,
@@ -49,7 +50,7 @@ describe('Gear Planner setups', () => {
       maximumLevel: 36,
       slottedAugments: {}
     })
-    expect(Object.values(activeGearPlannerSetup(state).equipment)).toEqual(Array(15).fill(null))
+    expect(Object.values(activeGearPlannerSetup(state).equipment)).toEqual(Array(allGearPlannerSlots.length).fill(null))
   })
 
   it('adds a uniquely identified empty setup, makes it active, and preserves previous state', () => {
@@ -61,7 +62,7 @@ describe('Gear Planner setups', () => {
     expect(next.setups).toHaveLength(2)
     expect(next.setups[0].equipment.Head).toBe(head)
     expect(next.setups[1]).toMatchObject({ id: 'setup-two', name: 'New Setup 2', slottedAugments: {} })
-    expect(Object.values(next.setups[1].equipment)).toEqual(Array(15).fill(null))
+    expect(Object.values(next.setups[1].equipment)).toEqual(Array(allGearPlannerSlots.length).fill(null))
     expect(addGearPlannerSetup(next, 'setup-two')).toBe(next)
   })
 
@@ -154,7 +155,7 @@ describe('Gear Planner setups', () => {
       maximumLevel: 36,
       slottedAugments: {}
     })
-    expect(Object.values(state.setups[0].equipment)).toEqual(Array(15).fill(null))
+    expect(Object.values(state.setups[0].equipment)).toEqual(Array(allGearPlannerSlots.length).fill(null))
     expect(state.setups[1].equipment.Head).toBe(secondHead)
   })
 })

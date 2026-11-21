@@ -13,11 +13,14 @@ import {
   Text,
   Title
 } from '@mantine/core'
+import { IconCrown } from '@tabler/icons-react'
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import BonusDetails from './BonusDetails.tsx'
 import DiscrepancyList from './DiscrepancyList.tsx'
 import EffectList from '../../shared/items/EffectList.tsx'
+import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
+import styles from '../../shared/layout/workspace.module.css'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { InvalidLgsDataError, loadLgsData } from './data.ts'
@@ -35,7 +38,7 @@ import { decodeLgsPermalink, LGS_PERMALINK_QUERY_PARAMETER, validateLgsBuild } f
 import CraftingBreakdownTool from './tools/CraftingBreakdownTool.tsx'
 import DetailsTool from './tools/DetailsTool.tsx'
 import IngredientsTool from './tools/IngredientsTool.tsx'
-import ToolsTool from './tools/ToolsTool.tsx'
+import SharingTool from './tools/SharingTool.tsx'
 import { lgsWorkspaceToolDefinitions } from './workspaceTools.ts'
 
 type DataState = { status: 'loading' } | { status: 'loaded'; data: LgsData } | { status: 'error'; cause: unknown }
@@ -118,7 +121,7 @@ const TierSection = ({
   onChange: (value: string | null) => void
   titleId: string
 }) => (
-  <Paper component='section' aria-labelledby={titleId} withBorder p='md'>
+  <Paper className={styles.surface} component='section' aria-labelledby={titleId} withBorder p='md'>
     <Stack gap='sm'>
       <Title order={2} size='h3' id={titleId}>
         {label}
@@ -212,7 +215,7 @@ const LegendaryGreenSteelPage = () => {
       return { id: definition.id, label: definition.label, icon: <Icon size={20} />, content }
     }
     return [
-      tool(lgsWorkspaceToolDefinitions[0], <ToolsTool plan={plan} data={data} onImport={setPlan} />),
+      tool(lgsWorkspaceToolDefinitions[0], <SharingTool plan={plan} data={data} onImport={setPlan} />),
       tool(
         lgsWorkspaceToolDefinitions[1],
         <DetailsTool
@@ -255,22 +258,23 @@ const LegendaryGreenSteelPage = () => {
   return (
     <WorkspaceLayout tools={tools}>
       <Stack gap='lg' p={{ base: 'md', sm: 'lg' }} maw={1100} mx='auto'>
-        <Group justify='space-between' align='flex-start' wrap='wrap'>
-          <Stack gap={4}>
-            <Title order={1}>Legendary Green Steel</Title>
-            <Text c='dimmed'>Plan crafting tiers, bonus effects, active augments, and materials.</Text>
-          </Stack>
-          <Button
-            variant='subtle'
-            color='gray'
-            disabled={!hasSelection}
-            onClick={() => {
-              setPlan(emptyLgsPlan())
-            }}
-          >
-            Reset plan
-          </Button>
-        </Group>
+        <WorkspaceHeader
+          title='Legendary Green Steel'
+          icon={IconCrown}
+          description='Plan crafting tiers, bonus effects, active augments, and materials.'
+          actions={
+            <Button
+              variant='subtle'
+              color='gray'
+              disabled={!hasSelection}
+              onClick={() => {
+                setPlan(emptyLgsPlan())
+              }}
+            >
+              Reset plan
+            </Button>
+          }
+        />
 
         {dataState.status === 'loading' ? (
           <Center mih={120} role='status' aria-live='polite'>
@@ -311,7 +315,7 @@ const LegendaryGreenSteelPage = () => {
                 {permalinkError}
               </Alert>
             ) : null}
-            <Paper component='section' aria-labelledby='lgs-base-title' withBorder p='md'>
+            <Paper className={styles.surface} component='section' aria-labelledby='lgs-base-title' withBorder p='md'>
               <Stack gap='sm'>
                 <Title order={2} size='h3' id='lgs-base-title'>
                   Base Item
@@ -391,7 +395,7 @@ const LegendaryGreenSteelPage = () => {
                 </>
               ) : (
                 <Grid.Col span={12}>
-                  <Paper withBorder p='md'>
+                  <Paper className={styles.surface} withBorder p='md'>
                     <Text c='dimmed' size='sm'>
                       Select a base item first.
                     </Text>
@@ -402,7 +406,14 @@ const LegendaryGreenSteelPage = () => {
 
             <Grid gap='md'>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <Paper component='section' aria-labelledby='lgs-bonus-title' withBorder p={{ base: 'md', sm: 'lg' }}>
+                <Paper
+                  className={styles.surface}
+                  component='section'
+                  aria-labelledby='lgs-bonus-title'
+                  withBorder
+                  h='100%'
+                  p='md'
+                >
                   <Stack gap='md'>
                     <Title order={2} size='h3' id='lgs-bonus-title'>
                       Bonus Effect
@@ -442,13 +453,20 @@ const LegendaryGreenSteelPage = () => {
                 </Paper>
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <Paper component='section' aria-labelledby='lgs-active-title' withBorder p='md'>
-                  <Stack gap='sm'>
+                <Paper
+                  className={styles.surface}
+                  component='section'
+                  aria-labelledby='lgs-active-title'
+                  withBorder
+                  h='100%'
+                  p='md'
+                >
+                  <Stack gap='md'>
                     <Title order={2} size='h3' id='lgs-active-title'>
                       Active Augment
                     </Title>
                     <Select
-                      label='Active Augment'
+                      aria-labelledby='lgs-active-title'
                       placeholder='Search active augments…'
                       data={activeData(data.activeAugments.filter((a) => !baseItem || fitsSlot(baseItem, a)))}
                       value={plan.activeAugmentName}

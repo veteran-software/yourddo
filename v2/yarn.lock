@@ -683,12 +683,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^26.6.6":
+"@types/node@npm:*, @types/node@npm:^26.6.6":
   version: 26.6.6
   resolution: "@types/node@npm:26.6.6"
   dependencies:
     undici-types: "npm:~8.9.0"
   checksum: 10c0/5cb63f644f6e85a257a9cd2403cbcbe196760e2a35fd3ec9fb8b5cff663e14cc832b198cc17b53f870a2e30900ed45a1fb3f53e6589aba26b8e8c484aa672053
+  languageName: node
+  linkType: hard
+
+"@types/papaparse@npm:^5":
+  version: 5.5.2
+  resolution: "@types/papaparse@npm:5.5.2"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/27b097b6f8f204b20ade1f2cbf4798eb38caa5fbfa3180fd0faa5e3f9aea371c1786ae180d56f3287556463eefe3100c953e316ea6ee99d7ae1d04111cfc9e50
   languageName: node
   linkType: hard
 
@@ -1603,6 +1612,13 @@ __metadata:
   bin:
     oxlint: bin/oxlint
   checksum: 10c0/73be499b923f1bb865a08b6fbb3c26a2df22ec8137f03d3689e3347f9e045b6bbbce7bfb74afe38e28736270090ba6c29fa4449f4c68898fab2c8fcf0972a073
+  languageName: node
+  linkType: hard
+
+"papaparse@npm:^5.5.4":
+  version: 5.7.1
+  resolution: "papaparse@npm:5.7.1"
+  checksum: 10c0/623319ba95fb35b3d1b105810649545e2e615b842c4ed2fb76217640a0e3343f51ef09163b32bff8df9f47efaa7e528457773da5b434fbf95beee742f3854a1b
   languageName: node
   linkType: hard
 
@@ -2566,6 +2582,7 @@ __metadata:
     "@testing-library/react": "npm:^16.3.3"
     "@testing-library/user-event": "npm:^14.6.13"
     "@types/node": "npm:^26.6.6"
+    "@types/papaparse": "npm:^5"
     "@types/react": "npm:^19.3.0"
     "@types/react-dom": "npm:^19.3.0"
     "@vitejs/plugin-react": "npm:^6.3.0"
@@ -2575,6 +2592,7 @@ __metadata:
     lz-string: "npm:^1.5.0"
     oxlint: "npm:^1.94.0"
     oxlint-tsgolint: "npm:^7.0.2007"
+    papaparse: "npm:^5.5.4"
     postcss: "npm:^8.5.33"
     postcss-preset-mantine: "npm:^1.18.0"
     postcss-simple-vars: "npm:^7.0.1"

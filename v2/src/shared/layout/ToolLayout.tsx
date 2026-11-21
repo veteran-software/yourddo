@@ -1,12 +1,13 @@
 import { Container, Stack } from '@mantine/core'
 import type { ReactNode } from 'react'
+import styles from './workspace.module.css'
 
 interface ToolLayoutProps {
   children: ReactNode
 }
 
 const ToolLayout = ({ children }: ToolLayoutProps) => (
-  <Container size='xl' py='lg'>
+  <Container className={styles.toolLayout} size='xl' py='lg'>
     <Stack gap='lg'>{children}</Stack>
   </Container>
 )

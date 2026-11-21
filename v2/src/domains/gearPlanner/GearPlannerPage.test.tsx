@@ -2,8 +2,8 @@
 
 import { MantineProvider } from '@mantine/core'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
-import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { validateEssenceCraftingDataset } from '../essenceCrafting/data.ts'
 import { createEssenceCraftingTestPayload } from '../essenceCrafting/test-fixture.ts'
 import { emptyGearCraftingData } from './crafting.ts'
 import { loadGearPlannerData } from './data.ts'
@@ -15,33 +15,34 @@ import {
   type GearPlannerFiligree,
   type GearPlannerFiligreeSetDefinition,
   type GearPlannerItem,
-  gearPlannerSlotGridColumns,
   gearPlannerSlots
 } from './gearPlanner.types.ts'
+import { gearPlannerPermalink } from './sharing'
+import { createGearPlannerSetup } from './setups'
 import GearPlannerPage from './GearPlannerPage.tsx'
+import { readTroveInventory, troveStorageKey } from './trove'
 import { GEAR_PLANNER_STORAGE_KEY } from './plannerStorage.ts'
 import { createGearPlannerReforgingData, emptyGearPlannerReforgingData } from './reforging.ts'
 import type { ReforgingEntry } from '../nearlyFinished/nearlyFinished.types.ts'
 
-const essenceData = {
-  rules: { supportedItemLevels: { minimum: 1, maximum: 36 } },
-  indexes: {}
-} as EssenceCraftingData
+const essenceData = validateEssenceCraftingDataset(createEssenceCraftingTestPayload())
 
 vi.mock('./data.ts', () => ({
   InvalidGearPlannerDataError: class InvalidGearPlannerDataError extends Error {},
   loadGearPlannerData: vi.fn()
 }))
 
-vi.mock('../essenceCrafting/data.ts', () => ({
-  InvalidEssenceCraftingDataError: class InvalidEssenceCraftingDataError extends Error {},
+vi.mock(import('../essenceCrafting/data.ts'), async (original) => ({
+  ...(await original()),
   loadEssenceCraftingData: vi.fn()
 }))
 
 const data: GearPlannerData = {
   sourceDatasets: [],
   items: [],
-  itemsBySlot: {} as GearPlannerData['itemsBySlot'],
+  itemsBySlot: Object.fromEntries(
+    allGearPlannerSlots.map((slot) => [slot, []])
+  ) as unknown as GearPlannerData['itemsBySlot'],
   augments: [],
   curses: [],
   filigrees: [],
@@ -109,6 +110,10 @@ const renderReadyPage = async (plannerData: GearPlannerData, essence = essenceDa
   await screen.findByRole('region', { name: 'Gear Planner workspace' })
 }
 
+beforeEach(() => {
+  localStorage.setItem('gearPlannerInfoDismissed', 'true')
+})
+
 afterEach(() => {
   cleanup()
   localStorage.clear()
@@ -150,8 +155,421 @@ afterAll(() => {
 })
 
 describe('GearPlannerPage', () => {
+  it('finds enchantments across slots and equips the result in its own slot', async () => {
+    await renderReadyPage(
+      dataWithItems([
+        item('helm', gearPlannerSlots.head, 'Quiet Helm', 10, [{ name: 'Concentration' }]),
+        item('neck', gearPlannerSlots.neck, 'Steady Pendant', 10, [{ name: 'Concentration' }]),
+        item('other', gearPlannerSlots.eyes, 'Plain Goggles')
+      ])
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Find gear' }))
+    fireEvent.change(screen.getByLabelText('Search items'), { target: { value: 'concentration' } })
+    expect(screen.getByRole('button', { name: 'Equip Quiet Helm in Head' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'Equip Plain Goggles in Eyes' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Equip Steady Pendant in Neck' }))
+    expect(within(screen.getByTestId('gear-item-editor')).getByText('Steady Pendant')).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Neck' })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Back to results' }))
+    expect(screen.getByRole<HTMLInputElement>('textbox', { name: 'Search items' }).value).toBe('concentration')
+    expect(screen.queryByRole('button', { name: 'Equip Plain Goggles in Eyes' })).toBeNull()
+  })
+
+  it('limits equipment and augment set choices to the inclusive level range', async () => {
+    const augment = {
+      name: 'Winter Crystal',
+      augmentType: 'Blue',
+      minLevel: 15,
+      effectsAdded: [],
+      setBonus: [{ name: 'Winter' }],
+      source: { name: 'Winter Crystal', augmentType: 'Blue', minLevel: 15, effectsAdded: [] }
+    }
+    await renderReadyPage(
+      dataWithItems(
+        [
+          item('head', 'Head', 'Summer Helm', 10, [], ['Summer']),
+          item('neck', 'Neck', 'Spring Pendant', 20, [], ['Spring'])
+        ],
+        [augment]
+      )
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Find gear' }))
+    const picker = screen.getByRole<HTMLInputElement>('combobox', { name: 'Item set' })
+    fireEvent.click(picker)
+    fireEvent.click(screen.getByRole('option', { name: 'Spring' }))
+    fireEvent.change(screen.getByLabelText('Maximum level'), { target: { value: '15' } })
+    expect(picker.value).toBe('')
+    fireEvent.change(screen.getByLabelText('Minimum level'), { target: { value: '10' } })
+    fireEvent.click(picker)
+    expect(screen.queryByRole('option', { name: 'Spring' })).toBeNull()
+    expect(screen.getByRole('option', { name: 'Summer' })).toBeTruthy()
+    fireEvent.click(screen.getByRole('option', { name: 'Winter' }))
+    fireEvent.change(screen.getByLabelText('Maximum level'), { target: { value: '14' } })
+    fireEvent.click(picker)
+    expect(screen.queryByRole('option', { name: 'Winter' })).toBeNull()
+    fireEvent.click(screen.getByRole('option', { name: 'Summer' }))
+    fireEvent.change(screen.getByLabelText('Minimum level'), { target: { value: '11' } })
+    expect(picker.value).toBe('')
+    fireEvent.click(picker)
+    expect(screen.queryByRole('option', { name: 'Summer' })).toBeNull()
+  })
+
+  it('opens exact searches from equipped and missing bonuses, and retargets an open finder from a set', async () => {
+    const e = (name: string, bonus: string) => ({ name, bonus, modifier: 2 })
+    await renderReadyPage(
+      dataWithItems([
+        item(
+          'head',
+          'Head',
+          'Quiet Helm',
+          10,
+          [e('Strength', 'Enhancement'), e('Light Spell Power', 'Quality')],
+          ['Winter']
+        ),
+        item('neck', 'Neck', 'Insight Pendant', 10, [e('Strength', 'Insight')], ['Winter']),
+        item('cloak', 'Cloak', 'Strength Cloak', 10, [e('Strength Skills', 'Insight'), e('Strength', 'Quality')]),
+        item('feet', 'Feet', 'Other Boots', 37, [e('Strength', 'Profane')])
+      ])
+    )
+    const click = (name: string) => fireEvent.click(screen.getByRole('button', { name }))
+    click('Select Head')
+    click('Winter')
+    expect(screen.getByRole('button', { name: 'Equip Insight Pendant in Neck' })).toBeTruthy()
+    click('Equip Quiet Helm in Head')
+    click('Winter')
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Item set' }).value).toBe('Winter')
+    click('Enchantments')
+    expect(screen.queryByRole('button', { name: 'Find Strength with Profane bonus' })).toBeNull()
+    click('Find Strength with Insight bonus')
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(screen.getByRole<HTMLInputElement>('textbox', { name: 'Exact enchantment' }).value).toBe('Strength')
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Enchantment bonus type' }).value).toBe('Insight')
+    expect(screen.getByRole('button', { name: 'Equip Insight Pendant in Neck' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'Equip Strength Cloak in Cloak' })).toBeNull()
+    click('Clear search')
+    const search = screen.getByRole<HTMLInputElement>('textbox', { name: 'Search items' })
+    expect(search.value).toBe('')
+    expect(document.activeElement).toBe(search)
+    expect(screen.queryByRole('button', { name: 'Clear search' })).toBeNull()
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Enchantment bonus type' }).value).toBe('Insight')
+    expect(screen.getByRole('button', { name: 'Equip Strength Cloak in Cloak' })).toBeTruthy()
+    click('Enchantments')
+    click('Find Strength with Enhancement bonus')
+    expect(screen.getByRole('button', { name: 'Equip Quiet Helm in Head' })).toBeTruthy()
+    click('Enchantments')
+    click('Find gear with Strength')
+    expect(screen.getByRole('button', { name: 'Equip Strength Cloak in Cloak' })).toBeTruthy()
+    click('Enchantments')
+    click('Find Light Spell Power with Enhancement bonus')
+    expect(screen.getAllByText('Craftable prefix · Split Prefix Test').length).toBeGreaterThan(0)
+    click('Set Bonuses')
+    click('Find members of Winter')
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Item set' }).value).toBe('Winter')
+    expect(screen.getByRole<HTMLInputElement>('textbox', { name: 'Search items' }).value).toBe('')
+    expect(screen.queryByRole('button', { name: 'Equip Strength Cloak in Cloak' })).toBeNull()
+    click('Equip Insight Pendant in Neck')
+    expect(within(screen.getByTestId('gear-item-editor')).getByText('Insight Pendant')).toBeTruthy()
+  })
+
+  it('previews materials, sockets, crafting provenance and slot-specific equipped status in both browsers', async () => {
+    const ring = item(
+      'ring-1',
+      gearPlannerSlots.firstFinger,
+      'Test Ring',
+      10,
+      [{ name: 'Lost Purpose' }],
+      ['Winter'],
+      [{ augmentType: 'Blue Slot' }, { augmentType: 'Blue' }, { augmentType: 'Moon' }]
+    )
+    ring.source = {
+      ...ring.source,
+      material: 'Silver',
+      dropLocations: [
+        { sourceType: 'CraftOnlyItem', isCraftOnly: true },
+        { sourceType: 'Crafting', craftingLocation: 'The Twelve' },
+        { sourceType: 'Crafting', craftingLocation: 'The Twelve' }
+      ]
+    }
+    await renderReadyPage(
+      dataWithItems([
+        ring,
+        { ...ring, id: 'ring-2', slot: gearPlannerSlots.secondFinger },
+        item('alternate', ring.slot, 'Alternate Ring', 10, [], ['Winter', 'Summer'])
+      ])
+    )
+    const click = (name: string) => fireEvent.click(screen.getByRole('button', { name }))
+    const row = (button: string) => {
+      const result = screen.getByRole('button', { name: button }).closest('li')
+      if (!result) throw new Error('Missing result card for ' + button)
+      return within(result)
+    }
+    click('Select ' + ring.slot)
+    const slotResult = row('Equip Test Ring')
+    expect(slotResult.getByText('Material · Silver (metal)')).toBeTruthy()
+    expect(slotResult.getAllByText('Blue')).toHaveLength(2)
+    expect(slotResult.getByText('Moon')).toBeTruthy()
+    expect(slotResult.getByText('Crafted at The Twelve')).toBeTruthy()
+    expect(slotResult.getByText('Set via Lost Purpose')).toBeTruthy()
+    expect(slotResult.queryByText('Equipped')).toBeNull()
+    click('Equip Test Ring')
+    expect(within(screen.getByTestId('gear-item-editor')).getByText('Material · Silver (metal)')).toBeTruthy()
+    click('Find gear')
+    const equipped = () => row('Equip Test Ring in ' + ring.slot)
+    expect(equipped().getByText('Equipped')).toBeTruthy()
+    expect(equipped().getByText('Material · Silver (metal)')).toBeTruthy()
+    expect(row('Equip Test Ring in ' + gearPlannerSlots.secondFinger).queryByText('Equipped')).toBeNull()
+    fireEvent.click(screen.getByRole('combobox', { name: 'Item set' }))
+    fireEvent.click(screen.getByRole('option', { name: 'Winter' }))
+    expect(equipped().queryByText('Set via Lost Purpose')).toBeNull()
+    const alternate = () => row('Equip Alternate Ring in ' + ring.slot)
+    expect(alternate().getByText('Replaces Test Ring · Member of Winter')).toBeTruthy()
+    expect(row('Equip Test Ring in ' + gearPlannerSlots.secondFinger).getByText('Empty slot')).toBeTruthy()
+    fireEvent.click(alternate().getByRole('button', { name: 'Winter' }))
+    fireEvent.click(screen.getByRole('combobox', { name: 'Item set' }))
+    fireEvent.click(screen.getByRole('option', { name: 'Summer' }))
+    expect(alternate().getByText('Replaces Test Ring · Outside Summer')).toBeTruthy()
+  })
+
+  it('shows all candidate effects inline in both browsers and highlights matching enchantments', async () => {
+    const bonus = 'Enhancement'
+    await renderReadyPage(
+      dataWithItems([
+        item('helm', gearPlannerSlots.head, 'Quiet Helm', 10, [
+          { name: 'Strength', bonus, modifier: '+4' },
+          { name: 'Accuracy', bonus, modifier: '+8%' }
+        ]),
+        item('neck', gearPlannerSlots.neck, 'Old Pendant', 10, [{ name: 'Wisdom', bonus, modifier: '+8' }]),
+        item('other', gearPlannerSlots.neck, 'New Pendant', 10, [
+          { name: 'Strength', bonus, modifier: '+6' },
+          { name: 'Accuracy', bonus, modifier: '+8%' },
+          { name: 'Wisdom', bonus, modifier: '+3' }
+        ])
+      ])
+    )
+    const click = (name: string) => fireEvent.click(screen.getByRole('button', { name }))
+    click('Select Head')
+    click('Equip Quiet Helm')
+    click('Select Neck')
+    click('Equip Old Pendant')
+    click('Change item')
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Show conflicting or lesser items' }))
+    const sheet = within(screen.getByRole('group', { name: 'New Pendant enchantments' }))
+    expect(sheet.getByText('Enhancement')).toBeTruthy()
+    expect(sheet.getByText('Upgrade from +4').parentElement?.textContent).toContain('+6')
+    expect(sheet.getByText('Matches equipped +8%')).toBeTruthy()
+    expect(sheet.getByText('Wisdom').nextElementSibling?.textContent).toBe('+3')
+    expect(screen.getByTestId('gear-slot-Neck').textContent).toContain('Old Pendant')
+    expect(screen.getByRole('group', { name: 'Old Pendant enchantments' })).toBeTruthy()
+    click('Find gear')
+    fireEvent.change(screen.getByLabelText('Search items'), { target: { value: 'stren' } })
+    expect(within(screen.getByRole('group', { name: 'New Pendant enchantments' })).getByText('Strength').tagName).toBe(
+      'MARK'
+    )
+    expect(within(screen.getByRole('group', { name: 'New Pendant enchantments' })).getAllByRole('term')).toHaveLength(3)
+  })
+
+  it('collapses one candidate independently and remembers it while filtering', async () => {
+    await renderReadyPage(
+      dataWithItems([
+        item('quiet', gearPlannerSlots.head, 'Quiet Helm', 10, [{ name: 'Wisdom' }]),
+        item('keen', gearPlannerSlots.head, 'Keen Helm', 10, [{ name: 'Accuracy' }]),
+        item('plain', gearPlannerSlots.head, 'Plain Helm')
+      ])
+    )
+    const button = (name: string) => screen.getByRole('button', { name })
+    fireEvent.click(button('Select Head'))
+    const toggle = button('Collapse enchantments for Quiet Helm in Head')
+    expect(toggle.getAttribute('aria-expanded')).toBe('true')
+    expect(document.getElementById(toggle.getAttribute('aria-controls') ?? '')?.textContent).toContain('Wisdom')
+    fireEvent.click(toggle)
+    expect(screen.queryByRole('group', { name: 'Quiet Helm enchantments' })).toBeNull()
+    expect(screen.getByRole('group', { name: 'Keen Helm enchantments' })).toBeTruthy()
+    expect(button('Equip Quiet Helm')).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /enchantments for Plain Helm/ })).toBeNull()
+    const search = screen.getByLabelText('Search items')
+    fireEvent.change(search, { target: { value: 'keen' } })
+    fireEvent.change(search, { target: { value: '' } })
+    const expand = button('Expand enchantments for Quiet Helm in Head')
+    expect(expand.getAttribute('aria-expanded')).toBe('false')
+    fireEvent.click(expand)
+    expect(screen.getByRole('group', { name: 'Quiet Helm enchantments' })).toBeTruthy()
+  })
+
+  it('groups equal school bonuses while preserving different values, comparison notes and search matches', async () => {
+    const school = (name: string, modifier: string) => ({ name: 'Spell DC: ' + name, modifier, bonus: 'Equipment' })
+    await renderReadyPage(
+      dataWithItems([
+        item('goggles', gearPlannerSlots.eyes, 'Focus Goggles', 10, [school('Illusion', '+2')]),
+        item('helm', gearPlannerSlots.head, 'Spell Helm', 10, [
+          school('Illusion', '+4'),
+          school('Evocation', '+4'),
+          school('Abjuration', '+4'),
+          school('Conjuration', '+6'),
+          { name: 'True Seeing' }
+        ])
+      ])
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Equip Focus Goggles' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Find gear' }))
+    fireEvent.change(screen.getByLabelText('Search items'), { target: { value: 'abjuration' } })
+    const sheet = within(screen.getByRole('group', { name: 'Spell Helm enchantments' }))
+    const terms = sheet.getAllByRole('term')
+    expect(terms).toHaveLength(4)
+    expect(terms[0].textContent).toBe('Spell DC: Illusion')
+    expect(terms[0].nextElementSibling?.textContent).toContain('Upgrade from +2')
+    expect(terms[1].textContent).toContain('Evocation, Abjuration')
+    expect(terms[1].nextElementSibling?.textContent).toBe('+4')
+    expect(sheet.getByText('Abjuration').tagName).toBe('MARK')
+    expect(sheet.getByText('Spell DC: Conjuration').nextElementSibling?.textContent).toBe('+6')
+    expect(sheet.getByText('True Seeing')).toBeTruthy()
+  })
+
+  it('shows published drop locations and collapses equipped details individually or across the loadout', async () => {
+    const helm = item('helm', gearPlannerSlots.head, 'Quiet Helm')
+    const quest = {
+      questWildernessChain: 'The Cove (Heroic)',
+      titleForLink: 'The Cove',
+      difficulty: 'Heroic',
+      whichChestPerson: 'End Chest'
+    }
+    await renderReadyPage(
+      dataWithItems([
+        {
+          ...helm,
+          source: {
+            ...helm.source,
+            dropLocations: [
+              quest,
+              quest,
+              { isCraftOnly: true },
+              { sourceType: 'RaidRune' },
+              { questWildernessChain: 4 }
+            ]
+          }
+        },
+        item('neck', gearPlannerSlots.neck, 'Old Pendant')
+      ])
+    )
+    const click = (name: string) => fireEvent.click(screen.getByRole('button', { name }))
+    click('Select Head')
+    click('Equip Quiet Helm')
+    const drops = within(screen.getByRole('list', { name: 'Drop locations' }))
+    expect(drops.getByRole('link', { name: 'The Cove (Heroic)' }).getAttribute('href')).toBe(
+      'https://ddocompendium.com/w/The%20Cove'
+    )
+    expect(drops.getByText(/Heroic · End Chest/)).toBeTruthy()
+    expect(drops.getByText('Craft only')).toBeTruthy()
+    expect(drops.getByText('Raid Rune')).toBeTruthy()
+    expect(drops.getAllByRole('listitem')).toHaveLength(3)
+    click('Select Neck')
+    click('Equip Old Pendant')
+    click('Collapse all')
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Quiet Helm')
+    expect(screen.getByRole('button', { name: 'Expand details' }).getAttribute('aria-expanded')).toBe('false')
+    click('Select Head')
+    expect(screen.queryByRole('list', { name: 'Drop locations' })).toBeNull()
+    click('Expand details')
+    expect(screen.getByRole('list', { name: 'Drop locations' })).toBeTruthy()
+    click('Select Neck')
+    expect(screen.getByRole('button', { name: 'Expand details' })).toBeTruthy()
+    click('Collapse all')
+    click('Expand all')
+    expect(screen.getByRole('button', { name: 'Collapse details' })).toBeTruthy()
+    expect(screen.queryByRole('list', { name: 'Drop locations' })).toBeNull()
+  })
+
+  it('preserves Trove owners in inventory search, the equipped editor, and browser storage', async () => {
+    await renderReadyPage(dataWithItems([item('helm', gearPlannerSlots.head, 'Quiet Helm')]))
+    fireEvent.click(screen.getByRole('button', { name: 'Import Trove' }))
+    const dialog = within(await screen.findByRole('dialog', { name: 'DH Trove Import' }))
+    fireEvent.click(dialog.getByLabelText('Legacy CSV'))
+    const input = document.querySelector('input[accept=".csv,text/csv"]')
+    if (!input) throw new Error('Missing CSV input')
+    const csv =
+      'Name,Quantity,Character,Location\nQuiet Helm,1,Robin,Bank\nQuiet Helm,2,—,SharedBank\nQuiet Helm,1,Robin,Bank'
+    const file = new File([csv], 'Inventory.csv')
+    Object.defineProperty(file, 'text', { value: () => Promise.resolve(csv) })
+    fireEvent.change(input, { target: { files: [file] } })
+    await dialog.findByText(/Inventory updated/)
+    fireEvent.click(dialog.getByRole('button', { name: 'Close' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Find gear' }))
+    const label = 'Owned · Robin (Bank), Shared Bank'
+    expect(await screen.findByText(label)).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Equip Quiet Helm in Head' }))
+    expect(within(screen.getByTestId('gear-item-editor')).getByText(label)).toBeTruthy()
+    expect(readTroveInventory().get('quiet helm')).toEqual(['Robin (Bank)', 'Shared Bank'])
+  })
+
+  it('restores both legacy owner formats and preserves older v2 name-only imports', () => {
+    localStorage.setItem(
+      'troveData',
+      JSON.stringify({
+        Ring: { byCharacter: { Robin: { Inventory: 1, Bank: 0 } } },
+        Helm: { byCharacter: [{ character: '-', locations: { SharedBank: 1, SharedCrafting: 2 } }] }
+      })
+    )
+    expect([...readTroveInventory()]).toEqual([
+      ['ring', ['Robin (Inventory)']],
+      ['helm', ['Shared Bank', 'Shared Crafting Bank']]
+    ])
+    localStorage.setItem(troveStorageKey, JSON.stringify([' Ring ']))
+    expect([...readTroveInventory()]).toEqual([['ring', []]])
+  })
+
+  it('shows the guide on startup, remembers dismissal and can reopen from the masthead', async () => {
+    localStorage.removeItem('gearPlannerInfoDismissed')
+    await renderReadyPage(data)
+    const guide = within(screen.getByRole('dialog', { name: 'About the Gear Planner' }))
+    expect(guide.getByText('Download JSON')).toBeTruthy()
+    expect(guide.getByText('Review backup')).toBeTruthy()
+    fireEvent.click(guide.getByRole('checkbox', { name: /show again on startup/i }))
+    fireEvent.click(guide.getByRole('button', { name: 'Got it' }))
+    cleanup()
+    await renderReadyPage(data)
+    expect(screen.queryByRole('dialog')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'About and backup guide' }))
+    expect(screen.getByRole<HTMLInputElement>('checkbox', { name: /show again on startup/i }).checked).toBe(true)
+    fireEvent.click(screen.getByRole('checkbox', { name: /show again on startup/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Close planner guide' }))
+    cleanup()
+    await renderReadyPage(data)
+    expect(screen.getByRole('dialog', { name: 'About the Gear Planner' })).toBeTruthy()
+  })
+
+  it('opens a shared setup directly and keeps the guide available on demand', async () => {
+    localStorage.removeItem('gearPlannerInfoDismissed')
+    const previous = window.location.href
+    try {
+      const link = gearPlannerPermalink(createGearPlannerSetup('link', 'Shared loadout'), previous)
+      window.history.replaceState(null, '', link)
+      await renderReadyPage(data)
+      expect(await screen.findByRole('tab', { name: 'Shared loadout' })).toBeTruthy()
+      expect(screen.queryByRole('dialog')).toBeNull()
+      fireEvent.click(screen.getByRole('button', { name: 'About and backup guide' }))
+      expect(screen.getByRole('dialog', { name: 'About the Gear Planner' })).toBeTruthy()
+    } finally {
+      window.history.replaceState(null, '', previous)
+    }
+  })
+
+  it('opens the Trove import guide directly from the planner toolbar', async () => {
+    await renderReadyPage(data)
+    const trigger = screen.getByRole('button', { name: 'Import Trove' })
+    expect(trigger.parentElement).toBe(screen.getByRole('button', { name: 'Find gear' }).parentElement)
+    fireEvent.click(trigger)
+    const dialog = within(await screen.findByRole('dialog', { name: 'DH Trove Import' }))
+    expect(dialog.getByRole('button', { name: 'Choose server folder' })).toBeTruthy()
+    expect(dialog.getByRole('button', { name: 'Select JSON files' })).toBeTruthy()
+    expect(document.querySelector('input[webkitdirectory]')).toBeTruthy()
+    fireEvent.click(dialog.getByLabelText('Legacy CSV'))
+    expect(document.querySelector('input[webkitdirectory]')).toBeNull()
+    expect(dialog.getByText('TroveExport.Inventory.csv')).toBeTruthy()
+    expect(dialog.getAllByRole('button', { name: /^Copy .+ path$/ })).toHaveLength(4)
+    expect(dialog.getByRole('button', { name: 'Upload DH Trove CSV' })).toBeTruthy()
+  })
+
   it.each([0, 1, 4, 5, 8])(
-    'keeps all %i item enchantments and makes long lists independently focusable',
+    'shows all %i item enchantments in one bulleted list when a slot has effects',
     async (count) => {
       const enchantments = Array.from({ length: count }, (_, index) => ({ name: `Effect ${String(index + 1)}` }))
       await renderReadyPage(
@@ -161,25 +579,23 @@ describe('GearPlannerPage', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
       fireEvent.click(await screen.findByRole('button', { name: 'Equip Enchanted Helm' }))
 
-      const card = screen.getByTestId('gear-slot-Head')
-      enchantments.forEach(({ name }) => {
-        expect(within(card).getByText(name)).toBeTruthy()
-      })
-      if (count > 4) {
-        const region = within(card).getByRole('region', { name: 'Head enchantments' })
-        expect(region.getAttribute('tabindex')).toBe('0')
-        expect(region.closest('button')).toBeNull()
-        region.focus()
-        expect(document.activeElement).toBe(region)
-        fireEvent.click(region)
-        expect(screen.queryByRole('button', { name: 'Close item browser' })).toBeNull()
-      } else {
-        expect(within(card).queryByRole('region', { name: 'Head enchantments' })).toBeNull()
+      const card = screen.getByTestId('gear-item-editor')
+      if (count === 0) {
+        expect(within(card).queryByRole('list', { name: 'Head enchantments' })).toBeNull()
+        return
       }
+      const list = within(card).getByRole('list', { name: 'Head enchantments' })
+      expect(list.tagName).toBe('UL')
+      expect(
+        within(list)
+          .getAllByRole('listitem')
+          .map((entry) => entry.textContent)
+      ).toEqual(enchantments.map(({ name }) => name))
+      expect(within(card).queryByRole('region', { name: 'Head enchantments' })).toBeNull()
     }
   )
 
-  it('renders character slots in legacy row-major order with responsive grid columns', async () => {
+  it('lists all character slots in the equipment navigator', async () => {
     await renderReadyPage(data)
 
     expect(screen.getAllByTestId(/gear-slot-/).map((slot) => slot.getAttribute('data-testid'))).toEqual([
@@ -199,7 +615,7 @@ describe('GearPlannerPage', () => {
       'gear-slot-Off Hand',
       'gear-slot-Quiver'
     ])
-    expect(gearPlannerSlotGridColumns).toEqual({ base: 1, '37rem': 2, '56rem': 3, '75rem': 4 })
+    expect(screen.getByText('0 / 15 equipped')).toBeTruthy()
   })
 
   it('renders an all-or-error load state and retries failed data loading', async () => {
@@ -238,15 +654,12 @@ describe('GearPlannerPage', () => {
       fireEvent.click(screen.getByRole('button', { name: `Select ${slot}` }))
       expect(await screen.findByText(`Select item for ${slot}`)).toBeTruthy()
       expect(screen.getByText(candidate)).toBeTruthy()
-      fireEvent.click(screen.getByRole('button', { name: 'Close item browser' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Back to equipment' }))
     }
   })
 
   it('equips and configures a synthetic Essence Crafted item with current v2 effect data', async () => {
-    const { validateEssenceCraftingDataset } =
-      await vi.importActual<typeof import('../essenceCrafting/data.ts')>('../essenceCrafting/data.ts')
-    const currentEssenceData = validateEssenceCraftingDataset(createEssenceCraftingTestPayload())
-    await renderReadyPage(dataWithItems([]), currentEssenceData)
+    await renderReadyPage(dataWithItems([]))
 
     fireEvent.click(screen.getByRole('button', { name: 'Select Main Hand' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Essence Crafted Weapon (Melee)' }))
@@ -265,7 +678,7 @@ describe('GearPlannerPage', () => {
     await renderReadyPage(dataWithItems([item('eyes', gearPlannerSlots.eyes, 'Test Goggles')]))
     fireEvent.click(screen.getByRole('button', { name: 'Select Eyes' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Test Goggles' }))
-    const card = within(screen.getByTestId('gear-slot-Eyes'))
+    const card = within(screen.getByTestId('gear-item-editor'))
     fireEvent.click(card.getByText('Item upgrades'))
     const selector = card.getByRole('combobox', { name: 'Reaper Forge' })
     fireEvent.click(selector)
@@ -289,15 +702,16 @@ describe('GearPlannerPage', () => {
     expect(screen.getByTestId('gear-slot-Head').textContent).toContain('First Helm')
 
     fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Change item' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Second Helm' }))
     expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Second Helm')
 
     fireEvent.click(screen.getByRole('button', { name: 'Select First Finger' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Independent Ring' }))
     fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
-    fireEvent.click(await screen.findByRole('button', { name: 'Clear Head' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Clear Head from equipment' }))
 
-    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Select an item')
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Empty')
     expect(screen.getByTestId('gear-slot-First Finger').textContent).toContain('Independent Ring')
   })
 
@@ -445,8 +859,10 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Set Bonuses' }))
     expect(await screen.findByText('1 contribution')).toBeTruthy()
     expect(screen.getByText('Head: Set Augment: Arcane Barrier on Socketed Helm')).toBeTruthy()
-
-    fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Find members of Arcane Barrier' }))
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Item set' }).value).toBe('Arcane Barrier')
+    expect(screen.getByText('Set Augment: Arcane Barrier · Colorless · ML 1')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
     fireEvent.click(screen.getByRole('button', { name: 'Clear augment' }))
     fireEvent.click(screen.getByRole('button', { name: 'Set Bonuses' }))
     expect(await screen.findByText('No set memberships yet')).toBeTruthy()
@@ -473,8 +889,9 @@ describe('GearPlannerPage', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Arcane Ring' }))
     fireEvent.click(screen.getByRole('button', { name: 'Set Bonuses' }))
 
-    expect(await screen.findByText('Unknown Set')).toBeTruthy()
-    expect(screen.getByText('Arcane Barrier')).toBeTruthy()
+    const summary = within(await screen.findByRole('dialog'))
+    expect(summary.getByText('Unknown Set')).toBeTruthy()
+    expect(summary.getByText('Arcane Barrier')).toBeTruthy()
     expect(screen.getByText('Effect definition unavailable')).toBeTruthy()
   })
 
@@ -500,13 +917,17 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Select First Finger' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Twelve Ring' }))
 
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
     expect(screen.getByTestId('equipped-effect-head:equipped-item:0').getAttribute('data-conflict-state')).toBe(
       'lesser'
     )
+    fireEvent.click(screen.getByRole('button', { name: 'Select First Finger' }))
+    expect(screen.getByText('Overrides Head')).toBeTruthy()
     expect(screen.getByTestId('equipped-effect-ring:equipped-item:0').getAttribute('data-conflict-state')).toBe(
       'effective'
     )
 
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
     fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
     expect(await screen.findByText('Strength')).toBeTruthy()
     expect(screen.getAllByText('+12')).toHaveLength(2)
@@ -515,17 +936,91 @@ describe('GearPlannerPage', () => {
     expect(screen.getAllByText(/2\[W\]/).length).toBeGreaterThan(1)
 
     fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Select First Finger' }))
     fireEvent.click(screen.getByRole('button', { name: 'Clear First Finger from equipment' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
     expect(screen.getByTestId('equipped-effect-head:equipped-item:0').getAttribute('data-conflict-state')).toBe('none')
 
     fireEvent.click(screen.getByRole('button', { name: 'Select Second Finger' }))
+    expect(screen.queryByRole('button', { name: 'Equip Tie Ring' })).toBeNull()
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Show conflicting or lesser items' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Tie Ring' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
     expect(screen.getByTestId('equipped-effect-head:equipped-item:0').getAttribute('data-conflict-state')).toBe(
       'effective'
     )
+    fireEvent.click(screen.getByRole('button', { name: 'Select Second Finger' }))
     expect(screen.getByTestId('equipped-effect-second-ring:equipped-item:0').getAttribute('data-conflict-state')).toBe(
       'effective'
     )
+  })
+
+  it('previews each augment against the remaining loadout before replacing a socket', async () => {
+    const effect = (name: string, modifier: number, bonus = 'Enhancement') => ({ name, bonus, modifier })
+    const head = item(
+      'head',
+      'Head',
+      'Socketed Helm',
+      10,
+      [],
+      [],
+      [
+        { augmentType: 'Red', name: 'Left socket' },
+        { augmentType: 'Red', name: 'Right socket' }
+      ]
+    )
+    const necklace = item('neck', 'Neck', 'Stat Necklace', 10, [
+      effect('Strength', 5),
+      effect('Wisdom', 5),
+      effect('Accuracy', 5),
+      effect('Power', 5, 'Mythic')
+    ])
+    const gem = (name: string, effectsAdded: GearPlannerData['augments'][number]['effectsAdded']) => ({
+      name,
+      augmentType: 'Red',
+      minLevel: 1,
+      effectsAdded,
+      source: { name }
+    })
+    const mixed = gem('Mixed Ruby', [effect('Strength', 6), effect('Wisdom', 5), effect('Accuracy', 4)])
+    const strong = gem('Strong Ruby', [effect('Strength', 10)])
+    const separate = gem('Independent Ruby', [effect('Strength', 1, 'Insight'), effect('Power', 2, 'Mythic')])
+    await renderReadyPage(dataWithItems([head, necklace], [mixed, strong, separate]))
+    const click = (name: string) => fireEvent.click(screen.getByRole('button', { name }))
+    click('Select Neck')
+    click('Equip Stat Necklace')
+    click('Select Head')
+    click('Equip Socketed Helm')
+    const socket = (name: string) => screen.getByRole<HTMLInputElement>('combobox', { name })
+    const option = (name: RegExp) => within(screen.getByRole('option', { name }))
+    fireEvent.click(socket('Left socket'))
+    fireEvent.click(screen.getByRole('option', { name: /Mixed Ruby/ }))
+    const selected = within(screen.getByTestId('augment-slot-head-0'))
+    expect(selected.getByText('Overrides Neck')).toBeTruthy()
+    expect(selected.getByText('Redundant (Neck)')).toBeTruthy()
+    expect(selected.getByText('Overridden by Neck')).toBeTruthy()
+    click('Clear augment')
+    fireEvent.click(socket('Left socket'))
+    fireEvent.click(screen.getByRole('option', { name: /Strong Ruby/ }))
+    fireEvent.click(socket('Right socket'))
+    expect(option(/Mixed Ruby/).queryByText('Upgrade')).toBeNull()
+    expect(option(/Mixed Ruby/).getByText(/Strength 6 .*equipped 10/)).toBeTruthy()
+    expect(option(/Independent Ruby/).queryByText(/Upgrade|Overpowered|Redundant/)).toBeNull()
+    fireEvent.keyDown(socket('Right socket'), { key: 'Escape' })
+    fireEvent.click(socket('Left socket'))
+    fireEvent.change(socket('Left socket'), { target: { value: 'Mixed Ruby' } })
+    const preview = option(/Mixed Ruby/)
+    expect(preview.getByText('Upgrade').closest('[title]')?.textContent).toContain(
+      'Strength 6 (Enhancement) · equipped 5'
+    )
+    expect(preview.getByText('Redundant').closest('[title]')?.textContent).toContain(
+      'Wisdom 5 (Enhancement) · equipped 5'
+    )
+    expect(preview.getByText('Overpowered').closest('[title]')?.textContent).toContain(
+      'Accuracy 4 (Enhancement) · equipped 5'
+    )
+    expect(within(screen.getByTestId('augment-slot-head-0')).getAllByText('Strong Ruby').length).toBeGreaterThan(0)
+    expect(socket('Right socket').value).toBe('')
   })
 
   it('shows selectors only for published item augment slots and filters choices before search', async () => {
@@ -623,6 +1118,66 @@ describe('GearPlannerPage', () => {
     expect(await screen.findByText('Test Filigree Set')).toBeTruthy()
     expect(screen.getByText('Filigree Set')).toBeTruthy()
     expect(screen.getByText('Main Hand: Filigree A on Sentient Dagger / Filigree slot 1')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Find members of Test Filigree Set' }))
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Filigree set' }).value).toBe('Test Filigree Set')
+    expect(screen.getByText('1 matching filigree')).toBeTruthy()
+  })
+
+  it('finds filigrees by effect across hosts and opens the chosen socket on a collapsed item', async () => {
+    const blade = item('blade', 'Main Hand', 'Test Blade', 30)
+    blade.source.type = 'Dagger'
+    const ring = item('ring', 'First Finger', 'Test Ring', 30)
+    ring.source.artifactType = 'Minor Artifact'
+    const filigree = (id: string, effect: string): GearPlannerFiligree => ({
+      id,
+      name: id,
+      minimumLevel: 1,
+      grouping: 'Test Set',
+      source: { name: id, enchantments: [{ name: effect, modifier: 2 }] }
+    })
+    const shard = filigree('Amber Shard', 'Healing Amplification')
+    const rare = filigree('Amber Shard (Rare)', 'Healing Amplification')
+    await renderReadyPage(dataWithItems([blade, ring], [], [shard, rare, filigree('Other Shard', 'Dodge')]))
+    const click = (name: string) => fireEvent.click(screen.getByRole('button', { name }))
+    for (const [host, index] of [
+      [blade, 1],
+      [ring, 2]
+    ] as const) {
+      click('Select ' + host.slot)
+      click('Equip ' + host.source.name)
+      click('Manage filigrees for ' + host.source.name)
+      for (let n = 1; n <= index; n++) {
+        if (!screen.queryByRole('button', { name: 'Filigree slot ' + String(n) })) click('Unlock slot')
+      }
+      click('Filigree slot ' + String(index))
+      click('Select Amber Shard')
+      click('Close filigree selector')
+    }
+    click('Collapse details')
+    click('Select Main Hand')
+    const find = () => {
+      click('Find gear')
+      fireEvent.click(screen.getByRole('radio', { name: 'Filigrees' }))
+      fireEvent.change(screen.getByRole('textbox', { name: 'Search filigrees' }), {
+        target: { value: '  AMPLIFICATION ' }
+      })
+    }
+    find()
+    expect(screen.getByText('2 matching filigrees')).toBeTruthy()
+    expect(screen.queryByText('Other Shard')).toBeNull()
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Equipped only' }))
+    expect(screen.queryByText('Amber Shard (Rare)')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Test Blade · Main Hand · Slot 1' })).toBeTruthy()
+    click('Test Ring · First Finger · Slot 2')
+    const dialog = within(screen.getByRole('dialog', { name: 'Filigrees — Test Ring' }))
+    expect(dialog.getByText('Select for slot 2')).toBeTruthy()
+    expect(dialog.getByRole('button', { name: 'Filigree slot 2' }).getAttribute('aria-pressed')).toBe('true')
+    click('Clear filigree')
+    click('Close filigree selector')
+    expect(within(screen.getByTestId('gear-item-editor')).getByText('Test Ring')).toBeTruthy()
+    find()
+    expect(screen.queryByRole('button', { name: 'Test Ring · First Finger · Slot 2' })).toBeNull()
+    expect(screen.getByRole('button', { name: 'Test Blade · Main Hand · Slot 1' })).toBeTruthy()
   })
 
   it('shows Deck of Many Curses controls only for eligible items and keeps selections in summaries and setups', async () => {
@@ -663,8 +1218,8 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Select Quiver' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Plain Quiver' }))
 
-    expect(screen.getByRole('button', { name: 'Manage curses for Cursed Helm' })).toBeTruthy()
     expect(screen.queryByRole('button', { name: 'Manage curses for Plain Quiver' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
     fireEvent.click(screen.getByRole('button', { name: 'Manage curses for Cursed Helm' }))
     expect(await screen.findByText('Rare')).toBeTruthy()
     expect(screen.getByText('Strength +2 (Fortune)')).toBeTruthy()
@@ -691,6 +1246,31 @@ describe('GearPlannerPage', () => {
     expect(screen.queryByTestId('selected-curse-head')).toBeNull()
     fireEvent.click(screen.getByRole('tab', { name: 'Default Setup' }))
     expect(screen.getByTestId('selected-curse-head').textContent).toContain('Curse of Greater Strength')
+  })
+
+  it('automatically carries over browser setups, opens the active loadout and keeps later v2 edits on reload', async () => {
+    const head = item('helm', 'Head', 'Legacy helm')
+    const catalog = dataWithItems([head])
+    const raw = JSON.stringify({
+      characterSetups: [
+        { id: 'first', name: 'Questing', slots: {} },
+        { id: 'raid', name: 'Raiding', slots: { Head: { name: 'Legacy helm' }, Neck: { name: 'Retired necklace' } } }
+      ],
+      activeSetupId: 'raid'
+    })
+    localStorage.setItem('gearPlannerState', raw)
+    await renderReadyPage(catalog)
+    expect(screen.getByRole('tab', { name: 'Raiding' }).getAttribute('aria-selected')).toBe('true')
+    expect(within(screen.getByTestId('gear-item-editor')).getByText('Legacy helm')).toBeTruthy()
+    expect(screen.getByText('Carried over 2 legacy Gear Planner setups.')).toBeTruthy()
+    expect(screen.getByText(/could not uniquely match Retired necklace/)).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Clear Head from equipment' }))
+    cleanup()
+    await renderReadyPage(catalog)
+    expect(screen.getByRole('tab', { name: 'Raiding' }).getAttribute('aria-selected')).toBe('true')
+    expect(screen.queryByText('Carried over 2 legacy Gear Planner setups.')).toBeNull()
+    expect(screen.getByTestId('gear-slot-Head').textContent).not.toContain('Legacy helm')
+    expect(localStorage.getItem('gearPlannerState')).toBe(raw)
   })
 
   it('restores a persisted curse selection into its item card and Enchantments Workspace', async () => {
@@ -755,7 +1335,7 @@ describe('GearPlannerPage', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Second Artifact' }))
     expect(await screen.findByText('Only one minor artifact can be equipped at a time.')).toBeTruthy()
     expect(screen.getByTestId('gear-slot-First Finger').textContent).toContain('First Artifact')
-    expect(screen.getByTestId('gear-slot-Second Finger').textContent).toContain('Select an item')
+    expect(screen.getByTestId('gear-slot-Second Finger').textContent).toContain('Empty')
   })
 
   it('adds, switches, renames, clears, and safely deletes compact setup tabs', async () => {
@@ -772,7 +1352,7 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Add setup' }))
 
     expect(screen.getByRole('tab', { name: 'New Setup 2' })).toBeTruthy()
-    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Select an item')
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Empty')
     fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Second Setup Helm' }))
     fireEvent.click(screen.getByRole('tab', { name: 'Default Setup' }))
@@ -783,9 +1363,13 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Save name' }))
     expect(screen.getByRole('tab', { name: 'Raid plan' })).toBeTruthy()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Clear active setup' }))
-    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Select an item')
-    fireEvent.click(screen.getByRole('button', { name: 'Delete active setup' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Setup actions' }))
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Clear setup…' }))
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('First Setup Helm')
+    fireEvent.click(screen.getByRole('button', { name: 'Clear setup' }))
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Empty')
+    fireEvent.click(screen.getByRole('button', { name: 'Setup actions' }))
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Delete setup…' }))
     expect(await screen.findByText('Delete setup?')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Delete setup' }))
     expect(screen.queryByRole('tab', { name: 'Raid plan' })).toBeNull()
@@ -794,8 +1378,9 @@ describe('GearPlannerPage', () => {
 
   it('exposes JSON actions and replaces setups only after a valid import resolves', async () => {
     await renderReadyPage(dataWithItems([item('imported-head', gearPlannerSlots.head, 'Imported Helm')]))
-    expect(screen.getByRole('button', { name: 'Export JSON' })).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Import JSON' })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Sharing' }))
+    expect(await screen.findByRole('button', { name: 'Download JSON' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Review backup' })).toBeTruthy()
 
     const equipment = Object.fromEntries(gearPlannerCharacterSlots.map((slot) => [slot, null])) as Record<
       (typeof gearPlannerCharacterSlots)[number],
@@ -826,6 +1411,14 @@ describe('GearPlannerPage', () => {
     expect(input).toBeTruthy()
     fireEvent.change(input as HTMLInputElement, { target: { files: [file] } })
 
+    const review = await screen.findByRole('dialog', { name: 'Replace current setups?' })
+    expect(screen.queryByRole('tab', { name: 'Imported setup', hidden: true })).toBeNull()
+    fireEvent.click(within(review).getByRole('button', { name: 'Cancel' }))
+    expect(screen.getByRole('tab', { name: 'Default Setup', hidden: true })).toBeTruthy()
+    const paste = screen.getByLabelText<HTMLTextAreaElement>('Paste Gear Planner JSON')
+    fireEvent.change(paste, { target: { value: paste.value + '\n' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Review backup' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Replace setups' }))
     expect(await screen.findByRole('tab', { name: 'Imported setup' })).toBeTruthy()
     expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Imported Helm')
     expect(screen.queryByRole('tab', { name: 'Default Setup' })).toBeNull()

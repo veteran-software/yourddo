@@ -1,5 +1,6 @@
 import itemSetsData from '../../../../src/data/loot/itemSets.json'
 import type { GearPlannerEffect } from './gearPlanner.types.ts'
+import { heroicSlaveLordsSets, legendarySlaveLordsSets } from './slaveLords'
 
 export interface GearPlannerStandardSetThreshold {
   threshold: number
@@ -119,7 +120,14 @@ const legacyStandardOverrides = [
 ] as const satisfies readonly GearPlannerStandardSetDefinition[]
 
 const definitionsByName = new Map<string, GearPlannerStandardSetDefinition>()
-for (const set of [...itemSetDefinitions, ...legacyStandardOverrides]) definitionsByName.set(set.name, set)
+for (const set of [
+  ...heroicSlaveLordsSets,
+  ...legendarySlaveLordsSets,
+  ...itemSetDefinitions,
+  ...legacyStandardOverrides
+]) {
+  definitionsByName.set(set.name, set)
+}
 
 // Array order matches the legacy lookup's first source order; override values retain their existing names.
 export const standardGearPlannerSetDefinitions = [...definitionsByName.values()]

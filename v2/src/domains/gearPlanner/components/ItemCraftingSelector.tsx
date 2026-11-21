@@ -1,3 +1,4 @@
+import { TroveOwnership } from './TroveInventory'
 import { Box, Select, Stack, Switch, Text } from '@mantine/core'
 import { gearCraftGroups, type GearCraftingData } from '../crafting.ts'
 import type { GearPlannerItem } from '../gearPlanner.types.ts'
@@ -43,6 +44,16 @@ export default function ItemCraftingSelector({
               clearable
               clearButtonProps={{ tabIndex: 0, 'aria-hidden': false, 'aria-label': `Clear ${group.label}` }}
               searchable
+              renderOption={
+                group.system === 'ritual-table'
+                  ? ({ option }) => (
+                      <Stack gap={2}>
+                        <span>{option.label}</span>
+                        <TroveOwnership name={option.label} inOption />
+                      </Stack>
+                    )
+                  : undefined
+              }
               data={group.choices.map((c) => ({
                 value: c.id,
                 label: c.label,

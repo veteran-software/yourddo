@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import CauldronOfCadencePage from '../domains/cauldronOfCadence/CauldronOfCadencePage.tsx'
 import DinosaurBonePage from '../domains/dinosaurBone/DinosaurBonePage.tsx'
 import EssenceCraftingPage from '../domains/essenceCrafting/EssenceCraftingPage.tsx'
@@ -19,14 +19,23 @@ import ViktraniumPage from '../domains/viktranium/ViktraniumPage.tsx'
 import NotFoundPage from '../shared/ui/NotFoundPage.tsx'
 import AppLayout from './AppLayout'
 
+function LegacyGearLink({ home = false }: { home?: boolean }) {
+  const { hash } = useLocation()
+  // Older deployments put the Gear Planner route and its shared setup in the hash.
+  if (hash.startsWith('#/gear-planner?') && new URLSearchParams(hash.slice('#/gear-planner?'.length)).has('gp')) {
+    return <Navigate to={hash.slice(1)} replace />
+  }
+  return home ? <HomePage /> : <GearPlannerPage />
+}
+
 const AppRouter = () => (
   <Routes>
     <Route element={<AppLayout />}>
-      <Route path='/' element={<HomePage />} />
+      <Route path='/' element={<LegacyGearLink home />} />
       <Route path='/cauldron-of-cadence' element={<CauldronOfCadencePage />} />
       <Route path='/dinosaur-bone' element={<DinosaurBonePage />} />
       <Route path='/essence-crafting' element={<EssenceCraftingPage />} />
-      <Route path='/gear-planner' element={<GearPlannerPage />} />
+      <Route path='/gear-planner' element={<LegacyGearLink />} />
       <Route path='/green-steel' element={<HeroicGreenSteelPage />} />
       <Route path='/legendary-green-steel' element={<LegendaryGreenSteelPage />} />
       <Route path='/incredible-potential' element={<IncrediblePotentialPage />} />

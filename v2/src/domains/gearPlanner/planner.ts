@@ -1,7 +1,11 @@
 import type { EssenceAffixPosition, EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
+import { candidateSetDetails, matchesGearEffect } from './finding'
+import { ownsTroveItem, type TroveInventory } from './trove'
 import { isCompatibleGearPlannerAugment } from './augments.ts'
 import { canApplyGearPlannerCurse, gearPlannerCurseIdentity } from './curses.ts'
 import {
+  createGearPlannerEssenceCraftingConfiguration,
+  getGearPlannerEssenceEnhancementChoices,
   type GearPlannerEssenceCraftingConfigurations,
   isEssenceCraftedGearPlannerItem,
   isGearPlannerEssenceAffixValid,
@@ -12,8 +16,16 @@ import {
   isGearPlannerMinorArtifact,
   normalizeGearPlannerFiligreeName
 } from './filigrees.ts'
-import type { GearPlannerAugment, GearPlannerCurse, GearPlannerFiligree, GearPlannerItem } from './gearPlanner.types.ts'
-import { gearPlannerCharacterSlots } from './gearPlanner.types.ts'
+import type {
+  GearPlannerAugment,
+  GearPlannerCurse,
+  GearPlannerEffect,
+  GearPlannerFiligree,
+  GearPlannerItem,
+  GearPlannerData
+} from './gearPlanner.types.ts'
+import { slotOwner } from './character'
+import { allGearPlannerSlots, gearPlannerCharacterSlots, type GearPlannerSlot } from './gearPlanner.types.ts'
 import {
   getEffectiveGearPlannerAugmentSlots,
   isGearPlannerReforgingStageStateValid,
@@ -25,7 +37,7 @@ import {
 
 export type GearPlannerCharacterSlot = (typeof gearPlannerCharacterSlots)[number]
 
-export type GearPlannerEquipment = Record<GearPlannerCharacterSlot, GearPlannerItem | null>
+export type GearPlannerEquipment = Record<GearPlannerSlot, GearPlannerItem | null>
 
 export type GearPlannerSlottedAugments = Readonly<Record<string, Readonly<Record<number, GearPlannerAugment>>>>
 export type GearPlannerSlottedCurses = Readonly<Record<string, GearPlannerCurse>>
@@ -43,6 +55,11 @@ export interface GearPlannerSelectionState {
 }
 
 export interface GearPlannerFilters {
+  inventory?: TroveInventory
+  ownedOnly?: boolean
+  isConflicting?: (item: GearPlannerItem) => boolean
+  exactEffect?: boolean
+  bonusType?: string | null
   search: string
   minimumLevel: number
   maximumLevel: number
@@ -52,9 +69,11 @@ export interface GearPlannerFilters {
 
 export interface GearPlannerCandidate {
   item: GearPlannerItem
+  effects: readonly (GearPlannerEffect & { craft?: string })[]
   searchText: string
   type: string
   sets: readonly string[]
+  craftGroups: ReturnType<typeof candidateSetDetails>['craftGroups']
 }
 
 const normalizeSearch = (value: string) => value.trim().toLocaleLowerCase()
@@ -65,7 +84,7 @@ export const gearPlannerItemType = (item: GearPlannerItem): string => {
 }
 
 export const createEmptyGearPlannerEquipment = (): GearPlannerEquipment =>
-  Object.fromEntries(gearPlannerCharacterSlots.map((slot) => [slot, null])) as GearPlannerEquipment
+  Object.fromEntries(allGearPlannerSlots.map((slot) => [slot, null])) as GearPlannerEquipment
 
 export const createEmptyGearPlannerSelectionState = (): GearPlannerSelectionState => ({
   equipment: createEmptyGearPlannerEquipment(),
@@ -77,11 +96,47 @@ export const createEmptyGearPlannerSelectionState = (): GearPlannerSelectionStat
   reforging: {}
 })
 
+const twoHandedSources = new Set([
+  'falchion.json',
+  'greatAxe.json',
+  'greatClub.json',
+  'greatSword.json',
+  'handwraps.json',
+  'maul.json',
+  'quarterstaff.json',
+  'longBow.json',
+  'shortBow.json'
+])
+const crossbowSources = new Set([
+  'greatCrossbow.json',
+  'heavyCrossbow.json',
+  'lightCrossbow.json',
+  'repeatingHeavyCrossbow.json',
+  'repeatingLightCrossbow.json'
+])
+
+export const occupiesBothHands = (item: GearPlannerItem) => twoHandedSources.has(item.sourceFile)
+
+export function allowsOffHand(main: GearPlannerItem | null, off: GearPlannerItem): boolean {
+  if (!main) return true
+  if (crossbowSources.has(main.sourceFile)) return off.sourceFile === 'runeArm.json' || off.source.type === 'Rune Arm'
+  return !occupiesBothHands(main)
+}
+
 export const equipGearPlannerItem = (
   equipment: GearPlannerEquipment,
-  slot: GearPlannerCharacterSlot,
+  slot: GearPlannerSlot,
   item: GearPlannerItem | null
-): GearPlannerEquipment => (item !== null && item.slot !== slot ? equipment : { ...equipment, [slot]: item })
+): GearPlannerEquipment => {
+  if (item && (item.slot !== slot || (slot === 'Off Hand' && !allowsOffHand(equipment['Main Hand'], item)))) {
+    return equipment
+  }
+  const off = equipment['Off Hand']
+  if (slot === 'Main Hand' && off && !allowsOffHand(item, off)) {
+    return { ...equipment, 'Main Hand': item, 'Off Hand': null }
+  }
+  return { ...equipment, [slot]: item }
+}
 
 const withoutSlottedAugments = (
   slottedAugments: GearPlannerSlottedAugments,
@@ -100,56 +155,44 @@ const withoutItemRecord = <T>(record: Readonly<Record<string, T>>, itemId: strin
 
 export const hasOtherGearPlannerMinorArtifact = (
   equipment: GearPlannerEquipment,
-  slot: GearPlannerCharacterSlot,
+  slot: GearPlannerSlot,
   item: GearPlannerItem
 ): boolean =>
   isGearPlannerMinorArtifact(item) &&
   Object.entries(equipment).some(
-    ([equippedSlot, equipped]) => equippedSlot !== slot && equipped !== null && isGearPlannerMinorArtifact(equipped)
+    ([equippedSlot, equipped]) =>
+      equippedSlot !== slot &&
+      slotOwner(equippedSlot) === slotOwner(slot) &&
+      equipped !== null &&
+      isGearPlannerMinorArtifact(equipped) &&
+      !(slot === 'Main Hand' && equippedSlot === 'Off Hand' && !allowsOffHand(item, equipped))
   )
 
 export const equipGearPlannerItemInSelection = (
   state: GearPlannerSelectionState,
-  slot: GearPlannerCharacterSlot,
+  slot: GearPlannerSlot,
   item: GearPlannerItem | null
 ): GearPlannerSelectionState => {
-  if (item && hasOtherGearPlannerMinorArtifact(state.equipment, slot, item)) return state
   if (item && state.equipment[slot]?.id === item.id) return state
   const equipment = equipGearPlannerItem(state.equipment, slot, item)
-  if (equipment === state.equipment) return state
+  if (equipment === state.equipment || (item && hasOtherGearPlannerMinorArtifact(state.equipment, slot, item)))
+    return state
 
-  const previousItem = state.equipment[slot]
-  const slottedAugments =
-    previousItem && previousItem.id !== item?.id
-      ? withoutSlottedAugments(state.slottedAugments, previousItem.id)
-      : state.slottedAugments
-  const slottedCurses =
-    previousItem && previousItem.id !== item?.id
-      ? withoutItemRecord(state.slottedCurses, previousItem.id)
-      : state.slottedCurses
-  const slottedFiligrees =
-    previousItem && previousItem.id !== item?.id
-      ? withoutItemRecord(state.slottedFiligrees, previousItem.id)
-      : state.slottedFiligrees
-  const unlockedFiligreeSlots =
-    previousItem && previousItem.id !== item?.id
-      ? withoutItemRecord(state.unlockedFiligreeSlots, previousItem.id)
-      : state.unlockedFiligreeSlots
-  const essenceCrafting =
-    previousItem && previousItem.id !== item?.id
-      ? withoutItemRecord(state.essenceCrafting, previousItem.id)
-      : state.essenceCrafting
-  const reforging =
-    previousItem && previousItem.id !== item?.id ? withoutItemRecord(state.reforging, previousItem.id) : state.reforging
-  return {
-    equipment,
-    slottedAugments,
-    slottedCurses,
-    slottedFiligrees,
-    unlockedFiligreeSlots,
-    essenceCrafting,
-    reforging
+  let next = { ...state, equipment }
+  for (const changedSlot of new Set([slot, 'Off Hand'] as const)) {
+    const previous = state.equipment[changedSlot]
+    if (!previous || previous.id === equipment[changedSlot]?.id) continue
+    next = {
+      ...next,
+      slottedAugments: withoutItemRecord(next.slottedAugments, previous.id),
+      slottedCurses: withoutItemRecord(next.slottedCurses, previous.id),
+      slottedFiligrees: withoutItemRecord(next.slottedFiligrees, previous.id),
+      unlockedFiligreeSlots: withoutItemRecord(next.unlockedFiligreeSlots, previous.id),
+      essenceCrafting: withoutItemRecord(next.essenceCrafting, previous.id),
+      reforging: withoutItemRecord(next.reforging, previous.id)
+    }
   }
+  return next
 }
 
 export type GearPlannerEssenceCraftingUpdate =
@@ -378,15 +421,35 @@ export const setGearPlannerSlottedFiligree = (
   return slottedFiligrees === state.slottedFiligrees ? state : { ...state, slottedFiligrees }
 }
 
-export const prepareGearPlannerCandidates = (items: readonly GearPlannerItem[]): readonly GearPlannerCandidate[] =>
-  items.map((item) => ({
-    item,
-    searchText: normalizeSearch(
-      [item.source.name, ...(item.source.enchantments?.map(({ name }) => name) ?? [])].join(' ')
-    ),
-    type: gearPlannerItemType(item),
-    sets: item.source.setBonus?.map(({ name }) => name) ?? []
-  }))
+export const prepareGearPlannerCandidates = (
+  items: readonly GearPlannerItem[],
+  data?: GearPlannerData,
+  essence?: EssenceCraftingData
+): readonly GearPlannerCandidate[] =>
+  items.map((item) => {
+    const { sets, craftGroups } = candidateSetDetails(item, data)
+    let effects: GearPlannerCandidate['effects'] = item.source.enchantments ?? []
+    if (essence && isEssenceCraftedGearPlannerItem(item)) {
+      const configuration = createGearPlannerEssenceCraftingConfiguration(essence, item.minimumLevel)
+      effects = (['prefix', 'suffix', 'extra'] as const).flatMap((position) =>
+        getGearPlannerEssenceEnhancementChoices(essence, item, configuration, null, position).flatMap((choice) =>
+          choice.effects.map((effect) => ({
+            name: effect.displayName,
+            bonus: essence.bonusTypes.find((type) => type.id === effect.bonusTypeId)?.displayName,
+            craft: position + ' · ' + choice.displayName
+          }))
+        )
+      )
+    }
+    return {
+      item,
+      effects,
+      searchText: normalizeSearch([item.source.name, ...effects.map((e) => e.name), ...sets].join(' ')),
+      type: gearPlannerItemType(item),
+      sets,
+      craftGroups
+    }
+  })
 
 export const filterGearPlannerCandidates = (
   candidates: readonly GearPlannerCandidate[],
@@ -395,19 +458,31 @@ export const filterGearPlannerCandidates = (
   const search = normalizeSearch(filters.search)
 
   return candidates
-    .filter(({ item, searchText, type, sets }) => {
+    .filter(({ item, searchText, type, sets, effects }) => {
       return (
         item.minimumLevel >= filters.minimumLevel &&
         item.minimumLevel <= filters.maximumLevel &&
         (!search || searchText.includes(search)) &&
         (!filters.type || type === filters.type) &&
-        (!filters.setName || sets.includes(filters.setName))
+        (!filters.setName || sets.includes(filters.setName)) &&
+        ((!filters.bonusType && !filters.exactEffect) ||
+          effects.some((e) => matchesGearEffect(e, search, filters.bonusType, Boolean(filters.exactEffect)))) &&
+        (!filters.ownedOnly ||
+          Boolean(item.essenceCrafting) ||
+          (filters.inventory && ownsTroveItem(filters.inventory, item.source.name))) &&
+        !filters.isConflicting?.(item)
       )
     })
     .toSorted((a, b) => {
       const syntheticDifference =
         Number(isEssenceCraftedGearPlannerItem(b.item)) - Number(isEssenceCraftedGearPlannerItem(a.item))
       if (syntheticDifference !== 0) return syntheticDifference
+      if (filters.inventory?.size) {
+        const owned =
+          Number(ownsTroveItem(filters.inventory, b.item.source.name)) -
+          Number(ownsTroveItem(filters.inventory, a.item.source.name))
+        if (owned) return owned
+      }
       if (a.item.minimumLevel !== b.item.minimumLevel) return b.item.minimumLevel - a.item.minimumLevel
       const byName = a.item.source.name.localeCompare(b.item.source.name)
       return byName || a.item.id.localeCompare(b.item.id)

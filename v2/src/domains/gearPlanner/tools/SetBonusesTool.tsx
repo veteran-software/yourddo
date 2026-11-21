@@ -1,4 +1,5 @@
-import { Alert, Badge, Divider, Group, Paper, Stack, Text, Title } from '@mantine/core'
+import { Alert, Badge, Button, Divider, Group, Paper, Stack, Text, Title } from '@mantine/core'
+import type { GearFindTarget } from '../finding'
 import { formatGearPlannerSetEffect, type GearPlannerSetMembership, type GearPlannerSetState } from '../sets.ts'
 
 const membershipLabel = (membership: GearPlannerSetMembership): string =>
@@ -11,7 +12,13 @@ const membershipLabel = (membership: GearPlannerSetMembership): string =>
 const contributionLabel = (count: number): string =>
   `${String(count)} ${count === 1 ? 'contribution' : 'contributions'}`
 
-const SetBonusesTool = ({ setState }: { setState: GearPlannerSetState }) => {
+const SetBonusesTool = ({
+  setState,
+  onFind
+}: {
+  setState: GearPlannerSetState
+  onFind: (target: GearFindTarget) => void
+}) => {
   if (!setState.sets.length) {
     return (
       <Alert color='blue' title='No set memberships yet' m='md'>
@@ -51,6 +58,17 @@ const SetBonusesTool = ({ setState }: { setState: GearPlannerSetState }) => {
                 </Text>
               ))}
             </Stack>
+            <Button
+              size='compact-xs'
+              variant='light'
+              w='fit-content'
+              aria-label={`Find members of ${name}`}
+              onClick={() => {
+                onFind({ kind: category, name })
+              }}
+            >
+              Find set members
+            </Button>
             {definition === undefined ? (
               <Alert color='yellow' variant='light' title='Effect definition unavailable'>
                 This membership is counted, but its {category === 'filigree' ? 'filigree' : 'item'} set effects are

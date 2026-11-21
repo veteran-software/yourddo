@@ -17,6 +17,7 @@ import {
   VisuallyHidden
 } from '@mantine/core'
 import {
+  IconGridDots,
   type Icon,
   IconDice1Filled,
   IconDice2Filled,
@@ -26,6 +27,8 @@ import {
   IconDice6Filled
 } from '@tabler/icons-react'
 import { type SyntheticEvent, useState } from 'react'
+import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
+import styles from '../../shared/layout/workspace.module.css'
 import ToolLayout from '../../shared/layout/ToolLayout.tsx'
 import useMastermindSolver, { type Color, type Feedback, type Guess } from './useMastermindSolver.ts'
 
@@ -167,12 +170,11 @@ const MastermindPage = () => {
         </VisuallyHidden>
       )}
 
-      <Stack gap='xs'>
-        <Group justify='space-between' align='flex-start' wrap='wrap'>
-          <Stack gap={2}>
-            <Title order={1}>Mastermind Solver</Title>
-            <Text c='dimmed'>The Reaver&apos;s Fate</Text>
-          </Stack>
+      <WorkspaceHeader
+        title='Mastermind Solver'
+        icon={IconGridDots}
+        description="The Reaver's Fate"
+        actions={
           <Anchor
             href='https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Puzzle%20Solvers%22'
             target='_blank'
@@ -181,15 +183,15 @@ const MastermindPage = () => {
           >
             Known issues / bug reports
           </Anchor>
-        </Group>
-        <Text>
-          Try the displayed code in game, then enter the black pegs for correct positions and white pegs for correct
-          colors in different positions.
-        </Text>
-      </Stack>
+        }
+      />
+      <Text size='sm'>
+        Try the displayed code in game, then enter the black pegs for correct positions and white pegs for correct
+        colors in different positions.
+      </Text>
 
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing={{ base: 'md', md: 'lg' }}>
-        <Paper withBorder p={{ base: 'md', sm: 'lg' }}>
+        <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'lg' }}>
           <Stack gap='lg'>
             <Group justify='space-between' wrap='wrap'>
               <Badge variant='light'>
@@ -211,7 +213,7 @@ const MastermindPage = () => {
         </Paper>
 
         {!finished ? (
-          <Paper withBorder p={{ base: 'md', sm: 'lg' }}>
+          <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'lg' }}>
             <Box component='form' onSubmit={handleSubmit}>
               <Stack gap='md'>
                 <Group justify='space-between' wrap='wrap'>

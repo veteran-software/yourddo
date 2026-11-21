@@ -91,10 +91,7 @@ const addAugmentSlot = async (user: ReturnType<typeof userEvent.setup>, slotLabe
   await selectOption(user, `Add an augment slot to ${slotLabel}`, slotColor)
 }
 
-const openTool = async (
-  user: ReturnType<typeof userEvent.setup>,
-  name: 'Recipes' | 'Ingredients' | 'Export' | 'Permalink'
-) => {
+const openTool = async (user: ReturnType<typeof userEvent.setup>, name: 'Recipes' | 'Ingredients' | 'Sharing') => {
   await screen.findByRole('combobox', { name: 'Master minimum level' })
 
   if (desktopViewport) {
@@ -296,8 +293,9 @@ describe('EssenceCraftingPage', () => {
     const user = userEvent.setup()
     renderPage()
 
-    const tool = await openTool(user, 'Permalink')
-    const input = within(tool).getByRole<HTMLInputElement>('textbox', { name: 'Essence Crafting permalink' })
+    const tool = await openTool(user, 'Sharing')
+    await user.click(within(tool).getByText('Preview share text'))
+    const input = within(tool).getByRole<HTMLInputElement>('textbox', { name: 'Share preview' })
     const url = new URL(input.value)
 
     expect(url.pathname).toBe('/essence-crafting')
@@ -314,11 +312,11 @@ describe('EssenceCraftingPage', () => {
     expect(within(selector).getAllByRole('button')).toHaveLength(EQUIPMENT_SLOTS.length)
     for (const slot of EQUIPMENT_SLOTS) {
       const control = within(selector).getByRole('button', { name: `Plan ${slot.label}` })
-      expect(control.getAttribute('aria-pressed')).toBe('false')
+      expect(control.hasAttribute('aria-current')).toBe(false)
     }
   })
 
-  it('registers Recipes, Ingredients, Export, and Permalink as desktop workspace tools', async () => {
+  it('registers Recipes, Ingredients, and Sharing as desktop workspace tools', async () => {
     desktopViewport = true
     const user = userEvent.setup()
     renderPage()
@@ -327,15 +325,14 @@ describe('EssenceCraftingPage', () => {
     const rail = within(screen.getByTestId('workspace-tool-rail'))
     expect(rail.getByRole('button', { name: 'Recipes' })).toBeTruthy()
     expect(rail.getByRole('button', { name: 'Ingredients' })).toBeTruthy()
-    expect(rail.getByRole('button', { name: 'Export' })).toBeTruthy()
-    expect(rail.getByRole('button', { name: 'Permalink' })).toBeTruthy()
+    expect(rail.getByRole('button', { name: 'Sharing' })).toBeTruthy()
     const tool = await openRecipes(user)
     expect(tool).toBeTruthy()
     expect(screen.getByText('No planned items')).toBeTruthy()
 
     await user.click(screen.getByRole('button', { name: 'Close Recipes' }))
     expect(screen.queryByRole('complementary', { name: 'Recipes' })).toBeNull()
-    await openTool(user, 'Export')
+    await openTool(user, 'Sharing')
     expect(screen.getByRole('button', { name: 'Download JSON' })).toBeTruthy()
   })
 
@@ -372,6 +369,7 @@ describe('EssenceCraftingPage', () => {
 
     await activateSlot(user, 'Main Hand')
     await activateSlot(user, 'Off Hand')
+    await user.click(screen.getByRole('button', { name: 'Edit Main Hand' }))
     await openIngredients(user)
     expect(totalQuantity('ingredient-essence')).toBe('20')
 
@@ -427,6 +425,7 @@ describe('EssenceCraftingPage', () => {
 
     await activateSlot(user, 'Main Hand')
     await activateSlot(user, 'Off Hand')
+    await user.click(screen.getByRole('button', { name: 'Edit Main Hand' }))
     await selectOption(user, 'Minimum level for Main Hand', '2')
     await openRecipes(user)
 
@@ -512,7 +511,7 @@ describe('EssenceCraftingPage', () => {
     expect(vi.mocked(loadEssenceCraftingData)).toHaveBeenCalledTimes(2)
   })
 
-  it('activates multiple slots and keeps cards in catalog order regardless of activation order', async () => {
+  it('keeps slots in catalog order and opens only the selected item editor', async () => {
     const user = userEvent.setup()
     renderPage()
 
@@ -520,12 +519,12 @@ describe('EssenceCraftingPage', () => {
     await activateSlot(user, 'Main Hand')
     await activateSlot(user, 'Off Hand')
 
-    expect(screen.getAllByTestId(/^planned-item-/).map((card) => card.dataset.testid)).toEqual([
-      'planned-item-main-hand',
-      'planned-item-off-hand',
-      'planned-item-ring-2'
-    ])
-    expect(screen.getByRole('button', { name: 'Remove Ring 2' }).getAttribute('aria-pressed')).toBe('true')
+    const selector = within(screen.getByTestId('equipment-slot-selector'))
+    expect(
+      selector.getAllByRole('button', { name: /^Edit / }).map((button) => button.getAttribute('aria-label'))
+    ).toEqual(['Edit Main Hand', 'Edit Off Hand', 'Edit Ring 2'])
+    expect(screen.getAllByTestId(/^planned-item-/)).toHaveLength(1)
+    expect(selector.getByRole('button', { name: 'Edit Off Hand' }).getAttribute('aria-current')).toBe('true')
   })
 
   it('keeps Ring 1 and Ring 2 independently configurable', async () => {
@@ -534,11 +533,13 @@ describe('EssenceCraftingPage', () => {
 
     await activateSlot(user, 'Ring 1')
     await activateSlot(user, 'Ring 2')
+    await user.click(screen.getByRole('button', { name: 'Edit Ring 1' }))
     await selectOption(user, 'Minimum level for Ring 1', '2')
 
     expect(getSelect('Minimum level for Ring 1').value).toBe('2')
-    expect(getSelect('Minimum level for Ring 2').value).toBe('Inherit master minimum level (1)')
     expect(screen.getByRole('heading', { name: 'Ring 1 planned item' })).toBeTruthy()
+    await user.click(screen.getByRole('button', { name: 'Edit Ring 2' }))
+    expect(getSelect('Minimum level for Ring 2').value).toBe('Inherit master minimum level (1)')
     expect(screen.getByRole('heading', { name: 'Ring 2 planned item' })).toBeTruthy()
   })
 
@@ -548,14 +549,14 @@ describe('EssenceCraftingPage', () => {
 
     await activateSlot(user, 'Main Hand')
     await activateSlot(user, 'Off Hand')
-    await user.click(screen.getByRole('button', { name: 'Remove Off Hand' }))
+    await user.click(screen.getByRole('button', { name: 'Remove Off Hand planned item' }))
 
     expect(screen.getByRole('dialog', { name: 'Remove Off Hand?' })).toBeTruthy()
     await user.click(screen.getByRole('button', { name: 'Remove item' }))
 
     expect(screen.getByTestId('planned-item-main-hand')).toBeTruthy()
     expect(screen.queryByTestId('planned-item-off-hand')).toBeNull()
-    expect(screen.getByRole('button', { name: 'Plan Off Hand' }).getAttribute('aria-pressed')).toBe('false')
+    expect(screen.getByRole('button', { name: 'Plan Off Hand' })).toBeTruthy()
   })
 
   it('collapses and expands an individual item card accessibly', async () => {
@@ -594,12 +595,13 @@ describe('EssenceCraftingPage', () => {
 
     await activateSlot(user, 'Main Hand')
     await activateSlot(user, 'Off Hand')
+    await user.click(screen.getByRole('button', { name: 'Edit Main Hand' }))
     await selectOption(user, 'Minimum level for Main Hand', '2')
     await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
     await user.click(screen.getByRole('button', { name: 'Reset Main Hand planned item' }))
 
     expect(screen.getByTestId('planned-item-main-hand')).toBeTruthy()
-    expect(screen.getByTestId('planned-item-off-hand')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Edit Off Hand' })).toBeTruthy()
     expect(getSelect('Minimum level for Main Hand').value).toBe('Inherit master minimum level (1)')
     expect(getSelect('Prefix for Main Hand').value).toBe('')
   })

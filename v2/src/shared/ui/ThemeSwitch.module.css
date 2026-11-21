@@ -1,0 +1,57 @@
+.root {
+  --segment-width: 2.25rem;
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: var(--segment-width);
+  position: relative;
+  isolation: isolate;
+  padding: 3px;
+  border: 1px solid var(--mantine-color-dark-4);
+  border-radius: 11px;
+  background: var(--mantine-color-dark-9);
+}
+
+.indicator,
+.label {
+  height: 2rem;
+  border-radius: 7px;
+}
+
+.indicator {
+  position: absolute;
+  inset: 3px auto auto 3px;
+  width: var(--segment-width);
+  background: linear-gradient(var(--mantine-color-dark-5), var(--mantine-color-dark-6));
+  box-shadow: inset 0 0 0 1px var(--mantine-color-gold-6);
+  transition: transform 240ms cubic-bezier(0.22, 0.68, 0.22, 1);
+  pointer-events: none;
+}
+
+.label {
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: var(--mantine-color-dark-2);
+  cursor: pointer;
+}
+
+.root input:checked + .label {
+  color: var(--mantine-color-gold-2);
+}
+
+@media (hover: hover) {
+  .root input:not(:checked) + .label:hover {
+    color: var(--mantine-color-dark-0);
+  }
+}
+
+.root input:focus-visible + .label {
+  outline: 2px solid var(--mantine-color-gold-2);
+  outline-offset: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition: none;
+  }
+}

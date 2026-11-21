@@ -54,7 +54,8 @@ afterEach(cleanup)
 describe('AugmentSlotSelector', () => {
   it('searches compatible choices, selects, replaces, and clears an augment', async () => {
     const ruby = augment('Ruby of Strength', 'Red')
-    const diamond = augment('Diamond of Strength', 'Colorless')
+    const openSet = vi.fn()
+    const diamond = { ...augment('Diamond of Strength', 'Colorless'), setBonus: [{ name: 'Winter' }] }
     const sapphire = augment('Sapphire of Strength', 'Blue')
     const user = userEvent.setup()
 
@@ -63,10 +64,13 @@ describe('AugmentSlotSelector', () => {
       return (
         <MantineProvider env='test'>
           <AugmentSlotSelector
+            openSet={openSet}
             item={item}
             slotIndex={0}
             augmentSlot={item.source.augments?.[0] ?? { augmentType: 'Red' }}
             augments={[ruby, diamond, sapphire]}
+            conflicts={{ conflicts: [], bySourceId: {} }}
+            conflictSources={[]}
             selected={selected}
             onChange={setSelected}
           />
@@ -84,6 +88,8 @@ describe('AugmentSlotSelector', () => {
     expect(screen.queryByRole('option', { name: /Sapphire of Strength/ })).toBeNull()
 
     await user.click(screen.getByRole('option', { name: /Diamond of Strength/ }))
+    await user.click(within(selector).getByRole('button', { name: 'Winter' }))
+    expect(openSet).toHaveBeenCalledWith('Winter')
     expect(within(selector).getAllByText('Diamond of Strength')).toHaveLength(2)
 
     await user.click(input)
@@ -97,7 +103,7 @@ describe('AugmentSlotSelector', () => {
     expect(within(selector).queryByRole('button', { name: 'Clear augment' })).toBeNull()
   })
 
-  it('hides over-level augments until Show all levels is enabled', async () => {
+  it('flags only above-level choices when Show all levels is enabled', async () => {
     const overLevel = { ...augment('Legendary Ruby', 'Red'), minLevel: 30 }
     const user = userEvent.setup()
 
@@ -107,7 +113,11 @@ describe('AugmentSlotSelector', () => {
           item={item}
           slotIndex={0}
           augmentSlot={item.source.augments?.[0] ?? { augmentType: 'Red' }}
-          augments={[overLevel]}
+          hostLevel={12}
+          augments={[overLevel, { ...augment('Ruby at level', 'Red'), minLevel: 12 }]}
+          conflicts={{ conflicts: [], bySourceId: {} }}
+          conflictSources={[]}
+          openSet={vi.fn()}
           selected={null}
           onChange={vi.fn()}
         />
@@ -119,6 +129,9 @@ describe('AugmentSlotSelector', () => {
     expect(screen.queryByRole('option', { name: /Legendary Ruby/ })).toBeNull()
     await user.click(screen.getByRole('switch', { name: 'Show all levels' }))
     await user.click(input)
-    expect(await screen.findByRole('option', { name: /Legendary Ruby/ })).toBeTruthy()
+    const over = await screen.findByRole('option', { name: /Legendary Ruby/ })
+    expect(within(over).getByText('Above item ML 12')).toBeTruthy()
+    const atLevel = screen.getByRole('option', { name: /Ruby at level/ })
+    expect(within(atLevel).queryByText(/Above item ML/)).toBeNull()
   })
 })

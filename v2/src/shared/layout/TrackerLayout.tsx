@@ -1,5 +1,8 @@
-import { Box, Container, Flex, Paper, Stack, Text, Title } from '@mantine/core'
+import { Box, Container, Paper, Stack } from '@mantine/core'
+import { IconListCheck } from '@tabler/icons-react'
 import type { ReactNode } from 'react'
+import WorkspaceHeader from './WorkspaceHeader'
+import styles from './workspace.module.css'
 
 interface TrackerLayoutProps {
   title: string
@@ -12,35 +15,14 @@ interface TrackerLayoutProps {
 
 const TrackerLayout = ({ title, description, summary, controls, actions, children }: TrackerLayoutProps) => (
   <Container size='xl' px='md' py='lg'>
-    <Stack gap='lg'>
-      <Box component='header'>
-        <Stack gap='md'>
-          <Flex direction={{ base: 'column', sm: 'row' }} align={{ sm: 'flex-start' }} gap='md'>
-            <Stack gap={4} flex={1} miw={0}>
-              <Title order={1}>{title}</Title>
-              {description !== undefined ? (
-                <Text component='div' c='dimmed'>
-                  {description}
-                </Text>
-              ) : null}
-            </Stack>
-
-            {actions !== undefined ? (
-              <Flex wrap='wrap' gap='md' justify={{ base: 'flex-start', sm: 'flex-end' }}>
-                {actions}
-              </Flex>
-            ) : null}
-          </Flex>
-
-          {summary !== undefined ? (
-            <Paper p='md' style={{ boxShadow: 'inset 3px 0 0 var(--app-crimson)' }}>
-              {summary}
-            </Paper>
-          ) : null}
-          {controls !== undefined ? <Box w='100%'>{controls}</Box> : null}
-        </Stack>
-      </Box>
-
+    <Stack gap='md'>
+      <WorkspaceHeader icon={IconListCheck} title={title} description={description} actions={actions} />
+      {(summary !== undefined || controls !== undefined) && (
+        <div className={styles.trackerTools}>
+          {summary !== undefined && <Paper className={styles.summary}>{summary}</Paper>}
+          {controls !== undefined && <Box>{controls}</Box>}
+        </div>
+      )}
       <Box component='main' w='100%' miw={0}>
         {children}
       </Box>

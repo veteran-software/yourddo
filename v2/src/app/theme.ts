@@ -18,6 +18,7 @@ import {
 import classes from './theme.module.css'
 
 export const theme = createTheme({
+  cursorType: 'pointer',
   primaryColor: 'gold',
   primaryShade: 5,
   autoContrast: true,

@@ -2,7 +2,8 @@ import { gearCraftGroups, applyGearCraft, type GearCraftingData } from './crafti
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { createGearPlannerEssenceCraftingConfiguration, isEssenceCraftedGearPlannerItem } from './essenceCrafting.ts'
 import type { GearPlannerAugment, GearPlannerCurse, GearPlannerFiligree, GearPlannerItem } from './gearPlanner.types.ts'
-import type { GearPlannerCharacterSlot } from './planner.ts'
+import type { GearPlannerSlot } from './gearPlanner.types'
+import { defaultCharacter, type CharacterSettings } from './character'
 import {
   createEmptyGearPlannerSelectionState,
   equipGearPlannerItemInSelection,
@@ -26,6 +27,7 @@ export const gearPlannerMinimumLevel = 1
 export const gearPlannerMaximumLevel = 36
 
 export interface GearPlannerSetup extends GearPlannerSelectionState {
+  character: CharacterSettings
   id: string
   name: string
   minimumLevel: number
@@ -40,6 +42,7 @@ export interface GearPlannerSetupsState {
 export const createGearPlannerSetup = (id: string, name: string): GearPlannerSetup => ({
   id,
   name,
+  character: defaultCharacter(),
   minimumLevel: gearPlannerMinimumLevel,
   maximumLevel: gearPlannerMaximumLevel,
   ...createEmptyGearPlannerSelectionState()
@@ -127,7 +130,7 @@ export const updateGearPlannerSetupLevels = (
 
 export const equipGearPlannerSetupItem = (
   state: GearPlannerSetupsState,
-  slot: GearPlannerCharacterSlot,
+  slot: GearPlannerSlot,
   item: GearPlannerItem | null,
   essenceData?: EssenceCraftingData
 ): GearPlannerSetupsState =>
@@ -220,7 +223,7 @@ export const setGearPlannerSetupEssenceCraftingConfiguration = (
 
 export const setGearPlannerSetupCraft = (
   state: GearPlannerSetupsState,
-  slot: GearPlannerCharacterSlot,
+  slot: GearPlannerSlot,
   itemId: string,
   system: string,
   choiceId: string | null,
@@ -234,3 +237,6 @@ export const setGearPlannerSetupCraft = (
     const updated = applyGearCraft(item, group, choiceId)
     return updated === item ? setup : { ...setup, equipment: { ...setup.equipment, [slot]: updated } }
   })
+
+export const updateSetupCharacter = (state: GearPlannerSetupsState, id: string, character: CharacterSettings) =>
+  replaceSetup(state, id, (setup) => ({ ...setup, character }))

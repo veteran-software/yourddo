@@ -69,6 +69,12 @@ export const normalizeGearPlannerFiligreeName = (name: string): string =>
     .trim()
     .toLocaleLowerCase()
 
+export const filigreeSetNames = (filigree: GearPlannerFiligree) =>
+  (filigree.grouping ?? '')
+    .split('/')
+    .map((name) => name.trim())
+    .filter(Boolean)
+
 const equippedItems = (equipment: GearPlannerEquipment): readonly GearPlannerItem[] =>
   Object.values(equipment).filter((item): item is GearPlannerItem => item !== null)
 

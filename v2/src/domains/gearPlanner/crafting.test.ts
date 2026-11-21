@@ -1,10 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import { emptyGearCraftingData, gearCraftGroups } from './crafting.ts'
 import { collectEquippedEffects } from './effects.ts'
+import { candidateSetDetails } from './finding'
 import { normalizeGearPlannerSources } from './normalize.ts'
 import { createGearPlannerExport, importGearPlannerState } from './plannerStorage.ts'
-import { collectEquippedItemSetMemberships } from './sets.ts'
-import { createDefaultGearPlannerState, equipGearPlannerSetupItem, setGearPlannerSetupCraft } from './setups.ts'
+import { collectEquippedItemSetMemberships, resolveGearPlannerSetState } from './sets.ts'
+import { formatGearSetup, gearPlannerPermalink, openGearPlannerLink } from './sharing'
+import {
+  activeGearPlannerSetup,
+  createDefaultGearPlannerState,
+  equipGearPlannerSetupItem,
+  setGearPlannerSetupCraft
+} from './setups.ts'
 
 describe('gear planner item crafting', () => {
   it('restores recipe IDs against current data and keeps replacement and additive effects distinct', () => {
@@ -93,6 +100,83 @@ describe('gear planner item crafting', () => {
       data.crafting
     )
     expect(invalid).toBe(state)
+  })
+
+  it('counts only the selected Slave Lords tier and set through equipment changes, saves and sharing', () => {
+    const marker = { name: 'Against the Slave Lords Set Bonus' }
+    const data = normalizeGearPlannerSources(
+      ['helmet', 'cloak', 'belt', 'bracers', 'necklace', 'boots', 'gloves'].map((type) => ({
+        fileName: type + '.json',
+        records: [{ name: type, minLevel: type === 'boots' ? 28 : 8, enchantments: type === 'gloves' ? [] : [marker] }]
+      })),
+      []
+    )
+    const might = "Slave Lord's Might"
+    const sorcery = "Slave Lord's Sorcery"
+    const endurance = "Slave's Endurance"
+    let state = createDefaultGearPlannerState()
+    for (const item of data.items) {
+      state = equipGearPlannerSetupItem(state, item.slot, item)
+      const { sets: choices } = candidateSetDetails(item)
+      if (item.slot === 'Hands') expect(choices).toEqual([])
+      else
+        expect(choices).toEqual(
+          [might, sorcery, endurance].map((name) => (item.slot === 'Feet' ? 'Legendary ' + name : name))
+        )
+    }
+    const equipment = () => activeGearPlannerSetup(state).equipment
+    const sets = () => resolveGearPlannerSetState(equipment(), {}).sets
+    expect(sets()).toEqual([])
+    expect(collectEquippedEffects(equipment())).toEqual([])
+    const savedBlank = createGearPlannerExport(state)
+    expect(
+      importGearPlannerState(JSON.stringify(savedBlank), data).state.setups[0].equipment.Head?.crafts ?? []
+    ).toEqual([])
+
+    const select = (item: (typeof data.items)[number], choice: string | null) => {
+      state = setGearPlannerSetupCraft(state, item.slot, item.id, 'slave-lords', choice, data.crafting)
+    }
+    const heroic = data.items.filter((item) => item.slot !== 'Hands' && item.slot !== 'Feet')
+    const legendary = data.itemsBySlot.Feet[0]
+    select(legendary, might)
+    expect(sets()).toEqual([])
+    select(legendary, 'Legendary ' + might)
+    for (const [index, item] of heroic.entries()) {
+      select(item, might)
+      const set = sets().find((s) => s.name === might)
+      expect(set?.thresholds.map((t) => t.isActive)).toEqual([index >= 2, index >= 4])
+    }
+    expect(sets().find((s) => s.name === might)?.thresholds[1].effects).toContainEqual({
+      name: 'Strength',
+      modifier: 1,
+      bonus: 'Artifact'
+    })
+    select(heroic[0], endurance)
+    expect(sets().find((s) => s.name === might)?.count).toBe(4)
+    expect(sets().find((s) => s.name === endurance)?.count).toBe(1)
+
+    const shareText = formatGearSetup(
+      activeGearPlannerSetup(state),
+      [],
+      { Character: resolveGearPlannerSetState(equipment(), {}) },
+      'Discord Markdown',
+      ''
+    )
+    expect(shareText.split(endurance)).toHaveLength(2)
+    const saved = importGearPlannerState(JSON.stringify(createGearPlannerExport(state)), data)
+    const url = new URL(gearPlannerPermalink(activeGearPlannerSetup(state), 'https://example.test/gear-planner'))
+    const shared = openGearPlannerLink(
+      new URLSearchParams(url.hash.slice(1)).get('gp') ?? '',
+      createDefaultGearPlannerState(),
+      data
+    )
+    for (const restored of [saved, shared]) {
+      expect(restored.issues).toEqual([])
+      expect(resolveGearPlannerSetState(activeGearPlannerSetup(restored.state).equipment, {}).sets).toEqual(sets())
+    }
+    select(heroic[0], null)
+    state = equipGearPlannerSetupItem(state, legendary.slot, null)
+    expect(sets().map((s) => [s.name, s.count])).toEqual([[might, 4]])
   })
 
   it('restricts recipes by marker and level and includes every grant in a choice', () => {

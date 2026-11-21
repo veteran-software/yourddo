@@ -518,20 +518,22 @@ describe('AppRouter', () => {
       renderRoute('/nearly-complete', desktop)
 
       const navigation = screen.getByRole('button', { name: toggle })
-      const themeMenu = screen.getByRole('button', { name: 'Theme: System' })
+      const system = screen.getByRole<HTMLInputElement>('radio', { name: 'System' })
 
       await user.tab()
       expect(document.activeElement).toBe(navigation)
       expect(navigation.className).toContain('mantine-focus-auto')
 
       await user.tab()
-      expect(document.activeElement).toBe(themeMenu)
-      expect(themeMenu.className).toContain('mantine-focus-auto')
+      expect(document.activeElement).toBe(system)
+      expect(system.checked).toBe(true)
 
-      await user.keyboard('{Enter}')
-      expect(await screen.findByRole('menuitem', { name: 'Light' })).toBeTruthy()
-      await user.keyboard('{Escape}')
-      expect(screen.queryByRole('menuitem', { name: 'Light' })).toBeNull()
+      for (const name of ['Light', 'Dark', 'System']) {
+        await user.keyboard('{ArrowRight}')
+        const option = screen.getByRole<HTMLInputElement>('radio', { name })
+        expect(option.checked).toBe(true)
+        expect(document.activeElement).toBe(option)
+      }
     }
   )
 
@@ -539,16 +541,15 @@ describe('AppRouter', () => {
     const user = userEvent.setup()
     renderRoute('/cauldron-of-cadence')
 
-    const chooseTheme = async (current: string, next: string) => {
-      await user.click(screen.getByRole('button', { name: `Theme: ${current}` }))
-      await user.click(screen.getByRole('menuitem', { name: next }))
-      expect(screen.getByRole('button', { name: `Theme: ${next}` })).toBeTruthy()
+    for (const name of ['Light', 'Dark', 'System']) {
+      const option = screen.getByRole<HTMLInputElement>('radio', { name })
+      await user.click(option)
+      expect(option.checked).toBe(true)
+      expect(document.documentElement.getAttribute('data-mantine-color-scheme')).toBe(
+        name === 'Dark' ? 'dark' : 'light'
+      )
       expect(screen.getByRole('heading', { name: 'Cauldron of Cadence domain' })).toBeTruthy()
     }
-
-    await chooseTheme('System', 'Light')
-    await chooseTheme('Light', 'Dark')
-    await chooseTheme('Dark', 'System')
   })
 
   it('tracks system color-scheme changes while the application is open', async () => {

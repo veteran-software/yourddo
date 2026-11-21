@@ -4,7 +4,6 @@ import {
   Button,
   Center,
   Grid,
-  Group,
   Loader,
   Paper,
   SegmentedControl,
@@ -13,8 +12,10 @@ import {
   Text,
   Title
 } from '@mantine/core'
-import { IconFileInfo, IconListCheck, IconListDetails, IconTools } from '@tabler/icons-react'
+import { IconHammer, IconFileInfo, IconListCheck, IconListDetails, IconShare } from '@tabler/icons-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
+import styles from '../../shared/layout/workspace.module.css'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { EffectDetails, OptionBadges, SpellDetails } from './components/EffectDetails.tsx'
 import {
@@ -269,9 +270,9 @@ const HeroicGreenSteelPage = () => {
   const tools = initial
     ? [
         {
-          id: 'tools',
-          label: 'Tools',
-          icon: <IconTools size={20} />,
+          id: 'sharing',
+          label: 'Sharing',
+          icon: <IconShare size={20} />,
           content: (
             <SharingTool
               selection={selection}
@@ -319,25 +320,28 @@ const HeroicGreenSteelPage = () => {
   return (
     <WorkspaceLayout tools={tools}>
       <Stack gap='lg' p={{ base: 'md', sm: 'lg' }} maw={1100} mx='auto'>
-        <Group justify='space-between' align='flex-start' wrap='wrap'>
-          <Stack gap={4}>
-            <Title order={1}>Heroic Green Steel Crafting</Title>
-            <Text c='dimmed'>Build a Heroic Green Steel item through each Shroud altar.</Text>
-            <Anchor href={issuesUrl} target='_blank' rel='noreferrer' size='sm'>
-              Known issues / bug reports
-            </Anchor>
-          </Stack>
-          <Button
-            variant='subtle'
-            color='gray'
-            disabled={!hasSelection}
-            onClick={() => {
-              setSelection(emptyHgsSelection)
-            }}
-          >
-            Reset build
-          </Button>
-        </Group>
+        <WorkspaceHeader
+          title='Heroic Green Steel Crafting'
+          icon={IconHammer}
+          description='Build a Heroic Green Steel item through each Shroud altar.'
+          actions={
+            <>
+              <Anchor href={issuesUrl} target='_blank' rel='noreferrer' size='sm'>
+                Known issues / bug reports
+              </Anchor>
+              <Button
+                variant='subtle'
+                color='gray'
+                disabled={!hasSelection}
+                onClick={() => {
+                  setSelection(emptyHgsSelection)
+                }}
+              >
+                Reset build
+              </Button>
+            </>
+          }
+        />
 
         {initialState.status === 'loading' ? (
           <Loading>Loading Heroic Green Steel base options…</Loading>
@@ -358,7 +362,7 @@ const HeroicGreenSteelPage = () => {
                 {permalinkError}
               </Alert>
             ) : null}
-            <Paper component='section' aria-labelledby='hgs-base-title' withBorder p='md'>
+            <Paper className={styles.surface} component='section' aria-labelledby='hgs-base-title' withBorder p='md'>
               <Stack gap='sm'>
                 <Title order={2} size='h3' id='hgs-base-title'>
                   {altarLabels.base}
@@ -401,7 +405,7 @@ const HeroicGreenSteelPage = () => {
               </Stack>
             </Paper>
 
-            <Paper component='section' aria-labelledby='hgs-spell-title' withBorder p='md'>
+            <Paper className={styles.surface} component='section' aria-labelledby='hgs-spell-title' withBorder p='md'>
               <Stack gap='sm'>
                 <Title order={2} size='h3' id='hgs-spell-title'>
                   Desired Spell
@@ -460,7 +464,13 @@ const HeroicGreenSteelPage = () => {
 
             <Grid gap='md' data-testid='hgs-tier-grid'>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <Paper component='section' aria-labelledby='hgs-tier1-title' withBorder p='md'>
+                <Paper
+                  className={styles.surface}
+                  component='section'
+                  aria-labelledby='hgs-tier1-title'
+                  withBorder
+                  p='md'
+                >
                   <Stack gap='sm'>
                     <Title order={2} size='h3' id='hgs-tier1-title'>
                       {altarLabels.tier1}
@@ -495,7 +505,13 @@ const HeroicGreenSteelPage = () => {
               </Grid.Col>
 
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <Paper component='section' aria-labelledby='hgs-tier2-title' withBorder p='md'>
+                <Paper
+                  className={styles.surface}
+                  component='section'
+                  aria-labelledby='hgs-tier2-title'
+                  withBorder
+                  p='md'
+                >
                   <Stack gap='sm'>
                     <Title order={2} size='h3' id='hgs-tier2-title'>
                       {altarLabels.tier2}
@@ -546,7 +562,13 @@ const HeroicGreenSteelPage = () => {
               </Grid.Col>
 
               <Grid.Col span={12}>
-                <Paper component='section' aria-labelledby='hgs-tier3-title' withBorder p='md'>
+                <Paper
+                  className={styles.surface}
+                  component='section'
+                  aria-labelledby='hgs-tier3-title'
+                  withBorder
+                  p='md'
+                >
                   <Stack gap='sm'>
                     <Title order={2} size='h3' id='hgs-tier3-title'>
                       {altarLabels.tier3}

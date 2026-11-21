@@ -1,3 +1,4 @@
+import { convertLegacyGearSave } from './legacyImport'
 import { gearCraftGroups, applyGearCraft } from './crafting.ts'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { gearPlannerAugmentIdentity, isCompatibleGearPlannerAugment } from './augments.ts'
@@ -10,8 +11,16 @@ import {
   resolveEssenceCraftedGearPlannerItem
 } from './essenceCrafting.ts'
 import { collectSelectedGearPlannerFiligrees, getGearPlannerMaxFiligreeSlots } from './filigrees.ts'
-import { gearPlannerCharacterSlots, type GearPlannerData } from './gearPlanner.types.ts'
+import { classNames, defaultCharacter, slotOwner, proficiencyOptions, type CharacterSettings } from './character'
 import {
+  allGearPlannerSlots,
+  gearPlannerPetSlots,
+  gearPlannerCharacterSlots,
+  type GearPlannerSlot,
+  type GearPlannerData
+} from './gearPlanner.types.ts'
+import {
+  allowsOffHand,
   createEmptyGearPlannerEquipment,
   setGearPlannerItemReforgingState,
   setGearPlannerSlottedAugment,
@@ -87,7 +96,9 @@ export interface PersistedGearPlannerSetupV1 {
   name: string
   minimumLevel: number
   maximumLevel: number
-  equipment: Record<(typeof gearPlannerCharacterSlots)[number], string | null>
+  character?: CharacterSettings
+  equipment: Record<(typeof gearPlannerCharacterSlots)[number], string | null> &
+    Partial<Record<GearPlannerSlot, string | null>>
   selectedAugments: readonly PersistedGearPlannerAugmentV1[]
   selectedCurses?: readonly PersistedGearPlannerCurseV1[]
   selectedFiligrees?: readonly PersistedGearPlannerFiligreeV1[]
@@ -106,8 +117,10 @@ export interface PersistedGearPlannerStateV1 {
 
 export interface GearPlannerRestoreIssue {
   kind:
+    | 'legacy-selection'
     | 'invalid-craft'
     | 'invalid-state'
+    | 'incompatible-off-hand'
     | 'missing-item'
     | 'missing-augment'
     | 'orphaned-augment'
@@ -133,10 +146,12 @@ export interface RestoredGearPlannerState {
   issues: readonly GearPlannerRestoreIssue[]
 }
 
-export type GearPlannerStorageSource = 'empty' | 'v2' | 'invalid'
+export type GearPlannerStorageSource = 'empty' | 'v2' | 'legacy' | 'invalid'
 
 export interface LoadedGearPlannerState extends RestoredGearPlannerState {
   source: GearPlannerStorageSource
+  legacySaveImported?: boolean
+  carryover?: { kind: 'success' | 'error'; message: string }
 }
 
 export class InvalidGearPlannerStateError extends Error {
@@ -172,14 +187,35 @@ const requiredLevel = (value: unknown, path: string): number => {
   return value
 }
 
+function parseCharacter(value: unknown, path: string): CharacterSettings {
+  const record = requiredRecord(value, path)
+  const character = defaultCharacter()
+  for (const key of ['classes', 'weapons', 'armor', 'shields'] as const) {
+    const values = record[key]
+    const options = key === 'classes' ? classNames : proficiencyOptions[key]
+    if (
+      !Array.isArray(values) ||
+      !values.every((v: unknown): v is string => typeof v === 'string' && options.includes(v)) ||
+      new Set(values).size !== values.length ||
+      (key === 'classes' && values.length > 3)
+    )
+      throw new InvalidGearPlannerStateError(path + '.' + key + ' contains invalid selections')
+    character[key] = values
+  }
+  if (typeof record.allowMetalWithDruid !== 'boolean')
+    throw new InvalidGearPlannerStateError(path + '.allowMetalWithDruid must be a boolean')
+  return { ...character, allowMetalWithDruid: record.allowMetalWithDruid }
+}
+
 const parseEquipment = (value: unknown, path: string): PersistedGearPlannerSetupV1['equipment'] => {
   const record = requiredRecord(value, path)
-  const validSlots = new Set<string>(gearPlannerCharacterSlots)
+  const validSlots = new Set<string>(allGearPlannerSlots)
   for (const key of Object.keys(record)) {
-    if (!validSlots.has(key)) throw new InvalidGearPlannerStateError(`${path}.${key} is not a character equipment slot`)
+    if (!validSlots.has(key)) throw new InvalidGearPlannerStateError(`${path}.${key} is not an equipment slot`)
   }
   const equipment = {} as PersistedGearPlannerSetupV1['equipment']
-  for (const slot of gearPlannerCharacterSlots) {
+  for (const slot of allGearPlannerSlots) {
+    if (!Object.hasOwn(record, slot) && gearPlannerPetSlots.some((p) => p === slot)) continue
     const itemId = record[slot]
     if (itemId !== null && (typeof itemId !== 'string' || !itemId.trim())) {
       throw new InvalidGearPlannerStateError(`${path}.${slot} must be an item ID or null`)
@@ -358,6 +394,7 @@ const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 
     name,
     minimumLevel,
     maximumLevel,
+    ...(record.character === undefined ? {} : { character: parseCharacter(record.character, path + '.character') }),
     equipment: parseEquipment(record.equipment, `${path}.equipment`),
     selectedAugments: parseSelectedAugments(record.selectedAugments, `${path}.selectedAugments`),
     ...(record.selectedCurses === undefined
@@ -429,8 +466,11 @@ export const serializeGearPlannerState = (state: GearPlannerSetupsState): Persis
     name: setup.name,
     minimumLevel: setup.minimumLevel,
     maximumLevel: setup.maximumLevel,
+    character: setup.character,
     equipment: Object.fromEntries(
-      gearPlannerCharacterSlots.map((slot) => [slot, setup.equipment[slot]?.id ?? null])
+      allGearPlannerSlots
+        .filter((slot) => slotOwner(slot) === 'Character' || setup.equipment[slot])
+        .map((slot) => [slot, setup.equipment[slot]?.id ?? null])
     ) as PersistedGearPlannerSetupV1['equipment'],
     selectedAugments: Object.values(setup.equipment)
       .filter((item): item is NonNullable<typeof item> => item !== null)
@@ -501,18 +541,26 @@ export const restorePersistedGearPlannerState = (
   const issues: GearPlannerRestoreIssue[] = []
   const setups = persisted.setups.map((savedSetup) => {
     const equipment = createEmptyGearPlannerEquipment()
-    for (const slot of gearPlannerCharacterSlots) {
+    for (const slot of allGearPlannerSlots) {
       const itemId = savedSetup.equipment[slot]
-      if (itemId === null) continue
+      if (itemId == null) continue
       const item = itemsById.get(itemId) ?? resolveEssenceCraftedGearPlannerItem(itemId, slot)
       if (!item || item.slot !== slot) {
         issues.push({ kind: 'missing-item', message: `${savedSetup.name}: ${slot} item is no longer available` })
         continue
       }
+      const mainHand = equipment['Main Hand']
+      if (slot === 'Off Hand' && mainHand && !allowsOffHand(mainHand, item)) {
+        issues.push({
+          kind: 'incompatible-off-hand',
+          message: `${savedSetup.name}: ${item.source.name} was unequipped because it cannot be used with ${mainHand.source.name}.`
+        })
+        continue
+      }
       equipment[slot] = item
     }
     for (const { itemId, system, choiceId } of savedSetup.selectedCrafts ?? []) {
-      const slot = gearPlannerCharacterSlots.find((s) => equipment[s]?.id === itemId)
+      const slot = allGearPlannerSlots.find((s) => equipment[s]?.id === itemId)
       const item = slot && equipment[slot]
       const group = item && gearCraftGroups(item, data.crafting).find((g) => g.system === system)
       if (slot && item && group) {
@@ -529,6 +577,7 @@ export const restorePersistedGearPlannerState = (
     }
     let setup: GearPlannerSetup = {
       ...createGearPlannerSetup(savedSetup.id, savedSetup.name),
+      character: savedSetup.character ?? defaultCharacter(),
       minimumLevel: savedSetup.minimumLevel,
       maximumLevel: savedSetup.maximumLevel,
       equipment
@@ -726,6 +775,33 @@ const browserStorage = (): GearPlannerStorage | undefined => {
   }
 }
 
+function combineBrowserSetups(
+  current: PersistedGearPlannerStateV1 | undefined,
+  loaded: LoadedGearPlannerState,
+  legacy: PersistedGearPlannerStateV1
+) {
+  if (!current) return { payload: legacy, added: legacy.setups.length }
+  const comparable = loaded.issues.length ? current : serializeGearPlannerState(loaded.state)
+  const blank = JSON.stringify(serializeGearPlannerState(createDefaultGearPlannerState()).setups[0])
+  if (comparable.setups.length === 1 && JSON.stringify(comparable.setups[0]) === blank) {
+    return { payload: legacy, added: legacy.setups.length }
+  }
+
+  const existing = new Map(comparable.setups.map((s) => [s.id, JSON.stringify(s)]))
+  const ids = new Set([...existing.keys(), ...legacy.setups.map((s) => s.id)])
+  const additions = legacy.setups.flatMap((setup) => {
+    const content = JSON.stringify(setup)
+    if (content === blank || existing.get(setup.id) === content) return []
+    if (!existing.has(setup.id)) return [setup]
+    let id = 'legacy-' + setup.id
+    while (ids.has(id)) id = 'legacy-' + id
+    ids.add(id)
+    return [{ ...setup, id, name: setup.name + ' (legacy)' }]
+  })
+  // Keep the original v2 references even if the current catalog cannot resolve them.
+  return { payload: { ...current, setups: [...current.setups, ...additions] }, added: additions.length }
+}
+
 export const loadGearPlannerState = (
   data: GearPlannerData,
   essenceDataOrStorage?: EssenceCraftingData | GearPlannerStorage,
@@ -739,18 +815,22 @@ export const loadGearPlannerState = (
     essenceData === undefined
       ? ((essenceDataOrStorage as GearPlannerStorage | undefined) ?? browserStorage())
       : (suppliedStorage ?? browserStorage())
-  if (!storage) return { source: 'empty', state: createDefaultGearPlannerState(), issues: [] }
+  const empty: LoadedGearPlannerState = { source: 'empty', state: createDefaultGearPlannerState(), issues: [] }
+  if (!storage) return empty
+  let current: PersistedGearPlannerStateV1 | undefined
+  let loaded = empty
   try {
     const raw = storage.getItem(GEAR_PLANNER_STORAGE_KEY)
-    if (raw === null) return { source: 'empty', state: createDefaultGearPlannerState(), issues: [] }
-    return {
-      source: 'v2',
-      ...restorePersistedGearPlannerState(parsePersistedGearPlannerState(JSON.parse(raw)), data, essenceData)
+    if (raw !== null) {
+      const parsed: unknown = JSON.parse(raw)
+      current = parsePersistedGearPlannerState(parsed)
+      loaded = { source: 'v2', ...restorePersistedGearPlannerState(current, data, essenceData) }
+      if (isRecord(parsed) && parsed.legacySaveImported === true) return { ...loaded, legacySaveImported: true }
     }
   } catch (error) {
     return {
+      ...empty,
       source: 'invalid',
-      state: createDefaultGearPlannerState(),
       issues: [
         {
           kind: 'invalid-state',
@@ -759,19 +839,73 @@ export const loadGearPlannerState = (
       ]
     }
   }
+  try {
+    const raw = storage.getItem('gearPlannerState')
+    if (raw === null) return loaded
+    const legacy = importGearPlannerState(raw, data, essenceData)
+    const { payload, added } = combineBrowserSetups(current, loaded, serializeGearPlannerState(legacy.state))
+    const restored = current ? restorePersistedGearPlannerState(payload, data, essenceData) : legacy
+    const issues = current ? [...legacy.issues, ...restored.issues] : legacy.issues
+    const saved = writeBrowserSave(storage, payload, true)
+    let carryover: LoadedGearPlannerState['carryover']
+    if (!saved) {
+      carryover = {
+        kind: 'error',
+        message: 'Legacy setups opened for this session. The browser could not save the v2 copy.'
+      }
+    } else if (added || issues.length) {
+      carryover = {
+        kind: 'success',
+        message: added
+          ? `Carried over ${String(added)} legacy Gear Planner ${added === 1 ? 'setup' : 'setups'}.`
+          : 'Legacy setups were already present. Review the import details.'
+      }
+    }
+    return { source: 'legacy', state: restored.state, issues, carryover, legacySaveImported: true }
+  } catch (error) {
+    return {
+      ...loaded,
+      source: 'invalid',
+      carryover: { kind: 'error', message: 'The legacy Gear Planner save could not be imported.' },
+      issues: [
+        ...loaded.issues,
+        { kind: 'invalid-state', message: error instanceof Error ? error.message : 'Invalid legacy save.' }
+      ]
+    }
+  }
 }
 
-export const saveGearPlannerState = (
-  state: GearPlannerSetupsState,
-  storage: GearPlannerStorage | undefined = browserStorage()
-): boolean => {
-  if (!storage) return false
+function writeBrowserSave(
+  storage: GearPlannerStorage,
+  payload: PersistedGearPlannerStateV1,
+  legacySaveImported: boolean
+) {
   try {
-    storage.setItem(GEAR_PLANNER_STORAGE_KEY, JSON.stringify(serializeGearPlannerState(state)))
+    storage.setItem(
+      GEAR_PLANNER_STORAGE_KEY,
+      JSON.stringify({ ...payload, ...(legacySaveImported && { legacySaveImported: true }) })
+    )
     return true
   } catch {
     return false
   }
+}
+
+export const saveGearPlannerState = (
+  state: GearPlannerSetupsState,
+  storage: GearPlannerStorage | undefined = browserStorage(),
+  legacySaveImported?: boolean
+): boolean => {
+  if (!storage) return false
+  if (legacySaveImported === undefined) {
+    try {
+      const previous: unknown = JSON.parse(storage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? 'null')
+      legacySaveImported = isRecord(previous) && previous.legacySaveImported === true
+    } catch {
+      legacySaveImported = false
+    }
+  }
+  return writeBrowserSave(storage, serializeGearPlannerState(state), legacySaveImported)
 }
 
 export const createGearPlannerExport = (state: GearPlannerSetupsState): PersistedGearPlannerStateV1 => ({
@@ -783,5 +917,13 @@ export const importGearPlannerState = (
   text: string,
   data: GearPlannerData,
   essenceData?: EssenceCraftingData
-): RestoredGearPlannerState =>
-  restorePersistedGearPlannerState(parsePersistedGearPlannerState(JSON.parse(text)), data, essenceData)
+): RestoredGearPlannerState => {
+  const payload: unknown = JSON.parse(text)
+  const legacy = convertLegacyGearSave(payload, data, essenceData)
+  const restored = restorePersistedGearPlannerState(
+    parsePersistedGearPlannerState(legacy?.payload ?? payload),
+    data,
+    essenceData
+  )
+  return legacy ? { state: restored.state, issues: [...legacy.issues, ...restored.issues] } : restored
+}

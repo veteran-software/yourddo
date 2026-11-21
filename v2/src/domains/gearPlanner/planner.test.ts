@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { GearPlannerAugment } from './gearPlanner.types.ts'
-import { gearPlannerCharacterSlots, type GearPlannerItem, gearPlannerSlots } from './gearPlanner.types.ts'
+import { allGearPlannerSlots, type GearPlannerItem, gearPlannerSlots } from './gearPlanner.types.ts'
 import {
   createEmptyGearPlannerEquipment,
   createEmptyGearPlannerSelectionState,
@@ -43,11 +43,11 @@ const filters = {
 }
 
 describe('Gear Planner equipment selection', () => {
-  it('creates all normal character slots empty', () => {
+  it('creates all character and companion slots empty', () => {
     const equipment = createEmptyGearPlannerEquipment()
 
-    expect(Object.keys(equipment)).toEqual(gearPlannerCharacterSlots)
-    expect(Object.values(equipment)).toEqual(Array(gearPlannerCharacterSlots.length).fill(null))
+    expect(Object.keys(equipment)).toEqual(allGearPlannerSlots)
+    expect(Object.values(equipment)).toEqual(Array(allGearPlannerSlots.length).fill(null))
   })
 
   it('equips, replaces, removes, and leaves unrelated slots unchanged', () => {
@@ -65,7 +65,7 @@ describe('Gear Planner equipment selection', () => {
     expect(removed['First Finger']).toBe(ring)
   })
 
-  it('keeps slot-specific rings and weapons independent, including two-handed parity', () => {
+  it('preserves rings and dual wielding but rejects an off-hand dagger with a two-handed axe', () => {
     const source = { name: 'Shared Ring', type: 'Ring', minLevel: 10 }
     const firstRing: GearPlannerItem = {
       id: 'first-ring',
@@ -84,7 +84,10 @@ describe('Gear Planner equipment selection', () => {
       source: weaponSource
     }
     const offDagger: GearPlannerItem = { ...mainDagger, id: 'dagger-off', slot: gearPlannerSlots.offHand }
-    const greatAxe = item('axe-main', gearPlannerSlots.mainHand, 'Great Axe', 10, 'Great Axe')
+    const greatAxe = {
+      ...item('axe-main', gearPlannerSlots.mainHand, 'Great Axe', 10, 'Great Axe'),
+      sourceFile: 'greatAxe.json'
+    }
     const before = structuredClone(source)
     const withRings = equipGearPlannerItem(
       equipGearPlannerItem(createEmptyGearPlannerEquipment(), gearPlannerSlots.firstFinger, firstRing),
@@ -108,7 +111,13 @@ describe('Gear Planner equipment selection', () => {
     expect(withDualWield['Main Hand']).toBe(mainDagger)
     expect(withDualWield['Off Hand']).toBe(offDagger)
     expect(withWeapons['Main Hand']).toBe(greatAxe)
-    expect(withWeapons['Off Hand']).toBe(offDagger)
+    expect(withWeapons['Off Hand']).toBeNull()
+    expect(equipGearPlannerItem(withWeapons, 'Off Hand', offDagger)).toBe(withWeapons)
+    const crossbow = { ...greatAxe, sourceFile: 'repeatingHeavyCrossbow.json' }
+    const runeArm = { ...offDagger, sourceFile: 'runeArm.json' }
+    const ranged = equipGearPlannerItem(withWeapons, 'Main Hand', crossbow)
+    expect(equipGearPlannerItem(ranged, 'Off Hand', offDagger)).toBe(ranged)
+    expect(equipGearPlannerItem(ranged, 'Off Hand', runeArm)['Off Hand']).toBe(runeArm)
     expect(source).toEqual(before)
   })
 

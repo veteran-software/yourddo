@@ -16,16 +16,18 @@ import { useReducedMotion } from '@mantine/hooks'
 import { IconChevronsLeft, IconChevronsRight } from '@tabler/icons-react'
 import type { ReactNode } from 'react'
 import { useEffect, useId, useRef, useState } from 'react'
+import styles from './workspace.module.css'
 
 interface WorkspaceTool {
   id: string
   label: string
   icon: ReactNode
-  content: ReactNode
+  content: ReactNode | ((revealWorkspace: () => void) => ReactNode)
 }
 
 interface WorkspaceLayoutProps {
   children: ReactNode
+  scrollMain?: boolean
   tools?: readonly WorkspaceTool[]
   defaultActiveToolId?: string
   toolPanelWidth?: string | number
@@ -43,6 +45,7 @@ const toCssSize = (size: string | number) => (typeof size === 'number' ? `${Stri
 
 const WorkspaceLayout = ({
   children,
+  scrollMain = true,
   tools,
   defaultActiveToolId,
   toolPanelWidth = defaultToolPanelWidth,
@@ -60,7 +63,7 @@ const WorkspaceLayout = ({
 
   // The first matching tool is the deterministic winner when IDs are duplicated.
   const resolvedTools =
-    tools ??
+    tools?.toSorted((a, b) => Number(a.id === 'sharing') - Number(b.id === 'sharing')) ??
     (inspector !== undefined
       ? [
           {
@@ -111,6 +114,16 @@ const WorkspaceLayout = ({
   const closeTool = () => {
     setActiveToolId(undefined)
   }
+
+  // Navigation inside a tool reveals the main workspace. Desktop summaries can stay alongside it.
+  const revealWorkspace = () => {
+    if (!desktop) {
+      mobileOpeningTrigger.current = null
+      closeTool()
+    }
+  }
+  const renderContent = (tool: WorkspaceTool) =>
+    typeof tool.content === 'function' ? tool.content(revealWorkspace) : tool.content
 
   const toolButton = (tool: WorkspaceTool, index: number, showLabel = railExpanded) => {
     const active = activeTool?.id === tool.id
@@ -191,32 +204,48 @@ const WorkspaceLayout = ({
   const desktopTools = desktop && resolvedTools.length > 0
   const mobileTools = !desktop && resolvedTools.length > 0
 
+  const mobileNavigation = mobileTools ? (
+    <ScrollArea
+      style={{ flexShrink: 0 }}
+      type='auto'
+      offsetScrollbars
+      scrollbarSize={6}
+      data-testid='workspace-mobile-tools'
+    >
+      <Group
+        component='nav'
+        aria-label='Workspace tools'
+        wrap='nowrap'
+        gap={4}
+        miw='max-content'
+        p='xs'
+        bg='var(--app-nav)'
+      >
+        {resolvedTools.map((tool, index) => toolButton(tool, index, true))}
+      </Group>
+    </ScrollArea>
+  ) : null
+
   return (
     <Flex
+      className={styles.plannerLayout}
       data-testid='workspace-layout'
       h='calc(100dvh - var(--app-shell-header-height, 56px))'
       mih={0}
       style={{ overflow: 'hidden' }}
     >
       <Box component='section' aria-label='Workspace' data-testid='workspace-main' flex={1} miw={0} mih={0}>
-        <ScrollArea h='100%' type='auto'>
-          {mobileTools ? (
-            <ScrollArea type='auto' offsetScrollbars scrollbarSize={6} data-testid='workspace-mobile-tools'>
-              <Group
-                component='nav'
-                aria-label='Workspace tools'
-                wrap='nowrap'
-                gap={4}
-                miw='max-content'
-                p='xs'
-                bg='var(--app-nav)'
-              >
-                {resolvedTools.map((tool, index) => toolButton(tool, index, true))}
-              </Group>
-            </ScrollArea>
-          ) : null}
-          {children}
-        </ScrollArea>
+        {scrollMain ? (
+          <ScrollArea h='100%' type='auto'>
+            {mobileNavigation}
+            {children}
+          </ScrollArea>
+        ) : (
+          <Stack h='100%' gap={0}>
+            {mobileNavigation}
+            {children}
+          </Stack>
+        )}
       </Box>
 
       {desktopTools ? (
@@ -269,7 +298,7 @@ const WorkspaceLayout = ({
                 </Group>
                 <Divider />
                 <ScrollArea data-testid='workspace-tool-panel-content' type='auto' flex={1} miw={0} mih={0}>
-                  {panelTool.content}
+                  {renderContent(panelTool)}
                 </ScrollArea>
               </Stack>
             </>
@@ -327,6 +356,7 @@ const WorkspaceLayout = ({
         <Drawer
           opened={Boolean(activeTool)}
           onClose={closeTool}
+          returnFocus={false}
           title={activeTool?.label}
           position='right'
           size={panelWidth}
@@ -340,7 +370,7 @@ const WorkspaceLayout = ({
                 </Group>
               </ScrollArea>
               <ScrollArea type='auto' flex={1} mih={0}>
-                {activeTool.content}
+                {renderContent(activeTool)}
               </ScrollArea>
             </Stack>
           ) : null}

@@ -1,5 +1,6 @@
 import rules from './craftingRules.json'
 import type { GearPlannerEffect, GearPlannerItem } from './gearPlanner.types.ts'
+import { heroicSlaveLordsSets, legendarySlaveLordsSets, slaveLordsMarker } from './slaveLords'
 
 export interface CraftChoice {
   id: string
@@ -75,6 +76,10 @@ export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): 
       label: 'Ritual Table',
       choices: ritual.map((r) => ({ id: r.name, label: r.name, effects: r.effects }))
     })
+  if (markers.has(slaveLordsMarker)) {
+    const sets = item.minimumLevel >= 28 ? legendarySlaveLordsSets : heroicSlaveLordsSets
+    groups.push({ system: 'slave-lords', label: 'Slave Lords set', choices: sets.map(({ name }) => setChoice(name)) })
+  }
   if (markers.has('Lost Purpose')) {
     const legendary = source.name.startsWith('Legendary ') || item.minimumLevel >= 20
     groups.push({

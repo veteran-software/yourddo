@@ -15,7 +15,10 @@ import {
   Text,
   Title
 } from '@mantine/core'
+import { IconFlame } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
+import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
+import styles from '../../shared/layout/workspace.module.css'
 import ToolLayout from '../../shared/layout/ToolLayout.tsx'
 import {
   type CauldronRecipes,
@@ -110,9 +113,15 @@ const CauldronOfCadencePage = () => {
 
   return (
     <ToolLayout>
-      <Stack gap='xs'>
-        <Group justify='space-between' align='flex-start' wrap='wrap'>
-          <Title order={1}>Cauldron of Cadence</Title>
+      <WorkspaceHeader
+        title='Cauldron of Cadence'
+        icon={IconFlame}
+        description={
+          <Text size='sm' c={secondaryTextColor}>
+            Choose an item you have or an effect you want to find its Cauldron set augment recipe.
+          </Text>
+        }
+        actions={
           <Anchor
             href='https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Cauldron%20of%20Cadence%22'
             target='_blank'
@@ -121,11 +130,8 @@ const CauldronOfCadencePage = () => {
           >
             Known issues / bug reports
           </Anchor>
-        </Group>
-        <Text c={secondaryTextColor}>
-          Choose an item you have or an effect you want to find its Cauldron set augment recipe.
-        </Text>
-      </Stack>
+        }
+      />
 
       <Alert color='blue' title='Minimum level 30'>
         All Cauldron set augments are Minimum Level 30 and require a three-piece set.
@@ -168,8 +174,8 @@ const CauldronOfCadencePage = () => {
           The loaded recipe data is empty. Try again later.
         </Alert>
       ) : (
-        <>
-          <SimpleGrid cols={{ base: 1, md: 2 }} spacing={{ base: 'lg', md: 'xl' }}>
+        <div className={styles.recipeDesk}>
+          <Stack className={styles.recipeControls} gap='md'>
             <Stack gap='xs'>
               <Title order={2} size='h3'>
                 Item Selection
@@ -205,11 +211,9 @@ const CauldronOfCadencePage = () => {
                 clearable
               />
             </Stack>
-          </SimpleGrid>
+          </Stack>
 
-          <Divider />
-
-          <Paper withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
+          <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
             {selectedRecipe ? (
               <Stack gap='lg'>
                 <Group justify='space-between' align='flex-start' wrap='wrap'>
@@ -305,7 +309,7 @@ const CauldronOfCadencePage = () => {
               </Stack>
             )}
           </Paper>
-        </>
+        </div>
       )}
     </ToolLayout>
   )

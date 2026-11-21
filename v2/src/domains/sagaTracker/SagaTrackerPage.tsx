@@ -1,4 +1,17 @@
-import { Alert, Button, Center, CloseButton, Group, Loader, Modal, Stack, Tabs, Text, TextInput } from '@mantine/core'
+import {
+  Alert,
+  Button,
+  Center,
+  CloseButton,
+  Group,
+  Loader,
+  Modal,
+  Progress,
+  Stack,
+  Tabs,
+  Text,
+  TextInput
+} from '@mantine/core'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import TrackerLayout from '../../shared/layout/TrackerLayout.tsx'
 import { createBackup, downloadBackup, parseBackup } from './backup.ts'
@@ -306,7 +319,21 @@ const SagaTrackerPage = () => {
       <TrackerLayout
         title='Saga Tracker'
         description='Track your DDO saga completion.'
-        summary={data ? `${completedCount.toString()} / ${data.sagas.length.toString()} completed` : undefined}
+        summary={
+          data ? (
+            <Stack gap={4}>
+              <Text size='sm' fw={600}>
+                {completedCount} / {data.sagas.length} completed
+              </Text>
+              <Progress
+                aria-hidden
+                size={4}
+                color='teal'
+                value={data.sagas.length ? (completedCount / data.sagas.length) * 100 : 0}
+              />
+            </Stack>
+          ) : undefined
+        }
         controls={controls}
         actions={actions}
       >

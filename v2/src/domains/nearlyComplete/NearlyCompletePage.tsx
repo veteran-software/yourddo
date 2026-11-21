@@ -14,7 +14,10 @@ import {
   Text,
   Title
 } from '@mantine/core'
+import { IconPuzzle } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
+import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
+import styles from '../../shared/layout/workspace.module.css'
 import ToolLayout from '../../shared/layout/ToolLayout.tsx'
 import { getNearlyCompleteItems, loadNearlyCompleteItems, type NearlyCompleteDataset } from './data.ts'
 import {
@@ -98,12 +101,11 @@ const NearlyCompletePage = () => {
 
   return (
     <ToolLayout>
-      <Stack gap='xs'>
-        <Title order={1}>Nearly Complete</Title>
-        <Text c='dimmed'>
-          Choose a Nearly Complete property and completed effect to view its Duergar Completion Forge recipe.
-        </Text>
-      </Stack>
+      <WorkspaceHeader
+        title='Nearly Complete'
+        icon={IconPuzzle}
+        description='Choose a Nearly Complete property and completed effect to view its Duergar Completion Forge recipe.'
+      />
 
       {recipesState.status === 'loading' ? (
         <Center mih={160} role='status' aria-live='polite'>
@@ -137,116 +139,118 @@ const NearlyCompletePage = () => {
         </Alert>
       ) : (
         <>
-          <Stack gap='md'>
-            <Title order={2} size='h3'>
-              Select a Recipe
-            </Title>
+          <div className={styles.recipeDesk}>
+            <Stack className={styles.recipeControls} gap='md'>
+              <Title order={2} size='h3'>
+                Select a Recipe
+              </Title>
 
-            <SimpleGrid cols={{ base: 1, md: 3 }} spacing='md'>
-              <Select
-                label='Item Tier'
-                data={['Heroic', 'Legendary']}
-                value={tier}
-                onChange={changeTier}
-                allowDeselect={false}
-              />
+              <Stack gap='sm'>
+                <Select
+                  label='Item Tier'
+                  data={['Heroic', 'Legendary']}
+                  value={tier}
+                  onChange={changeTier}
+                  allowDeselect={false}
+                />
 
-              <Select
-                label='Nearly Complete Property'
-                data={categories}
-                value={category}
-                onChange={(value) => {
-                  setCategory(value ?? '')
-                  setSelectedName(null)
-                }}
-                allowDeselect={false}
-              />
+                <Select
+                  label='Nearly Complete Property'
+                  data={categories}
+                  value={category}
+                  onChange={(value) => {
+                    setCategory(value ?? '')
+                    setSelectedName(null)
+                  }}
+                  allowDeselect={false}
+                />
 
-              <Select
-                label='Completed Property'
-                placeholder='Select a property…'
-                data={recipes.map((recipe) => recipe.name)}
-                value={selectedName}
-                onChange={setSelectedName}
-                searchable
-                clearable
-              />
-            </SimpleGrid>
-          </Stack>
+                <Select
+                  label='Completed Property'
+                  placeholder='Select a property…'
+                  data={recipes.map((recipe) => recipe.name)}
+                  value={selectedName}
+                  onChange={setSelectedName}
+                  searchable
+                  clearable
+                />
+              </Stack>
+            </Stack>
 
-          <Paper withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
-            {selectedRecipe ? (
-              <Stack gap='lg'>
-                <Group justify='space-between' align='flex-start'>
-                  <Stack gap={4}>
-                    <Title order={2}>{selectedRecipe.name}</Title>
-                    <Text c='dimmed' size='sm'>
-                      Crafted in: {selectedRecipe.craftedIn}
-                    </Text>
-                  </Stack>
+            <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
+              {selectedRecipe ? (
+                <Stack gap='lg'>
+                  <Group justify='space-between' align='flex-start'>
+                    <Stack gap={4}>
+                      <Title order={2}>{selectedRecipe.name}</Title>
+                      <Text c='dimmed' size='sm'>
+                        Crafted in: {selectedRecipe.craftedIn}
+                      </Text>
+                    </Stack>
 
-                  <Group gap='xs'>
-                    <Badge variant='light'>{tier}</Badge>
-                    <Badge variant='outline'>{category}</Badge>
+                    <Group gap='xs'>
+                      <Badge variant='light'>{tier}</Badge>
+                      <Badge variant='outline'>{category}</Badge>
+                    </Group>
                   </Group>
-                </Group>
 
-                <Divider />
+                  <Divider />
 
-                <SimpleGrid cols={{ base: 1, md: 2 }} spacing={{ base: 'lg', md: 'xl' }}>
-                  <Stack gap='sm'>
-                    <Title order={3} size='h4'>
-                      Recipe Requirements
-                    </Title>
-                    <List spacing='sm'>
-                      {selectedRecipe.requirements.map((requirement) => (
-                        <List.Item key={requirement.name}>
-                          <Text component='span' size='sm'>
-                            {requirement.name}
-                          </Text>{' '}
-                          <Badge variant='light' color='gray' size='sm'>
-                            ×{requirement.quantity ?? 1}
-                          </Badge>
-                        </List.Item>
-                      ))}
-                    </List>
-                  </Stack>
-
-                  <Stack gap='sm'>
-                    <Title order={3} size='h4'>
-                      Resulting Effects
-                    </Title>
-                    <List spacing='sm'>
-                      {selectedRecipe.effectsAdded.map((effect) => (
-                        <List.Item key={`${effect.name}-${effect.modifier ?? ''}-${effect.bonus ?? ''}`}>
-                          <Text component='span' size='sm'>
-                            {effect.name}
-                          </Text>{' '}
-                          <Badge variant='light' size='sm'>
-                            {effect.modifier != null ? `+${effect.modifier}` : '—'}
-                          </Badge>{' '}
-                          {effect.bonus && (
-                            <Badge variant='outline' color='gray' size='sm'>
-                              {effect.bonus}
+                  <SimpleGrid cols={{ base: 1, md: 2 }} spacing={{ base: 'lg', md: 'xl' }}>
+                    <Stack gap='sm'>
+                      <Title order={3} size='h4'>
+                        Recipe Requirements
+                      </Title>
+                      <List spacing='sm'>
+                        {selectedRecipe.requirements.map((requirement) => (
+                          <List.Item key={requirement.name}>
+                            <Text component='span' size='sm'>
+                              {requirement.name}
+                            </Text>{' '}
+                            <Badge variant='light' color='gray' size='sm'>
+                              ×{requirement.quantity ?? 1}
                             </Badge>
-                          )}
-                        </List.Item>
-                      ))}
-                    </List>
-                  </Stack>
-                </SimpleGrid>
-              </Stack>
-            ) : (
-              <Stack gap='xs'>
-                <Title order={2} size='h3'>
-                  Select a completed property
-                </Title>
-                <Text c='dimmed'>
-                  Select a Completed Property above to view its requirements and resulting effects.
-                </Text>
-              </Stack>
-            )}
-          </Paper>
+                          </List.Item>
+                        ))}
+                      </List>
+                    </Stack>
+
+                    <Stack gap='sm'>
+                      <Title order={3} size='h4'>
+                        Resulting Effects
+                      </Title>
+                      <List spacing='sm'>
+                        {selectedRecipe.effectsAdded.map((effect) => (
+                          <List.Item key={`${effect.name}-${effect.modifier ?? ''}-${effect.bonus ?? ''}`}>
+                            <Text component='span' size='sm'>
+                              {effect.name}
+                            </Text>{' '}
+                            <Badge variant='light' size='sm'>
+                              {effect.modifier != null ? `+${effect.modifier}` : '—'}
+                            </Badge>{' '}
+                            {effect.bonus && (
+                              <Badge variant='outline' color='gray' size='sm'>
+                                {effect.bonus}
+                              </Badge>
+                            )}
+                          </List.Item>
+                        ))}
+                      </List>
+                    </Stack>
+                  </SimpleGrid>
+                </Stack>
+              ) : (
+                <Stack gap='xs'>
+                  <Title order={2} size='h3'>
+                    Select a completed property
+                  </Title>
+                  <Text c='dimmed'>
+                    Select a Completed Property above to view its requirements and resulting effects.
+                  </Text>
+                </Stack>
+              )}
+            </Paper>
+          </div>
 
           <Divider />
 

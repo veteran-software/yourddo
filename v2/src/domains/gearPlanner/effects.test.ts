@@ -242,7 +242,7 @@ describe('Gear Planner augment effect sources', () => {
       augmentSlotName: 'Ruby socket'
     })
     expect(aggregateEffectSummary(sources).find(({ name }) => name === 'Strength')?.groups[0].effectiveValue).toBe(10)
-    expect(resolveEffectConflicts(sources).bySourceId['head:augment:0:0']).toEqual({ isEffective: false })
+    expect(resolveEffectConflicts(sources).bySourceId['head:augment:0:0']).toMatchObject({ isEffective: false })
   })
 
   it('lets stronger augment effects win without conflicting across bonus types', () => {
@@ -260,7 +260,7 @@ describe('Gear Planner augment effect sources', () => {
 
     expect(summary?.groups.find(({ bonusType }) => bonusType === 'enhancement')?.effectiveDisplay).toBe('+10%')
     expect(summary?.groups.find(({ bonusType }) => bonusType === 'insight')?.effectiveValue).toBe(5)
-    expect(resolveEffectConflicts(sources).bySourceId['head:augment:0:0']).toEqual({ isEffective: true })
+    expect(resolveEffectConflicts(sources).bySourceId['head:augment:0:0']).toMatchObject({ isEffective: true })
     expect(resolveEffectConflicts(sources).conflicts).toHaveLength(1)
   })
 

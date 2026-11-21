@@ -143,6 +143,20 @@ describe('Gear Planner setup serialization', () => {
     expect(restored.state.setups[1].equipment['Off Hand']).toBe(configured.data.items[3])
   })
 
+  it('restores the main-hand weapon and reports an incompatible saved off-hand item', () => {
+    const configured = configuredState()
+    const axe = { ...configured.data.items[2], sourceFile: 'greatAxe.json' }
+    const payload = serializeGearPlannerState(configured.state)
+    payload.setups[1].equipment['Main Hand'] = axe.id
+    const restored = restorePersistedGearPlannerState(
+      payload,
+      data([axe, ...configured.data.items.filter((i) => i.id !== axe.id)], [configured.ruby])
+    )
+    expect(restored.state.setups[1].equipment['Main Hand']).toBe(axe)
+    expect(restored.state.setups[1].equipment['Off Hand']).toBeNull()
+    expect(restored.issues.map((issue) => issue.kind)).toEqual(['incompatible-off-hand'])
+  })
+
   it('serializes references only, omitting CDN item and augment objects and transient browser state', () => {
     const configured = configuredState()
     const payload = serializeGearPlannerState(configured.state)
@@ -391,6 +405,76 @@ describe('Gear Planner local and JSON persistence', () => {
       expect(loaded.state).toEqual(createDefaultGearPlannerState())
       expect(local.getItem(GEAR_PLANNER_STORAGE_KEY)).toBe(saved)
     }
+  })
+
+  it('merges legacy browser setups once, preserves conflicting v2 IDs and skips identical setups', () => {
+    const { data: catalog, state } = configuredState()
+    const saved = storage()
+    saveGearPlannerState(state, saved)
+    const second = state.setups[1]
+    const original = JSON.stringify({
+      activeSetupId: 'default',
+      characterSetups: [
+        { id: 'default', name: 'Legacy tank', slots: {} },
+        {
+          id: second.id,
+          name: second.name,
+          slots: { 'Second Finger': { name: 'Shared Ring' }, 'Off Hand': { name: 'Shared Dagger' } }
+        },
+        { id: 'extra', name: 'Older setup without slots' }
+      ]
+    })
+    saved.setItem('gearPlannerState', original)
+    const migrated = loadGearPlannerState(catalog, saved)
+    expect(migrated.issues).toEqual([])
+    expect(migrated.state.activeSetupId).toBe(second.id)
+    expect(migrated.state.setups.map((s) => s.name)).toEqual([
+      'Default Setup',
+      second.name,
+      'Legacy tank (legacy)',
+      'Older setup without slots'
+    ])
+    expect(migrated.state.setups[0].equipment['First Finger']?.id).toBe('first-ring')
+    expect(loadGearPlannerState(catalog, saved)).toMatchObject({ source: 'v2', state: migrated.state })
+    saveGearPlannerState(state, saved)
+    expect(loadGearPlannerState(catalog, saved).state).toEqual(state)
+    expect(saved.getItem('gearPlannerState')).toBe(original)
+    expect(createGearPlannerExport(migrated.state)).not.toHaveProperty('legacySaveImported')
+  })
+
+  it('retries failed writes and keeps both originals when a stored payload is invalid', () => {
+    const source = JSON.stringify({ characterSetups: [{ id: 'old', name: 'Legacy', slots: {} }], activeSetupId: 'old' })
+    const local = storage({ gearPlannerState: source })
+    const original = JSON.stringify(serializeGearPlannerState(createDefaultGearPlannerState()))
+    local.setItem(GEAR_PLANNER_STORAGE_KEY, original)
+    const full = {
+      getItem: local.getItem,
+      setItem: () => {
+        throw new Error('Quota exceeded')
+      }
+    }
+    expect(loadGearPlannerState(data([]), full)).toMatchObject({
+      state: { activeSetupId: 'old' },
+      carryover: { kind: 'error' }
+    })
+    expect(local.getItem(GEAR_PLANNER_STORAGE_KEY)).toBe(original)
+    expect(loadGearPlannerState(data([]), local)).toMatchObject({
+      source: 'legacy',
+      state: { activeSetupId: 'old', setups: [{ name: 'Legacy' }] }
+    })
+    local.setItem(GEAR_PLANNER_STORAGE_KEY, '{bad')
+    expect(loadGearPlannerState(data([]), local).source).toBe('invalid')
+    expect(local.getItem(GEAR_PLANNER_STORAGE_KEY)).toBe('{bad')
+    expect(local.getItem('gearPlannerState')).toBe(source)
+    local.setItem(GEAR_PLANNER_STORAGE_KEY, original)
+    local.setItem('gearPlannerState', '{bad')
+    expect(loadGearPlannerState(data([]), local)).toMatchObject({
+      source: 'invalid',
+      state: createDefaultGearPlannerState(),
+      carryover: { kind: 'error' }
+    })
+    expect(local.getItem(GEAR_PLANNER_STORAGE_KEY)).toBe(original)
+    expect(local.getItem('gearPlannerState')).toBe('{bad')
   })
 
   it('writes only serialized meaningful state and exports an explicitly versioned complete collection', () => {

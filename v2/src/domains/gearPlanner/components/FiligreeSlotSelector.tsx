@@ -1,10 +1,29 @@
-import { Badge, Button, Group, Modal, Paper, ScrollArea, SimpleGrid, Stack, Text, TextInput } from '@mantine/core'
-import { useMemo, useState } from 'react'
+import { useTroveInventory } from '../troveContext'
+import { TroveOwnership, OwnedFilter } from './TroveInventory'
+import { ownsTroveItem } from '../trove'
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Button,
+  Group,
+  Modal,
+  Paper,
+  ScrollArea,
+  SimpleGrid,
+  Stack,
+  Text,
+  TextInput
+} from '@mantine/core'
+import { IconX } from '@tabler/icons-react'
+import { useId, useMemo, useState } from 'react'
 import { getGearPlannerMaxFiligreeSlots, normalizeGearPlannerFiligreeName } from '../filigrees.ts'
 import type { GearPlannerEffect, GearPlannerFiligree, GearPlannerItem } from '../gearPlanner.types.ts'
 import { type GearPlannerSlottedFiligrees, gearPlannerUnlockedFiligreeSlotCount } from '../planner.ts'
 
 interface FiligreeSlotSelectorProps {
+  initialSlotIndex?: number
+  onClose?: () => void
   item: GearPlannerItem
   filigrees: readonly GearPlannerFiligree[]
   slottedFiligrees: GearPlannerSlottedFiligrees
@@ -17,6 +36,8 @@ const effectLabel = (effect: GearPlannerEffect): string =>
   `${effect.name}${effect.modifier == null ? '' : ` ${String(effect.modifier)}`}${effect.bonus ? ` (${String(effect.bonus)})` : ''}`
 
 const FiligreeSlotSelector = ({
+  initialSlotIndex,
+  onClose,
   item,
   filigrees,
   slottedFiligrees,
@@ -24,18 +45,26 @@ const FiligreeSlotSelector = ({
   onChange,
   onUnlockedSlotCountChange
 }: FiligreeSlotSelectorProps) => {
-  const [opened, setOpened] = useState(false)
-  const [activeSlotIndex, setActiveSlotIndex] = useState<number | null>(null)
+  const { inventory, ownedOnly } = useTroveInventory()
+  const [opened, setOpened] = useState(initialSlotIndex !== undefined)
+  const [activeSlotIndex, setActiveSlotIndex] = useState<number | null>(initialSlotIndex ?? null)
   const [search, setSearch] = useState('')
   const maximum = getGearPlannerMaxFiligreeSlots(item)
   const unlocked = gearPlannerUnlockedFiligreeSlotCount(item, unlockedFiligreeSlots)
   const selected = slottedFiligrees[item.id] ?? {}
+  const filled = Object.keys(selected).length
+  const countLabel = `${String(filled)} filled · ${String(unlocked)}/${String(maximum)} unlocked`
+  const selectorId = useId()
   const visible = useMemo(
     () =>
       filigrees
-        .filter((filigree) => filigree.name.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()))
+        .filter(
+          (filigree) =>
+            filigree.name.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()) &&
+            (!ownedOnly || ownsTroveItem(inventory, filigree.name, true))
+        )
         .toSorted((left, right) => left.name.localeCompare(right.name) || left.id.localeCompare(right.id)),
-    [filigrees, search]
+    [filigrees, search, inventory, ownedOnly]
   )
   const selectedInAnotherSlot = (filigree: GearPlannerFiligree): boolean =>
     Object.entries(selected).some(
@@ -44,6 +73,7 @@ const FiligreeSlotSelector = ({
         normalizeGearPlannerFiligreeName(current.name) === normalizeGearPlannerFiligreeName(filigree.name)
     )
   const close = () => {
+    onClose?.()
     setOpened(false)
     setActiveSlotIndex(null)
     setSearch('')
@@ -53,13 +83,14 @@ const FiligreeSlotSelector = ({
     <>
       <Button
         aria-label={`Manage filigrees for ${item.source.name}`}
+        aria-describedby={selectorId}
         size='compact-xs'
         variant='light'
         onClick={() => {
           setOpened(true)
         }}
       >
-        Filigrees {String(unlocked)}/{String(maximum)}
+        Filigrees · <span id={selectorId}>{countLabel}</span>
       </Button>
       <Modal
         opened={opened}
@@ -102,26 +133,53 @@ const FiligreeSlotSelector = ({
           <SimpleGrid cols={{ base: 2, sm: 3, md: 5 }} spacing='xs'>
             {Array.from({ length: unlocked }, (_, slotIndex) => {
               const filigree = selected[slotIndex]
+              const slotId = selectorId + '-slot-' + String(slotIndex)
+              const removeLabel = filigree ? `Remove ${filigree.name} from slot ${String(slotIndex + 1)}` : ''
               return (
-                <Button
-                  key={slotIndex}
-                  aria-label={`Filigree slot ${String(slotIndex + 1)}`}
-                  color={activeSlotIndex === slotIndex ? 'violet' : undefined}
-                  h={58}
-                  p='xs'
-                  variant={filigree ? 'light' : 'default'}
-                  onClick={() => {
-                    setActiveSlotIndex(slotIndex)
-                    setSearch('')
-                  }}
-                >
-                  <Stack gap={0} align='center' w='100%'>
-                    <Text lineClamp={2} size='xs' ta='center'>
-                      {filigree?.name ?? `Empty slot ${String(slotIndex + 1)}`}
-                    </Text>
-                    {filigree ? <Badge size='xs'>Filled</Badge> : null}
-                  </Stack>
-                </Button>
+                <Box key={slotIndex} pos='relative'>
+                  <Button
+                    id={slotId}
+                    fullWidth
+                    pr={filigree ? '1.8rem' : undefined}
+                    aria-pressed={activeSlotIndex === slotIndex}
+                    data-autofocus={initialSlotIndex === slotIndex || undefined}
+                    aria-label={`Filigree slot ${String(slotIndex + 1)}`}
+                    color={activeSlotIndex === slotIndex ? 'violet' : undefined}
+                    h={58}
+                    py='xs'
+                    pl='xs'
+                    variant={filigree ? 'light' : 'default'}
+                    onClick={() => {
+                      setActiveSlotIndex(slotIndex)
+                      setSearch('')
+                    }}
+                  >
+                    <Stack gap={0} align='center' w='100%'>
+                      <Text lineClamp={2} size='xs' ta='center'>
+                        {filigree?.name ?? `Empty slot ${String(slotIndex + 1)}`}
+                      </Text>
+                      {filigree ? <Badge size='xs'>Filled</Badge> : null}
+                    </Stack>
+                  </Button>
+                  {filigree && (
+                    <ActionIcon
+                      size='sm'
+                      variant='subtle'
+                      color='red'
+                      pos='absolute'
+                      top={2}
+                      right={2}
+                      aria-label={removeLabel}
+                      title={removeLabel}
+                      onClick={() => {
+                        document.getElementById(slotId)?.focus()
+                        onChange(slotIndex, null)
+                      }}
+                    >
+                      <IconX size={14} />
+                    </ActionIcon>
+                  )}
+                </Box>
               )
             })}
           </SimpleGrid>
@@ -144,6 +202,7 @@ const FiligreeSlotSelector = ({
                   </Button>
                 ) : null}
               </Group>
+              <OwnedFilter />
               <TextInput
                 aria-label='Search filigrees'
                 placeholder='Search filigrees'
@@ -163,6 +222,7 @@ const FiligreeSlotSelector = ({
                             <Text fw={600} size='sm'>
                               {filigree.name}
                             </Text>
+                            <TroveOwnership name={filigree.name} filigree />
                             {filigree.source.enchantments?.map((effect, index) => (
                               <Text key={`${effect.name}-${String(index)}`} c='dimmed' size='xs'>
                                 {effectLabel(effect)}

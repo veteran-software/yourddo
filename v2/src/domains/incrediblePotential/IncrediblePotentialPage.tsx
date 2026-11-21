@@ -18,8 +18,11 @@ import {
   Timeline,
   Title
 } from '@mantine/core'
+import { IconDiamond } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
 import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
+import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
+import styles from '../../shared/layout/workspace.module.css'
 import ToolLayout from '../../shared/layout/ToolLayout.tsx'
 import {
   type AltarRecipe,
@@ -214,20 +217,23 @@ const IncrediblePotentialPage = () => {
 
   return (
     <ToolLayout>
-      <Stack gap={4}>
-        <Group justify='space-between' align='flex-start' wrap='wrap'>
-          <Stack gap={4}>
-            <Title order={1}>Incredible Potential Crafting</Title>
-            <Text c='dimmed'>Tower of Despair Rings</Text>
-            <Text size='sm'>Choose a ring and an upgrade effect to plan every Altar of Subjugation step.</Text>
-          </Stack>
-          {dataState.status === 'loaded' && (
+      <WorkspaceHeader
+        title='Incredible Potential Crafting'
+        icon={IconDiamond}
+        description={
+          <>
+            <strong>Tower of Despair Rings</strong> · Choose a ring and an upgrade effect to plan every Altar of
+            Subjugation step.
+          </>
+        }
+        actions={
+          dataState.status === 'loaded' && (
             <Button variant='subtle' color='gray' onClick={reset}>
               Reset
             </Button>
-          )}
-        </Group>
-      </Stack>
+          )
+        }
+      />
 
       {dataState.status === 'loading' ? (
         <Center mih={240} role='status' aria-live='polite'>
@@ -262,7 +268,7 @@ const IncrediblePotentialPage = () => {
         </Alert>
       ) : (
         <>
-          <Paper withBorder p={{ base: 'md', sm: 'lg' }}>
+          <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'lg' }}>
             <Stack gap='lg'>
               <Group justify='space-between' align='flex-end' wrap='wrap'>
                 <Stack gap={4}>
@@ -378,7 +384,7 @@ const IncrediblePotentialPage = () => {
           </Paper>
 
           {selectedRing && (
-            <Paper withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
+            <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
               <Stack gap='lg'>
                 <Group align='flex-start' wrap='wrap'>
                   <Image src={ringIconUrl} fallbackSrc={unknownIconUrl} alt='' w={72} h={72} fit='contain' />
@@ -455,7 +461,7 @@ const IncrediblePotentialPage = () => {
 
           {selectedRing && selectedUpgrade && planResult?.plan && (
             <>
-              <Paper withBorder p={{ base: 'md', sm: 'xl' }}>
+              <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }}>
                 <Stack gap='lg'>
                   <Title order={2}>Total Shopping List</Title>
                   <Text c='dimmed' size='sm'>
@@ -492,7 +498,7 @@ const IncrediblePotentialPage = () => {
                 </Stack>
               </Paper>
 
-              <Paper withBorder p={{ base: 'md', sm: 'xl' }}>
+              <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }}>
                 <Stack gap='md'>
                   <Title order={2}>Crafting Steps</Title>
                   <Text c='dimmed' size='sm'>
