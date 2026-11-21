@@ -24,12 +24,6 @@
       "options": {
         "parser": "json"
       }
-    },
-    {
-      "files": "**/essenceCrafting.v2.json",
-      "options": {
-        "objectWrap": "preserve"
-      }
     }
   ]
 }

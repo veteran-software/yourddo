@@ -6,7 +6,7 @@ This document records the migration pattern proven by the completed Nearly Compl
 
 ### Keep domains together
 
-A tool owns its page, domain-specific types, data interpretation, plain domain logic, source data, and tests under `v2/src/domains/<domain>`.
+A tool owns its page, domain-specific types, data interpretation, plain domain logic, source data, and tests under `src/domains/<domain>`.
 
 Move code into shared folders only when it serves multiple domains. Shared code should provide narrow application concerns, such as the common tool layout or dataset transport, while each domain retains its own rules and presentation.
 
@@ -102,7 +102,7 @@ Keep each migrated tool at its existing public path and preserve navigation to t
 ## Checklist for the next simple tool
 
 - [ ] Confirm the existing public URL and current domain behavior before migrating.
-- [ ] Put the page, domain types, logic, data, and tests under `v2/src/domains/<domain>`.
+- [ ] Put the page, domain types, logic, data, and tests under `src/domains/<domain>`.
 - [ ] Reuse `ToolLayout` and build the page directly with Mantine components and props.
 - [ ] Add one page title, a dimmed task description, and visibly labeled controls grouped under a section heading.
 - [ ] Make control and result grids responsive with Mantine responsive props.

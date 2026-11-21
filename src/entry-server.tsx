@@ -1,10 +1,11 @@
 import { renderToString } from 'react-dom/server'
-import { Provider } from 'react-redux'
+import { MantineProvider } from '@mantine/core'
 import { MemoryRouter } from 'react-router-dom'
-import App from './App.tsx'
-import { buildStructuredData, normalizeCanonicalPath, resolveSeo } from './components/seo/seoConfig.ts'
-import { SITE_NAME, SITE_PREVIEW_IMAGE_PATH } from './components/seo/siteMeta.ts'
-import store from './redux/store.ts'
+import App from './app/AppRouter'
+import { buildStructuredData, normalizeCanonicalPath, resolveSeo } from './shared/seo/seoConfig.ts'
+import { SITE_NAME, SITE_ORIGIN, SITE_PREVIEW_IMAGE_PATH } from './shared/seo/siteMeta.ts'
+import { theme, cssVariablesResolver } from './app/theme'
+export { ROUTE_SEO } from './shared/seo/seoConfig'
 
 export interface PrerenderResult {
   html: string
@@ -18,20 +19,20 @@ export interface PrerenderResult {
   imageAlt: string
 }
 
-const DEFAULT_ORIGIN = 'https://yourddo.com'
-
-export const render = (url: string, origin = DEFAULT_ORIGIN): PrerenderResult => {
+// This build-only entry runs in Node, outside React Fast Refresh.
+// oxlint-disable-next-line react/only-export-components
+export const render = (url: string, origin = SITE_ORIGIN): PrerenderResult => {
   const pathname = new URL(url, origin).pathname
   const seo = resolveSeo(pathname)
   const canonicalPath = seo.canonicalPath ?? seo.path ?? pathname
-  const canonicalUrl = `${origin}${normalizeCanonicalPath(canonicalPath)}`
-  const structuredData = buildStructuredData(origin, seo, canonicalUrl)
+  const canonicalUrl = `${SITE_ORIGIN}${normalizeCanonicalPath(canonicalPath)}`
+  const structuredData = buildStructuredData(SITE_ORIGIN, seo, canonicalUrl)
 
   const html = renderToString(
     <MemoryRouter initialEntries={[url]}>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <MantineProvider theme={theme} cssVariablesResolver={cssVariablesResolver} defaultColorScheme='auto'>
+        <App hostname={new URL(origin).hostname} />
+      </MantineProvider>
     </MemoryRouter>
   )
 
@@ -40,10 +41,10 @@ export const render = (url: string, origin = DEFAULT_ORIGIN): PrerenderResult =>
     title: seo.title,
     description: seo.description,
     canonicalUrl,
-    robots: seo.noIndex ? 'noindex, nofollow' : 'index, follow',
+    robots: seo.noIndex || new URL(origin).hostname.startsWith('develop.') ? 'noindex, nofollow' : 'index, follow',
     siteName: SITE_NAME,
     structuredData,
-    imageUrl: `${origin}${SITE_PREVIEW_IMAGE_PATH}`,
+    imageUrl: `${SITE_ORIGIN}${SITE_PREVIEW_IMAGE_PATH}`,
     imageAlt: 'YourDDO homepage preview'
   }
 }

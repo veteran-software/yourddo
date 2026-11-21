@@ -21,20 +21,7 @@ jobs:
     - name: Enable Corepack
       run: corepack enable
 
-    - name: Set up Go
-      uses: actions/setup-go@v6
-      with:
-        go-version: '1.26.1'
-        cache-dependency-path: tools/*/go.mod
-
-    - name: Install dependencies
-      run: YARN_ENABLE_SCRIPTS=false yarn install
-
-    - name: Prebuild
-      run: yarn prebuild
-
-    - name: Lint
-      run: yarn lint
-
-    - name: Type check
-      run: yarn build # Since the 'build' script runs 'tsc -b && vite build', it includes type checking
+    - run: yarn install --immutable
+    - run: yarn lint
+    - run: yarn test
+    - run: yarn build
