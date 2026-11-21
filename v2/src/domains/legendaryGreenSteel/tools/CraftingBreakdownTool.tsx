@@ -1,3 +1,4 @@
+import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
 import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Group, List, Paper, Stack, Text, Title } from '@mantine/core'
 import type { LgsRecipe, LgsRequirement } from '../legendaryGreenSteel.types.ts'
@@ -15,6 +16,7 @@ const CraftingBreakdownTool = ({
   stages: readonly LgsCraftingStage[]
   components: readonly LgsRecipe[]
 }) => {
+  const location = useIngredientLocations()
   const componentIds = new Set(components.map((component) => component.id))
   const selectedStages = stages.filter(
     (stage): stage is LgsCraftingStage & { recipe: NonNullable<LgsCraftingStage['recipe']> } => Boolean(stage.recipe)
@@ -51,6 +53,11 @@ const CraftingBreakdownTool = ({
               {recipe.requirements.map(({ id, name, quantity }) => (
                 <List.Item key={id}>
                   {name} ×{quantity}
+                  {location(name) && (
+                    <Text size='xs' c='dimmed'>
+                      Found in: {location(name)}
+                    </Text>
+                  )}
                   <IngredientStock name={name} required={quantity} />
                   {componentIds.has(id) ? ' (crafted component)' : ''}
                 </List.Item>

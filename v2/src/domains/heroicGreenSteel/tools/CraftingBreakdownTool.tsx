@@ -1,3 +1,4 @@
+import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
 import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Button, Center, Group, List, Loader, Paper, Stack, Text, Title } from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
@@ -12,6 +13,7 @@ const CraftingBreakdownTool = ({
   recipeIds: readonly number[]
   devices: Readonly<Record<'base' | 'tier1' | 'tier2' | 'tier3', HgsDevice>>
 }) => {
+  const location = useIngredientLocations()
   const [data, setData] = useState<HgsRecipeData | null>(null)
   const [error, setError] = useState<unknown>(null)
   const [attempt, setAttempt] = useState(0)
@@ -101,6 +103,11 @@ const CraftingBreakdownTool = ({
                   {data.ingredientById.get(relation.ingredientId)?.name ?? 'Missing ingredient'} ×
                   {relation.quantity.toString()}
                   {relation.producerRecipeId ? ' (crafted component)' : ''}
+                  {location(data.ingredientById.get(relation.ingredientId)?.name ?? '') && (
+                    <Text size='xs' c='dimmed'>
+                      Found in: {location(data.ingredientById.get(relation.ingredientId)?.name ?? '')}
+                    </Text>
+                  )}
                   <IngredientStock
                     name={data.ingredientById.get(relation.ingredientId)?.name ?? 'Missing ingredient'}
                     required={relation.quantity}

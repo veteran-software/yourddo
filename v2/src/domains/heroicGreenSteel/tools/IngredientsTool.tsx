@@ -1,3 +1,4 @@
+import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
 import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Button, Center, Group, List, Loader, Stack, Text, Title } from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
@@ -6,6 +7,7 @@ import type { HgsRecipeData } from '../heroicGreenSteel.types.ts'
 import { expandIngredientRequirements } from '../logic.ts'
 
 const IngredientsTool = ({ recipeIds }: { recipeIds: readonly number[] }) => {
+  const location = useIngredientLocations()
   const [data, setData] = useState<HgsRecipeData | null>(null)
   const [error, setError] = useState<unknown>(null)
   const [attempt, setAttempt] = useState(0)
@@ -85,6 +87,11 @@ const IngredientsTool = ({ recipeIds }: { recipeIds: readonly number[] }) => {
               ×{quantity}
             </Badge>
           </Group>
+          {location(ingredient.name) && (
+            <Text size='xs' c='dimmed'>
+              Found in: {location(ingredient.name)}
+            </Text>
+          )}
           <IngredientStock name={ingredient.name} required={quantity} />
         </List.Item>
       ))}

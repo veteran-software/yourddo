@@ -1,9 +1,11 @@
+import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
 import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Group, List, Stack, Text, Title } from '@mantine/core'
 import type { LgsIngredientPlan, LgsRequirement } from '../legendaryGreenSteel.types.ts'
 
-const IngredientList = ({ values }: { values: readonly LgsRequirement[] }) =>
-  values.length ? (
+const IngredientList = ({ values }: { values: readonly LgsRequirement[] }) => {
+  const location = useIngredientLocations()
+  return values.length ? (
     <List spacing='xs'>
       {values.map(({ id, name, quantity }) => (
         <List.Item key={id}>
@@ -15,6 +17,11 @@ const IngredientList = ({ values }: { values: readonly LgsRequirement[] }) =>
               ×{quantity}
             </Badge>
           </Group>
+          {location(name) && (
+            <Text size='xs' c='dimmed'>
+              Found in: {location(name)}
+            </Text>
+          )}
           <IngredientStock name={name} required={quantity} />
         </List.Item>
       ))}
@@ -24,6 +31,7 @@ const IngredientList = ({ values }: { values: readonly LgsRequirement[] }) =>
       No materials yet.
     </Text>
   )
+}
 
 const IngredientsTool = ({ plan }: { plan: LgsIngredientPlan }) => {
   if (!plan.rawMaterials.length && !plan.craftedMaterials.length) {
