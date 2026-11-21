@@ -50,7 +50,6 @@ const icons = {
 import { useSlotView } from '../../shared/layout/plannerView'
 import { PlannerViewToolbar } from '../../shared/layout/PlannerViewToolbar'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout'
-import { getAvailableEnhancementChoices } from './enhancementEligibility'
 
 interface Props {
   tools: readonly WorkspaceTool[]
@@ -80,13 +79,13 @@ export default function EssencePlanWorkspace({
   const levels = Array.from({ length: maximum - minimum + 1 }, (_, i) => String(minimum + i))
 
   function selectSlot(id: EquipmentSlotId) {
-    if (!plan.itemsBySlotId[id]) {
-      onAction({ type: 'activate-equipment-slot', equipmentSlotId: id })
-      if (view === 'grid') {
-        setSelected(id)
-        return
-      }
+    if (view === 'grid') {
+      if (plan.itemsBySlotId[id]) onRequestDeactivate(id)
+      else onAction({ type: 'activate-equipment-slot', equipmentSlotId: id })
+      setSelected(id)
+      return
     }
+    if (!plan.itemsBySlotId[id]) onAction({ type: 'activate-equipment-slot', equipmentSlotId: id })
     setSelected(id)
     setShowDetail(true)
     requestAnimationFrame(() => detailHeading.current?.focus({ preventScroll: true }))
@@ -131,8 +130,8 @@ export default function EssencePlanWorkspace({
       />
       <div
         className={layout.columns}
-        data-grid={view === 'grid' || undefined}
-        data-detail={showDetail && item ? true : undefined}
+        data-crafting-board={view === 'grid' || undefined}
+        data-detail={view === 'list' && showDetail && item ? true : undefined}
       >
         <nav className={layout.slots} aria-label='Equipment slots'>
           <Group className={layout.paneHeading} justify='space-between'>
@@ -151,109 +150,108 @@ export default function EssencePlanWorkspace({
                 planned &&
                 data.indexes.enhancementById.get(planned.prefixEnhancementId ?? planned.suffixEnhancementId ?? '')
               return (
-                <div key={id} className={layout.slotCell} data-filled={planned ? true : undefined}>
-                  <UnstyledButton
-                    type='button'
-                    className={layout.slot}
-                    aria-current={current === id ? true : undefined}
-                    aria-controls='essence-editor'
-                    aria-label={`${planned ? 'Edit' : 'Plan'} ${label}`}
-                    onClick={() => {
-                      selectSlot(id)
-                    }}
-                  >
-                    <span className={layout.slotIcon} data-equipped={planned ? true : undefined}>
-                      <Icon size={19} stroke={1.6} aria-hidden />
-                    </span>
-                    <Stack gap={0} miw={0} flex={1}>
-                      <Text size='sm' fw={600}>
-                        {label}
-                      </Text>
-                      <Text size='xs' c='dimmed' truncate>
-                        {planned
-                          ? `ML ${String(planned.minimumLevelOverride ?? plan.masterMinimumLevel)} · ${affix?.displayName ?? 'Planned'}`
-                          : 'Not planned'}
-                      </Text>
-                    </Stack>
-                    <IconChevronRight size={14} aria-hidden />
-                  </UnstyledButton>
-                  {view === 'grid' && planned && (
-                    <div className={layout.quickAffixes}>
-                      {(['prefix', 'suffix'] as const).map((position) => (
-                        <Select
-                          key={position}
-                          size='xs'
-                          searchable
-                          clearable
-                          label={position === 'prefix' ? 'Prefix' : 'Suffix'}
-                          classNames={{ root: layout.quickField, label: layout.quickLabel }}
-                          aria-label={`${position === 'prefix' ? 'Prefix' : 'Suffix'} for ${label} in grid`}
-                          placeholder='Choose…'
-                          data={getAvailableEnhancementChoices(
-                            data,
-                            id,
-                            position,
-                            planned.minimumLevelOverride ?? plan.masterMinimumLevel
-                          ).map((choice) => ({ value: choice.id, label: choice.displayName }))}
-                          value={position === 'prefix' ? planned.prefixEnhancementId : planned.suffixEnhancementId}
-                          onChange={(enhancementId) => {
-                            onAction({
-                              type: position === 'prefix' ? 'select-prefix-enhancement' : 'select-suffix-enhancement',
-                              equipmentSlotId: id,
-                              enhancementId
-                            })
-                          }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <UnstyledButton
+                  key={id}
+                  type='button'
+                  className={layout.slot}
+                  aria-current={current === id ? true : undefined}
+                  aria-controls={view === 'grid' ? 'crafting-cards' : 'essence-editor'}
+                  aria-pressed={view === 'grid' ? !!planned : undefined}
+                  aria-label={`${planned ? (view === 'grid' ? 'Remove' : 'Edit') : 'Plan'} ${label}`}
+                  onClick={() => {
+                    selectSlot(id)
+                  }}
+                >
+                  <span className={layout.slotIcon} data-equipped={planned ? true : undefined}>
+                    <Icon size={19} stroke={1.6} aria-hidden />
+                  </span>
+                  <Stack gap={0} miw={0} flex={1}>
+                    <Text size='sm' fw={600}>
+                      {label}
+                    </Text>
+                    <Text size='xs' c='dimmed' truncate>
+                      {planned
+                        ? `ML ${String(planned.minimumLevelOverride ?? plan.masterMinimumLevel)} · ${affix?.displayName ?? 'Planned'}`
+                        : 'Not planned'}
+                    </Text>
+                  </Stack>
+                  <IconChevronRight size={14} aria-hidden />
+                </UnstyledButton>
               )
             })}
           </div>
         </nav>
-        <section className={layout.detail} id='essence-editor' aria-labelledby='essence-editor-heading'>
-          <Group className={layout.paneHeading} wrap='nowrap'>
-            <ActionIcon
-              className={layout.back}
-              variant='subtle'
-              aria-label='Back to equipment slots'
-              onClick={() => {
-                setShowDetail(false)
-                requestAnimationFrame(() =>
-                  slotList.current?.querySelector<HTMLButtonElement>('[aria-current="true"]')?.focus()
-                )
-              }}
-            >
-              <IconArrowLeft size={18} />
-            </ActionIcon>
-            <Title order={2} size='h4' id='essence-editor-heading' tabIndex={-1} ref={detailHeading}>
-              Item configuration
-            </Title>
-          </Group>
-          <div className={layout.detailBody} key={current ?? 'empty'}>
-            {item && current ? (
-              <PlannedItemEditor
-                data={data}
-                equipmentSlotId={current}
-                item={item}
-                masterMinimumLevel={plan.masterMinimumLevel}
-                collapsed={plan.collapsedSlotIds.includes(current)}
-                onAction={onAction}
-                onRequestDeactivate={onRequestDeactivate}
-              />
-            ) : (
-              <Center mih={180} p='md'>
-                <Stack align='center' gap='xs'>
-                  <IconSparkles size={30} stroke={1.4} color='var(--app-accent)' aria-hidden />
-                  <Text c='dimmed' ta='center'>
-                    Select an equipment slot to begin crafting.
-                  </Text>
-                </Stack>
-              </Center>
+        {view === 'grid' ? (
+          <section className={layout.craftingCards} id='crafting-cards' aria-label='Planned items'>
+            {plan.activeSlotIds.length === 0 && (
+              <Text c='dimmed' p='md'>
+                Select equipment slots to start your crafting plan.
+              </Text>
             )}
-          </div>
-        </section>
+            {EQUIPMENT_SLOTS.map(({ id }) => {
+              const planned = plan.itemsBySlotId[id]
+              return (
+                planned && (
+                  <article key={id} className={layout.craftingCard}>
+                    <PlannedItemEditor
+                      data={data}
+                      equipmentSlotId={id}
+                      item={planned}
+                      masterMinimumLevel={plan.masterMinimumLevel}
+                      collapsed={plan.collapsedSlotIds.includes(id)}
+                      onAction={onAction}
+                      onRequestDeactivate={onRequestDeactivate}
+                      board
+                    />
+                  </article>
+                )
+              )
+            })}
+          </section>
+        ) : (
+          <section className={layout.detail} id='essence-editor' aria-labelledby='essence-editor-heading'>
+            <Group className={layout.paneHeading} wrap='nowrap'>
+              <ActionIcon
+                className={layout.back}
+                variant='subtle'
+                aria-label='Back to equipment slots'
+                onClick={() => {
+                  setShowDetail(false)
+                  requestAnimationFrame(() =>
+                    slotList.current?.querySelector<HTMLButtonElement>('[aria-current="true"]')?.focus()
+                  )
+                }}
+              >
+                <IconArrowLeft size={18} />
+              </ActionIcon>
+              <Title order={2} size='h4' id='essence-editor-heading' tabIndex={-1} ref={detailHeading}>
+                Item configuration
+              </Title>
+            </Group>
+            <div className={layout.detailBody} key={current ?? 'empty'}>
+              {item && current ? (
+                <PlannedItemEditor
+                  data={data}
+                  equipmentSlotId={current}
+                  item={item}
+                  masterMinimumLevel={plan.masterMinimumLevel}
+                  collapsed={plan.collapsedSlotIds.includes(current)}
+                  onAction={onAction}
+                  onRequestDeactivate={onRequestDeactivate}
+                />
+              ) : (
+                <Center mih={180} p='md'>
+                  <Stack align='center' gap='xs'>
+                    <IconSparkles size={30} stroke={1.4} color='var(--app-accent)' aria-hidden />
+                    <Text c='dimmed' ta='center'>
+                      Select an equipment slot to begin crafting.
+                    </Text>
+                  </Stack>
+                </Center>
+              )}
+            </div>
+          </section>
+        )}
       </div>
     </Paper>
   )

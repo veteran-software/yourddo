@@ -485,74 +485,128 @@
 .columns[data-grid] .slots {
   border: 0;
 }
+
 .columns[data-grid] .slotList {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-auto-rows: max-content;
   align-content: start;
-  align-items: start;
-  gap: 0.5rem;
+  gap: 0.65rem;
   padding: 0.65rem;
 }
-.columns[data-grid] :is(.slotList > .slot, .slotCell) {
+.gearCard,
+.craftingCard {
+  min-width: 0;
+  align-self: start;
   background: var(--app-panel);
   border: 1px solid var(--app-border);
   border-radius: var(--mantine-radius-sm);
-  overflow: hidden;
+  container-type: inline-size;
 }
-.columns[data-grid] .slot {
-  min-height: 3.45rem;
-  padding: 0.5rem 0.65rem;
+.gearCardHeading {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.65rem;
+  color: var(--app-accent);
+  background: var(--app-raised);
+  border-bottom: 1px solid var(--app-border);
+  border-radius: var(--mantine-radius-sm) var(--mantine-radius-sm) 0 0;
 }
-.columns[data-grid] .slotCell .slot {
-  border-bottom: 0;
-  min-height: 2.85rem;
-  padding-block: 0.25rem;
+.gearCardHeading svg:last-child {
+  margin-inline-start: auto;
 }
-.columns[data-grid] .slot:hover {
+.gearCardHeading:hover,
+.gearCard .emptyCard:hover {
   background: var(--mantine-color-default-hover);
 }
-.columns[data-grid] .slot[aria-current='true'] {
-  box-shadow: inset 3px 0 var(--app-accent);
-}
-.columns[data-grid] .slot .compactSlot {
-  flex-direction: column;
-  align-items: start;
-}
-.columns[data-grid] .slot p {
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-.quickAffixes {
-  display: grid;
-  gap: 0.35rem;
-  padding: 0.35rem 0.65rem 0.45rem;
-  border-top: 1px solid var(--app-border);
-}
-.quickField {
-  display: grid;
-  grid-template-columns: 2.2rem minmax(0, 1fr);
-  align-items: center;
-  column-gap: 0.3rem;
-}
-.quickLabel {
+.gearCard .emptyCard {
+  width: 100%;
+  min-height: 5.5rem;
   color: var(--mantine-color-dimmed);
 }
-@container (max-width: 32rem) {
+.gearCard .itemHeader {
+  padding: 0.5rem;
+  overflow-wrap: anywhere;
+}
+.columns[data-crafting-board] {
+  grid-template-columns: clamp(11rem, 22%, 15rem) minmax(0, 1fr);
+}
+.columns[data-crafting-board] .slot[aria-pressed='true'] {
+  background: var(--equipped-wash);
+  border-inline-start-color: var(--equipped-ink);
+}
+.craftingCards {
+  display: grid;
+  align-content: start;
+  gap: 0.8rem;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 0.75rem;
+}
+@container (max-width:63rem) {
+  .columns[data-grid] .slotList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@container (max-width:47rem) {
   .columns[data-grid] .slotList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .columns[data-grid] .slot {
-    padding: 0.4rem;
-    gap: 0.35rem;
+}
+@container (max-width:39rem) {
+  .columns[data-crafting-board] {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
   }
-  .columns[data-grid] .slot > svg {
+  .columns[data-crafting-board] .slots,
+  .craftingCards {
+    flex: none;
+  }
+  .columns[data-crafting-board] .slotList {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-height: 9rem;
+    overflow: auto;
+  }
+  .columns[data-crafting-board] .slot {
+    padding: 0.35rem;
+    gap: 0.25rem;
+  }
+  .columns[data-crafting-board] .slotIcon,
+  .columns[data-crafting-board] .slot > svg {
     display: none;
   }
-  .quickField {
-    display: block;
+  .craftingCards {
+    overflow: visible;
   }
 }
-.gridBonuses {
-  color: var(--equipped-ink);
+@container (max-width:31rem) {
+  .columns[data-grid] .slotList {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.gearCard .scrollEnchantments {
+  max-block-size: var(--five-enchantments, calc(5lh + 0.75rem));
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+}
+.gearCard .scrollEnchantments:focus-visible {
+  outline: 2px solid var(--app-accent);
+  outline-offset: 1px;
+}
+.gearCard .gearCardHeading {
+  padding: 0.55rem 0.65rem;
+  background: var(--app-raised);
+}
+
+.craftingSettings summary {
+  cursor: pointer;
+  color: var(--app-accent);
+  font-weight: 600;
 }

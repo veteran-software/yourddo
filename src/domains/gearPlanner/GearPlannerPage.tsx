@@ -235,6 +235,7 @@ const itemMetadata = (item: GearPlannerItem, essenceMinimumLevel?: number) =>
   }`
 
 interface EquipmentEditorProps {
+  inline: boolean
   sets: readonly string[]
   openSet: (name: string) => void
   initialFiligreeSlot?: number
@@ -271,6 +272,7 @@ interface EquipmentEditorProps {
 }
 
 const EquipmentEditor = ({
+  inline,
   sets,
   openSet,
   initialFiligreeSlot,
@@ -301,7 +303,7 @@ const EquipmentEditor = ({
   setEssenceConfiguration,
   setReforging
 }: EquipmentEditorProps) => (
-  <Stack gap='md' p='md' data-testid='gear-item-editor'>
+  <Stack gap='md' p={inline ? 'xs' : 'md'} data-testid='gear-item-editor'>
     <div className={classes.itemHeader}>
       <Group wrap='nowrap' miw={0}>
         <GearItemArt item={item} slot={slot} size={46} />
@@ -324,7 +326,7 @@ const EquipmentEditor = ({
           size='xs'
           variant='subtle'
           aria-expanded={!collapsed}
-          aria-controls='gear-item-details'
+          aria-controls={'gear-item-details-' + slot.replaceAll(' ', '-')}
           leftSection={collapsed ? <IconChevronDown size={15} /> : <IconChevronUp size={15} />}
           onClick={toggleDetails}
         >
@@ -353,14 +355,19 @@ const EquipmentEditor = ({
         </Button>
       </Group>
     </div>
-    <div id='gear-item-details' hidden={collapsed}>
+    <div id={'gear-item-details-' + slot.replaceAll(' ', '-')} hidden={collapsed}>
       {!collapsed && (
         <Stack gap='md'>
           <ItemDropLocations locations={item.source.dropLocations} />
           <div className={classes.editorSections}>
             {effects.length > 0 && (
               <div className={classes.effects}>
-                <EquippedEnchantmentList sources={effects} conflicts={conflicts} label={`${slot} enchantments`} />
+                <EquippedEnchantmentList
+                  compact={inline}
+                  sources={effects}
+                  conflicts={conflicts}
+                  label={`${slot} enchantments`}
+                />
               </div>
             )}
             <Stack gap='md' miw={0}>
@@ -1431,6 +1438,13 @@ const GearPlannerWorkspace = () => {
     setPlannerState((current) => equipGearPlannerSetupItem(current, targetSlot, item, dataState.essenceData))
     setMode('equipped')
     setPersistenceEnabled(true)
+    if (view === 'grid' && !finding) {
+      setDetailOnMobile(false)
+      requestAnimationFrame(() =>
+        slotListRef.current?.querySelector<HTMLButtonElement>('[aria-current="true"]')?.focus({ preventScroll: true })
+      )
+      return
+    }
     requestAnimationFrame(() => detailHeadingRef.current?.focus({ preventScroll: true }))
   }
 
@@ -1481,6 +1495,85 @@ const GearPlannerWorkspace = () => {
         }}
         onMinorArtifactRejected={() => {
           setFeedback({ kind: 'error', message: 'Only one minor artifact can be equipped at a time.' })
+        }}
+      />
+    )
+
+  const renderEquipmentEditor = (cardSlot: GearPlannerSlot, cardItem: GearPlannerItem, inline: boolean) =>
+    dataState.status === 'ready' && (
+      <EquipmentEditor
+        inline={inline}
+        openSet={openSet}
+        sets={setState.memberships
+          .filter((membership) => membership.category === 'equipped-item' && membership.itemId === cardItem.id)
+          .map((membership) => membership.setName)}
+        initialFiligreeSlot={!inline && typeof mode === 'object' ? mode.filigreeSlot : undefined}
+        onFiligreeClose={() => {
+          setMode('equipped')
+        }}
+        key={cardSlot}
+        slot={cardSlot}
+        item={cardItem}
+        collapsed={collapsedItems.has(itemKey(cardItem))}
+        toggleDetails={() => {
+          const key = itemKey(cardItem)
+          setDetailsCollapsed([key], !collapsedItems.has(key))
+        }}
+        data={dataState.data}
+        essenceData={dataState.essenceData}
+        effects={effects.filter(
+          (effect) =>
+            effect.slot === cardSlot &&
+            (effect.category === 'crafting' ||
+              effect.category === 'equipped-item' ||
+              effect.category === 'reforging-tier' ||
+              effect.category === 'reforging-choice' ||
+              effect.category === 'essence')
+        )}
+        conflictSources={conflictSources}
+        conflicts={conflicts}
+        slottedAugments={slottedAugments}
+        slottedCurses={slottedCurses}
+        slottedFiligrees={slottedFiligrees}
+        unlockedFiligreeSlots={unlockedFiligreeSlots}
+        essenceCrafting={essenceCrafting}
+        reforging={reforging}
+        effectiveAugmentSlots={effectiveAugmentSlots}
+        openBrowser={() => {
+          selectSlot(cardSlot)
+          setMode('replace')
+        }}
+        clearSlot={(currentSlot) => {
+          equip(currentSlot, null)
+        }}
+        setAugment={(itemId, slotIndex, augment) => {
+          applySetupState((current) =>
+            setGearPlannerSetupAugment(current, itemId, slotIndex, augment, dataState.data.reforging)
+          )
+        }}
+        setCraft={(itemId, system, choiceId) => {
+          applySetupState((current) =>
+            setGearPlannerSetupCraft(current, cardSlot, itemId, system, choiceId, dataState.data.crafting)
+          )
+        }}
+        setCurse={(itemId, curseId) => {
+          applySetupState((current) => setGearPlannerSetupCurse(current, itemId, curseId, dataState.data.curses))
+        }}
+        setFiligree={(itemId, slotIndex, filigree) => {
+          applySetupState((current) => setGearPlannerSetupFiligree(current, itemId, slotIndex, filigree))
+        }}
+        setUnlockedFiligreeSlots={(itemId, count) => {
+          applySetupState((current) => setGearPlannerSetupUnlockedFiligreeSlots(current, itemId, count))
+        }}
+        setEssenceConfiguration={(itemId, update) => {
+          applySetupState((current) =>
+            setGearPlannerSetupEssenceCraftingConfiguration(current, itemId, update, dataState.essenceData)
+          )
+        }}
+        setReforging={(itemId, stage, update) => {
+          applySetupState((current) =>
+            setGearPlannerSetupReforgingState(current, itemId, stage, update, dataState.data.reforging)
+          )
         }}
       />
     )
@@ -1771,234 +1864,168 @@ const GearPlannerWorkspace = () => {
                   </Button>
                 )}
                 <div className={classes.slotList}>
-                  {slots.map((name) => {
-                    const equipped = equipment[name]
-                    const config = equipped && essenceCrafting[equipped.id]
-                    const gridBonuses =
-                      view === 'grid' && equipped
-                        ? [
-                            ...(config
-                              ? [config.prefixId, config.suffixId, config.extraId].map(
-                                  (id) => id && dataState.essenceData.indexes.enhancementById.get(id)?.displayName
-                                )
-                              : []),
-                            ...(equipped.crafts ?? []).map((craft) => craft.label),
-                            ...(equipped.source.setBonus ?? []).map((set) => set.name)
-                          ]
-                            .filter(Boolean)
-                            .join(' · ')
-                        : ''
-                    const SlotIcon = slotIcons[name]
-                    return (
-                      <UnstyledButton
-                        key={name}
-                        type='button'
-                        className={classes.slot}
-                        aria-label={`Select ${name}`}
-                        aria-current={slot === name ? true : undefined}
-                        title={equipped?.source.name}
-                        aria-description={equipped?.source.name ?? 'Empty'}
-                        aria-controls='gear-detail-panel'
-                        data-testid={`gear-slot-${name}`}
-                        onClick={() => {
-                          selectSlot(name)
-                        }}
-                      >
-                        <span className={classes.slotIcon} data-equipped={equipped ? true : undefined}>
-                          <SlotIcon aria-hidden size={19} stroke={1.6} />
-                        </span>
-                        <Stack
-                          gap={0}
-                          miw={0}
-                          flex={1}
-                          className={
-                            equipped && collapsedItems.has(itemKey(equipped)) ? classes.compactSlot : undefined
-                          }
+                  {(view !== 'grid' || !detailOnMobile) &&
+                    slots.map((name) => {
+                      const equipped = equipment[name]
+                      const SlotIcon = slotIcons[name]
+                      if (view === 'grid')
+                        return (
+                          <article key={name} className={classes.gearCard} aria-label={name + ' equipment'}>
+                            <UnstyledButton
+                              className={classes.gearCardHeading}
+                              aria-label={'Select ' + name}
+                              data-testid={'gear-slot-' + name}
+                              aria-current={slot === name || undefined}
+                              onClick={() => {
+                                selectSlot(name)
+                                if (equipped) setMode('replace')
+                              }}
+                            >
+                              <SlotIcon size={17} aria-hidden />
+                              <strong>{name}</strong>
+                              <IconSearch size={15} aria-hidden />
+                            </UnstyledButton>
+                            {equipped ? (
+                              renderEquipmentEditor(name, equipped, true)
+                            ) : (
+                              <Button
+                                variant='subtle'
+                                className={classes.emptyCard}
+                                aria-label={'Browse gear for ' + name}
+                                onClick={() => {
+                                  selectSlot(name)
+                                }}
+                              >
+                                Select item
+                              </Button>
+                            )}
+                          </article>
+                        )
+                      return (
+                        <UnstyledButton
+                          key={name}
+                          type='button'
+                          className={classes.slot}
+                          aria-label={`Select ${name}`}
+                          aria-current={slot === name ? true : undefined}
+                          title={equipped?.source.name}
+                          aria-description={equipped?.source.name ?? 'Empty'}
+                          aria-controls='gear-detail-panel'
+                          data-testid={`gear-slot-${name}`}
+                          onClick={() => {
+                            selectSlot(name)
+                          }}
                         >
-                          <Text fw={600} size='sm'>
-                            {name}
-                          </Text>
-                          <Text size='xs' c='dimmed' truncate>
-                            {equipped?.source.name ?? 'Empty'}
-                          </Text>
-                          {gridBonuses && (
-                            <Text size='xs' className={classes.gridBonuses}>
-                              {gridBonuses}
+                          <span className={classes.slotIcon} data-equipped={equipped ? true : undefined}>
+                            <SlotIcon aria-hidden size={19} stroke={1.6} />
+                          </span>
+                          <Stack
+                            gap={0}
+                            miw={0}
+                            flex={1}
+                            className={
+                              equipped && collapsedItems.has(itemKey(equipped)) ? classes.compactSlot : undefined
+                            }
+                          >
+                            <Text fw={600} size='sm'>
+                              {name}
                             </Text>
-                          )}
-                        </Stack>
-                        <IconChevronRight aria-hidden size={14} />
-                      </UnstyledButton>
-                    )
-                  })}
+                            <Text size='xs' c='dimmed' truncate>
+                              {equipped?.source.name ?? 'Empty'}
+                            </Text>
+                          </Stack>
+                          <IconChevronRight aria-hidden size={14} />
+                        </UnstyledButton>
+                      )
+                    })}
                 </div>
               </nav>
-              <section id='gear-detail-panel' className={classes.detail} aria-labelledby='gear-detail-title'>
-                <Group className={classes.paneHeading} wrap='nowrap'>
-                  <ActionIcon
-                    variant='subtle'
-                    className={classes.back}
-                    aria-label='Back to equipment'
-                    onClick={backToEquipment}
-                  >
-                    <IconArrowLeft size={18} />
-                  </ActionIcon>
-                  <Title order={2} size='h4' id='gear-detail-title' ref={detailHeadingRef} tabIndex={-1}>
-                    {gearDetailTitle(showingPaths, finding, owner, browsing, slot)}
-                  </Title>
-                  {!finding && returnSlot && (
-                    <Button
-                      size='compact-sm'
-                      variant='light'
-                      ml='auto'
-                      onClick={() => {
-                        findGear()
-                      }}
-                    >
-                      Back to results
-                    </Button>
-                  )}
-                  {(showingPaths || finding || (replacing && selectedItem)) && (
-                    <Button
-                      size='compact-sm'
+              {(view !== 'grid' || detailOnMobile) && (
+                <section id='gear-detail-panel' className={classes.detail} aria-labelledby='gear-detail-title'>
+                  <Group className={classes.paneHeading} wrap='nowrap'>
+                    <ActionIcon
                       variant='subtle'
-                      ml='auto'
-                      onClick={() => {
-                        setMode('equipped')
-                      }}
+                      className={classes.back}
+                      aria-label='Back to equipment'
+                      onClick={backToEquipment}
                     >
-                      Cancel
-                    </Button>
-                  )}
-                </Group>
-                {(finding || returnSlot !== null) && (
-                  <div
-                    key={activeSetup.id + '-find-' + String(findRequest.revision)}
-                    className={classes.detailBody}
-                    hidden={!finding}
-                  >
-                    {renderBrowser(true)}
-                  </div>
-                )}
-                {showingPaths && (
-                  <div className={classes.detailBody}>
-                    <UpgradeResults
-                      key={pathSearch.revision}
-                      request={pathSearch.request}
-                      setup={activeSetup}
-                      owner={owner}
-                      data={dataState.data}
-                      essence={dataState.essenceData}
-                      onSave={(draft) => {
-                        const id = createGearPlannerSetupId()
-                        applySetupState((current) => {
-                          if (activeGearPlannerSetup(current) !== activeSetup) return current
-                          const name = nextSetupName(current.setups, draft.name)
-                          return { ...current, setups: [...current.setups, { ...draft, id, name }], activeSetupId: id }
-                        })
-                        setMode('equipped')
-                        setFeedback({ kind: 'success', message: 'Upgrade path saved as a new setup.' })
-                      }}
-                    />
-                  </div>
-                )}
-                {!finding && !showingPaths && (
-                  <div
-                    key={activeSetup.id + slot + String(browsing) + (typeof mode === 'object' ? 'equipped' : mode)}
-                    className={classes.detailBody}
-                  >
-                    {!browsing && selectedItem ? (
-                      <EquipmentEditor
-                        openSet={openSet}
-                        sets={setState.memberships
-                          .filter(
-                            (membership) =>
-                              membership.category === 'equipped-item' && membership.itemId === selectedItem.id
-                          )
-                          .map((membership) => membership.setName)}
-                        initialFiligreeSlot={typeof mode === 'object' ? mode.filigreeSlot : undefined}
-                        onFiligreeClose={() => {
+                      <IconArrowLeft size={18} />
+                    </ActionIcon>
+                    <Title order={2} size='h4' id='gear-detail-title' ref={detailHeadingRef} tabIndex={-1}>
+                      {gearDetailTitle(showingPaths, finding, owner, browsing, slot)}
+                    </Title>
+                    {!finding && returnSlot && (
+                      <Button
+                        size='compact-sm'
+                        variant='light'
+                        ml='auto'
+                        onClick={() => {
+                          findGear()
+                        }}
+                      >
+                        Back to results
+                      </Button>
+                    )}
+                    {(showingPaths || finding || (replacing && selectedItem)) && (
+                      <Button
+                        size='compact-sm'
+                        variant='subtle'
+                        ml='auto'
+                        onClick={() => {
                           setMode('equipped')
                         }}
-                        key={slot}
-                        slot={slot}
-                        item={selectedItem}
-                        collapsed={collapsedItems.has(itemKey(selectedItem))}
-                        toggleDetails={() => {
-                          const key = itemKey(selectedItem)
-                          setDetailsCollapsed([key], !collapsedItems.has(key))
-                        }}
+                      >
+                        Cancel
+                      </Button>
+                    )}
+                  </Group>
+                  {(finding || returnSlot !== null) && (
+                    <div
+                      key={activeSetup.id + '-find-' + String(findRequest.revision)}
+                      className={classes.detailBody}
+                      hidden={!finding}
+                    >
+                      {renderBrowser(true)}
+                    </div>
+                  )}
+                  {showingPaths && (
+                    <div className={classes.detailBody}>
+                      <UpgradeResults
+                        key={pathSearch.revision}
+                        request={pathSearch.request}
+                        setup={activeSetup}
+                        owner={owner}
                         data={dataState.data}
-                        essenceData={dataState.essenceData}
-                        effects={effects.filter(
-                          (effect) =>
-                            effect.slot === slot &&
-                            (effect.category === 'crafting' ||
-                              effect.category === 'equipped-item' ||
-                              effect.category === 'reforging-tier' ||
-                              effect.category === 'reforging-choice' ||
-                              effect.category === 'essence')
-                        )}
-                        conflictSources={conflictSources}
-                        conflicts={conflicts}
-                        slottedAugments={slottedAugments}
-                        slottedCurses={slottedCurses}
-                        slottedFiligrees={slottedFiligrees}
-                        unlockedFiligreeSlots={unlockedFiligreeSlots}
-                        essenceCrafting={essenceCrafting}
-                        reforging={reforging}
-                        effectiveAugmentSlots={effectiveAugmentSlots}
-                        openBrowser={() => {
-                          setMode('replace')
-                        }}
-                        clearSlot={(currentSlot) => {
-                          equip(currentSlot, null)
-                        }}
-                        setAugment={(itemId, slotIndex, augment) => {
-                          applySetupState((current) =>
-                            setGearPlannerSetupAugment(current, itemId, slotIndex, augment, dataState.data.reforging)
-                          )
-                        }}
-                        setCraft={(itemId, system, choiceId) => {
-                          applySetupState((current) =>
-                            setGearPlannerSetupCraft(current, slot, itemId, system, choiceId, dataState.data.crafting)
-                          )
-                        }}
-                        setCurse={(itemId, curseId) => {
-                          applySetupState((current) =>
-                            setGearPlannerSetupCurse(current, itemId, curseId, dataState.data.curses)
-                          )
-                        }}
-                        setFiligree={(itemId, slotIndex, filigree) => {
-                          applySetupState((current) =>
-                            setGearPlannerSetupFiligree(current, itemId, slotIndex, filigree)
-                          )
-                        }}
-                        setUnlockedFiligreeSlots={(itemId, count) => {
-                          applySetupState((current) => setGearPlannerSetupUnlockedFiligreeSlots(current, itemId, count))
-                        }}
-                        setEssenceConfiguration={(itemId, update) => {
-                          applySetupState((current) =>
-                            setGearPlannerSetupEssenceCraftingConfiguration(
-                              current,
-                              itemId,
-                              update,
-                              dataState.essenceData
-                            )
-                          )
-                        }}
-                        setReforging={(itemId, stage, update) => {
-                          applySetupState((current) =>
-                            setGearPlannerSetupReforgingState(current, itemId, stage, update, dataState.data.reforging)
-                          )
+                        essence={dataState.essenceData}
+                        onSave={(draft) => {
+                          const id = createGearPlannerSetupId()
+                          applySetupState((current) => {
+                            if (activeGearPlannerSetup(current) !== activeSetup) return current
+                            const name = nextSetupName(current.setups, draft.name)
+                            return {
+                              ...current,
+                              setups: [...current.setups, { ...draft, id, name }],
+                              activeSetupId: id
+                            }
+                          })
+                          setMode('equipped')
+                          setFeedback({ kind: 'success', message: 'Upgrade path saved as a new setup.' })
                         }}
                       />
-                    ) : (
-                      renderBrowser(false)
-                    )}
-                  </div>
-                )}
-              </section>
+                    </div>
+                  )}
+                  {!finding && !showingPaths && (
+                    <div
+                      key={activeSetup.id + slot + String(browsing) + (typeof mode === 'object' ? 'equipped' : mode)}
+                      className={classes.detailBody}
+                    >
+                      {!browsing && selectedItem
+                        ? renderEquipmentEditor(slot, selectedItem, false)
+                        : renderBrowser(false)}
+                    </div>
+                  )}
+                </section>
+              )}
             </div>
             <Modal
               opened={setupAction !== null}
