@@ -1,5 +1,6 @@
 import {
   Alert,
+  Anchor,
   Badge,
   Button,
   Center,
@@ -263,16 +264,26 @@ const LegendaryGreenSteelPage = () => {
           icon={IconCrown}
           description='Plan crafting tiers, bonus effects, active augments, and materials.'
           actions={
-            <Button
-              variant='subtle'
-              color='gray'
-              disabled={!hasSelection}
-              onClick={() => {
-                setPlan(emptyLgsPlan())
-              }}
-            >
-              Reset plan
-            </Button>
+            <>
+              <Anchor
+                size='sm'
+                href='https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Legendary%20Green%20Steel%22'
+                target='_blank'
+                rel='noreferrer'
+              >
+                Known issues and bug reports ↗
+              </Anchor>
+              <Button
+                variant='subtle'
+                color='gray'
+                disabled={!hasSelection}
+                onClick={() => {
+                  setPlan(emptyLgsPlan())
+                }}
+              >
+                Reset plan
+              </Button>
+            </>
           }
         />
 

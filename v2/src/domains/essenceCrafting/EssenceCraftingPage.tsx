@@ -1,4 +1,4 @@
-import { Alert, Button, Center, Group, Loader, Modal, Stack, Text } from '@mantine/core'
+import { Alert, Anchor, Button, Center, Group, Loader, Modal, Stack, Text } from '@mantine/core'
 import { IconSparkles, IconBasket, IconShare, IconListDetails } from '@tabler/icons-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
@@ -179,7 +179,29 @@ const EssenceCraftingPage = () => {
   return (
     <WorkspaceLayout tools={tools} scrollMain={false}>
       <Stack className={layout.planner} gap='sm' p={{ base: 'xs', sm: 'md' }}>
-        <WorkspaceHeader title='Essence Crafting' icon={IconSparkles} />
+        <WorkspaceHeader
+          title='Essence Crafting'
+          icon={IconSparkles}
+          description={
+            <>
+              Crafting data assistance provided by{' '}
+              <Anchor size='sm' href='https://dungeonhelper.com' target='_blank' rel='noreferrer'>
+                Dungeon Helper
+              </Anchor>
+              .
+            </>
+          }
+          actions={
+            <Anchor
+              size='sm'
+              href='https://github.com/veteran-software/yourddo/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Essence%20Crafting%22'
+              target='_blank'
+              rel='noreferrer'
+            >
+              Known issues and bug reports ↗
+            </Anchor>
+          }
+        />
 
         {dataState.status === 'loading' ? (
           <Center mih={160} role='status' aria-live='polite'>
