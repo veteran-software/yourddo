@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { recordVisit } from '../domains/home/shelves'
 import { useLocation } from 'react-router-dom'
 import { TroveImport, TroveProvider } from '../domains/gearPlanner/components/TroveInventory'
 import { AppShell, Burger, Group, Image, ScrollArea } from '@mantine/core'
@@ -13,6 +15,9 @@ const AppLayout = () => {
   const [desktopOpened, desktop] = useDisclosure(true)
 
   const { pathname } = useLocation()
+  useEffect(() => {
+    recordVisit(pathname)
+  }, [pathname])
   const status = useServerStatus()
   function openStatus(openNav: () => void) {
     openNav()

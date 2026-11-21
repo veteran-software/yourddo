@@ -167,10 +167,10 @@ describe('AppRouter', () => {
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
     await user.click(screen.getByRole('button', { name: 'Crafting' }))
-    await user.click(screen.getByRole('link', { name: 'Essence Crafting', hidden: true }))
+    await user.click(await screen.findByRole('link', { name: 'Essence Crafting' }))
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Essence Crafting domain' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Essence Crafting domain' })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Essence Crafting' }).getAttribute('aria-current')).toBe('page')
   })
 
@@ -189,9 +189,9 @@ describe('AppRouter', () => {
     renderRoute('/')
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
     await user.click(screen.getByRole('button', { name: 'Tools' }))
-    await user.click(screen.getByRole('link', { name: 'Saga Tracker', hidden: true }))
+    await user.click(await screen.findByRole('link', { name: 'Saga Tracker' }))
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Saga Tracker domain' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Saga Tracker domain' })).toBeTruthy()
   })
 
   it('renders Viktranium at its preserved route and supports a direct remount', () => {
@@ -209,8 +209,8 @@ describe('AppRouter', () => {
     renderRoute('/')
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
     await user.click(screen.getByRole('button', { name: 'Crafting' }))
-    await user.click(screen.getByRole('link', { name: 'Viktranium Experiment', hidden: true }))
-    expect(screen.getByRole('heading', { name: 'Viktranium domain' })).toBeTruthy()
+    await user.click(await screen.findByRole('link', { name: 'Viktranium Experiment' }))
+    expect(await screen.findByRole('heading', { name: 'Viktranium domain' })).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
   })
 
@@ -238,10 +238,10 @@ describe('AppRouter', () => {
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
     await user.click(screen.getByRole('button', { name: 'Crafting' }))
-    await user.click(screen.getByRole('link', { name: 'Dinosaur Bone Crafting', hidden: true }))
+    await user.click(await screen.findByRole('link', { name: 'Dinosaur Bone Crafting' }))
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Dinosaur Bone domain' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Dinosaur Bone domain' })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Dinosaur Bone Crafting' }).getAttribute('aria-current')).toBe('page')
   })
 
@@ -275,7 +275,7 @@ describe('AppRouter', () => {
     await user.keyboard('{Enter}')
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Incredible Potential domain' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Incredible Potential domain' })).toBeTruthy()
     expect(link.getAttribute('aria-current')).toBe('page')
   })
 
@@ -330,10 +330,10 @@ describe('AppRouter', () => {
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
     await user.click(screen.getByRole('button', { name: 'Crafting' }))
-    await user.click(screen.getByRole('link', { name: 'Nearly Finished', hidden: true }))
+    await user.click(await screen.findByRole('link', { name: 'Nearly Finished' }))
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Nearly Finished domain' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Nearly Finished domain' })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Nearly Finished' }).getAttribute('aria-current')).toBe('page')
   })
 
@@ -474,7 +474,7 @@ describe('AppRouter', () => {
     await user.keyboard('{Enter}')
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Mastermind domain' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Mastermind domain' })).toBeTruthy()
     expect(link.getAttribute('aria-current')).toBe('page')
   })
 
@@ -489,7 +489,7 @@ describe('AppRouter', () => {
     await user.keyboard('{Enter}')
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Monastery domain' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Monastery domain' })).toBeTruthy()
     expect(link.getAttribute('aria-current')).toBe('page')
   })
 
@@ -504,7 +504,7 @@ describe('AppRouter', () => {
     await user.keyboard('{Enter}')
 
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Total Chaos domain' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Total Chaos domain' })).toBeTruthy()
     expect(link.getAttribute('aria-current')).toBe('page')
   })
 
