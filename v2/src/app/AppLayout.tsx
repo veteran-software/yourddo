@@ -1,3 +1,4 @@
+import RouteSeo from '../shared/seo/RouteSeo'
 import { useEffect } from 'react'
 import { recordVisit } from '../domains/home/shelves'
 import { useLocation } from 'react-router-dom'
@@ -37,6 +38,7 @@ const AppLayout = () => {
         }}
         padding={0}
       >
+        <RouteSeo />
         <AppShell.Header>
           <Group h='100%' px={{ base: 'xs', sm: 'md' }} gap='xs' wrap='nowrap' justify='space-between'>
             <Group gap='sm' wrap='nowrap' miw={0}>

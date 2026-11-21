@@ -13,7 +13,7 @@
   "env": {
     "builtin": true
   },
-  "ignorePatterns": ["dist", "eslint.config.js"],
+  "ignorePatterns": ["dist", "dist-ssr", "eslint.config.js"],
   "jsPlugins": ["eslint-plugin-sonarjs"],
   "rules": {
     "constructor-super": "error",
