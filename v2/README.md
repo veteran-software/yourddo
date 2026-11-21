@@ -2,6 +2,8 @@
 
 YourDDO v2 uses React 19, Vite, TypeScript, React Router, and Mantine.
 
+The current game version is **82.1.0**. The app loads the latest published extraction identified by the CDN release manifest.
+
 ## Implementation style
 
 Code must be minimalist, direct, and readable.
