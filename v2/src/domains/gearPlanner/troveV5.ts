@@ -1,4 +1,4 @@
-import { addTroveOwner, troveOwner } from './trove.ts'
+import { TroveSnapshot, troveOwner } from './trove.ts'
 
 // Trove repeats "Name" in effects, tabs and metadata. Only inventory rows represent owned items.
 function record(value: unknown): Record<string, unknown> {
@@ -8,14 +8,14 @@ function record(value: unknown): Record<string, unknown> {
 
 function collectItems(
   rows: unknown,
-  inventory: Map<string, string[]>,
+  inventory: TroveSnapshot,
   character: unknown,
   location: string,
   bankDetails: string[] = []
 ) {
   if (!Array.isArray(rows)) throw new Error('Expected an item list')
   for (const row of rows) {
-    const { Name, Quantity, CharacterName, Container, Tab, Row, Column, EquipsTo } = record(row)
+    const { Name, Quantity, CharacterName, Container, Tab, Row, Column, EquipsTo, Binding } = record(row)
     if (typeof Name !== 'string' || !Name.trim()) throw new Error('Expected an item name')
     if (Quantity !== undefined && (typeof Quantity !== 'number' || !Number.isFinite(Quantity))) {
       throw new Error('Expected a numeric quantity')
@@ -36,12 +36,18 @@ function collectItems(
       ) {
         details.push(EquipsTo[0])
       }
-      addTroveOwner(inventory, Name, troveOwner(character ?? CharacterName, where, details))
+      inventory.record(
+        Name,
+        troveOwner(character ?? CharacterName, where, details),
+        character ?? CharacterName,
+        Quantity ?? 1,
+        Binding
+      )
     }
   }
 }
 
-function collectBank(bank: unknown, inventory: Map<string, string[]>, character: unknown, location: string) {
+function collectBank(bank: unknown, inventory: TroveSnapshot, character: unknown, location: string) {
   for (const tab of Object.values(record(record(bank).Tabs))) {
     const { Name, Pages } = record(tab)
     for (const [pageNumber, page] of Object.entries(record(Pages))) {
@@ -58,7 +64,7 @@ export async function importTroveV5(files: readonly File[]) {
     throw new Error(
       'No Trove v5 snapshots found. Choose your server folder or select its inventory and bank JSON files.'
     )
-  const inventory = new Map<string, string[]>()
+  const inventory = new TroveSnapshot()
   // Read one snapshot at a time. An account bank alone can be several megabytes.
   for (const file of snapshots) {
     try {

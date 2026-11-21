@@ -2,7 +2,14 @@ import { Badge, Button, Checkbox, Code, FileButton, Group, Modal, SegmentedContr
 import { IconCopy, IconFolderOpen, IconUpload } from '@tabler/icons-react'
 import { copyText } from '../../../shared/serialization/browser'
 import { useState, type ReactNode, type MouseEvent } from 'react'
-import { getTroveOwners, parseTroveCsv, readTroveInventory, troveStorageKey, type TroveInventory } from '../trove'
+import {
+  getTroveOwners,
+  parseTroveCsv,
+  serializeTroveInventory,
+  readTroveInventory,
+  troveStorageKey,
+  type TroveInventory
+} from '../trove'
 
 import { importTroveV5 } from '../troveV5'
 import { TroveContext, useTroveInventory } from '../troveContext'
@@ -12,7 +19,7 @@ export function TroveProvider({ children }: { children: ReactNode }) {
   const replace = (next: TroveInventory) => {
     setInventory(next)
     if (!next.size) setOwnedOnly(false)
-    localStorage.setItem(troveStorageKey, JSON.stringify([...next]))
+    localStorage.setItem(troveStorageKey, serializeTroveInventory(next))
   }
   return (
     <TroveContext.Provider value={{ inventory, ownedOnly, setOwnedOnly, replace }}>{children}</TroveContext.Provider>

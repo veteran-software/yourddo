@@ -3,6 +3,45 @@ const itemKey = (name: string) => name.trim().toLowerCase()
 
 export type TroveInventory = ReadonlyMap<string, readonly string[]>
 
+export interface TroveHolding {
+  location: string
+  character: string
+  quantity: number
+  binding: 'character' | 'transferable' | 'unknown'
+}
+
+export class TroveSnapshot extends Map<string, string[]> {
+  readonly holdings = new Map<string, TroveHolding[]>()
+
+  record(name: string, location: string, character: unknown, quantity: number, binding: unknown) {
+    const key = itemKey(name)
+    addTroveOwner(this, key, location)
+    const entries = this.holdings.get(key) ?? []
+    const shared = location.startsWith('Shared Bank') || location.startsWith('Shared Crafting Bank')
+    const owner = !shared && typeof character === 'string' && !/^[-—–]$/.test(character.trim()) ? character.trim() : ''
+    const restriction =
+      binding === 'BtC' || binding === 'BoundToCharacter'
+        ? 'character'
+        : ['BtA', 'BoundToAccount', 'None', 'Unbound'].includes(String(binding))
+          ? 'transferable'
+          : 'unknown'
+    const match = entries.find((h) => h.location === location && h.character === owner && h.binding === restriction)
+    if (match) match.quantity += quantity
+    else entries.push({ location, character: owner, quantity, binding: restriction })
+    this.holdings.set(key, entries)
+  }
+}
+
+export function serializeTroveInventory(inventory: TroveInventory) {
+  return JSON.stringify(
+    [...inventory].map(([name, owners]) => [
+      name,
+      owners,
+      inventory instanceof TroveSnapshot ? inventory.holdings.get(name) : undefined
+    ])
+  )
+}
+
 export function getTroveOwners(inventory: TroveInventory, name: string, filigree = false) {
   const key = itemKey(name)
   return inventory.get(key) ?? (filigree ? inventory.get(key.replace(/ \(rare\)$/, '')) : undefined)
@@ -34,7 +73,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 export function readTroveInventory(): TroveInventory {
-  const inventory = new Map<string, string[]>()
+  const inventory = new TroveSnapshot()
   try {
     const saved = localStorage.getItem(troveStorageKey)
     if (saved !== null) {
@@ -45,6 +84,19 @@ export function readTroveInventory(): TroveInventory {
           if (typeof entry === 'string') addTroveOwner(inventory, entry, '')
           else if (Array.isArray(entry) && typeof entry[0] === 'string' && Array.isArray(entry[1])) {
             addTroveOwner(inventory, entry[0], '')
+            if (Array.isArray(entry[2])) {
+              const holdings = entry[2].filter(
+                (h: unknown): h is TroveHolding =>
+                  isRecord(h) &&
+                  typeof h.location === 'string' &&
+                  typeof h.character === 'string' &&
+                  typeof h.quantity === 'number' &&
+                  Number.isSafeInteger(h.quantity) &&
+                  h.quantity > 0 &&
+                  (h.binding === 'character' || h.binding === 'transferable' || h.binding === 'unknown')
+              )
+              if (holdings.length) inventory.holdings.set(entry[0], holdings)
+            }
             for (const owner of entry[1]) if (typeof owner === 'string') addTroveOwner(inventory, entry[0], owner)
           }
         }
@@ -91,13 +143,15 @@ export async function parseTroveCsv(text: string): Promise<TroveInventory> {
     throw new Error('Choose a Dungeon Helper Trove CSV with Name, Quantity, Character and Location columns.')
   }
   if (parsed.errors.length) throw new Error('The Trove CSV contains an invalid row. The previous inventory was kept.')
-  const inventory = new Map<string, string[]>()
+  const inventory = new TroveSnapshot()
   for (const row of parsed.data) {
     if (Number.isFinite(Number(row.Quantity)) && Number(row.Quantity) > 0) {
-      addTroveOwner(
-        inventory,
+      inventory.record(
         row.Name,
-        troveOwner(row.Character, row.Location.trim(), row.Tab?.trim() ? ['Tab ' + row.Tab.trim()] : [])
+        troveOwner(row.Character, row.Location.trim(), row.Tab?.trim() ? ['Tab ' + row.Tab.trim()] : []),
+        row.Character,
+        Number(row.Quantity),
+        row.Binding
       )
     }
   }

@@ -1,5 +1,6 @@
 import { characterAllowsItem, enabledOwners, ownerSlots, slotOwner } from './character'
 import LoadoutComparison from './components/LoadoutComparison'
+import FarmingTool from './tools/FarmingTool'
 import CharacterSetupTool from './tools/CharacterSetupTool'
 import { ownsTroveItem } from './trove'
 import { gearPlannerAugmentIdentity } from './augments'
@@ -46,6 +47,7 @@ import {
   IconCopy,
   IconColumns2,
   IconUserCog,
+  IconMapPin,
   IconAlertTriangle,
   IconSearch,
   IconArrowLeft,
@@ -1164,6 +1166,12 @@ const GearPlannerWorkspace = () => {
                 }}
               />
             )
+          },
+          {
+            id: 'farming',
+            label: 'Farming list',
+            icon: <IconMapPin stroke={2} />,
+            content: <FarmingTool key={activeSetup.id} setup={activeSetup} />
           },
           {
             id: 'sharing',
