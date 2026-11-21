@@ -501,6 +501,9 @@ describe('GearPlannerPage', () => {
     fireEvent.change(input, { target: { files: [file] } })
     await dialog.findByText(/Inventory updated/)
     fireEvent.click(dialog.getByRole('button', { name: 'Close' }))
+    expect(screen.getByRole('button', { name: 'Import Trove' }).getAttribute('aria-description')).toMatch(
+      /^1 distinct item loaded · Last imported /
+    )
     fireEvent.click(screen.getByRole('button', { name: 'Find gear' }))
     const label = 'Robin (Bank)'
     expect(await screen.findByText(label)).toBeTruthy()
@@ -568,8 +571,10 @@ describe('GearPlannerPage', () => {
   })
 
   it('opens the Trove import guide directly from the planner toolbar', async () => {
+    localStorage.setItem(troveStorageKey, JSON.stringify(['ring', 'boots']))
     await renderReadyPage(data)
     const trigger = screen.getByRole('button', { name: 'Import Trove' })
+    expect(trigger.getAttribute('aria-description')).toBe('2 distinct items loaded')
     expect(trigger.parentElement).toBe(screen.getByRole('button', { name: 'Find gear' }).parentElement)
     fireEvent.click(trigger)
     const dialog = within(await screen.findByRole('dialog', { name: 'DH Trove Import' }))

@@ -1,3 +1,4 @@
+import { createCraftingSelection } from '../../shared/layout/craftingSession'
 import {
   Accordion,
   Alert,
@@ -68,16 +69,24 @@ const modeData = [
   { label: 'AND', value: 'AND' }
 ]
 
+const useFamily = createCraftingSelection<ViktraniumFamily>(() => initialFamily)
+const useSelectedItemId = createCraftingSelection<string | null>(() => null)
+const useItemFilters = createCraftingSelection<string[]>(() => [])
+const useItemFilterMode = createCraftingSelection<'OR' | 'AND'>(() => 'AND')
+const useSelectedAugments = createCraftingSelection<SelectedAugments>(() => ({}))
+const useAugmentFilters = createCraftingSelection<string[]>(() => [])
+const useAugmentFilterMode = createCraftingSelection<'OR' | 'AND'>(() => 'OR')
+
 const ViktraniumPage = () => {
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
   const [loadAttempt, setLoadAttempt] = useState(0)
-  const [family, setFamily] = useState<ViktraniumFamily>(initialFamily)
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null)
-  const [itemFilters, setItemFilters] = useState<string[]>([])
-  const [itemFilterMode, setItemFilterMode] = useState<'OR' | 'AND'>('AND')
-  const [selectedAugments, setSelectedAugments] = useState<SelectedAugments>({})
-  const [augmentFilters, setAugmentFilters] = useState<string[]>([])
-  const [augmentFilterMode, setAugmentFilterMode] = useState<'OR' | 'AND'>('OR')
+  const [family, setFamily] = useFamily()
+  const [selectedItemId, setSelectedItemId] = useSelectedItemId()
+  const [itemFilters, setItemFilters] = useItemFilters()
+  const [itemFilterMode, setItemFilterMode] = useItemFilterMode()
+  const [selectedAugments, setSelectedAugments] = useSelectedAugments()
+  const [augmentFilters, setAugmentFilters] = useAugmentFilters()
+  const [augmentFilterMode, setAugmentFilterMode] = useAugmentFilterMode()
 
   useEffect(() => {
     let active = true

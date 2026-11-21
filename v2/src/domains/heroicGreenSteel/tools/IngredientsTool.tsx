@@ -1,3 +1,5 @@
+import RecipeDetails from '../../../shared/items/RecipeDetails'
+import { heroicRecipeParts } from '../logic'
 import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
 import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Button, Center, Group, List, Loader, Stack, Text, Title } from '@mantine/core'
@@ -75,10 +77,10 @@ const IngredientsTool = ({ recipeIds }: { recipeIds: readonly number[] }) => {
     )
   }
 
-  const renderList = (values: typeof result.plan.terminal) => (
+  const renderList = (values: readonly ((typeof result.plan.terminal)[number] & { producerRecipeId?: number })[]) => (
     <List spacing='xs'>
-      {values.map(({ ingredient, quantity }) => (
-        <List.Item key={ingredient.id}>
+      {values.map(({ ingredient, quantity, producerRecipeId }) => (
+        <List.Item key={producerRecipeId ?? ingredient.id}>
           <Group component='span' justify='space-between' wrap='nowrap'>
             <Text component='span' size='sm'>
               {ingredient.name}
@@ -91,6 +93,14 @@ const IngredientsTool = ({ recipeIds }: { recipeIds: readonly number[] }) => {
             <Text size='xs' c='dimmed'>
               Found in: {location(ingredient.name)}
             </Text>
+          )}
+          {producerRecipeId !== undefined && (
+            <RecipeDetails
+              name={ingredient.name}
+              count={quantity}
+              recipeKey={producerRecipeId}
+              lookup={heroicRecipeParts(data)}
+            />
           )}
           <IngredientStock name={ingredient.name} required={quantity} />
         </List.Item>

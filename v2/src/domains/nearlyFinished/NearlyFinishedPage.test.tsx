@@ -2,7 +2,7 @@
 
 import { TroveProvider } from '../gearPlanner/components/TroveInventory'
 import { type MantineColorScheme, MantineProvider } from '@mantine/core'
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadManualPayload, UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
@@ -310,6 +310,12 @@ describe('NearlyFinishedPage workflow', () => {
     expect(drawer.textContent).toContain('Simple Ingot')
     expect(drawer.textContent).toContain('Complex Compound')
     expect(drawer.textContent).not.toContain('Have / Required')
+    const compound = within(drawer).getByLabelText('Recipe for Complex Compound')
+    await user.click(compound)
+    const details = compound.closest('details')
+    if (!details?.open) throw new Error('Expected open compound recipe')
+    await user.click(within(details).getByLabelText('Recipe for Simple Ingot'))
+    expect(within(details).getByText('Iron Defender Rivet ×12')).toBeTruthy()
   })
 
   it('describes an empty raw-material list', async () => {

@@ -1,3 +1,7 @@
+import RecipeDetails from '../../../shared/items/RecipeDetails'
+import { legendaryRecipeParts } from '../logic'
+import { expandLgsRequirements } from '../logic'
+import ComponentFarmingLocations from '../../../shared/items/ComponentFarmingLocations'
 import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
 import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Group, List, Paper, Stack, Text, Title } from '@mantine/core'
@@ -17,7 +21,7 @@ const CraftingBreakdownTool = ({
   components: readonly LgsRecipe[]
 }) => {
   const location = useIngredientLocations()
-  const componentIds = new Set(components.map((component) => component.id))
+  const componentById = new Map(components.map((component) => [component.id, component]))
   const selectedStages = stages.filter(
     (stage): stage is LgsCraftingStage & { recipe: NonNullable<LgsCraftingStage['recipe']> } => Boolean(stage.recipe)
   )
@@ -50,18 +54,36 @@ const CraftingBreakdownTool = ({
               {recipe.craftedIn}
             </Text>
             <List spacing={4} size='sm'>
-              {recipe.requirements.map(({ id, name, quantity }) => (
-                <List.Item key={id}>
-                  {name} ×{quantity}
-                  {location(name) && (
-                    <Text size='xs' c='dimmed'>
-                      Found in: {location(name)}
-                    </Text>
-                  )}
-                  <IngredientStock name={name} required={quantity} />
-                  {componentIds.has(id) ? ' (crafted component)' : ''}
-                </List.Item>
-              ))}
+              {recipe.requirements.map(({ id, name, quantity }) => {
+                const component = componentById.get(id)
+                return (
+                  <List.Item key={id}>
+                    {name} ×{quantity}
+                    {component && ' (crafted component)'}
+                    {location(name) && (
+                      <Text size='xs' c='dimmed'>
+                        Found in: {location(name)}
+                      </Text>
+                    )}
+                    <IngredientStock name={name} required={quantity} />
+                    {component && (
+                      <RecipeDetails
+                        name={name}
+                        count={quantity}
+                        recipeKey={id}
+                        lookup={legendaryRecipeParts(components)}
+                      />
+                    )}
+                    {component && (
+                      <ComponentFarmingLocations
+                        materials={expandLgsRequirements([component], components).rawMaterials}
+                        count={quantity}
+                        location={location}
+                      />
+                    )}
+                  </List.Item>
+                )
+              })}
             </List>
           </Stack>
         </Paper>

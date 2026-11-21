@@ -1,5 +1,7 @@
 // @vitest-environment jsdom
 
+import { MemoryRouter } from 'react-router-dom'
+import AppRouter from '../../app/AppRouter'
 import { MantineProvider } from '@mantine/core'
 import { cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -230,6 +232,28 @@ describe('DinosaurBonePage', () => {
     const dialog = await screen.findByRole('dialog', { name: 'Finished Item' })
     expect(within(dialog).getByText(/Minimum level 20/)).toBeTruthy()
     expect(within(dialog).getByText('Color augment minimum level')).toBeTruthy()
+  })
+
+  it('restores the selected item and augment when Continue reopens the workspace', async () => {
+    loadMock.mockResolvedValue(data)
+    const user = userEvent.setup()
+    render(
+      <MantineProvider env='test'>
+        <MemoryRouter initialEntries={['/dinosaur-bone']}>
+          <AppRouter />
+        </MemoryRouter>
+      </MantineProvider>
+    )
+    await screen.findByRole('combobox', { name: 'Item' })
+    expect(screen.getByText(/Sharpened Bone in the Village of Tanaroa/)).toBeTruthy()
+    await chooseItem(user)
+    const claw = { name: 'Isle of Dread: Claw (Weapon) augment' }
+    await user.click(screen.getByRole('combobox', claw))
+    await user.click(await screen.findByRole('option', { name: /Claw One/ }))
+    await user.click(screen.getByRole('link', { name: 'YourDDO home' }))
+    await user.click((await screen.findAllByRole('link', { name: 'Continue Dinosaur Bone Crafting' }))[0])
+    expect(inputValue(await screen.findByRole('combobox', { name: 'Item' }))).toBe('Dinosaur Bone Test Sword')
+    expect(inputValue(screen.getByRole('combobox', claw))).toBe('Claw One')
   })
 
   it('uses separate workspace tools and preserves configuration while switching them', async () => {

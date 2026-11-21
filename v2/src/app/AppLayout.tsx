@@ -1,6 +1,7 @@
+import { CraftingSession } from '../shared/layout/craftingSession'
 import { IconBrandDiscord, IconBrandGithub } from '@tabler/icons-react'
 import RouteSeo from '../shared/seo/RouteSeo'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { recordVisit } from '../domains/home/shelves'
 import { Link, useLocation } from 'react-router-dom'
 import { TroveImport, TroveProvider } from '../domains/gearPlanner/components/TroveInventory'
@@ -13,13 +14,23 @@ import { useServerStatus } from '../shared/serverStatus/useServerStatus'
 import ThemeSwitch from '../shared/ui/ThemeSwitch'
 
 const AppLayout = ({ develop }: { develop: boolean }) => {
+  const [craftingSession] = useState(() => ({}))
   const [mobileOpened, mobile] = useDisclosure(false)
   const [desktopOpened, desktop] = useDisclosure(true)
 
-  const { pathname } = useLocation()
+  const location = useLocation()
+  const { pathname } = location
+  const visitState: unknown = location.state
+  const recentPath =
+    visitState &&
+    typeof visitState === 'object' &&
+    'recentToolPath' in visitState &&
+    typeof visitState.recentToolPath === 'string'
+      ? visitState.recentToolPath
+      : pathname
   useEffect(() => {
-    recordVisit(pathname)
-  }, [pathname])
+    recordVisit(recentPath)
+  }, [recentPath])
   const status = useServerStatus()
   function openStatus(openNav: () => void) {
     openNav()
@@ -131,7 +142,9 @@ const AppLayout = ({ develop }: { develop: boolean }) => {
         </AppShell.Navbar>
 
         <AppShell.Main>
-          <Outlet />
+          <CraftingSession.Provider value={craftingSession}>
+            <Outlet />
+          </CraftingSession.Provider>
         </AppShell.Main>
       </AppShell>
     </TroveProvider>

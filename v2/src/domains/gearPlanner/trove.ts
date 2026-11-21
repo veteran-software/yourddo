@@ -11,6 +11,7 @@ export interface TroveHolding {
 }
 
 export class TroveSnapshot extends Map<string, string[]> {
+  importedAt?: string
   readonly holdings = new Map<string, TroveHolding[]>()
 
   record(name: string, location: string, character: unknown, quantity: number, binding: unknown) {
@@ -44,14 +45,13 @@ export function troveCharacterNames(inventory: TroveInventory) {
   return [...characters].sort((a, b) => a.localeCompare(b))
 }
 
-export function serializeTroveInventory(inventory: TroveInventory) {
-  return JSON.stringify(
-    [...inventory].map(([name, owners]) => [
-      name,
-      owners,
-      inventory instanceof TroveSnapshot ? inventory.holdings.get(name) : undefined
-    ])
-  )
+export function serializeTroveInventory(inventory: TroveInventory, importedAt: string) {
+  const items = [...inventory].map(([name, owners]) => [
+    name,
+    owners,
+    inventory instanceof TroveSnapshot ? inventory.holdings.get(name) : undefined
+  ])
+  return JSON.stringify({ items, importedAt })
 }
 
 export function getTroveOwners(inventory: TroveInventory, name: string, filigree = false) {
@@ -84,12 +84,21 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
-export function readTroveInventory(): TroveInventory {
+export function readTroveInventory(): TroveSnapshot {
   const inventory = new TroveSnapshot()
   try {
     const saved = localStorage.getItem(troveStorageKey)
     if (saved !== null) {
-      const list: unknown = JSON.parse(saved)
+      const payload: unknown = JSON.parse(saved)
+      const list = isRecord(payload) ? payload.items : payload
+      if (
+        isRecord(payload) &&
+        Array.isArray(list) &&
+        typeof payload.importedAt === 'string' &&
+        Number.isFinite(Date.parse(payload.importedAt))
+      ) {
+        inventory.importedAt = payload.importedAt
+      }
       if (Array.isArray(list)) {
         for (const entry of list) {
           // Earlier v2 imports kept only the item names.

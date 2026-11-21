@@ -1,10 +1,22 @@
-import { ActionIcon, Anchor, Button, Group, Paper, SimpleGrid, Stack, Text, Title } from '@mantine/core'
-import { IconStar, IconStarFilled } from '@tabler/icons-react'
+import { ActionIcon, Anchor, Button, Group, Paper, Stack, Text, Title } from '@mantine/core'
+import {
+  IconArrowUpRight,
+  IconBook2,
+  IconClock,
+  IconCompass,
+  IconNews,
+  IconShield,
+  IconStar,
+  IconStarFilled
+} from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ToolLayout from '../../shared/layout/ToolLayout'
 import { navigation } from '../../shared/navigation/navigation'
 import { homeTools, pinsKey, recentsKey, readShelf, writeShelf } from './shelves'
+
+import { GEAR_PLANNER_STORAGE_KEY, parsePersistedGearPlannerState } from '../gearPlanner/plannerStorage'
+import styles from './home.module.css'
 
 const forum = 'https://forums.ddo.com/index.php?forums/announcements.5/'
 function News() {
@@ -43,10 +55,13 @@ function News() {
   return (
     <Paper component='section' withBorder p='md'>
       <Group justify='space-between'>
-        <Title order={2} size='h3'>
+        <Title className={styles.panelTitle} order={2} size='h4'>
+          <IconNews aria-hidden size={18} />
           DDO announcements
         </Title>
-        <Anchor href={forum}>Official forum ↗</Anchor>
+        <Anchor size='sm' href={forum}>
+          Official forum ↗
+        </Anchor>
       </Group>
       {items.length ? (
         <Stack gap='xs' mt='sm'>
@@ -65,92 +80,180 @@ function News() {
     </Paper>
   )
 }
+function shelfEntries(saved: string[]) {
+  return saved.flatMap((entry) => {
+    const [raw, title] = entry.split('||')
+    const path = raw.startsWith('/') ? raw : '/' + raw
+    const tool = homeTools.find((t) => t.path === path)
+    return tool ? [{ ...tool, label: title || tool.label }] : []
+  })
+}
+
+function readActiveSetupName() {
+  try {
+    const saved = parsePersistedGearPlannerState(JSON.parse(localStorage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? 'null'))
+    return saved.setups.find((s) => s.id === saved.activeSetupId)?.name
+  } catch {
+    return undefined
+  }
+}
+function ContinueLink({ tool, setup }: { tool: { path: string; label: string }; setup?: string }) {
+  return (
+    <Anchor className={styles.continueLink} component={Link} to={tool.path}>
+      <span>
+        Continue {tool.label}
+        {setup && (
+          <Text component='span' display='block' size='sm' c='dimmed'>
+            {setup}
+          </Text>
+        )}
+      </span>
+      <IconArrowUpRight aria-hidden size={18} />
+    </Anchor>
+  )
+}
 export default function HomePage() {
   const [pins, setPins] = useState(() => readShelf(pinsKey))
   const [recent, setRecent] = useState(() => readShelf(recentsKey))
+  function togglePin(id: string) {
+    const next = pins.includes(id) ? pins.filter((pin) => pin !== id) : [id, ...pins]
+    setPins(next)
+    writeShelf(pinsKey, next)
+  }
+  const recentTools = shelfEntries(recent)
+  const latest = recentTools[0]
+  const [setup] = useState(() => (latest?.path === '/gear-planner' ? readActiveSetupName() : undefined))
   return (
     <ToolLayout>
-      <Title>YourDDO</Title>
-      <SimpleGrid cols={{ base: 1, sm: 2 }}>
-        {['Pinned tools', 'Recent tools'].map((label, i) => {
-          const entries = (i ? recent : pins).flatMap((entry) => {
-            const [raw, title] = entry.split('||')
-            const path = raw.startsWith('/') ? raw : '/' + raw
-            const tool = homeTools.find((t) => t.path === path)
-            return tool ? [{ ...tool, label: title || tool.label }] : []
-          })
-          return (
-            <Paper component='section' key={label} withBorder p='md'>
-              <Group justify='space-between'>
-                <Title order={2} size='h3'>
-                  {label}
-                </Title>
-                {entries.length > 0 && (
-                  <Button
-                    variant='subtle'
-                    size='compact-xs'
-                    aria-label={'Clear ' + label.toLowerCase()}
-                    onClick={() => {
-                      ;(i ? setRecent : setPins)([])
-                      writeShelf(i ? recentsKey : pinsKey, [])
-                    }}
-                  >
-                    Clear
-                  </Button>
-                )}
-              </Group>
-              {entries.length ? (
-                <Stack gap='xs' mt='sm'>
-                  {entries.map((e) => (
-                    <Anchor key={e.path} component={Link} to={e.path} aria-label={'Open ' + e.label}>
-                      {e.label}
-                    </Anchor>
-                  ))}
-                </Stack>
-              ) : (
-                <Text c='dimmed' size='sm'>
-                  {i ? 'Tools you visit appear here.' : 'Star a tool below to pin it here.'}
-                </Text>
-              )}
-            </Paper>
-          )
-        })}
-      </SimpleGrid>
-      {navigation.map((group) => (
-        <section key={group.label}>
-          <Title order={2} size='h3' mb='xs'>
-            {group.label}
-          </Title>
-          <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }}>
-            {group.items.map((tool) => {
-              const id = tool.path.slice(1),
-                pinned = pins.includes(id)
-              return (
-                <Paper key={id} withBorder p='sm'>
-                  <Group wrap='nowrap' justify='space-between'>
-                    <Anchor component={Link} to={tool.path} aria-label={'Open ' + tool.label}>
-                      {tool.label}
-                    </Anchor>
-                    <ActionIcon
+      <header className={styles.masthead}>
+        <div>
+          <Title>YourDDO</Title>
+          <Text>Gear planning, crafting, and quest puzzle solvers.</Text>
+        </div>
+        <IconCompass className={styles.compass} stroke={0.7} aria-hidden />
+      </header>
+      <div className={styles.dashboard}>
+        {latest && (
+          <div className={styles.mobileContinue}>
+            <ContinueLink tool={latest} setup={setup} />
+          </div>
+        )}
+        <div className={styles.directory}>
+          {navigation.map((group) => (
+            <section className={styles.category} key={group.label}>
+              <Title className={styles.categoryTitle} order={2} size='h3'>
+                <group.icon size={21} aria-hidden />
+                {group.label}
+              </Title>
+              <div className={styles.tools}>
+                {group.items.map((tool, index) => {
+                  const id = tool.path.slice(1),
+                    pinned = pins.includes(id)
+                  return (
+                    <div key={id} className={styles.tool}>
+                      <Anchor
+                        className={styles.toolLink}
+                        component={Link}
+                        to={tool.path}
+                        aria-label={'Open ' + tool.label}
+                      >
+                        {group.label === 'Tools' &&
+                          (index === 0 ? <IconShield aria-hidden /> : <IconBook2 aria-hidden />)}
+                        {tool.label}
+                      </Anchor>
+                      <ActionIcon
+                        variant='subtle'
+                        aria-label={(pinned ? 'Unpin ' : 'Pin ') + tool.label}
+                        aria-pressed={pinned}
+                        onClick={() => {
+                          togglePin(id)
+                        }}
+                      >
+                        {pinned ? <IconStarFilled size={16} /> : <IconStar size={16} />}
+                      </ActionIcon>
+                    </div>
+                  )
+                })}
+              </div>
+            </section>
+          ))}
+        </div>
+        <aside className={styles.sidebar} aria-label='Personal tools and announcements'>
+          {['Pinned tools', 'Recent tools'].map((label, i) => {
+            const entries = i ? recentTools : shelfEntries(pins)
+            return (
+              <Paper component='section' key={label} withBorder p='md'>
+                <Group justify='space-between'>
+                  <Title className={styles.panelTitle} order={2} size='h4'>
+                    {i ? <IconClock size={18} aria-hidden /> : <IconStar size={18} aria-hidden />}
+                    {label}
+                  </Title>
+                  {entries.length > 0 && (
+                    <Button
                       variant='subtle'
-                      aria-label={(pinned ? 'Unpin ' : 'Pin ') + tool.label}
-                      aria-pressed={pinned}
+                      size='compact-xs'
+                      aria-label={'Clear ' + label.toLowerCase()}
                       onClick={() => {
-                        const next = pinned ? pins.filter((p) => p !== id) : [id, ...pins]
-                        setPins(next)
-                        writeShelf(pinsKey, next)
+                        ;(i ? setRecent : setPins)([])
+                        writeShelf(i ? recentsKey : pinsKey, [])
                       }}
                     >
-                      {pinned ? <IconStarFilled size={16} /> : <IconStar size={16} />}
-                    </ActionIcon>
-                  </Group>
-                </Paper>
-              )
-            })}
-          </SimpleGrid>
-        </section>
-      ))}
-      <News />
+                      Clear
+                    </Button>
+                  )}
+                </Group>
+                {entries.length ? (
+                  <Stack gap={4} mt='sm'>
+                    {i === 1 && latest && (
+                      <div className={styles.desktopContinue}>
+                        <ContinueLink tool={latest} setup={setup} />
+                      </div>
+                    )}
+                    {entries.map((e, index) => (
+                      <Group
+                        key={e.path}
+                        justify='space-between'
+                        wrap='nowrap'
+                        gap='xs'
+                        className={i && index === 0 ? styles.mobileRecentLink : undefined}
+                      >
+                        <Anchor
+                          flex={1}
+                          className={styles.shelfLink}
+                          component={Link}
+                          to={e.path}
+                          aria-label={'Open ' + e.label}
+                        >
+                          {e.label}
+                          {i === 1 && <IconArrowUpRight aria-hidden size={15} />}
+                        </Anchor>
+                        {i === 0 && (
+                          <ActionIcon
+                            variant='subtle'
+                            title={'Unpin ' + e.label}
+                            aria-label={'Unpin ' + e.label + ' from shelf'}
+                            onClick={() => {
+                              togglePin(e.path.slice(1))
+                            }}
+                          >
+                            <IconStarFilled size={16} aria-hidden />
+                          </ActionIcon>
+                        )}
+                      </Group>
+                    ))}
+                  </Stack>
+                ) : (
+                  <Text c='dimmed' size='sm'>
+                    {i ? 'Tools you visit appear here.' : 'Star a tool below to pin it here.'}
+                  </Text>
+                )}
+              </Paper>
+            )
+          })}
+
+          <News />
+        </aside>
+      </div>
     </ToolLayout>
   )
 }

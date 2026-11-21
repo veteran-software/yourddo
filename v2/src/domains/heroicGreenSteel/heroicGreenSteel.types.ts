@@ -200,5 +200,5 @@ export interface HgsIngredientTotal {
 
 export interface HgsIngredientPlan {
   terminal: HgsIngredientTotal[]
-  crafted: HgsIngredientTotal[]
+  crafted: (HgsIngredientTotal & { producerRecipeId: number })[]
 }

@@ -121,3 +121,6 @@ export const expandLgsRequirements = (
     [...totals.values()].sort((a, b) => a.name.localeCompare(b.name))
   return { rawMaterials: sorted(raw), craftedMaterials: sorted(crafted) }
 }
+
+export const legendaryRecipeParts = (components: readonly LgsRecipe[]) => (id: number) =>
+  components.find((component) => component.id === id)?.requirements.map((part) => ({ ...part, recipeKey: part.id }))

@@ -317,7 +317,7 @@ describe('Heroic Green Steel logic', () => {
       recipeById: new Map(recipes.map((value) => [value.id, value]))
     })
     expect(result.terminal).toEqual([{ ingredient: ingredients[1], quantity: 7 }])
-    expect(result.crafted).toEqual([{ ingredient: ingredients[0], quantity: 2 }])
+    expect(result.crafted).toEqual([{ ingredient: ingredients[0], producerRecipeId: 2, quantity: 2 }])
   })
 
   it('protects recipe expansion from cycles and missing references', () => {

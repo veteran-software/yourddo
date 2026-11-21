@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 import { buildStructuredData, normalizeCanonicalPath, resolveSeo } from './seoConfig.ts'
-import { SITE_NAME, SITE_PREVIEW_IMAGE_PATH } from './siteMeta.ts'
+import { SITE_NAME, SITE_ORIGIN, SITE_PREVIEW_IMAGE_PATH } from './siteMeta.ts'
 
 const setMetaTagByName = (name: string, value: string) => {
   const selector = `meta[name="${name}"]`
@@ -76,7 +76,7 @@ const RouteSeo = () => {
   }, [location.pathname])
 
   useEffect(() => {
-    const origin = globalThis.window.location.origin
+    const origin = SITE_ORIGIN
     const canonicalUrl = `${origin}${normalizeCanonicalPath(seo.canonicalPath)}`
     const structuredData = buildStructuredData(origin, seo, canonicalUrl)
 

@@ -1,3 +1,4 @@
+import { createCraftingSelection } from '../../shared/layout/craftingSession'
 import {
   Alert,
   Anchor,
@@ -154,9 +155,11 @@ const activeData = (augments: readonly LgsActiveAugment[]) =>
     .sort((left, right) => left.displayName.localeCompare(right.displayName))
     .map(({ name, displayName }) => ({ value: name, label: displayName }))
 
+const usePlan = createCraftingSelection<LgsPlan>(emptyLgsPlan)
+
 const LegendaryGreenSteelPage = () => {
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
-  const [plan, setPlan] = useState<LgsPlan>(emptyLgsPlan)
+  const [plan, setPlan] = usePlan()
   const [attempt, setAttempt] = useState(0)
   const [permalinkError, setPermalinkError] = useState<string | null>(null)
   const handledPermalink = useRef<string | null>(null)
@@ -188,7 +191,7 @@ const LegendaryGreenSteelPage = () => {
     } catch (cause) {
       setPermalinkError(cause instanceof Error ? cause.message : 'Invalid LGS permalink')
     }
-  }, [data, permalink])
+  }, [data, permalink, setPlan])
   const baseItem = data ? selected(data.baseItems, plan.baseItemName) : undefined
   const bonusEffect = data ? selected(data.bonusEffects, plan.bonusEffectName) : undefined
   const options = data ? getLgsOptions(data, plan, baseItem) : undefined
@@ -230,7 +233,10 @@ const LegendaryGreenSteelPage = () => {
           heart={heart?.name}
         />
       ),
-      tool(lgsWorkspaceToolDefinitions[2], <IngredientsTool plan={ingredientPlan} />),
+      tool(
+        lgsWorkspaceToolDefinitions[2],
+        <IngredientsTool components={data.craftingComponents} plan={ingredientPlan} />
+      ),
       tool(
         lgsWorkspaceToolDefinitions[3],
         <CraftingBreakdownTool
@@ -246,7 +252,20 @@ const LegendaryGreenSteelPage = () => {
         />
       )
     ]
-  }, [activeAugment, baseItem, heart, bonusEffect, weaponResult, data, ingredientPlan, plan, tier1, tier2, tier3])
+  }, [
+    activeAugment,
+    baseItem,
+    heart,
+    bonusEffect,
+    weaponResult,
+    data,
+    ingredientPlan,
+    plan,
+    tier1,
+    tier2,
+    tier3,
+    setPlan
+  ])
   const updatePlan = <Field extends keyof LgsPlan>(field: Field, value: LgsPlan[Field]) => {
     if (!data) return
     setPlan((current) => reconcileLgsPlan(data, { ...current, [field]: value }))

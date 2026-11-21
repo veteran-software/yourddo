@@ -1,3 +1,4 @@
+import { createCraftingSelection } from '../../shared/layout/craftingSession'
 import {
   Alert,
   Anchor,
@@ -92,6 +93,8 @@ const optionLabel = (option: HgsTierOption, data: HgsInitialData) => {
     .join(', ')
 }
 
+const useSelection = createCraftingSelection<HgsSelection>(() => emptyHgsSelection)
+
 const HeroicGreenSteelPage = () => {
   const [initialState, setInitialState] = useState<LoadState<HgsInitialData>>({ status: 'loading' })
   const [tier2State, setTier2State] = useState<LoadState<HgsTier2Data>>({ status: 'idle' })
@@ -99,7 +102,7 @@ const HeroicGreenSteelPage = () => {
   const [initialAttempt, setInitialAttempt] = useState(0)
   const [tier2Attempt, setTier2Attempt] = useState(0)
   const [tier3Attempt, setTier3Attempt] = useState(0)
-  const [selection, setSelection] = useState<HgsSelection>(emptyHgsSelection)
+  const [selection, setSelection] = useSelection()
   const [permalinkError, setPermalinkError] = useState<string | null>(null)
   const handledPermalink = useRef<string | null>(null)
   const permalink =
@@ -265,7 +268,7 @@ const HeroicGreenSteelPage = () => {
     } catch (cause) {
       setPermalinkError(cause instanceof Error ? cause.message : 'Invalid HGS permalink')
     }
-  }, [initial, permalink, tier2Data, tier3Data, validCombinations])
+  }, [initial, permalink, tier2Data, tier3Data, validCombinations, setSelection])
 
   const tools = initial
     ? [

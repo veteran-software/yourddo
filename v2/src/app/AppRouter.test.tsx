@@ -5,6 +5,7 @@ import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import { pinsKey, recentsKey, readShelf } from '../domains/home/shelves'
 import AppRouter from './AppRouter'
 
 vi.mock('../domains/cauldronOfCadence/CauldronOfCadencePage.tsx', () => ({
@@ -381,10 +382,21 @@ describe('AppRouter', () => {
   })
 
   it('preserves the legacy Toxic Treatment route alias', async () => {
+    localStorage.setItem(recentsKey, JSON.stringify(['/the-shroud', '/toxic-treatment||Toxic Treatment quest']))
     renderRoute('/toxic-treatment')
 
     expect(await screen.findByRole('heading', { name: 'Monastery domain' })).toBeTruthy()
+    expect(readShelf(recentsKey)).toEqual(['/toxic-treatment||Toxic Treatment quest', '/the-shroud'])
     expect(screen.getByRole('link', { name: 'Monastery of the Scorpion' }).getAttribute('aria-current')).toBe('page')
+  })
+
+  it('removes one pin from the shelf and updates the directory star', async () => {
+    localStorage.setItem(pinsKey, JSON.stringify(['gear-planner', 'the-shroud']))
+    renderRoute('/')
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Unpin Gear Planner from shelf' }))
+    expect(readShelf(pinsKey)).toEqual(['the-shroud'])
+    expect(screen.getByRole('button', { name: 'Pin Gear Planner' }).getAttribute('aria-pressed')).toBe('false')
+    expect(screen.getByRole('button', { name: 'Unpin The Shroud from shelf' })).toBeTruthy()
   })
 
   it('renders Total Chaos at its preserved public route and supports a direct remount', () => {

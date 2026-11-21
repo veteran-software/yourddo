@@ -1,3 +1,4 @@
+import { createCraftingSelection } from '../../shared/layout/craftingSession'
 import IngredientStock from '../../shared/items/IngredientStock'
 import {
   Alert,
@@ -133,14 +134,20 @@ const ringSummary = (ring: IncrediblePotentialRing): string =>
 
 const upgradeSummary = (upgrade: AltarRecipe): string => upgrade.added?.map(formatEffect).join(', ') ?? upgrade.name
 
+const useSelectedRingName = createCraftingSelection<string | null>(() => null)
+const useSelectedUpgradeId = createCraftingSelection<string | null>(() => null)
+const useRingFilters = createCraftingSelection<string[]>(() => [])
+const useUpgradeFilters = createCraftingSelection<string[]>(() => [])
+const useFilterMode = createCraftingSelection<FilterMode>(() => 'OR')
+
 const IncrediblePotentialPage = () => {
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
   const [loadAttempt, setLoadAttempt] = useState(0)
-  const [selectedRingName, setSelectedRingName] = useState<string | null>(null)
-  const [selectedUpgradeId, setSelectedUpgradeId] = useState<string | null>(null)
-  const [ringFilters, setRingFilters] = useState<string[]>([])
-  const [upgradeFilters, setUpgradeFilters] = useState<string[]>([])
-  const [filterMode, setFilterMode] = useState<FilterMode>('OR')
+  const [selectedRingName, setSelectedRingName] = useSelectedRingName()
+  const [selectedUpgradeId, setSelectedUpgradeId] = useSelectedUpgradeId()
+  const [ringFilters, setRingFilters] = useRingFilters()
+  const [upgradeFilters, setUpgradeFilters] = useUpgradeFilters()
+  const [filterMode, setFilterMode] = useFilterMode()
 
   const data = dataState.status === 'loaded' ? dataState.data : null
   const rings = useMemo(() => data?.rings ?? [], [data])

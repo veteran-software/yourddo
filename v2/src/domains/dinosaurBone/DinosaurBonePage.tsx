@@ -1,3 +1,4 @@
+import { createCraftingSelection } from '../../shared/layout/craftingSession'
 import {
   Accordion,
   Alert,
@@ -41,6 +42,7 @@ import {
   getAvailableSlots,
   getCompatibleAugments,
   getEffectNames,
+  familySources,
   getFamilyLabel,
   getFilterOptions,
   getItemsForFamily,
@@ -65,18 +67,28 @@ const errorTitle = (cause: unknown) => {
   return 'Dinosaur Bone data is unavailable'
 }
 
+const useFamily = createCraftingSelection<ItemFamily>(() => initialFamily)
+const useSelectedItemName = createCraftingSelection<string | null>(() => null)
+const useItemFilters = createCraftingSelection<string[]>(() => [])
+const useItemFilterMode = createCraftingSelection<'OR' | 'AND'>(() => 'AND')
+const useSelectedAugments = createCraftingSelection<SelectedAugments>(() => ({}))
+const useIodAugmentFilters = createCraftingSelection<string[]>(() => [])
+const useIodAugmentFilterMode = createCraftingSelection<'OR' | 'AND'>(() => 'OR')
+const useColorAugmentFilters = createCraftingSelection<string[]>(() => [])
+const useColorAugmentFilterMode = createCraftingSelection<'OR' | 'AND'>(() => 'OR')
+
 const DinosaurBonePage = () => {
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
   const [loadAttempt, setLoadAttempt] = useState(0)
-  const [family, setFamily] = useState<ItemFamily>(initialFamily)
-  const [selectedItemName, setSelectedItemName] = useState<string | null>(null)
-  const [itemFilters, setItemFilters] = useState<string[]>([])
-  const [itemFilterMode, setItemFilterMode] = useState<'OR' | 'AND'>('AND')
-  const [selectedAugments, setSelectedAugments] = useState<SelectedAugments>({})
-  const [iodAugmentFilters, setIodAugmentFilters] = useState<string[]>([])
-  const [iodAugmentFilterMode, setIodAugmentFilterMode] = useState<'OR' | 'AND'>('OR')
-  const [colorAugmentFilters, setColorAugmentFilters] = useState<string[]>([])
-  const [colorAugmentFilterMode, setColorAugmentFilterMode] = useState<'OR' | 'AND'>('OR')
+  const [family, setFamily] = useFamily()
+  const [selectedItemName, setSelectedItemName] = useSelectedItemName()
+  const [itemFilters, setItemFilters] = useItemFilters()
+  const [itemFilterMode, setItemFilterMode] = useItemFilterMode()
+  const [selectedAugments, setSelectedAugments] = useSelectedAugments()
+  const [iodAugmentFilters, setIodAugmentFilters] = useIodAugmentFilters()
+  const [iodAugmentFilterMode, setIodAugmentFilterMode] = useIodAugmentFilterMode()
+  const [colorAugmentFilters, setColorAugmentFilters] = useColorAugmentFilters()
+  const [colorAugmentFilterMode, setColorAugmentFilterMode] = useColorAugmentFilterMode()
 
   useEffect(() => {
     let active = true
@@ -268,6 +280,7 @@ const DinosaurBonePage = () => {
                   <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <Select
                       label='Item family'
+                      description={familySources[family]}
                       data={itemFamilies.map((value) => ({ value, label: getFamilyLabel(value) }))}
                       value={family}
                       onChange={changeFamily}

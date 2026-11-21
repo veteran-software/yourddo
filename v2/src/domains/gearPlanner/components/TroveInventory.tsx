@@ -1,4 +1,16 @@
-import { Badge, Button, Checkbox, Code, FileButton, Group, Modal, SegmentedControl, Stack, Text } from '@mantine/core'
+import {
+  Badge,
+  Button,
+  Checkbox,
+  Code,
+  FileButton,
+  Group,
+  Modal,
+  SegmentedControl,
+  Stack,
+  Text,
+  Tooltip
+} from '@mantine/core'
 import { IconCopy, IconFolderOpen, IconUpload } from '@tabler/icons-react'
 import { copyText } from '../../../shared/serialization/browser'
 import { useState, type ReactNode, type MouseEvent } from 'react'
@@ -14,15 +26,21 @@ import {
 import { importTroveV5 } from '../troveV5'
 import { TroveContext, useTroveInventory } from '../troveContext'
 export function TroveProvider({ children }: { children: ReactNode }) {
-  const [inventory, setInventory] = useState(readTroveInventory)
+  const [{ inventory, importedAt }, setSnapshot] = useState<{ inventory: TroveInventory; importedAt?: string }>(() => {
+    const saved = readTroveInventory()
+    return { inventory: saved, importedAt: saved.importedAt }
+  })
   const [ownedOnly, setOwnedOnly] = useState(false)
   const replace = (next: TroveInventory) => {
-    setInventory(next)
+    const time = new Date().toISOString()
+    setSnapshot({ inventory: next, importedAt: time })
     if (!next.size) setOwnedOnly(false)
-    localStorage.setItem(troveStorageKey, serializeTroveInventory(next))
+    localStorage.setItem(troveStorageKey, serializeTroveInventory(next, time))
   }
   return (
-    <TroveContext.Provider value={{ inventory, ownedOnly, setOwnedOnly, replace }}>{children}</TroveContext.Provider>
+    <TroveContext.Provider value={{ inventory, importedAt, ownedOnly, setOwnedOnly, replace }}>
+      {children}
+    </TroveContext.Provider>
   )
 }
 
@@ -104,7 +122,13 @@ const pickerInputProps = {
 const folderInputProps = { ...pickerInputProps, webkitdirectory: '' }
 
 export function TroveImport({ compact = false }: { compact?: boolean } = {}) {
-  const { inventory, replace } = useTroveInventory()
+  const { inventory, importedAt, replace } = useTroveInventory()
+  const lastImport = importedAt
+    ? 'Last imported ' + new Date(importedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
+    : undefined
+  const itemCount =
+    inventory.size.toLocaleString() + (inventory.size === 1 ? ' distinct item loaded' : ' distinct items loaded')
+  const inventoryStatus = [itemCount, lastImport].filter(Boolean).join(' · ')
   const [opened, setOpened] = useState(false)
   const [copied, setCopied] = useState('')
   const [message, setMessage] = useState('')
@@ -144,22 +168,30 @@ export function TroveImport({ compact = false }: { compact?: boolean } = {}) {
   }
   return (
     <>
-      <Button
-        size='xs'
-        variant='light'
-        aria-label='Import Trove'
-        title='Import Trove'
-        leftSection={compact ? undefined : <IconUpload size={16} aria-hidden />}
-        onClick={() => {
-          setMessage('')
-          setCopied('')
-          setOpened(true)
-        }}
-      >
-        {compact ? <IconUpload size={16} /> : 'Import Trove'}
-      </Button>
+      <Tooltip label={'Import Trove · ' + inventoryStatus} events={{ hover: true, focus: true, touch: false }}>
+        <Button
+          size='xs'
+          variant='light'
+          aria-label='Import Trove'
+          color={inventory.size ? 'teal' : undefined}
+          aria-description={inventoryStatus}
+          leftSection={compact ? undefined : <IconUpload size={16} aria-hidden />}
+          onClick={() => {
+            setMessage('')
+            setCopied('')
+            setOpened(true)
+          }}
+        >
+          {compact ? <IconUpload size={16} /> : 'Import Trove'}
+        </Button>
+      </Tooltip>
       <Modal opened={opened} onClose={close} title='DH Trove Import' centered size='lg'>
         <Stack gap='md'>
+          {lastImport && (
+            <Text size='sm' c='dimmed'>
+              {lastImport}
+            </Text>
+          )}
           <SegmentedControl
             aria-label='Trove format'
             data={['Trove v5', 'Legacy CSV']}

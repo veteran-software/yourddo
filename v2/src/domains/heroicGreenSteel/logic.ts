@@ -304,7 +304,7 @@ export const expandIngredientRequirements = (
   data: Pick<HgsRecipeData, 'ingredientById' | 'recipeById'>
 ): HgsIngredientPlan => {
   const terminal = new Map<number, number>()
-  const crafted = new Map<number, number>()
+  const crafted = new Map<string, HgsIngredientPlan['crafted'][number]>()
 
   const expandRecipe = (recipeId: number, multiplier: number, ancestors: ReadonlySet<number>) => {
     if (ancestors.has(recipeId)) throw new CyclicHeroicGreenSteelRecipeError(recipeId)
@@ -313,14 +313,20 @@ export const expandIngredientRequirements = (
     const nextAncestors = new Set(ancestors).add(recipeId)
 
     for (const relation of recipe.ingredients) {
-      if (!data.ingredientById.has(relation.ingredientId)) {
+      const ingredient = data.ingredientById.get(relation.ingredientId)
+      if (!ingredient) {
         throw new InvalidHeroicGreenSteelReferenceError(`missing ingredient ${relation.ingredientId.toString()}`)
       }
       const quantity = multiplier * relation.quantity
       if (relation.producerRecipeId === undefined) {
         terminal.set(relation.ingredientId, (terminal.get(relation.ingredientId) ?? 0) + quantity)
       } else {
-        crafted.set(relation.ingredientId, (crafted.get(relation.ingredientId) ?? 0) + quantity)
+        const key = relation.ingredientId.toString() + '/' + relation.producerRecipeId.toString()
+        crafted.set(key, {
+          ingredient,
+          producerRecipeId: relation.producerRecipeId,
+          quantity: (crafted.get(key)?.quantity ?? 0) + quantity
+        })
         expandRecipe(relation.producerRecipeId, quantity, nextAncestors)
       }
     }
@@ -339,7 +345,10 @@ export const expandIngredientRequirements = (
       })
       .sort((a, b) => a.ingredient.name.localeCompare(b.ingredient.name))
 
-  return { terminal: totals(terminal), crafted: totals(crafted) }
+  return {
+    terminal: totals(terminal),
+    crafted: [...crafted.values()].sort((a, b) => a.ingredient.name.localeCompare(b.ingredient.name))
+  }
 }
 
 export const selectedRecipes = (
@@ -351,3 +360,10 @@ export const selectedRecipes = (
     if (!recipe) throw new InvalidHeroicGreenSteelReferenceError(`missing recipe ${id.toString()}`)
     return recipe
   })
+
+export const heroicRecipeParts = (data: HgsRecipeData) => (id: number) =>
+  data.recipeById.get(id)?.ingredients.map((part) => ({
+    name: data.ingredientById.get(part.ingredientId)?.name ?? 'Missing ingredient',
+    quantity: part.quantity,
+    recipeKey: part.producerRecipeId
+  }))

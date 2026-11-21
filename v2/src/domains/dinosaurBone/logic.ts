@@ -24,6 +24,13 @@ const familyLabels: Readonly<Record<ItemFamily, string>> = {
   'named-items': 'Named Items'
 }
 
+export const familySources: Readonly<Record<ItemFamily, string>> = {
+  'crafted-weapons': 'Crafted at Sharpened Bone in the Village of Tanaroa.',
+  'attuned-weapons': 'Raid loot from Skeletons in the Closet.',
+  'armor-accessories': 'Raid loot from Skeletons in the Closet.',
+  'named-items': 'Named loot from quests and the raid.'
+}
+
 export const itemFamilies: readonly ItemFamily[] = [
   'crafted-weapons',
   'attuned-weapons',

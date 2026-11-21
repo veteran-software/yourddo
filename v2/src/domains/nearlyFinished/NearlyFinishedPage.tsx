@@ -1,3 +1,4 @@
+import RecipeDetails from '../../shared/items/RecipeDetails'
 import IngredientStock from '../../shared/items/IngredientStock'
 import {
   Alert,
@@ -106,7 +107,15 @@ const RequirementList = ({ requirements }: { requirements: NearlyFinishedRequire
   </List>
 )
 
-const MaterialList = ({ materials, emptyMessage }: { materials: IngredientTotal[]; emptyMessage: string }) =>
+const MaterialList = ({
+  materials,
+  emptyMessage,
+  recipes
+}: {
+  materials: IngredientTotal[]
+  emptyMessage: string
+  recipes?: NearlyFinishedDataset['meltingStation']
+}) =>
   materials.length > 0 ? (
     <List spacing='sm'>
       {materials.map(({ name, quantity }) => (
@@ -119,6 +128,18 @@ const MaterialList = ({ materials, emptyMessage }: { materials: IngredientTotal[
               ×{quantity}
             </Badge>
           </Group>
+          {recipes && (
+            <RecipeDetails
+              name={name}
+              recipeKey={name}
+              count={quantity}
+              lookup={(key) =>
+                recipes
+                  .find((recipe) => recipe.name === key)
+                  ?.requirements.map((part) => ({ ...part, recipeKey: part.name }))
+              }
+            />
+          )}
           <IngredientStock name={name} required={quantity} />
         </List.Item>
       ))}
@@ -485,6 +506,7 @@ const NearlyFinishedPage = () => {
                 </Title>
                 <MaterialList
                   materials={shoppingTotals.craftedMaterials}
+                  recipes={dataset?.meltingStation}
                   emptyMessage='No melting-station materials are required.'
                 />
               </Stack>

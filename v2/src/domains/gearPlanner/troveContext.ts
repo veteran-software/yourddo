@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react'
 import type { TroveInventory } from './trove'
 export const TroveContext = createContext<{
+  importedAt?: string
   inventory: TroveInventory
   ownedOnly: boolean
   setOwnedOnly: (value: boolean) => void

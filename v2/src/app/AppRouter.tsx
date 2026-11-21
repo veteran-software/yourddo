@@ -48,8 +48,14 @@ const AppRouter = ({ hostname = globalThis.window?.location.hostname ?? '' }: { 
       <Route path='/the-shroud' element={<ShroudPage />} />
       <Route path='/total-chaos' element={<TotalChaosPage />} />
       <Route path='/viktranium-experiment' element={<ViktraniumPage />} />
-      <Route path='/the-key-to-the-mythal' element={<Navigate to='/reavers-fate' replace />} />
-      <Route path='/toxic-treatment' element={<Navigate to='/monastery-of-the-scorpion' replace />} />
+      <Route
+        path='/the-key-to-the-mythal'
+        element={<Navigate to='/reavers-fate' state={{ recentToolPath: '/the-key-to-the-mythal' }} replace />}
+      />
+      <Route
+        path='/toxic-treatment'
+        element={<Navigate to='/monastery-of-the-scorpion' state={{ recentToolPath: '/toxic-treatment' }} replace />}
+      />
       <Route path='*' element={<NotFoundPage />} />
     </Route>
   </Routes>

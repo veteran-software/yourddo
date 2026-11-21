@@ -9,6 +9,8 @@ export default defineConfig({
   },
   plugins: [react()],
   server: {
+    // Editors can truncate a module briefly while saving it.
+    watch: { awaitWriteFinish: { stabilityThreshold: 150, pollInterval: 25 } },
     fs: {
       strict: true
     },

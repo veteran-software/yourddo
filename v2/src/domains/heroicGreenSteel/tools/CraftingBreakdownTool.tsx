@@ -1,3 +1,6 @@
+import RecipeDetails from '../../../shared/items/RecipeDetails'
+import { heroicRecipeParts } from '../logic'
+import ComponentFarmingLocations from '../../../shared/items/ComponentFarmingLocations'
 import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
 import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Button, Center, Group, List, Loader, Paper, Stack, Text, Title } from '@mantine/core'
@@ -107,6 +110,23 @@ const CraftingBreakdownTool = ({
                     <Text size='xs' c='dimmed'>
                       Found in: {location(data.ingredientById.get(relation.ingredientId)?.name ?? '')}
                     </Text>
+                  )}
+                  {relation.producerRecipeId !== undefined && (
+                    <RecipeDetails
+                      name={data.ingredientById.get(relation.ingredientId)?.name ?? 'component'}
+                      count={relation.quantity}
+                      recipeKey={relation.producerRecipeId}
+                      lookup={heroicRecipeParts(data)}
+                    />
+                  )}
+                  {relation.producerRecipeId !== undefined && (
+                    <ComponentFarmingLocations
+                      materials={expandIngredientRequirements([relation.producerRecipeId], data).terminal.map(
+                        ({ ingredient, quantity }) => ({ name: ingredient.name, quantity })
+                      )}
+                      count={relation.quantity}
+                      location={location}
+                    />
                   )}
                   <IngredientStock
                     name={data.ingredientById.get(relation.ingredientId)?.name ?? 'Missing ingredient'}

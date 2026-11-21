@@ -1,9 +1,17 @@
+import RecipeDetails from '../../../shared/items/RecipeDetails'
+import { legendaryRecipeParts } from '../logic'
 import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
 import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Group, List, Stack, Text, Title } from '@mantine/core'
-import type { LgsIngredientPlan, LgsRequirement } from '../legendaryGreenSteel.types.ts'
+import type { LgsIngredientPlan, LgsRecipe, LgsRequirement } from '../legendaryGreenSteel.types.ts'
 
-const IngredientList = ({ values }: { values: readonly LgsRequirement[] }) => {
+const IngredientList = ({
+  values,
+  components
+}: {
+  values: readonly LgsRequirement[]
+  components?: readonly LgsRecipe[]
+}) => {
   const location = useIngredientLocations()
   return values.length ? (
     <List spacing='xs'>
@@ -22,6 +30,9 @@ const IngredientList = ({ values }: { values: readonly LgsRequirement[] }) => {
               Found in: {location(name)}
             </Text>
           )}
+          {components && (
+            <RecipeDetails name={name} count={quantity} recipeKey={id} lookup={legendaryRecipeParts(components)} />
+          )}
           <IngredientStock name={name} required={quantity} />
         </List.Item>
       ))}
@@ -33,7 +44,7 @@ const IngredientList = ({ values }: { values: readonly LgsRequirement[] }) => {
   )
 }
 
-const IngredientsTool = ({ plan }: { plan: LgsIngredientPlan }) => {
+const IngredientsTool = ({ plan, components }: { plan: LgsIngredientPlan; components: readonly LgsRecipe[] }) => {
   if (!plan.rawMaterials.length && !plan.craftedMaterials.length) {
     return (
       <Alert color='blue' title='No crafting stages selected' m='md'>
@@ -53,7 +64,7 @@ const IngredientsTool = ({ plan }: { plan: LgsIngredientPlan }) => {
         <Title order={3} size='h5'>
           Crafted Materials
         </Title>
-        <IngredientList values={plan.craftedMaterials} />
+        <IngredientList values={plan.craftedMaterials} components={components} />
       </Stack>
     </Stack>
   )

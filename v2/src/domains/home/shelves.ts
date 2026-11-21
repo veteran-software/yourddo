@@ -18,6 +18,8 @@ export function writeShelf(key: string, values: string[]) {
   }
 }
 export function recordVisit(path: string) {
-  if (homeTools.some((t) => t.path === path))
-    writeShelf(recentsKey, [path, ...readShelf(recentsKey).filter((p) => p.split('||')[0] !== path)].slice(0, 5))
+  if (!homeTools.some((tool) => tool.path === path)) return
+  const history = readShelf(recentsKey)
+  const entry = history.find((value) => value.split('||')[0] === path) ?? path
+  writeShelf(recentsKey, [entry, ...history.filter((value) => value.split('||')[0] !== path)].slice(0, 5))
 }

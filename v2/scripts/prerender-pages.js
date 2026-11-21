@@ -104,6 +104,8 @@ const writeRouteHtml = async (routePath, html) => {
     routePath === '/' ? path.join(distDir, 'index.html') : path.join(distDir, routePath.slice(1), 'index.html')
   await mkdir(path.dirname(outputPath), { recursive: true })
   await writeFile(outputPath, html, 'utf8')
+  // Static hosts resolve /tool and /tool/ through different files.
+  if (routePath !== '/') await writeFile(path.join(distDir, routePath.slice(1) + '.html'), html, 'utf8')
 }
 
 const main = async () => {
