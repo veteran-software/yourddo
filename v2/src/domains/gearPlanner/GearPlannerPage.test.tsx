@@ -5,6 +5,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-li
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { createEssenceCraftingTestPayload } from '../essenceCrafting/test-fixture.ts'
+import { emptyGearCraftingData } from './crafting.ts'
 import { loadGearPlannerData } from './data.ts'
 import {
   allGearPlannerSlots,
@@ -46,6 +47,7 @@ const data: GearPlannerData = {
   filigrees: [],
   filigreeSetDefinitions: [],
   filigreeSetDefinitionByName: new Map(),
+  crafting: emptyGearCraftingData,
   reforging: emptyGearPlannerReforgingData,
   rawItemCount: 0,
   normalizedItemCount: 0,
@@ -197,7 +199,7 @@ describe('GearPlannerPage', () => {
       'gear-slot-Off Hand',
       'gear-slot-Quiver'
     ])
-    expect(gearPlannerSlotGridColumns).toEqual({ base: 1, xs: 2, md: 3, lg: 4 })
+    expect(gearPlannerSlotGridColumns).toEqual({ base: 1, '37rem': 2, '56rem': 3, '75rem': 4 })
   })
 
   it('renders an all-or-error load state and retries failed data loading', async () => {
@@ -257,6 +259,20 @@ describe('GearPlannerPage', () => {
     fireEvent.click(await screen.findByRole('option', { name: /Split Prefix Test/ }))
     fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
     expect((await screen.findAllByText(/Essence Crafting · prefix: Split Prefix Test/)).length).toBe(2)
+  })
+
+  it('applies and clears a Reaper Forge upgrade on the equipped card', async () => {
+    await renderReadyPage(dataWithItems([item('eyes', gearPlannerSlots.eyes, 'Test Goggles')]))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Eyes' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Test Goggles' }))
+    const card = within(screen.getByTestId('gear-slot-Eyes'))
+    fireEvent.click(card.getByText('Item upgrades'))
+    const selector = card.getByRole('combobox', { name: 'Reaper Forge' })
+    fireEvent.click(selector)
+    fireEvent.click(await screen.findByRole('option', { name: 'Reaper Goggles Enchantment' }))
+    expect(card.getByText('Attack Rolls 1 (Reaper)')).toBeTruthy()
+    fireEvent.click(card.getByRole('button', { name: 'Clear Reaper Forge' }))
+    expect(card.queryByText('Attack Rolls 1 (Reaper)')).toBeNull()
   })
 
   it('equips, replaces, and clears an item without altering another slot', async () => {

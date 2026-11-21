@@ -1,171 +1,110 @@
-import { describe, expect, it, vi } from 'vitest'
-import { lgsDatasetDomain, loadLgsData, parseLgsData } from './data.ts'
-import { groupLgsBaseItems } from './logic.ts'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { loadDatasetFile } from '../../shared/data/loadDataset.ts'
+import { loadLgsData, parseLgsResources } from './data.ts'
+import { devices, files } from './lgsTestData.ts'
+vi.mock('../../shared/data/loadDataset.ts', () => ({ loadDatasetFile: vi.fn() }))
 
-vi.mock('../../shared/data/loadDataset.ts', () => ({ loadDataset: vi.fn() }))
-
-const requirement = { name: 'Raw Material', quantity: 1 }
-const base = (name: string, ingredientType: string) => ({
-  name,
-  ingredientType,
-  image: 'image',
-  craftedIn: 'Altar',
-  quantity: 1,
-  requirements: [requirement]
-})
-const tier = (
-  name: string,
-  tierNumber: number,
-  itemType: string,
-  effectsAdded: { name: string; modifier?: number | string; bonus?: string }[] = [{ name: 'Effect' }]
-) => ({
-  name,
-  title: name,
-  augmentType: `Tier ${String(tierNumber)}`,
-  minimumLevel: 26,
-  craftedIn: 'Altar',
-  quantity: 1,
-  requirements: [requirement],
-  effectsAdded,
-  tier: tierNumber,
-  itemType,
-  primaryFocus: 'Air',
-  essence: 'Ethereal',
-  gem: 'Dominion'
-})
-const fill = <T>(first: T, count: number): T[] => [first, ...Array.from({ length: count - 1 }, () => first)]
-
-const payload = () => ({
-  schemaVersion: 1,
-  baseItems: [
-    ...fill(base('Legendary Green Steel Sword', 'Legendary Green Steel Weapon'), 40),
-    ...fill(base('Legendary Green Steel Belt', 'Legendary Green Steel Accessory'), 8)
-  ],
-  tier1: fill(
-    tier('Tier 1 Weapon Augment (Air Ethereal Dominion)', 1, 'Weapon', [
-      { name: 'Electric Spell Power', modifier: 139, bonus: 'Equipment' },
-      { name: 'Good-aligned Weapon' }
-    ]),
-    72
-  ),
-  tier2: fill(
-    tier('Tier 2 Equipment Augment (Air Ethereal Dominion)', 2, 'Equipment', [
-      { name: 'Electric Spell Critical Damage', modifier: '10%', bonus: 'Insight' }
-    ]),
-    72
-  ),
-  tier3: fill(
-    {
-      ...tier('Tier 3 Weapon Augment (Water Air Ethereal Dominion)', 3, 'Weapon', [{ name: 'Good-aligned Weapon' }]),
-      primaryFocus: 'Water',
-      secondaryFocus: 'Air'
-    },
-    252
-  ),
-  activeAugments: [
-    {
-      name: 'Legendary Green Steel Augment: Animal Growth',
-      displayName: 'Animal Growth',
-      image: 'image',
-      minimumLevel: 26,
-      augmentType: 'Active',
-      description: 'Animal spell.',
-      craftedIn: 'Altar',
-      quantity: 1,
-      requirements: [requirement]
-    },
-    {
-      name: 'Legendary Green Steel Augment: Cometfall',
-      displayName: 'Cometfall',
-      type: 'Damage',
-      image: 'image',
-      minimumLevel: 26,
-      augmentType: 'Active',
-      craftedIn: 'Altar',
-      quantity: 1,
-      requirements: [requirement]
-    },
-    ...fill(
-      {
-        name: 'Legendary Green Steel Augment: Other',
-        displayName: 'Other',
-        minimumLevel: 26,
-        augmentType: 'Active',
-        description: 'Other spell.',
-        craftedIn: 'Altar',
-        quantity: 1,
-        requirements: [requirement]
-      },
-      37
+describe('LGS release resources', () => {
+  beforeEach(() => {
+    vi.mocked(loadDatasetFile).mockReset()
+    const paths = Object.fromEntries(Object.keys(files).map((key) => [key, `nested/${key}.json`]))
+    const resources = new Map(Object.entries(files).map(([key, file]) => [`legendary-green-steel/${paths[key]}`, file]))
+    vi.mocked(loadDatasetFile).mockImplementation((path) =>
+      Promise.resolve(
+        path === 'legendary-green-steel/manifest.json'
+          ? {
+              system: 'legendary-green-steel',
+              version: 'sha256:' + '0'.repeat(64),
+              devices,
+              resources: { ...paths, icons: 'icons.json' }
+            }
+          : resources.get(path)
+      )
     )
-  ],
-  bonusEffects: fill(
-    { name: 'Bonus', description: 'Description', lowerFoci: ['Air', 'Water'], tier3Foci: ['Water', 'Air'] },
-    21
-  ),
-  craftingComponents: fill(
-    { name: 'Intermediate', craftedIn: 'Altar', quantity: 1, requirements: [requirement], type: 'Crafted' },
-    33
-  ),
-  specialRecipes: [{ name: "Immortal's Heart", quantity: 1, requirements: [{ name: 'Codex Runes', quantity: 2500 }] }]
-})
-
-describe('Legendary Green Steel data', () => {
-  it('guards production payload schema and collection counts', () => {
-    const data = parseLgsData(payload())
-    expect(data.schemaVersion).toBe(1)
-    expect(data.baseItems).toHaveLength(48)
-    expect(data.tier1).toHaveLength(72)
-    expect(data.tier2).toHaveLength(72)
-    expect(data.tier3).toHaveLength(252)
-    expect(data.activeAugments).toHaveLength(39)
-    expect(data.bonusEffects).toHaveLength(21)
-    expect(data.craftingComponents).toHaveLength(33)
-    expect(data.specialRecipes).toHaveLength(1)
-    expect(groupLgsBaseItems(data.baseItems).map(({ label, items }) => [label, items.length])).toEqual([
-      ['Weapons', 40],
-      ['Accessories', 8]
-    ])
   })
-
-  it('accepts optional production fields without coercion', () => {
-    const data = parseLgsData(payload())
-    expect(data.tier1[0].effectsAdded[0]).toMatchObject({ modifier: 139, bonus: 'Equipment' })
-    expect(data.tier1[0].effectsAdded[1]).toEqual({ name: 'Good-aligned Weapon' })
-    expect(data.tier2[0].effectsAdded[0]).toMatchObject({ modifier: '10%', bonus: 'Insight' })
+  it('loads named resources relative to the domain manifest and resolves their IDs', async () => {
+    const firstLoad = loadLgsData()
+    expect(loadLgsData()).toBe(firstLoad)
+    const data = await firstLoad
+    expect(loadDatasetFile).toHaveBeenCalledTimes(17)
     expect(data.tier3[0]).toMatchObject({
-      primaryFocus: 'Water',
-      secondaryFocus: 'Air',
-      essence: 'Ethereal',
-      gem: 'Dominion'
+      id: 6,
+      focuses: ['Air', 'Fire'],
+      craftedIn: 'tier3 Altar',
+      requirements: [{ id: 32, name: 'Tier 3 Component', quantity: 3 }]
     })
-    expect(data.tier3[0].image).toBeUndefined()
     expect(data.activeAugments[0]).toMatchObject({
-      name: 'Legendary Green Steel Augment: Animal Growth',
-      description: 'Animal spell.'
+      displayName: 'Animal Growth',
+      name: 'Legendary Green Steel Augment: Animal Growth'
     })
-    expect(data.activeAugments[0].type).toBeUndefined()
-    expect(data.activeAugments[1]).toMatchObject({ name: 'Legendary Green Steel Augment: Cometfall', type: 'Damage' })
-    expect(data.activeAugments[1].description).toBeUndefined()
-    expect(data.specialRecipes).toMatchObject([
-      { name: "Immortal's Heart", quantity: 1, requirements: [{ name: 'Codex Runes', quantity: 2500 }] }
+    expect(data.immortalsHeart.requirements).toEqual([{ id: 27, name: 'Codex Rune', quantity: 2500 }])
+  })
+  it('omits numbered wear modifiers and their placeholder descriptions from displayed effects', () => {
+    const [visible] = files.effects
+    const wearModifiers = ['Plus 5 Wear Modifier', 'Plus 21 Wear Modifier', '+30 Wear Modifier'].map(
+      (displayName, i) => ({
+        id: 900 + i,
+        displayName,
+        description: '..'
+      })
+    )
+    const base = { ...files.baseItems[0], effectIds: [visible.id, ...wearModifiers.map((effect) => effect.id)] }
+    const data = parseLgsResources(
+      { ...files, effects: [...files.effects, ...wearModifiers], baseItems: [base] },
+      devices
+    )
+    expect(data.baseItems[0]).toMatchObject({ effects: [visible.displayName], details: [] })
+  })
+  it('reads configured weapon rules without an activation reason', () => {
+    const data = parseLgsResources(files, devices)
+    expect(data.bonusEffects[0].requiredFocuses).toEqual(files.weaponBonuses[0].requiredFocuses)
+    expect(data.bonusEffects[0].paragraphs).toEqual(['Electric Spell Power +139 (Equipment)'])
+    expect(data.bonusEffects[1].notes).toContain('Piece threshold is unverified.')
+    const legacy = { ...files.weaponBonuses[0], activationStatus: 'unresolved', activationReason: 'Unverified.' }
+    expect(
+      parseLgsResources({ ...files, weaponBonuses: [legacy] }, devices).bonusEffects[0].requiredFocuses
+    ).toBeUndefined()
+    expect(() =>
+      parseLgsResources({ ...files, weaponBonuses: [{ ...files.weaponBonuses[0], requiredFocuses: {} }] }, devices)
+    ).toThrow('tier1And2')
+  })
+
+  it('allows a retry after a failed manifest request', async () => {
+    vi.mocked(loadDatasetFile).mockRejectedValueOnce(new Error('offline'))
+    await expect(loadLgsData()).rejects.toThrow('offline')
+    await expect(loadLgsData()).resolves.toMatchObject({ immortalsHeart: { id: 9 } })
+  })
+  it('keeps mechanical discrepancies and partial effect explanations beside the published description', () => {
+    const effects = [
+      {
+        ...files.effects[0],
+        knownDiscrepancies: [
+          { stat: 'Silver_DR', statDisplayName: 'Silver bypass', stated: 'omitted', mechanical: true },
+          { stat: 'Positive Energy Spell Power', stated: 37, mechanical: 34.75, unit: 'points' },
+          { stat: 'Critical Damage', stated: 5, mechanical: 20, unit: 'percent' }
+        ],
+        unresolved: ['Unknown trigger.']
+      },
+      ...files.effects.slice(1)
+    ]
+    const data = parseLgsResources({ ...files, effects }, devices)
+    const tier = data.tier1.find((item) => item.id === 3)
+    expect(tier?.details).toEqual(['Unknown trigger.'])
+    expect(tier?.discrepancies).toEqual([
+      'Silver bypass: stated omitted, actual true.',
+      'Positive Energy Spell Power: stated 37, actual 34.75.',
+      'Critical Damage: stated 5, actual 20 percent.'
     ])
   })
-
-  it('reports validation paths without including payload data', () => {
-    const invalidPayload = payload()
-    const invalidAugment = invalidPayload.activeAugments[1] as Record<string, unknown>
-    invalidAugment.description = 42
-
-    expect(() => parseLgsData(invalidPayload)).toThrow(
-      'activeAugments[1].description: expected string, received number'
-    )
-  })
-
-  it('loads the generated dataset by its production domain', async () => {
-    const { loadDataset } = await import('../../shared/data/loadDataset.ts')
-    vi.mocked(loadDataset).mockResolvedValueOnce(payload())
-    await expect(loadLgsData()).resolves.toMatchObject({ schemaVersion: 1 })
-    expect(loadDataset).toHaveBeenCalledWith(lgsDatasetDomain)
+  it('rejects broken references, output mismatches and cycles before rendering', () => {
+    expect(() => parseLgsResources({ ...files, spells: [] }, devices)).toThrow('spellId')
+    expect(() => parseLgsResources({ ...files, effects: [] }, devices)).toThrow('effectId')
+    expect(() => parseLgsResources({ ...files, ingredients: [] }, devices)).toThrow('ingredientId')
+    const changed = structuredClone(files)
+    changed.tier3Recipes[0].outputItemId = 123
+    expect(() => parseLgsResources(changed, devices)).toThrow('wrong output')
+    const cyclic = structuredClone(files)
+    cyclic.tier1Recipes[2].ingredients[0].ingredientId = 31
+    expect(() => parseLgsResources(cyclic, devices)).toThrow('Circular')
   })
 })

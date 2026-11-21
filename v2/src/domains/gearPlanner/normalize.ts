@@ -1,3 +1,4 @@
+import { emptyGearCraftingData } from './crafting.ts'
 import {
   allGearPlannerSlots,
   type GearPlannerData,
@@ -89,6 +90,7 @@ export const normalizeGearPlannerSources = (
     filigrees: [],
     filigreeSetDefinitions: [],
     filigreeSetDefinitionByName: new Map(),
+    crafting: emptyGearCraftingData,
     reforging: emptyGearPlannerReforgingData,
     rawItemCount,
     normalizedItemCount: items.length,

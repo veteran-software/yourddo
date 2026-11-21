@@ -63,7 +63,10 @@ export const collectEquippedItemSetMemberships = (
   equipment: GearPlannerEquipment
 ): readonly GearPlannerSetMembership[] =>
   equippedItems(equipment).flatMap((item) =>
-    (item.source.setBonus ?? []).map(({ name }, setIndex) => ({
+    [
+      ...(item.source.name.includes('Gem of Many Facets') ? [] : (item.source.setBonus ?? [])),
+      ...(item.crafts ?? []).flatMap((craft) => (craft.setName ? [{ name: craft.setName }] : []))
+    ].map(({ name }, setIndex) => ({
       id: `${item.id}:equipped-item-set:${String(setIndex)}`,
       setName: name,
       category: 'equipped-item' as const,

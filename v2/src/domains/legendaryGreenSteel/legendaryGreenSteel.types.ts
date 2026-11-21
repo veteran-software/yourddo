@@ -1,82 +1,67 @@
 export interface LgsRequirement {
+  id: number
   name: string
   quantity: number
 }
 
-export interface LgsEffect {
-  name: string
-  modifier?: number | string
-  bonus?: string
-}
-
-export type LgsMetadata = Readonly<Record<string, unknown>>
-
-interface LgsCraftedRecord {
+export interface LgsRecipe {
+  id: number
   name: string
   craftedIn: string
-  quantity: number
   requirements: readonly LgsRequirement[]
-  image?: string
-  binding?: LgsMetadata
-  baseValue?: unknown
-  source: LgsMetadata
 }
 
-export interface LgsBaseItem extends LgsCraftedRecord {
-  ingredientType: 'Legendary Green Steel Weapon' | 'Legendary Green Steel Accessory'
+interface SlottedItem extends LgsRecipe {
+  slotTypes: readonly string[]
 }
 
-export interface LgsTierAugment extends LgsCraftedRecord {
-  title: string
-  augmentType: string
-  minimumLevel: number | string
-  effectsAdded: readonly LgsEffect[]
-  tier: 1 | 2 | 3
-  itemType: 'Weapon' | 'Equipment'
-  primaryFocus: string
-  secondaryFocus?: string
+export interface LgsBaseItem extends SlottedItem {
+  type: 'weapon' | 'equipment'
+  effects: readonly string[]
+  details: readonly string[]
+  discrepancies: readonly string[]
+}
+
+export interface LgsTierAugment extends SlottedItem {
+  focuses: readonly string[]
   essence: string
   gem: string
+  effects: readonly string[]
+  details: readonly string[]
+  discrepancies: readonly string[]
 }
 
-export interface LgsActiveAugment extends LgsCraftedRecord {
+export interface LgsActiveAugment extends SlottedItem {
   displayName: string
-  type?: string
-  minimumLevel: number | string
-  augmentType: string
-  description?: string
-  weight?: number | string
+  discrepancies: readonly string[]
+  description: string
+  spellDetails: string
+}
+
+export interface WeaponFocusRule {
+  tier1And2: readonly [string, string]
+  tier3: readonly [string, string]
 }
 
 export interface LgsBonusEffect {
+  requiredFocuses?: WeaponFocusRule
   name: string
-  description: string
-  lowerFoci: readonly string[]
-  tier3Foci: readonly string[]
-  source: LgsMetadata
-}
-
-export interface LgsCraftingComponent extends LgsCraftedRecord {
-  type?: string
-}
-
-export interface LgsSpecialRecipe {
-  name: string
-  quantity: number
-  requirements: readonly LgsRequirement[]
-  source: LgsMetadata
+  group: 'Weapon bonuses' | 'Equipment sets'
+  discrepancies: readonly string[]
+  paragraphs: readonly string[]
+  notes: readonly string[]
 }
 
 export interface LgsData {
-  schemaVersion: 1
   baseItems: readonly LgsBaseItem[]
   tier1: readonly LgsTierAugment[]
   tier2: readonly LgsTierAugment[]
   tier3: readonly LgsTierAugment[]
   activeAugments: readonly LgsActiveAugment[]
   bonusEffects: readonly LgsBonusEffect[]
-  craftingComponents: readonly LgsCraftingComponent[]
-  specialRecipes: readonly LgsSpecialRecipe[]
+  explicitNoEffect: readonly WeaponFocusRule[]
+  craftingComponents: readonly LgsRecipe[]
+  immortalsHeart: SlottedItem
 }
 
 export interface LgsPlan {
@@ -86,6 +71,7 @@ export interface LgsPlan {
   tier3Name: string | null
   bonusEffectName: string | null
   activeAugmentName: string | null
+  useImmortalsHeart?: true
 }
 
 export interface LgsIngredientPlan {

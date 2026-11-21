@@ -1,3 +1,4 @@
+import { gearCraftGroups, applyGearCraft } from './crafting.ts'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { gearPlannerAugmentIdentity, isCompatibleGearPlannerAugment } from './augments.ts'
 import { canApplyGearPlannerCurse, collectSelectedGearPlannerCurses, gearPlannerCurseIdentity } from './curses.ts'
@@ -92,6 +93,7 @@ export interface PersistedGearPlannerSetupV1 {
   selectedFiligrees?: readonly PersistedGearPlannerFiligreeV1[]
   unlockedFiligreeSlots?: readonly PersistedGearPlannerUnlockedFiligreeSlotsV1[]
   selectedEssenceCrafting?: readonly PersistedGearPlannerEssenceCraftingV1[]
+  selectedCrafts?: readonly { itemId: string; system: string; choiceId: string }[]
   selectedReforging?: readonly PersistedGearPlannerReforgingV1[]
 }
 
@@ -104,6 +106,7 @@ export interface PersistedGearPlannerStateV1 {
 
 export interface GearPlannerRestoreIssue {
   kind:
+    | 'invalid-craft'
     | 'invalid-state'
     | 'missing-item'
     | 'missing-augment'
@@ -326,6 +329,21 @@ const parseSelectedReforging = (value: unknown, path: string): readonly Persiste
   })
 }
 
+const parseSelectedCrafts = (value: unknown, path: string) => {
+  if (!Array.isArray(value)) throw new InvalidGearPlannerStateError(`${path} must be an array`)
+  const seen = new Set<string>()
+  return value.map((entry, i) => {
+    const key = `${path}[${String(i)}]`
+    const record = requiredRecord(entry, key)
+    const itemId = requiredString(record.itemId, key + '.itemId')
+    const system = requiredString(record.system, key + '.system')
+    const identity = JSON.stringify([itemId, system])
+    if (seen.has(identity)) throw new InvalidGearPlannerStateError(`${path} contains duplicate crafting selections`)
+    seen.add(identity)
+    return { itemId, system, choiceId: requiredString(record.choiceId, key + '.choiceId') }
+  })
+}
+
 const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 => {
   const path = `setups[${String(index)}]`
   const record = requiredRecord(value, path)
@@ -364,6 +382,9 @@ const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 
             `${path}.selectedEssenceCrafting`
           )
         }),
+    ...(record.selectedCrafts === undefined
+      ? {}
+      : { selectedCrafts: parseSelectedCrafts(record.selectedCrafts, `${path}.selectedCrafts`) }),
     ...(record.selectedReforging === undefined
       ? {}
       : { selectedReforging: parseSelectedReforging(record.selectedReforging, `${path}.selectedReforging`) })
@@ -452,6 +473,9 @@ export const serializeGearPlannerState = (state: GearPlannerSetupsState): Persis
           : []
       })
       .toSorted((left, right) => left.itemId.localeCompare(right.itemId)),
+    selectedCrafts: Object.values(setup.equipment).flatMap(
+      (item) => item?.crafts?.map((craft) => ({ itemId: item.id, system: craft.system, choiceId: craft.id })) ?? []
+    ),
     selectedReforging: Object.values(setup.equipment)
       .filter((item): item is NonNullable<typeof item> => item !== null)
       .flatMap((item) => {
@@ -486,6 +510,22 @@ export const restorePersistedGearPlannerState = (
         continue
       }
       equipment[slot] = item
+    }
+    for (const { itemId, system, choiceId } of savedSetup.selectedCrafts ?? []) {
+      const slot = gearPlannerCharacterSlots.find((s) => equipment[s]?.id === itemId)
+      const item = slot && equipment[slot]
+      const group = item && gearCraftGroups(item, data.crafting).find((g) => g.system === system)
+      if (slot && item && group) {
+        const updated = applyGearCraft(item, group, choiceId)
+        if (updated !== item) {
+          equipment[slot] = updated
+          continue
+        }
+      }
+      issues.push({
+        kind: 'invalid-craft',
+        message: `${savedSetup.name}: ${system} selection is unavailable for its item`
+      })
     }
     let setup: GearPlannerSetup = {
       ...createGearPlannerSetup(savedSetup.id, savedSetup.name),

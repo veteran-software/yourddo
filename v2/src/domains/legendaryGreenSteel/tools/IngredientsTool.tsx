@@ -4,8 +4,8 @@ import type { LgsIngredientPlan, LgsRequirement } from '../legendaryGreenSteel.t
 const IngredientList = ({ values }: { values: readonly LgsRequirement[] }) =>
   values.length ? (
     <List spacing='xs'>
-      {values.map(({ name, quantity }) => (
-        <List.Item key={name}>
+      {values.map(({ id, name, quantity }) => (
+        <List.Item key={id}>
           <Group component='span' justify='space-between' wrap='nowrap'>
             <Text component='span' size='sm'>
               {name}

@@ -1,4 +1,3 @@
-import rawCurses from '../../../../src/data/deckOfManyCurses.json'
 import {
   type GearPlannerCurse,
   type GearPlannerEffect,
@@ -62,8 +61,6 @@ export const parseGearPlannerCurseDataset = (value: unknown): readonly GearPlann
     })
   )
 }
-
-export const gearPlannerCurseDefinitions = parseGearPlannerCurseDataset(rawCurses)
 
 export const gearPlannerCurseIdentity = (curse: GearPlannerCurse): string => curse.id
 

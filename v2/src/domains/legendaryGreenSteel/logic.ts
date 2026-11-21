@@ -1,16 +1,13 @@
 import type {
   LgsBaseItem,
-  LgsBonusEffect,
   LgsData,
-  LgsEffect,
   LgsIngredientPlan,
   LgsPlan,
+  LgsRecipe,
   LgsRequirement,
-  LgsTierAugment
+  LgsTierAugment,
+  WeaponFocusRule
 } from './legendaryGreenSteel.types.ts'
-
-type LgsTierField = 'tier1Name' | 'tier2Name' | 'tier3Name'
-export type LgsPlanField = keyof LgsPlan
 
 export const emptyLgsPlan = (): LgsPlan => ({
   baseItemName: null,
@@ -21,199 +18,106 @@ export const emptyLgsPlan = (): LgsPlan => ({
   activeAugmentName: null
 })
 
-export const getTierItemType = (ingredientType: string): LgsTierAugment['itemType'] =>
-  ingredientType === 'Legendary Green Steel Weapon' ? 'Weapon' : 'Equipment'
-
 export const groupLgsBaseItems = (items: readonly LgsBaseItem[]) =>
-  [
-    { label: 'Weapons', ingredientType: 'Legendary Green Steel Weapon' },
-    { label: 'Accessories', ingredientType: 'Legendary Green Steel Accessory' }
-  ].map(({ label, ingredientType }) => ({
-    label,
-    items: items
-      .filter((item) => item.ingredientType === ingredientType)
-      .sort((left, right) => left.name.localeCompare(right.name))
+  (['weapon', 'equipment'] as const).map((type) => ({
+    label: type === 'weapon' ? 'Weapons' : 'Accessories',
+    items: items.filter((item) => item.type === type).sort((a, b) => a.name.localeCompare(b.name))
   }))
 
-export const formatLgsEffect = ({ name, modifier, bonus }: LgsEffect): string => {
-  const modifierText =
-    modifier === undefined || name.endsWith(String(modifier))
-      ? ''
-      : ` ${String(modifier).startsWith('+') || String(modifier).startsWith('-') ? String(modifier) : `+${String(modifier)}`}`
-  return `${name}${modifierText}${bonus ? ` (${bonus})` : ''}`
+export const fitsSlot = (base: LgsBaseItem | undefined, item: { slotTypes: readonly string[] }) =>
+  !!base && item.slotTypes.some((type) => base.slotTypes.includes(type))
+
+type Tier = 'tier1' | 'tier2' | 'tier3'
+type SelectedTiers = Record<Tier, LgsTierAugment | undefined>
+
+function selectedTiers(data: LgsData, plan: LgsPlan): SelectedTiers {
+  return {
+    tier1: data.tier1.find((t) => t.name === plan.tier1Name),
+    tier2: data.tier2.find((t) => t.name === plan.tier2Name),
+    tier3: data.tier3.find((t) => t.name === plan.tier3Name)
+  }
 }
 
-const selected = <T extends { name: string }>(records: readonly T[], name: string | null): T | undefined =>
-  records.find((record) => record.name === name)
-
-const matchingFoci = (left: readonly string[], right: readonly string[]): boolean =>
-  left.length === right.length &&
-  left.every(
-    (focus) => left.filter((value) => value === focus).length === right.filter((value) => value === focus).length
+function allowsPair([a, b]: readonly [string, string], first?: string, second?: string) {
+  return (
+    ((!first || first === a) && (!second || second === b)) || ((!first || first === b) && (!second || second === a))
   )
-
-const lowerTiersMatchBonus = (
-  bonus: LgsBonusEffect,
-  tier1: LgsTierAugment | undefined,
-  tier2: LgsTierAugment | undefined
-): boolean => {
-  if (tier1 && tier2) return matchingFoci([tier1.primaryFocus, tier2.primaryFocus], bonus.lowerFoci)
-  const tier = tier1 ?? tier2
-  return tier ? bonus.lowerFoci.includes(tier.primaryFocus) : true
+}
+function matchesRule(rule: WeaponFocusRule, { tier1, tier2, tier3 }: SelectedTiers) {
+  return (
+    allowsPair(rule.tier1And2, tier1?.focuses[0], tier2?.focuses[0]) &&
+    allowsPair(rule.tier3, tier3?.focuses[0], tier3?.focuses[1])
+  )
 }
 
-const tier3MatchesBonus = (tier: LgsTierAugment | undefined, bonus: LgsBonusEffect): boolean => {
-  if (!tier) return true
-  if (tier.itemType === 'Equipment') return bonus.tier3Foci.includes(tier.primaryFocus)
-  return tier.secondaryFocus !== undefined && matchingFoci([tier.primaryFocus, tier.secondaryFocus], bonus.tier3Foci)
-}
-
-export const isTierCompatibleWithBonus = (tier: LgsTierAugment, bonus: LgsBonusEffect | undefined): boolean => {
-  if (!bonus) return true
-  return tier.tier < 3 ? bonus.lowerFoci.includes(tier.primaryFocus) : tier3MatchesBonus(tier, bonus)
-}
-
-const selectedTiers = (data: LgsData, plan: LgsPlan) => ({
-  tier1: selected(data.tier1, plan.tier1Name),
-  tier2: selected(data.tier2, plan.tier2Name),
-  tier3: selected(data.tier3, plan.tier3Name)
-})
-
-const compatibleWithBonus = (bonus: LgsBonusEffect, tiers: ReturnType<typeof selectedTiers>): boolean =>
-  lowerTiersMatchBonus(bonus, tiers.tier1, tiers.tier2) && tier3MatchesBonus(tiers.tier3, bonus)
-
-export const getCompatibleBonusEffects = (data: LgsData, plan: LgsPlan): readonly LgsBonusEffect[] => {
+export function getLgsOptions(data: LgsData, plan: LgsPlan, base: LgsBaseItem | undefined) {
   const tiers = selectedTiers(data, plan)
-  return data.bonusEffects
-    .filter((bonus) => compatibleWithBonus(bonus, tiers))
-    .sort((left, right) => left.name.localeCompare(right.name))
+  const weapon = base?.type === 'weapon'
+  const target = weapon ? data.bonusEffects.find((b) => b.name === plan.bonusEffectName)?.requiredFocuses : undefined
+  // Older builds could select any bonus for reference. Keep their tiers editable.
+  const filter = target && matchesRule(target, tiers) ? target : undefined
+  const choices = (key: Tier) =>
+    data[key].filter((t) => fitsSlot(base, t) && (!filter || matchesRule(filter, { ...tiers, [key]: t })))
+  const bonuses = data.bonusEffects.filter((b) => {
+    if (!base || b.name === plan.bonusEffectName) return true
+    if (b.group === 'Equipment sets') return !weapon
+    return weapon && (!b.requiredFocuses || matchesRule(b.requiredFocuses, tiers))
+  })
+  return { tier1: choices('tier1'), tier2: choices('tier2'), tier3: choices('tier3'), bonuses }
 }
 
-const compatibleTierOptions = (
-  data: LgsData,
-  plan: LgsPlan,
-  field: LgsTierField,
-  options: readonly LgsTierAugment[]
-): readonly LgsTierAugment[] => {
-  const base = selected(data.baseItems, plan.baseItemName)
-  if (!base) return []
-  const bonus = selected(data.bonusEffects, plan.bonusEffectName)
+export function weaponBonusResult(data: LgsData, plan: LgsPlan): string | undefined {
+  if (!data.baseItems.some((b) => b.name === plan.baseItemName && b.type === 'weapon')) return
   const tiers = selectedTiers(data, plan)
-  return options
-    .filter((tier) => tier.itemType === getTierItemType(base.ingredientType))
-    .filter((tier) => {
-      if (!bonus || !isTierCompatibleWithBonus(tier, bonus)) return !bonus
-      if (field === 'tier1Name') return lowerTiersMatchBonus(bonus, tier, tiers.tier2)
-      if (field === 'tier2Name') return lowerTiersMatchBonus(bonus, tiers.tier1, tier)
-      return true
-    })
-    .sort((left, right) => left.name.localeCompare(right.name))
+  const configured = data.bonusEffects.filter((b) => b.requiredFocuses)
+  if (!configured.length) return
+  if (!tiers.tier1 || !tiers.tier2 || !tiers.tier3) {
+    const target = configured.find((b) => b.name === plan.bonusEffectName)
+    if (target?.requiredFocuses && !matchesRule(target.requiredFocuses, tiers))
+      return 'The selected tiers do not match the selected weapon bonus.'
+    return
+  }
+  if (data.explicitNoEffect.some((rule) => matchesRule(rule, tiers)))
+    return 'The release lists no weapon bonus for this combination.'
+  const matched = configured.find((b) => b.requiredFocuses && matchesRule(b.requiredFocuses, tiers))
+  return matched ? `Weapon bonus: ${matched.name}.` : 'No published weapon bonus matches this combination.'
 }
 
-export const getCompatibleTier1 = (data: LgsData, plan: LgsPlan): readonly LgsTierAugment[] =>
-  compatibleTierOptions(data, plan, 'tier1Name', data.tier1)
-
-export const getCompatibleTier2 = (data: LgsData, plan: LgsPlan): readonly LgsTierAugment[] =>
-  compatibleTierOptions(data, plan, 'tier2Name', data.tier2)
-
-export const getCompatibleTier3 = (data: LgsData, plan: LgsPlan): readonly LgsTierAugment[] =>
-  compatibleTierOptions(data, plan, 'tier3Name', data.tier3)
-
-const validTierName = (
-  base: LgsBaseItem | undefined,
-  name: string | null,
-  tiers: readonly LgsTierAugment[]
-): string | null => {
-  const tier = selected(tiers, name)
-  return tier && base && tier.itemType === getTierItemType(base.ingredientType) ? tier.name : null
-}
-
-const reconcileBonusTiers = (data: LgsData, plan: LgsPlan, changedField?: LgsPlanField): LgsPlan => {
-  const bonus = selected(data.bonusEffects, plan.bonusEffectName)
-  if (!bonus) return plan
-  const tiers = selectedTiers(data, plan)
-
-  if (changedField === 'tier1Name' && tiers.tier1 && !isTierCompatibleWithBonus(tiers.tier1, bonus)) {
-    return { ...plan, bonusEffectName: null }
-  }
-  if (changedField === 'tier2Name' && tiers.tier2 && !isTierCompatibleWithBonus(tiers.tier2, bonus)) {
-    return { ...plan, bonusEffectName: null }
-  }
-  if (changedField === 'tier3Name' && tiers.tier3 && !isTierCompatibleWithBonus(tiers.tier3, bonus)) {
-    return { ...plan, bonusEffectName: null }
-  }
-
-  let next = plan
-  if (
-    changedField === 'tier1Name' &&
-    tiers.tier1 &&
-    tiers.tier2 &&
-    !lowerTiersMatchBonus(bonus, tiers.tier1, tiers.tier2)
-  ) {
-    next = { ...next, tier2Name: null }
-  } else if (
-    changedField === 'tier2Name' &&
-    tiers.tier1 &&
-    tiers.tier2 &&
-    !lowerTiersMatchBonus(bonus, tiers.tier1, tiers.tier2)
-  ) {
-    next = { ...next, tier1Name: null }
-  } else if (changedField !== 'tier1Name' && changedField !== 'tier2Name') {
-    if (tiers.tier1 && !isTierCompatibleWithBonus(tiers.tier1, bonus)) next = { ...next, tier1Name: null }
-    if (tiers.tier2 && !isTierCompatibleWithBonus(tiers.tier2, bonus)) next = { ...next, tier2Name: null }
-    const remaining = selectedTiers(data, next)
-    if (remaining.tier1 && remaining.tier2 && !lowerTiersMatchBonus(bonus, remaining.tier1, remaining.tier2)) {
-      next = { ...next, tier2Name: null }
-    }
-  }
-  const tier3 = selected(data.tier3, next.tier3Name)
-  return tier3 && !isTierCompatibleWithBonus(tier3, bonus) ? { ...next, tier3Name: null } : next
-}
-
-export const reconcileLgsSelections = (data: LgsData, plan: LgsPlan, changedField?: LgsPlanField): LgsPlan => {
-  const base = selected(data.baseItems, plan.baseItemName)
-  const next: LgsPlan = {
-    ...plan,
+export const reconcileLgsPlan = (data: LgsData, plan: LgsPlan): LgsPlan => {
+  const base = data.baseItems.find((item) => item.name === plan.baseItemName)
+  const tierName = (key: 'tier1' | 'tier2' | 'tier3', name: string | null) =>
+    data[key].find((tier) => tier.name === name && fitsSlot(base, tier))?.name ?? null
+  const active = data.activeAugments.find((item) => item.name === plan.activeAugmentName)
+  return {
     baseItemName: base?.name ?? null,
-    tier1Name: validTierName(base, plan.tier1Name, data.tier1),
-    tier2Name: validTierName(base, plan.tier2Name, data.tier2),
-    tier3Name: validTierName(base, plan.tier3Name, data.tier3),
-    bonusEffectName: selected(data.bonusEffects, plan.bonusEffectName)?.name ?? null,
-    activeAugmentName: selected(data.activeAugments, plan.activeAugmentName)?.name ?? null
+    tier1Name: tierName('tier1', plan.tier1Name),
+    tier2Name: tierName('tier2', plan.tier2Name),
+    tier3Name: tierName('tier3', plan.tier3Name),
+    bonusEffectName: data.bonusEffects.find((bonus) => bonus.name === plan.bonusEffectName)?.name ?? null,
+    activeAugmentName: active && (!base || fitsSlot(base, active)) ? active.name : null,
+    ...(plan.useImmortalsHeart && fitsSlot(base, data.immortalsHeart) ? { useImmortalsHeart: true } : {})
   }
-  return reconcileBonusTiers(data, next, changedField)
 }
-
-export const applyLgsSelection = <Field extends LgsPlanField>(
-  data: LgsData,
-  plan: LgsPlan,
-  field: Field,
-  value: LgsPlan[Field]
-): LgsPlan => reconcileLgsSelections(data, { ...plan, [field]: value }, field)
-
-export const reconcileLgsPlan = (data: LgsData, plan: LgsPlan): LgsPlan => reconcileLgsSelections(data, plan)
 
 export const expandLgsRequirements = (
-  recipes: readonly { requirements: readonly LgsRequirement[] }[],
-  components: readonly { name: string; requirements: readonly LgsRequirement[] }[]
+  recipes: readonly LgsRecipe[],
+  components: readonly LgsRecipe[]
 ): LgsIngredientPlan => {
-  const componentByName = new Map(components.map((component) => [component.name, component]))
-  const raw = new Map<string, number>()
-  const crafted = new Map<string, number>()
-  const visit = (requirement: LgsRequirement, multiplier: number, ancestry: ReadonlySet<string>) => {
+  const componentById = new Map(components.map((component) => [component.id, component]))
+  const raw = new Map<number, LgsRequirement>()
+  const crafted = new Map<number, LgsRequirement>()
+  const visit = (requirement: LgsRequirement, multiplier: number, ancestry: ReadonlySet<number>) => {
     const quantity = requirement.quantity * multiplier
-    const component = componentByName.get(requirement.name)
-    if (!component) {
-      raw.set(requirement.name, (raw.get(requirement.name) ?? 0) + quantity)
-      return
-    }
-    if (ancestry.has(component.name)) throw new Error(`Circular LGS crafting component: ${component.name}`)
-    crafted.set(component.name, (crafted.get(component.name) ?? 0) + quantity)
-    const nextAncestry = new Set(ancestry).add(component.name)
-    for (const child of component.requirements) visit(child, quantity, nextAncestry)
+    const component = componentById.get(requirement.id)
+    const totals = component ? crafted : raw
+    totals.set(requirement.id, { ...requirement, quantity: (totals.get(requirement.id)?.quantity ?? 0) + quantity })
+    if (!component) return
+    if (ancestry.has(component.id)) throw new Error(`Circular LGS crafting component: ${component.name}`)
+    const next = new Set(ancestry).add(component.id)
+    for (const child of component.requirements) visit(child, quantity, next)
   }
   for (const recipe of recipes) for (const requirement of recipe.requirements) visit(requirement, 1, new Set())
-  const values = (map: ReadonlyMap<string, number>) =>
-    [...map].map(([name, quantity]) => ({ name, quantity })).sort((left, right) => left.name.localeCompare(right.name))
-  return { rawMaterials: values(raw), craftedMaterials: values(crafted) }
+  const sorted = (totals: Map<number, LgsRequirement>) =>
+    [...totals.values()].sort((a, b) => a.name.localeCompare(b.name))
+  return { rawMaterials: sorted(raw), craftedMaterials: sorted(crafted) }
 }

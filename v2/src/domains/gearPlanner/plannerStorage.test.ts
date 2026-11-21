@@ -1,8 +1,10 @@
+import rawCurses from '../../../../src/data/deckOfManyCurses.json'
+import { emptyGearCraftingData } from './crafting.ts'
 import { describe, expect, it, vi } from 'vitest'
 import { validateEssenceCraftingDataset } from '../essenceCrafting/data.ts'
 import { createEssenceCraftingTestPayload } from '../essenceCrafting/test-fixture.ts'
 import { gearPlannerAugmentIdentity, isCompatibleGearPlannerAugment } from './augments.ts'
-import { gearPlannerCurseDefinitions, gearPlannerCurseIdentity } from './curses.ts'
+import { parseGearPlannerCurseDataset, gearPlannerCurseIdentity } from './curses.ts'
 import { loadGearPlannerData } from './data.ts'
 import { collectEquippedEffects } from './effects.ts'
 import { getEssenceCraftedGearPlannerItems } from './essenceCrafting.ts'
@@ -85,6 +87,7 @@ const data = (
   curses,
   filigreeSetDefinitions: [],
   filigreeSetDefinitionByName: new Map(),
+  crafting: emptyGearCraftingData,
   reforging: emptyGearPlannerReforgingData,
   itemsBySlot: Object.fromEntries(
     allGearPlannerSlots.map((slot) => [slot, items.filter((candidate) => candidate.slot === slot)])
@@ -478,7 +481,7 @@ describe('Gear Planner curse persistence', () => {
   it('persists both Masterworks identities unchanged without applying crafting behavior', () => {
     const head = item('masterwork-host', gearPlannerSlots.head, 'Masterwork Helm')
     for (const name of ['Curse of Minor Masterworks', 'Curse of Major Masterworks']) {
-      const selected = gearPlannerCurseDefinitions.find((candidate) => candidate.name === name)
+      const selected = parseGearPlannerCurseDataset(rawCurses).find((candidate) => candidate.name === name)
       expect(selected).toBeDefined()
       if (!selected) continue
       let state = equipGearPlannerSetupItem(createDefaultGearPlannerState(), gearPlannerSlots.head, head)

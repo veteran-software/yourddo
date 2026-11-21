@@ -1,5 +1,5 @@
 import { Alert, Badge, Group, List, Paper, Stack, Text, Title } from '@mantine/core'
-import type { LgsCraftingComponent, LgsRequirement } from '../legendaryGreenSteel.types.ts'
+import type { LgsRecipe, LgsRequirement } from '../legendaryGreenSteel.types.ts'
 
 interface LgsCraftingStage {
   label: string
@@ -12,9 +12,9 @@ const CraftingBreakdownTool = ({
   components
 }: {
   stages: readonly LgsCraftingStage[]
-  components: readonly LgsCraftingComponent[]
+  components: readonly LgsRecipe[]
 }) => {
-  const componentByName = new Map(components.map((component) => [component.name, component]))
+  const componentIds = new Set(components.map((component) => component.id))
   const selectedStages = stages.filter(
     (stage): stage is LgsCraftingStage & { recipe: NonNullable<LgsCraftingStage['recipe']> } => Boolean(stage.recipe)
   )
@@ -47,14 +47,12 @@ const CraftingBreakdownTool = ({
               {recipe.craftedIn}
             </Text>
             <List spacing={4} size='sm'>
-              {recipe.requirements
-                .filter(({ name }) => name !== "Immortal's Heart")
-                .map(({ name, quantity }) => (
-                  <List.Item key={name}>
-                    {name} ×{quantity}
-                    {componentByName.has(name) ? ' (crafted component)' : ''}
-                  </List.Item>
-                ))}
+              {recipe.requirements.map(({ id, name, quantity }) => (
+                <List.Item key={id}>
+                  {name} ×{quantity}
+                  {componentIds.has(id) ? ' (crafted component)' : ''}
+                </List.Item>
+              ))}
             </List>
           </Stack>
         </Paper>

@@ -114,6 +114,7 @@ export const equipGearPlannerItemInSelection = (
   item: GearPlannerItem | null
 ): GearPlannerSelectionState => {
   if (item && hasOtherGearPlannerMinorArtifact(state.equipment, slot, item)) return state
+  if (item && state.equipment[slot]?.id === item.id) return state
   const equipment = equipGearPlannerItem(state.equipment, slot, item)
   if (equipment === state.equipment) return state
 

@@ -1,3 +1,4 @@
+import { emptyGearCraftingData } from './crafting.ts'
 import { describe, expect, it } from 'vitest'
 import { gearPlannerAugmentIdentity } from './augments.ts'
 import { conflictEligibleEffectSources, collectEquippedEffects } from './effects.ts'
@@ -148,6 +149,7 @@ const data = (items: readonly GearPlannerItem[]): GearPlannerData => ({
   filigrees: [],
   filigreeSetDefinitions: [],
   filigreeSetDefinitionByName: new Map(),
+  crafting: emptyGearCraftingData,
   reforging,
   rawItemCount: items.length,
   normalizedItemCount: items.length,

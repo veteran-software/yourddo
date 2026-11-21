@@ -5,8 +5,8 @@ import { IconFileInfo, IconListCheck, IconListDetails, IconTools } from '@tabler
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { loadLgsData } from './data.ts'
-import type { LgsData } from './legendaryGreenSteel.types.ts'
+import { loadLgsData, parseLgsResources } from './data.ts'
+import { devices, files } from './lgsTestData.ts'
 import LegendaryGreenSteelPage from './LegendaryGreenSteelPage.tsx'
 import { encodeLgsPermalink } from './sharing.ts'
 import { lgsWorkspaceToolDefinitions } from './workspaceTools.ts'
@@ -21,152 +21,9 @@ vi.mock('../../shared/serialization/browser.ts', () => ({
   readTextFile: vi.fn()
 }))
 
-vi.mock('./data.ts', () => ({ loadLgsData: vi.fn(), InvalidLgsDataError: class InvalidLgsDataError extends Error {} }))
+vi.mock(import('./data.ts'), async (original) => ({ ...(await original()), loadLgsData: vi.fn() }))
 
-const data: LgsData = {
-  schemaVersion: 1,
-  baseItems: [
-    {
-      name: 'Weapon Base',
-      ingredientType: 'Legendary Green Steel Weapon',
-      craftedIn: 'Altar',
-      quantity: 1,
-      requirements: [{ name: 'Weapon Raw', quantity: 1 }],
-      source: {}
-    },
-    {
-      name: 'Accessory Base',
-      ingredientType: 'Legendary Green Steel Accessory',
-      craftedIn: 'Altar',
-      quantity: 1,
-      requirements: [{ name: 'Accessory Raw', quantity: 1 }],
-      source: {}
-    }
-  ],
-  tier1: [
-    {
-      name: 'Tier 1 Weapon',
-      title: 'Tier 1 Weapon',
-      augmentType: 'Tier 1',
-      minimumLevel: 26,
-      craftedIn: 'Altar',
-      quantity: 1,
-      requirements: [{ name: 'Weapon Component', quantity: 1 }],
-      effectsAdded: [{ name: 'Electric Spell Power', modifier: 139, bonus: 'Equipment' }],
-      tier: 1,
-      itemType: 'Weapon',
-      primaryFocus: 'Air',
-      essence: 'Ethereal',
-      gem: 'Dominion',
-      source: {}
-    },
-    {
-      name: 'Tier 1 Equipment',
-      title: 'Tier 1 Equipment',
-      augmentType: 'Tier 1',
-      minimumLevel: 26,
-      craftedIn: 'Altar',
-      quantity: 1,
-      requirements: [],
-      effectsAdded: [{ name: 'Good-aligned Weapon' }],
-      tier: 1,
-      itemType: 'Equipment',
-      primaryFocus: 'Air',
-      essence: 'Ethereal',
-      gem: 'Dominion',
-      source: {}
-    }
-  ],
-  tier2: [
-    {
-      name: 'Tier 2 Weapon',
-      title: 'Tier 2 Weapon',
-      augmentType: 'Tier 2',
-      minimumLevel: 26,
-      craftedIn: 'Tier 2 Altar',
-      quantity: 1,
-      requirements: [{ name: 'Tier 2 Raw', quantity: 2 }],
-      effectsAdded: [{ name: 'Electric Lore', modifier: 29, bonus: 'Equipment' }],
-      tier: 2,
-      itemType: 'Weapon',
-      primaryFocus: 'Air',
-      essence: 'Ethereal',
-      gem: 'Dominion',
-      source: {}
-    }
-  ],
-  tier3: [
-    {
-      name: 'Tier 3 Weapon Air Fire',
-      title: 'Tier 3 Weapon Air Fire',
-      augmentType: 'Tier 3',
-      minimumLevel: 26,
-      craftedIn: 'Tier 3 Altar',
-      quantity: 1,
-      requirements: [{ name: 'Tier 3 Component', quantity: 3 }],
-      effectsAdded: [{ name: 'Electric Critical Damage', modifier: 6 }],
-      tier: 3,
-      itemType: 'Weapon',
-      primaryFocus: 'Air',
-      secondaryFocus: 'Fire',
-      essence: 'Ethereal',
-      gem: 'Dominion',
-      source: {}
-    }
-  ],
-  activeAugments: [
-    {
-      name: 'Legendary Green Steel Augment: Animal Growth',
-      displayName: 'Animal Growth',
-      minimumLevel: 26,
-      augmentType: 'Active',
-      description: 'Animal spell.',
-      craftedIn: 'Altar',
-      quantity: 1,
-      requirements: [{ name: 'Active Raw', quantity: 1 }],
-      source: {}
-    },
-    {
-      name: 'Legendary Green Steel Augment: Cometfall',
-      displayName: 'Cometfall',
-      type: 'Damage',
-      minimumLevel: 26,
-      augmentType: 'Active',
-      craftedIn: 'Altar',
-      quantity: 1,
-      requirements: [{ name: 'Active Raw', quantity: 1 }],
-      source: {}
-    }
-  ],
-  bonusEffects: [
-    {
-      name: 'Air Fire Bonus',
-      description: 'Air and fire description.',
-      lowerFoci: ['Air', 'Air'],
-      tier3Foci: ['Air', 'Fire'],
-      source: {}
-    }
-  ],
-  craftingComponents: [
-    {
-      name: 'Weapon Component',
-      craftedIn: 'Altar',
-      quantity: 1,
-      requirements: [{ name: 'Component Raw', quantity: 2 }],
-      source: {}
-    },
-    {
-      name: 'Tier 3 Component',
-      craftedIn: 'Component Altar',
-      quantity: 1,
-      requirements: [{ name: 'Tier 3 Raw', quantity: 3 }],
-      source: {}
-    }
-  ],
-  specialRecipes: [
-    { name: "Immortal's Heart", quantity: 1, requirements: [{ name: 'Codex Runes', quantity: 2500 }], source: {} }
-  ]
-}
+const data = parseLgsResources(files, devices)
 
 const renderPage = () =>
   render(
@@ -183,6 +40,7 @@ const choose = async (user: ReturnType<typeof userEvent.setup>, label: string, o
 let desktopViewport = true
 
 beforeEach(() => {
+  Element.prototype.scrollIntoView = vi.fn()
   vi.stubGlobal(
     'matchMedia',
     vi.fn((query: string) => ({
@@ -213,6 +71,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+  Reflect.deleteProperty(Element.prototype, 'scrollIntoView')
   cleanup()
   window.history.replaceState({}, '', '/')
   vi.mocked(loadLgsData).mockReset()
@@ -247,6 +106,65 @@ describe('LegendaryGreenSteelPage', () => {
     expect(screen.queryByRole('option', { name: /Tier 1 Equipment/ })).toBeNull()
   })
 
+  it('places the discrepancy heading and notes after a horizontal rule at the end of the tier list', async () => {
+    const note = 'Positive Energy Spell Power: stated 37, actual 34.75.'
+    vi.mocked(loadLgsData).mockResolvedValue({
+      ...data,
+      tier1: data.tier1.map((tier) => ({ ...tier, discrepancies: [note] }))
+    })
+    const user = userEvent.setup()
+    renderPage()
+    await choose(user, 'Legendary Green Steel base item', /^Weapon Base$/)
+    const section = within(screen.getByRole('region', { name: 'Tier 1' }))
+    expect(section.queryByRole('separator')).toBeNull()
+    await choose(user, 'Tier 1 upgrade', /^Electric Spell Power/)
+    const [effects, notes] = section.getAllByRole('list')
+    const rule = section.getByRole('separator')
+    expect(rule.tagName).toBe('HR')
+    expect(effects.nextElementSibling).toBe(rule)
+    expect(rule.nextElementSibling).toBe(section.getByRole('heading', { name: 'Discrepancies' }))
+    expect(rule.nextElementSibling?.nextElementSibling).toBe(notes)
+    expect(notes.nextElementSibling).toBeNull()
+    expect(within(notes).getByText(note)).toBeTruthy()
+  })
+
+  it('shows the gameplay effect first and reveals technical notes on request', async () => {
+    const note = 'Damage across simultaneous stacks is unverified.'
+    const catalog = parseLgsResources(
+      {
+        ...files,
+        effects: [
+          {
+            ...files.effects[0],
+            displayName: 'Air Fire Bonus',
+            description: 'Attacks deal fire damage.\n\nThis effect can stack.',
+            unresolved: [note]
+          },
+          ...files.effects.slice(1)
+        ]
+      },
+      devices
+    )
+    vi.mocked(loadLgsData).mockResolvedValue(catalog)
+    const user = userEvent.setup()
+    renderPage()
+    await choose(user, 'Bonus Effect', /^Air Fire Bonus$/)
+    const panel = within(screen.getByRole('region', { name: 'Bonus Effect' }))
+    expect(panel.queryByText(/required focuses/i)).toBeNull()
+    expect(panel.getByText('Attacks deal fire damage.').nextElementSibling).toBe(
+      panel.getByText('This effect can stack.')
+    )
+    const toggle = panel.getByText('Technical notes')
+    const details = toggle.closest('details')
+    expect(details?.open).toBe(false)
+    await user.click(toggle)
+    expect(details?.open).toBe(true)
+    expect(details?.textContent).toContain(note)
+    await choose(user, 'Bonus Effect', /^Dominion$/)
+    expect(panel.getByText('Technical notes').closest('details')?.open).toBe(false)
+    expect(panel.getByText('Activation is unverified.')).toBeTruthy()
+  })
+
   it('supports tier and bonus selection in every order after choosing a base item', async () => {
     vi.mocked(loadLgsData).mockResolvedValue(data)
     const user = userEvent.setup()
@@ -279,6 +197,7 @@ describe('LegendaryGreenSteelPage', () => {
     await choose(user, 'Tier 1 upgrade', /^Electric Spell Power/)
     await choose(user, 'Tier 3 upgrade', /^Electric Critical Damage/)
     await choose(user, 'Tier 2 upgrade', /^Electric Lore/)
+    expect(screen.getByText('Weapon bonus: Air Fire Bonus.')).toBeTruthy()
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Bonus Effect' }).value).toBe('')
   })
 
@@ -307,7 +226,7 @@ describe('LegendaryGreenSteelPage', () => {
     expect(screen.getByRole('combobox', { name: 'Active Augment' }).getAttribute('value')).toBe('')
   })
 
-  it('keeps an active augment without description selectable and omits description text', async () => {
+  it('shows the resolved active spell and its charge and cooldown details', async () => {
     desktopViewport = false
     vi.mocked(loadLgsData).mockResolvedValue(data)
     const user = userEvent.setup()
@@ -319,8 +238,25 @@ describe('LegendaryGreenSteelPage', () => {
 
     const dialog = await screen.findByRole('dialog', { name: 'Build Summary' })
     expect(within(dialog).getByText('Cometfall')).toBeTruthy()
-    expect(within(dialog).getByText('Damage')).toBeTruthy()
+    expect(within(dialog).getByText(/Caster level 10 .*Charges 1/)).toBeTruthy()
     expect(within(dialog).queryByText('undefined')).toBeNull()
+  })
+
+  it('adds the Heart recipe and cost only for a cleansed accessory', async () => {
+    vi.mocked(loadLgsData).mockResolvedValue(data)
+    const user = userEvent.setup()
+    renderPage()
+    await choose(user, 'Legendary Green Steel base item', /^Accessory Base$/)
+    const heart = screen.getByRole('checkbox', { name: "Cleanse with Immortal's Heart" })
+    await user.click(screen.getByRole('button', { name: 'Ingredients' }))
+    expect(screen.queryByText('Codex Rune')).toBeNull()
+    await user.click(heart)
+    const ingredients = screen.getByRole('complementary', { name: 'Ingredients' })
+    expect(within(ingredients).getByText('Codex Rune')).toBeTruthy()
+    expect(within(ingredients).getByText('×2500')).toBeTruthy()
+    await choose(user, 'Legendary Green Steel base item', /^Weapon Base$/)
+    expect(screen.queryByRole('checkbox', { name: /Cleanse/ })).toBeNull()
+    expect(within(ingredients).queryByText('Codex Rune')).toBeNull()
   })
 
   it('matches HGS tool IDs, order, and icon components without inspecting SVG markup', () => {
@@ -395,13 +331,13 @@ describe('LegendaryGreenSteelPage', () => {
       )
     })
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 1 upgrade' }).value).toBe(
-      'Electric Spell Power +139 (Equipment)'
+      'Electric Spell Power +139 (Equipment) · Air · Ethereal · Dominion'
     )
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 2 upgrade' }).value).toBe(
-      'Electric Lore +29 (Equipment)'
+      'Electric Lore +29 (Equipment) · Air · Ethereal · Dominion'
     )
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 3 upgrade' }).value).toBe(
-      'Electric Critical Damage +6'
+      'Electric Critical Damage +6 · Air / Fire · Ethereal · Dominion'
     )
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Bonus Effect' }).value).toBe('Air Fire Bonus')
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Active Augment' }).value).toBe('Animal Growth')
@@ -430,13 +366,13 @@ describe('LegendaryGreenSteelPage', () => {
       )
     })
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 1 upgrade' }).value).toBe(
-      'Electric Spell Power +139 (Equipment)'
+      'Electric Spell Power +139 (Equipment) · Air · Ethereal · Dominion'
     )
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 2 upgrade' }).value).toBe(
-      'Electric Lore +29 (Equipment)'
+      'Electric Lore +29 (Equipment) · Air · Ethereal · Dominion'
     )
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Tier 3 upgrade' }).value).toBe(
-      'Electric Critical Damage +6'
+      'Electric Critical Damage +6 · Air / Fire · Ethereal · Dominion'
     )
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Bonus Effect' }).value).toBe('Air Fire Bonus')
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Active Augment' }).value).toBe('Animal Growth')

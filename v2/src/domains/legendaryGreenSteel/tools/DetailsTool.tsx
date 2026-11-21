@@ -1,16 +1,16 @@
 import { Alert, Badge, Divider, Group, Stack, Text, Title } from '@mantine/core'
+import BonusDetails from '../BonusDetails.tsx'
+import DiscrepancyList from '../DiscrepancyList.tsx'
 import EffectList from '../../../shared/items/EffectList.tsx'
 import type { LgsActiveAugment, LgsBaseItem, LgsBonusEffect, LgsTierAugment } from '../legendaryGreenSteel.types.ts'
-import { formatLgsEffect } from '../logic.ts'
 
 const TierBadges = ({ tier }: { tier: LgsTierAugment }) => (
   <Group gap={6} wrap='wrap'>
-    <Badge variant='light'>{tier.primaryFocus}</Badge>
-    {tier.secondaryFocus ? (
-      <Badge variant='outline' color='gray'>
-        {tier.secondaryFocus}
+    {tier.focuses.map((focus, index) => (
+      <Badge key={index} variant='light'>
+        {focus}
       </Badge>
-    ) : null}
+    ))}
     <Badge variant='outline' color='gray'>
       {tier.essence}
     </Badge>
@@ -31,7 +31,8 @@ const TierDetails = ({ label, tier }: { label: string; tier: LgsTierAugment | un
           {tier.name}
         </Text>
         <TierBadges tier={tier} />
-        <EffectList effects={tier.effectsAdded.map(formatLgsEffect)} empty='No published effects.' />
+        <EffectList effects={[...tier.effects, ...tier.details]} empty='No published effects.' />
+        <DiscrepancyList notes={tier.discrepancies} />
       </>
     ) : (
       <Text c='dimmed' size='sm'>
@@ -47,13 +48,17 @@ const DetailsTool = ({
   tier2,
   tier3,
   bonusEffect,
-  activeAugment
+  weaponResult,
+  activeAugment,
+  heart
 }: {
   baseItem?: LgsBaseItem
   tier1?: LgsTierAugment
   tier2?: LgsTierAugment
   tier3?: LgsTierAugment
+  weaponResult?: string
   bonusEffect?: LgsBonusEffect
+  heart?: string
   activeAugment?: LgsActiveAugment
 }) => (
   <Stack gap='md' p='md'>
@@ -68,8 +73,11 @@ const DetailsTool = ({
         </Title>
         <Text fw={600}>{baseItem.name}</Text>
         <Text c='dimmed' size='sm'>
-          {baseItem.ingredientType}
+          {baseItem.type === 'weapon' ? 'Weapon' : 'Accessory'}
         </Text>
+        <EffectList effects={[...baseItem.effects, ...baseItem.details]} />
+        {heart && <Text size='sm'>Cleansed with {heart}</Text>}
+        <DiscrepancyList notes={baseItem.discrepancies} />
       </Stack>
     )}
     <Divider />
@@ -83,17 +91,20 @@ const DetailsTool = ({
       <Title order={3} size='h5'>
         Bonus Effect
       </Title>
+      {weaponResult && <Text size='sm'>{weaponResult}</Text>}
       {bonusEffect ? (
         <>
           <Text fw={600} size='sm'>
             {bonusEffect.name}
           </Text>
-          <Text size='sm'>{bonusEffect.description}</Text>
+          <BonusDetails key={bonusEffect.name} bonus={bonusEffect} />
         </>
       ) : (
-        <Text c='dimmed' size='sm'>
-          Bonus Effect is incomplete.
-        </Text>
+        !weaponResult && (
+          <Text c='dimmed' size='sm'>
+            No bonus selected for reference.
+          </Text>
+        )
       )}
     </Stack>
     <Divider />
@@ -106,12 +117,17 @@ const DetailsTool = ({
           <Text fw={600} size='sm'>
             {activeAugment.displayName}
           </Text>
-          {activeAugment.type ? (
+          {activeAugment.spellDetails ? (
             <Text c='dimmed' size='sm'>
-              {activeAugment.type}
+              {activeAugment.spellDetails}
             </Text>
           ) : null}
-          {activeAugment.description ? <Text size='sm'>{activeAugment.description}</Text> : null}
+          {activeAugment.description ? (
+            <Text size='sm' style={{ whiteSpace: 'pre-line' }}>
+              {activeAugment.description}
+            </Text>
+          ) : null}
+          <DiscrepancyList notes={activeAugment.discrepancies} />
         </>
       ) : (
         <Text c='dimmed' size='sm'>

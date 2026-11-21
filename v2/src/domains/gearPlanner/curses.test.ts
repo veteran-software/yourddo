@@ -1,10 +1,6 @@
+import rawCurses from '../../../../src/data/deckOfManyCurses.json'
 import { describe, expect, it } from 'vitest'
-import {
-  canApplyGearPlannerCurse,
-  gearPlannerCurseDefinitions,
-  gearPlannerCurseIdentity,
-  parseGearPlannerCurseDataset
-} from './curses.ts'
+import { canApplyGearPlannerCurse, gearPlannerCurseIdentity, parseGearPlannerCurseDataset } from './curses.ts'
 import type { GearPlannerCurse, GearPlannerItem } from './gearPlanner.types.ts'
 import { gearPlannerSlots } from './gearPlanner.types.ts'
 import {
@@ -140,7 +136,7 @@ describe('Gear Planner curses', () => {
   })
 
   it('uses exact canonical names as identities and preserves both Masterworks records', () => {
-    const names = gearPlannerCurseDefinitions.map((definition) => gearPlannerCurseIdentity(definition))
+    const names = parseGearPlannerCurseDataset(rawCurses).map((definition) => gearPlannerCurseIdentity(definition))
     expect(new Set(names).size).toBe(names.length)
     expect(names).toContain('Curse of Minor Masterworks')
     expect(names).toContain('Curse of Major Masterworks')

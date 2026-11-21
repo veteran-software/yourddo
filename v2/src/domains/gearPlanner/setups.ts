@@ -1,3 +1,4 @@
+import { gearCraftGroups, applyGearCraft, type GearCraftingData } from './crafting.ts'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { createGearPlannerEssenceCraftingConfiguration, isEssenceCraftedGearPlannerItem } from './essenceCrafting.ts'
 import type { GearPlannerAugment, GearPlannerCurse, GearPlannerFiligree, GearPlannerItem } from './gearPlanner.types.ts'
@@ -215,4 +216,21 @@ export const setGearPlannerSetupEssenceCraftingConfiguration = (
   replaceSetup(state, state.activeSetupId, (setup) => {
     const selection = setGearPlannerEssenceCraftingConfiguration(setup, itemId, update, data)
     return selection === setup ? setup : { ...setup, ...selection }
+  })
+
+export const setGearPlannerSetupCraft = (
+  state: GearPlannerSetupsState,
+  slot: GearPlannerCharacterSlot,
+  itemId: string,
+  system: string,
+  choiceId: string | null,
+  data: GearCraftingData
+): GearPlannerSetupsState =>
+  replaceSetup(state, state.activeSetupId, (setup) => {
+    const item = setup.equipment[slot]
+    if (!item || item.id !== itemId) return setup
+    const group = gearCraftGroups(item, data).find((g) => g.system === system)
+    if (!group) return setup
+    const updated = applyGearCraft(item, group, choiceId)
+    return updated === item ? setup : { ...setup, equipment: { ...setup.equipment, [slot]: updated } }
   })

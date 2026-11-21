@@ -1,18 +1,34 @@
-import { loadDataset } from '../../shared/data/loadDataset.ts'
+import { loadDatasetFile } from '../../shared/data/loadDataset.ts'
 import type {
-  LgsActiveAugment,
-  LgsBaseItem,
   LgsBonusEffect,
-  LgsCraftingComponent,
   LgsData,
-  LgsEffect,
-  LgsMetadata,
-  LgsRequirement,
-  LgsSpecialRecipe,
-  LgsTierAugment
+  LgsRecipe,
+  LgsTierAugment,
+  WeaponFocusRule
 } from './legendaryGreenSteel.types.ts'
+import { expandLgsRequirements } from './logic.ts'
 
-export const lgsDatasetDomain = 'legendary-green-steel'
+const domain = 'legendary-green-steel'
+const resources = [
+  'baseItems',
+  'tier1',
+  'tier2',
+  'tier3',
+  'activeAugments',
+  'effects',
+  'spells',
+  'ingredients',
+  'baseRecipes',
+  'tier1Recipes',
+  'tier2Recipes',
+  'tier3Recipes',
+  'activeRecipes',
+  'weaponBonuses',
+  'equipmentSets',
+  'immortalsHeart'
+] as const
+type Resource = (typeof resources)[number]
+type Row = Record<string, unknown>
 
 export class InvalidLgsDataError extends Error {
   constructor(message: string) {
@@ -21,218 +37,262 @@ export class InvalidLgsDataError extends Error {
   }
 }
 
-const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null
-const nonEmptyString = (value: unknown): value is string => typeof value === 'string' && value.trim().length > 0
-const received = (value: unknown): string =>
-  value === undefined ? 'undefined' : Array.isArray(value) ? 'array' : typeof value
-
-const metadata = (value: Record<string, unknown>): LgsMetadata => ({ ...value })
-
-const parseRequirements = (value: unknown, owner: string): LgsRequirement[] => {
-  if (!Array.isArray(value)) throw new InvalidLgsDataError(`requirements missing for ${owner}`)
-  return value.map((requirement) => {
-    if (!isRecord(requirement) || !nonEmptyString(requirement.name) || typeof requirement.quantity !== 'number') {
-      throw new InvalidLgsDataError(`invalid requirement for ${owner}`)
-    }
-    if (!Number.isFinite(requirement.quantity) || requirement.quantity <= 0) {
-      throw new InvalidLgsDataError(`invalid requirement quantity for ${requirement.name}`)
-    }
-    return { name: requirement.name, quantity: requirement.quantity }
+function invalid(message: string): never {
+  throw new InvalidLgsDataError(message)
+}
+function row(value: unknown, path: string): Row {
+  if (typeof value !== 'object' || !value || Array.isArray(value)) return invalid(`expected object at ${path}`)
+  return value as Row
+}
+function list(value: unknown, path: string): unknown[] {
+  return Array.isArray(value) ? value : invalid(`expected array at ${path}`)
+}
+function str(value: unknown, path: string): string {
+  return typeof value === 'string' && value.trim() ? value : invalid(`expected text at ${path}`)
+}
+function integer(value: unknown, path: string): number {
+  return typeof value === 'number' && Number.isSafeInteger(value) && value > 0
+    ? value
+    : invalid(`expected positive integer at ${path}`)
+}
+function strings(value: unknown, path: string): string[] {
+  return list(value, path).map((v) => str(v, path))
+}
+function indexed(value: unknown, path: string) {
+  const result = new Map<number, Row>()
+  for (const v of list(value, path)) {
+    const record = row(v, path)
+    const id = integer(record.id, `${path}.id`)
+    if (result.has(id)) invalid(`duplicate ${path} ID ${String(id)}`)
+    result.set(id, record)
+  }
+  return result
+}
+function lookup(records: ReadonlyMap<number, Row>, key: unknown, path: string) {
+  const id = integer(key, path)
+  return records.get(id) ?? invalid(`unknown ${path} ${String(id)}`)
+}
+function discrepancyNotes(record: Row): string[] {
+  return list(record.knownDiscrepancies ?? [], 'knownDiscrepancies').map((entry) => {
+    const note = row(entry, 'knownDiscrepancies')
+    const value = (v: unknown) =>
+      (typeof v === 'number' && Number.isFinite(v)) || typeof v === 'boolean' ? String(v) : str(v, 'discrepancy value')
+    const unit = note.unit === undefined || note.unit === 'points' ? '' : ' ' + str(note.unit, 'unit')
+    return `${str(note.statDisplayName ?? note.stat, 'stat label')}: stated ${value(note.stated)}, actual ${value(note.mechanical)}${unit}.`
   })
 }
 
-const parseEffects = (value: unknown, owner: string): LgsEffect[] => {
-  if (!Array.isArray(value)) throw new InvalidLgsDataError(`effects missing for ${owner}`)
-  return value.map((effect) => {
-    if (!isRecord(effect) || !nonEmptyString(effect.name)) throw new InvalidLgsDataError(`invalid effect for ${owner}`)
-    if (effect.modifier !== undefined && typeof effect.modifier !== 'number' && typeof effect.modifier !== 'string') {
-      throw new InvalidLgsDataError(`invalid effect modifier for ${effect.name}`)
+function weaponFocusRule(value: unknown, path: string): WeaponFocusRule {
+  const rule = row(value, path)
+  const pair = (key: keyof WeaponFocusRule): [string, string] => {
+    const values = strings(rule[key], `${path}.${key}`)
+    if (values.length !== 2) invalid(`expected two focuses at ${path}.${key}`)
+    return [values[0], values[1]]
+  }
+  return { tier1And2: pair('tier1And2'), tier3: pair('tier3') }
+}
+
+export function parseLgsResources(
+  files: Record<Resource, unknown>,
+  devices: Row,
+  weaponBonusMatching?: unknown
+): LgsData {
+  const matching = weaponBonusMatching === undefined ? undefined : row(weaponBonusMatching, 'weaponBonusMatching')
+  if (matching && matching.orderWithinPairs !== 'any') invalid('unsupported weapon focus pair order')
+  const ingredients = indexed(files.ingredients, 'ingredients')
+  const effectById = indexed(files.effects, 'effects')
+  const spells = indexed(files.spells, 'spells')
+  const recipes = new Map<number, Row>()
+  for (const stage of ['base', 'tier1', 'tier2', 'tier3', 'active'] as const) {
+    for (const [id, recipe] of indexed(files[`${stage}Recipes`], stage)) {
+      if (recipes.has(id) || recipe.device !== stage || recipe.quantity !== 1)
+        invalid(`invalid ${stage} recipe ${String(id)}`)
+      recipes.set(id, recipe)
     }
-    if (effect.bonus !== undefined && typeof effect.bonus !== 'string') {
-      throw new InvalidLgsDataError(`invalid effect bonus for ${effect.name}`)
-    }
+  }
+  function crafted(item: Row, outputId: unknown): LgsRecipe {
+    const id = integer(outputId, 'output item ID')
+    const recipe = lookup(recipes, item.recipeId, 'recipeId')
+    if (recipe.outputItemId !== id)
+      invalid(`recipe ${String(item.recipeId)} has the wrong output for item ${String(id)}`)
+    const device = str(recipe.device, 'device')
     return {
-      name: effect.name,
-      ...(effect.modifier !== undefined ? { modifier: effect.modifier } : {}),
-      ...(typeof effect.bonus === 'string' ? { bonus: effect.bonus } : {})
+      id,
+      name: str(item.name, 'item.name'),
+      craftedIn: str(row(devices[device], device).name, 'device.name'),
+      requirements: list(recipe.ingredients, 'recipe.ingredients').map((v) => {
+        const part = row(v, 'recipe ingredient')
+        const ingredient = lookup(ingredients, part.ingredientId, 'ingredientId')
+        return {
+          id: integer(part.ingredientId, 'ingredientId'),
+          name: str(ingredient.name, 'ingredient.name'),
+          quantity: integer(part.quantity, 'ingredient quantity')
+        }
+      })
     }
-  })
-}
-
-const craftedFields = (value: Record<string, unknown>, owner: string) => {
-  if (!nonEmptyString(value.name) || !nonEmptyString(value.craftedIn) || typeof value.quantity !== 'number') {
-    throw new InvalidLgsDataError(`invalid crafted record for ${owner}`)
   }
-  if (!Number.isFinite(value.quantity) || value.quantity <= 0) {
-    throw new InvalidLgsDataError(`invalid quantity for ${value.name}`)
-  }
-  return {
-    name: value.name,
-    craftedIn: value.craftedIn,
-    quantity: value.quantity,
-    requirements: parseRequirements(value.requirements, value.name),
-    ...(typeof value.image === 'string' ? { image: value.image } : {}),
-    ...(isRecord(value.binding) ? { binding: metadata(value.binding) } : {}),
-    ...(value.baseValue !== undefined ? { baseValue: value.baseValue } : {}),
-    source: metadata(value)
-  }
-}
-
-const parseBaseItems = (value: unknown): LgsBaseItem[] => {
-  if (!Array.isArray(value)) throw new InvalidLgsDataError('baseItems missing')
-  return value.map((item) => {
-    if (
-      !isRecord(item) ||
-      (item.ingredientType !== 'Legendary Green Steel Weapon' &&
-        item.ingredientType !== 'Legendary Green Steel Accessory')
-    ) {
-      throw new InvalidLgsDataError('invalid base item')
+  function itemEffects(item: Row) {
+    const rows = list(item.effectIds, 'effectIds').map((id) => lookup(effectById, id, 'effectId'))
+    const names: string[] = []
+    const details = new Set<string>()
+    const discrepancies = new Set<string>()
+    const unresolved = new Set<string>()
+    if (item.description) details.add(str(item.description, 'description'))
+    for (const effect of rows) {
+      const name = str(effect.displayName, 'effect.displayName')
+      const description = str(effect.description, 'effect.description')
+      if (!/^(?:plus\s+|\+\s*)\d+\s+wear modifier$/i.test(name.trim())) {
+        names.push(name)
+        details.add(description)
+      }
+      for (const note of discrepancyNotes(effect)) discrepancies.add(note)
+      for (const note of strings(effect.unresolved ?? [], 'effect.unresolved')) unresolved.add(note)
     }
-    return { ...craftedFields(item, 'base item'), ingredientType: item.ingredientType }
-  })
-}
-
-const parseTiers = (value: unknown, tier: 1 | 2 | 3): LgsTierAugment[] => {
-  if (!Array.isArray(value)) throw new InvalidLgsDataError(`tier${tier.toString()} missing`)
-  return value.map((augment) => {
-    if (
-      !isRecord(augment) ||
-      !nonEmptyString(augment.title) ||
-      !nonEmptyString(augment.augmentType) ||
-      (typeof augment.minimumLevel !== 'number' && typeof augment.minimumLevel !== 'string') ||
-      augment.tier !== tier ||
-      (augment.itemType !== 'Weapon' && augment.itemType !== 'Equipment') ||
-      !nonEmptyString(augment.primaryFocus) ||
-      !nonEmptyString(augment.essence) ||
-      !nonEmptyString(augment.gem)
-    ) {
-      throw new InvalidLgsDataError(`invalid tier ${tier.toString()} augment`)
-    }
-    if (augment.secondaryFocus !== undefined && !nonEmptyString(augment.secondaryFocus)) {
-      throw new InvalidLgsDataError(`invalid secondary focus for ${String(augment.name)}`)
-    }
+    for (const note of discrepancyNotes(item)) discrepancies.add(note)
     return {
-      ...craftedFields(augment, `tier ${tier.toString()} augment`),
-      title: augment.title,
-      augmentType: augment.augmentType,
-      minimumLevel: augment.minimumLevel,
-      effectsAdded: parseEffects(augment.effectsAdded, String(augment.name)),
-      tier,
-      itemType: augment.itemType,
-      primaryFocus: augment.primaryFocus,
-      ...(typeof augment.secondaryFocus === 'string' ? { secondaryFocus: augment.secondaryFocus } : {}),
-      essence: augment.essence,
-      gem: augment.gem
+      effects: names,
+      descriptions: [...details],
+      unresolved: [...unresolved],
+      discrepancies: [...discrepancies]
     }
-  })
-}
-
-const parseActiveAugments = (value: unknown): LgsActiveAugment[] => {
-  if (!Array.isArray(value))
-    throw new InvalidLgsDataError(`activeAugments: expected array, received ${received(value)}`)
-  return value.map((augment, index) => {
-    const path = `activeAugments[${index.toString()}]`
-    if (!isRecord(augment)) throw new InvalidLgsDataError(`${path}: expected object, received ${received(augment)}`)
-    if (!nonEmptyString(augment.displayName)) {
-      throw new InvalidLgsDataError(
-        `${path}.displayName: expected non-empty string, received ${received(augment.displayName)}`
+  }
+  function itemDetails(item: Row) {
+    const { effects, descriptions, unresolved, discrepancies } = itemEffects(item)
+    return {
+      effects,
+      details: [...new Set([...descriptions, ...unresolved])].filter((text) => !effects.includes(text)),
+      discrepancies
+    }
+  }
+  function tiers(key: 'tier1' | 'tier2' | 'tier3'): LgsTierAugment[] {
+    return [...indexed(files[key], key).values()]
+      .map((item) => {
+        const primary = str(item.focus, 'focus')
+        const paired = key === 'tier3' && item.type === 'weapon'
+        const focuses = paired ? strings(item.focuses, 'focuses') : [primary]
+        if (item.type !== 'weapon' && item.type !== 'equipment') invalid(`invalid ${key} type`)
+        if (paired && (focuses.length !== 2 || focuses[0] !== primary)) invalid('invalid tier 3 focus pair')
+        return {
+          ...crafted(item, item.augmentId),
+          slotTypes: strings(item.slotTypes, 'slotTypes'),
+          focuses,
+          essence: str(item.essence, 'essence'),
+          gem: str(item.gem, 'gem'),
+          ...itemDetails(item)
+        }
+      })
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }
+  function bonuses(key: 'weaponBonuses' | 'equipmentSets', group: LgsBonusEffect['group']): LgsBonusEffect[] {
+    return [...indexed(files[key], key).values()].map((item) => {
+      const { effects, descriptions, unresolved, discrepancies } = itemEffects(item)
+      const observations = [
+        ['observedAttunements', 'Observed attunements'],
+        ['observedFocusPairs', 'Observed focus pairs'],
+        ['counters', 'Equipment counters'],
+        ['observedCallbackFocuses', 'Observed callback focuses']
+      ].flatMap(([field, label]) =>
+        item[field] === undefined ? [] : [`${label}: ${strings(item[field], field).join(', ')}.`]
       )
-    }
-    if (!nonEmptyString(augment.augmentType)) {
-      throw new InvalidLgsDataError(
-        `${path}.augmentType: expected non-empty string, received ${received(augment.augmentType)}`
-      )
-    }
-    if (typeof augment.minimumLevel !== 'number' && typeof augment.minimumLevel !== 'string') {
-      throw new InvalidLgsDataError(
-        `${path}.minimumLevel: expected number or string, received ${received(augment.minimumLevel)}`
-      )
-    }
-    if (augment.type !== undefined && typeof augment.type !== 'string') {
-      throw new InvalidLgsDataError(`${path}.type: expected string, received ${received(augment.type)}`)
-    }
-    if (augment.description !== undefined && typeof augment.description !== 'string') {
-      throw new InvalidLgsDataError(`${path}.description: expected string, received ${received(augment.description)}`)
-    }
-    return {
-      ...craftedFields(augment, path),
-      displayName: augment.displayName,
-      ...(typeof augment.type === 'string' ? { type: augment.type } : {}),
-      minimumLevel: augment.minimumLevel,
-      augmentType: augment.augmentType,
-      ...(typeof augment.description === 'string' ? { description: augment.description } : {}),
-      ...(typeof augment.weight === 'number' || typeof augment.weight === 'string' ? { weight: augment.weight } : {})
-    }
-  })
-}
-
-const parseBonusEffects = (value: unknown): LgsBonusEffect[] => {
-  if (!Array.isArray(value)) throw new InvalidLgsDataError('bonusEffects missing')
-  return value.map((effect) => {
-    if (
-      !isRecord(effect) ||
-      !nonEmptyString(effect.name) ||
-      !nonEmptyString(effect.description) ||
-      !Array.isArray(effect.lowerFoci) ||
-      !effect.lowerFoci.every(nonEmptyString) ||
-      !Array.isArray(effect.tier3Foci) ||
-      !effect.tier3Foci.every(nonEmptyString)
-    ) {
-      throw new InvalidLgsDataError('invalid bonus effect')
-    }
-    return {
-      name: effect.name,
-      description: effect.description,
-      lowerFoci: [...effect.lowerFoci],
-      tier3Foci: [...effect.tier3Foci],
-      source: metadata(effect)
-    }
-  })
-}
-
-const parseComponents = (value: unknown): LgsCraftingComponent[] => {
-  if (!Array.isArray(value)) throw new InvalidLgsDataError('craftingComponents missing')
-  return value.map((component) => {
-    if (!isRecord(component)) throw new InvalidLgsDataError('invalid crafting component')
-    return {
-      ...craftedFields(component, 'crafting component'),
-      ...(typeof component.type === 'string' ? { type: component.type } : {})
-    }
-  })
-}
-
-const parseSpecialRecipes = (value: unknown): LgsSpecialRecipe[] => {
-  if (!Array.isArray(value)) throw new InvalidLgsDataError('specialRecipes missing')
-  return value.map((recipe) => {
-    if (!isRecord(recipe) || !nonEmptyString(recipe.name) || typeof recipe.quantity !== 'number') {
-      throw new InvalidLgsDataError('invalid special recipe')
-    }
-    return {
-      name: recipe.name,
-      quantity: recipe.quantity,
-      requirements: parseRequirements(recipe.requirements, recipe.name),
-      source: metadata(recipe)
-    }
-  })
-}
-
-export const parseLgsData = (value: unknown): LgsData => {
-  if (!isRecord(value) || value.schemaVersion !== 1) {
-    throw new InvalidLgsDataError(
-      `expected schemaVersion 1, received ${String(isRecord(value) ? value.schemaVersion : undefined)}`
-    )
+      const status = str(item.activationStatus, 'activationStatus')
+      const name = str(item.name, 'bonus.name')
+      const requiredFocuses =
+        group === 'Weapon bonuses' && status === 'configured'
+          ? weaponFocusRule(item.requiredFocuses, `${name}.requiredFocuses`)
+          : undefined
+      return {
+        name,
+        requiredFocuses,
+        group,
+        discrepancies,
+        paragraphs: [
+          ...new Set(
+            [...effects, ...descriptions]
+              .filter((text) => text !== name)
+              .flatMap((text) =>
+                text
+                  .split(/\n\s*\n/)
+                  .map((paragraph) => paragraph.trim())
+                  .filter(Boolean)
+              )
+          )
+        ],
+        notes: [
+          ...(item.activationReason === undefined ? [] : [str(item.activationReason, `${name}.activationReason`)]),
+          ...unresolved,
+          ...observations
+        ]
+      }
+    })
   }
-  return {
-    schemaVersion: 1,
-    baseItems: parseBaseItems(value.baseItems),
-    tier1: parseTiers(value.tier1, 1),
-    tier2: parseTiers(value.tier2, 2),
-    tier3: parseTiers(value.tier3, 3),
-    activeAugments: parseActiveAugments(value.activeAugments),
-    bonusEffects: parseBonusEffects(value.bonusEffects),
-    craftingComponents: parseComponents(value.craftingComponents),
-    specialRecipes: parseSpecialRecipes(value.specialRecipes)
+  const components = [...ingredients.values()].filter((i) => i.recipeId !== undefined).map((i) => crafted(i, i.id))
+  // Detect cycles before exposing any selectable recipe to the page.
+  try {
+    expandLgsRequirements(components, components)
+  } catch (cause) {
+    throw new InvalidLgsDataError(cause instanceof Error ? cause.message : 'invalid ingredient graph')
   }
+  const heart = row(files.immortalsHeart, 'immortalsHeart')
+  const data: LgsData = {
+    baseItems: [...indexed(files.baseItems, 'baseItems').values()].map((item) => {
+      if (item.type !== 'weapon' && item.type !== 'equipment') return invalid('invalid base item type')
+      const slotTypes = list(item.slots, 'base slots').flatMap((v) => strings(row(v, 'slot').types, 'slot.types'))
+      return { ...crafted(item, item.id), type: item.type, slotTypes, ...itemDetails(item) }
+    }),
+    tier1: tiers('tier1'),
+    tier2: tiers('tier2'),
+    tier3: tiers('tier3'),
+    activeAugments: [...indexed(files.activeAugments, 'activeAugments').values()].map((item) => {
+      const spell = lookup(spells, item.spellId, 'spellId')
+      const { details, discrepancies } = itemDetails(item)
+      const cooldown = spell.cooldownSeconds
+      if (typeof cooldown !== 'number' || !Number.isFinite(cooldown) || cooldown < 0) invalid('invalid spell cooldown')
+      return {
+        ...crafted(item, item.id),
+        slotTypes: strings(item.slotTypes, 'slotTypes'),
+        displayName: str(spell.name, 'spell.name'),
+        discrepancies,
+        description: [...new Set([...details, str(spell.description, 'spell.description')])].join('\n'),
+        spellDetails: `Caster level ${String(integer(item.casterLevel, 'casterLevel'))} · Charges ${String(integer(item.charges, 'charges'))} · Recharge count ${String(integer(item.rechargeCount, 'rechargeCount'))} · Spell cooldown ${String(cooldown)}s`
+      }
+    }),
+    explicitNoEffect: matching
+      ? list(matching.explicitNoEffect, 'explicitNoEffect').map((value) => weaponFocusRule(value, 'explicitNoEffect'))
+      : [],
+    bonusEffects: [...bonuses('weaponBonuses', 'Weapon bonuses'), ...bonuses('equipmentSets', 'Equipment sets')],
+    craftingComponents: components,
+    immortalsHeart: { ...crafted(heart, heart.id), slotTypes: strings(heart.slotTypes, 'heart.slotTypes') }
+  }
+  for (const records of [data.baseItems, data.tier1, data.tier2, data.tier3, data.activeAugments, data.bonusEffects]) {
+    if (new Set(records.map((r) => r.name)).size !== records.length) invalid('duplicate selectable name')
+  }
+  return data
 }
 
-export const loadLgsData = async (): Promise<LgsData> => parseLgsData(await loadDataset<unknown>(lgsDatasetDomain))
+async function loadResources(): Promise<LgsData> {
+  const manifest = row(await loadDatasetFile<unknown>(`${domain}/manifest.json`), 'manifest')
+  if (manifest.system !== domain || !/^sha256:[0-9a-f]{64}$/.test(str(manifest.version, 'manifest.version')))
+    invalid('unsupported LGS manifest')
+  const paths = row(manifest.resources, 'manifest.resources')
+  const devices = row(manifest.devices, 'manifest.devices')
+  const files = await Promise.all(
+    resources.map(async (key) => {
+      const path = str(paths[key], key)
+      if (!/^(?:[\w-]+\/)*[\w-]+\.json$/.test(path)) invalid(`invalid resource path for ${key}`)
+      return [key, await loadDatasetFile<unknown>(`${domain}/${path}`)] as const
+    })
+  )
+  return parseLgsResources(
+    Object.fromEntries(files) as Record<Resource, unknown>,
+    devices,
+    manifest.weaponBonusMatching
+  )
+}
+
+let pending: Promise<LgsData> | undefined
+export function loadLgsData(): Promise<LgsData> {
+  pending ??= loadResources().finally(() => {
+    pending = undefined
+  })
+  return pending
+}

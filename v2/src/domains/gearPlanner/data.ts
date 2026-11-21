@@ -1,6 +1,8 @@
+import { craftItemKey, type GearCraftingData } from './crafting.ts'
+import { standardGearPlannerSetDefinitionByName } from './standardSetDefinitions.ts'
 import { loadDatasetFile, loadManualPayload } from '../../shared/data/loadDataset.ts'
 import { nearlyFinishedPayloadName, parseNearlyFinishedDataset } from '../nearlyFinished/nearlyFinished.logic.ts'
-import { gearPlannerCurseDefinitions } from './curses.ts'
+import { parseGearPlannerCurseDataset } from './curses.ts'
 import type {
   GearPlannerAugment,
   GearPlannerAugmentSlot,
@@ -14,6 +16,27 @@ import type {
 import { normalizeGearPlannerFiligrees, normalizeGearPlannerSources } from './normalize.ts'
 import { createGearPlannerReforgingData } from './reforging.ts'
 import { gearPlannerItemSources } from './sourceMapping.ts'
+
+const namedUpgradeFiles = [
+  {
+    system: 'fountain',
+    label: 'Upgrade in Fountain of Necrotic Might',
+    marker: 'Upgradeable Item (Black Abbot)',
+    path: 'fountain-of-necrotic-might/upgrades.json'
+  },
+  {
+    system: 'stormreaver',
+    label: 'Upgrade in Stormreaver Monument',
+    marker: 'Upgradeable Item (Stormreaver)',
+    path: 'stormreaver-monument/upgrades.json'
+  },
+  {
+    system: 'zhentarim',
+    label: 'Upgrade with Zhentarim Black Stones',
+    marker: 'Zhentarim Attuned',
+    path: 'zhentarim-attuned/upgrades.json'
+  }
+] as const
 
 const datasetRoot = 'gear-planner'
 const augmentPath = `${datasetRoot}/augment.json`
@@ -190,10 +213,13 @@ const parseFiligreeSetEffect = (value: unknown, path: string): GearPlannerEffect
   return { ...record, name }
 }
 
-export const parseGearPlannerFiligreeSetDataset = (value: unknown): readonly GearPlannerFiligreeSetDefinition[] => {
+export const parseGearPlannerFiligreeSetDataset = (
+  value: unknown,
+  sourceName = 'filigreeSets.json'
+): readonly GearPlannerFiligreeSetDefinition[] => {
   const names = new Set<string>()
-  return arrayAt(value, 'filigreeSets.json').map((entry, index) => {
-    const path = `filigreeSets.json[${index.toString()}]`
+  return arrayAt(value, sourceName).map((entry, index) => {
+    const path = `${sourceName}[${index.toString()}]`
     const record = recordAt(entry, path)
     if (!isNonEmptyString(record.name)) invalid(`${path}.name`, 'expected non-empty string')
     const name = record.name as string
@@ -224,15 +250,51 @@ export const parseGearPlannerFiligreeSetDataset = (value: unknown): readonly Gea
   })
 }
 
+const loadCraftingData = async (): Promise<GearCraftingData> => {
+  const [recipes, ...tables] = await Promise.all([
+    loadManualPayload<unknown>('nearlyComplete.recipes'),
+    ...namedUpgradeFiles.map((file) => loadDatasetFile<unknown>(file.path))
+  ])
+  const named = (record: Record<string, unknown>, path: string): string =>
+    isNonEmptyString(record.name) ? record.name : invalid(path, 'expected a name')
+  const effects = (record: Record<string, unknown>, field: string, path: string) =>
+    arrayAt(record[field], path).map((entry) => parseEffect(entry, path))
+  return {
+    nearlyComplete: arrayAt(recipes, 'nearlyComplete.recipes').map((entry, index) => {
+      const path = `nearlyComplete.recipes[${String(index)}]`
+      const record = recordAt(entry, path)
+      return {
+        name: named(record, path),
+        effectsAdded: effects(record, 'effectsAdded', path),
+        effectsRemoved: effects(record, 'effectsRemoved', path),
+        requirements: arrayAt(record.requirements, path).map((r) => ({ name: named(recordAt(r, path), path) }))
+      }
+    }),
+    upgrades: namedUpgradeFiles.map((file, index) => ({
+      ...file,
+      items: new Map(
+        arrayAt(tables[index], file.path).map((entry) => {
+          const record = recordAt(entry, file.path)
+          return [craftItemKey(named(record, file.path)), effects(record, 'effectsAdded', file.path)]
+        })
+      )
+    }))
+  }
+}
+
 export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types.ts').GearPlannerData> => {
   const fileNames = Object.keys(gearPlannerItemSources)
-  const [rawReforging, rawAugments, rawFiligrees, rawFiligreeSets, ...rawItems] = await Promise.all([
-    loadManualPayload<unknown>(nearlyFinishedPayloadName),
-    loadDatasetFile<unknown>(augmentPath),
-    loadDatasetFile<unknown>(filigreePath),
-    loadDatasetFile<unknown>(filigreeSetPath),
-    ...fileNames.map((fileName) => loadDatasetFile<unknown>(`${datasetRoot}/${fileName}`))
-  ])
+  const [crafting, rawCurses, rawSets, rawReforging, rawAugments, rawFiligrees, rawFiligreeSets, ...rawItems] =
+    await Promise.all([
+      loadCraftingData(),
+      loadManualPayload<unknown>('deckOfManyCurses'),
+      loadManualPayload<unknown>('itemSets.enchantments'),
+      loadManualPayload<unknown>(nearlyFinishedPayloadName),
+      loadDatasetFile<unknown>(augmentPath),
+      loadDatasetFile<unknown>(filigreePath),
+      loadDatasetFile<unknown>(filigreeSetPath),
+      ...fileNames.map((fileName) => loadDatasetFile<unknown>(`${datasetRoot}/${fileName}`))
+    ])
   const sourceDatasets: GearPlannerSourceDataset[] = fileNames.map((fileName, index) => ({
     fileName,
     records: parseGearPlannerItemDataset(rawItems[index], fileName)
@@ -246,8 +308,13 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
   const filigreeSetDefinitions = parseGearPlannerFiligreeSetDataset(rawFiligreeSets)
   return {
     ...normalized,
+    crafting,
+    standardSets: new Map([
+      ...standardGearPlannerSetDefinitionByName,
+      ...parseGearPlannerFiligreeSetDataset(rawSets, 'itemSets.enchantments').map((set) => [set.name, set] as const)
+    ]),
     reforging: createGearPlannerReforgingData(reforgingEntries, sourceDatasets),
-    curses: gearPlannerCurseDefinitions,
+    curses: parseGearPlannerCurseDataset(rawCurses),
     filigrees: normalizeGearPlannerFiligrees(parseGearPlannerItemDataset(rawFiligrees, 'filigrees.json')),
     filigreeSetDefinitions,
     filigreeSetDefinitionByName: new Map(filigreeSetDefinitions.map((definition) => [definition.name, definition]))

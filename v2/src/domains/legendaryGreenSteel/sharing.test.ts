@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { createPermalinkChecksum } from '../../shared/serialization/checksum.ts'
-import type { LgsData, LgsEffect, LgsPlan, LgsTierAugment } from './legendaryGreenSteel.types.ts'
+import type { LgsPlan } from './legendaryGreenSteel.types.ts'
+import { parseLgsResources } from './data.ts'
+import { files, devices } from './lgsTestData.ts'
 import { emptyLgsPlan } from './logic.ts'
 import {
   buildLgsPermalinkUrl,
@@ -16,102 +18,67 @@ import {
   validateLgsBuild
 } from './sharing.ts'
 
-const tier = (
-  name: string,
-  number: 1 | 2 | 3,
-  secondaryFocus?: string,
-  effectsAdded: readonly LgsEffect[] = []
-): LgsTierAugment => ({
-  name,
-  title: name,
-  augmentType: `Tier ${number.toString()}`,
-  minimumLevel: 26,
-  craftedIn: 'Altar',
-  quantity: 1,
-  requirements: [],
-  effectsAdded,
-  tier: number,
-  itemType: 'Weapon',
-  primaryFocus: 'Air',
-  ...(secondaryFocus ? { secondaryFocus } : {}),
-  essence: 'Ethereal',
-  gem: 'Dominion',
-  source: {}
-})
-
-const data: LgsData = {
-  schemaVersion: 1,
-  baseItems: [
-    {
-      name: 'Weapon Base',
-      ingredientType: 'Legendary Green Steel Weapon',
-      craftedIn: 'Altar',
-      quantity: 1,
-      requirements: [],
-      source: {}
-    }
-  ],
-  tier1: [tier('Tier 1', 1, undefined, [{ name: 'Good-aligned Weapon' }])],
-  tier2: [tier('Tier 2', 2, undefined, [{ name: 'Electric Spell Power', modifier: 139, bonus: 'Equipment' }])],
-  tier3: [
-    tier('Tier 3 Air Fire', 3, 'Fire', [
-      { name: 'Electric Resistance', modifier: '50%', bonus: 'Equipment' },
-      { name: 'Deadly', modifier: 17 }
-    ])
-  ],
-  bonusEffects: [
-    {
-      name: 'Air Fire Bonus',
-      description: 'Air and fire synergy.',
-      lowerFoci: ['Air', 'Air'],
-      tier3Foci: ['Air', 'Fire'],
-      source: {}
-    },
-    { name: 'Water Bonus', description: '', lowerFoci: ['Water'], tier3Foci: ['Water'], source: {} }
-  ],
-  activeAugments: [
-    {
-      name: 'Active Augment',
-      displayName: 'Active Augment',
-      type: 'Spell',
-      description: 'Casts a spell.',
-      augmentType: 'Active',
-      minimumLevel: 26,
-      craftedIn: 'Altar',
-      quantity: 1,
-      requirements: [],
-      source: {}
-    }
-  ],
-  craftingComponents: [],
-  specialRecipes: []
-}
+const data = parseLgsResources(files, devices)
 
 const complete: LgsPlan = {
   baseItemName: 'Weapon Base',
-  tier1Name: 'Tier 1',
-  tier2Name: 'Tier 2',
-  tier3Name: 'Tier 3 Air Fire',
+  tier1Name: 'Tier 1 Weapon',
+  tier2Name: 'Tier 2 Weapon',
+  tier3Name: 'Tier 3 Weapon Air Fire',
   bonusEffectName: 'Air Fire Bonus',
-  activeAugmentName: 'Active Augment'
+  activeAugmentName: 'Legendary Green Steel Augment: Animal Growth'
 }
 
 describe('LGS sharing', () => {
   it('round trips complete and partial plans using canonical dataset names', () => {
     expect(createLgsJsonBuild(complete)).toEqual({ schema: 'yourddo-lgs', version: 1, ...complete })
     expect(validateLgsBuild(parseLgsJsonBuild(formatLgsJsonBuild(complete)), data)).toEqual(complete)
-    const partial = { ...emptyLgsPlan(), baseItemName: 'Weapon Base', activeAugmentName: 'Active Augment' }
+    const partial = {
+      ...emptyLgsPlan(),
+      baseItemName: 'Weapon Base',
+      activeAugmentName: 'Legendary Green Steel Augment: Animal Growth'
+    }
     expect(validateLgsBuild(parseLgsJsonBuild(formatLgsJsonBuild(partial)), data)).toEqual(partial)
   })
 
+  it('restores and exports cleansed equipment while rejecting a Heart on a weapon', () => {
+    const plan = { ...emptyLgsPlan(), baseItemName: 'Accessory Base', useImmortalsHeart: true as const }
+    expect(createLgsJsonBuild(plan).version).toBe(2)
+    for (const snapshot of [
+      parseLgsJsonBuild(formatLgsJsonBuild(plan)),
+      decodeLgsPermalink(encodeLgsPermalink(plan))
+    ]) {
+      expect(validateLgsBuild(snapshot, data)).toEqual(plan)
+      expect(() => validateLgsBuild({ ...snapshot, baseItemName: 'Weapon Base' }, data)).toThrow('compatible')
+    }
+    const view = resolveLgsBuildView(plan, data)
+    expect(formatLgsDiscordMarkdown(view)).toContain("Immortal's Heart")
+    expect(formatLgsBbCode(view)).toContain("Immortal's Heart")
+  })
+
+  it.each(['Weave Boots', 'Bracers', 'Weave Gloves', 'Goggles'])(
+    'imports the historical %s name in JSON and permalinks',
+    (part) => {
+      const name = 'Legendary Green Steel ' + part
+      const catalog = { ...data, baseItems: [{ ...data.baseItems[1], name }] }
+      const legacy = { ...emptyLgsPlan(), baseItemName: name + '[ps]' }
+      for (const snapshot of [
+        parseLgsJsonBuild(formatLgsJsonBuild(legacy)),
+        decodeLgsPermalink(encodeLgsPermalink(legacy))
+      ]) {
+        expect(validateLgsBuild(snapshot, catalog)).toEqual({ ...legacy, baseItemName: name })
+      }
+    }
+  )
+
   it('rejects malformed, unsupported, stale, and incompatible imports without accepting arbitrary records', () => {
     expect(() => parseLgsJsonBuild('{')).toThrow('Invalid LGS JSON')
-    expect(() => parseLgsJsonBuild(JSON.stringify({ ...createLgsJsonBuild(complete), version: 2 }))).toThrow('version')
+    expect(() => parseLgsJsonBuild(JSON.stringify({ ...createLgsJsonBuild(complete), version: 3 }))).toThrow('version')
     expect(() => parseLgsJsonBuild(JSON.stringify({ ...createLgsJsonBuild(complete), tier1Name: {} }))).toThrow(
       'Tier 1'
     )
     expect(() => validateLgsBuild({ ...complete, tier1Name: 'Removed tier' }, data)).toThrow('Unknown Tier 1')
-    expect(() => validateLgsBuild({ ...complete, bonusEffectName: 'Water Bonus' }, data)).toThrow('compatible')
+    expect(() => validateLgsBuild({ ...complete, tier1Name: 'Tier 1 Equipment' }, data)).toThrow('compatible')
   })
 
   it('uses deterministic fixed-field, checksummed permalinks for complete, partial, and empty builds', () => {
@@ -119,7 +86,7 @@ describe('LGS sharing', () => {
     expect(permalink.split('.')).toHaveLength(8)
     expect(decodeLgsPermalink(permalink)).toEqual(complete)
     expect(encodeLgsPermalink(complete)).toBe(permalink)
-    const partial = { ...emptyLgsPlan(), baseItemName: 'Weapon Base', tier1Name: 'Tier 1' }
+    const partial = { ...emptyLgsPlan(), baseItemName: 'Weapon Base', tier1Name: 'Tier 1 Weapon' }
     expect(decodeLgsPermalink(encodeLgsPermalink(partial))).toEqual(partial)
     expect(decodeLgsPermalink(encodeLgsPermalink(emptyLgsPlan()))).toEqual(emptyLgsPlan())
     const url = new URL(buildLgsPermalinkUrl(complete, 'https://yourddo.example'))
@@ -130,7 +97,7 @@ describe('LGS sharing', () => {
   it('rejects malformed and stale permalink selections without accepting arbitrary records', () => {
     const permalink = encodeLgsPermalink(complete)
     expect(() => decodeLgsPermalink(`${permalink.slice(0, -1)}x`)).toThrow('checksum')
-    const unsupportedPayload = permalink.replace(/^1/, '2').split('.').slice(0, -1).join('.')
+    const unsupportedPayload = permalink.replace(/^1/, '3').split('.').slice(0, -1).join('.')
     expect(() => decodeLgsPermalink(`${unsupportedPayload}.${createPermalinkChecksum(unsupportedPayload)}`)).toThrow(
       'version'
     )
@@ -141,24 +108,41 @@ describe('LGS sharing', () => {
     expect(() => validateLgsBuild({ ...complete, activeAugmentName: 'Removed active' }, data)).toThrow('Unknown active')
   })
 
+  it('puts labeled discrepancy notes last in both human-readable exports', () => {
+    const note = 'Positive Energy Spell Power: stated 37, actual 34.75.'
+    const catalog = { ...data, tier1: data.tier1.map((tier) => ({ ...tier, discrepancies: [note] })) }
+    const view = resolveLgsBuildView(complete, catalog)
+    expect(formatLgsBbCode(view).split('\n').slice(-3)).toEqual([
+      '[hr]',
+      '[b]Discrepancies[/b]',
+      `- Tier 1 Weapon: ${note}`
+    ])
+    expect(formatLgsDiscordMarkdown(view).split('\n').slice(-3)).toEqual([
+      '────────',
+      '**Discrepancies**',
+      `- Tier 1 Weapon: ${note}`
+    ])
+  })
+
   it('formats clean, related Discord and forum output without empty sections', () => {
     const view = resolveLgsBuildView(complete, data)
     const discord = formatLgsDiscordMarkdown(view)
     const forum = formatLgsBbCode(view)
     expect(discord).toContain('**Legendary Green Steel**')
     expect(discord).toContain('**Base Item:** Weapon Base (Legendary Green Steel Weapon)')
-    expect(discord).toContain('**Tier 3**\nTier 3 Air Fire\nFocus: Air / Fire · Gem: Dominion · Essence: Ethereal')
-    expect(discord).toContain('- Good-aligned Weapon')
+    expect(discord).toContain(
+      '**Tier 3**\nTier 3 Weapon Air Fire\nFocus: Air / Fire · Gem: Dominion · Essence: Ethereal'
+    )
     expect(discord).toContain('- Electric Spell Power +139 (Equipment)')
-    expect(discord).toContain('- Electric Resistance +50% (Equipment)')
-    expect(discord).toContain('- Deadly +17')
-    expect(discord).toContain('**Bonus Effect:** Air Fire Bonus\nAir and fire synergy.')
-    expect(discord).toContain('**Active Augment:** Active Augment\nSpell\nCasts a spell.')
+    expect(discord).toContain('- Electric Lore +29 (Equipment)')
+    expect(discord).toContain('- Electric Critical Damage +6')
+    expect(discord).toContain('**Bonus Effect:** Air Fire Bonus\nRequired focuses for tiers 1 and 2: Air + Air.')
+    expect(discord).toContain('**Active Augment:** Animal Growth\nCaster level 10')
     expect(forum).toContain('[b]Legendary Green Steel[/b]')
     expect(forum).toContain('[i]Focus:[/i] Air / Fire')
 
     const partial = formatLgsDiscordMarkdown(
-      resolveLgsBuildView({ ...emptyLgsPlan(), baseItemName: 'Weapon Base', tier1Name: 'Tier 1' }, data)
+      resolveLgsBuildView({ ...emptyLgsPlan(), baseItemName: 'Weapon Base', tier1Name: 'Tier 1 Weapon' }, data)
     )
     expect(partial).not.toContain('**Tier 2**')
     expect(partial).not.toContain('**Bonus Effect:**')

@@ -19,7 +19,15 @@ import {
 } from './reforging.ts'
 
 export type GearPlannerEffectSourceCategory =
-  'equipped-item' | 'reforging-tier' | 'reforging-choice' | 'augment' | 'curse' | 'essence' | 'filigree' | 'set'
+  | 'crafting'
+  | 'equipped-item'
+  | 'reforging-tier'
+  | 'reforging-choice'
+  | 'augment'
+  | 'curse'
+  | 'essence'
+  | 'filigree'
+  | 'set'
 
 export interface GearPlannerEffectSource {
   id: string
@@ -32,6 +40,7 @@ export interface GearPlannerEffectSource {
   augmentSlotIndex?: number
   augmentSlotName?: string
   curseId?: string
+  craftLabel?: string
   curseName?: string
   essenceEnhancementId?: string
   essenceEnhancementName?: string
@@ -136,23 +145,38 @@ export const collectEquippedEffects = (
     const category: 'reforging-tier' | 'equipped-item' = effective.tier ? 'reforging-tier' : 'equipped-item'
     const sourceId = category === 'reforging-tier' ? `reforging-tier:${effective.tier?.tier ?? ''}` : 'equipped-item'
     return [
-      ...effective.enchantments.flatMap((effect, index) =>
-        legacyUpgradePlaceholders.has(effect.name)
-          ? []
-          : [
-              {
-                id: `${item.id}:${sourceId}:${String(index)}`,
-                effect,
-                itemId: item.id,
-                itemName: item.source.name,
-                slot: item.slot,
-                category,
-                ...(effective.tier ? { reforgingStage: effective.tier.stage } : {}),
-                normalizedName: normalizeEffectName(effect.name),
-                normalizedBonusType: normalizeBonusType(effect.bonus),
-                comparisonValue: parseEffectModifier(effect.modifier)
-              }
-            ]
+      ...(item.crafts?.some((craft) => craft.replacesEnchantments) ? [] : effective.enchantments).flatMap(
+        (effect, index) =>
+          legacyUpgradePlaceholders.has(effect.name)
+            ? []
+            : [
+                {
+                  id: `${item.id}:${sourceId}:${String(index)}`,
+                  effect,
+                  itemId: item.id,
+                  itemName: item.source.name,
+                  slot: item.slot,
+                  category,
+                  ...(effective.tier ? { reforgingStage: effective.tier.stage } : {}),
+                  normalizedName: normalizeEffectName(effect.name),
+                  normalizedBonusType: normalizeBonusType(effect.bonus),
+                  comparisonValue: parseEffectModifier(effect.modifier)
+                }
+              ]
+      ),
+      ...(item.crafts ?? []).flatMap((craft) =>
+        (craft.effects ?? []).map((effect, index) => ({
+          id: `${item.id}:craft:${craft.system}:${String(index)}`,
+          effect,
+          itemId: item.id,
+          itemName: item.source.name,
+          slot: item.slot,
+          category: 'crafting' as const,
+          craftLabel: craft.system === 'mythic' ? 'Mythic Boost ' + craft.label : craft.label,
+          normalizedName: normalizeEffectName(effect.name),
+          normalizedBonusType: normalizeBonusType(effect.bonus),
+          comparisonValue: parseEffectModifier(effect.modifier)
+        }))
       ),
       ...effective.choices.map(({ stage, choice }) => ({
         id: `${item.id}:reforging-choice:${stage}:${encodeURIComponent(choice.id)}`,
@@ -311,6 +335,7 @@ export const conflictEligibleEffectSources = (
 ): readonly GearPlannerEffectSource[] =>
   sources.filter(
     ({ category, reforgingStage }) =>
+      category === 'crafting' ||
       category === 'equipped-item' ||
       category === 'augment' ||
       (category === 'reforging-choice' && reforgingStage === 'nearly-finished')

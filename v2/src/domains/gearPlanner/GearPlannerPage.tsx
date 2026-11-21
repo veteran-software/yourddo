@@ -1,3 +1,4 @@
+import ItemCraftingSelector from './components/ItemCraftingSelector.tsx'
 import {
   ActionIcon,
   Alert,
@@ -97,6 +98,7 @@ import {
   selectGearPlannerSetup,
   setGearPlannerSetupAugment,
   setGearPlannerSetupCurse,
+  setGearPlannerSetupCraft,
   setGearPlannerSetupEssenceCraftingConfiguration,
   setGearPlannerSetupFiligree,
   setGearPlannerSetupReforgingState,
@@ -154,6 +156,7 @@ interface EquipmentSlotCardProps {
   openBrowser: (slot: GearPlannerCharacterSlot) => void
   clearSlot: (slot: GearPlannerCharacterSlot) => void
   setAugment: (itemId: string, slotIndex: number, augment: GearPlannerData['augments'][number] | null) => void
+  setCraft: (itemId: string, system: string, choiceId: string | null) => void
   setCurse: (itemId: string, curseId: string | null) => void
   setFiligree: (itemId: string, slotIndex: number, filigree: GearPlannerData['filigrees'][number] | null) => void
   setUnlockedFiligreeSlots: (itemId: string, count: number) => void
@@ -184,6 +187,7 @@ const EquipmentSlotCard = ({
   clearSlot,
   setAugment,
   setCurse,
+  setCraft,
   setFiligree,
   setUnlockedFiligreeSlots,
   setEssenceConfiguration,
@@ -191,7 +195,7 @@ const EquipmentSlotCard = ({
 }: EquipmentSlotCardProps) => (
   <Paper withBorder p='sm' mih={132} style={{ position: 'relative' }} data-testid={`gear-slot-${slot}`}>
     <Stack gap='xs' h='100%'>
-      <Group justify='space-between' gap='xs' wrap='nowrap'>
+      <Group justify='space-between' gap='xs' wrap='nowrap' mih={28}>
         <Text fw={700} size='sm'>
           {slot}
         </Text>
@@ -216,7 +220,9 @@ const EquipmentSlotCard = ({
         onClick={() => {
           openBrowser(slot)
         }}
-        style={{ flex: 1, minWidth: 0, textAlign: 'left' }}
+        flex={item ? undefined : 1}
+        miw={0}
+        style={{ display: 'flex', alignItems: 'flex-start', textAlign: 'left' }}
       >
         {item ? (
           <Group wrap='nowrap' align='flex-start'>
@@ -264,6 +270,16 @@ const EquipmentSlotCard = ({
             />
           ))
         : null}
+      {item && (
+        <ItemCraftingSelector
+          key={`crafting-${item.id}`}
+          item={item}
+          data={data.crafting}
+          onChange={(system, choiceId) => {
+            setCraft(item.id, system, choiceId)
+          }}
+        />
+      )}
       {item && canApplyGearPlannerCurse(item) ? (
         <CurseSelector
           item={item}
@@ -550,12 +566,12 @@ const GearPlannerPage = () => {
       resolveGearPlannerSetState(
         equipment,
         slottedAugments,
-        undefined,
+        dataState.status === 'ready' ? dataState.data.standardSets : undefined,
         slottedFiligrees,
         filigreeDefinitions,
         effectiveAugmentSlots
       ),
-    [effectiveAugmentSlots, equipment, filigreeDefinitions, slottedAugments, slottedFiligrees]
+    [dataState, effectiveAugmentSlots, equipment, filigreeDefinitions, slottedAugments, slottedFiligrees]
   )
   const effects = useMemo(() => [...baseEffects, ...collectActiveSetEffectSources(setState)], [baseEffects, setState])
   const conflictSources = useMemo(() => conflictEligibleEffectSources(baseEffects), [baseEffects])
@@ -881,7 +897,7 @@ const GearPlannerPage = () => {
               <Text c='dimmed' size='sm'>
                 Select any slot to browse compatible equipment.
               </Text>
-              <SimpleGrid cols={gearPlannerSlotGridColumns} spacing='md'>
+              <SimpleGrid type='container' cols={gearPlannerSlotGridColumns} spacing='md'>
                 {characterSlotLayout.map((slot) => (
                   <EquipmentSlotCard
                     key={slot}
@@ -892,7 +908,8 @@ const GearPlannerPage = () => {
                     effects={effects.filter(
                       (effect) =>
                         effect.slot === slot &&
-                        (effect.category === 'equipped-item' ||
+                        (effect.category === 'crafting' ||
+                          effect.category === 'equipped-item' ||
                           effect.category === 'reforging-tier' ||
                           effect.category === 'reforging-choice' ||
                           effect.category === 'essence')
@@ -913,6 +930,11 @@ const GearPlannerPage = () => {
                     setAugment={(itemId, slotIndex, augment) => {
                       applySetupState((current) =>
                         setGearPlannerSetupAugment(current, itemId, slotIndex, augment, dataState.data.reforging)
+                      )
+                    }}
+                    setCraft={(itemId, system, choiceId) => {
+                      applySetupState((current) =>
+                        setGearPlannerSetupCraft(current, slot, itemId, system, choiceId, dataState.data.crafting)
                       )
                     }}
                     setCurse={(itemId, curseId) => {

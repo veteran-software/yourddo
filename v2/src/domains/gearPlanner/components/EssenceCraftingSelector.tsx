@@ -99,7 +99,7 @@ const EssenceCraftingSelector = ({
       <Text c='blue' fw={600} size='xs'>
         Essence Crafting · effective ML {effectiveLevel}
       </Text>
-      <SimpleGrid cols={{ base: 1, xs: 2 }} spacing='xs'>
+      <SimpleGrid minColWidth='min(100%, 8.5rem)' autoFlow='auto-fit' spacing='xs'>
         <Select
           size='xs'
           label='Essence minimum level'
@@ -123,58 +123,53 @@ const EssenceCraftingSelector = ({
           }}
         />
       </SimpleGrid>
-      <SimpleGrid
-        cols={{ base: 1, md: hasGearPlannerEssenceExtraSlot(configuration) && extra.length ? 3 : 2 }}
-        spacing='xs'
-      >
+      <Stack gap={3}>
+        <Select
+          size='xs'
+          label='Prefix'
+          placeholder='Choose a prefix'
+          searchable
+          clearable
+          data={withSelectedOption(data, prefix, configuration.prefixId, effectiveLevel)}
+          value={configuration.prefixId}
+          onChange={(enhancementId) => {
+            onAffixChange('prefix', enhancementId)
+          }}
+        />
+        <EffectDetails data={data} enhancementId={configuration.prefixId} effectiveLevel={effectiveLevel} />
+      </Stack>
+      <Stack gap={3}>
+        <Select
+          size='xs'
+          label='Suffix'
+          placeholder='Choose a suffix'
+          searchable
+          clearable
+          data={withSelectedOption(data, suffix, configuration.suffixId, effectiveLevel)}
+          value={configuration.suffixId}
+          onChange={(enhancementId) => {
+            onAffixChange('suffix', enhancementId)
+          }}
+        />
+        <EffectDetails data={data} enhancementId={configuration.suffixId} effectiveLevel={effectiveLevel} />
+      </Stack>
+      {hasGearPlannerEssenceExtraSlot(configuration) && extra.length > 0 ? (
         <Stack gap={3}>
           <Select
             size='xs'
-            label='Prefix'
-            placeholder='Choose a prefix'
+            label='Mark of House Cannith / Extra'
+            placeholder='Choose an extra'
             searchable
             clearable
-            data={withSelectedOption(data, prefix, configuration.prefixId, effectiveLevel)}
-            value={configuration.prefixId}
+            data={withSelectedOption(data, extra, configuration.extraId, effectiveLevel)}
+            value={configuration.extraId}
             onChange={(enhancementId) => {
-              onAffixChange('prefix', enhancementId)
+              onAffixChange('extra', enhancementId)
             }}
           />
-          <EffectDetails data={data} enhancementId={configuration.prefixId} effectiveLevel={effectiveLevel} />
+          <EffectDetails data={data} enhancementId={configuration.extraId} effectiveLevel={effectiveLevel} />
         </Stack>
-        <Stack gap={3}>
-          <Select
-            size='xs'
-            label='Suffix'
-            placeholder='Choose a suffix'
-            searchable
-            clearable
-            data={withSelectedOption(data, suffix, configuration.suffixId, effectiveLevel)}
-            value={configuration.suffixId}
-            onChange={(enhancementId) => {
-              onAffixChange('suffix', enhancementId)
-            }}
-          />
-          <EffectDetails data={data} enhancementId={configuration.suffixId} effectiveLevel={effectiveLevel} />
-        </Stack>
-        {hasGearPlannerEssenceExtraSlot(configuration) && extra.length > 0 ? (
-          <Stack gap={3}>
-            <Select
-              size='xs'
-              label='Mark of House Cannith / Extra'
-              placeholder='Choose an extra'
-              searchable
-              clearable
-              data={withSelectedOption(data, extra, configuration.extraId, effectiveLevel)}
-              value={configuration.extraId}
-              onChange={(enhancementId) => {
-                onAffixChange('extra', enhancementId)
-              }}
-            />
-            <EffectDetails data={data} enhancementId={configuration.extraId} effectiveLevel={effectiveLevel} />
-          </Stack>
-        ) : null}
-      </SimpleGrid>
+      ) : null}
     </Stack>
   )
 }

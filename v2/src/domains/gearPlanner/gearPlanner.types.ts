@@ -40,7 +40,7 @@ export const gearPlannerCharacterSlots = [
   gearPlannerSlots.quiver
 ] as const satisfies readonly GearPlannerSlot[]
 
-export const gearPlannerSlotGridColumns = { base: 1, xs: 2, md: 3, lg: 4 } as const
+export const gearPlannerSlotGridColumns = { base: 1, '37rem': 2, '56rem': 3, '75rem': 4 } as const
 
 export const gearPlannerPetSlots = [
   gearPlannerSlots.ironDefenderArmor,
@@ -109,6 +109,7 @@ export interface GearPlannerAugment {
 }
 
 export interface GearPlannerItem {
+  crafts?: readonly import('./crafting.ts').EquippedCraft[]
   id: string
   slot: GearPlannerSlot
   sourceFile: string
@@ -154,6 +155,8 @@ export interface GearPlannerSourceDataset {
 }
 
 export interface GearPlannerData {
+  crafting: import('./crafting.ts').GearCraftingData
+  standardSets?: ReadonlyMap<string, import('./standardSetDefinitions.ts').GearPlannerStandardSetDefinition>
   sourceDatasets: readonly GearPlannerSourceDataset[]
   items: readonly GearPlannerItem[]
   itemsBySlot: Readonly<Record<GearPlannerSlot, readonly GearPlannerItem[]>>

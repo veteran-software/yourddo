@@ -71,9 +71,10 @@ vi.mock('../domains/viktranium/ViktraniumPage.tsx', () => ({
   default: () => <h1>Viktranium domain</h1>
 }))
 
-const renderRoute = (path: string) =>
+// jsdom fixes the viewport at 1024px. Move the lg breakpoint to exercise the desktop layout.
+const renderRoute = (path: string, desktop = false) =>
   render(
-    <MantineProvider env='test' defaultColorScheme='auto'>
+    <MantineProvider env='test' defaultColorScheme='auto' theme={desktop ? { breakpoints: { lg: '60em' } } : undefined}>
       <MemoryRouter initialEntries={[path]}>
         <AppRouter />
       </MemoryRouter>
@@ -269,7 +270,7 @@ describe('AppRouter', () => {
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
     await user.click(screen.getByRole('button', { name: 'Crafting' }))
-    const link = screen.getByRole('link', { name: 'Incredible Potential', hidden: true })
+    const link = await screen.findByRole('link', { name: 'Incredible Potential' })
     link.focus()
     await user.keyboard('{Enter}')
 
@@ -438,18 +439,23 @@ describe('AppRouter', () => {
     expect(screen.getByRole('link', { name: 'Return home' }).getAttribute('href')).toBe('/')
   })
 
-  it('toggles the desktop sidebar and closes mobile navigation after selection', async () => {
+  it('toggles the desktop sidebar', async () => {
     const user = userEvent.setup()
-    renderRoute('/')
+    renderRoute('/', true)
 
     await user.click(screen.getByRole('button', { name: 'Collapse navigation' }))
     expect(screen.getByRole('button', { name: 'Expand navigation' })).toBeTruthy()
+  })
+
+  it('closes mobile navigation after selecting the Cauldron route', async () => {
+    const user = userEvent.setup()
+    renderRoute('/')
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
     expect(screen.getByRole('button', { name: 'Close navigation' })).toBeTruthy()
 
     await user.click(screen.getByRole('button', { name: 'Crafting' }))
-    const link = screen.getByRole('link', { name: 'Cauldron of Cadence', hidden: true })
+    const link = await screen.findByRole('link', { name: 'Cauldron of Cadence' })
     link.focus()
     await user.keyboard('{Enter}')
 
@@ -463,7 +469,7 @@ describe('AppRouter', () => {
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
     await user.click(screen.getByRole('button', { name: 'Puzzle Solvers' }))
-    const link = screen.getByRole('link', { name: "The Reaver's Fate", hidden: true })
+    const link = await screen.findByRole('link', { name: "The Reaver's Fate" })
     link.focus()
     await user.keyboard('{Enter}')
 
@@ -478,7 +484,7 @@ describe('AppRouter', () => {
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
     await user.click(screen.getByRole('button', { name: 'Puzzle Solvers' }))
-    const link = screen.getByRole('link', { name: 'Monastery of the Scorpion', hidden: true })
+    const link = await screen.findByRole('link', { name: 'Monastery of the Scorpion' })
     link.focus()
     await user.keyboard('{Enter}')
 
@@ -493,7 +499,7 @@ describe('AppRouter', () => {
 
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
     await user.click(screen.getByRole('button', { name: 'Puzzle Solvers' }))
-    const link = screen.getByRole('link', { name: 'Total Chaos', hidden: true })
+    const link = await screen.findByRole('link', { name: 'Total Chaos' })
     link.focus()
     await user.keyboard('{Enter}')
 
@@ -502,30 +508,32 @@ describe('AppRouter', () => {
     expect(link.getAttribute('aria-current')).toBe('page')
   })
 
-  it('exposes navigation and theme controls to the keyboard with Mantine focus styles', async () => {
-    const user = userEvent.setup()
-    renderRoute('/nearly-complete')
+  it.each([
+    { layout: 'mobile', desktop: false, toggle: 'Open navigation' },
+    { layout: 'desktop', desktop: true, toggle: 'Collapse navigation' }
+  ])(
+    'exposes $layout navigation and theme controls to the keyboard with Mantine focus styles',
+    async ({ desktop, toggle }) => {
+      const user = userEvent.setup()
+      renderRoute('/nearly-complete', desktop)
 
-    const mobileNavigation = screen.getByRole('button', { name: 'Open navigation' })
-    const desktopNavigation = screen.getByRole('button', { name: 'Collapse navigation' })
-    const themeMenu = screen.getByRole('button', { name: 'Theme: System' })
+      const navigation = screen.getByRole('button', { name: toggle })
+      const themeMenu = screen.getByRole('button', { name: 'Theme: System' })
 
-    await user.tab()
-    expect(document.activeElement).toBe(mobileNavigation)
-    expect(mobileNavigation.className).toContain('mantine-focus-auto')
+      await user.tab()
+      expect(document.activeElement).toBe(navigation)
+      expect(navigation.className).toContain('mantine-focus-auto')
 
-    await user.tab()
-    expect(document.activeElement).toBe(desktopNavigation)
+      await user.tab()
+      expect(document.activeElement).toBe(themeMenu)
+      expect(themeMenu.className).toContain('mantine-focus-auto')
 
-    await user.tab()
-    expect(document.activeElement).toBe(themeMenu)
-    expect(themeMenu.className).toContain('mantine-focus-auto')
-
-    await user.keyboard('{Enter}')
-    expect(await screen.findByRole('menuitem', { name: 'Light' })).toBeTruthy()
-    await user.keyboard('{Escape}')
-    expect(screen.queryByRole('menuitem', { name: 'Light' })).toBeNull()
-  })
+      await user.keyboard('{Enter}')
+      expect(await screen.findByRole('menuitem', { name: 'Light' })).toBeTruthy()
+      await user.keyboard('{Escape}')
+      expect(screen.queryByRole('menuitem', { name: 'Light' })).toBeNull()
+    }
+  )
 
   it('keeps the Cauldron route available in light, dark, and system themes', async () => {
     const user = userEvent.setup()

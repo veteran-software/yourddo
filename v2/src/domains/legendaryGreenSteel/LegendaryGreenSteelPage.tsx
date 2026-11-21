@@ -1,22 +1,35 @@
-import { Alert, Badge, Button, Center, Grid, Group, Loader, Paper, Select, Stack, Text, Title } from '@mantine/core'
+import {
+  Alert,
+  Badge,
+  Button,
+  Center,
+  Checkbox,
+  Grid,
+  Group,
+  Loader,
+  Paper,
+  Select,
+  Stack,
+  Text,
+  Title
+} from '@mantine/core'
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import BonusDetails from './BonusDetails.tsx'
+import DiscrepancyList from './DiscrepancyList.tsx'
 import EffectList from '../../shared/items/EffectList.tsx'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
 import { InvalidLgsDataError, loadLgsData } from './data.ts'
 import type { LgsActiveAugment, LgsBaseItem, LgsData, LgsPlan, LgsTierAugment } from './legendaryGreenSteel.types.ts'
 import {
-  applyLgsSelection,
+  getLgsOptions,
+  weaponBonusResult,
+  reconcileLgsPlan,
+  fitsSlot,
   emptyLgsPlan,
   expandLgsRequirements,
-  formatLgsEffect,
-  getCompatibleBonusEffects,
-  getCompatibleTier1,
-  getCompatibleTier2,
-  getCompatibleTier3,
-  groupLgsBaseItems,
-  type LgsPlanField
+  groupLgsBaseItems
 } from './logic.ts'
 import { decodeLgsPermalink, LGS_PERMALINK_QUERY_PARAMETER, validateLgsBuild } from './sharing.ts'
 import CraftingBreakdownTool from './tools/CraftingBreakdownTool.tsx'
@@ -32,12 +45,11 @@ const selected = <T extends { name: string }>(values: readonly T[], name: string
 
 const TierBadges = ({ tier }: { tier: LgsTierAugment }) => (
   <Group gap={6} wrap='wrap'>
-    <Badge variant='light'>{tier.primaryFocus}</Badge>
-    {tier.secondaryFocus ? (
-      <Badge variant='outline' color='gray'>
-        {tier.secondaryFocus}
+    {tier.focuses.map((focus, index) => (
+      <Badge key={index} variant='light'>
+        {focus}
       </Badge>
-    ) : null}
+    ))}
     <Badge variant='outline' color='gray'>
       {tier.essence}
     </Badge>
@@ -46,6 +58,8 @@ const TierBadges = ({ tier }: { tier: LgsTierAugment }) => (
     </Badge>
   </Group>
 )
+
+const focusLabel = (tier: LgsTierAugment) => [tier.focuses.join(' / '), tier.essence, tier.gem].join(' · ')
 
 const TierSelect = ({
   label,
@@ -67,7 +81,7 @@ const TierSelect = ({
       onChange={onChange}
       data={options.map((option) => ({
         value: option.name,
-        label: option.effectsAdded.map(formatLgsEffect).join('; ')
+        label: `${option.effects.join('; ') || option.name} · ${focusLabel(option)}`
       }))}
       searchable
       clearable
@@ -76,9 +90,9 @@ const TierSelect = ({
         const augment = optionByName.get(option.value)
         return augment ? (
           <Stack gap={1}>
-            <Text size='sm'>{option.label}</Text>
+            <Text size='sm'>{augment.effects.join('; ') || augment.name}</Text>
             <Text size='xs' c='dimmed'>
-              {augment.primaryFocus} · {augment.essence} · {augment.gem}
+              {focusLabel(augment)}
             </Text>
           </Stack>
         ) : (
@@ -117,7 +131,8 @@ const TierSection = ({
       {tier ? (
         <>
           <TierBadges tier={tier} />
-          <EffectList effects={tier.effectsAdded.map(formatLgsEffect)} empty='No published effects.' />
+          <EffectList effects={[...tier.effects, ...tier.details]} empty='No published effects.' />
+          <DiscrepancyList notes={tier.discrepancies} />
         </>
       ) : null}
     </Stack>
@@ -172,10 +187,9 @@ const LegendaryGreenSteelPage = () => {
   }, [data, permalink])
   const baseItem = data ? selected(data.baseItems, plan.baseItemName) : undefined
   const bonusEffect = data ? selected(data.bonusEffects, plan.bonusEffectName) : undefined
-  const tier1Options = data ? getCompatibleTier1(data, plan) : []
-  const tier2Options = data ? getCompatibleTier2(data, plan) : []
-  const tier3Options = data ? getCompatibleTier3(data, plan) : []
-  const bonusEffectOptions = data ? getCompatibleBonusEffects(data, plan) : []
+  const options = data ? getLgsOptions(data, plan, baseItem) : undefined
+  const weaponResult = data ? weaponBonusResult(data, plan) : undefined
+  const heart = plan.useImmortalsHeart ? data?.immortalsHeart : undefined
   const tier1 = data ? selected(data.tier1, plan.tier1Name) : undefined
   const tier2 = data ? selected(data.tier2, plan.tier2Name) : undefined
   const tier3 = data ? selected(data.tier3, plan.tier3Name) : undefined
@@ -185,11 +199,11 @@ const LegendaryGreenSteelPage = () => {
     () =>
       data
         ? expandLgsRequirements(
-            [baseItem, tier1, tier2, tier3, activeAugment].flatMap((recipe) => (recipe ? [recipe] : [])),
+            [baseItem, tier1, tier2, tier3, activeAugment, heart].flatMap((recipe) => (recipe ? [recipe] : [])),
             data.craftingComponents
           )
         : { rawMaterials: [], craftedMaterials: [] },
-    [activeAugment, baseItem, data, tier1, tier2, tier3]
+    [activeAugment, baseItem, heart, data, tier1, tier2, tier3]
   )
   const tools = useMemo<readonly WorkspaceTool[]>(() => {
     if (!data) return []
@@ -207,7 +221,9 @@ const LegendaryGreenSteelPage = () => {
           tier2={tier2}
           tier3={tier3}
           bonusEffect={bonusEffect}
+          weaponResult={weaponResult}
           activeAugment={activeAugment}
+          heart={heart?.name}
         />
       ),
       tool(lgsWorkspaceToolDefinitions[2], <IngredientsTool plan={ingredientPlan} />),
@@ -219,16 +235,17 @@ const LegendaryGreenSteelPage = () => {
             { label: 'Tier 1', recipe: tier1 },
             { label: 'Tier 2', recipe: tier2 },
             { label: 'Tier 3', recipe: tier3 },
-            { label: 'Active Augment', recipe: activeAugment, displayName: activeAugment?.displayName }
+            { label: 'Active Augment', recipe: activeAugment, displayName: activeAugment?.displayName },
+            { label: 'Cleansing', recipe: heart }
           ]}
           components={data.craftingComponents}
         />
       )
     ]
-  }, [activeAugment, baseItem, bonusEffect, data, ingredientPlan, plan, tier1, tier2, tier3])
-  const updatePlan = <Field extends LgsPlanField>(field: Field, value: LgsPlan[Field]) => {
+  }, [activeAugment, baseItem, heart, bonusEffect, weaponResult, data, ingredientPlan, plan, tier1, tier2, tier3])
+  const updatePlan = <Field extends keyof LgsPlan>(field: Field, value: LgsPlan[Field]) => {
     if (!data) return
-    setPlan((current) => applyLgsSelection(data, current, field, value))
+    setPlan((current) => reconcileLgsPlan(data, { ...current, [field]: value }))
   }
   const retry = () => {
     setDataState({ status: 'loading' })
@@ -260,7 +277,7 @@ const LegendaryGreenSteelPage = () => {
             <Stack align='center' gap='xs'>
               <Loader size='sm' />
               <Text c='dimmed' size='sm'>
-                Loading Legendary Green Steel base options…
+                Loading Legendary Green Steel crafting data…
               </Text>
             </Stack>
           </Center>
@@ -313,12 +330,22 @@ const LegendaryGreenSteelPage = () => {
                   maw={520}
                 />
                 {baseItem ? (
-                  <Text size='sm'>{baseItem.ingredientType}</Text>
+                  <Text size='sm'>{baseItem.type === 'weapon' ? 'Weapon' : 'Accessory'}</Text>
                 ) : (
                   <Text c='dimmed' size='sm'>
                     Select a Legendary Green Steel base item to begin.
                   </Text>
                 )}
+                {fitsSlot(baseItem, data.immortalsHeart) && (
+                  <Checkbox
+                    label={`Cleanse with ${data.immortalsHeart.name}`}
+                    checked={Boolean(heart)}
+                    onChange={(event) => {
+                      updatePlan('useImmortalsHeart', event.currentTarget.checked || undefined)
+                    }}
+                  />
+                )}
+                {baseItem && <DiscrepancyList notes={baseItem.discrepancies} />}
               </Stack>
             </Paper>
 
@@ -330,7 +357,7 @@ const LegendaryGreenSteelPage = () => {
                       label='Tier 1'
                       titleId='lgs-tier1-title'
                       value={plan.tier1Name}
-                      options={tier1Options}
+                      options={options?.tier1 ?? []}
                       tier={tier1}
                       onChange={(tier1Name) => {
                         updatePlan('tier1Name', tier1Name)
@@ -342,7 +369,7 @@ const LegendaryGreenSteelPage = () => {
                       label='Tier 2'
                       titleId='lgs-tier2-title'
                       value={plan.tier2Name}
-                      options={tier2Options}
+                      options={options?.tier2 ?? []}
                       tier={tier2}
                       onChange={(tier2Name) => {
                         updatePlan('tier2Name', tier2Name)
@@ -354,7 +381,7 @@ const LegendaryGreenSteelPage = () => {
                       label='Tier 3'
                       titleId='lgs-tier3-title'
                       value={plan.tier3Name}
-                      options={tier3Options}
+                      options={options?.tier3 ?? []}
                       tier={tier3}
                       onChange={(tier3Name) => {
                         updatePlan('tier3Name', tier3Name)
@@ -375,15 +402,29 @@ const LegendaryGreenSteelPage = () => {
 
             <Grid gap='md'>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <Paper component='section' aria-labelledby='lgs-bonus-title' withBorder p='md'>
-                  <Stack gap='sm'>
+                <Paper component='section' aria-labelledby='lgs-bonus-title' withBorder p={{ base: 'md', sm: 'lg' }}>
+                  <Stack gap='md'>
                     <Title order={2} size='h3' id='lgs-bonus-title'>
                       Bonus Effect
                     </Title>
                     <Select
-                      label='Bonus Effect'
-                      placeholder='Search bonus effects…'
-                      data={bonusEffectOptions.map(({ name }) => ({ value: name, label: name }))}
+                      aria-labelledby='lgs-bonus-title'
+                      placeholder={
+                        baseItem?.type === 'equipment'
+                          ? 'Search equipment sets…'
+                          : baseItem?.type === 'weapon'
+                            ? 'Search weapon bonuses…'
+                            : 'Search bonuses…'
+                      }
+                      data={(['Weapon bonuses', 'Equipment sets'] as const)
+                        .map((group) => ({
+                          group,
+                          items: (options?.bonuses ?? [])
+                            .filter((b) => b.group === group)
+                            .map((b) => b.name)
+                            .sort()
+                        }))
+                        .filter((group) => group.items.length)}
                       value={plan.bonusEffectName}
                       onChange={(bonusEffectName) => {
                         updatePlan('bonusEffectName', bonusEffectName)
@@ -391,7 +432,12 @@ const LegendaryGreenSteelPage = () => {
                       searchable
                       clearable
                     />
-                    {bonusEffect ? <Text size='sm'>{bonusEffect.description}</Text> : null}
+                    {weaponResult && (
+                      <Text size='sm' role='status'>
+                        {weaponResult}
+                      </Text>
+                    )}
+                    {bonusEffect && <BonusDetails key={bonusEffect.name} bonus={bonusEffect} />}
                   </Stack>
                 </Paper>
               </Grid.Col>
@@ -404,7 +450,7 @@ const LegendaryGreenSteelPage = () => {
                     <Select
                       label='Active Augment'
                       placeholder='Search active augments…'
-                      data={activeData(data.activeAugments)}
+                      data={activeData(data.activeAugments.filter((a) => !baseItem || fitsSlot(baseItem, a)))}
                       value={plan.activeAugmentName}
                       onChange={(activeAugmentName) => {
                         updatePlan('activeAugmentName', activeAugmentName)
@@ -412,12 +458,17 @@ const LegendaryGreenSteelPage = () => {
                       searchable
                       clearable
                     />
-                    {activeAugment?.type ? (
+                    {activeAugment?.spellDetails ? (
                       <Text c='dimmed' size='sm'>
-                        {activeAugment.type}
+                        {activeAugment.spellDetails}
                       </Text>
                     ) : null}
-                    {activeAugment?.description ? <Text size='sm'>{activeAugment.description}</Text> : null}
+                    {activeAugment?.description ? (
+                      <Text size='sm' style={{ whiteSpace: 'pre-line' }}>
+                        {activeAugment.description}
+                      </Text>
+                    ) : null}
+                    {activeAugment && <DiscrepancyList notes={activeAugment.discrepancies} />}
                   </Stack>
                 </Paper>
               </Grid.Col>

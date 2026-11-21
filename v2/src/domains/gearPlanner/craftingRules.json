@@ -1,0 +1,1063 @@
+{
+  "ritual": [
+    {
+      "marker": "Sealed in Fire",
+      "name": "Legendary Dust",
+      "effects": [
+        {
+          "name": "Legendary Dust"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Fire",
+      "name": "Legendary Ash",
+      "effects": [
+        {
+          "name": "Legendary Ash"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Fire",
+      "name": "Legendary Vacuum",
+      "effects": [
+        {
+          "name": "Legendary Vacuum"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Fire",
+      "name": "Legendary Ooze",
+      "effects": [
+        {
+          "name": "Legendary Ooze"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Fire",
+      "name": "Legendary Salt",
+      "effects": [
+        {
+          "name": "Legendary Salt"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Fire",
+      "name": "Legendary Affirmation",
+      "effects": [
+        {
+          "name": "Legendary Affirmation"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+15 Strength",
+      "effects": [
+        {
+          "name": "Strength",
+          "modifier": 15,
+          "bonus": "Enhancement"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+15 Dexterity",
+      "effects": [
+        {
+          "name": "Dexterity",
+          "modifier": 15,
+          "bonus": "Enhancement"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+15 Constitution",
+      "effects": [
+        {
+          "name": "Constitution",
+          "modifier": 15,
+          "bonus": "Enhancement"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+15 Intelligence",
+      "effects": [
+        {
+          "name": "Intelligence",
+          "modifier": 15,
+          "bonus": "Enhancement"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+15 Wisdom",
+      "effects": [
+        {
+          "name": "Wisdom",
+          "modifier": 15,
+          "bonus": "Enhancement"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+15 Charisma",
+      "effects": [
+        {
+          "name": "Charisma",
+          "modifier": 15,
+          "bonus": "Enhancement"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+7 Insightful Strength",
+      "effects": [
+        {
+          "name": "Strength",
+          "modifier": 7,
+          "bonus": "Insight"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+7 Insightful Dexterity",
+      "effects": [
+        {
+          "name": "Dexterity",
+          "modifier": 7,
+          "bonus": "Insight"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+7 Insightful Constitution",
+      "effects": [
+        {
+          "name": "Constitution",
+          "modifier": 7,
+          "bonus": "Insight"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+7 Insightful Intelligence",
+      "effects": [
+        {
+          "name": "Intelligence",
+          "modifier": 7,
+          "bonus": "Insight"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+7 Insightful Wisdom",
+      "effects": [
+        {
+          "name": "Wisdom",
+          "modifier": 7,
+          "bonus": "Insight"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+7 Insightful Charisma",
+      "effects": [
+        {
+          "name": "Charisma",
+          "modifier": 7,
+          "bonus": "Insight"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+3 Quality Strength",
+      "effects": [
+        {
+          "name": "Strength",
+          "modifier": 3,
+          "bonus": "Quality"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+3 Quality Dexterity",
+      "effects": [
+        {
+          "name": "Dexterity",
+          "modifier": 3,
+          "bonus": "Quality"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+3 Quality Constitution",
+      "effects": [
+        {
+          "name": "Constitution",
+          "modifier": 3,
+          "bonus": "Quality"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+3 Quality Intelligence",
+      "effects": [
+        {
+          "name": "Intelligence",
+          "modifier": 3,
+          "bonus": "Quality"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+3 Quality Wisdom",
+      "effects": [
+        {
+          "name": "Wisdom",
+          "modifier": 3,
+          "bonus": "Quality"
+        }
+      ]
+    },
+    {
+      "marker": "Sealed in Undeath",
+      "name": "+3 Quality Charisma",
+      "effects": [
+        {
+          "name": "Charisma",
+          "modifier": 3,
+          "bonus": "Quality"
+        }
+      ]
+    }
+  ],
+  "lost": [
+    "Heart of Blades",
+    "Vol's Influence",
+    "The Fury's Rage",
+    "Delight of the Devourer",
+    "Minion of the Mockery",
+    "The Keeper's Coffin",
+    "The Shadow's Emptiness",
+    "The Traveler's Guidance",
+    "Armaments of the Archons",
+    "Devils' Infernal Dance",
+    "Forbidden Knowledge",
+    "Legendary Heart of Blades",
+    "Legendary Vol's Influence",
+    "Legendary The Fury's Rage",
+    "Legendary Delight of the Devourer",
+    "Legendary Minion of the Mockery",
+    "Legendary The Keeper's Coffin",
+    "Legendary The Shadow's Emptiness",
+    "Legendary The Traveler's Guidance",
+    "Legendary Armaments of the Archons",
+    "Legendary Devils' Infernal Dance",
+    "Legendary Forbidden Knowledge"
+  ],
+  "gems": {
+    "Gem of Many Facets": [
+      {
+        "label": "Random set 1 (from Red Fens or Vault of Night)",
+        "setBonuses": [
+          "Divine Blessing",
+          "Draconic Prophecy",
+          "Elder's Knowledge",
+          "Kundarak Delving Equipment",
+          "Marshwalker",
+          "Mroranon's Might",
+          "Raven's Eye",
+          "Shaman's Fury",
+          "Silver Concord's Subtlety",
+          "Siren's Ward",
+          "Vulkoor's Cunning",
+          "Vulkoor's Might",
+          "Wards of House Kundarak"
+        ]
+      },
+      {
+        "label": "Random set 2 (from Chronoscope or Sands of Menechtarun)",
+        "setBonuses": [
+          "Menechtarun Scavenger",
+          "Might of the Abishai",
+          "Oasis of Morality",
+          "The Desert's Biting Sands",
+          "The Desert's Burning Sun",
+          "The Desert's Starless Nights",
+          "The Desert's Writhing Storm",
+          "Vulkoor's Chosen",
+          "Windlasher's Ferocity"
+        ]
+      }
+    ],
+    "Epic Gem of Many Facets": [
+      {
+        "label": "Random set 1 (from Epic Vault of Night or Epic Red Fens)",
+        "setBonuses": [
+          "Epic Divine Blessing",
+          "Epic Draconic Prophecy",
+          "Epic Elder's Knowledge",
+          "Epic Kundarak Delving Equipment",
+          "Epic Marshwalker",
+          "Epic Mroranon's Might",
+          "Epic Raven's Eye",
+          "Epic Shaman's Fury",
+          "Epic Silver Concord's Subtlety",
+          "Epic Siren's Ward",
+          "Epic Vulkoor's Cunning",
+          "Epic Vulkoor's Might",
+          "Epic Wards of House Kundarak"
+        ]
+      },
+      {
+        "label": "Random set 2 (from Epic Chronoscope or Epic Sands of Menechtarun)",
+        "setBonuses": [
+          "Epic Menechtarun Scavenger",
+          "Epic Might of the Abishai",
+          "Epic Oasis of Morality",
+          "Epic Vulkoor's Chosen",
+          "Epic Windlasher's Ferocity",
+          "The Epic Desert's Biting Sands",
+          "The Epic Desert's Burning Sun",
+          "The Epic Desert's Starless Nights",
+          "The Epic Desert's Writhing Storm"
+        ]
+      }
+    ],
+    "Legendary Gem of Many Facets": [
+      {
+        "label": "Random set 1 (Legendary Vault of Night or Legendary Red Fens)",
+        "setBonuses": [
+          "Legendary Divine Blessing",
+          "Legendary Draconic Prophecy",
+          "Legendary Elder's Knowledge",
+          "Legendary Kundarak Delving Equipment",
+          "Legendary Marshwalker",
+          "Legendary Mroranon's Might",
+          "Legendary Raven's Eye",
+          "Legendary Shaman's Fury",
+          "Legendary Silver Concord's Subtlety",
+          "Legendary Siren's Ward",
+          "Legendary Vulkoor's Cunning",
+          "Legendary Vulkoor's Might",
+          "Legendary Wards of House Kundarak"
+        ]
+      },
+      {
+        "label": "Random set 2 (Legendary Chronoscope or Legendary Sands of Menechtarun)",
+        "setBonuses": [
+          "Legendary Menechtarun Scavenger",
+          "Legendary Might of the Abishai",
+          "Legendary Oasis of Morality",
+          "Legendary Vulkoor's Chosen",
+          "Legendary Windlasher's Ferocity",
+          "The Legendary Desert's Biting Sands",
+          "The Legendary Desert's Burning Sun",
+          "The Legendary Desert's Starless Nights",
+          "The Legendary Desert's Writhing Storm"
+        ]
+      }
+    ]
+  },
+  "trace": [
+    {
+      "name": "Xoriat Madness: Mania",
+      "effects": [
+        {
+          "name": "Melodic Guard"
+        }
+      ]
+    },
+    {
+      "name": "Xoriat Madness: Hysteria",
+      "effects": [
+        {
+          "name": "Hysteria"
+        }
+      ]
+    },
+    {
+      "name": "Xoriat Madness: Obsession",
+      "effects": [
+        {
+          "name": "Obsession"
+        }
+      ]
+    },
+    {
+      "name": "Xoriat Madness: Paranoia",
+      "effects": [
+        {
+          "name": "Paranoia"
+        }
+      ]
+    },
+    {
+      "name": "Xoriat Madness: Delirium",
+      "effects": [
+        {
+          "name": "Delirium"
+        }
+      ]
+    },
+    {
+      "name": "Xoriat Madness: Solipsism",
+      "effects": [
+        {
+          "name": "Solipsism"
+        }
+      ]
+    },
+    {
+      "name": "Xoriat Madness: Alien Mind",
+      "effects": [
+        {
+          "name": "Will Saving Throws",
+          "modifier": 10,
+          "bonus": "Resistance"
+        }
+      ]
+    },
+    {
+      "name": "Xoriat Madness: Uncanny Awareness",
+      "effects": [
+        {
+          "name": "Reflex Saving Throws",
+          "modifier": 10,
+          "bonus": "Resistance"
+        }
+      ]
+    },
+    {
+      "name": "Xoriat Madness: Subtle Ambition",
+      "effects": [
+        {
+          "name": "Spell DC: Conjuration",
+          "modifier": 2,
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell DC: Illusion",
+          "modifier": 2,
+          "bonus": "Equipment"
+        }
+      ]
+    },
+    {
+      "name": "Xoriat Madness: Chaotic Ambition",
+      "effects": [
+        {
+          "name": "Spell Critical Chance: Acid",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Bludgeoning",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Chaos",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Cold",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Electric",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Evil",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Fire",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Force",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Good",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Lawful",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Light",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Negative Energy",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Piercing",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Poison",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Positive Energy",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Repair",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Rust",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Slashing",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Sonic",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        },
+        {
+          "name": "Spell Critical Chance: Untyped",
+          "modifier": "1%",
+          "bonus": "Equipment"
+        }
+      ]
+    }
+  ],
+  "reaper": [
+    {
+      "id": "reaper-goggles-enchantment",
+      "name": "Reaper Goggles Enchantment",
+      "allowedSlots": ["Eyes"],
+      "grants": [
+        {
+          "stat": "Attack Rolls",
+          "modifier": 1
+        },
+        {
+          "stat": "Spell Penetration (Level 9)",
+          "modifier": 1
+        }
+      ]
+    },
+    {
+      "id": "reaper-helmet-enchantment",
+      "name": "Reaper Helmet Enchantment",
+      "allowedSlots": ["Head"],
+      "grants": [
+        {
+          "stat": "Strength",
+          "modifier": 2
+        },
+        {
+          "stat": "Dexterity",
+          "modifier": 2
+        },
+        {
+          "stat": "Constitution",
+          "modifier": 2
+        },
+        {
+          "stat": "Intelligence",
+          "modifier": 2
+        },
+        {
+          "stat": "Wisdom",
+          "modifier": 2
+        },
+        {
+          "stat": "Charisma",
+          "modifier": 2
+        }
+      ]
+    },
+    {
+      "id": "reaper-necklace-enchantment",
+      "name": "Reaper Necklace Enchantment",
+      "allowedSlots": ["Neck"],
+      "grants": [
+        {
+          "stat": "Melee Power",
+          "modifier": 2
+        },
+        {
+          "stat": "Ranged Power",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Acid",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Cold",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Electric",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Fire",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Force",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Piercing",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Slashing",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Bludgeoning",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Light",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Chaos",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Evil",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Good",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Lawful",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Negative Energy",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Poison",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Positive Energy",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Sonic",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Repair",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Rust",
+          "modifier": 2
+        },
+        {
+          "stat": "Spell Power: Universal",
+          "modifier": 2
+        },
+        {
+          "stat": "Physical Resistance Rating",
+          "modifier": 2
+        },
+        {
+          "stat": "Magical Resistance Rating",
+          "modifier": 2
+        }
+      ]
+    },
+    {
+      "id": "reaper-cloak-enchantment",
+      "name": "Reaper Cloak Enchantment",
+      "allowedSlots": ["Cloak"],
+      "grants": [
+        {
+          "stat": "Dodge",
+          "modifier": 1,
+          "unit": "percent"
+        },
+        {
+          "stat": "Dodge Cap",
+          "modifier": 1,
+          "unit": "percent"
+        }
+      ]
+    },
+    {
+      "id": "reaper-belt-enchantment",
+      "name": "Reaper Belt Enchantment",
+      "allowedSlots": ["Waist"],
+      "grants": [
+        {
+          "stat": "Maximum Hit Points",
+          "modifier": 10
+        },
+        {
+          "stat": "Physical Resistance Rating",
+          "modifier": 3
+        }
+      ]
+    },
+    {
+      "id": "reaper-gloves-enchantment",
+      "name": "Reaper Gloves Enchantment",
+      "allowedSlots": ["Hands"],
+      "grants": [
+        {
+          "stat": "Skill: Balance",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Bluff",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Concentration",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Diplomacy",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Disable Device",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Haggle",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Heal",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Hide",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Intimidate",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Jump",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Listen",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Move Silently",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Open Lock",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Perform",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Repair",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Search",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Spellcraft",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Spot",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Swim",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Tumble",
+          "modifier": 1
+        },
+        {
+          "stat": "Skill: Use Magic Device",
+          "modifier": 1
+        },
+        {
+          "stat": "Physical Resistance Rating",
+          "modifier": 3
+        }
+      ]
+    },
+    {
+      "id": "reaper-boots-enchantment",
+      "name": "Reaper Boots Enchantment",
+      "allowedSlots": ["Feet"],
+      "grants": [
+        {
+          "stat": "Physical Resistance Rating",
+          "modifier": 5
+        },
+        {
+          "stat": "Magical Resistance Rating",
+          "modifier": 5
+        }
+      ]
+    },
+    {
+      "id": "reaper-bracers-enchantment",
+      "name": "Reaper Bracers Enchantment",
+      "allowedSlots": ["Wrists"],
+      "grants": [
+        {
+          "stat": "Fortitude Saving Throws",
+          "modifier": 1
+        },
+        {
+          "stat": "Reflex Saving Throws",
+          "modifier": 1
+        },
+        {
+          "stat": "Will Saving Throws",
+          "modifier": 1
+        },
+        {
+          "stat": "Magical Resistance Rating",
+          "modifier": 3
+        }
+      ]
+    },
+    {
+      "id": "reaper-armor-enchantment",
+      "name": "Reaper Armor Enchantment",
+      "allowedSlots": ["Armor"],
+      "grants": [
+        {
+          "stat": "Armor Class",
+          "modifier": 5,
+          "unit": "percent"
+        },
+        {
+          "stat": "Physical Resistance Rating",
+          "modifier": 3
+        }
+      ]
+    },
+    {
+      "id": "reaper-shield-enchantment",
+      "name": "Reaper Shield Enchantment",
+      "allowedSlots": ["Off Hand"],
+      "grants": [
+        {
+          "stat": "Fortification",
+          "modifier": 25,
+          "unit": "percent"
+        },
+        {
+          "stat": "Physical Resistance Rating",
+          "modifier": 3
+        }
+      ]
+    },
+    {
+      "id": "reaper-ring-boost-1",
+      "name": "Reaper Ring Boost (1)",
+      "allowedSlots": ["First Finger", "Second Finger"],
+      "grants": [
+        {
+          "stat": "Spell DC: Abjuration",
+          "modifier": 1
+        },
+        {
+          "stat": "Spell DC: Breath Weapon",
+          "modifier": 1
+        },
+        {
+          "stat": "Spell DC: Conjuration",
+          "modifier": 1
+        },
+        {
+          "stat": "Spell DC: Divination",
+          "modifier": 1
+        },
+        {
+          "stat": "Spell DC: Enchantment",
+          "modifier": 1
+        },
+        {
+          "stat": "Spell DC: Evocation",
+          "modifier": 1
+        },
+        {
+          "stat": "Spell DC: Illusion",
+          "modifier": 1
+        },
+        {
+          "stat": "Spell DC: Necromancy",
+          "modifier": 1
+        },
+        {
+          "stat": "Spell DC: Transmutation",
+          "modifier": 1
+        },
+        {
+          "stat": "Tactical DC: Trip",
+          "modifier": 1
+        },
+        {
+          "stat": "Tactical DC: Improved Trip",
+          "modifier": 1
+        },
+        {
+          "stat": "Tactical DC: Sunder",
+          "modifier": 1
+        },
+        {
+          "stat": "Tactical DC: Improved Sunder",
+          "modifier": 1
+        },
+        {
+          "stat": "Tactical DC: Stunning",
+          "modifier": 1
+        },
+        {
+          "stat": "Assassin Special Ability DC",
+          "modifier": 1
+        }
+      ]
+    },
+    {
+      "id": "reaper-ring-boost-2",
+      "name": "Reaper Ring Boost (2)",
+      "allowedSlots": ["First Finger", "Second Finger"],
+      "grants": [
+        {
+          "stat": "Universal Spell Power",
+          "modifier": 10
+        }
+      ]
+    },
+    {
+      "id": "reaper-ring-boost-3",
+      "name": "Reaper Ring Boost (3)",
+      "allowedSlots": ["First Finger", "Second Finger"],
+      "grants": [
+        {
+          "stat": "Melee Power",
+          "modifier": 5
+        },
+        {
+          "stat": "Ranged Power",
+          "modifier": 5
+        }
+      ]
+    },
+    {
+      "id": "reaper-ring-boost-4",
+      "name": "Reaper Ring Boost (4)",
+      "allowedSlots": ["First Finger", "Second Finger"],
+      "grants": [
+        {
+          "stat": "Spell Cost Reduction",
+          "modifier": 3,
+          "unit": "percent"
+        },
+        {
+          "stat": "Magical Resistance Rating",
+          "modifier": 3
+        }
+      ]
+    }
+  ],
+  "mythic": [
+    {
+      "slots": ["Main Hand"],
+      "types": [],
+      "magnitudes": [2, 4],
+      "bonuses": ["Melee Power", "Ranged Power", "Universal Spell Power"]
+    },
+    {
+      "slots": ["Waist", "Hands", "Eyes", "First Finger", "Second Finger", "Trinket"],
+      "types": ["Belt", "Gloves", "Goggles", "Ring", "Trinket"],
+      "magnitudes": [1, 3],
+      "bonuses": ["Melee Power", "Ranged Power", "Universal Spell Power"]
+    },
+    {
+      "slots": ["Armor", "Feet", "Wrists", "Cloak", "Head", "Neck", "Off Hand"],
+      "types": ["Armor", "Boots", "Bracers", "Cloak", "Headwear", "Helmet", "Necklace", "Shield"],
+      "magnitudes": [2, 4],
+      "bonuses": ["Physical Resistance Rating", "Magical Resistance Rating"]
+    },
+    {
+      "slots": ["Off Hand"],
+      "types": ["Orb"],
+      "magnitudes": [2, 4],
+      "bonuses": ["Physical Resistance Rating", "Magical Resistance Rating"]
+    },
+    {
+      "slots": ["Off Hand"],
+      "types": ["Rune Arm", "Collar"],
+      "magnitudes": [2, 4],
+      "bonuses": ["Melee Power", "Ranged Power", "Universal Spell Power"]
+    }
+  ]
+}
