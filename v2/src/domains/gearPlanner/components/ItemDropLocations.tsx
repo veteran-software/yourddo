@@ -11,20 +11,12 @@ export default function ItemDropLocations({ locations }: { locations: GearPlanne
         Drop locations
       </Text>
       <List size='sm' spacing={2} withPadding aria-label='Drop locations'>
-        {entries.map(({ title, page, detail }) => (
-          <List.Item key={JSON.stringify([title, page, detail])}>
-            {page ? (
-              <Anchor
-                size='sm'
-                href={`https://ddocompendium.com/w/${encodeURIComponent(page)}`}
-                target='_blank'
-                rel='noreferrer'
-              >
-                {title}
-              </Anchor>
-            ) : (
-              title
-            )}
+        {entries.map(({ title, href, detail }) => (
+          <List.Item key={JSON.stringify([title, href, detail])}>
+            <Anchor size='sm' href={href} target='_blank' rel='noreferrer'>
+              {title}
+            </Anchor>
+
             {detail && (
               <Text component='span' size='sm' c='dimmed'>
                 {' '}

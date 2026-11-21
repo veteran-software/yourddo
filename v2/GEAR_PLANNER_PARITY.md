@@ -26,7 +26,7 @@
 
 ## Smaller navigation difference
 
-Legacy links generic drop-source labels such as Craft Only to the Compendium. V2 links named locations and renders generic labels as text. A useful destination for each generic label still needs verification.
+- [x] Drop locations and the farming list link named sources to their Compendium pages. Generic sources open a Compendium search for the source, including Crafting for craft-only items.
 
 ## CDN data verification
 

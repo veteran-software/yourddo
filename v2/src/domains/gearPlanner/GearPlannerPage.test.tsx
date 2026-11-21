@@ -463,8 +463,12 @@ describe('GearPlannerPage', () => {
       'https://ddocompendium.com/w/The%20Cove'
     )
     expect(drops.getByText(/Heroic · End Chest/)).toBeTruthy()
-    expect(drops.getByText('Craft only')).toBeTruthy()
-    expect(drops.getByText('Raid Rune')).toBeTruthy()
+    expect(drops.getByRole('link', { name: 'Craft only' }).getAttribute('href')).toBe(
+      'https://ddocompendium.com/w/Special:Search?search=Crafting'
+    )
+    expect(drops.getByRole('link', { name: 'Raid Rune' }).getAttribute('href')).toBe(
+      'https://ddocompendium.com/w/Special:Search?search=Raid%20Rune'
+    )
     expect(drops.getAllByRole('listitem')).toHaveLength(3)
     click('Select Neck')
     click('Equip Old Pendant')

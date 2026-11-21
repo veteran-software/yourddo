@@ -39,9 +39,9 @@ export function farmingList(setup: GearPlannerSetup, inventory: TroveInventory, 
     const sources = gearDropLocations(source.dropLocations)
     if (!sources.length && Array.isArray(source.foundIn)) {
       for (const title of source.foundIn)
-        if (typeof title === 'string' && title.trim()) sources.push({ title, detail: '', page: '' })
+        if (typeof title === 'string' && title.trim()) sources.push({ title, detail: '', href: '' })
     }
-    if (!sources.length && fallback) sources.push({ title: fallback, page: '', detail: '' })
+    if (!sources.length && fallback) sources.push({ title: fallback, href: '', detail: '' })
     needs.set(key, { name, uses: [use], sources, filigree })
   }
   for (const owner of enabledOwners(setup.character.classes))

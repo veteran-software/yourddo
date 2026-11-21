@@ -94,13 +94,8 @@ export default function FarmingTool({ setup }: { setup: GearPlannerSetup }) {
                   .map(([group, rows]) => (
                     <div className={css.group} key={group}>
                       <h5>
-                        {status === 'Farm' && rows[0].sources[0]?.page ? (
-                          <Anchor
-                            size='sm'
-                            href={'https://ddocompendium.com/w/' + encodeURIComponent(rows[0].sources[0].page)}
-                            target='_blank'
-                            rel='noreferrer'
-                          >
+                        {status === 'Farm' && rows[0].sources[0]?.href ? (
+                          <Anchor size='sm' href={rows[0].sources[0].href} target='_blank' rel='noreferrer'>
                             {group}
                           </Anchor>
                         ) : (
