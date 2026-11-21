@@ -37,7 +37,7 @@ function stripObjectiveRank(effect: GearPlannerEffect): GearPlannerEffect {
   const name = effect.name.trim()
   const words = name.split(/\s+/u)
   if (words.length < 2) return effect
-  const token = words[words.length - 1]
+  const token = words.at(-1) ?? ''
   const rank = /^([+-]?\d+(?:\.\d+)?)(%|\[W\])?$/i.exec(token)
   if (!rank) return effect
   const modifier = String(effect.modifier ?? '').trim()
