@@ -102,6 +102,9 @@ const legacyUpgradePlaceholders = new Set([
   'Finishing Touch',
   'Lost Purpose',
   slaveLordsMarker,
+  ...['Prefix', 'Suffix', 'Extra', 'Bonus', 'Augment'].flatMap((slot) =>
+    ["Slaver's ", "Legendary Slaver's "].map((prefix) => prefix + slot + ' Slot')
+  ),
   'Trace of Madness',
   'Ritual Table',
   'Sealed in Fire',

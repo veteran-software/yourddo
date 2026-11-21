@@ -213,3 +213,8 @@ export const loadManualPayload = async <T>(name: string): Promise<T> => {
 
   return parseDataset<T>(payloadResponse)
 }
+
+export const hasDatasetDirectory = async (directory: string): Promise<boolean> => {
+  const { manifest } = await loadRelease()
+  return manifest.generatedFiles.some((file) => file.path.startsWith(directory + '/'))
+}

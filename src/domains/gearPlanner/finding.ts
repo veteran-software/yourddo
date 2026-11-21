@@ -38,7 +38,7 @@ export function candidateSetDetails(
   const { name, setBonus, enchantments } = item.source
   const gem = name.includes('Gem of Many Facets')
   const craftGroups =
-    gem || enchantments?.some((e) => e.name === 'Lost Purpose' || e.name === slaveLordsMarker)
+    gem || item.slaveLordsBase || enchantments?.some((e) => e.name === 'Lost Purpose' || e.name === slaveLordsMarker)
       ? gearCraftGroups(item, data?.crafting ?? emptyGearCraftingData).flatMap((group) => {
           const sets = group.choices.flatMap((choice) => (choice.setName ? [choice.setName] : []))
           return sets.length ? [{ label: group.label, sets }] : []

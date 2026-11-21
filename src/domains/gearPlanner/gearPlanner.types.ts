@@ -107,6 +107,7 @@ export interface GearPlannerAugment {
 }
 
 export interface GearPlannerItem {
+  slaveLordsBase?: import('../slaveLords/data').SlaveLordsBase
   crafts?: readonly import('./crafting.ts').EquippedCraft[]
   id: string
   slot: GearPlannerSlot

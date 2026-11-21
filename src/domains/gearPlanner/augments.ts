@@ -7,6 +7,12 @@ import type {
 } from './gearPlanner.types.ts'
 import type { GearPlannerEquipment, GearPlannerSlottedAugments } from './planner.ts'
 
+export function getGearPlannerBaseAugmentSlots(item: GearPlannerItem): readonly GearPlannerAugmentSlot[] {
+  const base = item.source.augments ?? []
+  const socket = item.crafts?.find((craft) => craft.augmentSlot)?.augmentSlot
+  return socket ? [...base, socket] : base
+}
+
 const normaliseAugmentType = (value: string): string => normaliseAugmentSlotType(value).toLocaleLowerCase()
 
 export const gearPlannerAugmentIdentity = (augment: GearPlannerAugment): string =>
@@ -59,7 +65,7 @@ export const collectSelectedGearPlannerAugments = (
   equippedItems(equipment).flatMap((item) =>
     Object.entries(slottedAugments[item.id] ?? {}).flatMap(([slotIndex, augment]) => {
       const index = Number(slotIndex)
-      const augmentSlot = augmentSlotsByItem[item.id]?.[index] ?? item.source.augments?.[index]
+      const augmentSlot = (augmentSlotsByItem[item.id] ?? getGearPlannerBaseAugmentSlots(item))[index]
       return augment && augmentSlot ? [{ item, slotIndex: index, augmentSlot, augment }] : []
     })
   )

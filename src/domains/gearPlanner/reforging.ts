@@ -1,3 +1,4 @@
+import { getGearPlannerBaseAugmentSlots } from './augments'
 import type { ReforgingEntry } from '../nearlyFinished/nearlyFinished.types.ts'
 import type {
   GearPlannerAugmentSlot,
@@ -354,7 +355,7 @@ export const getEffectiveGearPlannerAugmentSlots = (
   state: GearPlannerItemReforgingState | undefined,
   data: GearPlannerReforgingData
 ): readonly GearPlannerAugmentSlot[] => {
-  if (!anyActiveStage(item, state, data)) return item.source.augments ?? []
+  if (!anyActiveStage(item, state, data)) return getGearPlannerBaseAugmentSlots(item)
   const nearlyFinished = effectiveTierRecord(item, 'nearly-finished', data)
   return nearlyFinished && (nearlyFinished.source.augments?.length ?? 0) > 0
     ? (nearlyFinished.source.augments ?? [])

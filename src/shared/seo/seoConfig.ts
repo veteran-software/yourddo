@@ -46,6 +46,11 @@ const ROUTE_SEO_DATA = [
     'Build and compare Legendary Green Steel recipes and ingredient requirements.'
   ],
   [
+    '/slave-lords',
+    'Slave Lords Crafting | YourDDO',
+    'Plan Heroic and Legendary Slave Lords equipment upgrades and find the ingredients for your recipes.'
+  ],
+  [
     '/incredible-potential',
     'Incredible Potential | YourDDO',
     'Plan Incredible Potential item upgrades, materials, and results.'

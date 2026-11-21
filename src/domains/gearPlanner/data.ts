@@ -1,3 +1,5 @@
+import { loadOptionalSlaveLordsData } from '../slaveLords/loadSlaveLordsData'
+import { slaveLordsSetDefinitions } from './slaveLordsCrafting'
 import { craftItemKey, type GearCraftingData } from './crafting.ts'
 import { standardGearPlannerSetDefinitionByName } from './standardSetDefinitions.ts'
 import { loadDatasetFile, loadManualPayload } from '../../shared/data/loadDataset.ts'
@@ -309,6 +311,7 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
   const fileNames = Object.keys(gearPlannerItemSources)
   const [
     crafting,
+    slaveLords,
     rawCurses,
     rawSets,
     rawReforging,
@@ -319,6 +322,7 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
     ...rawItems
   ] = await Promise.all([
     loadCraftingData(),
+    loadOptionalSlaveLordsData(),
     loadManualPayload<unknown>('deckOfManyCurses'),
     loadManualPayload<unknown>('itemSets.enchantments'),
     loadManualPayload<unknown>(nearlyFinishedPayloadName),
@@ -336,7 +340,8 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
   const normalized = normalizeGearPlannerSources(
     sourceDatasets,
     parseGearPlannerAugmentDataset(rawAugments),
-    new Set(reforgingEntries.map(({ item }) => item))
+    new Set(reforgingEntries.map(({ item }) => item)),
+    slaveLords
   )
   const filigreeSetDefinitions = parseGearPlannerFiligreeSetDataset(rawFiligreeSets)
   const filigreeSetDefinitionByName = new Map(filigreeSetDefinitions.map((definition) => [definition.name, definition]))
@@ -344,10 +349,11 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
   return {
     ...normalized,
     setIndex,
-    crafting,
+    crafting: { ...crafting, slaveLords },
     standardSets: new Map([
       ...standardGearPlannerSetDefinitionByName,
-      ...parseGearPlannerFiligreeSetDataset(rawSets, 'itemSets.enchantments').map((set) => [set.name, set] as const)
+      ...parseGearPlannerFiligreeSetDataset(rawSets, 'itemSets.enchantments').map((set) => [set.name, set] as const),
+      ...(slaveLords ? slaveLordsSetDefinitions(slaveLords).map((set) => [set.name, set] as const) : [])
     ]),
     reforging: createGearPlannerReforgingData(reforgingEntries, sourceDatasets),
     curses: parseGearPlannerCurseDataset(rawCurses),

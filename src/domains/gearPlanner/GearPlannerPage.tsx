@@ -849,6 +849,18 @@ const ItemBrowser = ({
               const setSources = craftGroups
                 .filter((group) => !setName || group.sets.includes(setName))
                 .map((group) => group.label)
+              const matchingRecipes =
+                (effectQuery || bonusType) && (item.essenceCrafting || item.slaveLordsBase)
+                  ? [
+                      ...new Set(
+                        effects.flatMap((effect) =>
+                          effect.craft && matchesGearEffect(effect, effectQuery, bonusType, exactEffect)
+                            ? [effect.craft]
+                            : []
+                        )
+                      )
+                    ]
+                  : []
               const collapsed = collapsedSheets.has(item.id)
               const sheetId = `candidate-enchantments-${encodeURIComponent(item.id)}`
               const toggleLabel = `${collapsed ? 'Expand' : 'Collapse'} enchantments for ${item.source.name} in ${item.slot}`
@@ -889,19 +901,24 @@ const ItemBrowser = ({
                       ) : (
                         <ItemSetLinks names={setName ? [setName] : itemSets} onOpen={openSet} />
                       )}
-                      {item.essenceCrafting &&
-                        (effectQuery || bonusType) &&
-                        [
-                          ...new Set(
-                            effects
-                              .filter((e) => matchesGearEffect(e, effectQuery, bonusType, exactEffect))
-                              .map((e) => e.craft)
-                          )
-                        ].map((recipe) => (
+                      {matchingRecipes.length > 1 && item.slaveLordsBase ? (
+                        <details>
+                          <Text component='summary' size='xs'>
+                            {matchingRecipes.length} matching upgrades
+                          </Text>
+                          {matchingRecipes.map((recipe) => (
+                            <Text key={recipe} size='xs'>
+                              {recipe}
+                            </Text>
+                          ))}
+                        </details>
+                      ) : (
+                        matchingRecipes.map((recipe) => (
                           <Text key={recipe} size='xs'>
                             Craftable {recipe}
                           </Text>
-                        ))}
+                        ))
+                      )}
                       <TroveOwnership name={item.source.name} />
                     </Stack>
                     <Group gap={4} wrap='nowrap'>
