@@ -1,0 +1,31 @@
+.trigger {
+  text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.results {
+  max-height: min(47dvh, 26rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-block: 1px solid var(--app-border);
+}
+.row {
+  display: block;
+  width: 100%;
+  padding: 0.6rem 0.5rem;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+.row + .row {
+  border-top: 1px solid var(--app-border);
+}
+.row:hover,
+.row:focus-visible,
+.row[aria-pressed='true'] {
+  background: var(--mantine-color-default-hover);
+}
+.row:disabled {
+  opacity: 0.6;
+}

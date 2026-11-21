@@ -1,0 +1,64 @@
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import CauldronOfCadencePage from '../domains/cauldronOfCadence/CauldronOfCadencePage.tsx'
+import DinosaurBonePage from '../domains/dinosaurBone/DinosaurBonePage.tsx'
+import EssenceCraftingPage from '../domains/essenceCrafting/EssenceCraftingPage.tsx'
+import GearPlannerPage from '../domains/gearPlanner/GearPlannerPage.tsx'
+import HeroicGreenSteelPage from '../domains/heroicGreenSteel/HeroicGreenSteelPage.tsx'
+import HomePage from '../domains/home/HomePage.tsx'
+import IncrediblePotentialPage from '../domains/incrediblePotential/IncrediblePotentialPage.tsx'
+import LegendaryGreenSteelPage from '../domains/legendaryGreenSteel/LegendaryGreenSteelPage.tsx'
+import MastermindPage from '../domains/mastermind/MastermindPage.tsx'
+import MonasteryOfTheScorpionPage from '../domains/monasteryOfTheScorpion/MonasteryOfTheScorpionPage.tsx'
+import NearlyCompletePage from '../domains/nearlyComplete/NearlyCompletePage.tsx'
+import NearlyFinishedPage from '../domains/nearlyFinished/NearlyFinishedPage.tsx'
+import SagaTrackerPage from '../domains/sagaTracker/SagaTrackerPage.tsx'
+import ShadowCryptPage from '../domains/shadowCrypt/ShadowCryptPage.tsx'
+import ShroudPage from '../domains/shroud/ShroudPage.tsx'
+import TotalChaosPage from '../domains/totalChaos/TotalChaosPage.tsx'
+import ViktraniumPage from '../domains/viktranium/ViktraniumPage.tsx'
+import NotFoundPage from '../shared/ui/NotFoundPage.tsx'
+import AppLayout from './AppLayout'
+
+function LegacyGearLink({ home = false }: Readonly<{ home?: boolean }>) {
+  const { hash } = useLocation()
+  // Older deployments put the Gear Planner route and its shared setup in the hash.
+  if (hash.startsWith('#/gear-planner?') && new URLSearchParams(hash.slice('#/gear-planner?'.length)).has('gp')) {
+    return <Navigate to={hash.slice(1)} replace />
+  }
+  return home ? <HomePage /> : <GearPlannerPage />
+}
+
+const AppRouter = ({ hostname = globalThis.window?.location.hostname ?? '' }: { hostname?: string } = {}) => (
+  <Routes>
+    <Route element={<AppLayout develop={hostname.startsWith('develop.')} />}>
+      <Route path='/' element={<LegacyGearLink home />} />
+      <Route path='/cauldron-of-cadence' element={<CauldronOfCadencePage />} />
+      <Route path='/dinosaur-bone' element={<DinosaurBonePage />} />
+      <Route path='/essence-crafting' element={<EssenceCraftingPage />} />
+      <Route path='/gear-planner' element={<LegacyGearLink />} />
+      <Route path='/green-steel' element={<HeroicGreenSteelPage />} />
+      <Route path='/legendary-green-steel' element={<LegendaryGreenSteelPage />} />
+      <Route path='/incredible-potential' element={<IncrediblePotentialPage />} />
+      <Route path='/nearly-complete' element={<NearlyCompletePage />} />
+      <Route path='/nearly-finished' element={<NearlyFinishedPage />} />
+      <Route path='/reavers-fate' element={<MastermindPage />} />
+      <Route path='/saga-tracker' element={<SagaTrackerPage />} />
+      <Route path='/monastery-of-the-scorpion' element={<MonasteryOfTheScorpionPage />} />
+      <Route path='/the-shadow-crypt' element={<ShadowCryptPage />} />
+      <Route path='/the-shroud' element={<ShroudPage />} />
+      <Route path='/total-chaos' element={<TotalChaosPage />} />
+      <Route path='/viktranium-experiment' element={<ViktraniumPage />} />
+      <Route
+        path='/the-key-to-the-mythal'
+        element={<Navigate to='/reavers-fate' state={{ recentToolPath: '/the-key-to-the-mythal' }} replace />}
+      />
+      <Route
+        path='/toxic-treatment'
+        element={<Navigate to='/monastery-of-the-scorpion' state={{ recentToolPath: '/toxic-treatment' }} replace />}
+      />
+      <Route path='*' element={<NotFoundPage />} />
+    </Route>
+  </Routes>
+)
+
+export default AppRouter

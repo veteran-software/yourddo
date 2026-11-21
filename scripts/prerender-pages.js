@@ -2,31 +2,10 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const rootDir = path.resolve(__dirname, '..')
+const rootDir = fileURLToPath(new URL('..', import.meta.url))
 const distDir = path.join(rootDir, 'dist')
 const ssrBundlePath = path.join(rootDir, 'dist-ssr', 'entry-server.js')
 const templatePath = path.join(distDir, 'index.html')
-
-const ROUTES_TO_PRERENDER = [
-  '/',
-  '/gear-planner',
-  '/essence-crafting',
-  '/saga-tracker',
-  '/cauldron-of-cadence',
-  '/dinosaur-bone',
-  '/green-steel',
-  '/incredible-potential',
-  '/legendary-green-steel',
-  '/monastery-of-the-scorpion',
-  '/nearly-finished',
-  '/reavers-fate',
-  '/the-shadow-crypt',
-  '/the-shroud',
-  '/total-chaos',
-  '/viktranium-experiment'
-]
 
 const escapeHtml = (value) =>
   value
@@ -115,29 +94,34 @@ const buildHtml = (template, prerender) => {
     /<script\s+id="structured-data"\s+type="application\/ld\+json">.*?<\/script>/is,
     `<script id="structured-data" type="application/ld+json">${escapeJsonLd(prerender.structuredData)}</script>`
   )
-  html = html.replace(/<main id="root"><\/main>/, `<main id="root">${prerender.html}</main>`)
+  html = html.replace(/<div id="root"><\/div>/, `<div id="root">${prerender.html}</div>`)
 
   return html
 }
 
 const writeRouteHtml = async (routePath, html) => {
-  const outputPath = routePath === '/' ? path.join(distDir, 'index.html') : path.join(distDir, routePath.slice(1))
+  const outputPath =
+    routePath === '/' ? path.join(distDir, 'index.html') : path.join(distDir, routePath.slice(1), 'index.html')
   await mkdir(path.dirname(outputPath), { recursive: true })
   await writeFile(outputPath, html, 'utf8')
+  // Static hosts resolve /tool and /tool/ through different files.
+  if (routePath !== '/') await writeFile(path.join(distDir, routePath.slice(1) + '.html'), html, 'utf8')
 }
 
 const main = async () => {
   const template = await readFile(templatePath, 'utf8')
-  const { render } = await import(pathToFileURL(ssrBundlePath).href)
+  const { render, ROUTE_SEO } = await import(pathToFileURL(ssrBundlePath).href)
   const origin = process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://yourddo.com'
 
-  for (const routePath of ROUTES_TO_PRERENDER) {
-    const prerender = render(routePath, origin)
-    const html = buildHtml(template, prerender)
-    await writeRouteHtml(routePath, html)
-  }
+  await Promise.all(
+    ROUTE_SEO.map(async ({ path: routePath }) => {
+      const prerender = render(routePath, origin)
+      const html = buildHtml(template, prerender)
+      await writeRouteHtml(routePath, html)
+    })
+  )
 
-  console.log(`Prerendered ${ROUTES_TO_PRERENDER.length} routes`)
+  console.log(`Prerendered ${ROUTE_SEO.length} routes`)
 }
 
 try {

@@ -1,0 +1,467 @@
+import { describe, expect, it, vi } from 'vitest'
+import publishedSets from './fixtures/publishedSets.json'
+import { parseGearPlannerFiligreeSetDataset, loadGearPlannerData } from './data.ts'
+import { aggregateEffectSummary, conflictEligibleEffectSources, resolveEffectConflicts } from './effects.ts'
+import {
+  type GearPlannerAugment,
+  type GearPlannerFiligree,
+  type GearPlannerFiligreeSetDefinition,
+  type GearPlannerItem,
+  gearPlannerSlots
+} from './gearPlanner.types.ts'
+import {
+  createEmptyGearPlannerEquipment,
+  createEmptyGearPlannerSelectionState,
+  equipGearPlannerItem,
+  equipGearPlannerItemInSelection,
+  type GearPlannerCharacterSlot,
+  setGearPlannerSlottedAugment,
+  setGearPlannerSlottedFiligree,
+  setGearPlannerUnlockedFiligreeSlots
+} from './planner.ts'
+import { collectActiveSetEffectSources, resolveGearPlannerSetState } from './sets.ts'
+import {
+  type GearPlannerStandardSetDefinition,
+  standardGearPlannerSetDefinitionByName
+} from './standardSetDefinitions.ts'
+
+const definitions = new Map<string, GearPlannerStandardSetDefinition>([
+  [
+    'Set A',
+    {
+      name: 'Set A',
+      thresholds: [
+        { threshold: 2, effects: [{ name: 'Strength', modifier: 2, bonus: 'Artifact' }] },
+        { threshold: 3, effects: [{ name: 'Melee Power', modifier: 5, bonus: 'Artifact' }] },
+        { threshold: 5, effects: [{ name: 'Damage', modifier: 3, bonus: 'Artifact' }] }
+      ]
+    }
+  ],
+  ['Set B', { name: 'Set B', thresholds: [{ threshold: 2, effects: [{ name: 'Wisdom', modifier: 2 }] }] }]
+])
+
+const item = (
+  id: string,
+  slot: GearPlannerCharacterSlot,
+  name: string,
+  setNames: readonly string[],
+  augments?: GearPlannerItem['source']['augments'],
+  enchantments?: GearPlannerItem['source']['enchantments']
+): GearPlannerItem => ({
+  id,
+  slot,
+  sourceFile: 'test.json',
+  minimumLevel: 1,
+  source: {
+    name,
+    setBonus: setNames.map((setName) => ({ name: setName })),
+    ...(augments === undefined ? {} : { augments }),
+    ...(enchantments === undefined ? {} : { enchantments })
+  }
+})
+
+const augment = (name: string, setNames: readonly string[]): GearPlannerAugment => ({
+  name,
+  augmentType: 'Colorless',
+  minLevel: 1,
+  effectsAdded: [],
+  setBonus: setNames.map((setName) => ({ name: setName })),
+  source: { name, augmentType: 'Colorless', minLevel: 1, effectsAdded: [] }
+})
+
+const equipped = (...items: readonly GearPlannerItem[]) =>
+  items.reduce(
+    (equipment, plannerItem) =>
+      equipGearPlannerItem(equipment, plannerItem.slot as GearPlannerCharacterSlot, plannerItem),
+    createEmptyGearPlannerEquipment()
+  )
+
+const stateFor = (items: readonly GearPlannerItem[]) => resolveGearPlannerSetState(equipped(...items), {}, definitions)
+
+describe('Gear Planner standard set memberships', () => {
+  it('activates the six individual Artifact ability bonuses from the sole Echoes definition at three pieces', () => {
+    const published = new Map(
+      parseGearPlannerFiligreeSetDataset(publishedSets, 'itemSets.enchantments').map((set) => [set.name, set])
+    )
+    const name = 'Echoes of the Walking Ancestors'
+    expect([...published.keys()].filter((key) => key.toLowerCase() === name.toLowerCase())).toEqual([name])
+    const helm = item('helm', 'Head', "Legendary Walking Ancestor's Helmet", [name])
+    const cloak = item('cloak', 'Cloak', "Legendary Walking Ancestor's Shroud", [name])
+    const robe = item('robe', 'Armor', 'Legendary Robe of the Locus', [name])
+    expect(collectActiveSetEffectSources(resolveGearPlannerSetState(equipped(helm, cloak), {}, published))).toEqual([])
+    const stats = aggregateEffectSummary(
+      collectActiveSetEffectSources(resolveGearPlannerSetState(equipped(helm, cloak, robe), {}, published))
+    )
+    for (const ability of ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma']) {
+      expect(stats.find((stat) => stat.name === ability)).toMatchObject({
+        total: 3,
+        groups: [{ bonusType: 'artifact', effectiveValue: 3 }]
+      })
+    }
+    expect(stats.some((stat) => stat.normalizedName === 'ability scores')).toBe(false)
+  })
+
+  it('counts equipped item memberships literally, including multiple memberships on one item', () => {
+    const single = stateFor([item('head', gearPlannerSlots.head, 'Set Helm', ['Set A'])])
+    const multiple = stateFor([
+      item('head', gearPlannerSlots.head, 'Set Helm', ['Set A', 'Set B']),
+      item('ring', gearPlannerSlots.firstFinger, 'Set Ring', ['Set A'])
+    ])
+    const duplicate = stateFor([item('head', gearPlannerSlots.head, 'Duplicated Set Helm', ['Set A', 'Set A'])])
+
+    expect(single.sets).toMatchObject([{ name: 'Set A', count: 1 }])
+    expect(multiple.sets).toMatchObject([
+      { name: 'Set A', count: 2 },
+      { name: 'Set B', count: 1 }
+    ])
+    expect(duplicate.sets).toMatchObject([{ name: 'Set A', count: 2 }])
+  })
+
+  it('adds selected augment membership and removes it with its augment or equipped host item', () => {
+    const head = item(
+      'head',
+      gearPlannerSlots.head,
+      'Socketed Helm',
+      ['Set A'],
+      [{ augmentType: 'Colorless', name: 'Socket' }]
+    )
+    const setAugment = augment('Set Augment: Set A', ['Set A'])
+    let selection = equipGearPlannerItemInSelection(createEmptyGearPlannerSelectionState(), gearPlannerSlots.head, head)
+    selection = setGearPlannerSlottedAugment(selection, head.id, 0, setAugment)
+
+    expect(
+      resolveGearPlannerSetState(selection.equipment, selection.slottedAugments, definitions).sets[0]
+    ).toMatchObject({
+      name: 'Set A',
+      count: 2,
+      memberships: [
+        { category: 'equipped-item', itemId: 'head', itemName: 'Socketed Helm', slot: 'Head' },
+        {
+          category: 'augment',
+          itemId: 'head',
+          itemName: 'Socketed Helm',
+          slot: 'Head',
+          augmentName: 'Set Augment: Set A',
+          augmentSlotIndex: 0
+        }
+      ]
+    })
+
+    selection = setGearPlannerSlottedAugment(selection, head.id, 0, null)
+    expect(resolveGearPlannerSetState(selection.equipment, selection.slottedAugments, definitions).sets).toMatchObject([
+      { name: 'Set A', count: 1, memberships: [{ category: 'equipped-item' }] }
+    ])
+
+    selection = setGearPlannerSlottedAugment(selection, head.id, 0, setAugment)
+    selection = equipGearPlannerItemInSelection(selection, gearPlannerSlots.head, null)
+    expect(resolveGearPlannerSetState(selection.equipment, selection.slottedAugments, definitions).sets).toEqual([])
+  })
+
+  it('drops old memberships and adds new memberships when an item is replaced', () => {
+    const oldItem = item('head-a', gearPlannerSlots.head, 'Set A Helm', ['Set A'])
+    const newItem = item('head-b', gearPlannerSlots.head, 'Set B Helm', ['Set B'])
+    let selection = equipGearPlannerItemInSelection(
+      createEmptyGearPlannerSelectionState(),
+      gearPlannerSlots.head,
+      oldItem
+    )
+    selection = equipGearPlannerItemInSelection(selection, gearPlannerSlots.head, newItem)
+
+    expect(resolveGearPlannerSetState(selection.equipment, selection.slottedAugments, definitions).sets).toMatchObject([
+      { name: 'Set B', count: 1 }
+    ])
+  })
+})
+
+describe('Gear Planner standard set activation', () => {
+  it('activates every qualifying threshold and retains partial progress', () => {
+    const slots = [
+      gearPlannerSlots.head,
+      gearPlannerSlots.firstFinger,
+      gearPlannerSlots.secondFinger,
+      gearPlannerSlots.neck,
+      gearPlannerSlots.trinket
+    ] as const
+    const at = (count: number) =>
+      stateFor(
+        slots
+          .slice(0, count)
+          .map((slot, index) => item(`item-${String(index)}`, slot, `Set A ${String(index)}`, ['Set A']))
+      )
+
+    expect(at(1).sets[0].thresholds.map(({ isActive }) => isActive)).toEqual([false, false, false])
+    expect(at(2).sets[0].thresholds.map(({ isActive }) => isActive)).toEqual([true, false, false])
+    expect(at(3).sets[0].thresholds.map(({ isActive }) => isActive)).toEqual([true, true, false])
+    expect(at(5).sets[0].thresholds.map(({ isActive }) => isActive)).toEqual([true, true, true])
+    expect(at(1).sets[0]).toMatchObject({ name: 'Set A', count: 1 })
+  })
+
+  it('keeps unknown definitions countable and effect-free', () => {
+    const setState = resolveGearPlannerSetState(
+      equipped(item('head', gearPlannerSlots.head, 'Mystery Helm', ['Unknown Set'])),
+      {},
+      definitions
+    )
+
+    expect(setState.sets).toMatchObject([{ name: 'Unknown Set', count: 1, thresholds: [] }])
+    expect(setState.unresolvedDefinitionNames).toEqual(['Unknown Set'])
+    expect(collectActiveSetEffectSources(setState)).toEqual([])
+  })
+
+  it('turns every active threshold into aggregate effect sources with set provenance only', () => {
+    const setState = stateFor([
+      item('head', gearPlannerSlots.head, 'Set A Helm', ['Set A'], undefined, [
+        { name: 'Strength', modifier: 1, bonus: 'Artifact' }
+      ]),
+      item('ring', gearPlannerSlots.firstFinger, 'Set A Ring', ['Set A']),
+      item('second-ring', gearPlannerSlots.secondFinger, 'Set A Ring 2', ['Set A'])
+    ])
+    const sources = collectActiveSetEffectSources(setState)
+
+    expect(sources).toMatchObject([
+      { category: 'set', setName: 'Set A', setThreshold: 2, effect: { name: 'Strength', modifier: 2 } },
+      { category: 'set', setName: 'Set A', setThreshold: 3, effect: { name: 'Melee Power', modifier: 5 } }
+    ])
+    expect(aggregateEffectSummary(sources).find(({ name }) => name === 'Strength')?.groups[0].effectiveValue).toBe(2)
+  })
+
+  it('keeps set effects in the summary but out of normal item/augment conflicts', () => {
+    const base = [
+      {
+        id: 'item:strength',
+        category: 'equipped-item' as const,
+        itemId: 'item',
+        itemName: 'Set Helm',
+        slot: 'Head',
+        effect: { name: 'Strength', modifier: 1, bonus: 'Artifact' },
+        normalizedName: 'strength',
+        normalizedBonusType: 'artifact',
+        comparisonValue: 1
+      }
+    ]
+    const setState = stateFor([
+      item('head', gearPlannerSlots.head, 'Set A Helm', ['Set A']),
+      item('ring', gearPlannerSlots.firstFinger, 'Set A Ring', ['Set A'])
+    ])
+    const allSources = [...base, ...collectActiveSetEffectSources(setState)]
+
+    expect(aggregateEffectSummary(allSources).find(({ name }) => name === 'Strength')?.groups[0].effectiveValue).toBe(2)
+    expect(resolveEffectConflicts(conflictEligibleEffectSources(allSources)).conflicts).toEqual([])
+  })
+})
+
+describe('Gear Planner filigree set memberships', () => {
+  const filigreeDefinitions = new Map<string, GearPlannerFiligreeSetDefinition>([
+    [
+      'Filigree Set',
+      {
+        name: 'Filigree Set',
+        thresholds: [
+          { threshold: 2, effects: [{ name: 'Melee Power', modifier: 5 }] },
+          { threshold: 3, effects: [{ name: 'Doublestrike', modifier: '2%' }] }
+        ],
+        source: { name: 'Filigree Set' }
+      }
+    ]
+  ])
+  const filigree = (id: string, name: string): GearPlannerFiligree => ({
+    id,
+    name,
+    minimumLevel: 1,
+    grouping: 'Filigree Set',
+    source: { name, pageTitle: id, type: 'Common', enchantments: [{ name: 'Strength', modifier: 1 }] }
+  })
+  const filigreeHost = (id: string, slot: GearPlannerCharacterSlot): GearPlannerItem => ({
+    ...item(id, slot, id, []),
+    minimumLevel: 30,
+    source: { name: id, type: 'Dagger' }
+  })
+
+  it('counts equipped pieces per grouping, retains partial progress, and activates each reached threshold', () => {
+    const main = filigreeHost('main', gearPlannerSlots.mainHand)
+    const off = filigreeHost('off', gearPlannerSlots.offHand)
+    const first = filigree('first', 'First')
+    const duplicate = filigree('duplicate', 'First')
+    const second = filigree('second', 'Second')
+    let selection = equipGearPlannerItemInSelection(
+      createEmptyGearPlannerSelectionState(),
+      gearPlannerSlots.mainHand,
+      main
+    )
+    selection = equipGearPlannerItemInSelection(selection, gearPlannerSlots.offHand, off)
+    selection = setGearPlannerUnlockedFiligreeSlots(selection, main.id, 2)
+    selection = setGearPlannerUnlockedFiligreeSlots(selection, off.id, 2)
+    selection = setGearPlannerSlottedFiligree(selection, main.id, 0, first)
+    selection = setGearPlannerSlottedFiligree(selection, off.id, 0, duplicate)
+
+    let resolved = resolveGearPlannerSetState(
+      selection.equipment,
+      selection.slottedAugments,
+      definitions,
+      selection.slottedFiligrees,
+      filigreeDefinitions
+    )
+    expect(resolved.sets).toMatchObject([
+      { name: 'Filigree Set', category: 'filigree', count: 2, thresholds: [{ isActive: true }, { isActive: false }] }
+    ])
+    expect(resolved.sets[0].memberships).toHaveLength(2)
+
+    selection = setGearPlannerSlottedFiligree(selection, main.id, 1, second)
+    resolved = resolveGearPlannerSetState(
+      selection.equipment,
+      selection.slottedAugments,
+      definitions,
+      selection.slottedFiligrees,
+      filigreeDefinitions
+    )
+    expect(resolved.sets[0].thresholds.map(({ isActive }) => isActive)).toEqual([true, true])
+    expect(collectActiveSetEffectSources(resolved)).toMatchObject([
+      { category: 'set', setCategory: 'filigree', setName: 'Filigree Set', setThreshold: 2 },
+      { setThreshold: 3 }
+    ])
+    selection = setGearPlannerSlottedFiligree(selection, main.id, 1, null)
+    expect(
+      resolveGearPlannerSetState(
+        selection.equipment,
+        selection.slottedAugments,
+        definitions,
+        selection.slottedFiligrees,
+        filigreeDefinitions
+      ).sets[0].count
+    ).toBe(2)
+  })
+
+  it('keeps unresolved filigree definitions safe and countable', () => {
+    const host = filigreeHost('main', gearPlannerSlots.mainHand)
+    const unknown = { ...filigree('unknown', 'Unknown'), grouping: 'Unknown Filigree Set' }
+    let selection = equipGearPlannerItemInSelection(
+      createEmptyGearPlannerSelectionState(),
+      gearPlannerSlots.mainHand,
+      host
+    )
+    selection = setGearPlannerUnlockedFiligreeSlots(selection, host.id, 1)
+    selection = setGearPlannerSlottedFiligree(selection, host.id, 0, unknown)
+    const resolved = resolveGearPlannerSetState(
+      selection.equipment,
+      selection.slottedAugments,
+      definitions,
+      selection.slottedFiligrees,
+      filigreeDefinitions
+    )
+    expect(resolved.sets).toMatchObject([
+      { name: 'Unknown Filigree Set', category: 'filigree', count: 1, thresholds: [] }
+    ])
+    expect(resolved.unresolvedDefinitionNames).toEqual(['Unknown Filigree Set'])
+  })
+
+  it('keeps item and filigree definitions separate when names coincide', () => {
+    const standardItem = item('head', gearPlannerSlots.head, 'Set A Helm', ['Set A'])
+    const host = filigreeHost('main', gearPlannerSlots.mainHand)
+    const selected = { ...filigree('set-a', 'Set A Filigree'), grouping: 'Set A' }
+    const sameNameFiligreeDefinitions = new Map([
+      ...filigreeDefinitions,
+      [
+        'Set A',
+        {
+          name: 'Set A',
+          thresholds: [{ threshold: 1, effects: [{ name: 'Filigree Power', modifier: 1 }] }],
+          source: {}
+        }
+      ]
+    ])
+    let selection = equipGearPlannerItemInSelection(
+      createEmptyGearPlannerSelectionState(),
+      gearPlannerSlots.head,
+      standardItem
+    )
+    selection = equipGearPlannerItemInSelection(selection, gearPlannerSlots.mainHand, host)
+    selection = setGearPlannerUnlockedFiligreeSlots(selection, host.id, 1)
+    selection = setGearPlannerSlottedFiligree(selection, host.id, 0, selected)
+
+    const sets = resolveGearPlannerSetState(
+      selection.equipment,
+      selection.slottedAugments,
+      definitions,
+      selection.slottedFiligrees,
+      sameNameFiligreeDefinitions
+    ).sets
+    const itemSet = sets.find(({ category }) => category === 'item')
+    const filigreeSet = sets.find(({ category }) => category === 'filigree')
+    expect(itemSet).toMatchObject({ name: 'Set A', count: 1 })
+    expect(itemSet?.thresholds[0]).toMatchObject({ threshold: 2, isActive: false })
+    expect(filigreeSet).toMatchObject({ name: 'Set A', count: 1 })
+    expect(filigreeSet?.thresholds[0]).toMatchObject({ threshold: 1, isActive: true })
+  })
+})
+
+describe('Gear Planner production set-definition audit', () => {
+  it.runIf(import.meta.env.VITE_GEAR_PLANNER_CDN === '1')(
+    'reports production item and augment set names without inventing effects',
+    async () => {
+      const nativeFetch = globalThis.fetch
+      vi.stubGlobal('fetch', (input: string | URL | Request, init?: RequestInit) => {
+        const requestedUrl = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
+        return nativeFetch(requestedUrl.replace('/data-cdn/', 'https://cdn.yourddo.com/'), init)
+      })
+      try {
+        const data = await loadGearPlannerData()
+        const itemNames = new Set(
+          data.sourceDatasets.flatMap(({ records }) =>
+            records.flatMap((sourceItem) => sourceItem.setBonus?.map(({ name }) => name) ?? [])
+          )
+        )
+        const augmentNames = new Set(
+          data.augments.flatMap((sourceAugment) => sourceAugment.setBonus?.map(({ name }) => name) ?? [])
+        )
+        const itemMemberships = data.sourceDatasets.flatMap(({ fileName, records }) =>
+          records.flatMap((sourceItem) =>
+            sourceItem.setBonus?.length
+              ? [{ fileName, name: sourceItem.name, setNames: sourceItem.setBonus.map(({ name }) => name) }]
+              : []
+          )
+        )
+        const names = [...new Set([...itemNames, ...augmentNames])].toSorted((left, right) => left.localeCompare(right))
+        const standardSets = data.standardSets ?? standardGearPlannerSetDefinitionByName
+        const resolved = names.filter((name) => standardSets.has(name))
+        const unresolved = names.filter((name) => !standardSets.has(name))
+        const itemOnly = unresolved.filter((name) => itemNames.has(name) && !augmentNames.has(name))
+        const augmentOnly = unresolved.filter((name) => augmentNames.has(name) && !itemNames.has(name))
+        const shared = unresolved.filter((name) => itemNames.has(name) && augmentNames.has(name))
+        const standardThreePiece = itemMemberships.find(({ setNames }) =>
+          setNames.some((name) => standardSets.get(name)?.thresholds.some(({ threshold }) => threshold === 3))
+        )
+        const multipleThreshold = itemMemberships.find(({ setNames }) =>
+          setNames.some((name) => (standardSets.get(name)?.thresholds.length ?? 0) > 1)
+        )
+        const multipleMembership = itemMemberships.find(({ setNames }) => setNames.length > 1)
+        const arcaneBarrierAugment = data.augments.find(({ name }) => name === 'Set Augment: Arcane Barrier')
+
+        console.info(
+          JSON.stringify({
+            distinctSetNames: names.length,
+            resolvedStandardSetNames: resolved.length,
+            unresolvedSetNames: unresolved.length,
+            unresolved,
+            unresolvedItemOnly: itemOnly,
+            unresolvedAugmentOnly: augmentOnly,
+            unresolvedShared: shared,
+            examples: {
+              standardThreePiece,
+              multipleThreshold,
+              multipleMembership,
+              arcaneBarrierAugment: arcaneBarrierAugment
+                ? {
+                    name: arcaneBarrierAugment.name,
+                    setNames: arcaneBarrierAugment.setBonus?.map(({ name }) => name) ?? []
+                  }
+                : undefined
+            }
+          })
+        )
+        expect(resolved.length + unresolved.length).toBe(names.length)
+      } finally {
+        vi.unstubAllGlobals()
+      }
+    }
+  )
+})

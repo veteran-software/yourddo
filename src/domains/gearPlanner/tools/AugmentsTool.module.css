@@ -1,0 +1,60 @@
+.tool {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.tool header,
+.move {
+  border-inline-start: 0.2rem solid var(--app-accent);
+  padding-inline-start: 0.65rem;
+}
+.tool header strong {
+  font-size: 1.1rem;
+}
+.tool header span,
+.tool small,
+.group h4 span:last-child:not(:only-child) {
+  color: var(--mantine-color-dimmed);
+}
+.tool h3 {
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem;
+}
+.group {
+  border: 1px solid var(--app-border);
+  border-radius: var(--mantine-radius-sm);
+  margin-bottom: 0.6rem;
+  overflow: hidden;
+}
+.group h4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--app-nav);
+  margin: 0;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.8rem;
+}
+.row {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.6rem 0.7rem;
+  min-width: 0;
+  font-size: 0.9rem;
+}
+.row + .row {
+  border-top: 1px solid var(--app-border);
+}
+.row small,
+.move small {
+  font-size: 0.77rem;
+}
+.row > :last-child {
+  margin-top: 0.15rem;
+}
+.move {
+  display: grid;
+  gap: 0.2rem;
+  justify-items: start;
+  padding-block: 0.4rem;
+  background: var(--app-nav);
+}

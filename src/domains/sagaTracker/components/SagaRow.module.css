@@ -1,0 +1,10 @@
+.quest:has(input:focus-visible) {
+  outline: 2px solid var(--mantine-color-text);
+  outline-offset: 2px;
+  border-radius: var(--mantine-radius-xs);
+}
+
+.quest input {
+  scroll-margin-top: calc(var(--app-shell-header-offset, 0px) + 0.5rem);
+  scroll-margin-bottom: 0.5rem;
+}

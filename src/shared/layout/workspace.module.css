@@ -1,0 +1,180 @@
+/* Use Mantine's original rem sizes through full HD. Scale wide workspaces
+   and their portaled controls together using the browser's default font size. */
+@media (min-width: 150em) {
+  :root {
+    --workspace-type-scale: 1.125;
+  }
+  .plannerLayout,
+  .toolLayout:has(.header),
+  body:has(.plannerLayout, .toolLayout .header) [data-portal] {
+    --workspace-type-unit: calc(1rem * var(--mantine-scale) * var(--workspace-type-scale));
+    --mantine-font-size-xs: calc(0.75 * var(--workspace-type-unit));
+    --mantine-font-size-sm: calc(0.875 * var(--workspace-type-unit));
+    --mantine-font-size-md: var(--workspace-type-unit);
+    --mantine-font-size-lg: calc(1.125 * var(--workspace-type-unit));
+    --mantine-font-size-xl: calc(1.25 * var(--workspace-type-unit));
+    --mantine-h1-font-size: calc(2.125 * var(--workspace-type-unit));
+    --mantine-h2-font-size: calc(1.625 * var(--workspace-type-unit));
+    --mantine-h3-font-size: calc(1.375 * var(--workspace-type-unit));
+    --mantine-h4-font-size: var(--mantine-font-size-lg);
+    --mantine-h5-font-size: var(--mantine-font-size-md);
+    --mantine-h6-font-size: var(--mantine-font-size-sm);
+    font-size: var(--mantine-font-size-md);
+
+    & :global(.mantine-Badge-label) {
+      font-size: calc(1em * var(--workspace-type-scale));
+    }
+  }
+}
+@media (min-width: 210em) {
+  :root {
+    --workspace-type-scale: 1.25;
+  }
+}
+
+.banner {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid color-mix(in srgb, var(--app-accent) 35%, var(--app-border));
+  border-radius: var(--mantine-radius-sm);
+  background: linear-gradient(
+    106deg,
+    var(--app-active),
+    var(--app-panel) 45%,
+    color-mix(in srgb, light-dark(#23645e, #8ed1c6) 12%, var(--app-panel))
+  );
+}
+.banner::before {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+  inset: 0 16% 0 auto;
+  width: 21%;
+  transform: skewX(-34deg);
+  border-inline: 1px solid color-mix(in srgb, var(--app-accent) 30%, transparent);
+  background: repeating-linear-gradient(90deg, transparent 0 9px, var(--app-ambient) 9px 10px);
+}
+.crest {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.3rem;
+  flex: none;
+  background: var(--app-accent);
+  color: var(--app-panel);
+  clip-path: polygon(0 0, 100% 0, 100% 68%, 50% 100%, 0 68%);
+  padding-bottom: 3px;
+}
+
+.header {
+  composes: banner;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  padding: clamp(0.65rem, 1vw, 1rem);
+}
+.identity {
+  display: flex;
+  flex: 1 1 16rem;
+  align-items: center;
+  min-width: 0;
+  gap: 0.75rem;
+}
+.identity h1 {
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.description {
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-sm);
+  margin-top: 0.2rem;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 100%;
+  gap: 0.4rem 0.75rem;
+}
+.surface {
+  background-image: linear-gradient(115deg, var(--app-ambient), transparent 22rem);
+}
+.surface h2 {
+  border-inline-start: 2px solid var(--app-accent);
+  padding-inline-start: 0.6rem;
+}
+.trackerTools {
+  display: flex;
+  align-items: end;
+  gap: var(--mantine-spacing-md);
+  flex-wrap: wrap;
+}
+.trackerTools > :last-child {
+  flex: 1 1 16rem;
+}
+.summary {
+  box-shadow: inset 3px 0 light-dark(#23645e, #8ed1c6);
+  padding: 0.4rem 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+div.puzzle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+.puzzleControls {
+  padding: var(--mantine-spacing-md);
+}
+.board {
+  min-width: 0;
+  container-type: inline-size;
+  display: grid;
+  align-content: center;
+  background: radial-gradient(ellipse at center, var(--app-raised), var(--app-nav));
+  padding-block: var(--mantine-spacing-lg);
+  border-block-start: 1px solid var(--app-border);
+}
+@media (min-width: 62em) {
+  div.puzzle {
+    grid-template-columns: minmax(16rem, 30%) minmax(0, 1fr);
+  }
+  .board {
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--app-border);
+  }
+  .puzzleControls {
+    padding: var(--mantine-spacing-lg);
+  }
+}
+@media (max-width: 36em) {
+  .header::before {
+    display: none;
+  }
+  .identity h1 {
+    font-size: 1.3rem;
+  }
+}
+
+.recipeDesk {
+  display: grid;
+  gap: var(--mantine-spacing-md);
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+}
+.recipeControls {
+  padding: var(--mantine-spacing-md);
+  border: 1px solid var(--app-border);
+  border-block-start: 2px solid var(--app-accent);
+  border-radius: var(--mantine-radius-sm);
+  background: linear-gradient(120deg, var(--app-raised), var(--app-panel));
+}
+@media (min-width: 75em) {
+  .recipeDesk {
+    grid-template-columns: minmax(15rem, 27%) minmax(0, 1fr);
+  }
+  .recipeControls {
+    position: sticky;
+    top: calc(var(--app-shell-header-offset, 0px) + var(--mantine-spacing-sm));
+  }
+}

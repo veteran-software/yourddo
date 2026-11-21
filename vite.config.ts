@@ -5,20 +5,13 @@ import { defineConfig } from 'vitest/config'
 // https://vite.dev/config/
 export default defineConfig({
   test: {
-    environment: 'jsdom',
-    globals: true,
-    setupFiles: ['./src/test/setup.ts']
-  },
-  css: {
-    devSourcemap: false,
-    preprocessorOptions: {
-      scss: {
-        silenceDeprecations: ['color-functions', 'global-builtin', 'import', 'if-function']
-      }
-    }
+    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    environment: 'node'
   },
   plugins: [react()],
   server: {
+    // Editors can truncate a module briefly while saving it.
+    watch: { awaitWriteFinish: { stabilityThreshold: 150, pollInterval: 25 } },
     fs: {
       strict: true
     },

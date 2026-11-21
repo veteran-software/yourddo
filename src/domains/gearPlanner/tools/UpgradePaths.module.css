@@ -1,0 +1,51 @@
+.path {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--mantine-color-default-border);
+  border-inline-start: 0.2rem solid var(--mantine-primary-color-filled);
+  border-radius: var(--mantine-radius-sm);
+  background: var(--mantine-color-default);
+}
+.gain {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.details {
+  flex: 1 1 16rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.objectiveGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+  gap: 0.5rem;
+}
+.objectiveGrid .objectiveRow {
+  min-height: 2.75rem;
+  min-width: 0;
+  text-align: start;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--app-border);
+  border-radius: var(--mantine-radius-sm);
+  background: var(--app-panel);
+}
+.objectiveRow span {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+.objectiveRow small {
+  font-variant-numeric: tabular-nums;
+  color: var(--mantine-color-dimmed);
+}
+.objectiveGrid .objectiveRow:hover,
+.objectiveGrid .objectiveRow:focus-visible,
+.objectiveGrid .objectiveRow[aria-pressed='true'] {
+  border-color: var(--mantine-primary-color-filled);
+}

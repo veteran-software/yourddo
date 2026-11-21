@@ -22,14 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
 .yarn/
 coverage/
-.go/
-.go-cache/
-/src/data/essenceCrafting/runtime/
-/src/data/loot/runtime/
-/src/data/fountainOfNecroticMight.json
-src/pages/gearPlannerv2/
-src/redux/slices/gearPlanner.slice.ts
 /AGENTS.md
 /.mcp.json
+/old/

@@ -1,0 +1,202 @@
+.masthead {
+  isolation: isolate;
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.4rem, 3vw, 2.7rem);
+  border: 1px solid var(--app-border);
+  border-inline-start: 4px solid var(--app-accent);
+  border-radius: var(--mantine-radius-sm);
+  background: linear-gradient(105deg, var(--app-panel) 25%, var(--app-active) 80%, var(--app-panel));
+}
+.masthead h1 {
+  font-size: clamp(2.35rem, 5vw, 4rem);
+  line-height: 1.08;
+}
+.masthead p {
+  margin-top: 0.45rem;
+  text-wrap: balance;
+  max-width: 68%;
+}
+.compass {
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+  right: 7%;
+  top: 50%;
+  width: clamp(8rem, 20vw, 16rem);
+  height: auto;
+  transform: translateY(-50%) rotate(-15deg);
+  color: color-mix(in srgb, var(--app-accent) 44%, transparent);
+  border: 1px dashed currentColor;
+  border-radius: 50%;
+  outline: 1px solid currentColor;
+  outline-offset: 0.45rem;
+}
+.dashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(17rem, 1fr);
+  gap: clamp(1rem, 2vw, 2rem);
+  align-items: start;
+}
+.directory,
+.sidebar {
+  display: grid;
+  gap: var(--mantine-spacing-lg);
+  min-width: 0;
+}
+.category {
+  --ink: var(--app-accent);
+}
+.category:nth-child(2) {
+  --ink: light-dark(#25655e, #8ed1c6);
+}
+.category:nth-child(3) {
+  --ink: var(--app-crimson);
+}
+.categoryTitle,
+.panelTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.categoryTitle {
+  margin-bottom: 0.6rem;
+}
+.categoryTitle svg,
+.panelTitle svg {
+  flex: none;
+  color: var(--ink, var(--app-accent));
+}
+.categoryTitle::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--app-border);
+}
+.tools {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem 0.7rem;
+}
+.tool {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  padding-inline-end: 0.35rem;
+  border-radius: var(--mantine-radius-sm);
+  border: 1px solid var(--app-border);
+  background: var(--app-panel);
+}
+.tool:hover,
+.tool:focus-within {
+  border-color: var(--ink);
+}
+.tool .toolLink,
+.sidebar .shelfLink {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.tool .toolLink {
+  padding: 0.6rem 0.7rem;
+  flex: 1;
+  align-self: stretch;
+  color: var(--app-heading);
+  font-weight: 600;
+}
+.category:first-child .tool {
+  background: linear-gradient(115deg, var(--app-active), var(--app-panel));
+}
+.category:first-child .toolLink {
+  min-height: 4rem;
+  font-size: 1.1rem;
+}
+.toolLink svg {
+  color: var(--ink);
+  flex: none;
+}
+.tool button {
+  flex: none;
+}
+.sidebar .shelfLink {
+  justify-content: space-between;
+  padding-block: 0.25rem;
+}
+.panelTitle + *,
+.sidebar p {
+  overflow-wrap: anywhere;
+}
+.sidebar p {
+  margin-top: 0.5rem;
+}
+@media (max-width: 58em) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    grid-row: 1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sidebar section:last-child {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 38em) {
+  .tools,
+  .sidebar {
+    grid-template-columns: 1fr;
+  }
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+  }
+  .directory,
+  .sidebar {
+    width: 100%;
+  }
+  .compass {
+    right: -2rem;
+    opacity: 0.65;
+  }
+}
+.mobileContinue {
+  display: none;
+}
+.dashboard .continueLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  border-inline-start: 3px solid var(--app-accent);
+  background: var(--app-active);
+  color: var(--app-active-text);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.continueLink svg {
+  flex: none;
+}
+@media (max-width: 58em) {
+  .mobileContinue {
+    display: block;
+    width: 100%;
+  }
+  .desktopContinue {
+    display: none;
+  }
+  .sidebar {
+    grid-row: auto;
+  }
+}
+.sidebar .mobileRecentLink {
+  display: none;
+}
+@media (max-width: 58em) {
+  .sidebar .mobileRecentLink {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
