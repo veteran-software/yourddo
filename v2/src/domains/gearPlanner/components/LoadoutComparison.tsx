@@ -14,6 +14,7 @@ export default function LoadoutComparison({
   data,
   essence,
   onClose,
+  initialOwner = 'Character',
   duplicate
 }: {
   setups: readonly GearPlannerSetup[]
@@ -21,11 +22,12 @@ export default function LoadoutComparison({
   data: GearPlannerData
   essence: EssenceCraftingData
   onClose: () => void
-  duplicate: () => void
+  initialOwner?: GearOwner
+  duplicate?: () => void
 }) {
   const [from, setFrom] = useState(setups.find((s) => s.id !== active.id)?.id ?? active.id)
   const [to, setTo] = useState(active.id)
-  const [owner, setOwner] = useState<GearOwner>('Character')
+  const [owner, setOwner] = useState<GearOwner>(initialOwner)
   const [tab, setTab] = useState<'Stats' | 'Sets' | 'Gear'>('Stats')
   const [unchanged, setUnchanged] = useState(false)
   const a = setups.find((s) => s.id === from) ?? active,
@@ -47,7 +49,7 @@ export default function LoadoutComparison({
   const options = setups.map((s) => ({ value: s.id, label: s.name }))
   return (
     <Modal opened onClose={onClose} title='Compare loadouts' size='52rem' centered>
-      {setups.length === 1 ? (
+      {setups.length === 1 && duplicate ? (
         <Stack align='flex-start'>
           <Text>Duplicate {active.name}, change its gear, then compare the two setups here.</Text>
           <Button leftSection={<IconCopy size={16} />} onClick={duplicate}>

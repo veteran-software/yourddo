@@ -4,7 +4,7 @@ import { IconMapPin, IconBackpack, IconCheck, IconHelpCircle } from '@tabler/ico
 import { useLocalStorage } from '@mantine/hooks'
 import { farmingList, type FarmStatus } from '../farming'
 import type { GearPlannerSetup } from '../setups'
-import { TroveSnapshot } from '../trove'
+import { troveCharacterNames } from '../trove'
 import { useTroveInventory } from '../troveContext'
 import css from './FarmingTool.module.css'
 
@@ -22,17 +22,7 @@ export default function FarmingTool({ setup }: { setup: GearPlannerSetup }) {
     defaultValue: []
   })
   const [view, setView] = useState<'To do' | 'All items'>('To do')
-  const names = useMemo(() => {
-    const characters = new Set<string>()
-    for (const owners of inventory.values())
-      for (const owner of owners) {
-        const name = /^(.*?) \(/.exec(owner)?.[1]
-        if (name) characters.add(name)
-      }
-    if (inventory instanceof TroveSnapshot)
-      for (const list of inventory.holdings.values()) for (const h of list) if (h.character) characters.add(h.character)
-    return [...characters].sort((a, b) => a.localeCompare(b))
-  }, [inventory])
+  const names = useMemo(() => troveCharacterNames(inventory), [inventory])
   const tasks = useMemo(() => farmingList(setup, inventory, character), [setup, inventory, character])
   const taskKey = (t: (typeof tasks)[number]) =>
     JSON.stringify([character.trim().toLowerCase(), t.name, t.status, t.group, t.quantity, t.uses])

@@ -32,6 +32,18 @@ export class TroveSnapshot extends Map<string, string[]> {
   }
 }
 
+export function troveCharacterNames(inventory: TroveInventory) {
+  const characters = new Set<string>()
+  for (const owners of inventory.values())
+    for (const owner of owners) {
+      const name = /^(.*?) \(/.exec(owner)?.[1]
+      if (name) characters.add(name)
+    }
+  if (inventory instanceof TroveSnapshot)
+    for (const list of inventory.holdings.values()) for (const h of list) if (h.character) characters.add(h.character)
+  return [...characters].sort((a, b) => a.localeCompare(b))
+}
+
 export function serializeTroveInventory(inventory: TroveInventory) {
   return JSON.stringify(
     [...inventory].map(([name, owners]) => [

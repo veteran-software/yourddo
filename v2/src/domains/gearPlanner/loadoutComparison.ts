@@ -1,6 +1,13 @@
+import { objectiveEffect } from './statObjectives'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types'
 import { enabledOwners, ownerSlots, type GearOwner } from './character'
-import { aggregateEffectSummary, collectEquippedEffects, type GearPlannerEffectSummary } from './effects'
+import {
+  aggregateEffectSummary,
+  collectEquippedEffects,
+  normalizeEffectName,
+  parseEffectModifier,
+  type GearPlannerEffectSummary
+} from './effects'
 import type { GearPlannerData } from './gearPlanner.types'
 import { createEmptyGearPlannerEquipment } from './planner'
 import {
@@ -41,7 +48,8 @@ export function loadoutSnapshot(
   setup: GearPlannerSetup,
   owner: GearOwner,
   data: GearPlannerData,
-  essence: EssenceCraftingData
+  essence: EssenceCraftingData,
+  objective?: string
 ) {
   const equipment = createEmptyGearPlannerEquipment()
   const gear: Entries = new Map()
@@ -98,15 +106,32 @@ export function loadoutSnapshot(
     data.reforging,
     setup.reforging
   )
-  const stats: Entries = new Map(
-    aggregateEffectSummary([...effects, ...collectActiveSetEffectSources(sets)]).map((s) => [s.name, statValue(s)])
+  const summaries = aggregateEffectSummary(
+    [...effects, ...collectActiveSetEffectSources(sets)].map((source) => {
+      const effect = objectiveEffect(source.effect)
+      return effect === source.effect
+        ? source
+        : {
+            ...source,
+            effect,
+            normalizedName: normalizeEffectName(effect.name),
+            comparisonValue: parseEffectModifier(effect.modifier)
+          }
+    })
   )
+  const stats: Entries = new Map(summaries.map((s) => [s.name, statValue(s)]))
+  const objectiveBonuses: Entries = new Map()
+  const selected = objective && summaries.find((s) => s.normalizedName === objective.toLowerCase())
+  if (selected)
+    for (const group of selected.groups)
+      objectiveBonuses.set(group.bonusType, statValue({ ...selected, total: group.effectiveValue, groups: [group] }))
   const tiers: Entries = new Map()
   for (const set of sets.sets)
     for (const tier of set.thresholds)
       if (tier.isActive) tiers.set(`${set.name} · ${String(tier.threshold)}-piece`, { text: 'Active' })
   return {
     Stats: stats,
+    objectiveBonuses,
     Sets: tiers,
     Gear: gear,
     predictsProwessStack: new Set(effects.filter((e) => e.filigreeType === 71).map((e) => e.itemId)).size > 1

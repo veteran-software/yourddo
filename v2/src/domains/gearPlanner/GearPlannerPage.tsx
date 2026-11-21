@@ -1,4 +1,6 @@
 import { characterAllowsItem, enabledOwners, ownerSlots, slotOwner } from './character'
+import { UpgradePathsTool, UpgradeResults } from './tools/UpgradePathsTool'
+import type { PathRequest } from './upgradePaths'
 import LoadoutComparison from './components/LoadoutComparison'
 import AugmentsTool from './tools/AugmentsTool'
 import FarmingTool from './tools/FarmingTool'
@@ -49,6 +51,7 @@ import {
   IconColumns2,
   IconUserCog,
   IconMapPin,
+  IconRoute,
   IconAlertTriangle,
   IconSearch,
   IconArrowLeft,
@@ -137,6 +140,7 @@ import {
   createDefaultGearPlannerState,
   createGearPlannerSetupId,
   deleteGearPlannerSetup,
+  type GearPlannerSetup,
   duplicateGearPlannerSetup,
   exchangeSetupAugments,
   equipGearPlannerSetupItem,
@@ -971,7 +975,13 @@ const GearPlannerWorkspace = () => {
   const [attempt, setAttempt] = useState(0)
   const [plannerState, setPlannerState] = useState(createDefaultGearPlannerState)
   const [requestedSlot, setSlot] = useState<GearPlannerSlot>('Eyes')
-  const [mode, setMode] = useState<'equipped' | 'replace' | 'find' | { filigreeSlot: number }>('equipped')
+  const [mode, setMode] = useState<'equipped' | 'replace' | 'find' | 'paths' | { filigreeSlot: number }>('equipped')
+  const [pathSearch, setPathSearch] = useState<{
+    request: PathRequest
+    setup: GearPlannerSetup
+    owner: string
+    revision: number
+  } | null>(null)
   const [findRequest, setFindRequest] = useState<{ revision: number; target?: GearFindTarget }>({ revision: 0 })
   const [returnSlot, setReturnSlot] = useState<GearPlannerSlot | null>(null)
   const finding = mode === 'find'
@@ -1024,6 +1034,7 @@ const GearPlannerWorkspace = () => {
   )
   const slot = owners.includes(slotOwner(requestedSlot)) ? requestedSlot : 'Eyes'
   const owner = slotOwner(slot)
+  const showingPaths = mode === 'paths' && pathSearch?.setup === activeSetup && pathSearch.owner === owner
   const slots: readonly GearPlannerSlot[] = owner === 'Character' ? characterSlotLayout : ownerSlots[owner]
   const [collapsedItems, setCollapsedItems] = useState<ReadonlySet<string>>(new Set())
   const itemKey = (item: GearPlannerItem) => JSON.stringify([activeSetup.id, item.id])
@@ -1193,6 +1204,37 @@ const GearPlannerWorkspace = () => {
                 openSet={(name) => {
                   revealWorkspace()
                   openSet(name)
+                }}
+              />
+            )
+          },
+          {
+            id: 'upgrade-paths',
+            label: 'Upgrade paths',
+            icon: <IconRoute stroke={2} />,
+            content: (revealWorkspace: () => void) => (
+              <UpgradePathsTool
+                effects={effects}
+                key={activeSetup.id + owner}
+                owner={owner}
+                setup={activeSetup}
+                data={dataState.data}
+                sets={setState}
+                initial={
+                  pathSearch?.setup === activeSetup && pathSearch.owner === owner ? pathSearch.request : undefined
+                }
+                onFind={(request) => {
+                  setPathSearch((current) => ({
+                    request,
+                    setup: activeSetup,
+                    owner,
+                    revision: (current?.revision ?? 0) + 1
+                  }))
+                  setReturnSlot(null)
+                  setMode('paths')
+                  setDetailOnMobile(true)
+                  revealWorkspace()
+                  requestAnimationFrame(() => detailHeadingRef.current?.focus({ preventScroll: true }))
                 }}
               />
             )
@@ -1724,13 +1766,15 @@ const GearPlannerWorkspace = () => {
                     <IconArrowLeft size={18} />
                   </ActionIcon>
                   <Title order={2} size='h4' id='gear-detail-title' ref={detailHeadingRef} tabIndex={-1}>
-                    {finding
-                      ? owner === 'Character'
-                        ? 'Find gear across slots'
-                        : 'Find gear for ' + owner
-                      : browsing
-                        ? `Select item for ${slot}`
-                        : slot}
+                    {showingPaths
+                      ? 'Upgrade paths'
+                      : finding
+                        ? owner === 'Character'
+                          ? 'Find gear across slots'
+                          : 'Find gear for ' + owner
+                        : browsing
+                          ? `Select item for ${slot}`
+                          : slot}
                   </Title>
                   {!finding && returnSlot && (
                     <Button
@@ -1744,7 +1788,7 @@ const GearPlannerWorkspace = () => {
                       Back to results
                     </Button>
                   )}
-                  {(finding || (replacing && selectedItem)) && (
+                  {(showingPaths || finding || (replacing && selectedItem)) && (
                     <Button
                       size='compact-sm'
                       variant='subtle'
@@ -1766,7 +1810,31 @@ const GearPlannerWorkspace = () => {
                     {renderBrowser(true)}
                   </div>
                 )}
-                {!finding && (
+                {showingPaths && (
+                  <div className={classes.detailBody}>
+                    <UpgradeResults
+                      key={pathSearch.revision}
+                      request={pathSearch.request}
+                      setup={activeSetup}
+                      owner={owner}
+                      data={dataState.data}
+                      essence={dataState.essenceData}
+                      onSave={(draft) => {
+                        const id = createGearPlannerSetupId()
+                        applySetupState((current) => {
+                          if (activeGearPlannerSetup(current) !== activeSetup) return current
+                          let name = draft.name
+                          for (let n = 2; current.setups.some((s) => s.name === name); n++)
+                            name = draft.name + ' ' + String(n)
+                          return { ...current, setups: [...current.setups, { ...draft, id, name }], activeSetupId: id }
+                        })
+                        setMode('equipped')
+                        setFeedback({ kind: 'success', message: 'Upgrade path saved as a new setup.' })
+                      }}
+                    />
+                  </div>
+                )}
+                {!finding && !showingPaths && (
                   <div
                     key={activeSetup.id + slot + String(browsing) + (typeof mode === 'object' ? 'equipped' : mode)}
                     className={classes.detailBody}

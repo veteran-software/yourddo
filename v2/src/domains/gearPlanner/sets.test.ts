@@ -78,6 +78,27 @@ const equipped = (...items: readonly GearPlannerItem[]) =>
 const stateFor = (items: readonly GearPlannerItem[]) => resolveGearPlannerSetState(equipped(...items), {}, definitions)
 
 describe('Gear Planner standard set memberships', () => {
+  it('activates the six individual Artifact ability bonuses from the sole Echoes definition at three pieces', () => {
+    const name = 'Echoes of the Walking Ancestors'
+    expect(
+      [...standardGearPlannerSetDefinitionByName.keys()].filter((key) => key.toLowerCase() === name.toLowerCase())
+    ).toEqual([name])
+    const helm = item('helm', 'Head', "Legendary Walking Ancestor's Helmet", [name])
+    const cloak = item('cloak', 'Cloak', "Legendary Walking Ancestor's Shroud", [name])
+    const robe = item('robe', 'Armor', 'Legendary Robe of the Locus', [name])
+    expect(collectActiveSetEffectSources(resolveGearPlannerSetState(equipped(helm, cloak), {}))).toEqual([])
+    const stats = aggregateEffectSummary(
+      collectActiveSetEffectSources(resolveGearPlannerSetState(equipped(helm, cloak, robe), {}))
+    )
+    for (const ability of ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma']) {
+      expect(stats.find((stat) => stat.name === ability)).toMatchObject({
+        total: 3,
+        groups: [{ bonusType: 'artifact', effectiveValue: 3 }]
+      })
+    }
+    expect(stats.some((stat) => stat.normalizedName === 'ability scores')).toBe(false)
+  })
+
   it('counts equipped item memberships literally, including multiple memberships on one item', () => {
     const single = stateFor([item('head', gearPlannerSlots.head, 'Set Helm', ['Set A'])])
     const multiple = stateFor([

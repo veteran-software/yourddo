@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 
+import userEvent from '@testing-library/user-event'
 import { MantineProvider } from '@mantine/core'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -17,11 +18,12 @@ import {
   type GearPlannerItem,
   gearPlannerSlots
 } from './gearPlanner.types.ts'
+import { searchUpgradePaths, type PathRequest } from './upgradePaths'
 import { gearPlannerPermalink } from './sharing'
 import { createGearPlannerSetup } from './setups'
 import GearPlannerPage from './GearPlannerPage.tsx'
-import { readTroveInventory, troveStorageKey } from './trove'
-import { GEAR_PLANNER_STORAGE_KEY } from './plannerStorage.ts'
+import { readTroveInventory, troveStorageKey, TroveSnapshot } from './trove'
+import { GEAR_PLANNER_STORAGE_KEY, parsePersistedGearPlannerState } from './plannerStorage.ts'
 import { createGearPlannerReforgingData, emptyGearPlannerReforgingData } from './reforging.ts'
 import type { ReforgingEntry } from '../nearlyFinished/nearlyFinished.types.ts'
 
@@ -641,6 +643,199 @@ describe('GearPlannerPage', () => {
       expect(screen.getByRole('region', { name: 'Gear Planner workspace' })).toBeTruthy()
     })
     expect(loadGearPlannerData).toHaveBeenCalledTimes(2)
+  })
+
+  it.each([
+    ['Spell Crit Damage', 'Fire', 'Spell Critical Damage: Fire'],
+    ['Spell Crit Chance', 'Cold', 'Spell Critical Chance: Cold'],
+    ['Spell Power', 'Light', 'Spell Power: Light'],
+    ['Spell DCs', 'Illusion', 'Spell DC: Illusion']
+  ])('selects an upgrade objective through %s, subtype, and bonus type', async (family, subtype, objective) => {
+    const names = [
+      'Spell Critical Damage: Fire',
+      'Spell Critical Damage: Acid',
+      'Cold Spell Critical Chance',
+      'Spell Critical Chance: Acid',
+      'Light Spell Power',
+      'Spell Power: Fire',
+      'sonic Spell Power',
+      'Spell Power:',
+      'Spell DC: Illusion',
+      'Spell DC: Evocation'
+    ]
+    const helm = item(
+      'caster',
+      'Head',
+      'Caster Helm',
+      10,
+      names.map((name) => ({ name, modifier: 3, bonus: 'Insight' }))
+    )
+    const alias = item('other', 'Neck', 'Other Helm', 10, [
+      { name: 'Spell Power: Light', modifier: 2, bonus: 'Quality' },
+      { name: 'Spell Critical Chance: Cold', modifier: 2, bonus: 'Quality' }
+    ])
+    await renderReadyPage(dataWithItems([helm, alias]))
+    const click = async (name: string | RegExp) => fireEvent.click(await screen.findByRole('button', { name }))
+    await click('Upgrade paths')
+    await click('Choose a stat')
+    await click(/^Spellcasting/)
+    expect(screen.queryByRole('button', { name: objective })).toBeNull()
+    await click(family)
+    const dialog = within(screen.getByRole('dialog', { name: family }))
+    const otherType = family === 'Spell Power' ? 'Fire' : family === 'Spell DCs' ? 'Evocation' : 'Acid'
+    expect(dialog.getByRole('button', { name: otherType })).toBeTruthy()
+    if (family === 'Spell Power') {
+      expect(dialog.getByRole('button', { name: 'Sonic' })).toBeTruthy()
+      expect(dialog.getByRole('button', { name: 'General' })).toBeTruthy()
+    }
+    await click(subtype)
+    if (family === 'Spell Crit Chance' || family === 'Spell Power') {
+      expect(screen.getByRole('button', { name: 'Quality' })).toBeTruthy()
+    }
+    await click('Back to ' + family)
+    await click('Back to Spellcasting')
+    await click(family)
+    await click(subtype)
+    await click('Insight')
+    expect(await screen.findByRole('button', { name: objective + ' · Insight' })).toBeTruthy()
+  })
+
+  it('selects a skill by its short label and finds gear using the catalog effect', async () => {
+    await renderReadyPage(
+      dataWithItems([
+        item('boots', 'Feet', 'Acrobat Boots', 10, [{ name: 'Skill: Balance', bonus: 'Insight', modifier: 3 }])
+      ])
+    )
+    const click = async (name: string | RegExp) => fireEvent.click(await screen.findByRole('button', { name }))
+    await click('Upgrade paths')
+    await click('Choose a stat')
+    await click(/^Skills/)
+    await click('Balance')
+    await click('Insight')
+    expect(screen.getByRole('button', { name: 'Balance · Insight' })).toBeTruthy()
+    await click('Find paths')
+    expect(await screen.findByRole('button', { name: 'Preview' })).toBeTruthy()
+  })
+
+  it('previews a suggested upgrade and saves it separately from its baseline', async () => {
+    const helm = item('helpful', 'Head', 'Insight Helm', 10, [{ name: 'Strength +3', modifier: 3, bonus: 'Insight' }])
+    await renderReadyPage(dataWithItems([helm]))
+    const click = async (name: string) => fireEvent.click(await screen.findByRole('button', { name }))
+    await click('Upgrade paths')
+    const user = userEvent.setup()
+    await click('Choose a stat')
+    await user.type(screen.getByRole('textbox', { name: 'Search stats' }), 'Stren')
+    expect(screen.queryByRole('button', { name: 'Strength +3' })).toBeNull()
+    await click('Strength')
+    await click('Insight')
+    await click('Find paths')
+    await click('Preview')
+    const dialog = within(await screen.findByRole('dialog', { name: 'Compare loadouts' }))
+    expect(dialog.getByRole('row', { name: /Strength/ }).textContent).toContain('+3')
+    fireEvent.keyDown(dialog.getByRole('table'), { key: 'Escape', code: 'Escape' })
+    await click('Save as setup')
+    expect(await screen.findByText('Upgrade path saved as a new setup.')).toBeTruthy()
+    await waitFor(() => {
+      const saved = parsePersistedGearPlannerState(JSON.parse(localStorage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? '{}'))
+      expect(saved.setups).toHaveLength(2)
+      expect(JSON.stringify(saved.setups[0])).not.toContain('helpful')
+      expect(JSON.stringify(saved.setups[1])).toContain('helpful')
+    })
+  })
+
+  it('ranks a stat against equipped bonuses and shows only effective improvements of the selected type', () => {
+    const ranked = (id: string, slot: GearPlannerItem['slot'], rank: number, bonus: string) =>
+      item(id, slot, id, 10, [{ name: 'Aim +' + String(rank), modifier: rank, bonus }])
+    const current = ranked('Old', 'Head', 4, 'Enhancement')
+    const baseline = createGearPlannerSetup('a', 'A')
+    const setup = { ...baseline, equipment: { ...baseline.equipment, Head: current } }
+    const catalog = dataWithItems([
+      current,
+      ranked('Higher', 'Head', 10, 'Enhancement'),
+      ranked('Equal', 'Eyes', 4, 'Enhancement'),
+      ranked('Lower', 'Eyes', 2, 'Enhancement'),
+      ranked('Insightful', 'Eyes', 2, 'Insight')
+    ])
+    const run = (bonusType?: string) => {
+      const iterator = searchUpgradePaths(
+        setup,
+        'Character',
+        catalog,
+        essenceData,
+        { kind: 'Stat', objective: 'Aim', bonusType, locked: [], protectedTiers: [], character: '' },
+        new Map()
+      )
+      let step = iterator.next()
+      while (!step.done) step = iterator.next()
+      return step.value
+    }
+    expect(run('enhancement')).toMatchObject([
+      { name: 'Higher', delta: '+6', totals: '4 → 10', bonusChanges: ['Enhancement 4 → 10'] }
+    ])
+    expect(run('insight')).toMatchObject([{ name: 'Insightful', delta: '+2', totals: '4 → 6' }])
+    expect(run().map((p) => p.name)).toEqual(['Higher', 'Insightful'])
+  })
+
+  it('respects indirect slot locks, protected set tiers and host limits for augment paths', () => {
+    const strength = (modifier: number) => ({ name: 'Strength', modifier, bonus: 'Enhancement' })
+    const baseline = createGearPlannerSetup('a', 'A')
+    const shield = item('shield', 'Off Hand', 'Shield', 10, [], ['Test set'])
+    const helm = item('helm', 'Head', 'Helm', 10, [strength(2)], [], [{ augmentType: 'Blue' }])
+    const setup = { ...baseline, equipment: { ...baseline.equipment, 'Off Hand': shield, Head: helm } }
+    const blade = { ...item('sword', 'Main Hand', 'Greatsword', 10, [strength(5)]), sourceFile: 'greatSword.json' }
+    const augment = {
+      name: 'Sapphire',
+      augmentType: 'Blue',
+      minLevel: 10,
+      effectsAdded: [strength(4)],
+      setBonus: [{ name: 'Test set' }],
+      source: {}
+    }
+    const catalog = {
+      ...dataWithItems(
+        [blade, helm, shield],
+        [
+          augment,
+          { ...augment, minLevel: 11, name: 'Too high' },
+          { ...augment, augmentType: 'Red', name: 'Wrong color' }
+        ]
+      ),
+      standardSets: new Map([
+        [
+          'Test set',
+          {
+            name: 'Test set',
+            thresholds: [
+              { threshold: 1, effects: [] },
+              { threshold: 2, effects: [] }
+            ]
+          }
+        ]
+      ])
+    }
+    const base: PathRequest = { kind: 'Stat', objective: 'Strength', protectedTiers: [], locked: [], character: '' }
+    const inventory = new TroveSnapshot()
+    inventory.record('Greatsword', 'Alt (Backpack)', 'Alt', 1, 'BtC')
+    inventory.record('Sapphire', 'Shared Bank', '', 1, 'BtA')
+    const run = (request: PathRequest) => {
+      const search = searchUpgradePaths(setup, 'Character', catalog, essenceData, request, inventory)
+      let step = search.next()
+      while (!step.done) step = search.next()
+      return step.value
+    }
+    expect(run(base).map((p) => [p.name, p.delta])).toEqual([
+      ['Greatsword', '+3'],
+      ['Sapphire', '+2']
+    ])
+    expect(run({ ...base, locked: ['Off Hand'] }).map((p) => p.name)).toEqual(['Sapphire'])
+    expect(run({ ...base, protectedTiers: ['Test set · 1-piece'] }).map((p) => p.name)).toEqual(['Sapphire'])
+    expect(run({ ...base, locked: ['Off Hand', 'Head'] })).toEqual([])
+    expect(run({ ...base, kind: 'Set tier', objective: 'Test set · 2-piece' }).map((p) => p.name)).toEqual(['Sapphire'])
+    const [bound, bank] = run({ ...base, character: 'Main' })
+    expect(bound.availability).toBe('Farm')
+    expect(bound.losses).toContain('Unequips Shield')
+    expect(bound.location).toContain('Character-bound')
+    expect(bank).toMatchObject({ availability: 'Collect', location: 'Shared Bank' })
   })
 
   it('duplicates a setup, compares a gear change, and reverses the delta when the baseline changes', async () => {

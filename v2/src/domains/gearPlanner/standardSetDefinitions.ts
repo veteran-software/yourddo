@@ -81,18 +81,6 @@ const legacyStandardOverrides = [
       ]
     }
   ]),
-  definition('Echoes Of The Walking Ancestors', [
-    {
-      threshold: 3,
-      effects: [
-        { name: 'Imbue Dice', modifier: 3, bonus: 'Artifact' },
-        { name: 'Spell DCs', modifier: 3, bonus: 'Artifact' },
-        { name: 'Tactical DCs', modifier: 3, bonus: 'Artifact' },
-        { name: 'Assassinate DC', modifier: 3, bonus: 'Artifact' },
-        { name: 'Ability Scores', modifier: 3, bonus: 'Artifact' }
-      ]
-    }
-  ]),
   definition('Devastation of the Firemouth', [
     {
       threshold: 3,
