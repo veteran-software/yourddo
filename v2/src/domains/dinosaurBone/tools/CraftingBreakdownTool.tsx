@@ -1,3 +1,4 @@
+import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Box, Group, List, Paper, Stack, Text, Title } from '@mantine/core'
 import type { DinosaurBoneRequirement, FinishedDinosaurBoneItem } from '../dinosaurBone.types.ts'
 
@@ -29,6 +30,7 @@ const RequirementList = ({ requirements }: { requirements: readonly DinosaurBone
               ×{String(requirement.quantity)}
             </Badge>
           </Group>
+          <IngredientStock name={requirement.name} required={requirement.quantity} />
           {requirement.requirements && requirement.requirements.length > 0 ? (
             <Box mt='xs' ml='sm'>
               <Text c='dimmed' size='xs' mb={4}>

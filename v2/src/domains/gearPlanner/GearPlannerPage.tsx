@@ -17,7 +17,7 @@ import GearPlannerGuide from './components/GearPlannerGuide'
 import CandidateEnchantments from './components/CandidateEnchantments'
 import ItemDropLocations from './components/ItemDropLocations'
 import FiligreeSetBrowser from './components/FiligreeSetBrowser'
-import { TroveOwnership, OwnedFilter, TroveImport, TroveProvider } from './components/TroveInventory'
+import { TroveOwnership, OwnedFilter, TroveImport } from './components/TroveInventory'
 import { createCandidateComparison, matchesGearEffect, type GearFindTarget } from './finding'
 import classes from '../../shared/layout/PlannerWorkspace.module.css'
 import ItemCraftingSelector from './components/ItemCraftingSelector.tsx'
@@ -1982,10 +1982,4 @@ const GearPlannerWorkspace = () => {
   )
 }
 
-export default function GearPlannerPage() {
-  return (
-    <TroveProvider>
-      <GearPlannerWorkspace />
-    </TroveProvider>
-  )
-}
+export default GearPlannerWorkspace

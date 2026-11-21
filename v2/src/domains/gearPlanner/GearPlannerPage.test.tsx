@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 
+import { TroveProvider } from './components/TroveInventory'
 import userEvent from '@testing-library/user-event'
 import { MantineProvider } from '@mantine/core'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
@@ -106,7 +107,9 @@ const renderReadyPage = async (plannerData: GearPlannerData, essence = essenceDa
   vi.mocked(loadEssenceCraftingData).mockResolvedValue(essence)
   render(
     <MantineProvider env='test'>
-      <GearPlannerPage />
+      <TroveProvider>
+        <GearPlannerPage />
+      </TroveProvider>
     </MantineProvider>
   )
   await screen.findByRole('region', { name: 'Gear Planner workspace' })
@@ -631,7 +634,9 @@ describe('GearPlannerPage', () => {
 
     render(
       <MantineProvider env='test'>
-        <GearPlannerPage />
+        <TroveProvider>
+          <GearPlannerPage />
+        </TroveProvider>
       </MantineProvider>
     )
 

@@ -1,3 +1,4 @@
+import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Box, Group, List, Stack, Text } from '@mantine/core'
 import type { ClassifiedDinosaurBoneItem, CumulativeIngredient } from '../dinosaurBone.types.ts'
 
@@ -41,6 +42,7 @@ const IngredientsTool = ({
                   ×{String(ingredient.quantity)}
                 </Badge>
               </Group>
+              <IngredientStock name={ingredient.name} required={ingredient.quantity} />
             </List.Item>
           ))}
         </List>

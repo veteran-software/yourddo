@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 
+import { TroveProvider } from '../gearPlanner/components/TroveInventory'
 import { type MantineColorScheme, MantineProvider } from '@mantine/core'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -67,7 +68,9 @@ const dataset: NearlyFinishedDataset = {
 const renderPage = (defaultColorScheme: MantineColorScheme = 'auto') =>
   render(
     <MantineProvider env='test' defaultColorScheme={defaultColorScheme}>
-      <NearlyFinishedPage />
+      <TroveProvider>
+        <NearlyFinishedPage />
+      </TroveProvider>
     </MantineProvider>
   )
 
@@ -288,7 +291,11 @@ describe('NearlyFinishedPage workflow', () => {
     expect(screen.getAllByText('Thread of Fate').length).toBeGreaterThan(0)
   })
 
-  it('opens a required-only shopping list with matching raw and crafted totals', async () => {
+  it('shows Trove stock and locations alongside material totals', async () => {
+    localStorage.setItem(
+      'troveData',
+      JSON.stringify({ 'Iron Defender Rivet': { byCharacter: [{ character: 'Tester', locations: { Backpack: 7 } }] } })
+    )
     const user = userEvent.setup()
     renderPage()
 
@@ -298,7 +305,7 @@ describe('NearlyFinishedPage workflow', () => {
 
     const drawer = screen.getByRole('dialog')
     expect(drawer.textContent).toContain('Shopping List — Heroic Choice Item')
-    expect(drawer.textContent).toContain('required quantities only')
+    expect(drawer.textContent).toContain('Tester (Backpack) ×7')
     expect(drawer.textContent).toContain('Iron Defender Rivet')
     expect(drawer.textContent).toContain('Simple Ingot')
     expect(drawer.textContent).toContain('Complex Compound')

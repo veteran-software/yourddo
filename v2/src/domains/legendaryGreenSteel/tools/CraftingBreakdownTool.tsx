@@ -1,3 +1,4 @@
+import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Group, List, Paper, Stack, Text, Title } from '@mantine/core'
 import type { LgsRecipe, LgsRequirement } from '../legendaryGreenSteel.types.ts'
 
@@ -50,6 +51,7 @@ const CraftingBreakdownTool = ({
               {recipe.requirements.map(({ id, name, quantity }) => (
                 <List.Item key={id}>
                   {name} ×{quantity}
+                  <IngredientStock name={name} required={quantity} />
                   {componentIds.has(id) ? ' (crafted component)' : ''}
                 </List.Item>
               ))}

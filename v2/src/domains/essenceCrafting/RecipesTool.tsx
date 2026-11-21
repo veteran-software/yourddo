@@ -1,3 +1,4 @@
+import IngredientStock from '../../shared/items/IngredientStock'
 import { Alert, Divider, Stack, Table, Text, Title } from '@mantine/core'
 import BindingSelector from './BindingSelector.tsx'
 import { sourceLabels, stepLabel, unavailableStepsForPlan, warningMessage } from './craftingPlanPresentation.ts'
@@ -35,7 +36,10 @@ const RecipeRequirements = ({
     <Table.Tbody>
       {materials.map((material) => (
         <Table.Tr key={material.ingredientId}>
-          <Table.Td>{material.displayName}</Table.Td>
+          <Table.Td>
+            {material.displayName}
+            <IngredientStock name={material.displayName} required={material.quantity} />
+          </Table.Td>
           <Table.Td style={{ textAlign: 'right' }}>{material.quantity}</Table.Td>
         </Table.Tr>
       ))}

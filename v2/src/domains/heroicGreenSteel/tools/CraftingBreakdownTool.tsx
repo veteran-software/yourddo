@@ -1,3 +1,4 @@
+import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Button, Center, Group, List, Loader, Paper, Stack, Text, Title } from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
 import { loadHeroicGreenSteelRecipeData } from '../data.ts'
@@ -100,6 +101,10 @@ const CraftingBreakdownTool = ({
                   {data.ingredientById.get(relation.ingredientId)?.name ?? 'Missing ingredient'} ×
                   {relation.quantity.toString()}
                   {relation.producerRecipeId ? ' (crafted component)' : ''}
+                  <IngredientStock
+                    name={data.ingredientById.get(relation.ingredientId)?.name ?? 'Missing ingredient'}
+                    required={relation.quantity}
+                  />
                 </List.Item>
               ))}
             </List>

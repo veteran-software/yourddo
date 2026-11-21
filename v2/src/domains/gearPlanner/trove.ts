@@ -131,7 +131,14 @@ export function readTroveInventory(): TroveInventory {
         for (const row of rows) {
           if (!isRecord(row) || !isRecord(row.locations)) continue
           for (const [location, qty] of Object.entries(row.locations)) {
-            if (typeof qty === 'number' && qty > 0) addTroveOwner(inventory, name, troveOwner(row.character, location))
+            if (typeof qty === 'number' && qty > 0)
+              inventory.record(
+                name,
+                troveOwner(row.character, location),
+                row.character,
+                qty,
+                isRecord(entry) ? entry.binding : undefined
+              )
           }
         }
         if (!rows.length) addTroveOwner(inventory, name, '')

@@ -1,3 +1,4 @@
+import IngredientStock from '../../shared/items/IngredientStock'
 import {
   Alert,
   Anchor,
@@ -99,6 +100,7 @@ const RequirementList = ({ requirements }: { requirements: NearlyFinishedRequire
             ×{quantity}
           </Badge>
         </Group>
+        <IngredientStock name={name} required={quantity} />
       </List.Item>
     ))}
   </List>
@@ -117,6 +119,7 @@ const MaterialList = ({ materials, emptyMessage }: { materials: IngredientTotal[
               ×{quantity}
             </Badge>
           </Group>
+          <IngredientStock name={name} required={quantity} />
         </List.Item>
       ))}
     </List>
@@ -469,10 +472,6 @@ const NearlyFinishedPage = () => {
         <ScrollArea h='calc(100dvh - 6rem)' type='auto'>
           {shoppingTotals ? (
             <Stack gap='xl' pr='sm'>
-              <Alert color='blue' title='Required totals'>
-                Trove inventory comparison is not yet available in YourDDO v2. These totals show required quantities
-                only.
-              </Alert>
               <Stack gap='sm'>
                 <Title order={2} size='h4'>
                   Raw Materials

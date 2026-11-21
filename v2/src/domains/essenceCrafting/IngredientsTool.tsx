@@ -1,3 +1,4 @@
+import IngredientStock from '../../shared/items/IngredientStock'
 import { Alert, Stack, Table, Text } from '@mantine/core'
 import BindingSelector from './BindingSelector.tsx'
 import { unavailableStepsForPlan, warningMessage } from './craftingPlanPresentation.ts'
@@ -26,7 +27,10 @@ const MaterialsTable = ({ materials, testId }: { materials: readonly EssenceMate
     <Table.Tbody>
       {materials.map((material) => (
         <Table.Tr key={material.ingredientId} data-testid={`${testId ?? 'ingredient'}-${material.ingredientId}`}>
-          <Table.Td>{material.displayName}</Table.Td>
+          <Table.Td>
+            {material.displayName}
+            <IngredientStock name={material.displayName} required={material.quantity} />
+          </Table.Td>
           <Table.Td style={{ textAlign: 'right' }}>{material.quantity}</Table.Td>
         </Table.Tr>
       ))}

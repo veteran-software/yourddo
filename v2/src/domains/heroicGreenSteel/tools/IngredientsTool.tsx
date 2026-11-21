@@ -1,3 +1,4 @@
+import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Button, Center, Group, List, Loader, Stack, Text, Title } from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
 import { loadHeroicGreenSteelRecipeData } from '../data.ts'
@@ -84,6 +85,7 @@ const IngredientsTool = ({ recipeIds }: { recipeIds: readonly number[] }) => {
               ×{quantity}
             </Badge>
           </Group>
+          <IngredientStock name={ingredient.name} required={quantity} />
         </List.Item>
       ))}
     </List>

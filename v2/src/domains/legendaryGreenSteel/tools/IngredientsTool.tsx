@@ -1,3 +1,4 @@
+import IngredientStock from '../../../shared/items/IngredientStock'
 import { Alert, Badge, Group, List, Stack, Text, Title } from '@mantine/core'
 import type { LgsIngredientPlan, LgsRequirement } from '../legendaryGreenSteel.types.ts'
 
@@ -14,6 +15,7 @@ const IngredientList = ({ values }: { values: readonly LgsRequirement[] }) =>
               ×{quantity}
             </Badge>
           </Group>
+          <IngredientStock name={name} required={quantity} />
         </List.Item>
       ))}
     </List>

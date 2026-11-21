@@ -1,3 +1,4 @@
+import IngredientStock from '../../shared/items/IngredientStock'
 import {
   Alert,
   Badge,
@@ -114,6 +115,7 @@ const MaterialList = ({
             ×{quantity}
           </Badge>
         </Group>
+        <IngredientStock name={name} required={quantity} />
         {showAcquisition && foundIn.length > 0 && (
           <Text c='dimmed' size='xs' mt={2}>
             Found in: {foundIn.join(', ')}

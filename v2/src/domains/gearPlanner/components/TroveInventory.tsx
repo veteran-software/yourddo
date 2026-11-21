@@ -103,7 +103,7 @@ const pickerInputProps = {
 
 const folderInputProps = { ...pickerInputProps, webkitdirectory: '' }
 
-export function TroveImport() {
+export function TroveImport({ compact = false }: { compact?: boolean } = {}) {
   const { inventory, replace } = useTroveInventory()
   const [opened, setOpened] = useState(false)
   const [copied, setCopied] = useState('')
@@ -147,14 +147,16 @@ export function TroveImport() {
       <Button
         size='xs'
         variant='light'
-        leftSection={<IconUpload size={16} aria-hidden />}
+        aria-label='Import Trove'
+        title='Import Trove'
+        leftSection={compact ? undefined : <IconUpload size={16} aria-hidden />}
         onClick={() => {
           setMessage('')
           setCopied('')
           setOpened(true)
         }}
       >
-        Import Trove
+        {compact ? <IconUpload size={16} /> : 'Import Trove'}
       </Button>
       <Modal opened={opened} onClose={close} title='DH Trove Import' centered size='lg'>
         <Stack gap='md'>
@@ -171,8 +173,8 @@ export function TroveImport() {
           {format === 'Trove v5' ? (
             <>
               <Text size='sm'>
-                Choose your server folder, such as <Code>Shadowdale</Code>. Gear Planner reads inventory and bank
-                snapshots in its subfolders automatically.
+                Choose your server folder, such as <Code>Shadowdale</Code>. YourDDO reads inventory and bank snapshots
+                in its subfolders automatically.
               </Text>
               <Group gap='xs'>
                 <FileButton
