@@ -196,7 +196,7 @@ const ViktraniumPage = () => {
   }
 
   return (
-    <WorkspaceLayout tools={tools} toolPanelWidth='24rem'>
+    <WorkspaceLayout tools={tools} toolPanelWidth='26.4rem'>
       <Container size='xl' py={{ base: 'md', sm: 'lg' }} px={{ base: 'md', sm: 'lg' }}>
         <Stack gap='lg'>
           <WorkspaceHeader

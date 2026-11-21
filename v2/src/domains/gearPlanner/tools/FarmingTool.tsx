@@ -41,7 +41,7 @@ export default function FarmingTool({ setup }: { setup: GearPlannerSetup }) {
     tasks.filter((t) => t.status === status && !done(t)).reduce((n, t) => n + t.quantity, 0)
   const pending = tasks.filter((t) => !done(t)).length
   return (
-    <Stack gap='sm' className={css.tool}>
+    <Stack p='md' gap='md' className={css.tool}>
       <div className={css.heading}>
         <Text size='xs' c='dimmed'>
           Active setup

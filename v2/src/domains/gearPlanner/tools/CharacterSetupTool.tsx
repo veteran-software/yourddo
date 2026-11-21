@@ -9,7 +9,7 @@ export default function CharacterSetupTool({
   onChange: (settings: CharacterSettings) => void
 }) {
   return (
-    <Stack p='sm' gap='md'>
+    <Stack p='md' gap='md'>
       <MultiSelect
         label='Character classes'
         description='Choose up to three classes to set starting proficiencies.'

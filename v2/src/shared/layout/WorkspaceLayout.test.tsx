@@ -137,7 +137,7 @@ describe('WorkspaceLayout', () => {
     expect(panel.style.width).toBe('0rem')
     expect(panel.style.visibility).toBe('hidden')
     await user.click(finishedButton)
-    expect(panel.style.width).toBe('22rem')
+    expect(panel.style.width).toBe('24.2rem')
     expect(panel.style.visibility).toBe('visible')
     const widthIndex = panel.style.transitionProperty.split(', ').indexOf('width')
     expect(panel.style.transitionDuration.split(', ')[widthIndex]).toBe('220ms')

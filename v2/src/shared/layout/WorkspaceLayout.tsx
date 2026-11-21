@@ -36,7 +36,7 @@ interface WorkspaceLayoutProps {
   inspectorTitle?: string
 }
 
-const defaultToolPanelWidth = '22rem'
+const defaultToolPanelWidth = '24.2rem'
 const collapsedRailWidth = '3rem'
 const expandedRailWidth = '11rem'
 const toolPanelTransitionDuration = 220
@@ -141,7 +141,7 @@ const WorkspaceLayout = ({
           color={active ? undefined : 'gray'}
           leftSection={tool.icon}
           justify='flex-start'
-          fullWidth
+          fullWidth={desktop}
           h={36}
           px='xs'
           radius='sm'
@@ -278,7 +278,7 @@ const WorkspaceLayout = ({
             <>
               <Divider orientation='vertical' pos='absolute' left={0} top={0} bottom={0} />
               <Stack w={panelWidth} h='100%' gap={0}>
-                <Group p='xs' gap={8} wrap='nowrap' miw={0}>
+                <Group px='md' py='xs' gap='sm' wrap='nowrap' miw={0}>
                   {panelTool.icon}
                   <Text component='h2' m={0} flex={1} miw={0} fz='h2' lh='h2' fw={700} truncate>
                     {panelTool.label}
@@ -324,7 +324,7 @@ const WorkspaceLayout = ({
           <Divider orientation='vertical' />
           <Stack gap={0} flex={1} miw={0} mih={0} p={4}>
             <ScrollArea type='auto' scrollbars='y' flex={1} w='100%' miw={0} mih={0}>
-              <Stack gap={2} miw={0}>
+              <Stack gap='xs' miw={0}>
                 {resolvedTools.map((tool, index) => toolButton(tool, index))}
               </Stack>
             </ScrollArea>
@@ -359,13 +359,22 @@ const WorkspaceLayout = ({
           returnFocus={false}
           title={activeTool?.label}
           position='right'
-          size={panelWidth}
+          size={`min(${panelWidth}, 100vw)`}
+          styles={{ body: { padding: 0 } }}
           closeButtonProps={{ 'aria-label': 'Close workspace tool' }}
         >
           {activeTool ? (
             <Stack data-testid='workspace-mobile-tool-content' gap={0} mih='100%'>
-              <ScrollArea type='auto' offsetScrollbars scrollbarSize={6} mb='sm'>
-                <Group component='nav' aria-label='Workspace tools' wrap='nowrap' gap={4} miw='max-content'>
+              <ScrollArea type='auto' offsetScrollbars scrollbarSize={6}>
+                <Group
+                  component='nav'
+                  aria-label='Workspace tools'
+                  wrap='nowrap'
+                  gap='xs'
+                  px='md'
+                  py='xs'
+                  miw='max-content'
+                >
                   {resolvedTools.map((tool, index) => toolButton(tool, index, true))}
                 </Group>
               </ScrollArea>
