@@ -6,10 +6,16 @@ function record(value: unknown): Record<string, unknown> {
   return value as Record<string, unknown>
 }
 
-function collectItems(rows: unknown, inventory: Map<string, string[]>, character: unknown, location: string) {
+function collectItems(
+  rows: unknown,
+  inventory: Map<string, string[]>,
+  character: unknown,
+  location: string,
+  bankDetails: string[] = []
+) {
   if (!Array.isArray(rows)) throw new Error('Expected an item list')
   for (const row of rows) {
-    const { Name, Quantity, CharacterName, Container } = record(row)
+    const { Name, Quantity, CharacterName, Container, Tab, Row, Column, EquipsTo } = record(row)
     if (typeof Name !== 'string' || !Name.trim()) throw new Error('Expected an item name')
     if (Quantity !== undefined && (typeof Quantity !== 'number' || !Number.isFinite(Quantity))) {
       throw new Error('Expected a numeric quantity')
@@ -17,15 +23,31 @@ function collectItems(rows: unknown, inventory: Map<string, string[]>, character
     // Equipped and other single items can omit Quantity.
     if (Quantity === undefined || Quantity > 0) {
       const where = location === 'Inventory' && Container === 'Equipped' ? 'Equipped' : location
-      addTroveOwner(inventory, Name, troveOwner(character ?? CharacterName, where))
+      const details = [...bankDetails]
+      if (where === 'Inventory') {
+        if (typeof Tab === 'number') details.push('Tab ' + String(Tab))
+        if (typeof Row === 'number' && typeof Column === 'number')
+          details.push(`Row ${String(Row)}, column ${String(Column)}`)
+      } else if (
+        where === 'Equipped' &&
+        Array.isArray(EquipsTo) &&
+        EquipsTo.length === 1 &&
+        typeof EquipsTo[0] === 'string'
+      ) {
+        details.push(EquipsTo[0])
+      }
+      addTroveOwner(inventory, Name, troveOwner(character ?? CharacterName, where, details))
     }
   }
 }
 
 function collectBank(bank: unknown, inventory: Map<string, string[]>, character: unknown, location: string) {
   for (const tab of Object.values(record(record(bank).Tabs))) {
-    for (const page of Object.values(record(record(tab).Pages))) {
-      collectItems(record(page).Items, inventory, character, location)
+    const { Name, Pages } = record(tab)
+    for (const [pageNumber, page] of Object.entries(record(Pages))) {
+      const details = typeof Name === 'string' && Name.trim() ? [Name.trim()] : []
+      details.push('Page ' + pageNumber)
+      collectItems(record(page).Items, inventory, character, location, details)
     }
   }
 }

@@ -20,11 +20,13 @@ export function addTroveOwner(inventory: Map<string, string[]>, name: string, ow
   else if (owner && !owners.includes(owner)) owners.push(owner)
 }
 
-export function troveOwner(character: unknown, location: string) {
-  if (location === 'SharedBank') return 'Shared Bank'
-  if (location === 'SharedCrafting') return 'Shared Crafting Bank'
+export function troveOwner(character: unknown, location: string, details: readonly string[] = []) {
+  const shared = location === 'SharedBank' || location === 'SharedCrafting'
+  const container = shared ? (location === 'SharedBank' ? 'Shared Bank' : 'Shared Crafting Bank') : location
+  const where = [container, ...details].filter(Boolean).join(' · ')
+  if (shared) return where
   const name = typeof character === 'string' ? character.trim() : ''
-  return name && !/^[-—–]$/.test(name) ? (location ? name + ' (' + location + ')' : name) : location
+  return name && !/^[-—–]$/.test(name) ? (where ? name + ' (' + where + ')' : name) : where
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -47,11 +49,15 @@ export function readTroveInventory(): TroveInventory {
           }
         }
       }
-      return inventory
+      if (![...inventory.values()].some((owners) => !owners.length)) return inventory
     }
+    // Older v2 snapshots stored only names. Recover matching holdings from the legacy save when available.
+    const missing =
+      saved === null ? null : new Set([...inventory].filter(([, owners]) => !owners.length).map(([key]) => key))
     const legacy: unknown = JSON.parse(localStorage.getItem('troveData') ?? 'null')
     if (isRecord(legacy)) {
       for (const [name, entry] of Object.entries(legacy)) {
+        if (missing && !missing.has(itemKey(name))) continue
         const holdings = isRecord(entry) ? entry.byCharacter : undefined
         const rows = Array.isArray(holdings)
           ? holdings
@@ -88,7 +94,11 @@ export async function parseTroveCsv(text: string): Promise<TroveInventory> {
   const inventory = new Map<string, string[]>()
   for (const row of parsed.data) {
     if (Number.isFinite(Number(row.Quantity)) && Number(row.Quantity) > 0) {
-      addTroveOwner(inventory, row.Name, troveOwner(row.Character, row.Location.trim()))
+      addTroveOwner(
+        inventory,
+        row.Name,
+        troveOwner(row.Character, row.Location.trim(), row.Tab?.trim() ? ['Tab ' + row.Tab.trim()] : [])
+      )
     }
   }
   return inventory

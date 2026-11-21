@@ -25,6 +25,13 @@
   justify-content: space-between;
   flex-wrap: nowrap;
 }
+.setupActions {
+  --setup-action-size: 1.875rem;
+  flex-shrink: 0;
+}
+.setupActions button {
+  height: var(--setup-action-size);
+}
 .toolbar > :first-child {
   min-width: 0;
   max-width: 100%;

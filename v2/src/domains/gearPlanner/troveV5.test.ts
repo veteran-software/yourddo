@@ -14,12 +14,14 @@ describe('Trove v5 inventory', () => {
       snapshot('hero-1-inventory.json', {
         Name: 'Character',
         Inventory: [
-          { Name: ' Helm ', Effects: [{ Name: 'Insight' }], Container: 'Equipped' },
-          { Name: 'Helm', Container: 'Equipped' },
+          { Name: ' Helm ', Effects: [{ Name: 'Insight' }], Container: 'Equipped', EquipsTo: ['Head'] },
+          { Name: 'Helm', Container: 'Equipped', EquipsTo: ['Head'] },
           { Name: 'Spent', Quantity: 0 }
         ]
       }),
-      snapshot('hero-2-inventory.json', { Inventory: [{ Name: 'Helm', Quantity: 1, CharacterName: 'Alt' }] }),
+      snapshot('hero-2-inventory.json', {
+        Inventory: [{ Name: 'Helm', Quantity: 1, CharacterName: 'Alt', Tab: 3, Row: 2, Column: 4 }]
+      }),
       snapshot('hero-1-bank.json', { Name: 'Bank Alt', PersonalBank: bank('Sword'), ReincarnationBank: bank('Ring') }),
       snapshot('account.json', { SharedBank: bank('Helm'), CraftingBank: bank('Ingot') }),
       snapshot('preferences.json', { Name: 'Ignored' })
@@ -27,10 +29,14 @@ describe('Trove v5 inventory', () => {
     const { inventory, fileCount } = await importTroveV5(files)
     expect(fileCount).toBe(4)
     expect(Object.fromEntries(inventory)).toEqual({
-      helm: ['Character (Equipped)', 'Alt (Inventory)', 'Shared Bank'],
-      sword: ['Bank Alt (Bank)'],
-      ring: ['Bank Alt (Reincarnation Cache)'],
-      ingot: ['Shared Crafting Bank']
+      helm: [
+        'Character (Equipped · Head)',
+        'Alt (Inventory · Tab 3 · Row 2, column 4)',
+        'Shared Bank · Tab name · Page 1'
+      ],
+      sword: ['Bank Alt (Bank · Tab name · Page 1)'],
+      ring: ['Bank Alt (Reincarnation Cache · Tab name · Page 1)'],
+      ingot: ['Shared Crafting Bank · Tab name · Page 1']
     })
   })
   it('rejects a damaged batch before replacing ownership, and reports folders without snapshots', async () => {

@@ -1,4 +1,4 @@
-import { Button, Checkbox, Code, FileButton, Group, Modal, SegmentedControl, Stack, Text } from '@mantine/core'
+import { Badge, Button, Checkbox, Code, FileButton, Group, Modal, SegmentedControl, Stack, Text } from '@mantine/core'
 import { IconCopy, IconFolderOpen, IconUpload } from '@tabler/icons-react'
 import { copyText } from '../../../shared/serialization/browser'
 import { useState, type ReactNode, type MouseEvent } from 'react'
@@ -31,22 +31,46 @@ export function TroveOwnership({
   const { inventory } = useTroveInventory()
   const owners = getTroveOwners(inventory, name, filigree)
   if (!owners) return null
-  if (!inOption && owners.length > 2) {
+  const badge = (
+    <Badge component='span' size='xs' variant='light' color='teal' radius='sm'>
+      Owned
+    </Badge>
+  )
+  const first = owners[0] ?? 'Location unavailable · reimport Trove to refresh'
+  const label = (
+    <Group component='span' gap={6} align='baseline' wrap='wrap'>
+      {badge}
+      <Text component='span' size='xs' style={{ overflowWrap: 'anywhere' }}>
+        {first}
+      </Text>
+    </Group>
+  )
+  if (owners.length <= 1) return label
+  if (inOption)
     return (
-      <details>
-        <Text component='summary' size='xs' fw={500} c='teal' style={{ cursor: 'pointer', overflowWrap: 'anywhere' }}>
-          Owned · {owners[0]} · {owners.length - 1} more locations
-        </Text>
-        <Text size='xs' mt={2} style={{ overflowWrap: 'anywhere' }}>
-          {owners.slice(1).join(', ')}
-        </Text>
-      </details>
+      <Stack gap={2}>
+        {label}
+        <Text size='xs'>{owners.slice(1).join(' · ')}</Text>
+      </Stack>
     )
-  }
   return (
-    <Text size='xs' fw={500} c='teal' style={{ overflowWrap: 'anywhere' }}>
-      {owners.length ? 'Owned · ' + owners.join(', ') : 'Owned'}
-    </Text>
+    <details>
+      <summary style={{ cursor: 'pointer' }}>
+        <Group component='span' display='inline-flex' gap={6} align='baseline'>
+          {label}
+          <Text component='span' size='xs' c='dimmed'>
+            +{owners.length - 1} more
+          </Text>
+        </Group>
+      </summary>
+      <ul style={{ marginBlock: '.25rem', paddingInlineStart: '1.25rem' }}>
+        {owners.slice(1).map((owner) => (
+          <li key={owner}>
+            <Text size='xs'>{owner}</Text>
+          </li>
+        ))}
+      </ul>
+    </details>
   )
 }
 

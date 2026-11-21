@@ -493,8 +493,11 @@ describe('GearPlannerPage', () => {
     await dialog.findByText(/Inventory updated/)
     fireEvent.click(dialog.getByRole('button', { name: 'Close' }))
     fireEvent.click(screen.getByRole('button', { name: 'Find gear' }))
-    const label = 'Owned · Robin (Bank), Shared Bank'
+    const label = 'Robin (Bank)'
     expect(await screen.findByText(label)).toBeTruthy()
+    expect(screen.getByText('Owned').closest('.mantine-Badge-root')).toBeTruthy()
+    fireEvent.click(screen.getByText('+1 more'))
+    expect(screen.getByText('Shared Bank').closest('details')?.open).toBe(true)
     fireEvent.click(screen.getByRole('button', { name: 'Equip Quiet Helm in Head' }))
     expect(within(screen.getByTestId('gear-item-editor')).getByText(label)).toBeTruthy()
     expect(readTroveInventory().get('quiet helm')).toEqual(['Robin (Bank)', 'Shared Bank'])
@@ -512,8 +515,11 @@ describe('GearPlannerPage', () => {
       ['ring', ['Robin (Inventory)']],
       ['helm', ['Shared Bank', 'Shared Crafting Bank']]
     ])
-    localStorage.setItem(troveStorageKey, JSON.stringify([' Ring ']))
-    expect([...readTroveInventory()]).toEqual([['ring', []]])
+    localStorage.setItem(troveStorageKey, JSON.stringify([' Ring ', 'Unknown']))
+    expect([...readTroveInventory()]).toEqual([
+      ['ring', ['Robin (Inventory)']],
+      ['unknown', []]
+    ])
   })
 
   it('shows the guide on startup, remembers dismissal and can reopen from the masthead', async () => {
@@ -635,6 +641,28 @@ describe('GearPlannerPage', () => {
       expect(screen.getByRole('region', { name: 'Gear Planner workspace' })).toBeTruthy()
     })
     expect(loadGearPlannerData).toHaveBeenCalledTimes(2)
+  })
+
+  it('duplicates a setup, compares a gear change, and reverses the delta when the baseline changes', async () => {
+    const helm = item('helm', 'Head', 'Comparison Helm', 10, [
+      { name: 'Doublestrike', modifier: '+8%', bonus: 'Enhancement' },
+      { name: 'Deathblock' }
+    ])
+    await renderReadyPage(dataWithItems([helm]))
+    const click = async (name: string) => fireEvent.click(await screen.findByRole('button', { name }))
+    await click('Compare')
+    await click('Duplicate setup')
+    await click('Select Head')
+    await click('Equip Comparison Helm')
+    await click('Compare')
+    const dialog = within(await screen.findByRole('dialog', { name: 'Compare loadouts' }))
+    expect(dialog.getByRole('row', { name: /Doublestrike/ }).textContent).toContain('+8%')
+    expect(dialog.getByRole('row', { name: /Deathblock/ }).textContent).toContain('Gained')
+    const select = dialog.getByLabelText<HTMLSelectElement>('Compare to')
+    fireEvent.change(dialog.getByLabelText('Baseline'), { target: { value: select.value } })
+    expect(dialog.getByRole('row', { name: /Doublestrike/ }).textContent).toContain('-8%')
+    fireEvent.click(dialog.getByText('Gear (1)'))
+    expect(dialog.getByRole('row', { name: /Comparison Helm/ }).textContent).toContain('Lost')
   })
 
   it('opens candidates only for clicked Head, Main Hand, and Off Hand slots', async () => {

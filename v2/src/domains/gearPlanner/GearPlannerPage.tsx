@@ -1,4 +1,5 @@
 import { characterAllowsItem, enabledOwners, ownerSlots, slotOwner } from './character'
+import LoadoutComparison from './components/LoadoutComparison'
 import CharacterSetupTool from './tools/CharacterSetupTool'
 import { ownsTroveItem } from './trove'
 import { gearPlannerAugmentIdentity } from './augments'
@@ -42,6 +43,8 @@ import {
   UnstyledButton
 } from '@mantine/core'
 import {
+  IconCopy,
+  IconColumns2,
   IconUserCog,
   IconAlertTriangle,
   IconSearch,
@@ -131,6 +134,7 @@ import {
   createDefaultGearPlannerState,
   createGearPlannerSetupId,
   deleteGearPlannerSetup,
+  duplicateGearPlannerSetup,
   equipGearPlannerSetupItem,
   gearPlannerMinimumLevel,
   gearPlannerMaximumLevel,
@@ -780,9 +784,12 @@ const ItemBrowser = ({
                 Augments that grant this set
               </Text>
               {setAugments.map((augment) => (
-                <Text size='sm' key={gearPlannerAugmentIdentity(augment)}>
-                  {augment.name} · {augment.augmentType} · ML {augment.minLevel}
-                </Text>
+                <Group gap='xs' key={gearPlannerAugmentIdentity(augment)}>
+                  <Text size='sm'>
+                    {augment.name} · {augment.augmentType} · ML {augment.minLevel}
+                  </Text>
+                  <TroveOwnership name={augment.name} />
+                </Group>
               ))}
             </Stack>
           )}
@@ -986,6 +993,7 @@ const GearPlannerWorkspace = () => {
   const [persistenceEnabled, setPersistenceEnabled] = useState(false)
   const [renameOpen, setRenameOpen] = useState(false)
   const [renameValue, setRenameValue] = useState('')
+  const [compareOpen, setCompareOpen] = useState(false)
   const [setupAction, setSetupAction] = useState<'Clear' | 'Delete' | null>(null)
   const [feedback, setFeedback] = useState<{
     kind: 'success' | 'error'
@@ -1305,6 +1313,14 @@ const GearPlannerWorkspace = () => {
     setPersistenceEnabled(true)
   }
 
+  const duplicateSetup = () => {
+    const id = createGearPlannerSetupId()
+    applySetupState((current) => duplicateGearPlannerSetup(current, id))
+    setCompareOpen(false)
+    setReturnSlot(null)
+    setMode('equipped')
+  }
+
   const renderBrowser = (isFinder: boolean) =>
     dataState.status === 'ready' && (
       <ItemBrowser
@@ -1429,9 +1445,20 @@ const GearPlannerWorkspace = () => {
                   ))}
                 </Tabs.List>
               </Tabs>
-              <Group gap='xs' wrap='nowrap'>
+              <Group className={classes.setupActions} gap='xs' wrap='nowrap'>
+                <Button
+                  size='xs'
+                  variant='light'
+                  leftSection={<IconColumns2 size={15} />}
+                  onClick={() => {
+                    setCompareOpen(true)
+                  }}
+                >
+                  Compare
+                </Button>
                 <Tooltip label='Add setup'>
                   <ActionIcon
+                    size='var(--setup-action-size)'
                     aria-label='Add setup'
                     variant='light'
                     onClick={() => {
@@ -1445,6 +1472,7 @@ const GearPlannerWorkspace = () => {
                 </Tooltip>
                 <Tooltip label='Rename active setup'>
                   <ActionIcon
+                    size='var(--setup-action-size)'
                     aria-label='Rename active setup'
                     variant='light'
                     onClick={() => {
@@ -1457,11 +1485,15 @@ const GearPlannerWorkspace = () => {
                 </Tooltip>
                 <Menu position='bottom-end'>
                   <Menu.Target>
-                    <Button size='compact-xs' variant='default'>
+                    <Button size='xs' variant='default'>
                       Setup actions
                     </Button>
                   </Menu.Target>
                   <Menu.Dropdown>
+                    <Menu.Item leftSection={<IconCopy size={16} />} onClick={duplicateSetup}>
+                      Duplicate setup
+                    </Menu.Item>
+
                     <Menu.Item
                       leftSection={<IconX size={16} />}
                       onClick={() => {
@@ -1484,6 +1516,18 @@ const GearPlannerWorkspace = () => {
                 </Menu>
               </Group>
             </div>
+            {compareOpen && (
+              <LoadoutComparison
+                setups={plannerState.setups}
+                active={activeSetup}
+                data={dataState.data}
+                essence={dataState.essenceData}
+                onClose={() => {
+                  setCompareOpen(false)
+                }}
+                duplicate={duplicateSetup}
+              />
+            )}
             {renameOpen ? (
               <Group gap='xs' wrap='nowrap'>
                 <TextInput
