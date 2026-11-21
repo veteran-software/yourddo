@@ -10,7 +10,7 @@ import {
   isGearPlannerEssenceCraftingMaterial,
   resolveEssenceCraftedGearPlannerItem
 } from './essenceCrafting.ts'
-import { collectSelectedGearPlannerFiligrees, getGearPlannerMaxFiligreeSlots } from './filigrees.ts'
+import { getGearPlannerMaxFiligreeSlots } from './filigrees.ts'
 import { classNames, defaultCharacter, slotOwner, proficiencyOptions, type CharacterSettings } from './character'
 import {
   allGearPlannerSlots,
@@ -25,8 +25,8 @@ import {
   setGearPlannerItemReforgingState,
   setGearPlannerSlottedAugment,
   setGearPlannerSlottedCurse,
-  setGearPlannerSlottedFiligree,
-  setGearPlannerUnlockedFiligreeSlots
+  configureHostFiligree,
+  configureHostFiligreeSlots
 } from './planner.ts'
 import {
   getEffectiveGearPlannerAugmentSlots,
@@ -485,15 +485,17 @@ export const serializeGearPlannerState = (state: GearPlannerSetupsState): Persis
     selectedCurses: collectSelectedGearPlannerCurses(setup.equipment, setup.slottedCurses)
       .map(({ item, curse }) => ({ itemId: item.id, curseId: gearPlannerCurseIdentity(curse) }))
       .toSorted((left, right) => left.itemId.localeCompare(right.itemId)),
-    selectedFiligrees: collectSelectedGearPlannerFiligrees(setup.equipment, setup.slottedFiligrees)
-      .map(({ item, slotIndex, filigree }) => ({ itemId: item.id, slotIndex, filigreeId: filigree.id }))
+    selectedFiligrees: Object.entries(setup.slottedFiligrees)
+      .flatMap(([itemId, slots]) =>
+        Object.entries(slots).map(([index, filigree]) => ({
+          itemId,
+          slotIndex: Number(index),
+          filigreeId: filigree.id
+        }))
+      )
       .toSorted((left, right) => left.itemId.localeCompare(right.itemId) || left.slotIndex - right.slotIndex),
-    unlockedFiligreeSlots: Object.values(setup.equipment)
-      .filter((item): item is NonNullable<typeof item> => item !== null && getGearPlannerMaxFiligreeSlots(item) > 0)
-      .map((item) => ({
-        itemId: item.id,
-        count: Math.max(0, Math.min(getGearPlannerMaxFiligreeSlots(item), setup.unlockedFiligreeSlots[item.id] ?? 0))
-      }))
+    unlockedFiligreeSlots: Object.entries(setup.unlockedFiligreeSlots)
+      .map(([itemId, count]) => ({ itemId, count }))
       .toSorted((left, right) => left.itemId.localeCompare(right.itemId)),
     selectedEssenceCrafting: Object.values(setup.equipment)
       .filter(isEssenceCraftedGearPlannerItem)
@@ -725,19 +727,19 @@ export const restorePersistedGearPlannerState = (
       setup = { ...setup, essenceCrafting: { ...setup.essenceCrafting, [item.id]: configuration } }
     }
     for (const savedUnlockedSlots of savedSetup.unlockedFiligreeSlots ?? []) {
-      const item = findEquippedItem(setup, savedUnlockedSlots.itemId)
+      const item = findEquippedItem(setup, savedUnlockedSlots.itemId) ?? itemsById.get(savedUnlockedSlots.itemId)
       if (!item) {
-        issues.push({ kind: 'orphaned-filigree', message: `${savedSetup.name}: filigree host item is not equipped` })
+        issues.push({ kind: 'orphaned-filigree', message: `${savedSetup.name}: filigree host item is unavailable` })
         continue
       }
       if (getGearPlannerMaxFiligreeSlots(item) === 0) continue
-      const selection = setGearPlannerUnlockedFiligreeSlots(setup, item.id, savedUnlockedSlots.count)
+      const selection = configureHostFiligreeSlots(setup, item, savedUnlockedSlots.count)
       setup = selection === setup ? setup : { ...setup, ...selection }
     }
     for (const savedFiligree of savedSetup.selectedFiligrees ?? []) {
-      const item = findEquippedItem(setup, savedFiligree.itemId)
+      const item = findEquippedItem(setup, savedFiligree.itemId) ?? itemsById.get(savedFiligree.itemId)
       if (!item) {
-        issues.push({ kind: 'orphaned-filigree', message: `${savedSetup.name}: filigree host item is not equipped` })
+        issues.push({ kind: 'orphaned-filigree', message: `${savedSetup.name}: filigree host item is unavailable` })
         continue
       }
       const filigree = filigreesById.get(savedFiligree.filigreeId)
@@ -755,9 +757,12 @@ export const restorePersistedGearPlannerState = (
         })
         continue
       }
-      const selection = setGearPlannerSlottedFiligree(setup, item.id, savedFiligree.slotIndex, filigree)
+      const selection = configureHostFiligree(setup, item, savedFiligree.slotIndex, filigree)
       if (selection === setup) {
-        issues.push({ kind: 'invalid-filigree-slot', message: `${savedSetup.name}: filigree slot is not unlocked` })
+        issues.push({
+          kind: 'invalid-filigree-slot',
+          message: `${savedSetup.name}: could not slot ${filigree.name} on ${item.source.name}: the slot is locked, occupied, or this type is already slotted`
+        })
         continue
       }
       setup = { ...setup, ...selection }

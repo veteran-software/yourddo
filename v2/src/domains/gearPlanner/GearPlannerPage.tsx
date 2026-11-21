@@ -1,5 +1,6 @@
 import { characterAllowsItem, enabledOwners, ownerSlots, slotOwner } from './character'
 import LoadoutComparison from './components/LoadoutComparison'
+import AugmentsTool from './tools/AugmentsTool'
 import FarmingTool from './tools/FarmingTool'
 import CharacterSetupTool from './tools/CharacterSetupTool'
 import { ownsTroveItem } from './trove'
@@ -137,6 +138,7 @@ import {
   createGearPlannerSetupId,
   deleteGearPlannerSetup,
   duplicateGearPlannerSetup,
+  exchangeSetupAugments,
   equipGearPlannerSetupItem,
   gearPlannerMinimumLevel,
   gearPlannerMaximumLevel,
@@ -1163,6 +1165,34 @@ const GearPlannerWorkspace = () => {
                 settings={activeSetup.character}
                 onChange={(character) => {
                   applySetupState((current) => updateSetupCharacter(current, activeSetup.id, character))
+                }}
+              />
+            )
+          },
+          {
+            id: 'augments',
+            label: 'Augments',
+            icon: <IconDiamond stroke={2} />,
+            content: (revealWorkspace: () => void) => (
+              <AugmentsTool
+                key={activeSetup.id}
+                setup={activeSetup}
+                augments={dataState.data.augments}
+                slots={effectiveAugmentSlots}
+                effects={allEffects}
+                onChange={(socket, augment) => {
+                  applySetupState((current) =>
+                    setGearPlannerSetupAugment(current, socket.item.id, socket.index, augment, dataState.data.reforging)
+                  )
+                }}
+                onExchange={(from, to) => {
+                  applySetupState((current) =>
+                    exchangeSetupAugments(current, activeSetup.id, from, to, dataState.data.reforging)
+                  )
+                }}
+                openSet={(name) => {
+                  revealWorkspace()
+                  openSet(name)
                 }}
               />
             )

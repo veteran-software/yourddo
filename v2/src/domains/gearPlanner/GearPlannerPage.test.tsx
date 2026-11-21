@@ -883,7 +883,7 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Socketed Helm' }))
     fireEvent.click(screen.getByRole('combobox', { name: 'Colorless socket' }))
-    fireEvent.click(await screen.findByRole('option', { name: /Set Augment: Arcane Barrier/ }))
+    fireEvent.click(await screen.findByRole('button', { name: /Set Augment: Arcane Barrier/ }))
     fireEvent.click(screen.getByRole('button', { name: 'Set Bonuses' }))
     expect(await screen.findByText('1 contribution')).toBeTruthy()
     expect(screen.getByText('Head: Set Augment: Arcane Barrier on Socketed Helm')).toBeTruthy()
@@ -897,7 +897,7 @@ describe('GearPlannerPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
     fireEvent.click(screen.getByRole('combobox', { name: 'Colorless socket' }))
-    fireEvent.click(await screen.findByRole('option', { name: /Set Augment: Arcane Barrier/ }))
+    fireEvent.click(await screen.findByRole('button', { name: /Set Augment: Arcane Barrier/ }))
     fireEvent.click(screen.getByRole('button', { name: 'Clear Head from equipment' }))
     fireEvent.click(screen.getByRole('button', { name: 'Set Bonuses' }))
     expect(await screen.findByText('No set memberships yet')).toBeTruthy()
@@ -1020,23 +1020,23 @@ describe('GearPlannerPage', () => {
     click('Select Head')
     click('Equip Socketed Helm')
     const socket = (name: string) => screen.getByRole<HTMLInputElement>('combobox', { name })
-    const option = (name: RegExp) => within(screen.getByRole('option', { name }))
+    const option = (name: RegExp) => within(screen.getByRole('button', { name }))
     fireEvent.click(socket('Left socket'))
-    fireEvent.click(screen.getByRole('option', { name: /Mixed Ruby/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Mixed Ruby/ }))
     const selected = within(screen.getByTestId('augment-slot-head-0'))
     expect(selected.getByText('Overrides Neck')).toBeTruthy()
     expect(selected.getByText('Redundant (Neck)')).toBeTruthy()
     expect(selected.getByText('Overridden by Neck')).toBeTruthy()
     click('Clear augment')
     fireEvent.click(socket('Left socket'))
-    fireEvent.click(screen.getByRole('option', { name: /Strong Ruby/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Strong Ruby/ }))
     fireEvent.click(socket('Right socket'))
     expect(option(/Mixed Ruby/).queryByText('Upgrade')).toBeNull()
     expect(option(/Mixed Ruby/).getByText(/Strength 6 .*equipped 10/)).toBeTruthy()
     expect(option(/Independent Ruby/).queryByText(/Upgrade|Overpowered|Redundant/)).toBeNull()
-    fireEvent.keyDown(socket('Right socket'), { key: 'Escape' })
+    fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Close' }))
     fireEvent.click(socket('Left socket'))
-    fireEvent.change(socket('Left socket'), { target: { value: 'Mixed Ruby' } })
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search augments' }), { target: { value: 'Mixed Ruby' } })
     const preview = option(/Mixed Ruby/)
     expect(preview.getByText('Upgrade').closest('[title]')?.textContent).toContain(
       'Strength 6 (Enhancement) · equipped 5'
@@ -1048,7 +1048,8 @@ describe('GearPlannerPage', () => {
       'Accuracy 4 (Enhancement) · equipped 5'
     )
     expect(within(screen.getByTestId('augment-slot-head-0')).getAllByText('Strong Ruby').length).toBeGreaterThan(0)
-    expect(socket('Right socket').value).toBe('')
+    fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Close' }))
+    expect(socket('Right socket').textContent).toBe('Select augment')
   })
 
   it('shows selectors only for published item augment slots and filters choices before search', async () => {
@@ -1089,11 +1090,11 @@ describe('GearPlannerPage', () => {
     expect(screen.getByRole('combobox', { name: 'Ruby socket' })).toBeTruthy()
 
     fireEvent.click(screen.getByRole('combobox', { name: 'Ruby socket' }))
-    expect(await screen.findByRole('option', { name: /Ruby of Strength/ })).toBeTruthy()
-    expect(screen.getByRole('option', { name: /Diamond of Strength/ })).toBeTruthy()
-    expect(screen.queryByRole('option', { name: /Sapphire of Strength/ })).toBeNull()
+    expect(await screen.findByRole('button', { name: /Ruby of Strength/ })).toBeTruthy()
+    expect(screen.getByRole('button', { name: /Diamond of Strength/ })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /Sapphire of Strength/ })).toBeNull()
 
-    fireEvent.click(screen.getByRole('option', { name: /Ruby of Strength/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Ruby of Strength/ }))
     expect((await screen.findAllByText('Ruby of Strength')).length).toBeGreaterThan(1)
     expect(screen.getByText('Strength +8 (Enhancement)')).toBeTruthy()
 

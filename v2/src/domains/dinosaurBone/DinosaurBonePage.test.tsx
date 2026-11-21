@@ -147,11 +147,12 @@ describe('DinosaurBonePage', () => {
 
     await user.click(screen.getByRole('button', { name: 'Red Empty' }))
     await user.click(await screen.findByRole('combobox', { name: 'Red augment' }))
+    await user.click(screen.getByRole('switch', { name: 'Show all levels' }))
 
-    expect(await screen.findByText('Red Augments')).toBeTruthy()
-    expect(screen.getByText('Colorless Augments')).toBeTruthy()
-    expect(screen.getByLabelText('Minimum level 20')).toBeTruthy()
-    expect(screen.getByLabelText('Minimum level 8')).toBeTruthy()
+    expect(await screen.findByRole('button', { name: 'Red' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Colorless' })).toBeTruthy()
+    expect(screen.getByText('ML 20')).toBeTruthy()
+    expect(screen.getByText('ML 8')).toBeTruthy()
   })
 
   it('separates IoD and color effect filters and applies each only to its matching slots', async () => {
@@ -172,7 +173,8 @@ describe('DinosaurBonePage', () => {
 
     await user.click(screen.getByRole('button', { name: 'Red Empty' }))
     await user.click(await screen.findByRole('combobox', { name: 'Red augment' }))
-    expect(await screen.findByRole('option', { name: /Red One/ })).toBeTruthy()
+    await user.click(screen.getByRole('switch', { name: 'Show all levels' }))
+    expect(await screen.findByRole('button', { name: /Red One/ })).toBeTruthy()
     await user.keyboard('{Escape}')
 
     await user.click(screen.getByRole('combobox', { name: 'Color augment effect filters' }))
@@ -218,7 +220,8 @@ describe('DinosaurBonePage', () => {
     expect(screen.queryByText('Color augment minimum level')).toBeNull()
     await user.click(screen.getByRole('button', { name: 'Red Empty' }))
     await user.click(await screen.findByRole('combobox', { name: 'Red augment' }))
-    await user.click(await screen.findByRole('option', { name: /Red One/ }))
+    await user.click(screen.getByRole('switch', { name: 'Show all levels' }))
+    await user.click(await screen.findByRole('button', { name: /Red One/ }))
 
     expect(screen.getByText('Color augment minimum level')).toBeTruthy()
     expect(screen.getByText(/raises the item’s minimum level from 15 to 20/)).toBeTruthy()

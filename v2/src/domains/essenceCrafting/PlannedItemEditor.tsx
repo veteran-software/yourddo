@@ -122,9 +122,7 @@ const PlannedItemEditor = memo(
         effectiveMinimumLevel <= data.rules.supportedItemLevels.maximum &&
         effectiveMinimumLevel >= minimumItemLevel &&
         isAugmentSlotTypeAvailable(data, equipmentSlotId, augmentSlot.augmentSlotTypeId)
-      const eligibleAugments = augmentSlotIsEligible
-        ? compatibleAugments.filter((augment) => augment.minimumItemLevel <= effectiveMinimumLevel)
-        : []
+      const eligibleAugments = augmentSlotIsEligible ? compatibleAugments : []
       const filteredCompatibleAugments = filterCompatibleAugmentsByEffectsFromCompatibleAugments(
         eligibleAugments,
         augmentSlot.selectedEffectNames,
@@ -435,6 +433,8 @@ const PlannedItemEditor = memo(
 
                           <Stack gap='xs'>
                             <AugmentSelect
+                              hostLevel={effectiveMinimumLevel}
+                              hardLevelCap
                               label={`Augment for ${slotLabel} on ${label}`}
                               slotType={augmentSlotType.displayName}
                               options={options}

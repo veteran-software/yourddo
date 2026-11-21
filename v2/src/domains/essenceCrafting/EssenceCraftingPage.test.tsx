@@ -77,7 +77,7 @@ const renderPage = () =>
 
 const selectOption = async (user: ReturnType<typeof userEvent.setup>, label: string, option: string | RegExp) => {
   await user.click(await screen.findByRole('combobox', { name: label }))
-  await user.click(await screen.findByRole('option', { name: option }))
+  await user.click(await screen.findByRole(label.startsWith('Augment for ') ? 'button' : 'option', { name: option }))
 }
 
 const getSelect = (label: string) => screen.getByRole<HTMLInputElement>('combobox', { name: label })
@@ -672,11 +672,11 @@ describe('EssenceCraftingPage', () => {
     const augmentLabel = 'Augment for Red augment slot on Main Hand'
 
     await selectOption(user, augmentLabel, /Ruby of Charisma \+1/)
-    expect(getSelect(augmentLabel).value).toBe('Ruby of Charisma +1')
+    expect(getSelect(augmentLabel).textContent).toBe('Ruby of Charisma +1')
     expect(screen.getByText('Charisma: +1 (Enhancement)')).toBeTruthy()
 
     await user.click(screen.getByRole('button', { name: 'Clear augment for Red augment slot on Main Hand' }))
-    expect(getSelect(augmentLabel).value).toBe('')
+    expect(getSelect(augmentLabel).textContent).toBe('Choose augment')
     expect(screen.queryByText('Charisma: +1 (Enhancement)')).toBeNull()
   })
 
@@ -693,15 +693,15 @@ describe('EssenceCraftingPage', () => {
     await selectOption(user, filterLabel, 'Strength')
 
     await user.click(getSelect(augmentLabel))
-    expect(await screen.findByRole('option', { name: /Ruby of Charisma \+1/ })).toBeTruthy()
-    expect(screen.getByRole('option', { name: /Ruby of Strength \+1/ })).toBeTruthy()
-    expect(screen.getByRole('option', { name: /Ruby of Versatility \+1/ })).toBeTruthy()
+    expect(await screen.findByRole('button', { name: /Ruby of Charisma \+1/ })).toBeTruthy()
+    expect(screen.getByRole('button', { name: /Ruby of Strength \+1/ })).toBeTruthy()
+    expect(screen.getByRole('button', { name: /Ruby of Versatility \+1/ })).toBeTruthy()
     await user.keyboard('{Escape}')
 
     await user.click(screen.getByRole('radio', { name: 'Match all effects' }))
     await user.click(getSelect(augmentLabel))
-    expect(await screen.findByRole('option', { name: /Ruby of Versatility \+1/ })).toBeTruthy()
-    expect(screen.queryByRole('option', { name: /Ruby of Charisma \+1/ })).toBeNull()
-    expect(screen.queryByRole('option', { name: /Ruby of Strength \+1/ })).toBeNull()
+    expect(await screen.findByRole('button', { name: /Ruby of Versatility \+1/ })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /Ruby of Charisma \+1/ })).toBeNull()
+    expect(screen.queryByRole('button', { name: /Ruby of Strength \+1/ })).toBeNull()
   })
 })

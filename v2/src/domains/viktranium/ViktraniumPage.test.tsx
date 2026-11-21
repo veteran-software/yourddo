@@ -89,7 +89,9 @@ describe('ViktraniumPage', () => {
 
     await user.click(screen.getByRole('button', { name: 'Red Empty' }))
     await user.click(await screen.findByRole('combobox', { name: 'Red augment' }))
-    await user.click(required((await screen.findAllByRole('option', { name: /Duplicate Name/ })).at(0)))
+    await user.click(screen.getByRole('switch', { name: 'Show all levels' }))
+    await user.click(screen.getByRole('button', { name: 'Red' }))
+    await user.click(await screen.findByRole('button', { name: /Duplicate Name/ }))
     expect(screen.getByRole('button', { name: 'Red Configured' })).toBeTruthy()
 
     await user.click(screen.getByRole('button', { name: 'Finished Item' }))

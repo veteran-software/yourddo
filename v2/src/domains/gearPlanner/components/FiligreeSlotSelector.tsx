@@ -17,7 +17,7 @@ import {
 } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
 import { useId, useMemo, useState } from 'react'
-import { getGearPlannerMaxFiligreeSlots, normalizeGearPlannerFiligreeName } from '../filigrees.ts'
+import { getGearPlannerMaxFiligreeSlots, sameFiligreeType } from '../filigrees.ts'
 import type { GearPlannerEffect, GearPlannerFiligree, GearPlannerItem } from '../gearPlanner.types.ts'
 import { type GearPlannerSlottedFiligrees, gearPlannerUnlockedFiligreeSlotCount } from '../planner.ts'
 
@@ -68,9 +68,7 @@ const FiligreeSlotSelector = ({
   )
   const selectedInAnotherSlot = (filigree: GearPlannerFiligree): boolean =>
     Object.entries(selected).some(
-      ([slotIndex, current]) =>
-        Number(slotIndex) !== activeSlotIndex &&
-        normalizeGearPlannerFiligreeName(current.name) === normalizeGearPlannerFiligreeName(filigree.name)
+      ([slotIndex, current]) => Number(slotIndex) !== activeSlotIndex && sameFiligreeType(current, filigree)
     )
   const close = () => {
     onClose?.()
@@ -117,6 +115,8 @@ const FiligreeSlotSelector = ({
               ) : null}
               {unlocked > 1 ? (
                 <Button
+                  disabled={Boolean(selected[unlocked - 1])}
+                  title={selected[unlocked - 1] ? 'Remove the filigree before removing this slot' : undefined}
                   color='red'
                   size='compact-xs'
                   variant='light'
@@ -236,7 +236,7 @@ const FiligreeSlotSelector = ({
                           </Stack>
                           <Button
                             aria-label={`Select ${filigree.name}`}
-                            disabled={disabled}
+                            disabled={disabled || Boolean(selected[activeSlotIndex])}
                             size='compact-xs'
                             variant='light'
                             onClick={() => {
@@ -245,7 +245,11 @@ const FiligreeSlotSelector = ({
                               setSearch('')
                             }}
                           >
-                            {disabled ? 'Slotted' : 'Select'}
+                            {disabled
+                              ? 'Type already slotted'
+                              : selected[activeSlotIndex]
+                                ? 'Clear slot first'
+                                : 'Select'}
                           </Button>
                         </Group>
                       </Paper>

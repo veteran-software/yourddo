@@ -1,19 +1,7 @@
 import { Badge, Group, Text } from '@mantine/core'
-import { normaliseAugmentSlotType } from '../../../shared/augments/compatibility'
+import { normaliseAugmentSlotType, augmentColors } from '../../../shared/augments/compatibility'
 import ItemMaterial from './ItemMaterial'
 import type { GearPlannerAugmentSlot, GearPlannerItem } from '../gearPlanner.types'
-
-const socketColors: Readonly<Record<string, string>> = {
-  Red: 'red',
-  Blue: 'blue',
-  Yellow: 'yellow',
-  Purple: 'violet',
-  Orange: 'orange',
-  Green: 'green',
-  Colorless: 'gray',
-  Sun: 'yellow',
-  Moon: 'indigo'
-}
 
 function craftingSources(item: GearPlannerItem) {
   if (item.essenceCrafting) return ['Essence Crafting']
@@ -59,7 +47,7 @@ export default function CandidateEquipmentDetails({
                 key={index}
                 variant='dot'
                 tt='none'
-                color={socketColors[name] ?? 'gray'}
+                color={augmentColors[name] ?? 'gray'}
                 title={augmentType}
                 style={{ maxWidth: '100%', height: 'auto', whiteSpace: 'normal' }}
               >

@@ -27,3 +27,17 @@ export const getCompatibleAugmentTypes = (slotType: string): readonly string[] =
   const color = getColorAugmentType(slotType)
   return color ? compatibleColorsBySlot[color] : [normaliseAugmentSlotType(slotType)]
 }
+
+export const augmentColors: Readonly<Record<string, string>> = {
+  Red: 'red',
+  Blue: 'blue',
+  Yellow: 'yellow',
+  Purple: 'violet',
+  Orange: 'orange',
+  Green: 'green',
+  Colorless: 'gray',
+  Sun: 'yellow',
+  Moon: 'indigo'
+}
+export const hasColorPicker = (type: string) =>
+  Boolean(getColorAugmentType(type)) || ['Sun', 'Moon'].includes(normaliseAugmentSlotType(type))

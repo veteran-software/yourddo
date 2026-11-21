@@ -254,7 +254,7 @@ describe('Gear Planner filigree set memberships', () => {
     source: { name: id, type: 'Dagger' }
   })
 
-  it('counts global unique names per grouping, retains partial progress, and activates each reached threshold', () => {
+  it('counts equipped pieces per grouping, retains partial progress, and activates each reached threshold', () => {
     const main = filigreeHost('main', gearPlannerSlots.mainHand)
     const off = filigreeHost('off', gearPlannerSlots.offHand)
     const first = filigree('first', 'First')
@@ -279,9 +279,9 @@ describe('Gear Planner filigree set memberships', () => {
       filigreeDefinitions
     )
     expect(resolved.sets).toMatchObject([
-      { name: 'Filigree Set', category: 'filigree', count: 1, thresholds: [{ isActive: false }, { isActive: false }] }
+      { name: 'Filigree Set', category: 'filigree', count: 2, thresholds: [{ isActive: true }, { isActive: false }] }
     ])
-    expect(resolved.sets[0].memberships).toHaveLength(1)
+    expect(resolved.sets[0].memberships).toHaveLength(2)
 
     selection = setGearPlannerSlottedFiligree(selection, main.id, 1, second)
     resolved = resolveGearPlannerSetState(
@@ -291,9 +291,10 @@ describe('Gear Planner filigree set memberships', () => {
       selection.slottedFiligrees,
       filigreeDefinitions
     )
-    expect(resolved.sets[0].thresholds.map(({ isActive }) => isActive)).toEqual([true, false])
+    expect(resolved.sets[0].thresholds.map(({ isActive }) => isActive)).toEqual([true, true])
     expect(collectActiveSetEffectSources(resolved)).toMatchObject([
-      { category: 'set', setCategory: 'filigree', setName: 'Filigree Set', setThreshold: 2 }
+      { category: 'set', setCategory: 'filigree', setName: 'Filigree Set', setThreshold: 2 },
+      { setThreshold: 3 }
     ])
     selection = setGearPlannerSlottedFiligree(selection, main.id, 1, null)
     expect(
@@ -304,7 +305,7 @@ describe('Gear Planner filigree set memberships', () => {
         selection.slottedFiligrees,
         filigreeDefinitions
       ).sets[0].count
-    ).toBe(1)
+    ).toBe(2)
   })
 
   it('keeps unresolved filigree definitions safe and countable', () => {

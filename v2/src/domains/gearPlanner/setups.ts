@@ -1,3 +1,5 @@
+import { canExchangeAugments, type LoadoutSocket } from './augmentSockets'
+import { enabledOwners, slotOwner } from './character'
 import { gearCraftGroups, applyGearCraft, type GearCraftingData } from './crafting.ts'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { createGearPlannerEssenceCraftingConfiguration, isEssenceCraftedGearPlannerItem } from './essenceCrafting.ts'
@@ -174,6 +176,33 @@ export const setGearPlannerSetupAugment = (
     const selection = setGearPlannerSlottedAugment(setup, itemId, slotIndex, augment, augmentSlots)
     return selection === setup ? setup : { ...setup, ...selection }
   })
+
+export function exchangeSetupAugments(
+  state: GearPlannerSetupsState,
+  setupId: string,
+  from: LoadoutSocket,
+  to: LoadoutSocket,
+  data: GearPlannerReforgingData
+) {
+  if (state.activeSetupId !== setupId) return state
+  return replaceSetup(state, setupId, (setup) => {
+    const owners = enabledOwners(setup.character.classes)
+    function current(socket: LoadoutSocket) {
+      const item = setup.equipment[socket.item.slot]
+      if (item?.id !== socket.item.id || !owners.includes(slotOwner(item.slot))) return
+      const slots = getEffectiveGearPlannerAugmentSlots(item, setup.reforging[item.id], data)
+      const slot = slots[socket.index]
+      if (!slot || (setup.slottedAugments[item.id]?.[socket.index] ?? null) !== socket.augment) return
+      return { ...socket, item, slot, slots }
+    }
+    const a = current(from),
+      b = current(to)
+    if (!a || !b || !canExchangeAugments(a, b)) return setup
+    const first = setGearPlannerSlottedAugment(setup, a.item.id, a.index, b.augment, a.slots)
+    const next = setGearPlannerSlottedAugment(first, b.item.id, b.index, a.augment, b.slots)
+    return { ...setup, ...next }
+  })
+}
 
 export const setGearPlannerSetupReforgingState = (
   state: GearPlannerSetupsState,

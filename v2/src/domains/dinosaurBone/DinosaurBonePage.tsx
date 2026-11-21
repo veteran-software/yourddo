@@ -452,6 +452,7 @@ const DinosaurBonePage = () => {
                                   <Accordion.Panel>
                                     <Stack gap='xs'>
                                       <AugmentSelect
+                                        hostLevel={Number(selectedItem.minLevel) || undefined}
                                         label={`${slot.label} augment`}
                                         slotType={slot.augmentType}
                                         placeholder={`Search ${slot.label} options…`}

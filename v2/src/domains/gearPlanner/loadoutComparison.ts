@@ -105,7 +105,12 @@ export function loadoutSnapshot(
   for (const set of sets.sets)
     for (const tier of set.thresholds)
       if (tier.isActive) tiers.set(`${set.name} · ${String(tier.threshold)}-piece`, { text: 'Active' })
-  return { Stats: stats, Sets: tiers, Gear: gear }
+  return {
+    Stats: stats,
+    Sets: tiers,
+    Gear: gear,
+    predictsProwessStack: new Set(effects.filter((e) => e.filigreeType === 71).map((e) => e.itemId)).size > 1
+  }
 }
 
 export function comparisonRows(before: Entries, after: Entries) {

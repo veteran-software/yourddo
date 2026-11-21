@@ -11,11 +11,7 @@ import {
   isGearPlannerEssenceAffixValid,
   isGearPlannerEssenceCraftingMaterial
 } from './essenceCrafting.ts'
-import {
-  getGearPlannerMaxFiligreeSlots,
-  isGearPlannerMinorArtifact,
-  normalizeGearPlannerFiligreeName
-} from './filigrees.ts'
+import { getGearPlannerMaxFiligreeSlots, isGearPlannerMinorArtifact, sameFiligreeType } from './filigrees.ts'
 import type {
   GearPlannerAugment,
   GearPlannerCurse,
@@ -186,8 +182,6 @@ export const equipGearPlannerItemInSelection = (
       ...next,
       slottedAugments: withoutItemRecord(next.slottedAugments, previous.id),
       slottedCurses: withoutItemRecord(next.slottedCurses, previous.id),
-      slottedFiligrees: withoutItemRecord(next.slottedFiligrees, previous.id),
-      unlockedFiligreeSlots: withoutItemRecord(next.unlockedFiligreeSlots, previous.id),
       essenceCrafting: withoutItemRecord(next.essenceCrafting, previous.id),
       reforging: withoutItemRecord(next.reforging, previous.id)
     }
@@ -362,24 +356,23 @@ export const setGearPlannerUnlockedFiligreeSlots = (
   requestedCount: number
 ): GearPlannerSelectionState => {
   const item = equippedItemById(state.equipment, itemId)
-  const maximum = item ? getGearPlannerMaxFiligreeSlots(item) : 0
-  if (!item || maximum === 0 || !Number.isInteger(requestedCount)) return state
+  return item ? configureHostFiligreeSlots(state, item, requestedCount) : state
+}
+
+export function configureHostFiligreeSlots(
+  state: GearPlannerSelectionState,
+  item: GearPlannerItem,
+  requestedCount: number
+): GearPlannerSelectionState {
+  const maximum = getGearPlannerMaxFiligreeSlots(item)
+  if (!maximum || !Number.isInteger(requestedCount)) return state
   const count = Math.max(0, Math.min(maximum, requestedCount))
-  const previousCount = gearPlannerUnlockedFiligreeSlotCount(item, state.unlockedFiligreeSlots)
-  const currentFiligrees = state.slottedFiligrees[itemId] ?? {}
-  const remainingFiligrees = Object.fromEntries(
-    Object.entries(currentFiligrees).filter(([slotIndex]) => Number(slotIndex) < count)
-  ) as Readonly<Record<number, GearPlannerFiligree>>
-  const slottedFiligrees =
-    Object.keys(remainingFiligrees).length > 0
-      ? { ...state.slottedFiligrees, [itemId]: remainingFiligrees }
-      : withoutItemRecord(state.slottedFiligrees, itemId)
-  if (count === previousCount && slottedFiligrees === state.slottedFiligrees) return state
-  return {
-    ...state,
-    slottedFiligrees,
-    unlockedFiligreeSlots: { ...state.unlockedFiligreeSlots, [itemId]: count }
-  }
+  if (
+    count === gearPlannerUnlockedFiligreeSlotCount(item, state.unlockedFiligreeSlots) ||
+    Object.keys(state.slottedFiligrees[item.id] ?? {}).some((index) => Number(index) >= count)
+  )
+    return state
+  return { ...state, unlockedFiligreeSlots: { ...state.unlockedFiligreeSlots, [item.id]: count } }
 }
 
 export const setGearPlannerSlottedFiligree = (
@@ -389,8 +382,17 @@ export const setGearPlannerSlottedFiligree = (
   filigree: GearPlannerFiligree | null
 ): GearPlannerSelectionState => {
   const item = equippedItemById(state.equipment, itemId)
+  return item ? configureHostFiligree(state, item, slotIndex, filigree) : state
+}
+
+export function configureHostFiligree(
+  state: GearPlannerSelectionState,
+  item: GearPlannerItem,
+  slotIndex: number,
+  filigree: GearPlannerFiligree | null
+): GearPlannerSelectionState {
+  const itemId = item.id
   if (
-    !item ||
     !Number.isInteger(slotIndex) ||
     slotIndex < 0 ||
     slotIndex >= getGearPlannerMaxFiligreeSlots(item) ||
@@ -401,11 +403,8 @@ export const setGearPlannerSlottedFiligree = (
   const currentItemFiligrees = state.slottedFiligrees[itemId] ?? {}
   if (
     filigree &&
-    Object.entries(currentItemFiligrees).some(
-      ([currentSlot, selected]) =>
-        Number(currentSlot) !== slotIndex &&
-        normalizeGearPlannerFiligreeName(selected.name) === normalizeGearPlannerFiligreeName(filigree.name)
-    )
+    (currentItemFiligrees[slotIndex] ||
+      Object.values(currentItemFiligrees).some((selected) => sameFiligreeType(selected, filigree)))
   ) {
     return state
   }

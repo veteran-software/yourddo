@@ -1,6 +1,7 @@
+import AugmentPicker from './AugmentPicker'
 import { Badge, Group, Select, Text } from '@mantine/core'
 import { useMemo } from 'react'
-import { getCompatibleAugmentTypes } from './compatibility.ts'
+import { hasColorPicker, getCompatibleAugmentTypes } from './compatibility.ts'
 
 export interface AugmentSelectOption {
   value?: string
@@ -18,6 +19,8 @@ interface AugmentSelectProps<T extends AugmentSelectOption> {
   value: string | null | undefined
   onChange: (value: string | null) => void
   placeholder?: string
+  hostLevel?: number
+  hardLevelCap?: boolean
   nothingFoundMessage?: string
 }
 
@@ -36,6 +39,8 @@ const AugmentSelect = <T extends AugmentSelectOption>({
   value,
   onChange,
   placeholder,
+  hostLevel,
+  hardLevelCap,
   nothingFoundMessage = 'No compatible augments found.'
 }: AugmentSelectProps<T>) => {
   const compatibleTypes = useMemo(() => getCompatibleAugmentTypes(slotType), [slotType])
@@ -58,6 +63,24 @@ const AugmentSelect = <T extends AugmentSelectOption>({
     [compatibleOptions, compatibleTypes]
   )
 
+  if (hasColorPicker(slotType))
+    return (
+      <AugmentPicker
+        label={label}
+        colors={compatibleTypes}
+        hostLevel={hostLevel}
+        value={value}
+        onChange={onChange}
+        options={compatibleOptions.map((a) => ({
+          value: optionValue(a),
+          label: optionLabel(a),
+          augmentType: a.augmentType,
+          minimumLevel: minimumLevel(a),
+          disabled: Boolean(hardLevelCap && hostLevel !== undefined && Number(minimumLevel(a)) > hostLevel)
+        }))}
+        nothingFoundMessage={nothingFoundMessage}
+      />
+    )
   return (
     <Select
       label={label}

@@ -367,6 +367,7 @@ const ViktraniumPage = () => {
                               <Accordion.Panel>
                                 <Stack gap='sm'>
                                   <AugmentSelect
+                                    hostLevel={selectedItem.minimumLevel}
                                     label={`${slot.label} augment`}
                                     slotType={slot.augmentType}
                                     options={shownOptions.map((augment) => ({

@@ -4,6 +4,7 @@ import { MantineProvider } from '@mantine/core'
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import { troveStorageKey } from '../../domains/gearPlanner/trove'
 import AugmentSelect from './AugmentSelect.tsx'
 
 beforeAll(() => {
@@ -34,6 +35,39 @@ beforeAll(() => {
 afterEach(cleanup)
 
 describe('AugmentSelect', () => {
+  it('combines Trove ownership, socket color, search and host-level filters in the dialog', async () => {
+    localStorage.setItem(troveStorageKey, JSON.stringify(['Owned ruby']))
+    try {
+      const user = userEvent.setup()
+      render(
+        <MantineProvider env='test'>
+          <AugmentSelect
+            label='Purple socket'
+            slotType='Purple'
+            hostLevel={10}
+            value={null}
+            onChange={vi.fn()}
+            options={[
+              { name: 'Owned ruby', augmentType: 'Red', minLevel: 20 },
+              { name: 'Other ruby', augmentType: 'Red', minLevel: 2 },
+              { name: 'Other sapphire', augmentType: 'Blue', minLevel: 2 }
+            ]}
+          />
+        </MantineProvider>
+      )
+      expect(screen.queryByLabelText('Show owned')).toBeNull()
+      await user.click(screen.getByRole('combobox', { name: 'Purple socket' }))
+      await user.click(screen.getByRole('button', { name: 'Red' }))
+      await user.type(screen.getByRole('textbox', { name: 'Search augments' }), 'ruby')
+      await user.click(screen.getByLabelText('Show owned'))
+      expect(screen.queryByRole('button', { name: /Other ruby|Owned ruby/ })).toBeNull()
+      await user.click(screen.getByLabelText('Show all levels'))
+      expect(screen.getByRole('button', { name: /Owned ruby/ })).toBeTruthy()
+      expect(screen.queryByRole('button', { name: /Other ruby|Other sapphire/ })).toBeNull()
+    } finally {
+      localStorage.removeItem(troveStorageKey)
+    }
+  })
   it('selects stable values while preserving duplicate display labels', async () => {
     const onChange = vi.fn()
     const user = userEvent.setup()
@@ -53,9 +87,10 @@ describe('AugmentSelect', () => {
     )
 
     await user.click(screen.getByRole('combobox', { name: 'Red augment' }))
-    const duplicateOptions = await screen.findAllByRole('option', { name: /Duplicate Name/ })
+    const duplicateOptions = await screen.findAllByRole('button', { name: /Duplicate Name/ })
     expect(duplicateOptions).toHaveLength(2)
-    const colorlessOption = duplicateOptions.at(1)
+    await user.click(screen.getByRole('button', { name: 'Colorless' }))
+    const colorlessOption = screen.getByRole('button', { name: /Duplicate Name/ })
     if (!colorlessOption) throw new Error('Missing colorless test option')
     await user.click(colorlessOption)
     expect(onChange.mock.calls[0]?.[0]).toBe('colorless-id')

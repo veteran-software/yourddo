@@ -8,6 +8,7 @@ import { parseGearPlannerCurseDataset, gearPlannerCurseIdentity } from './curses
 import { loadGearPlannerData } from './data.ts'
 import { collectEquippedEffects } from './effects.ts'
 import { getEssenceCraftedGearPlannerItems } from './essenceCrafting.ts'
+import { loadoutSnapshot, comparisonRows } from './loadoutComparison'
 import { normalizeGearPlannerFiligreeName } from './filigrees.ts'
 import {
   allGearPlannerSlots,
@@ -615,6 +616,79 @@ describe('Gear Planner filigree persistence', () => {
     delete previousV1.setups[0].unlockedFiligreeSlots
     expect(parsePersistedGearPlannerState(previousV1).version).toBe(GEAR_PLANNER_PERSISTED_VERSION)
     expect(restorePersistedGearPlannerState(previousV1, data([sentient], [], [selected])).issues).toEqual([])
+  })
+
+  it('compares equipped Prowess pieces after swapping saved weapon configurations', () => {
+    const first = host()
+    const second = { ...first, id: 'second-weapon' }
+    const artifact = {
+      ...first,
+      id: 'artifact',
+      slot: gearPlannerSlots.trinket,
+      source: { name: 'Artifact', type: 'Trinket', artifactType: 'Minor' }
+    }
+    const strength = { ...filigree(), name: 'Prowess: Strength', grouping: 'Prowess' }
+    const other = {
+      ...strength,
+      id: 'other',
+      name: 'Prowess: Attack',
+      source: { name: 'Prowess: Attack', enchantments: [{ name: 'Attack', modifier: 1 }] }
+    }
+    const definition = {
+      name: 'Prowess',
+      source: {},
+      thresholds: [
+        { threshold: 2, effects: [{ name: 'Physical Resistance Rating', modifier: 5 }] },
+        { threshold: 3, effects: [{ name: 'Melee Power', modifier: 5 }] }
+      ]
+    }
+    const catalog = {
+      ...data([first, second, artifact], [], [strength, other]),
+      filigreeSetDefinitionByName: new Map([['Prowess', definition]])
+    }
+    const essence = validateEssenceCraftingDataset(createEssenceCraftingTestPayload())
+    let state = createDefaultGearPlannerState()
+    for (const hostItem of [artifact, second, first]) {
+      state = equipGearPlannerSetupItem(state, hostItem.slot, hostItem)
+      state = setGearPlannerSetupUnlockedFiligreeSlots(state, hostItem.id, 2)
+      state = setGearPlannerSetupFiligree(state, hostItem.id, 0, strength)
+    }
+    state = setGearPlannerSetupFiligree(state, first.id, 1, other)
+    const before = loadoutSnapshot(state.setups[0], 'Character', catalog, essence)
+    const restored = restorePersistedGearPlannerState(serializeGearPlannerState(state), catalog)
+    expect(restored.issues).toEqual([])
+    state = equipGearPlannerSetupItem(restored.state, second.slot, second)
+    const after = loadoutSnapshot(state.setups[0], 'Character', catalog, essence)
+    expect(after.Stats.get('Strength')?.amount).toBe(2)
+    expect(after.Stats.get('Physical Resistance Rating')?.amount).toBe(5)
+    expect(comparisonRows(before.Stats, after.Stats)).toContainEqual(
+      expect.objectContaining({ label: 'Melee Power', delta: '-5' })
+    )
+    expect(after.Sets.has('Prowess · 3-piece')).toBe(false)
+    expect(after.Sets.has('Prowess · 2-piece')).toBe(true)
+    state = equipGearPlannerSetupItem(state, first.slot, first)
+    expect(loadoutSnapshot(state.setups[0], 'Character', catalog, essence)).toEqual(before)
+  })
+
+  it('reports an imported type 193 conflict and retains the first socket', () => {
+    const weapon = host()
+    const beacon = { ...filigree(), name: "City's Beacon/Enlightened Step: Strength" }
+    const spines = {
+      ...filigree(),
+      id: 'spines-rare',
+      name: 'Spines of the Manticore/The Wreath of Flame: Ranged Power (Rare)'
+    }
+    let state = equipGearPlannerSetupItem(createDefaultGearPlannerState(), weapon.slot, weapon)
+    state = setGearPlannerSetupUnlockedFiligreeSlots(state, weapon.id, 2)
+    const saved = serializeGearPlannerState(state)
+    saved.setups[0].selectedFiligrees = [beacon, spines].map((f, slotIndex) => ({
+      itemId: weapon.id,
+      slotIndex,
+      filigreeId: f.id
+    }))
+    const restored = restorePersistedGearPlannerState(saved, data([weapon], [], [beacon, spines]))
+    expect(restored.issues).toMatchObject([{ kind: 'invalid-filigree-slot' }])
+    expect(restored.state.setups[0].slottedFiligrees[weapon.id]).toEqual({ 0: beacon })
   })
 
   it('skips only missing filigrees and invalid restored slots', () => {

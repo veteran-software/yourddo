@@ -3,7 +3,7 @@ import { collectSelectedGearPlannerAugments } from './augments.ts'
 import { slaveLordsMarker } from './slaveLords'
 import { collectSelectedGearPlannerCurses } from './curses.ts'
 import { type GearPlannerEssenceCraftingConfigurations, resolveGearPlannerEssenceAffixes } from './essenceCrafting.ts'
-import { collectSelectedGearPlannerFiligrees } from './filigrees.ts'
+import { collectSelectedGearPlannerFiligrees, sentientFiligreeType } from './filigrees.ts'
 import type { GearPlannerEffect, GearPlannerItem } from './gearPlanner.types.ts'
 import type {
   GearPlannerEquipment,
@@ -46,6 +46,7 @@ export interface GearPlannerEffectSource {
   essenceEnhancementId?: string
   essenceEnhancementName?: string
   essenceAffixPosition?: 'prefix' | 'suffix' | 'extra'
+  filigreeType?: number
   filigreeName?: string
   filigreeSlotIndex?: number
   reforgingStage?: GearPlannerReforgingStage
@@ -264,6 +265,7 @@ export const collectEquippedEffects = (
       itemName: item.source.name,
       slot: item.slot,
       category: 'filigree' as const,
+      filigreeType: sentientFiligreeType(filigree),
       filigreeName: filigree.name,
       filigreeSlotIndex: slotIndex,
       normalizedName: normalizeEffectName(effect.name),
@@ -276,14 +278,18 @@ export const collectEquippedEffects = (
 const sourceDisplay = (source: GearPlannerEffectSource): string =>
   source.effect.modifier === undefined || source.effect.modifier === null ? '' : String(source.effect.modifier)
 
+const isProwessStrength = (entry: GearPlannerEffectSource) =>
+  entry.filigreeType === 71 && entry.normalizedName === 'strength' && entry.comparisonValue === 1
+
 const withEffectiveEntries = (
   entries: readonly GearPlannerEffectSource[],
   bonusType: string
 ): GearPlannerEffectSummaryGroup => {
   const summing = summingBonusTypes.has(bonusType)
+  const prowessStrength = Math.min(20, new Set(entries.filter(isProwessStrength).map((entry) => entry.itemId)).size)
   const effectiveValue = summing
     ? entries.reduce((total, entry) => total + entry.comparisonValue, 0)
-    : Math.max(0, ...entries.map((entry) => entry.comparisonValue))
+    : Math.max(prowessStrength, ...entries.map((entry) => entry.comparisonValue))
   const effectiveDisplay =
     entries
       .find((entry) => entry.comparisonValue === effectiveValue && sourceDisplay(entry))
@@ -295,7 +301,13 @@ const withEffectiveEntries = (
     bonusType,
     effectiveValue,
     effectiveDisplay,
-    entries: entries.map((entry) => ({ ...entry, isEffective: summing || entry.comparisonValue === effectiveValue }))
+    entries: entries.map((entry) => ({
+      ...entry,
+      isEffective:
+        summing ||
+        entry.comparisonValue === effectiveValue ||
+        (isProwessStrength(entry) && prowessStrength === effectiveValue)
+    }))
   }
 }
 
@@ -417,11 +429,8 @@ export const resolveEffectConflicts = (
   const bySourceId: Record<string, GearPlannerEffectConflictResolution['bySourceId'][string]> = {}
   const conflicts = [...grouped.values()].flatMap((entries): GearPlannerEffectConflict[] => {
     if (entries.length < 2) return []
-    const effectiveValue = Math.max(...entries.map((entry) => entry.comparisonValue))
-    const resolvedEntries = entries.map((entry) => ({
-      ...entry,
-      isEffective: entry.comparisonValue === effectiveValue
-    }))
+    if (entries.every(isProwessStrength)) return []
+    const resolvedEntries = withEffectiveEntries(entries, entries[0].normalizedBonusType).entries
     for (const entry of resolvedEntries)
       bySourceId[entry.id] = { isEffective: entry.isEffective, entries: resolvedEntries }
     return [

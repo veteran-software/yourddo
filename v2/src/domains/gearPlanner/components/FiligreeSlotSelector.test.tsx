@@ -94,6 +94,8 @@ describe('FiligreeSlotSelector', () => {
 
     await user.click(screen.getByRole('button', { name: 'Filigree slot 1' }))
     await user.type(screen.getByRole('textbox', { name: 'Search filigrees' }), 'second')
+    expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Select Second Filigree' }).disabled).toBe(true)
+    await user.click(screen.getByRole('button', { name: 'Clear filigree' }))
     await user.click(screen.getByRole('button', { name: 'Select Second Filigree' }))
     expect(screen.getByRole('button', { name: 'Filigree slot 1' }).textContent).toContain('Second Filigree')
     await user.click(screen.getByRole('button', { name: 'Close filigree selector' }))

@@ -110,6 +110,12 @@ export default function LoadoutComparison({
               label='Show unchanged'
             />
           </Group>
+          {tab !== 'Gear' && (left.predictsProwessStack || right.predictsProwessStack) && (
+            <Text size='sm' c='dimmed'>
+              Prowess: Strength on two hosts is modeled as +2 Strength and two set pieces. In-game confirmation is
+              pending.
+            </Text>
+          )}
           {visible.length ? (
             <div className={css.results}>
               <table aria-label={tab + ' comparison'}>

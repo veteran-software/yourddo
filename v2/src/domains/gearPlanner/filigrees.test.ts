@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
+  collectSelectedGearPlannerFiligrees,
+  sameFiligreeType,
   getGearPlannerMaxFiligreeSlots,
   isGearPlannerMinorArtifact,
   isGearPlannerSentientWeapon,
@@ -57,7 +59,7 @@ describe('Gear Planner filigree capability', () => {
 })
 
 describe('Gear Planner filigree transitions', () => {
-  it('selects, replaces, clears, bounds unlocked slots, and clears reduced slots', () => {
+  it('requires an explicit clear before replacing a filigree or locking its slot', () => {
     const host = item('host', gearPlannerSlots.mainHand, 'Dagger', 30)
     const first = filigree('first', 'First')
     const second = filigree('second', 'Second')
@@ -73,10 +75,14 @@ describe('Gear Planner filigree transitions', () => {
     state = setGearPlannerUnlockedFiligreeSlots(state, host.id, 2)
     state = setGearPlannerSlottedFiligree(state, host.id, 1, second)
     expect(state.slottedFiligrees[host.id]?.[1]).toBe(second)
+    expect(setGearPlannerSlottedFiligree(state, host.id, 0, replacement)).toBe(state)
+    state = setGearPlannerSlottedFiligree(state, host.id, 0, null)
     state = setGearPlannerSlottedFiligree(state, host.id, 0, replacement)
     expect(state.slottedFiligrees[host.id]?.[0]).toBe(replacement)
     state = setGearPlannerSlottedFiligree(state, host.id, 0, null)
     expect(state.slottedFiligrees[host.id]?.[0]).toBeUndefined()
+    expect(setGearPlannerUnlockedFiligreeSlots(state, host.id, 0)).toBe(state)
+    state = setGearPlannerSlottedFiligree(state, host.id, 1, null)
     state = setGearPlannerUnlockedFiligreeSlots(state, host.id, 0)
     expect(state.slottedFiligrees).toEqual({})
     expect(state.unlockedFiligreeSlots[host.id]).toBe(0)
@@ -84,7 +90,7 @@ describe('Gear Planner filigree transitions', () => {
     expect(setGearPlannerUnlockedFiligreeSlots(state, host.id, 99).unlockedFiligreeSlots[host.id]).toBe(10)
   })
 
-  it('cleans replaced and removed host metadata without touching unrelated hosts', () => {
+  it('restores sockets when a host is re-equipped and counts only equipped hosts', () => {
     const head = item('head', gearPlannerSlots.head, 'Trinket', 30, 'Minor')
     const replacement = item('replacement', gearPlannerSlots.head, 'Trinket', 30)
     const mainHand = item('main', gearPlannerSlots.mainHand, 'Dagger', 30)
@@ -98,31 +104,49 @@ describe('Gear Planner filigree transitions', () => {
     state = setGearPlannerSlottedFiligree(state, mainHand.id, 0, second)
     state = equipGearPlannerItemInSelection(state, gearPlannerSlots.head, replacement)
 
-    expect(state.slottedFiligrees).toEqual({ [mainHand.id]: { 0: second } })
-    expect(state.unlockedFiligreeSlots).toEqual({ [mainHand.id]: 2 })
+    expect(collectSelectedGearPlannerFiligrees(state.equipment, state.slottedFiligrees).map((s) => s.filigree)).toEqual(
+      [second]
+    )
     state = equipGearPlannerItemInSelection(state, gearPlannerSlots.mainHand, null)
-    expect(state.slottedFiligrees).toEqual({})
-    expect(state.unlockedFiligreeSlots).toEqual({})
+    expect(collectSelectedGearPlannerFiligrees(state.equipment, state.slottedFiligrees)).toEqual([])
+    state = equipGearPlannerItemInSelection(state, gearPlannerSlots.head, head)
+    expect(collectSelectedGearPlannerFiligrees(state.equipment, state.slottedFiligrees).map((s) => s.filigree)).toEqual(
+      [first]
+    )
+    expect(state.unlockedFiligreeSlots).toEqual({ [mainHand.id]: 2, [head.id]: 1 })
   })
 
-  it('matches legacy duplicate behavior: common/rare names conflict per host, not across hosts', () => {
+  it('resolves shared type 193 across names and prioritizes catalog type IDs', () => {
+    const a = filigree('a', 'City’s Beacon/Enlightened Step: Strength (Rare)')
+    const b = filigree('b', 'Spines of the Manticore/The Wreath of Flame: Ranged Power')
+    expect(sameFiligreeType(a, b)).toBe(true)
+    expect(sameFiligreeType({ ...a, source: { ...a.source, SentientFiligreeType: 500 } }, b)).toBe(false)
+    expect(
+      sameFiligreeType(
+        { ...a, source: { ...a.source, sentientFiligreeType: '500' } },
+        { ...b, source: { ...b.source, SentientFiligreeType: 500 } }
+      )
+    ).toBe(true)
+  })
+
+  it('rejects the rare variant on the weapon while allowing it on a Minor Artifact', () => {
     const mainHand = item('main', gearPlannerSlots.mainHand, 'Dagger', 30)
-    const offHand = item('off', gearPlannerSlots.offHand, 'Dagger', 30)
-    const common = filigree('common', 'Strength')
-    const rare = filigree('rare', 'Strength (Rare)')
+    const artifact = item('artifact', gearPlannerSlots.trinket, 'Trinket', 30, 'Minor')
+    const common = filigree('common', 'Prowess: Strength')
+    const rare = filigree('rare', 'Prowess: Strength (Rare)')
     let state = equipGearPlannerItemInSelection(
       createEmptyGearPlannerSelectionState(),
       gearPlannerSlots.mainHand,
       mainHand
     )
-    state = equipGearPlannerItemInSelection(state, gearPlannerSlots.offHand, offHand)
+    state = equipGearPlannerItemInSelection(state, gearPlannerSlots.trinket, artifact)
     state = setGearPlannerUnlockedFiligreeSlots(state, mainHand.id, 2)
-    state = setGearPlannerUnlockedFiligreeSlots(state, offHand.id, 1)
+    state = setGearPlannerUnlockedFiligreeSlots(state, artifact.id, 1)
     state = setGearPlannerSlottedFiligree(state, mainHand.id, 0, common)
     expect(setGearPlannerSlottedFiligree(state, mainHand.id, 1, rare)).toBe(state)
-    state = setGearPlannerSlottedFiligree(state, offHand.id, 0, rare)
+    state = setGearPlannerSlottedFiligree(state, artifact.id, 0, rare)
 
-    expect(state.slottedFiligrees).toEqual({ [mainHand.id]: { 0: common }, [offHand.id]: { 0: rare } })
+    expect(state.slottedFiligrees).toEqual({ [mainHand.id]: { 0: common }, [artifact.id]: { 0: rare } })
     expect(normalizeGearPlannerFiligreeName(common.name)).toBe(normalizeGearPlannerFiligreeName(rare.name))
   })
 

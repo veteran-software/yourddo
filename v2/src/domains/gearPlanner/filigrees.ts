@@ -69,6 +69,28 @@ export const normalizeGearPlannerFiligreeName = (name: string): string =>
     .trim()
     .toLocaleLowerCase()
 
+// Known identities for releases that predate the type field.
+const knownTypes = new Map([
+  ['prowess: strength', 71],
+  ["city's beacon/enlightened step: strength", 193],
+  ['spines of the manticore/the wreath of flame: ranged power', 193]
+])
+
+export function sentientFiligreeType(filigree: GearPlannerFiligree) {
+  const raw = filigree.source.SentientFiligreeType ?? filigree.source.sentientFiligreeType
+  if ((typeof raw === 'number' || (typeof raw === 'string' && /^\d+$/.test(raw))) && Number.isSafeInteger(Number(raw)))
+    return Number(raw)
+  return knownTypes.get(normalizeGearPlannerFiligreeName(filigree.name).replaceAll('’', "'"))
+}
+
+export function sameFiligreeType(a: GearPlannerFiligree, b: GearPlannerFiligree) {
+  const left = sentientFiligreeType(a),
+    right = sentientFiligreeType(b)
+  return left !== undefined && right !== undefined
+    ? left === right
+    : normalizeGearPlannerFiligreeName(a.name) === normalizeGearPlannerFiligreeName(b.name)
+}
+
 export const filigreeSetNames = (filigree: GearPlannerFiligree) =>
   (filigree.grouping ?? '')
     .split('/')

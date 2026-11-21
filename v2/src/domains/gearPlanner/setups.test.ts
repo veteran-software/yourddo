@@ -1,3 +1,5 @@
+import { emptyGearPlannerReforgingData as reforging } from './reforging'
+import { loadoutSockets } from './augmentSockets'
 import { describe, expect, it } from 'vitest'
 import {
   type GearPlannerAugment,
@@ -13,6 +15,7 @@ import {
   createDefaultGearPlannerState,
   deleteGearPlannerSetup,
   equipGearPlannerSetupItem,
+  exchangeSetupAugments,
   renameGearPlannerSetup,
   selectGearPlannerSetup,
   setGearPlannerSetupAugment,
@@ -38,6 +41,35 @@ const augment: GearPlannerAugment = {
 }
 
 describe('Gear Planner setups', () => {
+  it('moves and swaps augments atomically, rejecting stale or one-way-compatible destinations', () => {
+    const head = item('head', 'Head'),
+      hands = item('hands', 'Hands')
+    hands.source = { ...hands.source, augments: [{ augmentType: 'Purple' }, { augmentType: 'Purple' }] }
+    const blue = { ...augment, name: 'Sapphire', augmentType: 'Blue' }
+    let state = equipGearPlannerSetupItem(createDefaultGearPlannerState(), 'Head', head)
+    state = equipGearPlannerSetupItem(state, 'Hands', hands)
+    state = setGearPlannerSetupAugment(state, head.id, 0, augment)
+    state = setGearPlannerSetupAugment(state, hands.id, 0, blue)
+    const sockets = () =>
+      loadoutSockets(activeGearPlannerSetup(state), {
+        head: head.source.augments ?? [],
+        hands: hands.source.augments ?? []
+      })
+    const [ruby, sapphire, empty] = sockets()
+    const transfer = (a: typeof ruby, b: typeof ruby) =>
+      exchangeSetupAugments(state, state.activeSetupId, a, b, reforging)
+    expect(transfer(ruby, sapphire)).toBe(state)
+    state = transfer(ruby, empty)
+    expect(activeGearPlannerSetup(state).slottedAugments).toEqual({ hands: { 0: blue, 1: augment } })
+    expect(transfer(ruby, empty)).toBe(state)
+    const [, first, second] = sockets()
+    state = transfer(first, second)
+    expect(activeGearPlannerSetup(state).slottedAugments).toEqual({ hands: { 0: augment, 1: blue } })
+    const [, afterFirst, afterSecond] = sockets()
+    state = transfer(afterSecond, afterFirst)
+    expect(activeGearPlannerSetup(state).slottedAugments).toEqual({ hands: { 0: blue, 1: augment } })
+  })
+
   it('starts with one active empty default setup and default levels', () => {
     const state = createDefaultGearPlannerState()
 

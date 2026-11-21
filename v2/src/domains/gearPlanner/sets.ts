@@ -99,32 +99,22 @@ export const collectGearPlannerSetMemberships = (
   ...collectFiligreeSetMemberships(equipment, slottedFiligrees)
 ]
 
-// Legacy counts distinct display names per grouping across all equipped hosts.
 export const collectFiligreeSetMemberships = (
   equipment: GearPlannerEquipment,
   slottedFiligrees: GearPlannerSlottedFiligrees
-): readonly GearPlannerSetMembership[] => {
-  const membershipsBySetAndName = new Map<string, Map<string, GearPlannerSetMembership>>()
-  for (const { item, slotIndex, filigree } of collectSelectedGearPlannerFiligrees(equipment, slottedFiligrees)) {
-    for (const setName of filigreeSetNames(filigree)) {
-      const byName = membershipsBySetAndName.get(setName) ?? new Map<string, GearPlannerSetMembership>()
-      membershipsBySetAndName.set(setName, byName)
-      if (!byName.has(filigree.name)) {
-        byName.set(filigree.name, {
-          id: `${item.id}:filigree-set:${String(slotIndex)}:${encodeURIComponent(setName)}`,
-          setName,
-          category: 'filigree',
-          itemId: item.id,
-          itemName: item.source.name,
-          slot: item.slot,
-          filigreeName: filigree.name,
-          filigreeSlotIndex: slotIndex
-        })
-      }
-    }
-  }
-  return [...membershipsBySetAndName.values()].flatMap((byName) => [...byName.values()])
-}
+): readonly GearPlannerSetMembership[] =>
+  collectSelectedGearPlannerFiligrees(equipment, slottedFiligrees).flatMap(({ item, slotIndex, filigree }) =>
+    filigreeSetNames(filigree).map((setName) => ({
+      id: `${item.id}:filigree-set:${String(slotIndex)}:${encodeURIComponent(setName)}`,
+      setName,
+      category: 'filigree' as const,
+      itemId: item.id,
+      itemName: item.source.name,
+      slot: item.slot,
+      filigreeName: filigree.name,
+      filigreeSlotIndex: slotIndex
+    }))
+  )
 
 export const resolveGearPlannerSetState = (
   equipment: GearPlannerEquipment,
