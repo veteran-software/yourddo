@@ -1,13 +1,12 @@
+import TierBadges from './TierBadges'
 import { createCraftingSelection } from '../../shared/layout/craftingSession'
 import {
   Alert,
   Anchor,
-  Badge,
   Button,
   Center,
   Checkbox,
   Grid,
-  Group,
   Loader,
   Paper,
   Select,
@@ -47,22 +46,6 @@ type DataState = { status: 'loading' } | { status: 'loaded'; data: LgsData } | {
 
 const selected = <T extends { name: string }>(values: readonly T[] | undefined, name: string | null): T | undefined =>
   values?.find((value) => value.name === name)
-
-const TierBadges = ({ tier }: { tier: LgsTierAugment }) => (
-  <Group gap={6} wrap='wrap'>
-    {tier.focuses.map((focus, index) => (
-      <Badge key={index} variant='light'>
-        {focus}
-      </Badge>
-    ))}
-    <Badge variant='outline' color='gray'>
-      {tier.essence}
-    </Badge>
-    <Badge variant='outline' color='gray'>
-      {tier.gem}
-    </Badge>
-  </Group>
-)
 
 const focusLabel = (tier: LgsTierAugment) => [tier.focuses.join(' / '), tier.essence, tier.gem].join(' · ')
 

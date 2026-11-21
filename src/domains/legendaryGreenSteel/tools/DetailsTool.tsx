@@ -1,25 +1,9 @@
-import { keyedEntries } from '../../../shared/ui/keyedEntries'
-import { Alert, Badge, Divider, Group, Stack, Text, Title } from '@mantine/core'
+import TierBadges from '../TierBadges'
+import { Alert, Divider, Stack, Text, Title } from '@mantine/core'
 import BonusDetails from '../BonusDetails.tsx'
 import DiscrepancyList from '../DiscrepancyList.tsx'
 import EffectList from '../../../shared/items/EffectList.tsx'
 import type { LgsActiveAugment, LgsBaseItem, LgsBonusEffect, LgsTierAugment } from '../legendaryGreenSteel.types.ts'
-
-const TierBadges = ({ tier }: { tier: LgsTierAugment }) => (
-  <Group gap={6} wrap='wrap'>
-    {keyedEntries(tier.focuses).map(({ key, value: focus }) => (
-      <Badge key={key} variant='light'>
-        {focus}
-      </Badge>
-    ))}
-    <Badge variant='outline' color='gray'>
-      {tier.essence}
-    </Badge>
-    <Badge variant='outline' color='gray'>
-      {tier.gem}
-    </Badge>
-  </Group>
-)
 
 const TierDetails = ({ label, tier }: { label: string; tier: LgsTierAugment | undefined }) => (
   <Stack gap='xs'>

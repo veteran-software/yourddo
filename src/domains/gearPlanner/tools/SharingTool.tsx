@@ -1,3 +1,4 @@
+import { keyedEntries } from '../../../shared/ui/keyedEntries'
 import { useState } from 'react'
 import { Button, Group, Modal, Stack, Text } from '@mantine/core'
 import SharingPanel from '../../../shared/layout/SharingPanel'
@@ -21,8 +22,8 @@ export function ImportDetails({ issues }: Readonly<{ issues?: readonly GearPlann
     <details>
       <summary>Import details</summary>
       <Stack gap={2} mah='8rem' style={{ overflowY: 'auto' }}>
-        {issues.map((issue, i) => (
-          <Text key={i} size='xs'>
+        {keyedEntries(issues).map(({ key, value: issue }) => (
+          <Text key={key} size='xs'>
             {issue.message}
           </Text>
         ))}
