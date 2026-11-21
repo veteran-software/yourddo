@@ -150,6 +150,11 @@ const MaterialList = ({
     </Text>
   )
 
+const itemPlaceholder = (category: string | null, count: number) => {
+  if (!category) return 'Select a category first'
+  return count > 0 ? 'Search for an item…' : `No ${category} items available`
+}
+
 const NearlyFinishedPage = () => {
   const [datasetState, setDatasetState] = useState<DatasetState>({ status: 'loading' })
   const [loadAttempt, setLoadAttempt] = useState(0)
@@ -221,6 +226,254 @@ const NearlyFinishedPage = () => {
     setShoppingListOpened(false)
   }
 
+  const renderRecipe = () => {
+    if (!category)
+      return (
+        <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }}>
+          <Title order={2} size='h3'>
+            Select an item category
+          </Title>
+          <Text c='dimmed'>Choose Heroic, Legendary, or Raid to begin.</Text>
+        </Paper>
+      )
+    if (categoryEntries.length === 0)
+      return (
+        <Alert color='yellow' title={`No ${category} items found`}>
+          The loaded dataset does not contain any Nearly Finished items in this category.
+        </Alert>
+      )
+    if (!selectedItem)
+      return (
+        <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }}>
+          <Title order={2} size='h3'>
+            Select an item
+          </Title>
+          <Text c='dimmed'>Search the {category} item list to view its complete crafting plan.</Text>
+        </Paper>
+      )
+    if (!selectedEntry || !plan)
+      return (
+        <Alert color='red' title='No matching recipe'>
+          The selected item does not have a Nearly Finished reforging recipe in the loaded dataset.
+        </Alert>
+      )
+    return (
+      <Stack gap='xl'>
+        <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
+          <Stack gap='lg'>
+            <Group justify='space-between' align='flex-start' wrap='wrap'>
+              <Stack gap={4}>
+                <Title order={2}>{selectedEntry.item}</Title>
+                <Group gap='xs'>
+                  <Badge variant='light'>{category}</Badge>
+                  <Badge variant='outline'>Nearly Finished</Badge>
+                </Group>
+              </Stack>
+              {choices.length > 1 && (
+                <Stack gap={2} align='flex-end'>
+                  <Text size='xs' c='dimmed'>
+                    Property choice
+                  </Text>
+                  <Text fw={700}>{selectedChoice ?? 'Not selected'}</Text>
+                </Stack>
+              )}
+            </Group>
+
+            <Divider />
+
+            <SimpleGrid cols={{ base: 1, md: 3 }} spacing='xl'>
+              <Stack gap='sm'>
+                <Title order={3} size='h4'>
+                  Direct Reforging Cost
+                </Title>
+                <RequirementList requirements={selectedEntry.cost} />
+              </Stack>
+
+              <Stack gap='sm'>
+                <Title order={3} size='h4'>
+                  Effects Added
+                </Title>
+                {selectedEntry.effectsAdded.length > 0 ? (
+                  <List spacing='xs' size='sm'>
+                    {selectedEntry.effectsAdded.map((effect) => (
+                      <List.Item key={effect.name}>{effect.name}</List.Item>
+                    ))}
+                  </List>
+                ) : (
+                  <Text c='dimmed' size='sm'>
+                    No automatic effects. Choose a property when options are available.
+                  </Text>
+                )}
+              </Stack>
+
+              <Stack gap='sm'>
+                <Title order={3} size='h4'>
+                  Augment Slots Added
+                </Title>
+                {selectedEntry.augments && selectedEntry.augments.length > 0 ? (
+                  <List spacing='xs' size='sm'>
+                    {selectedEntry.augments
+                      .flatMap((augment, augmentIndex) =>
+                        Object.keys(augment).map((slot, slotIndex) => ({ augmentIndex, slot, slotIndex }))
+                      )
+                      .map(({ augmentIndex, slot, slotIndex }) => (
+                        <List.Item key={`${slot}-${String(augmentIndex)}-${String(slotIndex)}`}>
+                          {slot.charAt(0).toUpperCase() + slot.slice(1)} slot
+                        </List.Item>
+                      ))}
+                  </List>
+                ) : (
+                  <Text c='dimmed' size='sm'>
+                    No augment slots are added by this step.
+                  </Text>
+                )}
+              </Stack>
+            </SimpleGrid>
+          </Stack>
+        </Paper>
+
+        <SimpleGrid cols={{ base: 1, md: 2 }} spacing={{ base: 'xl', md: '3rem' }}>
+          <Stack gap='sm'>
+            <Group gap='xs'>
+              <Title order={2} size='h3'>
+                Gather Raw Materials
+              </Title>
+              <Badge variant='light' color='gray'>
+                {plan.rawMaterials.length}
+              </Badge>
+            </Group>
+            <Text c='dimmed' size='sm'>
+              Farm or obtain these base materials before using the melting station.
+            </Text>
+            <MaterialList materials={plan.rawMaterials} emptyMessage='No raw materials are required.' />
+          </Stack>
+
+          <Stack gap='sm'>
+            <Group gap='xs'>
+              <Title order={2} size='h3'>
+                Ordered Crafting Sequence
+              </Title>
+              <Badge variant='light'>{plan.craftedMaterials.length + 1}</Badge>
+            </Group>
+            <Text c='dimmed' size='sm'>
+              Complete each crafted dependency before the operation that consumes it.
+            </Text>
+            <List type='ordered' spacing='lg'>
+              {plan.craftedMaterials.map((step) => (
+                <List.Item key={step.name}>
+                  <Stack gap={4}>
+                    <Group gap='xs'>
+                      <Text fw={700}>{step.name}</Text>
+                      <Badge variant='light' color='gray' size='sm'>
+                        Craft ×{step.quantity}
+                      </Badge>
+                    </Group>
+                    <Text c='dimmed' size='xs'>
+                      Components:{' '}
+                      {step.requirements.map(({ name, quantity }) => `${name} ×${String(quantity)}`).join(', ')}
+                    </Text>
+                  </Stack>
+                </List.Item>
+              ))}
+              <List.Item>
+                <Stack gap={4}>
+                  <Group gap='xs'>
+                    <Text fw={700}>Final reforging: {plan.finalStep.item}</Text>
+                    <Badge variant='filled' size='sm'>
+                      Reforge ×1
+                    </Badge>
+                  </Group>
+                  <Text c='dimmed' size='xs'>
+                    Uses the direct reforging cost shown above.
+                  </Text>
+                </Stack>
+              </List.Item>
+            </List>
+          </Stack>
+        </SimpleGrid>
+      </Stack>
+    )
+  }
+
+  const renderCrafting = () => {
+    if (datasetState.status === 'loading')
+      return (
+        <Center mih={240} role='status' aria-live='polite'>
+          <Stack gap='xs' align='center'>
+            <Loader size='sm' />
+            <Text c='dimmed' size='sm'>
+              Loading Nearly Finished recipes…
+            </Text>
+          </Stack>
+        </Center>
+      )
+    if (datasetState.status === 'error')
+      return (
+        <Alert color='red' title={errorContent[datasetState.kind].title} aria-live='assertive'>
+          <Stack gap='sm' align='flex-start'>
+            <Text size='sm'>{errorContent[datasetState.kind].message}</Text>
+            {import.meta.env.DEV && (
+              <Text c='dimmed' size='xs'>
+                {datasetState.cause instanceof Error ? datasetState.cause.message : String(datasetState.cause)}
+              </Text>
+            )}
+            <Button size='sm' variant='light' onClick={retry}>
+              Retry
+            </Button>
+          </Stack>
+        </Alert>
+      )
+    if (nearlyFinishedEntries.length === 0)
+      return (
+        <Alert color='yellow' title='No Nearly Finished recipes found'>
+          The loaded dataset does not contain any Nearly Finished reforging entries.
+        </Alert>
+      )
+    return (
+      <div className={styles.recipeDesk}>
+        <Stack className={styles.recipeControls} gap='md'>
+          <Title order={2} size='h3'>
+            Select an Item
+          </Title>
+          <Stack gap='sm'>
+            <Select
+              label='Item category'
+              placeholder='Select a category…'
+              data={categories}
+              value={category}
+              onChange={changeCategory}
+              allowDeselect
+            />
+            <Select
+              label='Item'
+              placeholder={itemPlaceholder(category, categoryEntries.length)}
+              data={categoryEntries.map(({ item }) => item)}
+              value={selectedItem}
+              onChange={changeItem}
+              disabled={!category || categoryEntries.length === 0}
+              searchable
+              clearable
+            />
+          </Stack>
+
+          {choices.length > 1 && (
+            <Select
+              label='Property choice'
+              description='Optional for planning; the material cost is the same for every property.'
+              placeholder='Select one option…'
+              data={choices.map(({ name }) => name)}
+              value={selectedChoice}
+              onChange={setSelectedChoice}
+              clearable
+            />
+          )}
+        </Stack>
+
+        {renderRecipe()}
+      </div>
+    )
+  }
+
   return (
     <ToolLayout>
       <WorkspaceHeader
@@ -247,239 +500,7 @@ const NearlyFinishedPage = () => {
         }
       />
 
-      {datasetState.status === 'loading' ? (
-        <Center mih={240} role='status' aria-live='polite'>
-          <Stack gap='xs' align='center'>
-            <Loader size='sm' />
-            <Text c='dimmed' size='sm'>
-              Loading Nearly Finished recipes…
-            </Text>
-          </Stack>
-        </Center>
-      ) : datasetState.status === 'error' ? (
-        <Alert color='red' title={errorContent[datasetState.kind].title} aria-live='assertive'>
-          <Stack gap='sm' align='flex-start'>
-            <Text size='sm'>{errorContent[datasetState.kind].message}</Text>
-            {import.meta.env.DEV && (
-              <Text c='dimmed' size='xs'>
-                {datasetState.cause instanceof Error ? datasetState.cause.message : String(datasetState.cause)}
-              </Text>
-            )}
-            <Button size='sm' variant='light' onClick={retry}>
-              Retry
-            </Button>
-          </Stack>
-        </Alert>
-      ) : nearlyFinishedEntries.length === 0 ? (
-        <Alert color='yellow' title='No Nearly Finished recipes found'>
-          The loaded dataset does not contain any Nearly Finished reforging entries.
-        </Alert>
-      ) : (
-        <div className={styles.recipeDesk}>
-          <Stack className={styles.recipeControls} gap='md'>
-            <Title order={2} size='h3'>
-              Select an Item
-            </Title>
-            <Stack gap='sm'>
-              <Select
-                label='Item category'
-                placeholder='Select a category…'
-                data={categories}
-                value={category}
-                onChange={changeCategory}
-                allowDeselect
-              />
-              <Select
-                label='Item'
-                placeholder={
-                  !category
-                    ? 'Select a category first'
-                    : categoryEntries.length > 0
-                      ? 'Search for an item…'
-                      : `No ${category} items available`
-                }
-                data={categoryEntries.map(({ item }) => item)}
-                value={selectedItem}
-                onChange={changeItem}
-                disabled={!category || categoryEntries.length === 0}
-                searchable
-                clearable
-              />
-            </Stack>
-
-            {choices.length > 1 && (
-              <Select
-                label='Property choice'
-                description='Optional for planning; the material cost is the same for every property.'
-                placeholder='Select one option…'
-                data={choices.map(({ name }) => name)}
-                value={selectedChoice}
-                onChange={setSelectedChoice}
-                clearable
-              />
-            )}
-          </Stack>
-
-          {!category ? (
-            <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }}>
-              <Title order={2} size='h3'>
-                Select an item category
-              </Title>
-              <Text c='dimmed'>Choose Heroic, Legendary, or Raid to begin.</Text>
-            </Paper>
-          ) : categoryEntries.length === 0 ? (
-            <Alert color='yellow' title={`No ${category} items found`}>
-              The loaded dataset does not contain any Nearly Finished items in this category.
-            </Alert>
-          ) : !selectedItem ? (
-            <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }}>
-              <Title order={2} size='h3'>
-                Select an item
-              </Title>
-              <Text c='dimmed'>Search the {category} item list to view its complete crafting plan.</Text>
-            </Paper>
-          ) : !selectedEntry || !plan ? (
-            <Alert color='red' title='No matching recipe'>
-              The selected item does not have a Nearly Finished reforging recipe in the loaded dataset.
-            </Alert>
-          ) : (
-            <Stack gap='xl'>
-              <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
-                <Stack gap='lg'>
-                  <Group justify='space-between' align='flex-start' wrap='wrap'>
-                    <Stack gap={4}>
-                      <Title order={2}>{selectedEntry.item}</Title>
-                      <Group gap='xs'>
-                        <Badge variant='light'>{category}</Badge>
-                        <Badge variant='outline'>Nearly Finished</Badge>
-                      </Group>
-                    </Stack>
-                    {choices.length > 1 && (
-                      <Stack gap={2} align='flex-end'>
-                        <Text size='xs' c='dimmed'>
-                          Property choice
-                        </Text>
-                        <Text fw={700}>{selectedChoice ?? 'Not selected'}</Text>
-                      </Stack>
-                    )}
-                  </Group>
-
-                  <Divider />
-
-                  <SimpleGrid cols={{ base: 1, md: 3 }} spacing='xl'>
-                    <Stack gap='sm'>
-                      <Title order={3} size='h4'>
-                        Direct Reforging Cost
-                      </Title>
-                      <RequirementList requirements={selectedEntry.cost} />
-                    </Stack>
-
-                    <Stack gap='sm'>
-                      <Title order={3} size='h4'>
-                        Effects Added
-                      </Title>
-                      {selectedEntry.effectsAdded.length > 0 ? (
-                        <List spacing='xs' size='sm'>
-                          {selectedEntry.effectsAdded.map((effect) => (
-                            <List.Item key={effect.name}>{effect.name}</List.Item>
-                          ))}
-                        </List>
-                      ) : (
-                        <Text c='dimmed' size='sm'>
-                          No automatic effects. Choose a property when options are available.
-                        </Text>
-                      )}
-                    </Stack>
-
-                    <Stack gap='sm'>
-                      <Title order={3} size='h4'>
-                        Augment Slots Added
-                      </Title>
-                      {selectedEntry.augments && selectedEntry.augments.length > 0 ? (
-                        <List spacing='xs' size='sm'>
-                          {selectedEntry.augments
-                            .flatMap((augment, augmentIndex) =>
-                              Object.keys(augment).map((slot, slotIndex) => ({ augmentIndex, slot, slotIndex }))
-                            )
-                            .map(({ augmentIndex, slot, slotIndex }) => (
-                              <List.Item key={`${slot}-${String(augmentIndex)}-${String(slotIndex)}`}>
-                                {slot.charAt(0).toUpperCase() + slot.slice(1)} slot
-                              </List.Item>
-                            ))}
-                        </List>
-                      ) : (
-                        <Text c='dimmed' size='sm'>
-                          No augment slots are added by this step.
-                        </Text>
-                      )}
-                    </Stack>
-                  </SimpleGrid>
-                </Stack>
-              </Paper>
-
-              <SimpleGrid cols={{ base: 1, md: 2 }} spacing={{ base: 'xl', md: '3rem' }}>
-                <Stack gap='sm'>
-                  <Group gap='xs'>
-                    <Title order={2} size='h3'>
-                      Gather Raw Materials
-                    </Title>
-                    <Badge variant='light' color='gray'>
-                      {plan.rawMaterials.length}
-                    </Badge>
-                  </Group>
-                  <Text c='dimmed' size='sm'>
-                    Farm or obtain these base materials before using the melting station.
-                  </Text>
-                  <MaterialList materials={plan.rawMaterials} emptyMessage='No raw materials are required.' />
-                </Stack>
-
-                <Stack gap='sm'>
-                  <Group gap='xs'>
-                    <Title order={2} size='h3'>
-                      Ordered Crafting Sequence
-                    </Title>
-                    <Badge variant='light'>{plan.craftedMaterials.length + 1}</Badge>
-                  </Group>
-                  <Text c='dimmed' size='sm'>
-                    Complete each crafted dependency before the operation that consumes it.
-                  </Text>
-                  <List type='ordered' spacing='lg'>
-                    {plan.craftedMaterials.map((step) => (
-                      <List.Item key={step.name}>
-                        <Stack gap={4}>
-                          <Group gap='xs'>
-                            <Text fw={700}>{step.name}</Text>
-                            <Badge variant='light' color='gray' size='sm'>
-                              Craft ×{step.quantity}
-                            </Badge>
-                          </Group>
-                          <Text c='dimmed' size='xs'>
-                            Components:{' '}
-                            {step.requirements.map(({ name, quantity }) => `${name} ×${String(quantity)}`).join(', ')}
-                          </Text>
-                        </Stack>
-                      </List.Item>
-                    ))}
-                    <List.Item>
-                      <Stack gap={4}>
-                        <Group gap='xs'>
-                          <Text fw={700}>Final reforging: {plan.finalStep.item}</Text>
-                          <Badge variant='filled' size='sm'>
-                            Reforge ×1
-                          </Badge>
-                        </Group>
-                        <Text c='dimmed' size='xs'>
-                          Uses the direct reforging cost shown above.
-                        </Text>
-                      </Stack>
-                    </List.Item>
-                  </List>
-                </Stack>
-              </SimpleGrid>
-            </Stack>
-          )}
-        </div>
-      )}
+      {renderCrafting()}
 
       <Drawer
         opened={shoppingListOpened}

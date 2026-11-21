@@ -223,6 +223,276 @@ const DinosaurBonePage = () => {
 
   const isComplete = slots.length > 0 && slots.every(({ id }) => Boolean(selectedAugments[id]))
 
+  const renderCrafting = () => {
+    if (dataState.status === 'loading')
+      return (
+        <Center mih={220} role='status' aria-live='polite'>
+          <Stack align='center' gap='xs'>
+            <Loader size='sm' />
+            <Text c='dimmed' size='sm'>
+              Loading Dinosaur Bone data…
+            </Text>
+          </Stack>
+        </Center>
+      )
+    if (dataState.status === 'error')
+      return (
+        <Alert color='red' title={errorTitle(dataState.cause)} role='alert'>
+          <Stack gap='sm' align='flex-start'>
+            <Text size='sm'>The published Dinosaur Bone data could not be loaded. Try again shortly.</Text>
+            {import.meta.env.DEV && dataState.cause instanceof Error && (
+              <Text component='code' size='xs' style={{ overflowWrap: 'anywhere' }}>
+                {dataState.cause.message}
+              </Text>
+            )}
+            <Button
+              size='sm'
+              variant='light'
+              onClick={() => {
+                setDataState({ status: 'loading' })
+                setLoadAttempt((attempt) => attempt + 1)
+              }}
+            >
+              Retry
+            </Button>
+          </Stack>
+        </Alert>
+      )
+    return (
+      <>
+        <Paper className={styles.surface} withBorder p='md'>
+          <Stack gap='md'>
+            <SimpleGrid cols={{ base: 1, sm: 2 }}>
+              <Select
+                label='Item family'
+                description={familySources[family]}
+                data={itemFamilies.map((value) => ({ value, label: getFamilyLabel(value) }))}
+                value={family}
+                onChange={changeFamily}
+                allowDeselect={false}
+              />
+              <Select
+                label='Item'
+                placeholder='Search for an item…'
+                data={filteredItems.map(({ name }) => ({ value: name, label: name }))}
+                value={selectedItemName}
+                onChange={changeItem}
+                searchable
+                clearable
+                maxDropdownHeight={300}
+                nothingFoundMessage='No items match this search and filter selection.'
+              />
+            </SimpleGrid>
+            <MultiSelect
+              label='Item effect filters'
+              placeholder='Filter by effects'
+              data={itemFilterOptions}
+              value={itemFilters}
+              onChange={setItemFilters}
+              searchable
+              clearable
+              hidePickedOptions
+              maxDropdownHeight={260}
+            />
+            <Group gap='xs' role='group' aria-label='Item filter mode'>
+              {(['OR', 'AND'] as const).map((mode) => (
+                <Button
+                  key={mode}
+                  variant={itemFilterMode === mode ? 'filled' : 'default'}
+                  size='compact-sm'
+                  aria-pressed={itemFilterMode === mode}
+                  onClick={() => {
+                    setItemFilterMode(mode)
+                  }}
+                >
+                  {mode}
+                </Button>
+              ))}
+              <Text size='xs' c='dimmed' aria-live='polite'>
+                {String(filteredItems.length)} matching items
+              </Text>
+              {filteredItems.length === 0 && (
+                <Text size='xs' c='dimmed'>
+                  Clear filters to see this family’s items.
+                </Text>
+              )}
+            </Group>
+          </Stack>
+        </Paper>
+
+        {!selectedItem ? (
+          <Alert color='blue' title='Select an item'>
+            Choose an item to review its base properties and configure its crafting slots.
+          </Alert>
+        ) : (
+          <>
+            <ItemSummary item={selectedItem} />
+            <Paper className={styles.surface} withBorder p='md'>
+              <Stack gap='md'>
+                <Group justify='space-between' align='flex-start' wrap='wrap'>
+                  <Box>
+                    <Title order={2} size='h3'>
+                      Crafting slots
+                    </Title>
+                    <Text c='dimmed' size='sm'>
+                      Search and select one compatible augment for each available slot.
+                    </Text>
+                  </Box>
+                  {isComplete && <Badge color='green'>Configuration complete</Badge>}
+                </Group>
+                {slots.length === 0 ? (
+                  <Alert color='blue' title='No configurable slots'>
+                    This item has no configurable Dinosaur Bone slots.
+                  </Alert>
+                ) : (
+                  <>
+                    <SimpleGrid cols={{ base: 1, md: 2 }}>
+                      {iodSlots.length > 0 && (
+                        <Paper withBorder p='sm'>
+                          <Stack gap='xs'>
+                            <Box>
+                              <Text fw={600}>Isle of Dread (IoD) augment filters</Text>
+                              <Text c='dimmed' size='xs'>
+                                Applies only to IoD crafting slots.
+                              </Text>
+                            </Box>
+                            <MultiSelect
+                              label='IoD augment effect filters'
+                              placeholder='Filter IoD augments'
+                              data={iodAugmentFilterOptions}
+                              value={iodAugmentFilters}
+                              onChange={setIodAugmentFilters}
+                              searchable
+                              clearable
+                              hidePickedOptions
+                              maxDropdownHeight={260}
+                            />
+                            <Group gap='xs' role='group' aria-label='IoD augment filter mode'>
+                              {(['OR', 'AND'] as const).map((mode) => (
+                                <Button
+                                  key={mode}
+                                  variant={iodAugmentFilterMode === mode ? 'filled' : 'default'}
+                                  size='compact-sm'
+                                  aria-pressed={iodAugmentFilterMode === mode}
+                                  onClick={() => {
+                                    setIodAugmentFilterMode(mode)
+                                  }}
+                                >
+                                  {mode}
+                                </Button>
+                              ))}
+                            </Group>
+                          </Stack>
+                        </Paper>
+                      )}
+                      {colorSlots.length > 0 && (
+                        <Paper withBorder p='sm'>
+                          <Stack gap='xs'>
+                            <Box>
+                              <Text fw={600}>Color augment filters</Text>
+                              <Text c='dimmed' size='xs'>
+                                Applies only to color augment slots.
+                              </Text>
+                            </Box>
+                            <MultiSelect
+                              label='Color augment effect filters'
+                              placeholder='Filter color augments'
+                              data={colorAugmentFilterOptions}
+                              value={colorAugmentFilters}
+                              onChange={setColorAugmentFilters}
+                              searchable
+                              clearable
+                              hidePickedOptions
+                              maxDropdownHeight={260}
+                            />
+                            <Group gap='xs' role='group' aria-label='Color augment filter mode'>
+                              {(['OR', 'AND'] as const).map((mode) => (
+                                <Button
+                                  key={mode}
+                                  variant={colorAugmentFilterMode === mode ? 'filled' : 'default'}
+                                  size='compact-sm'
+                                  aria-pressed={colorAugmentFilterMode === mode}
+                                  onClick={() => {
+                                    setColorAugmentFilterMode(mode)
+                                  }}
+                                >
+                                  {mode}
+                                </Button>
+                              ))}
+                            </Group>
+                          </Stack>
+                        </Paper>
+                      )}
+                    </SimpleGrid>
+                    <Stack gap='xs'>
+                      <ArtifactAbilityScoreNotice item={selectedItem} effects={selectedUpgradeEffects} />
+                      <ColorAugmentLevelNotice item={selectedItem} slots={finished.slots} />
+                    </Stack>
+                    <Accordion variant='separated' multiple defaultValue={slots.slice(0, 1).map(({ id }) => id)}>
+                      {slots.map((slot) => {
+                        const options = filteredOptionsBySlot.get(slot.id) ?? []
+                        const selectedName = selectedAugments[slot.id]
+                        const selectedAugment = selectedName ? data?.indexes.augmentByName.get(selectedName) : undefined
+                        return (
+                          <Accordion.Item key={slot.id} value={slot.id}>
+                            <Accordion.Control>
+                              <Group justify='space-between' wrap='nowrap' pr='sm'>
+                                <Text fw={600} style={{ overflowWrap: 'anywhere' }}>
+                                  {slot.label}
+                                </Text>
+                                <Badge variant='light' color={selectedName ? 'green' : 'gray'}>
+                                  {selectedName ? 'Configured' : 'Empty'}
+                                </Badge>
+                              </Group>
+                            </Accordion.Control>
+                            <Accordion.Panel>
+                              <Stack gap='xs'>
+                                <AugmentSelect
+                                  hostLevel={Number(selectedItem.minLevel) || undefined}
+                                  label={`${slot.label} augment`}
+                                  slotType={slot.augmentType}
+                                  placeholder={`Search ${slot.label} options…`}
+                                  options={options}
+                                  value={selectedName}
+                                  onChange={(value) => {
+                                    setSelectedAugments((current) => ({ ...current, [slot.id]: value }))
+                                  }}
+                                  nothingFoundMessage='No compatible augments match these filters.'
+                                />
+                                {selectedAugment && (
+                                  <Box>
+                                    <Text size='sm' fw={600} style={{ overflowWrap: 'anywhere' }}>
+                                      {selectedAugment.name}
+                                    </Text>
+                                    <EffectList
+                                      effects={(selectedAugment.effectsAdded ?? []).map((effect) =>
+                                        formatEffect(adjustEffectForArtifact(effect, selectedItem))
+                                      )}
+                                      empty='No effect text published.'
+                                    />
+                                    {selectedAugment.description && (
+                                      <Text size='sm' mt='xs'>
+                                        {selectedAugment.description}
+                                      </Text>
+                                    )}
+                                  </Box>
+                                )}
+                              </Stack>
+                            </Accordion.Panel>
+                          </Accordion.Item>
+                        )
+                      })}
+                    </Accordion>
+                  </>
+                )}
+              </Stack>
+            </Paper>
+          </>
+        )}
+      </>
+    )
+  }
+
   return (
     <WorkspaceLayout tools={tools} toolPanelWidth='26.4rem'>
       <Container size='xl' py={{ base: 'md', sm: 'lg' }} px={{ base: 'md', sm: 'lg' }}>
@@ -243,271 +513,7 @@ const DinosaurBonePage = () => {
             }
           />
 
-          {dataState.status === 'loading' ? (
-            <Center mih={220} role='status' aria-live='polite'>
-              <Stack align='center' gap='xs'>
-                <Loader size='sm' />
-                <Text c='dimmed' size='sm'>
-                  Loading Dinosaur Bone data…
-                </Text>
-              </Stack>
-            </Center>
-          ) : dataState.status === 'error' ? (
-            <Alert color='red' title={errorTitle(dataState.cause)} role='alert'>
-              <Stack gap='sm' align='flex-start'>
-                <Text size='sm'>The published Dinosaur Bone data could not be loaded. Try again shortly.</Text>
-                {import.meta.env.DEV && dataState.cause instanceof Error ? (
-                  <Text component='code' size='xs' style={{ overflowWrap: 'anywhere' }}>
-                    {dataState.cause.message}
-                  </Text>
-                ) : null}
-                <Button
-                  size='sm'
-                  variant='light'
-                  onClick={() => {
-                    setDataState({ status: 'loading' })
-                    setLoadAttempt((attempt) => attempt + 1)
-                  }}
-                >
-                  Retry
-                </Button>
-              </Stack>
-            </Alert>
-          ) : (
-            <>
-              <Paper className={styles.surface} withBorder p='md'>
-                <Stack gap='md'>
-                  <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                    <Select
-                      label='Item family'
-                      description={familySources[family]}
-                      data={itemFamilies.map((value) => ({ value, label: getFamilyLabel(value) }))}
-                      value={family}
-                      onChange={changeFamily}
-                      allowDeselect={false}
-                    />
-                    <Select
-                      label='Item'
-                      placeholder='Search for an item…'
-                      data={filteredItems.map(({ name }) => ({ value: name, label: name }))}
-                      value={selectedItemName}
-                      onChange={changeItem}
-                      searchable
-                      clearable
-                      maxDropdownHeight={300}
-                      nothingFoundMessage='No items match this search and filter selection.'
-                    />
-                  </SimpleGrid>
-                  <MultiSelect
-                    label='Item effect filters'
-                    placeholder='Filter by effects'
-                    data={itemFilterOptions}
-                    value={itemFilters}
-                    onChange={setItemFilters}
-                    searchable
-                    clearable
-                    hidePickedOptions
-                    maxDropdownHeight={260}
-                  />
-                  <Group gap='xs' role='group' aria-label='Item filter mode'>
-                    {(['OR', 'AND'] as const).map((mode) => (
-                      <Button
-                        key={mode}
-                        variant={itemFilterMode === mode ? 'filled' : 'default'}
-                        size='compact-sm'
-                        aria-pressed={itemFilterMode === mode}
-                        onClick={() => {
-                          setItemFilterMode(mode)
-                        }}
-                      >
-                        {mode}
-                      </Button>
-                    ))}
-                    <Text size='xs' c='dimmed' aria-live='polite'>
-                      {String(filteredItems.length)} matching items
-                    </Text>
-                    {filteredItems.length === 0 ? (
-                      <Text size='xs' c='dimmed'>
-                        Clear filters to see this family’s items.
-                      </Text>
-                    ) : null}
-                  </Group>
-                </Stack>
-              </Paper>
-
-              {!selectedItem ? (
-                <Alert color='blue' title='Select an item'>
-                  Choose an item to review its base properties and configure its crafting slots.
-                </Alert>
-              ) : (
-                <>
-                  <ItemSummary item={selectedItem} />
-                  <Paper className={styles.surface} withBorder p='md'>
-                    <Stack gap='md'>
-                      <Group justify='space-between' align='flex-start' wrap='wrap'>
-                        <Box>
-                          <Title order={2} size='h3'>
-                            Crafting slots
-                          </Title>
-                          <Text c='dimmed' size='sm'>
-                            Search and select one compatible augment for each available slot.
-                          </Text>
-                        </Box>
-                        {isComplete ? <Badge color='green'>Configuration complete</Badge> : null}
-                      </Group>
-                      {slots.length === 0 ? (
-                        <Alert color='blue' title='No configurable slots'>
-                          This item has no configurable Dinosaur Bone slots.
-                        </Alert>
-                      ) : (
-                        <>
-                          <SimpleGrid cols={{ base: 1, md: 2 }}>
-                            {iodSlots.length > 0 ? (
-                              <Paper withBorder p='sm'>
-                                <Stack gap='xs'>
-                                  <Box>
-                                    <Text fw={600}>Isle of Dread (IoD) augment filters</Text>
-                                    <Text c='dimmed' size='xs'>
-                                      Applies only to IoD crafting slots.
-                                    </Text>
-                                  </Box>
-                                  <MultiSelect
-                                    label='IoD augment effect filters'
-                                    placeholder='Filter IoD augments'
-                                    data={iodAugmentFilterOptions}
-                                    value={iodAugmentFilters}
-                                    onChange={setIodAugmentFilters}
-                                    searchable
-                                    clearable
-                                    hidePickedOptions
-                                    maxDropdownHeight={260}
-                                  />
-                                  <Group gap='xs' role='group' aria-label='IoD augment filter mode'>
-                                    {(['OR', 'AND'] as const).map((mode) => (
-                                      <Button
-                                        key={mode}
-                                        variant={iodAugmentFilterMode === mode ? 'filled' : 'default'}
-                                        size='compact-sm'
-                                        aria-pressed={iodAugmentFilterMode === mode}
-                                        onClick={() => {
-                                          setIodAugmentFilterMode(mode)
-                                        }}
-                                      >
-                                        {mode}
-                                      </Button>
-                                    ))}
-                                  </Group>
-                                </Stack>
-                              </Paper>
-                            ) : null}
-                            {colorSlots.length > 0 ? (
-                              <Paper withBorder p='sm'>
-                                <Stack gap='xs'>
-                                  <Box>
-                                    <Text fw={600}>Color augment filters</Text>
-                                    <Text c='dimmed' size='xs'>
-                                      Applies only to color augment slots.
-                                    </Text>
-                                  </Box>
-                                  <MultiSelect
-                                    label='Color augment effect filters'
-                                    placeholder='Filter color augments'
-                                    data={colorAugmentFilterOptions}
-                                    value={colorAugmentFilters}
-                                    onChange={setColorAugmentFilters}
-                                    searchable
-                                    clearable
-                                    hidePickedOptions
-                                    maxDropdownHeight={260}
-                                  />
-                                  <Group gap='xs' role='group' aria-label='Color augment filter mode'>
-                                    {(['OR', 'AND'] as const).map((mode) => (
-                                      <Button
-                                        key={mode}
-                                        variant={colorAugmentFilterMode === mode ? 'filled' : 'default'}
-                                        size='compact-sm'
-                                        aria-pressed={colorAugmentFilterMode === mode}
-                                        onClick={() => {
-                                          setColorAugmentFilterMode(mode)
-                                        }}
-                                      >
-                                        {mode}
-                                      </Button>
-                                    ))}
-                                  </Group>
-                                </Stack>
-                              </Paper>
-                            ) : null}
-                          </SimpleGrid>
-                          <Stack gap='xs'>
-                            <ArtifactAbilityScoreNotice item={selectedItem} effects={selectedUpgradeEffects} />
-                            <ColorAugmentLevelNotice item={selectedItem} slots={finished.slots} />
-                          </Stack>
-                          <Accordion variant='separated' multiple defaultValue={slots.slice(0, 1).map(({ id }) => id)}>
-                            {slots.map((slot) => {
-                              const options = filteredOptionsBySlot.get(slot.id) ?? []
-                              const selectedName = selectedAugments[slot.id]
-                              const selectedAugment = selectedName
-                                ? data?.indexes.augmentByName.get(selectedName)
-                                : undefined
-                              return (
-                                <Accordion.Item key={slot.id} value={slot.id}>
-                                  <Accordion.Control>
-                                    <Group justify='space-between' wrap='nowrap' pr='sm'>
-                                      <Text fw={600} style={{ overflowWrap: 'anywhere' }}>
-                                        {slot.label}
-                                      </Text>
-                                      <Badge variant='light' color={selectedName ? 'green' : 'gray'}>
-                                        {selectedName ? 'Configured' : 'Empty'}
-                                      </Badge>
-                                    </Group>
-                                  </Accordion.Control>
-                                  <Accordion.Panel>
-                                    <Stack gap='xs'>
-                                      <AugmentSelect
-                                        hostLevel={Number(selectedItem.minLevel) || undefined}
-                                        label={`${slot.label} augment`}
-                                        slotType={slot.augmentType}
-                                        placeholder={`Search ${slot.label} options…`}
-                                        options={options}
-                                        value={selectedName}
-                                        onChange={(value) => {
-                                          setSelectedAugments((current) => ({ ...current, [slot.id]: value }))
-                                        }}
-                                        nothingFoundMessage='No compatible augments match these filters.'
-                                      />
-                                      {selectedAugment ? (
-                                        <Box>
-                                          <Text size='sm' fw={600} style={{ overflowWrap: 'anywhere' }}>
-                                            {selectedAugment.name}
-                                          </Text>
-                                          <EffectList
-                                            effects={(selectedAugment.effectsAdded ?? []).map((effect) =>
-                                              formatEffect(adjustEffectForArtifact(effect, selectedItem))
-                                            )}
-                                            empty='No effect text published.'
-                                          />
-                                          {selectedAugment.description ? (
-                                            <Text size='sm' mt='xs'>
-                                              {selectedAugment.description}
-                                            </Text>
-                                          ) : null}
-                                        </Box>
-                                      ) : null}
-                                    </Stack>
-                                  </Accordion.Panel>
-                                </Accordion.Item>
-                              )
-                            })}
-                          </Accordion>
-                        </>
-                      )}
-                    </Stack>
-                  </Paper>
-                </>
-              )}
-            </>
-          )}
+          {renderCrafting()}
         </Stack>
       </Container>
     </WorkspaceLayout>

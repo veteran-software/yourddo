@@ -45,8 +45,8 @@ import { lgsWorkspaceToolDefinitions } from './workspaceTools.ts'
 
 type DataState = { status: 'loading' } | { status: 'loaded'; data: LgsData } | { status: 'error'; cause: unknown }
 
-const selected = <T extends { name: string }>(values: readonly T[], name: string | null): T | undefined =>
-  values.find((value) => value.name === name)
+const selected = <T extends { name: string }>(values: readonly T[] | undefined, name: string | null): T | undefined =>
+  values?.find((value) => value.name === name)
 
 const TierBadges = ({ tier }: { tier: LgsTierAugment }) => (
   <Group gap={6} wrap='wrap'>
@@ -133,13 +133,13 @@ const TierSection = ({
       ) : (
         <Alert color='yellow'>No {label} options are compatible with the current selections.</Alert>
       )}
-      {tier ? (
+      {tier && (
         <>
           <TierBadges tier={tier} />
           <EffectList effects={[...tier.effects, ...tier.details]} empty='No published effects.' />
           <DiscrepancyList notes={tier.discrepancies} />
         </>
-      ) : null}
+      )}
     </Stack>
   </Paper>
 )
@@ -154,6 +154,8 @@ const activeData = (augments: readonly LgsActiveAugment[]) =>
   [...augments]
     .sort((left, right) => left.displayName.localeCompare(right.displayName))
     .map(({ name, displayName }) => ({ value: name, label: displayName }))
+
+const bonusPlaceholders = { equipment: 'Search equipment sets…', weapon: 'Search weapon bonuses…' } as const
 
 const usePlan = createCraftingSelection<LgsPlan>(emptyLgsPlan)
 
@@ -192,15 +194,15 @@ const LegendaryGreenSteelPage = () => {
       setPermalinkError(cause instanceof Error ? cause.message : 'Invalid LGS permalink')
     }
   }, [data, permalink, setPlan])
-  const baseItem = data ? selected(data.baseItems, plan.baseItemName) : undefined
-  const bonusEffect = data ? selected(data.bonusEffects, plan.bonusEffectName) : undefined
+  const baseItem = selected(data?.baseItems, plan.baseItemName)
+  const bonusEffect = selected(data?.bonusEffects, plan.bonusEffectName)
   const options = data ? getLgsOptions(data, plan, baseItem) : undefined
   const weaponResult = data ? weaponBonusResult(data, plan) : undefined
   const heart = plan.useImmortalsHeart ? data?.immortalsHeart : undefined
-  const tier1 = data ? selected(data.tier1, plan.tier1Name) : undefined
-  const tier2 = data ? selected(data.tier2, plan.tier2Name) : undefined
-  const tier3 = data ? selected(data.tier3, plan.tier3Name) : undefined
-  const activeAugment = data ? selected(data.activeAugments, plan.activeAugmentName) : undefined
+  const tier1 = selected(data?.tier1, plan.tier1Name)
+  const tier2 = selected(data?.tier2, plan.tier2Name)
+  const tier3 = selected(data?.tier3, plan.tier3Name)
+  const activeAugment = selected(data?.activeAugments, plan.activeAugmentName)
   const hasSelection = Object.values(plan).some((value) => value !== null)
   const ingredientPlan = useMemo(
     () =>
@@ -306,7 +308,7 @@ const LegendaryGreenSteelPage = () => {
           }
         />
 
-        {dataState.status === 'loading' ? (
+        {dataState.status === 'loading' && (
           <Center mih={120} role='status' aria-live='polite'>
             <Stack align='center' gap='xs'>
               <Loader size='sm' />
@@ -315,8 +317,8 @@ const LegendaryGreenSteelPage = () => {
               </Text>
             </Stack>
           </Center>
-        ) : null}
-        {dataState.status === 'error' ? (
+        )}
+        {dataState.status === 'error' && (
           <Alert
             color='red'
             title={
@@ -327,24 +329,24 @@ const LegendaryGreenSteelPage = () => {
           >
             <Stack gap='sm' align='flex-start'>
               <Text size='sm'>Crafting data could not be loaded. Try again.</Text>
-              {import.meta.env.DEV && dataState.cause instanceof Error ? (
+              {import.meta.env.DEV && dataState.cause instanceof Error && (
                 <Text component='code' size='xs' style={{ overflowWrap: 'anywhere' }}>
                   {dataState.cause.message}
                 </Text>
-              ) : null}
+              )}
               <Button size='sm' variant='light' onClick={retry}>
                 Retry
               </Button>
             </Stack>
           </Alert>
-        ) : null}
-        {data ? (
+        )}
+        {data && (
           <Stack gap='md'>
-            {permalinkError ? (
+            {permalinkError && (
               <Alert color='red' title='Build link could not be loaded'>
                 {permalinkError}
               </Alert>
-            ) : null}
+            )}
             <Paper className={styles.surface} component='section' aria-labelledby='lgs-base-title' withBorder p='md'>
               <Stack gap='sm'>
                 <Title order={2} size='h3' id='lgs-base-title'>
@@ -450,13 +452,7 @@ const LegendaryGreenSteelPage = () => {
                     </Title>
                     <Select
                       aria-labelledby='lgs-bonus-title'
-                      placeholder={
-                        baseItem?.type === 'equipment'
-                          ? 'Search equipment sets…'
-                          : baseItem?.type === 'weapon'
-                            ? 'Search weapon bonuses…'
-                            : 'Search bonuses…'
-                      }
+                      placeholder={baseItem ? bonusPlaceholders[baseItem.type] : 'Search bonuses…'}
                       data={(['Weapon bonuses', 'Equipment sets'] as const)
                         .map((group) => ({
                           group,
@@ -506,23 +502,23 @@ const LegendaryGreenSteelPage = () => {
                       searchable
                       clearable
                     />
-                    {activeAugment?.spellDetails ? (
+                    {activeAugment?.spellDetails && (
                       <Text c='dimmed' size='sm'>
                         {activeAugment.spellDetails}
                       </Text>
-                    ) : null}
-                    {activeAugment?.description ? (
+                    )}
+                    {activeAugment?.description && (
                       <Text size='sm' style={{ whiteSpace: 'pre-line' }}>
                         {activeAugment.description}
                       </Text>
-                    ) : null}
+                    )}
                     {activeAugment && <DiscrepancyList notes={activeAugment.discrepancies} />}
                   </Stack>
                 </Paper>
               </Grid.Col>
             </Grid>
           </Stack>
-        ) : null}
+        )}
       </Stack>
     </WorkspaceLayout>
   )

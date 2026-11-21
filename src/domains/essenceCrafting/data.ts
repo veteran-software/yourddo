@@ -138,6 +138,28 @@ const assertNonOverlappingBands = (bands: readonly EssenceModifierBand[], owner:
   }
 }
 
+function parseFixedModifier(
+  record: Record<string, unknown>,
+  unit: EssenceModifierUnit,
+  owner: string
+): EssenceFixedModifier {
+  if ((unit === 'text' && !nonEmptyString(record.value)) || (unit !== 'text' && !finiteNumber(record.value))) {
+    invalid(`invalid fixed modifier value for ${owner}`)
+  }
+  if (
+    (unit === 'dice' && (!positiveInteger(record.value) || record.die === undefined)) ||
+    (unit !== 'dice' && record.die !== undefined)
+  ) {
+    invalid(`invalid fixed dice modifier for ${owner}`)
+  }
+  return {
+    kind: 'fixed',
+    unit,
+    value: record.value,
+    ...(unit === 'dice' ? { die: parseDie(record.die, owner) } : {})
+  } as EssenceFixedModifier
+}
+
 const parseModifier = (value: unknown, owner: string, minimum: number, maximum: number): EssenceModifier => {
   const record = expectRecord(value, `modifier for ${owner}`)
   if (
@@ -148,23 +170,7 @@ const parseModifier = (value: unknown, owner: string, minimum: number, maximum: 
     invalid(`invalid modifier for ${owner}`)
   }
   const unit = record.unit as EssenceModifierUnit
-  if (record.kind === 'fixed') {
-    if ((unit === 'text' && !nonEmptyString(record.value)) || (unit !== 'text' && !finiteNumber(record.value))) {
-      invalid(`invalid fixed modifier value for ${owner}`)
-    }
-    if (
-      (unit === 'dice' && (!positiveInteger(record.value) || record.die === undefined)) ||
-      (unit !== 'dice' && record.die !== undefined)
-    ) {
-      invalid(`invalid fixed dice modifier for ${owner}`)
-    }
-    return {
-      kind: 'fixed',
-      unit,
-      value: record.value,
-      ...(unit === 'dice' ? { die: parseDie(record.die, owner) } : {})
-    } as EssenceFixedModifier
-  }
+  if (record.kind === 'fixed') return parseFixedModifier(record, unit, owner)
   if (record.kind !== 'by-item-level' || unit === 'text') invalid(`unsupported modifier kind for ${owner}`)
   if ((unit === 'dice' && record.die === undefined) || (unit !== 'dice' && record.die !== undefined)) {
     invalid(`invalid item-level dice modifier for ${owner}`)
@@ -373,16 +379,7 @@ const parseRules = (value: unknown): EssenceRules => {
   }
 }
 
-const buildIndexes = (
-  enhancements: readonly EssenceEnhancement[],
-  ingredients: readonly EssenceIngredient[],
-  augments: readonly EssenceAugment[],
-  recipes: readonly EssenceRecipe[],
-  minimumLevelShards: readonly EssenceMinimumLevelShard[],
-  minimum: number,
-  maximum: number
-): EssenceCraftingIndexes => {
-  const enhancementById = new Map(enhancements.map((enhancement) => [enhancement.id, enhancement]))
+function indexEnhancementPlacements(enhancements: readonly EssenceEnhancement[]) {
   const enhancementsByPlacement = new Map<EssenceAffixPosition, Map<string, EssenceEnhancement[]>>()
   for (const enhancement of enhancements) {
     for (const placement of enhancement.placements) {
@@ -398,30 +395,32 @@ const buildIndexes = (
       }
     }
   }
-  const ingredientById = new Map(ingredients.map((ingredient) => [ingredient.id, ingredient]))
-  const augmentById = new Map(augments.map((augment) => [augment.id, augment]))
+  return enhancementsByPlacement
+}
+
+function minimumLevelRecipe(
+  recipeById: ReadonlyMap<string, EssenceRecipe>,
+  shard: EssenceMinimumLevelShard,
+  binding: EssenceBinding
+) {
+  const recipe = recipeById.get(shard.recipes[`${binding}RecipeId`])
+  if (recipe?.kind !== 'minimum-level-shard' || recipe.binding !== binding || recipe.itemLevel !== shard.itemLevel)
+    return invalid(`invalid ${binding} minimum-level recipe reference for level ${String(shard.itemLevel)}`)
+  return recipe
+}
+
+function indexMinimumLevelRecipes(
+  recipes: readonly EssenceRecipe[],
+  minimumLevelShards: readonly EssenceMinimumLevelShard[],
+  minimum: number,
+  maximum: number
+) {
   const recipeById = new Map(recipes.map((recipe) => [recipe.id, recipe]))
-  for (const recipe of recipes) {
-    for (const requirement of recipe.requirements)
-      assertReference(ingredientById, requirement.ingredientId, 'ingredient')
-  }
   const minimumLevelRecipeByLevel = new Map<number, Readonly<Record<EssenceBinding, EssenceMinimumLevelRecipe>>>()
   const referencedMinimumLevelRecipeIds = new Set<string>()
   for (const shard of minimumLevelShards) {
-    const bound = recipeById.get(shard.recipes.boundRecipeId)
-    const unbound = recipeById.get(shard.recipes.unboundRecipeId)
-    if (bound?.kind !== 'minimum-level-shard' || bound.binding !== 'bound' || bound.itemLevel !== shard.itemLevel) {
-      invalid(`invalid bound minimum-level recipe reference for level ${String(shard.itemLevel)}`)
-    }
-    if (
-      unbound?.kind !== 'minimum-level-shard' ||
-      unbound.binding !== 'unbound' ||
-      unbound.itemLevel !== shard.itemLevel
-    ) {
-      invalid(`invalid unbound minimum-level recipe reference for level ${String(shard.itemLevel)}`)
-    }
-    const boundRecipe = bound as EssenceMinimumLevelRecipe
-    const unboundRecipe = unbound as EssenceMinimumLevelRecipe
+    const boundRecipe = minimumLevelRecipe(recipeById, shard, 'bound')
+    const unboundRecipe = minimumLevelRecipe(recipeById, shard, 'unbound')
     if (referencedMinimumLevelRecipeIds.has(boundRecipe.id) || referencedMinimumLevelRecipeIds.has(unboundRecipe.id)) {
       invalid(`duplicate minimum-level recipe reference for level ${String(shard.itemLevel)}`)
     }
@@ -440,7 +439,74 @@ const buildIndexes = (
       invalid(`unreferenced minimum-level recipe: ${recipe.id}`)
     }
   }
+  return minimumLevelRecipeByLevel
+}
+
+const buildIndexes = (
+  enhancements: readonly EssenceEnhancement[],
+  ingredients: readonly EssenceIngredient[],
+  augments: readonly EssenceAugment[],
+  recipes: readonly EssenceRecipe[],
+  minimumLevelShards: readonly EssenceMinimumLevelShard[],
+  minimum: number,
+  maximum: number
+): EssenceCraftingIndexes => {
+  const enhancementById = new Map(enhancements.map((enhancement) => [enhancement.id, enhancement]))
+  const enhancementsByPlacement = indexEnhancementPlacements(enhancements)
+  const ingredientById = new Map(ingredients.map((ingredient) => [ingredient.id, ingredient]))
+  const augmentById = new Map(augments.map((augment) => [augment.id, augment]))
+  for (const recipe of recipes) {
+    for (const requirement of recipe.requirements)
+      assertReference(ingredientById, requirement.ingredientId, 'ingredient')
+  }
+  const minimumLevelRecipeByLevel = indexMinimumLevelRecipes(recipes, minimumLevelShards, minimum, maximum)
   return { enhancementById, enhancementsByPlacement, ingredientById, augmentById, minimumLevelRecipeByLevel }
+}
+
+function validateEffectReferences(
+  effects: readonly EssenceEffect[],
+  bonusTypeById: ReadonlyMap<string, EssenceNamedRecord>
+) {
+  for (const effect of effects) {
+    if (effect.bonusTypeId) assertReference(bonusTypeById, effect.bonusTypeId, 'bonus type')
+  }
+}
+
+function validateEnhancementReferences(
+  enhancement: EssenceEnhancement,
+  itemCategoryById: ReadonlyMap<string, EssenceNamedRecord>,
+  bonusTypeById: ReadonlyMap<string, EssenceNamedRecord>,
+  recipeById: ReadonlyMap<string, EssenceRecipe>
+) {
+  for (const placement of enhancement.placements) {
+    for (const itemCategoryId of placement.itemCategoryIds)
+      assertReference(itemCategoryById, itemCategoryId, 'item category')
+  }
+  validateEffectReferences(enhancement.effects, bonusTypeById)
+  const boundRecipe = recipeById.get(enhancement.recipes.boundRecipeId)
+  const unboundRecipe = recipeById.get(enhancement.recipes.unboundRecipeId)
+  if (boundRecipe?.kind !== 'enhancement-shard' || boundRecipe.binding !== 'bound')
+    invalid(`invalid bound recipe reference for ${enhancement.id}`)
+  if (unboundRecipe?.kind !== 'enhancement-shard' || unboundRecipe.binding !== 'unbound')
+    invalid(`invalid unbound recipe reference for ${enhancement.id}`)
+}
+
+function validateAugmentPlacements(
+  rules: EssenceRules,
+  itemCategoryById: ReadonlyMap<string, EssenceNamedRecord>,
+  augmentTypeById: ReadonlyMap<string, EssenceNamedRecord>
+) {
+  for (const slotType of rules.augmentSlotTypes) {
+    for (const augmentTypeId of slotType.acceptsAugmentTypeIds)
+      assertReference(augmentTypeById, augmentTypeId, 'augment type')
+  }
+  for (const placement of rules.augmentSlotPlacements) {
+    assertReference(itemCategoryById, placement.itemCategoryId, 'item category')
+    for (const slotTypeId of placement.augmentSlotTypeIds) {
+      if (!rules.augmentSlotTypes.some(({ id }) => id === slotTypeId))
+        invalid(`missing augment slot type reference: ${slotTypeId}`)
+    }
+  }
 }
 
 export const validateEssenceCraftingDataset = (value: unknown): EssenceCraftingData => {
@@ -483,37 +549,13 @@ export const validateEssenceCraftingDataset = (value: unknown): EssenceCraftingD
   const bonusTypeById = new Map(bonusTypes.map((type) => [type.id, type]))
   const recipeById = new Map(recipes.map((recipe) => [recipe.id, recipe]))
   for (const enhancement of enhancements) {
-    for (const placement of enhancement.placements) {
-      for (const itemCategoryId of placement.itemCategoryIds)
-        assertReference(itemCategoryById, itemCategoryId, 'item category')
-    }
-    for (const effect of enhancement.effects) {
-      if (effect.bonusTypeId) assertReference(bonusTypeById, effect.bonusTypeId, 'bonus type')
-    }
-    const boundRecipe = recipeById.get(enhancement.recipes.boundRecipeId)
-    const unboundRecipe = recipeById.get(enhancement.recipes.unboundRecipeId)
-    if (boundRecipe?.kind !== 'enhancement-shard' || boundRecipe.binding !== 'bound')
-      invalid(`invalid bound recipe reference for ${enhancement.id}`)
-    if (unboundRecipe?.kind !== 'enhancement-shard' || unboundRecipe.binding !== 'unbound')
-      invalid(`invalid unbound recipe reference for ${enhancement.id}`)
+    validateEnhancementReferences(enhancement, itemCategoryById, bonusTypeById, recipeById)
   }
   for (const augment of augments) {
     assertReference(augmentTypeById, augment.augmentTypeId, 'augment type')
-    for (const effect of augment.effects) {
-      if (effect.bonusTypeId) assertReference(bonusTypeById, effect.bonusTypeId, 'bonus type')
-    }
+    validateEffectReferences(augment.effects, bonusTypeById)
   }
-  for (const slotType of rules.augmentSlotTypes) {
-    for (const augmentTypeId of slotType.acceptsAugmentTypeIds)
-      assertReference(augmentTypeById, augmentTypeId, 'augment type')
-  }
-  for (const placement of rules.augmentSlotPlacements) {
-    assertReference(itemCategoryById, placement.itemCategoryId, 'item category')
-    for (const slotTypeId of placement.augmentSlotTypeIds) {
-      if (!rules.augmentSlotTypes.some(({ id }) => id === slotTypeId))
-        invalid(`missing augment slot type reference: ${slotTypeId}`)
-    }
-  }
+  validateAugmentPlacements(rules, itemCategoryById, augmentTypeById)
   const indexes = buildIndexes(enhancements, ingredients, augments, recipes, minimumLevelShards, minimum, maximum)
   assertReference(indexes.ingredientById, rules.extraAffix.markRequirement.ingredientId, 'extra affix ingredient')
   return {

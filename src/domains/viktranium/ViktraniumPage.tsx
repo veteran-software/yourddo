@@ -204,6 +204,216 @@ const ViktraniumPage = () => {
     setSelectedAugments({})
   }
 
+  const renderCrafting = () => {
+    if (dataState.status === 'loading')
+      return (
+        <Center mih={220} role='status' aria-live='polite'>
+          <Stack align='center' gap='xs'>
+            <Loader size='sm' />
+            <Text c='dimmed' size='sm'>
+              Loading Viktranium data…
+            </Text>
+          </Stack>
+        </Center>
+      )
+    if (dataState.status === 'error')
+      return (
+        <Alert color='red' title={errorTitle(dataState.cause)} role='alert'>
+          <Stack gap='sm' align='flex-start'>
+            <Text size='sm'>The published Viktranium data could not be loaded or validated. Try again shortly.</Text>
+            {import.meta.env.DEV && dataState.cause instanceof Error && (
+              <Text component='code' size='xs'>
+                {dataState.cause.message}
+              </Text>
+            )}
+            <Button
+              size='sm'
+              variant='light'
+              onClick={() => {
+                setDataState({ status: 'loading' })
+                setLoadAttempt((value) => value + 1)
+              }}
+            >
+              Retry
+            </Button>
+          </Stack>
+        </Alert>
+      )
+    return (
+      <>
+        <Paper className={styles.surface} withBorder p='md'>
+          <Stack gap='md'>
+            <SimpleGrid cols={{ base: 1, sm: 2 }}>
+              <Select
+                label='Item family'
+                data={itemFamilies.map((value) => ({ value, label: getFamilyLabel(value) }))}
+                value={family}
+                onChange={changeFamily}
+                allowDeselect={false}
+              />
+              <Select
+                label='Item'
+                placeholder='Search for an item…'
+                data={itemSelectOptions}
+                value={selectedItemId}
+                onChange={changeItem}
+                searchable
+                clearable
+                maxDropdownHeight={300}
+                nothingFoundMessage='No items match this search and filter selection.'
+              />
+            </SimpleGrid>
+            <SimpleGrid cols={{ base: 1, sm: 2 }}>
+              <MultiSelect
+                label='Item effect filters'
+                placeholder='Choose effects…'
+                data={itemFilterOptions}
+                value={itemFilters}
+                onChange={setItemFilters}
+                searchable
+                clearable
+                maxDropdownHeight={260}
+              />
+              <Box>
+                <Text component='label' display='block' size='sm' fw={500} mb={4}>
+                  Item filter mode
+                </Text>
+                <SegmentedControl
+                  fullWidth
+                  data={modeData}
+                  value={itemFilterMode}
+                  onChange={(value) => {
+                    setItemFilterMode(value as 'OR' | 'AND')
+                  }}
+                />
+              </Box>
+            </SimpleGrid>
+            {filteredItems.length === 0 && <Alert color='blue'>No items match the active effect filters.</Alert>}
+            {selectedItemFilteredOut && (
+              <Alert color='yellow'>
+                The selected item is retained but does not match the active discovery filters.
+              </Alert>
+            )}
+          </Stack>
+        </Paper>
+
+        {selectedItem ? (
+          <>
+            <ViktraniumItemSummary item={selectedItem} />
+            <Paper className={styles.surface} withBorder p='md'>
+              <Stack gap='md'>
+                <Group justify='space-between' align='center'>
+                  <Title order={2} size='h3'>
+                    Configure augment slots
+                  </Title>
+                  <Badge color={buildComplete(finished) ? 'green' : 'gray'}>
+                    {buildComplete(finished) ? 'Complete' : `${String(finished.emptySlots.length)} empty`}
+                  </Badge>
+                </Group>
+                <SimpleGrid cols={{ base: 1, sm: 2 }}>
+                  <MultiSelect
+                    label='Augment effect filters'
+                    placeholder='Choose effects…'
+                    data={augmentFilterOptions}
+                    value={augmentFilters}
+                    onChange={setAugmentFilters}
+                    searchable
+                    clearable
+                    maxDropdownHeight={260}
+                  />
+                  <Box>
+                    <Text component='label' display='block' size='sm' fw={500} mb={4}>
+                      Augment filter mode
+                    </Text>
+                    <SegmentedControl
+                      fullWidth
+                      data={modeData}
+                      value={augmentFilterMode}
+                      onChange={(value) => {
+                        setAugmentFilterMode(value as 'OR' | 'AND')
+                      }}
+                    />
+                  </Box>
+                </SimpleGrid>
+                <Accordion key={selectedItem.id} defaultValue={selectedItem.slots[0]?.id} variant='separated'>
+                  {selectedItem.slots.map((slot) => {
+                    const allOptions = compatibleBySlot.get(slot.id) ?? []
+                    const filteredOptions = filteredBySlot.get(slot.id) ?? []
+                    const selectedId = selectedAugments[slot.id] ?? slot.filledAugmentId ?? null
+                    const selected = selectedId ? data?.indexes.augmentById.get(selectedId) : undefined
+                    const outsideFilters = Boolean(selected && !filteredOptions.includes(selected))
+                    const shownOptions = outsideFilters && selected ? [selected, ...filteredOptions] : filteredOptions
+                    return (
+                      <Accordion.Item value={slot.id} key={slot.id}>
+                        <Accordion.Control>
+                          <Group justify='space-between' wrap='nowrap' pr='sm'>
+                            <Text fw={600}>{slot.label}</Text>
+                            <Badge color={selected ? 'green' : 'gray'} variant='light'>
+                              {selected ? 'Configured' : 'Empty'}
+                            </Badge>
+                          </Group>
+                        </Accordion.Control>
+                        <Accordion.Panel>
+                          <Stack gap='sm'>
+                            <AugmentSelect
+                              hostLevel={selectedItem.minimumLevel}
+                              label={`${slot.label} augment`}
+                              slotType={slot.augmentType}
+                              options={shownOptions.map((augment) => ({
+                                value: augment.id,
+                                label: augment.name,
+                                augmentType: augment.augmentType,
+                                minimumLevel: augment.minimumLevel
+                              }))}
+                              value={selectedId}
+                              onChange={(value) => {
+                                setSelectedAugments((current) => ({ ...current, [slot.id]: value }))
+                              }}
+                              nothingFoundMessage={
+                                allOptions.length
+                                  ? 'No compatible augments match the active filters.'
+                                  : 'No compatible augments are published.'
+                              }
+                            />
+                            {outsideFilters && (
+                              <Alert color='yellow'>
+                                The selected augment is retained but does not match the active discovery filters.
+                              </Alert>
+                            )}
+                            {selected && (
+                              <Group align='flex-start' wrap='nowrap'>
+                                <ItemIcon item={selected} size={48} alt={`${selected.name} icon`} />
+                                <Box style={{ minWidth: 0 }}>
+                                  <Text fw={600}>{selected.name}</Text>
+                                  <Text c='dimmed' size='xs'>
+                                    Minimum level {String(selected.minimumLevel)}
+                                    {selected.recipes.length ? ` · ${selected.recipes[0].device}` : ''}
+                                  </Text>
+                                  <EffectList
+                                    effects={selected.effects.map(formatEffect)}
+                                    empty='No effect text published.'
+                                  />
+                                </Box>
+                              </Group>
+                            )}
+                          </Stack>
+                        </Accordion.Panel>
+                      </Accordion.Item>
+                    )
+                  })}
+                </Accordion>
+              </Stack>
+            </Paper>
+          </>
+        ) : (
+          <Alert color='blue' title='No item selected'>
+            Choose one item to begin configuring its published slots.
+          </Alert>
+        )}
+      </>
+    )
+  }
+
   return (
     <WorkspaceLayout tools={tools} toolPanelWidth='26.4rem'>
       <Container size='xl' py={{ base: 'md', sm: 'lg' }} px={{ base: 'md', sm: 'lg' }}>
@@ -224,214 +434,7 @@ const ViktraniumPage = () => {
             }
           />
 
-          {dataState.status === 'loading' ? (
-            <Center mih={220} role='status' aria-live='polite'>
-              <Stack align='center' gap='xs'>
-                <Loader size='sm' />
-                <Text c='dimmed' size='sm'>
-                  Loading Viktranium data…
-                </Text>
-              </Stack>
-            </Center>
-          ) : dataState.status === 'error' ? (
-            <Alert color='red' title={errorTitle(dataState.cause)} role='alert'>
-              <Stack gap='sm' align='flex-start'>
-                <Text size='sm'>
-                  The published Viktranium data could not be loaded or validated. Try again shortly.
-                </Text>
-                {import.meta.env.DEV && dataState.cause instanceof Error ? (
-                  <Text component='code' size='xs'>
-                    {dataState.cause.message}
-                  </Text>
-                ) : null}
-                <Button
-                  size='sm'
-                  variant='light'
-                  onClick={() => {
-                    setDataState({ status: 'loading' })
-                    setLoadAttempt((value) => value + 1)
-                  }}
-                >
-                  Retry
-                </Button>
-              </Stack>
-            </Alert>
-          ) : (
-            <>
-              <Paper className={styles.surface} withBorder p='md'>
-                <Stack gap='md'>
-                  <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                    <Select
-                      label='Item family'
-                      data={itemFamilies.map((value) => ({ value, label: getFamilyLabel(value) }))}
-                      value={family}
-                      onChange={changeFamily}
-                      allowDeselect={false}
-                    />
-                    <Select
-                      label='Item'
-                      placeholder='Search for an item…'
-                      data={itemSelectOptions}
-                      value={selectedItemId}
-                      onChange={changeItem}
-                      searchable
-                      clearable
-                      maxDropdownHeight={300}
-                      nothingFoundMessage='No items match this search and filter selection.'
-                    />
-                  </SimpleGrid>
-                  <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                    <MultiSelect
-                      label='Item effect filters'
-                      placeholder='Choose effects…'
-                      data={itemFilterOptions}
-                      value={itemFilters}
-                      onChange={setItemFilters}
-                      searchable
-                      clearable
-                      maxDropdownHeight={260}
-                    />
-                    <Box>
-                      <Text component='label' display='block' size='sm' fw={500} mb={4}>
-                        Item filter mode
-                      </Text>
-                      <SegmentedControl
-                        fullWidth
-                        data={modeData}
-                        value={itemFilterMode}
-                        onChange={(value) => {
-                          setItemFilterMode(value as 'OR' | 'AND')
-                        }}
-                      />
-                    </Box>
-                  </SimpleGrid>
-                  {filteredItems.length === 0 ? (
-                    <Alert color='blue'>No items match the active effect filters.</Alert>
-                  ) : null}
-                  {selectedItemFilteredOut ? (
-                    <Alert color='yellow'>
-                      The selected item is retained but does not match the active discovery filters.
-                    </Alert>
-                  ) : null}
-                </Stack>
-              </Paper>
-
-              {selectedItem ? (
-                <>
-                  <ViktraniumItemSummary item={selectedItem} />
-                  <Paper className={styles.surface} withBorder p='md'>
-                    <Stack gap='md'>
-                      <Group justify='space-between' align='center'>
-                        <Title order={2} size='h3'>
-                          Configure augment slots
-                        </Title>
-                        <Badge color={buildComplete(finished) ? 'green' : 'gray'}>
-                          {buildComplete(finished) ? 'Complete' : `${String(finished.emptySlots.length)} empty`}
-                        </Badge>
-                      </Group>
-                      <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                        <MultiSelect
-                          label='Augment effect filters'
-                          placeholder='Choose effects…'
-                          data={augmentFilterOptions}
-                          value={augmentFilters}
-                          onChange={setAugmentFilters}
-                          searchable
-                          clearable
-                          maxDropdownHeight={260}
-                        />
-                        <Box>
-                          <Text component='label' display='block' size='sm' fw={500} mb={4}>
-                            Augment filter mode
-                          </Text>
-                          <SegmentedControl
-                            fullWidth
-                            data={modeData}
-                            value={augmentFilterMode}
-                            onChange={(value) => {
-                              setAugmentFilterMode(value as 'OR' | 'AND')
-                            }}
-                          />
-                        </Box>
-                      </SimpleGrid>
-                      <Accordion key={selectedItem.id} defaultValue={selectedItem.slots[0]?.id} variant='separated'>
-                        {selectedItem.slots.map((slot) => {
-                          const allOptions = compatibleBySlot.get(slot.id) ?? []
-                          const filteredOptions = filteredBySlot.get(slot.id) ?? []
-                          const selectedId = selectedAugments[slot.id] ?? slot.filledAugmentId ?? null
-                          const selected = selectedId ? data?.indexes.augmentById.get(selectedId) : undefined
-                          const outsideFilters = Boolean(selected && !filteredOptions.includes(selected))
-                          const shownOptions =
-                            outsideFilters && selected ? [selected, ...filteredOptions] : filteredOptions
-                          return (
-                            <Accordion.Item value={slot.id} key={slot.id}>
-                              <Accordion.Control>
-                                <Group justify='space-between' wrap='nowrap' pr='sm'>
-                                  <Text fw={600}>{slot.label}</Text>
-                                  <Badge color={selected ? 'green' : 'gray'} variant='light'>
-                                    {selected ? 'Configured' : 'Empty'}
-                                  </Badge>
-                                </Group>
-                              </Accordion.Control>
-                              <Accordion.Panel>
-                                <Stack gap='sm'>
-                                  <AugmentSelect
-                                    hostLevel={selectedItem.minimumLevel}
-                                    label={`${slot.label} augment`}
-                                    slotType={slot.augmentType}
-                                    options={shownOptions.map((augment) => ({
-                                      value: augment.id,
-                                      label: augment.name,
-                                      augmentType: augment.augmentType,
-                                      minimumLevel: augment.minimumLevel
-                                    }))}
-                                    value={selectedId}
-                                    onChange={(value) => {
-                                      setSelectedAugments((current) => ({ ...current, [slot.id]: value }))
-                                    }}
-                                    nothingFoundMessage={
-                                      allOptions.length
-                                        ? 'No compatible augments match the active filters.'
-                                        : 'No compatible augments are published.'
-                                    }
-                                  />
-                                  {outsideFilters ? (
-                                    <Alert color='yellow'>
-                                      The selected augment is retained but does not match the active discovery filters.
-                                    </Alert>
-                                  ) : null}
-                                  {selected ? (
-                                    <Group align='flex-start' wrap='nowrap'>
-                                      <ItemIcon item={selected} size={48} alt={`${selected.name} icon`} />
-                                      <Box style={{ minWidth: 0 }}>
-                                        <Text fw={600}>{selected.name}</Text>
-                                        <Text c='dimmed' size='xs'>
-                                          Minimum level {String(selected.minimumLevel)}
-                                          {selected.recipes.length ? ` · ${selected.recipes[0].device}` : ''}
-                                        </Text>
-                                        <EffectList
-                                          effects={selected.effects.map(formatEffect)}
-                                          empty='No effect text published.'
-                                        />
-                                      </Box>
-                                    </Group>
-                                  ) : null}
-                                </Stack>
-                              </Accordion.Panel>
-                            </Accordion.Item>
-                          )
-                        })}
-                      </Accordion>
-                    </Stack>
-                  </Paper>
-                </>
-              ) : (
-                <Alert color='blue' title='No item selected'>
-                  Choose one item to begin configuring its published slots.
-                </Alert>
-              )}
-            </>
-          )}
+          {renderCrafting()}
         </Stack>
       </Container>
     </WorkspaceLayout>

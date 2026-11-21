@@ -155,6 +155,14 @@ export const createEssenceCraftingPermalinkV4Payload = (
 export const encodeEssenceCraftingPermalink = (data: EssenceCraftingData, plan: EssencePlanState): string =>
   LZString.compressToEncodedURIComponent(JSON.stringify(createEssenceCraftingPermalinkV4Payload(data, plan)))
 
+function indexAugmentEffectNames(data: EssenceCraftingData) {
+  const effectNameById = new Map<string, string>()
+  for (const augment of data.augments) {
+    for (const effect of augment.effects) effectNameById.set(effect.id, effect.displayName)
+  }
+  return effectNameById
+}
+
 const decodeV4Augments = (
   data: EssenceCraftingData,
   value: unknown
@@ -167,10 +175,7 @@ const decodeV4Augments = (
     }[]
   | null => {
   if (!Array.isArray(value)) return null
-  const effectNameById = new Map<string, string>()
-  for (const augment of data.augments) {
-    for (const effect of augment.effects) effectNameById.set(effect.id, effect.displayName)
-  }
+  const effectNameById = indexAugmentEffectNames(data)
 
   const decoded = []
   for (const candidate of value) {
@@ -239,6 +244,16 @@ const createLegacyEnhancementIdByRecipeId = (data: EssenceCraftingData): Readonl
   return resolved
 }
 
+function decodeLegacyFilterCodes(filterCodes: unknown) {
+  if (!Array.isArray(filterCodes)) return []
+  const selectedEffectNames: string[] = []
+  for (const effectCode of filterCodes) {
+    const effectName = isIntegerNumber(effectCode) ? LEGACY_V3_EFFECT_NAMES[effectCode] : undefined
+    if (effectName !== undefined) selectedEffectNames.push(effectName)
+  }
+  return selectedEffectNames
+}
+
 const decodeLegacyV3Augments = (
   data: EssenceCraftingData,
   value: unknown
@@ -260,17 +275,10 @@ const decodeLegacyV3Augments = (
     if (!isIntegerNumber(colorCode) || !isIntegerNumber(augmentCode)) continue
     const augmentSlotTypeId = LEGACY_V3_AUGMENT_SLOT_TYPE_IDS[colorCode] ?? 'colorless'
     const legacyAugmentName = augmentCode > 0 ? LEGACY_V3_AUGMENT_NAMES[augmentCode - 1] : undefined
-    const selectedEffectNames: string[] = []
-    if (Array.isArray(filterCodes)) {
-      for (const effectCode of filterCodes) {
-        const effectName = isIntegerNumber(effectCode) ? LEGACY_V3_EFFECT_NAMES[effectCode] : undefined
-        if (effectName !== undefined) selectedEffectNames.push(effectName)
-      }
-    }
     decoded.push({
       augmentSlotTypeId,
       augmentId: resolveUniqueNamedId(legacyAugmentName, data.augments),
-      selectedEffectNames,
+      selectedEffectNames: decodeLegacyFilterCodes(filterCodes),
       filterMode: filterMode === 1 ? ('and' as const) : ('or' as const)
     })
   }

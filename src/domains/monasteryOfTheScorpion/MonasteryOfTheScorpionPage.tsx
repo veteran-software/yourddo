@@ -13,14 +13,15 @@ import {
 } from '@mantine/core'
 import { IconBug } from '@tabler/icons-react'
 import { useState } from 'react'
-import activeTileImage from '../../shared/lightsOut/tile_active.png'
-import emptyTileImage from '../../shared/lightsOut/tile_empty.png'
-import inactiveTileImage from '../../shared/lightsOut/tile_inactive.png'
+import { PressMarker } from '../../shared/lightsOut/PressMarker'
+import { getTileAppearance } from '../../shared/lightsOut/tileAppearance'
 import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
 import styles from '../../shared/layout/workspace.module.css'
 import ToolLayout from '../../shared/layout/ToolLayout.tsx'
 import {
   applyPresses,
+  countPresses,
+  solutionStatus,
   initBoard,
   randomPresses,
   solveBoard,
@@ -35,8 +36,6 @@ type EditAction = 'toggle' | 'remove'
 type SolverStatus = 'idle' | 'random' | 'solution' | 'complete' | 'no-solution'
 
 const createMask = (): boolean[][] => Array.from({ length: ROWS }, () => new Array<boolean>(COLUMNS).fill(true))
-
-const countPresses = (presses: number[][]): number => presses.flat().filter((press) => press === 1).length
 
 const MonasteryOfTheScorpionPage = () => {
   const [mask, setMask] = useState(createMask)
@@ -71,7 +70,7 @@ const MonasteryOfTheScorpionPage = () => {
     setSolution(presses)
     setMarkedSolution(marked)
     setShowSolution(presses !== null)
-    setSolverStatus(presses === null ? 'no-solution' : countPresses(presses) === 0 ? 'complete' : 'solution')
+    setSolverStatus(solutionStatus(presses))
   }
 
   const handleRandom = () => {
@@ -208,13 +207,8 @@ const MonasteryOfTheScorpionPage = () => {
                 const completed = markedSolution ? markedSolution[row][column] === 1 : false
                 const state = on ? 'on' : 'off'
                 const presence = removed ? 'removed' : 'present'
-                const recommendation = recommended
-                  ? completed
-                    ? 'recommended solution press completed'
-                    : 'recommended solution press not completed'
-                  : 'not a recommended solution press'
+                const { recommendation, tileStyle } = getTileAppearance(removed, on, recommended, completed)
                 const label = `Row ${String(row + 1)}, column ${String(column + 1)}, ${state}, ${presence}, ${recommendation}`
-                const backgroundImage = removed ? emptyTileImage : on ? activeTileImage : inactiveTileImage
 
                 return (
                   <UnstyledButton
@@ -228,37 +222,9 @@ const MonasteryOfTheScorpionPage = () => {
                     }}
                     w='100%'
                     opacity={removed ? 0.4 : 1}
-                    style={{
-                      aspectRatio: '1 / 1',
-                      backgroundImage: `url(${backgroundImage})`,
-                      backgroundPosition: 'center',
-                      backgroundSize: 'cover',
-                      border: recommended
-                        ? completed
-                          ? '2px solid var(--mantine-color-yellow-6)'
-                          : '4px solid var(--mantine-color-green-6)'
-                        : '1px solid var(--mantine-color-default-border)',
-                      position: 'relative'
-                    }}
+                    style={tileStyle}
                   >
-                    {recommended && (
-                      <Box
-                        component='span'
-                        aria-hidden='true'
-                        pos='absolute'
-                        top={4}
-                        right={4}
-                        w={20}
-                        h={20}
-                        bg={completed ? 'yellow.6' : 'green.6'}
-                        c='black'
-                        fw={700}
-                        fz='sm'
-                        style={{ borderRadius: '50%', display: 'grid', placeItems: 'center' }}
-                      >
-                        {completed ? '✓' : '!'}
-                      </Box>
-                    )}
+                    {recommended && <PressMarker completed={completed} />}
                   </UnstyledButton>
                 )
               })

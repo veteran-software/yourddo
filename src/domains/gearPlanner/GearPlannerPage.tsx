@@ -1,4 +1,4 @@
-import { characterAllowsItem, enabledOwners, ownerSlots, slotOwner } from './character'
+import { characterAllowsItem, enabledOwners, type GearOwner, ownerSlots, slotOwner } from './character'
 import { UpgradePathsTool, UpgradeResults } from './tools/UpgradePathsTool'
 import type { PathRequest } from './upgradePaths'
 import LoadoutComparison from './components/LoadoutComparison'
@@ -468,6 +468,31 @@ interface ItemBrowserProps extends Pick<EquipmentEditorProps, 'effectiveAugmentS
   updateLevels: (update: { minimumLevel?: number; maximumLevel?: number }) => void
 }
 
+function incumbentSetLabel(
+  memberships: readonly GearPlannerSetMembership[],
+  incumbent: GearPlannerItem | null,
+  setName: string | null
+) {
+  if (!incumbent || !setName) return undefined
+  const inSet = memberships.some(
+    (membership) =>
+      membership.category === 'equipped-item' && membership.itemId === incumbent.id && membership.setName === setName
+  )
+  return inSet ? `Member of ${setName}` : `Outside ${setName}`
+}
+
+function candidateSlotLabel(equipped: boolean, incumbent: GearPlannerItem | null) {
+  if (equipped) return 'Currently equipped'
+  return incumbent ? `Replaces ${incumbent.source.name}` : 'Empty slot'
+}
+
+function emptyCatalogMessage(slot: string | null, mainHand: GearPlannerItem | null) {
+  if (slot === 'Off Hand' && mainHand && occupiesBothHands(mainHand)) {
+    return `${mainHand.source.name} occupies both hands. Change your main-hand weapon to equip an off-hand item.`
+  }
+  return 'No equipment matches these filters.'
+}
+
 const ItemBrowser = ({
   memberships,
   openSet,
@@ -491,7 +516,8 @@ const ItemBrowser = ({
   onMinorArtifactRejected,
   updateLevels
 }: ItemBrowserProps) => {
-  const [search, setSearch] = useState(target?.kind === 'effect' ? target.name : '')
+  const effectTarget = target?.kind === 'effect' ? target : undefined
+  const [search, setSearch] = useState(effectTarget?.name ?? '')
   const [exactEffect, setExactEffect] = useState(target?.kind === 'effect')
   const [type, setType] = useState<string | null>(null)
   const [setName, setSetName] = useState<string | null>(target?.kind === 'item' ? target.name : null)
@@ -499,21 +525,19 @@ const ItemBrowser = ({
   const [collapsedSheets, setCollapsedSheets] = useState<ReadonlySet<string>>(() => new Set())
   const [catalog, setCatalog] = useState(target?.kind === 'filigree' ? 'Filigrees' : 'Equipment')
   const [slotFilter, setSlotFilter] = useState<string | null>(null)
-  const [bonusType, setBonusType] = useState<string | null>(
-    target?.kind === 'effect' ? (target.bonusType ?? null) : null
-  )
+  const [bonusType, setBonusType] = useState<string | null>(effectTarget?.bonusType ?? null)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const filtersId = useId()
+  const filterSlot = finding ? slotFilter : slot
   const effectQuery = search.trim().toLowerCase()
   const { inventory, ownedOnly, setOwnedOnly } = useTroveInventory()
   const candidates = useMemo(() => {
-    const filterSlot = finding ? slotFilter : slot
     return catalogItems.filter(
       ({ item }) =>
         (!filterSlot || item.slot === filterSlot) &&
         (item.slot !== 'Off Hand' || allowsOffHand(equipment['Main Hand'], item))
     )
-  }, [catalogItems, equipment, finding, slotFilter, slot])
+  }, [catalogItems, equipment, filterSlot])
   const bonusTypes = useMemo(
     () =>
       finding
@@ -600,30 +624,35 @@ const ItemBrowser = ({
   }
   const activeFilters = [
     {
+      id: 'slot',
       label: slotFilter,
       clear: () => {
         setSlotFilter(null)
       }
     },
     {
+      id: 'type',
       label: type,
       clear: () => {
         setType(null)
       }
     },
     {
+      id: 'set',
       label: setName,
       clear: () => {
         setSetName(null)
       }
     },
     {
+      id: 'bonus',
       label: bonusType && bonusType + ' bonus',
       clear: () => {
         setBonusType(null)
       }
     },
     {
+      id: 'levels',
       label:
         (minimumLevel !== gearPlannerMinimumLevel || maximumLevel !== gearPlannerMaximumLevel) &&
         `ML ${String(minimumLevel)}–${String(maximumLevel)}`,
@@ -632,12 +661,14 @@ const ItemBrowser = ({
       }
     },
     {
+      id: 'conflicts',
       label: showConflicts && 'Include lesser items',
       clear: () => {
         onShowConflicts(false)
       }
     },
     {
+      id: 'owned',
       label: ownedOnly && 'Owned only',
       clear: () => {
         setOwnedOnly(false)
@@ -664,7 +695,7 @@ const ItemBrowser = ({
           onChange={setCatalog}
         />
       )}
-      {catalog === 'Filigrees' ? (
+      {catalog === 'Filigrees' && (
         <FiligreeSetBrowser
           data={data}
           equipped={equippedFiligrees}
@@ -672,7 +703,8 @@ const ItemBrowser = ({
           initialQuery={search}
           initialSet={target?.kind === 'filigree' ? target.name : undefined}
         />
-      ) : (
+      )}
+      {catalog !== 'Filigrees' && (
         <>
           <CatalogSearch
             label={exactEffect ? 'Exact enchantment' : 'Search items'}
@@ -701,10 +733,10 @@ const ItemBrowser = ({
                   Filters
                 </Button>
                 {activeFilters.map(
-                  ({ label, clear }, index) =>
+                  ({ id, label, clear }) =>
                     label && (
                       <Button
-                        key={index}
+                        key={id}
                         size='compact-xs'
                         variant='default'
                         rightSection={<IconX size={12} aria-hidden />}
@@ -758,7 +790,7 @@ const ItemBrowser = ({
                 }}
               />
 
-              {types.length > 1 ? (
+              {types.length > 1 && (
                 <Select
                   label='Item type'
                   placeholder='All types'
@@ -767,7 +799,7 @@ const ItemBrowser = ({
                   value={type}
                   onChange={setType}
                 />
-              ) : null}
+              )}
               <Select
                 searchable
                 label='Item set'
@@ -811,17 +843,7 @@ const ItemBrowser = ({
             {filtered.slice(0, visibleCount).map(({ item, sets: itemSets, effects, craftGroups }) => {
               const incumbent = equipment[item.slot]
               const equipped = incumbent?.id === item.id
-              const membershipLabel =
-                finding && incumbent && setName
-                  ? memberships.some(
-                      (membership) =>
-                        membership.category === 'equipped-item' &&
-                        membership.itemId === incumbent.id &&
-                        membership.setName === setName
-                    )
-                    ? `Member of ${setName}`
-                    : `Outside ${setName}`
-                  : undefined
+              const membershipLabel = incumbentSetLabel(memberships, incumbent, setName)
               const essence = equipped ? essenceCrafting[item.id] : undefined
               const setSources = craftGroups
                 .filter((group) => !setName || group.sets.includes(setName))
@@ -852,16 +874,7 @@ const ItemBrowser = ({
                         </Text>
                         {finding && (!equipped || membershipLabel) && (
                           <Text size='xs' c='dimmed'>
-                            {[
-                              equipped
-                                ? 'Currently equipped'
-                                : incumbent
-                                  ? `Replaces ${incumbent.source.name}`
-                                  : 'Empty slot',
-                              membershipLabel
-                            ]
-                              .filter(Boolean)
-                              .join(' · ')}
+                            {[candidateSlotLabel(equipped, incumbent), membershipLabel].filter(Boolean).join(' · ')}
                           </Text>
                         )}
                       </Group>
@@ -950,16 +963,8 @@ const ItemBrowser = ({
               )
             })}
           </ul>
-          {filtered.length === 0 ? (
-            <Text c='dimmed'>
-              {(finding ? slotFilter : slot) === 'Off Hand' &&
-              equipment['Main Hand'] &&
-              occupiesBothHands(equipment['Main Hand'])
-                ? `${equipment['Main Hand'].source.name} occupies both hands. Change your main-hand weapon to equip an off-hand item.`
-                : 'No equipment matches these filters.'}
-            </Text>
-          ) : null}
-          {visibleCount < filtered.length ? (
+          {filtered.length === 0 && <Text c='dimmed'>{emptyCatalogMessage(filterSlot, equipment['Main Hand'])}</Text>}
+          {visibleCount < filtered.length && (
             <Button
               variant='subtle'
               onClick={() => {
@@ -968,18 +973,48 @@ const ItemBrowser = ({
             >
               Show {String(Math.min(pageSize, filtered.length - visibleCount))} more
             </Button>
-          ) : null}
+          )}
         </>
       )}
     </Stack>
   )
 }
 
+function resolveEquipmentSlots(owners: readonly GearOwner[], requestedSlot: GearPlannerSlot) {
+  const slot = owners.includes(slotOwner(requestedSlot)) ? requestedSlot : 'Eyes'
+  const owner = slotOwner(slot)
+  const slots: readonly GearPlannerSlot[] = owner === 'Character' ? characterSlotLayout : ownerSlots[owner]
+  return { slot, owner, slots }
+}
+
+function gearDetailTitle(
+  showingPaths: boolean,
+  finding: boolean,
+  owner: string,
+  browsing: boolean,
+  slot: GearPlannerSlot
+) {
+  if (showingPaths) return 'Upgrade paths'
+  if (finding) return owner === 'Character' ? 'Find gear across slots' : 'Find gear for ' + owner
+  return browsing ? `Select item for ${slot}` : slot
+}
+
+function nextSetupName(setups: readonly GearPlannerSetup[], base: string) {
+  const names = new Set(setups.map((setup) => setup.name))
+  let name = base
+  let suffix = 2
+  while (names.has(name)) {
+    name = `${base} ${String(suffix)}`
+    suffix += 1
+  }
+  return name
+}
+
 const GearPlannerWorkspace = () => {
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
   const [attempt, setAttempt] = useState(0)
   const [plannerState, setPlannerState] = useState(createDefaultGearPlannerState)
-  const [requestedSlot, setSlot] = useState<GearPlannerSlot>('Eyes')
+  const [requestedSlot, setRequestedSlot] = useState<GearPlannerSlot>('Eyes')
   const [mode, setMode] = useState<'equipped' | 'replace' | 'find' | 'paths' | { filigreeSlot: number }>('equipped')
   const [pathSearch, setPathSearch] = useState<{
     request: PathRequest
@@ -997,7 +1032,7 @@ const GearPlannerWorkspace = () => {
   const detailHeadingRef = useRef<HTMLHeadingElement>(null)
   const selectSlot = (next: GearPlannerSlot) => {
     setReturnSlot(null)
-    setSlot(next)
+    setRequestedSlot(next)
     setMode('equipped')
     setDetailOnMobile(true)
     requestAnimationFrame(() => detailHeadingRef.current?.focus({ preventScroll: true }))
@@ -1037,10 +1072,8 @@ const GearPlannerWorkspace = () => {
       ),
     [equipment, slottedFiligrees, owners]
   )
-  const slot = owners.includes(slotOwner(requestedSlot)) ? requestedSlot : 'Eyes'
-  const owner = slotOwner(slot)
+  const { slot, owner, slots } = resolveEquipmentSlots(owners, requestedSlot)
   const showingPaths = mode === 'paths' && pathSearch?.setup === activeSetup && pathSearch.owner === owner
-  const slots: readonly GearPlannerSlot[] = owner === 'Character' ? characterSlotLayout : ownerSlots[owner]
   const [collapsedItems, setCollapsedItems] = useState<ReadonlySet<string>>(new Set())
   const itemKey = (item: GearPlannerItem) => JSON.stringify([activeSetup.id, item.id])
   const equippedKeys = slots.flatMap((name) => (equipment[name] ? [itemKey(equipment[name])] : []))
@@ -1126,7 +1159,7 @@ const GearPlannerWorkspace = () => {
   )
   function findGear(target?: GearFindTarget) {
     if (returnSlot && !target) {
-      if (slotOwner(returnSlot) !== owner) setSlot(returnSlot)
+      if (slotOwner(returnSlot) !== owner) setRequestedSlot(returnSlot)
     } else {
       setFindRequest((current) => ({ revision: current.revision + 1, target }))
     }
@@ -1143,7 +1176,7 @@ const GearPlannerWorkspace = () => {
       id: 'enchantments',
       label: 'Enchantments',
       icon: <IconListDetails stroke={2} />,
-      content: (revealWorkspace) => (
+      renderContent: (revealWorkspace) => (
         <EnchantmentsTool
           summary={summary}
           candidates={catalogItems}
@@ -1160,7 +1193,7 @@ const GearPlannerWorkspace = () => {
       id: 'set-bonuses',
       label: 'Set Bonuses',
       icon: <IconLayersLinked stroke={2} />,
-      content: (revealWorkspace) => (
+      renderContent: (revealWorkspace) => (
         <SetBonusesTool
           setState={setState}
           onFind={(target) => {
@@ -1189,7 +1222,7 @@ const GearPlannerWorkspace = () => {
             id: 'augments',
             label: 'Augments',
             icon: <IconDiamond stroke={2} />,
-            content: (revealWorkspace: () => void) => (
+            renderContent: (revealWorkspace: () => void) => (
               <AugmentsTool
                 key={activeSetup.id}
                 setup={activeSetup}
@@ -1217,7 +1250,7 @@ const GearPlannerWorkspace = () => {
             id: 'upgrade-paths',
             label: 'Upgrade paths',
             icon: <IconRoute stroke={2} />,
-            content: (revealWorkspace: () => void) => (
+            renderContent: (revealWorkspace: () => void) => (
               <UpgradePathsTool
                 effects={effects}
                 key={activeSetup.id + owner}
@@ -1266,7 +1299,9 @@ const GearPlannerWorkspace = () => {
                   setPlannerState(state)
                   setMode('equipped')
                   setDetailOnMobile(false)
-                  setSlot(characterSlotLayout.find((s) => activeGearPlannerSetup(state).equipment[s]) ?? 'Eyes')
+                  setRequestedSlot(
+                    characterSlotLayout.find((s) => activeGearPlannerSetup(state).equipment[s]) ?? 'Eyes'
+                  )
                   setPersistenceEnabled(true)
                   setFeedback({ kind: 'success', message: 'Backup restored.' })
                 }}
@@ -1310,7 +1345,7 @@ const GearPlannerWorkspace = () => {
         if (import.meta.env.DEV && restored.issues.length > 0) {
           console.warn('Gear Planner persistence restore issues:', restored.issues)
         }
-        setSlot(characterSlotLayout.find((s) => activeGearPlannerSetup(restored.state).equipment[s]) ?? 'Eyes')
+        setRequestedSlot(characterSlotLayout.find((s) => activeGearPlannerSetup(restored.state).equipment[s]) ?? 'Eyes')
         setPlannerState(restored.state)
         legacySaveImported.current = restored.legacySaveImported === true
         setPersistenceEnabled(false)
@@ -1338,7 +1373,7 @@ const GearPlannerWorkspace = () => {
       setReturnSlot(null)
       setPlannerState(imported.state)
       setPersistenceEnabled(true)
-      setSlot(characterSlotLayout.find((s) => activeGearPlannerSetup(imported.state).equipment[s]) ?? 'Eyes')
+      setRequestedSlot(characterSlotLayout.find((s) => activeGearPlannerSetup(imported.state).equipment[s]) ?? 'Eyes')
       setMode('equipped')
       setDetailOnMobile(false)
       url.searchParams.delete('gp')
@@ -1386,7 +1421,7 @@ const GearPlannerWorkspace = () => {
   const equip = (targetSlot: GearPlannerSlot, item: GearPlannerItem | null) => {
     if (dataState.status !== 'ready') return
     if (finding) setReturnSlot(slot)
-    setSlot(targetSlot)
+    setRequestedSlot(targetSlot)
     setPlannerState((current) => equipGearPlannerSetupItem(current, targetSlot, item, dataState.essenceData))
     setMode('equipped')
     setPersistenceEnabled(true)
@@ -1415,7 +1450,7 @@ const GearPlannerWorkspace = () => {
         openFiligree={({ item, slotIndex }) => {
           if (isFinder) setReturnSlot(slot)
           setDetailsCollapsed([itemKey(item)], false)
-          setSlot(item.slot)
+          setRequestedSlot(item.slot)
           setDetailOnMobile(true)
           setMode({ filigreeSlot: slotIndex })
         }}
@@ -1474,7 +1509,7 @@ const GearPlannerWorkspace = () => {
           )}
         </Group>
 
-        {dataState.status === 'loading' ? (
+        {dataState.status === 'loading' && (
           <Center mih={160} role='status' aria-live='polite'>
             <Stack align='center' gap='xs'>
               <Loader size='sm' />
@@ -1483,9 +1518,9 @@ const GearPlannerWorkspace = () => {
               </Text>
             </Stack>
           </Center>
-        ) : null}
+        )}
 
-        {dataState.status === 'error' ? (
+        {dataState.status === 'error' && (
           <Alert
             color='red'
             title={
@@ -1497,19 +1532,19 @@ const GearPlannerWorkspace = () => {
           >
             <Stack gap='sm' align='flex-start'>
               <Text size='sm'>Gear Planner data could not be loaded. Try again.</Text>
-              {import.meta.env.DEV && dataState.cause instanceof Error ? (
+              {import.meta.env.DEV && dataState.cause instanceof Error && (
                 <Text component='code' size='xs' style={{ overflowWrap: 'anywhere' }}>
                   {dataState.cause.message}
                 </Text>
-              ) : null}
+              )}
               <Button size='sm' variant='light' onClick={retry}>
                 Retry
               </Button>
             </Stack>
           </Alert>
-        ) : null}
+        )}
 
-        {dataState.status === 'ready' ? (
+        {dataState.status === 'ready' && (
           <Paper component='section' aria-label='Gear Planner workspace' withBorder className={classes.workspace}>
             <div className={classes.toolbar}>
               <Tabs
@@ -1613,7 +1648,7 @@ const GearPlannerWorkspace = () => {
                 duplicate={duplicateSetup}
               />
             )}
-            {renameOpen ? (
+            {renameOpen && (
               <Group gap='xs' wrap='nowrap'>
                 <TextInput
                   aria-label='Setup name'
@@ -1656,19 +1691,19 @@ const GearPlannerWorkspace = () => {
                   Cancel
                 </Button>
               </Group>
-            ) : null}
-            {feedback?.kind === 'success' ? (
+            )}
+            {feedback?.kind === 'success' && (
               <Notification icon={<IconCheck size={16} />} color='green' withCloseButton={false} role='status'>
                 <Text size='sm'>{feedback.message}</Text>
                 <ImportDetails issues={feedback.issues} />
               </Notification>
-            ) : null}
-            {feedback?.kind === 'error' ? (
+            )}
+            {feedback?.kind === 'error' && (
               <Notification icon={<IconAlertTriangle size={16} />} color='red' withCloseButton={false} role='alert'>
                 <Text size='sm'>{feedback.message}</Text>
                 <ImportDetails issues={feedback.issues} />
               </Notification>
-            ) : null}
+            )}
             <div className={classes.columns} data-detail={detailOnMobile || undefined}>
               <nav className={classes.slots} ref={slotListRef} aria-label='Equipment slots'>
                 {owners.length > 1 && (
@@ -1683,7 +1718,7 @@ const GearPlannerWorkspace = () => {
                       const target = owners.find((o) => o === value)
                       if (target) {
                         setReturnSlot(null)
-                        setSlot(ownerSlots[target][0])
+                        setRequestedSlot(ownerSlots[target][0])
                         setMode('equipped')
                       }
                     }}
@@ -1771,15 +1806,7 @@ const GearPlannerWorkspace = () => {
                     <IconArrowLeft size={18} />
                   </ActionIcon>
                   <Title order={2} size='h4' id='gear-detail-title' ref={detailHeadingRef} tabIndex={-1}>
-                    {showingPaths
-                      ? 'Upgrade paths'
-                      : finding
-                        ? owner === 'Character'
-                          ? 'Find gear across slots'
-                          : 'Find gear for ' + owner
-                        : browsing
-                          ? `Select item for ${slot}`
-                          : slot}
+                    {gearDetailTitle(showingPaths, finding, owner, browsing, slot)}
                   </Title>
                   {!finding && returnSlot && (
                     <Button
@@ -1828,9 +1855,7 @@ const GearPlannerWorkspace = () => {
                         const id = createGearPlannerSetupId()
                         applySetupState((current) => {
                           if (activeGearPlannerSetup(current) !== activeSetup) return current
-                          let name = draft.name
-                          for (let n = 2; current.setups.some((s) => s.name === name); n++)
-                            name = draft.name + ' ' + String(n)
+                          const name = nextSetupName(current.setups, draft.name)
                           return { ...current, setups: [...current.setups, { ...draft, id, name }], activeSetupId: id }
                         })
                         setMode('equipped')
@@ -1981,7 +2006,7 @@ const GearPlannerWorkspace = () => {
               </Stack>
             </Modal>
           </Paper>
-        ) : null}
+        )}
       </Stack>
     </WorkspaceLayout>
   )

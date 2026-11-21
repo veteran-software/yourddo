@@ -84,6 +84,11 @@ interface RouteOverviewProps {
   routeName: string
 }
 
+function describeStep(index: number, completedSteps: number) {
+  if (index < completedSteps) return { state: 'completed', label: 'Done' }
+  if (index === completedSteps) return { state: 'current', label: 'Now' }
+  return { state: 'remaining', label: String(index + 1) }
+}
 const RouteOverview = ({ route, completedSteps, routeName }: RouteOverviewProps) => (
   <Stack gap='xs'>
     <Text size='sm' fw={600}>
@@ -95,7 +100,7 @@ const RouteOverview = ({ route, completedSteps, routeName }: RouteOverviewProps)
           const completed = index < completedSteps
           const current = index === completedSteps
           const StepIcon = getStepIcon(step)
-          const state = completed ? 'completed' : current ? 'current' : 'remaining'
+          const { state, label } = describeStep(index, completedSteps)
 
           return (
             <Box
@@ -121,7 +126,7 @@ const RouteOverview = ({ route, completedSteps, routeName }: RouteOverviewProps)
                     {completed ? <IconCheck size={15} aria-hidden='true' /> : <StepIcon size={15} aria-hidden='true' />}
                   </ThemeIcon>
                   <Text size='xs' fw={700} aria-hidden='true'>
-                    {completed ? 'Done' : current ? 'Now' : String(index + 1)}
+                    {label}
                   </Text>
                   <Text size='xs' fw={600} aria-hidden='true'>
                     {getStepAbbreviation(step)}
@@ -315,6 +320,53 @@ const ShadowCryptPage = () => {
   )
 
   const selectedRoutes = selectedColor ? SHADOW_CRYPT_ROUTES[selectedColor] : null
+  const renderRouteInstructions = () => {
+    if (!selectedColor || !selectedRoutes)
+      return (
+        <Paper className={styles.surface} withBorder p='lg'>
+          <Text fw={600}>Choose the starting-room color to show the next route instruction.</Text>
+        </Paper>
+      )
+    if (selectedRouteType === 'twelve-gear')
+      return (
+        <Box maw={760}>
+          {renderRoutePanel(
+            `${getColorLabel(selectedColor)} 12-Gear`,
+            'Go east from the start, identify the room color, then follow this route.',
+            2,
+            selectedRoutes.twelveGear,
+            getRouteKey(selectedColor, selectedRouteType)
+          )}
+        </Box>
+      )
+    return (
+      <Stack gap='md'>
+        <Stack gap={2}>
+          <Title order={2} size='h3'>
+            {getColorLabel(selectedColor)} 8-Gear Duo
+          </Title>
+          <Text c='dimmed'>Each group follows its own route and keeps independent progress.</Text>
+        </Stack>
+        <SimpleGrid cols={{ base: 1, md: 2 }} spacing={{ base: 'md', md: 'lg' }}>
+          {renderRoutePanel(
+            'Group A',
+            'Move east from the start to identify the color, then follow this route.',
+            3,
+            selectedRoutes.eightGearDuo.groupA,
+            getRouteKey(selectedColor, selectedRouteType, 'groupA')
+          )}
+          {renderRoutePanel(
+            'Group B',
+            'Wait at the starting room until Group A identifies the color. Do not first go east unless this route says East.',
+            3,
+            selectedRoutes.eightGearDuo.groupB,
+            getRouteKey(selectedColor, selectedRouteType, 'groupB')
+          )}
+        </SimpleGrid>
+      </Stack>
+    )
+  }
+
   return (
     <ToolLayout>
       <WorkspaceHeader
@@ -372,46 +424,7 @@ const ShadowCryptPage = () => {
         </SimpleGrid>
       </Paper>
 
-      {!selectedColor || !selectedRoutes ? (
-        <Paper className={styles.surface} withBorder p='lg'>
-          <Text fw={600}>Choose the starting-room color to show the next route instruction.</Text>
-        </Paper>
-      ) : selectedRouteType === 'twelve-gear' ? (
-        <Box maw={760}>
-          {renderRoutePanel(
-            `${getColorLabel(selectedColor)} 12-Gear`,
-            'Go east from the start, identify the room color, then follow this route.',
-            2,
-            selectedRoutes.twelveGear,
-            getRouteKey(selectedColor, selectedRouteType)
-          )}
-        </Box>
-      ) : (
-        <Stack gap='md'>
-          <Stack gap={2}>
-            <Title order={2} size='h3'>
-              {getColorLabel(selectedColor)} 8-Gear Duo
-            </Title>
-            <Text c='dimmed'>Each group follows its own route and keeps independent progress.</Text>
-          </Stack>
-          <SimpleGrid cols={{ base: 1, md: 2 }} spacing={{ base: 'md', md: 'lg' }}>
-            {renderRoutePanel(
-              'Group A',
-              'Move east from the start to identify the color, then follow this route.',
-              3,
-              selectedRoutes.eightGearDuo.groupA,
-              getRouteKey(selectedColor, selectedRouteType, 'groupA')
-            )}
-            {renderRoutePanel(
-              'Group B',
-              'Wait at the starting room until Group A identifies the color. Do not first go east unless this route says East.',
-              3,
-              selectedRoutes.eightGearDuo.groupB,
-              getRouteKey(selectedColor, selectedRouteType, 'groupB')
-            )}
-          </SimpleGrid>
-        </Stack>
-      )}
+      {renderRouteInstructions()}
 
       <Accordion variant='separated'>
         <Accordion.Item value='how-to-use'>

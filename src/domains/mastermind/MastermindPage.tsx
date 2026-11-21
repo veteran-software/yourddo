@@ -133,6 +133,8 @@ const MastermindPage = () => {
   const latestFeedback = guesses.at(-1)?.feedback
   const solved = latestFeedback?.black === 4 || possibleCount === 1
   const maximumReached = finished && !solved
+  const unfinishedLabel = maximumReached ? 'Last guess' : 'Next guess'
+  const guessLabel = solved ? 'Solution' : unfinishedLabel
   const displayedAttempt = finished ? guesses.length : guesses.length + 1
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
@@ -159,6 +161,72 @@ const MastermindPage = () => {
     setBlack(0)
     setWhite(0)
     setFeedbackError(undefined)
+  }
+
+  const renderFeedback = () => {
+    if (!finished)
+      return (
+        <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'lg' }}>
+          <Box component='form' onSubmit={handleSubmit}>
+            <Stack gap='md'>
+              <Group justify='space-between' wrap='wrap'>
+                <Title order={2} size='h3'>
+                  Enter feedback
+                </Title>
+                <Badge color={feedbackError ? 'red' : 'blue'} variant='light'>
+                  {feedbackError ? 'No valid solution remains' : 'In progress'}
+                </Badge>
+              </Group>
+              <Text c='dimmed' size='sm'>
+                Enter the feedback shown in game for the guess beside these controls.
+              </Text>
+              <SimpleGrid cols={{ base: 1, xs: 2 }} spacing='sm'>
+                <NumberInput
+                  label='Black feedback'
+                  description='Correct color and position'
+                  value={black}
+                  onChange={setBlack}
+                  min={0}
+                  max={4}
+                  allowDecimal={false}
+                  clampBehavior='strict'
+                  isAllowed={isAllowedFeedbackValue}
+                />
+                <NumberInput
+                  label='White feedback'
+                  description='Correct color, different position'
+                  value={white}
+                  onChange={setWhite}
+                  min={0}
+                  max={4}
+                  allowDecimal={false}
+                  clampBehavior='strict'
+                  isAllowed={isAllowedFeedbackValue}
+                />
+              </SimpleGrid>
+              {feedbackError && (
+                <Alert color='red' title='No valid solution remains' role='alert'>
+                  {feedbackError} Check the in-game feedback and try again.
+                </Alert>
+              )}
+              <Button type='submit' fullWidth>
+                Submit feedback
+              </Button>
+            </Stack>
+          </Box>
+        </Paper>
+      )
+    if (solved)
+      return (
+        <Alert color='green' title='Puzzle solved!' role='status' aria-live='polite'>
+          The solution is shown beside this message. Go grab your loot!
+        </Alert>
+      )
+    return (
+      <Alert color='red' title='Maximum attempts reached' role='status' aria-live='polite'>
+        The solver did not identify a solution within {MAX_ATTEMPTS} attempts. Reset the puzzle to try again.
+      </Alert>
+    )
   }
 
   return (
@@ -202,75 +270,14 @@ const MastermindPage = () => {
             <Divider />
             <Stack gap='sm' align='flex-start'>
               <Title order={2} size='h3'>
-                {solved ? 'Solution' : maximumReached ? 'Last guess' : 'Next guess'}
+                {guessLabel}
               </Title>
-              <CodePegs
-                code={currentGuess}
-                label={solved ? 'Solution' : maximumReached ? 'Last guess' : 'Next guess'}
-              />
+              <CodePegs code={currentGuess} label={guessLabel} />
             </Stack>
           </Stack>
         </Paper>
 
-        {!finished ? (
-          <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'lg' }}>
-            <Box component='form' onSubmit={handleSubmit}>
-              <Stack gap='md'>
-                <Group justify='space-between' wrap='wrap'>
-                  <Title order={2} size='h3'>
-                    Enter feedback
-                  </Title>
-                  <Badge color={feedbackError ? 'red' : 'blue'} variant='light'>
-                    {feedbackError ? 'No valid solution remains' : 'In progress'}
-                  </Badge>
-                </Group>
-                <Text c='dimmed' size='sm'>
-                  Enter the feedback shown in game for the guess beside these controls.
-                </Text>
-                <SimpleGrid cols={{ base: 1, xs: 2 }} spacing='sm'>
-                  <NumberInput
-                    label='Black feedback'
-                    description='Correct color and position'
-                    value={black}
-                    onChange={setBlack}
-                    min={0}
-                    max={4}
-                    allowDecimal={false}
-                    clampBehavior='strict'
-                    isAllowed={isAllowedFeedbackValue}
-                  />
-                  <NumberInput
-                    label='White feedback'
-                    description='Correct color, different position'
-                    value={white}
-                    onChange={setWhite}
-                    min={0}
-                    max={4}
-                    allowDecimal={false}
-                    clampBehavior='strict'
-                    isAllowed={isAllowedFeedbackValue}
-                  />
-                </SimpleGrid>
-                {feedbackError && (
-                  <Alert color='red' title='No valid solution remains' role='alert'>
-                    {feedbackError} Check the in-game feedback and try again.
-                  </Alert>
-                )}
-                <Button type='submit' fullWidth>
-                  Submit feedback
-                </Button>
-              </Stack>
-            </Box>
-          </Paper>
-        ) : solved ? (
-          <Alert color='green' title='Puzzle solved!' role='status' aria-live='polite'>
-            The solution is shown beside this message. Go grab your loot!
-          </Alert>
-        ) : (
-          <Alert color='red' title='Maximum attempts reached' role='status' aria-live='polite'>
-            The solver did not identify a solution within {MAX_ATTEMPTS} attempts. Reset the puzzle to try again.
-          </Alert>
-        )}
+        {renderFeedback()}
       </SimpleGrid>
 
       <Group justify='flex-end'>

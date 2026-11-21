@@ -42,7 +42,7 @@ type RecipesState =
 const secondaryTextColor = 'light-dark(var(--mantine-color-gray-7), var(--mantine-color-gray-3))'
 
 const formatBinding = ({ type, to, from }: CauldronRecipes[number]['binding']): string =>
-  `${type}${to ? ` to ${to}` : ''}${from ? ` on ${from}` : ''}`
+  [type, to && 'to ' + to, from && 'on ' + from].filter(Boolean).join(' ')
 
 const CauldronOfCadencePage = () => {
   const [recipesState, setRecipesState] = useState<RecipesState>({ status: 'loading' })
@@ -111,6 +111,201 @@ const CauldronOfCadencePage = () => {
     setLoadAttempt((attempt) => attempt + 1)
   }
 
+  const renderSelectedRecipe = () => {
+    if (selectedRecipe)
+      return (
+        <Stack gap='lg'>
+          <Group justify='space-between' align='flex-start' wrap='wrap'>
+            <Stack gap={4}>
+              <Title order={2}>{selectedRecipe.name}</Title>
+              <Text c={secondaryTextColor} size='sm'>
+                {selectedRecipe.description}
+              </Text>
+            </Stack>
+            <Button variant='subtle' size='sm' onClick={clearSelection}>
+              Clear selection
+            </Button>
+          </Group>
+
+          <Group gap='xs'>
+            <Badge variant='light'>{selectedRecipe.augmentType}</Badge>
+            <Badge variant='light'>Minimum Level {selectedRecipe.minimumLevel}</Badge>
+            <Badge variant='outline'>{formatBinding(selectedRecipe.binding)}</Badge>
+            <Badge variant='outline'>Crafted in {selectedRecipe.craftedIn}</Badge>
+          </Group>
+
+          <Divider />
+
+          <SimpleGrid cols={{ base: 1, md: 2 }} spacing={{ base: 'lg', md: 'xl' }}>
+            <Stack gap='sm'>
+              <Title order={3} size='h4'>
+                Set Bonus
+              </Title>
+              {selectedRecipe.setBonus.map((setBonus) => (
+                <Stack key={setBonus.name} gap='xs'>
+                  <Group gap='xs'>
+                    <Text fw={700}>{setBonus.name}</Text>
+                    <Badge variant='light'>{setBonus.numPiecesEquipped} pieces</Badge>
+                  </Group>
+                  <List spacing='xs' size='sm'>
+                    {setBonus.enhancements.map((effect) => (
+                      <List.Item key={`${effect.name}-${String(effect.modifier)}-${effect.bonus ?? ''}`}>
+                        {formatEffect(effect)}
+                      </List.Item>
+                    ))}
+                  </List>
+                </Stack>
+              ))}
+            </Stack>
+
+            <Stack gap='sm'>
+              <Title order={3} size='h4'>
+                Required Items
+              </Title>
+              <List spacing='sm'>
+                {selectedRecipe.requirements.map((requirement) => (
+                  <List.Item key={requirement.name}>
+                    <Group component='span' gap='xs' wrap='nowrap'>
+                      <Text component='span' size='sm'>
+                        {requirement.name}
+                      </Text>
+                      <Badge variant='light' color='gray' size='sm'>
+                        ×{requirement.quantity}
+                      </Badge>
+                    </Group>
+                  </List.Item>
+                ))}
+              </List>
+            </Stack>
+          </SimpleGrid>
+        </Stack>
+      )
+    if (selectedItem && selectedSetBonus)
+      return (
+        <Alert color='red' title='Invalid selection'>
+          <Stack gap='sm' align='flex-start'>
+            <Text size='sm'>The selected item and effect do not belong to the same Cauldron recipe.</Text>
+            <Button size='sm' variant='light' onClick={clearSelection}>
+              Reset selection
+            </Button>
+          </Stack>
+        </Alert>
+      )
+    if (selectedItem)
+      return (
+        <Stack gap='xs'>
+          <Title order={2} size='h3'>
+            Select an upgrade effect
+          </Title>
+          <Text c={secondaryTextColor}>
+            {findRecipeByItem(recipes, selectedItem)
+              ? `Choose the available effect for ${selectedItem} to view its set augment recipe.`
+              : 'The selected item is not available in the loaded recipe data.'}
+          </Text>
+        </Stack>
+      )
+    return (
+      <Stack gap='xs'>
+        <Title order={2} size='h3'>
+          Select an item or effect
+        </Title>
+        <Text c={secondaryTextColor}>Choose either selection above to begin.</Text>
+      </Stack>
+    )
+  }
+
+  const renderRecipes = () => {
+    if (recipesState.status === 'loading')
+      return (
+        <Center mih={180} role='status' aria-live='polite'>
+          <Stack gap='xs' align='center'>
+            <Loader size='sm' />
+            <Text c={secondaryTextColor} size='sm'>
+              Loading Cauldron recipes…
+            </Text>
+          </Stack>
+        </Center>
+      )
+    if (recipesState.status === 'error')
+      return (
+        <Alert color='red' title='Cauldron recipes are unavailable'>
+          <Stack gap='sm' align='flex-start'>
+            <Text size='sm'>We could not load the recipe data. Check your connection and try again.</Text>
+            {import.meta.env.DEV && (
+              <Text c={secondaryTextColor} size='xs'>
+                {recipesState.cause instanceof Error ? recipesState.cause.message : String(recipesState.cause)}
+              </Text>
+            )}
+            <Button size='sm' variant='light' onClick={retry}>
+              Retry
+            </Button>
+          </Stack>
+        </Alert>
+      )
+    if (recipesState.status === 'invalid')
+      return (
+        <Alert color='red' title='Cauldron recipe data is invalid'>
+          <Stack gap='sm' align='flex-start'>
+            <Text size='sm'>The loaded data does not match the expected Cauldron recipe format.</Text>
+            <Button size='sm' variant='light' onClick={retry}>
+              Retry
+            </Button>
+          </Stack>
+        </Alert>
+      )
+    if (recipes.length === 0)
+      return (
+        <Alert color='yellow' title='No Cauldron recipes found'>
+          The loaded recipe data is empty. Try again later.
+        </Alert>
+      )
+    return (
+      <div className={styles.recipeDesk}>
+        <Stack className={styles.recipeControls} gap='md'>
+          <Stack gap='xs'>
+            <Title order={2} size='h3'>
+              Item Selection
+            </Title>
+            <Text c={secondaryTextColor} size='sm'>
+              Select the named item required by a Cauldron recipe.
+            </Text>
+            <Select
+              label='Required item'
+              placeholder='Select an item…'
+              data={itemOptions}
+              value={selectedItem}
+              onChange={changeItem}
+              searchable
+              clearable
+            />
+          </Stack>
+
+          <Stack gap='xs'>
+            <Title order={2} size='h3'>
+              Upgrade Effect Selection
+            </Title>
+            <Text c={secondaryTextColor} size='sm'>
+              Choose an effect directly, or select an item first to show its available effect.
+            </Text>
+            <Select
+              label='Set bonus effect'
+              placeholder='Select an effect…'
+              data={effectOptions}
+              value={selectedSetBonus}
+              onChange={changeEffect}
+              searchable
+              clearable
+            />
+          </Stack>
+        </Stack>
+
+        <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
+          {renderSelectedRecipe()}
+        </Paper>
+      </div>
+    )
+  }
+
   return (
     <ToolLayout>
       <WorkspaceHeader
@@ -137,180 +332,7 @@ const CauldronOfCadencePage = () => {
         All Cauldron set augments are Minimum Level 30 and require a three-piece set.
       </Alert>
 
-      {recipesState.status === 'loading' ? (
-        <Center mih={180} role='status' aria-live='polite'>
-          <Stack gap='xs' align='center'>
-            <Loader size='sm' />
-            <Text c={secondaryTextColor} size='sm'>
-              Loading Cauldron recipes…
-            </Text>
-          </Stack>
-        </Center>
-      ) : recipesState.status === 'error' ? (
-        <Alert color='red' title='Cauldron recipes are unavailable'>
-          <Stack gap='sm' align='flex-start'>
-            <Text size='sm'>We could not load the recipe data. Check your connection and try again.</Text>
-            {import.meta.env.DEV && (
-              <Text c={secondaryTextColor} size='xs'>
-                {recipesState.cause instanceof Error ? recipesState.cause.message : String(recipesState.cause)}
-              </Text>
-            )}
-            <Button size='sm' variant='light' onClick={retry}>
-              Retry
-            </Button>
-          </Stack>
-        </Alert>
-      ) : recipesState.status === 'invalid' ? (
-        <Alert color='red' title='Cauldron recipe data is invalid'>
-          <Stack gap='sm' align='flex-start'>
-            <Text size='sm'>The loaded data does not match the expected Cauldron recipe format.</Text>
-            <Button size='sm' variant='light' onClick={retry}>
-              Retry
-            </Button>
-          </Stack>
-        </Alert>
-      ) : recipes.length === 0 ? (
-        <Alert color='yellow' title='No Cauldron recipes found'>
-          The loaded recipe data is empty. Try again later.
-        </Alert>
-      ) : (
-        <div className={styles.recipeDesk}>
-          <Stack className={styles.recipeControls} gap='md'>
-            <Stack gap='xs'>
-              <Title order={2} size='h3'>
-                Item Selection
-              </Title>
-              <Text c={secondaryTextColor} size='sm'>
-                Select the named item required by a Cauldron recipe.
-              </Text>
-              <Select
-                label='Required item'
-                placeholder='Select an item…'
-                data={itemOptions}
-                value={selectedItem}
-                onChange={changeItem}
-                searchable
-                clearable
-              />
-            </Stack>
-
-            <Stack gap='xs'>
-              <Title order={2} size='h3'>
-                Upgrade Effect Selection
-              </Title>
-              <Text c={secondaryTextColor} size='sm'>
-                Choose an effect directly, or select an item first to show its available effect.
-              </Text>
-              <Select
-                label='Set bonus effect'
-                placeholder='Select an effect…'
-                data={effectOptions}
-                value={selectedSetBonus}
-                onChange={changeEffect}
-                searchable
-                clearable
-              />
-            </Stack>
-          </Stack>
-
-          <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
-            {selectedRecipe ? (
-              <Stack gap='lg'>
-                <Group justify='space-between' align='flex-start' wrap='wrap'>
-                  <Stack gap={4}>
-                    <Title order={2}>{selectedRecipe.name}</Title>
-                    <Text c={secondaryTextColor} size='sm'>
-                      {selectedRecipe.description}
-                    </Text>
-                  </Stack>
-                  <Button variant='subtle' size='sm' onClick={clearSelection}>
-                    Clear selection
-                  </Button>
-                </Group>
-
-                <Group gap='xs'>
-                  <Badge variant='light'>{selectedRecipe.augmentType}</Badge>
-                  <Badge variant='light'>Minimum Level {selectedRecipe.minimumLevel}</Badge>
-                  <Badge variant='outline'>{formatBinding(selectedRecipe.binding)}</Badge>
-                  <Badge variant='outline'>Crafted in {selectedRecipe.craftedIn}</Badge>
-                </Group>
-
-                <Divider />
-
-                <SimpleGrid cols={{ base: 1, md: 2 }} spacing={{ base: 'lg', md: 'xl' }}>
-                  <Stack gap='sm'>
-                    <Title order={3} size='h4'>
-                      Set Bonus
-                    </Title>
-                    {selectedRecipe.setBonus.map((setBonus) => (
-                      <Stack key={setBonus.name} gap='xs'>
-                        <Group gap='xs'>
-                          <Text fw={700}>{setBonus.name}</Text>
-                          <Badge variant='light'>{setBonus.numPiecesEquipped} pieces</Badge>
-                        </Group>
-                        <List spacing='xs' size='sm'>
-                          {setBonus.enhancements.map((effect) => (
-                            <List.Item key={`${effect.name}-${String(effect.modifier)}-${effect.bonus ?? ''}`}>
-                              {formatEffect(effect)}
-                            </List.Item>
-                          ))}
-                        </List>
-                      </Stack>
-                    ))}
-                  </Stack>
-
-                  <Stack gap='sm'>
-                    <Title order={3} size='h4'>
-                      Required Items
-                    </Title>
-                    <List spacing='sm'>
-                      {selectedRecipe.requirements.map((requirement) => (
-                        <List.Item key={requirement.name}>
-                          <Group component='span' gap='xs' wrap='nowrap'>
-                            <Text component='span' size='sm'>
-                              {requirement.name}
-                            </Text>
-                            <Badge variant='light' color='gray' size='sm'>
-                              ×{requirement.quantity}
-                            </Badge>
-                          </Group>
-                        </List.Item>
-                      ))}
-                    </List>
-                  </Stack>
-                </SimpleGrid>
-              </Stack>
-            ) : selectedItem && selectedSetBonus ? (
-              <Alert color='red' title='Invalid selection'>
-                <Stack gap='sm' align='flex-start'>
-                  <Text size='sm'>The selected item and effect do not belong to the same Cauldron recipe.</Text>
-                  <Button size='sm' variant='light' onClick={clearSelection}>
-                    Reset selection
-                  </Button>
-                </Stack>
-              </Alert>
-            ) : selectedItem ? (
-              <Stack gap='xs'>
-                <Title order={2} size='h3'>
-                  Select an upgrade effect
-                </Title>
-                <Text c={secondaryTextColor}>
-                  {findRecipeByItem(recipes, selectedItem)
-                    ? `Choose the available effect for ${selectedItem} to view its set augment recipe.`
-                    : 'The selected item is not available in the loaded recipe data.'}
-                </Text>
-              </Stack>
-            ) : (
-              <Stack gap='xs'>
-                <Title order={2} size='h3'>
-                  Select an item or effect
-                </Title>
-                <Text c={secondaryTextColor}>Choose either selection above to begin.</Text>
-              </Stack>
-            )}
-          </Paper>
-        </div>
-      )}
+      {renderRecipes()}
     </ToolLayout>
   )
 }

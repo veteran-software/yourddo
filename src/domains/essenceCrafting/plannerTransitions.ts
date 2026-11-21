@@ -291,6 +291,16 @@ const sanitizeHydratedItem = (
   return revalidateItemSelections(data, equipmentSlotId, item, masterMinimumLevel)
 }
 
+function readEquipmentSlotIds(value: unknown): Set<EquipmentSlotId> {
+  const ids = new Set<EquipmentSlotId>()
+  if (Array.isArray(value)) {
+    for (const slot of value) {
+      if (typeof slot === 'string' && isEquipmentSlotId(slot)) ids.add(slot)
+    }
+  }
+  return ids
+}
+
 export const hydrateEssencePlan = (data: EssenceCraftingData, externalState: unknown): EssencePlanState => {
   if (!isRecord(externalState)) return createEmptyEssencePlan(data)
   const masterMinimumLevel =
@@ -298,12 +308,7 @@ export const hydrateEssencePlan = (data: EssenceCraftingData, externalState: unk
     isSupportedMinimumLevel(data, externalState.masterMinimumLevel)
       ? externalState.masterMinimumLevel
       : data.rules.supportedItemLevels.minimum
-  const requestedActiveIds = new Set<EquipmentSlotId>()
-  if (Array.isArray(externalState.activeSlotIds)) {
-    for (const value of externalState.activeSlotIds) {
-      if (typeof value === 'string' && isEquipmentSlotId(value)) requestedActiveIds.add(value)
-    }
-  }
+  const requestedActiveIds = readEquipmentSlotIds(externalState.activeSlotIds)
   const activeSlotIds = orderEquipmentSlotIds(requestedActiveIds)
   const rawItems = isRecord(externalState.itemsBySlotId) ? externalState.itemsBySlotId : {}
   const itemsBySlotId: EssencePlanState['itemsBySlotId'] = {}
@@ -316,21 +321,37 @@ export const hydrateEssencePlan = (data: EssenceCraftingData, externalState: unk
     )
   }
 
-  const requestedCollapsedIds = new Set<EquipmentSlotId>()
-  if (Array.isArray(externalState.collapsedSlotIds)) {
-    for (const value of externalState.collapsedSlotIds) {
-      if (typeof value === 'string' && isEquipmentSlotId(value) && requestedActiveIds.has(value)) {
-        requestedCollapsedIds.add(value)
-      }
-    }
-  }
+  const requestedCollapsedIds = readEquipmentSlotIds(externalState.collapsedSlotIds)
 
   return {
     masterMinimumLevel,
     activeSlotIds,
-    collapsedSlotIds: orderEquipmentSlotIds(requestedCollapsedIds),
+    collapsedSlotIds: activeSlotIds.filter((id) => requestedCollapsedIds.has(id)),
     itemsBySlotId
   }
+}
+
+function setMasterMinimumLevel(
+  data: EssenceCraftingData,
+  state: EssencePlanState,
+  minimumLevel: number
+): EssencePlanState {
+  if (!isSupportedMinimumLevel(data, minimumLevel) || minimumLevel === state.masterMinimumLevel) {
+    return state
+  }
+  const itemsBySlotId = { ...state.itemsBySlotId }
+  for (const equipmentSlotId of state.activeSlotIds) {
+    const item = itemsBySlotId[equipmentSlotId]
+    if (item?.minimumLevelOverride !== null) continue
+    const constrainedOverride = constrainOverrideToAugmentSlots(data, minimumLevel, item, null)
+    itemsBySlotId[equipmentSlotId] = revalidateItemSelections(
+      data,
+      equipmentSlotId,
+      { ...item, minimumLevelOverride: constrainedOverride },
+      minimumLevel
+    )
+  }
+  return { ...state, masterMinimumLevel: minimumLevel, itemsBySlotId }
 }
 
 export const transitionEssencePlan = (
@@ -339,24 +360,8 @@ export const transitionEssencePlan = (
   action: EssencePlanAction
 ): EssencePlanState => {
   switch (action.type) {
-    case 'set-master-minimum-level': {
-      if (!isSupportedMinimumLevel(data, action.minimumLevel) || action.minimumLevel === state.masterMinimumLevel) {
-        return state
-      }
-      const itemsBySlotId = { ...state.itemsBySlotId }
-      for (const equipmentSlotId of state.activeSlotIds) {
-        const item = itemsBySlotId[equipmentSlotId]
-        if (item?.minimumLevelOverride !== null) continue
-        const constrainedOverride = constrainOverrideToAugmentSlots(data, action.minimumLevel, item, null)
-        itemsBySlotId[equipmentSlotId] = revalidateItemSelections(
-          data,
-          equipmentSlotId,
-          { ...item, minimumLevelOverride: constrainedOverride },
-          action.minimumLevel
-        )
-      }
-      return { ...state, masterMinimumLevel: action.minimumLevel, itemsBySlotId }
-    }
+    case 'set-master-minimum-level':
+      return setMasterMinimumLevel(data, state, action.minimumLevel)
     case 'activate-equipment-slot': {
       if (!isEquipmentSlotId(action.equipmentSlotId)) return state
       const activeIds = new Set(state.activeSlotIds)

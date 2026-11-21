@@ -193,6 +193,25 @@ const formatDiscordStep = (context: ExportContext, step: EssenceMaterialStep): s
   ]
 }
 
+type ExportItem = NonNullable<ReturnType<typeof humanItemData>>
+
+function discordEnhancementLines(context: ExportContext, { item, materials, stepsBySource }: ExportItem) {
+  const { data } = context
+  const lines: string[] = []
+  for (const [source, enhancementId] of selectedEnhancements(item)) {
+    if (!enhancementId) continue
+    const enhancement = data.indexes.enhancementById.get(enhancementId)
+    lines.push(`- ${source[0].toUpperCase()}${source.slice(1)}: ${enhancement?.displayName ?? 'Unknown enhancement'}`)
+    for (const effect of resolvedEffectsForSelection(data, enhancementId, materials.effectiveItemLevel)) {
+      lines.push(`  - Effect: ${formatEffect(effect)}`)
+    }
+    const step = stepsBySource.get(source)
+    if (step) lines.push(...formatDiscordStep(context, step))
+    else if (source === 'extra') lines.push('  - Not applied: requires Mark of House Cannith')
+  }
+  return lines
+}
+
 /**
  * Creates a Discord-ready view from the shared plan-material calculation. It
  * only formats resolved recipe data; it does not recreate recipe semantics.
@@ -220,17 +239,7 @@ export const formatEssencePlanDiscordMarkdown = (
       lines.push('- Minimum Level shard', ...formatDiscordStep(context, minimumLevelStep))
     }
 
-    for (const [source, enhancementId] of selectedEnhancements(item)) {
-      if (!enhancementId) continue
-      const enhancement = data.indexes.enhancementById.get(enhancementId)
-      lines.push(`- ${source[0].toUpperCase()}${source.slice(1)}: ${enhancement?.displayName ?? 'Unknown enhancement'}`)
-      for (const effect of resolvedEffectsForSelection(data, enhancementId, materials.effectiveItemLevel)) {
-        lines.push(`  - Effect: ${formatEffect(effect)}`)
-      }
-      const step = stepsBySource.get(source)
-      if (step) lines.push(...formatDiscordStep(context, step))
-      else if (source === 'extra') lines.push('  - Not applied: requires Mark of House Cannith')
-    }
+    lines.push(...discordEnhancementLines(context, itemData))
 
     const markStep = stepsBySource.get('mark-of-house-cannith')
     if (markStep) {
@@ -264,6 +273,25 @@ const formatBbCodeStep = (context: ExportContext, step: EssenceMaterialStep): st
   ]
 }
 
+function bbCodeEnhancementLines(context: ExportContext, { item, materials, stepsBySource }: ExportItem) {
+  const { data } = context
+  const lines: string[] = []
+  for (const [source, enhancementId] of selectedEnhancements(item)) {
+    if (!enhancementId) continue
+    const enhancement = data.indexes.enhancementById.get(enhancementId)
+    const label = `${source[0].toUpperCase()}${source.slice(1)}`
+    lines.push(`[*][b]${label}:[/b] ${escapeBbCode(enhancement?.displayName ?? 'Unknown enhancement')}`, '[list]')
+    for (const effect of resolvedEffectsForSelection(data, enhancementId, materials.effectiveItemLevel)) {
+      lines.push(`[*]Effect: ${escapeBbCode(formatEffect(effect))}`)
+    }
+    const step = stepsBySource.get(source)
+    if (step) lines.push(...formatBbCodeStep(context, step))
+    else if (source === 'extra') lines.push('[*]Not applied: requires Mark of House Cannith')
+    lines.push('[/list]')
+  }
+  return lines
+}
+
 /** Formats the same calculated plan for broadly compatible forum BBCode. */
 export const formatEssencePlanBbCode = (
   data: EssenceCraftingData,
@@ -289,19 +317,7 @@ export const formatEssencePlanBbCode = (
       lines.push(`[*][b]Minimum Level shard[/b]`, '[list]', ...formatBbCodeStep(context, minimumLevelStep), '[/list]')
     }
 
-    for (const [source, enhancementId] of selectedEnhancements(item)) {
-      if (!enhancementId) continue
-      const enhancement = data.indexes.enhancementById.get(enhancementId)
-      const label = `${source[0].toUpperCase()}${source.slice(1)}`
-      lines.push(`[*][b]${label}:[/b] ${escapeBbCode(enhancement?.displayName ?? 'Unknown enhancement')}`, '[list]')
-      for (const effect of resolvedEffectsForSelection(data, enhancementId, materials.effectiveItemLevel)) {
-        lines.push(`[*]Effect: ${escapeBbCode(formatEffect(effect))}`)
-      }
-      const step = stepsBySource.get(source)
-      if (step) lines.push(...formatBbCodeStep(context, step))
-      else if (source === 'extra') lines.push('[*]Not applied: requires Mark of House Cannith')
-      lines.push('[/list]')
-    }
+    lines.push(...bbCodeEnhancementLines(context, itemData))
 
     const markStep = stepsBySource.get('mark-of-house-cannith')
     if (markStep) {

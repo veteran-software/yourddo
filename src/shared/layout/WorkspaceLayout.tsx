@@ -18,12 +18,11 @@ import type { ReactNode } from 'react'
 import { useEffect, useId, useRef, useState } from 'react'
 import styles from './workspace.module.css'
 
-interface WorkspaceTool {
+type WorkspaceTool = {
   id: string
   label: string
   icon: ReactNode
-  content: ReactNode | ((revealWorkspace: () => void) => ReactNode)
-}
+} & ({ content: ReactNode } | { renderContent: (revealWorkspace: () => void) => ReactNode })
 
 interface WorkspaceLayoutProps {
   children: ReactNode
@@ -123,7 +122,7 @@ const WorkspaceLayout = ({
     }
   }
   const renderContent = (tool: WorkspaceTool) =>
-    typeof tool.content === 'function' ? tool.content(revealWorkspace) : tool.content
+    'renderContent' in tool ? tool.renderContent(revealWorkspace) : tool.content
 
   const toolButton = (tool: WorkspaceTool, index: number, showLabel = railExpanded) => {
     const active = activeTool?.id === tool.id

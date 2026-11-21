@@ -224,6 +224,303 @@ const IncrediblePotentialPage = () => {
     setLoadAttempt((attempt) => attempt + 1)
   }
 
+  const renderCrafting = () => {
+    if (dataState.status === 'loading')
+      return (
+        <Center mih={240} role='status' aria-live='polite'>
+          <Stack gap='xs' align='center'>
+            <Loader size='sm' />
+            <Text c='dimmed' size='sm'>
+              Loading Incredible Potential data…
+            </Text>
+          </Stack>
+        </Center>
+      )
+    if (dataState.status === 'error')
+      return (
+        <Alert color='red' title={errorContent[dataState.kind].title} aria-live='assertive'>
+          <Stack gap='sm' align='flex-start'>
+            <Text size='sm'>{errorContent[dataState.kind].message}</Text>
+            {import.meta.env.DEV && (
+              <Text c='dimmed' size='xs'>
+                {dataState.cause instanceof Error ? dataState.cause.message : String(dataState.cause)}
+              </Text>
+            )}
+            <Button size='sm' variant='light' onClick={retry}>
+              Retry
+            </Button>
+          </Stack>
+        </Alert>
+      )
+    if (rings.length === 0)
+      return (
+        <Alert color='yellow' title='No Tower of Despair rings found'>
+          The loaded ring dataset is empty. Try again after the data is updated.
+        </Alert>
+      )
+    if (upgrades.length === 0)
+      return (
+        <Alert color='yellow' title='No Incredible Potential upgrades found'>
+          The loaded Altar of Subjugation dataset does not contain any ring upgrades.
+        </Alert>
+      )
+    return (
+      <>
+        <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'lg' }}>
+          <Stack gap='lg'>
+            <Group justify='space-between' align='flex-end' wrap='wrap'>
+              <Stack gap={4}>
+                <Text component='label' fw={500} id='filter-mode-label'>
+                  Filter matching
+                </Text>
+                <Text c='dimmed' size='xs'>
+                  One mode applies to both ring and upgrade filters.
+                </Text>
+              </Stack>
+              <SegmentedControl
+                aria-labelledby='filter-mode-label'
+                value={filterMode}
+                onChange={(value) => {
+                  setFilterMode(value)
+                }}
+                data={[
+                  { label: 'Match any', value: 'OR' },
+                  { label: 'Match all', value: 'AND' }
+                ]}
+              />
+            </Group>
+
+            <SimpleGrid cols={{ base: 1, md: 2 }} spacing='lg'>
+              <Stack gap='xs'>
+                <Title order={2} size='h3'>
+                  Base Ring
+                </Title>
+                <MultiSelect
+                  label='Ring effects and item sets'
+                  placeholder='Filter rings…'
+                  data={ringFilterGroups}
+                  value={ringFilters}
+                  onChange={setRingFilters}
+                  searchable
+                  clearable
+                />
+                <Text c='dimmed' size='xs' role='status' aria-live='polite'>
+                  {filteredRings.length} of {rings.length} rings shown.
+                </Text>
+                {filteredRings.length === 0 ? (
+                  <Alert color='yellow' title='No rings match'>
+                    Clear a ring filter or change the matching mode.
+                  </Alert>
+                ) : (
+                  <Select
+                    label='Base ring'
+                    placeholder='Select a ring…'
+                    data={filteredRings.map((ring) => ({
+                      value: ring.name,
+                      label: `${ring.name} — ${ringSummary(ring)}`
+                    }))}
+                    value={selectedRingName}
+                    onChange={setSelectedRingName}
+                    searchable
+                    clearable
+                  />
+                )}
+              </Stack>
+
+              <Stack gap='xs'>
+                <Title order={2} size='h3'>
+                  Ring Upgrade
+                </Title>
+                {!selectedRing ? (
+                  <Text c='dimmed' size='sm'>
+                    Select a base ring to choose its Incredible Potential effect.
+                  </Text>
+                ) : (
+                  <>
+                    <MultiSelect
+                      label='Upgrade effects'
+                      placeholder='Filter upgrades…'
+                      data={upgradeFilterOptions}
+                      value={upgradeFilters}
+                      onChange={setUpgradeFilters}
+                      searchable
+                      clearable
+                    />
+                    <Text c='dimmed' size='xs' role='status' aria-live='polite'>
+                      {filteredUpgrades.length} of {upgrades.length} upgrades shown.
+                    </Text>
+                    {filteredUpgrades.length === 0 ? (
+                      <Alert color='yellow' title='No upgrades match'>
+                        Clear an upgrade filter or change the matching mode.
+                      </Alert>
+                    ) : (
+                      <>
+                        {upgradeFilters.length > 0 && filteredUpgrades.length > 1 && (
+                          <Text c='dimmed' size='sm'>
+                            Multiple upgrades match. Refine the filters or choose one from the list.
+                          </Text>
+                        )}
+                        <Select
+                          label='Upgrade effect'
+                          placeholder='Select an effect…'
+                          data={filteredUpgrades.map((upgrade) => ({
+                            value: upgrade.recipeId.toString(),
+                            label: `${upgradeSummary(upgrade)} — ${upgrade.name}`
+                          }))}
+                          value={selectedUpgradeId}
+                          onChange={setSelectedUpgradeId}
+                          searchable
+                          clearable
+                        />
+                      </>
+                    )}
+                  </>
+                )}
+              </Stack>
+            </SimpleGrid>
+          </Stack>
+        </Paper>
+
+        {selectedRing && (
+          <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
+            <Stack gap='lg'>
+              <Group align='flex-start' wrap='wrap'>
+                <Image src={ringIconUrl} fallbackSrc={unknownIconUrl} alt='' w={72} h={72} fit='contain' />
+                <Stack gap='xs'>
+                  <Title order={2}>{selectedRing.name}</Title>
+                  <Group gap='xs'>
+                    <Badge variant='light'>Minimum Level {selectedRing.minLevel}</Badge>
+                    <Badge variant='outline'>Exclusive</Badge>
+                  </Group>
+                </Stack>
+              </Group>
+
+              <SimpleGrid cols={{ base: 1, sm: 2 }} spacing='xs'>
+                <Text size='sm'>Item type: {selectedRing.type}</Text>
+                <Text size='sm'>Slots: First Finger, Second Finger</Text>
+                <Text size='sm'>Ingredient type: Ring of Incredible Potential</Text>
+                <Text size='sm'>Binding: Bound to Character on Acquisition</Text>
+                <Text size='sm'>Item set: {selectedRing.setName}</Text>
+              </SimpleGrid>
+
+              <Divider />
+
+              <Stack gap='xs'>
+                <Title order={3} size='h4'>
+                  Existing Enchantments
+                </Title>
+                <List spacing='xs'>
+                  {selectedRing.enchantments
+                    .filter(({ name }) => name !== 'Incredible Potential')
+                    .map((effect) => (
+                      <List.Item key={formatEffect(effect)}>{formatEffect(effect)}</List.Item>
+                    ))}
+                </List>
+              </Stack>
+
+              <Stack gap='xs'>
+                <Title order={3} size='h4'>
+                  Incredible Potential Upgrade
+                </Title>
+                {selectedUpgrade ? (
+                  <>
+                    <Text c='dimmed' size='sm'>
+                      {selectedUpgrade.name}
+                    </Text>
+                    <List spacing='xs'>
+                      {selectedUpgrade.added?.map((effect) => (
+                        <List.Item key={`${selectedUpgrade.recipeId.toString()}-${formatEffect(effect)}`}>
+                          {formatEffect(effect)}
+                          {effect.notes && (
+                            <Text c='dimmed' size='xs'>
+                              {effect.notes}
+                            </Text>
+                          )}
+                        </List.Item>
+                      ))}
+                    </List>
+                  </>
+                ) : (
+                  <Text c='dimmed' size='sm'>
+                    Incredible Potential is unresolved. Choose an upgrade effect to replace it.
+                  </Text>
+                )}
+              </Stack>
+            </Stack>
+          </Paper>
+        )}
+
+        {selectedRing && selectedUpgrade && planResult?.cause && (
+          <Alert color='red' title='This recipe cannot be calculated' aria-live='assertive'>
+            The published recipe dependencies are invalid. Choose another upgrade or try again after the data is fixed.
+          </Alert>
+        )}
+
+        {selectedRing && selectedUpgrade && planResult?.plan && (
+          <>
+            <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }}>
+              <Stack gap='lg'>
+                <Title order={2}>Total Shopping List</Title>
+                <Text c='dimmed' size='sm'>
+                  The selected ring is listed directly instead of legacy Enchanted Accessory or Enchanted Weapon
+                  placeholders. Medium Energy Cells are gatherable materials and are not expanded into other recipes.
+                </Text>
+                <SimpleGrid cols={{ base: 1, md: 2 }} spacing='xl'>
+                  <Stack gap='sm'>
+                    <Title order={3} size='h4'>
+                      Bring to the Altar
+                    </Title>
+                    <List spacing='sm'>
+                      <List.Item>
+                        <Group component='span' gap='xs'>
+                          <Text component='span' size='sm'>
+                            {selectedRing.name}
+                          </Text>
+                          <Badge variant='light' color='gray' size='sm'>
+                            ×1
+                          </Badge>
+                        </Group>
+                      </List.Item>
+                    </List>
+                    <MaterialList materials={planResult.plan.rawMaterials} showAcquisition />
+                  </Stack>
+
+                  <Stack gap='sm'>
+                    <Title order={3} size='h4'>
+                      Craft Along the Way
+                    </Title>
+                    <MaterialList materials={planResult.plan.craftedMaterials} />
+                  </Stack>
+                </SimpleGrid>
+              </Stack>
+            </Paper>
+
+            <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }}>
+              <Stack gap='md'>
+                <Title order={2}>Crafting Steps</Title>
+                <Text c='dimmed' size='sm'>
+                  The Focus, Gem, and Essence can be crafted in any order.
+                </Text>
+                <Timeline active={planResult.plan.steps.length} bulletSize={24} lineWidth={2}>
+                  {planResult.plan.steps.map((step, index) => (
+                    <Timeline.Item key={`${step.name}-${index.toString()}`} title={step.name}>
+                      <Stack gap='xs' mt='xs'>
+                        <MaterialList materials={step.requirements} />
+                        {index === planResult.plan.steps.length - 1 && (
+                          <Text size='sm'>Apply the upgrade to {selectedRing.name} at the Altar of Subjugation.</Text>
+                        )}
+                      </Stack>
+                    </Timeline.Item>
+                  ))}
+                </Timeline>
+              </Stack>
+            </Paper>
+          </>
+        )}
+      </>
+    )
+  }
+
   return (
     <ToolLayout>
       <WorkspaceHeader
@@ -244,293 +541,7 @@ const IncrediblePotentialPage = () => {
         }
       />
 
-      {dataState.status === 'loading' ? (
-        <Center mih={240} role='status' aria-live='polite'>
-          <Stack gap='xs' align='center'>
-            <Loader size='sm' />
-            <Text c='dimmed' size='sm'>
-              Loading Incredible Potential data…
-            </Text>
-          </Stack>
-        </Center>
-      ) : dataState.status === 'error' ? (
-        <Alert color='red' title={errorContent[dataState.kind].title} aria-live='assertive'>
-          <Stack gap='sm' align='flex-start'>
-            <Text size='sm'>{errorContent[dataState.kind].message}</Text>
-            {import.meta.env.DEV && (
-              <Text c='dimmed' size='xs'>
-                {dataState.cause instanceof Error ? dataState.cause.message : String(dataState.cause)}
-              </Text>
-            )}
-            <Button size='sm' variant='light' onClick={retry}>
-              Retry
-            </Button>
-          </Stack>
-        </Alert>
-      ) : rings.length === 0 ? (
-        <Alert color='yellow' title='No Tower of Despair rings found'>
-          The loaded ring dataset is empty. Try again after the data is updated.
-        </Alert>
-      ) : upgrades.length === 0 ? (
-        <Alert color='yellow' title='No Incredible Potential upgrades found'>
-          The loaded Altar of Subjugation dataset does not contain any ring upgrades.
-        </Alert>
-      ) : (
-        <>
-          <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'lg' }}>
-            <Stack gap='lg'>
-              <Group justify='space-between' align='flex-end' wrap='wrap'>
-                <Stack gap={4}>
-                  <Text component='label' fw={500} id='filter-mode-label'>
-                    Filter matching
-                  </Text>
-                  <Text c='dimmed' size='xs'>
-                    One mode applies to both ring and upgrade filters.
-                  </Text>
-                </Stack>
-                <SegmentedControl
-                  aria-labelledby='filter-mode-label'
-                  value={filterMode}
-                  onChange={(value) => {
-                    setFilterMode(value)
-                  }}
-                  data={[
-                    { label: 'Match any', value: 'OR' },
-                    { label: 'Match all', value: 'AND' }
-                  ]}
-                />
-              </Group>
-
-              <SimpleGrid cols={{ base: 1, md: 2 }} spacing='lg'>
-                <Stack gap='xs'>
-                  <Title order={2} size='h3'>
-                    Base Ring
-                  </Title>
-                  <MultiSelect
-                    label='Ring effects and item sets'
-                    placeholder='Filter rings…'
-                    data={ringFilterGroups}
-                    value={ringFilters}
-                    onChange={setRingFilters}
-                    searchable
-                    clearable
-                  />
-                  <Text c='dimmed' size='xs' role='status' aria-live='polite'>
-                    {filteredRings.length} of {rings.length} rings shown.
-                  </Text>
-                  {filteredRings.length === 0 ? (
-                    <Alert color='yellow' title='No rings match'>
-                      Clear a ring filter or change the matching mode.
-                    </Alert>
-                  ) : (
-                    <Select
-                      label='Base ring'
-                      placeholder='Select a ring…'
-                      data={filteredRings.map((ring) => ({
-                        value: ring.name,
-                        label: `${ring.name} — ${ringSummary(ring)}`
-                      }))}
-                      value={selectedRingName}
-                      onChange={setSelectedRingName}
-                      searchable
-                      clearable
-                    />
-                  )}
-                </Stack>
-
-                <Stack gap='xs'>
-                  <Title order={2} size='h3'>
-                    Ring Upgrade
-                  </Title>
-                  {!selectedRing ? (
-                    <Text c='dimmed' size='sm'>
-                      Select a base ring to choose its Incredible Potential effect.
-                    </Text>
-                  ) : (
-                    <>
-                      <MultiSelect
-                        label='Upgrade effects'
-                        placeholder='Filter upgrades…'
-                        data={upgradeFilterOptions}
-                        value={upgradeFilters}
-                        onChange={setUpgradeFilters}
-                        searchable
-                        clearable
-                      />
-                      <Text c='dimmed' size='xs' role='status' aria-live='polite'>
-                        {filteredUpgrades.length} of {upgrades.length} upgrades shown.
-                      </Text>
-                      {filteredUpgrades.length === 0 ? (
-                        <Alert color='yellow' title='No upgrades match'>
-                          Clear an upgrade filter or change the matching mode.
-                        </Alert>
-                      ) : (
-                        <>
-                          {upgradeFilters.length > 0 && filteredUpgrades.length > 1 && (
-                            <Text c='dimmed' size='sm'>
-                              Multiple upgrades match. Refine the filters or choose one from the list.
-                            </Text>
-                          )}
-                          <Select
-                            label='Upgrade effect'
-                            placeholder='Select an effect…'
-                            data={filteredUpgrades.map((upgrade) => ({
-                              value: upgrade.recipeId.toString(),
-                              label: `${upgradeSummary(upgrade)} — ${upgrade.name}`
-                            }))}
-                            value={selectedUpgradeId}
-                            onChange={setSelectedUpgradeId}
-                            searchable
-                            clearable
-                          />
-                        </>
-                      )}
-                    </>
-                  )}
-                </Stack>
-              </SimpleGrid>
-            </Stack>
-          </Paper>
-
-          {selectedRing && (
-            <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }} shadow='sm'>
-              <Stack gap='lg'>
-                <Group align='flex-start' wrap='wrap'>
-                  <Image src={ringIconUrl} fallbackSrc={unknownIconUrl} alt='' w={72} h={72} fit='contain' />
-                  <Stack gap='xs'>
-                    <Title order={2}>{selectedRing.name}</Title>
-                    <Group gap='xs'>
-                      <Badge variant='light'>Minimum Level {selectedRing.minLevel}</Badge>
-                      <Badge variant='outline'>Exclusive</Badge>
-                    </Group>
-                  </Stack>
-                </Group>
-
-                <SimpleGrid cols={{ base: 1, sm: 2 }} spacing='xs'>
-                  <Text size='sm'>Item type: {selectedRing.type}</Text>
-                  <Text size='sm'>Slots: First Finger, Second Finger</Text>
-                  <Text size='sm'>Ingredient type: Ring of Incredible Potential</Text>
-                  <Text size='sm'>Binding: Bound to Character on Acquisition</Text>
-                  <Text size='sm'>Item set: {selectedRing.setName}</Text>
-                </SimpleGrid>
-
-                <Divider />
-
-                <Stack gap='xs'>
-                  <Title order={3} size='h4'>
-                    Existing Enchantments
-                  </Title>
-                  <List spacing='xs'>
-                    {selectedRing.enchantments
-                      .filter(({ name }) => name !== 'Incredible Potential')
-                      .map((effect) => (
-                        <List.Item key={formatEffect(effect)}>{formatEffect(effect)}</List.Item>
-                      ))}
-                  </List>
-                </Stack>
-
-                <Stack gap='xs'>
-                  <Title order={3} size='h4'>
-                    Incredible Potential Upgrade
-                  </Title>
-                  {selectedUpgrade ? (
-                    <>
-                      <Text c='dimmed' size='sm'>
-                        {selectedUpgrade.name}
-                      </Text>
-                      <List spacing='xs'>
-                        {selectedUpgrade.added?.map((effect) => (
-                          <List.Item key={`${selectedUpgrade.recipeId.toString()}-${formatEffect(effect)}`}>
-                            {formatEffect(effect)}
-                            {effect.notes && (
-                              <Text c='dimmed' size='xs'>
-                                {effect.notes}
-                              </Text>
-                            )}
-                          </List.Item>
-                        ))}
-                      </List>
-                    </>
-                  ) : (
-                    <Text c='dimmed' size='sm'>
-                      Incredible Potential is unresolved. Choose an upgrade effect to replace it.
-                    </Text>
-                  )}
-                </Stack>
-              </Stack>
-            </Paper>
-          )}
-
-          {selectedRing && selectedUpgrade && planResult?.cause && (
-            <Alert color='red' title='This recipe cannot be calculated' aria-live='assertive'>
-              The published recipe dependencies are invalid. Choose another upgrade or try again after the data is
-              fixed.
-            </Alert>
-          )}
-
-          {selectedRing && selectedUpgrade && planResult?.plan && (
-            <>
-              <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }}>
-                <Stack gap='lg'>
-                  <Title order={2}>Total Shopping List</Title>
-                  <Text c='dimmed' size='sm'>
-                    The selected ring is listed directly instead of legacy Enchanted Accessory or Enchanted Weapon
-                    placeholders. Medium Energy Cells are gatherable materials and are not expanded into other recipes.
-                  </Text>
-                  <SimpleGrid cols={{ base: 1, md: 2 }} spacing='xl'>
-                    <Stack gap='sm'>
-                      <Title order={3} size='h4'>
-                        Bring to the Altar
-                      </Title>
-                      <List spacing='sm'>
-                        <List.Item>
-                          <Group component='span' gap='xs'>
-                            <Text component='span' size='sm'>
-                              {selectedRing.name}
-                            </Text>
-                            <Badge variant='light' color='gray' size='sm'>
-                              ×1
-                            </Badge>
-                          </Group>
-                        </List.Item>
-                      </List>
-                      <MaterialList materials={planResult.plan.rawMaterials} showAcquisition />
-                    </Stack>
-
-                    <Stack gap='sm'>
-                      <Title order={3} size='h4'>
-                        Craft Along the Way
-                      </Title>
-                      <MaterialList materials={planResult.plan.craftedMaterials} />
-                    </Stack>
-                  </SimpleGrid>
-                </Stack>
-              </Paper>
-
-              <Paper className={styles.surface} withBorder p={{ base: 'md', sm: 'xl' }}>
-                <Stack gap='md'>
-                  <Title order={2}>Crafting Steps</Title>
-                  <Text c='dimmed' size='sm'>
-                    The Focus, Gem, and Essence can be crafted in any order.
-                  </Text>
-                  <Timeline active={planResult.plan.steps.length} bulletSize={24} lineWidth={2}>
-                    {planResult.plan.steps.map((step, index) => (
-                      <Timeline.Item key={`${step.name}-${index.toString()}`} title={step.name}>
-                        <Stack gap='xs' mt='xs'>
-                          <MaterialList materials={step.requirements} />
-                          {index === planResult.plan.steps.length - 1 && (
-                            <Text size='sm'>Apply the upgrade to {selectedRing.name} at the Altar of Subjugation.</Text>
-                          )}
-                        </Stack>
-                      </Timeline.Item>
-                    ))}
-                  </Timeline>
-                </Stack>
-              </Paper>
-            </>
-          )}
-        </>
-      )}
+      {renderCrafting()}
     </ToolLayout>
   )
 }

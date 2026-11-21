@@ -13,14 +13,15 @@ import {
 } from '@mantine/core'
 import { IconTopologyStar3 } from '@tabler/icons-react'
 import { useState } from 'react'
-import activeTileImage from '../../shared/lightsOut/tile_active.png'
-import emptyTileImage from '../../shared/lightsOut/tile_empty.png'
-import inactiveTileImage from '../../shared/lightsOut/tile_inactive.png'
+import { PressMarker } from '../../shared/lightsOut/PressMarker'
+import { getTileAppearance } from '../../shared/lightsOut/tileAppearance'
 import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
 import styles from '../../shared/layout/workspace.module.css'
 import ToolLayout from '../../shared/layout/ToolLayout.tsx'
 import {
   applyPresses,
+  countPresses,
+  solutionStatus,
   initBoard,
   makeCircular4x4Config,
   makeRectConfig,
@@ -40,8 +41,6 @@ const CONFIGURATIONS = {
 
 type ConfigName = keyof typeof CONFIGURATIONS
 type SolverStatus = 'idle' | 'random' | 'solution' | 'complete' | 'no-solution'
-
-const countPresses = (presses: number[][]): number => presses.flat().filter((press) => press === 1).length
 
 const ShroudPage = () => {
   const [configName, setConfigName] = useState<ConfigName>('3x3')
@@ -92,7 +91,7 @@ const ShroudPage = () => {
     setSolution(presses)
     setMarkedSolution(marked)
     setShowSolution(presses !== null)
-    setSolverStatus(presses === null ? 'no-solution' : countPresses(presses) === 0 ? 'complete' : 'solution')
+    setSolverStatus(solutionStatus(presses))
   }
 
   const handleClear = () => {
@@ -209,19 +208,7 @@ const ShroudPage = () => {
                 const on = board[row][column] === 1
                 const recommended = solution && showSolution ? solution[row][column] === 1 : false
                 const completed = markedSolution ? markedSolution[row][column] === 1 : false
-                const backgroundImage = masked ? emptyTileImage : on ? activeTileImage : inactiveTileImage
-                const tileStyle = {
-                  aspectRatio: '1 / 1',
-                  backgroundImage: `url(${backgroundImage})`,
-                  backgroundPosition: 'center',
-                  backgroundSize: 'cover',
-                  border: recommended
-                    ? completed
-                      ? '2px solid var(--mantine-color-yellow-6)'
-                      : '4px solid var(--mantine-color-green-6)'
-                    : '1px solid var(--mantine-color-default-border)',
-                  position: 'relative' as const
-                }
+                const { recommendation, tileStyle } = getTileAppearance(masked, on, recommended, completed)
 
                 if (masked) {
                   return (
@@ -236,11 +223,6 @@ const ShroudPage = () => {
                 }
 
                 const state = on ? 'on' : 'off'
-                const recommendation = recommended
-                  ? completed
-                    ? 'recommended solution press completed'
-                    : 'recommended solution press not completed'
-                  : 'not a recommended solution press'
 
                 return (
                   <UnstyledButton
@@ -254,24 +236,7 @@ const ShroudPage = () => {
                     w='100%'
                     style={tileStyle}
                   >
-                    {recommended && (
-                      <Box
-                        component='span'
-                        aria-hidden='true'
-                        pos='absolute'
-                        top={4}
-                        right={4}
-                        w={20}
-                        h={20}
-                        bg={completed ? 'yellow.6' : 'green.6'}
-                        c='black'
-                        fw={700}
-                        fz='sm'
-                        style={{ borderRadius: '50%', display: 'grid', placeItems: 'center' }}
-                      >
-                        {completed ? '✓' : '!'}
-                      </Box>
-                    )}
+                    {recommended && <PressMarker completed={completed} />}
                   </UnstyledButton>
                 )
               })

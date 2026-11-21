@@ -97,3 +97,10 @@ export const solveBoard = (board: Board, config: Config): { presses: Presses; ma
 }
 
 export { initBoard, makeCircular4x4Config, makeRectConfig } from './helpers.ts'
+
+export const countPresses = (presses: number[][]): number => presses.flat().filter((press) => press === 1).length
+
+export function solutionStatus(presses: number[][] | null) {
+  if (!presses) return 'no-solution'
+  return countPresses(presses) === 0 ? 'complete' : 'solution'
+}

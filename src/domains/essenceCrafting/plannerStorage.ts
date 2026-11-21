@@ -178,6 +178,19 @@ const migrateLegacyAugmentSlots = (data: EssenceCraftingData, value: unknown): P
   return slots
 }
 
+function migrateCollapsedSlots(keys: unknown, activeSlotIds: readonly EquipmentSlotId[]) {
+  if (!Array.isArray(keys)) return []
+  const collapsedSlotIds: EquipmentSlotId[] = []
+  for (const legacySlotKey of keys) {
+    if (typeof legacySlotKey !== 'string') continue
+    const equipmentSlotId = LEGACY_SLOT_ID_BY_KEY[legacySlotKey]
+    if (equipmentSlotId && activeSlotIds.includes(equipmentSlotId) && !collapsedSlotIds.includes(equipmentSlotId)) {
+      collapsedSlotIds.push(equipmentSlotId)
+    }
+  }
+  return collapsedSlotIds
+}
+
 /**
  * Converts only recognized legacy user choices. It never copies stored data
  * records: legacy names are resolved against the current decoded dataset.
@@ -209,21 +222,10 @@ export const migrateLegacyEssenceCraftingPayload = (
     }
   }
 
-  const collapsedSlotIds: EquipmentSlotId[] = []
-  if (Array.isArray(legacyPayload.collapsedKeys)) {
-    for (const legacySlotKey of legacyPayload.collapsedKeys) {
-      if (typeof legacySlotKey !== 'string') continue
-      const equipmentSlotId = LEGACY_SLOT_ID_BY_KEY[legacySlotKey]
-      if (equipmentSlotId && activeSlotIds.includes(equipmentSlotId) && !collapsedSlotIds.includes(equipmentSlotId)) {
-        collapsedSlotIds.push(equipmentSlotId)
-      }
-    }
-  }
-
   return {
     masterMinimumLevel: typeof legacyPayload.masterMinLevel === 'number' ? legacyPayload.masterMinLevel : NaN,
     activeSlotIds,
-    collapsedSlotIds,
+    collapsedSlotIds: migrateCollapsedSlots(legacyPayload.collapsedKeys, activeSlotIds),
     itemsBySlotId
   }
 }
