@@ -423,60 +423,68 @@ const PlannedItemEditor = memo(
         )}
       </Stack>
     )
+    const itemActions = (
+      <>
+        {' '}
+        <Button
+          variant='subtle'
+          size='sm'
+          aria-label={`Reset ${label} planned item`}
+          onClick={() => {
+            onAction({ type: 'reset-planned-item', equipmentSlotId })
+          }}
+        >
+          Reset item
+        </Button>
+        <Button
+          color='red'
+          variant='subtle'
+          size='sm'
+          aria-label={`Remove ${label} planned item`}
+          onClick={() => {
+            onRequestDeactivate(equipmentSlotId)
+          }}
+        >
+          Remove
+        </Button>
+      </>
+    )
     return (
       <Stack gap={0} data-testid={`planned-item-${equipmentSlotId}`}>
-        <Group className={layout.itemHeader}>
-          <Stack gap={4}>
-            <Title order={2} size='h3'>
-              {label} planned item
-            </Title>
-            <Badge variant='light' w='fit-content'>
-              Effective minimum level: {effectiveMinimumLevel}
-            </Badge>
-          </Stack>
+        {!board && (
+          <Group className={layout.itemHeader}>
+            <Stack gap={4}>
+              <Title order={2} size='h3'>
+                {label} planned item
+              </Title>
+              <Badge variant='light' w='fit-content'>
+                Effective minimum level: {effectiveMinimumLevel}
+              </Badge>
+            </Stack>
 
-          <Group gap='xs' wrap='wrap'>
-            <Button
-              variant='subtle'
-              size='sm'
-              aria-label={`${collapsed ? 'Expand' : 'Collapse'} ${label} planned item`}
-              aria-expanded={!collapsed}
-              aria-controls={detailsId}
-              onClick={() => {
-                onAction({
-                  type: collapsed ? 'expand-equipment-slot' : 'collapse-equipment-slot',
-                  equipmentSlotId
-                })
-              }}
-            >
-              {collapsed ? 'Expand' : 'Collapse'}
-            </Button>
-            <Button
-              variant='subtle'
-              size='sm'
-              aria-label={`Reset ${label} planned item`}
-              onClick={() => {
-                onAction({ type: 'reset-planned-item', equipmentSlotId })
-              }}
-            >
-              Reset item
-            </Button>
-            <Button
-              color='red'
-              variant='subtle'
-              size='sm'
-              aria-label={`Remove ${label} planned item`}
-              onClick={() => {
-                onRequestDeactivate(equipmentSlotId)
-              }}
-            >
-              Remove
-            </Button>
+            <Group gap='xs' wrap='wrap'>
+              <Button
+                variant='subtle'
+                size='sm'
+                aria-label={`${collapsed ? 'Expand' : 'Collapse'} ${label} planned item`}
+                aria-expanded={!collapsed}
+                aria-controls={detailsId}
+                onClick={() => {
+                  onAction({
+                    type: collapsed ? 'expand-equipment-slot' : 'collapse-equipment-slot',
+                    equipmentSlotId
+                  })
+                }}
+              >
+                {collapsed ? 'Expand' : 'Collapse'}
+              </Button>
+              {itemActions}
+            </Group>
           </Group>
-        </Group>
+        )}
 
         {!collapsed ? (
-          <Stack id={detailsId} p='md' gap='lg'>
+          <Stack id={detailsId} p={board ? 'xs' : 'md'} gap={board ? 'sm' : 'lg'}>
             {prefixChoices.length === 0 && suffixChoices.length === 0 && extraChoices.length === 0 ? (
               <Alert color='yellow' title='No affixes are available'>
                 The loaded data has no {label} affixes for minimum level {effectiveMinimumLevel}.
@@ -491,6 +499,7 @@ const PlannedItemEditor = memo(
                   <Stack mt='sm'>
                     {settings}
                     {augments}
+                    <Group gap={4}>{itemActions}</Group>
                   </Stack>
                 </details>
               </>
