@@ -1,9 +1,0 @@
-dist
-node_modules
-coverage
-*.log
-.yarn
-.pnp.*
-yarn.lock
-public
-essenceCrafting.v2.json
