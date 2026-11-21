@@ -91,7 +91,7 @@ export default function EssencePlanWorkspace({
 
   return (
     <Paper component='section' aria-label='Essence Crafting workspace' withBorder className={layout.workspace}>
-      <Group className={layout.toolbar} justify='space-between' wrap='nowrap'>
+      <Group className={layout.toolbar}>
         <Group gap='xs' wrap='nowrap'>
           <Text component='label' htmlFor='essence-master-level' size='sm' fw={600}>
             Master minimum level
@@ -117,15 +117,16 @@ export default function EssencePlanWorkspace({
         >
           Reset plan
         </Button>
+        <PlannerViewToolbar
+          tools={tools}
+          view={view}
+          changeView={(next) => {
+            setView(next)
+            setShowDetail(false)
+          }}
+        />
       </Group>
-      <PlannerViewToolbar
-        tools={tools}
-        view={view}
-        changeView={(next) => {
-          setView(next)
-          setShowDetail(false)
-        }}
-      />
+
       <div
         className={layout.columns}
         data-grid={view === 'grid' || undefined}

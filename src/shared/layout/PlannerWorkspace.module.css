@@ -22,8 +22,8 @@
   border-bottom: 1px solid var(--mantine-color-default-border);
 }
 .toolbar {
-  justify-content: space-between;
-  flex-wrap: nowrap;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 .setupActions {
   --setup-action-size: 1.875rem;
@@ -33,6 +33,7 @@
   height: var(--setup-action-size);
 }
 .toolbar > :first-child {
+  margin-inline-end: auto;
   min-width: 0;
   max-width: 100%;
   overflow-x: auto;
@@ -466,11 +467,33 @@
 
 .viewToolbar {
   display: flex;
+  flex: none;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.35rem 0.75rem;
-  border-bottom: 1px solid var(--app-border);
+  gap: 0.4rem;
+  padding-inline-start: 0.65rem;
+  border-inline-start: 1px solid var(--app-border);
+}
+.toolbar:has(.setupActions) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+.toolbar:has(.setupActions) > :first-child {
+  width: 100%;
+}
+@container (max-width:44rem) {
+  .toolbar:has(.setupActions) {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .setupActions {
+    grid-row: 2;
+    grid-column: 1/-1;
+  }
+  .toolbar .viewToolbar {
+    grid-column: 2;
+    grid-row: 1;
+    border: 0;
+    padding: 0;
+  }
 }
 .columns[data-grid] {
   grid-template-columns: minmax(0, 1fr);

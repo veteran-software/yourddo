@@ -1734,6 +1734,14 @@ const GearPlannerWorkspace = () => {
                   </Menu.Dropdown>
                 </Menu>
               </Group>
+              <PlannerViewToolbar
+                tools={tools}
+                view={view}
+                changeView={(next) => {
+                  setView(next)
+                  setDetailOnMobile(false)
+                }}
+              />
             </div>
             {compareOpen && (
               <LoadoutComparison
@@ -1803,14 +1811,7 @@ const GearPlannerWorkspace = () => {
                 <ImportDetails issues={feedback.issues} />
               </Notification>
             )}
-            <PlannerViewToolbar
-              tools={tools}
-              view={view}
-              changeView={(next) => {
-                setView(next)
-                setDetailOnMobile(false)
-              }}
-            />
+
             <div
               className={classes.columns}
               data-grid={view === 'grid' || undefined}
