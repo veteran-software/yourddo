@@ -352,7 +352,7 @@ const assertUnique = <T>(values: readonly T[], label: string, identity: (value: 
   const seen = new Set<string>()
   for (const value of values) {
     const id = identity(value)
-    if (seen.has(id)) throw new InvalidViktraniumDataError(`duplicate ${label} ID${owner ? ` in ${owner}` : ''}: ${id}`)
+    if (seen.has(id)) throw new InvalidViktraniumDataError(`duplicate ${label} ID${owner ? ' in ' + owner : ''}: ${id}`)
     seen.add(id)
   }
 }

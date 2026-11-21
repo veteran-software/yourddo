@@ -17,7 +17,7 @@ interface SharingToolProps {
   planMaterials: EssencePlanMaterials
 }
 
-export default function SharingTool({ binding, data, plan, planMaterials }: SharingToolProps) {
+export default function SharingTool({ binding, data, plan, planMaterials }: Readonly<SharingToolProps>) {
   return (
     <SharingPanel
       permalink={buildEssenceCraftingPermalinkUrl(encodeEssenceCraftingPermalink(data, plan))}

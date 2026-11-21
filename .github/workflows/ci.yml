@@ -21,7 +21,7 @@ jobs:
     - name: Enable Corepack
       run: corepack enable
 
-    - run: yarn install --immutable
+    - run: yarn install --immutable --mode=skip-build
     - run: yarn lint
     - run: yarn test
     - run: yarn build

@@ -14,7 +14,7 @@ import {
   Title
 } from '@mantine/core'
 import { IconHammer, IconFileInfo, IconListCheck, IconListDetails, IconShare } from '@tabler/icons-react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
 import styles from '../../shared/layout/workspace.module.css'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
@@ -95,6 +95,70 @@ const optionLabel = (option: HgsTierOption, data: HgsInitialData) => {
 
 const useSelection = createCraftingSelection<HgsSelection>(() => emptyHgsSelection)
 
+const pending = (state: LoadState<unknown>) => state.status === 'idle' || state.status === 'loading'
+
+const baseItemPrompt = (
+  <Text c='dimmed' size='sm'>
+    Select a base item first.
+  </Text>
+)
+type TierAvailabilityProps = Readonly<{
+  hasBase: boolean
+  state: LoadState<unknown>
+  prerequisite: LoadState<unknown>
+  loading: string
+  error: string
+  unavailable: string
+  retry: () => void
+  children: ReactNode
+}>
+
+function TierAvailability({
+  hasBase,
+  state,
+  prerequisite,
+  loading,
+  error,
+  unavailable,
+  retry,
+  children
+}: TierAvailabilityProps) {
+  if (!hasBase) return baseItemPrompt
+  if (pending(state) || pending(prerequisite)) return <Loading>{loading}</Loading>
+  if (state.status === 'error') return <LoadError message={error} cause={state.cause} retry={retry} />
+  if (prerequisite.status === 'error') return <Alert color='yellow'>{unavailable}</Alert>
+  return children
+}
+
+type UpgradeSelectProps = Readonly<{
+  label: string
+  placeholder: string
+  empty: string
+  options: readonly HgsTierOption[]
+  initial: HgsInitialData
+  value: number | null
+  onChange: (value: number | null) => void
+}>
+
+function UpgradeSelect({ label, placeholder, empty, options, initial, value, onChange }: UpgradeSelectProps) {
+  if (!options.length) return <Alert color='yellow'>{empty}</Alert>
+  return (
+    <Select
+      label={label}
+      placeholder={placeholder}
+      searchable
+      clearable
+      data={toHgsSelectOptions(options, (option) => optionLabel(option, initial))}
+      value={value?.toString() ?? null}
+      onChange={(selected) => {
+        onChange(selected ? Number(selected) : null)
+      }}
+    />
+  )
+}
+
+const selectedEffects = (initial: HgsInitialData | null, tier?: HgsTierOption) =>
+  initial && tier ? resolveEffects(tier.effectIds, initial.effectById) : []
 const HeroicGreenSteelPage = () => {
   const [initialState, setInitialState] = useState<LoadState<HgsInitialData>>({ status: 'loading' })
   const [tier2State, setTier2State] = useState<LoadState<HgsTier2Data>>({ status: 'idle' })
@@ -224,9 +288,9 @@ const HeroicGreenSteelPage = () => {
   )
   const tier3Options = selection.selectedTier3Mode === 'basic' ? basicOptions : focusedOptions
 
-  const tier1Effects = initial && tier1 ? resolveEffects(tier1.effectIds, initial.effectById) : []
-  const tier2Effects = initial && tier2 ? resolveEffects(tier2.effectIds, initial.effectById) : []
-  const tier3Effects = initial && tier3 ? resolveEffects(tier3.effectIds, initial.effectById) : []
+  const tier1Effects = selectedEffects(initial, tier1)
+  const tier2Effects = selectedEffects(initial, tier2)
+  const tier3Effects = selectedEffects(initial, tier3)
   const spell = tier2Data && tier2 ? resolveSpell(tier2.spellId, tier2Data.spellById) : undefined
   const desiredSpell = tier2Data ? resolveSpell(selection.selectedSpellId ?? undefined, tier2Data.spellById) : undefined
   const recipeIds = useMemo(
@@ -320,6 +384,251 @@ const HeroicGreenSteelPage = () => {
       ]
     : []
 
+  const retryTier2 = () => {
+    setTier2State({ status: 'loading' })
+    setTier2Attempt((value) => value + 1)
+  }
+  const retryTier3 = () => {
+    setTier3State({ status: 'loading' })
+    setTier3Attempt((value) => value + 1)
+  }
+  const renderAltars = () => {
+    if (initialState.status === 'loading') return <Loading>Loading Heroic Green Steel base options…</Loading>
+    if (initialState.status === 'error')
+      return (
+        <LoadError
+          message='We could not load the Heroic Green Steel catalog. Check your connection and try again.'
+          cause={initialState.cause}
+          retry={() => {
+            setSelection(emptyHgsSelection)
+            setInitialState({ status: 'loading' })
+            setInitialAttempt((value) => value + 1)
+          }}
+        />
+      )
+    if (!initial) return null
+    return (
+      <Stack gap='md'>
+        {permalinkError ? (
+          <Alert color='red' title='Build link could not be loaded'>
+            {permalinkError}
+          </Alert>
+        ) : null}
+        <Paper className={styles.surface} component='section' aria-labelledby='hgs-base-title' withBorder p='md'>
+          <Stack gap='sm'>
+            <Title order={2} size='h3' id='hgs-base-title'>
+              {altarLabels.base}
+            </Title>
+            <Select
+              label='Green Steel base item'
+              placeholder='Search weapons and equipment…'
+              searchable
+              clearable
+              w='100%'
+              maw={520}
+              data={[
+                {
+                  group: 'Weapons',
+                  items: toHgsSelectOptions(
+                    initial.baseItems.filter(({ type }) => type === 'weapon'),
+                    (item) => item.name
+                  )
+                },
+                {
+                  group: 'Equipment',
+                  items: toHgsSelectOptions(
+                    initial.baseItems.filter(({ type }) => type === 'equipment'),
+                    (item) => item.name
+                  )
+                }
+              ]}
+              value={selection.selectedBaseItemId?.toString() ?? null}
+              onChange={(value) => {
+                updateSelection('selectedBaseItemId', value ? Number(value) : null)
+              }}
+            />
+            {baseItem ? (
+              <Text size='sm'>{baseItem.description}</Text>
+            ) : (
+              <Text c='dimmed' size='sm'>
+                Select a Green Steel base item to begin.
+              </Text>
+            )}
+          </Stack>
+        </Paper>
+
+        <Paper className={styles.surface} component='section' aria-labelledby='hgs-spell-title' withBorder p='md'>
+          <Stack gap='sm'>
+            <Title order={2} size='h3' id='hgs-spell-title'>
+              Desired Spell
+            </Title>
+            <Grid gap='md'>
+              <Grid.Col span={{ base: 12, md: 5 }}>
+                <TierAvailability
+                  hasBase={Boolean(baseItem)}
+                  state={tier2State}
+                  prerequisite={tier3State}
+                  loading='Loading available spells…'
+                  error='Available spells could not be loaded.'
+                  unavailable='Spell compatibility is unavailable until Tier 3 data loads.'
+                  retry={retryTier2}
+                >
+                  <Select
+                    label='Spell'
+                    placeholder='Select a spell...'
+                    searchable
+                    clearable
+                    w='100%'
+                    data={toHgsSelectOptions(spellOptions, (spellOption) => spellOption.name)}
+                    value={selection.selectedSpellId?.toString() ?? null}
+                    onChange={(value) => {
+                      updateSelection('selectedSpellId', value ? Number(value) : null)
+                    }}
+                  />
+                </TierAvailability>
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, md: 7 }}>
+                {desiredSpell ? (
+                  <Paper withBorder p='sm'>
+                    <SpellDetails spell={desiredSpell} />
+                  </Paper>
+                ) : (
+                  <Text c='dimmed' size='sm'>
+                    Select a spell to view its details.
+                  </Text>
+                )}
+              </Grid.Col>
+            </Grid>
+          </Stack>
+        </Paper>
+
+        <Grid gap='md' data-testid='hgs-tier-grid'>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <Paper className={styles.surface} component='section' aria-labelledby='hgs-tier1-title' withBorder p='md'>
+              <Stack gap='sm'>
+                <Title order={2} size='h3' id='hgs-tier1-title'>
+                  {altarLabels.tier1}
+                </Title>
+                {baseItem ? (
+                  <UpgradeSelect
+                    label='Tier 1 upgrade'
+                    placeholder='Choose focus, essence, and gem…'
+                    empty='No compatible Tier 1 options were published for this item.'
+                    options={tier1Options}
+                    initial={initial}
+                    value={selection.selectedTier1Id}
+                    onChange={(value) => {
+                      updateSelection('selectedTier1Id', value)
+                    }}
+                  />
+                ) : (
+                  baseItemPrompt
+                )}
+                {tier1 ? (
+                  <>
+                    <OptionBadges option={tier1} />
+                    <EffectDetails effects={tier1Effects} />
+                  </>
+                ) : null}
+              </Stack>
+            </Paper>
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <Paper className={styles.surface} component='section' aria-labelledby='hgs-tier2-title' withBorder p='md'>
+              <Stack gap='sm'>
+                <Title order={2} size='h3' id='hgs-tier2-title'>
+                  {altarLabels.tier2}
+                </Title>
+                <TierAvailability
+                  hasBase={Boolean(baseItem)}
+                  state={tier2State}
+                  prerequisite={tier3State}
+                  loading='Loading Tier 2 upgrades and spells…'
+                  error='Tier 2 upgrades could not be loaded.'
+                  unavailable='Tier 2 compatibility is unavailable until Tier 3 data loads.'
+                  retry={retryTier2}
+                >
+                  <UpgradeSelect
+                    label='Tier 2 upgrade'
+                    placeholder='Choose a compatible upgrade…'
+                    empty='No Tier 2 options are compatible with the current selections.'
+                    options={tier2Options}
+                    initial={initial}
+                    value={selection.selectedTier2Id}
+                    onChange={(value) => {
+                      updateSelection('selectedTier2Id', value)
+                    }}
+                  />
+                </TierAvailability>
+                {tier2 ? (
+                  <>
+                    <OptionBadges option={tier2} />
+                    <EffectDetails effects={tier2Effects} />
+                  </>
+                ) : null}
+              </Stack>
+            </Paper>
+          </Grid.Col>
+
+          <Grid.Col span={12}>
+            <Paper className={styles.surface} component='section' aria-labelledby='hgs-tier3-title' withBorder p='md'>
+              <Stack gap='sm'>
+                <Title order={2} size='h3' id='hgs-tier3-title'>
+                  {altarLabels.tier3}
+                </Title>
+                <TierAvailability
+                  hasBase={Boolean(baseItem)}
+                  state={tier3State}
+                  prerequisite={tier2State}
+                  loading='Loading Tier 3 upgrades…'
+                  error='Tier 3 upgrades could not be loaded.'
+                  unavailable='Tier 3 compatibility is unavailable until Tier 2 data loads.'
+                  retry={retryTier3}
+                >
+                  <SegmentedControl
+                    aria-label='Tier 3 mode'
+                    value={selection.selectedTier3Mode ?? ''}
+                    onChange={(value) => {
+                      if (value === 'basic' || value === 'focused') updateSelection('selectedTier3Mode', value)
+                    }}
+                    data={[
+                      { label: 'Basic', value: 'basic' },
+                      { label: 'Focused', value: 'focused' }
+                    ]}
+                    fullWidth
+                  />
+                  {!selection.selectedTier3Mode ? (
+                    <Text c='dimmed' size='sm'>
+                      Choose Basic or Focused to see compatible Tier 3 upgrades.
+                    </Text>
+                  ) : (
+                    <UpgradeSelect
+                      label={`Tier 3 ${selection.selectedTier3Mode === 'basic' ? 'Basic' : 'Focused'} upgrade`}
+                      placeholder='Choose a final upgrade…'
+                      empty='No compatible Tier 3 options were published for this mode.'
+                      options={tier3Options}
+                      initial={initial}
+                      value={selection.selectedTier3Id}
+                      onChange={(value) => {
+                        updateSelection('selectedTier3Id', value)
+                      }}
+                    />
+                  )}
+                </TierAvailability>
+                {tier3 ? (
+                  <>
+                    <OptionBadges option={tier3} />
+                    <EffectDetails effects={tier3Effects} />
+                  </>
+                ) : null}
+              </Stack>
+            </Paper>
+          </Grid.Col>
+        </Grid>
+      </Stack>
+    )
+  }
   return (
     <WorkspaceLayout tools={tools}>
       <Stack gap='lg' p={{ base: 'md', sm: 'lg' }} maw={1100} mx='auto'>
@@ -346,303 +655,7 @@ const HeroicGreenSteelPage = () => {
           }
         />
 
-        {initialState.status === 'loading' ? (
-          <Loading>Loading Heroic Green Steel base options…</Loading>
-        ) : initialState.status === 'error' ? (
-          <LoadError
-            message='We could not load the Heroic Green Steel catalog. Check your connection and try again.'
-            cause={initialState.cause}
-            retry={() => {
-              setSelection(emptyHgsSelection)
-              setInitialState({ status: 'loading' })
-              setInitialAttempt((value) => value + 1)
-            }}
-          />
-        ) : initial ? (
-          <Stack gap='md'>
-            {permalinkError ? (
-              <Alert color='red' title='Build link could not be loaded'>
-                {permalinkError}
-              </Alert>
-            ) : null}
-            <Paper className={styles.surface} component='section' aria-labelledby='hgs-base-title' withBorder p='md'>
-              <Stack gap='sm'>
-                <Title order={2} size='h3' id='hgs-base-title'>
-                  {altarLabels.base}
-                </Title>
-                <Select
-                  label='Green Steel base item'
-                  placeholder='Search weapons and equipment…'
-                  searchable
-                  clearable
-                  w='100%'
-                  maw={520}
-                  data={[
-                    {
-                      group: 'Weapons',
-                      items: toHgsSelectOptions(
-                        initial.baseItems.filter(({ type }) => type === 'weapon'),
-                        (item) => item.name
-                      )
-                    },
-                    {
-                      group: 'Equipment',
-                      items: toHgsSelectOptions(
-                        initial.baseItems.filter(({ type }) => type === 'equipment'),
-                        (item) => item.name
-                      )
-                    }
-                  ]}
-                  value={selection.selectedBaseItemId?.toString() ?? null}
-                  onChange={(value) => {
-                    updateSelection('selectedBaseItemId', value ? Number(value) : null)
-                  }}
-                />
-                {baseItem ? (
-                  <Text size='sm'>{baseItem.description}</Text>
-                ) : (
-                  <Text c='dimmed' size='sm'>
-                    Select a Green Steel base item to begin.
-                  </Text>
-                )}
-              </Stack>
-            </Paper>
-
-            <Paper className={styles.surface} component='section' aria-labelledby='hgs-spell-title' withBorder p='md'>
-              <Stack gap='sm'>
-                <Title order={2} size='h3' id='hgs-spell-title'>
-                  Desired Spell
-                </Title>
-                <Grid gap='md'>
-                  <Grid.Col span={{ base: 12, md: 5 }}>
-                    {!baseItem ? (
-                      <Text c='dimmed' size='sm'>
-                        Select a base item first.
-                      </Text>
-                    ) : tier2State.status === 'loading' ||
-                      tier2State.status === 'idle' ||
-                      tier3State.status === 'loading' ||
-                      tier3State.status === 'idle' ? (
-                      <Loading>Loading available spells…</Loading>
-                    ) : tier2State.status === 'error' ? (
-                      <LoadError
-                        message='Available spells could not be loaded.'
-                        cause={tier2State.cause}
-                        retry={() => {
-                          setTier2State({ status: 'loading' })
-                          setTier2Attempt((value) => value + 1)
-                        }}
-                      />
-                    ) : tier3State.status === 'error' ? (
-                      <Alert color='yellow'>Spell compatibility is unavailable until Tier 3 data loads.</Alert>
-                    ) : (
-                      <Select
-                        label='Spell'
-                        placeholder='Select a spell...'
-                        searchable
-                        clearable
-                        w='100%'
-                        data={toHgsSelectOptions(spellOptions, (spellOption) => spellOption.name)}
-                        value={selection.selectedSpellId?.toString() ?? null}
-                        onChange={(value) => {
-                          updateSelection('selectedSpellId', value ? Number(value) : null)
-                        }}
-                      />
-                    )}
-                  </Grid.Col>
-                  <Grid.Col span={{ base: 12, md: 7 }}>
-                    {desiredSpell ? (
-                      <Paper withBorder p='sm'>
-                        <SpellDetails spell={desiredSpell} />
-                      </Paper>
-                    ) : (
-                      <Text c='dimmed' size='sm'>
-                        Select a spell to view its details.
-                      </Text>
-                    )}
-                  </Grid.Col>
-                </Grid>
-              </Stack>
-            </Paper>
-
-            <Grid gap='md' data-testid='hgs-tier-grid'>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <Paper
-                  className={styles.surface}
-                  component='section'
-                  aria-labelledby='hgs-tier1-title'
-                  withBorder
-                  p='md'
-                >
-                  <Stack gap='sm'>
-                    <Title order={2} size='h3' id='hgs-tier1-title'>
-                      {altarLabels.tier1}
-                    </Title>
-                    {!baseItem ? (
-                      <Text c='dimmed' size='sm'>
-                        Select a base item first.
-                      </Text>
-                    ) : tier1Options.length === 0 ? (
-                      <Alert color='yellow'>No compatible Tier 1 options were published for this item.</Alert>
-                    ) : (
-                      <Select
-                        label='Tier 1 upgrade'
-                        placeholder='Choose focus, essence, and gem…'
-                        searchable
-                        clearable
-                        data={toHgsSelectOptions(tier1Options, (option) => optionLabel(option, initial))}
-                        value={selection.selectedTier1Id?.toString() ?? null}
-                        onChange={(value) => {
-                          updateSelection('selectedTier1Id', value ? Number(value) : null)
-                        }}
-                      />
-                    )}
-                    {tier1 ? (
-                      <>
-                        <OptionBadges option={tier1} />
-                        <EffectDetails effects={tier1Effects} />
-                      </>
-                    ) : null}
-                  </Stack>
-                </Paper>
-              </Grid.Col>
-
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <Paper
-                  className={styles.surface}
-                  component='section'
-                  aria-labelledby='hgs-tier2-title'
-                  withBorder
-                  p='md'
-                >
-                  <Stack gap='sm'>
-                    <Title order={2} size='h3' id='hgs-tier2-title'>
-                      {altarLabels.tier2}
-                    </Title>
-                    {!baseItem ? (
-                      <Text c='dimmed' size='sm'>
-                        Select a base item first.
-                      </Text>
-                    ) : tier2State.status === 'loading' ||
-                      tier2State.status === 'idle' ||
-                      tier3State.status === 'loading' ||
-                      tier3State.status === 'idle' ? (
-                      <Loading>Loading Tier 2 upgrades and spells…</Loading>
-                    ) : tier2State.status === 'error' ? (
-                      <LoadError
-                        message='Tier 2 upgrades could not be loaded.'
-                        cause={tier2State.cause}
-                        retry={() => {
-                          setTier2State({ status: 'loading' })
-                          setTier2Attempt((value) => value + 1)
-                        }}
-                      />
-                    ) : tier3State.status === 'error' ? (
-                      <Alert color='yellow'>Tier 2 compatibility is unavailable until Tier 3 data loads.</Alert>
-                    ) : tier2Options.length === 0 ? (
-                      <Alert color='yellow'>No Tier 2 options are compatible with the current selections.</Alert>
-                    ) : (
-                      <Select
-                        label='Tier 2 upgrade'
-                        placeholder='Choose a compatible upgrade…'
-                        searchable
-                        clearable
-                        data={toHgsSelectOptions(tier2Options, (option) => optionLabel(option, initial))}
-                        value={selection.selectedTier2Id?.toString() ?? null}
-                        onChange={(value) => {
-                          updateSelection('selectedTier2Id', value ? Number(value) : null)
-                        }}
-                      />
-                    )}
-                    {tier2 ? (
-                      <>
-                        <OptionBadges option={tier2} />
-                        <EffectDetails effects={tier2Effects} />
-                      </>
-                    ) : null}
-                  </Stack>
-                </Paper>
-              </Grid.Col>
-
-              <Grid.Col span={12}>
-                <Paper
-                  className={styles.surface}
-                  component='section'
-                  aria-labelledby='hgs-tier3-title'
-                  withBorder
-                  p='md'
-                >
-                  <Stack gap='sm'>
-                    <Title order={2} size='h3' id='hgs-tier3-title'>
-                      {altarLabels.tier3}
-                    </Title>
-                    {!baseItem ? (
-                      <Text c='dimmed' size='sm'>
-                        Select a base item first.
-                      </Text>
-                    ) : tier3State.status === 'loading' ||
-                      tier3State.status === 'idle' ||
-                      tier2State.status === 'loading' ||
-                      tier2State.status === 'idle' ? (
-                      <Loading>Loading Tier 3 upgrades…</Loading>
-                    ) : tier3State.status === 'error' ? (
-                      <LoadError
-                        message='Tier 3 upgrades could not be loaded.'
-                        cause={tier3State.cause}
-                        retry={() => {
-                          setTier3State({ status: 'loading' })
-                          setTier3Attempt((value) => value + 1)
-                        }}
-                      />
-                    ) : tier2State.status === 'error' ? (
-                      <Alert color='yellow'>Tier 3 compatibility is unavailable until Tier 2 data loads.</Alert>
-                    ) : (
-                      <>
-                        <SegmentedControl
-                          aria-label='Tier 3 mode'
-                          value={selection.selectedTier3Mode ?? ''}
-                          onChange={(value) => {
-                            if (value === 'basic' || value === 'focused') updateSelection('selectedTier3Mode', value)
-                          }}
-                          data={[
-                            { label: 'Basic', value: 'basic' },
-                            { label: 'Focused', value: 'focused' }
-                          ]}
-                          fullWidth
-                        />
-                        {!selection.selectedTier3Mode ? (
-                          <Text c='dimmed' size='sm'>
-                            Choose Basic or Focused to see compatible Tier 3 upgrades.
-                          </Text>
-                        ) : tier3Options.length === 0 ? (
-                          <Alert color='yellow'>No compatible Tier 3 options were published for this mode.</Alert>
-                        ) : (
-                          <Select
-                            label={`Tier 3 ${selection.selectedTier3Mode === 'basic' ? 'Basic' : 'Focused'} upgrade`}
-                            placeholder='Choose a final upgrade…'
-                            searchable
-                            clearable
-                            data={toHgsSelectOptions(tier3Options, (option) => optionLabel(option, initial))}
-                            value={selection.selectedTier3Id?.toString() ?? null}
-                            onChange={(value) => {
-                              updateSelection('selectedTier3Id', value ? Number(value) : null)
-                            }}
-                          />
-                        )}
-                      </>
-                    )}
-                    {tier3 ? (
-                      <>
-                        <OptionBadges option={tier3} />
-                        <EffectDetails effects={tier3Effects} />
-                      </>
-                    ) : null}
-                  </Stack>
-                </Paper>
-              </Grid.Col>
-            </Grid>
-          </Stack>
-        ) : null}
+        {renderAltars()}
       </Stack>
     </WorkspaceLayout>
   )

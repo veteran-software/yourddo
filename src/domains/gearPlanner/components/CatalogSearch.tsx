@@ -8,7 +8,7 @@ interface CatalogSearchProps {
   onChange: (value: string) => void
 }
 
-export default function CatalogSearch({ label, placeholder, value, onChange }: CatalogSearchProps) {
+export default function CatalogSearch({ label, placeholder, value, onChange }: Readonly<CatalogSearchProps>) {
   const input = useRef<HTMLInputElement>(null)
   return (
     <TextInput

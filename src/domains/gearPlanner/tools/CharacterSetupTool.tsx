@@ -4,10 +4,10 @@ import { changeClasses, classNames, proficiencyOptions, type CharacterSettings }
 export default function CharacterSetupTool({
   settings,
   onChange
-}: {
+}: Readonly<{
   settings: CharacterSettings
   onChange: (settings: CharacterSettings) => void
-}) {
+}>) {
   return (
     <Stack p='md' gap='md'>
       <MultiSelect

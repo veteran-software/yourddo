@@ -50,7 +50,7 @@ function stripObjectiveRank(effect: GearPlannerEffect): GearPlannerEffect {
 export function objectiveCategory(name: string) {
   if (/^(strength|dexterity|constitution|intelligence|wisdom|charisma|ability scores?)$/i.test(name))
     return 'Ability scores'
-  if (/^skill:|skills? bonus|persuasion/i.test(name)) return 'Skills'
+  if (name.toLowerCase().startsWith('skill:') || /skills? bonus|persuasion/i.test(name)) return 'Skills'
   if (
     /spell resistance|resistance rating|armor class|absorption|resistance|fortification(?! bypass)|dodge|save\b|hit points|damage reduction/i.test(
       name

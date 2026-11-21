@@ -187,7 +187,7 @@ export const resolveSpell = (
 export const stripDdoMarkup = (value: string): string =>
   value
     .replace(/<\/?rgb(?:=[^>]+)?>/gi, '')
-    .replace(/\\n/g, '\n')
+    .replaceAll('\\n', '\n')
     .trim()
 
 const formatDice = ({ count, sides }: { count: number; sides: number }) => `${count.toString()}d${sides.toString()}`
@@ -222,7 +222,7 @@ export const formatMechanic = (mechanic: HgsMechanic): string => {
   }
   if (mechanic.type === 'negativeLevels' && mechanic.amount) {
     return withBonusType(
-      `${formatDice(mechanic.amount.dice)} negative levels${mechanic.durationType ? ` (${mechanic.durationType})` : ''}`,
+      `${formatDice(mechanic.amount.dice)} negative levels${mechanic.durationType ? ' (' + mechanic.durationType + ')' : ''}`,
       mechanic.bonusType
     )
   }
@@ -230,7 +230,7 @@ export const formatMechanic = (mechanic: HgsMechanic): string => {
     return withBonusType(`Summon ${mechanic.name ?? 'published creature'}`, mechanic.bonusType)
   if (mechanic.type === 'status') {
     return withBonusType(
-      `${mechanic.name ?? 'Status'}${mechanic.save ? ` (${mechanic.save.type} DC ${mechanic.save.dc.toString()})` : ''}`,
+      `${mechanic.name ?? 'Status'}${mechanic.save ? ' (' + mechanic.save.type + ' DC ' + mechanic.save.dc.toString() + ')' : ''}`,
       mechanic.bonusType
     )
   }
@@ -242,7 +242,7 @@ export const formatMechanic = (mechanic: HgsMechanic): string => {
           ? formatDice(mechanic.value.dice)
           : 'Published amount'
     return withBonusType(
-      `${value} regeneration${mechanic.intervalSeconds ? ` every ${mechanic.intervalSeconds.toString()} seconds` : ''}`,
+      `${value} regeneration${mechanic.intervalSeconds ? ' every ' + mechanic.intervalSeconds.toString() + ' seconds' : ''}`,
       mechanic.bonusType
     )
   }

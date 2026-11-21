@@ -2,7 +2,9 @@ import { gearDropLocations } from '../dropLocations'
 import { Anchor, List, Stack, Text } from '@mantine/core'
 import type { GearPlannerItem } from '../gearPlanner.types'
 
-export default function ItemDropLocations({ locations }: { locations: GearPlannerItem['source']['dropLocations'] }) {
+export default function ItemDropLocations({
+  locations
+}: Readonly<{ locations: GearPlannerItem['source']['dropLocations'] }>) {
   const entries = gearDropLocations(locations)
   if (!entries.length) return null
   return (

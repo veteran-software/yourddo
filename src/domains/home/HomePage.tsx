@@ -97,7 +97,7 @@ function readActiveSetupName() {
     return undefined
   }
 }
-function ContinueLink({ tool, setup }: { tool: { path: string; label: string }; setup?: string }) {
+function ContinueLink({ tool, setup }: Readonly<{ tool: { path: string; label: string }; setup?: string }>) {
   return (
     <Anchor className={styles.continueLink} component={Link} to={tool.path}>
       <span>

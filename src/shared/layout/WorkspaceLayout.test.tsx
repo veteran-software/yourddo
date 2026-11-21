@@ -292,11 +292,11 @@ describe('WorkspaceLayout', () => {
     renderLayout({ tools })
 
     if (isDesktop) {
-      expect(screen.queryByTestId('workspace-tool-rail')).not.toBeNull()
+      expect(screen.getByTestId('workspace-tool-rail')).toBeTruthy()
       expect(screen.queryByTestId('workspace-mobile-tools')).toBeNull()
     } else {
       expect(screen.queryByTestId('workspace-tool-rail')).toBeNull()
-      expect(screen.queryByTestId('workspace-mobile-tools')).not.toBeNull()
+      expect(screen.getByTestId('workspace-mobile-tools')).toBeTruthy()
     }
   })
 

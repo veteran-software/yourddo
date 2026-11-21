@@ -9,11 +9,11 @@ export default function ComponentFarmingLocations({
   materials,
   count,
   location
-}: {
+}: Readonly<{
   materials: readonly Material[]
   count: number
   location: (name: string) => string | undefined
-}) {
+}>) {
   const rows = materials.flatMap(({ name, quantity }) => {
     const foundIn = location(name)
     return foundIn ? [{ name, quantity: quantity * count, foundIn }] : []

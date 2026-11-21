@@ -1,7 +1,7 @@
 import { Box, Text } from '@mantine/core'
 import EffectList from '../../shared/items/EffectList.tsx'
 
-export default function DiscrepancyList({ notes }: { notes: readonly string[] }) {
+export default function DiscrepancyList({ notes }: Readonly<{ notes: readonly string[] }>) {
   if (!notes.length) return null
   return (
     <>

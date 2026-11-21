@@ -33,7 +33,7 @@ interface FiligreeSlotSelectorProps {
 }
 
 const effectLabel = (effect: GearPlannerEffect): string =>
-  `${effect.name}${effect.modifier == null ? '' : ` ${String(effect.modifier)}`}${effect.bonus ? ` (${String(effect.bonus)})` : ''}`
+  `${effect.name}${effect.modifier == null ? '' : ' ' + String(effect.modifier)}${effect.bonus ? ' (' + String(effect.bonus) + ')' : ''}`
 
 const FiligreeSlotSelector = ({
   initialSlotIndex,

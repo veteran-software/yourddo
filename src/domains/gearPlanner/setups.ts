@@ -56,8 +56,9 @@ export const createDefaultGearPlannerState = (): GearPlannerSetupsState => ({
 })
 
 export const createGearPlannerSetupId = (): string => {
-  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') return crypto.randomUUID()
-  return `setup-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
+  if (typeof globalThis.crypto.randomUUID === 'function') return globalThis.crypto.randomUUID()
+  const entropy = globalThis.crypto.getRandomValues(new Uint32Array(4))
+  return 'setup-' + entropy.join('-')
 }
 
 const replaceSetup = (
@@ -269,7 +270,7 @@ export const setGearPlannerSetupCraft = (
 ): GearPlannerSetupsState =>
   replaceSetup(state, state.activeSetupId, (setup) => {
     const item = setup.equipment[slot]
-    if (!item || item.id !== itemId) return setup
+    if (item?.id !== itemId) return setup
     const group = gearCraftGroups(item, data).find((g) => g.system === system)
     if (!group) return setup
     const updated = applyGearCraft(item, group, choiceId)

@@ -15,7 +15,7 @@ import type { GearPlannerSetState } from '../sets'
 import { activeGearPlannerSetup, type GearPlannerSetupsState } from '../setups'
 import { formatGearSetup, gearPlannerPermalink } from '../sharing'
 
-export function ImportDetails({ issues }: { issues?: readonly GearPlannerRestoreIssue[] }) {
+export function ImportDetails({ issues }: Readonly<{ issues?: readonly GearPlannerRestoreIssue[] }>) {
   if (!issues?.length) return null
   return (
     <details>
@@ -38,14 +38,14 @@ export default function SharingTool({
   data,
   essenceData,
   onRestore
-}: {
+}: Readonly<{
   state: GearPlannerSetupsState
   effects: readonly GearPlannerEffectSource[]
   ownerSets: Partial<Record<GearOwner, GearPlannerSetState>>
   data: GearPlannerData
   essenceData: EssenceCraftingData
   onRestore: (state: GearPlannerSetupsState) => void
-}) {
+}>) {
   const [pending, setPending] = useState<ReturnType<typeof importGearPlannerState> | null>(null)
   const setup = activeGearPlannerSetup(state)
   const permalink = gearPlannerPermalink(setup, window.location.href)

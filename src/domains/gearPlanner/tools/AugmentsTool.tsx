@@ -26,7 +26,7 @@ export default function AugmentsTool({
   onChange,
   onExchange,
   openSet
-}: {
+}: Readonly<{
   setup: GearPlannerSetup
   slots: Readonly<Record<string, readonly GearPlannerAugmentSlot[]>>
   augments: readonly GearPlannerAugment[]
@@ -34,7 +34,7 @@ export default function AugmentsTool({
   onChange: (socket: LoadoutSocket, augment: GearPlannerAugment | null) => void
   onExchange: (from: LoadoutSocket, to: LoadoutSocket) => void
   openSet: (name: string) => void
-}) {
+}>) {
   const sockets = useMemo(() => loadoutSockets(setup, slots), [setup, slots])
   const [emptyOnly, setEmptyOnly] = useState(false)
   const [edit, setEdit] = useState('')
@@ -79,13 +79,15 @@ export default function AugmentsTool({
     [catalog, sockets, setup.essenceCrafting]
   )
   const wanted = lookup ? catalog.get(lookup) : undefined
-  const visible = sockets.filter((s) =>
-    source
-      ? canExchangeAugments(source, s)
-      : wanted
-        ? !s.augment && isCompatibleGearPlannerAugment(s.slot, wanted)
-        : !emptyOnly || !s.augment
-  )
+  const visible = sockets.filter((s) => {
+    if (source) {
+      return canExchangeAugments(source, s)
+    }
+    if (wanted) {
+      return !s.augment && isCompatibleGearPlannerAugment(s.slot, wanted)
+    }
+    return !emptyOnly || !s.augment
+  })
   const empty = sockets.filter((s) => !s.augment).length
   const hostLevel = (s: LoadoutSocket) => setup.essenceCrafting[s.item.id]?.minimumLevel ?? s.item.minimumLevel
   const edited = sockets.find((s) => keyOf(s) === edit)

@@ -81,7 +81,7 @@ const BuildSummaryTool = ({
     <Stage label='Tier 2' option={tier2} effects={tier2Effects} incomplete='Tier 2 is incomplete.' spell={spell} />
     <Divider />
     <Stage
-      label={`Tier 3${tier3Mode ? ` · ${tier3Mode === 'basic' ? 'Basic' : 'Focused'}` : ''}`}
+      label={`Tier 3${tier3Mode ? ' · ' + (tier3Mode === 'basic' ? 'Basic' : 'Focused') : ''}`}
       option={tier3}
       effects={tier3Effects}
       incomplete='Tier 3 is incomplete.'

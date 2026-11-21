@@ -119,7 +119,7 @@ export const getItemOptions = (recipes: CauldronRecipes, selectedItem: string | 
     }))
 
 export const formatEffect = (effect: CauldronEffect): string =>
-  `${effect.name} (+${String(effect.modifier)}${effect.bonus ? ` ${effect.bonus}` : ''})`
+  `${effect.name} (+${String(effect.modifier)}${effect.bonus ? ' ' + effect.bonus : ''})`
 
 export const getEffectOptions = (recipes: CauldronRecipes, selectedItem: string | null): CauldronOption[] => {
   const setBonuses = recipes.flatMap((recipe) => recipe.setBonus)

@@ -33,7 +33,7 @@ const familyLabels: Readonly<Record<ViktraniumFamily, string>> = {
 export const getFamilyLabel = (family: ViktraniumFamily): string => familyLabels[family]
 
 export const formatEffect = ({ name, modifier, bonus, notes }: ViktraniumEffect): string =>
-  `${name}${modifier !== undefined ? ` (${String(modifier)}${bonus ? ` ${bonus}` : ''})` : ''}${notes ? ` — ${notes}` : ''}`
+  `${name}${modifier !== undefined ? ' (' + String(modifier) + (bonus ? ' ' + bonus : '') + ')' : ''}${notes ? ' — ' + notes : ''}`
 
 export const getItemEffectNames = (item: ViktraniumItem): string[] => item.enchantments.map(({ name }) => name)
 export const getAugmentEffectNames = (augment: ViktraniumAugment): string[] => augment.effects.map(({ name }) => name)

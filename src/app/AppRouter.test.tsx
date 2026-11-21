@@ -126,233 +126,77 @@ afterAll(() => {
 })
 
 describe('AppRouter', () => {
-  it('renders Gear Planner at its registered navigation route', () => {
-    renderRoute('/gear-planner')
+  it.each([
+    ['/gear-planner', 'Gear Planner', 'Gear Planner'],
+    ['/legendary-green-steel', 'Legendary Green Steel', 'Legendary Green Steel'],
+    ['/green-steel', 'Heroic Green Steel', 'Heroic Green Steel'],
+    ['/essence-crafting', 'Essence Crafting', 'Essence Crafting'],
+    ['/saga-tracker', 'Saga Tracker', 'Saga Tracker'],
+    ['/viktranium-experiment', 'Viktranium Experiment', 'Viktranium'],
+    ['/dinosaur-bone', 'Dinosaur Bone Crafting', 'Dinosaur Bone'],
+    ['/incredible-potential', 'Incredible Potential', 'Incredible Potential'],
+    ['/cauldron-of-cadence', 'Cauldron of Cadence', 'Cauldron of Cadence'],
+    ['/nearly-complete', 'Nearly Complete', 'Nearly Complete'],
+    ['/nearly-finished', 'Nearly Finished', 'Nearly Finished'],
+    ['/reavers-fate', "The Reaver's Fate", 'Mastermind'],
+    ['/monastery-of-the-scorpion', 'Monastery of the Scorpion', 'Monastery'],
+    ['/total-chaos', 'Total Chaos', 'Total Chaos'],
+    ['/the-shroud', 'The Shroud', 'Shroud'],
+    ['/the-shadow-crypt', 'The Shadow Crypt', 'Shadow Crypt']
+  ])('renders %s with active navigation on direct visits and remounts', (path, label, domain) => {
+    const checkRoute = () => {
+      expect(screen.getByRole('heading', { name: `${domain} domain` })).toBeTruthy()
+      expect(screen.queryByRole('heading', { name: 'Page not found' })).toBeNull()
+      const link = screen.getByRole('link', { name: label })
+      expect(link.getAttribute('href')).toBe(path)
+      expect(link.getAttribute('aria-current')).toBe('page')
+    }
 
-    expect(screen.getByRole('heading', { name: 'Gear Planner domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Gear Planner' }).getAttribute('aria-current')).toBe('page')
-  })
-
-  it('renders Legendary Green Steel at its reserved public route', () => {
-    renderRoute('/legendary-green-steel')
-
-    expect(screen.getByRole('heading', { name: 'Legendary Green Steel domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Legendary Green Steel' }).getAttribute('aria-current')).toBe('page')
-  })
-
-  it('renders Heroic Green Steel at its preserved public route', () => {
-    renderRoute('/green-steel')
-
-    expect(screen.getByRole('heading', { name: 'Heroic Green Steel domain' })).toBeTruthy()
-    const link = screen.getByRole('link', { name: 'Heroic Green Steel' })
-    expect(link.getAttribute('href')).toBe('/green-steel')
-    expect(link.getAttribute('aria-current')).toBe('page')
-  })
-
-  it('renders Essence Crafting at its public route with active navigation and direct remount support', () => {
-    const firstRender = renderRoute('/essence-crafting')
-
-    expect(screen.getByRole('heading', { name: 'Essence Crafting domain' })).toBeTruthy()
-    const link = screen.getByRole('link', { name: 'Essence Crafting' })
-    expect(link.getAttribute('href')).toBe('/essence-crafting')
-    expect(link.getAttribute('aria-current')).toBe('page')
-
+    const firstRender = renderRoute(path)
+    checkRoute()
     firstRender.unmount()
-    renderRoute('/essence-crafting')
-    expect(screen.getByRole('heading', { name: 'Essence Crafting domain' })).toBeTruthy()
+    renderRoute(path)
+    checkRoute()
   })
 
-  it('closes mobile navigation after selecting Essence Crafting', async () => {
-    const user = userEvent.setup()
-    renderRoute('/')
+  it.each(['/nearly-complete', '/reavers-fate', '/monastery-of-the-scorpion', '/total-chaos'])(
+    'keeps the sidebar scrollable on %s',
+    (path) => {
+      renderRoute(path)
+      const viewport = screen.getByRole('navigation').querySelector<HTMLElement>('[data-scrollarea-viewport]')
+      expect(viewport?.style.overflowY).toBe('scroll')
+      expect(screen.getAllByRole('main')).toHaveLength(1)
+      expect(screen.getByRole('button', { name: 'Puzzle Solvers' })).toBeTruthy()
+    }
+  )
 
-    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('button', { name: 'Crafting' }))
-    await user.click(await screen.findByRole('link', { name: 'Essence Crafting' }))
-
-    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(await screen.findByRole('heading', { name: 'Essence Crafting domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Essence Crafting' }).getAttribute('aria-current')).toBe('page')
-  })
-
-  it('renders Saga Tracker at its preserved route with active navigation and direct remount support', () => {
-    const firstRender = renderRoute('/saga-tracker')
-    expect(screen.getByRole('heading', { name: 'Saga Tracker domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Saga Tracker' }).getAttribute('aria-current')).toBe('page')
-
-    firstRender.unmount()
-    renderRoute('/saga-tracker')
-    expect(screen.getByRole('heading', { name: 'Saga Tracker domain' })).toBeTruthy()
-  })
-
-  it('closes mobile navigation after selecting Saga Tracker', async () => {
+  it.each([
+    ['Crafting', 'Essence Crafting', 'Essence Crafting', 'click'],
+    ['Tools', 'Saga Tracker', 'Saga Tracker', 'click'],
+    ['Crafting', 'Viktranium Experiment', 'Viktranium', 'click'],
+    ['Crafting', 'Dinosaur Bone Crafting', 'Dinosaur Bone', 'click'],
+    ['Crafting', 'Incredible Potential', 'Incredible Potential', 'keyboard'],
+    ['Crafting', 'Nearly Finished', 'Nearly Finished', 'click'],
+    ['Crafting', 'Cauldron of Cadence', 'Cauldron of Cadence', 'keyboard'],
+    ['Puzzle Solvers', "The Reaver's Fate", 'Mastermind', 'keyboard'],
+    ['Puzzle Solvers', 'Monastery of the Scorpion', 'Monastery', 'keyboard'],
+    ['Puzzle Solvers', 'Total Chaos', 'Total Chaos', 'keyboard']
+  ])('closes mobile navigation after selecting %s > %s', async (group, label, domain, input) => {
     const user = userEvent.setup()
     renderRoute('/')
     await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('button', { name: 'Tools' }))
-    await user.click(await screen.findByRole('link', { name: 'Saga Tracker' }))
+    expect(screen.getByRole('button', { name: 'Close navigation' })).toBeTruthy()
+    await user.click(screen.getByRole('button', { name: group }))
+    const link = await screen.findByRole('link', { name: label })
+    if (input === 'keyboard') {
+      link.focus()
+      await user.keyboard('{Enter}')
+    } else {
+      await user.click(link)
+    }
+    expect(await screen.findByRole('heading', { name: `${domain} domain` })).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(await screen.findByRole('heading', { name: 'Saga Tracker domain' })).toBeTruthy()
-  })
-
-  it('renders Viktranium at its preserved route and supports a direct remount', () => {
-    const firstRender = renderRoute('/viktranium-experiment')
-    expect(screen.getByRole('heading', { name: 'Viktranium domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Viktranium Experiment' }).getAttribute('aria-current')).toBe('page')
-
-    firstRender.unmount()
-    renderRoute('/viktranium-experiment')
-    expect(screen.getByRole('heading', { name: 'Viktranium domain' })).toBeTruthy()
-  })
-
-  it('closes mobile navigation after selecting Viktranium', async () => {
-    const user = userEvent.setup()
-    renderRoute('/')
-    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('button', { name: 'Crafting' }))
-    await user.click(await screen.findByRole('link', { name: 'Viktranium Experiment' }))
-    expect(await screen.findByRole('heading', { name: 'Viktranium domain' })).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-  })
-
-  it('renders Dinosaur Bone at its preserved public route', () => {
-    renderRoute('/dinosaur-bone')
-
-    expect(screen.getByRole('heading', { name: 'Dinosaur Bone domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Dinosaur Bone Crafting' }).getAttribute('aria-current')).toBe('page')
-  })
-
-  it('loads Dinosaur Bone directly after a remount', () => {
-    const firstRender = renderRoute('/dinosaur-bone')
-    expect(screen.getByRole('heading', { name: 'Dinosaur Bone domain' })).toBeTruthy()
-
-    firstRender.unmount()
-    renderRoute('/dinosaur-bone')
-
-    expect(screen.getByRole('heading', { name: 'Dinosaur Bone domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Dinosaur Bone Crafting' }).getAttribute('aria-current')).toBe('page')
-  })
-
-  it('closes mobile navigation after selecting Dinosaur Bone', async () => {
-    const user = userEvent.setup()
-    renderRoute('/')
-
-    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('button', { name: 'Crafting' }))
-    await user.click(await screen.findByRole('link', { name: 'Dinosaur Bone Crafting' }))
-
-    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(await screen.findByRole('heading', { name: 'Dinosaur Bone domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Dinosaur Bone Crafting' }).getAttribute('aria-current')).toBe('page')
-  })
-
-  it('renders Incredible Potential at its preserved public route', () => {
-    renderRoute('/incredible-potential')
-
-    expect(screen.getByRole('heading', { name: 'Incredible Potential domain' })).toBeTruthy()
-    const link = screen.getByRole('link', { name: 'Incredible Potential' })
-    expect(link.getAttribute('href')).toBe('/incredible-potential')
     expect(link.getAttribute('aria-current')).toBe('page')
-  })
-
-  it('loads Incredible Potential directly after a remount', () => {
-    const firstRender = renderRoute('/incredible-potential')
-    expect(screen.getByRole('heading', { name: 'Incredible Potential domain' })).toBeTruthy()
-
-    firstRender.unmount()
-    renderRoute('/incredible-potential')
-
-    expect(screen.getByRole('heading', { name: 'Incredible Potential domain' })).toBeTruthy()
-  })
-
-  it('closes mobile navigation after selecting Incredible Potential', async () => {
-    const user = userEvent.setup()
-    renderRoute('/')
-
-    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('button', { name: 'Crafting' }))
-    const link = await screen.findByRole('link', { name: 'Incredible Potential' })
-    link.focus()
-    await user.keyboard('{Enter}')
-
-    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(await screen.findByRole('heading', { name: 'Incredible Potential domain' })).toBeTruthy()
-    expect(link.getAttribute('aria-current')).toBe('page')
-  })
-
-  it('renders the Cauldron of Cadence domain at its preserved public route', () => {
-    renderRoute('/cauldron-of-cadence')
-
-    expect(screen.getByRole('heading', { name: 'Cauldron of Cadence domain' })).toBeTruthy()
-
-    const link = screen.getByRole('link', { name: 'Cauldron of Cadence' })
-    expect(link.getAttribute('href')).toBe('/cauldron-of-cadence')
-    expect(link.getAttribute('aria-current')).toBe('page')
-  })
-
-  it('loads the Cauldron route directly after a remount', () => {
-    const firstRender = renderRoute('/cauldron-of-cadence')
-    expect(screen.getByRole('heading', { name: 'Cauldron of Cadence domain' })).toBeTruthy()
-
-    firstRender.unmount()
-    renderRoute('/cauldron-of-cadence')
-
-    expect(screen.getByRole('heading', { name: 'Cauldron of Cadence domain' })).toBeTruthy()
-  })
-
-  it('renders the Nearly Complete domain at its public route', () => {
-    renderRoute('/nearly-complete')
-
-    expect(screen.getByRole('heading', { name: 'Nearly Complete domain' })).toBeTruthy()
-
-    const link = screen.getByRole('link', { name: 'Nearly Complete' })
-    expect(link.getAttribute('href')).toBe('/nearly-complete')
-    expect(link.getAttribute('aria-current')).toBe('page')
-    expect(screen.getAllByRole('main')).toHaveLength(1)
-
-    const sidebarViewport = screen.getByRole('navigation').querySelector<HTMLElement>('[data-scrollarea-viewport]')
-    expect(sidebarViewport?.style.overflowY).toBe('scroll')
-    expect(screen.getByRole('button', { name: 'Puzzle Solvers' })).toBeTruthy()
-  })
-
-  it('renders the Nearly Finished domain at its preserved public route', () => {
-    renderRoute('/nearly-finished')
-
-    expect(screen.getByRole('heading', { name: 'Nearly Finished domain' })).toBeTruthy()
-
-    const link = screen.getByRole('link', { name: 'Nearly Finished' })
-    expect(link.getAttribute('href')).toBe('/nearly-finished')
-    expect(link.getAttribute('aria-current')).toBe('page')
-  })
-
-  it('closes mobile navigation after selecting Nearly Finished', async () => {
-    const user = userEvent.setup()
-    renderRoute('/')
-
-    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('button', { name: 'Crafting' }))
-    await user.click(await screen.findByRole('link', { name: 'Nearly Finished' }))
-
-    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(await screen.findByRole('heading', { name: 'Nearly Finished domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Nearly Finished' }).getAttribute('aria-current')).toBe('page')
-  })
-
-  it('renders Mastermind at its preserved public route and supports a direct remount', () => {
-    const firstRender = renderRoute('/reavers-fate')
-
-    expect(screen.getByRole('heading', { name: 'Mastermind domain' })).toBeTruthy()
-    const link = screen.getByRole('link', { name: "The Reaver's Fate" })
-    expect(link.getAttribute('href')).toBe('/reavers-fate')
-    expect(link.getAttribute('aria-current')).toBe('page')
-    const sidebarViewport = screen.getByRole('navigation').querySelector<HTMLElement>('[data-scrollarea-viewport]')
-    expect(sidebarViewport?.style.overflowY).toBe('scroll')
-
-    firstRender.unmount()
-    renderRoute('/reavers-fate')
-
-    expect(screen.getByRole('heading', { name: 'Mastermind domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: "The Reaver's Fate" }).getAttribute('aria-current')).toBe('page')
   })
 
   it('preserves the legacy Mastermind route alias', async () => {
@@ -362,23 +206,6 @@ describe('AppRouter', () => {
     expect(screen.getByRole('link', { name: "The Reaver's Fate", hidden: true }).getAttribute('aria-current')).toBe(
       'page'
     )
-  })
-
-  it('renders Monastery at its preserved public route and supports a direct remount', () => {
-    const firstRender = renderRoute('/monastery-of-the-scorpion')
-
-    expect(screen.getByRole('heading', { name: 'Monastery domain' })).toBeTruthy()
-    const link = screen.getByRole('link', { name: 'Monastery of the Scorpion' })
-    expect(link.getAttribute('href')).toBe('/monastery-of-the-scorpion')
-    expect(link.getAttribute('aria-current')).toBe('page')
-    const sidebarViewport = screen.getByRole('navigation').querySelector<HTMLElement>('[data-scrollarea-viewport]')
-    expect(sidebarViewport?.style.overflowY).toBe('scroll')
-
-    firstRender.unmount()
-    renderRoute('/monastery-of-the-scorpion')
-
-    expect(screen.getByRole('heading', { name: 'Monastery domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Monastery of the Scorpion' }).getAttribute('aria-current')).toBe('page')
   })
 
   it('preserves the legacy Toxic Treatment route alias', async () => {
@@ -399,51 +226,6 @@ describe('AppRouter', () => {
     expect(screen.getByRole('button', { name: 'Unpin The Shroud from shelf' })).toBeTruthy()
   })
 
-  it('renders Total Chaos at its preserved public route and supports a direct remount', () => {
-    const firstRender = renderRoute('/total-chaos')
-
-    expect(screen.getByRole('heading', { name: 'Total Chaos domain' })).toBeTruthy()
-    const link = screen.getByRole('link', { name: 'Total Chaos' })
-    expect(link.getAttribute('href')).toBe('/total-chaos')
-    expect(link.getAttribute('aria-current')).toBe('page')
-    const sidebarViewport = screen.getByRole('navigation').querySelector<HTMLElement>('[data-scrollarea-viewport]')
-    expect(sidebarViewport?.style.overflowY).toBe('scroll')
-
-    firstRender.unmount()
-    renderRoute('/total-chaos')
-
-    expect(screen.getByRole('heading', { name: 'Total Chaos domain' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: 'Total Chaos' }).getAttribute('aria-current')).toBe('page')
-  })
-
-  it('renders The Shroud at its canonical route without falling through to not found', () => {
-    const firstRender = renderRoute('/the-shroud')
-
-    expect(screen.getByRole('heading', { name: 'Shroud domain' })).toBeTruthy()
-    expect(screen.queryByRole('heading', { name: 'Page not found' })).toBeNull()
-    const link = screen.getByRole('link', { name: 'The Shroud' })
-    expect(link.getAttribute('href')).toBe('/the-shroud')
-    expect(link.getAttribute('aria-current')).toBe('page')
-
-    firstRender.unmount()
-    renderRoute('/the-shroud')
-    expect(screen.getByRole('heading', { name: 'Shroud domain' })).toBeTruthy()
-  })
-
-  it('renders The Shadow Crypt at its preserved public route without falling through to not found', () => {
-    const firstRender = renderRoute('/the-shadow-crypt')
-
-    expect(screen.getByRole('heading', { name: 'Shadow Crypt domain' })).toBeTruthy()
-    expect(screen.queryByRole('heading', { name: 'Page not found' })).toBeNull()
-    const link = screen.getByRole('link', { name: 'The Shadow Crypt' })
-    expect(link.getAttribute('href')).toBe('/the-shadow-crypt')
-    expect(link.getAttribute('aria-current')).toBe('page')
-
-    firstRender.unmount()
-    renderRoute('/the-shadow-crypt')
-    expect(screen.getByRole('heading', { name: 'Shadow Crypt domain' })).toBeTruthy()
-  })
-
   it('renders the not-found page for an unknown route', () => {
     renderRoute('/unknown-tool')
 
@@ -457,67 +239,6 @@ describe('AppRouter', () => {
 
     await user.click(screen.getByRole('button', { name: 'Collapse navigation' }))
     expect(screen.getByRole('button', { name: 'Expand navigation' })).toBeTruthy()
-  })
-
-  it('closes mobile navigation after selecting the Cauldron route', async () => {
-    const user = userEvent.setup()
-    renderRoute('/')
-
-    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    expect(screen.getByRole('button', { name: 'Close navigation' })).toBeTruthy()
-
-    await user.click(screen.getByRole('button', { name: 'Crafting' }))
-    const link = await screen.findByRole('link', { name: 'Cauldron of Cadence' })
-    link.focus()
-    await user.keyboard('{Enter}')
-
-    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(link.getAttribute('aria-current')).toBe('page')
-  })
-
-  it('closes mobile navigation after selecting the Mastermind route', async () => {
-    const user = userEvent.setup()
-    renderRoute('/')
-
-    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('button', { name: 'Puzzle Solvers' }))
-    const link = await screen.findByRole('link', { name: "The Reaver's Fate" })
-    link.focus()
-    await user.keyboard('{Enter}')
-
-    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(await screen.findByRole('heading', { name: 'Mastermind domain' })).toBeTruthy()
-    expect(link.getAttribute('aria-current')).toBe('page')
-  })
-
-  it('closes mobile navigation after selecting the Monastery route', async () => {
-    const user = userEvent.setup()
-    renderRoute('/')
-
-    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('button', { name: 'Puzzle Solvers' }))
-    const link = await screen.findByRole('link', { name: 'Monastery of the Scorpion' })
-    link.focus()
-    await user.keyboard('{Enter}')
-
-    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(await screen.findByRole('heading', { name: 'Monastery domain' })).toBeTruthy()
-    expect(link.getAttribute('aria-current')).toBe('page')
-  })
-
-  it('closes mobile navigation after selecting the Total Chaos route', async () => {
-    const user = userEvent.setup()
-    renderRoute('/')
-
-    await user.click(screen.getByRole('button', { name: 'Open navigation' }))
-    await user.click(screen.getByRole('button', { name: 'Puzzle Solvers' }))
-    const link = await screen.findByRole('link', { name: 'Total Chaos' })
-    link.focus()
-    await user.keyboard('{Enter}')
-
-    expect(screen.getByRole('button', { name: 'Open navigation' })).toBeTruthy()
-    expect(await screen.findByRole('heading', { name: 'Total Chaos domain' })).toBeTruthy()
-    expect(link.getAttribute('aria-current')).toBe('page')
   })
 
   it.each([

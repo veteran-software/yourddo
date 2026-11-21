@@ -16,6 +16,7 @@ import {
   allGearPlannerSlots,
   gearPlannerPetSlots,
   gearPlannerCharacterSlots,
+  type GearPlannerItem,
   type GearPlannerSlot,
   type GearPlannerData
 } from './gearPlanner.types.ts'
@@ -436,7 +437,7 @@ export const parsePersistedGearPlannerState = (value: unknown): PersistedGearPla
   if (!Array.isArray(record.setups) || record.setups.length === 0) {
     throw new InvalidGearPlannerStateError('setups must be a non-empty array')
   }
-  const setups = record.setups.map(parseSetup)
+  const setups = record.setups.map((setup, index) => parseSetup(setup, index))
   const ids = new Set<string>()
   for (const setup of setups) {
     if (ids.has(setup.id)) throw new InvalidGearPlannerStateError('setup IDs must be unique')
@@ -531,52 +532,273 @@ export const serializeGearPlannerState = (state: GearPlannerSetupsState): Persis
 const findEquippedItem = (setup: GearPlannerSetup, itemId: string) =>
   Object.values(setup.equipment).find((item) => item?.id === itemId) ?? null
 
+function restoreCatalog(data: GearPlannerData, essenceData?: EssenceCraftingData) {
+  const itemsById = new Map(data.items.map((item) => [item.id, item]))
+  const augmentsById = new Map(data.augments.map((augment) => [gearPlannerAugmentIdentity(augment), augment]))
+  const cursesById = new Map(data.curses.map((curse) => [gearPlannerCurseIdentity(curse), curse]))
+  const filigreesById = new Map(data.filigrees.map((filigree) => [filigree.id, filigree]))
+  return { data, essenceData, itemsById, augmentsById, cursesById, filigreesById }
+}
+
+type RestoreCatalog = ReturnType<typeof restoreCatalog>
+type ReportIssue = (kind: GearPlannerRestoreIssue['kind'], message: string) => void
+
+function restoreEquipment(savedSetup: PersistedGearPlannerSetupV1, { itemsById }: RestoreCatalog, report: ReportIssue) {
+  const equipment = createEmptyGearPlannerEquipment()
+  for (const slot of allGearPlannerSlots) {
+    const itemId = savedSetup.equipment[slot]
+    if (itemId == null) continue
+    const item = itemsById.get(itemId) ?? resolveEssenceCraftedGearPlannerItem(itemId, slot)
+    if (item?.slot !== slot) {
+      report('missing-item', `${slot} item is no longer available`)
+      continue
+    }
+    const mainHand = equipment['Main Hand']
+    if (slot === 'Off Hand' && mainHand && !allowsOffHand(mainHand, item)) {
+      report(
+        'incompatible-off-hand',
+        `${item.source.name} was unequipped because it cannot be used with ${mainHand.source.name}.`
+      )
+      continue
+    }
+    equipment[slot] = item
+  }
+  return equipment
+}
+
+function restoreGearCrafts(
+  equipment: GearPlannerSetup['equipment'],
+  savedSetup: PersistedGearPlannerSetupV1,
+  { data }: RestoreCatalog,
+  report: ReportIssue
+) {
+  for (const { itemId, system, choiceId } of savedSetup.selectedCrafts ?? []) {
+    const slot = allGearPlannerSlots.find((s) => equipment[s]?.id === itemId)
+    const item = slot && equipment[slot]
+    const group = item && gearCraftGroups(item, data.crafting).find((g) => g.system === system)
+    if (slot && item && group) {
+      const updated = applyGearCraft(item, group, choiceId)
+      if (updated !== item) {
+        equipment[slot] = updated
+        continue
+      }
+    }
+    report('invalid-craft', `${system} selection is unavailable for its item`)
+  }
+}
+
+function restoreReforging(
+  setup: GearPlannerSetup,
+  savedReforging: PersistedGearPlannerReforgingV1,
+  { data }: RestoreCatalog,
+  report: ReportIssue
+) {
+  const item = findEquippedItem(setup, savedReforging.itemId)
+  if (!item) {
+    report('orphaned-reforging', 'reforging host item is not equipped')
+    return setup
+  }
+  for (const stage of gearPlannerReforgingStages) {
+    const selected = savedReforging.stages[stage]
+    if (!selected) continue
+    if (!gearPlannerReforgingRecipeForStage(item, stage, data.reforging)) {
+      report('missing-reforging-recipe', 'reforging recipe is unavailable')
+      continue
+    }
+    if (!isGearPlannerReforgingStageStateValid(item, stage, selected, data.reforging)) {
+      report('invalid-reforging-selection', 'reforging selection is invalid')
+      continue
+    }
+    const selection = setGearPlannerItemReforgingState(setup, item.id, stage, selected, data.reforging)
+    setup = { ...setup, ...selection }
+  }
+  return setup
+}
+
+function restoreAugment(
+  setup: GearPlannerSetup,
+  savedAugment: PersistedGearPlannerAugmentV1,
+  { augmentsById, data }: RestoreCatalog,
+  report: ReportIssue
+): GearPlannerSetup {
+  const item = findEquippedItem(setup, savedAugment.itemId)
+  if (!item) {
+    report('orphaned-augment', 'augment host item is not equipped')
+    return setup
+  }
+  const augment = augmentsById.get(savedAugment.augmentId)
+  if (!augment) {
+    report('missing-augment', 'selected augment is no longer available')
+    return setup
+  }
+  const augmentSlots = getEffectiveGearPlannerAugmentSlots(item, setup.reforging[item.id], data.reforging)
+  const augmentSlot = augmentSlots[savedAugment.slotIndex]
+  if (!augmentSlot || !isCompatibleGearPlannerAugment(augmentSlot, augment)) {
+    report('incompatible-augment', 'selected augment is no longer compatible')
+    return setup
+  }
+  const selection = setGearPlannerSlottedAugment(setup, item.id, savedAugment.slotIndex, augment, augmentSlots)
+  return { ...setup, ...selection }
+}
+
+function restoreCurse(
+  setup: GearPlannerSetup,
+  savedCurse: PersistedGearPlannerCurseV1,
+  { cursesById, data }: RestoreCatalog,
+  report: ReportIssue
+): GearPlannerSetup {
+  const item = findEquippedItem(setup, savedCurse.itemId)
+  if (!item) {
+    report('orphaned-curse', 'curse host item is not equipped')
+    return setup
+  }
+  if (!canApplyGearPlannerCurse(item)) {
+    report('ineligible-curse', 'curses cannot be applied to Quiver')
+    return setup
+  }
+  if (!cursesById.has(savedCurse.curseId)) {
+    report('missing-curse', 'selected curse is no longer available')
+    return setup
+  }
+  const selection = setGearPlannerSlottedCurse(setup, item.id, savedCurse.curseId, data.curses)
+  return { ...setup, ...selection }
+}
+
+function restoreEssenceConfiguration(
+  setup: GearPlannerSetup,
+  item: GearPlannerItem,
+  savedEssence: PersistedGearPlannerEssenceCraftingV1,
+  essenceData: EssenceCraftingData,
+  report: ReportIssue
+) {
+  const configuration: GearPlannerEssenceCraftingConfiguration = {
+    minimumLevel: savedEssence.minimumLevel,
+    material: isGearPlannerEssenceCraftingMaterial(savedEssence.material) ? savedEssence.material : '',
+    prefixId: null,
+    suffixId: null,
+    extraId: null
+  }
+  if (!isGearPlannerEssenceCraftingMaterial(savedEssence.material)) {
+    report('ineligible-essence', 'Essence Crafted material is invalid')
+  }
+  for (const [position, enhancementId] of [
+    ['prefix', savedEssence.prefixId],
+    ['suffix', savedEssence.suffixId],
+    ['extra', savedEssence.extraId]
+  ] as const) {
+    if (enhancementId === null) continue
+    if (!essenceData.indexes.enhancementById.has(enhancementId)) {
+      report('missing-essence-enhancement', 'Essence enhancement is unavailable')
+      continue
+    }
+    if (
+      !isGearPlannerEssenceAffixValid(
+        essenceData,
+        item,
+        configuration,
+        setup.slottedCurses[item.id],
+        position,
+        enhancementId
+      )
+    ) {
+      report('ineligible-essence', 'Essence enhancement is no longer eligible')
+      continue
+    }
+    configuration[`${position}Id`] = enhancementId
+  }
+  return configuration
+}
+
+function restoreEssence(
+  setup: GearPlannerSetup,
+  savedEssence: PersistedGearPlannerEssenceCraftingV1,
+  { essenceData }: RestoreCatalog,
+  report: ReportIssue
+) {
+  const item = findEquippedItem(setup, savedEssence.itemId)
+  if (!item) {
+    report('orphaned-essence', 'Essence Crafted host item is not equipped')
+    return setup
+  }
+  if (!isEssenceCraftedGearPlannerItem(item)) {
+    report('ineligible-essence', 'item is not Essence Crafted')
+    return setup
+  }
+  if (!essenceData) {
+    report('missing-essence-data', 'Essence Crafting data is unavailable')
+    return setup
+  }
+  if (
+    savedEssence.minimumLevel < essenceData.rules.supportedItemLevels.minimum ||
+    savedEssence.minimumLevel > essenceData.rules.supportedItemLevels.maximum
+  ) {
+    report('ineligible-essence', 'Essence Crafted minimum level is invalid')
+    return setup
+  }
+  const configuration = restoreEssenceConfiguration(setup, item, savedEssence, essenceData, report)
+  return { ...setup, essenceCrafting: { ...setup.essenceCrafting, [item.id]: configuration } }
+}
+
+function restoreFiligreeSlots(
+  setup: GearPlannerSetup,
+  savedUnlockedSlots: PersistedGearPlannerUnlockedFiligreeSlotsV1,
+  { itemsById }: RestoreCatalog,
+  report: ReportIssue
+): GearPlannerSetup {
+  const item = findEquippedItem(setup, savedUnlockedSlots.itemId) ?? itemsById.get(savedUnlockedSlots.itemId)
+  if (!item) {
+    report('orphaned-filigree', 'filigree host item is unavailable')
+    return setup
+  }
+  if (getGearPlannerMaxFiligreeSlots(item) === 0) return setup
+  const selection = configureHostFiligreeSlots(setup, item, savedUnlockedSlots.count)
+  return { ...setup, ...selection }
+}
+
+function restoreFiligree(
+  setup: GearPlannerSetup,
+  savedFiligree: PersistedGearPlannerFiligreeV1,
+  { itemsById, filigreesById }: RestoreCatalog,
+  report: ReportIssue
+): GearPlannerSetup {
+  const item = findEquippedItem(setup, savedFiligree.itemId) ?? itemsById.get(savedFiligree.itemId)
+  if (!item) {
+    report('orphaned-filigree', 'filigree host item is unavailable')
+    return setup
+  }
+  const filigree = filigreesById.get(savedFiligree.filigreeId)
+  if (!filigree) {
+    report('missing-filigree', 'selected filigree is no longer available')
+    return setup
+  }
+  if (savedFiligree.slotIndex >= getGearPlannerMaxFiligreeSlots(item)) {
+    report('invalid-filigree-slot', 'filigree slot is no longer available')
+    return setup
+  }
+  const selection = configureHostFiligree(setup, item, savedFiligree.slotIndex, filigree)
+  if (selection === setup) {
+    report(
+      'invalid-filigree-slot',
+      `could not slot ${filigree.name} on ${item.source.name}: the slot is locked, occupied, or this type is already slotted`
+    )
+    return setup
+  }
+  return { ...setup, ...selection }
+}
+
 export const restorePersistedGearPlannerState = (
   persisted: PersistedGearPlannerStateV1,
   data: GearPlannerData,
   essenceData?: EssenceCraftingData
 ): RestoredGearPlannerState => {
-  const itemsById = new Map(data.items.map((item) => [item.id, item]))
-  const augmentsById = new Map(data.augments.map((augment) => [gearPlannerAugmentIdentity(augment), augment]))
-  const cursesById = new Map(data.curses.map((curse) => [gearPlannerCurseIdentity(curse), curse]))
-  const filigreesById = new Map(data.filigrees.map((filigree) => [filigree.id, filigree]))
+  const catalog = restoreCatalog(data, essenceData)
   const issues: GearPlannerRestoreIssue[] = []
   const setups = persisted.setups.map((savedSetup) => {
-    const equipment = createEmptyGearPlannerEquipment()
-    for (const slot of allGearPlannerSlots) {
-      const itemId = savedSetup.equipment[slot]
-      if (itemId == null) continue
-      const item = itemsById.get(itemId) ?? resolveEssenceCraftedGearPlannerItem(itemId, slot)
-      if (!item || item.slot !== slot) {
-        issues.push({ kind: 'missing-item', message: `${savedSetup.name}: ${slot} item is no longer available` })
-        continue
-      }
-      const mainHand = equipment['Main Hand']
-      if (slot === 'Off Hand' && mainHand && !allowsOffHand(mainHand, item)) {
-        issues.push({
-          kind: 'incompatible-off-hand',
-          message: `${savedSetup.name}: ${item.source.name} was unequipped because it cannot be used with ${mainHand.source.name}.`
-        })
-        continue
-      }
-      equipment[slot] = item
+    const report: ReportIssue = (kind, message) => {
+      issues.push({ kind, message: `${savedSetup.name}: ${message}` })
     }
-    for (const { itemId, system, choiceId } of savedSetup.selectedCrafts ?? []) {
-      const slot = allGearPlannerSlots.find((s) => equipment[s]?.id === itemId)
-      const item = slot && equipment[slot]
-      const group = item && gearCraftGroups(item, data.crafting).find((g) => g.system === system)
-      if (slot && item && group) {
-        const updated = applyGearCraft(item, group, choiceId)
-        if (updated !== item) {
-          equipment[slot] = updated
-          continue
-        }
-      }
-      issues.push({
-        kind: 'invalid-craft',
-        message: `${savedSetup.name}: ${system} selection is unavailable for its item`
-      })
-    }
+    const equipment = restoreEquipment(savedSetup, catalog, report)
+    restoreGearCrafts(equipment, savedSetup, catalog, report)
     let setup: GearPlannerSetup = {
       ...createGearPlannerSetup(savedSetup.id, savedSetup.name),
       character: savedSetup.character ?? defaultCharacter(),
@@ -584,189 +806,13 @@ export const restorePersistedGearPlannerState = (
       maximumLevel: savedSetup.maximumLevel,
       equipment
     }
-    for (const savedReforging of savedSetup.selectedReforging ?? []) {
-      const item = findEquippedItem(setup, savedReforging.itemId)
-      if (!item) {
-        issues.push({ kind: 'orphaned-reforging', message: `${savedSetup.name}: reforging host item is not equipped` })
-        continue
-      }
-      for (const stage of gearPlannerReforgingStages) {
-        const selected = savedReforging.stages[stage]
-        if (!selected) continue
-        if (!gearPlannerReforgingRecipeForStage(item, stage, data.reforging)) {
-          issues.push({
-            kind: 'missing-reforging-recipe',
-            message: `${savedSetup.name}: reforging recipe is unavailable`
-          })
-          continue
-        }
-        if (!isGearPlannerReforgingStageStateValid(item, stage, selected, data.reforging)) {
-          issues.push({
-            kind: 'invalid-reforging-selection',
-            message: `${savedSetup.name}: reforging selection is invalid`
-          })
-          continue
-        }
-        const selection = setGearPlannerItemReforgingState(setup, item.id, stage, selected, data.reforging)
-        setup = selection === setup ? setup : { ...setup, ...selection }
-      }
-    }
-    for (const savedAugment of savedSetup.selectedAugments) {
-      const item = findEquippedItem(setup, savedAugment.itemId)
-      if (!item) {
-        issues.push({ kind: 'orphaned-augment', message: `${savedSetup.name}: augment host item is not equipped` })
-        continue
-      }
-      const augment = augmentsById.get(savedAugment.augmentId)
-      if (!augment) {
-        issues.push({ kind: 'missing-augment', message: `${savedSetup.name}: selected augment is no longer available` })
-        continue
-      }
-      const augmentSlots = getEffectiveGearPlannerAugmentSlots(item, setup.reforging[item.id], data.reforging)
-      const augmentSlot = augmentSlots[savedAugment.slotIndex]
-      if (!augmentSlot || !isCompatibleGearPlannerAugment(augmentSlot, augment)) {
-        issues.push({
-          kind: 'incompatible-augment',
-          message: `${savedSetup.name}: selected augment is no longer compatible`
-        })
-        continue
-      }
-      const selection = setGearPlannerSlottedAugment(setup, item.id, savedAugment.slotIndex, augment, augmentSlots)
-      setup = selection === setup ? setup : { ...setup, ...selection }
-    }
-    for (const savedCurse of savedSetup.selectedCurses ?? []) {
-      const item = findEquippedItem(setup, savedCurse.itemId)
-      if (!item) {
-        issues.push({ kind: 'orphaned-curse', message: `${savedSetup.name}: curse host item is not equipped` })
-        continue
-      }
-      if (!canApplyGearPlannerCurse(item)) {
-        issues.push({ kind: 'ineligible-curse', message: `${savedSetup.name}: curses cannot be applied to Quiver` })
-        continue
-      }
-      if (!cursesById.has(savedCurse.curseId)) {
-        issues.push({ kind: 'missing-curse', message: `${savedSetup.name}: selected curse is no longer available` })
-        continue
-      }
-      const selection = setGearPlannerSlottedCurse(setup, item.id, savedCurse.curseId, data.curses)
-      setup = selection === setup ? setup : { ...setup, ...selection }
-    }
-    for (const savedEssence of savedSetup.selectedEssenceCrafting ?? []) {
-      const item = findEquippedItem(setup, savedEssence.itemId)
-      if (!item) {
-        issues.push({
-          kind: 'orphaned-essence',
-          message: `${savedSetup.name}: Essence Crafted host item is not equipped`
-        })
-        continue
-      }
-      if (!isEssenceCraftedGearPlannerItem(item)) {
-        issues.push({ kind: 'ineligible-essence', message: `${savedSetup.name}: item is not Essence Crafted` })
-        continue
-      }
-      if (!essenceData) {
-        issues.push({
-          kind: 'missing-essence-data',
-          message: `${savedSetup.name}: Essence Crafting data is unavailable`
-        })
-        continue
-      }
-      if (
-        savedEssence.minimumLevel < essenceData.rules.supportedItemLevels.minimum ||
-        savedEssence.minimumLevel > essenceData.rules.supportedItemLevels.maximum
-      ) {
-        issues.push({
-          kind: 'ineligible-essence',
-          message: `${savedSetup.name}: Essence Crafted minimum level is invalid`
-        })
-        continue
-      }
-      const configuration: GearPlannerEssenceCraftingConfiguration = {
-        minimumLevel: savedEssence.minimumLevel,
-        material: isGearPlannerEssenceCraftingMaterial(savedEssence.material) ? savedEssence.material : '',
-        prefixId: null,
-        suffixId: null,
-        extraId: null
-      }
-      if (!isGearPlannerEssenceCraftingMaterial(savedEssence.material)) {
-        issues.push({ kind: 'ineligible-essence', message: `${savedSetup.name}: Essence Crafted material is invalid` })
-      }
-      for (const [position, enhancementId] of [
-        ['prefix', savedEssence.prefixId],
-        ['suffix', savedEssence.suffixId],
-        ['extra', savedEssence.extraId]
-      ] as const) {
-        if (enhancementId === null) continue
-        if (!essenceData.indexes.enhancementById.has(enhancementId)) {
-          issues.push({
-            kind: 'missing-essence-enhancement',
-            message: `${savedSetup.name}: Essence enhancement is unavailable`
-          })
-          continue
-        }
-        if (
-          !isGearPlannerEssenceAffixValid(
-            essenceData,
-            item,
-            configuration,
-            setup.slottedCurses[item.id],
-            position,
-            enhancementId
-          )
-        ) {
-          issues.push({
-            kind: 'ineligible-essence',
-            message: `${savedSetup.name}: Essence enhancement is no longer eligible`
-          })
-          continue
-        }
-        if (position === 'prefix') configuration.prefixId = enhancementId
-        else if (position === 'suffix') configuration.suffixId = enhancementId
-        else configuration.extraId = enhancementId
-      }
-      setup = { ...setup, essenceCrafting: { ...setup.essenceCrafting, [item.id]: configuration } }
-    }
-    for (const savedUnlockedSlots of savedSetup.unlockedFiligreeSlots ?? []) {
-      const item = findEquippedItem(setup, savedUnlockedSlots.itemId) ?? itemsById.get(savedUnlockedSlots.itemId)
-      if (!item) {
-        issues.push({ kind: 'orphaned-filigree', message: `${savedSetup.name}: filigree host item is unavailable` })
-        continue
-      }
-      if (getGearPlannerMaxFiligreeSlots(item) === 0) continue
-      const selection = configureHostFiligreeSlots(setup, item, savedUnlockedSlots.count)
-      setup = selection === setup ? setup : { ...setup, ...selection }
-    }
-    for (const savedFiligree of savedSetup.selectedFiligrees ?? []) {
-      const item = findEquippedItem(setup, savedFiligree.itemId) ?? itemsById.get(savedFiligree.itemId)
-      if (!item) {
-        issues.push({ kind: 'orphaned-filigree', message: `${savedSetup.name}: filigree host item is unavailable` })
-        continue
-      }
-      const filigree = filigreesById.get(savedFiligree.filigreeId)
-      if (!filigree) {
-        issues.push({
-          kind: 'missing-filigree',
-          message: `${savedSetup.name}: selected filigree is no longer available`
-        })
-        continue
-      }
-      if (savedFiligree.slotIndex >= getGearPlannerMaxFiligreeSlots(item)) {
-        issues.push({
-          kind: 'invalid-filigree-slot',
-          message: `${savedSetup.name}: filigree slot is no longer available`
-        })
-        continue
-      }
-      const selection = configureHostFiligree(setup, item, savedFiligree.slotIndex, filigree)
-      if (selection === setup) {
-        issues.push({
-          kind: 'invalid-filigree-slot',
-          message: `${savedSetup.name}: could not slot ${filigree.name} on ${item.source.name}: the slot is locked, occupied, or this type is already slotted`
-        })
-        continue
-      }
-      setup = { ...setup, ...selection }
-    }
+    for (const saved of savedSetup.selectedReforging ?? []) setup = restoreReforging(setup, saved, catalog, report)
+    for (const saved of savedSetup.selectedAugments) setup = restoreAugment(setup, saved, catalog, report)
+    for (const saved of savedSetup.selectedCurses ?? []) setup = restoreCurse(setup, saved, catalog, report)
+    for (const saved of savedSetup.selectedEssenceCrafting ?? []) setup = restoreEssence(setup, saved, catalog, report)
+    for (const saved of savedSetup.unlockedFiligreeSlots ?? [])
+      setup = restoreFiligreeSlots(setup, saved, catalog, report)
+    for (const saved of savedSetup.selectedFiligrees ?? []) setup = restoreFiligree(setup, saved, catalog, report)
     return setup
   })
   return { state: { setups, activeSetupId: persisted.activeSetupId }, issues }
@@ -807,6 +853,53 @@ function combineBrowserSetups(
   return { payload: { ...current, setups: [...current.setups, ...additions] }, added: additions.length }
 }
 
+function carryoverStatus(
+  saved: boolean,
+  added: number,
+  issues: readonly GearPlannerRestoreIssue[]
+): LoadedGearPlannerState['carryover'] {
+  if (!saved)
+    return { kind: 'error', message: 'Legacy setups opened for this session. The browser could not save the v2 copy.' }
+  if (added)
+    return {
+      kind: 'success',
+      message: `Carried over ${String(added)} legacy Gear Planner ${added === 1 ? 'setup' : 'setups'}.`
+    }
+  if (issues.length)
+    return { kind: 'success', message: 'Legacy setups were already present. Review the import details.' }
+  return undefined
+}
+
+function loadLegacyBrowserSave(
+  storage: GearPlannerStorage,
+  current: PersistedGearPlannerStateV1 | undefined,
+  loaded: LoadedGearPlannerState,
+  data: GearPlannerData,
+  essenceData?: EssenceCraftingData
+): LoadedGearPlannerState {
+  try {
+    const raw = storage.getItem('gearPlannerState')
+    if (raw === null) return loaded
+    const legacy = importGearPlannerState(raw, data, essenceData)
+    const { payload, added } = combineBrowserSetups(current, loaded, serializeGearPlannerState(legacy.state))
+    const restored = current ? restorePersistedGearPlannerState(payload, data, essenceData) : legacy
+    const issues = current ? [...legacy.issues, ...restored.issues] : legacy.issues
+    const saved = writeBrowserSave(storage, payload, true)
+    const carryover = carryoverStatus(saved, added, issues)
+    return { source: 'legacy', state: restored.state, issues, carryover, legacySaveImported: true }
+  } catch (error) {
+    return {
+      ...loaded,
+      source: 'invalid',
+      carryover: { kind: 'error', message: 'The legacy Gear Planner save could not be imported.' },
+      issues: [
+        ...loaded.issues,
+        { kind: 'invalid-state', message: error instanceof Error ? error.message : 'Invalid legacy save.' }
+      ]
+    }
+  }
+}
+
 export const loadGearPlannerState = (
   data: GearPlannerData,
   essenceDataOrStorage?: EssenceCraftingData | GearPlannerStorage,
@@ -844,40 +937,7 @@ export const loadGearPlannerState = (
       ]
     }
   }
-  try {
-    const raw = storage.getItem('gearPlannerState')
-    if (raw === null) return loaded
-    const legacy = importGearPlannerState(raw, data, essenceData)
-    const { payload, added } = combineBrowserSetups(current, loaded, serializeGearPlannerState(legacy.state))
-    const restored = current ? restorePersistedGearPlannerState(payload, data, essenceData) : legacy
-    const issues = current ? [...legacy.issues, ...restored.issues] : legacy.issues
-    const saved = writeBrowserSave(storage, payload, true)
-    let carryover: LoadedGearPlannerState['carryover']
-    if (!saved) {
-      carryover = {
-        kind: 'error',
-        message: 'Legacy setups opened for this session. The browser could not save the v2 copy.'
-      }
-    } else if (added || issues.length) {
-      carryover = {
-        kind: 'success',
-        message: added
-          ? `Carried over ${String(added)} legacy Gear Planner ${added === 1 ? 'setup' : 'setups'}.`
-          : 'Legacy setups were already present. Review the import details.'
-      }
-    }
-    return { source: 'legacy', state: restored.state, issues, carryover, legacySaveImported: true }
-  } catch (error) {
-    return {
-      ...loaded,
-      source: 'invalid',
-      carryover: { kind: 'error', message: 'The legacy Gear Planner save could not be imported.' },
-      issues: [
-        ...loaded.issues,
-        { kind: 'invalid-state', message: error instanceof Error ? error.message : 'Invalid legacy save.' }
-      ]
-    }
-  }
+  return loadLegacyBrowserSave(storage, current, loaded, data, essenceData)
 }
 
 function writeBrowserSave(

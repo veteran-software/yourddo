@@ -300,13 +300,15 @@ export const calculateCumulativeIngredients = (
       name,
       quantity: value.quantity,
       ...(value.ingredientType ? { ingredientType: value.ingredientType } : {}),
-      ...(value.foundIn.size > 0 ? { foundIn: [...value.foundIn].sort() } : {})
+      ...(value.foundIn.size > 0
+        ? { foundIn: [...value.foundIn].sort((left, right) => left.localeCompare(right)) }
+        : {})
     }))
     .sort((a, b) => a.name.localeCompare(b.name))
 }
 
 export const formatEffect = ({ name, modifier, bonus, notes }: DinosaurBoneEffect): string =>
-  `${name}${modifier !== undefined ? ` (${String(modifier)}${bonus ? ` ${bonus}` : ''})` : ''}${notes ? ` — ${notes}` : ''}`
+  `${name}${modifier !== undefined ? ' (' + String(modifier) + (bonus ? ' ' + bonus : '') + ')' : ''}${notes ? ' — ' + notes : ''}`
 
 export const validateUniqueNames = (records: readonly { name: string }[], label: string) => {
   const names = new Set<string>()

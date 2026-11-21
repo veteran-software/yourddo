@@ -52,8 +52,8 @@ const toSelectData = (enhancements: readonly EssenceEnhancement[]) =>
 
 const formatEffectDisplay = ({ effect, modifier, bonusType }: EssenceEffectDisplayData): string => {
   const formattedModifier = formatResolvedEffectModifier(modifier)
-  return `${effect.displayName}${formattedModifier ? `: ${formattedModifier}` : ''}${
-    bonusType ? ` (${bonusType.displayName})` : ''
+  return `${effect.displayName}${formattedModifier ? ': ' + formattedModifier : ''}${
+    bonusType ? ' (' + bonusType.displayName + ')' : ''
   }`
 }
 

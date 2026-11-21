@@ -26,7 +26,7 @@ import {
 import type { GearPlannerAugment, GearPlannerAugmentSlot, GearPlannerItem } from '../gearPlanner.types.ts'
 
 const effectLabel = ({ name, modifier, bonus }: GearPlannerAugment['effectsAdded'][number]): string =>
-  `${name}${modifier == null ? '' : ` ${String(modifier)}`}${bonus == null || bonus === '' ? '' : ` (${String(bonus)})`}`
+  `${name}${modifier == null ? '' : ' ' + String(modifier)}${bonus == null || bonus === '' ? '' : ' (' + String(bonus) + ')'}`
 
 const comparisonColors = { Upgrade: 'teal', Redundant: 'gray', Overpowered: 'orange' } as const
 

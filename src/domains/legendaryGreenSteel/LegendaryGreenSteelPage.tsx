@@ -463,7 +463,7 @@ const LegendaryGreenSteelPage = () => {
                           items: (options?.bonuses ?? [])
                             .filter((b) => b.group === group)
                             .map((b) => b.name)
-                            .sort()
+                            .sort((left, right) => left.localeCompare(right))
                         }))
                         .filter((group) => group.items.length)}
                       value={plan.bonusEffectName}

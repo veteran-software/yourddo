@@ -247,7 +247,11 @@ export const createGearPlannerReforgingData = (
     recipes.push(recipe)
     recipesByItemName.set(entry.item, recipes)
   }
-  return { recipesByItemName, tierRecordsByItemName, unsupportedStages: [...unsupportedStages].toSorted() }
+  return {
+    recipesByItemName,
+    tierRecordsByItemName,
+    unsupportedStages: [...unsupportedStages].toSorted((left, right) => left.localeCompare(right))
+  }
 }
 
 export const gearPlannerReforgingRecipesForItem = (
@@ -314,7 +318,7 @@ export const getGearPlannerEffectiveReforgingTier = (
   for (const stage of [...gearPlannerReforgingStages].reverse()) {
     const recipe = gearPlannerReforgingRecipeForStage(item, stage, data)
     const selected = state?.[stage]
-    if (!recipe || recipe.kind !== 'toggle' || selected?.kind !== 'active') continue
+    if (recipe?.kind !== 'toggle' || selected?.kind !== 'active') continue
     const tier = tierByStage[stage]
     const record = effectiveTierRecord(item, tier, data)
     if (record) return { stage, tier, record }

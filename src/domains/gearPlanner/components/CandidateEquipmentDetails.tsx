@@ -20,7 +20,13 @@ function craftingSources(item: GearPlannerItem) {
       )
     }
   }
-  return sources.size ? [...sources] : craftOnly ? ['Craft only'] : []
+  if (sources.size) {
+    return [...sources]
+  }
+  if (craftOnly) {
+    return ['Craft only']
+  }
+  return []
 }
 
 export default function CandidateEquipmentDetails({
@@ -28,12 +34,12 @@ export default function CandidateEquipmentDetails({
   material,
   sockets,
   setSources
-}: {
+}: Readonly<{
   item: GearPlannerItem
   material: string | undefined
   sockets: readonly GearPlannerAugmentSlot[]
   setSources: readonly string[]
-}) {
+}>) {
   return (
     <Group gap='xs' align='center' px='sm' py={6}>
       <ItemMaterial item={item} selectedMaterial={material} />

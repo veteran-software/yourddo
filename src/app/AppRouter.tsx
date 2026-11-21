@@ -19,7 +19,7 @@ import ViktraniumPage from '../domains/viktranium/ViktraniumPage.tsx'
 import NotFoundPage from '../shared/ui/NotFoundPage.tsx'
 import AppLayout from './AppLayout'
 
-function LegacyGearLink({ home = false }: { home?: boolean }) {
+function LegacyGearLink({ home = false }: Readonly<{ home?: boolean }>) {
   const { hash } = useLocation()
   // Older deployments put the Gear Planner route and its shared setup in the hash.
   if (hash.startsWith('#/gear-planner?') && new URLSearchParams(hash.slice('#/gear-planner?'.length)).has('gp')) {

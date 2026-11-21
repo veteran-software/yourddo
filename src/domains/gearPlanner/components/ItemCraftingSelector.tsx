@@ -7,11 +7,11 @@ export default function ItemCraftingSelector({
   item,
   data,
   onChange
-}: {
+}: Readonly<{
   item: GearPlannerItem
   data: GearCraftingData
   onChange: (system: string, choiceId: string | null) => void
-}) {
+}>) {
   const groups = gearCraftGroups(item, data)
   if (!groups.length) return null
   const selected = item.crafts ?? []

@@ -24,7 +24,7 @@ export default function FiligreeSetBrowser({
   openSlot,
   initialSet,
   initialQuery
-}: FiligreeSetBrowserProps) {
+}: Readonly<FiligreeSetBrowserProps>) {
   const [setName, setSetName] = useState<string | null>(initialSet ?? null)
   const [query, setQuery] = useState(initialQuery)
   const [equippedOnly, setEquippedOnly] = useState(false)
@@ -47,7 +47,10 @@ export default function FiligreeSetBrowser({
     [data, hostsById]
   )
   const setOptions = useMemo(
-    () => [...new Set([...data.filigreeSetDefinitionByName.keys(), ...members.flatMap((m) => m.sets)])].sort(),
+    () =>
+      [...new Set([...data.filigreeSetDefinitionByName.keys(), ...members.flatMap((m) => m.sets)])].sort(
+        (left, right) => left.localeCompare(right)
+      ),
     [members, data]
   )
   const search = query.trim().toLowerCase()

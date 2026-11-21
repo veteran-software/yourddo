@@ -212,7 +212,11 @@ const slotIcons = {
   Quiver: IconArcheryArrow
 } satisfies Record<GearPlannerSlot, typeof IconSword>
 
-function GearItemArt({ item, slot, size }: { item: GearPlannerItem; slot: GearPlannerItem['slot']; size: number }) {
+function GearItemArt({
+  item,
+  slot,
+  size
+}: Readonly<{ item: GearPlannerItem; slot: GearPlannerItem['slot']; size: number }>) {
   const SlotIcon = slotIcons[slot]
   return (
     <span className={classes.itemArt} style={{ width: size, height: size }} aria-hidden>
@@ -515,7 +519,7 @@ const ItemBrowser = ({
       finding
         ? [
             ...new Set(candidates.flatMap(({ effects }) => effects.map((effect) => normalizeBonusType(effect.bonus))))
-          ].sort()
+          ].sort((left, right) => left.localeCompare(right))
         : [],
     [finding, candidates]
   )

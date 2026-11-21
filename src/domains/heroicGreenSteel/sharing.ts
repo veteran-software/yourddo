@@ -203,7 +203,7 @@ export const resolveHgsBuildView = (
       selection.selectedTier2Id === null ? undefined : tier2.tier2ById.get(selection.selectedTier2Id)
     ],
     [
-      `Altar of Devastation${selection.selectedTier3Mode ? ` (${selection.selectedTier3Mode})` : ''}`,
+      `Altar of Devastation${selection.selectedTier3Mode ? ' (' + selection.selectedTier3Mode + ')' : ''}`,
       selection.selectedTier3Id === null
         ? undefined
         : selection.selectedTier3Mode === 'basic'

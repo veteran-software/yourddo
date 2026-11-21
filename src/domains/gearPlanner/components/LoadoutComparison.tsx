@@ -16,7 +16,7 @@ export default function LoadoutComparison({
   onClose,
   initialOwner = 'Character',
   duplicate
-}: {
+}: Readonly<{
   setups: readonly GearPlannerSetup[]
   active: GearPlannerSetup
   data: GearPlannerData
@@ -24,7 +24,7 @@ export default function LoadoutComparison({
   onClose: () => void
   initialOwner?: GearOwner
   duplicate?: () => void
-}) {
+}>) {
   const [from, setFrom] = useState(setups.find((s) => s.id !== active.id)?.id ?? active.id)
   const [to, setTo] = useState(active.id)
   const [owner, setOwner] = useState<GearOwner>(initialOwner)

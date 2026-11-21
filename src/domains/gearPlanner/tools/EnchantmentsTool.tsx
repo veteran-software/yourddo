@@ -37,26 +37,36 @@ const sourceLabel = (source: GearPlannerEffectSource) => {
 const reforgingStageLabel = (source: GearPlannerEffectSource) =>
   source.reforgingStage ? gearPlannerReforgingStageLabel[source.reforgingStage] : 'Reforging upgrade'
 
-const sourceProvenance = (source: GearPlannerEffectSource): string =>
-  source.category === 'crafting'
-    ? `${source.craftLabel ?? 'Item upgrade'} · ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
-    : source.category === 'set'
-      ? source.setCategory === 'filigree'
-        ? `${source.setName ?? 'Set bonus'} · ${String(source.setThreshold ?? 0)}-piece filigree set bonus`
-        : `${source.setName ?? 'Set bonus'} · ${String(source.setThreshold ?? 0)}-piece bonus`
-      : source.category === 'augment'
-        ? `${source.augmentName ?? 'Augment'} slotted in ${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'} / ${source.augmentSlotName ?? `Augment slot ${String((source.augmentSlotIndex ?? 0) + 1)}`}`
-        : source.category === 'reforging-tier'
-          ? `Reforging · ${reforgingStageLabel(source)} tier on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
-          : source.category === 'reforging-choice'
-            ? `Reforging · ${reforgingStageLabel(source)}: ${source.reforgingChoiceLabel ?? 'Selected choice'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
-            : source.category === 'curse'
-              ? `Deck of Many Curses · ${source.curseName ?? 'Curse'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
-              : source.category === 'essence'
-                ? `Essence Crafting · ${source.essenceAffixPosition ?? 'Affix'}: ${source.essenceEnhancementName ?? 'Enhancement'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
-                : source.category === 'filigree'
-                  ? `${source.filigreeName ?? 'Filigree'} on ${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'} / Filigree slot ${String((source.filigreeSlotIndex ?? 0) + 1)}`
-                  : `${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'}`
+const sourceProvenance = (source: GearPlannerEffectSource): string => {
+  if (source.category === 'crafting') {
+    return `${source.craftLabel ?? 'Item upgrade'} · ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
+  }
+  if (source.category === 'set') {
+    if (source.setCategory === 'filigree') {
+      return `${source.setName ?? 'Set bonus'} · ${String(source.setThreshold ?? 0)}-piece filigree set bonus`
+    }
+    return `${source.setName ?? 'Set bonus'} · ${String(source.setThreshold ?? 0)}-piece bonus`
+  }
+  if (source.category === 'augment') {
+    return `${source.augmentName ?? 'Augment'} slotted in ${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'} / ${source.augmentSlotName ?? 'Augment slot ' + String((source.augmentSlotIndex ?? 0) + 1)}`
+  }
+  if (source.category === 'reforging-tier') {
+    return `Reforging · ${reforgingStageLabel(source)} tier on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
+  }
+  if (source.category === 'reforging-choice') {
+    return `Reforging · ${reforgingStageLabel(source)}: ${source.reforgingChoiceLabel ?? 'Selected choice'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
+  }
+  if (source.category === 'curse') {
+    return `Deck of Many Curses · ${source.curseName ?? 'Curse'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
+  }
+  if (source.category === 'essence') {
+    return `Essence Crafting · ${source.essenceAffixPosition ?? 'Affix'}: ${source.essenceEnhancementName ?? 'Enhancement'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
+  }
+  if (source.category === 'filigree') {
+    return `${source.filigreeName ?? 'Filigree'} on ${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'} / Filigree slot ${String((source.filigreeSlotIndex ?? 0) + 1)}`
+  }
+  return `${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'}`
+}
 
 const groupValue = (group: GearPlannerEffectSummary['groups'][number]) =>
   group.effectiveValue === 0 ? group.effectiveDisplay || 'Active' : `+${String(group.effectiveValue)}`
@@ -145,7 +155,7 @@ const EnchantmentsTool = ({
         const choices = available.get(effect.normalizedName)
         const missing = [...(choices ?? [])]
           .filter((type) => !effect.groups.some((group) => group.bonusType === type))
-          .sort()
+          .sort((left, right) => left.localeCompare(right))
         const search = (bonusType?: string) => {
           onFind({ kind: 'effect', name: effect.name, bonusType })
         }

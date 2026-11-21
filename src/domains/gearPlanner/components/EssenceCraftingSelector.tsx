@@ -26,7 +26,7 @@ const effectLabel = (data: EssenceCraftingData, enhancement: EssenceEnhancement,
   if (resolved.status !== 'resolved') return enhancement.displayName
   const effects = resolved.effects.map(({ effect, modifier, bonusType }) => {
     const value = formatResolvedEffectModifier(modifier)
-    return `${effect.displayName}${value ? ` ${value}` : ''}${bonusType ? ` (${bonusType.displayName})` : ''}`
+    return `${effect.displayName}${value ? ' ' + value : ''}${bonusType ? ' (' + bonusType.displayName + ')' : ''}`
   })
   return effects.length ? `${enhancement.displayName} (${effects.join('; ')})` : enhancement.displayName
 }

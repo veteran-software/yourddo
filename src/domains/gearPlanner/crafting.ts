@@ -103,7 +103,7 @@ export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): 
         groups.push({
           system: 'gem-set-' + String(i + 1),
           label: pool.label,
-          choices: [...new Set(names)].sort().map(setChoice)
+          choices: [...new Set(names)].sort((left, right) => left.localeCompare(right)).map(setChoice)
         })
     })
   }

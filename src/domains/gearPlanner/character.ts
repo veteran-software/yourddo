@@ -144,7 +144,7 @@ const CLASS_PROFICIENCIES: Record<string, ClassProficiencies> = {
 export const classNames = Object.keys(CLASS_PROFICIENCIES)
 const weaponTypes = [
   ...new Set([...Object.values(WEAPON_TYPES).flat(), ...Object.values(CLASS_PROFICIENCIES).flatMap((p) => p.weapons)])
-].sort()
+].sort((left, right) => left.localeCompare(right))
 export interface CharacterSettings {
   classes: string[]
   weapons: string[]

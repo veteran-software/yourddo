@@ -57,7 +57,7 @@ export default function AugmentPicker({
   ownedOnly,
   onOwnedChange,
   nothingFoundMessage
-}: Props) {
+}: Readonly<Props>) {
   const [open, setOpen] = useState(false)
   const [color, setColor] = useState('')
   const [search, setSearch] = useState('')

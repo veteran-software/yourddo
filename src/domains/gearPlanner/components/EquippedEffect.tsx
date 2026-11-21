@@ -5,11 +5,11 @@ export default function EquippedEffect({
   id,
   conflicts,
   label
-}: {
+}: Readonly<{
   id: string
   conflicts: GearPlannerEffectConflictResolution
   label: string
-}) {
+}>) {
   const match = conflicts.bySourceId[id]
   if (!match) return <>{label}</>
   const slots = (effective: boolean) =>
@@ -19,7 +19,7 @@ export default function EquippedEffect({
           .filter((entry) => entry.id !== id && entry.isEffective === effective)
           .map((entry) =>
             entry.category === 'augment'
-              ? `${entry.slot ?? 'Equipment'} / ${entry.augmentSlotName ?? `Augment slot ${String((entry.augmentSlotIndex ?? 0) + 1)}`}`
+              ? `${entry.slot ?? 'Equipment'} / ${entry.augmentSlotName ?? 'Augment slot ' + String((entry.augmentSlotIndex ?? 0) + 1)}`
               : entry.slot
           )
       )

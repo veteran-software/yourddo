@@ -41,7 +41,10 @@ function statValue(effect: GearPlannerEffectSummary): Value {
   )
   const [unit] = units
   if (units.size === 1 && unit != null) return { text: number.format(effect.total) + unit, amount: effect.total, unit }
-  return { text: [...new Set(modifiers.filter(Boolean))].sort().join(' · ') || 'Present' }
+  return {
+    text:
+      [...new Set(modifiers.filter(Boolean))].sort((left, right) => left.localeCompare(right)).join(' · ') || 'Present'
+  }
 }
 
 export function loadoutSnapshot(

@@ -25,7 +25,7 @@ import {
 
 import { importTroveV5 } from '../troveV5'
 import { TroveContext, useTroveInventory } from '../troveContext'
-export function TroveProvider({ children }: { children: ReactNode }) {
+export function TroveProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [{ inventory, importedAt }, setSnapshot] = useState<{ inventory: TroveInventory; importedAt?: string }>(() => {
     const saved = readTroveInventory()
     return { inventory: saved, importedAt: saved.importedAt }
@@ -48,11 +48,11 @@ export function TroveOwnership({
   name,
   filigree = false,
   inOption = false
-}: {
+}: Readonly<{
   name: string
   filigree?: boolean
   inOption?: boolean
-}) {
+}>) {
   const { inventory } = useTroveInventory()
   const owners = getTroveOwners(inventory, name, filigree)
   if (!owners) return null

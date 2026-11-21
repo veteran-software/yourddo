@@ -84,7 +84,7 @@ export function farmingList(setup: GearPlannerSetup, inventory: TroveInventory, 
       const available = stock.map((h) => {
         const shared = /^Shared (?:Crafting )?Bank(?: ·|$)/.test(h.location)
         if (!target) return { h, status: 'Owned' as const }
-        if (h.character && h.character.toLowerCase() === target) return { h, status: 'Owned' as const }
+        if (h.character?.toLowerCase() === target) return { h, status: 'Owned' as const }
         if (h.binding === 'character' && h.character) return { h, status: 'bound' as const }
         if (shared || (h.character && h.binding === 'transferable')) return { h, status: 'Collect' as const }
         return { h, status: 'Check' as const }

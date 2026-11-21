@@ -89,9 +89,15 @@ export function convertLegacyGearSave(value: unknown, data: GearPlannerData, ess
       const values = raw[legacyKey]
       if (!Array.isArray(values)) continue
       const options = proficiencyOptions[key]
-      const normalized = values.map((v: unknown) =>
-        v === 'Longsword' ? 'Long Sword' : v === 'Handaxe' ? 'Hand Axe' : v
-      )
+      const normalized = values.map((v: unknown) => {
+        if (v === 'Longsword') {
+          return 'Long Sword'
+        }
+        if (v === 'Handaxe') {
+          return 'Hand Axe'
+        }
+        return v
+      })
       character[key] = [
         ...new Set(normalized.filter((v: unknown): v is string => typeof v === 'string' && options.includes(v)))
       ]

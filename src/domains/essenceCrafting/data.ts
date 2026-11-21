@@ -63,7 +63,7 @@ const assertUnique = <T>(
   const seen = new Set<string | number>()
   for (const value of values) {
     const id = identity(value)
-    if (seen.has(id)) invalid(`duplicate ${label}${owner ? ` for ${owner}` : ''}: ${String(id)}`)
+    if (seen.has(id)) invalid(`duplicate ${label}${owner ? ' for ' + owner : ''}: ${String(id)}`)
     seen.add(id)
   }
 }
@@ -103,7 +103,7 @@ const parseRequirements = (value: unknown, owner: string): EssenceRecipeRequirem
 }
 
 const parseDie = (value: unknown, owner: string): string => {
-  if (!nonEmptyString(value) || !/^d[1-9][0-9]*$/u.test(value)) invalid(`invalid die for ${owner}`)
+  if (!nonEmptyString(value) || !/^d[1-9]\d*$/u.test(value)) invalid(`invalid die for ${owner}`)
   return value as string
 }
 

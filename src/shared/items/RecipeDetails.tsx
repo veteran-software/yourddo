@@ -11,12 +11,12 @@ export default function RecipeDetails<Key extends string | number>({
   count,
   lookup,
   name
-}: {
+}: Readonly<{
   recipeKey: Key
   name: string
   count: number
   lookup: (key: Key) => readonly Part<Key>[] | undefined
-}) {
+}>) {
   const [opened, setOpened] = useState(false)
   const parts = lookup(recipeKey)
   if (!parts?.length) return null

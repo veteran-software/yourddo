@@ -77,7 +77,13 @@ export function troveOwner(character: unknown, location: string, details: readon
   const where = [container, ...details].filter(Boolean).join(' · ')
   if (shared) return where
   const name = typeof character === 'string' ? character.trim() : ''
-  return name && !/^[-—–]$/.test(name) ? (where ? name + ' (' + where + ')' : name) : where
+  if (name && !/^[-—–]$/.test(name)) {
+    if (where) {
+      return name + ' (' + where + ')'
+    }
+    return name
+  }
+  return where
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

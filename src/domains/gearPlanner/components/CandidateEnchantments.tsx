@@ -11,7 +11,7 @@ interface Props {
   bonusType: string | null
 }
 
-export default function CandidateEnchantments({ item, comparison, query, bonusType, exact }: Props) {
+export default function CandidateEnchantments({ item, comparison, query, bonusType, exact }: Readonly<Props>) {
   const effects = item.source.enchantments
   if (!effects?.length) return null
   const groups = Map.groupBy(effects, (effect) => String(effect.bonus ?? '').trim())

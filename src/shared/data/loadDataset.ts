@@ -70,7 +70,7 @@ const parseLatestRelease = async (response: Response): Promise<LatestRelease> =>
     typeof latest.dataVersion !== 'number' ||
     typeof latest.baseUrl !== 'string'
   ) {
-    throw new Error('Invalid latest release response: invalid release metadata')
+    throw new TypeError('Invalid latest release response: invalid release metadata')
   }
 
   return latest as unknown as LatestRelease
@@ -90,7 +90,7 @@ const parseManifest = async (response: Response): Promise<DataManifest> => {
   }
 
   if (typeof manifest.gameVersion !== 'string' || typeof manifest.dataVersion !== 'number') {
-    throw new Error('Invalid data manifest response: invalid release metadata')
+    throw new TypeError('Invalid data manifest response: invalid release metadata')
   }
 
   if (!Array.isArray(manifest.generatedFiles) || !manifest.generatedFiles.every(isGeneratedFile)) {

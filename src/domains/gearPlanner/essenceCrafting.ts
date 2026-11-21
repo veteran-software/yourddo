@@ -216,12 +216,15 @@ export const hasGearPlannerEssenceExtraSlot = (configuration: GearPlannerEssence
 const affixSelection = (
   configuration: GearPlannerEssenceCraftingConfiguration,
   position: EssenceAffixPosition
-): string | null =>
-  position === 'prefix'
-    ? configuration.prefixId
-    : position === 'suffix'
-      ? configuration.suffixId
-      : configuration.extraId
+): string | null => {
+  if (position === 'prefix') {
+    return configuration.prefixId
+  }
+  if (position === 'suffix') {
+    return configuration.suffixId
+  }
+  return configuration.extraId
+}
 
 export const getGearPlannerEssenceEnhancementChoices = (
   data: EssenceCraftingData,

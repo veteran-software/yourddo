@@ -22,11 +22,11 @@ export function ServerStatusShortcut({
   live,
   onOpen,
   className
-}: {
+}: Readonly<{
   live: Feeds['live']
   onOpen: () => void
   className: string
-}) {
+}>) {
   const { count, label, state } = liveSummary(live)
   const description = `Open server status · ${count} ${label}`
   return (
@@ -63,7 +63,7 @@ function WorldRow({
   )
 }
 
-export default function ServerStatus({ live, preview }: Feeds) {
+export default function ServerStatus({ live, preview }: Readonly<Feeds>) {
   const [legacyOpen, setLegacyOpen] = useState(false)
   const legacy = useLegacyStatus(live.legacy, legacyOpen && !live.failed)
   const { count, label, state } = liveSummary(live)

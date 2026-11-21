@@ -67,7 +67,15 @@ const isFiniteNumber = (value: unknown): value is number => typeof value === 'nu
 
 const isIntegerNumber = (value: unknown): value is number => typeof value === 'number' && Number.isInteger(value)
 
-const compareStableIds = (left: string, right: string): number => (left < right ? -1 : left > right ? 1 : 0)
+const compareStableIds = (left: string, right: string): number => {
+  if (left < right) {
+    return -1
+  }
+  if (left > right) {
+    return 1
+  }
+  return 0
+}
 
 const readString = (value: unknown): string => (typeof value === 'string' ? value : '')
 

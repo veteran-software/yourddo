@@ -3,7 +3,7 @@ import type { Board, Config } from './types.ts'
 export const makeRectConfig = (rows: number, cols: number): Config => ({
   rows,
   cols,
-  mask: Array.from({ length: rows }, () => Array(cols).fill(true) as boolean[]),
+  mask: Array.from({ length: rows }, () => new Array<boolean>(cols).fill(true)),
   wrap: false
 })
 
@@ -63,7 +63,7 @@ export const forwardEliminate = (matrix: boolean[][]): number[] => {
 
 export const backSubstitute = (matrix: boolean[][], pivots: number[]): boolean[] => {
   const size = matrix.length
-  const solution = Array(size).fill(false) as boolean[]
+  const solution = new Array<boolean>(size).fill(false)
 
   for (let pivot = pivots.length - 1; pivot >= 0; pivot--) {
     const column = pivots[pivot]
@@ -80,7 +80,7 @@ export const backSubstitute = (matrix: boolean[][], pivots: number[]): boolean[]
 }
 
 export const initBoard = (config: Config): Board =>
-  Array.from({ length: config.rows }, () => Array(config.cols).fill(0) as number[])
+  Array.from({ length: config.rows }, () => new Array<number>(config.cols).fill(0))
 
 export const applyPlusToggle = (board: Board, config: Config, row: number, column: number): void => {
   const offsets: readonly [number, number][] = [
@@ -213,7 +213,7 @@ export const buildRhs = (board: Board, indexOf: number[][]): boolean[] => {
 
 export const buildAugmentedMatrix = (neighbors: number[][], rhs: boolean[]): boolean[][] => {
   const size = neighbors.length
-  const matrix: boolean[][] = Array.from({ length: size }, () => Array(size + 1).fill(false) as boolean[])
+  const matrix: boolean[][] = Array.from({ length: size }, () => new Array<boolean>(size + 1).fill(false))
 
   neighbors.forEach((neighborIndexes, index) => {
     neighborIndexes.forEach((neighbor) => (matrix[index][neighbor] = true))

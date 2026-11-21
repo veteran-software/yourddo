@@ -102,7 +102,7 @@ const decodePermalinkName = (value: string, field: string): string | null => {
   if (value === '-') return null
   try {
     const decoded = decodeURIComponent(value)
-    if (!decoded || permalinkName(decoded) !== value) throw new Error()
+    if (!decoded || permalinkName(decoded) !== value) throw new Error('Invalid permalink name')
     return decoded
   } catch {
     throw new InvalidLgsBuildError(`Invalid permalink ${field}`)

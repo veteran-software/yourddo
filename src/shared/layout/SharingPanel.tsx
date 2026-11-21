@@ -31,7 +31,7 @@ export default function SharingPanel({
   downloads,
   jsonExport,
   jsonImport
-}: SharingPanelProps) {
+}: Readonly<SharingPanelProps>) {
   const [status, setStatus] = useState<{
     section: 'share' | 'export' | 'import'
     error?: boolean

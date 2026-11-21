@@ -5,7 +5,7 @@ import { type GearPlannerEffectSource, previewPotentialEffectConflict } from '..
 import type { GearPlannerCurse, GearPlannerEffect, GearPlannerItem } from '../gearPlanner.types.ts'
 
 const effectLabel = (effect: GearPlannerEffect): string =>
-  `${effect.name}${effect.modifier == null ? '' : ` ${String(effect.modifier)}`}${effect.bonus ? ` (${String(effect.bonus)})` : ''}`
+  `${effect.name}${effect.modifier == null ? '' : ' ' + String(effect.modifier)}${effect.bonus ? ' (' + String(effect.bonus) + ')' : ''}`
 
 interface CurseSelectorProps {
   item: GearPlannerItem

@@ -6,7 +6,7 @@ export type ExportFormat = 'forum' | 'discord'
 const attributionUrl = 'https://yourddo.com/viktranium-experiment'
 
 const plain = (value: string): string => value.replace(/[\r\n]+/g, ' ').trim()
-const bb = (value: string): string => plain(value).replace(/\[/g, '&#91;').replace(/\]/g, '&#93;')
+const bb = (value: string): string => plain(value).replaceAll('[', '&#91;').replaceAll(']', '&#93;')
 const md = (value: string): string => plain(value).replace(/([\\`*_{}[\]()#+.!|>-])/g, '\\$1')
 
 const ingredientLines = (ingredients: IngredientCalculation, format: ExportFormat): string[] => {
@@ -43,7 +43,7 @@ export const formatViktraniumExport = (
     }
     lines.push(`- ${escape(slot.label)}: ${escape(augment.name)}`)
     augment.effects.forEach((effect) => lines.push(`  - ${escape(formatEffect(effect))}`))
-    augment.recipes.forEach((recipe) => lines.push(`  - ${escape(`Crafted at ${recipe.device}`)}`))
+    augment.recipes.forEach((recipe) => lines.push(`  - ${escape('Crafted at ' + recipe.device)}`))
   })
   lines.push('', heading('Ingredients'), ...ingredientLines(ingredients, format))
   const warnings = [...finished.warnings, ...finished.incompleteRecipeWarnings, ...ingredients.warnings]

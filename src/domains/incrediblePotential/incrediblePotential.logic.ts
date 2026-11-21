@@ -193,8 +193,8 @@ export const buildCraftingPlan = (
     }
   }
 
-  const shardName = upgrade.ingredients.find((name) => name.endsWith(' Shard of Great Power'))
-  if (!shardName) throw new MissingUpgradeIngredientError(upgrade.name)
+  const hasShard = upgrade.ingredients.some((name) => name.endsWith(' Shard of Great Power'))
+  if (!hasShard) throw new MissingUpgradeIngredientError(upgrade.name)
 
   for (const requirement of upgrade.ingredients) {
     expand(requirement, quantityFor(requirement), [], upgrade.name)

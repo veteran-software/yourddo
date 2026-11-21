@@ -397,7 +397,10 @@ export const previewPotentialEffectConflict = (
   )
   if (!matches.length) return { isConflict: false, currentMax: 0, isRedundant: false }
 
-  const strongest = matches.reduce((best, source) => (source.comparisonValue > best.comparisonValue ? source : best))
+  const strongest = matches.reduce(
+    (best, source) => (source.comparisonValue > best.comparisonValue ? source : best),
+    matches[0]
+  )
   const currentMax = strongest.comparisonValue
   const candidateValue = parseEffectModifier(effect.modifier)
   return {

@@ -34,7 +34,7 @@ const COLUMNS = 5
 type EditAction = 'toggle' | 'remove'
 type SolverStatus = 'idle' | 'random' | 'solution' | 'complete' | 'no-solution'
 
-const createMask = (): boolean[][] => Array.from({ length: ROWS }, () => Array(COLUMNS).fill(true) as boolean[])
+const createMask = (): boolean[][] => Array.from({ length: ROWS }, () => new Array<boolean>(COLUMNS).fill(true))
 
 const countPresses = (presses: number[][]): number => presses.flat().filter((press) => press === 1).length
 

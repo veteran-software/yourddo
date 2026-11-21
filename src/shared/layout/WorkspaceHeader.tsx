@@ -10,7 +10,12 @@ interface WorkspaceHeaderProps {
   actions?: ReactNode
 }
 
-export default function WorkspaceHeader({ title, icon: CrestIcon, description, actions }: WorkspaceHeaderProps) {
+export default function WorkspaceHeader({
+  title,
+  icon: CrestIcon,
+  description,
+  actions
+}: Readonly<WorkspaceHeaderProps>) {
   return (
     <header className={styles.header}>
       <div className={styles.identity}>

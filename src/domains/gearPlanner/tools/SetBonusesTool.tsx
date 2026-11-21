@@ -2,12 +2,15 @@ import { Alert, Badge, Button, Divider, Group, Paper, Stack, Text, Title } from 
 import type { GearFindTarget } from '../finding'
 import { formatGearPlannerSetEffect, type GearPlannerSetMembership, type GearPlannerSetState } from '../sets.ts'
 
-const membershipLabel = (membership: GearPlannerSetMembership): string =>
-  membership.category === 'augment'
-    ? `${membership.slot}: ${membership.augmentName ?? 'Augment'} on ${membership.itemName}`
-    : membership.category === 'filigree'
-      ? `${membership.slot}: ${membership.filigreeName ?? 'Filigree'} on ${membership.itemName} / Filigree slot ${String((membership.filigreeSlotIndex ?? 0) + 1)}`
-      : `${membership.slot}: ${membership.itemName}`
+const membershipLabel = (membership: GearPlannerSetMembership): string => {
+  if (membership.category === 'augment') {
+    return `${membership.slot}: ${membership.augmentName ?? 'Augment'} on ${membership.itemName}`
+  }
+  if (membership.category === 'filigree') {
+    return `${membership.slot}: ${membership.filigreeName ?? 'Filigree'} on ${membership.itemName} / Filigree slot ${String((membership.filigreeSlotIndex ?? 0) + 1)}`
+  }
+  return `${membership.slot}: ${membership.itemName}`
+}
 
 const contributionLabel = (count: number): string =>
   `${String(count)} ${count === 1 ? 'contribution' : 'contributions'}`

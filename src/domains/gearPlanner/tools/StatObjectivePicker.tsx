@@ -14,13 +14,13 @@ export default function StatObjectivePicker({
   value,
   bonus,
   onSelect
-}: {
+}: Readonly<{
   stats: ReadonlyMap<string, ReadonlySet<string>>
   equipped: ReadonlySet<string>
   value: string | null
   bonus?: string
   onSelect: (name: string, bonus?: string) => void
-}) {
+}>) {
   const [open, setOpen] = useState(false)
   const [category, setCategory] = useState('')
   const [query, setQuery] = useState('')
@@ -57,7 +57,7 @@ export default function StatObjectivePicker({
     }
   }
   // Keep the spell groups together before the individually selectable stats.
-  const rows = [...families.keys()].sort().concat(statsRows)
+  const rows = [...families.keys()].sort((left, right) => left.localeCompare(right)).concat(statsRows)
   const members = (families.get(family) ?? []).toSorted((a, b) => a.subtype.localeCompare(b.subtype))
   function pick(name: string, type?: string) {
     onSelect(name, type)
@@ -127,19 +127,21 @@ export default function StatObjectivePicker({
               <>
                 <Text fw={700}>{objectiveLabel(chosen)}</Text>
                 <div className={css.objectiveGrid}>
-                  {[undefined, ...[...(stats.get(chosen) ?? [])].sort()].map((type) => (
-                    <UnstyledButton
-                      className={css.objectiveRow}
-                      key={type ?? 'all'}
-                      aria-pressed={value === chosen && bonus === type}
-                      onClick={() => {
-                        pick(chosen, type)
-                      }}
-                    >
-                      <span>{type ? bonusLabel(type) : 'All bonus types'}</span>
-                      {value === chosen && bonus === type && <IconCheck size={14} aria-hidden />}
-                    </UnstyledButton>
-                  ))}
+                  {[undefined, ...[...(stats.get(chosen) ?? [])].sort((left, right) => left.localeCompare(right))].map(
+                    (type) => (
+                      <UnstyledButton
+                        className={css.objectiveRow}
+                        key={type ?? 'all'}
+                        aria-pressed={value === chosen && bonus === type}
+                        onClick={() => {
+                          pick(chosen, type)
+                        }}
+                      >
+                        <span>{type ? bonusLabel(type) : 'All bonus types'}</span>
+                        {value === chosen && bonus === type && <IconCheck size={14} aria-hidden />}
+                      </UnstyledButton>
+                    )
+                  )}
                 </div>
               </>
             ) : family ? (

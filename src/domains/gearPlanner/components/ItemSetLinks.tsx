@@ -1,6 +1,9 @@
 import { Anchor, Group } from '@mantine/core'
 
-export default function ItemSetLinks({ names, onOpen }: { names: readonly string[]; onOpen: (name: string) => void }) {
+export default function ItemSetLinks({
+  names,
+  onOpen
+}: Readonly<{ names: readonly string[]; onOpen: (name: string) => void }>) {
   if (!names.length) return null
   return (
     <Group gap='xs'>

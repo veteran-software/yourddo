@@ -55,7 +55,13 @@ interface Props {
   onRequestReset: () => void
 }
 
-export default function EssencePlanWorkspace({ data, plan, onAction, onRequestDeactivate, onRequestReset }: Props) {
+export default function EssencePlanWorkspace({
+  data,
+  plan,
+  onAction,
+  onRequestDeactivate,
+  onRequestReset
+}: Readonly<Props>) {
   const [selected, setSelected] = useState<EquipmentSlotId>()
   const [showDetail, setShowDetail] = useState(false)
   const detailHeading = useRef<HTMLHeadingElement>(null)

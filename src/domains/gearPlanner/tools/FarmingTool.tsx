@@ -14,7 +14,7 @@ const sections = [
   { status: 'Check', title: 'Verify ownership', icon: IconHelpCircle },
   { status: 'Owned', title: 'In Trove', icon: IconCheck }
 ] as const
-export default function FarmingTool({ setup }: { setup: GearPlannerSetup }) {
+export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetup }>) {
   const { inventory } = useTroveInventory()
   const [character, setCharacter] = useLocalStorage({ key: 'yourddo:farming-character:' + setup.id, defaultValue: '' })
   const [checked, setChecked] = useLocalStorage<string[]>({
