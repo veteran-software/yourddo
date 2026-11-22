@@ -1,5 +1,6 @@
 import {
   AppShell,
+  Badge,
   Button,
   Card,
   Combobox,
@@ -112,6 +113,7 @@ export const theme = createTheme({
         }
       })
     }),
+    Badge: Badge.extend({ styles: { root: { fontSize: 'calc(var(--badge-fz) + 0.125rem)' } } }),
     Button: Button.extend({ defaultProps: { fw: 600 } }),
     NavLink: NavLink.extend({
       classNames: { root: classes.navLink },
