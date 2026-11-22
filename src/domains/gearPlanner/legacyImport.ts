@@ -2,7 +2,16 @@ import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.typ
 import { gearPlannerAugmentIdentity } from './augments'
 import { gearCraftGroups } from './crafting'
 import { getEssenceCraftedGearPlannerItems } from './essenceCrafting'
-import { classNames, changeClasses, defaultCharacter, proficiencyOptions, slotOwner } from './character'
+import {
+  catalogWeaponTypes,
+  normalizeSavedWeaponFilters,
+  savedWeaponFilterOptions,
+  classNames,
+  changeClasses,
+  defaultCharacter,
+  proficiencyOptions,
+  slotOwner
+} from './character'
 import {
   allGearPlannerSlots,
   type GearPlannerData,
@@ -60,6 +69,7 @@ export function convertLegacyGearSave(value: unknown, data: GearPlannerData, ess
   if (object(value) && value.version !== undefined && value.version !== 1)
     throw new Error('Unsupported legacy Gear Planner save version.')
   const issues: GearPlannerRestoreIssue[] = []
+  const availableWeapons = catalogWeaponTypes(data)
   const converted = setups.map((raw: unknown, index: number) => {
     if (!object(raw) || !object(raw.slots) || 'equipment' in raw) throw new Error('Invalid legacy Gear Planner setup.')
     const name = typeof raw.name === 'string' ? raw.name : `Imported Setup ${String(index + 1)}`
@@ -76,7 +86,7 @@ export function convertLegacyGearSave(value: unknown, data: GearPlannerData, ess
     const selectedCrafts: List<'selectedCrafts'> = [],
       selectedReforging: List<'selectedReforging'> = [],
       selectedEssenceCrafting: List<'selectedEssenceCrafting'> = []
-    const character = restoreCharacter(raw, warn)
+    const character = restoreCharacter(raw, warn, availableWeapons)
     warnUnknownSlots(raw, warn)
     for (const slot of allGearPlannerSlots) {
       equipment[slot] = null
@@ -139,7 +149,7 @@ function warnUnknownSlots(raw: Row, warn: (message: string) => void) {
   }
 }
 
-function restoreCharacter(raw: Row, warn: (message: string) => void) {
+function restoreCharacter(raw: Row, warn: (message: string) => void, availableWeapons: readonly string[]) {
   const classes = Array.isArray(raw.classes)
     ? [
         ...new Set(raw.classes.filter((c: unknown): c is string => typeof c === 'string' && classNames.includes(c)))
@@ -150,7 +160,7 @@ function restoreCharacter(raw: Row, warn: (message: string) => void) {
     raw.classes.some((c: unknown) => c != null && (typeof c !== 'string' || !classes.includes(c)))
   )
     warn('Unrecognized or excess character classes were skipped.')
-  const character = changeClasses(defaultCharacter(), classes)
+  const character = changeClasses(defaultCharacter(), classes, availableWeapons)
   for (const [key, legacyKey] of [
     ['weapons', 'weaponFilters'],
     ['armor', 'armorFilters'],
@@ -158,16 +168,8 @@ function restoreCharacter(raw: Row, warn: (message: string) => void) {
   ] as const) {
     const values = raw[legacyKey]
     if (!Array.isArray(values)) continue
-    const options = proficiencyOptions[key]
-    const normalized = values.map((v: unknown) => {
-      if (v === 'Longsword') {
-        return 'Long Sword'
-      }
-      if (v === 'Handaxe') {
-        return 'Hand Axe'
-      }
-      return v
-    })
+    const options = key === 'weapons' ? savedWeaponFilterOptions(availableWeapons) : proficiencyOptions[key]
+    const normalized = key === 'weapons' ? normalizeSavedWeaponFilters(values, availableWeapons) : values
     character[key] = [
       ...new Set(normalized.filter((v: unknown): v is string => typeof v === 'string' && options.includes(v)))
     ]

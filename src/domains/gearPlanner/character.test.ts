@@ -8,6 +8,44 @@ import { gearPlannerPermalink, openGearPlannerLink } from './sharing'
 import { activeGearPlannerSetup, createDefaultGearPlannerState, updateSetupCharacter } from './setups'
 
 describe('Gear Planner character setup', () => {
+  it('keeps class grants distinct from the weapon types offered by the catalog', () => {
+    const types = ['Club', 'Heavy Mace', 'Light Hammer', 'Handwraps', 'Hand Axe', 'Long Sword']
+    const weapons = (name: string, available = types) => changeClasses(defaultCharacter(), [name], available).weapons
+    expect(weapons('Wizard')).toEqual(['Club'])
+    expect(weapons('Druid')).toEqual(['Club'])
+    expect(weapons('Bard')).toContain('Long Sword')
+    expect(weapons('Monk')).toEqual(expect.arrayContaining(['Hand Axe', 'Handwraps']))
+    for (const name of ['Druid', 'Wizard', 'Monk']) expect(weapons(name, [...types, 'Unarmed'])).toContain('Unarmed')
+  })
+
+  it.each([
+    [['Club', 'Scepter'], ['Club']],
+    [['Scepter'], ['Scepter']],
+    [['Unarmed'], ['Unarmed']],
+    [
+      ['Longsword', 'Long Sword', 'Handaxe'],
+      ['Long Sword', 'Hand Axe']
+    ]
+  ])('restores weapon filters %j through legacy and current exports', (weapons, expected) => {
+    const data = normalizeGearPlannerSources([], [])
+    const legacy = importGearPlannerState(
+      JSON.stringify([{ name: 'Saved setup', slots: {}, weaponFilters: weapons }]),
+      data
+    )
+    const payload = createGearPlannerExport(legacy.state)
+    const setup = payload.setups[0]
+    const current = importGearPlannerState(
+      JSON.stringify({ ...payload, setups: [{ ...setup, character: { ...setup.character, weapons } }] }),
+      data
+    )
+    for (const restored of [legacy, current]) {
+      expect(activeGearPlannerSetup(restored.state)).toMatchObject({
+        name: 'Saved setup',
+        character: { weapons: expected }
+      })
+    }
+  })
+
   it('combines multiclass proficiencies, removes dropped class grants, and keeps manual extras', () => {
     const start = changeClasses(defaultCharacter(), ['Druid', 'Artificer'])
     expect(start.weapons).toEqual(expect.arrayContaining(['Scimitar', 'Repeating Light Crossbow']))

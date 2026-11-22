@@ -2,6 +2,7 @@ import {
   type CharacterSettings,
   violatesDruidicOath,
   characterAllowsItem,
+  catalogWeaponTypes,
   enabledOwners,
   type GearOwner,
   ownerSlots,
@@ -477,6 +478,7 @@ interface ItemBrowserProps extends Pick<EquipmentEditorProps, 'effectiveAugmentS
   memberships: readonly GearPlannerSetMembership[]
   equippedFiligrees: readonly GearPlannerSelectedFiligree[]
   openFiligree: (host: GearPlannerSelectedFiligree) => void
+  missingWeaponFilters: readonly string[]
   catalogItems: readonly GearPlannerCandidate[]
   target?: GearFindTarget
   slots: readonly GearPlannerSlot[]
@@ -525,6 +527,7 @@ const ItemBrowser = ({
   equippedFiligrees,
   openFiligree,
   catalogItems,
+  missingWeaponFilters,
   effectiveAugmentSlots,
   essenceCrafting,
   target,
@@ -721,6 +724,14 @@ const ItemBrowser = ({
           onChange={setCatalog}
         />
       )}
+      {catalog === 'Equipment' &&
+        missingWeaponFilters.length > 0 &&
+        (!filterSlot || filterSlot === 'Main Hand' || filterSlot === 'Off Hand') && (
+          <Text size='sm' c='orange'>
+            Saved weapon filter unavailable: {missingWeaponFilters.join(', ')}. Open Character setup to replace or clear
+            it.
+          </Text>
+        )}
       {catalog === 'Filigrees' && (
         <FiligreeSetBrowser
           data={data}
@@ -1172,13 +1183,22 @@ const GearPlannerWorkspace = () => {
   const comparison = useMemo(() => createCandidateComparison(conflictSources), [conflictSources])
   const conflicts = useMemo(() => resolveEffectConflicts(conflictSources), [conflictSources])
   const summary = useMemo(() => aggregateEffectSummary(effects), [effects])
+  const weaponTypes = useMemo(
+    () => (dataState.status === 'ready' ? catalogWeaponTypes(dataState.data) : []),
+    [dataState]
+  )
+  const unavailableWeaponsOnly =
+    activeSetup.character.weapons.length > 0 &&
+    !activeSetup.character.weapons.some((type) => weaponTypes.includes(type))
   const catalogItems = useMemo(
     () =>
       dataState.status === 'ready'
         ? prepareGearPlannerCandidates(
             slots
               .flatMap((s) => [
-                ...getEssenceCraftedGearPlannerItems(s, activeSetup.minimumLevel),
+                ...getEssenceCraftedGearPlannerItems(s, activeSetup.minimumLevel).filter(
+                  (item) => !unavailableWeaponsOnly || item.essenceCrafting?.itemCategoryId !== 'weapon'
+                ),
                 ...dataState.data.itemsBySlot[s]
               ])
               .filter((item) => characterAllowsItem(activeSetup.character, item, essenceCrafting[item.id]?.material)),
@@ -1186,7 +1206,7 @@ const GearPlannerWorkspace = () => {
             dataState.essenceData
           )
         : [],
-    [dataState, slots, activeSetup.minimumLevel, activeSetup.character, essenceCrafting]
+    [dataState, slots, activeSetup.minimumLevel, activeSetup.character, essenceCrafting, unavailableWeaponsOnly]
   )
   function findGear(target?: GearFindTarget) {
     if (returnSlot && !target) {
@@ -1242,6 +1262,7 @@ const GearPlannerWorkspace = () => {
             icon: <IconUserCog stroke={2} />,
             content: (
               <CharacterSetupTool
+                weaponTypes={weaponTypes}
                 settings={activeSetup.character}
                 onChange={(character) => {
                   applySetupState((current) => updateSetupCharacter(current, activeSetup.id, character))
@@ -1496,6 +1517,7 @@ const GearPlannerWorkspace = () => {
         target={isFinder ? findRequest.target : undefined}
         effectiveAugmentSlots={effectiveAugmentSlots}
         essenceCrafting={essenceCrafting}
+        missingWeaponFilters={unavailableWeaponsOnly && owner === 'Character' ? activeSetup.character.weapons : []}
         catalogItems={catalogItems}
         slots={slots}
         finding={isFinder}

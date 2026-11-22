@@ -26,7 +26,7 @@ import { gearPlannerPermalink } from './sharing'
 import { createGearPlannerSetup } from './setups'
 import GearPlannerPage from './GearPlannerPage.tsx'
 import { readTroveInventory, troveStorageKey, TroveSnapshot } from './trove'
-import { GEAR_PLANNER_STORAGE_KEY, parsePersistedGearPlannerState } from './plannerStorage.ts'
+import { createGearPlannerExport, GEAR_PLANNER_STORAGE_KEY, parsePersistedGearPlannerState } from './plannerStorage.ts'
 import { createGearPlannerReforgingData, emptyGearPlannerReforgingData } from './reforging.ts'
 import type { ReforgingEntry } from '../nearlyFinished/nearlyFinished.types.ts'
 
@@ -902,6 +902,51 @@ describe('GearPlannerPage', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Back to equipment' }))
     }
   })
+
+  it('shows a Wizard the catalog weapon types and grants Club without offering Scepter', async () => {
+    const club = item('club', 'Main Hand', 'Crystalline Scepter')
+    club.source.type = 'Club'
+    const mace = item('mace', 'Main Hand', 'Scepter of Healing')
+    mace.source.type = 'Heavy Mace'
+    await renderReadyPage(dataWithItems([club, mace]))
+    fireEvent.click(screen.getByRole('button', { name: 'Character setup' }))
+    fireEvent.click(screen.getByRole('combobox', { name: 'Character classes' }))
+    fireEvent.click(await screen.findByRole('option', { name: 'Wizard' }))
+    fireEvent.click(screen.getByRole('button', { name: /Weapons.*selected/ }))
+    expect((await screen.findByRole<HTMLInputElement>('checkbox', { name: 'Club' })).checked).toBe(true)
+    expect(screen.getByRole<HTMLInputElement>('checkbox', { name: 'Heavy Mace' }).checked).toBe(false)
+    expect(screen.queryByRole('checkbox', { name: 'Scepter' })).toBeNull()
+  })
+
+  it.each(['replace', 'clear'])(
+    'keeps an unavailable saved filter empty until the player chooses to %s it',
+    async (action) => {
+      const setup = createGearPlannerSetup('saved', 'Saved build')
+      setup.character.weapons = ['Scepter']
+      localStorage.setItem(
+        GEAR_PLANNER_STORAGE_KEY,
+        JSON.stringify(createGearPlannerExport({ setups: [setup], activeSetupId: setup.id }))
+      )
+      const club = item('scepter', 'Main Hand', 'Crystalline Scepter')
+      club.source.type = 'Club'
+      const mace = item('mace', 'Main Hand', 'Scepter of Healing')
+      mace.source.type = 'Heavy Mace'
+      await renderReadyPage(dataWithItems([club, mace]))
+      fireEvent.click(screen.getByRole('button', { name: 'Select Main Hand' }))
+      expect(await screen.findByText(/Saved weapon filter unavailable: Scepter/)).toBeTruthy()
+      expect(screen.queryByRole('button', { name: /^Equip / })).toBeNull()
+      fireEvent.click(screen.getByRole('button', { name: 'Character setup' }))
+      if (action === 'clear') {
+        fireEvent.click(screen.getByRole('button', { name: 'Clear weapon filter' }))
+      } else {
+        fireEvent.click(screen.getByRole('button', { name: /Weapons.*selected/ }))
+        fireEvent.click(await screen.findByRole('checkbox', { name: 'Club' }))
+      }
+      expect(await screen.findByRole('button', { name: 'Equip Crystalline Scepter' })).toBeTruthy()
+      expect(Boolean(screen.queryByRole('button', { name: 'Equip Scepter of Healing' }))).toBe(action === 'clear')
+      expect(screen.queryByText(/Saved weapon filter unavailable/)).toBeNull()
+    }
+  )
 
   it('keeps equipped Essence armor and updates its oath warning and material choices with character settings', async () => {
     await renderReadyPage(dataWithItems([]))

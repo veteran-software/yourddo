@@ -11,7 +11,16 @@ import {
   resolveEssenceCraftedGearPlannerItem
 } from './essenceCrafting.ts'
 import { getGearPlannerMaxFiligreeSlots } from './filigrees.ts'
-import { classNames, defaultCharacter, slotOwner, proficiencyOptions, type CharacterSettings } from './character'
+import {
+  catalogWeaponTypes,
+  normalizeSavedWeaponFilters,
+  savedWeaponFilterOptions,
+  classNames,
+  defaultCharacter,
+  slotOwner,
+  proficiencyOptions,
+  type CharacterSettings
+} from './character'
 import {
   allGearPlannerSlots,
   gearPlannerPetSlots,
@@ -188,12 +197,18 @@ const requiredLevel = (value: unknown, path: string): number => {
   return value
 }
 
-function parseCharacter(value: unknown, path: string): CharacterSettings {
+function parseCharacter(value: unknown, path: string, availableWeapons: readonly string[]): CharacterSettings {
   const record = requiredRecord(value, path)
   const character = defaultCharacter()
   for (const key of ['classes', 'weapons', 'armor', 'shields'] as const) {
-    const values = record[key]
-    const options = key === 'classes' ? classNames : proficiencyOptions[key]
+    const raw = record[key]
+    const values = key === 'weapons' && Array.isArray(raw) ? normalizeSavedWeaponFilters(raw, availableWeapons) : raw
+    const options =
+      key === 'classes'
+        ? classNames
+        : key === 'weapons'
+          ? savedWeaponFilterOptions(availableWeapons)
+          : proficiencyOptions[key]
     if (
       !Array.isArray(values) ||
       !values.every((v: unknown): v is string => typeof v === 'string' && options.includes(v)) ||
@@ -381,7 +396,11 @@ const parseSelectedCrafts = (value: unknown, path: string) => {
   })
 }
 
-const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 => {
+const parseSetup = (
+  value: unknown,
+  index: number,
+  availableWeapons: readonly string[]
+): PersistedGearPlannerSetupV1 => {
   const path = `setups[${String(index)}]`
   const record = requiredRecord(value, path)
   const id = requiredString(record.id, `${path}.id`)
@@ -395,7 +414,9 @@ const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 
     name,
     minimumLevel,
     maximumLevel,
-    ...(record.character === undefined ? {} : { character: parseCharacter(record.character, path + '.character') }),
+    ...(record.character === undefined
+      ? {}
+      : { character: parseCharacter(record.character, path + '.character', availableWeapons) }),
     equipment: parseEquipment(record.equipment, `${path}.equipment`),
     selectedAugments: parseSelectedAugments(record.selectedAugments, `${path}.selectedAugments`),
     ...(record.selectedCurses === undefined
@@ -429,7 +450,7 @@ const parseSetup = (value: unknown, index: number): PersistedGearPlannerSetupV1 
   }
 }
 
-export const parsePersistedGearPlannerState = (value: unknown): PersistedGearPlannerStateV1 => {
+export const parsePersistedGearPlannerState = (value: unknown, data?: GearPlannerData): PersistedGearPlannerStateV1 => {
   const record = requiredRecord(value, 'payload')
   if (record.version !== GEAR_PLANNER_PERSISTED_VERSION) {
     throw new InvalidGearPlannerStateError(`version must be ${String(GEAR_PLANNER_PERSISTED_VERSION)}`)
@@ -437,7 +458,8 @@ export const parsePersistedGearPlannerState = (value: unknown): PersistedGearPla
   if (!Array.isArray(record.setups) || record.setups.length === 0) {
     throw new InvalidGearPlannerStateError('setups must be a non-empty array')
   }
-  const setups = record.setups.map((setup, index) => parseSetup(setup, index))
+  const availableWeapons = data ? catalogWeaponTypes(data) : proficiencyOptions.weapons
+  const setups = record.setups.map((setup, index) => parseSetup(setup, index, availableWeapons))
   const ids = new Set<string>()
   for (const setup of setups) {
     if (ids.has(setup.id)) throw new InvalidGearPlannerStateError('setup IDs must be unique')
@@ -926,7 +948,7 @@ export const loadGearPlannerState = (
     const raw = storage.getItem(GEAR_PLANNER_STORAGE_KEY)
     if (raw !== null) {
       const parsed: unknown = JSON.parse(raw)
-      current = parsePersistedGearPlannerState(parsed)
+      current = parsePersistedGearPlannerState(parsed, data)
       loaded = { source: 'v2', ...restorePersistedGearPlannerState(current, data, essenceData) }
       if (isRecord(parsed) && parsed.legacySaveImported === true) return { ...loaded, legacySaveImported: true }
     }
@@ -991,7 +1013,7 @@ export const importGearPlannerState = (
   const payload: unknown = JSON.parse(text)
   const legacy = convertLegacyGearSave(payload, data, essenceData)
   const restored = restorePersistedGearPlannerState(
-    parsePersistedGearPlannerState(legacy?.payload ?? payload),
+    parsePersistedGearPlannerState(legacy?.payload ?? payload, data),
     data,
     essenceData
   )
