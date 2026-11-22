@@ -129,3 +129,7 @@ extraction.
 - Build the page with Mantine and verify keyboard use, loading and error announcements, responsive layouts, and light,
   dark, and system themes.
 - Run Prettier, OxLint, TypeScript, the full test suite, and the production build.
+
+### Amplify missing-page fallback
+
+The build publishes `404.html` alongside the tool pages. After the artifact is deployed, set the final rule in Amplify Hosting’s **Rewrites and redirects** to source `<*>`, target `/404.html`, and status **404 (Not Found)**. Keep the API proxy rules above it. A direct request to a missing URL should return HTTP 404 with the “Page not found” title and a `noindex` robots tag before JavaScript runs.
