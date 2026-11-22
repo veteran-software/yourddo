@@ -1,3 +1,7 @@
+:root {
+  font-size: 106.25%;
+}
+
 .paper .paper {
   --app-paper-surface: var(--app-raised);
 }
