@@ -24,6 +24,10 @@ vi.mock('../domains/gearPlanner/GearPlannerPage.tsx', () => ({
   default: () => <h1>Gear Planner domain</h1>
 }))
 
+vi.mock('../domains/alchemical/AlchemicalPage.tsx', () => ({
+  default: () => <h1>Alchemical Crafting domain</h1>
+}))
+
 vi.mock('../domains/slaveLords/SlaveLordsPage.tsx', () => ({
   default: () => <h1>Slave Lords Crafting domain</h1>
 }))
@@ -138,6 +142,7 @@ describe('AppRouter', () => {
     ['/saga-tracker', 'Saga Tracker', 'Saga Tracker'],
     ['/viktranium-experiment', 'Viktranium Experiment', 'Viktranium'],
     ['/dinosaur-bone', 'Dinosaur Bone Crafting', 'Dinosaur Bone'],
+    ['/alchemical', 'Alchemical Crafting', 'Alchemical Crafting'],
     ['/slave-lords', 'Slave Lords Crafting', 'Slave Lords Crafting'],
     ['/incredible-potential', 'Incredible Potential', 'Incredible Potential'],
     ['/cauldron-of-cadence', 'Cauldron of Cadence', 'Cauldron of Cadence'],

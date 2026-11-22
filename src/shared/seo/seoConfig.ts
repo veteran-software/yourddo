@@ -47,6 +47,11 @@ const ROUTE_SEO_DATA = [
     'Build and compare Legendary Green Steel recipes and ingredient requirements.'
   ],
   [
+    '/alchemical',
+    'Alchemical Crafting | YourDDO',
+    'Plan Original and Legendary Alchemical upgrades, compare their effects, and find the ingredients for each crafting stage.'
+  ],
+  [
     '/slave-lords',
     'Slave Lords Crafting | YourDDO',
     'Plan Heroic and Legendary Slave Lords equipment upgrades and find the ingredients for your recipes.'

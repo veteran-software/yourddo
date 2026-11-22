@@ -141,6 +141,7 @@ describe('SidebarNavigation', () => {
     ])
     expect(screen.getAllByRole('link').map((link) => link.textContent)).toEqual([
       'Home',
+      'Alchemical Crafting',
       'Cauldron of Cadence',
       'Dinosaur Bone Crafting',
       'Essence Crafting',

@@ -5,6 +5,7 @@ import EssenceCraftingPage from '../domains/essenceCrafting/EssenceCraftingPage.
 import GearPlannerPage from '../domains/gearPlanner/GearPlannerPage.tsx'
 import HeroicGreenSteelPage from '../domains/heroicGreenSteel/HeroicGreenSteelPage.tsx'
 import HomePage from '../domains/home/HomePage.tsx'
+import AlchemicalPage from '../domains/alchemical/AlchemicalPage.tsx'
 import SlaveLordsPage from '../domains/slaveLords/SlaveLordsPage.tsx'
 import IncrediblePotentialPage from '../domains/incrediblePotential/IncrediblePotentialPage.tsx'
 import LegendaryGreenSteelPage from '../domains/legendaryGreenSteel/LegendaryGreenSteelPage.tsx'
@@ -40,6 +41,7 @@ const AppRouter = ({ hostname = globalThis.window?.location.hostname ?? '' }: { 
       <Route path='/gear-planner' element={<LegacyGearLink />} />
       <Route path='/green-steel' element={<HeroicGreenSteelPage />} />
       <Route path='/legendary-green-steel' element={<LegendaryGreenSteelPage />} />
+      <Route path='/alchemical' element={<AlchemicalPage />} />
       <Route path='/slave-lords' element={<SlaveLordsPage />} />
       <Route path='/incredible-potential' element={<IncrediblePotentialPage />} />
       <Route path='/nearly-complete' element={<NearlyCompletePage />} />

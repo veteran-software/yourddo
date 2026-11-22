@@ -41,6 +41,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://yourddo.com/alchemical</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://yourddo.com/slave-lords</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
