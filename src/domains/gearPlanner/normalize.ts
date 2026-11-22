@@ -1,3 +1,5 @@
+import type { AlchemicalData } from '../alchemical/data'
+import { attachAlchemicalBase, alchemicalItemKey, syntheticAlchemicalItem } from './alchemicalCrafting'
 import type { SlaveLordsData } from '../slaveLords/data'
 import { slaveLordsBlankSlots } from './slaveLordsCrafting'
 import { emptyGearCraftingData } from './crafting.ts'
@@ -85,13 +87,16 @@ export const normalizeGearPlannerSources = (
   sourceDatasets: readonly GearPlannerSourceDataset[],
   augments: GearPlannerData['augments'],
   reforgingItemNames: ReadonlySet<string> = new Set(),
-  slaveLords?: SlaveLordsData
+  slaveLords?: SlaveLordsData,
+  alchemical?: AlchemicalData
 ): GearPlannerData => {
   const itemsBySlot = Object.fromEntries(allGearPlannerSlots.map((slot) => [slot, [] as GearPlannerItem[]])) as Record<
     GearPlannerSlot,
     GearPlannerItem[]
   >
   const bases = new Map(slaveLords?.bases.map((base) => [base.name, base]))
+  const alchemicalBases = new Map(alchemical?.bases.map((base) => [alchemicalItemKey(base.name), base]))
+  const matchedBases = new Set<number>()
   let rawItemCount = 0
   let rejectedItemCount = 0
 
@@ -103,6 +108,9 @@ export const normalizeGearPlannerSources = (
         continue
       }
       const absoluteMinimumLevel = optionalNumericLevel(source.absoluteMinLevel)
+      const alchemicalBase = alchemicalBases.size
+        ? alchemicalBases.get(alchemicalItemKey(source.pageTitle ?? source.name))
+        : undefined
       const candidate = bases.get(source.pageTitle ?? source.name) ?? bases.get(source.name)
       const base = candidate?.minimumLevel === numericLevel(source.minLevel) ? candidate : undefined
       const slots = new Set([...sourceSlotsForItem(fileName, source), ...slaveLordsBlankSlots(base)])
@@ -113,11 +121,22 @@ export const normalizeGearPlannerSources = (
         }
         const item = normalizeItem(fileName, source, slot, absoluteMinimumLevel)
         if (base) item.slaveLordsBase = base
-        itemsBySlot[slot].push(item)
+        if (alchemicalBase) {
+          matchedBases.add(alchemicalBase.id)
+          itemsBySlot[slot].push(attachAlchemicalBase(item, alchemicalBase))
+        } else itemsBySlot[slot].push(item)
       }
     }
   }
 
+  for (const base of alchemicalBases.values()) {
+    if (matchedBases.has(base.id)) continue
+    const synthetic = syntheticAlchemicalItem(base)
+    if (!synthetic) continue
+    for (const slot of sourceSlotsForItem(synthetic.fileName, synthetic.source)) {
+      itemsBySlot[slot].push(attachAlchemicalBase(normalizeItem(synthetic.fileName, synthetic.source, slot), base))
+    }
+  }
   const items = allGearPlannerSlots.flatMap((slot) => itemsBySlot[slot])
   return {
     sourceDatasets,
@@ -128,7 +147,7 @@ export const normalizeGearPlannerSources = (
     filigrees: [],
     filigreeSetDefinitions: [],
     filigreeSetDefinitionByName: new Map(),
-    crafting: slaveLords ? { ...emptyGearCraftingData, slaveLords } : emptyGearCraftingData,
+    crafting: { ...emptyGearCraftingData, slaveLords, alchemical },
     reforging: emptyGearPlannerReforgingData,
     rawItemCount,
     normalizedItemCount: items.length,

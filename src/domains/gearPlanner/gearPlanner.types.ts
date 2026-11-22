@@ -107,6 +107,7 @@ export interface GearPlannerAugment {
 }
 
 export interface GearPlannerItem {
+  alchemical?: { base: import('../alchemical/data').AlchemicalBase; source: GearPlannerSourceItem }
   slaveLordsBase?: import('../slaveLords/data').SlaveLordsBase
   crafts?: readonly import('./crafting.ts').EquippedCraft[]
   id: string

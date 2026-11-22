@@ -284,10 +284,10 @@ export const setGearPlannerSetupCraft = (
     if (item?.id !== itemId) return setup
     const group = gearCraftGroups(item, data).find((g) => g.system === system)
     if (!group) return setup
-    const updated = applyGearCraft(item, group, choiceId)
+    const updated = applyGearCraft(item, group, choiceId, data)
     if (updated === item) return setup
     const slottedAugments =
-      system === 'slave-lords-augment'
+      system === 'slave-lords-augment' || system.startsWith('alchemical-')
         ? sanitizeGearPlannerSlottedAugments(setup.slottedAugments, updated, getGearPlannerBaseAugmentSlots(updated))
         : setup.slottedAugments
     return { ...setup, slottedAugments, equipment: { ...setup.equipment, [slot]: updated } }

@@ -1,3 +1,5 @@
+import { alchemicalCraftGroups, applyAlchemicalRecipe } from './alchemicalCrafting'
+import type { AlchemicalData } from '../alchemical/data'
 import type { SlaveLordsData } from '../slaveLords/data'
 import { slaveLordsCraftGroups } from './slaveLordsCrafting'
 import rules from './craftingRules.json'
@@ -25,6 +27,7 @@ export interface CraftGroup {
 }
 
 export interface GearCraftingData {
+  alchemical?: AlchemicalData
   slaveLords?: SlaveLordsData
   nearlyComplete: readonly {
     name: string
@@ -81,6 +84,7 @@ function nearlyCompleteGroup(item: GearPlannerItem, data: GearCraftingData): Cra
 
 export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): CraftGroup[] {
   const groups: CraftGroup[] = []
+  if (item.alchemical && data.alchemical) groups.push(...alchemicalCraftGroups(item, data.alchemical))
   const source = item.source
   const markers = new Set(source.enchantments?.map(({ name }) => name))
   for (const { system, label, marker, items } of data.upgrades) {
@@ -155,7 +159,14 @@ export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): 
   return groups
 }
 
-export function applyGearCraft(item: GearPlannerItem, group: CraftGroup, choiceId: string | null): GearPlannerItem {
+export function applyGearCraft(
+  item: GearPlannerItem,
+  group: CraftGroup,
+  choiceId: string | null,
+  data: GearCraftingData
+): GearPlannerItem {
+  if (item.alchemical && data.alchemical && group.system.startsWith('alchemical-'))
+    return applyAlchemicalRecipe(item, group, choiceId, data.alchemical)
   const current = item.crafts ?? []
   const remaining = current.filter((c) => c.system !== group.system)
   if (choiceId === null) return remaining.length === current.length ? item : { ...item, crafts: remaining }

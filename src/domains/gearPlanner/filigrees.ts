@@ -49,7 +49,7 @@ export const isGearPlannerMinorArtifact = (item: GearPlannerItem): boolean =>
   (item.source.artifactType?.trim().length ?? 0) > 0
 
 export const isGearPlannerSentientWeapon = (item: GearPlannerItem): boolean =>
-  legacySentientWeaponTypes.has(item.source.type ?? '')
+  item.alchemical?.base.acceptsSentience !== false && legacySentientWeaponTypes.has(item.source.type ?? '')
 
 export const getGearPlannerMaxFiligreeSlots = (item: GearPlannerItem): number => {
   if (isGearPlannerMinorArtifact(item)) {
