@@ -1,3 +1,4 @@
+import { matchRoutes } from 'react-router-dom'
 import { DEFAULT_DESCRIPTION, SITE_NAME } from './siteMeta.ts'
 
 export interface SeoConfig {
@@ -89,17 +90,25 @@ const toSeoConfig = ([path, title, description]: (typeof ROUTE_SEO_DATA)[number]
 
 export const ROUTE_SEO: SeoConfig[] = ROUTE_SEO_DATA.map(toSeoConfig)
 
-export const resolveSeo = (pathname: string): SeoConfig => {
-  const exactMatch = ROUTE_SEO.find((route) => route.path === pathname)
-  if (exactMatch) return exactMatch
+export const routeAliases = [
+  { path: '/the-key-to-the-mythal', target: '/reavers-fate' },
+  { path: '/toxic-treatment', target: '/monastery-of-the-scorpion' }
+] as const
 
-  const prefixMatch = ROUTE_SEO.find(
-    (route) => route.path != null && route.path !== '/' && pathname.startsWith(route.path)
-  )
-  if (prefixMatch) return prefixMatch
-
-  return ROUTE_SEO[0]
+const notFoundSeo: SeoConfig = {
+  title: 'Page not found | YourDDO',
+  description:
+    'This page could not be found. Visit the YourDDO homepage to browse crafting tools, planners, and puzzle solvers.',
+  noIndex: true
 }
+
+const seoRoutes = [
+  ...ROUTE_SEO.map((seo) => ({ path: seo.path, seo })),
+  ...routeAliases.map(({ path, target }) => ({ path, seo: ROUTE_SEO.find((route) => route.path === target) }))
+]
+
+export const resolveSeo = (pathname: string): SeoConfig =>
+  matchRoutes(seoRoutes, { pathname })?.[0]?.route.seo ?? notFoundSeo
 
 export const normalizeCanonicalPath = (path: string) => {
   if (path === '/') return ''

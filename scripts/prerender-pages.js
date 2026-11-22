@@ -78,7 +78,7 @@ const buildHtml = (template, prerender) => {
   html = upsertMetaProperty(html, 'og:title', prerender.title)
   html = upsertMetaProperty(html, 'og:description', prerender.description)
   html = upsertMetaProperty(html, 'og:type', 'website')
-  html = upsertMetaProperty(html, 'og:url', prerender.canonicalUrl)
+  if (prerender.canonicalUrl) html = upsertMetaProperty(html, 'og:url', prerender.canonicalUrl)
   html = upsertMetaProperty(html, 'og:image', prerender.imageUrl)
   html = upsertMetaProperty(html, 'og:image:width', '1200')
   html = upsertMetaProperty(html, 'og:image:height', '630')
@@ -88,12 +88,13 @@ const buildHtml = (template, prerender) => {
   html = upsertMetaName(html, 'twitter:description', prerender.description)
   html = upsertMetaName(html, 'twitter:image', prerender.imageUrl)
   html = upsertMetaName(html, 'twitter:image:alt', prerender.imageAlt)
-  html = upsertCanonical(html, prerender.canonicalUrl)
-  html = replaceOrInsert(
-    html,
-    /<script\s+id="structured-data"\s+type="application\/ld\+json">.*?<\/script>/is,
-    `<script id="structured-data" type="application/ld+json">${escapeJsonLd(prerender.structuredData)}</script>`
-  )
+  if (prerender.canonicalUrl) html = upsertCanonical(html, prerender.canonicalUrl)
+  if (prerender.structuredData)
+    html = replaceOrInsert(
+      html,
+      /<script\s+id="structured-data"\s+type="application\/ld\+json">.*?<\/script>/is,
+      `<script id="structured-data" type="application/ld+json">${escapeJsonLd(prerender.structuredData)}</script>`
+    )
   html = html.replace(/<div id="root"><\/div>/, `<div id="root">${prerender.html}</div>`)
 
   return html
@@ -110,7 +111,7 @@ const writeRouteHtml = async (routePath, html) => {
 
 const main = async () => {
   const template = await readFile(templatePath, 'utf8')
-  const { render, ROUTE_SEO } = await import(pathToFileURL(ssrBundlePath).href)
+  const { render, ROUTE_SEO, routeAliases } = await import(pathToFileURL(ssrBundlePath).href)
   const origin = process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://yourddo.com'
 
   await Promise.all(
@@ -121,7 +122,12 @@ const main = async () => {
     })
   )
 
-  console.log(`Prerendered ${ROUTE_SEO.length} routes`)
+  await Promise.all(
+    routeAliases.map(({ path: alias, target }) => writeRouteHtml(alias, buildHtml(template, render(target, origin))))
+  )
+  await writeFile(path.join(distDir, '404.html'), buildHtml(template, render('/404.html', origin)), 'utf8')
+
+  console.log(`Prerendered ${ROUTE_SEO.length} routes, ${routeAliases.length} aliases, and 404.html`)
 }
 
 try {

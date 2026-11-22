@@ -17,6 +17,7 @@ import ShadowCryptPage from '../domains/shadowCrypt/ShadowCryptPage.tsx'
 import ShroudPage from '../domains/shroud/ShroudPage.tsx'
 import TotalChaosPage from '../domains/totalChaos/TotalChaosPage.tsx'
 import ViktraniumPage from '../domains/viktranium/ViktraniumPage.tsx'
+import { routeAliases } from '../shared/seo/seoConfig'
 import NotFoundPage from '../shared/ui/NotFoundPage.tsx'
 import AppLayout from './AppLayout'
 
@@ -50,14 +51,9 @@ const AppRouter = ({ hostname = globalThis.window?.location.hostname ?? '' }: { 
       <Route path='/the-shroud' element={<ShroudPage />} />
       <Route path='/total-chaos' element={<TotalChaosPage />} />
       <Route path='/viktranium-experiment' element={<ViktraniumPage />} />
-      <Route
-        path='/the-key-to-the-mythal'
-        element={<Navigate to='/reavers-fate' state={{ recentToolPath: '/the-key-to-the-mythal' }} replace />}
-      />
-      <Route
-        path='/toxic-treatment'
-        element={<Navigate to='/monastery-of-the-scorpion' state={{ recentToolPath: '/toxic-treatment' }} replace />}
-      />
+      {routeAliases.map(({ path, target }) => (
+        <Route key={path} path={path} element={<Navigate to={target} state={{ recentToolPath: path }} replace />} />
+      ))}
       <Route path='*' element={<NotFoundPage />} />
     </Route>
   </Routes>

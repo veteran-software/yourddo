@@ -71,15 +71,12 @@ const RouteSeo = () => {
     return {
       ...base,
       noIndex: base.noIndex ?? isDevelop,
-      canonicalPath: base.canonicalPath ?? base.path ?? location.pathname
+      canonicalPath: base.canonicalPath ?? base.path
     }
   }, [location.pathname])
 
   useEffect(() => {
     const origin = SITE_ORIGIN
-    const canonicalUrl = `${origin}${normalizeCanonicalPath(seo.canonicalPath)}`
-    const structuredData = buildStructuredData(origin, seo, canonicalUrl)
-
     document.title = seo.title
     setMetaTagByName('description', seo.description)
     setMetaTagByName('robots', seo.noIndex ? 'noindex, nofollow' : 'index, follow')
@@ -87,13 +84,20 @@ const RouteSeo = () => {
     setMetaTagByProperty('og:title', seo.title)
     setMetaTagByProperty('og:description', seo.description)
     setMetaTagByProperty('og:type', 'website')
-    setMetaTagByProperty('og:url', canonicalUrl)
     setMetaTagByName('twitter:card', 'summary_large_image')
     setMetaTagByName('twitter:title', seo.title)
     setMetaTagByName('twitter:description', seo.description)
     setImageMeta(origin)
-    setLinkHref('link[rel="canonical"]', canonicalUrl)
-    setJsonLd('structured-data', structuredData)
+    if (seo.canonicalPath) {
+      const canonicalUrl = origin + normalizeCanonicalPath(seo.canonicalPath)
+      setMetaTagByProperty('og:url', canonicalUrl)
+      setLinkHref('link[rel="canonical"]', canonicalUrl)
+      setJsonLd('structured-data', buildStructuredData(origin, seo, canonicalUrl))
+    } else {
+      document.head.querySelector('meta[property="og:url"]')?.remove()
+      document.head.querySelector('link[rel="canonical"]')?.remove()
+      document.head.querySelector('script#structured-data')?.remove()
+    }
   }, [seo])
 
   return null
