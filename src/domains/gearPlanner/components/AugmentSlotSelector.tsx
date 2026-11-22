@@ -95,7 +95,7 @@ const AugmentSlotSelector = ({
     for (const effect of augment.effectsAdded) {
       const sources = sourcesByEffect.get(normalizeEffectName(effect.name))
       if (!sources) continue
-      const preview = previewPotentialEffectConflict(effect, sources, item.id)
+      const preview = previewPotentialEffectConflict(effect, sources)
       if (!preview.isConflict) continue
       const lesser = preview.isOverpowered ? 'Overpowered' : 'Redundant'
       const status = preview.isUpgrade ? 'Upgrade' : lesser

@@ -284,9 +284,28 @@ describe('Gear Planner augment effect sources', () => {
 })
 
 describe('Gear Planner filigree effect sources', () => {
-  it('adds selected filigree effects with item and slot provenance but excludes them from conflicts', () => {
+  it('compares against the combined Prowess bonus without marking the two hosts redundant', () => {
+    const effect = { name: 'Strength', modifier: 1, bonus: 'Filigree' }
+    const [base] = collectEquippedEffects(equipped(item('third', gearPlannerSlots.head, 'Helm', [effect])))
+    const prowess = ['weapon', 'artifact'].map((id) => ({
+      ...base,
+      id,
+      itemId: id,
+      category: 'filigree' as const,
+      filigreeType: 71
+    }))
+    expect(resolveEffectConflicts(prowess).conflicts).toEqual([])
+    expect(previewPotentialEffectConflict(effect, prowess)).toMatchObject({ currentMax: 2, isOverpowered: true })
+    const resolution = resolveEffectConflicts([...prowess, base])
+    expect(resolution.bySourceId[base.id].isEffective).toBe(false)
+    for (const source of prowess) {
+      expect(resolution.bySourceId[source.id]).toMatchObject({ isEffective: true, entries: [{ id: base.id }] })
+    }
+  })
+
+  it('adds selected filigree effects with item and slot provenance and compares matching bonus types', () => {
     const host = item('host', gearPlannerSlots.mainHand, 'Sentient Dagger', [
-      { name: 'Strength', modifier: 10, bonus: 'Enhancement' }
+      { name: 'Strength', modifier: 10, bonus: 'Filigree' }
     ])
     host.minimumLevel = 30
     host.source.type = 'Dagger'
@@ -318,7 +337,7 @@ describe('Gear Planner filigree effect sources', () => {
     expect(aggregateEffectSummary(sources).find(({ name }) => name === 'Ghostly')?.isNumeric).toBe(false)
     expect(
       resolveEffectConflicts(conflictEligibleEffectSources(sources)).bySourceId['host:filigree:0:0']
-    ).toBeUndefined()
+    ).toMatchObject({ isEffective: true })
 
     selection = setGearPlannerSlottedFiligree(selection, host.id, 0, null)
     expect(
@@ -333,7 +352,7 @@ describe('Gear Planner filigree effect sources', () => {
 })
 
 describe('Gear Planner curse effect sources', () => {
-  it('adds every selected curse effect with host provenance, summary normalization, and no normal conflict participation', () => {
+  it('adds every selected curse effect with host provenance, summary normalization, and same-type conflicts', () => {
     const head = item('head', gearPlannerSlots.head, 'Cursed Helm', [
       { name: 'Strength', modifier: '+10', bonus: 'Fortune' }
     ])
@@ -367,9 +386,9 @@ describe('Gear Planner curse effect sources', () => {
       '+10'
     )
     expect(aggregateEffectSummary(sources).find(({ name }) => name === 'Ghostly')?.isNumeric).toBe(false)
-    expect(
-      resolveEffectConflicts(conflictEligibleEffectSources(sources)).bySourceId[curseSources[0].id]
-    ).toBeUndefined()
+    expect(resolveEffectConflicts(conflictEligibleEffectSources(sources)).bySourceId[curseSources[0].id]).toMatchObject(
+      { isEffective: false }
+    )
 
     selection = setGearPlannerSlottedCurse(selection, head.id, null, [selected])
     expect(
@@ -392,7 +411,7 @@ describe('Gear Planner curse effect sources', () => {
     ).toEqual([])
   })
 
-  it('matches legacy candidate preview semantics without making selected curses conflict sources', () => {
+  it('compares candidates with effects that remain equipped', () => {
     const fortuneTen = item('fortune-ten', gearPlannerSlots.head, 'Fortune Ten', [
       { name: 'Strength', modifier: '+10', bonus: 'Fortune' }
     ])
@@ -402,20 +421,11 @@ describe('Gear Planner curse effect sources', () => {
     const lesser = { name: 'Strength', modifier: '+1', bonus: 'Fortune' }
     const greater = { name: 'Strength', modifier: '+2', bonus: 'Fortune' }
 
-    expect(
-      previewPotentialEffectConflict(lesser, collectEquippedEffects(equipped(fortuneTen)), fortuneTen.id)
-    ).toMatchObject({
-      isConflict: false
-    })
-    expect(
-      previewPotentialEffectConflict(lesser, collectEquippedEffects(equipped(fortuneTen)), 'new-host')
-    ).toMatchObject({
+    expect(previewPotentialEffectConflict(lesser, collectEquippedEffects(equipped(fortuneTen)))).toMatchObject({
       isConflict: true,
       isOverpowered: true
     })
-    expect(
-      previewPotentialEffectConflict(greater, collectEquippedEffects(equipped(fortuneOne)), 'new-host')
-    ).toMatchObject({
+    expect(previewPotentialEffectConflict(greater, collectEquippedEffects(equipped(fortuneOne)))).toMatchObject({
       isConflict: true,
       isUpgrade: true
     })

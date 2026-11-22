@@ -293,12 +293,15 @@ const sourceDisplay = (source: GearPlannerEffectSource): string =>
 const isProwessStrength = (entry: GearPlannerEffectSource) =>
   entry.filigreeType === 71 && entry.normalizedName === 'strength' && entry.comparisonValue === 1
 
+const stackedProwessStrength = (entries: readonly GearPlannerEffectSource[]) =>
+  Math.min(20, new Set(entries.filter(isProwessStrength).map((entry) => entry.itemId)).size)
+
 const withEffectiveEntries = (
   entries: readonly GearPlannerEffectSource[],
   bonusType: string
 ): GearPlannerEffectSummaryGroup => {
   const summing = summingBonusTypes.has(bonusType)
-  const prowessStrength = Math.min(20, new Set(entries.filter(isProwessStrength).map((entry) => entry.itemId)).size)
+  const prowessStrength = stackedProwessStrength(entries)
   const effectiveValue = summing
     ? entries.reduce((total, entry) => total + entry.comparisonValue, 0)
     : Math.max(prowessStrength, ...entries.map((entry) => entry.comparisonValue))
@@ -358,17 +361,10 @@ export const aggregateEffectSummary = (
     .toSorted((left, right) => left.name.localeCompare(right.name))
 }
 
-// Legacy curse, filigree, and set effects participate in display aggregation, never normal item/augment conflicts.
+// Set thresholds are resolved across the loadout, separately from effects attached to an item.
 export const conflictEligibleEffectSources = (
   sources: readonly GearPlannerEffectSource[]
-): readonly GearPlannerEffectSource[] =>
-  sources.filter(
-    ({ category, reforgingStage }) =>
-      category === 'crafting' ||
-      category === 'equipped-item' ||
-      category === 'augment' ||
-      (category === 'reforging-choice' && reforgingStage === 'nearly-finished')
-  )
+): readonly GearPlannerEffectSource[] => sources.filter(({ category }) => category !== 'set')
 
 export interface GearPlannerPotentialEffectConflict {
   isConflict: boolean
@@ -379,12 +375,10 @@ export interface GearPlannerPotentialEffectConflict {
   isOverpowered?: boolean
 }
 
-// Matches legacy checkPotentialConflict for a candidate effect. The host item's base effects are ignored;
-// its selected augments remain eligible, and selected curses never become permanent conflict sources.
+// Callers omit the equipment slot, augment socket, or curse that the candidate replaces.
 export const previewPotentialEffectConflict = (
   effect: GearPlannerEffect,
-  sources: readonly GearPlannerEffectSource[],
-  hostItemId: string
+  sources: readonly GearPlannerEffectSource[]
 ): GearPlannerPotentialEffectConflict => {
   const normalizedName = normalizeEffectName(effect.name)
   const normalizedBonusType = normalizeBonusType(effect.bonus)
@@ -402,10 +396,7 @@ export const previewPotentialEffectConflict = (
   }
 
   const matches = conflictEligibleEffectSources(sources).filter(
-    (source) =>
-      (source.itemId !== hostItemId || source.category === 'augment') &&
-      source.normalizedName === normalizedName &&
-      source.normalizedBonusType === normalizedBonusType
+    (source) => source.normalizedName === normalizedName && source.normalizedBonusType === normalizedBonusType
   )
   if (!matches.length) return { isConflict: false, currentMax: 0, isRedundant: false }
 
@@ -413,12 +404,14 @@ export const previewPotentialEffectConflict = (
     (best, source) => (source.comparisonValue > best.comparisonValue ? source : best),
     matches[0]
   )
-  const currentMax = strongest.comparisonValue
+  const currentMax = matches.some(isProwessStrength)
+    ? Math.max(strongest.comparisonValue, stackedProwessStrength(matches))
+    : strongest.comparisonValue
   const candidateValue = parseEffectModifier(effect.modifier)
   return {
     isConflict: true,
     currentMax,
-    currentModifier: strongest.effect.modifier,
+    currentModifier: currentMax === strongest.comparisonValue ? strongest.effect.modifier : currentMax,
     isRedundant: candidateValue === currentMax,
     isUpgrade: candidateValue > currentMax,
     isOverpowered: candidateValue < currentMax
@@ -446,8 +439,13 @@ export const resolveEffectConflicts = (
     if (entries.length < 2) return []
     if (entries.every(isProwessStrength)) return []
     const resolvedEntries = withEffectiveEntries(entries, entries[0].normalizedBonusType).entries
-    for (const entry of resolvedEntries)
-      bySourceId[entry.id] = { isEffective: entry.isEffective, entries: resolvedEntries }
+    for (const entry of resolvedEntries) {
+      // Copies on different hosts contribute together, even when a third effect competes with them.
+      const competingEntries = isProwessStrength(entry)
+        ? resolvedEntries.filter((other) => !isProwessStrength(other))
+        : resolvedEntries
+      bySourceId[entry.id] = { isEffective: entry.isEffective, entries: competingEntries }
+    }
     return [
       {
         name: entries[0].effect.name,

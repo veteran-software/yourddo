@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { validateEssenceCraftingDataset } from '../essenceCrafting/data.ts'
 import type { EssenceAffixPosition, EssenceEnhancement } from '../essenceCrafting/essenceCrafting.types.ts'
 import { createEssenceCraftingTestPayload } from '../essenceCrafting/test-fixture.ts'
+import { createCandidateComparison } from './finding.ts'
 import { aggregateEffectSummary, collectEquippedEffects, conflictEligibleEffectSources } from './effects.ts'
 import {
   createGearPlannerEssenceCraftingConfiguration,
@@ -271,7 +272,7 @@ describe('Gear Planner Essence Crafting behavior', () => {
     expect(resolvedModifier(null)).toBe('+1')
   })
 
-  it('adds selected Essence effects to summary provenance but not normal conflict sources', () => {
+  it('uses selected Essence affixes in the summary and Find Gear replacement checks', () => {
     const current = data()
     const weapon = crafted(gearPlannerSlots.mainHand)
     const configuration = {
@@ -298,7 +299,17 @@ describe('Gear Planner Essence Crafting behavior', () => {
       },
       { effect: { name: 'Spellcasting Implement', modifier: '+5%' } }
     ])
-    expect(conflictEligibleEffectSources(sources)).toEqual([])
+    const comparison = createCandidateComparison(conflictEligibleEffectSources(sources))
+    const candidate = {
+      ...weapon,
+      slot: gearPlannerSlots.head,
+      source: { ...weapon.source, enchantments: [{ name: 'Light Spell Power', modifier: '+1', bonus: 'Enhancement' }] }
+    }
+    expect(comparison.isConflicting(candidate)).toBe(true)
+    expect(comparison.isConflicting({ ...candidate, slot: weapon.slot })).toBe(false)
+    expect(
+      comparison.compareEffect(candidate, { ...candidate.source.enchantments[0], bonus: 'Insightful' })?.isConflict
+    ).toBe(false)
     expect(aggregateEffectSummary(sources).map(({ name }) => name)).toEqual([
       'Light Spell Power',
       'Spellcasting Implement'
