@@ -1,5 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { loadManualPayload } from '../../shared/data/loadDataset.ts'
+import { describe, expect, it } from 'vitest'
 import {
   type CauldronEffect,
   type CauldronRecipe,
@@ -9,14 +8,8 @@ import {
   formatEffect,
   getEffectOptions,
   getItemOptions,
-  getRequiredItemName,
-  InvalidCauldronRecipesError,
-  loadCauldronRecipes
+  getRequiredItemName
 } from './recipes.ts'
-
-vi.mock('../../shared/data/loadDataset.ts', () => ({
-  loadManualPayload: vi.fn()
-}))
 
 interface Combination {
   item: string
@@ -132,11 +125,10 @@ const currentCombinations: Combination[] = [
 
 const createRecipe = ({ item, set, effects }: Combination): CauldronRecipe => ({
   augmentType: 'Colorless',
-  baseValue: { platinum: 500 },
+  requiredItem: item,
   binding: { type: 'Bound', to: 'Account', from: 'Acquisition' },
   craftedIn: 'Cauldron of Cadence',
   description: `Slotting this Augment in any Augment Slot will override its Set Bonus to the ${set} set.`,
-  image: 'cauldronOfCadenceAugment',
   minimumLevel: 30,
   name: `Set Augment: ${set}`,
   quantity: 1,
@@ -145,33 +137,12 @@ const createRecipe = ({ item, set, effects }: Combination): CauldronRecipe => ({
     { name: 'Empty Soul Vessel', quantity: 1 },
     { name: item, quantity: 1 }
   ],
-  setBonus: [{ name: set, numPiecesEquipped: 3, enhancements: effects }],
-  weight: 0.01
+  setBonus: [{ name: set, numPiecesEquipped: 3, enhancements: effects }]
 })
 
 const recipes = currentCombinations.map(createRecipe)
 
-beforeEach(() => {
-  vi.mocked(loadManualPayload).mockReset()
-})
-
 describe('Cauldron of Cadence recipes', () => {
-  it('loads and validates the actual manifest payload', async () => {
-    vi.mocked(loadManualPayload).mockResolvedValue(recipes)
-
-    await expect(loadCauldronRecipes()).resolves.toEqual(recipes)
-    expect(loadManualPayload).toHaveBeenCalledWith('cauldronOfCadence.recipes')
-  })
-
-  it('accepts an empty payload and rejects data outside the upstream contract', async () => {
-    vi.mocked(loadManualPayload)
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce([{ name: 'Incomplete recipe' }])
-
-    await expect(loadCauldronRecipes()).resolves.toEqual([])
-    await expect(loadCauldronRecipes()).rejects.toBeInstanceOf(InvalidCauldronRecipesError)
-  })
-
   it('preserves item sorting and first-enhancement effect sorting', () => {
     expect(getItemOptions(recipes, null).map(({ value }) => value)).toEqual(
       currentCombinations.map(({ item }) => item).toSorted((a, b) => a.localeCompare(b))

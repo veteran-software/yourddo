@@ -9,6 +9,7 @@ import {
   List,
   Loader,
   Paper,
+  SegmentedControl,
   Select,
   SimpleGrid,
   Stack,
@@ -33,9 +34,12 @@ import {
   loadCauldronRecipes
 } from './recipes.ts'
 
+import type { CauldronCatalog } from './catalog'
+import FerrocrystalRecipes from './FerrocrystalRecipes'
+
 type RecipesState =
   | { status: 'loading' }
-  | { status: 'loaded'; recipes: CauldronRecipes }
+  | { status: 'loaded'; catalog: CauldronCatalog }
   | { status: 'error'; cause: unknown }
   | { status: 'invalid' }
 
@@ -46,11 +50,12 @@ const formatBinding = ({ type, to, from }: CauldronRecipes[number]['binding']): 
 
 const CauldronOfCadencePage = () => {
   const [recipesState, setRecipesState] = useState<RecipesState>({ status: 'loading' })
+  const [category, setCategory] = useState('augments')
   const [loadAttempt, setLoadAttempt] = useState(0)
   const [selectedItem, setSelectedItem] = useState<string | null>(null)
   const [selectedSetBonus, setSelectedSetBonus] = useState<string | null>(null)
 
-  const recipes = useMemo(() => (recipesState.status === 'loaded' ? recipesState.recipes : []), [recipesState])
+  const recipes = useMemo(() => (recipesState.status === 'loaded' ? recipesState.catalog.augments : []), [recipesState])
   const itemOptions = useMemo(() => getItemOptions(recipes, selectedItem), [recipes, selectedItem])
   const effectOptions = useMemo(() => getEffectOptions(recipes, selectedItem), [recipes, selectedItem])
   const selectedRecipe =
@@ -63,7 +68,7 @@ const CauldronOfCadencePage = () => {
       .then((loadedRecipes) => {
         if (!active) return
 
-        setRecipesState({ status: 'loaded', recipes: loadedRecipes })
+        setRecipesState({ status: 'loaded', catalog: loadedRecipes })
         setSelectedItem(null)
         setSelectedSetBonus(null)
       })
@@ -176,8 +181,30 @@ const CauldronOfCadencePage = () => {
                   </List.Item>
                 ))}
               </List>
+              {selectedRecipe.restrictions && (
+                <Text size='sm' c='dimmed'>
+                  {selectedRecipe.restrictions}
+                </Text>
+              )}
             </Stack>
           </SimpleGrid>
+          {selectedRecipe.setBonus.some((bonus) => bonus.discrepancies?.length) && (
+            <>
+              <Divider />
+              <Stack gap={4}>
+                <Text fw={700} size='sm'>
+                  Discrepancy
+                </Text>
+                {selectedRecipe.setBonus
+                  .flatMap((bonus) => bonus.discrepancies ?? [])
+                  .map((note) => (
+                    <Text key={note} size='sm'>
+                      {note}
+                    </Text>
+                  ))}
+              </Stack>
+            </>
+          )}
         </Stack>
       )
     if (selectedItem && selectedSetBonus)
@@ -253,6 +280,8 @@ const CauldronOfCadencePage = () => {
           </Stack>
         </Alert>
       )
+    if (category === 'weapons' && recipesState.status === 'loaded')
+      return <FerrocrystalRecipes weapons={recipesState.catalog.weapons} />
     if (recipes.length === 0)
       return (
         <Alert color='yellow' title='No Cauldron recipes found'>
@@ -291,6 +320,9 @@ const CauldronOfCadencePage = () => {
               label='Set bonus effect'
               placeholder='Select an effect…'
               data={effectOptions}
+              filter={({ search }) =>
+                effectOptions.filter((option) => option.searchText?.includes(search.trim().toLowerCase()))
+              }
               value={selectedSetBonus}
               onChange={changeEffect}
               searchable
@@ -313,7 +345,8 @@ const CauldronOfCadencePage = () => {
         icon={IconFlame}
         description={
           <Text size='sm' c={secondaryTextColor}>
-            Choose an item you have or an effect you want to find its Cauldron set augment recipe.
+            Choose an item you have or an effect you want to find its set augment recipe, or browse Ferrocrystal
+            weapons.
           </Text>
         }
         actions={
@@ -328,9 +361,20 @@ const CauldronOfCadencePage = () => {
         }
       />
 
-      <Alert color='blue' title='Minimum level 30'>
-        All Cauldron set augments are Minimum Level 30 and require a three-piece set.
-      </Alert>
+      <SegmentedControl
+        aria-label='Recipe category'
+        value={category}
+        onChange={setCategory}
+        data={[
+          { value: 'augments', label: 'Set augments' },
+          { value: 'weapons', label: 'Ferrocrystal weapons' }
+        ]}
+      />
+      {category === 'augments' && (
+        <Alert color='blue' title='Minimum level 30'>
+          All Cauldron set augments are Minimum Level 30 and require a three-piece set.
+        </Alert>
+      )}
 
       {renderRecipes()}
     </ToolLayout>
