@@ -1,0 +1,50 @@
+.row {
+  display: flex;
+  align-items: flex-end;
+}
+.row .joinedInput {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+.toggle {
+  display: grid;
+  place-items: center;
+  flex: 0 0 2.5rem;
+  height: calc(2.25rem * var(--mantine-scale));
+  background: var(--app-raised);
+  color: var(--mantine-color-text);
+  border: 1px solid var(--app-border);
+  border-inline-start: 0;
+  border-radius: 0 var(--mantine-radius-default) var(--mantine-radius-default) 0;
+  cursor: pointer;
+}
+.toggle:hover,
+.toggle[aria-expanded='true'] {
+  background: var(--app-active);
+  color: var(--app-accent);
+}
+.toggle:focus-visible {
+  outline: 2px solid var(--app-accent);
+  outline-offset: 2px;
+}
+.ingredients {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0.125rem 0.75rem;
+  border-inline-start: 0.15rem solid var(--app-accent);
+}
+.ingredients li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 0.25rem;
+  font-size: var(--mantine-font-size-sm);
+}
+.ingredients li + li {
+  border-block-start: 1px solid var(--app-border);
+}
+.ingredients strong {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
