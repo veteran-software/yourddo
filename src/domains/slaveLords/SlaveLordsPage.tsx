@@ -17,6 +17,7 @@ import {
 } from '@mantine/core'
 import { IconLink, IconRestore } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
+import RecipeSelect from '../../shared/items/RecipeSelect'
 import IngredientStock from '../../shared/items/IngredientStock'
 import { createCraftingSelection } from '../../shared/layout/craftingSession'
 import ToolLayout from '../../shared/layout/ToolLayout'
@@ -122,18 +123,6 @@ function OptionDetails({
           <StatList stats={threshold.effects} />
         </Stack>
       ))}
-      {option.costs.length > 0 && (
-        <details>
-          <summary>Recipe ingredients</summary>
-          <Stack mt='xs' gap={2}>
-            {option.costs.map((cost) => (
-              <Text size='sm' key={cost.id}>
-                {cost.quantity} × {cost.name}
-              </Text>
-            ))}
-          </Stack>
-        </details>
-      )}
       {option.discrepancies.length > 0 && (
         <>
           <Divider />
@@ -291,7 +280,8 @@ function CraftingPlan({ data }: { data: SlaveLordsData }) {
                     const picked = selected.find((option) => option.category === category)
                     return (
                       <Stack key={category} gap='xs'>
-                        <Select
+                        <RecipeSelect
+                          ingredients={picked?.costs}
                           searchable
                           clearable
                           label={categories[category]}

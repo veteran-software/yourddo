@@ -1,4 +1,4 @@
-import { loadManualPayload } from '../../shared/data/loadDataset.ts'
+export { loadCauldronRecipes, InvalidCauldronRecipesError } from './catalog'
 
 export interface CauldronEffect {
   name: string
@@ -9,6 +9,7 @@ export interface CauldronEffect {
 export interface CauldronSetBonus {
   name: string
   numPiecesEquipped: number
+  discrepancies?: string[]
   enhancements: CauldronEffect[]
 }
 
@@ -19,7 +20,8 @@ export interface CauldronRequirement {
 
 export interface CauldronRecipe {
   augmentType: string
-  baseValue: { platinum: number }
+  requiredItem: string
+  restrictions?: string
   binding: {
     type: string
     to: string
@@ -27,13 +29,11 @@ export interface CauldronRecipe {
   }
   craftedIn: string
   description: string
-  image: string
   minimumLevel: number
   name: string
   quantity: number
   requirements: CauldronRequirement[]
   setBonus: CauldronSetBonus[]
-  weight: number
 }
 
 export type CauldronRecipes = CauldronRecipe[]
@@ -42,71 +42,10 @@ export interface CauldronOption {
   value: string
   label: string
   disabled: boolean
+  searchText?: string
 }
 
-export class InvalidCauldronRecipesError extends Error {
-  constructor() {
-    super('The Cauldron of Cadence recipe data is invalid.')
-    this.name = 'InvalidCauldronRecipesError'
-  }
-}
-
-const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null
-
-const isEffect = (value: unknown): value is CauldronEffect => {
-  if (!isRecord(value)) return false
-
-  return (
-    typeof value.name === 'string' &&
-    (typeof value.modifier === 'number' || typeof value.modifier === 'string') &&
-    (value.bonus === undefined || typeof value.bonus === 'string')
-  )
-}
-
-const isRequirement = (value: unknown): value is CauldronRequirement =>
-  isRecord(value) && typeof value.name === 'string' && typeof value.quantity === 'number'
-
-const isSetBonus = (value: unknown): value is CauldronSetBonus =>
-  isRecord(value) &&
-  typeof value.name === 'string' &&
-  typeof value.numPiecesEquipped === 'number' &&
-  Array.isArray(value.enhancements) &&
-  value.enhancements.every(isEffect)
-
-const isRecipe = (value: unknown): value is CauldronRecipe => {
-  if (!isRecord(value) || !isRecord(value.baseValue) || !isRecord(value.binding)) return false
-
-  return (
-    typeof value.augmentType === 'string' &&
-    typeof value.baseValue.platinum === 'number' &&
-    typeof value.binding.type === 'string' &&
-    typeof value.binding.to === 'string' &&
-    typeof value.binding.from === 'string' &&
-    typeof value.craftedIn === 'string' &&
-    typeof value.description === 'string' &&
-    typeof value.image === 'string' &&
-    typeof value.minimumLevel === 'number' &&
-    typeof value.name === 'string' &&
-    typeof value.quantity === 'number' &&
-    Array.isArray(value.requirements) &&
-    value.requirements.length > 0 &&
-    value.requirements.every(isRequirement) &&
-    Array.isArray(value.setBonus) &&
-    value.setBonus.length > 0 &&
-    value.setBonus.every(isSetBonus) &&
-    typeof value.weight === 'number'
-  )
-}
-
-export const loadCauldronRecipes = async (): Promise<CauldronRecipes> => {
-  const value = await loadManualPayload<unknown>('cauldronOfCadence.recipes')
-
-  if (!Array.isArray(value) || !value.every(isRecipe)) throw new InvalidCauldronRecipesError()
-
-  return value
-}
-
-export const getRequiredItemName = (recipe: CauldronRecipe): string => recipe.requirements.at(-1)?.name ?? ''
+export const getRequiredItemName = (recipe: CauldronRecipe): string => recipe.requiredItem
 
 export const getItemOptions = (recipes: CauldronRecipes, selectedItem: string | null): CauldronOption[] =>
   recipes
@@ -132,7 +71,11 @@ export const getEffectOptions = (recipes: CauldronRecipes, selectedItem: string 
 
       return {
         value: setBonus.name,
-        label: setBonus.enhancements.map(formatEffect).join(', '),
+        searchText: [setBonus.name, ...setBonus.enhancements.map(formatEffect)].join(' ').toLowerCase(),
+        label:
+          setBonus.enhancements.length > 2
+            ? setBonus.name + ' · ' + String(setBonus.enhancements.length) + ' effects'
+            : setBonus.enhancements.map(formatEffect).join(', '),
         disabled: selectedItem !== null && (!recipe || getRequiredItemName(recipe) !== selectedItem)
       }
     })

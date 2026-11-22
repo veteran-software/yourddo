@@ -1,4 +1,5 @@
 import { convertLegacyGearSave } from './legacyImport'
+import { alchemicalStageOrder } from './alchemicalCrafting'
 import { gearCraftGroups, applyGearCraft } from './crafting.ts'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { gearPlannerAugmentIdentity, isCompatibleGearPlannerAugment } from './augments.ts'
@@ -594,7 +595,9 @@ function restoreGearCrafts(
   { data }: RestoreCatalog,
   report: ReportIssue
 ) {
-  for (const { itemId, system, choiceId } of savedSetup.selectedCrafts ?? []) {
+  for (const { itemId, system, choiceId } of (savedSetup.selectedCrafts ?? []).toSorted(
+    (a, b) => alchemicalStageOrder(a.system) - alchemicalStageOrder(b.system)
+  )) {
     const slot = allGearPlannerSlots.find((s) => equipment[s]?.id === itemId)
     const item = slot && equipment[slot]
     const group = item && gearCraftGroups(item, data.crafting).find((g) => g.system === system)
@@ -604,7 +607,7 @@ function restoreGearCrafts(
         system === 'slave-lords' && item.slaveLordsBase
           ? choiceId.replace("Slave's Endurance", "Slaver's Endurance")
           : choiceId
-      const updated = applyGearCraft(item, group, restoredChoice)
+      const updated = applyGearCraft(item, group, restoredChoice, data.crafting)
       if (updated !== item) {
         equipment[slot] = updated
         continue

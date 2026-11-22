@@ -23,11 +23,10 @@ vi.mock('./recipes.ts', async (importOriginal) => {
 
 const createRecipe = (item: string, set: string, effects: CauldronEffect[]): CauldronRecipe => ({
   augmentType: 'Colorless',
-  baseValue: { platinum: 500 },
+  requiredItem: item,
   binding: { type: 'Bound', to: 'Account', from: 'Acquisition' },
   craftedIn: 'Cauldron of Cadence',
   description: `Slotting this Augment in any Augment Slot will override its Set Bonus to the ${set} set.`,
-  image: 'cauldronOfCadenceAugment',
   minimumLevel: 30,
   name: `Set Augment: ${set}`,
   quantity: 1,
@@ -36,8 +35,7 @@ const createRecipe = (item: string, set: string, effects: CauldronEffect[]): Cau
     { name: 'Empty Soul Vessel', quantity: 1 },
     { name: item, quantity: 1 }
   ],
-  setBonus: [{ name: set, numPiecesEquipped: 3, enhancements: effects }],
-  weight: 0.01
+  setBonus: [{ name: set, numPiecesEquipped: 3, enhancements: effects }]
 })
 
 const perfectSilence = createRecipe('Vestments of Ravenloft', 'Perfect Silence', [
@@ -92,7 +90,7 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-  vi.mocked(loadCauldronRecipes).mockResolvedValue(recipes)
+  vi.mocked(loadCauldronRecipes).mockResolvedValue({ augments: recipes, weapons: [] })
 })
 
 afterEach(() => {
@@ -108,7 +106,7 @@ afterAll(() => {
 
 describe('CauldronOfCadencePage', () => {
   it('shows a stable loading state before rendering controls', async () => {
-    let resolveRecipes: (value: CauldronRecipe[]) => void = () => undefined
+    let resolveRecipes: (value: Awaited<ReturnType<typeof loadCauldronRecipes>>) => void = () => undefined
     vi.mocked(loadCauldronRecipes).mockReturnValue(
       new Promise((resolve) => {
         resolveRecipes = resolve
@@ -122,7 +120,7 @@ describe('CauldronOfCadencePage', () => {
     expect(screen.queryByRole('combobox', { name: 'Required item' })).toBeNull()
 
     await act(async () => {
-      resolveRecipes(recipes)
+      resolveRecipes({ augments: recipes, weapons: [] })
       await Promise.resolve()
     })
 
@@ -130,9 +128,11 @@ describe('CauldronOfCadencePage', () => {
   })
 
   it('shows a friendly failure and recovers on retry', async () => {
-    const cause = new Error('Manual payload request failed: 503 Unavailable')
+    const cause = new Error('Dataset request failed: 503 Unavailable')
     cause.stack = 'private stack trace'
-    vi.mocked(loadCauldronRecipes).mockRejectedValueOnce(cause).mockResolvedValueOnce(recipes)
+    vi.mocked(loadCauldronRecipes)
+      .mockRejectedValueOnce(cause)
+      .mockResolvedValueOnce({ augments: recipes, weapons: [] })
 
     renderPage()
 
@@ -149,7 +149,7 @@ describe('CauldronOfCadencePage', () => {
   it('distinguishes invalid data from a request failure and retries it', async () => {
     vi.mocked(loadCauldronRecipes)
       .mockRejectedValueOnce(new InvalidCauldronRecipesError())
-      .mockResolvedValueOnce(recipes)
+      .mockResolvedValueOnce({ augments: recipes, weapons: [] })
 
     renderPage()
 
@@ -162,7 +162,7 @@ describe('CauldronOfCadencePage', () => {
   })
 
   it('shows a distinct empty-dataset state', async () => {
-    vi.mocked(loadCauldronRecipes).mockResolvedValue([])
+    vi.mocked(loadCauldronRecipes).mockResolvedValue({ augments: [], weapons: [] })
 
     renderPage()
 
@@ -227,6 +227,43 @@ describe('CauldronOfCadencePage', () => {
     expect(screen.getByRole('heading', { name: 'Select an item or effect' })).toBeTruthy()
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Required item' }).value).toBe('')
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Set bonus effect' }).value).toBe('')
+  })
+
+  it('browses each Ferrocrystal tier and shows the selected weapon cost and effects', async () => {
+    const user = userEvent.setup()
+    vi.mocked(loadCauldronRecipes).mockResolvedValue({
+      augments: recipes,
+      weapons: [
+        {
+          id: 1,
+          tier: 'heroic',
+          minimumLevel: 5,
+          name: 'Ferrocrystal Dagger',
+          description: 'Crystal dagger',
+          effects: ['Feybane 2'],
+          requirements: [{ name: 'Chunk of Ferrocrystal', quantity: 20 }]
+        },
+        {
+          id: 2,
+          tier: 'legendary',
+          minimumLevel: 29,
+          name: 'Legendary Ferrocrystal Dagger',
+          description: 'Crystal dagger',
+          effects: ['Feybane 6'],
+          requirements: [{ name: 'Legendary Chunk of Ferrocrystal', quantity: 20 }]
+        }
+      ]
+    })
+    renderPage()
+    await user.click(await screen.findByText('Ferrocrystal weapons'))
+    await selectOption(user, 'Ferrocrystal weapon', 'Ferrocrystal Dagger')
+    expect(screen.getByText('Feybane 2')).toBeTruthy()
+    await user.click(screen.getByText('Legendary'))
+    expect(screen.queryByText('Feybane 2')).toBeNull()
+    await selectOption(user, 'Ferrocrystal weapon', 'Legendary Ferrocrystal Dagger')
+    expect(screen.getByText('Legendary Chunk of Ferrocrystal')).toBeTruthy()
+    expect(screen.getByText('×20')).toBeTruthy()
+    expect(screen.getByText('Feybane 6')).toBeTruthy()
   })
 
   it('preserves the usage note, minimum-level warning, and known-issues link', async () => {

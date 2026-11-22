@@ -1,5 +1,6 @@
+import { alchemicalRecipeHref } from '../alchemicalCrafting'
 import { TroveOwnership } from './TroveInventory'
-import { Box, Select, Stack, Switch, Text } from '@mantine/core'
+import { Anchor, Box, Select, Stack, Switch, Text } from '@mantine/core'
 import { gearCraftGroups, type GearCraftingData } from '../crafting.ts'
 import type { GearPlannerItem } from '../gearPlanner.types.ts'
 
@@ -14,6 +15,7 @@ export default function ItemCraftingSelector({
 }>) {
   const groups = gearCraftGroups(item, data)
   if (!groups.length) return null
+  const recipeHref = alchemicalRecipeHref(item)
   const selected = item.crafts ?? []
   return (
     <Box component='details'>
@@ -21,6 +23,11 @@ export default function ItemCraftingSelector({
         Item upgrades{selected.length ? ` (${String(selected.length)})` : ''}
       </Text>
       <Stack mt='xs' gap='xs'>
+        {recipeHref && (
+          <Anchor href={recipeHref} size='sm'>
+            Open crafting recipe
+          </Anchor>
+        )}
         {groups.map((group) => {
           const value = selected.find((c) => c.system === group.system)?.id ?? null
           if (group.replacesEnchantments)

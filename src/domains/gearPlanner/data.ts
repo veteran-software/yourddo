@@ -1,3 +1,4 @@
+import { loadOptionalAlchemicalData } from '../alchemical/loadAlchemicalData'
 import { loadOptionalSlaveLordsData } from '../slaveLords/loadSlaveLordsData'
 import { slaveLordsSetDefinitions } from './slaveLordsCrafting'
 import { craftItemKey, type GearCraftingData } from './crafting.ts'
@@ -312,6 +313,7 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
   const [
     crafting,
     slaveLords,
+    alchemical,
     rawCurses,
     rawSets,
     rawReforging,
@@ -323,6 +325,7 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
   ] = await Promise.all([
     loadCraftingData(),
     loadOptionalSlaveLordsData(),
+    loadOptionalAlchemicalData(),
     loadManualPayload<unknown>('deckOfManyCurses'),
     loadManualPayload<unknown>('itemSets.enchantments'),
     loadManualPayload<unknown>(nearlyFinishedPayloadName),
@@ -341,7 +344,8 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
     sourceDatasets,
     parseGearPlannerAugmentDataset(rawAugments),
     new Set(reforgingEntries.map(({ item }) => item)),
-    slaveLords
+    slaveLords,
+    alchemical
   )
   const filigreeSetDefinitions = parseGearPlannerFiligreeSetDataset(rawFiligreeSets)
   const filigreeSetDefinitionByName = new Map(filigreeSetDefinitions.map((definition) => [definition.name, definition]))
@@ -349,7 +353,7 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
   return {
     ...normalized,
     setIndex,
-    crafting: { ...crafting, slaveLords },
+    crafting: { ...crafting, slaveLords, alchemical },
     standardSets: new Map([
       ...standardGearPlannerSetDefinitionByName,
       ...parseGearPlannerFiligreeSetDataset(rawSets, 'itemSets.enchantments').map((set) => [set.name, set] as const),
