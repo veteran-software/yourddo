@@ -60,7 +60,7 @@ export default function CharacterSetupTool({
       {settings.classes.includes('Druid') && (
         <Checkbox
           label='Allow metal armor and shields'
-          description='Override the Druidic Oath when browsing equipment.'
+          description='Override the Druidic Oath for equipped gear, gear searches, and Essence Crafting materials.'
           checked={settings.allowMetalWithDruid}
           onChange={(event) => {
             onChange({ ...settings, allowMetalWithDruid: event.currentTarget.checked })

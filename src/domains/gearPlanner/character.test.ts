@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { getEssenceCraftedGearPlannerItems } from './essenceCrafting'
 import { changeClasses, characterAllowsItem, defaultCharacter } from './character'
 import type { GearPlannerItem } from './gearPlanner.types'
 import { normalizeGearPlannerSources } from './normalize'
@@ -29,6 +30,22 @@ describe('Gear Planner character setup', () => {
     expect(allowed('Off Hand', 'Small Shield', 'Wood')).toBe(true)
     expect(allowed('Main Hand', 'Scimitar', 'Steel')).toBe(true)
     expect(allowed('Wolf Companion Armor', 'Docent', 'Steel')).toBe(true)
+  })
+  it('uses the configured Essence material for armor and shields across class and override changes', () => {
+    const druid = changeClasses(defaultCharacter(), ['Fighter', 'Druid'])
+    const fighter = changeClasses(defaultCharacter(), ['Fighter'])
+    const templates = [
+      ...getEssenceCraftedGearPlannerItems('Armor', 1),
+      ...getEssenceCraftedGearPlannerItems('Off Hand', 1)
+    ]
+    for (const template of templates) {
+      const covered = template.slot === 'Armor' || template.essenceCrafting?.kind === 'shield'
+      expect(characterAllowsItem(druid, template, 'Flametouched Iron')).toBe(!covered)
+      expect(characterAllowsItem(druid, template, 'Wood')).toBe(true)
+      expect(characterAllowsItem(druid, template)).toBe(true)
+      expect(characterAllowsItem({ ...druid, allowMetalWithDruid: true }, template, 'Byeshk')).toBe(true)
+      expect(characterAllowsItem(fighter, template, 'Byeshk')).toBe(true)
+    }
   })
   it('restores both legacy companions, their separate upgrades and character settings through JSON and permalinks', () => {
     const collar = { name: 'Test Collar', type: 'Collar', minLevel: 12, augments: [{ augmentType: 'Red' }] }

@@ -1,3 +1,4 @@
+import { type CharacterSettings, violatesDruidicOath } from '../character'
 import { Select, SimpleGrid, Stack, Text } from '@mantine/core'
 import { formatResolvedEffectModifier, resolveEnhancementEffects } from '../../essenceCrafting/enhancementEffects.ts'
 import type { EssenceCraftingData, EssenceEnhancement } from '../../essenceCrafting/essenceCrafting.types.ts'
@@ -11,6 +12,7 @@ import {
 import type { GearPlannerCurse, GearPlannerItem } from '../gearPlanner.types.ts'
 
 interface EssenceCraftingSelectorProps {
+  character: CharacterSettings
   item: GearPlannerItem
   data: EssenceCraftingData
   configuration: GearPlannerEssenceCraftingConfiguration
@@ -76,6 +78,7 @@ const EffectDetails = ({
 }
 
 const EssenceCraftingSelector = ({
+  character,
   item,
   data,
   configuration,
@@ -116,7 +119,11 @@ const EssenceCraftingSelector = ({
           label='Material'
           placeholder='None'
           clearable
-          data={gearPlannerEssenceCraftingMaterials.map((material) => ({ value: material, label: material }))}
+          data={gearPlannerEssenceCraftingMaterials.map((material) => ({
+            value: material,
+            label: material,
+            disabled: violatesDruidicOath(character, item, material)
+          }))}
           value={configuration.material || null}
           onChange={(material) => {
             onMaterialChange(material ?? '')

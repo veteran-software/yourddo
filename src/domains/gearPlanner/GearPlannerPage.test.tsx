@@ -132,6 +132,7 @@ afterEach(() => {
 })
 
 beforeAll(() => {
+  Object.defineProperty(Element.prototype, 'scrollIntoView', { configurable: true, value: vi.fn() })
   vi.stubGlobal(
     'matchMedia',
     vi.fn(() => ({
@@ -162,6 +163,7 @@ beforeAll(() => {
 })
 
 afterAll(() => {
+  Reflect.deleteProperty(Element.prototype, 'scrollIntoView')
   vi.unstubAllGlobals()
 })
 
@@ -899,6 +901,27 @@ describe('GearPlannerPage', () => {
       expect(screen.getByText(candidate)).toBeTruthy()
       fireEvent.click(screen.getByRole('button', { name: 'Back to equipment' }))
     }
+  })
+
+  it('keeps equipped Essence armor and updates its oath warning and material choices with character settings', async () => {
+    await renderReadyPage(dataWithItems([]))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Armor' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Essence Crafted Armor' }))
+    const material = screen.getByRole('combobox', { name: 'Material' })
+    fireEvent.click(material)
+    fireEvent.click(await screen.findByRole('option', { name: 'Byeshk' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Character setup' }))
+    fireEvent.click(screen.getByRole('combobox', { name: 'Character classes' }))
+    fireEvent.click(await screen.findByRole('option', { name: 'Druid' }))
+    const armor = screen.getByTestId('gear-slot-Armor')
+    expect(armor.textContent).toContain('Essence Crafted Armor')
+    expect(armor.textContent).toContain('Violates Druidic Oath')
+    fireEvent.click(material)
+    expect((await screen.findByRole('option', { name: 'Byeshk' })).getAttribute('aria-disabled')).toBe('true')
+    expect(screen.getByRole('option', { name: 'Wood' }).getAttribute('aria-disabled')).not.toBe('true')
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Allow metal armor and shields' }))
+    expect(armor.textContent).not.toContain('Violates Druidic Oath')
+    expect((material as HTMLInputElement).value).toBe('Byeshk')
   })
 
   it('equips and configures a synthetic Essence Crafted item with current v2 effect data', async () => {
