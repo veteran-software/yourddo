@@ -18,6 +18,10 @@ interface CurseSelectorProps {
 const CurseSelector = ({ item, curses, selected, conflictSources, onChange }: CurseSelectorProps) => {
   const [opened, setOpened] = useState(false)
   const [search, setSearch] = useState('')
+  const remainingSources = useMemo(
+    () => conflictSources.filter((source) => source.category !== 'curse' || source.itemId !== item.id),
+    [conflictSources, item.id]
+  )
   const visible = useMemo(
     () =>
       curses
@@ -112,7 +116,7 @@ const CurseSelector = ({ item, curses, selected, conflictSources, onChange }: Cu
             <Stack gap='xs'>
               {visible.map((curse) => {
                 const previews = curse.enchantments.map((effect) =>
-                  previewPotentialEffectConflict(effect, conflictSources, item.id)
+                  previewPotentialEffectConflict(effect, remainingSources)
                 )
                 const conflicting = previews.some(({ isConflict, isRedundant }) => isConflict && isRedundant)
                 const upgrade = previews.some(({ isConflict, isUpgrade }) => isConflict && isUpgrade)

@@ -1,7 +1,7 @@
 import { emptyGearCraftingData } from './crafting.ts'
 import { describe, expect, it } from 'vitest'
 import { gearPlannerAugmentIdentity } from './augments.ts'
-import { conflictEligibleEffectSources, collectEquippedEffects } from './effects.ts'
+import { conflictEligibleEffectSources, collectEquippedEffects, previewPotentialEffectConflict } from './effects.ts'
 import {
   allGearPlannerSlots,
   type GearPlannerAugment,
@@ -292,7 +292,7 @@ describe('Gear Planner reforging domain', () => {
     expect(getEffectiveGearPlannerAugmentSlots(blade, state.reforging[blade.id], reforging)[0]?.augmentType).toBe('Red')
   })
 
-  it('emits tier and choice provenance, but only Nearly Finished choices join legacy conflicts', () => {
+  it('compares active tier and choice effects from every reforging stage', () => {
     const blade = item()
     const trinket = item('Choice Trinket', gearPlannerSlots.trinket)
     let state = equipGearPlannerItemInSelection(
@@ -316,6 +316,13 @@ describe('Gear Planner reforging domain', () => {
       { kind: 'choice', choiceId: 'label:Spell DC: Evocation +2' },
       reforging
     )
+    state = setGearPlannerItemReforgingState(
+      state,
+      trinket.id,
+      'finishing-touch',
+      { kind: 'choice', choiceId: 'label:Spell DC: Necromancy +2' },
+      reforging
+    )
     const effectSources = collectEquippedEffects(
       state.equipment,
       state.slottedAugments,
@@ -330,9 +337,17 @@ describe('Gear Planner reforging domain', () => {
         expect.objectContaining({ category: 'reforging-choice', reforgingStage: 'almost-there' })
       ])
     )
-    expect(
-      conflictEligibleEffectSources(effectSources).filter(({ category }) => category === 'reforging-choice')
-    ).toMatchObject([{ reforgingStage: 'nearly-finished' }])
+    for (const name of ['Spell DC: Evocation +2', 'Spell DC: Necromancy +2']) {
+      expect(
+        previewPotentialEffectConflict(
+          { name, bonus: 'Enhancement', modifier: 1 },
+          conflictEligibleEffectSources(effectSources)
+        )
+      ).toMatchObject({
+        isOverpowered: true,
+        currentMax: 2
+      })
+    }
   })
 
   it('cleans reforging with replaced items and restores compact valid state before augment validation', () => {

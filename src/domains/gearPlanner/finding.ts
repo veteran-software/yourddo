@@ -64,8 +64,7 @@ export function createCandidateComparison(sources: readonly GearPlannerEffectSou
       matches &&
       previewPotentialEffectConflict(
         effect,
-        matches.filter((source) => source.slot !== item.slot),
-        item.id
+        matches.filter((source) => source.slot !== item.slot)
       )
     )
   }
