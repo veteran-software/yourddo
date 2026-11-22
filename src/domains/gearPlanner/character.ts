@@ -1,4 +1,4 @@
-import type { GearPlannerItem } from './gearPlanner.types'
+import type { GearPlannerData, GearPlannerItem } from './gearPlanner.types'
 import { gearPlannerCharacterSlots, gearPlannerSlots } from './gearPlanner.types'
 
 const WEAPON_TYPES: Record<string, string[]> = {
@@ -105,7 +105,7 @@ const CLASS_PROFICIENCIES: Record<string, ClassProficiencies> = {
     shields: ['Buckler', 'Large Shield', 'Orb', 'Small Shield', 'Tower Shield']
   },
   Monk: {
-    weapons: [...WEAPON_TYPES.Simple, 'Hand Axe', 'Handwraps', 'Kama', 'Shuriken'],
+    weapons: [...WEAPON_TYPES.Simple, 'Unarmed', 'Hand Axe', 'Handwraps', 'Kama', 'Shuriken'],
     armor: ['Cloth Armor'],
     shields: []
   },
@@ -135,16 +135,42 @@ const CLASS_PROFICIENCIES: Record<string, ClassProficiencies> = {
     shields: []
   },
   Wizard: {
-    weapons: ['Club', 'Scepter', 'Dagger', 'Quarterstaff', 'Heavy Crossbow', 'Light Crossbow', 'Throwing Dagger'],
+    weapons: ['Club', 'Unarmed', 'Dagger', 'Quarterstaff', 'Heavy Crossbow', 'Light Crossbow', 'Throwing Dagger'],
     armor: ['Cloth Armor'],
     shields: []
   }
 }
 
 export const classNames = Object.keys(CLASS_PROFICIENCIES)
-const weaponTypes = [
-  ...new Set([...Object.values(WEAPON_TYPES).flat(), ...Object.values(CLASS_PROFICIENCIES).flatMap((p) => p.weapons)])
-].sort((left, right) => left.localeCompare(right))
+const weaponTypes = Object.values(WEAPON_TYPES).flat()
+export function catalogWeaponTypes(data: GearPlannerData): string[] {
+  const types = data.itemsBySlot['Main Hand'].flatMap(({ source }) => (source.type ? [source.type] : []))
+  return [...new Set(types)].sort((left, right) => left.localeCompare(right))
+}
+
+export function normalizeSavedWeaponFilters(values: readonly unknown[], available: readonly string[]) {
+  const normalized = [
+    ...new Set(
+      values.map((value) => {
+        if (value === 'Longsword') return 'Long Sword'
+        if (value === 'Handaxe') return 'Hand Axe'
+        return value
+      })
+    )
+  ]
+  const current = normalized.filter(
+    (value) => value !== 'Scepter' && (value !== 'Unarmed' || available.includes('Unarmed'))
+  )
+  // Preserve an unavailable-only selection: an empty array means all weapons.
+  const hasKnownReplacement = current.some(
+    (value) => typeof value === 'string' && (weaponTypes.includes(value) || available.includes(value))
+  )
+  return hasKnownReplacement ? current : normalized
+}
+
+export function savedWeaponFilterOptions(available: readonly string[]) {
+  return [...available, ...weaponTypes, 'Scepter', 'Unarmed']
+}
 export interface CharacterSettings {
   classes: string[]
   weapons: string[]
@@ -161,11 +187,23 @@ export const defaultCharacter = (): CharacterSettings => ({
   allowMetalWithDruid: false
 })
 export const proficiencyOptions = { weapons: weaponTypes, armor: ARMOR_TYPES, shields: SHIELD_TYPES }
-export function changeClasses(current: CharacterSettings, classes: string[]): CharacterSettings {
+export function changeClasses(
+  current: CharacterSettings,
+  classes: string[],
+  availableWeapons: readonly string[] = weaponTypes
+): CharacterSettings {
   const next = { ...current, classes }
   for (const key of ['weapons', 'armor', 'shields'] as const) {
     const previous = new Set(current.classes.flatMap((c) => CLASS_PROFICIENCIES[c][key]))
-    const granted = classes.flatMap((c) => CLASS_PROFICIENCIES[c][key])
+    if (
+      key === 'weapons' &&
+      current.weapons.length &&
+      current.weapons.every((value) => !availableWeapons.includes(value))
+    )
+      continue
+    const granted = classes
+      .flatMap((c) => CLASS_PROFICIENCIES[c][key])
+      .filter((value) => key !== 'weapons' || availableWeapons.includes(value))
     next[key] = [...new Set([...current[key].filter((value) => !previous.has(value)), ...granted])]
   }
   return next

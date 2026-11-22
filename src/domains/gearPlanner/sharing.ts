@@ -32,7 +32,7 @@ function mapAugmentIds(setup: PersistedGearPlannerSetupV1, resolve: (id: string)
 }
 
 function restoreSharedSetup(text: string, data: GearPlannerData, essence?: EssenceCraftingData) {
-  const payload = parsePersistedGearPlannerState(JSON.parse(text))
+  const payload = parsePersistedGearPlannerState(JSON.parse(text), data)
   if (payload.setups.length !== 1) throw new Error('A Gear Planner permalink must contain one setup.')
   const known = new Map<string, string>()
   const unique = new Map<string, string | null>()

@@ -1,3 +1,4 @@
+import { catalogWeaponTypes, changeClasses, characterAllowsItem, classNames, defaultCharacter } from './character'
 import { describe, expect, it, vi } from 'vitest'
 import {
   InvalidGearPlannerDataError,
@@ -245,6 +246,20 @@ describe('Gear Planner production CDN validation', () => {
     })
     try {
       const data = await loadGearPlannerData()
+      const weaponTypes = catalogWeaponTypes(data)
+      for (const className of classNames) {
+        const character = changeClasses(defaultCharacter(), [className], weaponTypes)
+        for (const type of character.weapons) {
+          expect(
+            data.itemsBySlot['Main Hand'].some(
+              (candidate) => candidate.source.type === type && characterAllowsItem(character, candidate)
+            ),
+            className + ' / ' + type
+          ).toBe(true)
+        }
+      }
+      expect(changeClasses(defaultCharacter(), ['Bard'], weaponTypes).weapons).toContain('Long Sword')
+      expect(changeClasses(defaultCharacter(), ['Monk'], weaponTypes).weapons).toContain('Hand Axe')
       const filigreeNameCounts = new Map<string, number>()
       for (const { name } of data.filigrees) filigreeNameCounts.set(name, (filigreeNameCounts.get(name) ?? 0) + 1)
       const duplicateFiligreeDisplayNameGroups = [...filigreeNameCounts.values()].filter((count) => count > 1).length
