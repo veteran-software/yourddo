@@ -1,4 +1,12 @@
-import { characterAllowsItem, enabledOwners, type GearOwner, ownerSlots, slotOwner } from './character'
+import {
+  type CharacterSettings,
+  violatesDruidicOath,
+  characterAllowsItem,
+  enabledOwners,
+  type GearOwner,
+  ownerSlots,
+  slotOwner
+} from './character'
 import { UpgradePathsTool, UpgradeResults } from './tools/UpgradePathsTool'
 import type { PathRequest } from './upgradePaths'
 import LoadoutComparison from './components/LoadoutComparison'
@@ -235,6 +243,7 @@ const itemMetadata = (item: GearPlannerItem, essenceMinimumLevel?: number) =>
   }`
 
 interface EquipmentEditorProps {
+  character: CharacterSettings
   inline: boolean
   sets: readonly string[]
   openSet: (name: string) => void
@@ -272,6 +281,7 @@ interface EquipmentEditorProps {
 }
 
 const EquipmentEditor = ({
+  character,
   inline,
   sets,
   openSet,
@@ -317,6 +327,11 @@ const EquipmentEditor = ({
             </Text>
             <ItemMaterial item={item} selectedMaterial={essenceCrafting[item.id]?.material} />
           </Group>
+          {violatesDruidicOath(character, item, essenceCrafting[item.id]?.material) && (
+            <Text size='xs' c='orange'>
+              Violates Druidic Oath. Change the gear or allow metal in Character Setup.
+            </Text>
+          )}
           <ItemSetLinks names={sets} onOpen={openSet} />
           <TroveOwnership name={item.source.name} />
         </Stack>
@@ -418,6 +433,7 @@ const EquipmentEditor = ({
               ) : null}
               {isEssenceCraftedGearPlannerItem(item) && essenceCrafting[item.id] ? (
                 <EssenceCraftingSelector
+                  character={character}
                   item={item}
                   data={essenceData}
                   configuration={essenceCrafting[item.id]}
@@ -1160,15 +1176,17 @@ const GearPlannerWorkspace = () => {
     () =>
       dataState.status === 'ready'
         ? prepareGearPlannerCandidates(
-            slots.flatMap((s) => [
-              ...getEssenceCraftedGearPlannerItems(s, activeSetup.minimumLevel),
-              ...dataState.data.itemsBySlot[s].filter((item) => characterAllowsItem(activeSetup.character, item))
-            ]),
+            slots
+              .flatMap((s) => [
+                ...getEssenceCraftedGearPlannerItems(s, activeSetup.minimumLevel),
+                ...dataState.data.itemsBySlot[s]
+              ])
+              .filter((item) => characterAllowsItem(activeSetup.character, item, essenceCrafting[item.id]?.material)),
             dataState.data,
             dataState.essenceData
           )
         : [],
-    [dataState, slots, activeSetup.minimumLevel, activeSetup.character]
+    [dataState, slots, activeSetup.minimumLevel, activeSetup.character, essenceCrafting]
   )
   function findGear(target?: GearFindTarget) {
     if (returnSlot && !target) {
@@ -1502,6 +1520,7 @@ const GearPlannerWorkspace = () => {
   const renderEquipmentEditor = (cardSlot: GearPlannerSlot, cardItem: GearPlannerItem, inline: boolean) =>
     dataState.status === 'ready' && (
       <EquipmentEditor
+        character={activeSetup.character}
         inline={inline}
         openSet={openSet}
         sets={setState.memberships
@@ -1869,6 +1888,9 @@ const GearPlannerWorkspace = () => {
                     slots.map((name) => {
                       const equipped = equipment[name]
                       const SlotIcon = slotIcons[name]
+                      const oathViolation =
+                        equipped &&
+                        violatesDruidicOath(activeSetup.character, equipped, essenceCrafting[equipped.id]?.material)
                       if (view === 'grid')
                         return (
                           <article key={name} className={classes.gearCard} aria-label={name + ' equipment'}>
@@ -1910,7 +1932,11 @@ const GearPlannerWorkspace = () => {
                           aria-label={`Select ${name}`}
                           aria-current={slot === name ? true : undefined}
                           title={equipped?.source.name}
-                          aria-description={equipped?.source.name ?? 'Empty'}
+                          aria-description={
+                            oathViolation
+                              ? equipped.source.name + ' · Violates Druidic Oath'
+                              : (equipped?.source.name ?? 'Empty')
+                          }
                           aria-controls='gear-detail-panel'
                           data-testid={`gear-slot-${name}`}
                           onClick={() => {
@@ -1934,6 +1960,11 @@ const GearPlannerWorkspace = () => {
                             <Text size='xs' c='dimmed' truncate>
                               {equipped?.source.name ?? 'Empty'}
                             </Text>
+                            {oathViolation && (
+                              <Text size='xs' c='orange'>
+                                Violates Druidic Oath
+                              </Text>
+                            )}
                           </Stack>
                           <IconChevronRight aria-hidden size={14} />
                         </UnstyledButton>

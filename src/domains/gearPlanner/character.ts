@@ -199,6 +199,7 @@ const metals = new Set([
   'adamantine',
   'alchemical silver',
   'cold iron',
+  'flametouched iron',
   'byeshk',
   'bronze',
   'copper',
@@ -216,17 +217,27 @@ function proficiencyGroup(slot: GearPlannerItem['slot'], shield: boolean) {
   return null
 }
 
-export function characterAllowsItem(settings: CharacterSettings, item: GearPlannerItem) {
+export function violatesDruidicOath(
+  settings: CharacterSettings,
+  item: GearPlannerItem,
+  material = item.source.material
+) {
+  const type = item.source.type ?? ''
+  const covered =
+    item.slot === 'Armor' ||
+    (item.slot === 'Off Hand' && SHIELD_TYPES.includes(type) && type !== 'Orb' && type !== 'Rune Arm')
+  return covered && settings.classes.includes('Druid') && !settings.allowMetalWithDruid && isMetalMaterial(material)
+}
+
+export function characterAllowsItem(
+  settings: CharacterSettings,
+  item: GearPlannerItem,
+  material = item.source.material
+) {
+  if (violatesDruidicOath(settings, item, material)) return false
   if (item.essenceCrafting || slotOwner(item.slot) !== 'Character') return true
   const type = item.source.type ?? ''
   const shield = SHIELD_TYPES.includes(type)
-  if (
-    settings.classes.includes('Druid') &&
-    !settings.allowMetalWithDruid &&
-    (item.slot === 'Armor' || (item.slot === 'Off Hand' && shield && type !== 'Orb' && type !== 'Rune Arm')) &&
-    isMetalMaterial(item.source.material)
-  )
-    return false
   const key = proficiencyGroup(item.slot, shield)
   return (
     !key || !settings[key].length || settings[key].includes(type === 'Robe' || type === 'Outfit' ? 'Cloth Armor' : type)
