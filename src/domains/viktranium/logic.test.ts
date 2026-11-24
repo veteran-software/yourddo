@@ -56,6 +56,13 @@ describe('Viktranium logic', () => {
     expect(finished.baseEffects).toHaveLength(1)
   })
 
+  it('describes a missing augment by slot without exposing its ID', () => {
+    const data = setup()
+    const item = required(data.indexes.itemById.get('item-heroic-crafted'))
+    const finished = calculateFinishedItem(item, { 'slot-red': 'augment-retired' }, data)
+    expect(finished.warnings).toEqual(['Red: the selected augment is no longer available.'])
+  })
+
   it('aggregates and multiplies nested requirements without mutation', () => {
     const data = setup()
     const item = required(data.indexes.itemById.get('item-heroic-crafted'))

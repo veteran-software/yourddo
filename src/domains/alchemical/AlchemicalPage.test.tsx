@@ -172,13 +172,17 @@ describe('Alchemical Crafting', () => {
     ).toBe('Sharing')
     await user.click(rail.getByRole('button', { name: 'Sharing' }))
     const panel = within(screen.getByRole('complementary', { name: 'Sharing' }))
+    await user.click(panel.getByRole('button', { name: 'Copy Permalink' }))
+    const link = new URL(vi.mocked(copyText).mock.lastCall?.[0] ?? '')
+    expect(link.pathname).toBe('/alchemical')
+    expect(link.search).toMatch(/^\?build=1\.[A-Za-z0-9]+$/)
     for (const [button, text] of [
-      ['Copy Permalink', '/alchemical?base=11&recipes=20,21'],
       ['Copy Discord', '**Alchemical Scimitar · ML 12**'],
       ['Copy Forum', '[b]Alchemical Scimitar · ML 12[/b]']
     ]) {
       await user.click(panel.getByRole('button', { name: button }))
       expect(vi.mocked(copyText).mock.lastCall?.[0]).toContain(text)
+      expect(vi.mocked(copyText).mock.lastCall?.[0]).toContain(link.href)
     }
     await user.click(panel.getByRole('button', { name: 'Copy JSON' }))
     const json = vi.mocked(copyText).mock.lastCall?.[0]
@@ -195,6 +199,9 @@ describe('Alchemical Crafting', () => {
     await user.click(panel.getByRole('button', { name: 'Load Build' }))
     expect(panel.getByRole('alert').textContent).toContain('incompatible binding')
     expect(tier.value).toBe('Bind Fire')
+    cleanup()
+    renderPage(link.pathname + link.search)
+    expect((await screen.findByRole<HTMLInputElement>('combobox', { name: 'Tier 1' })).value).toBe('Bind Fire')
   })
   it('lets players look up a component or exchange separately from their item', async () => {
     const user = userEvent.setup()

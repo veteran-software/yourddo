@@ -418,16 +418,26 @@ describe('EssenceCraftingPage', () => {
     expect(screen.getAllByText('Mark of House Cannith')).toHaveLength(2)
   })
 
-  it('shows a split prefix exactly once in the detailed Recipes plan', async () => {
+  it('shows a split prefix once and keeps recipe IDs out of recipe details', async () => {
     const user = userEvent.setup()
     renderPage()
 
     await activateSlot(user, 'Main Hand')
     await selectOption(user, 'Prefix for Main Hand', 'Split Prefix Test')
-    await openRecipes(user)
+    await addAugmentSlot(user, 'Main Hand', 'Red')
+    await selectOption(user, 'Augment for Red augment slot on Main Hand', /Ruby of Charisma \+1/)
+    const recipes = await openRecipes(user)
 
-    expect(screen.getByText('Prefix shard: Split Prefix Test')).toBeTruthy()
-    expect(screen.getAllByText('Prefix shard: Split Prefix Test')).toHaveLength(1)
+    expect(within(recipes).getByText('Prefix shard: Split Prefix Test')).toBeTruthy()
+    expect(within(recipes).getByText(/Ruby of Charisma \+1 \(Red\)/)).toBeTruthy()
+    expect(recipes.textContent).not.toMatch(/Recipe ID|recipe-(?:enhancement|minimum-level)-/i)
+    expect(within(recipes).getByText('Crafting level 100 · Bound')).toBeTruthy()
+    expect(within(screen.getByTestId('recipes-step-main-hand-prefix')).getByText('Magic Item Essence')).toBeTruthy()
+
+    await user.click(within(recipes).getByRole('radio', { name: 'Unbound' }))
+
+    expect(recipes.textContent).not.toMatch(/Recipe ID|recipe-(?:enhancement|minimum-level)-/i)
+    expect(within(recipes).getByText('Crafting level 120 · Unbound')).toBeTruthy()
   })
 
   it('closes the Ingredients workspace tool without changing the planner state', async () => {

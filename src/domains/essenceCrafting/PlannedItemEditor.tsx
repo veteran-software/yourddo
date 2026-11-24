@@ -149,7 +149,7 @@ const PlannedItemEditor = memo(
           options: augmentOptions.map((augment) => ({
             value: augment.id,
             label: augment.displayName,
-            augmentType: augmentTypeDisplayNameById.get(augment.augmentTypeId) ?? augment.augmentTypeId,
+            augmentType: augmentTypeDisplayNameById.get(augment.augmentTypeId) ?? 'Augment',
             minimumLevel: augment.minimumItemLevel
           }))
         }

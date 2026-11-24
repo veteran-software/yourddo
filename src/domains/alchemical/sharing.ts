@@ -13,7 +13,8 @@ export interface Selection {
 }
 
 export function alchemicalPlanPath(baseId: number, ids: readonly number[]) {
-  return '/alchemical?base=' + String(baseId) + (ids.length ? '&recipes=' + ids.join(',') : '')
+  const build = btoa([baseId, ...ids].join(',')).replace(/=+$/, '')
+  return '/alchemical?build=1.' + build
 }
 
 function restore(data: AlchemicalData, base: AlchemicalBase, ids: number[]): Selection {
@@ -28,8 +29,25 @@ function restore(data: AlchemicalData, base: AlchemicalBase, ids: number[]): Sel
 
 export function linkedSelection(data: AlchemicalData, search: string): Selection | null {
   const params = new URLSearchParams(search)
-  const base = data.bases.find((entry) => String(entry.id) === params.get('base'))
-  return base ? restore(data, base, (params.get('recipes') ?? '').split(',').map(Number)) : null
+  let baseId = params.get('base')
+  let ids = (params.get('recipes') ?? '').split(',').map(Number)
+  const build = params.get('build')
+  if (build !== null) {
+    const token = /^1\.([A-Za-z0-9]+)$/.exec(build)?.[1]
+    if (!token) return null
+    try {
+      const decoded = atob(token)
+      if (!/^\d+(,\d+)*$/.test(decoded)) return null
+      const [base, ...recipes] = decoded.split(',')
+      baseId = base
+      ids = recipes.map(Number)
+      if (ids.length > alchemicalStages.length || !ids.every(Number.isSafeInteger)) return null
+    } catch {
+      return null
+    }
+  }
+  const base = data.bases.find((entry) => String(entry.id) === baseId)
+  return base ? restore(data, base, ids) : null
 }
 
 export function exportAlchemicalPlan(baseId: number, recipes: readonly number[]) {

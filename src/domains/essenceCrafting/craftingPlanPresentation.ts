@@ -20,7 +20,7 @@ export const warningMessage = (data: EssenceCraftingData, step: EssenceUnavailab
     return `${displayName ?? stepLabel(step)} has no ${step.reason.binding} recipe variant.`
   }
   if (step.reason.status === 'enhancement-not-found') {
-    return `The selected enhancement ${step.reason.enhancementId} is no longer available.`
+    return 'A selected enhancement is no longer available.'
   }
   return `The ${step.reason.binding} Minimum Level recipe for item level ${String(step.reason.itemLevel)} is unavailable.`
 }

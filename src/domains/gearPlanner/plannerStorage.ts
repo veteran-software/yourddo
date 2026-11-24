@@ -228,7 +228,7 @@ const parseEquipment = (value: unknown, path: string): PersistedGearPlannerSetup
   const record = requiredRecord(value, path)
   const validSlots = new Set<string>(allGearPlannerSlots)
   for (const key of Object.keys(record)) {
-    if (!validSlots.has(key)) throw new InvalidGearPlannerStateError(`${path}.${key} is not an equipment slot`)
+    if (!validSlots.has(key)) throw new InvalidGearPlannerStateError(`${path} contains an unknown equipment slot`)
   }
   const equipment = {} as PersistedGearPlannerSetupV1['equipment']
   for (const slot of allGearPlannerSlots) {
@@ -370,7 +370,8 @@ const parseSelectedReforging = (value: unknown, path: string): readonly Persiste
     const sourceStages = requiredRecord(record.stages, `${entryPath}.stages`)
     const parsed: Partial<Record<(typeof gearPlannerReforgingStages)[number], GearPlannerReforgingStageState>> = {}
     for (const [stage, state] of Object.entries(sourceStages)) {
-      if (!stages.has(stage)) throw new InvalidGearPlannerStateError(`${entryPath}.stages.${stage} is not supported`)
+      if (!stages.has(stage))
+        throw new InvalidGearPlannerStateError(`${entryPath}.stages contains an unsupported stage`)
       parsed[stage as (typeof gearPlannerReforgingStages)[number]] = parseReforgingStageState(
         state,
         `${entryPath}.stages.${stage}`
