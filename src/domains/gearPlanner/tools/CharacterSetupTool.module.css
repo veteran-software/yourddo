@@ -1,0 +1,14 @@
+.levels {
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.levels select {
+  width: 3.6rem;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.slider {
+  margin: 0.5rem 0.5rem 0;
+}

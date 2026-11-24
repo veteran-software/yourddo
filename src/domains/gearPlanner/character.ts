@@ -176,6 +176,7 @@ export interface CharacterSettings {
   weapons: string[]
   armor: string[]
   shields: string[]
+  disabledProficiencies?: ProficiencyKey[]
   allowMetalWithDruid: boolean
 }
 
@@ -187,6 +188,65 @@ export const defaultCharacter = (): CharacterSettings => ({
   allowMetalWithDruid: false
 })
 export const proficiencyOptions = { weapons: weaponTypes, armor: ARMOR_TYPES, shields: SHIELD_TYPES }
+export type ProficiencyKey = keyof typeof proficiencyOptions
+const twoHandedMelee = new Set([
+  'Falchion',
+  'Great Axe',
+  'Great Club',
+  'Great Sword',
+  'Handwraps',
+  'Maul',
+  'Quarterstaff'
+])
+
+function weaponGroup(type: string) {
+  if (WEAPON_TYPES.Throwing.includes(type)) return 'Throwing weapons'
+  if (/bow$/i.test(type)) return 'Ranged weapons'
+  return twoHandedMelee.has(type) ? 'Two-handed weapons' : 'One-handed weapons'
+}
+
+export function proficiencyGroups(weapons: string[]) {
+  const group = (title: string, key: ProficiencyKey, types: string[]) => ({ title, key, types })
+  const weapon = (title: string) =>
+    group(
+      title,
+      'weapons',
+      weapons.filter((type) => weaponGroup(type) === title)
+    )
+  return [
+    weapon('One-handed weapons'),
+    weapon('Two-handed weapons'),
+    group('Off-hand items', 'shields', SHIELD_TYPES),
+    weapon('Ranged weapons'),
+    weapon('Throwing weapons'),
+    group('Armor', 'armor', ARMOR_TYPES)
+  ]
+}
+
+export function selectedProficiencies(settings: CharacterSettings, key: ProficiencyKey, available: string[]) {
+  if (settings.disabledProficiencies?.includes(key)) return []
+  return settings[key].length ? available.filter((type) => settings[key].includes(type)) : available
+}
+
+export function updateProficiencyGroup(
+  settings: CharacterSettings,
+  key: ProficiencyKey,
+  available: string[],
+  group: string[],
+  selection: string[]
+): CharacterSettings {
+  const selected = selectedProficiencies(settings, key, available)
+  const values = available.filter((type) => (group.includes(type) ? selection.includes(type) : selected.includes(type)))
+  const { disabledProficiencies = [], ...rest } = settings
+  const disabled = disabledProficiencies.filter((category) => category !== key)
+  if (!values.length) disabled.push(key)
+  return {
+    ...rest,
+    [key]: values.length === available.length ? [] : values,
+    ...(disabled.length && { disabledProficiencies: disabled })
+  }
+}
+
 export function changeClasses(
   current: CharacterSettings,
   classes: string[],
@@ -194,6 +254,7 @@ export function changeClasses(
 ): CharacterSettings {
   const next = { ...current, classes }
   for (const key of ['weapons', 'armor', 'shields'] as const) {
+    if (current.disabledProficiencies?.includes(key)) continue
     const previous = new Set(current.classes.flatMap((c) => CLASS_PROFICIENCIES[c][key]))
     if (
       key === 'weapons' &&
@@ -273,10 +334,12 @@ export function characterAllowsItem(
   material = item.source.material
 ) {
   if (violatesDruidicOath(settings, item, material)) return false
-  if (item.essenceCrafting || slotOwner(item.slot) !== 'Character') return true
+  if (slotOwner(item.slot) !== 'Character') return true
   const type = item.source.type ?? ''
   const shield = SHIELD_TYPES.includes(type)
   const key = proficiencyGroup(item.slot, shield)
+  if (key && settings.disabledProficiencies?.includes(key)) return false
+  if (item.essenceCrafting) return true
   return (
     !key || !settings[key].length || settings[key].includes(type === 'Robe' || type === 'Outfit' ? 'Cloth Armor' : type)
   )

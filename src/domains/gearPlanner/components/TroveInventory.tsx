@@ -80,7 +80,7 @@ export function TroveOwnership({
     )
   return (
     <details>
-      <summary style={{ cursor: 'pointer' }}>
+      <summary title={owners.join('\n')} style={{ cursor: 'pointer' }}>
         <Group component='span' display='inline-flex' gap={6} align='baseline'>
           {label}
           <Text component='span' size='xs' c='dimmed'>

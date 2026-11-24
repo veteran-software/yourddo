@@ -1,3 +1,4 @@
+import ChangeSummary from '../components/ChangeSummary'
 import { keyedEntries } from '../../../shared/ui/keyedEntries'
 import { useEffect, useMemo, useState } from 'react'
 import {
@@ -293,9 +294,8 @@ export function UpgradeResults({
                   </Text>
                 </Group>
                 {path.losses.length > 0 && (
-                  <Text size='xs' c='orange'>
-                    Trade-offs · {path.losses.slice(0, 2).join(' · ')}
-                    {path.losses.length > 2 ? ' · +' + String(path.losses.length - 2) + ' more' : ''}
+                  <Text component='div' size='xs' c='orange'>
+                    Trade-offs · <ChangeSummary entries={path.losses} label='Trade-offs' />
                   </Text>
                 )}
               </div>
