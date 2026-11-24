@@ -65,6 +65,14 @@ describe('Gear Planner sharing', () => {
     expect(issues.map((i) => i.message).join(' ')).toMatch(/Unsupported slot: armor.*could not uniquely match/)
   })
 
+  it('omits stale upgrade IDs from legacy import warnings', () => {
+    const raw = { ...oldSetup, slottedMythicBoost: { [id]: 'retired-mythic-id' } }
+    const { issues } = importGearPlannerState(JSON.stringify([raw]), data)
+    expect(issues.map((issue) => issue.message)).toEqual([
+      '[Raid] *tank*: Head: a selected crafting upgrade is unavailable.'
+    ])
+  })
+
   it.each([
     ['original tuple', [meta.name, 10, 36, [], [], [], [], 0, [legacyItem]]],
     [

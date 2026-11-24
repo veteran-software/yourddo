@@ -170,7 +170,7 @@ it('reconstructs stages in order, applies the resulting level, stats and socket,
   expect(restored.issues).toEqual([])
   state = restored.state
   expect(activeGearPlannerSetup(state).slottedAugments[item.id][0].name).toBe('Ruby')
-  expect(alchemicalRecipeHref(current())).toBe('/alchemical?base=1&recipes=11,21,31,41')
+  expect(alchemicalRecipeHref(current())).toBe('/alchemical?build=1.MSwxMSwyMSwzMSw0MQ')
   select('material', '12')
   expect(current().minimumLevel).toBe(12)
   expect(current().source.augments).toHaveLength(0)
@@ -180,7 +180,7 @@ it('reconstructs stages in order, applies the resulting level, stats and socket,
       .filter((e) => e.effect.name === 'Attack Rolls')
       .map((e) => e.effect.modifier)
   ).toEqual([5])
-  expect(alchemicalRecipeHref(current())).toBe('/alchemical?base=1&recipes=12')
+  expect(alchemicalRecipeHref(current())).toBe('/alchemical?build=1.MSwxMg')
   select('material', null)
   expect(current().source.material).toBe('Steel')
 })

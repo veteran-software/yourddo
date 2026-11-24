@@ -269,7 +269,7 @@ function restoreEssenceAffixes(
           (e.id === old || e.displayName === old) &&
           e.placements.some((p) => p.itemCategoryIds.includes(category) && p.position === pos)
       )
-      if (!found) warn(`${slot}: unmatched ${pos} ${scalar(old)}.`)
+      if (!found) warn(`${slot}: the selected ${pos} enhancement is unavailable.`)
       return found?.id ?? null
     }
     selectedEssenceCrafting.push({
@@ -307,7 +307,7 @@ function restoreCraftChoices(
     )
     const choice = exact ?? (legacyMatches.length === 1 ? legacyMatches[0] : undefined)
     if (choice) selectedCrafts.push({ itemId: item.id, system, choiceId: choice.id })
-    else warn(`${slot}: unmatched ${system} upgrade ${target}.`)
+    else warn(`${slot}: a selected crafting upgrade is unavailable.`)
   }
   for (const [key, system] of Object.entries(crafts)) addCraft(system, upgrade(key))
   for (const [idx, v] of entries(selected('slottedGemSetBonuses'))) addCraft('gem-set-' + String(Number(idx) + 1), v)

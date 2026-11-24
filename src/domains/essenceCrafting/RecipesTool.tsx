@@ -70,7 +70,9 @@ const RecipesTool = ({ binding, data, plan, planMaterials, onBindingChange }: Re
         const itemPlan = plan.itemsBySlotId[item.equipmentSlotId]
         const selectedAugments = itemPlan?.augmentSlots.flatMap((slot) => {
           const augment = slot.augmentId ? data.indexes.augmentById.get(slot.augmentId) : undefined
-          return augment ? [`${augment.displayName} (${slot.augmentSlotTypeId})`] : []
+          if (!augment) return []
+          const slotType = data.rules.augmentSlotTypes.find(({ id }) => id === slot.augmentSlotTypeId)
+          return [slotType ? `${augment.displayName} (${slotType.displayName})` : augment.displayName]
         })
 
         return (
@@ -78,7 +80,7 @@ const RecipesTool = ({ binding, data, plan, planMaterials, onBindingChange }: Re
             <Divider />
             <Stack gap={2}>
               <Title order={3} size='h4'>
-                {equipmentSlotLabels.get(item.equipmentSlotId) ?? item.equipmentSlotId}
+                {equipmentSlotLabels.get(item.equipmentSlotId) ?? 'Equipment slot'}
               </Title>
               <Text c='dimmed' size='sm'>
                 Minimum level {String(item.effectiveItemLevel)} · {binding === 'bound' ? 'Bound' : 'Unbound'} recipes
@@ -112,8 +114,7 @@ const RecipesTool = ({ binding, data, plan, planMaterials, onBindingChange }: Re
                   <Text fw={600}>{stepLabel(step)}</Text>
                   {recipe ? (
                     <Text size='sm'>
-                      Recipe ID: {recipe.id} · Crafting level {String(recipe.craftingLevel)} ·{' '}
-                      {recipe.binding === 'bound' ? 'Bound' : 'Unbound'}
+                      Crafting level {String(recipe.craftingLevel)} · {recipe.binding === 'bound' ? 'Bound' : 'Unbound'}
                     </Text>
                   ) : null}
                   <RecipeRequirements

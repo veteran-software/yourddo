@@ -82,8 +82,17 @@ describe('Saga Tracker backups', () => {
 
   it('rejects an invalid version or timestamp before returning progress', () => {
     expect(() => parseBackup({ ...valid, version: 1 }, sagas, quests)).toThrow(InvalidSagaTrackerBackupError)
-    expect(() => parseBackup({ ...valid, questDoneAt: { quest: -1 } }, sagas, quests)).toThrow('non-negative')
+    expect(() => parseBackup({ ...valid, questDoneAt: { quest: -1 } }, sagas, quests)).toThrow(
+      /^Invalid Saga Tracker backup: questDoneAt must contain finite non-negative numbers$/
+    )
     expect(() => parseBackup({ ...valid, turnedInAt: [] }, sagas, quests)).toThrow('must be an object')
+  })
+
+  it('omits the saga ID when a completion status is invalid', () => {
+    const backup = { ...valid, items: [{ id: 'first', completed: 'yes', turnedIn: false }] }
+    expect(() => parseBackup(backup, sagas, quests)).toThrow(
+      /^Invalid Saga Tracker backup: saga completion and turn-in statuses must be booleans$/
+    )
   })
 
   it('handles duplicate saga IDs deterministically with the last record winning', () => {

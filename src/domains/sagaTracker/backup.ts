@@ -38,7 +38,7 @@ const parseTimestamps = (value: unknown, label: string): TimestampMap => {
   const timestamps: TimestampMap = {}
   for (const [id, timestamp] of Object.entries(value)) {
     if (typeof timestamp !== 'number' || !Number.isFinite(timestamp) || timestamp < 0) {
-      throw new InvalidSagaTrackerBackupError(`${label}.${id} must be a finite non-negative number`)
+      throw new InvalidSagaTrackerBackupError(`${label} must contain finite non-negative numbers`)
     }
     timestamps[id] = timestamp
   }
@@ -67,7 +67,7 @@ export const parseBackup = (
     const item = entry as Record<string, unknown>
     if (typeof item.id !== 'string') throw new InvalidSagaTrackerBackupError('item IDs must be strings')
     if (typeof item.completed !== 'boolean' || typeof item.turnedIn !== 'boolean') {
-      throw new InvalidSagaTrackerBackupError(`item ${item.id} status values must be booleans`)
+      throw new InvalidSagaTrackerBackupError('saga completion and turn-in statuses must be booleans')
     }
     imported.set(item.id, { completed: item.completed, turnedIn: item.turnedIn })
   }

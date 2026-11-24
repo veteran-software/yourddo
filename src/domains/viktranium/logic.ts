@@ -114,7 +114,7 @@ export const calculateFinishedItem = (
     const selectedId = selected[slot.id] ?? slot.filledAugmentId
     if (!selectedId) return []
     const augment = data.indexes.augmentById.get(selectedId)
-    if (!augment) return [`${slot.label}: selected augment ${selectedId} is missing.`]
+    if (!augment) return [`${slot.label}: the selected augment is no longer available.`]
     return getCompatibleTypes(slot).includes(augment.augmentType)
       ? []
       : [`${slot.label}: “${augment.name}” is not compatible.`]
