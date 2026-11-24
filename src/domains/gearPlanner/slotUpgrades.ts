@@ -1,3 +1,4 @@
+import { compareFocus, focusChanges, type FocusChange } from './focusStats'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types'
 import { characterAllowsItem, ownerSlots, slotOwner } from './character'
 import type { GearPlannerData, GearPlannerItem, GearPlannerSlot } from './gearPlanner.types'
@@ -17,6 +18,7 @@ export interface SlotReplacement {
   retention: number
   comparable: boolean
   group: 'Straight upgrade' | 'Closest replacement' | 'Worth a trade-off'
+  focus: FocusChange[]
   improvements: Map<string, number>
 }
 
@@ -107,6 +109,7 @@ export function* findSlotReplacements(
       retention,
       comparable: contributions.length > 0,
       group,
+      focus: focusChanges(setup.character.focusStats ?? [], before.Stats, after.Stats),
       improvements
     }
   }
@@ -132,6 +135,7 @@ export function shortlistReplacements(results: SlotReplacement[], priority: stri
     .toSorted(
       (a, b) =>
         (priority ? (b.improvements.get(priority) ?? 0) - (a.improvements.get(priority) ?? 0) : 0) ||
+        compareFocus(a.focus, b.focus) ||
         a.displaced.length - b.displaced.length ||
         a.lostSets.length - b.lostSets.length ||
         Number(b.group === 'Straight upgrade') - Number(a.group === 'Straight upgrade') ||
@@ -142,7 +146,7 @@ export function shortlistReplacements(results: SlotReplacement[], priority: stri
         (variantRank.get(a) ?? 0) - (variantRank.get(b) ?? 0) ||
         a.item.source.name.localeCompare(b.item.source.name)
     )
-  if (priority) return ranked.slice(0, 5)
+  if (priority || ranked[0]?.focus.length) return ranked.slice(0, 5)
   const groups = new Set<string>()
   const leaders = ranked.filter((row) => {
     if (groups.has(row.group)) return false

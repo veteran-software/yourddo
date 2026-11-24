@@ -812,6 +812,64 @@ describe('GearPlannerPage', () => {
     })
   })
 
+  it('uses ordered focus stats for slot replacements and paths while preserving explicit objectives', () => {
+    const stat = (name: string, modifier: number) => ({ name, modifier, bonus: 'Enhancement' })
+    const candidates = [
+      item('dc', 'Head', 'DC helm', 10, [stat('Wisdom', 1)]),
+      item('hp', 'Head', 'HP helm', 10, [stat('Maximum Hit Points', 20)]),
+      item('both', 'Head', 'Both', 10, [stat('Wisdom', 1), stat('Maximum Hit Points', 1)])
+    ]
+    const catalog = dataWithItems(candidates)
+    const setup = createGearPlannerSetup('a', 'Focus')
+    setup.character.focusStats = ['Wisdom', 'Maximum Hit Points']
+    const slots = () =>
+      shortlistReplacements(
+        [...findSlotReplacements(setup, 'Head', catalog, essenceData)].filter((row) => row !== undefined),
+        null
+      ).map((row) => row.item.source.name)
+    const paths = (kind: PathRequest['kind']) => {
+      const search = searchUpgradePaths(
+        setup,
+        'Character',
+        catalog,
+        essenceData,
+        { kind, objective: 'Maximum Hit Points', character: '', locked: [], protectedTiers: [] },
+        new Map()
+      )
+      let step = search.next()
+      while (!step.done) step = search.next()
+      return step.value.map((row) => row.name)
+    }
+    expect(slots()).toEqual(['Both', 'DC helm', 'HP helm'])
+    expect(paths('Focus stats')).toEqual(slots())
+    expect(paths('Stat')).toEqual(['HP helm', 'Both'])
+    setup.character.focusStats.reverse()
+    expect(slots()).toEqual(['Both', 'HP helm', 'DC helm'])
+    expect(paths('Focus stats')).toEqual(slots())
+  })
+
+  it('selects a setup focus stat and uses it to find upgrade paths', async () => {
+    await renderReadyPage(
+      dataWithItems([
+        item('focushelm', 'Head', 'Focus helm', 10, [{ name: 'Wisdom', modifier: 2, bonus: 'Enhancement' }])
+      ])
+    )
+    const user = userEvent.setup()
+    const click = async (name: string) => {
+      await user.click(await screen.findByRole('button', { name }))
+    }
+    await click('Character setup')
+    await click('Add focus stat')
+    await user.type(screen.getByRole('textbox', { name: 'Search stats' }), 'wisdom')
+    await click('Wisdom')
+    expect(await screen.findByRole('button', { name: 'Remove Wisdom' })).toBeTruthy()
+    const saved = parsePersistedGearPlannerState(JSON.parse(localStorage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? '{}'))
+    expect(saved.setups[0].character?.focusStats).toEqual(['Wisdom'])
+    await user.click(screen.getAllByRole('button', { name: 'Upgrade paths' })[0])
+    await click('Find paths')
+    expect(await screen.findByText('Wisdom +2')).toBeTruthy()
+  })
+
   it('compares same-slot replacements against overlapping bonuses and preserves unique effect losses', () => {
     const stat = (name: string, modifier: number) => ({ name, modifier, bonus: 'Enhancement' })
     const host = item('gloves', 'Hands', 'Original gloves', 10, [stat('Strength', 12), { name: 'Ghostly' }])

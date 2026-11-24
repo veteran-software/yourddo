@@ -1,3 +1,4 @@
+import { focusSummary } from '../focusStats'
 import { useEffect, useMemo, useState } from 'react'
 import { Badge, Button, Group, Loader, Modal, Paper, Select, Stack, Text, Title } from '@mantine/core'
 import type { EssenceCraftingData } from '../../essenceCrafting/essenceCrafting.types'
@@ -93,7 +94,12 @@ export default function SlotUpgrades({
               searchable
               clearable
               label='Prioritize a stat'
-              placeholder='Any improvement'
+              description={
+                setup.character.focusStats?.length
+                  ? 'Setup priorities: ' + setup.character.focusStats.join(' › ')
+                  : undefined
+              }
+              placeholder={setup.character.focusStats?.length ? 'Use setup focus stats' : 'Any improvement'}
               data={options}
               value={priority}
               onChange={setPriority}
@@ -138,6 +144,7 @@ export default function SlotUpgrades({
                       </Text>
                     </Group>
                     <Text fw={700}>{row.item.source.name}</Text>
+                    {row.focus.some((entry) => entry.delta) && <Text size='sm'>{focusSummary(row.focus)}</Text>}
                     <TroveOwnership name={row.item.source.name} />
                     {gain.length > 0 && (
                       <Text component='div' size='sm'>

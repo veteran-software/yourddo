@@ -1,3 +1,4 @@
+import { compareFocus, focusChanges, type FocusChange } from './focusStats'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types'
 import { characterAllowsItem, ownerSlots, type GearOwner } from './character'
 import { isCompatibleGearPlannerAugment } from './augments'
@@ -11,7 +12,7 @@ import type { GearPlannerSetup } from './setups'
 import type { TroveInventory } from './trove'
 
 export interface PathRequest {
-  kind: 'Stat' | 'Set tier'
+  kind: 'Stat' | 'Set tier' | 'Focus stats'
   objective: string
   bonusType?: string
   locked: string[]
@@ -25,6 +26,7 @@ export interface UpgradePath {
   change: string
   setup: GearPlannerSetup
   gain: number
+  focus: FocusChange[]
   bonusChanges: string[]
   totals?: string
   delta: string
@@ -78,7 +80,14 @@ export function* searchUpgradePaths(
       return
     const after = loadoutSnapshot(next, owner, data, essence, request.kind === 'Stat' ? request.objective : undefined)
     if (request.protectedTiers.some((tier) => !after.Sets.has(tier))) return
-    const improvement = objectiveGain(after)
+    const focus = focusChanges(setup.character.focusStats ?? [], before.Stats, after.Stats)
+    const count = focus.filter((entry) => entry.delta > 0).length
+    const improvement =
+      request.kind === 'Focus stats'
+        ? count
+          ? { gain: 0, delta: String(count) + (count === 1 ? ' focus gain' : ' focus gains'), totals: undefined }
+          : undefined
+        : objectiveGain(after)
     if (!improvement) return
     const losses = [...comparisonRows(before.Sets, after.Sets), ...comparisonRows(before.Stats, after.Stats)]
       .filter((row) => row.direction === 'loss')
@@ -101,6 +110,7 @@ export function* searchUpgradePaths(
       change,
       setup: next,
       ...improvement,
+      focus,
       bonusChanges: comparisonRows(before.objectiveBonuses, after.objectiveBonuses)
         .filter((row) => row.changed)
         .map((row) => bonusLabel(row.label) + ' ' + row.before + ' → ' + row.after),
@@ -154,5 +164,11 @@ export function* searchUpgradePaths(
     if (!host) continue
     yield* socketChanges(slot, host)
   }
-  return paths.sort((a, b) => b.gain - a.gain || a.losses.length - b.losses.length || a.name.localeCompare(b.name))
+  return paths.sort(
+    (a, b) =>
+      b.gain - a.gain ||
+      compareFocus(a.focus, b.focus) ||
+      a.losses.length - b.losses.length ||
+      a.name.localeCompare(b.name)
+  )
 }

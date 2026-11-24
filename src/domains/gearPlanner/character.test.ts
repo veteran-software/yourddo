@@ -128,6 +128,35 @@ describe('Gear Planner character setup', () => {
       expect(characterAllowsItem(fighter, template, 'Byeshk')).toBe(true)
     }
   })
+  it('keeps focus priority order in exported setups and shared links', () => {
+    const data = normalizeGearPlannerSources([], [])
+    const state = createDefaultGearPlannerState()
+    const setup = activeGearPlannerSetup(state)
+    const focusStats = ['Wisdom', 'Spell DC: Evocation', 'Maximum Hit Points']
+    const focused = updateSetupCharacter(state, setup.id, { ...setup.character, focusStats })
+    const exported = createGearPlannerExport(focused)
+    const imported = importGearPlannerState(JSON.stringify(exported), data)
+    const url = new URL(gearPlannerPermalink(activeGearPlannerSetup(focused), 'https://example.test/gear-planner'))
+    const shared = openGearPlannerLink(new URLSearchParams(url.hash.slice(1)).get('gp') ?? '', state, data)
+    for (const result of [imported, shared]) {
+      expect(activeGearPlannerSetup(result.state).character.focusStats).toEqual(focusStats)
+    }
+    for (const invalid of [
+      ['Wisdom', 'wisdom'],
+      ['A', 'B', 'C', 'D', 'E', 'F']
+    ]) {
+      expect(() =>
+        importGearPlannerState(
+          JSON.stringify({
+            ...exported,
+            setups: [{ ...exported.setups[0], character: { ...setup.character, focusStats: invalid } }]
+          }),
+          data
+        )
+      ).toThrow(/focusStats/)
+    }
+  })
+
   it('restores both legacy companions, their separate upgrades and character settings through JSON and permalinks', () => {
     const collar = { name: 'Test Collar', type: 'Collar', minLevel: 12, augments: [{ augmentType: 'Red' }] }
     const rubies = ['Ruby A', 'Ruby B'].map((name) => ({

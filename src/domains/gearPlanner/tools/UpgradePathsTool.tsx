@@ -14,16 +14,17 @@ import {
   Autocomplete
 } from '@mantine/core'
 import StatObjectivePicker from './StatObjectivePicker'
-import { objectiveEffect, bonusLabel, spellObjective } from '../statObjectives'
-import { normalizeBonusType, type GearPlannerEffectSource } from '../effects'
+import { bonusLabel, spellObjective } from '../statObjectives'
+import type { GearPlannerEffectSource } from '../effects'
 import { IconRoute } from '@tabler/icons-react'
 import type { EssenceCraftingData } from '../../essenceCrafting/essenceCrafting.types'
 import { ownerSlots, type GearOwner } from '../character'
 import LoadoutComparison from '../components/LoadoutComparison'
-import type { GearPlannerData, GearPlannerEffect } from '../gearPlanner.types'
+import type { GearPlannerData } from '../gearPlanner.types'
 import type { GearPlannerSetState } from '../sets'
 import type { GearPlannerSetup } from '../setups'
-import { standardGearPlannerSetDefinitionByName } from '../standardSetDefinitions'
+import { useStatCatalog } from './useStatCatalog'
+import { focusSummary } from '../focusStats'
 import { troveCharacterNames } from '../trove'
 import { useTroveInventory } from '../troveContext'
 import { searchUpgradePaths, type PathRequest, type UpgradePath } from '../upgradePaths'
@@ -49,7 +50,9 @@ export function UpgradePathsTool({
   onFind: (r: PathRequest) => void
   initial?: PathRequest
 }) {
-  const [kind, setKind] = useState<PathRequest['kind']>(initial?.kind ?? 'Stat')
+  const [kind, setKind] = useState<PathRequest['kind']>(
+    initial?.kind ?? (setup.character.focusStats?.length ? 'Focus stats' : 'Stat')
+  )
   const [objective, setObjective] = useState<string | null>(
     initial?.kind === 'Stat'
       ? (spellObjective(initial.objective)?.name ?? initial.objective)
@@ -61,33 +64,7 @@ export function UpgradePathsTool({
   const [character, setCharacter] = useState(initial?.character ?? '')
   const { inventory } = useTroveInventory()
   const characters = useMemo(() => troveCharacterNames(inventory), [inventory])
-  const stats = useMemo(() => {
-    const catalog = new Map<string, Set<string>>()
-    const canonicalNames = new Map<string, string>()
-    const add = (effectsToAdd: readonly GearPlannerEffect[], typeOverride?: string) => {
-      for (const source of effectsToAdd) {
-        const e = objectiveEffect(source)
-        if (!/^[+-]?(?:\d+(?:\.\d+)?|\.\d+)(?:%|\[W\])?$/i.test(String(e.modifier ?? '').trim())) continue
-        const key = e.name.toLowerCase()
-        const name = canonicalNames.get(key) ?? e.name
-        canonicalNames.set(key, name)
-        const types = catalog.get(name) ?? new Set<string>()
-        types.add(typeOverride ?? normalizeBonusType(e.bonus))
-        catalog.set(name, types)
-      }
-    }
-    for (const source of effects) add([source.effect], source.normalizedBonusType)
-    for (const slot of ownerSlots[owner]) for (const item of data.itemsBySlot[slot]) add(item.source.enchantments ?? [])
-    for (const augment of data.augments) add(augment.effectsAdded)
-    for (const f of data.filigrees) add(f.source.enchantments ?? [], 'filigree')
-    for (const set of [
-      ...(data.standardSets ?? standardGearPlannerSetDefinitionByName).values(),
-      ...data.filigreeSetDefinitions
-    ])
-      for (const tier of set.thresholds) add(tier.effects)
-    return new Map([...catalog].sort(([a], [b]) => a.localeCompare(b)))
-  }, [data, owner, effects])
-  const equipped = useMemo(() => new Set(effects.map((s) => objectiveEffect(s.effect).name.toLowerCase())), [effects])
+  const { stats, equipped } = useStatCatalog(data, owner, effects)
   const active = sets.sets.flatMap((s) =>
     s.thresholds.filter((t) => t.isActive).map((t) => s.name + ' · ' + String(t.threshold) + '-piece')
   )
@@ -95,7 +72,11 @@ export function UpgradePathsTool({
     const tier = s.thresholds.find((t) => !t.isActive)
     return tier ? [s.name + ' · ' + String(tier.threshold) + '-piece'] : []
   })
-  const valid = objective && (kind === 'Stat' ? stats.has(objective) : next.includes(objective))
+  const focus = setup.character.focusStats ?? []
+  const valid =
+    kind === 'Focus stats'
+      ? focus.length > 0
+      : objective && (kind === 'Stat' ? stats.has(objective) : next.includes(objective))
   return (
     <Stack p='md' gap='md'>
       <div>
@@ -106,7 +87,7 @@ export function UpgradePathsTool({
       </div>
       <SegmentedControl
         aria-label='Objective type'
-        data={['Stat', 'Set tier']}
+        data={focus.length ? ['Focus stats', 'Stat', 'Set tier'] : ['Stat', 'Set tier']}
         value={kind}
         onChange={(v) => {
           setKind(v)
@@ -114,7 +95,9 @@ export function UpgradePathsTool({
           setBonusType(undefined)
         }}
       />
-      {kind === 'Stat' ? (
+      {kind === 'Focus stats' ? (
+        <Text size='sm'>{focus.join(' › ')}</Text>
+      ) : kind === 'Stat' ? (
         <StatObjectivePicker
           stats={stats}
           equipped={equipped}
@@ -168,10 +151,10 @@ export function UpgradePathsTool({
         leftSection={<IconRoute size={16} />}
         disabled={!valid}
         onClick={() => {
-          if (objective)
+          if (valid)
             onFind({
               kind,
-              objective,
+              objective: kind === 'Focus stats' ? 'Focus stats' : (objective ?? ''),
               bonusType,
               locked,
               protectedTiers: protectedTiers.filter((t) => active.includes(t)),
@@ -281,6 +264,7 @@ export function UpgradeResults({
                 <Text size='sm'>
                   {path.slot} · {path.change}
                 </Text>
+                {path.focus.some((entry) => entry.delta) && <Text size='sm'>{focusSummary(path.focus)}</Text>}
                 {path.bonusChanges.length > 0 && <Text size='xs'>{path.bonusChanges.join(' · ')}</Text>}
                 <Group gap='xs'>
                   <Badge

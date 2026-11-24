@@ -15,6 +15,7 @@ import LoadoutComparison from './components/LoadoutComparison'
 import AugmentsTool from './tools/AugmentsTool'
 import FarmingTool from './tools/FarmingTool'
 import LevelRangeInputs, { type LevelRange } from './components/LevelRangeInputs'
+import FocusStatEditor from './tools/FocusStatEditor'
 import CharacterSetupTool from './tools/CharacterSetupTool'
 import { ownsTroveItem } from './trove'
 import { gearPlannerAugmentIdentity } from './augments'
@@ -1258,6 +1259,19 @@ const GearPlannerWorkspace = () => {
             icon: <IconUserCog stroke={2} />,
             content: (
               <CharacterSetupTool
+                focusEditor={
+                  <FocusStatEditor
+                    data={dataState.data}
+                    owner={owner}
+                    effects={effects}
+                    names={activeSetup.character.focusStats ?? []}
+                    onChange={(focusStats) => {
+                      applySetupState((current) =>
+                        updateSetupCharacter(current, activeSetup.id, { ...activeSetup.character, focusStats })
+                      )
+                    }}
+                  />
+                }
                 levels={activeSetup}
                 updateLevels={updateLevels}
                 weaponTypes={weaponTypes}

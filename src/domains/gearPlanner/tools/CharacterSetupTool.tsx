@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Accordion, Button, Checkbox, Group, MultiSelect, NativeSelect, RangeSlider, Stack, Text } from '@mantine/core'
+import type { ReactNode } from 'react'
 import type { LevelRange } from '../components/LevelRangeInputs'
 import {
   changeClasses,
@@ -82,11 +83,13 @@ export default function CharacterSetupTool({
   levels,
   updateLevels,
   settings,
+  focusEditor,
   weaponTypes,
   onChange
 }: Readonly<{
   levels: LevelRange
   updateLevels: (update: Partial<LevelRange>) => void
+  focusEditor: ReactNode
   weaponTypes: string[]
   settings: CharacterSettings
   onChange: (settings: CharacterSettings) => void
@@ -107,6 +110,7 @@ export default function CharacterSetupTool({
           onChange(changeClasses(settings, values, weaponTypes))
         }}
       />
+      {focusEditor}
       <Text size='sm' c='dimmed'>
         Choose which equipment types appear in gear searches.
       </Text>

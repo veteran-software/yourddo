@@ -176,6 +176,7 @@ export interface CharacterSettings {
   weapons: string[]
   armor: string[]
   shields: string[]
+  focusStats?: string[]
   disabledProficiencies?: ProficiencyKey[]
   allowMetalWithDruid: boolean
 }
