@@ -3,6 +3,7 @@ import {
   Badge,
   Button,
   Group,
+  Modal,
   MultiSelect,
   Paper,
   Radio,
@@ -10,10 +11,11 @@ import {
   SimpleGrid,
   Stack,
   Switch,
+  Table,
   Text,
   Title
 } from '@mantine/core'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import layout from '../../shared/layout/PlannerWorkspace.module.css'
 import AugmentSelect from '../../shared/augments/AugmentSelect.tsx'
 import {
@@ -51,8 +53,26 @@ interface PlannedItemEditorProps {
 const toSelectData = (enhancements: readonly EssenceEnhancement[]) =>
   enhancements.map(({ id, displayName }) => ({ value: id, label: displayName }))
 
+const affixDropdownProps = {
+  position: 'bottom-start',
+  width: 'max-content',
+  styles: { dropdown: { minWidth: 'min(22rem, calc(100vw - 1rem))', maxWidth: 'calc(100vw - 1rem)' } }
+} as const
+
+const dualPrefixMinimumLevel = 20
+const isDualPrefix = (enhancement: EssenceEnhancement) =>
+  enhancement.minimumItemLevel === dualPrefixMinimumLevel &&
+  enhancement.placements.some(({ position }) => position === 'prefix')
+
 const formatEffectDisplay = ({ effect, modifier, bonusType }: EssenceEffectDisplayData): string => {
-  const formattedModifier = formatResolvedEffectModifier(modifier)
+  const displayModifier =
+    modifier.status === 'resolved' &&
+    modifier.representation === 'percentage' &&
+    typeof modifier.value === 'number' &&
+    modifier.value !== Number(modifier.value.toFixed(2))
+      ? { ...modifier, value: Math.trunc(Number(modifier.value.toFixed(10))) }
+      : modifier
+  const formattedModifier = formatResolvedEffectModifier(displayModifier)
   return `${effect.displayName}${formattedModifier ? ': ' + formattedModifier : ''}${
     bonusType ? ' (' + bonusType.displayName + ')' : ''
   }`
@@ -83,6 +103,7 @@ const PlannedItemEditor = memo(
     onAction,
     onRequestDeactivate
   }: PlannedItemEditorProps) => {
+    const [showDualPrefixes, setShowDualPrefixes] = useState(false)
     const equipmentSlot = EQUIPMENT_SLOTS.find(({ id }) => id === equipmentSlotId)
     if (!equipmentSlot) return null
 
@@ -90,6 +111,16 @@ const PlannedItemEditor = memo(
     const detailsId = `planned-item-${equipmentSlotId}-details`
     const effectiveMinimumLevel = item.minimumLevelOverride ?? masterMinimumLevel
     const prefixChoices = getAvailableEnhancementChoices(data, equipmentSlotId, 'prefix', effectiveMinimumLevel)
+    const dualPrefixOptions = prefixChoices.filter(isDualPrefix).map(({ id, displayName, effects }) => ({
+      value: id,
+      label: `${displayName} (${effects.map((effect) => effect.displayName).join(', ')})`
+    }))
+    const prefixOptions = dualPrefixOptions.length
+      ? [
+          { group: 'Suggested Dual Prefix Shards', items: dualPrefixOptions },
+          { group: 'Other prefixes', items: toSelectData(prefixChoices.filter((choice) => !isDualPrefix(choice))) }
+        ]
+      : toSelectData(prefixChoices)
     const suffixChoices = getAvailableEnhancementChoices(data, equipmentSlotId, 'suffix', effectiveMinimumLevel)
     const extraChoices = getAvailableEnhancementChoices(data, equipmentSlotId, 'extra', effectiveMinimumLevel)
     const resolveSelectedEnhancementEffects = (enhancementId: string | null) =>
@@ -214,10 +245,11 @@ const PlannedItemEditor = memo(
         <SimpleGrid type='container' cols={board ? { base: 1, '29rem': 3 } : { base: 1, '32rem': 2 }} spacing='sm'>
           <Stack gap={4}>
             <Select
+              comboboxProps={affixDropdownProps}
               label='Prefix'
               aria-label={`Prefix for ${label}`}
               placeholder='Choose a prefix'
-              data={toSelectData(prefixChoices)}
+              data={prefixOptions}
               value={item.prefixEnhancementId}
               onChange={(enhancementId) => {
                 onAction({ type: 'select-prefix-enhancement', equipmentSlotId, enhancementId })
@@ -226,10 +258,59 @@ const PlannedItemEditor = memo(
               searchable
             />
             <EffectDetails effects={prefixEffects} />
+            {effectiveMinimumLevel >= dualPrefixMinimumLevel && (
+              <>
+                <Button
+                  variant='subtle'
+                  size='xs'
+                  w='fit-content'
+                  onClick={() => {
+                    setShowDualPrefixes(true)
+                  }}
+                >
+                  View all Dual Prefix Shards
+                </Button>
+                <Modal
+                  opened={showDualPrefixes}
+                  onClose={() => {
+                    setShowDualPrefixes(false)
+                  }}
+                  title='Dual Prefix Shards'
+                  size='lg'
+                >
+                  {showDualPrefixes && (
+                    <Table striped>
+                      <Table.Thead>
+                        <Table.Tr>
+                          <Table.Th>Shard</Table.Th>
+                          <Table.Th>Effects at ML {effectiveMinimumLevel}</Table.Th>
+                        </Table.Tr>
+                      </Table.Thead>
+                      <Table.Tbody>
+                        {data.enhancements
+                          .filter(isDualPrefix)
+                          .sort((a, b) => a.displayName.localeCompare(b.displayName))
+                          .map((shard) => (
+                            <Table.Tr key={shard.id}>
+                              <Table.Th scope='row'>{shard.displayName}</Table.Th>
+                              <Table.Td>
+                                {resolveEssenceEffects(data, shard.effects, effectiveMinimumLevel)
+                                  .map(formatEffectDisplay)
+                                  .join(', ')}
+                              </Table.Td>
+                            </Table.Tr>
+                          ))}
+                      </Table.Tbody>
+                    </Table>
+                  )}
+                </Modal>
+              </>
+            )}
           </Stack>
 
           <Stack gap={4}>
             <Select
+              comboboxProps={affixDropdownProps}
               label='Suffix'
               aria-label={`Suffix for ${label}`}
               placeholder='Choose a suffix'
@@ -246,6 +327,7 @@ const PlannedItemEditor = memo(
 
           <Stack gap={4}>
             <Select
+              comboboxProps={affixDropdownProps}
               label='Extra'
               aria-label={`Extra for ${label}`}
               placeholder={extraEnabled ? 'Choose an extra affix' : 'Enable the Mark to choose an extra affix'}
