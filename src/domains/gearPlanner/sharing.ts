@@ -189,7 +189,7 @@ export function openGearPlannerLink(
 function formatSharedEffect(effect: GearPlannerEffect) {
   const label = formatGearPlannerSetEffect(effect)
   const notes = typeof effect.notes === 'string' ? effect.notes.trim() : ''
-  return notes ? `${label} — ${notes}` : label
+  return notes ? `${label} · ${notes}` : label
 }
 
 function craftDetails(
@@ -248,7 +248,8 @@ export function formatGearSetup(
   permalink: string
 ) {
   const forum = format === 'Forum BBCode'
-  const escape = forum ? escapeBbCode : escapeMarkdown
+  const escapeMarkup = forum ? escapeBbCode : escapeMarkdown
+  const escape = (text: string) => escapeMarkup(text.replaceAll(/[^\S\r\n]*—[^\S\r\n]*/g, ' - '))
   const heading = (text: string) => (forum ? `[b]${escape(text)}[/b]` : `**${escape(text)}**`)
   const lines = [
     heading(setup.name),
