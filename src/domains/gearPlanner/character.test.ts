@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { getEssenceCraftedGearPlannerItems } from './essenceCrafting'
-import { changeClasses, characterAllowsItem, defaultCharacter } from './character'
+import {
+  changeClasses,
+  characterAllowsItem,
+  defaultCharacter,
+  proficiencyGroups,
+  proficiencyOptions,
+  updateProficiencyGroup
+} from './character'
 import type { GearPlannerItem } from './gearPlanner.types'
 import { normalizeGearPlannerSources } from './normalize'
 import { createGearPlannerExport, importGearPlannerState } from './plannerStorage'
@@ -8,6 +15,42 @@ import { gearPlannerPermalink, openGearPlannerLink } from './sharing'
 import { activeGearPlannerSetup, createDefaultGearPlannerState, updateSetupCharacter } from './setups'
 
 describe('Gear Planner character setup', () => {
+  it('groups catalog weapons and changes one group without disturbing the others', () => {
+    const weapons = ['Club', 'Handwraps', 'Quarterstaff', 'Long Bow', 'Repeating Heavy Crossbow', 'Dart']
+    const groups = proficiencyGroups(weapons)
+    expect(groups.map((group) => group.title)).toEqual([
+      'One-handed weapons',
+      'Two-handed weapons',
+      'Off-hand items',
+      'Ranged weapons',
+      'Throwing weapons',
+      'Armor'
+    ])
+    const ranged = groups[3].types
+    expect(ranged).toEqual(['Long Bow', 'Repeating Heavy Crossbow'])
+    expect(groups[1].types).toEqual(['Handwraps', 'Quarterstaff'])
+    const withoutRanged = updateProficiencyGroup(defaultCharacter(), 'weapons', weapons, ranged, [])
+    expect(withoutRanged.weapons).toEqual(['Club', 'Handwraps', 'Quarterstaff', 'Dart'])
+    const restored = updateProficiencyGroup(withoutRanged, 'weapons', weapons, ranged, ranged)
+    expect(restored).toEqual(defaultCharacter())
+  })
+
+  it('round trips an explicitly empty armor filter and restores it with select all', () => {
+    const state = createDefaultGearPlannerState()
+    const setup = activeGearPlannerSetup(state)
+    const armor = proficiencyOptions.armor
+    const settings = updateProficiencyGroup(setup.character, 'armor', armor, armor, [])
+    const payload = createGearPlannerExport(updateSetupCharacter(state, setup.id, settings))
+    const restored = activeGearPlannerSetup(
+      importGearPlannerState(JSON.stringify(payload), normalizeGearPlannerSources([], [])).state
+    )
+    const template = getEssenceCraftedGearPlannerItems('Armor', 1)[0]
+    expect(characterAllowsItem(restored.character, template)).toBe(false)
+    expect(
+      characterAllowsItem(updateProficiencyGroup(restored.character, 'armor', armor, armor, armor), template)
+    ).toBe(true)
+  })
+
   it('keeps class grants distinct from the weapon types offered by the catalog', () => {
     const types = ['Club', 'Heavy Mace', 'Light Hammer', 'Handwraps', 'Hand Axe', 'Long Sword']
     const weapons = (name: string, available = types) => changeClasses(defaultCharacter(), [name], available).weapons
@@ -85,6 +128,35 @@ describe('Gear Planner character setup', () => {
       expect(characterAllowsItem(fighter, template, 'Byeshk')).toBe(true)
     }
   })
+  it('keeps focus priority order in exported setups and shared links', () => {
+    const data = normalizeGearPlannerSources([], [])
+    const state = createDefaultGearPlannerState()
+    const setup = activeGearPlannerSetup(state)
+    const focusStats = ['Wisdom', 'Spell DC: Evocation', 'Maximum Hit Points']
+    const focused = updateSetupCharacter(state, setup.id, { ...setup.character, focusStats })
+    const exported = createGearPlannerExport(focused)
+    const imported = importGearPlannerState(JSON.stringify(exported), data)
+    const url = new URL(gearPlannerPermalink(activeGearPlannerSetup(focused), 'https://example.test/gear-planner'))
+    const shared = openGearPlannerLink(new URLSearchParams(url.hash.slice(1)).get('gp') ?? '', state, data)
+    for (const result of [imported, shared]) {
+      expect(activeGearPlannerSetup(result.state).character.focusStats).toEqual(focusStats)
+    }
+    for (const invalid of [
+      ['Wisdom', 'wisdom'],
+      ['A', 'B', 'C', 'D', 'E', 'F']
+    ]) {
+      expect(() =>
+        importGearPlannerState(
+          JSON.stringify({
+            ...exported,
+            setups: [{ ...exported.setups[0], character: { ...setup.character, focusStats: invalid } }]
+          }),
+          data
+        )
+      ).toThrow(/focusStats/)
+    }
+  })
+
   it('restores both legacy companions, their separate upgrades and character settings through JSON and permalinks', () => {
     const collar = { name: 'Test Collar', type: 'Collar', minLevel: 12, augments: [{ augmentType: 'Red' }] }
     const rubies = ['Ruby A', 'Ruby B'].map((name) => ({

@@ -21,6 +21,7 @@ import {
   type GearPlannerItem,
   gearPlannerSlots
 } from './gearPlanner.types.ts'
+import { findSlotReplacements, shortlistReplacements } from './slotUpgrades'
 import { searchUpgradePaths, type PathRequest } from './upgradePaths'
 import { gearPlannerPermalink } from './sharing'
 import { createGearPlannerSetup } from './setups'
@@ -186,6 +187,52 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Back to results' }))
     expect(screen.getByRole<HTMLInputElement>('textbox', { name: 'Search items' }).value).toBe('concentration')
     expect(screen.queryByRole('button', { name: 'Equip Plain Goggles in Eyes' })).toBeNull()
+  })
+
+  it('previews the level range during a drag and saves once on release', async () => {
+    await renderReadyPage(dataWithItems([]))
+    fireEvent.click(screen.getByRole('button', { name: 'Character setup' }))
+    const range = within(screen.getByRole('group', { name: 'Gear level range' }))
+    const minimum = range.getByLabelText<HTMLSelectElement>('Minimum level')
+    const thumb = range.getByRole('slider', { name: 'Adjust minimum level' })
+    const geometry = vi
+      .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+      .mockReturnValue(new DOMRect(0, 0, 350, 20))
+    const writes = vi.spyOn(Storage.prototype, 'setItem')
+    const setupWrites = () => writes.mock.calls.filter(([key]) => key === GEAR_PLANNER_STORAGE_KEY)
+    try {
+      fireEvent.mouseDown(thumb, { clientX: 50 })
+      await waitFor(() => {
+        expect(minimum.value).toBe('6')
+      })
+      fireEvent.mouseMove(document, { clientX: 100 })
+      await waitFor(() => {
+        expect(minimum.value).toBe('11')
+      })
+      expect(setupWrites()).toHaveLength(0)
+      fireEvent.mouseUp(document)
+      await waitFor(() => {
+        expect(setupWrites()).toHaveLength(1)
+      })
+      expect(minimum.value).toBe('11')
+    } finally {
+      geometry.mockRestore()
+      writes.mockRestore()
+    }
+  })
+
+  it('uses the Character Setup level range in Find Gear', async () => {
+    await renderReadyPage(
+      dataWithItems([item('head', 'Head', 'Summer Helm', 10), item('neck', 'Neck', 'Spring Pendant', 20)])
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Character setup' }))
+    const range = within(screen.getByRole('group', { name: 'Gear level range' }))
+    fireEvent.change(range.getByLabelText('Minimum level'), { target: { value: '8' } })
+    expect(range.getByRole('slider', { name: 'Adjust minimum level' }).getAttribute('aria-valuenow')).toBe('8')
+    fireEvent.change(range.getByLabelText('Maximum level'), { target: { value: '15' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Find gear' }))
+    expect(await screen.findByText('Summer Helm')).toBeTruthy()
+    expect(screen.queryByText('Spring Pendant')).toBeNull()
   })
 
   it('limits equipment and augment set choices to the inclusive level range', async () => {
@@ -765,6 +812,132 @@ describe('GearPlannerPage', () => {
     })
   })
 
+  it('uses ordered focus stats for slot replacements and paths while preserving explicit objectives', () => {
+    const stat = (name: string, modifier: number) => ({ name, modifier, bonus: 'Enhancement' })
+    const candidates = [
+      item('dc', 'Head', 'DC helm', 10, [stat('Wisdom', 1)]),
+      item('hp', 'Head', 'HP helm', 10, [stat('Maximum Hit Points', 20)]),
+      item('both', 'Head', 'Both', 10, [stat('Wisdom', 1), stat('Maximum Hit Points', 1)])
+    ]
+    const catalog = dataWithItems(candidates)
+    const setup = createGearPlannerSetup('a', 'Focus')
+    setup.character.focusStats = ['Wisdom', 'Maximum Hit Points']
+    const slots = () =>
+      shortlistReplacements(
+        [...findSlotReplacements(setup, 'Head', catalog, essenceData)].filter((row) => row !== undefined),
+        null
+      ).map((row) => row.item.source.name)
+    const paths = (kind: PathRequest['kind']) => {
+      const search = searchUpgradePaths(
+        setup,
+        'Character',
+        catalog,
+        essenceData,
+        { kind, objective: 'Maximum Hit Points', character: '', locked: [], protectedTiers: [] },
+        new Map()
+      )
+      let step = search.next()
+      while (!step.done) step = search.next()
+      return step.value.map((row) => row.name)
+    }
+    expect(slots()).toEqual(['Both', 'DC helm', 'HP helm'])
+    expect(paths('Focus stats')).toEqual(slots())
+    expect(paths('Stat')).toEqual(['HP helm', 'Both'])
+    setup.character.focusStats.reverse()
+    expect(slots()).toEqual(['Both', 'HP helm', 'DC helm'])
+    expect(paths('Focus stats')).toEqual(slots())
+  })
+
+  it('selects a setup focus stat and uses it to find upgrade paths', async () => {
+    await renderReadyPage(
+      dataWithItems([
+        item('focushelm', 'Head', 'Focus helm', 10, [{ name: 'Wisdom', modifier: 2, bonus: 'Enhancement' }])
+      ])
+    )
+    const user = userEvent.setup()
+    const click = async (name: string) => {
+      await user.click(await screen.findByRole('button', { name }))
+    }
+    await click('Character setup')
+    await click('Add focus stat')
+    await user.type(screen.getByRole('textbox', { name: 'Search stats' }), 'wisdom')
+    await click('Wisdom')
+    expect(await screen.findByRole('button', { name: 'Remove Wisdom' })).toBeTruthy()
+    const saved = parsePersistedGearPlannerState(JSON.parse(localStorage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? '{}'))
+    expect(saved.setups[0].character?.focusStats).toEqual(['Wisdom'])
+    await user.click(screen.getAllByRole('button', { name: 'Upgrade paths' })[0])
+    await click('Find paths')
+    expect(await screen.findByText('Wisdom +2')).toBeTruthy()
+  })
+
+  it('compares same-slot replacements against overlapping bonuses and preserves unique effect losses', () => {
+    const stat = (name: string, modifier: number) => ({ name, modifier, bonus: 'Enhancement' })
+    const host = item('gloves', 'Hands', 'Original gloves', 10, [stat('Strength', 12), { name: 'Ghostly' }])
+    const belt = item('belt', 'Waist', 'Belt', 10, [stat('Strength', 11)])
+    const straight = item('upgrade', 'Hands', 'Upgrade', 10, [stat('Strength', 13), { name: 'Ghostly' }])
+    const trade = item('trade', 'Hands', 'Trade', 10, [stat('Dexterity', 8)])
+    const baseline = createGearPlannerSetup('a', 'Test')
+    const setup = { ...baseline, equipment: { ...baseline.equipment, Hands: host, Waist: belt } }
+    const paths = [
+      ...findSlotReplacements(setup, 'Hands', dataWithItems([host, belt, straight, trade]), essenceData)
+    ].filter((p) => p !== undefined)
+    expect(paths).toHaveLength(2)
+    expect(paths[0]).toMatchObject({ group: 'Straight upgrade', gains: [{ label: 'Strength', delta: '+1' }] })
+    expect(paths[1].group).toBe('Worth a trade-off')
+    expect(paths[1].losses.map(({ label, delta }) => [label, delta])).toEqual([
+      ['Ghostly', 'Lost'],
+      ['Strength', '-1']
+    ])
+    expect(shortlistReplacements(paths, 'Dexterity').map((p) => p.item.id)).toEqual(['trade'])
+    expect(setup.equipment.Hands).toBe(host)
+  })
+
+  it('reveals every gain and trade-off from the slot upgrade overflow counts', async () => {
+    const effects = (names: string[]) => names.map((name) => ({ name, modifier: 2, bonus: 'Enhancement' }))
+    const old = item('old', 'Head', 'Old helm', 10, effects(['Strength', 'Wisdom', 'Dexterity']))
+    const next = item('new', 'Head', 'New helm', 10, effects(['Charisma', 'Constitution', 'Intelligence']))
+    await renderReadyPage(dataWithItems([old, next]))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Old helm' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Find upgrades' }))
+    const user = userEvent.setup()
+    for (const [label, stats] of [
+      ['gains', ['Charisma +2', 'Constitution +2', 'Intelligence +2']],
+      ['trade-offs', ['Dexterity -2', 'Strength -2', 'Wisdom -2']]
+    ] as const) {
+      const trigger = await screen.findByRole('button', { name: 'Show all 3 ' + label })
+      await user.hover(trigger)
+      const popup = await screen.findByRole('tooltip')
+      expect(
+        within(popup)
+          .getAllByRole('listitem')
+          .map((entry) => entry.textContent)
+      ).toEqual(stats)
+      await user.unhover(trigger)
+      await waitFor(() => {
+        expect(screen.queryByRole('tooltip')).toBeNull()
+      })
+    }
+  })
+  it('opens slot suggestions, previews a swap, then equips it on request', async () => {
+    const helm = (name: string, modifier: number) =>
+      item(name, 'Head', name, 10, [{ name: 'Wisdom', modifier, bonus: 'Enhancement' }])
+    await renderReadyPage(dataWithItems([helm('Original helm', 5), helm('Better helm', 7)]))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Original helm' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Find upgrades' }))
+    const suggestions = within(await screen.findByRole('dialog', { name: 'Find upgrades · Head' }))
+    expect(await suggestions.findByText('Wisdom +2')).toBeTruthy()
+    fireEvent.click(suggestions.getByRole('button', { name: 'Compare' }))
+    const comparison = within(await screen.findByRole('dialog', { name: 'Compare loadouts' }))
+    expect(comparison.getByRole('row', { name: /Wisdom/ }).textContent).toContain('+2')
+    fireEvent.keyDown(comparison.getByRole('table'), { key: 'Escape', code: 'Escape' })
+    const returned = within(await screen.findByRole('dialog', { name: 'Find upgrades · Head' }))
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Original helm')
+    fireEvent.click(returned.getByRole('button', { name: 'Equip' }))
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Better helm')
+  })
+
   it('ranks a stat against equipped bonuses and shows only effective improvements of the selected type', () => {
     const ranked = (id: string, slot: GearPlannerItem['slot'], rank: number, bonus: string) =>
       item(id, slot, id, 10, [{ name: 'Aim +' + String(rank), modifier: rank, bonus }])
@@ -912,7 +1085,7 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Character setup' }))
     fireEvent.click(screen.getByRole('combobox', { name: 'Character classes' }))
     fireEvent.click(await screen.findByRole('option', { name: 'Wizard' }))
-    fireEvent.click(screen.getByRole('button', { name: /Weapons.*selected/ }))
+    fireEvent.click(screen.getByRole('button', { name: /One-handed weapons/ }))
     expect((await screen.findByRole<HTMLInputElement>('checkbox', { name: 'Club' })).checked).toBe(true)
     expect(screen.getByRole<HTMLInputElement>('checkbox', { name: 'Heavy Mace' }).checked).toBe(false)
     expect(screen.queryByRole('checkbox', { name: 'Scepter' })).toBeNull()
@@ -939,7 +1112,7 @@ describe('GearPlannerPage', () => {
       if (action === 'clear') {
         fireEvent.click(screen.getByRole('button', { name: 'Clear weapon filter' }))
       } else {
-        fireEvent.click(screen.getByRole('button', { name: /Weapons.*selected/ }))
+        fireEvent.click(screen.getByRole('button', { name: /One-handed weapons/ }))
         fireEvent.click(await screen.findByRole('checkbox', { name: 'Club' }))
       }
       expect(await screen.findByRole('button', { name: 'Equip Crystalline Scepter' })).toBeTruthy()

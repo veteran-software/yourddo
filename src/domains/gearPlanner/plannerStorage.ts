@@ -219,6 +219,29 @@ function parseCharacter(value: unknown, path: string, availableWeapons: readonly
       throw new InvalidGearPlannerStateError(path + '.' + key + ' contains invalid selections')
     character[key] = values
   }
+  if (record.focusStats !== undefined) {
+    const names: unknown = record.focusStats
+    if (
+      !Array.isArray(names) ||
+      names.length > 5 ||
+      !names.every((name: unknown): name is string => typeof name === 'string' && Boolean(name.trim())) ||
+      new Set(names.map((name) => name.toLowerCase())).size !== names.length
+    )
+      throw new InvalidGearPlannerStateError(path + '.focusStats must contain up to five distinct stat names')
+    character.focusStats = names
+  }
+  if (record.disabledProficiencies !== undefined) {
+    const disabled = record.disabledProficiencies
+    if (
+      !Array.isArray(disabled) ||
+      !disabled.every(
+        (key: unknown): key is keyof typeof proficiencyOptions =>
+          (key === 'weapons' || key === 'armor' || key === 'shields') && character[key].length === 0
+      )
+    )
+      throw new InvalidGearPlannerStateError(path + '.disabledProficiencies contains invalid selections')
+    character.disabledProficiencies = [...new Set(disabled)]
+  }
   if (typeof record.allowMetalWithDruid !== 'boolean')
     throw new InvalidGearPlannerStateError(path + '.allowMetalWithDruid must be a boolean')
   return { ...character, allowMetalWithDruid: record.allowMetalWithDruid }

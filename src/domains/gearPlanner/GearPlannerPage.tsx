@@ -10,9 +10,12 @@ import {
 } from './character'
 import { UpgradePathsTool, UpgradeResults } from './tools/UpgradePathsTool'
 import type { PathRequest } from './upgradePaths'
+import SlotUpgrades from './components/SlotUpgrades'
 import LoadoutComparison from './components/LoadoutComparison'
 import AugmentsTool from './tools/AugmentsTool'
 import FarmingTool from './tools/FarmingTool'
+import LevelRangeInputs, { type LevelRange } from './components/LevelRangeInputs'
+import FocusStatEditor from './tools/FocusStatEditor'
 import CharacterSetupTool from './tools/CharacterSetupTool'
 import { ownsTroveItem } from './trove'
 import { gearPlannerAugmentIdentity } from './augments'
@@ -46,7 +49,6 @@ import {
   Menu,
   Modal,
   Notification,
-  NumberInput,
   Paper,
   Select,
   SimpleGrid,
@@ -244,6 +246,7 @@ const itemMetadata = (item: GearPlannerItem, essenceMinimumLevel?: number) =>
   }`
 
 interface EquipmentEditorProps {
+  findSlotUpgrades: () => void
   character: CharacterSettings
   inline: boolean
   sets: readonly string[]
@@ -282,6 +285,7 @@ interface EquipmentEditorProps {
 }
 
 const EquipmentEditor = ({
+  findSlotUpgrades,
   character,
   inline,
   sets,
@@ -357,6 +361,9 @@ const EquipmentEditor = ({
           }}
         >
           Change item
+        </Button>
+        <Button size='xs' variant='light' leftSection={<IconRoute size={15} />} onClick={findSlotUpgrades}>
+          Find upgrades
         </Button>
         <Button
           size='xs'
@@ -810,22 +817,7 @@ const ItemBrowser = ({
                   onChange={setBonusType}
                 />
               )}
-              <NumberInput
-                label='Minimum level'
-                min={1}
-                value={minimumLevel}
-                onChange={(value) => {
-                  updateLevels({ minimumLevel: typeof value === 'number' ? value : 1 })
-                }}
-              />
-              <NumberInput
-                label='Maximum level'
-                min={1}
-                value={maximumLevel}
-                onChange={(value) => {
-                  updateLevels({ maximumLevel: typeof value === 'number' ? value : 36 })
-                }}
-              />
+              <LevelRangeInputs minimumLevel={minimumLevel} maximumLevel={maximumLevel} updateLevels={updateLevels} />
 
               {types.length > 1 && (
                 <Select
@@ -1091,6 +1083,7 @@ const GearPlannerWorkspace = () => {
   const [persistenceEnabled, setPersistenceEnabled] = useState(false)
   const [renameOpen, setRenameOpen] = useState(false)
   const [renameValue, setRenameValue] = useState('')
+  const [upgradeSlot, setUpgradeSlot] = useState<GearPlannerSlot | null>(null)
   const [compareOpen, setCompareOpen] = useState(false)
   const [setupAction, setSetupAction] = useState<'Clear' | 'Delete' | null>(null)
   const [feedback, setFeedback] = useState<{
@@ -1222,6 +1215,10 @@ const GearPlannerWorkspace = () => {
   const openSet = (name: string) => {
     findGear({ kind: 'item', name })
   }
+  function updateLevels(update: Partial<LevelRange>) {
+    applySetupState((current) => updateGearPlannerSetupLevels(current, activeSetup.id, update))
+  }
+
   const tools: readonly WorkspaceTool[] = [
     {
       id: 'enchantments',
@@ -1262,6 +1259,21 @@ const GearPlannerWorkspace = () => {
             icon: <IconUserCog stroke={2} />,
             content: (
               <CharacterSetupTool
+                focusEditor={
+                  <FocusStatEditor
+                    data={dataState.data}
+                    owner={owner}
+                    effects={effects}
+                    names={activeSetup.character.focusStats ?? []}
+                    onChange={(focusStats) => {
+                      applySetupState((current) =>
+                        updateSetupCharacter(current, activeSetup.id, { ...activeSetup.character, focusStats })
+                      )
+                    }}
+                  />
+                }
+                levels={activeSetup}
+                updateLevels={updateLevels}
                 weaponTypes={weaponTypes}
                 settings={activeSetup.character}
                 onChange={(character) => {
@@ -1530,9 +1542,7 @@ const GearPlannerWorkspace = () => {
         minimumLevel={activeSetup.minimumLevel}
         maximumLevel={activeSetup.maximumLevel}
         equip={equip}
-        updateLevels={(update) => {
-          applySetupState((current) => updateGearPlannerSetupLevels(current, activeSetup.id, update))
-        }}
+        updateLevels={updateLevels}
         onMinorArtifactRejected={() => {
           setFeedback({ kind: 'error', message: 'Only one minor artifact can be equipped at a time.' })
         }}
@@ -1542,6 +1552,9 @@ const GearPlannerWorkspace = () => {
   const renderEquipmentEditor = (cardSlot: GearPlannerSlot, cardItem: GearPlannerItem, inline: boolean) =>
     dataState.status === 'ready' && (
       <EquipmentEditor
+        findSlotUpgrades={() => {
+          setUpgradeSlot(cardSlot)
+        }}
         character={activeSetup.character}
         inline={inline}
         openSet={openSet}
@@ -1784,6 +1797,21 @@ const GearPlannerWorkspace = () => {
                 }}
               />
             </div>
+            {upgradeSlot && (
+              <SlotUpgrades
+                setup={activeSetup}
+                slot={upgradeSlot}
+                data={dataState.data}
+                essence={dataState.essenceData}
+                onClose={() => {
+                  setUpgradeSlot(null)
+                }}
+                onEquip={(item) => {
+                  equip(upgradeSlot, item)
+                  setUpgradeSlot(null)
+                }}
+              />
+            )}
             {compareOpen && (
               <LoadoutComparison
                 setups={plannerState.setups}

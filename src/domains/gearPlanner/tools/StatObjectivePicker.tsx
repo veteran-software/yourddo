@@ -35,12 +35,14 @@ export default function StatObjectivePicker({
   equipped,
   value,
   bonus,
+  focus = false,
   onSelect
 }: Readonly<{
   stats: ReadonlyMap<string, ReadonlySet<string>>
   equipped: ReadonlySet<string>
   value: string | null
   bonus?: string
+  focus?: boolean
   onSelect: (name: string, bonus?: string) => void
 }>) {
   const [open, setOpen] = useState(false)
@@ -88,7 +90,7 @@ export default function StatObjectivePicker({
   return (
     <div>
       <Text size='sm' fw={500}>
-        Stat objective
+        {focus ? 'Focus stats' : 'Stat objective'}
       </Text>
       <Button
         fullWidth
@@ -104,7 +106,7 @@ export default function StatObjectivePicker({
           setOpen(true)
         }}
       >
-        {value ? objectiveLabel(value) + ' · ' + selectedBonus : 'Choose a stat'}
+        {value ? objectiveLabel(value) + ' · ' + selectedBonus : focus ? 'Add focus stat' : 'Choose a stat'}
       </Button>
       <Modal
         opened={open}
@@ -157,7 +159,8 @@ export default function StatObjectivePicker({
                     className={css.objectiveRow}
                     key={name}
                     onClick={() => {
-                      setChosen(name)
+                      if (focus) pick(name)
+                      else setChosen(name)
                     }}
                   >
                     <span>{subtype}</span>
@@ -214,6 +217,7 @@ export default function StatObjectivePicker({
                           key={name}
                           onClick={() => {
                             if (families.has(name)) setFamily(name)
+                            else if (focus) pick(name)
                             else setChosen(name)
                           }}
                         >
