@@ -85,7 +85,9 @@ export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetu
           {sections.map(({ status, title, icon: Icon }) => {
             const visible = tasks.filter((t) => t.status === status && (view === 'All items' || !done(t)))
             if (!visible.length) return null
-            const groups = Map.groupBy(visible, (t) => t.group)
+            const groups = Map.groupBy(visible, (t) =>
+              status === 'Farm' && !t.sources.length ? 'DDO Compendium Links' : t.group
+            )
             return (
               <section key={status} aria-label={title}>
                 <h4 className={css.section}>

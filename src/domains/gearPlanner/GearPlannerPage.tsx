@@ -1233,6 +1233,39 @@ const GearPlannerWorkspace = () => {
   }
 
   const tools: readonly WorkspaceTool[] = [
+    ...(dataState.status === 'ready'
+      ? [
+          {
+            id: 'character',
+            label: 'Character setup',
+            icon: <IconUserCog stroke={2} />,
+            content: (
+              <CharacterSetupTool
+                focusEditor={
+                  <FocusStatEditor
+                    data={dataState.data}
+                    owner={owner}
+                    effects={effects}
+                    names={activeSetup.character.focusStats ?? []}
+                    onChange={(focusStats) => {
+                      applySetupState((current) =>
+                        updateSetupCharacter(current, activeSetup.id, { ...activeSetup.character, focusStats })
+                      )
+                    }}
+                  />
+                }
+                levels={activeSetup}
+                updateLevels={updateLevels}
+                weaponTypes={weaponTypes}
+                settings={activeSetup.character}
+                onChange={(character) => {
+                  applySetupState((current) => updateSetupCharacter(current, activeSetup.id, character))
+                }}
+              />
+            )
+          }
+        ]
+      : []),
     {
       id: 'enchantments',
       label: 'Enchantments',
@@ -1266,35 +1299,6 @@ const GearPlannerWorkspace = () => {
     },
     ...(dataState.status === 'ready'
       ? [
-          {
-            id: 'character',
-            label: 'Character setup',
-            icon: <IconUserCog stroke={2} />,
-            content: (
-              <CharacterSetupTool
-                focusEditor={
-                  <FocusStatEditor
-                    data={dataState.data}
-                    owner={owner}
-                    effects={effects}
-                    names={activeSetup.character.focusStats ?? []}
-                    onChange={(focusStats) => {
-                      applySetupState((current) =>
-                        updateSetupCharacter(current, activeSetup.id, { ...activeSetup.character, focusStats })
-                      )
-                    }}
-                  />
-                }
-                levels={activeSetup}
-                updateLevels={updateLevels}
-                weaponTypes={weaponTypes}
-                settings={activeSetup.character}
-                onChange={(character) => {
-                  applySetupState((current) => updateSetupCharacter(current, activeSetup.id, character))
-                }}
-              />
-            )
-          },
           {
             id: 'augments',
             label: 'Augments',
@@ -1581,7 +1585,9 @@ const GearPlannerWorkspace = () => {
         title={label}
         aria-expanded={!collapsed}
         aria-controls={'gear-item-details-' + item.slot.replaceAll(' ', '-')}
-        onClick={() => setDetailsCollapsed([key], !collapsed)}
+        onClick={() => {
+          setDetailsCollapsed([key], !collapsed)
+        }}
       >
         {collapsed ? <IconChevronRight size={16} aria-hidden /> : <IconChevronDown size={16} aria-hidden />}
       </ActionIcon>

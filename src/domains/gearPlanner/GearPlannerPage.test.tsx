@@ -169,6 +169,19 @@ afterAll(() => {
 })
 
 describe('GearPlannerPage', () => {
+  it('links farming list items with unknown drop locations to their Compendium pages', async () => {
+    await renderReadyPage(dataWithItems([item('helm', gearPlannerSlots.head, 'Helm of Fire & Ice')]))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Helm of Fire & Ice' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Farming list' }))
+    const list = within(await screen.findByRole('region', { name: 'To farm' }))
+    expect(list.getByRole('heading', { name: 'DDO Compendium Links' })).toBeTruthy()
+    expect(list.getByRole('link', { name: 'Helm of Fire & Ice' }).getAttribute('href')).toBe(
+      'https://ddocompendium.com/w/Helm%20of%20Fire%20%26%20Ice'
+    )
+    expect(list.queryByText(/source unlisted/i)).toBeNull()
+  })
+
   it('finds enchantments across slots and equips the result in its own slot', async () => {
     await renderReadyPage(
       dataWithItems([
