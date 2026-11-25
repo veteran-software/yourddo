@@ -604,6 +604,16 @@ function restoreCatalog(data: GearPlannerData, essenceData?: EssenceCraftingData
 type RestoreCatalog = ReturnType<typeof restoreCatalog>
 type ReportIssue = (kind: GearPlannerRestoreIssue['kind'], message: string) => void
 
+function legacyEquipmentFields(id: string) {
+  const parts = id.split('|')
+  if (parts.length !== 5) return undefined
+  try {
+    return parts.map(decodeURIComponent)
+  } catch {
+    return undefined
+  }
+}
+
 // Pre-catalog saves identified equipment by source page, filename, name and level.
 function migrateEquipmentReferences(
   setup: PersistedGearPlannerSetupV1,
@@ -615,14 +625,8 @@ function migrateEquipmentReferences(
   for (const slot of allGearPlannerSlots) {
     const oldId = equipment[slot]
     if (!oldId || catalog.itemsById.has(oldId)) continue
-    const parts = oldId.split('|')
-    if (parts.length !== 5) continue
-    let fields: string[]
-    try {
-      fields = parts.map(decodeURIComponent)
-    } catch {
-      continue
-    }
+    const fields = legacyEquipmentFields(oldId)
+    if (!fields) continue
     const [savedSlot, file, , name, level] = fields
     if (savedSlot !== slot) continue
     const matches = catalog.data.itemsBySlot[slot].filter(

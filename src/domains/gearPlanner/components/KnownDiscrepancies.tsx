@@ -1,6 +1,6 @@
 import { Text } from '@mantine/core'
 
-export default function KnownDiscrepancies({ notes }: { notes?: readonly string[] }) {
+export default function KnownDiscrepancies({ notes }: Readonly<{ notes?: readonly string[] }>) {
   if (!notes?.length) return null
   return (
     <aside aria-label='Known in-game discrepancies'>

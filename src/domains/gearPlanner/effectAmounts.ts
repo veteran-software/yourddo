@@ -19,6 +19,6 @@ export function percentModifier(points: number, signed = false) {
 }
 
 export function displayPercentModifier(modifier: string | undefined) {
-  if (!modifier || !/^[+-]?(?:\d+\.?\d*|\.\d+)%$/.test(modifier)) return { modifier }
+  if (!modifier || !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)%$/.test(modifier)) return { modifier }
   return percentModifier(Number(modifier.slice(0, -1)), modifier.startsWith('+'))
 }

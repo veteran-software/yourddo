@@ -42,7 +42,8 @@ export function statValue(effect: GearPlannerEffectSummary, signed = false): Val
   const [unit] = units
   if (units.size === 1 && unit != null) {
     const fractional = active.filter((e) => e.calculationValue !== undefined && !Number.isInteger(e.calculationValue))
-    const rounding = fractional.length ? (fractional.every((e) => e.roundToNearest) ? 'round' : 'trunc') : undefined
+    let rounding: Value['rounding']
+    if (fractional.length) rounding = fractional.every((e) => e.roundToNearest) ? 'round' : 'trunc'
     return { text: formatAmount(effect.total, unit, signed, rounding), amount: effect.total, unit, rounding }
   }
   return {

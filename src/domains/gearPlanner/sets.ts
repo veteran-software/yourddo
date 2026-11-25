@@ -54,15 +54,18 @@ export interface GearPlannerSetState {
 const equippedItems = (equipment: GearPlannerEquipment): readonly GearPlannerItem[] =>
   Object.values(equipment).filter((item): item is GearPlannerItem => item !== null)
 
+function baseSetMemberships(item: GearPlannerItem, overrides: ReadonlyMap<string, boolean>) {
+  if (item.source.name.includes('Gem of Many Facets') || overrides.get(item.id)) return []
+  return (item.source.setBonus ?? []).slice(overrides.has(item.id) ? 1 : 0)
+}
+
 export const collectEquippedItemSetMemberships = (
   equipment: GearPlannerEquipment,
   overrides: ReadonlyMap<string, boolean> = new Map()
 ): readonly GearPlannerSetMembership[] =>
   equippedItems(equipment).flatMap((item) =>
     [
-      ...(item.source.name.includes('Gem of Many Facets') || overrides.get(item.id)
-        ? []
-        : (item.source.setBonus ?? []).slice(overrides.has(item.id) ? 1 : 0)),
+      ...baseSetMemberships(item, overrides),
       ...(item.crafts ?? []).flatMap((craft) => (craft.setName ? [{ name: craft.setName }] : []))
     ].map(({ name }, setIndex) => ({
       id: `${item.id}:equipped-item-set:${String(setIndex)}`,

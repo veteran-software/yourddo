@@ -1,3 +1,4 @@
+import { keyedEntries } from '../../shared/ui/keyedEntries'
 import KnownDiscrepancies from './components/KnownDiscrepancies'
 import {
   type CharacterSettings,
@@ -237,8 +238,8 @@ function GearItemArt({
   return (
     <span className={classes.itemArt} style={{ width: size, height: size }} aria-hidden>
       {item.source.iconLayers?.length ? (
-        item.source.iconLayers.map((src, layer) => (
-          <img key={layer} alt='' src={src} width={size} height={size} style={{ gridArea: '1 / 1' }} />
+        keyedEntries(item.source.iconLayers).map(({ key, value: src }) => (
+          <img key={key} alt='' src={src} width={size} height={size} style={{ gridArea: '1 / 1' }} />
         ))
       ) : (
         <ItemIcon item={item.source} size={size} />

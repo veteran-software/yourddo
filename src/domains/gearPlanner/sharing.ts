@@ -249,7 +249,13 @@ export function formatGearSetup(
 ) {
   const forum = format === 'Forum BBCode'
   const escapeMarkup = forum ? escapeBbCode : escapeMarkdown
-  const escape = (text: string) => escapeMarkup(text.replaceAll(/[^\S\r\n]*—[^\S\r\n]*/g, ' - '))
+  const escape = (text: string) =>
+    escapeMarkup(
+      text.replaceAll(/—[^\S\r\n]*|[^\S\r\n]+/g, (run, offset: number) => {
+        if (run.startsWith('—')) return ' - '
+        return text[offset + run.length] === '—' ? '' : run
+      })
+    )
   const heading = (text: string) => (forum ? `[b]${escape(text)}[/b]` : `**${escape(text)}**`)
   const lines = [
     heading(setup.name),

@@ -6,6 +6,7 @@ import {
   type GearPlannerEffect,
   type GearPlannerSlot,
   type GearPlannerSourceDataset,
+  type GearPlannerFiligreeSetDefinition,
   type GearPlannerSourceItem
 } from './gearPlanner.types'
 import { gearPlannerItemSources } from './sourceMapping'
@@ -127,12 +128,40 @@ function itemDiscrepancies(item: Row, effects: readonly GearPlannerEffect[]) {
   return [...new Set([...discrepancyNotes(item), ...effects.flatMap((effect) => effect.discrepancyNotes ?? [])])]
 }
 
-function effectStats(effect: Row, source: EffectSource): GearPlannerEffect[] {
-  if (effect.hidden && source === 'equipment') return []
-  const notes = typeof effect.description === 'string' ? effect.description : undefined
-  const name = typeof effect.displayName === 'string' ? effect.displayName.trim() : ''
+function roundedModifier(modifier: string | number, calculationValue: number) {
+  if (calculationValue === Number.parseFloat(String(modifier))) return { modifier }
+  return { modifier, calculationValue, roundToNearest: true }
+}
+
+function coefficientModifier(stat: Row, value: number, source: EffectSource) {
+  const property = typeof stat.name === 'string' ? stat.name : ''
+  const scale = source === 'augment' && augmentPercentagePoints.has(property) ? 1 : 100
+  const sign = stat.operation === 'Subtract' ? -1 : 1
+  const amount = Math.round(Number((value * scale).toFixed(6))) * sign
+  const power =
+    property.startsWith('Spell_DamageMod_') || /^Weapon_DamageMod_(?:Melee|Ranged)WeaponPower$/.test(property)
+  return roundedModifier(power ? amount : String(amount) + '%', value * scale * sign)
+}
+
+function statModifier(stat: Row, value: number, name: string, source: EffectSource) {
+  if (stat.unit === 'multiplier') {
+    const percent = Math.round(Number((value * 100).toFixed(10)))
+    const remaining =
+      stat.name === 'ActionAgent_CooldownModArray' ||
+      stat.name === 'Character_RegenerationIntervalMultiplier_SmiteEvil' ||
+      /\babsorption\b/i.test(name)
+    if (remaining) return roundedModifier(String(100 - percent) + '%', (1 - value) * 100)
+    return roundedModifier(String(percent) + '%', value * 100)
+  }
+  if (stat.unit === 'coefficient') return coefficientModifier(stat, value, source)
+  if (stat.unit === 'percent') return percentModifier(value)
+  if (stat.unit == null && implicitPercentRatios.has(String(stat.name))) return percentModifier(value * 100)
+  return { modifier: value }
+}
+
+function equipmentBonuses(enchantments: Row[], source: EffectSource, notes?: string) {
   const stats: GearPlannerEffect[] = []
-  for (const stat of rows(effect.enchantments ?? [], 'enchantments')) {
+  for (const stat of enchantments) {
     if (stat.internal || typeof stat.displayName !== 'string' || typeof stat.value !== 'number') continue
     // Conditional and derived values cannot be counted as always-on equipment bonuses.
     if (
@@ -144,42 +173,21 @@ function effectStats(effect: Row, source: EffectSource): GearPlannerEffect[] {
       stat.attackForms
     )
       continue
-    let calculationValue: number | undefined
-    let modifier: number | string = stat.value
-    if (stat.unit === 'multiplier') {
-      const percent = Math.round(Number((stat.value * 100).toFixed(10)))
-      const remainingFraction =
-        stat.name === 'ActionAgent_CooldownModArray' ||
-        stat.name === 'Character_RegenerationIntervalMultiplier_SmiteEvil' ||
-        /\babsorption\b/i.test(stat.displayName)
-      calculationValue = remainingFraction ? (1 - stat.value) * 100 : stat.value * 100
-      modifier = String(remainingFraction ? 100 - percent : percent) + '%'
-    } else if (stat.unit === 'coefficient') {
-      const property = typeof stat.name === 'string' ? stat.name : ''
-      const scale = source === 'augment' && augmentPercentagePoints.has(property) ? 1 : 100
-      const amount = Math.round(Number((stat.value * scale).toFixed(6))) * (stat.operation === 'Subtract' ? -1 : 1)
-      calculationValue = stat.value * scale * (stat.operation === 'Subtract' ? -1 : 1)
-      const power =
-        property.startsWith('Spell_DamageMod_') || /^Weapon_DamageMod_(?:Melee|Ranged)WeaponPower$/.test(property)
-      modifier = power ? amount : String(amount) + '%'
-    } else if (stat.unit === 'percent' || (stat.unit == null && implicitPercentRatios.has(String(stat.name)))) {
-      const points = stat.unit === 'percent' ? stat.value : stat.value * 100
-      const display = percentModifier(points)
-      modifier = display.modifier
-      calculationValue = display.calculationValue
-    }
     stats.push({
       name: stat.displayName,
       bonus: typeof stat.bonusType === 'string' ? stat.bonusType : undefined,
-      modifier,
-      ...(calculationValue !== undefined &&
-        calculationValue !== Number.parseFloat(String(modifier)) && {
-          calculationValue,
-          ...((stat.unit === 'coefficient' || stat.unit === 'multiplier') && { roundToNearest: true })
-        }),
+      ...statModifier(stat, stat.value, stat.displayName, source),
       notes
     })
   }
+  return stats
+}
+
+function effectStats(effect: Row, source: EffectSource): GearPlannerEffect[] {
+  if (effect.hidden && source === 'equipment') return []
+  const notes = typeof effect.description === 'string' ? effect.description : undefined
+  const name = typeof effect.displayName === 'string' ? effect.displayName.trim() : ''
+  const stats = equipmentBonuses(rows(effect.enchantments ?? [], 'enchantments'), source, notes)
   if (name && (!stats.length || (Array.isArray(effect.procs) && effect.procs.length))) stats.push({ name, notes })
   const discrepancies = discrepancyNotes(effect, source)
   if (stats.length && discrepancies.length) stats[0].discrepancyNotes = discrepancies
@@ -219,6 +227,11 @@ function socket(slot: Row) {
   return { name, augmentType, slotTypes: Array.isArray(slot.types) ? slot.types.map(String) : [] }
 }
 
+function chargeLabel(charges: unknown) {
+  if (typeof charges !== 'number') return ''
+  return ' (' + String(charges) + (charges === 1 ? ' charge)' : ' charges)')
+}
+
 function spellIndex(value: unknown) {
   const index = new Map<string, GearPlannerEffect>()
   for (const spell of rows(value, 'spells')) {
@@ -227,8 +240,7 @@ function spellIndex(value: unknown) {
     const variants = rows(spell.variants ?? [], name)
     for (const entry of [spell, ...variants]) {
       const charges = entry.charges ?? spell.charges
-      const suffix =
-        typeof charges === 'number' ? ' (' + String(charges) + (charges === 1 ? ' charge)' : ' charges)') : ''
+      const suffix = chargeLabel(charges)
       index.set(entry === spell ? key : key + '/' + text(entry.variant, name), {
         name: name + suffix,
         notes: typeof spell.description === 'string' ? spell.description : undefined
@@ -260,6 +272,13 @@ function resolveEffects(
   return enchantments
 }
 
+function readBlockedSlots(stats: Row, name: string) {
+  const blockedSlots = stats.blockedEquipSlots ?? []
+  if (!Array.isArray(blockedSlots) || !blockedSlots.every((key: unknown) => typeof key === 'string'))
+    throw new Error('Invalid blocked slots for ' + name)
+  return blockedSlots
+}
+
 export function adaptItemCategory(
   items: unknown,
   effects: unknown,
@@ -276,9 +295,7 @@ export function adaptItemCategory(
     const stem = type.replaceAll(' ', '').replace(/^./, (first) => first.toLowerCase())
     const fileName = (type === 'Cloth Armor' ? 'cloth' : stem) + '.json'
     const records = datasets.get(fileName) ?? []
-    const blockedSlots = stats.blockedEquipSlots ?? []
-    if (!Array.isArray(blockedSlots) || !blockedSlots.every((key: unknown) => typeof key === 'string'))
-      throw new Error('Invalid blocked slots for ' + name)
+    const blockedSlots = readBlockedSlots(stats, name)
     const enchantments = resolveEffects(item, name, index, spells)
     if (item.minimumLevel !== undefined && !Number.isSafeInteger(item.minimumLevel))
       throw new Error('Invalid minimum level for ' + name)
@@ -352,6 +369,15 @@ export async function loadItemCatalog() {
     }
   }
   return datasets
+}
+
+function setDiscrepancies(set?: GearPlannerFiligreeSetDefinition) {
+  if (!set) return []
+  return set.thresholds.flatMap((tier) =>
+    tier.effects.flatMap((effect) =>
+      (effect.discrepancyNotes ?? []).map((note) => set.name + ' (' + String(tier.threshold) + '-piece): ' + note)
+    )
+  )
 }
 
 export async function loadSocketCatalog() {
@@ -435,18 +461,7 @@ export async function loadSocketCatalog() {
           const override = item.hostSetOverride ? row(item.hostSetOverride, name) : undefined
           const effectsAdded = resolveEffects(item, name, index, spells)
           const set = override ? definitions.get(id(override.primarySetId, name)) : undefined
-          const discrepancy = [
-            ...new Set([
-              ...itemDiscrepancies(item, effectsAdded),
-              ...(set?.thresholds.flatMap((tier) =>
-                tier.effects.flatMap((effect) =>
-                  (effect.discrepancyNotes ?? []).map(
-                    (note) => set.name + ' (' + String(tier.threshold) + '-piece): ' + note
-                  )
-                )
-              ) ?? [])
-            ])
-          ]
+          const discrepancy = [...new Set([...itemDiscrepancies(item, effectsAdded), ...setDiscrepancies(set)])]
           return {
             name,
             augmentType: slotTypes.map((code) => labels.get(code) ?? code).join(' / '),
