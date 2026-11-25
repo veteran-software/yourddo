@@ -78,6 +78,7 @@ const armorTypes = new Set(['Cloth Armor', 'Docent', 'Heavy Armor', 'Light Armor
 const quiverTypes = new Set(['quiver', '', 'bound', 'gear'])
 
 export const sourceSlotsForItem = (fileName: string, item: GearPlannerSourceItem): readonly GearPlannerSlot[] => {
+  if (item.catalogSlots) return item.catalogSlots
   if (fileName === 'collar.json' && petArmorCollars.has(item.name)) {
     return [gearPlannerSlots.ironDefenderArmor, gearPlannerSlots.wolfCompanionArmor]
   }

@@ -536,7 +536,15 @@
   border-bottom: 1px solid var(--app-border);
   border-radius: var(--mantine-radius-sm) var(--mantine-radius-sm) 0 0;
 }
-.gearCardHeading svg:last-child {
+.gearCardSelect {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  align-self: stretch;
+}
+.gearCardHeading > svg:last-child,
+.gearCardSelect svg:last-child {
   margin-inline-start: auto;
 }
 .gearCardHeading:hover,

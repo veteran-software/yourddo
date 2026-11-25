@@ -1,3 +1,4 @@
+import KnownDiscrepancies from './KnownDiscrepancies'
 import { Badge, Button, Group, Modal, Paper, ScrollArea, Stack, Text, TextInput } from '@mantine/core'
 import { useMemo, useState } from 'react'
 import { gearPlannerCurseIdentity } from '../curses.ts'
@@ -56,6 +57,7 @@ const CurseSelector = ({ item, curses, selected, conflictSources, onChange }: Cu
               {selected.type}
             </Badge>
           </Group>
+          <KnownDiscrepancies notes={selected.discrepancyNotes} />
           {selected.enchantments.map((effect, index) => (
             <Text key={`${effect.name}-${String(index)}`} size='xs'>
               {effectLabel(effect)}

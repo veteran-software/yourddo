@@ -56,7 +56,9 @@ import {
   type GearPlannerSetupsState
 } from './setups.ts'
 
-export const GEAR_PLANNER_STORAGE_KEY = 'yourddo:gear-planner:v2'
+// Keep the pre-catalog snapshot readable by older clients and available for recovery.
+const preCatalogStorageKey = 'yourddo:gear-planner:v2'
+export const GEAR_PLANNER_STORAGE_KEY = 'yourddo:gear-planner:items'
 // V1 accepts additive optional fields, so filigree references keep prior v2 saves compatible.
 export const GEAR_PLANNER_PERSISTED_VERSION = 1 as const
 export const GEAR_PLANNER_EXPORT_FILENAME = 'yourddo-gear-planner-v2.json'
@@ -579,6 +581,18 @@ export const serializeGearPlannerState = (state: GearPlannerSetupsState): Persis
 const findEquippedItem = (setup: GearPlannerSetup, itemId: string) =>
   Object.values(setup.equipment).find((item) => item?.id === itemId) ?? null
 
+function savedFields(key: string) {
+  try {
+    return key.split('|').map(decodeURIComponent)
+  } catch {
+    return []
+  }
+}
+
+function savedName(name: string) {
+  return name.replaceAll('’', "'").replace(/\s+/g, ' ').trim().toLowerCase()
+}
+
 function restoreCatalog(data: GearPlannerData, essenceData?: EssenceCraftingData) {
   const itemsById = new Map(data.items.map((item) => [item.id, item]))
   const augmentsById = new Map(data.augments.map((augment) => [gearPlannerAugmentIdentity(augment), augment]))
@@ -589,6 +603,62 @@ function restoreCatalog(data: GearPlannerData, essenceData?: EssenceCraftingData
 
 type RestoreCatalog = ReturnType<typeof restoreCatalog>
 type ReportIssue = (kind: GearPlannerRestoreIssue['kind'], message: string) => void
+
+// Pre-catalog saves identified equipment by source page, filename, name and level.
+function migrateEquipmentReferences(
+  setup: PersistedGearPlannerSetupV1,
+  catalog: RestoreCatalog,
+  report: ReportIssue
+): PersistedGearPlannerSetupV1 {
+  const replacements = new Map<string, string>()
+  const equipment = { ...setup.equipment }
+  for (const slot of allGearPlannerSlots) {
+    const oldId = equipment[slot]
+    if (!oldId || catalog.itemsById.has(oldId)) continue
+    const parts = oldId.split('|')
+    if (parts.length !== 5) continue
+    let fields: string[]
+    try {
+      fields = parts.map(decodeURIComponent)
+    } catch {
+      continue
+    }
+    const [savedSlot, file, , name, level] = fields
+    if (savedSlot !== slot) continue
+    const matches = catalog.data.itemsBySlot[slot].filter(
+      (item) =>
+        item.source.catalogId !== undefined &&
+        item.source.name.toLowerCase() === name.toLowerCase() &&
+        item.minimumLevel === Number(level) &&
+        (item.sourceFile === file ||
+          (item.sourceFile === 'cloth.json' && (file === 'robe.json' || file === 'outfit.json')))
+    )
+    if (matches.length === 1) {
+      replacements.set(oldId, matches[0].id)
+      equipment[slot] = matches[0].id
+    } else {
+      const reason = matches.length ? 'matches multiple catalog items' : 'has no catalog match'
+      report('missing-item', `${slot}: ${name} (ML ${level}) ${reason}.`)
+      equipment[slot] = null
+    }
+  }
+  if (!replacements.size) return { ...setup, equipment }
+  const remap = <T extends { itemId: string }>(entry: T): T => ({
+    ...entry,
+    itemId: replacements.get(entry.itemId) ?? entry.itemId
+  })
+  return {
+    ...setup,
+    equipment,
+    selectedAugments: setup.selectedAugments.map(remap),
+    selectedCrafts: setup.selectedCrafts?.map(remap),
+    selectedCurses: setup.selectedCurses?.map(remap),
+    unlockedFiligreeSlots: setup.unlockedFiligreeSlots?.map(remap),
+    selectedFiligrees: setup.selectedFiligrees?.map(remap),
+    selectedReforging: setup.selectedReforging?.map(remap),
+    selectedEssenceCrafting: setup.selectedEssenceCrafting?.map(remap)
+  }
+}
 
 function restoreEquipment(savedSetup: PersistedGearPlannerSetupV1, { itemsById }: RestoreCatalog, report: ReportIssue) {
   const equipment = createEmptyGearPlannerEquipment()
@@ -680,7 +750,16 @@ function restoreAugment(
     report('orphaned-augment', 'augment host item is not equipped')
     return setup
   }
-  const augment = augmentsById.get(savedAugment.augmentId)
+  let augment = augmentsById.get(savedAugment.augmentId)
+  if (!augment) {
+    const [type, level, name] = savedFields(savedAugment.augmentId)
+    if (name) {
+      const matches = data.augments.filter(
+        (a) => a.augmentType === type && a.minLevel === Number(level) && savedName(a.name) === savedName(name)
+      )
+      if (matches.length === 1) augment = matches[0]
+    }
+  }
   if (!augment) {
     report('missing-augment', 'selected augment is no longer available')
     return setup
@@ -820,7 +899,14 @@ function restoreFiligree(
     report('orphaned-filigree', 'filigree host item is unavailable')
     return setup
   }
-  const filigree = filigreesById.get(savedFiligree.filigreeId)
+  let filigree = filigreesById.get(savedFiligree.filigreeId)
+  if (!filigree) {
+    const [, name] = savedFields(savedFiligree.filigreeId)
+    if (name) {
+      const matches = [...filigreesById.values()].filter((f) => savedName(f.name) === savedName(name))
+      if (matches.length === 1) filigree = matches[0]
+    }
+  }
   if (!filigree) {
     report('missing-filigree', 'selected filigree is no longer available')
     return setup
@@ -847,10 +933,11 @@ export const restorePersistedGearPlannerState = (
 ): RestoredGearPlannerState => {
   const catalog = restoreCatalog(data, essenceData)
   const issues: GearPlannerRestoreIssue[] = []
-  const setups = persisted.setups.map((savedSetup) => {
+  const setups = persisted.setups.map((original) => {
     const report: ReportIssue = (kind, message) => {
-      issues.push({ kind, message: `${savedSetup.name}: ${message}` })
+      issues.push({ kind, message: `${original.name}: ${message}` })
     }
+    const savedSetup = migrateEquipmentReferences(original, catalog, report)
     const equipment = restoreEquipment(savedSetup, catalog, report)
     restoreGearCrafts(equipment, savedSetup, catalog, report)
     let setup: GearPlannerSetup = {
@@ -972,7 +1059,7 @@ export const loadGearPlannerState = (
   let current: PersistedGearPlannerStateV1 | undefined
   let loaded = empty
   try {
-    const raw = storage.getItem(GEAR_PLANNER_STORAGE_KEY)
+    const raw = storage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? storage.getItem(preCatalogStorageKey)
     if (raw !== null) {
       const parsed: unknown = JSON.parse(raw)
       current = parsePersistedGearPlannerState(parsed, data)
@@ -1018,7 +1105,9 @@ export const saveGearPlannerState = (
   if (!storage) return false
   if (legacySaveImported === undefined) {
     try {
-      const previous: unknown = JSON.parse(storage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? 'null')
+      const previous: unknown = JSON.parse(
+        storage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? storage.getItem(preCatalogStorageKey) ?? 'null'
+      )
       legacySaveImported = isRecord(previous) && previous.legacySaveImported === true
     } catch {
       legacySaveImported = false

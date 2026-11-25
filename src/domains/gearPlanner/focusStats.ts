@@ -1,3 +1,4 @@
+import { skillObjective } from './statObjectives'
 import type { loadoutSnapshot } from './loadoutComparison'
 
 type Stats = ReturnType<typeof loadoutSnapshot>['Stats']
@@ -10,8 +11,8 @@ export interface FocusChange {
 function lookup(stats: Stats, name: string) {
   const exact = stats.get(name)
   if (exact) return exact
-  const lower = name.toLowerCase()
-  for (const [label, entry] of stats) if (label.toLowerCase() === lower) return entry
+  const lower = skillObjective(name).toLowerCase()
+  for (const [label, entry] of stats) if (skillObjective(label).toLowerCase() === lower) return entry
 }
 
 export function focusChanges(names: readonly string[], before: Stats, after: Stats): FocusChange[] {

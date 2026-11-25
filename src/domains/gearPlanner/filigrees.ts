@@ -49,7 +49,10 @@ export const isGearPlannerMinorArtifact = (item: GearPlannerItem): boolean =>
   (item.source.artifactType?.trim().length ?? 0) > 0
 
 export const isGearPlannerSentientWeapon = (item: GearPlannerItem): boolean =>
-  item.alchemical?.base.acceptsSentience !== false && legacySentientWeaponTypes.has(item.source.type ?? '')
+  item.alchemical?.base.acceptsSentience !== false &&
+  (typeof item.source.acceptsSentience === 'boolean'
+    ? item.source.acceptsSentience
+    : legacySentientWeaponTypes.has(item.source.type ?? ''))
 
 export const getGearPlannerMaxFiligreeSlots = (item: GearPlannerItem): number => {
   if (isGearPlannerMinorArtifact(item)) {
@@ -65,6 +68,7 @@ export const supportsGearPlannerFiligrees = (item: GearPlannerItem): boolean => 
 
 export const normalizeGearPlannerFiligreeName = (name: string): string =>
   name
+    .replace(/\s+/g, ' ')
     .replace(/ \(Rare\)$/i, '')
     .trim()
     .toLocaleLowerCase()
@@ -84,6 +88,8 @@ export function sentientFiligreeType(filigree: GearPlannerFiligree) {
 }
 
 export function sameFiligreeType(a: GearPlannerFiligree, b: GearPlannerFiligree) {
+  if (typeof a.source.filigreeType === 'string' && typeof b.source.filigreeType === 'string')
+    return a.source.filigreeType === b.source.filigreeType
   const left = sentientFiligreeType(a),
     right = sentientFiligreeType(b)
   return left !== undefined && right !== undefined

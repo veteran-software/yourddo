@@ -48,9 +48,10 @@ export function candidateSetDetails(
   // The Gem's rolls already correct the four mislabeled Legendary desert sets.
   if (gem) return { sets: [...new Set(choices)], craftGroups }
   // The name/level index combines variants such as Sphere of Souls. Each item's own set identifies its variant.
-  const memberships = setBonus?.length
-    ? setBonus.map((s) => s.name)
-    : indexedSets(data?.setIndex, name, item.minimumLevel)
+  const memberships =
+    item.source.catalogId !== undefined || setBonus?.length
+      ? (setBonus ?? []).map((s) => s.name)
+      : indexedSets(data?.setIndex, name, item.minimumLevel)
   return { sets: [...new Set([...memberships, ...choices])], craftGroups }
 }
 

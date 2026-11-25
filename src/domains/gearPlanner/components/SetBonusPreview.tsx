@@ -1,3 +1,4 @@
+import KnownDiscrepancies from './KnownDiscrepancies'
 import { IconLayersLinked } from '@tabler/icons-react'
 import { statFamily } from '../finding'
 import classes from '../../../shared/layout/PlannerWorkspace.module.css'
@@ -48,6 +49,7 @@ export default function SetBonusPreview({
         ) : (
           <small>No effects listed.</small>
         )}
+        <KnownDiscrepancies notes={effects.flatMap((effect) => effect.discrepancyNotes ?? [])} />
       </div>
     )
   })

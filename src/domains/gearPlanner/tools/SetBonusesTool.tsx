@@ -1,3 +1,4 @@
+import KnownDiscrepancies from '../components/KnownDiscrepancies'
 import { Alert, Badge, Button, Divider, Group, Paper, Stack, Text, Title } from '@mantine/core'
 import type { GearFindTarget } from '../finding'
 import { formatGearPlannerSetEffect, type GearPlannerSetMembership, type GearPlannerSetState } from '../sets.ts'
@@ -98,6 +99,7 @@ const SetBonusesTool = ({
                           </Text>
                         ))
                       : null}
+                    <KnownDiscrepancies notes={effects.flatMap((effect) => effect.discrepancyNotes ?? [])} />
                   </Stack>
                 )
               })

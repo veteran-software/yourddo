@@ -26,9 +26,19 @@ export function spellObjective(name: string) {
   return { family, subtype: subtype || 'General', name: subtype ? base + ': ' + subtype : base }
 }
 
+const skills = new Set(
+  'Balance|Bluff|Concentration|Diplomacy|Disable Device|Haggle|Heal|Hide|Intimidate|Jump|Listen|Move Silently|Open Lock|Perform|Repair|Search|Spellcraft|Spot|Swim|Tumble|Use Magic Device'.split(
+    '|'
+  )
+)
+
+export function skillObjective(name: string) {
+  return skills.has(name) ? 'Skill: ' + name : name
+}
+
 export function objectiveEffect(effect: GearPlannerEffect): GearPlannerEffect {
   const ranked = stripObjectiveRank(effect)
-  const name = spellObjective(ranked.name)?.name
+  const name = spellObjective(ranked.name)?.name ?? skillObjective(ranked.name)
   return name && name !== ranked.name ? { ...ranked, name } : ranked
 }
 

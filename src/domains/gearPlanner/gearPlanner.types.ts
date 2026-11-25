@@ -50,6 +50,7 @@ export const gearPlannerPetSlots = [
 export const allGearPlannerSlots = [...gearPlannerCharacterSlots, ...gearPlannerPetSlots] as const
 
 export interface GearPlannerEffect {
+  discrepancyNotes?: readonly string[]
   name: string
   statModified?: string
   modifier?: string | number
@@ -60,6 +61,7 @@ export interface GearPlannerEffect {
 }
 
 export interface GearPlannerAugmentSlot {
+  slotTypes?: readonly string[]
   augmentType: string
   name?: string
   [key: string]: unknown
@@ -78,6 +80,11 @@ export interface GearPlannerBinding {
 }
 
 export interface GearPlannerSourceItem {
+  discrepancyNotes?: readonly string[]
+  blockedSlots?: readonly string[]
+  catalogId?: number
+  catalogSlots?: readonly GearPlannerSlot[]
+  iconLayers?: readonly string[]
   name: string
   pageTitle?: string
   type?: string
@@ -98,7 +105,10 @@ export interface GearPlannerSourceItem {
 }
 
 export interface GearPlannerAugment {
+  discrepancyNotes?: readonly string[]
+  clearSecondarySet?: boolean
   name: string
+  slotTypes?: readonly string[]
   augmentType: string
   minLevel: number
   effectsAdded: readonly GearPlannerEffect[]
@@ -131,6 +141,7 @@ export interface GearPlannerFiligree {
 }
 
 export interface GearPlannerCurse {
+  discrepancyNotes?: readonly string[]
   id: string
   name: string
   type: string

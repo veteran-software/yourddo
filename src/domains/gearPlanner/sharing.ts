@@ -23,6 +23,7 @@ import {
 
 // Storage IDs include the entire CDN augment record. Links only need its identity and a tie-breaker.
 function compactAugmentId(id: string) {
+  if (id.startsWith('augment:')) return id
   const split = id.lastIndexOf('|')
   return id.slice(0, split + 1) + createPermalinkChecksum(id.slice(split + 1))
 }
@@ -38,6 +39,7 @@ function restoreSharedSetup(text: string, data: GearPlannerData, essence?: Essen
   const unique = new Map<string, string | null>()
   for (const augment of data.augments) {
     const id = gearPlannerAugmentIdentity(augment)
+    if (id.startsWith('augment:')) continue
     const key = id.slice(0, id.lastIndexOf('|'))
     unique.set(key, unique.has(key) ? null : id)
     known.set(compactAugmentId(id), id)

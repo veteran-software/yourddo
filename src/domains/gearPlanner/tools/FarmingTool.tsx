@@ -119,7 +119,17 @@ export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetu
                               />
                             )}
                             <div>
-                              <strong>{t.name}</strong>
+                              {status === 'Farm' && !t.sources.length ? (
+                                <Anchor
+                                  href={'https://ddocompendium.com/w/' + encodeURIComponent(t.name)}
+                                  target='_blank'
+                                  rel='noreferrer'
+                                >
+                                  {t.name}
+                                </Anchor>
+                              ) : (
+                                <strong>{t.name}</strong>
+                              )}
                               {t.quantity > 1 && <b> ×{t.quantity}</b>}
                               <small>{[...new Set(t.uses)].join(' · ')}</small>
                               {status === 'Farm' && t.sources[0]?.detail && <small>{t.sources[0].detail}</small>}

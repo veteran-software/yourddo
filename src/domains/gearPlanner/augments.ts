@@ -16,15 +16,19 @@ export function getGearPlannerBaseAugmentSlots(item: GearPlannerItem): readonly 
 const normaliseAugmentType = (value: string): string => normaliseAugmentSlotType(value).toLocaleLowerCase()
 
 export const gearPlannerAugmentIdentity = (augment: GearPlannerAugment): string =>
-  [augment.augmentType, augment.minLevel, augment.name, JSON.stringify(augment.source)]
-    .map(String)
-    .map(encodeURIComponent)
-    .join('|')
+  typeof augment.source.id === 'number'
+    ? 'augment:' + String(augment.source.id)
+    : [augment.augmentType, augment.minLevel, augment.name, JSON.stringify(augment.source)]
+        .map(String)
+        .map(encodeURIComponent)
+        .join('|')
 
 export const isCompatibleGearPlannerAugment = (
   itemAugmentSlot: GearPlannerAugmentSlot,
   augment: GearPlannerAugment
 ): boolean => {
+  if (itemAugmentSlot.slotTypes?.length && augment.slotTypes)
+    return itemAugmentSlot.slotTypes.some((type) => augment.slotTypes?.includes(type))
   const augmentType = normaliseAugmentType(augment.augmentType)
   if (augmentType === '') return false
 

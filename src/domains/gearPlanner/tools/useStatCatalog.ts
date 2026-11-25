@@ -3,7 +3,6 @@ import { objectiveEffect } from '../statObjectives'
 import { normalizeBonusType, type GearPlannerEffectSource } from '../effects'
 import { ownerSlots, type GearOwner } from '../character'
 import type { GearPlannerData, GearPlannerEffect } from '../gearPlanner.types'
-import { standardGearPlannerSetDefinitionByName } from '../standardSetDefinitions'
 
 export function useStatCatalog(data: GearPlannerData, owner: GearOwner, effects: readonly GearPlannerEffectSource[]) {
   const stats = useMemo(() => {
@@ -22,14 +21,24 @@ export function useStatCatalog(data: GearPlannerData, owner: GearOwner, effects:
       }
     }
     for (const source of effects) add([source.effect], source.normalizedBonusType)
-    for (const slot of ownerSlots[owner]) for (const item of data.itemsBySlot[slot]) add(item.source.enchantments ?? [])
-    for (const augment of data.augments) add(augment.effectsAdded)
+    const setNames = new Set<string>()
+    for (const slot of ownerSlots[owner]) {
+      for (const item of data.itemsBySlot[slot]) {
+        add(item.source.enchantments ?? [])
+        for (const set of item.source.setBonus ?? []) setNames.add(set.name)
+      }
+    }
+    for (const augment of data.augments) {
+      add(augment.effectsAdded)
+      for (const set of augment.setBonus ?? []) setNames.add(set.name)
+    }
+    for (const curse of data.curses) add(curse.enchantments)
     for (const f of data.filigrees) add(f.source.enchantments ?? [], 'filigree')
-    for (const set of [
-      ...(data.standardSets ?? standardGearPlannerSetDefinitionByName).values(),
-      ...data.filigreeSetDefinitions
-    ])
-      for (const tier of set.thresholds) add(tier.effects)
+    for (const name of setNames) {
+      const set = data.standardSets?.get(name)
+      if (set) for (const tier of set.thresholds) add(tier.effects)
+    }
+    for (const set of data.filigreeSetDefinitions) for (const tier of set.thresholds) add(tier.effects)
     return new Map([...catalog].sort(([a], [b]) => a.localeCompare(b)))
   }, [data, owner, effects])
   const equipped = useMemo(() => new Set(effects.map((s) => objectiveEffect(s.effect).name.toLowerCase())), [effects])

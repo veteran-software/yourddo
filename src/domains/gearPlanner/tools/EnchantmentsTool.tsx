@@ -58,7 +58,7 @@ const sourceProvenance = (source: GearPlannerEffectSource): string => {
     return `Reforging · ${reforgingStageLabel(source)}: ${source.reforgingChoiceLabel ?? 'Selected choice'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
   }
   if (source.category === 'curse') {
-    return `Deck of Many Curses · ${source.curseName ?? 'Curse'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
+    return `${source.curseName ?? 'Curse'} on ${source.slot ?? 'Equipment'}`
   }
   if (source.category === 'essence') {
     return `Essence Crafting · ${source.essenceAffixPosition ?? 'Affix'}: ${source.essenceEnhancementName ?? 'Enhancement'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
@@ -69,8 +69,11 @@ const sourceProvenance = (source: GearPlannerEffectSource): string => {
   return `${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'}`
 }
 
-const groupValue = (group: GearPlannerEffectSummary['groups'][number]) =>
-  group.effectiveValue === 0 ? group.effectiveDisplay || 'Active' : `+${String(group.effectiveValue)}`
+const groupValue = (group: GearPlannerEffectSummary['groups'][number]) => {
+  if (group.effectiveValue === 0) return group.effectiveDisplay || 'Active'
+  const unit = group.effectiveDisplay.trim().match(/(%|\[W\])$/i)?.[0] ?? ''
+  return (group.effectiveValue > 0 ? '+' : '') + String(group.effectiveValue) + unit
+}
 
 export const EquippedEnchantmentList = ({
   sources,
@@ -183,7 +186,7 @@ const EnchantmentsTool = ({
           Enchantments
         </Title>
         <Text c='dimmed' size='xs'>
-          Legacy-style display aggregate, not a character stat calculation.
+          Totals summarize the effects in this loadout.
         </Text>
       </Stack>
       {summary.map((effect) => {
@@ -254,7 +257,7 @@ const EnchantmentsTool = ({
                         td={entry.isEffective ? undefined : 'line-through'}
                         style={{ overflowWrap: 'anywhere' }}
                       >
-                        {sourceProvenance(entry)}: {sourceLabel(entry)}
+                        {sourceProvenance(entry)}
                       </Text>
                     ))}
                   </Stack>

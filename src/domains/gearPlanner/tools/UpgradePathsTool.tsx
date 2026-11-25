@@ -14,7 +14,7 @@ import {
   Autocomplete
 } from '@mantine/core'
 import StatObjectivePicker from './StatObjectivePicker'
-import { bonusLabel, spellObjective } from '../statObjectives'
+import { bonusLabel, skillObjective, spellObjective } from '../statObjectives'
 import type { GearPlannerEffectSource } from '../effects'
 import { IconRoute } from '@tabler/icons-react'
 import type { EssenceCraftingData } from '../../essenceCrafting/essenceCrafting.types'
@@ -55,7 +55,7 @@ export function UpgradePathsTool({
   )
   const [objective, setObjective] = useState<string | null>(
     initial?.kind === 'Stat'
-      ? (spellObjective(initial.objective)?.name ?? initial.objective)
+      ? (spellObjective(initial.objective)?.name ?? skillObjective(initial.objective))
       : (initial?.objective ?? null)
   )
   const [bonusType, setBonusType] = useState(initial?.bonusType)

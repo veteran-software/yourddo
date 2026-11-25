@@ -1,3 +1,4 @@
+import KnownDiscrepancies from './KnownDiscrepancies'
 import { keyedEntries } from '../../../shared/ui/keyedEntries'
 import { Badge, Group, Text } from '@mantine/core'
 import { normaliseAugmentSlotType, augmentColors } from '../../../shared/augments/compatibility'
@@ -39,6 +40,7 @@ export default function CandidateEquipmentDetails({
   return (
     <Group gap='xs' align='center' px='sm' py={6}>
       <ItemMaterial item={item} selectedMaterial={material} />
+      <KnownDiscrepancies notes={item.source.discrepancyNotes} />
       {sockets.length > 0 && (
         <Group gap={4} role='group' aria-label='Augment sockets'>
           {keyedEntries(sockets).map(({ key, value: { augmentType } }) => {
