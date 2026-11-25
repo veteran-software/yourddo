@@ -69,6 +69,7 @@ export interface SlaveLordsStat {
   stat: string
   bonusType: string
   value: number
+  calculationValue?: number
   formattedValue: string
 }
 export interface SlaveLordsCost extends Named {
@@ -152,6 +153,7 @@ function effectsFor(effect: Effect): SlaveLordsStat[] {
         stat: statName(name, entry.name),
         bonusType: entry.bonusType,
         value,
+        ...(magnitude !== scaled && { calculationValue: scaled * (entry.operation === 'Subtract' ? -1 : 1) }),
         formattedValue: String(value) + (entry.unit === 'percent' ? '%' : '')
       }
     ]

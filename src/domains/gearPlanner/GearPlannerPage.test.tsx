@@ -1442,8 +1442,8 @@ describe('GearPlannerPage', () => {
     expect(screen.getAllByText('+12')).toHaveLength(2)
     const enchantments = within(screen.getByRole('dialog'))
     expect(enchantments.getByText('Doublestrike')).toBeTruthy()
-    expect(enchantments.getByText('+14%')).toBeTruthy()
-    expect(enchantments.getByText(/^[+]?2\[W\]$/)).toBeTruthy()
+    expect(enchantments.getAllByText('+14%')).toHaveLength(2)
+    expect(enchantments.getAllByText(/^[+]?2\[W\]$/)).toHaveLength(2)
 
     fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
     fireEvent.click(screen.getByRole('button', { name: 'Select First Finger' }))

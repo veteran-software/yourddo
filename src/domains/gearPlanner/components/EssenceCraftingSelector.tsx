@@ -1,3 +1,4 @@
+import { displayPercentModifier } from '../effectAmounts'
 import { type CharacterSettings, violatesDruidicOath } from '../character'
 import { Select, SimpleGrid, Stack, Text } from '@mantine/core'
 import { formatResolvedEffectModifier, resolveEnhancementEffects } from '../../essenceCrafting/enhancementEffects.ts'
@@ -27,7 +28,7 @@ const effectLabel = (data: EssenceCraftingData, enhancement: EssenceEnhancement,
   const resolved = resolveEnhancementEffects(data, enhancement.id, effectiveLevel)
   if (resolved.status !== 'resolved') return enhancement.displayName
   const effects = resolved.effects.map(({ effect, modifier, bonusType }) => {
-    const value = formatResolvedEffectModifier(modifier)
+    const value = displayPercentModifier(formatResolvedEffectModifier(modifier)).modifier
     return `${effect.displayName}${value ? ' ' + value : ''}${bonusType ? ' (' + bonusType.displayName + ')' : ''}`
   })
   return effects.length ? `${enhancement.displayName} (${effects.join('; ')})` : enhancement.displayName
@@ -64,7 +65,7 @@ const EffectDetails = ({
   return (
     <Stack gap={1}>
       {resolved.effects.map(({ effect, modifier, bonusType }) => {
-        const formattedModifier = formatResolvedEffectModifier(modifier)
+        const formattedModifier = displayPercentModifier(formatResolvedEffectModifier(modifier)).modifier
         return (
           <Text key={effect.id} c='dimmed' size='xs'>
             {effect.displayName}

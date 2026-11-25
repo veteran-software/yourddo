@@ -1,3 +1,4 @@
+import { formatAmount } from './effectAmounts'
 import { objectiveEffect } from './statObjectives'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types'
 import { enabledOwners, ownerSlots, type GearOwner } from './character'
@@ -5,7 +6,7 @@ import {
   aggregateEffectSummary,
   collectEquippedEffects,
   normalizeEffectName,
-  parseEffectModifier,
+  effectAmount,
   type GearPlannerEffectSummary
 } from './effects'
 import type { GearPlannerData, GearPlannerItem } from './gearPlanner.types'
@@ -23,14 +24,13 @@ interface Value {
   text: string
   amount?: number
   unit?: string
+  rounding?: 'round' | 'trunc'
 }
 type Entries = Map<string, Value>
-const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 6 })
 
-function statValue(effect: GearPlannerEffectSummary): Value {
-  const modifiers = effect.groups.flatMap((g) =>
-    g.entries.filter((e) => e.isEffective).map((e) => String(e.effect.modifier ?? '').trim())
-  )
+export function statValue(effect: GearPlannerEffectSummary, signed = false): Value {
+  const active = effect.groups.flatMap((g) => g.entries.filter((e) => e.isEffective).map((e) => e.effect))
+  const modifiers = active.map((e) => String(e.modifier ?? '').trim())
   const units = new Set(
     modifiers.filter(Boolean).map((value) => {
       const match = /^[+-]?(?:\d+(?:\.\d+)?|\.\d+)(%|\[W\]|)$/i.exec(value)
@@ -40,7 +40,11 @@ function statValue(effect: GearPlannerEffectSummary): Value {
     })
   )
   const [unit] = units
-  if (units.size === 1 && unit != null) return { text: number.format(effect.total) + unit, amount: effect.total, unit }
+  if (units.size === 1 && unit != null) {
+    const fractional = active.filter((e) => e.calculationValue !== undefined && !Number.isInteger(e.calculationValue))
+    const rounding = fractional.length ? (fractional.every((e) => e.roundToNearest) ? 'round' : 'trunc') : undefined
+    return { text: formatAmount(effect.total, unit, signed, rounding), amount: effect.total, unit, rounding }
+  }
   return {
     text:
       [...new Set(modifiers.filter(Boolean))].sort((left, right) => left.localeCompare(right)).join(' · ') || 'Present'
@@ -94,7 +98,7 @@ export function loadoutSnapshot(
             ...source,
             effect,
             normalizedName: normalizeEffectName(effect.name),
-            comparisonValue: parseEffectModifier(effect.modifier)
+            comparisonValue: effectAmount(effect)
           }
     })
   )
@@ -174,10 +178,13 @@ export function comparisonRows(before: Entries, after: Entries) {
     .map((label) => {
       const a = before.get(label),
         b = after.get(label)
-      const changed = a?.text !== b?.text
+      const changed = a?.text !== b?.text || a?.amount !== b?.amount
       let delta = changed ? 'Changed' : '—'
       if (!a) delta = 'Gained'
       else if (!b) delta = 'Lost'
+      let direction = changed ? 'changed' : 'same'
+      if (!a) direction = 'gain'
+      else if (!b) direction = 'loss'
       if (
         changed &&
         (a == null || a.amount != null) &&
@@ -185,12 +192,10 @@ export function comparisonRows(before: Entries, after: Entries) {
         (!a || !b || a.unit === b.unit)
       ) {
         const difference = (b?.amount ?? 0) - (a?.amount ?? 0)
-        delta = (difference > 0 ? '+' : '') + number.format(difference) + (b?.unit ?? a?.unit ?? '')
+        delta = formatAmount(difference, b?.unit ?? a?.unit, true, b?.rounding ?? a?.rounding)
+        if (difference > 0) direction = 'gain'
+        else if (difference < 0) direction = 'loss'
       }
-      let direction = 'changed'
-      if (!changed) direction = 'same'
-      else if (!a || delta.startsWith('+')) direction = 'gain'
-      else if (!b || delta.startsWith('-')) direction = 'loss'
       return { label, before: a?.text ?? '—', after: b?.text ?? '—', delta, direction, changed }
     })
 }

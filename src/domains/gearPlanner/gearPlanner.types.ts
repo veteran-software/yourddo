@@ -53,6 +53,8 @@ export interface GearPlannerEffect {
   discrepancyNotes?: readonly string[]
   name: string
   statModified?: string
+  calculationValue?: number
+  roundToNearest?: boolean
   modifier?: string | number
   bonus?: string | number
   stats?: readonly (string | number)[]

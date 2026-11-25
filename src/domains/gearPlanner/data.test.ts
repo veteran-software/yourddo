@@ -80,7 +80,10 @@ describe('Gear Planner data validation', () => {
       { displayName: 'Other multiplier', unit: 'multiplier', value: 0.856 },
       { displayName: 'Elemental Absorption: Fire', unit: 'multiplier', value: 0.72249997 },
       { displayName: 'Elemental Absorption: Cold', unit: 'multiplier', value: 0.8125 },
-      { displayName: 'Elemental Absorption: Acid', unit: 'percent', value: 12.5 }
+      { displayName: 'Elemental Absorption: Acid', unit: 'percent', value: 12.5 },
+      { name: 'Effect_SpellCostMultiplier', displayName: 'Spell Point Cost', value: 0.1 },
+      { name: 'Combat_MissileChanceToReturn', displayName: 'Returning Chance', value: 1 },
+      { name: 'BaseWeaponDamageDiceModifier', displayName: 'Weapon Damage Dice', value: 0.5 }
     ]
     const [category] = adaptItemCategory([helm], [{ id: 2, enchantments }], new Map(), new Map())
     expect(category.records[0].enchantments?.map((stat) => stat.modifier)).toEqual([
@@ -89,7 +92,10 @@ describe('Gear Planner data validation', () => {
       '86%',
       '28%',
       '19%',
-      '12.5%'
+      '12%',
+      '10%',
+      '100%',
+      0.5
     ])
   })
 

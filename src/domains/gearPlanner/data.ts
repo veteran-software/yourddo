@@ -1,3 +1,4 @@
+import { displayPercentModifier, percentModifier } from './effectAmounts'
 import { loadOptionalAlchemicalData } from '../alchemical/loadAlchemicalData'
 import { loadOptionalSlaveLordsData } from '../slaveLords/loadSlaveLordsData'
 import { slaveLordsSetDefinitions } from './slaveLordsCrafting'
@@ -89,7 +90,8 @@ const parseEffect = (value: unknown, path: string): GearPlannerEffect => {
   ) {
     invalid(`${path}.stats`, 'expected string or number array')
   }
-  return { ...record, name: record.name as string }
+  const display = typeof record.modifier === 'string' ? displayPercentModifier(record.modifier) : {}
+  return { ...record, ...display, name: record.name as string }
 }
 
 const parseAugmentSlot = (value: unknown, path: string): GearPlannerAugmentSlot => {
@@ -200,10 +202,9 @@ const parseFiligreeSetEffect = (value: unknown, path: string): GearPlannerEffect
     if (record[key] !== undefined && !isStringOrNumber(record[key]))
       invalid(`${path}.${key}`, 'expected string or number')
   }
-  return { ...record, name }
+  const display = typeof record.modifier === 'string' ? displayPercentModifier(record.modifier) : {}
+  return { ...record, ...display, name }
 }
-
-const itemSetPercent = new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 10 })
 
 export const parseGearPlannerFiligreeSetDataset = (
   value: unknown,
@@ -236,7 +237,7 @@ export const parseGearPlannerFiligreeSetDataset = (
             const effect = parseFiligreeSetEffect(rawEffect, `${bonusPath}.enhancements[${effectIndex.toString()}]`)
             // The item-set feed encodes percentages as numeric ratios and flat modifiers as strings.
             return sourceName === 'itemSets.enchantments' && typeof effect.modifier === 'number'
-              ? { ...effect, modifier: itemSetPercent.format(effect.modifier) }
+              ? { ...effect, ...percentModifier(effect.modifier * 100) }
               : effect
           })
         }
@@ -271,7 +272,18 @@ const loadCraftingData = async (): Promise<GearCraftingData> => {
       items: new Map(
         arrayAt(tables[index], file.path).map((entry) => {
           const record = recordAt(entry, file.path)
-          return [craftItemKey(named(record, file.path)), effects(record, 'effectsAdded', file.path)]
+          return [
+            craftItemKey(named(record, file.path)),
+            effects(record, 'effectsAdded', file.path).map((effect) => {
+              // Named upgrade tables encode threat modifiers as unitless ratios.
+              if (
+                /^(?:Melee|Ranged|Spell) Threat$/.test(effect.name) &&
+                /^[+-]?(?:\d+|\d*\.\d+)$/.test(String(effect.modifier))
+              )
+                return { ...effect, ...percentModifier(Number(effect.modifier) * 100) }
+              return effect
+            })
+          ]
         })
       )
     }))

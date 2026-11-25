@@ -1,3 +1,4 @@
+import { percentModifier } from './effectAmounts'
 import { loadDatasetFile } from '../../shared/data/loadDataset'
 import {
   allGearPlannerSlots,
@@ -92,6 +93,17 @@ const augmentPercentagePoints = new Set([
   'Feat_ArmorPiercing'
 ])
 
+const implicitPercentRatios = new Set([
+  'Effect_SpellCostMultiplier',
+  'Spell_SpellFailureChance',
+  'Combat_WeaponProcThreatMultiplier',
+  'Spell_CritMod',
+  'Effect_Webstore_XPMultiplier',
+  'Combat_BypassDodgePercentage',
+  'Effect_PirateFestival_DoubloonBonus',
+  'Combat_MissileChanceToReturn'
+])
+
 function discrepancyNotes(record: Row, source?: EffectSource): string[] {
   return rows(record.knownDiscrepancies ?? [], 'known discrepancies').map((entry) => {
     const stat = rows(record.enchantments ?? [], 'enchantments').find((stat) => stat.name === entry.stat)
@@ -132,6 +144,7 @@ function effectStats(effect: Row, source: EffectSource): GearPlannerEffect[] {
       stat.attackForms
     )
       continue
+    let calculationValue: number | undefined
     let modifier: number | string = stat.value
     if (stat.unit === 'multiplier') {
       const percent = Math.round(Number((stat.value * 100).toFixed(10)))
@@ -139,19 +152,31 @@ function effectStats(effect: Row, source: EffectSource): GearPlannerEffect[] {
         stat.name === 'ActionAgent_CooldownModArray' ||
         stat.name === 'Character_RegenerationIntervalMultiplier_SmiteEvil' ||
         /\babsorption\b/i.test(stat.displayName)
+      calculationValue = remainingFraction ? (1 - stat.value) * 100 : stat.value * 100
       modifier = String(remainingFraction ? 100 - percent : percent) + '%'
     } else if (stat.unit === 'coefficient') {
       const property = typeof stat.name === 'string' ? stat.name : ''
       const scale = source === 'augment' && augmentPercentagePoints.has(property) ? 1 : 100
       const amount = Math.round(Number((stat.value * scale).toFixed(6))) * (stat.operation === 'Subtract' ? -1 : 1)
+      calculationValue = stat.value * scale * (stat.operation === 'Subtract' ? -1 : 1)
       const power =
         property.startsWith('Spell_DamageMod_') || /^Weapon_DamageMod_(?:Melee|Ranged)WeaponPower$/.test(property)
       modifier = power ? amount : String(amount) + '%'
-    } else if (stat.unit === 'percent') modifier = String(Number(stat.value.toFixed(4))) + '%'
+    } else if (stat.unit === 'percent' || (stat.unit == null && implicitPercentRatios.has(String(stat.name)))) {
+      const points = stat.unit === 'percent' ? stat.value : stat.value * 100
+      const display = percentModifier(points)
+      modifier = display.modifier
+      calculationValue = display.calculationValue
+    }
     stats.push({
       name: stat.displayName,
       bonus: typeof stat.bonusType === 'string' ? stat.bonusType : undefined,
       modifier,
+      ...(calculationValue !== undefined &&
+        calculationValue !== Number.parseFloat(String(modifier)) && {
+          calculationValue,
+          ...((stat.unit === 'coefficient' || stat.unit === 'multiplier') && { roundToNearest: true })
+        }),
       notes
     })
   }

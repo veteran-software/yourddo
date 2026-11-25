@@ -1,3 +1,4 @@
+import { statValue } from '../loadoutComparison'
 import layout from '../../../shared/layout/PlannerWorkspace.module.css'
 import EquippedEffect from '../components/EquippedEffect'
 import {
@@ -67,12 +68,6 @@ const sourceProvenance = (source: GearPlannerEffectSource): string => {
     return `${source.filigreeName ?? 'Filigree'} on ${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'} / Filigree slot ${String((source.filigreeSlotIndex ?? 0) + 1)}`
   }
   return `${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'}`
-}
-
-const groupValue = (group: GearPlannerEffectSummary['groups'][number]) => {
-  if (group.effectiveValue === 0) return group.effectiveDisplay || 'Active'
-  const unit = group.effectiveDisplay.trim().match(/(%|\[W\])$/i)?.[0] ?? ''
-  return (group.effectiveValue > 0 ? '+' : '') + String(group.effectiveValue) + unit
 }
 
 export const EquippedEnchantmentList = ({
@@ -205,7 +200,7 @@ const EnchantmentsTool = ({
                   {effect.name}
                 </Text>
                 <Group gap={4} wrap='nowrap'>
-                  {effect.isNumeric ? <Badge variant='light'>+{String(effect.total)}</Badge> : null}
+                  {effect.isNumeric ? <Badge variant='light'>{statValue(effect, true).text}</Badge> : null}
                   {choices && (
                     <ActionIcon
                       variant='subtle'
@@ -244,7 +239,9 @@ const EnchantmentsTool = ({
                       </Text>
                     )}
                     <Text size='xs' fw={600}>
-                      {groupValue(group)}
+                      {group.effectiveValue === 0
+                        ? group.effectiveDisplay || 'Active'
+                        : statValue({ ...effect, total: group.effectiveValue, groups: [group] }, true).text}
                     </Text>
                   </Group>
                   <Stack gap={2}>

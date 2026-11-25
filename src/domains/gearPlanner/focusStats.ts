@@ -1,3 +1,4 @@
+import { formatAmount } from './effectAmounts'
 import { skillObjective } from './statObjectives'
 import type { loadoutSnapshot } from './loadoutComparison'
 
@@ -5,6 +6,7 @@ type Stats = ReturnType<typeof loadoutSnapshot>['Stats']
 export interface FocusChange {
   name: string
   delta: number
+  rounding?: 'round' | 'trunc'
   unit: string
 }
 
@@ -23,7 +25,12 @@ export function focusChanges(names: readonly string[], before: Stats, after: Sta
       (!from || from.amount !== undefined) &&
       (!to || to.amount !== undefined) &&
       (!from || !to || from.unit === to.unit)
-    return { name, delta: comparable ? (to?.amount ?? 0) - (from?.amount ?? 0) : 0, unit: to?.unit ?? from?.unit ?? '' }
+    return {
+      name,
+      rounding: to?.rounding ?? from?.rounding,
+      delta: comparable ? (to?.amount ?? 0) - (from?.amount ?? 0) : 0,
+      unit: to?.unit ?? from?.unit ?? ''
+    }
   })
 }
 
@@ -41,10 +48,9 @@ export function compareFocus(a: FocusChange[], b: FocusChange[]) {
   return 0
 }
 
-const signed = new Intl.NumberFormat('en-US', { signDisplay: 'always', maximumFractionDigits: 6 })
 export function focusSummary(changes: FocusChange[]) {
   return changes
     .filter((entry) => entry.delta)
-    .map(({ name, delta, unit }) => name + ' ' + signed.format(delta) + unit)
+    .map(({ name, delta, unit, rounding }) => name + ' ' + formatAmount(delta, unit, true, rounding))
     .join(' · ')
 }

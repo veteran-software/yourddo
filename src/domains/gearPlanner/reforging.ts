@@ -1,3 +1,4 @@
+import { displayPercentModifier } from './effectAmounts'
 import { getGearPlannerBaseAugmentSlots } from './augments'
 import type { ReforgingEntry } from '../nearlyFinished/nearlyFinished.types.ts'
 import type {
@@ -94,7 +95,7 @@ export const parseNearlyFinishedChoice = (label: string): GearPlannerEffect => {
     .slice(lastSpace + 1)
     .trim()
     .replace(/^\+/, '')
-  if (!content || Number.isNaN(Number(modifier))) return { name: trimmed, bonus: 'Enhancement' }
+  if (!content || Number.isNaN(Number(modifier.replace(/%$/, '')))) return { name: trimmed, bonus: 'Enhancement' }
 
   const tokens = content.split(/\s+/)
   const knownBonusTokens = new Set([
@@ -125,14 +126,14 @@ export const parseNearlyFinishedChoice = (label: string): GearPlannerEffect => {
   ])
   const firstToken = tokens[0]?.toLowerCase()
   return firstToken && knownBonusTokens.has(firstToken) && tokens.length > 1
-    ? { name: tokens.slice(1).join(' '), bonus: tokens[0], modifier }
-    : { name: content, bonus: 'Enhancement', modifier }
+    ? { name: tokens.slice(1).join(' '), bonus: tokens[0], ...displayPercentModifier(modifier) }
+    : { name: content, bonus: 'Enhancement', ...displayPercentModifier(modifier) }
 }
 
 const parseLaterStageChoice = (label: string): GearPlannerEffect => ({
   name: label,
   bonus: 'Enhancement',
-  modifier: label.split('+').pop()?.trim() ?? ''
+  ...displayPercentModifier(label.split('+').pop()?.trim() ?? '')
 })
 
 const choiceEffect = (stage: GearPlannerReforgingStage, label: string): GearPlannerEffect =>

@@ -1,10 +1,5 @@
 import { collectSelectedAugmentSetMemberships } from './augments.ts'
-import {
-  type GearPlannerEffectSource,
-  normalizeBonusType,
-  normalizeEffectName,
-  parseEffectModifier
-} from './effects.ts'
+import { type GearPlannerEffectSource, normalizeBonusType, normalizeEffectName, effectAmount } from './effects.ts'
 import { collectSelectedGearPlannerFiligrees, filigreeSetNames } from './filigrees.ts'
 import type {
   GearPlannerAugmentSlot,
@@ -186,7 +181,7 @@ export const collectActiveSetEffectSources = (setState: GearPlannerSetState): re
             setCategory: set.category,
             normalizedName: normalizeEffectName(effect.name),
             normalizedBonusType: normalizeBonusType(effect.bonus),
-            comparisonValue: parseEffectModifier(effect.modifier)
+            comparisonValue: effectAmount(effect)
           }))
     )
   )

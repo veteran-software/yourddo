@@ -1,3 +1,5 @@
+import { percentModifier } from './effectAmounts'
+import { comparisonRows, statValue } from './loadoutComparison'
 import { describe, expect, it } from 'vitest'
 import {
   aggregateEffectSummary,
@@ -107,6 +109,20 @@ describe('legacy effect normalization and parsing', () => {
 })
 
 describe('legacy effect summary and conflicts', () => {
+  it('stacks fractional percentages and computes changes before truncating their display', () => {
+    const effect = { name: 'Melee Threat', ...percentModifier(15.8) }
+    const head = item('head', gearPlannerSlots.head, 'Helm', [{ ...effect, bonus: 'Enhancement' }])
+    const ring = item('ring', gearPlannerSlots.firstFinger, 'Ring', [{ ...effect, bonus: 'Insight' }])
+    const before = statValue(aggregateEffectSummary(collectEquippedEffects(equipped(head)))[0])
+    const after = statValue(aggregateEffectSummary(collectEquippedEffects(equipped(head, ring)))[0])
+    expect(effect.modifier).toBe('15%')
+    expect(before).toMatchObject({ text: '15%', amount: 15.8 })
+    expect(after).toMatchObject({ text: '31%', amount: 31.6 })
+    expect(comparisonRows(new Map([['Threat', before]]), new Map([['Threat', after]]))[0].delta).toBe('+15%')
+    expect(percentModifier(14.000000000000002).modifier).toBe('14%')
+    expect(percentModifier(-15.8).modifier).toBe('-15%')
+  })
+
   it('keeps highest same-name typed bonus effective and marks lower source conflicting', () => {
     const sources = collectEquippedEffects(
       equipped(

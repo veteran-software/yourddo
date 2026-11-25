@@ -21,6 +21,7 @@ function gearEffect(stat: SlaveLordsStat): GearPlannerEffect {
   return {
     name: stat.stat,
     bonus: stat.bonusType,
+    calculationValue: stat.calculationValue,
     modifier: stat.formattedValue.endsWith('%') ? stat.formattedValue : stat.value
   }
 }
