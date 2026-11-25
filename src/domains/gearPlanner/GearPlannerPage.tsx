@@ -1,3 +1,5 @@
+import { keyedEntries } from '../../shared/ui/keyedEntries'
+import KnownDiscrepancies from './components/KnownDiscrepancies'
 import {
   type CharacterSettings,
   violatesDruidicOath,
@@ -38,6 +40,7 @@ import workspace from '../../shared/layout/workspace.module.css'
 import ItemCraftingSelector from './components/ItemCraftingSelector.tsx'
 import {
   ActionIcon,
+  Anchor,
   Checkbox,
   Badge,
   SegmentedControl,
@@ -234,9 +237,29 @@ function GearItemArt({
   const SlotIcon = slotIcons[slot]
   return (
     <span className={classes.itemArt} style={{ width: size, height: size }} aria-hidden>
-      <ItemIcon item={item.source} size={size} />
+      {item.source.iconLayers?.length ? (
+        keyedEntries(item.source.iconLayers).map(({ key, value: src }) => (
+          <img key={key} alt='' src={src} width={size} height={size} style={{ gridArea: '1 / 1' }} />
+        ))
+      ) : (
+        <ItemIcon item={item.source} size={size} />
+      )}
       <SlotIcon size='60%' stroke={1.6} />
     </span>
+  )
+}
+
+function ItemCompendiumLink({ item }: Readonly<{ item: GearPlannerItem }>) {
+  if (item.source.catalogId === undefined) return null
+  return (
+    <Anchor
+      size='xs'
+      href={'https://ddocompendium.com/w/' + encodeURIComponent(item.source.name)}
+      target='_blank'
+      rel='noreferrer'
+    >
+      DDO Compendium
+    </Anchor>
   )
 }
 
@@ -254,7 +277,6 @@ interface EquipmentEditorProps {
   initialFiligreeSlot?: number
   onFiligreeClose: () => void
   collapsed: boolean
-  toggleDetails: () => void
   slot: GearPlannerSlot
   item: GearPlannerItem
   data: GearPlannerData
@@ -293,7 +315,6 @@ const EquipmentEditor = ({
   initialFiligreeSlot,
   onFiligreeClose,
   collapsed,
-  toggleDetails,
   slot,
   item,
   data,
@@ -330,6 +351,7 @@ const EquipmentEditor = ({
             <Text c='dimmed' size='sm'>
               {itemMetadata(item, essenceCrafting[item.id]?.minimumLevel)}
             </Text>
+            <ItemCompendiumLink item={item} />
             <ItemMaterial item={item} selectedMaterial={essenceCrafting[item.id]?.material} />
           </Group>
           {violatesDruidicOath(character, item, essenceCrafting[item.id]?.material) && (
@@ -342,16 +364,6 @@ const EquipmentEditor = ({
         </Stack>
       </Group>
       <Group gap='xs'>
-        <Button
-          size='xs'
-          variant='subtle'
-          aria-expanded={!collapsed}
-          aria-controls={'gear-item-details-' + slot.replaceAll(' ', '-')}
-          leftSection={collapsed ? <IconChevronDown size={15} /> : <IconChevronUp size={15} />}
-          onClick={toggleDetails}
-        >
-          {collapsed ? 'Expand details' : 'Collapse details'}
-        </Button>
         <Button
           size='xs'
           variant='light'
@@ -382,6 +394,7 @@ const EquipmentEditor = ({
       {!collapsed && (
         <Stack gap='md'>
           <ItemDropLocations locations={item.source.dropLocations} />
+          <KnownDiscrepancies notes={item.source.discrepancyNotes} />
           <div className={classes.editorSections}>
             {effects.length > 0 && (
               <div className={classes.effects}>
@@ -913,6 +926,7 @@ const ItemBrowser = ({
                             .filter(Boolean)
                             .join(' · ')}
                         </Text>
+                        <ItemCompendiumLink item={item} />
                         {finding && (!equipped || membershipLabel) && (
                           <Text size='xs' c='dimmed'>
                             {[candidateSlotLabel(equipped, incumbent), membershipLabel].filter(Boolean).join(' · ')}
@@ -1220,6 +1234,39 @@ const GearPlannerWorkspace = () => {
   }
 
   const tools: readonly WorkspaceTool[] = [
+    ...(dataState.status === 'ready'
+      ? [
+          {
+            id: 'character',
+            label: 'Character setup',
+            icon: <IconUserCog stroke={2} />,
+            content: (
+              <CharacterSetupTool
+                focusEditor={
+                  <FocusStatEditor
+                    data={dataState.data}
+                    owner={owner}
+                    effects={effects}
+                    names={activeSetup.character.focusStats ?? []}
+                    onChange={(focusStats) => {
+                      applySetupState((current) =>
+                        updateSetupCharacter(current, activeSetup.id, { ...activeSetup.character, focusStats })
+                      )
+                    }}
+                  />
+                }
+                levels={activeSetup}
+                updateLevels={updateLevels}
+                weaponTypes={weaponTypes}
+                settings={activeSetup.character}
+                onChange={(character) => {
+                  applySetupState((current) => updateSetupCharacter(current, activeSetup.id, character))
+                }}
+              />
+            )
+          }
+        ]
+      : []),
     {
       id: 'enchantments',
       label: 'Enchantments',
@@ -1253,35 +1300,6 @@ const GearPlannerWorkspace = () => {
     },
     ...(dataState.status === 'ready'
       ? [
-          {
-            id: 'character',
-            label: 'Character setup',
-            icon: <IconUserCog stroke={2} />,
-            content: (
-              <CharacterSetupTool
-                focusEditor={
-                  <FocusStatEditor
-                    data={dataState.data}
-                    owner={owner}
-                    effects={effects}
-                    names={activeSetup.character.focusStats ?? []}
-                    onChange={(focusStats) => {
-                      applySetupState((current) =>
-                        updateSetupCharacter(current, activeSetup.id, { ...activeSetup.character, focusStats })
-                      )
-                    }}
-                  />
-                }
-                levels={activeSetup}
-                updateLevels={updateLevels}
-                weaponTypes={weaponTypes}
-                settings={activeSetup.character}
-                onChange={(character) => {
-                  applySetupState((current) => updateSetupCharacter(current, activeSetup.id, character))
-                }}
-              />
-            )
-          },
           {
             id: 'augments',
             label: 'Augments',
@@ -1413,6 +1431,13 @@ const GearPlannerWorkspace = () => {
         setPlannerState(restored.state)
         legacySaveImported.current = restored.legacySaveImported === true
         setPersistenceEnabled(false)
+        if (restored.issues.length && !restored.carryover) {
+          setFeedback({
+            kind: 'error',
+            message: 'Some saved selections could not be restored from the current catalog.',
+            issues: restored.issues
+          })
+        }
         if (restored.carryover) {
           setFeedback({ ...restored.carryover, issues: restored.issues })
         }
@@ -1549,6 +1574,27 @@ const GearPlannerWorkspace = () => {
       />
     )
 
+  function renderDetailsCaret(item: GearPlannerItem) {
+    const key = itemKey(item)
+    const collapsed = collapsedItems.has(key)
+    const label = collapsed ? 'Expand details' : 'Collapse details'
+    return (
+      <ActionIcon
+        variant='subtle'
+        size='sm'
+        aria-label={label}
+        title={label}
+        aria-expanded={!collapsed}
+        aria-controls={'gear-item-details-' + item.slot.replaceAll(' ', '-')}
+        onClick={() => {
+          setDetailsCollapsed([key], !collapsed)
+        }}
+      >
+        {collapsed ? <IconChevronRight size={16} aria-hidden /> : <IconChevronDown size={16} aria-hidden />}
+      </ActionIcon>
+    )
+  }
+
   const renderEquipmentEditor = (cardSlot: GearPlannerSlot, cardItem: GearPlannerItem, inline: boolean) =>
     dataState.status === 'ready' && (
       <EquipmentEditor
@@ -1569,10 +1615,6 @@ const GearPlannerWorkspace = () => {
         slot={cardSlot}
         item={cardItem}
         collapsed={collapsedItems.has(itemKey(cardItem))}
-        toggleDetails={() => {
-          const key = itemKey(cardItem)
-          setDetailsCollapsed([key], !collapsedItems.has(key))
-        }}
         data={dataState.data}
         essenceData={dataState.essenceData}
         effects={effects.filter(
@@ -1944,20 +1986,23 @@ const GearPlannerWorkspace = () => {
                       if (view === 'grid')
                         return (
                           <article key={name} className={classes.gearCard} aria-label={name + ' equipment'}>
-                            <UnstyledButton
-                              className={classes.gearCardHeading}
-                              aria-label={'Select ' + name}
-                              data-testid={'gear-slot-' + name}
-                              aria-current={slot === name || undefined}
-                              onClick={() => {
-                                selectSlot(name)
-                                if (equipped) setMode('replace')
-                              }}
-                            >
-                              <SlotIcon size={17} aria-hidden />
-                              <strong>{name}</strong>
-                              <IconSearch size={15} aria-hidden />
-                            </UnstyledButton>
+                            <div className={classes.gearCardHeading}>
+                              {equipped && renderDetailsCaret(equipped)}
+                              <UnstyledButton
+                                className={classes.gearCardSelect}
+                                aria-label={'Select ' + name}
+                                data-testid={'gear-slot-' + name}
+                                aria-current={slot === name || undefined}
+                                onClick={() => {
+                                  selectSlot(name)
+                                  if (equipped) setMode('replace')
+                                }}
+                              >
+                                <SlotIcon size={17} aria-hidden />
+                                <strong>{name}</strong>
+                                <IconSearch size={15} aria-hidden />
+                              </UnstyledButton>
+                            </div>
                             {equipped ? (
                               renderEquipmentEditor(name, equipped, true)
                             ) : (
@@ -2036,6 +2081,7 @@ const GearPlannerWorkspace = () => {
                     <Title order={2} size='h4' id='gear-detail-title' ref={detailHeadingRef} tabIndex={-1}>
                       {gearDetailTitle(showingPaths, finding, owner, browsing, slot)}
                     </Title>
+                    {!finding && !showingPaths && !browsing && selectedItem && renderDetailsCaret(selectedItem)}
                     {!finding && returnSlot && (
                       <Button
                         size='compact-sm'

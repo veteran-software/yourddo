@@ -1,3 +1,4 @@
+import { displayPercentModifier } from './effectAmounts'
 import { formatResolvedEffectModifier, resolveEnhancementEffects } from '../essenceCrafting/enhancementEffects.ts'
 import {
   getAvailableEnhancementChoicesForItemCategories,
@@ -293,9 +294,7 @@ export const resolveGearPlannerEssenceAffixes = (
         enhancement,
         effects: resolved.effects.map(({ effect, modifier, bonusType }) => ({
           name: effect.displayName,
-          ...(formatResolvedEffectModifier(modifier) === undefined
-            ? {}
-            : { modifier: formatResolvedEffectModifier(modifier) }),
+          ...displayPercentModifier(formatResolvedEffectModifier(modifier)),
           ...(bonusType ? { bonus: bonusType.displayName } : {})
         }))
       }

@@ -1,3 +1,4 @@
+import KnownDiscrepancies from './KnownDiscrepancies'
 import AugmentPicker from '../../../shared/augments/AugmentPicker'
 import EquippedEffect from './EquippedEffect'
 import ItemSetLinks from './ItemSetLinks'
@@ -78,13 +79,11 @@ const AugmentSlotSelector = ({
   )
   const selectData = useMemo(
     () =>
-      getCompatibleAugmentTypes(augmentSlot.augmentType).flatMap((augmentType) => {
-        const options = visible
-          .filter((augment) => normaliseAugmentSlotType(augment.augmentType) === normaliseAugmentSlotType(augmentType))
-          .map((augment) => ({ value: gearPlannerAugmentIdentity(augment), label: augment.name }))
-        return options.length > 0 ? [{ group: `${augmentType} augments`, items: options }] : []
-      }),
-    [augmentSlot.augmentType, visible]
+      [...Map.groupBy(visible, (a) => a.augmentType)].map(([type, entries]) => ({
+        group: type + ' augments',
+        items: entries.map((a) => ({ value: gearPlannerAugmentIdentity(a), label: a.name }))
+      })),
+    [visible]
   )
   const selectedOverLevel = selected !== null && selected.minLevel > hostLevel
   const label = augmentSlot.name ?? augmentSlot.augmentType
@@ -155,7 +154,6 @@ const AugmentSlotSelector = ({
         <AugmentPicker
           placeholder='Select augment'
           label={label}
-          description={`Augment slot ${String(slotIndex + 1)} · ${augmentSlot.augmentType}`}
           colors={getCompatibleAugmentTypes(augmentSlot.augmentType)}
           options={compatible.map((a) => ({
             value: gearPlannerAugmentIdentity(a),
@@ -182,7 +180,6 @@ const AugmentSlotSelector = ({
             size={'xs'}
             p={0}
             label={label}
-            description={`Augment slot ${String(slotIndex + 1)} · ${augmentSlot.augmentType}`}
             placeholder='Select augment'
             data={selectData}
             value={selectedId}
@@ -229,6 +226,7 @@ const AugmentSlotSelector = ({
             ) : null}
           </Group>
           <TroveOwnership name={selected.name} />
+          <KnownDiscrepancies notes={selected.discrepancyNotes} />
           {selected.effectsAdded.map((effect, effectIndex) => (
             <Text key={`${effect.name}-${String(effectIndex)}`} size='xs'>
               <EquippedEffect

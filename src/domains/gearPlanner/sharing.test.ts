@@ -13,7 +13,7 @@ const helm = {
   minLevel: '15',
   pageTitle: 'Arcsteel Brim',
   augments: [{ augmentType: 'Yellow' }],
-  enchantments: [{ name: 'Wisdom', modifier: 4, notes: '  While [active], gain *extra* Wisdom.  ' }]
+  enchantments: [{ name: 'Wisdom', modifier: 4, notes: '  While [active]—gain *extra* Wisdom.  ' }]
 }
 const topaz = { name: 'Topaz', augmentType: 'Yellow', minLevel: 1, source: {}, effectsAdded: [] }
 const data = normalizeGearPlannerSources(
@@ -137,9 +137,10 @@ describe('Gear Planner sharing', () => {
     expect(forum).toContain(`[url=${link}]View on YourDDO[/url]`)
     expect(discord).toContain('**[Raid] \\*tank\\***')
     expect(forum).toContain('[b]&#91;Raid&#93; *tank*[/b]')
-    expect(discord).toContain(String.raw`- Wisdom 4 — While [active], gain \*extra\* Wisdom.`)
-    expect(forum).toContain('• Wisdom 4 — While &#91;active&#93;, gain *extra* Wisdom.')
+    expect(discord).toContain(String.raw`- Wisdom 4 · While [active] - gain \*extra\* Wisdom.`)
+    expect(forum).toContain('• Wisdom 4 · While &#91;active&#93; - gain *extra* Wisdom.')
     for (const output of [discord, forum]) {
+      expect(output).not.toContain('—')
       expect(output).toContain('Arcsteel Brim (ML 15)')
       expect(output).toContain('Mythic Boost +2')
       expect(output).toContain('Augment 1: Topaz')

@@ -1,10 +1,5 @@
 import { collectSelectedAugmentSetMemberships } from './augments.ts'
-import {
-  type GearPlannerEffectSource,
-  normalizeBonusType,
-  normalizeEffectName,
-  parseEffectModifier
-} from './effects.ts'
+import { type GearPlannerEffectSource, normalizeBonusType, normalizeEffectName, effectAmount } from './effects.ts'
 import { collectSelectedGearPlannerFiligrees, filigreeSetNames } from './filigrees.ts'
 import type {
   GearPlannerAugmentSlot,
@@ -59,12 +54,18 @@ export interface GearPlannerSetState {
 const equippedItems = (equipment: GearPlannerEquipment): readonly GearPlannerItem[] =>
   Object.values(equipment).filter((item): item is GearPlannerItem => item !== null)
 
+function baseSetMemberships(item: GearPlannerItem, overrides: ReadonlyMap<string, boolean>) {
+  if (item.source.name.includes('Gem of Many Facets') || overrides.get(item.id)) return []
+  return (item.source.setBonus ?? []).slice(overrides.has(item.id) ? 1 : 0)
+}
+
 export const collectEquippedItemSetMemberships = (
-  equipment: GearPlannerEquipment
+  equipment: GearPlannerEquipment,
+  overrides: ReadonlyMap<string, boolean> = new Map()
 ): readonly GearPlannerSetMembership[] =>
   equippedItems(equipment).flatMap((item) =>
     [
-      ...(item.source.name.includes('Gem of Many Facets') ? [] : (item.source.setBonus ?? [])),
+      ...baseSetMemberships(item, overrides),
       ...(item.crafts ?? []).flatMap((craft) => (craft.setName ? [{ name: craft.setName }] : []))
     ].map(({ name }, setIndex) => ({
       id: `${item.id}:equipped-item-set:${String(setIndex)}`,
@@ -81,10 +82,16 @@ export const collectGearPlannerSetMemberships = (
   slottedAugments: GearPlannerSlottedAugments,
   slottedFiligrees: GearPlannerSlottedFiligrees = {},
   augmentSlotsByItem: Readonly<Record<string, readonly GearPlannerAugmentSlot[]>> = {}
-): readonly GearPlannerSetMembership[] => [
-  ...collectEquippedItemSetMemberships(equipment),
-  ...collectSelectedAugmentSetMemberships(equipment, slottedAugments, augmentSlotsByItem).map(
-    ({ item, slotIndex, augmentSlot, augment, setBonus }, membershipIndex) => ({
+): readonly GearPlannerSetMembership[] => {
+  const memberships = collectSelectedAugmentSetMemberships(equipment, slottedAugments, augmentSlotsByItem)
+  const overrides = new Map(
+    memberships.flatMap(({ item, augment }) =>
+      augment.clearSecondarySet === undefined ? [] : [[item.id, augment.clearSecondarySet] as const]
+    )
+  )
+  return [
+    ...collectEquippedItemSetMemberships(equipment, overrides),
+    ...memberships.map(({ item, slotIndex, augmentSlot, augment, setBonus }, membershipIndex) => ({
       id: `${item.id}:augment-set:${String(slotIndex)}:${String(membershipIndex)}`,
       setName: setBonus.name,
       category: 'augment' as const,
@@ -94,10 +101,10 @@ export const collectGearPlannerSetMemberships = (
       augmentName: augment.name,
       augmentSlotIndex: slotIndex,
       augmentSlotName: augmentSlot.name
-    })
-  ),
-  ...collectFiligreeSetMemberships(equipment, slottedFiligrees)
-]
+    })),
+    ...collectFiligreeSetMemberships(equipment, slottedFiligrees)
+  ]
+}
 
 export const collectFiligreeSetMemberships = (
   equipment: GearPlannerEquipment,
@@ -177,7 +184,7 @@ export const collectActiveSetEffectSources = (setState: GearPlannerSetState): re
             setCategory: set.category,
             normalizedName: normalizeEffectName(effect.name),
             normalizedBonusType: normalizeBonusType(effect.bonus),
-            comparisonValue: parseEffectModifier(effect.modifier)
+            comparisonValue: effectAmount(effect)
           }))
     )
   )

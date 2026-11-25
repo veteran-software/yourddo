@@ -1,0 +1,489 @@
+Game item ID,Item name,Item type,CDN file,minimumLevel,baseLevel (blank = absent),Planner fallback ML,Legacy ML on same name and type (reference only)
+1879174402,Adamantine Knuckles,Handwraps,items/weapons/handwraps/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879121989,Admiral's Tricorne,Head,items/clothing/head/items.json,absent,,1,
+1879165400,Adventurer's Torch,Club,items/weapons/club/items.json,absent,,1,
+1879095258,Agile Belt,Waist,items/clothing/waist/items.json,absent,,1,
+1879166859,Allegiance,Khopesh,items/weapons/khopesh/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879095271,Amulet of Inner Focus,Neck,items/jewelry/neck/items.json,absent,,1,
+1879095286,Amulet of the Brute,Neck,items/jewelry/neck/items.json,absent,,1,
+1879166900,Ancient Band,Ring,items/jewelry/ring/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879088989,Anger's Gift,Neck,items/jewelry/neck/items.json,absent,,1,
+1879088999,Anger's Step,Feet,items/clothing/feet/items.json,absent,,1,
+1879109274,Anti-Beholder Crystal,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879166898,Aquatic Bracers,Wrists,items/jewelry/wrists/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879095291,Arcane Gloves,Hands,items/clothing/hands/items.json,absent,,1,
+1879089076,Arcane Goggles,Eyes,items/jewelry/eyes/items.json,absent,,1,
+1879089074,Arcane Necklace,Neck,items/jewelry/neck/items.json,absent,,1,
+1879089090,Archivist's Goggles,Eyes,items/jewelry/eyes/items.json,absent,,1,
+1879089110,Archivist's Necklace,Neck,items/jewelry/neck/items.json,absent,,1,
+1879173350,Arkat's Cord,Waist,items/clothing/waist/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879186231,Assassin Initiate's Leathers,Light Armor,items/armor/light-armor/items.json,absent,,1,13 | 14 | 15
+1879095259,Axe Bane,Wrists,items/jewelry/wrists/items.json,absent,,1,
+1879166854,Axe of Adaxus,Battleaxe,items/weapons/battleaxe/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166912,Backstabber's Gloves,Hands,items/clothing/hands/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879165076,Bastion,Tower Shield,items/shields/tower-shield.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879165078,Bastion,Tower Shield,items/shields/tower-shield.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879095255,Battered Helm,Head,items/clothing/head/items.json,absent,,1,
+1879119073,Battered Marketplace Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879119074,Battered Marketplace Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879076029,Battleworn Shield of Cyre,Large Shield,items/shields/large-shield.json,absent,,1,
+1879055511,Battleworn Sword,Greatsword,items/weapons/greatsword/items.json,absent,,1,
+1879166917,Belt of the Seven Ideals,Waist,items/clothing/waist/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879069567,Berserker Bracers,Wrists,items/jewelry/wrists/items.json,absent,,1,
+1879095249,Blessed Goggles,Eyes,items/jewelry/eyes/items.json,absent,,1,
+1879095272,Boots of Nimbleness,Feet,items/clothing/feet/items.json,absent,,1,
+1879054902,Boots of Striding and Springing,Feet,items/clothing/feet/items.json,absent,,1,9
+1879068519,Boots of the Long Step,Feet,items/clothing/feet/items.json,absent,,1,
+1879068154,Bottle of Air,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879107350,Bouquet of Flowers,Club,items/weapons/club/items.json,absent,,1,
+1879095867,Bracelet of Friends,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879095262,Bracers of Assistance,Wrists,items/jewelry/wrists/items.json,absent,,1,
+1879165067,Bracers of Twisting Shade,Wrists,items/jewelry/wrists/items.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879186230,Branch of Vile Curses,Quarterstaff,items/weapons/quarterstaff/items.json,absent,,1,13 | 14 | 15
+1879166850,Bronze Ingot Arcanum,Quarterstaff,items/weapons/quarterstaff/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166868,Bulwark of the Storm's Fist,Large Shield,items/shields/large-shield.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166869,Bulwark of the Storm's Fist,Large Shield,items/shields/large-shield.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879121994,Captain's Chapeau,Head,items/clothing/head/items.json,absent,,1,
+1879096103,Charming Festival Mask,Head,items/clothing/head/items.json,absent,,1,
+1879166852,Charoush's Inferno,Bastard Sword,items/weapons/bastard-sword/items.json,absent,,1,
+1879068516,Chiku's Bauble,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879095283,Cloak of Faith,Cloak,items/clothing/cloak/items.json,absent,,1,
+1879069565,Cloven Jaw War Beads,Neck,items/jewelry/neck/items.json,absent,,1,
+1879051527,Club of the Holy Flame,Club,items/weapons/club/items.json,absent,,1,
+1879137259,Companion Collar,Pet Collar,items/pet-collar.json,absent,,1,
+1879195152,Compass,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879196751,Consuming Darkness,Ring,items/jewelry/ring/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879166858,Copper Ingot Arcanum,Quarterstaff,items/weapons/quarterstaff/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879121993,Corsair's Skullcap,Head,items/clothing/head/items.json,absent,,1,
+1879166853,Crystalline Scepter,Club,items/weapons/club/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879199981,Cuirass of the Haunted Avenger,Light Armor,items/armor/light-armor/items.json,absent,,1,
+1879095250,Curative Cloak,Cloak,items/clothing/cloak/items.json,absent,,1,
+1879199556,Cyran Guard,Docent,items/armor/docent/items.json,absent,,1,26 | 27 | 28
+1879199596,Cyran Guard,Docent,items/armor/docent/items.json,absent,,1,26 | 27 | 28
+1879073797,Dagger of Acid,Dagger,items/weapons/dagger/items.json,absent,,1,
+1879073792,Dagger of Flame,Dagger,items/weapons/dagger/items.json,absent,,1,
+1879073796,Dagger of Frost,Dagger,items/weapons/dagger/items.json,absent,,1,
+1879073794,Dagger of Shock,Dagger,items/weapons/dagger/items.json,absent,,1,
+1879166905,Daggertooth's Belt,Waist,items/clothing/waist/items.json,absent,,1,12 | 13 | 14 | 23 | 24
+1879110202,Dampened Frozen Plate,Heavy Armor,items/armor/heavy-armor/items.json,absent,,1,
+1879166903,Death's Locket,Neck,items/jewelry/neck/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879235503,Death's Smile,Head,items/clothing/head/items.json,absent,,1,
+1879068515,Deezil's Ornament,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879215258,Delighter's Docent,Docent,items/armor/docent/items.json,absent,,1,
+1879108872,Deneith Defender Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879108879,Deneith Defender Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879089083,Devoted Goggles,Eyes,items/jewelry/eyes/items.json,absent,,1,
+1879089104,Devoted Necklace,Neck,items/jewelry/neck/items.json,absent,,1,
+1879069949,Dirge's Bulwark,Large Shield,items/shields/large-shield.json,absent,,1,
+1879095264,Discarded Ring,Ring,items/jewelry/ring/items.json,absent,,1,
+1879200005,Docent of the Haunted Avenger,Docent,items/armor/docent/items.json,absent,,1,
+1879200007,Docent of the Haunted Avenger,Docent,items/armor/docent/items.json,absent,,1,
+1879200004,Docent of the Haunted Guardian,Docent,items/armor/docent/items.json,absent,,1,
+1879200006,Docent of the Haunted Guardian,Docent,items/armor/docent/items.json,absent,,1,
+1879200008,Docent of the Haunted Sage,Docent,items/armor/docent/items.json,absent,,1,
+1879200009,Docent of the Haunted Sage,Docent,items/armor/docent/items.json,absent,,1,
+1879121990,Dread Admiral's Tricorne,Head,items/clothing/head/items.json,absent,,1,
+1879166904,Dream Visor,Eyes,items/jewelry/eyes/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879160633,Drow Bastard Sword,Bastard Sword,items/weapons/bastard-sword/items.json,absent,,1,
+1879160627,Drow Dagger,Dagger,items/weapons/dagger/items.json,absent,,1,
+1879160639,Drow Greataxe,Greataxe,items/weapons/greataxe/items.json,absent,,1,
+1879160629,Drow Khopesh,Khopesh,items/weapons/khopesh/items.json,absent,,1,
+1879160636,Drow Light Mace,Lightmace,items/weapons/lightmace/items.json,absent,,1,
+1879160635,Drow Longsword,Longsword,items/weapons/longsword/items.json,absent,,1,
+1879160638,Drow Maul,Maul,items/weapons/maul/items.json,absent,,1,
+1879160634,Drow Quarterstaff,Quarterstaff,items/weapons/quarterstaff/items.json,absent,,1,
+1879160630,Drow Rapier,Rapier,items/weapons/rapier/items.json,absent,,1,
+1879160628,Drow Scimitar,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879160632,Drow Shortsword,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879160631,Drow Warhammer,Warhammer,items/weapons/warhammer/items.json,absent,,1,
+1879160637,Duergar Waraxe,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879107349,Elegant Diamond Necklace,Neck,items/jewelry/neck/items.json,absent,,1,
+1879196754,Elemental Fury,Shortsword,items/weapons/shortsword/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879058785,Elemental Gem (Earth),Weapon1,items/jewelry/weapon1/items.json,absent,,1,
+1879149744,Ember Longbow,Longbow,items/weapons/longbow/items.json,absent,,1,
+1879107351,Enchanted Chocolates by Fabiano & Zelda,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879095279,Engraved Circlet,Head,items/clothing/head/items.json,absent,,1,
+1879095248,Engraved Ring,Ring,items/jewelry/ring/items.json,absent,,1,
+1879119071,Enhanced Stormreach Marketplace Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879119072,Enhanced Stormreach Marketplace Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879095284,Expeditious Boots,Feet,items/clothing/feet/items.json,absent,,1,
+1879096101,Fearsome Festival Mask,Head,items/clothing/head/items.json,absent,,1,
+1879095277,Feather Cloak,Cloak,items/clothing/cloak/items.json,absent,,1,
+1879186989,Fell Shiv,Dagger,items/weapons/dagger/items.json,absent,,1,14 | 15 | 16 | 25 | 26 | 27
+1879107342,Festival Luck Charms,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879159329,Fintan's Bite,Scimitar,items/weapons/scimitar/items.json,absent,,1,1
+1879163724,Firebreak,Heavy Armor,items/armor/heavy-armor/items.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879163725,Firebreak,Heavy Armor,items/armor/heavy-armor/items.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879196756,First Blood,Bastard Sword,items/weapons/bastard-sword/items.json,absent,,1,14 | 15 | 16 | 25 | 26 | 27
+1879143038,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879143039,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879143040,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879143041,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879143042,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879144257,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879144258,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879144259,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879144260,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879144261,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879263616,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879263618,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879263620,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879263623,Flame Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879065470,Flamefang's  Hide,Cloak,items/clothing/cloak/items.json,absent,,1,
+1879163799,Forester's Brush Hook,Kama,items/weapons/kama/items.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879165070,Forgotten Light,HeavyMace,items/weapons/heavy-mace/items.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879068522,Fortified Gauntlets,Hands,items/clothing/hands/items.json,absent,,1,
+1879069947,Founder's Helm,Head,items/clothing/head/items.json,absent,,1,
+1879121992,Freebooter's Bandana,Head,items/clothing/head/items.json,absent,,1,
+1879196753,Frostbite Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879068499,Furor's Hide,Cloak,items/clothing/cloak/items.json,absent,,1,
+1879068523,Garzad's Helm,Head,items/clothing/head/items.json,absent,,1,
+1879069568,Gatewarden's Girdle,Waist,items/clothing/waist/items.json,absent,,1,
+1879166897,Ghost-Waking Cloak,Cloak,items/clothing/cloak/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879196757,Giant's Fist,Maul,items/weapons/maul/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879166909,Giantcraft Siberys Compass,Trinket,items/jewelry/trinket/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166918,Girdle of Giants' Brawn,Waist,items/clothing/waist/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879095244,Girdle of Lesser Fortitude,Waist,items/clothing/waist/items.json,absent,,1,
+1879068524,Glik's Bangle,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879166908,Globe of Imperial Blood,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879196746,Glorious Dawn,Ring,items/jewelry/ring/items.json,absent,,1,14 | 15 | 16 | 25 | 26 | 27
+1879166901,Gloves of Forgotten Craft,Hands,items/clothing/hands/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879186951,Gloves of the Master Illusionist,Hands,items/clothing/hands/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879069556,Gloves of the Poet,Hands,items/clothing/hands/items.json,absent,,1,
+1879186954,Goatskin Boots,Feet,items/clothing/feet/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879095268,Goggles of Insight,Eyes,items/jewelry/eyes/items.json,absent,,1,
+1879096105,Grasshopper Robe,Cloth,items/armor/cloth/items.json,absent,,1,
+1879166861,Great Axe of the Chained Soldier,Greataxe,items/weapons/greataxe/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879095868,Greater Bracelet of Friends,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879108873,Guardian of Stormreach Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879108880,Guardian of Stormreach Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879194333,Guardian's Boots,Feet,items/clothing/feet/items.json,absent,,1,15 | 27
+4026677981,Guardian's Boots,Feet,items/clothing/feet/items.json,absent,,1,15 | 27
+1879194335,Guardian's Bracers,Wrists,items/jewelry/wrists/items.json,absent,,1,15 | 26
+4026677983,Guardian's Bracers,Wrists,items/jewelry/wrists/items.json,absent,,1,15 | 26
+1879194334,Guardian's Cloak,Cloak,items/clothing/cloak/items.json,absent,,1,19 | 27
+4026677982,Guardian's Cloak,Cloak,items/clothing/cloak/items.json,absent,,1,19 | 27
+1879194321,Guardian's Gauntlets,Hands,items/clothing/hands/items.json,absent,,1,15 | 26
+4026677969,Guardian's Gauntlets,Hands,items/clothing/hands/items.json,absent,,1,15 | 26
+1879194337,Guardian's Girdle,Waist,items/clothing/waist/items.json,absent,,1,15 | 26
+4026677985,Guardian's Girdle,Waist,items/clothing/waist/items.json,absent,,1,15 | 26
+1879194341,Guardian's Glasses,Eyes,items/jewelry/eyes/items.json,absent,,1,19 | 27
+4026677989,Guardian's Glasses,Eyes,items/jewelry/eyes/items.json,absent,,1,19 | 27
+1879194326,Guardian's Helmet,Head,items/clothing/head/items.json,absent,,1,19 | 27
+4026677974,Guardian's Helmet,Head,items/clothing/head/items.json,absent,,1,19 | 27
+1879194338,Guardian's Locket,Neck,items/jewelry/neck/items.json,absent,,1,15 | 26
+4026677986,Guardian's Locket,Neck,items/jewelry/neck/items.json,absent,,1,15 | 26
+1879194329,Guardian's Ring,Ring,items/jewelry/ring/items.json,absent,,1,19 | 27
+4026677977,Guardian's Ring,Ring,items/jewelry/ring/items.json,absent,,1,19 | 27
+1879186237,Guidance of Shar,Trinket,items/jewelry/trinket/items.json,absent,,1,13 | 14 | 15
+1879166851,Hammer of the Leaden Clouds,Warhammer,items/weapons/warhammer/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879076071,Hand of God,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879214567,Hat of the Night Hag,Head,items/clothing/head/items.json,absent,,1,
+1879081493,Helm of Limited Doors,Head,items/clothing/head/items.json,absent,,1,
+1879076067,Helm of Natural Armor,Head,items/clothing/head/items.json,absent,,1,
+1879166902,Helm of the Black Dragon,Head,items/clothing/head/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166913,Helm of the Blue Dragon,Head,items/clothing/head/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166915,Helm of the White Dragon,Head,items/clothing/head/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879075464,Helmet of Resistance,Head,items/clothing/head/items.json,absent,,1,
+1879214568,Hood of Unrest,Head,items/clothing/head/items.json,absent,,1,
+1879199576,Hunter's Slayer,Greatsword,items/weapons/greatsword/items.json,absent,,1,24 | 25 | 26
+1879166914,Intricate Field Optics,Eyes,items/jewelry/eyes/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166916,Iron Beads,Neck,items/jewelry/neck/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879163800,Ironwood Khopesh,Khopesh,items/weapons/khopesh/items.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879163510,Ivy Wraps,Handwraps,items/weapons/handwraps/items.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879163511,Ivy Wraps,Handwraps,items/weapons/handwraps/items.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879068535,Jeeka's Spangle,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879173348,Jeweled Cloak,Cloak,items/clothing/cloak/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166911,Jorgundal's Collar,Neck,items/jewelry/neck/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166919,Kardin's Eye,Trinket,items/jewelry/trinket/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879068283,Keoghtom's Ointment,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879068496,Kneeza's Bauble,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879068500,Kutik's Bead,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879093958,Large Thin Quiver,Quiver,items/quiver.json,absent,,1,
+1879103125,Large Thin Quiver,Quiver,items/quiver.json,absent,,1,
+1879093960,Large Wide Quiver,Quiver,items/quiver.json,absent,,1,
+1879103124,Large Wide Quiver,Quiver,items/quiver.json,absent,,1,
+1879163726,Leaves of the Forest,Medium Armor,items/armor/medium-armor/items.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879163727,Leaves of the Forest,Medium Armor,items/armor/medium-armor/items.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879119196,Lesser Anti-Beholder Crystal,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879095869,Lesser Pendant of Travel,Neck,items/jewelry/neck/items.json,absent,,1,
+1879095289,Lhorne's Blade,Longsword,items/weapons/longsword/items.json,absent,,1,1
+1879163508,Livewood Core,Docent,items/armor/docent/items.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879163509,Livewood Core,Docent,items/armor/docent/items.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879214569,Long Broom of Mystery,Quarterstaff,items/weapons/quarterstaff/items.json,absent,,1,
+1879100584,Lousy Chain Docent?,Docent,items/armor/docent/items.json,absent,,1,
+1879096104,Lousy Chainshirt,Light Armor,items/armor/light-armor/items.json,absent,,1,
+1879096099,Lucky Hat,Head,items/clothing/head/items.json,absent,,1,
+1879077515,Lump of Coal,Dart,items/weapons/dart/items.json,absent,,1,
+1879079525,Madstone Rod,Club,items/weapons/club/items.json,absent,,1,
+1879176630,Madstone Skull,Orb,items/shields/orb.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879063699,Magestaff,Quarterstaff,items/weapons/quarterstaff/items.json,absent,,1,
+1879186988,Magistrate's Scepter,HeavyMace,items/weapons/heavy-mace/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879166899,Manacles of Ceaseless Toil,Wrists,items/jewelry/wrists/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166896,Mantle of the Dragonfriend,Cloak,items/clothing/cloak/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879194356,Martial Outfit,Cloth,items/armor/cloth/items.json,absent,,1,16 | 27
+4026678004,Martial Outfit,Cloth,items/armor/cloth/items.json,absent,,1,16 | 27
+1879096107,Mask of the Shadow,Head,items/clothing/head/items.json,absent,,1,
+1879186990,Master's Riposte,Longsword,items/weapons/longsword/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879068317,Maul of Vengeance,Maul,items/weapons/maul/items.json,absent,,1,1
+1879100583,Medium Shard Trinket,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879103122,Medium Thin Quiver,Quiver,items/quiver.json,absent,,1,
+1879103123,Medium Wide Quiver,Quiver,items/quiver.json,absent,,1,
+1879095267,Min's Handwraps,Handwraps,items/weapons/handwraps/items.json,absent,,1,1
+1879305671,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305672,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305673,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305674,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305676,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305678,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305679,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305680,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305682,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305683,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305685,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305686,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305687,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879305688,Mindcleaver,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,
+1879136270,Moldy Light Crossbow,LightCrossbow,items/weapons/light-crossbow/items.json,absent,,1,
+1879149574,Moldy Longbow,Longbow,items/weapons/longbow/items.json,absent,,1,
+1879095537,Moldy Quarterstaff,Quarterstaff,items/weapons/quarterstaff/items.json,absent,,1,
+1879095282,Molin's Great Axe,Greataxe,items/weapons/greataxe/items.json,absent,,1,1
+1879068501,Moog's Ornament,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879068525,Neecha's Bead,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879165068,Nether Grasps,Hands,items/clothing/hands/items.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879196752,Nether Orb,Orb,items/shields/orb.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879186238,Nightsinger's Mantle,Cloak,items/clothing/cloak/items.json,absent,,1,13 | 14 | 15
+1879089114,Nimble Brooch,Neck,items/jewelry/neck/items.json,absent,,1,
+1879089077,Nimble Grasp,Hands,items/clothing/hands/items.json,absent,,1,
+1879107578,Official Risia Ice Games Ice Skates,Feet,items/clothing/feet/items.json,absent,,1,
+1879136141,Oladren's Great Crossbow,GreatCrossbow,items/weapons/great-crossbow/items.json,absent,,1,
+1879209118,Old Reliable,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879095257,Ornate Goggles,Eyes,items/jewelry/eyes/items.json,absent,,1,
+1879199991,Outfit of the Haunted Avenger,Cloth,items/armor/cloth/items.json,absent,,1,
+1879199995,Outfit of the Haunted Guardian,Cloth,items/armor/cloth/items.json,absent,,1,
+1879096108,Party Hat,Head,items/clothing/head/items.json,absent,,1,
+1879089115,Pathfinder's Boots,Feet,items/clothing/feet/items.json,absent,,1,
+1879089102,Pathfinder's Necklace,Neck,items/jewelry/neck/items.json,absent,,1,
+1879068145,Pearl of Power I,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879068159,Periapt of Health,Neck,items/jewelry/neck/items.json,absent,,1,
+1879068490,Peridot Ring,Ring,items/jewelry/ring/items.json,absent,,1,
+1879108877,Phiarlan Veil Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879108884,Phiarlan Veil Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879072952,Phiarlan's Pendant of Time,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879081494,Pirate's Bandana,Head,items/clothing/head/items.json,absent,,1,
+1879068532,Plague's Fang,Dagger,items/weapons/dagger/items.json,absent,,1,
+1879199985,Platemail of the Haunted Guardian,Heavy Armor,items/armor/heavy-armor/items.json,absent,,1,
+1879076068,Power Evidence,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879195145,"Prismatic Cloak, Blue",Cloak,items/clothing/cloak/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879195148,"Prismatic Cloak, Green",Cloak,items/clothing/cloak/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879195141,"Prismatic Cloak, Grey",Cloak,items/clothing/cloak/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879195150,"Prismatic Cloak, Red",Cloak,items/clothing/cloak/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879195142,"Prismatic Cloak, Violet",Cloak,items/clothing/cloak/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879186955,Prison Break,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,14 | 15 | 16 | 25 | 26 | 27
+1879186952,Prisoner's Manacles,Wrists,items/jewelry/wrists/items.json,absent,,1,14 | 15 | 16 | 25 | 26 | 27
+1879095251,Protective Gloves,Hands,items/clothing/hands/items.json,absent,,1,
+1879089098,Protector's Brooch,Neck,items/jewelry/neck/items.json,absent,,1,
+1879089112,Protector's Gloves,Hands,items/clothing/hands/items.json,absent,,1,
+1879069563,Puzzle Cap,Head,items/clothing/head/items.json,absent,,1,
+1879093694,Quiver of Alacrity,Quiver,items/quiver.json,absent,,1,
+1879174329,Quiver of Poison,Quiver,items/quiver.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879120818,Quivering Quiver,Quiver,items/quiver.json,absent,,1,
+1879093792,Rakhat's Spangle,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879068486,Rakhat's Trifle,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879068517,Raktu's Trifle,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879107593,Rented Ice Skates,Feet,items/clothing/feet/items.json,absent,,1,
+1879214571,Reveler's Regalia,Cloth,items/armor/cloth/items.json,absent,,1,
+1879095256,Ring of Alertness,Ring,items/jewelry/ring/items.json,absent,,1,
+1879069554,Ring of Dragon's Breath,Ring,items/jewelry/ring/items.json,absent,,1,
+1879069600,Ring of Haggling,Ring,items/jewelry/ring/items.json,absent,,1,
+1879068520,Ring of Rage,Ring,items/jewelry/ring/items.json,absent,,1,
+1879166921,Ring of Shadows,Ring,items/jewelry/ring/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166922,Ring of the Djinn,Ring,items/jewelry/ring/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166906,Ring of the Stormreaver Prophecy,Ring,items/jewelry/ring/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879120274,Risian Fuzzball Bat,Greatclub,items/weapons/greatclub/items.json,absent,,1,
+1879120273,Risian Fuzzball Gloves,Hands,items/clothing/hands/items.json,absent,,1,
+1879165071,Roadwatch Bow,Longbow,items/weapons/longbow/items.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879102454,Robe of Armor +1,Cloth,items/armor/cloth/items.json,absent,,1,
+1879100014,Robe of Armor +2,Cloth,items/armor/cloth/items.json,absent,,1,
+1879105975,Robe of Armor +3,Cloth,items/armor/cloth/items.json,absent,,1,
+1879105976,Robe of Armor +4,Cloth,items/armor/cloth/items.json,absent,,1,
+1879105977,Robe of Armor +5,Cloth,items/armor/cloth/items.json,absent,,1,
+1879199990,Robe of the Haunted Sage,Cloth,items/armor/cloth/items.json,absent,,1,
+1879095876,Rod of Greater Teleport,Club,items/weapons/club/items.json,absent,,1,
+1879095871,Rod of Heal Light Wounds,Club,items/weapons/club/items.json,absent,,1,
+1879095874,Rod of Resist Energy,Club,items/weapons/club/items.json,absent,,1,
+1879095875,Rod of Teleport,Club,items/weapons/club/items.json,absent,,1,
+1879166860,Royal Scimitar,Scimitar,items/weapons/scimitar/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879065469,Ruby Ring,Ring,items/jewelry/ring/items.json,absent,,1,
+1879095261,Rugged Belt,Waist,items/clothing/waist/items.json,absent,,1,
+1879095253,Runic Gloves,Hands,items/clothing/hands/items.json,absent,,1,
+1879095536,Rusty Great Axe,Greataxe,items/weapons/greataxe/items.json,absent,,1,
+1879095538,Rusty Heavy Mace,HeavyMace,items/weapons/heavy-mace/items.json,absent,,1,
+1879095539,Rusty Longsword,Longsword,items/weapons/longsword/items.json,absent,,1,
+1879095540,Rusty Rapier,Rapier,items/weapons/rapier/items.json,absent,,1,
+1879194324,Sage's Cuffs,Wrists,items/jewelry/wrists/items.json,absent,,1,15 | 26
+4026677972,Sage's Cuffs,Wrists,items/jewelry/wrists/items.json,absent,,1,15 | 26
+1879194332,Sage's Gloves,Hands,items/clothing/hands/items.json,absent,,1,17 | 26
+4026677980,Sage's Gloves,Hands,items/clothing/hands/items.json,absent,,1,17 | 26
+1879194323,Sage's Locket,Neck,items/jewelry/neck/items.json,absent,,1,15 | 26
+4026677971,Sage's Locket,Neck,items/jewelry/neck/items.json,absent,,1,15 | 26
+1879194340,Sage's Mantle,Cloak,items/clothing/cloak/items.json,absent,,1,19 | 27
+4026677988,Sage's Mantle,Cloak,items/clothing/cloak/items.json,absent,,1,19 | 27
+1879194347,Sage's Ring,Ring,items/jewelry/ring/items.json,absent,,1,19 | 28
+4026677995,Sage's Ring,Ring,items/jewelry/ring/items.json,absent,,1,19 | 28
+1879194343,Sage's Sash,Waist,items/clothing/waist/items.json,absent,,1,15 | 26
+4026677991,Sage's Sash,Waist,items/clothing/waist/items.json,absent,,1,15 | 26
+1879194331,Sage's Shoes,Feet,items/clothing/feet/items.json,absent,,1,19 | 27
+4026677979,Sage's Shoes,Feet,items/clothing/feet/items.json,absent,,1,19 | 27
+1879194342,Sage's Skullcap,Head,items/clothing/head/items.json,absent,,1,19 | 27
+4026677990,Sage's Skullcap,Head,items/clothing/head/items.json,absent,,1,19 | 27
+1879194327,Sage's Spectacles,Eyes,items/jewelry/eyes/items.json,absent,,1,15 | 27
+4026677975,Sage's Spectacles,Eyes,items/jewelry/eyes/items.json,absent,,1,15 | 27
+1879194355,Sage's Vestments,Cloth,items/armor/cloth/items.json,absent,,1,16 | 27
+4026678003,Sage's Vestments,Cloth,items/armor/cloth/items.json,absent,,1,16 | 27
+1879199982,Scalemail of the Haunted Avenger,Medium Armor,items/armor/medium-armor/items.json,absent,,1,
+1879096109,Scallywag's Cap,Head,items/clothing/head/items.json,absent,,1,
+1879055505,Scarab of Protection,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879055518,Scarab of Spell Absorption,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879096100,Scary Festival Mask,Head,items/clothing/head/items.json,absent,,1,3
+1879075152,Scepter of Siberys,Club,items/weapons/club/items.json,absent,,1,
+1879196749,Shade's Hood,Head,items/clothing/head/items.json,absent,,1,14 | 15 | 16 | 25 | 26 | 27
+1879263412,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263414,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263415,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263417,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263418,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263420,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263421,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263423,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263424,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263425,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263426,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263428,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263432,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879263435,Shadowblade,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879165073,Shadowmail,Medium Armor,items/armor/medium-armor/items.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879165074,Shadowmail,Medium Armor,items/armor/medium-armor/items.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879196747,Shadowsight,Eyes,items/jewelry/eyes/items.json,absent,,1,14 | 15 | 16 | 25 | 26 | 27
+1879173349,Shamanic Fetish,Trinket,items/jewelry/trinket/items.json,absent,,1,12 | 13 | 23 | 24 | 25
+1879100781,Shard Trinket of Greater Restoration,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879100782,Shard Trinket of Mass Hold Person,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879100779,Shard Trinket of Mass Protection Elements,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879100772,Shard Trinket of Mnemonic Enhancement,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879100774,Shard Trinket of Summon Monster VII,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879100776,Shard Trinket of Sunburst,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879096106,Shen's Robe,Cloth,items/armor/cloth/items.json,absent,,1,
+1879108874,Shield of Jorasco,Large Shield,items/shields/large-shield.json,absent,,1,
+1879108881,Shield of Jorasco,Large Shield,items/shields/large-shield.json,absent,,1,
+1879214570,Short Broom of Mystery,Club,items/weapons/club/items.json,absent,,1,
+1879215210,Silence of the Tasty Hams,Head,items/clothing/head/items.json,absent,,1,
+1879055510,Silver Flame Deacon's Club,Club,items/weapons/club/items.json,absent,,1,
+1879055508,Silver Flame Deacon's Sword,Longsword,items/weapons/longsword/items.json,absent,,1,
+1879166843,Silver Ingot Arcanum,Quarterstaff,items/weapons/quarterstaff/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879056150,Silver Throwing Dart,Dart,items/weapons/dart/items.json,absent,,1,
+1879194336,Skirmisher's Belt,Waist,items/clothing/waist/items.json,absent,,1,15 | 26
+4026677984,Skirmisher's Belt,Waist,items/clothing/waist/items.json,absent,,1,15 | 26
+1879194328,Skirmisher's Boots,Feet,items/clothing/feet/items.json,absent,,1,19 | 27
+4026677976,Skirmisher's Boots,Feet,items/clothing/feet/items.json,absent,,1,19 | 27
+1879194325,Skirmisher's Bracers,Wrists,items/jewelry/wrists/items.json,absent,,1,15 | 26
+4026677973,Skirmisher's Bracers,Wrists,items/jewelry/wrists/items.json,absent,,1,15 | 26
+1879194339,Skirmisher's Circlet,Head,items/clothing/head/items.json,absent,,1,19 | 27
+4026677987,Skirmisher's Circlet,Head,items/clothing/head/items.json,absent,,1,19 | 27
+1879194330,Skirmisher's Cloak,Cloak,items/clothing/cloak/items.json,absent,,1,19 | 27
+4026677978,Skirmisher's Cloak,Cloak,items/clothing/cloak/items.json,absent,,1,19 | 27
+1879194346,Skirmisher's Gloves,Hands,items/clothing/hands/items.json,absent,,1,15 | 26
+1879194344,Skirmisher's Lenses,Eyes,items/jewelry/eyes/items.json,absent,,1,19 | 27
+4026677992,Skirmisher's Lenses,Eyes,items/jewelry/eyes/items.json,absent,,1,19 | 27
+1879194345,Skirmisher's Locket,Neck,items/jewelry/neck/items.json,absent,,1,15 | 26
+4026677993,Skirmisher's Locket,Neck,items/jewelry/neck/items.json,absent,,1,15 | 26
+1879194322,Skirmisher's Ring,Ring,items/jewelry/ring/items.json,absent,,1,19 | 27
+4026677970,Skirmisher's Ring,Ring,items/jewelry/ring/items.json,absent,,1,19 | 27
+1879186953,Skullduggery Kit,Waist,items/clothing/waist/items.json,absent,,1,14 | 15 | 16 | 25 | 26 | 27
+1879166856,Skullsmasher,Lightmace,items/weapons/lightmace/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166870,Skyvault Shield,Tower Shield,items/shields/tower-shield.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879166871,Skyvault Shield,Tower Shield,items/shields/tower-shield.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879100582,Small Shard Trinket,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879087035,Smoldering Cudgel,Club,items/weapons/club/items.json,absent,,1,
+1879107871,Snowball,Dart,items/weapons/dart/items.json,absent,,1,
+1879120271,Snowy Fuzzlet,Dart,items/weapons/dart/items.json,absent,,1,
+1879120294,Snowy Fuzzlet,Dart,items/weapons/dart/items.json,absent,,1,
+1879095254,Spear Bane,Wrists,items/jewelry/wrists/items.json,absent,,1,
+1879142596,Sphere of Silver Flame Essence,Dart,items/weapons/dart/items.json,absent,,1,
+1879166910,Spiked Boots,Feet,items/clothing/feet/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879096102,Spooky Festival Mask,Head,items/clothing/head/items.json,absent,,1,
+1879166907,Steady Handed Armbands,Wrists,items/jewelry/wrists/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879068531,Steeljaw's Teeth,ThrowingDagger,items/weapons/throwing-dagger/items.json,absent,,1,
+1879186950,Stolen Necklace,Neck,items/jewelry/neck/items.json,absent,,1,14 | 15 | 16 | 25 | 26 | 27
+1879108876,Stormreach Marketplace Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879108883,Stormreach Marketplace Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879095287,Straw Hat,Head,items/clothing/head/items.json,absent,,1,
+1879100559,Sun Flask,Dart,items/weapons/dart/items.json,absent,,1,
+1879076069,Supernal Favor,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879069555,Surefoot Boots,Feet,items/clothing/feet/items.json,absent,,1,
+1879166920,Surefooted Boots,Feet,items/clothing/feet/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879121991,Swabby's Kerchief,Head,items/clothing/head/items.json,absent,,1,
+1879163798,Swailing Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879068533,Sword of Pain,Shortsword,items/weapons/shortsword/items.json,absent,,1,
+1879095290,Tattered Cowl,Head,items/clothing/head/items.json,absent,,1,
+1879207050,Test Dagger,Dagger,items/weapons/dagger/items.json,absent,,1,
+1879088944,Test Quiver,Quiver,items/quiver.json,absent,,1,
+1879079889,Tester Immunity Beads,Neck,items/jewelry/neck/items.json,absent,,1,
+1879122834,The Admiral of Bling,Head,items/clothing/head/items.json,absent,,1,
+1879283855,The Balance Bat,Club,items/weapons/club/items.json,absent,,1,
+1879283856,The Balance Beam,Quarterstaff,items/weapons/quarterstaff/items.json,absent,,1,
+1879196755,The Morning Star,Shuriken,items/weapons/shuriken/items.json,absent,,1,14 | 15 | 16 | 25 | 26 | 27
+1879174403,The Mountain's Fist,DwarvenWarAxe,items/weapons/dwarven-war-axe/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879095252,Thera's Rapier,Rapier,items/weapons/rapier/items.json,absent,,1,1
+1879093959,Thin Quiver,Quiver,items/quiver.json,absent,,1,
+1879103120,Thin Quiver,Quiver,items/quiver.json,absent,,1,
+1879285020,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285021,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285022,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285023,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285024,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285025,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285026,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285027,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285028,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285029,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285031,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285032,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285033,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879285034,Thorn Blade,Scimitar,items/weapons/scimitar/items.json,absent,,1,
+1879196750,Thunder and Lightning,Handwraps,items/weapons/handwraps/items.json,absent,,1,17 | 18 | 19 | 26 | 27 | 28
+1879163797,Thunderstorm Crescent,Sickle,items/weapons/sickle/items.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879120272,Tinfoil Hat,Head,items/clothing/head/items.json,absent,,1,
+1879070521,Torch,Club,items/weapons/club/items.json,absent,,1,
+1879166857,Tortured Livewood Bow,Longbow,items/weapons/longbow/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879069566,Trapblast Goggles,Eyes,items/jewelry/eyes/items.json,absent,,1,
+1879196748,Trapsmith's Crossbow,RepeatingHeavyCrossbow,items/weapons/repeating-heavy-crossbow/items.json,absent,,1,14 | 15 | 16 | 25 | 26 | 27
+1879107267,Traveler's Garb,Cloth,items/armor/cloth/items.json,absent,,1,
+1879165069,Treads of Falling Shadow,Feet,items/clothing/feet/items.json,absent,,1,
+1879068313,Trogskull Helm,Head,items/clothing/head/items.json,absent,,1,
+1879089099,Troubleshooter's Goggles,Eyes,items/jewelry/eyes/items.json,absent,,1,
+1879089092,Troubleshooter's Necklace,Neck,items/jewelry/neck/items.json,absent,,1,
+1879074268,Turbine Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879095266,Valen's Mace,HeavyMace,items/weapons/heavy-mace/items.json,absent,,1,1
+1879103126,Very Large Thin Quiver,Quiver,items/quiver.json,absent,,1,
+1879103127,Very Large Wide Quiver,Quiver,items/quiver.json,absent,,1,
+1879080216,Vial of Blessed Water,Dart,items/weapons/dart/items.json,absent,,1,
+1879069564,Vial of Slumberdust,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879163753,Wall of Wood,Large Shield,items/shields/large-shield.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879163754,Wall of Wood,Large Shield,items/shields/large-shield.json,absent,,1,15 | 16 | 17 | 22 | 23 | 24
+1879108875,Warden of Kundarak Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879108882,Warden of Kundarak Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879108878,Watcher of The Twelve Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879108885,Watcher of The Twelve Shield,Large Shield,items/shields/large-shield.json,absent,,1,
+1879075153,Wayfinder's Scepter,Club,items/weapons/club/items.json,absent,,1,
+1879068526,Wazul's Amulet,Neck,items/jewelry/neck/items.json,absent,,1,
+1879163728,Whisperchain,Light Armor,items/armor/light-armor/items.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879163729,Whisperchain,Light Armor,items/armor/light-armor/items.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879093957,Wide Quiver,Quiver,items/quiver.json,absent,,1,
+1879103121,Wide Quiver,Quiver,items/quiver.json,absent,,1,
+1879166855,Windlasher,Falchion,items/weapons/falchion/items.json,absent,,1,12 | 13 | 14 | 23 | 24 | 25
+1879095247,Winter Boots,Feet,items/clothing/feet/items.json,absent,,1,
+1879069559,Witchdoctor's Mantle,Cloak,items/clothing/cloak/items.json,absent,,1,
+1879165075,Wizard's Ward,Orb,items/shields/orb.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879165077,Wizard's Ward,Orb,items/shields/orb.json,absent,,1,16 | 17 | 18 | 23 | 24 | 25
+1879068521,Zeef's Amulet,Trinket,items/jewelry/trinket/items.json,absent,,1,
+1879068497,Zizoo's Spangle,Trinket,items/jewelry/trinket/items.json,absent,,1,

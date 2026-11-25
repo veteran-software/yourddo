@@ -133,6 +133,17 @@ afterAll(() => {
   vi.unstubAllGlobals()
 })
 
+it('opens and closes the embedded coffee widget from the sidebar', async () => {
+  renderRoute('/', true)
+  const title = 'Buy Me a Beer support form'
+  expect(screen.queryByTitle(title)).toBeNull()
+  const user = userEvent.setup()
+  await user.click(screen.getByRole('button', { name: 'Buy Me a Beer' }))
+  expect(screen.getByTitle(title).getAttribute('src')).toContain('/widget/page/yourddo?')
+  await user.click(screen.getByRole('button', { name: 'Close support widget' }))
+  expect(screen.queryByTitle(title)).toBeNull()
+})
+
 describe('AppRouter', () => {
   it.each([
     ['/gear-planner', 'Gear Planner', 'Gear Planner'],

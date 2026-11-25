@@ -169,6 +169,19 @@ afterAll(() => {
 })
 
 describe('GearPlannerPage', () => {
+  it('links farming list items with unknown drop locations to their Compendium pages', async () => {
+    await renderReadyPage(dataWithItems([item('helm', gearPlannerSlots.head, 'Helm of Fire & Ice')]))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Helm of Fire & Ice' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Farming list' }))
+    const list = within(await screen.findByRole('region', { name: 'To farm' }))
+    expect(list.getByRole('heading', { name: 'DDO Compendium Links' })).toBeTruthy()
+    expect(list.getByRole('link', { name: 'Helm of Fire & Ice' }).getAttribute('href')).toBe(
+      'https://ddocompendium.com/w/Helm%20of%20Fire%20%26%20Ice'
+    )
+    expect(list.queryByText(/source unlisted/i)).toBeNull()
+  })
+
   it('finds enchantments across slots and equips the result in its own slot', async () => {
     await renderReadyPage(
       dataWithItems([
@@ -344,6 +357,8 @@ describe('GearPlannerPage', () => {
     ring.source = {
       ...ring.source,
       material: 'Silver',
+      discrepancyNotes: ['The description lists 15%. The in-game value is 30%.'],
+      catalogId: 123,
       dropLocations: [
         { sourceType: 'CraftOnlyItem', isCraftOnly: true },
         { sourceType: 'Crafting', craftingLocation: 'The Twelve' },
@@ -365,6 +380,10 @@ describe('GearPlannerPage', () => {
     }
     click('Select ' + ring.slot)
     const slotResult = row('Equip Test Ring')
+    expect(slotResult.getByRole('link', { name: 'DDO Compendium' }).getAttribute('href')).toBe(
+      'https://ddocompendium.com/w/Test%20Ring'
+    )
+    expect(slotResult.getByLabelText('Known in-game discrepancies').textContent).toContain('30%')
     expect(slotResult.getByText('Material · Silver (metal)')).toBeTruthy()
     expect(slotResult.getAllByText('Blue')).toHaveLength(2)
     expect(slotResult.getByText('Moon')).toBeTruthy()
@@ -372,7 +391,13 @@ describe('GearPlannerPage', () => {
     expect(slotResult.getByText('Set via Lost Purpose')).toBeTruthy()
     expect(slotResult.queryByText('Equipped')).toBeNull()
     click('Equip Test Ring')
+    expect(
+      within(screen.getByTestId('gear-item-editor')).getByRole('link', { name: 'DDO Compendium' }).getAttribute('href')
+    ).toBe('https://ddocompendium.com/w/Test%20Ring')
     expect(within(screen.getByTestId('gear-item-editor')).getByText('Material · Silver (metal)')).toBeTruthy()
+    expect(
+      within(screen.getByTestId('gear-item-editor')).getByLabelText('Known in-game discrepancies').textContent
+    ).toContain('30%')
     click('Find gear')
     const equipped = () => row('Equip Test Ring in ' + ring.slot)
     expect(equipped().getByText('Equipped')).toBeTruthy()
@@ -851,7 +876,7 @@ describe('GearPlannerPage', () => {
   it('selects a setup focus stat and uses it to find upgrade paths', async () => {
     await renderReadyPage(
       dataWithItems([
-        item('focushelm', 'Head', 'Focus helm', 10, [{ name: 'Wisdom', modifier: 2, bonus: 'Enhancement' }])
+        item('focushelm', 'Head', 'Focus helm', 10, [{ name: 'Jump', modifier: 2, bonus: 'Enhancement' }])
       ])
     )
     const user = userEvent.setup()
@@ -860,14 +885,14 @@ describe('GearPlannerPage', () => {
     }
     await click('Character setup')
     await click('Add focus stat')
-    await user.type(screen.getByRole('textbox', { name: 'Search stats' }), 'wisdom')
-    await click('Wisdom')
-    expect(await screen.findByRole('button', { name: 'Remove Wisdom' })).toBeTruthy()
+    await user.click(screen.getByRole('button', { name: /^Skills/ }))
+    await click('Jump')
+    expect(await screen.findByRole('button', { name: 'Remove Skill: Jump' })).toBeTruthy()
     const saved = parsePersistedGearPlannerState(JSON.parse(localStorage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? '{}'))
-    expect(saved.setups[0].character?.focusStats).toEqual(['Wisdom'])
+    expect(saved.setups[0].character?.focusStats).toEqual(['Skill: Jump'])
     await user.click(screen.getAllByRole('button', { name: 'Upgrade paths' })[0])
     await click('Find paths')
-    expect(await screen.findByText('Wisdom +2')).toBeTruthy()
+    expect(await screen.findByText('Skill: Jump +2')).toBeTruthy()
   })
 
   it('compares same-slot replacements against overlapping bonuses and preserves unique effect losses', () => {
@@ -1415,9 +1440,10 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
     expect(await screen.findByText('Strength')).toBeTruthy()
     expect(screen.getAllByText('+12')).toHaveLength(2)
-    expect(screen.getAllByText(/Doublestrike/).length).toBeGreaterThan(1)
-    expect(screen.getAllByText(/\+14%/).length).toBeGreaterThan(1)
-    expect(screen.getAllByText(/2\[W\]/).length).toBeGreaterThan(1)
+    const enchantments = within(screen.getByRole('dialog'))
+    expect(enchantments.getByText('Doublestrike')).toBeTruthy()
+    expect(enchantments.getAllByText('+14%')).toHaveLength(2)
+    expect(enchantments.getAllByText(/^[+]?2\[W\]$/)).toHaveLength(2)
 
     fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
     fireEvent.click(screen.getByRole('button', { name: 'Select First Finger' }))
@@ -1555,7 +1581,7 @@ describe('GearPlannerPage', () => {
     expect(screen.getByText('Strength +8 (Enhancement)')).toBeTruthy()
 
     fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
-    expect(await screen.findByText(/Ruby of Strength slotted in Socketed Helm · Head \/ Ruby socket/)).toBeTruthy()
+    expect(await screen.findByText('Ruby of Strength slotted in Socketed Helm · Head / Ruby socket')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
     fireEvent.click(screen.getByRole('button', { name: 'Clear Head from equipment' }))
     expect(screen.queryByText('Ruby of Strength')).toBeNull()
@@ -1714,9 +1740,7 @@ describe('GearPlannerPage', () => {
     expect(screen.getByTestId('selected-curse-head').textContent).toContain('Curse of Greater Strength')
     expect(screen.getByTestId('selected-curse-head').textContent).toContain('Ghostly')
     fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
-    expect(
-      await screen.findAllByText(/Deck of Many Curses · Curse of Greater Strength on Head: Cursed Helm/)
-    ).toHaveLength(2)
+    expect(await screen.findAllByText('Curse of Greater Strength on Head')).toHaveLength(2)
     fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
 
     fireEvent.click(screen.getByRole('button', { name: 'Manage curses for Cursed Helm' }))
@@ -1794,7 +1818,7 @@ describe('GearPlannerPage', () => {
     await renderReadyPage(dataWithItems([head], [], [], [], [selected]))
     expect(screen.getByTestId('selected-curse-restored-head').textContent).toContain('Curse of Restoration')
     fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
-    expect(await screen.findByText(/Deck of Many Curses · Curse of Restoration on Head: Restored Helm/)).toBeTruthy()
+    expect(await screen.findByText('Curse of Restoration on Head')).toBeTruthy()
   })
 
   it('rejects a second minor artifact in the browser and keeps the original equipped', async () => {

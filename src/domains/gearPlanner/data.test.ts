@@ -1,5 +1,6 @@
 import { catalogWeaponTypes, changeClasses, characterAllowsItem, classNames, defaultCharacter } from './character'
 import { describe, expect, it, vi } from 'vitest'
+import { adaptItemCategory } from './itemCatalog'
 import {
   InvalidGearPlannerDataError,
   loadGearPlannerData,
@@ -26,6 +27,101 @@ const normalize = (fileName: string, records: readonly GearPlannerSourceItem[]) 
   normalizeGearPlannerSources([{ fileName, records }], [])
 
 describe('Gear Planner data validation', () => {
+  it('joins native effect variants and keeps identically named game items distinct in both ring slots', () => {
+    const ring = {
+      id: 100,
+      name: 'Twin Ring',
+      itemType: 'Ring',
+      type: 'Jewelry',
+      minimumLevel: 29,
+      baseStats: { equipSlots: ['Finger1', 'Finger2'] },
+      iconLayers: [],
+      effects: [{ effectId: 1, variant: 'large' }],
+      augmentSlots: [{ name: 'Yellow Augment Slot' }],
+      equipmentSets: [{ id: 3, name: 'Set A' }]
+    }
+    const variants = [3, 9].map((value, i) => ({
+      variant: i ? 'large' : 'small',
+      displayName: 'Strength',
+      enchantments: [{ displayName: 'Strength', value, bonusType: 'Enhancement' }]
+    }))
+    const categories = adaptItemCategory(
+      [ring, { ...ring, id: 101, effects: [{ effectId: 1, variant: 'small' }] }],
+      [{ id: 1, variants }],
+      new Map(),
+      new Map()
+    )
+    const data = normalizeGearPlannerSources(categories, [])
+    expect(new Set(data.items.map(({ id }) => id)).size).toBe(4)
+    expect(data.itemsBySlot['Second Finger'].map(({ source }) => source.enchantments?.[0].modifier)).toEqual([9, 3])
+    expect(data.itemsBySlot['First Finger'][0].source).toMatchObject({
+      augments: [{ augmentType: 'Yellow' }],
+      setBonus: [{ name: 'Set A' }]
+    })
+    expect(() => adaptItemCategory([ring], [], new Map(), new Map())).toThrow('Missing effect 1/large')
+  })
+  it('displays cooldown, regeneration interval and damage reductions from the remaining fraction', () => {
+    const helm = {
+      id: 1,
+      name: 'Test Helm',
+      itemType: 'Head',
+      baseStats: { equipSlots: ['Head'] },
+      iconLayers: [],
+      effects: [{ effectId: 2 }]
+    }
+    const enchantments = [
+      { name: 'ActionAgent_CooldownModArray', displayName: 'Skill Cooldown: Bluff', unit: 'multiplier', value: 0.85 },
+      {
+        name: 'Character_RegenerationIntervalMultiplier_SmiteEvil',
+        displayName: 'Smite Evil: Regeneration Rate',
+        unit: 'multiplier',
+        value: 0.9
+      },
+      { displayName: 'Other multiplier', unit: 'multiplier', value: 0.856 },
+      { displayName: 'Elemental Absorption: Fire', unit: 'multiplier', value: 0.72249997 },
+      { displayName: 'Elemental Absorption: Cold', unit: 'multiplier', value: 0.8125 },
+      { displayName: 'Elemental Absorption: Acid', unit: 'percent', value: 12.5 },
+      { name: 'Effect_SpellCostMultiplier', displayName: 'Spell Point Cost', value: 0.1 },
+      { name: 'Combat_MissileChanceToReturn', displayName: 'Returning Chance', value: 1 },
+      { name: 'BaseWeaponDamageDiceModifier', displayName: 'Weapon Damage Dice', value: 0.5 }
+    ]
+    const [category] = adaptItemCategory([helm], [{ id: 2, enchantments }], new Map(), new Map())
+    expect(category.records[0].enchantments?.map((stat) => stat.modifier)).toEqual([
+      '15%',
+      '10%',
+      '86%',
+      '28%',
+      '19%',
+      '12%',
+      '10%',
+      '100%',
+      0.5
+    ])
+  })
+
+  it('reads coefficient spell power in points and preserves equipment percentage penalties', () => {
+    const item = {
+      id: 1,
+      name: 'Test Helm',
+      itemType: 'Head',
+      baseStats: { equipSlots: ['Head'] },
+      iconLayers: [],
+      effects: [{ effectId: 2 }]
+    }
+    const enchantments = [
+      { name: 'Spell_DamageMod_FirePower', displayName: 'Spell Power: Fire', unit: 'coefficient', value: 1.395 },
+      {
+        name: 'SpellPoints@Agent::m_fEffectScalar',
+        displayName: 'Maximum Spell Points',
+        unit: 'coefficient',
+        value: 0.05,
+        operation: 'Subtract'
+      }
+    ]
+    const [category] = adaptItemCategory([item], [{ id: 2, enchantments }], new Map(), new Map())
+    expect(category.records[0].enchantments?.map((stat) => stat.modifier)).toEqual([140, '-5%'])
+  })
+
   it('distinguishes item-set percentage ratios from flat stat and weapon-dice modifiers', () => {
     const enhancements = [
       { name: 'Spell Critical Chance: Electric', modifier: 0.05 },
@@ -238,14 +334,51 @@ describe('Gear Planner source normalization', () => {
 
 describe('Gear Planner production CDN validation', () => {
   it.runIf(import.meta.env.VITE_GEAR_PLANNER_CDN === '1')('loads and validates current CDN data', async () => {
+    const requested: string[] = []
     const nativeFetch = globalThis.fetch
     vi.stubGlobal('fetch', (input: string | URL | Request, init?: RequestInit) => {
       const requestedUrl = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
       const url = requestedUrl.replace('/data-cdn/', 'https://cdn.yourddo.com/')
+      requested.push(url)
       return nativeFetch(url, init)
     })
     try {
       const data = await loadGearPlannerData()
+      expect(requested.filter((url) => /\/(?:gear-planner|master)\/|\/manual\/deckOfManyCurses/.test(url))).toEqual([])
+      for (const path of [
+        'items/manifest.json',
+        'items/augments/standard.json',
+        'items/augments/filigrees.json',
+        'items/augments/sets.json',
+        'deck-of-many-curses/curses.json'
+      ])
+        expect(requested.some((url) => url.endsWith('/' + path))).toBe(true)
+      expect(data.curses.find((c) => c.name === 'Curse of Major Spellwork')?.enchantments).toContainEqual(
+        expect.objectContaining({ name: 'Universal Spell Power', modifier: 10 })
+      )
+      for (const [setName, pieces, name, modifier] of [
+        ['Celerity', 2, 'Doublestrike', '2%'],
+        ['The Enlightened Step', 5, 'Doubleshot', '5%'],
+        ['Dreadbringer', 5, 'Fortification Bypass', '20%'],
+        ['Paragon Guard', 3, 'Armor Class', '15%'],
+        ['Dread Stalker', 3, 'Melee Power', 15],
+        ['Dread Stalker', 3, 'Damage vs. Helpless', '15%']
+      ] as const) {
+        const set = data.filigreeSetDefinitionByName.get(setName) ?? data.standardSets?.get(setName)
+        expect(set?.thresholds.find((t) => t.threshold === pieces)?.effects, setName).toContainEqual(
+          expect.objectContaining({ name, modifier })
+        )
+      }
+      expect(data.curses.find((c) => c.name === "Curse of Weapon's Touch")?.enchantments).toContainEqual(
+        expect.objectContaining({ name: 'Doublestrike', modifier: '2%' })
+      )
+      const truthfulBlow = data.augments.find((augment) => augment.name === 'Set Augment: Truthful Blow')
+      expect(truthfulBlow?.discrepancyNotes).toEqual([
+        'Truthful Blow (3-piece): Fortification Bypass. The description lists 15%. The in-game value is 30%.'
+      ])
+      const card = data.items.find((item) => item.source.name === 'Legendary Library Card')
+      const cooldowns = card?.source.enchantments?.filter((effect) => effect.name.startsWith('Skill Cooldown:'))
+      expect(cooldowns?.map((effect) => effect.modifier)).toEqual(Array(6).fill('15%'))
       const weaponTypes = catalogWeaponTypes(data)
       for (const className of classNames) {
         const character = changeClasses(defaultCharacter(), [className], weaponTypes)
@@ -302,6 +435,10 @@ describe('Gear Planner production CDN validation', () => {
         })
       )
       expect(data.items).toHaveLength(data.normalizedItemCount)
+      expect(new Set(data.items.map(({ id }) => id)).size).toBe(data.items.length)
+      expect(
+        data.sourceDatasets.every(({ records }) => records.every(({ catalogId }) => Number.isSafeInteger(catalogId)))
+      ).toBe(true)
       expect(data.filigrees.length).toBeGreaterThan(0)
       expect(new Set(data.filigrees.map(({ id }) => id)).size).toBe(data.filigrees.length)
       expect(data.filigreeSetDefinitions.length).toBeGreaterThan(0)

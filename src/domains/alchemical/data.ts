@@ -88,7 +88,7 @@ export interface AlchemicalCost extends Named {
 }
 export interface AlchemicalEffect extends Named {
   description: string
-  stats: { stat: string; bonusType: string; value: number; formattedValue: string }[]
+  stats: { stat: string; bonusType: string; value: number; formattedValue: string; calculationValue?: number }[]
   augmentTypes: string[]
 }
 export interface AlchemicalRecipe extends Named {
@@ -204,13 +204,19 @@ function effectFor(effect: RawEffect): AlchemicalEffect | undefined {
     if (entry.operation === 'Set' && name !== 'Combat_MissileChanceToReturn') return []
     let value = entry.value
     let suffix = ''
-    if (entry.unit === 'coefficient') value = Math.trunc(Number((100 * value).toFixed(5)))
+    let precise: number | undefined
+    if (entry.unit === 'coefficient') {
+      precise = 100 * value
+      value = Math.trunc(Number(precise.toFixed(5)))
+    }
     if (entry.unit === 'percent') {
+      precise = value
       value = Math.trunc(value)
       suffix = '%'
     }
     if (entry.unit === 'multiplier' && entry.operation === 'Multiply') {
-      value = Number(((1 - value) * 100).toFixed(5))
+      precise = (1 - value) * 100
+      value = Number(precise.toFixed(5))
       suffix = '%'
     }
     if (name === 'Spell_SpellFailureChance' || name === 'Combat_MissileChanceToReturn') {
@@ -223,6 +229,9 @@ function effectFor(effect: RawEffect): AlchemicalEffect | undefined {
       {
         stat: stat.replace(/^(.+) (Spell Power|Spell Critical Chance|Spell DC)$/u, '$2: $1'),
         value,
+        ...(precise !== undefined && {
+          calculationValue: entry.operation === 'Subtract' ? -precise : precise
+        }),
         formattedValue: String(value) + suffix,
         bonusType: entry.bonusType
       }

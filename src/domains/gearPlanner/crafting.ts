@@ -1,3 +1,4 @@
+import { percentModifier } from './effectAmounts'
 import { alchemicalCraftGroups, applyAlchemicalRecipe } from './alchemicalCrafting'
 import type { AlchemicalData } from '../alchemical/data'
 import type { SlaveLordsData } from '../slaveLords/data'
@@ -151,7 +152,7 @@ export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): 
         label: r.name,
         effects: r.grants.map((g) => ({
           name: g.stat,
-          modifier: 'unit' in g && g.unit === 'percent' ? String(g.modifier) + '%' : g.modifier,
+          ...('unit' in g && g.unit === 'percent' ? percentModifier(g.modifier) : { modifier: g.modifier }),
           bonus: 'Reaper'
         }))
       }))

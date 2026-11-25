@@ -1,3 +1,4 @@
+import { formatAmount } from './effectAmounts'
 import { compareFocus, focusChanges, type FocusChange } from './focusStats'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types'
 import { characterAllowsItem, ownerSlots, type GearOwner } from './character'
@@ -69,7 +70,7 @@ export function* searchUpgradePaths(
         return
     }
     const totals = (current?.text ?? '0' + (value.unit ?? '')) + ' → ' + value.text
-    const delta = '+' + gain.toLocaleString('en-US', { maximumFractionDigits: 6 }) + (value.unit ?? '')
+    const delta = formatAmount(gain, value.unit, true, value.rounding ?? current?.rounding)
     return { gain, delta, totals }
   }
   function evaluate(next: GearPlannerSetup, slot: GearPlannerSlot, name: string, change: string) {

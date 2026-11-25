@@ -6,6 +6,7 @@ import { createEssenceCraftingTestPayload } from '../essenceCrafting/test-fixtur
 import { gearPlannerAugmentIdentity, isCompatibleGearPlannerAugment } from './augments.ts'
 import { parseGearPlannerCurseDataset, gearPlannerCurseIdentity } from './curses.ts'
 import { loadGearPlannerData } from './data.ts'
+import { gearPlannerItemId } from './normalize'
 import { collectEquippedEffects } from './effects.ts'
 import { getEssenceCraftedGearPlannerItems } from './essenceCrafting.ts'
 import { loadoutSnapshot, comparisonRows } from './loadoutComparison'
@@ -142,6 +143,30 @@ describe('Gear Planner setup serialization', () => {
     expect(restored.state.setups[0].slottedAugments['first-ring']?.[0]).toBe(configured.ruby)
     expect(restored.state.setups[1].equipment['Second Finger']).toBe(configured.data.items[1])
     expect(restored.state.setups[1].equipment['Off Hand']).toBe(configured.data.items[3])
+  })
+
+  it('migrates a pre-catalog item and its socket together and preserves the old browser snapshot', () => {
+    const ring = item('', 'First Finger', 'Ruby Ring', 'Red')
+    ring.source.minLevel = ring.minimumLevel
+    ring.id = gearPlannerItemId(ring.sourceFile, ring.source, ring.slot)
+    const updated = { ...ring, id: 'item:123:First Finger', source: { ...ring.source, catalogId: 123 } }
+    const ruby = augment()
+    const equipped = equipGearPlannerSetupItem(createDefaultGearPlannerState(), ring.slot, ring)
+    const saved = JSON.stringify(serializeGearPlannerState(setGearPlannerSetupAugment(equipped, ring.id, 0, ruby)))
+    const oldKey = 'yourddo:gear-planner:v2'
+    const local = storage({ [oldKey]: saved })
+    const nativeRuby = { ...ruby, source: { id: 101 } }
+    const restored = loadGearPlannerState(data([updated], [nativeRuby]), local)
+    expect(restored.issues).toEqual([])
+    expect(restored.state.setups[0].equipment[ring.slot]).toBe(updated)
+    expect(restored.state.setups[0].slottedAugments[updated.id]?.[0]).toBe(nativeRuby)
+    expect(saveGearPlannerState(restored.state, local)).toBe(true)
+    expect(local.getItem(oldKey)).toBe(saved)
+    expect(local.getItem(GEAR_PLANNER_STORAGE_KEY)).toContain(updated.id)
+    const ambiguous = { ...updated, id: 'item:456:First Finger', source: { ...updated.source, catalogId: 456 } }
+    const unresolved = importGearPlannerState(saved, data([updated, ambiguous], [ruby]))
+    expect(unresolved.state.setups[0].equipment[ring.slot]).toBeNull()
+    expect(unresolved.issues.map(({ kind }) => kind)).toContain('missing-item')
   })
 
   it('restores the main-hand weapon and reports an incompatible saved off-hand item', () => {
@@ -780,7 +805,7 @@ describe('Gear Planner production persistence', () => {
 
       const sets = currentData.standardSets ?? standardGearPlannerSetDefinitionByName
       const activeSet = [...sets.values()].find((definition) => {
-        if (definition.name !== 'Echoes of the Walking Ancestors') return false
+        if (definition.name !== 'Echoes of the Waking Ancestors') return false
         const matchingItems = characterItems.filter((plannerItem) =>
           plannerItem.source.setBonus?.some(({ name }) => name === definition.name)
         )
@@ -870,11 +895,9 @@ describe('Gear Planner production persistence', () => {
         }
       })()
       const characterItems = currentData.items.filter(isCharacterItem)
-      const sentient = characterItems.find(
-        (plannerItem) => plannerItem.source.type === 'Dagger' && plannerItem.minimumLevel >= 20
-      )
-      const minorArtifact = characterItems.find(
-        (plannerItem) => (plannerItem.source.artifactType?.trim().length ?? 0) > 0
+      const [sentient, secondHost] = characterItems.filter(
+        (candidate) =>
+          candidate.slot === 'Main Hand' && candidate.source.acceptsSentience === true && candidate.minimumLevel >= 20
       )
       const filigreeSet = currentData.filigreeSetDefinitions.find((definition) => {
         const uniqueNames = new Set(
@@ -890,9 +913,9 @@ describe('Gear Planner production persistence', () => {
         return uniqueNames.size >= definition.thresholds[0].threshold
       })
       expect(sentient).toBeDefined()
-      expect(minorArtifact).toBeDefined()
+      expect(secondHost).toBeDefined()
       expect(filigreeSet).toBeDefined()
-      if (!sentient || !minorArtifact || !filigreeSet) return
+      if (!sentient || !secondHost || !filigreeSet) return
 
       const selectedFiligrees = [
         ...new Map(
@@ -927,17 +950,17 @@ describe('Gear Planner production persistence', () => {
         ).filter(({ category }) => category === 'filigree').length
       ).toBeGreaterThan(0)
       state = addGearPlannerSetup(state, 'production-filigree-b', 'Production Filigree B')
-      state = equipGearPlannerSetupItem(state, minorArtifact.slot, minorArtifact)
+      state = equipGearPlannerSetupItem(state, secondHost.slot, secondHost)
       const restored = restorePersistedGearPlannerState(serializeGearPlannerState(state), currentData)
 
       expect(restored.issues).toEqual([])
       expect(restored.state.setups[0].slottedFiligrees[sentient.id]).toBeDefined()
-      expect(restored.state.setups[1].equipment[minorArtifact.slot]).toBe(minorArtifact)
+      expect(restored.state.setups[1].equipment[secondHost.slot]).toBe(secondHost)
       expect(restored.state.setups[1].slottedFiligrees).toEqual({})
       console.info(
         JSON.stringify({
           sentient: sentient.source.name,
-          minorArtifact: minorArtifact.source.name,
+          secondHost: secondHost.source.name,
           filigrees: selectedFiligrees.map(({ name }) => name),
           set: filigreeSet.name,
           threshold: filigreeSet.thresholds[0].threshold

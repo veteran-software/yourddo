@@ -1,11 +1,11 @@
 import { CraftingSession } from '../shared/layout/craftingSession'
-import { IconBrandDiscord, IconBrandGithub } from '@tabler/icons-react'
+import { IconBrandDiscord, IconBrandGithub, IconBeer } from '@tabler/icons-react'
 import RouteSeo from '../shared/seo/RouteSeo'
 import { useEffect, useState } from 'react'
 import { recordVisit } from '../domains/home/shelves'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { TroveImport, TroveProvider } from '../domains/gearPlanner/components/TroveInventory'
-import { ActionIcon, AppShell, Burger, Group, Image, ScrollArea, Text } from '@mantine/core'
+import { ActionIcon, AppShell, Burger, Drawer, Group, Image, ScrollArea, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import SidebarNavigation from '../shared/navigation/SidebarNavigation'
 import ServerStatus, { ServerStatusShortcut } from '../shared/serverStatus/ServerStatus'
@@ -21,6 +21,8 @@ const AppLayout = ({ develop }: { develop: boolean }) => {
   const [craftingSession] = useState(() => ({}))
   const [mobileOpened, mobile] = useDisclosure(false)
   const [desktopOpened, desktop] = useDisclosure(true)
+
+  const [coffeeOpened, coffee] = useDisclosure(false)
 
   const location = useLocation()
   const { pathname } = location
@@ -126,7 +128,7 @@ const AppLayout = ({ develop }: { develop: boolean }) => {
               aria-label='YourDDO on GitHub'
               title='GitHub'
             >
-              <IconBrandGithub size={18} />
+              <IconBrandGithub size={20} />
             </ActionIcon>
             <ActionIcon
               component='a'
@@ -135,11 +137,42 @@ const AppLayout = ({ develop }: { develop: boolean }) => {
               aria-label='YourDDO Discord community'
               title='Discord'
             >
-              <IconBrandDiscord size={18} />
+              <IconBrandDiscord size={20} />
+            </ActionIcon>
+            <ActionIcon
+              variant='subtle'
+              onClick={coffee.open}
+              aria-haspopup='dialog'
+              aria-label='Buy Me a Beer'
+              title='Buy Me a Beer'
+            >
+              <IconBeer size={20} aria-hidden />
             </ActionIcon>
           </Group>
           <ServerStatus {...status} />
         </AppShell.Navbar>
+
+        <Drawer
+          opened={coffeeOpened}
+          onClose={coffee.close}
+          position='right'
+          size={420}
+          title='Buy Me a Beer'
+          closeButtonProps={{ 'aria-label': 'Close support widget' }}
+          styles={{
+            content: { display: 'flex', flexDirection: 'column' },
+            body: { flex: 1, display: 'flex', padding: 0 }
+          }}
+        >
+          {coffeeOpened && (
+            <iframe
+              title='Buy Me a Beer support form'
+              src='https://buymeacoffee.com/widget/page/yourddo?description=Buy%20Me%20a%20Beer&color=%23B38B36'
+              allow='publickey-credentials-get *; payment *'
+              style={{ width: '100%', border: 0 }}
+            />
+          )}
+        </Drawer>
 
         <AppShell.Main>
           <CraftingSession.Provider value={craftingSession}>

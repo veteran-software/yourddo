@@ -28,15 +28,19 @@ const optionalNumericLevel = (value: string | number | undefined): number | unde
   return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined
 }
 
-// Source file, source page identity, level, and planner slot are stable across reloads.
+// The slot distinguishes two equipped copies of the same game record.
 export const gearPlannerItemId = (sourceFile: string, item: GearPlannerSourceItem, slot: GearPlannerSlot): string =>
-  [slot, sourceFile, item.pageTitle ?? item.name, item.name, numericLevel(item.minLevel)]
-    .map(encodeURIComponent)
-    .join('|')
+  item.catalogId !== undefined
+    ? `item:${String(item.catalogId)}:${slot}`
+    : [slot, sourceFile, item.pageTitle ?? item.name, item.name, numericLevel(item.minLevel)]
+        .map(encodeURIComponent)
+        .join('|')
 
 // Production display names are not unique. Page title is the stable corpus identity.
 export const gearPlannerFiligreeId = (item: GearPlannerSourceItem): string =>
-  [item.pageTitle ?? '', item.name, item.type ?? '', item.grouping ?? ''].map(encodeURIComponent).join('|')
+  item.catalogId !== undefined
+    ? 'filigree:' + String(item.catalogId)
+    : [item.pageTitle ?? '', item.name, item.type ?? '', item.grouping ?? ''].map(encodeURIComponent).join('|')
 
 export const normalizeGearPlannerFiligrees = (
   records: readonly GearPlannerSourceItem[],

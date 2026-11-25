@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import type { GearPlannerData } from '../gearPlanner.types'
 import type { GearOwner } from '../character'
 import type { GearPlannerEffectSource } from '../effects'
+import { skillObjective } from '../statObjectives'
 import StatObjectivePicker from './StatObjectivePicker'
 import { useStatCatalog } from './useStatCatalog'
 
@@ -22,7 +23,10 @@ export default function FocusStatEditor({
 }>) {
   const { stats, equipped } = useStatCatalog(data, owner, effects)
   const available = useMemo(
-    () => new Map([...stats].filter(([name]) => !names.some((n) => n.toLowerCase() === name.toLowerCase()))),
+    () =>
+      new Map(
+        [...stats].filter(([name]) => !names.some((n) => skillObjective(n).toLowerCase() === name.toLowerCase()))
+      ),
     [stats, names]
   )
   function move(index: number, direction: number) {

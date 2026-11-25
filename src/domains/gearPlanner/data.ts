@@ -1,3 +1,4 @@
+import { displayPercentModifier, percentModifier } from './effectAmounts'
 import { loadOptionalAlchemicalData } from '../alchemical/loadAlchemicalData'
 import { loadOptionalSlaveLordsData } from '../slaveLords/loadSlaveLordsData'
 import { slaveLordsSetDefinitions } from './slaveLordsCrafting'
@@ -5,7 +6,6 @@ import { craftItemKey, type GearCraftingData } from './crafting.ts'
 import { standardGearPlannerSetDefinitionByName } from './standardSetDefinitions.ts'
 import { loadDatasetFile, loadManualPayload } from '../../shared/data/loadDataset.ts'
 import { nearlyFinishedPayloadName, parseNearlyFinishedDataset } from '../nearlyFinished/nearlyFinished.logic.ts'
-import { parseGearPlannerCurseDataset } from './curses.ts'
 import type {
   GearPlannerAugment,
   GearPlannerAugmentSlot,
@@ -13,12 +13,11 @@ import type {
   GearPlannerEffect,
   GearPlannerFiligreeSetDefinition,
   GearPlannerSetBonus,
-  GearPlannerSourceDataset,
   GearPlannerSourceItem
 } from './gearPlanner.types.ts'
 import { normalizeGearPlannerFiligrees, normalizeGearPlannerSources } from './normalize.ts'
 import { createGearPlannerReforgingData } from './reforging.ts'
-import { gearPlannerItemSources } from './sourceMapping.ts'
+import { loadCatalogCurses, loadItemCatalog, loadSocketCatalog } from './itemCatalog'
 
 const namedUpgradeFiles = [
   {
@@ -40,11 +39,6 @@ const namedUpgradeFiles = [
     path: 'zhentarim-attuned/upgrades.json'
   }
 ] as const
-
-const datasetRoot = 'gear-planner'
-const augmentPath = `${datasetRoot}/augment.json`
-const filigreePath = `${datasetRoot}/filigrees.json`
-const filigreeSetPath = `${datasetRoot}/filigreeSets.json`
 
 export class InvalidGearPlannerDataError extends Error {
   constructor(message: string) {
@@ -96,7 +90,8 @@ const parseEffect = (value: unknown, path: string): GearPlannerEffect => {
   ) {
     invalid(`${path}.stats`, 'expected string or number array')
   }
-  return { ...record, name: record.name as string }
+  const display = typeof record.modifier === 'string' ? displayPercentModifier(record.modifier) : {}
+  return { ...record, ...display, name: record.name as string }
 }
 
 const parseAugmentSlot = (value: unknown, path: string): GearPlannerAugmentSlot => {
@@ -207,10 +202,9 @@ const parseFiligreeSetEffect = (value: unknown, path: string): GearPlannerEffect
     if (record[key] !== undefined && !isStringOrNumber(record[key]))
       invalid(`${path}.${key}`, 'expected string or number')
   }
-  return { ...record, name }
+  const display = typeof record.modifier === 'string' ? displayPercentModifier(record.modifier) : {}
+  return { ...record, ...display, name }
 }
-
-const itemSetPercent = new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 10 })
 
 export const parseGearPlannerFiligreeSetDataset = (
   value: unknown,
@@ -243,7 +237,7 @@ export const parseGearPlannerFiligreeSetDataset = (
             const effect = parseFiligreeSetEffect(rawEffect, `${bonusPath}.enhancements[${effectIndex.toString()}]`)
             // The item-set feed encodes percentages as numeric ratios and flat modifiers as strings.
             return sourceName === 'itemSets.enchantments' && typeof effect.modifier === 'number'
-              ? { ...effect, modifier: itemSetPercent.format(effect.modifier) }
+              ? { ...effect, ...percentModifier(effect.modifier * 100) }
               : effect
           })
         }
@@ -278,7 +272,18 @@ const loadCraftingData = async (): Promise<GearCraftingData> => {
       items: new Map(
         arrayAt(tables[index], file.path).map((entry) => {
           const record = recordAt(entry, file.path)
-          return [craftItemKey(named(record, file.path)), effects(record, 'effectsAdded', file.path)]
+          return [
+            craftItemKey(named(record, file.path)),
+            effects(record, 'effectsAdded', file.path).map((effect) => {
+              // Named upgrade tables encode threat modifiers as unitless ratios.
+              if (
+                /^(?:Melee|Ranged|Spell) Threat$/.test(effect.name) &&
+                /^[+-]?(?:\d+|\d*\.\d+)$/.test(String(effect.modifier))
+              )
+                return { ...effect, ...percentModifier(Number(effect.modifier) * 100) }
+              return effect
+            })
+          ]
         })
       )
     }))
@@ -309,63 +314,51 @@ export function parseGearPlannerSetIndex(value: unknown) {
 }
 
 export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types.ts').GearPlannerData> => {
-  const fileNames = Object.keys(gearPlannerItemSources)
-  const [
-    crafting,
-    slaveLords,
-    alchemical,
-    rawCurses,
-    rawSets,
-    rawReforging,
-    rawAugments,
-    rawFiligrees,
-    rawFiligreeSets,
-    rawSetIndex,
-    ...rawItems
-  ] = await Promise.all([
+  const [crafting, slaveLords, alchemical, curses, rawSets, rawReforging, sockets, sourceDatasets] = await Promise.all([
     loadCraftingData(),
     loadOptionalSlaveLordsData(),
     loadOptionalAlchemicalData(),
-    loadManualPayload<unknown>('deckOfManyCurses'),
+    loadCatalogCurses(),
     loadManualPayload<unknown>('itemSets.enchantments'),
     loadManualPayload<unknown>(nearlyFinishedPayloadName),
-    loadDatasetFile<unknown>(augmentPath),
-    loadDatasetFile<unknown>(filigreePath),
-    loadDatasetFile<unknown>(filigreeSetPath),
-    loadDatasetFile<unknown>(`${datasetRoot}/setBonusIndex.json`),
-    ...fileNames.map((fileName) => loadDatasetFile<unknown>(`${datasetRoot}/${fileName}`))
+    loadSocketCatalog(),
+    loadItemCatalog()
   ])
-  const sourceDatasets: GearPlannerSourceDataset[] = fileNames.map((fileName, index) => ({
-    fileName,
-    records: parseGearPlannerItemDataset(rawItems[index], fileName)
-  }))
   const reforgingEntries = parseNearlyFinishedDataset(rawReforging).reforgingStation
   const normalized = normalizeGearPlannerSources(
     sourceDatasets,
-    parseGearPlannerAugmentDataset(rawAugments),
+    sockets.augments(sourceDatasets),
     new Set(reforgingEntries.map(({ item }) => item)),
     slaveLords,
     alchemical
   )
-  const filigreeSetDefinitions = parseGearPlannerFiligreeSetDataset(rawFiligreeSets)
+  const filigreeSetDefinitions = sockets.filigreeDefinitions
   const filigreeSetDefinitionByName = new Map(filigreeSetDefinitions.map((definition) => [definition.name, definition]))
-  const setIndex = parseGearPlannerSetIndex(rawSetIndex)
+  const standardSets = new Map([
+    ...standardGearPlannerSetDefinitionByName,
+    ...parseGearPlannerFiligreeSetDataset(rawSets, 'itemSets.enchantments').map((set) => [set.name, set] as const),
+    ...sockets.equipmentDefinitions.map((set) => [set.name, set] as const),
+    ...(slaveLords ? slaveLordsSetDefinitions(slaveLords).map((set) => [set.name, set] as const) : [])
+  ])
+  // The game labels these heroic sets without a tier; their bonus definitions include it.
+  const definitionNames = new Map([
+    ['Echoes of the Waking Ancestors', 'Echoes of the Walking Ancestors'],
+    ['Brilliant Crescents', 'Brilliant Cresents'],
+    ...['Curse Necromancer', 'Heavy Warfare', 'Renegade Champion', 'Seasons of Change', 'Wayward Warrior'].map(
+      (name): [string, string] => [name, name + ' (Heroic)']
+    )
+  ])
+  for (const [name, definitionName] of definitionNames) {
+    const definition = standardSets.get(definitionName)
+    if (definition && !standardSets.has(name)) standardSets.set(name, { ...definition, name })
+  }
   return {
     ...normalized,
-    setIndex,
     crafting: { ...crafting, slaveLords, alchemical },
-    standardSets: new Map([
-      ...standardGearPlannerSetDefinitionByName,
-      ...parseGearPlannerFiligreeSetDataset(rawSets, 'itemSets.enchantments').map((set) => [set.name, set] as const),
-      ...(slaveLords ? slaveLordsSetDefinitions(slaveLords).map((set) => [set.name, set] as const) : [])
-    ]),
+    standardSets,
     reforging: createGearPlannerReforgingData(reforgingEntries, sourceDatasets),
-    curses: parseGearPlannerCurseDataset(rawCurses),
-    filigrees: normalizeGearPlannerFiligrees(
-      parseGearPlannerItemDataset(rawFiligrees, 'filigrees.json'),
-      filigreeSetDefinitionByName,
-      setIndex
-    ),
+    curses,
+    filigrees: normalizeGearPlannerFiligrees(sockets.filigrees, filigreeSetDefinitionByName),
     filigreeSetDefinitions,
     filigreeSetDefinitionByName
   }

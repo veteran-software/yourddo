@@ -1,3 +1,4 @@
+import { statValue } from '../loadoutComparison'
 import layout from '../../../shared/layout/PlannerWorkspace.module.css'
 import EquippedEffect from '../components/EquippedEffect'
 import {
@@ -58,7 +59,7 @@ const sourceProvenance = (source: GearPlannerEffectSource): string => {
     return `Reforging · ${reforgingStageLabel(source)}: ${source.reforgingChoiceLabel ?? 'Selected choice'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
   }
   if (source.category === 'curse') {
-    return `Deck of Many Curses · ${source.curseName ?? 'Curse'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
+    return `${source.curseName ?? 'Curse'} on ${source.slot ?? 'Equipment'}`
   }
   if (source.category === 'essence') {
     return `Essence Crafting · ${source.essenceAffixPosition ?? 'Affix'}: ${source.essenceEnhancementName ?? 'Enhancement'} on ${source.slot ?? 'Equipment'}: ${source.itemName ?? 'Equipped item'}`
@@ -68,9 +69,6 @@ const sourceProvenance = (source: GearPlannerEffectSource): string => {
   }
   return `${source.itemName ?? 'Equipped item'} · ${source.slot ?? 'Equipment'}`
 }
-
-const groupValue = (group: GearPlannerEffectSummary['groups'][number]) =>
-  group.effectiveValue === 0 ? group.effectiveDisplay || 'Active' : `+${String(group.effectiveValue)}`
 
 export const EquippedEnchantmentList = ({
   sources,
@@ -183,7 +181,7 @@ const EnchantmentsTool = ({
           Enchantments
         </Title>
         <Text c='dimmed' size='xs'>
-          Legacy-style display aggregate, not a character stat calculation.
+          Totals summarize the effects in this loadout.
         </Text>
       </Stack>
       {summary.map((effect) => {
@@ -202,7 +200,7 @@ const EnchantmentsTool = ({
                   {effect.name}
                 </Text>
                 <Group gap={4} wrap='nowrap'>
-                  {effect.isNumeric ? <Badge variant='light'>+{String(effect.total)}</Badge> : null}
+                  {effect.isNumeric ? <Badge variant='light'>{statValue(effect, true).text}</Badge> : null}
                   {choices && (
                     <ActionIcon
                       variant='subtle'
@@ -241,7 +239,9 @@ const EnchantmentsTool = ({
                       </Text>
                     )}
                     <Text size='xs' fw={600}>
-                      {groupValue(group)}
+                      {group.effectiveValue === 0
+                        ? group.effectiveDisplay || 'Active'
+                        : statValue({ ...effect, total: group.effectiveValue, groups: [group] }, true).text}
                     </Text>
                   </Group>
                   <Stack gap={2}>
@@ -254,7 +254,7 @@ const EnchantmentsTool = ({
                         td={entry.isEffective ? undefined : 'line-through'}
                         style={{ overflowWrap: 'anywhere' }}
                       >
-                        {sourceProvenance(entry)}: {sourceLabel(entry)}
+                        {sourceProvenance(entry)}
                       </Text>
                     ))}
                   </Stack>

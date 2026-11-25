@@ -114,10 +114,15 @@ const crossbowSources = new Set([
   'repeatingLightCrossbow.json'
 ])
 
-export const occupiesBothHands = (item: GearPlannerItem) => twoHandedSources.has(item.sourceFile)
+export const occupiesBothHands = (item: GearPlannerItem) =>
+  item.source.blockedSlots
+    ? item.source.blockedSlots.includes('Weapon2') && item.source.blockedSlots.includes('Runearm')
+    : twoHandedSources.has(item.sourceFile)
 
 export function allowsOffHand(main: GearPlannerItem | null, off: GearPlannerItem): boolean {
   if (!main) return true
+  if (main.source.blockedSlots)
+    return !main.source.blockedSlots.includes(off.source.type === 'Rune Arm' ? 'Runearm' : 'Weapon2')
   if (crossbowSources.has(main.sourceFile)) return off.sourceFile === 'runeArm.json' || off.source.type === 'Rune Arm'
   return !occupiesBothHands(main)
 }

@@ -85,7 +85,9 @@ export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetu
           {sections.map(({ status, title, icon: Icon }) => {
             const visible = tasks.filter((t) => t.status === status && (view === 'All items' || !done(t)))
             if (!visible.length) return null
-            const groups = Map.groupBy(visible, (t) => t.group)
+            const groups = Map.groupBy(visible, (t) =>
+              status === 'Farm' && !t.sources.length ? 'DDO Compendium Links' : t.group
+            )
             return (
               <section key={status} aria-label={title}>
                 <h4 className={css.section}>
@@ -119,7 +121,17 @@ export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetu
                               />
                             )}
                             <div>
-                              <strong>{t.name}</strong>
+                              {status === 'Farm' && !t.sources.length ? (
+                                <Anchor
+                                  href={'https://ddocompendium.com/w/' + encodeURIComponent(t.name)}
+                                  target='_blank'
+                                  rel='noreferrer'
+                                >
+                                  {t.name}
+                                </Anchor>
+                              ) : (
+                                <strong>{t.name}</strong>
+                              )}
                               {t.quantity > 1 && <b> ×{t.quantity}</b>}
                               <small>{[...new Set(t.uses)].join(' · ')}</small>
                               {status === 'Farm' && t.sources[0]?.detail && <small>{t.sources[0].detail}</small>}

@@ -1,3 +1,4 @@
+import { percentModifier } from './effectAmounts'
 import { alchemicalPlanPath } from '../alchemical/sharing'
 import {
   alchemicalStages,
@@ -59,7 +60,7 @@ export function alchemicalCraftGroups(item: GearPlannerItem, data: AlchemicalDat
 // The equipment index expands an enhancement bonus into the stats of the host.
 function gearEffects(effect: AlchemicalEffect, base: AlchemicalBase): GearPlannerEffect[] {
   if (effect.augmentTypes.length) return []
-  const stats = effect.stats.flatMap((stat) => {
+  const stats = effect.stats.flatMap<GearPlannerEffect>((stat) => {
     if (stat.stat === 'Orb Bonus') {
       return [
         'Fortitude Save',
@@ -83,7 +84,12 @@ function gearEffects(effect: AlchemicalEffect, base: AlchemicalBase): GearPlanne
       {
         name: stat.stat,
         bonus: stat.bonusType,
-        modifier: stat.formattedValue === String(stat.value) ? stat.value : stat.formattedValue
+        ...(stat.formattedValue.endsWith('%')
+          ? percentModifier(stat.calculationValue ?? stat.value)
+          : {
+              modifier: stat.formattedValue === String(stat.value) ? stat.value : stat.formattedValue,
+              calculationValue: stat.calculationValue
+            })
       }
     ]
   })

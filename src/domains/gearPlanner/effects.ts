@@ -133,6 +133,9 @@ export const parseEffectModifier = (value: EffectValue): number => {
   return Number.isNaN(parsed) ? 0 : parsed
 }
 
+export const effectAmount = (effect: GearPlannerEffect) =>
+  effect.calculationValue ?? parseEffectModifier(effect.modifier)
+
 const equippedItems = (equipment: GearPlannerEquipment): readonly GearPlannerItem[] =>
   Object.values(equipment).filter((item): item is GearPlannerItem => item !== null)
 
@@ -178,7 +181,7 @@ export const collectEquippedEffects = (
                   ...(effective.tier ? { reforgingStage: effective.tier.stage } : {}),
                   normalizedName: normalizeEffectName(effect.name),
                   normalizedBonusType: normalizeBonusType(effect.bonus),
-                  comparisonValue: parseEffectModifier(effect.modifier)
+                  comparisonValue: effectAmount(effect)
                 }
               ]
       ),
@@ -193,7 +196,7 @@ export const collectEquippedEffects = (
           craftLabel: craft.system === 'mythic' ? 'Mythic Boost ' + craft.label : craft.label,
           normalizedName: normalizeEffectName(effect.name),
           normalizedBonusType: normalizeBonusType(effect.bonus),
-          comparisonValue: parseEffectModifier(effect.modifier)
+          comparisonValue: effectAmount(effect)
         }))
       ),
       ...effective.choices.map(({ stage, choice }) => ({
@@ -207,7 +210,7 @@ export const collectEquippedEffects = (
         reforgingChoiceLabel: choice.label,
         normalizedName: normalizeEffectName(choice.effect.name),
         normalizedBonusType: normalizeBonusType(choice.effect.bonus),
-        comparisonValue: parseEffectModifier(choice.effect.modifier)
+        comparisonValue: effectAmount(choice.effect)
       }))
     ]
   }),
@@ -228,7 +231,7 @@ export const collectEquippedEffects = (
       augmentSlotName: augmentSlot.name,
       normalizedName: normalizeEffectName(effect.name),
       normalizedBonusType: normalizeBonusType(effect.bonus),
-      comparisonValue: parseEffectModifier(effect.modifier)
+      comparisonValue: effectAmount(effect)
     }))
   ),
   ...collectSelectedGearPlannerCurses(equipment, slottedCurses).flatMap(({ item, curse }) =>
@@ -243,7 +246,7 @@ export const collectEquippedEffects = (
       curseName: curse.name,
       normalizedName: normalizeEffectName(effect.name),
       normalizedBonusType: normalizeBonusType(effect.bonus),
-      comparisonValue: parseEffectModifier(effect.modifier)
+      comparisonValue: effectAmount(effect)
     }))
   ),
   ...(essenceData
@@ -264,7 +267,7 @@ export const collectEquippedEffects = (
               essenceAffixPosition: position,
               normalizedName: normalizeEffectName(effect.name),
               normalizedBonusType: normalizeBonusType(effect.bonus),
-              comparisonValue: parseEffectModifier(effect.modifier)
+              comparisonValue: effectAmount(effect)
             }))
         )
       })
@@ -282,7 +285,7 @@ export const collectEquippedEffects = (
       filigreeSlotIndex: slotIndex,
       normalizedName: normalizeEffectName(effect.name),
       normalizedBonusType: normalizeBonusType('Filigree'),
-      comparisonValue: parseEffectModifier(effect.modifier)
+      comparisonValue: effectAmount(effect)
     }))
   )
 ]
@@ -304,7 +307,7 @@ const withEffectiveEntries = (
   const prowessStrength = stackedProwessStrength(entries)
   const effectiveValue = summing
     ? entries.reduce((total, entry) => total + entry.comparisonValue, 0)
-    : Math.max(prowessStrength, ...entries.map((entry) => entry.comparisonValue))
+    : Math.max(...entries.map((entry) => entry.comparisonValue), prowessStrength || -Infinity)
   const effectiveDisplay =
     entries
       .find((entry) => entry.comparisonValue === effectiveValue && sourceDisplay(entry))
@@ -407,7 +410,7 @@ export const previewPotentialEffectConflict = (
   const currentMax = matches.some(isProwessStrength)
     ? Math.max(strongest.comparisonValue, stackedProwessStrength(matches))
     : strongest.comparisonValue
-  const candidateValue = parseEffectModifier(effect.modifier)
+  const candidateValue = effectAmount(effect)
   return {
     isConflict: true,
     currentMax,

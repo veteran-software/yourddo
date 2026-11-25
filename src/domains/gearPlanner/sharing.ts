@@ -23,6 +23,7 @@ import {
 
 // Storage IDs include the entire CDN augment record. Links only need its identity and a tie-breaker.
 function compactAugmentId(id: string) {
+  if (id.startsWith('augment:')) return id
   const split = id.lastIndexOf('|')
   return id.slice(0, split + 1) + createPermalinkChecksum(id.slice(split + 1))
 }
@@ -38,6 +39,7 @@ function restoreSharedSetup(text: string, data: GearPlannerData, essence?: Essen
   const unique = new Map<string, string | null>()
   for (const augment of data.augments) {
     const id = gearPlannerAugmentIdentity(augment)
+    if (id.startsWith('augment:')) continue
     const key = id.slice(0, id.lastIndexOf('|'))
     unique.set(key, unique.has(key) ? null : id)
     known.set(compactAugmentId(id), id)
@@ -187,7 +189,7 @@ export function openGearPlannerLink(
 function formatSharedEffect(effect: GearPlannerEffect) {
   const label = formatGearPlannerSetEffect(effect)
   const notes = typeof effect.notes === 'string' ? effect.notes.trim() : ''
-  return notes ? `${label} — ${notes}` : label
+  return notes ? `${label} · ${notes}` : label
 }
 
 function craftDetails(
@@ -246,7 +248,14 @@ export function formatGearSetup(
   permalink: string
 ) {
   const forum = format === 'Forum BBCode'
-  const escape = forum ? escapeBbCode : escapeMarkdown
+  const escapeMarkup = forum ? escapeBbCode : escapeMarkdown
+  const escape = (text: string) =>
+    escapeMarkup(
+      text.replaceAll(/—[^\S\r\n]*|[^\S\r\n]+/g, (run, offset: number) => {
+        if (run.startsWith('—')) return ' - '
+        return text[offset + run.length] === '—' ? '' : run
+      })
+    )
   const heading = (text: string) => (forum ? `[b]${escape(text)}[/b]` : `**${escape(text)}**`)
   const lines = [
     heading(setup.name),
