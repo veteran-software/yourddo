@@ -8,6 +8,7 @@ import {
 } from './data.ts'
 
 vi.mock('../../shared/data/loadDataset.ts', () => ({
+  hasDatasetFile: vi.fn().mockResolvedValue(false),
   loadDataset: vi.fn()
 }))
 

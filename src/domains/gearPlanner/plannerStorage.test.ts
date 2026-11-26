@@ -131,6 +131,16 @@ const configuredState = (): { state: GearPlannerSetupsState; data: GearPlannerDa
 }
 
 describe('Gear Planner setup serialization', () => {
+  it('restores renamed focus stats and combines duplicate selections', () => {
+    const state = createDefaultGearPlannerState()
+    state.setups[0].character.focusStats = ['Doublestrike Chance', 'Strength', 'Doublestrike']
+    const restored = restorePersistedGearPlannerState(serializeGearPlannerState(state), {
+      ...data([]),
+      enchantmentAliases: new Map([['doublestrike chance', 'Doublestrike']])
+    })
+    expect(restored.state.setups[0].character.focusStats).toEqual(['Doublestrike', 'Strength'])
+  })
+
   it('round-trips multiple setups, slot-specific rings and weapons, and augment indexes using current data objects', () => {
     const configured = configuredState()
     const payload = serializeGearPlannerState(configured.state)
@@ -947,8 +957,10 @@ describe('Gear Planner production persistence', () => {
           state.setups[0].equipment,
           state.setups[0].slottedAugments,
           state.setups[0].slottedFiligrees
-        ).filter(({ category }) => category === 'filigree').length
-      ).toBeGreaterThan(0)
+        )
+          .filter(({ category }) => category === 'filigree')
+          .map(({ effect }) => effect.name)
+      ).toEqual(selectedFiligrees.flatMap(({ source }) => (source.enchantments ?? []).map((effect) => effect.name)))
       state = addGearPlannerSetup(state, 'production-filigree-b', 'Production Filigree B')
       state = equipGearPlannerSetupItem(state, secondHost.slot, secondHost)
       const restored = restorePersistedGearPlannerState(serializeGearPlannerState(state), currentData)

@@ -1,3 +1,4 @@
+import { keyedEntries } from '../../shared/ui/keyedEntries'
 import {
   Alert,
   Badge,
@@ -34,6 +35,11 @@ type ItemsState =
 type RecipesState =
   { status: 'loading' } | { status: 'loaded'; recipes: NearlyCompleteRecipes } | { status: 'error'; cause: unknown }
 
+function signedModifier(value: string | number) {
+  const text = String(value)
+  return /^\d/.test(text) ? '+' + text : text
+}
+
 const NearlyCompletePage = () => {
   const [tier, setTier] = useState<RecipeTier>('Heroic')
   const [category, setCategory] = useState('')
@@ -46,11 +52,16 @@ const NearlyCompletePage = () => {
   const recipeDataset = useMemo(() => (recipesState.status === 'loaded' ? recipesState.recipes : []), [recipesState])
   const categories = useMemo(() => getRecipeCategories(recipeDataset, tier), [recipeDataset, tier])
   const recipes = useMemo(() => getRecipes(recipeDataset, tier, category), [category, recipeDataset, tier])
-  const eligibleItems = useMemo(
-    () => (itemsState.status === 'loaded' ? getNearlyCompleteItems(itemsState.items, tier, category) : []),
-    [category, itemsState, tier]
-  )
   const selectedRecipe = recipes.find((recipe) => recipe.name === selectedName)
+  const eligibleItems = useMemo(() => {
+    if (itemsState.status !== 'loaded') return []
+    const keeperIds = new Set((selectedRecipe ? [selectedRecipe] : recipes).flatMap((recipe) => recipe.keeperIds ?? []))
+    if (keeperIds.size)
+      return itemsState.items
+        .filter((item) => item.catalogId !== undefined && keeperIds.has(item.catalogId))
+        .toSorted((a, b) => a.name.localeCompare(b.name))
+    return getNearlyCompleteItems(itemsState.items, tier, category)
+  }, [category, itemsState, recipes, selectedRecipe, tier])
 
   useEffect(() => {
     let active = true
@@ -146,8 +157,14 @@ const NearlyCompletePage = () => {
     return (
       <List spacing='xs' size='sm'>
         {eligibleItems.map((item) => (
-          <List.Item key={`${item.pageTitle}-${item.minLevel}`}>
+          <List.Item key={item.catalogId ?? `${item.pageTitle}-${item.minLevel}`}>
             {item.name} — {item.type}, minimum level {item.minLevel}
+            {item.catalogId !== undefined &&
+              keyedEntries(selectedRecipe?.hostEffects?.get(item.catalogId) ?? []).map(({ key, value: effect }) => (
+                <Text key={key} size='sm'>
+                  {effect.name} {effect.modifier != null && signedModifier(effect.modifier)} {effect.bonus}
+                </Text>
+              ))}
           </List.Item>
         ))}
       </List>
@@ -272,13 +289,13 @@ const NearlyCompletePage = () => {
                       Resulting Effects
                     </Title>
                     <List spacing='sm'>
-                      {selectedRecipe.effectsAdded.map((effect) => (
-                        <List.Item key={`${effect.name}-${effect.modifier ?? ''}-${effect.bonus ?? ''}`}>
+                      {keyedEntries(selectedRecipe.effectsAdded).map(({ key, value: effect }) => (
+                        <List.Item key={key}>
                           <Text component='span' size='sm'>
                             {effect.name}
                           </Text>{' '}
                           <Badge variant='light' size='sm'>
-                            {effect.modifier != null ? `+${effect.modifier}` : '—'}
+                            {effect.modifier != null ? signedModifier(effect.modifier) : '—'}
                           </Badge>{' '}
                           {effect.bonus && (
                             <Badge variant='outline' color='gray' size='sm'>

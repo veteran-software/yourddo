@@ -40,6 +40,7 @@ import workspace from '../../shared/layout/workspace.module.css'
 import ItemCraftingSelector from './components/ItemCraftingSelector.tsx'
 import {
   ActionIcon,
+  Autocomplete,
   Anchor,
   Checkbox,
   Badge,
@@ -143,6 +144,7 @@ import {
   prepareGearPlannerCandidates
 } from './planner.ts'
 import {
+  equipmentWithReforgedSets,
   getEffectiveGearPlannerAugmentSlotsByItem,
   getGearPlannerEffectiveReforgingTier,
   gearPlannerReforgingRecipeForStage,
@@ -425,6 +427,7 @@ const EquipmentEditor = ({
                   slotIndex={slotIndex}
                   augmentSlot={augmentSlot}
                   augments={data.augments}
+                  enchantmentNames={data.augmentEnchantmentNames}
                   conflictSources={conflictSources}
                   selected={slottedAugments[item.id]?.[slotIndex] ?? null}
                   onChange={(augment) => {
@@ -625,7 +628,8 @@ const ItemBrowser = ({
             augment.minLevel >= minimumLevel &&
             augment.minLevel <= maximumLevel &&
             (!ownedOnly || ownsTroveItem(inventory, augment.name)) &&
-            augment.name.toLowerCase().includes(effectQuery)
+            (augment.name.toLowerCase().includes(effectQuery) ||
+              augment.searchLabels?.some((label) => label.toLowerCase().includes(effectQuery)))
         )
       : []
   const filtered = useMemo(
@@ -763,15 +767,37 @@ const ItemBrowser = ({
       )}
       {catalog !== 'Filigrees' && (
         <>
-          <CatalogSearch
-            label={exactEffect ? 'Exact enchantment' : 'Search items'}
-            placeholder={finding ? 'Name, enchantment or set' : 'Name or effect'}
-            value={search}
-            onChange={(value) => {
-              setExactEffect(false)
-              setSearch(value)
-            }}
-          />
+          {data.enchantmentNames ? (
+            <Autocomplete
+              label={exactEffect ? 'Exact enchantment' : 'Search items'}
+              placeholder={finding ? 'Name, enchantment or set' : 'Name or effect'}
+              data={data.enchantmentNames}
+              value={search}
+              limit={30}
+              clearable
+              clearButtonProps={{ 'aria-label': 'Clear search' }}
+              onChange={setSearch}
+              onInput={() => {
+                setExactEffect(false)
+              }}
+              onClear={() => {
+                setExactEffect(false)
+              }}
+              onOptionSubmit={() => {
+                setExactEffect(true)
+              }}
+            />
+          ) : (
+            <CatalogSearch
+              label={exactEffect ? 'Exact enchantment' : 'Search items'}
+              placeholder={finding ? 'Name, enchantment or set' : 'Name or effect'}
+              value={search}
+              onChange={(value) => {
+                setExactEffect(false)
+                setSearch(value)
+              }}
+            />
+          )}
           <Group gap='xs'>
             <Text aria-live='polite' c='dimmed' size='sm'>
               {filtered.length === 1 ? '1 item' : `${String(filtered.length)} items`}
@@ -1168,7 +1194,9 @@ const GearPlannerWorkspace = () => {
           return [
             currentOwner,
             resolveGearPlannerSetState(
-              loadout,
+              dataState.status === 'ready'
+                ? equipmentWithReforgedSets(loadout, reforging, dataState.data.reforging)
+                : loadout,
               slottedAugments,
               dataState.status === 'ready' ? dataState.data.standardSets : undefined,
               slottedFiligrees,
@@ -1178,7 +1206,16 @@ const GearPlannerWorkspace = () => {
           ] as const
         })
       ),
-    [owners, equipment, slottedAugments, dataState, slottedFiligrees, filigreeDefinitions, effectiveAugmentSlots]
+    [
+      owners,
+      equipment,
+      reforging,
+      slottedAugments,
+      dataState,
+      slottedFiligrees,
+      filigreeDefinitions,
+      effectiveAugmentSlots
+    ]
   )
   const setState = ownerSets[owner]
   const baseEffects = useMemo(
@@ -1309,6 +1346,7 @@ const GearPlannerWorkspace = () => {
                 key={activeSetup.id}
                 setup={activeSetup}
                 augments={dataState.data.augments}
+                enchantmentNames={dataState.data.augmentEnchantmentNames}
                 slots={effectiveAugmentSlots}
                 effects={allEffects}
                 onChange={(socket, augment) => {
@@ -1620,7 +1658,8 @@ const GearPlannerWorkspace = () => {
         effects={effects.filter(
           (effect) =>
             effect.slot === cardSlot &&
-            (effect.category === 'crafting' ||
+            (effect.category === 'augment' ||
+              effect.category === 'crafting' ||
               effect.category === 'equipped-item' ||
               effect.category === 'reforging-tier' ||
               effect.category === 'reforging-choice' ||

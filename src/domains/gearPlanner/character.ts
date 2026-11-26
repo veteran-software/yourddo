@@ -200,7 +200,7 @@ const twoHandedMelee = new Set([
   'Quarterstaff'
 ])
 
-function weaponGroup(type: string) {
+export function weaponGroup(type: string) {
   if (WEAPON_TYPES.Throwing.includes(type)) return 'Throwing weapons'
   if (/bow$/i.test(type)) return 'Ranged weapons'
   return twoHandedMelee.has(type) ? 'Two-handed weapons' : 'One-handed weapons'

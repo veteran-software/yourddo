@@ -23,6 +23,7 @@ import {
 } from './gearPlanner.types.ts'
 import { findSlotReplacements, shortlistReplacements } from './slotUpgrades'
 import { searchUpgradePaths, type PathRequest } from './upgradePaths'
+import { loadoutSnapshot } from './loadoutComparison'
 import { gearPlannerPermalink } from './sharing'
 import { createGearPlannerSetup } from './setups'
 import GearPlannerPage from './GearPlannerPage.tsx'
@@ -873,6 +874,52 @@ describe('GearPlannerPage', () => {
     expect(paths('Focus stats')).toEqual(slots())
   })
 
+  it('keeps qualified published spell power separate when calculating stat objectives', () => {
+    const spellPower = 'Spell Power: Universal'
+    const inspire = 'Inspire Courage: Spell Power: Universal'
+    const helm = item('inspire', 'Head', 'Bardic helm', 10, [
+      { name: spellPower, modifier: 3, bonus: 'Enhancement' },
+      { name: inspire, modifier: 2, bonus: 'Enhancement' }
+    ])
+    const catalog = { ...dataWithItems([helm]), enchantmentNames: [spellPower, inspire] }
+    const setup = createGearPlannerSetup('bard', 'Bard')
+    setup.equipment.Head = helm
+    const snapshot = loadoutSnapshot(setup, 'Character', catalog, essenceData, inspire)
+    expect(snapshot.Stats.get(inspire)?.amount).toBe(2)
+    expect(snapshot.Stats.get(spellPower)?.amount).toBe(3)
+    expect(snapshot.objectiveBonuses.get('enhancement')?.amount).toBe(2)
+  })
+
+  it('uses exported enchantment labels in Focus Stats and exact equipment search', async () => {
+    const dice = 'Eldritch Blast: Dice'
+    const pact = 'Eldritch Blast: Pact Dice'
+    const catalog = dataWithItems([
+      item('dice', 'Head', 'Base Helm', 10, [{ name: dice, modifier: 2 }]),
+      item('pact', 'Head', 'Pact Helm', 10, [{ name: pact, modifier: 3 }]),
+      item('hidden-name', 'Head', 'Other Helm', 10, [{ name: 'Legacy private label', modifier: 1 }])
+    ])
+    await renderReadyPage({ ...catalog, enchantmentNames: [dice, pact, 'Skill: Jump'] })
+    fireEvent.click(screen.getByRole('button', { name: 'Character setup' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Add focus stat' }))
+    const stats = screen.getByRole('textbox', { name: 'Search stats' })
+    fireEvent.change(stats, { target: { value: 'Legacy' } })
+    expect(screen.getByText('No matching stats.')).toBeTruthy()
+    fireEvent.change(stats, { target: { value: 'jump' } })
+    expect(screen.getByRole('button', { name: 'Skill: Jump' })).toBeTruthy()
+    fireEvent.change(stats, { target: { value: 'eldritch' } })
+    expect(screen.getByRole('button', { name: dice })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: pact }))
+    fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    const search = screen.getByRole('combobox', { name: 'Search items' })
+    fireEvent.focus(search)
+    fireEvent.change(search, { target: { value: 'eldritch' } })
+    fireEvent.click(await screen.findByRole('option', { name: pact }))
+    expect(screen.getByRole('combobox', { name: 'Exact enchantment' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Equip Pact Helm' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'Equip Base Helm' })).toBeNull()
+  })
+
   it('selects a setup focus stat and uses it to find upgrade paths', async () => {
     await renderReadyPage(
       dataWithItems([
@@ -1506,6 +1553,9 @@ describe('GearPlannerPage', () => {
     fireEvent.click(socket('Left socket'))
     fireEvent.click(screen.getByRole('button', { name: /Mixed Ruby/ }))
     const selected = within(screen.getByTestId('augment-slot-head-0'))
+    const enchantments = within(screen.getByRole('list', { name: 'Head enchantments' }))
+    expect(enchantments.getAllByRole('listitem')).toHaveLength(3)
+    expect(enchantments.getByText('Strength 6 (Enhancement)')).toBeTruthy()
     expect(selected.getByText('Overrides Neck')).toBeTruthy()
     expect(selected.getByText('Redundant (Neck)')).toBeTruthy()
     expect(selected.getByText('Overridden by Neck')).toBeTruthy()
@@ -1532,6 +1582,40 @@ describe('GearPlannerPage', () => {
     expect(within(screen.getByTestId('augment-slot-head-0')).getAllByText('Strong Ruby').length).toBeGreaterThan(0)
     fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Close' }))
     expect(socket('Right socket').textContent).toBe('Select augment')
+  })
+
+  it('shows scoped effect headings and descriptions in the picker and selected slot', async () => {
+    const stat = { name: 'Eldritch Blast: Pact Dice', modifier: '+1', bonus: 'Enhancement' }
+    const ruby = {
+      name: 'Pact Ruby',
+      augmentType: 'Red',
+      minLevel: 1,
+      source: {},
+      effectsAdded: [stat],
+      presentation: [{ name: 'Pact Magic', rows: [stat] }],
+      searchLabels: [stat.name]
+    }
+    const empty = {
+      ...ruby,
+      name: 'Seasonal Ruby',
+      effectsAdded: [],
+      presentation: [],
+      fallbackDescription: 'A gift of winter.',
+      searchLabels: []
+    }
+    const helm = item('head', 'Head', 'Socketed Helm', 10, [], [], [{ augmentType: 'Red', name: 'Ruby socket' }])
+    await renderReadyPage({ ...dataWithItems([helm], [ruby, empty]), augmentEnchantmentNames: [stat.name] })
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Equip Socketed Helm' }))
+    fireEvent.click(screen.getByRole('combobox', { name: 'Ruby socket' }))
+    const option = within(screen.getByRole('button', { name: /Pact Ruby/ }))
+    expect(option.getByText('Pact Magic')).toBeTruthy()
+    expect(option.getByText(/Eldritch Blast: Pact Dice/)).toBeTruthy()
+    expect(screen.getByText('A gift of winter.')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: /Pact Ruby/ }))
+    const slot = within(screen.getByTestId('augment-slot-head-0'))
+    expect(slot.getByText('Pact Magic')).toBeTruthy()
+    expect(slot.getByText(/Eldritch Blast: Pact Dice/)).toBeTruthy()
   })
 
   it('shows selectors only for published item augment slots and filters choices before search', async () => {
@@ -1577,8 +1661,10 @@ describe('GearPlannerPage', () => {
     expect(screen.queryByRole('button', { name: /Sapphire of Strength/ })).toBeNull()
 
     fireEvent.click(screen.getByRole('button', { name: /Ruby of Strength/ }))
-    expect((await screen.findAllByText('Ruby of Strength')).length).toBeGreaterThan(1)
-    expect(screen.getByText('Strength +8 (Enhancement)')).toBeTruthy()
+    expect(await screen.findAllByText('Ruby of Strength')).toHaveLength(1)
+    const stat = 'Strength +8 (Enhancement)'
+    expect(within(screen.getByTestId('augment-slot-head-0')).getByText(stat)).toBeTruthy()
+    expect(within(screen.getByRole('list', { name: 'Head enchantments' })).getByText(stat)).toBeTruthy()
 
     fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
     expect(await screen.findByText('Ruby of Strength slotted in Socketed Helm · Head / Ruby socket')).toBeTruthy()

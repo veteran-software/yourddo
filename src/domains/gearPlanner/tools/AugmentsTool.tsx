@@ -32,6 +32,7 @@ export default function AugmentsTool({
   setup,
   slots,
   augments,
+  enchantmentNames,
   effects,
   onChange,
   onExchange,
@@ -40,6 +41,7 @@ export default function AugmentsTool({
   setup: GearPlannerSetup
   slots: Readonly<Record<string, readonly GearPlannerAugmentSlot[]>>
   augments: readonly GearPlannerAugment[]
+  enchantmentNames?: readonly string[]
   effects: readonly GearPlannerEffectSource[]
   onChange: (socket: LoadoutSocket, augment: GearPlannerAugment | null) => void
   onExchange: (from: LoadoutSocket, to: LoadoutSocket) => void
@@ -77,6 +79,9 @@ export default function AugmentsTool({
                   value,
                   label: a.name,
                   augmentType: normaliseAugmentSlotType(a.augmentType),
+                  presentation: a.presentation,
+                  fallbackDescription: a.fallbackDescription,
+                  searchLabels: a.searchLabels,
                   minimumLevel: a.minLevel,
                   aboveLevel: hosts.every(
                     (s) => a.minLevel > (setup.essenceCrafting[s.item.id]?.minimumLevel ?? s.item.minimumLevel)
@@ -145,6 +150,7 @@ export default function AugmentsTool({
             placeholder='Search augments'
             colors={[...new Set(options.map((o) => o.augmentType))]}
             options={options}
+            enchantmentNames={options.some((option) => option.presentation) ? enchantmentNames : undefined}
             levelFilter
             value={lookup}
             inventory={inventory}
@@ -297,6 +303,7 @@ export default function AugmentsTool({
                             slotIndex={s.index}
                             augmentSlot={s.slot}
                             augments={augments}
+                            enchantmentNames={enchantmentNames}
                             conflicts={conflicts}
                             conflictSources={conflictSources}
                             selected={s.augment}

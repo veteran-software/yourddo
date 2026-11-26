@@ -14,6 +14,7 @@ import { createEmptyGearPlannerEquipment } from './planner'
 import {
   gearPlannerReforgingStages,
   gearPlannerReforgingStageLabel,
+  equipmentWithReforgedSets,
   gearPlannerReforgingChoiceForState,
   getEffectiveGearPlannerAugmentSlotsByItem
 } from './reforging'
@@ -52,6 +53,17 @@ export function statValue(effect: GearPlannerEffectSummary, signed = false): Val
   }
 }
 
+const catalogLabels = new WeakMap<readonly string[], ReadonlySet<string>>()
+function publishedLabels(names: readonly string[] | undefined) {
+  if (!names) return undefined
+  let labels = catalogLabels.get(names)
+  if (!labels) {
+    labels = new Set(names)
+    catalogLabels.set(names, labels)
+  }
+  return labels
+}
+
 export function loadoutSnapshot(
   setup: GearPlannerSetup,
   owner: GearOwner,
@@ -71,7 +83,7 @@ export function loadoutSnapshot(
   }
   const slots = getEffectiveGearPlannerAugmentSlotsByItem(equipment, setup.reforging, data.reforging)
   const sets = resolveGearPlannerSetState(
-    equipment,
+    equipmentWithReforgedSets(equipment, setup.reforging, data.reforging),
     setup.slottedAugments,
     data.standardSets,
     setup.slottedFiligrees,
@@ -90,8 +102,10 @@ export function loadoutSnapshot(
       reforging: setup.reforging
     }
   )
+  const labels = publishedLabels(data.enchantmentNames)
   const summaries = aggregateEffectSummary(
     [...effects, ...collectActiveSetEffectSources(sets)].map((source) => {
+      if (labels?.has(source.effect.name)) return source
       const effect = objectiveEffect(source.effect)
       return effect === source.effect
         ? source

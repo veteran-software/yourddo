@@ -21,7 +21,8 @@ import {
 } from '@mantine/core'
 import { IconTools } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
-import { loadManualPayload, UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
+import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
+import { loadNearlyFinishedRecipes } from './loadRecipes'
 import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
 import styles from '../../shared/layout/workspace.module.css'
 import ToolLayout from '../../shared/layout/ToolLayout.tsx'
@@ -33,8 +34,6 @@ import {
   getNearlyFinishedEntries,
   InvalidNearlyFinishedDatasetError,
   MissingIngredientRecipeError,
-  nearlyFinishedPayloadName,
-  parseNearlyFinishedDataset,
   UnsupportedNearlyFinishedSchemaError
 } from './nearlyFinished.logic.ts'
 import type {
@@ -180,10 +179,10 @@ const NearlyFinishedPage = () => {
   useEffect(() => {
     let active = true
 
-    loadManualPayload<unknown>(nearlyFinishedPayloadName)
-      .then((value) => {
+    loadNearlyFinishedRecipes()
+      .then((recipes) => {
         if (!active) return
-        setDatasetState({ status: 'loaded', dataset: parseNearlyFinishedDataset(value) })
+        setDatasetState({ status: 'loaded', dataset: recipes })
       })
       .catch((cause: unknown) => {
         if (!active) return
