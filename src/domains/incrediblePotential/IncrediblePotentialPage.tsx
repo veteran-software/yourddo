@@ -27,7 +27,7 @@ import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
 import styles from '../../shared/layout/workspace.module.css'
 import ToolLayout from '../../shared/layout/ToolLayout.tsx'
 import {
-  type AltarRecipe,
+  type RingUpgrade,
   type IncrediblePotentialData,
   type IncrediblePotentialRing,
   InvalidIncrediblePotentialDataError,
@@ -36,7 +36,6 @@ import {
 import {
   buildCraftingPlan,
   CyclicAltarRecipeError,
-  DuplicateAltarRecipeError,
   filterItems,
   type FilterMode,
   formatEffect,
@@ -65,11 +64,7 @@ const getErrorKind = (cause: unknown): DataErrorKind => {
   if (cause instanceof MissingAltarRecipeError || cause instanceof MissingUpgradeIngredientError) {
     return 'missing-dependency'
   }
-  if (
-    cause instanceof InvalidIncrediblePotentialDataError ||
-    cause instanceof DuplicateAltarRecipeError ||
-    cause instanceof InvalidCalculatedQuantityError
-  ) {
+  if (cause instanceof InvalidIncrediblePotentialDataError || cause instanceof InvalidCalculatedQuantityError) {
     return 'invalid'
   }
   return 'load'
@@ -128,11 +123,11 @@ const MaterialList = ({
 )
 
 const ringSummary = (ring: IncrediblePotentialRing): string =>
-  [...ring.enchantments.filter(({ name }) => name !== 'Incredible Potential').map(formatEffect), ring.setName].join(
-    ', '
-  )
+  [...ring.enchantments.filter(({ name }) => name !== 'Incredible Potential').map(formatEffect), ring.setName]
+    .filter(Boolean)
+    .join(', ')
 
-const upgradeSummary = (upgrade: AltarRecipe): string => upgrade.added?.map(formatEffect).join(', ') ?? upgrade.name
+const upgradeSummary = (upgrade: RingUpgrade): string => upgrade.added.map(formatEffect).join(', ')
 
 const useSelectedRingName = createCraftingSelection<string | null>(() => null)
 const useSelectedUpgradeId = createCraftingSelection<string | null>(() => null)
@@ -153,7 +148,11 @@ const IncrediblePotentialPage = () => {
   const rings = useMemo(() => data?.rings ?? [], [data])
   const upgrades = useMemo(() => (data ? getRingUpgrades(data.recipes) : []), [data])
   const selectedRing = rings.find(({ name }) => name === selectedRingName)
-  const selectedUpgrade = upgrades.find(({ recipeId }) => recipeId.toString() === selectedUpgradeId)
+  const eligibleUpgrades = useMemo(
+    () => upgrades.filter((upgrade) => selectedRing && upgrade.ringIds.includes(selectedRing.id)),
+    [selectedRing, upgrades]
+  )
+  const selectedUpgrade = eligibleUpgrades.find(({ recipeId }) => recipeId.toString() === selectedUpgradeId)
 
   const ringFilterGroups = useMemo(
     () => [
@@ -163,19 +162,22 @@ const IncrediblePotentialPage = () => {
       },
       {
         group: 'Item sets',
-        items: getFilterOptions(rings, (ring) => [ring.setName])
+        items: getFilterOptions(rings, (ring) => (ring.setName ? [ring.setName] : []))
       }
     ],
     [rings]
   )
-  const upgradeFilterOptions = useMemo(() => getFilterOptions(upgrades, getUpgradeFilterValues), [upgrades])
+  const upgradeFilterOptions = useMemo(
+    () => getFilterOptions(eligibleUpgrades, getUpgradeFilterValues),
+    [eligibleUpgrades]
+  )
   const filteredRings = useMemo(
     () => filterItems(rings, ringFilters, filterMode, getRingFilterValues),
     [filterMode, ringFilters, rings]
   )
   const filteredUpgrades = useMemo(
-    () => filterItems(upgrades, upgradeFilters, filterMode, getUpgradeFilterValues),
-    [filterMode, upgradeFilters, upgrades]
+    () => filterItems(eligibleUpgrades, upgradeFilters, filterMode, getUpgradeFilterValues),
+    [filterMode, upgradeFilters, eligibleUpgrades]
   )
   const planResult = useMemo(() => {
     if (!data || !selectedUpgrade) return null
@@ -347,7 +349,7 @@ const IncrediblePotentialPage = () => {
                       clearable
                     />
                     <Text c='dimmed' size='xs' role='status' aria-live='polite'>
-                      {filteredUpgrades.length} of {upgrades.length} upgrades shown.
+                      {filteredUpgrades.length} of {eligibleUpgrades.length} upgrades shown.
                     </Text>
                     {filteredUpgrades.length === 0 ? (
                       <Alert color='yellow' title='No upgrades match'>
@@ -367,7 +369,7 @@ const IncrediblePotentialPage = () => {
                             value: upgrade.recipeId.toString(),
                             label: `${upgradeSummary(upgrade)} — ${upgrade.name}`
                           }))}
-                          value={selectedUpgradeId}
+                          value={selectedUpgrade ? selectedUpgradeId : null}
                           onChange={setSelectedUpgradeId}
                           searchable
                           clearable
@@ -400,7 +402,7 @@ const IncrediblePotentialPage = () => {
                 <Text size='sm'>Slots: First Finger, Second Finger</Text>
                 <Text size='sm'>Ingredient type: Ring of Incredible Potential</Text>
                 <Text size='sm'>Binding: Bound to Character on Acquisition</Text>
-                <Text size='sm'>Item set: {selectedRing.setName}</Text>
+                {selectedRing.setName && <Text size='sm'>Item set: {selectedRing.setName}</Text>}
               </SimpleGrid>
 
               <Divider />
@@ -428,7 +430,7 @@ const IncrediblePotentialPage = () => {
                       {selectedUpgrade.name}
                     </Text>
                     <List spacing='xs'>
-                      {selectedUpgrade.added?.map((effect) => (
+                      {selectedUpgrade.added.map((effect) => (
                         <List.Item key={`${selectedUpgrade.recipeId.toString()}-${formatEffect(effect)}`}>
                           {formatEffect(effect)}
                           {effect.notes && (
@@ -462,8 +464,7 @@ const IncrediblePotentialPage = () => {
               <Stack gap='lg'>
                 <Title order={2}>Total Shopping List</Title>
                 <Text c='dimmed' size='sm'>
-                  The selected ring is listed directly instead of legacy Enchanted Accessory or Enchanted Weapon
-                  placeholders. Medium Energy Cells are gatherable materials and are not expanded into other recipes.
+                  Bring charged Medium Energy Cells to the altar.
                 </Text>
                 <SimpleGrid cols={{ base: 1, md: 2 }} spacing='xl'>
                   <Stack gap='sm'>

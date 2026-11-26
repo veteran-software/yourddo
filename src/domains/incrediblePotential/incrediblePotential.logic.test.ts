@@ -1,9 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import type { AltarRecipe, IncrediblePotentialRing } from './data.ts'
+import type { AltarRecipe, IncrediblePotentialRing, RecipeIngredient, RingUpgrade } from './data.ts'
 import {
   buildCraftingPlan,
   CyclicAltarRecipeError,
-  DuplicateAltarRecipeError,
   filterItems,
   formatEffect,
   getFilterOptions,
@@ -15,49 +14,51 @@ import {
   validateIncrediblePotentialData
 } from './incrediblePotential.logic.ts'
 
-const makeRecipe = (recipeId: number, name: string, ingredients: string[]): AltarRecipe => ({
+const material = (name: string, quantity = 1): RecipeIngredient => ({ name, quantity })
+const crafted = ({ recipeId, name }: AltarRecipe, quantity = 1): RecipeIngredient => ({ name, quantity, recipeId })
+const makeRecipe = (recipeId: number, name: string, ingredients: RecipeIngredient[]) => ({
   recipeId,
   name,
-  device: 'Altar of Subjugation',
-  ingredients,
-  removed: null,
-  added: null
+  stage: 'component' as const,
+  ingredients
 })
 
 const focus = makeRecipe(1, 'Focus of Fire', [
-  'Medium Devil Scales',
-  'Medium Glowing Arrowhead',
-  'Medium Gnawed Bone',
-  'Medium Twisted Shrapnel',
-  'Shavarath Medium Energy Cell'
+  material('Medium Devil Scales'),
+  material('Medium Glowing Arrowhead'),
+  material('Medium Gnawed Bone'),
+  material('Medium Twisted Shrapnel'),
+  material('Shavarath Medium Energy Cell')
 ])
 const gem = makeRecipe(2, 'Gem of Dominion', [
-  'Medium Devil Scales',
-  'Medium Gnawed Bone',
-  'Medium Length of Infernal Chain',
-  'Medium Twisted Shrapnel',
-  'Shavarath Medium Energy Cell'
+  material('Medium Devil Scales'),
+  material('Medium Gnawed Bone'),
+  material('Medium Length of Infernal Chain'),
+  material('Medium Twisted Shrapnel'),
+  material('Shavarath Medium Energy Cell')
 ])
 const essence = makeRecipe(3, 'Material Essence', [
-  'Medium Devil Scales',
-  'Medium Glowing Arrowhead',
-  'Medium Sulfurous Stone',
-  'Medium Twisted Shrapnel',
-  'Shavarath Medium Energy Cell'
+  material('Medium Devil Scales'),
+  material('Medium Glowing Arrowhead'),
+  material('Medium Sulfurous Stone'),
+  material('Medium Twisted Shrapnel'),
+  material('Shavarath Medium Energy Cell')
 ])
-const shard = makeRecipe(4, 'Material Fire Dominion Shard of Great Power', [
-  'Focus of Fire',
-  'Gem of Dominion',
-  'Material Essence',
-  'Shard of Great Power',
-  'Shavarath Medium Energy Cell'
-])
-const upgrade: AltarRecipe = {
-  ...makeRecipe(5, 'Material Fire Dominion Ring Upgrade', [
-    'Material Fire Dominion Shard of Great Power',
-    'Shavarath Trophy of War'
+const shard: AltarRecipe = {
+  ...makeRecipe(4, 'Material Fire Dominion Shard of Great Power', [
+    crafted(focus),
+    crafted(gem),
+    crafted(essence),
+    material('Shard of Great Power'),
+    material('Shavarath Medium Energy Cell')
   ]),
-  removed: 'Incredible Potential',
+  stage: 'shardImbuement'
+}
+
+const upgrade: RingUpgrade = {
+  ...makeRecipe(5, 'Material Fire Dominion Ring Upgrade', [crafted(shard), material('Shavarath Trophy of War', 9)]),
+  stage: 'ringUpgrade',
+  ringIds: [100, 200],
   added: [{ name: 'Flaming Burst' }]
 }
 const recipes = [focus, gem, essence, shard, upgrade]
@@ -105,7 +106,7 @@ describe('Incredible Potential logic', () => {
   })
 
   it('aggregates shared nested requirements and multiplies a repeated crafted requirement', () => {
-    const doubledShard = { ...shard, ingredients: [...shard.ingredients, 'Focus of Fire'] }
+    const doubledShard = { ...shard, ingredients: [...shard.ingredients, crafted(focus)] }
     const plan = buildCraftingPlan(upgrade, [focus, gem, essence, doubledShard, upgrade], [])
 
     expect(plan.craftedMaterials.find(({ name }) => name === 'Focus of Fire')?.quantity).toBe(2)
@@ -116,7 +117,7 @@ describe('Incredible Potential logic', () => {
   it('aggregates every repeated upgrade requirement', () => {
     const repeatedShardUpgrade = {
       ...upgrade,
-      ingredients: [shard.name, shard.name, 'Shavarath Trophy of War']
+      ingredients: [crafted(shard, 2), material('Shavarath Trophy of War', 9)]
     }
     const plan = buildCraftingPlan(repeatedShardUpgrade, [...recipes, repeatedShardUpgrade], [])
 
@@ -127,23 +128,15 @@ describe('Incredible Potential logic', () => {
     expect(plan.rawMaterials.find(({ name }) => name === 'Shavarath Trophy of War')?.quantity).toBe(9)
   })
 
-  it('detects reachable duplicate recipes and cycles without rejecting unrelated duplicates', () => {
-    expect(() => buildCraftingPlan(upgrade, [...recipes, { ...focus, recipeId: 10 }], [])).toThrow(
-      DuplicateAltarRecipeError
-    )
-
-    const cyclicFocus = { ...focus, ingredients: ['Material Fire Dominion Shard of Great Power'] }
+  it('detects cycles and follows IDs even when names match', () => {
+    const cyclicFocus = { ...focus, ingredients: [crafted(shard)] }
     expect(() => buildCraftingPlan(upgrade, [cyclicFocus, gem, essence, shard, upgrade], [])).toThrow(
       CyclicAltarRecipeError
     )
 
-    expect(() =>
-      buildCraftingPlan(
-        upgrade,
-        [...recipes, makeRecipe(20, 'Unused Recipe', []), makeRecipe(21, 'Unused Recipe', [])],
-        []
-      )
-    ).not.toThrow()
+    expect(buildCraftingPlan(upgrade, [...recipes, makeRecipe(10, focus.name, [])], [])).toEqual(
+      buildCraftingPlan(upgrade, recipes, [])
+    )
   })
 
   it('identifies the parent recipe when a required crafted dependency is missing', () => {
@@ -157,22 +150,9 @@ describe('Incredible Potential logic', () => {
   })
 
   it('rejects a ring upgrade without an Imbued Shard of Great Power', () => {
-    const upgradeWithoutShard = { ...upgrade, ingredients: ['Shavarath Trophy of War'] }
+    const upgradeWithoutShard = { ...upgrade, ingredients: [material('Shavarath Trophy of War', 9)] }
 
     expect(() => buildCraftingPlan(upgradeWithoutShard, recipes, [])).toThrow(MissingUpgradeIngredientError)
-  })
-
-  it('suppresses legacy item placeholders because the selected ring is listed separately', () => {
-    const shardWithPlaceholder = {
-      ...shard,
-      ingredients: [...shard.ingredients, 'Enchanted Accessory of Incredible Potential']
-    }
-    const plan = buildCraftingPlan(upgrade, [focus, gem, essence, shardWithPlaceholder, upgrade], [])
-
-    expect(plan.rawMaterials.some(({ name }) => name.includes('Enchanted Accessory'))).toBe(false)
-    expect(plan.steps.flatMap(({ requirements }) => requirements).some(({ name }) => name.includes('Enchanted'))).toBe(
-      false
-    )
   })
 
   it('produces the same deterministic result regardless of source recipe ordering', () => {
@@ -186,10 +166,10 @@ describe('Incredible Potential logic', () => {
     const dataset = {
       rings: [
         {
-          pageTitle: "Amara's Band",
+          id: 100,
           name: "Amara's Band",
           type: 'Ring',
-          minLevel: '18',
+          minLevel: 18,
           setName: 'Exorcist of the Silver Flame',
           enchantments: [{ name: 'Wisdom' }, { name: 'Incredible Potential' }]
         }
@@ -235,7 +215,7 @@ describe('Incredible Potential logic', () => {
   })
 
   it('preserves source upgrade ordering and derives sorted filter options from real records', () => {
-    const secondUpgrade: AltarRecipe = {
+    const secondUpgrade: RingUpgrade = {
       ...upgrade,
       recipeId: 6,
       name: 'Material Fire Escalation Ring Upgrade',
