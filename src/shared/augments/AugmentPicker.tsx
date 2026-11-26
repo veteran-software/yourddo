@@ -242,7 +242,7 @@ export default function AugmentPicker({
                       )}
                       <Text size='xs' c='dimmed'>
                         {o.augmentType}
-                        {o.disabled ? ' · Above item minimum level' : ''}
+                        {o.disabled ? ' · Above item ML' : ''}
                       </Text>
                     </Stack>
                     <Badge size='sm' variant='light' color='gray'>

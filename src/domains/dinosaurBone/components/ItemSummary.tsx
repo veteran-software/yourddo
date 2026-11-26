@@ -10,7 +10,7 @@ const formatBinding = (binding: Readonly<Record<string, string>> | undefined) =>
 const ItemSummary = ({ item }: { item: ClassifiedDinosaurBoneItem }) => {
   const metadata = [
     item.type,
-    item.minLevel !== undefined ? `Minimum level ${String(item.minLevel)}` : undefined,
+    item.minLevel !== undefined ? `ML ${String(item.minLevel)}` : undefined,
     formatBinding(item.binding),
     item.material,
     item.craftedIn

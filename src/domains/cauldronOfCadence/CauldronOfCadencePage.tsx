@@ -134,7 +134,7 @@ const CauldronOfCadencePage = () => {
 
           <Group gap='xs'>
             <Badge variant='light'>{selectedRecipe.augmentType}</Badge>
-            <Badge variant='light'>Minimum Level {selectedRecipe.minimumLevel}</Badge>
+            <Badge variant='light'>ML {selectedRecipe.minimumLevel}</Badge>
             <Badge variant='outline'>{formatBinding(selectedRecipe.binding)}</Badge>
             <Badge variant='outline'>Crafted in {selectedRecipe.craftedIn}</Badge>
           </Group>
@@ -371,8 +371,8 @@ const CauldronOfCadencePage = () => {
         ]}
       />
       {category === 'augments' && (
-        <Alert color='blue' title='Minimum level 30'>
-          All Cauldron set augments are Minimum Level 30 and require a three-piece set.
+        <Alert color='blue' title='ML 30'>
+          All Cauldron set augments are ML 30 and require a three-piece set.
         </Alert>
       )}
 

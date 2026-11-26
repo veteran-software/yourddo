@@ -11,7 +11,7 @@ const ViktraniumItemSummary = ({ item }: Readonly<{ item: ViktraniumItem }>) => 
   const metadata = [
     item.type,
     item.category,
-    `Minimum level ${String(item.minimumLevel)}`,
+    `ML ${String(item.minimumLevel)}`,
     bindingText(item.binding),
     item.material
   ].filter((value): value is string => Boolean(value))

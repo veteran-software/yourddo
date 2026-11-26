@@ -202,7 +202,7 @@ describe('CauldronOfCadencePage', () => {
     expect(screen.getByText('Perfect Silence')).toBeTruthy()
     expect(screen.getByText('3 pieces')).toBeTruthy()
     expect(screen.getAllByText('Sneak Attack Dice (+3 Artifact)')).not.toHaveLength(0)
-    expect(screen.getByText('Minimum Level 30')).toBeTruthy()
+    expect(screen.getAllByText('ML 30').length).toBeGreaterThan(0)
     expect(screen.getByText('Bound to Account on Acquisition')).toBeTruthy()
     expect(screen.getByText('Thread of Fate')).toBeTruthy()
     expect(screen.getByText('×50')).toBeTruthy()
@@ -271,7 +271,7 @@ describe('CauldronOfCadencePage', () => {
 
     const usageNote = await screen.findByText(/Choose an item you have or an effect you want/)
     expect(usageNote.style.color).toContain('light-dark')
-    expect(screen.getByText(/All Cauldron set augments are Minimum Level 30/)).toBeTruthy()
+    expect(screen.getByText(/All Cauldron set augments are ML 30/)).toBeTruthy()
     const link = screen.getByRole('link', { name: 'Known issues / bug reports' })
     expect(link.getAttribute('href')).toContain('label%3A%22Cauldron%20of%20Cadence%22')
     expect(link.getAttribute('target')).toBe('_blank')

@@ -28,9 +28,7 @@ export function BuildHeader({
       <ItemIcon item={item} size={40} />
       <div>
         <strong>{item.name}</strong>
-        <small>
-          {[item.type, level !== undefined && 'Minimum level ' + String(level)].filter(Boolean).join(' · ')}
-        </small>
+        <small>{[item.type, level !== undefined && 'ML ' + String(level)].filter(Boolean).join(' · ')}</small>
         {!!total && (
           <small>
             {filled} of {total} slots filled

@@ -389,7 +389,7 @@ const IncrediblePotentialPage = () => {
                 <Stack gap='xs'>
                   <Title order={2}>{selectedRing.name}</Title>
                   <Group gap='xs'>
-                    <Badge variant='light'>Minimum Level {selectedRing.minLevel}</Badge>
+                    <Badge variant='light'>ML {selectedRing.minLevel}</Badge>
                     <Badge variant='outline'>Exclusive</Badge>
                   </Group>
                 </Stack>

@@ -147,7 +147,7 @@ describe('NearlyCompletePage', () => {
       await Promise.resolve()
     })
 
-    expect(await screen.findByText(/Astral Spore Pendant/)).toBeTruthy()
+    expect(await screen.findByText(/Astral Spore Pendant.*ML 11/)).toBeTruthy()
   })
 
   it('shows a recipe loading state before rendering the controls', async () => {

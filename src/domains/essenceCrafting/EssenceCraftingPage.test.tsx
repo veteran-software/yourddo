@@ -92,7 +92,7 @@ const addAugmentSlot = async (user: ReturnType<typeof userEvent.setup>, slotLabe
 }
 
 const openTool = async (user: ReturnType<typeof userEvent.setup>, name: 'Recipes' | 'Ingredients' | 'Sharing') => {
-  await screen.findByRole('combobox', { name: 'Master minimum level' })
+  await screen.findByRole('combobox', { name: 'Master ML' })
 
   if (desktopViewport) {
     await user.click(within(screen.getByTestId('workspace-tool-rail')).getByRole('button', { name }))
@@ -177,7 +177,7 @@ describe('EssenceCraftingPage', () => {
       await Promise.resolve()
     })
 
-    expect(await screen.findByRole('combobox', { name: 'Master minimum level' })).toBeTruthy()
+    expect(await screen.findByRole('combobox', { name: 'Master ML' })).toBeTruthy()
   })
 
   it('hydrates the stored plan before writing, so the empty initial plan cannot overwrite it', async () => {
@@ -217,7 +217,7 @@ describe('EssenceCraftingPage', () => {
     })
 
     expect(await screen.findByTestId('planned-item-main-hand')).toBeTruthy()
-    expect(getSelect('Master minimum level').value).toBe('2')
+    expect(getSelect('Master ML').value).toBe('2')
     setItem.mockRestore()
   })
 
@@ -250,7 +250,7 @@ describe('EssenceCraftingPage', () => {
     renderPage()
 
     expect(await screen.findByTestId('planned-item-main-hand')).toBeTruthy()
-    expect(getSelect('Master minimum level').value).toBe('2')
+    expect(getSelect('Master ML').value).toBe('2')
     expect(replaceState).toHaveBeenCalled()
     expect(window.location.search).toBe('?view=compact&theme=dark')
     expect(screen.queryByText('Permalink could not be loaded')).toBeNull()
@@ -284,7 +284,7 @@ describe('EssenceCraftingPage', () => {
     expect(await screen.findByText('Permalink could not be loaded')).toBeTruthy()
     expect(screen.getByText(/invalid or damaged/i)).toBeTruthy()
     expect(await screen.findByTestId('planned-item-main-hand')).toBeTruthy()
-    expect(getSelect('Master minimum level').value).toBe('2')
+    expect(getSelect('Master ML').value).toBe('2')
     expect(new URLSearchParams(window.location.search).get('cc')).toBe('damaged-link')
     expect(new URLSearchParams(window.location.search).get('view')).toBe('compact')
   })
@@ -346,7 +346,7 @@ describe('EssenceCraftingPage', () => {
     const user = userEvent.setup()
     renderPage()
 
-    await screen.findByRole('combobox', { name: 'Master minimum level' })
+    await screen.findByRole('combobox', { name: 'Master ML' })
     const rail = within(screen.getByTestId('workspace-tool-rail'))
     expect(rail.getByRole('button', { name: 'Recipes' })).toBeTruthy()
     expect(rail.getByRole('button', { name: 'Ingredients' })).toBeTruthy()
@@ -398,7 +398,7 @@ describe('EssenceCraftingPage', () => {
     await openIngredients(user)
     expect(totalQuantity('ingredient-essence')).toBe('20')
 
-    await selectOption(user, 'Minimum level for Main Hand', '2')
+    await selectOption(user, 'ML for Main Hand', '2')
     expect(totalQuantity('ingredient-essence')).toBe('30')
   })
 
@@ -461,11 +461,11 @@ describe('EssenceCraftingPage', () => {
     await activateSlot(user, 'Main Hand')
     await activateSlot(user, 'Off Hand')
     await user.click(screen.getByRole('button', { name: 'Edit Main Hand' }))
-    await selectOption(user, 'Minimum level for Main Hand', '2')
+    await selectOption(user, 'ML for Main Hand', '2')
     await openRecipes(user)
 
-    expect(screen.getByTestId('recipes-item-main-hand').textContent).toContain('Minimum level 2')
-    expect(screen.getByTestId('recipes-item-off-hand').textContent).toContain('Minimum level 1')
+    expect(screen.getByTestId('recipes-item-main-hand').textContent).toContain('ML 2')
+    expect(screen.getByTestId('recipes-item-off-hand').textContent).toContain('ML 1')
   })
 
   it('does not include an Extra or Mark recipe step unless Mark is enabled', async () => {
@@ -491,7 +491,7 @@ describe('EssenceCraftingPage', () => {
     expect(screen.getByText('Light Spell Power: +1 (Enhancement)')).toBeTruthy()
     expect(screen.getByText('Spellcasting Implement: +5%')).toBeTruthy()
 
-    await selectOption(user, 'Minimum level for Main Hand', '2')
+    await selectOption(user, 'ML for Main Hand', '2')
     expect(screen.getByText('Light Spell Power: +2 (Enhancement)')).toBeTruthy()
     expect(screen.queryByText('Light Spell Power: +1 (Enhancement)')).toBeNull()
   })
@@ -542,7 +542,7 @@ describe('EssenceCraftingPage', () => {
     expect(await screen.findByText('Essence Crafting data is unavailable')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }))
 
-    expect(await screen.findByRole('combobox', { name: 'Master minimum level' })).toBeTruthy()
+    expect(await screen.findByRole('combobox', { name: 'Master ML' })).toBeTruthy()
     expect(vi.mocked(loadEssenceCraftingData)).toHaveBeenCalledTimes(2)
   })
 
@@ -569,12 +569,12 @@ describe('EssenceCraftingPage', () => {
     await activateSlot(user, 'Ring 1')
     await activateSlot(user, 'Ring 2')
     await user.click(screen.getByRole('button', { name: 'Edit Ring 1' }))
-    await selectOption(user, 'Minimum level for Ring 1', '2')
+    await selectOption(user, 'ML for Ring 1', '2')
 
-    expect(getSelect('Minimum level for Ring 1').value).toBe('2')
+    expect(getSelect('ML for Ring 1').value).toBe('2')
     expect(screen.getByRole('heading', { name: 'Ring 1 planned item' })).toBeTruthy()
     await user.click(screen.getByRole('button', { name: 'Edit Ring 2' }))
-    expect(getSelect('Minimum level for Ring 2').value).toBe('Inherit master minimum level (1)')
+    expect(getSelect('ML for Ring 2').value).toBe('Inherit master ML (1)')
     expect(screen.getByRole('heading', { name: 'Ring 2 planned item' })).toBeTruthy()
   })
 
@@ -616,12 +616,12 @@ describe('EssenceCraftingPage', () => {
     renderPage()
 
     await activateSlot(user, 'Main Hand')
-    await selectOption(user, 'Master minimum level', '2')
-    expect(screen.getByText('Effective minimum level: 2')).toBeTruthy()
+    await selectOption(user, 'Master ML', '2')
+    expect(screen.getByText('Effective ML 2')).toBeTruthy()
 
-    await selectOption(user, 'Master minimum level', '1')
-    await selectOption(user, 'Minimum level for Main Hand', '2')
-    expect(screen.getByText('Effective minimum level: 2')).toBeTruthy()
+    await selectOption(user, 'Master ML', '1')
+    await selectOption(user, 'ML for Main Hand', '2')
+    expect(screen.getByText('Effective ML 2')).toBeTruthy()
   })
 
   it('resets one item without deactivating it or changing other active items', async () => {
@@ -631,13 +631,13 @@ describe('EssenceCraftingPage', () => {
     await activateSlot(user, 'Main Hand')
     await activateSlot(user, 'Off Hand')
     await user.click(screen.getByRole('button', { name: 'Edit Main Hand' }))
-    await selectOption(user, 'Minimum level for Main Hand', '2')
+    await selectOption(user, 'ML for Main Hand', '2')
     await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
     await user.click(screen.getByRole('button', { name: 'Reset Main Hand planned item' }))
 
     expect(screen.getByTestId('planned-item-main-hand')).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Edit Off Hand' })).toBeTruthy()
-    expect(getSelect('Minimum level for Main Hand').value).toBe('Inherit master minimum level (1)')
+    expect(getSelect('ML for Main Hand').value).toBe('Inherit master ML (1)')
     expect(getSelect('Prefix for Main Hand').value).toBe('')
   })
 
@@ -687,8 +687,8 @@ describe('EssenceCraftingPage', () => {
     await addAugmentSlot(user, 'Main Hand', 'Red')
 
     expect(screen.getByTestId('augment-slot-editor-augment-slot:red')).toBeTruthy()
-    expect(screen.getByText('This slot requires minimum level 2. The effective minimum level is 2.')).toBeTruthy()
-    expect(screen.getByText('Effective minimum level: 2')).toBeTruthy()
+    expect(screen.getByText('This slot requires ML 2. Effective ML is 2.')).toBeTruthy()
+    expect(screen.getByText('Effective ML 2')).toBeTruthy()
     expect(getSelect('Add an augment slot to Main Hand').disabled).toBe(true)
     expect(screen.getByRole('combobox', { name: 'Augment for Red augment slot on Main Hand' })).toBeTruthy()
     expect(screen.getByRole('combobox', { name: 'Filter effects for Red augment slot on Main Hand' })).toBeTruthy()

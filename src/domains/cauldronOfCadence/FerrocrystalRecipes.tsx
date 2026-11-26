@@ -38,7 +38,7 @@ export default function FerrocrystalRecipes({ weapons }: Readonly<{ weapons: Wea
           <Stack>
             <Title order={2}>{current.name}</Title>
             <Group>
-              <Badge variant='light'>Minimum Level {current.minimumLevel}</Badge>
+              <Badge variant='light'>ML {current.minimumLevel}</Badge>
             </Group>
             <Text>{current.description}</Text>
             <Title order={3} size='h4'>

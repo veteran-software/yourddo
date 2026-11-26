@@ -877,7 +877,7 @@ function restoreEssence(
     savedEssence.minimumLevel < essenceData.rules.supportedItemLevels.minimum ||
     savedEssence.minimumLevel > essenceData.rules.supportedItemLevels.maximum
   ) {
-    report('ineligible-essence', 'Essence Crafted minimum level is invalid')
+    report('ineligible-essence', 'Essence Crafted ML is invalid')
     return setup
   }
   const configuration = restoreEssenceConfiguration(setup, item, savedEssence, essenceData, report)

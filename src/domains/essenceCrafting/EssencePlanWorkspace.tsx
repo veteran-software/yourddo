@@ -94,7 +94,7 @@ export default function EssencePlanWorkspace({
       <Group className={layout.toolbar}>
         <Group gap='xs' wrap='nowrap'>
           <Text component='label' htmlFor='essence-master-level' size='sm' fw={600}>
-            Master minimum level
+            Master ML
           </Text>
           <Select
             id='essence-master-level'

@@ -2,7 +2,7 @@ import type { EssenceCraftingData } from './essenceCrafting.types.ts'
 import type { EssenceMaterialStep, EssenceUnavailableMaterialStep } from './materialCalculations.ts'
 
 export const sourceLabels = {
-  'minimum-level-shard': 'Minimum Level shard',
+  'minimum-level-shard': 'ML shard',
   prefix: 'Prefix shard',
   suffix: 'Suffix shard',
   extra: 'Extra shard',
@@ -22,7 +22,7 @@ export const warningMessage = (data: EssenceCraftingData, step: EssenceUnavailab
   if (step.reason.status === 'enhancement-not-found') {
     return 'A selected enhancement is no longer available.'
   }
-  return `The ${step.reason.binding} Minimum Level recipe for item level ${String(step.reason.itemLevel)} is unavailable.`
+  return `The ${step.reason.binding} ML recipe for item level ${String(step.reason.itemLevel)} is unavailable.`
 }
 
 export const unavailableStepsForPlan = (
