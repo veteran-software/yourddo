@@ -1,15 +1,15 @@
+import type { ReactNode } from 'react'
+import styles from '../../../shared/layout/craftingTools.module.css'
 import TierBadges from '../TierBadges'
-import { Alert, Divider, Stack, Text, Title } from '@mantine/core'
+import { Alert, Stack, Text } from '@mantine/core'
 import BonusDetails from '../BonusDetails.tsx'
 import DiscrepancyList from '../DiscrepancyList.tsx'
 import EffectList from '../../../shared/items/EffectList.tsx'
 import type { LgsActiveAugment, LgsBaseItem, LgsBonusEffect, LgsTierAugment } from '../legendaryGreenSteel.types.ts'
 
 const TierDetails = ({ label, tier }: { label: string; tier: LgsTierAugment | undefined }) => (
-  <Stack gap='xs'>
-    <Title order={3} size='h5'>
-      {label}
-    </Title>
+  <Stack gap='xs' component='section' className={styles.stage}>
+    <h3>{label}</h3>
     {tier ? (
       <>
         <Text fw={600} size='sm'>
@@ -28,6 +28,7 @@ const TierDetails = ({ label, tier }: { label: string; tier: LgsTierAugment | un
 )
 
 const DetailsTool = ({
+  header,
   baseItem,
   tier1,
   tier2,
@@ -37,6 +38,7 @@ const DetailsTool = ({
   activeAugment,
   heart
 }: {
+  header: ReactNode
   baseItem?: LgsBaseItem
   tier1?: LgsTierAugment
   tier2?: LgsTierAugment
@@ -52,30 +54,19 @@ const DetailsTool = ({
         Select a Legendary Green Steel base item to begin the build.
       </Alert>
     ) : (
-      <Stack gap={4}>
-        <Title order={3} size='h5'>
-          Base Item
-        </Title>
-        <Text fw={600}>{baseItem.name}</Text>
-        <Text c='dimmed' size='sm'>
-          {baseItem.type === 'weapon' ? 'Weapon' : 'Accessory'}
-        </Text>
+      <Stack gap='xs' component='section' className={styles.stage}>
+        {header}
+        <h3>Base Item</h3>
         <EffectList effects={[...baseItem.effects, ...baseItem.details]} />
         {heart && <Text size='sm'>Cleansed with {heart}</Text>}
         <DiscrepancyList notes={baseItem.discrepancies} />
       </Stack>
     )}
-    <Divider />
     <TierDetails label='Tier 1' tier={tier1} />
-    <Divider />
     <TierDetails label='Tier 2' tier={tier2} />
-    <Divider />
     <TierDetails label='Tier 3' tier={tier3} />
-    <Divider />
-    <Stack gap='xs'>
-      <Title order={3} size='h5'>
-        Bonus Effect
-      </Title>
+    <Stack gap='xs' component='section' className={styles.stage}>
+      <h3>Bonus Effect</h3>
       {weaponResult && <Text size='sm'>{weaponResult}</Text>}
       {bonusEffect ? (
         <>
@@ -92,11 +83,8 @@ const DetailsTool = ({
         )
       )}
     </Stack>
-    <Divider />
-    <Stack gap='xs'>
-      <Title order={3} size='h5'>
-        Active Augment
-      </Title>
+    <Stack gap='xs' component='section' className={styles.stage}>
+      <h3>Active Augment</h3>
       {activeAugment ? (
         <>
           <Text fw={600} size='sm'>

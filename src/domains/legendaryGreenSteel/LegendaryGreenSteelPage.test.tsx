@@ -133,11 +133,12 @@ describe('LegendaryGreenSteelPage', () => {
     expect(within(notes).getByText(note)).toBeTruthy()
   })
 
-  it('shows the gameplay effect first and reveals technical notes on request', async () => {
+  it('shows gameplay descriptions and omits internal annotations', async () => {
     const note = 'Damage across simultaneous stacks is unverified.'
     const catalog = parseLgsResources(
       {
         ...files,
+        weaponBonuses: [{ ...files.weaponBonuses[0], observedFocusPairs: ['air/water', 'internal_key/fire'] }],
         effects: [
           {
             ...files.effects[0],
@@ -159,15 +160,11 @@ describe('LegendaryGreenSteelPage', () => {
     expect(panel.getByText('Attacks deal fire damage.').nextElementSibling).toBe(
       panel.getByText('This effect can stack.')
     )
-    const toggle = panel.getByText('Technical notes')
-    const details = toggle.closest('details')
-    expect(details?.open).toBe(false)
-    await user.click(toggle)
-    expect(details?.open).toBe(true)
-    expect(details?.textContent).toContain(note)
+    expect(panel.getByText('Observed focus pairs: Air + Water')).toBeTruthy()
+    expect(panel.queryByText('Technical notes')).toBeNull()
+    expect(panel.queryByText(note)).toBeNull()
     await choose(user, 'Bonus Effect', /^Dominion$/)
-    expect(panel.getByText('Technical notes').closest('details')?.open).toBe(false)
-    expect(panel.getByText('Activation is unverified.')).toBeTruthy()
+    expect(panel.queryByText('Piece threshold is unverified.')).toBeNull()
   })
 
   it('supports tier and bonus selection in every order after choosing a base item', async () => {
@@ -258,7 +255,7 @@ describe('LegendaryGreenSteelPage', () => {
     await user.click(heart)
     const ingredients = screen.getByRole('complementary', { name: 'Ingredients' })
     expect(within(ingredients).getByText('Codex Rune')).toBeTruthy()
-    expect(within(ingredients).getByText('×2500')).toBeTruthy()
+    expect(within(ingredients).getByText('×2,500')).toBeTruthy()
     await choose(user, 'Legendary Green Steel base item', /^Weapon Base$/)
     expect(screen.queryByRole('checkbox', { name: /Cleanse/ })).toBeNull()
     expect(within(ingredients).queryByText('Codex Rune')).toBeNull()
@@ -294,9 +291,11 @@ describe('LegendaryGreenSteelPage', () => {
     await user.click(screen.getByRole('button', { name: 'Crafting Breakdown' }))
     const breakdown = await screen.findByRole('complementary', { name: 'Crafting Breakdown' })
     for (const name of ['Weapon Base', 'Tier 1 Weapon', 'Tier 2 Weapon', 'Tier 3 Weapon Air Fire', 'Animal Growth']) {
-      expect(within(breakdown).getByText(name)).toBeTruthy()
+      expect(within(breakdown).getAllByText(name).length).toBeGreaterThan(0)
     }
-    expect(within(breakdown).getByText(/Weapon Component ×1 \(crafted component\)/)).toBeTruthy()
+    const componentRow = within(breakdown).getAllByText('Weapon Component')[0].closest('li')
+    if (!componentRow) throw new Error('Expected component row')
+    expect(within(componentRow).getByText('×1')).toBeTruthy()
     const recipe = within(breakdown).getAllByLabelText('Recipe for Weapon Component')[0]
     await user.click(recipe)
     const expanded = recipe.closest('details')

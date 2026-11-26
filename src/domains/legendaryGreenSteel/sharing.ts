@@ -205,10 +205,11 @@ export const resolveLgsBuildView = (plan: LgsPlan, data: LgsData): ResolvedLgsBu
             description: [
               bonusEffect.requiredFocuses
                 ? `Required focuses for tiers 1 and 2: ${bonusEffect.requiredFocuses.tier1And2.join(' + ')}. Tier 3: ${bonusEffect.requiredFocuses.tier3.join(' + ')}. Either order within each pair.`
-                : 'Activation unresolved.',
-              ...bonusEffect.paragraphs,
-              ...bonusEffect.notes
-            ].join('\n')
+                : '',
+              ...bonusEffect.paragraphs
+            ]
+              .filter(Boolean)
+              .join('\n')
           }
         }
       : {}),

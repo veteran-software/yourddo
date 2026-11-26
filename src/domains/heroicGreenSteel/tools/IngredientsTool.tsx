@@ -1,14 +1,15 @@
 import RecipeDetails from '../../../shared/items/RecipeDetails'
 import { heroicRecipeParts } from '../logic'
 import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
-import IngredientStock from '../../../shared/items/IngredientStock'
-import { Alert, Badge, Button, Center, Group, List, Loader, Stack, Text, Title } from '@mantine/core'
+import { BuildHeader, MaterialRow } from '../../../shared/layout/GreenSteelBuildParts'
+import styles from '../../../shared/layout/craftingTools.module.css'
+import { Alert, Button, Center, Loader, Stack, Text } from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
 import { loadHeroicGreenSteelRecipeData } from '../data.ts'
-import type { HgsRecipeData } from '../heroicGreenSteel.types.ts'
+import type { HgsBaseItem, HgsRecipeData } from '../heroicGreenSteel.types.ts'
 import { expandIngredientRequirements } from '../logic.ts'
 
-const IngredientsTool = ({ recipeIds }: { recipeIds: readonly number[] }) => {
+const IngredientsTool = ({ baseItem, recipeIds }: { baseItem?: HgsBaseItem; recipeIds: readonly number[] }) => {
   const location = useIngredientLocations()
   const [data, setData] = useState<HgsRecipeData | null>(null)
   const [error, setError] = useState<unknown>(null)
@@ -78,22 +79,14 @@ const IngredientsTool = ({ recipeIds }: { recipeIds: readonly number[] }) => {
   }
 
   const renderList = (values: readonly ((typeof result.plan.terminal)[number] & { producerRecipeId?: number })[]) => (
-    <List spacing='xs'>
+    <ul className={styles.costs}>
       {values.map(({ ingredient, quantity, producerRecipeId }) => (
-        <List.Item key={producerRecipeId ?? ingredient.id}>
-          <Group component='span' justify='space-between' wrap='nowrap'>
-            <Text component='span' size='sm'>
-              {ingredient.name}
-            </Text>
-            <Badge component='span' variant='light' color='gray'>
-              ×{quantity}
-            </Badge>
-          </Group>
-          {location(ingredient.name) && (
-            <Text size='xs' c='dimmed'>
-              Found in: {location(ingredient.name)}
-            </Text>
-          )}
+        <MaterialRow
+          key={producerRecipeId ?? ingredient.id}
+          name={ingredient.name}
+          quantity={quantity}
+          location={location(ingredient.name)}
+        >
           {producerRecipeId !== undefined && (
             <RecipeDetails
               name={ingredient.name}
@@ -102,28 +95,24 @@ const IngredientsTool = ({ recipeIds }: { recipeIds: readonly number[] }) => {
               lookup={heroicRecipeParts(data)}
             />
           )}
-          <IngredientStock name={ingredient.name} required={quantity} />
-        </List.Item>
+        </MaterialRow>
       ))}
-    </List>
+    </ul>
   )
 
   return (
     <Stack gap='lg' p='md'>
-      <Stack gap='xs'>
-        <Title order={3} size='h5'>
-          Terminal materials
-        </Title>
+      {baseItem && <BuildHeader item={baseItem} tiers={recipeIds.length - 1} />}
+      <Stack component='section' className={styles.stage} gap='xs'>
+        <h3>Terminal materials</h3>
         {result.plan.terminal.length ? (
           renderList(result.plan.terminal)
         ) : (
           <Text c='dimmed'>No terminal materials.</Text>
         )}
       </Stack>
-      <Stack gap='xs'>
-        <Title order={3} size='h5'>
-          Crafted components
-        </Title>
+      <Stack component='section' className={styles.stage} gap='xs'>
+        <h3>Crafted components</h3>
         {result.plan.crafted.length ? renderList(result.plan.crafted) : <Text c='dimmed'>No crafted components.</Text>}
       </Stack>
     </Stack>

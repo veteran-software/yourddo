@@ -59,7 +59,6 @@ describe('LGS release resources', () => {
     const data = parseLgsResources(files, devices)
     expect(data.bonusEffects[0].requiredFocuses).toEqual(files.weaponBonuses[0].requiredFocuses)
     expect(data.bonusEffects[0].paragraphs).toEqual(['Electric Spell Power +139 (Equipment)'])
-    expect(data.bonusEffects[1].notes).toContain('Piece threshold is unverified.')
     const legacy = { ...files.weaponBonuses[0], activationStatus: 'unresolved', activationReason: 'Unverified.' }
     expect(
       parseLgsResources({ ...files, weaponBonuses: [legacy] }, devices).bonusEffects[0].requiredFocuses
@@ -74,26 +73,30 @@ describe('LGS release resources', () => {
     await expect(loadLgsData()).rejects.toThrow('offline')
     await expect(loadLgsData()).resolves.toMatchObject({ immortalsHeart: { id: 9 } })
   })
-  it('keeps mechanical discrepancies and partial effect explanations beside the published description', () => {
+  it('keeps only known discrepancies and hides internal stat identifiers', () => {
     const effects = [
       {
         ...files.effects[0],
         knownDiscrepancies: [
+          { stat: 'Internal_Stat', stated: 1, mechanical: 2 },
           { stat: 'Silver_DR', statDisplayName: 'Silver bypass', stated: 'omitted', mechanical: true },
           { stat: 'Positive Energy Spell Power', stated: 37, mechanical: 34.75, unit: 'points' },
           { stat: 'Critical Damage', stated: 5, mechanical: 20, unit: 'percent' }
         ],
+        procs: [{ knownDiscrepancies: [{ stat: 'Damage type', stated: 'Acid', mechanical: 'Fire' }] }],
         unresolved: ['Unknown trigger.']
       },
       ...files.effects.slice(1)
     ]
     const data = parseLgsResources({ ...files, effects }, devices)
     const tier = data.tier1.find((item) => item.id === 3)
-    expect(tier?.details).toEqual(['Unknown trigger.'])
+    expect(tier?.details).toEqual([])
     expect(tier?.discrepancies).toEqual([
+      'Effect: stated 1, actual 2.',
       'Silver bypass: stated omitted, actual true.',
       'Positive Energy Spell Power: stated 37, actual 34.75.',
-      'Critical Damage: stated 5, actual 20 percent.'
+      'Critical Damage: stated 5, actual 20 percent.',
+      'Damage type: stated Acid, actual Fire.'
     ])
   })
   it('rejects broken references, output mismatches and cycles before rendering', () => {

@@ -1,3 +1,6 @@
+import { baseItemArt } from '../../shared/items/itemArt'
+import { nativeBaseItems, nativeEffects, nativeRecipeGraph } from './nativeData'
+import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import { loadDatasetFile } from '../../shared/data/loadDataset.ts'
 import type {
   HgsBaseItem,
@@ -56,8 +59,41 @@ const parseDevice = (value: unknown, label: string): HgsDevice => {
   return { id: value.id, name: value.name }
 }
 
-export const parseHeroicGreenSteelManifest = (value: unknown): HgsManifest => {
+type ReleaseManifest = HgsManifest & { native?: true }
+
+export const parseHeroicGreenSteelManifest = (value: unknown): ReleaseManifest => {
   if (!isRecord(value)) throw new InvalidHeroicGreenSteelDataError('manifest must be an object')
+  if (
+    value.schemaVersion === undefined &&
+    typeof value.version === 'string' &&
+    isRecord(value.resources) &&
+    isRecord(value.devices)
+  ) {
+    const resources = value.resources
+    const devices = Object.fromEntries(
+      Object.entries(value.devices).map(([key, device]) => {
+        if (!isRecord(device) || !isNumberArray(device.ids)) return [key, device]
+        return [key, { ...device, id: device.ids[0] }]
+      })
+    )
+    const manifest = parseHeroicGreenSteelManifest({
+      ...value,
+      schemaVersion: 1,
+      sourceVersion: value.version,
+      devices,
+      resources: {
+        ...resources,
+        tiers: resources,
+        recipes: {
+          base: resources.baseRecipes,
+          tier1: resources.tier1Recipes,
+          tier2: resources.tier2Recipes,
+          tier3: resources.tier3Recipes
+        }
+      }
+    })
+    return { ...manifest, native: true }
+  }
   if (value.schemaVersion !== 1) {
     throw new InvalidHeroicGreenSteelDataError(
       `expected manifest schemaVersion 1, received ${String(value.schemaVersion)}`
@@ -139,6 +175,7 @@ export const parseBaseItems = (value: unknown): HgsBaseItem[] => {
     return {
       id: entry.id,
       name: entry.name,
+      art: baseItemArt('heroic-green-steel', entry),
       description: entry.description,
       recipeId: entry.recipeId,
       type: entry.type,
@@ -319,6 +356,7 @@ export const parseEffects = (value: unknown): HgsEffect[] => {
     }
     return {
       id: entry.id,
+      ...(!isVisibleEffect(entry) && { hidden: true }),
       displayName: entry.displayName,
       description: entry.description,
       enchantments: entry.enchantments.map((mechanic) => parseMechanic(mechanic, entry.displayName as string)),
@@ -482,9 +520,20 @@ export const parseRecipes = (value: unknown): HgsRecipe[] => {
   return recipes
 }
 
-const resourcePath = (path: string) => `${domainRoot}/${path}`
+// Tiers and base items also supply the links used by the native ingredient graph.
+const rawResources = new Map<string, Promise<unknown>>()
+const readResource = (path: string) => {
+  const existing = rawResources.get(path)
+  if (existing) return existing
+  const loading = loadDatasetFile<unknown>(`${domainRoot}/${path}`).catch((error: unknown) => {
+    rawResources.delete(path)
+    throw error
+  })
+  rawResources.set(path, loading)
+  return loading
+}
 
-let manifestPromise: Promise<HgsManifest> | undefined
+let manifestPromise: Promise<ReleaseManifest> | undefined
 let initialPromise: Promise<HgsInitialData> | undefined
 let tier2Promise: Promise<HgsTier2Data> | undefined
 let tier3Promise: Promise<HgsTier3Data> | undefined
@@ -502,6 +551,7 @@ const loadManifest = () => {
 
 const cache = <T>(promise: Promise<T>, clear: () => void) =>
   promise.catch((cause: unknown) => {
+    rawResources.clear()
     clear()
     throw cause
   })
@@ -509,13 +559,15 @@ const cache = <T>(promise: Promise<T>, clear: () => void) =>
 export const loadHeroicGreenSteelInitialData = (): Promise<HgsInitialData> => {
   initialPromise ??= cache(
     loadManifest().then(async (manifest) => {
-      const [baseItemsValue, effectsValue, tier1Value] = await Promise.all([
-        loadDatasetFile<unknown>(resourcePath(manifest.resources.baseItems)),
-        loadDatasetFile<unknown>(resourcePath(manifest.resources.effects)),
-        loadDatasetFile<unknown>(resourcePath(manifest.resources.tiers.tier1))
+      const [baseItemsValue, effectsValue, tier1Value, spellsValue] = await Promise.all([
+        readResource(manifest.resources.baseItems),
+        readResource(manifest.resources.effects),
+        readResource(manifest.resources.tiers.tier1),
+        manifest.native ? readResource(manifest.resources.spells) : undefined
       ])
-      const baseItems = parseBaseItems(baseItemsValue)
-      const effects = parseEffects(effectsValue)
+      const baseItems = parseBaseItems(manifest.native ? nativeBaseItems(baseItemsValue) : baseItemsValue)
+      const effects = manifest.native ? nativeEffects(effectsValue, spellsValue) : parseEffects(effectsValue)
+      if (manifest.native) assertUniqueIds(effects, 'effect')
       const tier1 = parseTierOptions(tier1Value, 'tier1')
       return {
         manifest,
@@ -538,11 +590,17 @@ export const loadHeroicGreenSteelTier2Data = (): Promise<HgsTier2Data> => {
   tier2Promise ??= cache(
     loadManifest().then(async (manifest) => {
       const [tier2Value, spellsValue] = await Promise.all([
-        loadDatasetFile<unknown>(resourcePath(manifest.resources.tiers.tier2)),
-        loadDatasetFile<unknown>(resourcePath(manifest.resources.spells))
+        readResource(manifest.resources.tiers.tier2),
+        readResource(manifest.resources.spells)
       ])
       const tier2 = parseTierOptions(tier2Value, 'tier2')
-      const spells = parseSpells(spellsValue)
+      const spells = parseSpells(
+        manifest.native
+          ? assertArray(spellsValue, 'spells').map((spell) =>
+              isRecord(spell) ? { ...spell, rechargePerDay: spell.rechargesPerDay } : spell
+            )
+          : spellsValue
+      )
       return { tier2, spells, tier2ById: indexed(tier2), spellById: indexed(spells) }
     }),
     () => {
@@ -556,8 +614,8 @@ export const loadHeroicGreenSteelTier3Data = (): Promise<HgsTier3Data> => {
   tier3Promise ??= cache(
     loadManifest().then(async (manifest) => {
       const [basicValue, focusedValue] = await Promise.all([
-        loadDatasetFile<unknown>(resourcePath(manifest.resources.tiers.tier3Basic)),
-        loadDatasetFile<unknown>(resourcePath(manifest.resources.tiers.tier3Focused))
+        readResource(manifest.resources.tiers.tier3Basic),
+        readResource(manifest.resources.tiers.tier3Focused)
       ])
       const tier3Basic = parseTierOptions(basicValue, 'tier3-basic')
       const tier3Focused = parseTierOptions(focusedValue, 'tier3-focused')
@@ -579,14 +637,24 @@ export const loadHeroicGreenSteelRecipeData = (): Promise<HgsRecipeData> => {
   recipePromise ??= cache(
     loadManifest().then(async (manifest) => {
       const values = await Promise.all([
-        loadDatasetFile<unknown>(resourcePath(manifest.resources.ingredients)),
-        loadDatasetFile<unknown>(resourcePath(manifest.resources.recipes.base)),
-        loadDatasetFile<unknown>(resourcePath(manifest.resources.recipes.tier1)),
-        loadDatasetFile<unknown>(resourcePath(manifest.resources.recipes.tier2)),
-        loadDatasetFile<unknown>(resourcePath(manifest.resources.recipes.tier3))
+        readResource(manifest.resources.ingredients),
+        readResource(manifest.resources.recipes.base),
+        readResource(manifest.resources.recipes.tier1),
+        readResource(manifest.resources.recipes.tier2),
+        readResource(manifest.resources.recipes.tier3)
       ])
-      const ingredients = parseIngredients(values[0])
-      const recipes = values.slice(1).flatMap(parseRecipes)
+      let ingredientRows = values[0]
+      let recipeLists: unknown[] = values.slice(1)
+      if (manifest.native) {
+        const [base, ...tiers] = await Promise.all(
+          [manifest.resources.baseItems, ...Object.values(manifest.resources.tiers)].map(readResource)
+        )
+        const graph = nativeRecipeGraph(base, ingredientRows, tiers, recipeLists)
+        ingredientRows = graph.ingredients
+        recipeLists = [graph.recipes]
+      }
+      const ingredients = parseIngredients(ingredientRows)
+      const recipes = recipeLists.flatMap(parseRecipes)
       assertUniqueIds(recipes, 'recipe')
       return { ingredients, recipes, ingredientById: indexed(ingredients), recipeById: indexed(recipes) }
     }),
@@ -598,6 +666,7 @@ export const loadHeroicGreenSteelRecipeData = (): Promise<HgsRecipeData> => {
 }
 
 export const resetHeroicGreenSteelDataCache = () => {
+  rawResources.clear()
   manifestPromise = undefined
   initialPromise = undefined
   tier2Promise = undefined
