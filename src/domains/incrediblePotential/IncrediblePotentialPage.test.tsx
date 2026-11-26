@@ -240,7 +240,7 @@ describe('IncrediblePotentialPage', () => {
     expect(within(ringDetails).getByText('Adds fire damage on critical hits.')).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Total Shopping List' })).toBeTruthy()
     expect(screen.getAllByText('×9')).toHaveLength(2)
-    expect(screen.getByText('Found in: Tower of Despair')).toBeTruthy()
+    expect(screen.queryByText('Found in: Tower of Despair')).toBeNull()
     expect(screen.getByRole('heading', { name: 'Crafting Steps' })).toBeTruthy()
     expect(screen.getByText('The Focus, Gem, and Essence can be crafted in any order.')).toBeTruthy()
     expect(screen.getByText(/Apply the upgrade to Amara's Band/)).toBeTruthy()

@@ -29,7 +29,6 @@ import CatalogSearch from './components/CatalogSearch'
 import CandidateEquipmentDetails from './components/CandidateEquipmentDetails'
 import GearPlannerGuide from './components/GearPlannerGuide'
 import CandidateEnchantments from './components/CandidateEnchantments'
-import ItemDropLocations from './components/ItemDropLocations'
 import FiligreeSetBrowser from './components/FiligreeSetBrowser'
 import { TroveOwnership, OwnedFilter, TroveImport } from './components/TroveInventory'
 import { createCandidateComparison, matchesGearEffect, type GearFindTarget } from './finding'
@@ -395,7 +394,6 @@ const EquipmentEditor = ({
     <div id={'gear-item-details-' + slot.replaceAll(' ', '-')} hidden={collapsed}>
       {!collapsed && (
         <Stack gap='md'>
-          <ItemDropLocations locations={item.source.dropLocations} />
           <KnownDiscrepancies notes={item.source.discrepancyNotes} />
           <div className={classes.editorSections}>
             {effects.length > 0 && (

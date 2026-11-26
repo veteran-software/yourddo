@@ -175,17 +175,28 @@ afterAll(() => {
 })
 
 describe('GearPlannerPage', () => {
-  it('links farming list items with unknown drop locations to their Compendium pages', async () => {
-    await renderReadyPage(dataWithItems([item('helm', gearPlannerSlots.head, 'Helm of Fire & Ice')]))
+  it('keeps farming checkmarks without showing the old drop location', async () => {
+    const helm = item('helm', gearPlannerSlots.head, 'Helm of Fire & Ice')
+    helm.source = { ...helm.source, dropLocations: [{ questWildernessChain: 'The Vault' }] }
+    localStorage.setItem(
+      'yourddo:farming-progress:default',
+      JSON.stringify([JSON.stringify(['', helm.source.name, 'Farm', 'The Vault', 1, ['Head']])])
+    )
+    await renderReadyPage(dataWithItems([helm]))
     fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Helm of Fire & Ice' }))
     fireEvent.click(screen.getByRole('button', { name: 'Farming list' }))
+    expect(await screen.findByText('Everything in this setup is accounted for.')).toBeTruthy()
+    fireEvent.click(screen.getByRole('radio', { name: 'All items' }))
     const list = within(await screen.findByRole('region', { name: 'To farm' }))
-    expect(list.getByRole('heading', { name: 'DDO Compendium Links' })).toBeTruthy()
+    expect(list.queryByText('The Vault')).toBeNull()
     expect(list.getByRole('link', { name: 'Helm of Fire & Ice' }).getAttribute('href')).toBe(
       'https://ddocompendium.com/w/Helm%20of%20Fire%20%26%20Ice'
     )
-    expect(list.queryByText(/source unlisted/i)).toBeNull()
+    const checkbox = list.getByRole<HTMLInputElement>('checkbox', { name: 'Mark Helm of Fire & Ice complete' })
+    expect(checkbox.checked).toBe(true)
+    fireEvent.click(checkbox)
+    expect(checkbox.checked).toBe(false)
   })
 
   it('finds enchantments across slots and equips the result in its own slot', async () => {
@@ -350,7 +361,7 @@ describe('GearPlannerPage', () => {
     expect(within(screen.getByTestId('gear-item-editor')).getByText('Insight Pendant')).toBeTruthy()
   })
 
-  it('previews materials, sockets, crafting provenance and slot-specific equipped status in both browsers', async () => {
+  it('previews materials, sockets, set crafting options and slot-specific equipped status in both browsers', async () => {
     const ring = item(
       'ring-1',
       gearPlannerSlots.firstFinger,
@@ -393,7 +404,7 @@ describe('GearPlannerPage', () => {
     expect(slotResult.getByText('Material · Silver (metal)')).toBeTruthy()
     expect(slotResult.getAllByText('Blue')).toHaveLength(2)
     expect(slotResult.getByText('Moon')).toBeTruthy()
-    expect(slotResult.getByText('Crafted at The Twelve')).toBeTruthy()
+    expect(slotResult.queryByText('Crafted at The Twelve')).toBeNull()
     expect(slotResult.getByText('Set via Lost Purpose')).toBeTruthy()
     expect(slotResult.queryByText('Equipped')).toBeNull()
     click('Equip Test Ring')
@@ -515,7 +526,7 @@ describe('GearPlannerPage', () => {
     expect(sheet.getByText('True Seeing')).toBeTruthy()
   })
 
-  it('shows published drop locations and collapses equipped details individually or across the loadout', async () => {
+  it('omits drop locations and collapses equipped details individually or across the loadout', async () => {
     const helm = item('helm', gearPlannerSlots.head, 'Quiet Helm')
     const quest = {
       questWildernessChain: 'The Cove (Heroic)',
@@ -544,18 +555,8 @@ describe('GearPlannerPage', () => {
     const click = (name: string) => fireEvent.click(screen.getByRole('button', { name }))
     click('Select Head')
     click('Equip Quiet Helm')
-    const drops = within(screen.getByRole('list', { name: 'Drop locations' }))
-    expect(drops.getByRole('link', { name: 'The Cove (Heroic)' }).getAttribute('href')).toBe(
-      'https://ddocompendium.com/w/The%20Cove'
-    )
-    expect(drops.getByText(/Heroic · End Chest/)).toBeTruthy()
-    expect(drops.getByRole('link', { name: 'Craft only' }).getAttribute('href')).toBe(
-      'https://ddocompendium.com/w/Special:Search?search=Crafting'
-    )
-    expect(drops.getByRole('link', { name: 'Raid Rune' }).getAttribute('href')).toBe(
-      'https://ddocompendium.com/w/Special:Search?search=Raid%20Rune'
-    )
-    expect(drops.getAllByRole('listitem')).toHaveLength(3)
+    expect(screen.queryByText('The Cove (Heroic)')).toBeNull()
+    expect(screen.queryByText('End Chest', { exact: false })).toBeNull()
     click('Select Neck')
     click('Equip Old Pendant')
     click('Collapse all')
@@ -564,7 +565,7 @@ describe('GearPlannerPage', () => {
     click('Select Head')
     expect(screen.queryByRole('list', { name: 'Drop locations' })).toBeNull()
     click('Expand details')
-    expect(screen.getByRole('list', { name: 'Drop locations' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Collapse details' }).getAttribute('aria-expanded')).toBe('true')
     click('Select Neck')
     expect(screen.getByRole('button', { name: 'Expand details' })).toBeTruthy()
     click('Collapse all')

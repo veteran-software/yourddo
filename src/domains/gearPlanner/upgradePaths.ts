@@ -117,7 +117,7 @@ export function* searchUpgradePaths(
         .map((row) => bonusLabel(row.label) + ' ' + row.before + ' → ' + row.after),
       losses,
       availability: inventory.size ? (task?.status ?? 'Check') : 'Unknown',
-      location: task ? [task.group, ...task.notes].join(' · ') : ''
+      location: task ? [task.group, ...task.notes].filter(Boolean).join(' · ') : ''
     })
   }
   function* equipmentChanges(slot: GearPlannerSlot, host: GearPlannerItem | null) {

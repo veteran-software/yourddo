@@ -104,7 +104,7 @@ describe('Slave Lords Crafting', () => {
     expect(screen.getByText('Melee Power')).toBeTruthy()
     const checklist = within(screen.getByRole('region', { name: 'Ingredient checklist' }))
     expect(checklist.getByText('×6')).toBeTruthy()
-    expect(checklist.getByText('Slave Pits')).toBeTruthy()
+    expect(checklist.queryByText('Slave Pits')).toBeNull()
     await select('Item', 'Spinneret')
     expect(screen.queryByRole('combobox', { name: 'Prefix' })).toBeNull()
     expect(checklist.queryByText(cost.name)).toBeNull()

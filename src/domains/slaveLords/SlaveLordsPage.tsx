@@ -171,11 +171,6 @@ function IngredientList({ selected }: { selected: SlaveLordsOption[] }) {
                 <Badge variant='light'>×{cost.quantity.toLocaleString()}</Badge>
               </Group>
               <IngredientStock name={cost.name} required={cost.quantity} />
-              {cost.sources.length > 0 && (
-                <Text size='xs' c='dimmed'>
-                  {cost.sources.join(' · ')}
-                </Text>
-              )}
             </Stack>
           ))}
       </Stack>

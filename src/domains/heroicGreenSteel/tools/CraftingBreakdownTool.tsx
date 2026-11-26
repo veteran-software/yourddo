@@ -1,7 +1,5 @@
 import RecipeDetails from '../../../shared/items/RecipeDetails'
 import { heroicRecipeParts } from '../logic'
-import ComponentFarmingLocations from '../../../shared/items/ComponentFarmingLocations'
-import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
 import { BuildHeader, MaterialRow } from '../../../shared/layout/GreenSteelBuildParts'
 import styles from '../../../shared/layout/craftingTools.module.css'
 import { Alert, Button, Center, Loader, Stack, Text } from '@mantine/core'
@@ -19,7 +17,6 @@ const CraftingBreakdownTool = ({
   recipeIds: readonly number[]
   devices: Readonly<Record<'base' | 'tier1' | 'tier2' | 'tier3', HgsDevice>>
 }) => {
-  const location = useIngredientLocations()
   const [data, setData] = useState<HgsRecipeData | null>(null)
   const [error, setError] = useState<unknown>(null)
   const [attempt, setAttempt] = useState(0)
@@ -110,7 +107,6 @@ const CraftingBreakdownTool = ({
                     key={`${relation.ingredientId.toString()}-${ingredientIndex.toString()}`}
                     name={name}
                     quantity={relation.quantity}
-                    location={location(name)}
                   >
                     {relation.producerRecipeId !== undefined && (
                       <RecipeDetails
@@ -118,15 +114,6 @@ const CraftingBreakdownTool = ({
                         count={relation.quantity}
                         recipeKey={relation.producerRecipeId}
                         lookup={heroicRecipeParts(data)}
-                      />
-                    )}
-                    {relation.producerRecipeId !== undefined && (
-                      <ComponentFarmingLocations
-                        materials={expandIngredientRequirements([relation.producerRecipeId], data).terminal.map(
-                          ({ ingredient, quantity }) => ({ name: ingredient.name, quantity })
-                        )}
-                        count={relation.quantity}
-                        location={location}
                       />
                     )}
                   </MaterialRow>

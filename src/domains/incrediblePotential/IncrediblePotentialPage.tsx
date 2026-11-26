@@ -93,15 +93,9 @@ const errorContent: Record<DataErrorKind, { title: string; message: string }> = 
   }
 }
 
-const MaterialList = ({
-  materials,
-  showAcquisition = false
-}: {
-  materials: { name: string; quantity: number; foundIn: string[] }[]
-  showAcquisition?: boolean
-}) => (
+const MaterialList = ({ materials }: { materials: { name: string; quantity: number }[] }) => (
   <List spacing='sm'>
-    {materials.map(({ name, quantity, foundIn }) => (
+    {materials.map(({ name, quantity }) => (
       <List.Item key={name}>
         <Group component='span' gap='xs'>
           <Text component='span' size='sm'>
@@ -112,11 +106,6 @@ const MaterialList = ({
           </Badge>
         </Group>
         <IngredientStock name={name} required={quantity} />
-        {showAcquisition && foundIn.length > 0 && (
-          <Text c='dimmed' size='xs' mt={2}>
-            Found in: {foundIn.join(', ')}
-          </Text>
-        )}
       </List.Item>
     ))}
   </List>
@@ -483,7 +472,7 @@ const IncrediblePotentialPage = () => {
                         </Group>
                       </List.Item>
                     </List>
-                    <MaterialList materials={planResult.plan.rawMaterials} showAcquisition />
+                    <MaterialList materials={planResult.plan.rawMaterials} />
                   </Stack>
 
                   <Stack gap='sm'>

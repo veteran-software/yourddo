@@ -48,11 +48,6 @@ const ViktraniumItemSummary = ({ item }: Readonly<{ item: ViktraniumItem }>) => 
                 Crafted at {recipe.device}
               </Text>
             ))}
-            {item.dropLocations.map((location, index) => (
-              <Text size='sm' key={`${location.sourceType}-${String(index)}`}>
-                Found in {[location.source, location.location, location.difficulty].filter(Boolean).join(' · ')}
-              </Text>
-            ))}
             {item.notes ? <Text size='sm'>Note: {item.notes}</Text> : null}
           </Stack>
         </SimpleGrid>

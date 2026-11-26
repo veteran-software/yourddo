@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Anchor, Autocomplete, Badge, Checkbox, Group, SegmentedControl, Stack, Text, Title } from '@mantine/core'
-import { IconMapPin, IconBackpack, IconCheck, IconHelpCircle } from '@tabler/icons-react'
+import { IconListCheck, IconBackpack, IconCheck, IconHelpCircle } from '@tabler/icons-react'
 import { useLocalStorage } from '@mantine/hooks'
 import { farmingList, type FarmStatus } from '../farming'
 import type { GearPlannerSetup } from '../setups'
@@ -9,11 +9,25 @@ import { useTroveInventory } from '../troveContext'
 import css from './FarmingTool.module.css'
 
 const sections = [
-  { status: 'Farm', title: 'To farm', icon: IconMapPin },
+  { status: 'Farm', title: 'To farm', icon: IconListCheck },
   { status: 'Collect', title: 'To collect', icon: IconBackpack },
   { status: 'Check', title: 'Verify ownership', icon: IconHelpCircle },
   { status: 'Owned', title: 'In Trove', icon: IconCheck }
 ] as const
+function withoutFarmLocation(key: string): string {
+  try {
+    const value: unknown = JSON.parse(key)
+    // Older saved checkmarks included the item's drop location as the group.
+    if (Array.isArray(value) && value.length === 6 && value[2] === 'Farm') {
+      value[3] = ''
+      return JSON.stringify(value)
+    }
+  } catch {
+    return key
+  }
+  return key
+}
+
 export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetup }>) {
   const { inventory } = useTroveInventory()
   const [character, setCharacter] = useLocalStorage({ key: 'yourddo:farming-character:' + setup.id, defaultValue: '' })
@@ -24,12 +38,17 @@ export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetu
   const [view, setView] = useState<'To do' | 'All items'>('To do')
   const names = useMemo(() => troveCharacterNames(inventory), [inventory])
   const tasks = useMemo(() => farmingList(setup, inventory, character), [setup, inventory, character])
+  const completed = useMemo(() => new Set(checked.map(withoutFarmLocation)), [checked])
   const taskKey = (t: (typeof tasks)[number]) =>
     JSON.stringify([character.trim().toLowerCase(), t.name, t.status, t.group, t.quantity, t.uses])
   function markTask(key: string, complete: boolean) {
-    setChecked((values) => (complete ? [...new Set([...values, key])] : values.filter((value) => value !== key)))
+    setChecked((values) =>
+      complete
+        ? [...new Set([...values.map(withoutFarmLocation), key])]
+        : values.filter((value) => withoutFarmLocation(value) !== key)
+    )
   }
-  const done = (t: (typeof tasks)[number]) => t.status === 'Owned' || checked.includes(taskKey(t))
+  const done = (t: (typeof tasks)[number]) => t.status === 'Owned' || completed.has(taskKey(t))
   const total = (status: FarmStatus) =>
     tasks.filter((t) => t.status === status && !done(t)).reduce((n, t) => n + t.quantity, 0)
   const pending = tasks.filter((t) => !done(t)).length
@@ -85,9 +104,7 @@ export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetu
           {sections.map(({ status, title, icon: Icon }) => {
             const visible = tasks.filter((t) => t.status === status && (view === 'All items' || !done(t)))
             if (!visible.length) return null
-            const groups = Map.groupBy(visible, (t) =>
-              status === 'Farm' && !t.sources.length ? 'DDO Compendium Links' : t.group
-            )
+            const groups = Map.groupBy(visible, (t) => t.group)
             return (
               <section key={status} aria-label={title}>
                 <h4 className={css.section}>
@@ -98,22 +115,14 @@ export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetu
                   .sort(([a], [b]) => a.localeCompare(b))
                   .map(([group, rows]) => (
                     <div className={css.group} key={group}>
-                      <h5>
-                        {status === 'Farm' && rows[0].sources[0]?.href ? (
-                          <Anchor size='sm' href={rows[0].sources[0].href} target='_blank' rel='noreferrer'>
-                            {group}
-                          </Anchor>
-                        ) : (
-                          group
-                        )}
-                      </h5>
+                      {group && <h5>{group}</h5>}
                       <ul>
                         {rows.map((t) => (
                           <li key={taskKey(t)}>
                             {status !== 'Owned' && (
                               <Checkbox
                                 size='xs'
-                                aria-label={'Mark ' + t.name + ' complete in ' + group}
+                                aria-label={'Mark ' + t.name + ' complete' + (group ? ' in ' + group : '')}
                                 checked={done(t)}
                                 onChange={(e) => {
                                   markTask(taskKey(t), e.currentTarget.checked)
@@ -121,7 +130,7 @@ export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetu
                               />
                             )}
                             <div>
-                              {status === 'Farm' && !t.sources.length ? (
+                              {status === 'Farm' ? (
                                 <Anchor
                                   href={'https://ddocompendium.com/w/' + encodeURIComponent(t.name)}
                                   target='_blank'
@@ -134,20 +143,9 @@ export default function FarmingTool({ setup }: Readonly<{ setup: GearPlannerSetu
                               )}
                               {t.quantity > 1 && <b> ×{t.quantity}</b>}
                               <small>{[...new Set(t.uses)].join(' · ')}</small>
-                              {status === 'Farm' && t.sources[0]?.detail && <small>{t.sources[0].detail}</small>}
                               {t.notes.map((note) => (
                                 <small key={note}>{note}</small>
                               ))}
-                              {status === 'Farm' && t.sources.length > 1 && (
-                                <details>
-                                  <summary>Other sources ({t.sources.length - 1})</summary>
-                                  {t.sources.slice(1).map((s) => (
-                                    <small key={JSON.stringify(s)}>
-                                      {[s.title, s.detail].filter(Boolean).join(' · ')}
-                                    </small>
-                                  ))}
-                                </details>
-                              )}
                             </div>
                           </li>
                         ))}

@@ -45,7 +45,3 @@
   color: var(--mantine-color-dimmed);
   font-size: 0.78rem;
 }
-.group summary {
-  cursor: pointer;
-  font-size: 0.78rem;
-}

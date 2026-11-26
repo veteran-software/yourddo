@@ -31,11 +31,6 @@ import { formatHgsJsonBuild } from './sharing.ts'
 
 const browserMocks = vi.hoisted(() => ({ copyText: vi.fn().mockResolvedValue(undefined) }))
 
-vi.mock('../../shared/data/loadDataset', async (original) => ({
-  ...(await original<typeof import('../../shared/data/loadDataset')>()),
-  loadManualPayload: () => Promise.resolve([{ name: 'Large Devil Scales', foundIn: ['The Shroud'] }])
-}))
-
 vi.mock('../../shared/serialization/browser.ts', () => ({
   copyText: browserMocks.copyText,
   downloadTextFile: vi.fn(),
@@ -627,11 +622,11 @@ describe('HeroicGreenSteelPage', () => {
 
     await user.click(screen.getByRole('button', { name: 'Ingredients' }))
     expect(await screen.findByText('Large Devil Scales')).toBeTruthy()
-    expect(await screen.findByText('Found in: The Shroud')).toBeTruthy()
+    expect(screen.queryByText('Found in:', { exact: false })).toBeNull()
     await user.click(screen.getByRole('button', { name: 'Crafting Breakdown' }))
     const breakdown = await screen.findByRole('complementary', { name: 'Crafting Breakdown' })
     expect(within(breakdown).getByText('Eldritch Altar of Fecundity')).toBeTruthy()
-    expect(await within(breakdown).findByText('Found in: The Shroud')).toBeTruthy()
+    expect(within(breakdown).queryByText('Found in:', { exact: false })).toBeNull()
     expect(within(breakdown).getByText('Recipe 100')).toBeTruthy()
   })
 

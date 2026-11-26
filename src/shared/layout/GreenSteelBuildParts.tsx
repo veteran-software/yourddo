@@ -1,4 +1,3 @@
-import { IconChevronRight } from '@tabler/icons-react'
 import type { ReactNode } from 'react'
 import ItemIcon, { type ItemIconSource } from '../items/ItemIcon'
 import IngredientStock from '../items/IngredientStock'
@@ -29,35 +28,18 @@ export function BuildHeader({
 export function MaterialRow({
   name,
   quantity,
-  location,
   children
 }: Readonly<{
   name: string
   quantity: number
-  location?: string
   children?: ReactNode
 }>) {
-  const row = (
-    <>
-      <span>{name}</span>
-      <strong>×{quantity.toLocaleString()}</strong>
-    </>
-  )
   return (
     <li>
-      {location ? (
-        <details className={styles.source}>
-          <summary aria-label={'Where to find ' + name + ', quantity ' + quantity.toLocaleString()}>
-            <IconChevronRight size={15} aria-hidden />
-            {row}
-          </summary>
-          <ul>
-            <li>Found in: {location}</li>
-          </ul>
-        </details>
-      ) : (
-        <div className={styles.costRow}>{row}</div>
-      )}
+      <div className={styles.costRow}>
+        <span>{name}</span>
+        <strong>×{quantity.toLocaleString()}</strong>
+      </div>
       {children && <div className={styles.stock}>{children}</div>}
       <div className={styles.stock}>
         <IngredientStock name={name} required={quantity} />
