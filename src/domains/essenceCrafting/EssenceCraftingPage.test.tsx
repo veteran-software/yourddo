@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { MantineProvider } from '@mantine/core'
-import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadEssenceCraftingData, validateEssenceCraftingDataset } from './data.ts'
@@ -159,6 +159,192 @@ afterAll(() => {
 })
 
 describe('EssenceCraftingPage', () => {
+  it('prompts before unequipping an off-hand weapon', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Off Hand')
+    await selectOption(user, 'Prefix for Off Hand', 'Alpha Prefix')
+    await user.click(screen.getByRole('button', { name: 'Plan Orb' }))
+    let dialog = screen.getByRole('dialog', { name: 'Equipment conflict' })
+    expect(dialog.textContent).toContain('Unequip Off Hand to add Orb?')
+    await user.click(within(dialog).getByRole('button', { name: 'Cancel' }))
+    expect(getSelect('Prefix for Off Hand').value).toBe('Alpha Prefix')
+    expect(screen.getByRole('button', { name: 'Plan Orb' })).toBeTruthy()
+
+    await user.click(screen.getByRole('button', { name: 'Plan Orb' }))
+    dialog = screen.getByRole('dialog', { name: 'Equipment conflict' })
+    await user.click(within(dialog).getByRole('button', { name: 'Unequip and continue' }))
+    expect(screen.getByRole('button', { name: 'Plan Off Hand' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Edit Orb' })).toBeTruthy()
+  })
+
+  it('prompts before setting or replacing a two-handed weapon when equipment conflicts', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Orb')
+    await activateSlot(user, 'Main Hand')
+    await user.click(screen.getByRole('switch', { name: 'Two-handed weapon' }))
+    let dialog = screen.getByRole('dialog', { name: 'Equipment conflict' })
+    expect(dialog.textContent).toContain('Unequip Orb to use a two-handed Main Hand weapon?')
+    await user.click(within(dialog).getByRole('button', { name: 'Unequip and continue' }))
+
+    await user.click(screen.getByRole('button', { name: 'Plan Rune Arm' }))
+    dialog = screen.getByRole('dialog', { name: 'Equipment conflict' })
+    expect(dialog.textContent).toContain('Unequip the two-handed Main Hand weapon to add Rune Arm?')
+    await user.click(within(dialog).getByRole('button', { name: 'Cancel' }))
+    expect(screen.getByRole<HTMLInputElement>('switch', { name: 'Two-handed weapon' }).checked).toBe(true)
+
+    await user.click(screen.getByRole('button', { name: 'Plan Shield' }))
+    dialog = screen.getByRole('dialog', { name: 'Equipment conflict' })
+    await user.click(within(dialog).getByRole('button', { name: 'Unequip and continue' }))
+    expect(screen.getByRole('button', { name: 'Plan Main Hand' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Edit Shield' })).toBeTruthy()
+  })
+
+  it('lets the user resolve the same equipment conflict when applying a shard from the lookup', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Orb')
+    await user.click(screen.getByRole('tab', { name: 'Master Shard Lookup' }))
+    await user.type(screen.getByRole('textbox', { name: 'Shard or effect' }), 'Alpha Prefix')
+    await user.click(screen.getByRole('button', { name: 'Off Hand prefix' }))
+    const dialog = screen.getByRole('dialog', { name: 'Equipment conflict' })
+    expect(dialog.textContent).toContain('Unequip Orb to continue')
+    await user.click(within(dialog).getByRole('button', { name: 'Unequip and apply' }))
+
+    await user.click(screen.getByRole('tab', { name: 'Crafting Plan' }))
+    expect(screen.getByRole('button', { name: 'Plan Orb' })).toBeTruthy()
+    expect(getSelect('Prefix for Off Hand').value).toBe('Alpha Prefix')
+  })
+
+  it('opens the help guide from the lookup and returns focus when dismissed', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await user.click(await screen.findByRole('tab', { name: 'Master Shard Lookup' }))
+    const help = screen.getByRole('button', { name: 'Essence Crafting help' })
+    await user.click(help)
+
+    const dialog = screen.getByRole('dialog', { name: 'Essence Crafting help' })
+    expect(within(dialog).getByText('Deception')).toBeTruthy()
+    expect(within(dialog).getByText('Sneak Attack')).toBeTruthy()
+    expect(within(dialog).getByText('Master ML')).toBeTruthy()
+
+    await user.keyboard('{Escape}')
+    expect(screen.queryByRole('dialog', { name: 'Essence Crafting help' })).toBeNull()
+    await waitFor(() => {
+      expect(document.activeElement === help).toBe(true)
+    })
+    expect(screen.getByRole('tab', { name: 'Master Shard Lookup' }).getAttribute('aria-selected')).toBe('true')
+  })
+
+  it('applies a shard to a new item and confirms before replacing an occupied affix', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await user.click(await screen.findByRole('tab', { name: 'Master Shard Lookup' }))
+    const lookup = screen.getByRole('tabpanel', { name: 'Master Shard Lookup' })
+    const search = within(lookup).getByRole('textbox', { name: 'Shard or effect' })
+    await user.type(search, 'Alpha Prefix')
+    expect(within(lookup).getByRole('button', { name: 'Off Hand prefix' })).toBeTruthy()
+    await user.click(within(lookup).getByRole('button', { name: 'Main Hand prefix' }))
+    const applyDialog = screen.getByRole('dialog', { name: 'Apply effect?' })
+    expect(applyDialog.textContent).toContain('Apply Alpha Prefix as the prefix on Main Hand?')
+    expect(applyDialog.textContent).toContain('This adds the item to your plan.')
+    await user.click(within(applyDialog).getByRole('button', { name: 'Apply effect' }))
+    expect(within(lookup).getByRole('button', { name: 'Main Hand prefix (applied)' })).toBeTruthy()
+
+    await user.clear(search)
+    await user.type(search, 'Zebra Prefix')
+    const slot = within(lookup).getByRole('button', { name: 'Main Hand prefix' })
+    await user.click(slot)
+    const replaceDialog = screen.getByRole('dialog', { name: 'Replace effect?' })
+    expect(replaceDialog.textContent).toContain('Replace Alpha Prefix with Zebra Prefix as the prefix on Main Hand?')
+    await user.click(within(replaceDialog).getByRole('button', { name: 'Cancel' }))
+    await user.click(slot)
+    const confirmedDialog = screen.getByRole('dialog', { name: 'Replace effect?' })
+    expect(confirmedDialog.textContent).toContain('Replace Alpha Prefix with Zebra Prefix')
+    await user.click(within(confirmedDialog).getByRole('button', { name: 'Replace effect' }))
+
+    await user.click(screen.getByRole('tab', { name: 'Crafting Plan' }))
+    expect(getSelect('Prefix for Main Hand').value).toBe('Zebra Prefix')
+    expect(screen.getByRole('button', { name: 'Plan Off Hand' })).toBeTruthy()
+  })
+
+  it('discloses the item level and mark changes needed to apply a shard', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await user.click(await screen.findByRole('tab', { name: 'Master Shard Lookup' }))
+    const lookup = screen.getByRole('tabpanel', { name: 'Master Shard Lookup' })
+    const search = within(lookup).getByRole('textbox', { name: 'Shard or effect' })
+    await user.type(search, 'Level Two Suffix')
+    await user.click(within(lookup).getByRole('button', { name: 'Main Hand suffix' }))
+    let dialog = screen.getByRole('dialog', { name: 'Apply effect?' })
+    expect(dialog.textContent).toContain("raises the item's minimum level from 1 to 2")
+    await user.click(within(dialog).getByRole('button', { name: 'Apply effect' }))
+
+    await user.clear(search)
+    await user.type(search, 'Main Hand Extra')
+    await user.click(within(lookup).getByRole('button', { name: 'Main Hand extra' }))
+    dialog = screen.getByRole('dialog', { name: 'Apply effect?' })
+    expect(dialog.textContent).toContain('1 × Mark of House Cannith')
+    await user.click(within(dialog).getByRole('button', { name: 'Apply effect' }))
+
+    await user.click(screen.getByRole('tab', { name: 'Crafting Plan' }))
+    expect(getSelect('Master ML').value).toBe('1')
+    expect(getSelect('ML for Main Hand').value).toBe('2')
+    expect(getSelect('Suffix for Main Hand').value).toBe('Level Two Suffix')
+    expect(getSelect('Extra for Main Hand').value).toBe('Main Hand Extra')
+    expect(screen.getByRole<HTMLInputElement>('switch', { name: 'Mark of House Cannith for Main Hand' }).checked).toBe(
+      true
+    )
+  })
+
+  it('looks up shards by component effect and matching slot placement, with live effects and recipe variants', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await user.click(await screen.findByRole('tab', { name: 'Master Shard Lookup' }))
+    const lookup = screen.getByRole('tabpanel', { name: 'Master Shard Lookup' })
+    const search = within(lookup).getByRole('textbox', { name: 'Shard or effect' })
+    await user.type(search, 'LIGHT spell power')
+
+    const results = within(lookup).getByRole('table', { name: 'Shard results' })
+    expect(within(results).getAllByRole('row')).toHaveLength(2)
+    expect(within(results).getByRole('button', { name: /Split Prefix Test/ })).toBeTruthy()
+    const detail = within(lookup).getByRole('region', { name: 'Selected shard' })
+    expect(within(detail).getByText('+1')).toBeTruthy()
+    expect(within(detail).getByText('+5%')).toBeTruthy()
+    await selectOption(user, 'Preview item level', '2')
+    expect(within(detail).getByText('+2')).toBeTruthy()
+    expect(within(detail).getByText('×10')).toBeTruthy()
+
+    await user.click(within(lookup).getByText('Unbound', { exact: true }))
+    expect(within(detail).getByRole('heading', { name: 'Unbound recipe' })).toBeTruthy()
+    expect(within(detail).getByText('Crafting level 120')).toBeTruthy()
+    expect(within(detail).getByText('×20')).toBeTruthy()
+
+    await selectOption(user, 'Equipment slot', 'Ring')
+    await selectOption(user, 'Affix position', 'Prefix')
+    expect(within(lookup).getByText('No matching shards')).toBeTruthy()
+    await selectOption(user, 'Affix position', 'Suffix')
+    expect(within(lookup).getByRole('button', { name: /Split Prefix Test/ })).toBeTruthy()
+
+    await user.click(within(lookup).getByRole('button', { name: 'Clear filters' }))
+    await user.type(search, 'ml2')
+    expect(within(lookup).getByRole('heading', { name: 'Minimum Level 2 Shard' })).toBeTruthy()
+    expect(within(lookup).getByText('×140')).toBeTruthy()
+
+    await user.click(screen.getByRole('tab', { name: 'Crafting Plan' }))
+    expect(screen.getByRole('combobox', { name: 'Master ML' })).toBeTruthy()
+    await user.click(screen.getByRole('tab', { name: 'Master Shard Lookup' }))
+    expect(screen.getByRole<HTMLInputElement>('textbox', { name: 'Shard or effect' }).value).toBe('ml2')
+  })
+
   it('shows a CDN loading state while retaining the page title', async () => {
     let resolveData: (value: ReturnType<typeof createPageData>) => void = () => undefined
     vi.mocked(loadEssenceCraftingData).mockReturnValue(
@@ -503,8 +689,9 @@ describe('EssenceCraftingPage', () => {
     await activateSlot(user, 'Main Hand')
     await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
 
-    expect(screen.getByText('Alpha Prefix Effect')).toBeTruthy()
-    expect(screen.queryByText(/modifier not defined/i)).toBeNull()
+    const planner = within(screen.getByRole('tabpanel', { name: 'Crafting Plan' }))
+    expect(planner.getByText('Alpha Prefix Effect')).toBeTruthy()
+    expect(planner.queryByText(/modifier not defined/i)).toBeNull()
   })
 
   it('warns when the selected binding variant is unavailable', async () => {

@@ -24,7 +24,8 @@ export type EssenceCraftingPermalinkV4Item = [
   prefixEnhancementId: string,
   suffixEnhancementId: string,
   extraEnhancementId: string,
-  augments: EssenceCraftingPermalinkV4Augment[]
+  augments: EssenceCraftingPermalinkV4Augment[],
+  twoHanded?: 1
 ]
 
 export interface EssenceCraftingPermalinkV4Payload {
@@ -120,17 +121,21 @@ const encodeV4Item = (
   data: EssenceCraftingData,
   equipmentSlotId: EquipmentSlotId,
   item: PlannedItem
-): EssenceCraftingPermalinkV4Item => [
-  equipmentSlotId,
-  item.minimumLevelOverride ?? 0,
-  item.hasCannithMark ? 1 : 0,
-  item.prefixEnhancementId ?? '',
-  item.suffixEnhancementId ?? '',
-  item.hasCannithMark ? (item.extraEnhancementId ?? '') : '',
-  [...item.augmentSlots]
-    .sort((left, right) => compareStableIds(left.augmentSlotTypeId, right.augmentSlotTypeId))
-    .map((augmentSlot) => encodeV4Augment(data, augmentSlot))
-]
+): EssenceCraftingPermalinkV4Item => {
+  const encoded: EssenceCraftingPermalinkV4Item = [
+    equipmentSlotId,
+    item.minimumLevelOverride ?? 0,
+    item.hasCannithMark ? 1 : 0,
+    item.prefixEnhancementId ?? '',
+    item.suffixEnhancementId ?? '',
+    item.hasCannithMark ? (item.extraEnhancementId ?? '') : '',
+    [...item.augmentSlots]
+      .sort((left, right) => compareStableIds(left.augmentSlotTypeId, right.augmentSlotTypeId))
+      .map((augmentSlot) => encodeV4Augment(data, augmentSlot))
+  ]
+  if (item.twoHanded) encoded.push(1)
+  return encoded
+}
 
 export const createEssenceCraftingPermalinkV4Payload = (
   data: EssenceCraftingData,
@@ -212,6 +217,7 @@ const decodeV4Payload = (data: EssenceCraftingData, payload: Record<string, unkn
     const equipmentSlotId = candidate[0]
     activeSlotIds.push(equipmentSlotId)
     itemsBySlotId[equipmentSlotId] = {
+      twoHanded: candidate[7] === 1,
       minimumLevelOverride: candidate[1] || null,
       hasCannithMark: candidate[2] === 1,
       prefixEnhancementId: readString(candidate[3]) || null,

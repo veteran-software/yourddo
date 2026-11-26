@@ -21,6 +21,7 @@ interface PersistedAugmentSlotV1 {
 }
 
 interface PersistedItemV1 {
+  twoHanded?: true
   prefixEnhancementId: string | null
   suffixEnhancementId: string | null
   extraEnhancementId: string | null
@@ -106,6 +107,7 @@ export const createEssenceCraftingSessionPayload = (plan: EssencePlanState): Ess
     const item = plan.itemsBySlotId[equipmentSlotId]
     if (!item) continue
     itemsBySlotId[equipmentSlotId] = {
+      ...(item.twoHanded && { twoHanded: true }),
       prefixEnhancementId: item.prefixEnhancementId,
       suffixEnhancementId: item.suffixEnhancementId,
       extraEnhancementId: item.extraEnhancementId,

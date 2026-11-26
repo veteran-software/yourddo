@@ -13,7 +13,9 @@ import {
   readEssenceCraftingPermalinkFromSearch,
   removeEssenceCraftingPermalinkFromCurrentUrl
 } from './permalink.ts'
-import { hydrateEssencePlan } from './plannerTransitions.ts'
+import { formatEssencePlanJsonBackup, readEssencePlanBackup } from './planExport.ts'
+import { createEssenceCraftingSessionPayload } from './plannerStorage.ts'
+import { hydrateEssencePlan, transitionEssencePlan } from './plannerTransitions.ts'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
 
 const createPermalinkData = () => {
@@ -101,6 +103,20 @@ afterEach(() => {
 })
 
 describe('Essence Crafting permalink v4', () => {
+  it('preserves the two-handed Main Hand setting in session data, shared plans, and backups', () => {
+    const { data, plan } = createRepresentativePlan()
+    const twoHandedPlan = transitionEssencePlan(data, plan, { type: 'set-two-handed', enabled: true })
+    expect(hydrateEssencePlan(data, createEssenceCraftingSessionPayload(twoHandedPlan))).toEqual(twoHandedPlan)
+    expect(decodeEssenceCraftingPermalink(data, encodeEssenceCraftingPermalink(data, twoHandedPlan))).toEqual({
+      ok: true,
+      version: 4,
+      plan: twoHandedPlan
+    })
+    expect(readEssencePlanBackup(data, formatEssencePlanJsonBackup(data, twoHandedPlan, 'bound')).plan).toEqual(
+      twoHandedPlan
+    )
+  })
+
   it('round-trips multiple items, a split prefix, Mark state, collapse state, and augments', () => {
     const { data, plan } = createRepresentativePlan()
 

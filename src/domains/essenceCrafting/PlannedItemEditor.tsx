@@ -239,6 +239,15 @@ const PlannedItemEditor = memo(
           />
 
           {!board && mark}
+          {equipmentSlotId === 'main-hand' && (
+            <Switch
+              label='Two-handed weapon'
+              checked={item.twoHanded ?? false}
+              onChange={(event) => {
+                onAction({ type: 'set-two-handed', enabled: event.currentTarget.checked })
+              }}
+            />
+          )}
         </SimpleGrid>
       </Stack>
     )
