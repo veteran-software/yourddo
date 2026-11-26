@@ -1713,7 +1713,9 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Unlock slot' }))
     fireEvent.click(screen.getByRole('button', { name: 'Filigree slot 1' }))
     fireEvent.click(screen.getByRole('button', { name: 'Select Filigree A' }))
+    expect(within(screen.getByRole('dialog')).getByText('Strength 2')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Close filigree selector' }))
+    expect(within(screen.getByRole('list', { name: 'Main Hand enchantments' })).getByText(/Strength 2/)).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
     expect(await screen.findByText(/Filigree A on Sentient Dagger · Main Hand \/ Filigree slot 1/)).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
@@ -1913,7 +1915,7 @@ describe('GearPlannerPage', () => {
     expect(await screen.findByText('Curse of Restoration on Head')).toBeTruthy()
   })
 
-  it('rejects a second minor artifact in the browser and keeps the original equipped', async () => {
+  it('identifies minor artifacts in the browser and equipped editor and rejects a second artifact', async () => {
     const first = {
       ...item('artifact-a', gearPlannerSlots.firstFinger, 'First Artifact', 30),
       source: {
@@ -1931,7 +1933,10 @@ describe('GearPlannerPage', () => {
     await renderReadyPage(dataWithItems([first, second]))
 
     fireEvent.click(screen.getByRole('button', { name: 'Select First Finger' }))
-    fireEvent.click(await screen.findByRole('button', { name: 'Equip First Artifact' }))
+    const equipFirst = await screen.findByRole('button', { name: 'Equip First Artifact' })
+    expect(equipFirst.closest('li')?.textContent).toContain('Minor Artifact')
+    fireEvent.click(equipFirst)
+    expect(within(screen.getByTestId('gear-item-editor')).getByText(/ML 30 .* Minor Artifact/)).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Select Second Finger' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Second Artifact' }))
     expect(await screen.findByText('Only one minor artifact can be equipped at a time.')).toBeTruthy()

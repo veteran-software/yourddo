@@ -179,6 +179,11 @@ const FiligreeSlotSelector = ({
                       <IconX size={14} />
                     </ActionIcon>
                   )}
+                  {filigree?.source.enchantments?.map((effect, index) => (
+                    <Text key={index} size='xs' c='dimmed' ta='center'>
+                      {effectLabel(effect)}
+                    </Text>
+                  ))}
                 </Box>
               )
             })}

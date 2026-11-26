@@ -670,6 +670,14 @@ describe('Gear Planner production CDN validation', () => {
         data.sourceDatasets.every(({ records }) => records.every(({ catalogId }) => Number.isSafeInteger(catalogId)))
       ).toBe(true)
       expect(data.filigrees.length).toBeGreaterThan(0)
+      expect(
+        data.filigrees.find(({ name }) => name === 'Eye of the Beholder: Charisma (Rare)')?.source.enchantments
+      ).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ name: 'Charisma', modifier: 1 }),
+          expect.objectContaining({ name: 'Magical Resistance Rating', modifier: 2 })
+        ])
+      )
       expect(new Set(data.filigrees.map(({ id }) => id)).size).toBe(data.filigrees.length)
       expect(data.filigreeSetDefinitions.length).toBeGreaterThan(0)
     } finally {

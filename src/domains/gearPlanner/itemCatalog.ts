@@ -611,6 +611,12 @@ export async function loadSocketCatalog() {
   const names = exportedLabels === undefined ? undefined : enchantmentLabels(exportedLabels)
   const scoped = names && scopedAugmentReader(effectData, names)
   const index = effectIndex(effectData, 'augment')
+  // Filigrees grant effects whose records are hidden from the game's effect tooltips.
+  const filigreeIndex = indexedEffects(
+    effectData,
+    (effect) => effectStats(effect, 'augment'),
+    () => true
+  )
   const spells = spellIndex(spellData)
   function setName(key: unknown) {
     const set = sets.byId.get(id(key, 'set reference'))
@@ -627,7 +633,7 @@ export async function loadSocketCatalog() {
       catalogId: id(item.id, name),
       minLevel: id(item.minimumLevel, name),
       grouping,
-      enchantments: resolveEffects(item, name, index, spells)
+      enchantments: resolveEffects(item, name, filigreeIndex, spells)
     }
   })
   return {
