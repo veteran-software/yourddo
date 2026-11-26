@@ -52,6 +52,8 @@ export const allGearPlannerSlots = [...gearPlannerCharacterSlots, ...gearPlanner
 export interface GearPlannerEffect {
   discrepancyNotes?: readonly string[]
   name: string
+  displayOnly?: boolean
+  attackForms?: readonly string[]
   statModified?: string
   calculationValue?: number
   roundToNearest?: boolean
@@ -107,6 +109,9 @@ export interface GearPlannerSourceItem {
 }
 
 export interface GearPlannerAugment {
+  presentation?: { name: string; rows: GearPlannerEffect[] }[]
+  fallbackDescription?: string
+  searchLabels?: string[]
   discrepancyNotes?: readonly string[]
   clearSecondarySet?: boolean
   name: string
@@ -170,6 +175,9 @@ export interface GearPlannerSourceDataset {
 export type GearPlannerSetIndex = ReadonlyMap<string, readonly { setName: string; minimumLevel: number }[]>
 
 export interface GearPlannerData {
+  enchantmentNames?: readonly string[]
+  augmentEnchantmentNames?: readonly string[]
+  enchantmentAliases?: ReadonlyMap<string, string>
   setIndex?: GearPlannerSetIndex
   crafting: import('./crafting.ts').GearCraftingData
   standardSets?: ReadonlyMap<string, import('./standardSetDefinitions.ts').GearPlannerStandardSetDefinition>

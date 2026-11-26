@@ -1,9 +1,13 @@
+import type { ScopedAugmentPresentation } from './ScopedAugmentDetails'
 import AugmentPicker from './AugmentPicker'
 import { Badge, Group, Select, Text } from '@mantine/core'
 import { useMemo } from 'react'
 import { hasColorPicker, getCompatibleAugmentTypes } from './compatibility.ts'
 
 export interface AugmentSelectOption {
+  presentation?: ScopedAugmentPresentation['presentation']
+  fallbackDescription?: string
+  searchLabels?: readonly string[]
   value?: string
   label?: string
   name?: string
@@ -13,6 +17,7 @@ export interface AugmentSelectOption {
 }
 
 interface AugmentSelectProps<T extends AugmentSelectOption> {
+  enchantmentNames?: readonly string[]
   label: string
   slotType: string
   options: readonly T[]
@@ -36,6 +41,7 @@ const AugmentSelect = <T extends AugmentSelectOption>({
   label,
   slotType,
   options,
+  enchantmentNames,
   value,
   onChange,
   placeholder,
@@ -68,12 +74,16 @@ const AugmentSelect = <T extends AugmentSelectOption>({
       <AugmentPicker
         label={label}
         colors={compatibleTypes}
+        enchantmentNames={enchantmentNames}
         hostLevel={hostLevel}
         value={value}
         onChange={onChange}
         options={compatibleOptions.map((a) => ({
           value: optionValue(a),
           label: optionLabel(a),
+          searchLabels: a.searchLabels,
+          presentation: a.presentation,
+          fallbackDescription: a.fallbackDescription,
           augmentType: a.augmentType,
           minimumLevel: minimumLevel(a),
           disabled: Boolean(hardLevelCap && hostLevel !== undefined && Number(minimumLevel(a)) > hostLevel)

@@ -1,4 +1,5 @@
 import KnownDiscrepancies from './KnownDiscrepancies'
+import ScopedAugmentDetails from '../../../shared/augments/ScopedAugmentDetails'
 import AugmentPicker from '../../../shared/augments/AugmentPicker'
 import EquippedEffect from './EquippedEffect'
 import ItemSetLinks from './ItemSetLinks'
@@ -37,6 +38,7 @@ interface AugmentSlotSelectorProps {
   hostLevel?: number
   slotIndex: number
   augmentSlot: GearPlannerAugmentSlot
+  enchantmentNames?: readonly string[]
   augments: readonly GearPlannerAugment[]
   conflicts: GearPlannerEffectConflictResolution
   conflictSources: readonly GearPlannerEffectSource[]
@@ -51,6 +53,7 @@ const AugmentSlotSelector = ({
   slotIndex,
   augmentSlot,
   augments,
+  enchantmentNames,
   conflicts,
   conflictSources,
   selected,
@@ -120,9 +123,20 @@ const AugmentSlotSelector = ({
         </Group>
         <Text c='dimmed' size='xs'>
           {augment.augmentType}
-          {augment.effectsAdded[0] && !comparisons.size ? ` · ${effectLabel(augment.effectsAdded[0])}` : ''}
-          {augment.effectsAdded.length > 1 ? ` · ${String(augment.effectsAdded.length)} effects` : ''}
+          {!augment.presentation && augment.effectsAdded[0] && !comparisons.size
+            ? ` · ${effectLabel(augment.effectsAdded[0])}`
+            : ''}
+          {!augment.presentation && augment.effectsAdded.length > 1
+            ? ` · ${String(augment.effectsAdded.length)} effects`
+            : ''}
         </Text>
+        {augment.presentation && (
+          <ScopedAugmentDetails
+            augmentName={augment.name}
+            presentation={augment.presentation}
+            fallbackDescription={augment.fallbackDescription}
+          />
+        )}
         {augment.minLevel > hostLevel && (
           <Text size='xs' c='orange' fw={600}>
             Above item ML {hostLevel}
@@ -154,11 +168,13 @@ const AugmentSlotSelector = ({
         <AugmentPicker
           placeholder='Select augment'
           label={label}
+          enchantmentNames={enchantmentNames}
           colors={getCompatibleAugmentTypes(augmentSlot.augmentType)}
           options={compatible.map((a) => ({
             value: gearPlannerAugmentIdentity(a),
             label: a.name,
             augmentType: normaliseAugmentSlotType(a.augmentType),
+            searchLabels: a.searchLabels,
             minimumLevel: a.minLevel
           }))}
           value={selectedId}
@@ -212,30 +228,49 @@ const AugmentSlotSelector = ({
       )}
       {selected ? (
         <Stack gap={2} pl='xs'>
-          <Group gap='xs'>
-            <Text fw={600} size='xs'>
-              {selected.name}
-            </Text>
-            <Badge size='xs' variant='light'>
-              {selected.augmentType}
+          {selectedOverLevel && (
+            <Badge color='red' size='xs' w='fit-content'>
+              Over item ML
             </Badge>
-            {selectedOverLevel ? (
-              <Badge color='red' size='xs'>
-                Over item ML
-              </Badge>
-            ) : null}
-          </Group>
+          )}
           <TroveOwnership name={selected.name} />
           <KnownDiscrepancies notes={selected.discrepancyNotes} />
-          {selected.effectsAdded.map((effect, effectIndex) => (
-            <Text key={`${effect.name}-${String(effectIndex)}`} size='xs'>
-              <EquippedEffect
-                id={augmentEffectId(item.id, slotIndex, effectIndex)}
-                conflicts={conflicts}
-                label={effectLabel(effect)}
-              />
-            </Text>
-          ))}
+          {selected.presentation ? (
+            <ScopedAugmentDetails
+              augmentName={selected.name}
+              presentation={selected.presentation}
+              fallbackDescription={selected.fallbackDescription}
+              renderRow={(row, rowLabel) => {
+                const index = selected.effectsAdded.indexOf(row)
+                return index < 0 ? (
+                  rowLabel
+                ) : (
+                  <EquippedEffect
+                    id={augmentEffectId(item.id, slotIndex, index)}
+                    conflicts={conflicts}
+                    label={rowLabel}
+                  />
+                )
+              }}
+            />
+          ) : (
+            selected.effectsAdded.map((effect, effectIndex) => (
+              <Stack key={`${effect.name}-${String(effectIndex)}`} gap={0}>
+                <Text size='xs'>
+                  <EquippedEffect
+                    id={augmentEffectId(item.id, slotIndex, effectIndex)}
+                    conflicts={conflicts}
+                    label={effectLabel(effect)}
+                  />
+                </Text>
+                {effect.modifier == null && effect.notes && effect.notes !== effect.name && (
+                  <Text size='xs' c='dimmed'>
+                    {effect.notes}
+                  </Text>
+                )}
+              </Stack>
+            ))
+          )}
           <ItemSetLinks names={selected.setBonus?.map(({ name }) => name) ?? []} onOpen={openSet} />
           <Button
             color='red'

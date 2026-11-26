@@ -1,5 +1,6 @@
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
-import { collectSelectedGearPlannerAugments } from './augments.ts'
+import { slotOwner, weaponGroup } from './character'
+import { collectSelectedGearPlannerAugments, isCompatibleGearPlannerAugment } from './augments.ts'
 import { slaveLordsMarker } from './slaveLords'
 import { collectSelectedGearPlannerCurses } from './curses.ts'
 import { type GearPlannerEssenceCraftingConfigurations, resolveGearPlannerEssenceAffixes } from './essenceCrafting.ts'
@@ -142,6 +143,14 @@ const equippedItems = (equipment: GearPlannerEquipment): readonly GearPlannerIte
 export const augmentEffectId = (itemId: string, slotIndex: number, effectIndex: number) =>
   `${itemId}:augment:${String(slotIndex)}:${String(effectIndex)}`
 
+function matchesAugmentAttackForm(effect: GearPlannerEffect, host: GearPlannerItem, equipment: GearPlannerEquipment) {
+  if (!effect.attackForms?.length) return true
+  if (slotOwner(host.slot) !== 'Character') return effect.attackForms.includes('melee')
+  const group = weaponGroup(equipment['Main Hand']?.source.type ?? 'Unarmed')
+  const form = group === 'Ranged weapons' || group === 'Throwing weapons' ? 'ranged' : 'melee'
+  return effect.attackForms.includes(form)
+}
+
 export const collectEquippedEffects = (
   equipment: GearPlannerEquipment,
   slottedAugments: GearPlannerSlottedAugments = {},
@@ -218,22 +227,29 @@ export const collectEquippedEffects = (
     equipment,
     slottedAugments,
     reforgingData ? getEffectiveGearPlannerAugmentSlotsByItem(equipment, reforging, reforgingData) : {}
-  ).flatMap(({ item, slotIndex, augmentSlot, augment }) =>
-    augment.effectsAdded.map((effect, effectIndex) => ({
-      id: augmentEffectId(item.id, slotIndex, effectIndex),
-      effect,
-      itemId: item.id,
-      itemName: item.source.name,
-      slot: item.slot,
-      category: 'augment' as const,
-      augmentName: augment.name,
-      augmentSlotIndex: slotIndex,
-      augmentSlotName: augmentSlot.name,
-      normalizedName: normalizeEffectName(effect.name),
-      normalizedBonusType: normalizeBonusType(effect.bonus),
-      comparisonValue: effectAmount(effect)
-    }))
-  ),
+  ).flatMap(({ item, slotIndex, augmentSlot, augment }) => {
+    if (augment.presentation && !isCompatibleGearPlannerAugment(augmentSlot, augment)) return []
+    return augment.effectsAdded.flatMap((effect, effectIndex) =>
+      matchesAugmentAttackForm(effect, item, equipment)
+        ? [
+            {
+              id: augmentEffectId(item.id, slotIndex, effectIndex),
+              effect,
+              itemId: item.id,
+              itemName: item.source.name,
+              slot: item.slot,
+              category: 'augment' as const,
+              augmentName: augment.name,
+              augmentSlotIndex: slotIndex,
+              augmentSlotName: augmentSlot.name,
+              normalizedName: normalizeEffectName(effect.name),
+              normalizedBonusType: normalizeBonusType(effect.bonus),
+              comparisonValue: effectAmount(effect)
+            }
+          ]
+        : []
+    )
+  }),
   ...collectSelectedGearPlannerCurses(equipment, slottedCurses).flatMap(({ item, curse }) =>
     curse.enchantments.map((effect, effectIndex) => ({
       id: `${item.id}:curse:${encodeURIComponent(curse.id)}:${String(effectIndex)}`,

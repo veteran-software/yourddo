@@ -54,8 +54,10 @@ afterEach(cleanup)
 describe('AugmentSlotSelector', () => {
   it('searches compatible choices, selects, replaces, and clears an augment', async () => {
     const ruby = augment('Ruby of Strength', 'Red')
+    ruby.effectsAdded = [...ruby.effectsAdded, { name: 'Dragon bane', notes: 'Deals extra damage against dragons.' }]
     const openSet = vi.fn()
     const diamond = { ...augment('Diamond of Strength', 'Colorless'), setBonus: [{ name: 'Winter' }] }
+    diamond.presentation = [{ name: 'Diamond  of Strength', rows: [...diamond.effectsAdded] }]
     const sapphire = augment('Sapphire of Strength', 'Blue')
     const user = userEvent.setup()
 
@@ -83,19 +85,22 @@ describe('AugmentSlotSelector', () => {
     const input = within(selector).getByRole('combobox', { name: 'Ruby socket' })
     await user.click(input)
     await user.type(screen.getByRole('textbox', { name: 'Search augments' }), 'diamond')
-    expect(await screen.findByRole('button', { name: /Diamond of Strength/ })).toBeTruthy()
+    const option = await screen.findByRole('button', { name: /Diamond of Strength/ })
+    expect(within(option).getAllByText(diamond.name)).toHaveLength(1)
+    expect(within(option).getByText('Strength +8 (Enhancement)')).toBeTruthy()
     expect(screen.queryByRole('button', { name: /Ruby of Strength/ })).toBeNull()
     expect(screen.queryByRole('button', { name: /Sapphire of Strength/ })).toBeNull()
 
     await user.click(screen.getByRole('button', { name: /Diamond of Strength/ }))
     await user.click(within(selector).getByRole('button', { name: 'Winter' }))
     expect(openSet).toHaveBeenCalledWith('Winter')
-    expect(within(selector).getAllByText('Diamond of Strength')).toHaveLength(2)
+    expect(within(selector).getAllByText('Diamond of Strength')).toHaveLength(1)
 
     await user.click(input)
     expect(await screen.findByRole('button', { name: /Ruby of Strength/ })).toBeTruthy()
     await user.click(screen.getByRole('button', { name: /Ruby of Strength/ }))
-    expect(within(selector).getAllByText('Ruby of Strength')).toHaveLength(2)
+    expect(within(selector).getAllByText('Ruby of Strength')).toHaveLength(1)
+    expect(within(selector).getByText('Deals extra damage against dragons.')).toBeTruthy()
 
     await user.click(within(selector).getByRole('button', { name: 'Clear augment' }))
     expect(input.textContent).toBe('Select augment')
