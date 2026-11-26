@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { loadDataset } from '../../shared/data/loadDataset.ts'
+import { loadNativeNearlyComplete } from '../gearPlanner/nativeUpgradeData'
 import {
   getNearlyCompleteItemProperty,
   getNearlyCompleteItems,
@@ -7,10 +7,7 @@ import {
   type NearlyCompleteItem
 } from './data.ts'
 
-vi.mock('../../shared/data/loadDataset.ts', () => ({
-  hasDatasetFile: vi.fn().mockResolvedValue(false),
-  loadDataset: vi.fn()
-}))
+vi.mock('../gearPlanner/nativeUpgradeData', () => ({ loadNativeNearlyComplete: vi.fn() }))
 
 const item = (name: string, minLevel: string, property: string | null, type = 'Necklace'): NearlyCompleteItem => ({
   pageTitle: name,
@@ -21,16 +18,16 @@ const item = (name: string, minLevel: string, property: string | null, type = 'N
 })
 
 beforeEach(() => {
-  vi.mocked(loadDataset).mockReset()
+  vi.mocked(loadNativeNearlyComplete).mockReset()
 })
 
 describe('Nearly Complete data', () => {
-  it('loads the Nearly Complete S3 dataset', async () => {
+  it('loads items from the Nearly Complete CDN package', async () => {
     const items = [item('Astral Spore Pendant', '11', 'Quality Ability Score')]
-    vi.mocked(loadDataset).mockResolvedValue(items)
+    vi.mocked(loadNativeNearlyComplete).mockResolvedValue({ items, recipes: [] })
 
     await expect(loadNearlyCompleteItems()).resolves.toEqual(items)
-    expect(loadDataset).toHaveBeenCalledWith('nearly-complete')
+    expect(loadNativeNearlyComplete).toHaveBeenCalledOnce()
   })
 
   it('extracts the Nearly Complete property and ignores ineligible items', () => {

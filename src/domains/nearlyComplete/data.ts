@@ -1,6 +1,4 @@
 import { loadNativeNearlyComplete } from '../gearPlanner/nativeUpgradeData'
-import { isVisibleEffect } from '../../shared/data/visibleEffect'
-import { hasDatasetFile, loadDataset } from '../../shared/data/loadDataset.ts'
 import type { RecipeTier } from './recipes.ts'
 
 const nearlyCompletePrefix = 'Nearly Complete: '
@@ -23,12 +21,8 @@ export interface NearlyCompleteItem {
 
 export type NearlyCompleteDataset = NearlyCompleteItem[]
 
-export const loadNearlyCompleteItems = async (): Promise<NearlyCompleteDataset> => {
-  if (await hasDatasetFile('nearly-complete/enchantment-names.json')) return (await loadNativeNearlyComplete()).items
-  return loadDataset<NearlyCompleteDataset>('nearly-complete').then((items) =>
-    items.map((item) => ({ ...item, enchantments: item.enchantments.filter(isVisibleEffect) }))
-  )
-}
+export const loadNearlyCompleteItems = async (): Promise<NearlyCompleteDataset> =>
+  (await loadNativeNearlyComplete()).items
 
 export const getNearlyCompleteItemTier = (item: NearlyCompleteItem): RecipeTier =>
   Number(item.minLevel) >= 30 ? 'Legendary' : 'Heroic'

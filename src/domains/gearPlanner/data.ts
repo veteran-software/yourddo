@@ -7,7 +7,8 @@ import { craftItemKey, type GearCraftingData } from './crafting.ts'
 import { standardGearPlannerSetDefinitionByName } from './standardSetDefinitions.ts'
 import { hasDatasetFile, loadDatasetFile, loadManualPayload } from '../../shared/data/loadDataset.ts'
 import { loadNearlyFinishedRecipes } from '../nearlyFinished/loadRecipes'
-import { loadNativeNamedUpgrades, loadNativeNearlyComplete } from './nativeUpgradeData'
+import { loadNativeNamedUpgrades } from './nativeUpgradeData'
+import { loadNearlyCompleteRecipes } from '../nearlyComplete/recipes'
 import type {
   GearPlannerAugment,
   GearPlannerAugmentSlot,
@@ -256,21 +257,6 @@ const effects = (record: Record<string, unknown>, field: string, path: string) =
   arrayAt(record[field], path)
     .filter(isVisibleEffect)
     .map((entry) => parseEffect(entry, path))
-async function loadGearNearlyComplete() {
-  if (await hasDatasetFile('nearly-complete/enchantment-names.json')) return (await loadNativeNearlyComplete()).recipes
-  const recipes = await loadManualPayload<unknown>('nearlyComplete.recipes')
-  return arrayAt(recipes, 'nearlyComplete.recipes').map((entry, index) => {
-    const path = `nearlyComplete.recipes[${String(index)}]`
-    const record = recordAt(entry, path)
-    return {
-      name: named(record, path),
-      effectsAdded: effects(record, 'effectsAdded', path),
-      effectsRemoved: effects(record, 'effectsRemoved', path),
-      requirements: arrayAt(record.requirements, path).map((r) => ({ name: named(recordAt(r, path), path) }))
-    }
-  })
-}
-
 async function loadNamedUpgrade(file: (typeof namedUpgradeFiles)[number]) {
   const directory = file.path.slice(0, file.path.indexOf('/'))
   if (await hasDatasetFile(directory + '/enchantment-names.json'))
@@ -300,7 +286,7 @@ async function loadNamedUpgrade(file: (typeof namedUpgradeFiles)[number]) {
 
 async function loadCraftingData(): Promise<GearCraftingData> {
   const [nearlyComplete, upgrades] = await Promise.all([
-    loadGearNearlyComplete(),
+    loadNearlyCompleteRecipes(),
     Promise.all(namedUpgradeFiles.map(loadNamedUpgrade))
   ])
   return { nearlyComplete, upgrades }

@@ -5,14 +5,13 @@ import { type MantineColorScheme, MantineProvider } from '@mantine/core'
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { loadManualPayload, UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
+import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
 import type { NearlyFinishedDataset, ReforgingEntry } from './nearlyFinished.types.ts'
 import NearlyFinishedPage from './NearlyFinishedPage.tsx'
+import { loadNativeNearlyFinished } from '../gearPlanner/nativeUpgradeData'
+import { InvalidNearlyFinishedDatasetError } from './nearlyFinished.logic'
 
-vi.mock('../../shared/data/loadDataset.ts', async (importOriginal) => {
-  const loader = await importOriginal<typeof import('../../shared/data/loadDataset.ts')>()
-  return { ...loader, hasDatasetFile: vi.fn().mockResolvedValue(false), loadManualPayload: vi.fn() }
-})
+vi.mock('../gearPlanner/nativeUpgradeData', () => ({ loadNativeNearlyFinished: vi.fn() }))
 
 const createEntry = (values: Partial<ReforgingEntry> & Pick<ReforgingEntry, 'item'>): ReforgingEntry => ({
   stage: 'Nearly Finished',
@@ -105,12 +104,12 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-  vi.mocked(loadManualPayload).mockResolvedValue(structuredClone(dataset))
+  vi.mocked(loadNativeNearlyFinished).mockResolvedValue(structuredClone(dataset))
 })
 
 afterEach(() => {
   cleanup()
-  vi.mocked(loadManualPayload).mockReset()
+  vi.mocked(loadNativeNearlyFinished).mockReset()
   localStorage.clear()
 })
 
@@ -120,9 +119,9 @@ afterAll(() => {
 })
 
 describe('NearlyFinishedPage data states', () => {
-  it('loads recipes through the shared manifest loader and keeps loading stable', async () => {
+  it('loads recipes through the CDN package loader and keeps loading stable', async () => {
     let resolveDataset: (value: NearlyFinishedDataset) => void = () => undefined
-    vi.mocked(loadManualPayload).mockReturnValue(
+    vi.mocked(loadNativeNearlyFinished).mockReturnValue(
       new Promise((resolve) => {
         resolveDataset = resolve
       })
@@ -134,7 +133,7 @@ describe('NearlyFinishedPage data states', () => {
     expect(screen.getByRole('status').textContent).toContain('Loading Nearly Finished recipes…')
     expect(screen.queryByRole('combobox', { name: 'Item category' })).toBeNull()
     await waitFor(() => {
-      expect(loadManualPayload).toHaveBeenCalledWith('nearlyFinished.recipes')
+      expect(loadNativeNearlyFinished).toHaveBeenCalledOnce()
     })
 
     await act(async () => {
@@ -146,33 +145,33 @@ describe('NearlyFinishedPage data states', () => {
   })
 
   it('shows a friendly load failure and retries', async () => {
-    vi.mocked(loadManualPayload).mockRejectedValueOnce(new Error('Manual payload request failed: 503 Unavailable'))
+    vi.mocked(loadNativeNearlyFinished).mockRejectedValueOnce(new Error('Dataset request failed: 503 Unavailable'))
 
     renderPage()
 
     expect(await screen.findByText('Nearly Finished recipes are unavailable')).toBeTruthy()
-    vi.mocked(loadManualPayload).mockResolvedValueOnce(structuredClone(dataset))
+    vi.mocked(loadNativeNearlyFinished).mockResolvedValueOnce(structuredClone(dataset))
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }))
 
     expect(await screen.findByRole('combobox', { name: 'Item category' })).toBeTruthy()
-    expect(loadManualPayload).toHaveBeenCalledTimes(2)
+    expect(loadNativeNearlyFinished).toHaveBeenCalledTimes(2)
   })
 
   it('distinguishes unsupported schema and structurally invalid recipe data', async () => {
-    vi.mocked(loadManualPayload).mockRejectedValueOnce(new UnsupportedManifestSchemaError(3))
+    vi.mocked(loadNativeNearlyFinished).mockRejectedValueOnce(new UnsupportedManifestSchemaError(3))
     const first = renderPage()
 
     expect(await screen.findByText('Unsupported recipe data version')).toBeTruthy()
     first.unmount()
 
-    vi.mocked(loadManualPayload).mockResolvedValueOnce({ meltingStation: [], reforgingStation: [{}] })
+    vi.mocked(loadNativeNearlyFinished).mockRejectedValueOnce(new InvalidNearlyFinishedDatasetError())
     renderPage()
 
     expect(await screen.findByText('Nearly Finished recipe data is invalid')).toBeTruthy()
   })
 
   it('shows a distinct empty-dataset state', async () => {
-    vi.mocked(loadManualPayload).mockResolvedValue({ meltingStation: [], reforgingStation: [] })
+    vi.mocked(loadNativeNearlyFinished).mockResolvedValue({ meltingStation: [], reforgingStation: [] })
 
     renderPage()
 
@@ -182,7 +181,7 @@ describe('NearlyFinishedPage data states', () => {
 
   it('shows a distinct empty-category state', async () => {
     const user = userEvent.setup()
-    vi.mocked(loadManualPayload).mockResolvedValue({
+    vi.mocked(loadNativeNearlyFinished).mockResolvedValue({
       meltingStation: [dataset.meltingStation[0]],
       reforgingStation: [createEntry({ item: 'Heroic Only Item', cost: [{ name: 'Simple Ingot', quantity: 1 }] })]
     })
@@ -195,7 +194,7 @@ describe('NearlyFinishedPage data states', () => {
   })
 
   it('distinguishes cyclic dependencies and unknown missing ingredient recipes', async () => {
-    vi.mocked(loadManualPayload).mockResolvedValueOnce({
+    vi.mocked(loadNativeNearlyFinished).mockResolvedValueOnce({
       meltingStation: [
         { name: 'Alloy A', quantity: 1, requirements: [{ name: 'Alloy B', quantity: 1 }] },
         { name: 'Alloy B', quantity: 1, requirements: [{ name: 'Alloy A', quantity: 1 }] }
@@ -207,7 +206,7 @@ describe('NearlyFinishedPage data states', () => {
     expect(await screen.findByText('Cyclic recipe dependency detected')).toBeTruthy()
     first.unmount()
 
-    vi.mocked(loadManualPayload).mockResolvedValueOnce({
+    vi.mocked(loadNativeNearlyFinished).mockResolvedValueOnce({
       meltingStation: [],
       reforgingStation: [
         createEntry({ item: 'Missing Recipe Item', cost: [{ name: 'Unknown Compound', quantity: 1 }] })
@@ -322,7 +321,7 @@ describe('NearlyFinishedPage workflow', () => {
 
   it('describes an empty raw-material list', async () => {
     const user = userEvent.setup()
-    vi.mocked(loadManualPayload).mockResolvedValue({
+    vi.mocked(loadNativeNearlyFinished).mockResolvedValue({
       meltingStation: [{ name: 'Empty Component', quantity: 1, requirements: [] }],
       reforgingStation: [createEntry({ item: 'Empty Raw Item', cost: [{ name: 'Empty Component', quantity: 1 }] })]
     })
@@ -336,7 +335,7 @@ describe('NearlyFinishedPage workflow', () => {
 
   it('describes an empty crafted-material shopping list', async () => {
     const user = userEvent.setup()
-    vi.mocked(loadManualPayload).mockResolvedValue({
+    vi.mocked(loadNativeNearlyFinished).mockResolvedValue({
       meltingStation: [],
       reforgingStation: [createEntry({ item: 'Raw Only Item', cost: [{ name: 'Thread of Fate', quantity: 10 }] })]
     })
