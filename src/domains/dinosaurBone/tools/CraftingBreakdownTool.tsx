@@ -1,49 +1,7 @@
-import IngredientStock from '../../../shared/items/IngredientStock'
-import { Alert, Badge, Box, Group, List, Paper, Stack, Text, Title } from '@mantine/core'
-import type { DinosaurBoneRequirement, FinishedDinosaurBoneItem } from '../dinosaurBone.types.ts'
-
-const RequirementList = ({ requirements }: { requirements: readonly DinosaurBoneRequirement[] }) => {
-  if (requirements.length === 0) {
-    return (
-      <Text c='dimmed' size='xs'>
-        No published crafting requirements.
-      </Text>
-    )
-  }
-
-  return (
-    <List spacing='xs' size='sm'>
-      {requirements.map((requirement, index) => (
-        <List.Item key={`${requirement.name}-${String(index)}`}>
-          <Group component='span' justify='space-between' align='flex-start' wrap='nowrap'>
-            <Box component='span' style={{ minWidth: 0 }}>
-              <Text component='span' size='sm' style={{ overflowWrap: 'anywhere' }}>
-                {requirement.name}
-              </Text>
-              {requirement.foundIn?.map((location) => (
-                <Text component='span' display='block' c='dimmed' size='xs' key={location}>
-                  {location}
-                </Text>
-              ))}
-            </Box>
-            <Badge component='span' variant='light' color='gray'>
-              ×{String(requirement.quantity)}
-            </Badge>
-          </Group>
-          <IngredientStock name={requirement.name} required={requirement.quantity} />
-          {requirement.requirements && requirement.requirements.length > 0 ? (
-            <Box mt='xs' ml='sm'>
-              <Text c='dimmed' size='xs' mb={4}>
-                Component requirements
-              </Text>
-              <RequirementList requirements={requirement.requirements} />
-            </Box>
-          ) : null}
-        </List.Item>
-      ))}
-    </List>
-  )
-}
+import { Alert, Stack, Text } from '@mantine/core'
+import type { FinishedDinosaurBoneItem } from '../dinosaurBone.types'
+import { BuildHeader, RequirementList } from './RecipeParts'
+import styles from '../../../shared/layout/craftingTools.module.css'
 
 const CraftingBreakdownTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) => {
   if (!finished.item) {
@@ -79,18 +37,14 @@ const CraftingBreakdownTool = ({ finished }: { finished: FinishedDinosaurBoneIte
 
   return (
     <Stack gap='md' p='md'>
-      <Text size='sm'>Requirements are kept separate for each crafted part of this build.</Text>
+      <BuildHeader finished={finished} />
       {recipes.map((recipe) => (
-        <Paper component='section' aria-label={`${recipe.name} requirements`} withBorder p='sm' key={recipe.id}>
+        <section className={styles.stage} aria-label={`${recipe.name} requirements`} key={recipe.id}>
           <Stack gap='xs'>
-            <Group justify='space-between' align='flex-start' wrap='nowrap'>
-              <Title order={4} size='h5' style={{ overflowWrap: 'anywhere' }}>
-                {recipe.name}
-              </Title>
-              <Badge variant='light' color={recipe.id === 'base-item' ? 'blue' : 'gray'}>
-                {recipe.label}
-              </Badge>
-            </Group>
+            <h3>{recipe.label}</h3>
+            <Text fw={600} size='sm'>
+              {recipe.name}
+            </Text>
             {recipe.craftedIn ? (
               <Text c='dimmed' size='xs'>
                 Crafted at {recipe.craftedIn}
@@ -98,7 +52,7 @@ const CraftingBreakdownTool = ({ finished }: { finished: FinishedDinosaurBoneIte
             ) : null}
             <RequirementList requirements={recipe.requirements} />
           </Stack>
-        </Paper>
+        </section>
       ))}
     </Stack>
   )

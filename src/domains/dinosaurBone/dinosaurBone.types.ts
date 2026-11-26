@@ -1,3 +1,6 @@
+import type { ScopedAugmentPresentation } from '../../shared/augments/ScopedAugmentDetails'
+import type { ItemArt } from '../../shared/items/itemArt'
+
 export interface DinosaurBoneEffect {
   name: string
   modifier?: number | string
@@ -26,6 +29,7 @@ export interface DinosaurBoneSetBonus {
 }
 
 export interface DinosaurBoneItem {
+  art?: ItemArt
   name: string
   pageTitle?: string
   type: string
@@ -51,6 +55,8 @@ export interface DinosaurBoneItem {
 }
 
 export interface DinosaurBoneAugment {
+  scoped?: ScopedAugmentPresentation
+  searchLabels?: readonly string[]
   name: string
   augmentType: string
   description?: string
@@ -76,6 +82,7 @@ export interface DinosaurBoneIndexes {
 }
 
 export interface DinosaurBoneData {
+  enchantmentNames?: readonly string[]
   items: readonly ClassifiedDinosaurBoneItem[]
   dinosaurAugments: readonly DinosaurBoneAugment[]
   colorAugments: readonly DinosaurBoneAugment[]
@@ -103,10 +110,4 @@ export interface CumulativeIngredient {
   quantity: number
   ingredientType?: string
   foundIn?: readonly string[]
-}
-
-export interface CraftingRequirementsPayload {
-  schemaVersion: 1
-  items: readonly { name: string; requirements: readonly DinosaurBoneRequirement[] }[]
-  identityDifferences: readonly { legacyName: string; currentCdnName: string }[]
 }
