@@ -1,3 +1,4 @@
+import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import { loadDataset, loadManualPayload } from '../../shared/data/loadDataset.ts'
 
 export interface IncrediblePotentialEffect {
@@ -132,7 +133,7 @@ export const parseRings = (value: unknown): IncrediblePotentialRing[] => {
     name,
     type,
     minLevel,
-    enchantments,
+    enchantments: enchantments.filter(isVisibleEffect),
     setName: setBonus[0].name
   }))
 }
@@ -158,7 +159,7 @@ export const parseRecipes = (value: unknown): AltarRecipe[] => {
     }
   }
 
-  return value
+  return value.map((recipe) => ({ ...recipe, added: recipe.added?.filter(isVisibleEffect) ?? null }))
 }
 
 export const parseIngredients = (value: unknown): IngredientMetadata[] => {

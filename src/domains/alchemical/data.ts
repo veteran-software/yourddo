@@ -1,3 +1,4 @@
+import { isVisibleEffect } from '../../shared/data/visibleEffect'
 export const alchemicalStages = ['material', 'tier1', 'tier2', 'tier3'] as const
 export type AlchemicalStage = (typeof alchemicalStages)[number]
 export type AlchemicalFamily = 'original' | 'legendary'
@@ -190,6 +191,7 @@ const statNames: Readonly<Record<string, string>> = {
   'Spell.Metamagic@Agent::m_nEmpowerCostBonus': 'Empower Spell Point Cost Reduction'
 }
 function effectFor(effect: RawEffect): AlchemicalEffect | undefined {
+  if (!isVisibleEffect(effect)) return undefined
   // Keep hidden sockets and usable click effects. Suppress bookkeeping records (including minimum level handled by the recipe).
   if (
     /^(?:Plus \d+ (?:Minimum Level|.*(?:Wear|Cost) Modifier)|Bound (?:on Acquire|to Account)|Max Charges =|Recharge \d+\/day|Alchemical \()/i.test(
@@ -209,17 +211,17 @@ function effectFor(effect: RawEffect): AlchemicalEffect | undefined {
       precise = 100 * value
       value = Math.trunc(Number(precise.toFixed(5)))
     }
-    if (entry.unit === 'percent') {
+    if (entry.unit === 'percent' || entry.unit === 'points') {
       precise = value
       value = Math.trunc(value)
-      suffix = '%'
+      if (entry.unit === 'percent') suffix = '%'
     }
     if (entry.unit === 'multiplier' && entry.operation === 'Multiply') {
       precise = (1 - value) * 100
       value = Number(precise.toFixed(5))
       suffix = '%'
     }
-    if (name === 'Spell_SpellFailureChance' || name === 'Combat_MissileChanceToReturn') {
+    if (!entry.unit && (name === 'Spell_SpellFailureChance' || name === 'Combat_MissileChanceToReturn')) {
       value *= 100
       suffix = '%'
     }
