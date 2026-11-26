@@ -13,6 +13,7 @@ export interface PlannedAugmentSlot {
 }
 
 export interface PlannedItem {
+  twoHanded?: true
   prefixEnhancementId: string | null
   suffixEnhancementId: string | null
   extraEnhancementId: string | null

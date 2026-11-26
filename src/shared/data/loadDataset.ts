@@ -134,14 +134,23 @@ interface ResolvedRelease {
 }
 
 let releasePromise: Promise<ResolvedRelease> | undefined
+let latestPromise: Promise<LatestRelease> | undefined
 
 const joinUrl = (baseUrl: string, path: string): string => `${baseUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
 
-const resolveRelease = async (): Promise<ResolvedRelease> => {
-  const latestResponse = await fetchResponse(joinUrl(cdnBaseUrl, 'latest.json'), 'Latest release', {
-    cache: 'no-cache'
-  })
-  const latest = await parseLatestRelease(latestResponse)
+const loadLatestRelease = (): Promise<LatestRelease> => {
+  latestPromise ??= fetchResponse(joinUrl(cdnBaseUrl, 'latest.json'), 'Latest release', { cache: 'no-cache' })
+    .then(parseLatestRelease)
+    .catch((cause: unknown) => {
+      latestPromise = undefined
+      throw cause
+    })
+  return latestPromise
+}
+
+export const loadGameVersion = async (): Promise<string> => (await loadLatestRelease()).gameVersion
+
+const resolveRelease = async (latest: LatestRelease): Promise<ResolvedRelease> => {
   const baseUrl = joinUrl(cdnBaseUrl, latest.baseUrl)
   const manifestResponse = await fetchResponse(joinUrl(baseUrl, 'manifest.json'), 'Manifest')
   const manifest = await parseManifest(manifestResponse)
@@ -157,10 +166,14 @@ const resolveRelease = async (): Promise<ResolvedRelease> => {
 }
 
 const loadRelease = (): Promise<ResolvedRelease> => {
-  releasePromise ??= resolveRelease().catch((cause: unknown) => {
-    releasePromise = undefined
-    throw cause
-  })
+  if (!releasePromise) {
+    const latest = loadLatestRelease()
+    releasePromise = latest.then(resolveRelease).catch((cause: unknown) => {
+      if (latestPromise === latest) latestPromise = undefined
+      releasePromise = undefined
+      throw cause
+    })
+  }
 
   return releasePromise
 }

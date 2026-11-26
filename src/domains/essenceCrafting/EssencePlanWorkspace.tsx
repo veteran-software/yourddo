@@ -58,6 +58,7 @@ interface Props {
   data: EssenceCraftingData
   plan: EssencePlanState
   onAction: (action: EssencePlanAction) => void
+  onRequestActivate: (slot: EquipmentSlotId, onActivated: () => void) => void
   onRequestDeactivate: (slot: EquipmentSlotId) => void
   onRequestReset: () => void
 }
@@ -66,6 +67,7 @@ export default function EssencePlanWorkspace({
   data,
   plan,
   onAction,
+  onRequestActivate,
   onRequestDeactivate,
   onRequestReset,
   tools
@@ -83,10 +85,13 @@ export default function EssencePlanWorkspace({
   const SlotPanel = view === 'grid' ? 'section' : 'nav'
 
   function selectSlot(id: EquipmentSlotId) {
-    if (!plan.itemsBySlotId[id]) onAction({ type: 'activate-equipment-slot', equipmentSlotId: id })
-    setSelected(id)
-    setShowDetail(true)
-    requestAnimationFrame(() => detailHeading.current?.focus({ preventScroll: true }))
+    const reveal = () => {
+      setSelected(id)
+      setShowDetail(true)
+      requestAnimationFrame(() => detailHeading.current?.focus({ preventScroll: true }))
+    }
+    if (plan.itemsBySlotId[id]) reveal()
+    else onRequestActivate(id, reveal)
   }
 
   return (
@@ -195,14 +200,15 @@ export default function EssencePlanWorkspace({
                           className={layout.emptyCard}
                           aria-label={'Plan ' + label}
                           onClick={() => {
-                            setSelected(id)
-                            onAction({ type: 'activate-equipment-slot', equipmentSlotId: id })
-                            requestAnimationFrame(() =>
-                              document
-                                .getElementById('planned-item-' + id + '-details')
-                                ?.querySelector('input')
-                                ?.focus({ preventScroll: true })
-                            )
+                            onRequestActivate(id, () => {
+                              setSelected(id)
+                              requestAnimationFrame(() =>
+                                document
+                                  .getElementById('planned-item-' + id + '-details')
+                                  ?.querySelector('input')
+                                  ?.focus({ preventScroll: true })
+                              )
+                            })
                           }}
                         >
                           Plan item

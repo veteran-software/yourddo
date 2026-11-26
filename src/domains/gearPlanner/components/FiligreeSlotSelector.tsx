@@ -17,6 +17,7 @@ import {
 } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
 import { useId, useMemo, useState } from 'react'
+import { keyedEntries } from '../../../shared/ui/keyedEntries.ts'
 import { getGearPlannerMaxFiligreeSlots, sameFiligreeType } from '../filigrees.ts'
 import type { GearPlannerEffect, GearPlannerFiligree, GearPlannerItem } from '../gearPlanner.types.ts'
 import { type GearPlannerSlottedFiligrees, gearPlannerUnlockedFiligreeSlotCount } from '../planner.ts'
@@ -179,6 +180,11 @@ const FiligreeSlotSelector = ({
                       <IconX size={14} />
                     </ActionIcon>
                   )}
+                  {keyedEntries(filigree?.source.enchantments ?? []).map(({ key, value: effect }) => (
+                    <Text key={key} size='xs' c='dimmed' ta='center'>
+                      {effectLabel(effect)}
+                    </Text>
+                  ))}
                 </Box>
               )
             })}

@@ -53,6 +53,7 @@ const effectIdsForNames = (data: EssenceCraftingData, effectNames: readonly stri
 }
 
 const cloneItemForBackup = (data: EssenceCraftingData, item: PlannedItem): EssencePlanBackupItem => ({
+  ...(item.twoHanded && { twoHanded: true }),
   prefixEnhancementId: item.prefixEnhancementId,
   suffixEnhancementId: item.suffixEnhancementId,
   extraEnhancementId: item.extraEnhancementId,

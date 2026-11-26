@@ -125,6 +125,7 @@ import {
 import { getEssenceCraftedGearPlannerItems, isEssenceCraftedGearPlannerItem } from './essenceCrafting.ts'
 import {
   collectSelectedGearPlannerFiligrees,
+  isGearPlannerMinorArtifact,
   supportsGearPlannerFiligrees,
   type GearPlannerSelectedFiligree
 } from './filigrees.ts'
@@ -265,9 +266,13 @@ function ItemCompendiumLink({ item }: Readonly<{ item: GearPlannerItem }>) {
 }
 
 const itemMetadata = (item: GearPlannerItem, essenceMinimumLevel?: number) =>
-  `ML ${String(essenceMinimumLevel ?? item.minimumLevel)} · ${
-    isEssenceCraftedGearPlannerItem(item) ? 'Essence Crafted' : gearPlannerItemType(item)
-  }`
+  [
+    `ML ${String(essenceMinimumLevel ?? item.minimumLevel)}`,
+    isEssenceCraftedGearPlannerItem(item) ? 'Essence Crafted' : gearPlannerItemType(item),
+    isGearPlannerMinorArtifact(item) ? 'Minor Artifact' : ''
+  ]
+    .filter(Boolean)
+    .join(' · ')
 
 interface EquipmentEditorProps {
   findSlotUpgrades: () => void
@@ -1657,6 +1662,7 @@ const GearPlannerWorkspace = () => {
           (effect) =>
             effect.slot === cardSlot &&
             (effect.category === 'augment' ||
+              effect.category === 'filigree' ||
               effect.category === 'crafting' ||
               effect.category === 'equipped-item' ||
               effect.category === 'reforging-tier' ||

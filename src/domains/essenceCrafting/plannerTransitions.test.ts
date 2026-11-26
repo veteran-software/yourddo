@@ -38,6 +38,30 @@ const activate = (state: EssencePlanState, equipmentSlotId: string): EssencePlan
   transition(state, { type: 'activate-equipment-slot', equipmentSlotId })
 
 describe('Essence Crafting planner transitions', () => {
+  it('blocks conflicting additions and keeps the blocking item if the replacement is invalid', () => {
+    const state = activate(createEmptyEssencePlan(createData()), 'off-hand')
+    for (const id of ['orb', 'shield', 'rune-arm']) expect(activate(state, id)).toBe(state)
+    const change = {
+      type: 'apply-shard',
+      equipmentSlotId: 'orb',
+      position: 'prefix',
+      enhancementId: 'enhancement-alpha-prefix'
+    } as const
+    expect(transition(state, { type: 'resolve-equipment-conflict', change, blockers: ['off-hand'] })).toBe(state)
+  })
+
+  it('leaves the plan untouched when the requested shard cannot occupy the affix', () => {
+    const state = createEmptyEssencePlan(createData())
+    expect(
+      transition(state, {
+        type: 'apply-shard',
+        equipmentSlotId: 'ring-1',
+        position: 'extra',
+        enhancementId: 'enhancement-level-two-suffix'
+      })
+    ).toBe(state)
+  })
+
   it('activates slots with synchronized empty items in stable equipment order and ignores unknown IDs', () => {
     const initial = createEmptyEssencePlan(createData())
     const withSecondRing = activate(initial, 'ring-2')
