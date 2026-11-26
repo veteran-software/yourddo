@@ -45,15 +45,11 @@ export default function LayeredItemArt({
   }, [hasLayers, domain])
   const images = layers?.map((id) => icons?.get(id))
   return (
-    <span
-      className={styles.art}
-      style={{ width: size, height: size }}
-      role={alt ? 'img' : undefined}
-      aria-label={alt || undefined}
-      aria-hidden={!alt}
-    >
+    <span className={styles.art} style={{ width: size, height: size }} aria-hidden={!alt}>
       {images?.length && images.every((src): src is string => Boolean(src))
-        ? images.map((src, index) => <img alt='' key={String(index) + '-' + String(layers?.[index])} src={src} />)
+        ? images.map((src, index) => (
+            <img alt={index === 0 ? alt : ''} key={String(index) + '-' + String(layers?.[index])} src={src} />
+          ))
         : fallback}
     </span>
   )

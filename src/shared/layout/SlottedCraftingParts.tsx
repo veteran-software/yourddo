@@ -17,12 +17,12 @@ export function BuildHeader({
   level,
   filled,
   total
-}: {
+}: Readonly<{
   item: { name: string; type: string; icon?: string; image?: string }
   level?: string | number
   filled: number
   total: number
-}) {
+}>) {
   return (
     <header className={styles.item}>
       <ItemIcon item={item} size={40} />
@@ -44,10 +44,10 @@ export function BuildHeader({
 export function RequirementList({
   requirements,
   icons = false
-}: {
+}: Readonly<{
   requirements: readonly Requirement[]
   icons?: boolean
-}) {
+}>) {
   if (!requirements.length)
     return (
       <Text size='sm' c='dimmed'>

@@ -80,14 +80,16 @@ function damageLabel(row: Row) {
   return damage
 }
 
+function immunityLabel(row: Row) {
+  const traits = [...rows(row.targets ?? []).flatMap(traitNames), ...strings(row.effectTraits ?? [])]
+  return 'Immunity: ' + (row.targetDescription ? text(row.targetDescription) : traits.join(', ') || 'harmful effects')
+}
+
 function mechanicLabel(row: Row): string {
   if (row.type === 'damage') return damageLabel(row)
   if (row.type === 'damageReductionBypass') return 'Damage reduction bypass: ' + strings(row.traits).join(', ')
   if (row.type === 'saveAutoFailureImmunity') return 'Save auto-failure immunity: ' + strings(row.saveFlags).join(', ')
-  if (row.type === 'immunity') {
-    const traits = [...rows(row.targets ?? []).flatMap(traitNames), ...strings(row.effectTraits ?? [])]
-    return 'Immunity: ' + (row.targetDescription ? text(row.targetDescription) : traits.join(', ') || 'harmful effects')
-  }
+  if (row.type === 'immunity') return immunityLabel(row)
   if (row.type === 'levelDrain') return text(row.dice) + ' negative levels (' + text(row.channel) + ')'
   if (row.type === 'createEntity') return 'Summon ' + text(row.name)
   if (row.type === 'instantKill') return row.onFailedSave ? 'Instant kill on failed save' : 'Instant kill'
@@ -96,6 +98,13 @@ function mechanicLabel(row: Row): string {
   const name = text(row.displayName ?? row.name ?? row.type)
   if (Array.isArray(row.value)) return name + ': ' + strings(row.value).join(', ')
   return name
+}
+
+function mechanicValue(row: Row, absorption: boolean) {
+  if (typeof row.value !== 'number') return undefined
+  if (absorption) return Math.round((1 - row.value) * 100)
+  if (row.unit === 'percent' || row.unit === 'points') return Math.trunc(row.value)
+  return row.value
 }
 
 function nativeMechanics(row: Row, parent?: Row): HgsMechanic[] {
@@ -111,11 +120,7 @@ function nativeMechanics(row: Row, parent?: Row): HgsMechanic[] {
     name += ' (' + parent.save + ' DC ' + String(parent.saveDC) + ')'
   }
   const absorption = row.unit === 'multiplier' && row.operation === 'Multiply' && /absorption/i.test(name)
-  let value = row.value
-  if (typeof value === 'number') {
-    if (absorption) value = Math.round((1 - value) * 100)
-    else if (row.unit === 'percent' || row.unit === 'points') value = Math.trunc(value)
-  }
+  const value = mechanicValue(row, absorption)
   return [
     {
       name,

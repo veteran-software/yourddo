@@ -3,7 +3,7 @@ import type { FinishedDinosaurBoneItem } from '../dinosaurBone.types'
 import { getColorAugmentMinimumLevelIncrease } from '../logic'
 export { RequirementList } from '../../../shared/layout/SlottedCraftingParts'
 
-export function BuildHeader({ finished }: { finished: FinishedDinosaurBoneItem }) {
+export function BuildHeader({ finished }: Readonly<{ finished: FinishedDinosaurBoneItem }>) {
   const { item, slots, emptySlots } = finished
   if (!item) return null
   return (

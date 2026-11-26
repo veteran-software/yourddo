@@ -225,11 +225,8 @@ const selectedAugments = (data: EssenceCraftingData, item: PlannedItem) =>
 function augmentLines(data: EssenceCraftingData, augment: ReturnType<typeof selectedAugments>[number], level: number) {
   if (!augment.scoped) return resolveEssenceEffects(data, augment.effects, level).map(formatEffect)
   const { presentation, fallbackDescription } = augment.scoped
-  return presentation.length
-    ? presentation.flatMap((group) => [group.name, ...group.rows.map(scopedEffectLabel)])
-    : fallbackDescription
-      ? [fallbackDescription]
-      : []
+  if (!presentation.length) return fallbackDescription ? [fallbackDescription] : []
+  return presentation.flatMap((group) => [group.name, ...group.rows.map(scopedEffectLabel)])
 }
 
 const resolvedEffectsForSelection = (

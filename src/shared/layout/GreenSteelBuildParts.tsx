@@ -8,11 +8,11 @@ export function BuildHeader({
   item,
   tiers,
   equipmentLabel = 'Equipment'
-}: {
+}: Readonly<{
   item: ItemIconSource & { type: 'weapon' | 'equipment' }
   tiers: number
   equipmentLabel?: string
-}) {
+}>) {
   return (
     <header className={styles.item}>
       <ItemIcon item={item} size={40} />
@@ -31,12 +31,12 @@ export function MaterialRow({
   quantity,
   location,
   children
-}: {
+}: Readonly<{
   name: string
   quantity: number
   location?: string
   children?: ReactNode
-}) {
+}>) {
   const row = (
     <>
       <span>{name}</span>

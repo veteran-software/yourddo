@@ -496,7 +496,7 @@ function enchantmentLabels(value: unknown): string[] {
   return value.map((label) => text(label, 'enchantment label'))
 }
 
-const scopedGroups = ['standard', 'moon', 'sun']
+const scopedGroups = new Set(['standard', 'moon', 'sun'])
 
 // Gear Planner and its embedded crafting editor request the same release files concurrently.
 const pendingAugmentFiles = new Map<string, Promise<unknown>>()
@@ -611,11 +611,11 @@ export async function loadSocketCatalog() {
           }
       return groups.flatMap((group, i) =>
         rows(group, 'augments')
-          .filter((item) => !scopedGroups.includes(groupNames[i]) || publicRecord(item))
+          .filter((item) => !scopedGroups.has(groupNames[i]) || publicRecord(item))
           .map((item) => {
             const { name, slotTypes, minimumLevel } = socketItem(item)
             const override = item.hostSetOverride ? row(item.hostSetOverride, name) : undefined
-            const details = scoped && scopedGroups.includes(groupNames[i]) ? scoped(item) : undefined
+            const details = scoped && scopedGroups.has(groupNames[i]) ? scoped(item) : undefined
             const effectsAdded = details?.effectsAdded ?? resolveEffects(item, name, index, spells)
             const set = override ? definitions.get(id(override.primarySetId, name)) : undefined
             const discrepancy = [...new Set([...itemDiscrepancies(item, effectsAdded), ...setDiscrepancies(set)])]

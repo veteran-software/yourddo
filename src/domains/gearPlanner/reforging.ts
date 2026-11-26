@@ -42,12 +42,11 @@ export interface GearPlannerReforgingChoice {
   effect: GearPlannerEffect
 }
 
-export interface GearPlannerReforgingRecipe {
+export interface GearPlannerReforgingRecipe extends Pick<ReforgingEntry, 'native'> {
   itemName: string
   stage: GearPlannerReforgingStage
   kind: 'toggle' | 'choice'
   choices: readonly GearPlannerReforgingChoice[]
-  native?: ReforgingEntry['native']
   usesNearlyFinishedFallback?: true
 }
 
@@ -341,6 +340,44 @@ const effectiveTierRecord = (
   return candidates.length === 1 ? candidates[0] : undefined
 }
 
+function selectedNativeOption(
+  item: GearPlannerItem,
+  recipe: GearPlannerReforgingRecipe | undefined,
+  selection: GearPlannerReforgingStageState | undefined,
+  data: GearPlannerReforgingData
+) {
+  if (!recipe?.native || !selection) return undefined
+  if (selection.kind === 'active') return recipe.kind === 'toggle' ? recipe.native.options[0] : undefined
+  const choice = gearPlannerReforgingChoiceForState(item, recipe.stage, selection, data)
+  return choice && recipe.native.options[recipe.choices.indexOf(choice)]
+}
+
+function nativeReforgingTier(
+  item: GearPlannerItem,
+  state: GearPlannerItemReforgingState,
+  data: GearPlannerReforgingData,
+  native: readonly GearPlannerReforgingRecipe[]
+): GearPlannerEffectiveReforgingTier | null {
+  let groups = [...(native[0].native?.base ?? [])]
+  const augments = [...getGearPlannerBaseAugmentSlots(item)]
+  let lastStage: GearPlannerReforgingStage | undefined
+  for (const stage of gearPlannerReforgingStages) {
+    const recipe = native.find((r) => r.stage === stage)
+    const option = selectedNativeOption(item, recipe, state[stage], data)
+    if (!option) continue
+    groups = [...groups.filter(({ id }) => !option.removeIds.includes(id)), ...option.added]
+    if (option.slot) augments.push(option.slot)
+    lastStage = stage
+  }
+  if (!lastStage) return null
+  const tier = tierByStage[lastStage]
+  const setBonus = [
+    ...new Set([...(item.source.setBonus ?? []).map((set) => set.name), ...groups.flatMap((g) => g.setName ?? [])])
+  ].map((name) => ({ name }))
+  const source = { ...item.source, enchantments: groups.flatMap((g) => g.effects), augments, setBonus }
+  return { stage: lastStage, tier, record: { tier, source, sourceFile: item.sourceFile } }
+}
+
 export const getGearPlannerEffectiveReforgingTier = (
   item: GearPlannerItem,
   state: GearPlannerItemReforgingState | undefined,
@@ -348,30 +385,7 @@ export const getGearPlannerEffectiveReforgingTier = (
 ): GearPlannerEffectiveReforgingTier | null => {
   if (!state) return null
   const native = gearPlannerReforgingRecipesForItem(item, data).filter((r) => r.native)
-  if (native.length) {
-    let groups = [...(native[0].native?.base ?? [])]
-    const augments = [...getGearPlannerBaseAugmentSlots(item)]
-    let lastStage: GearPlannerReforgingStage | undefined
-    for (const stage of gearPlannerReforgingStages) {
-      const recipe = native.find((r) => r.stage === stage)
-      const selection = state?.[stage]
-      if (!recipe?.native || !selection || (selection.kind === 'active' && recipe.kind !== 'toggle')) continue
-      const chosen = gearPlannerReforgingChoiceForState(item, stage, selection, data)
-      const index = selection.kind === 'choice' ? recipe.choices.findIndex((choice) => choice === chosen) : 0
-      const option = recipe.native.options[index]
-      if (!option) continue
-      groups = [...groups.filter(({ id }) => !option.removeIds.includes(id)), ...option.added]
-      if (option.slot) augments.push(option.slot)
-      lastStage = stage
-    }
-    if (!lastStage) return null
-    const tier = tierByStage[lastStage]
-    const setBonus = [
-      ...new Set([...(item.source.setBonus ?? []).map((set) => set.name), ...groups.flatMap((g) => g.setName ?? [])])
-    ].map((name) => ({ name }))
-    const source = { ...item.source, enchantments: groups.flatMap((g) => g.effects), augments, setBonus }
-    return { stage: lastStage, tier, record: { tier, source, sourceFile: item.sourceFile } }
-  }
+  if (native.length) return nativeReforgingTier(item, state, data, native)
   for (const stage of [...gearPlannerReforgingStages].reverse()) {
     const recipe = gearPlannerReforgingRecipeForStage(item, stage, data)
     const selected = state?.[stage]

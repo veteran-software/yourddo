@@ -101,7 +101,8 @@ export async function addNativeSelectionAliases(data: ViktraniumData): Promise<V
     data.items.map(async (item) => {
       const title = item.name.replace(/^(Legendary )?Calamitous Sceptre$/, '$1Calamitous Burning Sceptre')
       itemById.set(await historicalId('item', title), item)
-      const previous = previousTypes[title] ?? item.slots.map((slot) => slot.augmentType).sort()
+      const previous =
+        previousTypes[title] ?? item.slots.map((slot) => slot.augmentType).sort((a, b) => a.localeCompare(b, 'en'))
       const slots = new Map<string, string>()
       await Promise.all(
         item.slots.map(async (slot) => {

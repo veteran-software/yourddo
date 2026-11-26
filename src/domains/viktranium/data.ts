@@ -457,8 +457,14 @@ export async function loadViktraniumData(): Promise<ViktraniumData> {
       : loadDataset<unknown>('viktranium').then(validateViktraniumDataset),
     loadScopedAugmentCatalog()
   ])
-  if (!catalog) return native ? addNativeSelectionAliases(data) : data
+  const result = catalog ? mergeScopedAugments(data, catalog) : data
+  return native ? addNativeSelectionAliases(result) : result
+}
 
+function mergeScopedAugments(
+  data: ViktraniumData,
+  catalog: NonNullable<Awaited<ReturnType<typeof loadScopedAugmentCatalog>>>
+) {
   const match = scopedAugmentMatcher(catalog.entries)
   const previous = Map.groupBy(
     data.augments.filter((a) => hasColorPicker(a.augmentType)),
@@ -497,6 +503,5 @@ export async function loadViktraniumData(): Promise<ViktraniumData> {
     const current = group !== undefined && firstByMatch.get(group)
     if (current) for (const original of originals) augmentById.set(original.id, current)
   }
-  const result = { ...data, augments, enchantmentNames: catalog.names, indexes: { ...indexes, augmentById } }
-  return native ? addNativeSelectionAliases(result) : result
+  return { ...data, augments, enchantmentNames: catalog.names, indexes: { ...indexes, augmentById } }
 }

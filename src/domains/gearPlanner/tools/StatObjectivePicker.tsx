@@ -90,6 +90,7 @@ export default function StatObjectivePicker({
       setPage(0)
     }
   }
+  const placeholder = focus ? 'Add focus stat' : 'Choose a stat'
   return (
     <div>
       <Text size='sm' fw={500}>
@@ -109,7 +110,7 @@ export default function StatObjectivePicker({
           setOpen(true)
         }}
       >
-        {value ? label(value) + ' · ' + selectedBonus : focus ? 'Add focus stat' : 'Choose a stat'}
+        {value ? label(value) + ' · ' + selectedBonus : placeholder}
       </Button>
       <Modal
         opened={open}
