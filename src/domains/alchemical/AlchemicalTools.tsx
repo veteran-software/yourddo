@@ -1,5 +1,4 @@
 import { SegmentedControl, Stack, Text } from '@mantine/core'
-import { IconChevronRight } from '@tabler/icons-react'
 import IngredientStock from '../../shared/items/IngredientStock'
 import AlchemicalItemArt from './AlchemicalItemArt'
 import type { AlchemicalBase, AlchemicalEffect, AlchemicalStage, resolveAlchemicalPlan } from './data'
@@ -52,36 +51,17 @@ export function IngredientTool({
       )}
       {costs.length ? (
         <ul className={styles.costs}>
-          {costs.map((cost) => {
-            const row = (
-              <>
+          {costs.map((cost) => (
+            <li key={cost.id}>
+              <div className={styles.costRow}>
                 <span>{cost.name}</span>
                 <strong>×{cost.quantity.toLocaleString()}</strong>
-              </>
-            )
-            return (
-              <li key={cost.id}>
-                {cost.sources.length ? (
-                  <details className={styles.source}>
-                    <summary aria-label={'Where to find ' + cost.name + ', quantity ' + cost.quantity.toLocaleString()}>
-                      <IconChevronRight size={15} aria-hidden />
-                      {row}
-                    </summary>
-                    <ul>
-                      {cost.sources.map((source) => (
-                        <li key={source}>{source}</li>
-                      ))}
-                    </ul>
-                  </details>
-                ) : (
-                  <div className={styles.costRow}>{row}</div>
-                )}
-                <div className={styles.stock}>
-                  <IngredientStock name={cost.name} required={cost.quantity} />
-                </div>
-              </li>
-            )
-          })}
+              </div>
+              <div className={styles.stock}>
+                <IngredientStock name={cost.name} required={cost.quantity} />
+              </div>
+            </li>
+          ))}
         </ul>
       ) : (
         <Text size='sm' c='dimmed'>

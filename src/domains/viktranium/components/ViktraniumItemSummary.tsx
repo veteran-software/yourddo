@@ -7,11 +7,11 @@ import type { ViktraniumItem } from '../viktranium.types.ts'
 const bindingText = (binding: Readonly<Record<string, string>> | undefined) =>
   binding ? Object.values(binding).join(' · ') : undefined
 
-const ViktraniumItemSummary = ({ item }: { item: ViktraniumItem }) => {
+const ViktraniumItemSummary = ({ item }: Readonly<{ item: ViktraniumItem }>) => {
   const metadata = [
     item.type,
     item.category,
-    `Minimum level ${String(item.minimumLevel)}`,
+    `ML ${String(item.minimumLevel)}`,
     bindingText(item.binding),
     item.material
   ].filter((value): value is string => Boolean(value))
@@ -46,11 +46,6 @@ const ViktraniumItemSummary = ({ item }: { item: ViktraniumItem }) => {
             {item.recipes.map((recipe) => (
               <Text size='sm' key={recipe.id}>
                 Crafted at {recipe.device}
-              </Text>
-            ))}
-            {item.dropLocations.map((location, index) => (
-              <Text size='sm' key={`${location.sourceType}-${String(index)}`}>
-                Found in {[location.source, location.location, location.difficulty].filter(Boolean).join(' · ')}
               </Text>
             ))}
             {item.notes ? <Text size='sm'>Note: {item.notes}</Text> : null}

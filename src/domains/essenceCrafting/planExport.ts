@@ -317,7 +317,7 @@ export const formatEssencePlanDiscordMarkdown = (
 
     const minimumLevelStep = stepsBySource.get('minimum-level-shard')
     if (minimumLevelStep) {
-      lines.push('- Minimum Level shard', ...formatDiscordStep(context, minimumLevelStep))
+      lines.push('- ML shard', ...formatDiscordStep(context, minimumLevelStep))
     }
 
     lines.push(...discordEnhancementLines(context, itemData))
@@ -395,7 +395,7 @@ export const formatEssencePlanBbCode = (
 
     const minimumLevelStep = stepsBySource.get('minimum-level-shard')
     if (minimumLevelStep) {
-      lines.push(`[*][b]Minimum Level shard[/b]`, '[list]', ...formatBbCodeStep(context, minimumLevelStep), '[/list]')
+      lines.push(`[*][b]ML shard[/b]`, '[list]', ...formatBbCodeStep(context, minimumLevelStep), '[/list]')
     }
 
     lines.push(...bbCodeEnhancementLines(context, itemData))

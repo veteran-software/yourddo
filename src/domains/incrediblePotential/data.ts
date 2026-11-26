@@ -1,5 +1,10 @@
+import { loadItemSetResource } from '../../shared/data/loadItemSetResource.ts'
+import { loadDatasetFile } from '../../shared/data/loadDataset.ts'
 import { isVisibleEffect } from '../../shared/data/visibleEffect'
-import { loadDataset, loadManualPayload } from '../../shared/data/loadDataset.ts'
+
+const domain = 'incredible-potential'
+const potential = 'Incredible Potential'
+const mediumEnergyCell = 'Shavarath Medium Energy Cell'
 
 export interface IncrediblePotentialEffect {
   name: string
@@ -9,26 +14,33 @@ export interface IncrediblePotentialEffect {
 }
 
 export interface IncrediblePotentialRing {
-  pageTitle: string
+  id: number
   name: string
   type: string
-  minLevel: string
+  minLevel: number
   enchantments: IncrediblePotentialEffect[]
-  setName: string
+  setName?: string
 }
 
-interface PublishedIncrediblePotentialRing extends Omit<IncrediblePotentialRing, 'setName'> {
-  setBonus: { name: string }[]
+export interface RecipeIngredient {
+  name: string
+  quantity: number
+  recipeId?: number
 }
 
-export interface AltarRecipe {
+interface Recipe {
   recipeId: number
   name: string
-  device: string
-  ingredients: string[]
-  removed: string | null
-  added: IncrediblePotentialEffect[] | null
+  ingredients: RecipeIngredient[]
 }
+
+export interface RingUpgrade extends Recipe {
+  stage: 'ringUpgrade'
+  added: IncrediblePotentialEffect[]
+  ringIds: number[]
+}
+
+export type AltarRecipe = RingUpgrade | (Recipe & { stage: 'component' | 'shardImbuement' })
 
 export interface IngredientMetadata {
   name: string
@@ -48,156 +60,204 @@ export class InvalidIncrediblePotentialDataError extends Error {
   }
 }
 
-const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null
-
-const isEffect = (value: unknown): value is IncrediblePotentialEffect => {
-  if (!isRecord(value) || typeof value.name !== 'string' || value.name.length === 0) return false
-
-  return (
-    (value.modifier === undefined ||
-      typeof value.modifier === 'string' ||
-      (typeof value.modifier === 'number' && Number.isFinite(value.modifier))) &&
-    (value.bonus === undefined || typeof value.bonus === 'string') &&
-    (value.notes === undefined || typeof value.notes === 'string')
-  )
+function record(value: unknown, label: string): Record<string, unknown> {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return Object.fromEntries(Object.entries(value))
+  }
+  throw new InvalidIncrediblePotentialDataError('Invalid ' + label)
 }
 
-const isSetBonus = (value: unknown): value is { name: string } => isRecord(value) && typeof value.name === 'string'
+function list(value: unknown, label: string): unknown[] {
+  if (Array.isArray(value)) return value
+  throw new InvalidIncrediblePotentialDataError('Invalid ' + label)
+}
 
-const isRing = (value: unknown): value is PublishedIncrediblePotentialRing =>
-  isRecord(value) &&
-  typeof value.pageTitle === 'string' &&
-  typeof value.name === 'string' &&
-  value.name.length > 0 &&
-  typeof value.type === 'string' &&
-  typeof value.minLevel === 'string' &&
-  Array.isArray(value.enchantments) &&
-  value.enchantments.every(isEffect) &&
-  Array.isArray(value.setBonus) &&
-  value.setBonus.every(isSetBonus)
+function nameOf(value: unknown, label: string): string {
+  if (typeof value === 'string' && value.trim()) return value
+  throw new InvalidIncrediblePotentialDataError('Invalid ' + label)
+}
 
-const isRecipe = (value: unknown): value is AltarRecipe =>
-  isRecord(value) &&
-  typeof value.recipeId === 'number' &&
-  Number.isFinite(value.recipeId) &&
-  typeof value.name === 'string' &&
-  value.name.length > 0 &&
-  typeof value.device === 'string' &&
-  Array.isArray(value.ingredients) &&
-  value.ingredients.every((ingredient) => typeof ingredient === 'string' && ingredient.length > 0) &&
-  (value.removed === null || typeof value.removed === 'string') &&
-  (value.added === null || (Array.isArray(value.added) && value.added.every(isEffect)))
+function positiveInteger(value: unknown, label: string): number {
+  if (typeof value === 'number' && Number.isSafeInteger(value) && value > 0) return value
+  throw new InvalidIncrediblePotentialDataError('Invalid ' + label)
+}
 
-const assertUnique = (values: string[] | number[], label: string) => {
-  const seen = new Set<string | number>()
+function indexById<T extends { id: number }>(rows: T[], label: string): Map<number, T> {
+  const indexed = new Map(rows.map((row) => [row.id, row]))
+  if (indexed.size !== rows.length) throw new InvalidIncrediblePotentialDataError('Duplicate ID in ' + label)
+  return indexed
+}
 
-  for (const value of values) {
-    if (seen.has(value)) throw new InvalidIncrediblePotentialDataError(`Duplicate ${label}: ${String(value)}`)
-    seen.add(value)
+function resolveId<T>(index: ReadonlyMap<number, T>, value: unknown, label: string): T {
+  const id = positiveInteger(value, label)
+  const entry = index.get(id)
+  if (!entry) throw new InvalidIncrediblePotentialDataError(`Missing ${label} ${id.toString()}`)
+  return entry
+}
+
+function parseEffect(value: unknown) {
+  const effect = record(value, 'effect')
+  return {
+    id: positiveInteger(effect.id, 'effect ID'),
+    name: typeof effect.displayName === 'string' ? effect.displayName : '',
+    description: typeof effect.description === 'string' ? effect.description.trim() : '',
+    enchantments: list(effect.enchantments, 'effect enchantments'),
+    visible: isVisibleEffect(effect)
   }
 }
 
-export const parseRings = (value: unknown): IncrediblePotentialRing[] => {
-  if (!Array.isArray(value) || !value.every(isRing)) throw new InvalidIncrediblePotentialDataError('Invalid ring data.')
+function displayEffect(effect: ReturnType<typeof parseEffect>): IncrediblePotentialEffect[] {
+  if (!effect.visible) return []
 
-  assertUnique(
-    value.map(({ name }) => name),
-    'ring name'
+  // Burst effects describe an on-hit proc. Their modifiers target the enemy and are not worn stats.
+  const stats = effect.name.endsWith(' Burst')
+    ? []
+    : effect.enchantments.flatMap((value): IncrediblePotentialEffect[] => {
+        const stat = record(value, 'enchantment')
+        if (stat.internal === true || !isVisibleEffect(stat) || typeof stat.displayName !== 'string') return []
+        if (typeof stat.value !== 'number' || !Number.isFinite(stat.value)) return []
+
+        if (stat.operation === 'Multiply' && stat.unit === 'multiplier') {
+          const percent = Math.round((1 - stat.value) * 10000) / 100
+          return [{ name: stat.displayName, modifier: `${percent.toString()}%` }]
+        }
+
+        return [
+          {
+            name: stat.displayName,
+            modifier: stat.value,
+            bonus: typeof stat.bonusType === 'string' ? stat.bonusType : undefined
+          }
+        ]
+      })
+
+  return stats.length ? stats : [{ name: nameOf(effect.name, 'effect name'), notes: effect.description }]
+}
+
+function parseItem(row: unknown) {
+  const item = record(row, 'item')
+  const name = nameOf(item.name, 'item name')
+  const sources = list(item.sources ?? [], 'item sources').flatMap((value) => {
+    const source = record(value, 'item source')
+    if (source.kind === 'crafting_device' || source.kind === 'store_catalog') return []
+    return [nameOf(source.name, 'source name')]
+  })
+  return { id: positiveInteger(item.id, 'item ID'), name, foundIn: [...new Set(sources)] }
+}
+
+function parseCatalog(
+  baseValue: unknown,
+  ingredientsValue: unknown,
+  effectsValue: unknown,
+  recipesValue: unknown,
+  setValue: unknown
+): IncrediblePotentialData {
+  const bases = list(baseValue, 'base items').map((value) => record(value, 'base item'))
+  const ingredients = list(ingredientsValue, 'ingredients').map(parseItem)
+  const items = indexById([...bases.map(parseItem), ...ingredients], 'materials')
+  const effects = indexById(list(effectsValue, 'effects').map(parseEffect), 'effects')
+
+  const setNames = new Set(
+    list(setValue, 'item sets').map((value) => nameOf(record(value, 'item set').name, 'set name'))
   )
-
-  for (const ring of value) {
-    if (!Number.isFinite(Number(ring.minLevel))) {
-      throw new InvalidIncrediblePotentialDataError(`Invalid minimum level for ${ring.name}.`)
-    }
-
-    if (ring.setBonus.length !== 1) {
-      throw new InvalidIncrediblePotentialDataError(
-        `Expected one set bonus for ${ring.name}, found ${ring.setBonus.length.toString()}.`
+  const rings = bases
+    .filter((item) => item.craftingRole === 'ring')
+    .map((item): IncrediblePotentialRing => {
+      const { id, name } = resolveId(items, item.id, 'ring')
+      const minLevel = positiveInteger(item.minimumLevel, 'ring level')
+      const ringEffects = list(item.effects, 'ring effects').map((value) =>
+        resolveId(effects, record(value, 'ring effect').effectId, 'ring effect')
       )
-    }
+      const setEffect = ringEffects.find((effect) => effect.visible && setNames.has(effect.name))
+      const enchantments = ringEffects.filter((effect) => effect !== setEffect).flatMap(displayEffect)
+      if (!enchantments.some((effect) => effect.name === potential)) {
+        throw new InvalidIncrediblePotentialDataError(`Missing Incredible Potential effect on ${name}`)
+      }
+      return {
+        id,
+        name,
+        type: nameOf(item.itemType, 'ring type'),
+        minLevel,
+        setName: setEffect?.name,
+        enchantments
+      }
+    })
+    .toSorted((a, b) => a.name.localeCompare(b.name))
 
-    if (ring.setBonus[0].name.trim().length === 0) {
-      throw new InvalidIncrediblePotentialDataError(`Invalid set bonus for ${ring.name}.`)
+  const recipeRows = list(recipesValue, 'recipes').map((value) => {
+    const recipe = record(value, 'recipe')
+    return {
+      raw: recipe,
+      id: positiveInteger(recipe.id, 'recipe ID'),
+      name: nameOf(recipe.name, 'recipe name'),
+      stage: recipe.stage
     }
-
-    const placeholders = ring.enchantments.filter(({ name }) => name === 'Incredible Potential')
-    if (placeholders.length !== 1) {
-      throw new InvalidIncrediblePotentialDataError(
-        `Expected one Incredible Potential placeholder for ${ring.name}, found ${placeholders.length.toString()}.`
-      )
+  })
+  const recipesById = indexById(recipeRows, 'recipes')
+  const components = new Map<number, number>()
+  for (const recipe of recipeRows) {
+    if (recipe.stage !== 'component' || recipe.name === mediumEnergyCell) continue
+    const output = resolveId(items, recipe.raw.outputItemId, 'component output')
+    if (components.has(output.id) || recipe.raw.quantity !== 1) {
+      throw new InvalidIncrediblePotentialDataError(`Unsupported component output for ${recipe.name}`)
     }
+    components.set(output.id, recipe.id)
   }
 
-  return value.map(({ pageTitle, name, type, minLevel, enchantments, setBonus }) => ({
-    pageTitle,
-    name,
-    type,
-    minLevel,
-    enchantments: enchantments.filter(isVisibleEffect),
-    setName: setBonus[0].name
-  }))
-}
-
-export const parseRecipes = (value: unknown): AltarRecipe[] => {
-  if (!Array.isArray(value) || !value.every(isRecipe)) {
-    throw new InvalidIncrediblePotentialDataError('Invalid Altar of Subjugation recipe data.')
-  }
-
-  const upgrades = value.filter(({ removed }) => removed === 'Incredible Potential')
-  assertUnique(
-    upgrades.map(({ recipeId }) => recipeId),
-    'ring upgrade recipe ID'
-  )
-  assertUnique(
-    upgrades.map(({ name }) => name),
-    'ring upgrade recipe name'
-  )
-
-  for (const upgrade of upgrades) {
-    if (!upgrade.added || upgrade.added.length === 0) {
-      throw new InvalidIncrediblePotentialDataError(`Ring upgrade ${upgrade.name} has no added effect.`)
-    }
-  }
-
-  return value.map((recipe) => ({ ...recipe, added: recipe.added?.filter(isVisibleEffect) ?? null }))
-}
-
-export const parseIngredients = (value: unknown): IngredientMetadata[] => {
-  if (!Array.isArray(value)) throw new InvalidIncrediblePotentialDataError('Invalid ingredient data.')
-
-  const ingredients = value.map((entry): IngredientMetadata => {
-    if (!isRecord(entry) || typeof entry.name !== 'string' || entry.name.length === 0) {
-      throw new InvalidIncrediblePotentialDataError('Invalid ingredient data.')
+  const recipes = recipeRows.flatMap((recipe): AltarRecipe[] => {
+    const { id: recipeId, name, stage } = recipe
+    if (stage === 'ringReset' || (stage === 'component' && name === mediumEnergyCell)) return []
+    if (stage !== 'shardImbuement' && stage !== 'component' && stage !== 'ringUpgrade') {
+      throw new InvalidIncrediblePotentialDataError(`Invalid recipe stage for ${name}`)
     }
 
-    if (
-      entry.foundIn !== undefined &&
-      entry.foundIn !== null &&
-      (!Array.isArray(entry.foundIn) || !entry.foundIn.every((location) => typeof location === 'string'))
-    ) {
-      throw new InvalidIncrediblePotentialDataError(`Invalid acquisition data for ${entry.name}.`)
+    const inputs = list(recipe.raw.ingredients, 'recipe ingredients').map((value): RecipeIngredient => {
+      const input = record(value, 'recipe ingredient')
+      const quantity = positiveInteger(input.quantity, 'ingredient quantity')
+      const material = resolveId(items, input.ingredientId ?? input.itemId, 'recipe material')
+      if (input.preparationRecipeId !== undefined) {
+        const prep = resolveId(recipesById, input.preparationRecipeId, 'preparation recipe')
+        return { name: prep.name, quantity, recipeId: prep.id }
+      }
+      return { name: material.name, quantity, recipeId: components.get(material.id) }
+    })
+
+    if (stage === 'component') return [{ recipeId, name, stage, ingredients: inputs }]
+    const keeper = record(recipe.raw.keeper, 'recipe keeper')
+    if (stage === 'shardImbuement') {
+      const shard = resolveId(items, keeper.itemId, 'base shard')
+      return [{ recipeId, name, stage, ingredients: [...inputs, { name: shard.name, quantity: 1 }] }]
     }
 
-    return { name: entry.name, foundIn: entry.foundIn ?? [] }
+    const ringIds = list(keeper.itemIds, 'eligible rings').map((value) => positiveInteger(value, 'eligible ring ID'))
+    const added = list(recipe.raw.addEffectIds, 'added effects').flatMap((id) =>
+      displayEffect(resolveId(effects, id, 'added effect'))
+    )
+    if (!added.length || !ringIds.length || ringIds.some((id) => !rings.some((ring) => ring.id === id))) {
+      throw new InvalidIncrediblePotentialDataError(`Invalid effect or eligible rings for ${name}`)
+    }
+    return [{ recipeId, name, stage, ingredients: inputs, added, ringIds }]
   })
 
-  assertUnique(
-    ingredients.map(({ name }) => name),
-    'ingredient name'
-  )
-  return ingredients
+  return { rings, recipes, ingredients: [...items.values()] }
 }
 
-export const loadIncrediblePotentialData = async (): Promise<IncrediblePotentialData> => {
-  const [ringsValue, recipesValue, ingredientsValue] = await Promise.all([
-    loadDataset<unknown>('incredible-potential'),
-    loadManualPayload<unknown>('altarOfSubjugation.recipes'),
-    loadManualPayload<unknown>('ingredients')
-  ])
-
-  return {
-    rings: parseRings(ringsValue),
-    recipes: parseRecipes(recipesValue),
-    ingredients: parseIngredients(ingredientsValue)
+export async function loadIncrediblePotentialData(): Promise<IncrediblePotentialData> {
+  const manifest = record(await loadDatasetFile<unknown>(`${domain}/manifest.json`), 'crafting manifest')
+  if (manifest.system !== domain) throw new InvalidIncrediblePotentialDataError('Invalid crafting manifest system')
+  const resources = record(manifest.resources, 'crafting resources')
+  const read = (key: string) => {
+    const path = nameOf(resources[key], key)
+    if (!/^(?:[\w-]+\/)*[\w-]+\.json$/.test(path))
+      throw new InvalidIncrediblePotentialDataError('Invalid path for ' + key)
+    return loadDatasetFile<unknown>(`${domain}/${path}`)
   }
+  const [bases, ingredients, effects, recipes, sets] = await Promise.all([
+    read('baseItems'),
+    read('ingredients'),
+    read('effects'),
+    read('recipes'),
+    loadItemSetResource('itemSets')
+  ])
+  return parseCatalog(bases, ingredients, effects, recipes, sets)
 }

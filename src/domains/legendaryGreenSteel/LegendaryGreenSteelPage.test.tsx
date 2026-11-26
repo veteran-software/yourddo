@@ -15,11 +15,6 @@ const browserMocks = vi.hoisted(() => ({
   copyText: vi.fn<(text: string) => Promise<void>>().mockResolvedValue(undefined)
 }))
 
-vi.mock('../../shared/data/loadDataset', async (original) => ({
-  ...(await original<typeof import('../../shared/data/loadDataset')>()),
-  loadManualPayload: () => Promise.resolve([{ name: 'Component Raw', foundIn: ['The Codex and the Shroud'] }])
-}))
-
 vi.mock('../../shared/serialization/browser.ts', () => ({
   copyText: browserMocks.copyText,
   downloadTextFile: vi.fn(),
@@ -301,17 +296,12 @@ describe('LegendaryGreenSteelPage', () => {
     const expanded = recipe.closest('details')
     if (!expanded?.open) throw new Error('Expected component recipe')
     expect(await within(expanded).findByText('Component Raw ×2')).toBeTruthy()
-    const farming = within(breakdown).getAllByText('Farming locations')[0]
-    await user.click(farming)
-    const details = farming.closest('details')
-    if (!details?.open) throw new Error('Expected expanded farming locations')
-    expect(within(details).getByText('Component Raw ×2')).toBeTruthy()
-    expect(within(details).getByText('Found in: The Codex and the Shroud')).toBeTruthy()
+    expect(within(breakdown).queryByText('Farming locations')).toBeNull()
     expect(within(breakdown).queryByText("Immortal's Heart")).toBeNull()
 
     await user.click(screen.getByRole('button', { name: 'Ingredients' }))
     const ingredients = await screen.findByRole('complementary', { name: 'Ingredients' })
-    expect(await within(ingredients).findByText('Found in: The Codex and the Shroud')).toBeTruthy()
+    expect(within(ingredients).queryByText('Found in:', { exact: false })).toBeNull()
     expect(within(ingredients).getByText('Component Raw')).toBeTruthy()
     expect(within(ingredients).queryByText('Tier 1 Weapon')).toBeNull()
 

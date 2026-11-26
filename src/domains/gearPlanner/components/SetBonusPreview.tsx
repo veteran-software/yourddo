@@ -12,7 +12,7 @@ export default function SetBonusPreview({
   compact?: boolean
 }) {
   if (!definition?.thresholds.length) return null
-  const tiers = definition.thresholds.map(({ threshold, effects }) => {
+  const tiers = definition.thresholds.map(({ threshold, effects, requirement }, tierIndex) => {
     const sharedBonus =
       effects.length && effects.every((effect) => effect.bonus === effects[0].bonus) ? effects[0].bonus : undefined
     const rows = effects.map((effect, index) => {
@@ -20,11 +20,12 @@ export default function SetBonusPreview({
       return { effect, family, key: family ? JSON.stringify([family[1], effect.modifier, effect.bonus]) : index }
     })
     return (
-      <div key={threshold} className={classes.setTier}>
+      <div key={`${threshold.toString()}-${tierIndex.toString()}`} className={classes.setTier}>
         <h4>
           <span>{threshold}-piece</span>
           {sharedBonus != null && sharedBonus !== '' && <small>{sharedBonus} bonus</small>}
         </h4>
+        {requirement && <small>{requirement}</small>}
         {effects.length ? (
           <ul>
             {[...Map.groupBy(rows, (row) => row.key)].map(([key, group]) => {

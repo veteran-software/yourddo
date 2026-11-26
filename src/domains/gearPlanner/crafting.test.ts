@@ -114,6 +114,18 @@ describe('gear planner item crafting', () => {
     const might = "Slave Lord's Might"
     const sorcery = "Slave Lord's Sorcery"
     const endurance = "Slave's Endurance"
+    const setDefinitions = new Map([
+      [
+        might,
+        {
+          name: might,
+          thresholds: [
+            { threshold: 3, effects: [{ name: 'Melee Power', modifier: 1, bonus: 'Artifact' }] },
+            { threshold: 5, effects: [{ name: 'Strength', modifier: 1, bonus: 'Artifact' }] }
+          ]
+        }
+      ]
+    ])
     let state = createDefaultGearPlannerState()
     for (const item of data.items) {
       state = equipGearPlannerSetupItem(state, item.slot, item)
@@ -125,7 +137,7 @@ describe('gear planner item crafting', () => {
         )
     }
     const equipment = () => activeGearPlannerSetup(state).equipment
-    const sets = () => resolveGearPlannerSetState(equipment(), {}).sets
+    const sets = () => resolveGearPlannerSetState(equipment(), {}, setDefinitions).sets
     expect(sets()).toEqual([])
     expect(collectEquippedEffects(equipment())).toEqual([])
     const savedBlank = createGearPlannerExport(state)
@@ -158,7 +170,7 @@ describe('gear planner item crafting', () => {
     const shareText = formatGearSetup(
       activeGearPlannerSetup(state),
       [],
-      { Character: resolveGearPlannerSetState(equipment(), {}) },
+      { Character: resolveGearPlannerSetState(equipment(), {}, setDefinitions) },
       'Discord Markdown',
       ''
     )
@@ -172,7 +184,9 @@ describe('gear planner item crafting', () => {
     )
     for (const restored of [saved, shared]) {
       expect(restored.issues).toEqual([])
-      expect(resolveGearPlannerSetState(activeGearPlannerSetup(restored.state).equipment, {}).sets).toEqual(sets())
+      expect(
+        resolveGearPlannerSetState(activeGearPlannerSetup(restored.state).equipment, {}, setDefinitions).sets
+      ).toEqual(sets())
     }
     select(heroic[0], null)
     state = equipGearPlannerSetupItem(state, legendary.slot, null)

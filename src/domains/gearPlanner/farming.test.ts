@@ -26,10 +26,9 @@ it('allocates copies to the target first, then transferable stock, and farms a s
   const tasks = farmingList(ringSetup(), inventory, 'Hero')
   expect(tasks.map((t) => [t.status, t.quantity, t.group])).toEqual([
     ['Owned', 1, 'Hero (Inventory)'],
-    ['Farm', 1, 'The Vault']
+    ['Farm', 1, '']
   ])
   expect(tasks[1].notes).toEqual(['Alt (Bank) · Character-bound'])
-  expect(tasks[1].sources.map((s) => s.title)).toEqual(['The Vault', 'Trader'])
   const bank = await parseTroveCsv(prefix + 'Ruby Ring,-,SharedBank,3,BtA')
   expect(farmingList(ringSetup(), bank, 'Hero')).toMatchObject([
     { status: 'Collect', quantity: 2, group: 'Shared Bank' }

@@ -145,7 +145,7 @@ export function loadNativeNearlyComplete() {
   })
   return nearlyCompleteRequest
 }
-async function buildNearlyComplete() {
+async function buildNearlyComplete(): Promise<{ items: NearlyCompleteDataset; recipes: NearlyCompleteRecipe[] }> {
   const data = await readUpgradeSystem('nearly-complete')
   const items: NearlyCompleteDataset = data.bases.map((item) => ({
     catalogId: item.id,

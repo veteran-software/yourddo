@@ -49,12 +49,12 @@ const ROUTE_SEO_DATA = [
   [
     '/alchemical',
     'Alchemical Crafting | YourDDO',
-    'Plan Original and Legendary Alchemical upgrades, compare their effects, and find the ingredients for each crafting stage.'
+    'Plan Original and Legendary Alchemical upgrades, compare their effects, and calculate the materials for each crafting stage.'
   ],
   [
     '/slave-lords',
     'Slave Lords Crafting | YourDDO',
-    'Plan Heroic and Legendary Slave Lords equipment upgrades and find the ingredients for your recipes.'
+    'Plan Heroic and Legendary Slave Lords upgrades, preview set bonuses, and calculate the materials for your equipment.'
   ],
   [
     '/incredible-potential',

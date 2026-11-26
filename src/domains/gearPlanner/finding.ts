@@ -5,7 +5,7 @@ import {
   previewPotentialEffectConflict,
   type GearPlannerEffectSource
 } from './effects'
-import type { GearPlannerData, GearPlannerEffect, GearPlannerItem, GearPlannerSetIndex } from './gearPlanner.types'
+import type { GearPlannerData, GearPlannerEffect, GearPlannerItem } from './gearPlanner.types'
 import { slaveLordsMarker } from './slaveLords'
 
 export type GearFindTarget =
@@ -23,18 +23,7 @@ export function matchesGearEffect(
   )
 }
 
-function indexedSets(index: GearPlannerSetIndex | undefined, name: string, level: number) {
-  const entries = index?.get(name) ?? []
-  const exact = entries.some((e) => e.minimumLevel === level)
-  return entries
-    .filter((e) => e.minimumLevel === 0 || (exact ? e.minimumLevel === level : Math.abs(e.minimumLevel - level) <= 1))
-    .map((e) => e.setName)
-}
-
-export function candidateSetDetails(
-  item: GearPlannerItem,
-  data?: Partial<Pick<GearPlannerData, 'crafting' | 'setIndex'>>
-) {
+export function candidateSetDetails(item: GearPlannerItem, data?: Partial<Pick<GearPlannerData, 'crafting'>>) {
   const { name, setBonus, enchantments } = item.source
   const gem = name.includes('Gem of Many Facets')
   const craftGroups =
@@ -47,11 +36,7 @@ export function candidateSetDetails(
   const choices = craftGroups.flatMap((group) => group.sets)
   // The Gem's rolls already correct the four mislabeled Legendary desert sets.
   if (gem) return { sets: [...new Set(choices)], craftGroups }
-  // The name/level index combines variants such as Sphere of Souls. Each item's own set identifies its variant.
-  const memberships =
-    item.source.catalogId !== undefined || setBonus?.length
-      ? (setBonus ?? []).map((s) => s.name)
-      : indexedSets(data?.setIndex, name, item.minimumLevel)
+  const memberships = (setBonus ?? []).map((set) => set.name)
   return { sets: [...new Set([...memberships, ...choices])], craftGroups }
 }
 

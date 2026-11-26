@@ -7,6 +7,8 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
 import {
   type AltarRecipe,
+  type RecipeIngredient,
+  type RingUpgrade,
   type IncrediblePotentialData,
   InvalidIncrediblePotentialDataError,
   loadIncrediblePotentialData
@@ -18,43 +20,55 @@ vi.mock('./data.ts', async (importOriginal) => {
   return { ...dataModule, loadIncrediblePotentialData: vi.fn() }
 })
 
-const makeRecipe = (recipeId: number, name: string, ingredients: string[]): AltarRecipe => ({
+const material = (name: string, quantity = 1): RecipeIngredient => ({ name, quantity })
+const crafted = ({ recipeId, name }: AltarRecipe, quantity = 1): RecipeIngredient => ({ name, quantity, recipeId })
+const makeRecipe = (recipeId: number, name: string, ingredients: RecipeIngredient[]) => ({
   recipeId,
   name,
-  device: 'Altar of Subjugation',
-  ingredients,
-  removed: null,
-  added: null
+  stage: 'component' as const,
+  ingredients
 })
 
-const focus = makeRecipe(1, 'Focus of Fire', ['Medium Devil Scales', 'Shavarath Medium Energy Cell'])
-const gem = makeRecipe(2, 'Gem of Dominion', ['Medium Gnawed Bone', 'Shavarath Medium Energy Cell'])
-const essence = makeRecipe(3, 'Material Essence', ['Medium Twisted Shrapnel', 'Shavarath Medium Energy Cell'])
-const shard = makeRecipe(4, 'Material Fire Dominion Shard of Great Power', [
-  focus.name,
-  gem.name,
-  essence.name,
-  'Shard of Great Power',
-  'Shavarath Medium Energy Cell'
+const focus = makeRecipe(1, 'Focus of Fire', [
+  material('Medium Devil Scales'),
+  material('Shavarath Medium Energy Cell')
 ])
-const fireUpgrade: AltarRecipe = {
-  ...makeRecipe(5, 'Material Fire Dominion Ring Upgrade', [shard.name, 'Shavarath Trophy of War']),
-  removed: 'Incredible Potential',
+const gem = makeRecipe(2, 'Gem of Dominion', [material('Medium Gnawed Bone'), material('Shavarath Medium Energy Cell')])
+const essence = makeRecipe(3, 'Material Essence', [
+  material('Medium Twisted Shrapnel'),
+  material('Shavarath Medium Energy Cell')
+])
+const shard: AltarRecipe = {
+  ...makeRecipe(4, 'Material Fire Dominion Shard of Great Power', [
+    crafted(focus),
+    crafted(gem),
+    crafted(essence),
+    material('Shard of Great Power'),
+    material('Shavarath Medium Energy Cell')
+  ]),
+  stage: 'shardImbuement'
+}
+
+const fireUpgrade: RingUpgrade = {
+  ...makeRecipe(5, 'Material Fire Dominion Ring Upgrade', [crafted(shard), material('Shavarath Trophy of War', 9)]),
+  stage: 'ringUpgrade',
+  ringIds: [100, 200],
   added: [{ name: 'Flaming Burst', notes: 'Adds fire damage on critical hits.' }]
 }
-const insightUpgrade: AltarRecipe = {
-  ...makeRecipe(6, 'Material Fire Escalation Ring Upgrade', [shard.name, 'Shavarath Trophy of War']),
-  removed: 'Incredible Potential',
+const insightUpgrade: RingUpgrade = {
+  ...makeRecipe(6, 'Material Fire Escalation Ring Upgrade', [crafted(shard), material('Shavarath Trophy of War', 9)]),
+  stage: 'ringUpgrade',
+  ringIds: [100, 200],
   added: [{ name: 'Dexterity', modifier: 2, bonus: 'Insight' }]
 }
 
 const data: IncrediblePotentialData = {
   rings: [
     {
-      pageTitle: "Amara's Band",
+      id: 100,
       name: "Amara's Band",
       type: 'Ring',
-      minLevel: '18',
+      minLevel: 18,
       setName: 'Exorcist of the Silver Flame',
       enchantments: [
         { name: 'Wisdom', modifier: '6', bonus: 'Enhancement' },
@@ -63,10 +77,10 @@ const data: IncrediblePotentialData = {
       ]
     },
     {
-      pageTitle: 'Whisper Ring',
+      id: 200,
       name: 'Whisper Ring',
       type: 'Ring',
-      minLevel: '18',
+      minLevel: 18,
       setName: 'Assassin',
       enchantments: [
         { name: 'Dexterity', modifier: '6', bonus: 'Enhancement' },
@@ -197,7 +211,7 @@ describe('IncrediblePotentialPage', () => {
     vi.mocked(loadIncrediblePotentialData).mockResolvedValueOnce({
       ...structuredClone(data),
       recipes: data.recipes.map((recipe) =>
-        recipe.name === focus.name ? { ...recipe, ingredients: [shard.name] } : recipe
+        recipe.name === focus.name ? { ...recipe, ingredients: [crafted(shard)] } : recipe
       )
     })
     renderPage()
@@ -226,11 +240,11 @@ describe('IncrediblePotentialPage', () => {
     expect(within(ringDetails).getByText('Adds fire damage on critical hits.')).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Total Shopping List' })).toBeTruthy()
     expect(screen.getAllByText('×9')).toHaveLength(2)
-    expect(screen.getByText('Found in: Tower of Despair')).toBeTruthy()
+    expect(screen.queryByText('Found in: Tower of Despair')).toBeNull()
     expect(screen.getByRole('heading', { name: 'Crafting Steps' })).toBeTruthy()
     expect(screen.getByText('The Focus, Gem, and Essence can be crafted in any order.')).toBeTruthy()
     expect(screen.getByText(/Apply the upgrade to Amara's Band/)).toBeTruthy()
-    expect(screen.getByText(/listed directly instead of legacy Enchanted Accessory/)).toBeTruthy()
+    expect(screen.getByText('Bring charged Medium Energy Cells to the altar.')).toBeTruthy()
 
     const image = ringDetails.querySelector('img')
     expect(image?.getAttribute('alt')).toBe('')
@@ -294,6 +308,25 @@ describe('IncrediblePotentialPage', () => {
     expect(screen.queryByRole('heading', { name: 'Whisper Ring' })).toBeNull()
     expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Base ring' }).value).toBe('')
     expect(screen.getByText('2 of 2 rings shown.')).toBeTruthy()
+  })
+
+  it('only offers upgrades whose keeper accepts the selected ring', async () => {
+    const user = userEvent.setup()
+    vi.mocked(loadIncrediblePotentialData).mockResolvedValueOnce({
+      ...data,
+      recipes: [focus, gem, essence, shard, fireUpgrade, { ...insightUpgrade, ringIds: [100] }]
+    })
+    renderPage()
+
+    await selectOption(user, 'Base ring', /Amara's Band/)
+    await selectOption(user, 'Upgrade effect', /Dexterity/)
+    await selectOption(user, 'Base ring', /Whisper Ring/)
+
+    expect(screen.getByText('1 of 1 upgrades shown.')).toBeTruthy()
+    expect(screen.getByRole<HTMLInputElement>('combobox', { name: 'Upgrade effect' }).value).toBe('')
+    expect(screen.queryByRole('heading', { name: 'Total Shopping List' })).toBeNull()
+    await selectOption(user, 'Upgrade effect', /Flaming Burst/)
+    expect(screen.getByRole('heading', { name: 'Total Shopping List' })).toBeTruthy()
   })
 
   it('changes the resolved upgrade without duplicating stale effect details', async () => {

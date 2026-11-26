@@ -4,12 +4,18 @@ import { MantineProvider } from '@mantine/core'
 import { cleanup, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { validateViktraniumDataset } from './data.ts'
-import { createViktraniumTestPayload } from './test-fixture.ts'
+import { loadDatasetFile } from '../../shared/data/loadDataset'
+import { createViktraniumTestData, createViktraniumTestRecords } from './test-fixture.ts'
 import ViktraniumPage from './ViktraniumPage.tsx'
 
 let desktopViewport = false
 const loadMock = vi.hoisted(() => vi.fn())
+const decodeImage = vi.fn<() => Promise<undefined>>().mockResolvedValue(undefined)
+
+vi.mock('../../shared/data/loadDataset', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../../shared/data/loadDataset')>()),
+  loadDatasetFile: vi.fn()
+}))
 
 vi.mock('./data.ts', async (importOriginal) => {
   const actual = await importOriginal<typeof import('./data.ts')>()
@@ -18,6 +24,7 @@ vi.mock('./data.ts', async (importOriginal) => {
 
 beforeAll(() => {
   Element.prototype.scrollIntoView = vi.fn()
+  HTMLImageElement.prototype.decode = decodeImage
   vi.stubGlobal(
     'matchMedia',
     vi.fn((query: string) => ({
@@ -41,7 +48,7 @@ beforeAll(() => {
   )
 })
 
-const data = () => validateViktraniumDataset(createViktraniumTestPayload())
+const data = () => createViktraniumTestData()
 function required<T>(value: T | undefined): T {
   if (value === undefined) throw new Error('Missing test fixture value')
   return value
@@ -54,7 +61,7 @@ const renderPage = () =>
   )
 
 const chooseHeroicItem = async (user: ReturnType<typeof userEvent.setup>) => {
-  await user.click(screen.getByRole('combobox', { name: 'Item' }))
+  await user.click(await screen.findByRole('combobox', { name: 'Item' }))
   await user.click(await screen.findByRole('option', { name: /Sceptre \(Cruel Baton\)/ }))
 }
 
@@ -65,6 +72,32 @@ afterEach(() => {
 })
 
 describe('ViktraniumPage', () => {
+  it('reveals the catalog icon on the crafting page after every layer decodes', async () => {
+    const fixture = createViktraniumTestRecords()
+    fixture.items[0].art = { domain: 'viktranium', layers: [11, 22] }
+    loadMock.mockResolvedValue(createViktraniumTestData(fixture))
+    vi.mocked(loadDatasetFile).mockResolvedValueOnce([
+      { id: 11, pngBase64: 'aWNvbg==' },
+      { id: 22, pngBase64: 'bGF5ZXI=' }
+    ])
+    const finalLayer = Promise.withResolvers<undefined>()
+    decodeImage.mockImplementation(function (this: HTMLImageElement) {
+      return this.src.endsWith('bGF5ZXI=') ? finalLayer.promise : Promise.resolve(undefined)
+    })
+    const user = userEvent.setup()
+    renderPage()
+
+    await chooseHeroicItem(user)
+    await screen.findByAltText('Cruel Baton icon')
+    expect(screen.queryByRole('img', { name: 'Cruel Baton icon' })).toBeNull()
+    finalLayer.resolve(undefined)
+    await waitFor(() => {
+      expect(screen.getByRole('img', { name: 'Cruel Baton icon' }).getAttribute('src')).toBe(
+        'data:image/png;base64,aWNvbg=='
+      )
+    })
+  })
+
   it('loads the workflow, uses approved presentation aliases, and renders every explicit slot', async () => {
     loadMock.mockResolvedValue(data())
     const user = userEvent.setup()
@@ -129,16 +162,19 @@ describe('ViktraniumPage', () => {
   })
 
   it('retains a selected item when discovery filters exclude it, then clears augments on family change', async () => {
-    const payload = createViktraniumTestPayload()
-    required(payload.items.at(1)).recipes = [
+    const payload = createViktraniumTestRecords()
+    const second = required(payload.items.at(1))
+    second.family = 'heroic-crafted-weapons'
+    second.recipes = [
       {
         id: 'recipe-second-heroic',
+        status: 'complete',
         deviceId: '1',
         device: 'Heroic Viktranium Experiment Crafting',
         requirements: []
       }
     ]
-    loadMock.mockResolvedValue(validateViktraniumDataset(payload))
+    loadMock.mockResolvedValue(createViktraniumTestData(payload))
     const user = userEvent.setup()
     renderPage()
     await screen.findByRole('heading', { name: 'Viktranium Experiment Crafting' })

@@ -1,7 +1,5 @@
 import { loadNativeNearlyComplete } from '../gearPlanner/nativeUpgradeData'
 import type { GearPlannerEffect } from '../gearPlanner/gearPlanner.types'
-import { isVisibleEffect } from '../../shared/data/visibleEffect'
-import { hasDatasetFile, loadManualPayload } from '../../shared/data/loadDataset.ts'
 
 export type RecipeTier = 'Heroic' | 'Legendary'
 
@@ -26,16 +24,8 @@ export interface NearlyCompleteRecipe {
 
 export type NearlyCompleteRecipes = NearlyCompleteRecipe[]
 
-export const loadNearlyCompleteRecipes = async (): Promise<NearlyCompleteRecipes> => {
-  if (await hasDatasetFile('nearly-complete/enchantment-names.json')) return (await loadNativeNearlyComplete()).recipes
-  return loadManualPayload<NearlyCompleteRecipes>('nearlyComplete.recipes').then((recipes) =>
-    recipes.map((recipe) => ({
-      ...recipe,
-      effectsAdded: recipe.effectsAdded.filter(isVisibleEffect),
-      effectsRemoved: recipe.effectsRemoved.filter(isVisibleEffect)
-    }))
-  )
-}
+export const loadNearlyCompleteRecipes = async (): Promise<NearlyCompleteRecipes> =>
+  (await loadNativeNearlyComplete()).recipes
 
 export const getRecipeCategory = (recipe: NearlyCompleteRecipe): string =>
   recipe.effectsRemoved[0]?.name.replace('Nearly Complete: ', '') ?? ''

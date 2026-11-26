@@ -49,13 +49,13 @@ export const ColorAugmentLevelNotice = ({
     <Alert
       color='blue'
       variant='light'
-      title='Color augment minimum level'
+      title='Color augment ML'
       role='status'
       p='xs'
       styles={{ title: { fontSize: 'var(--mantine-font-size-sm)' } }}
     >
       <Text size='xs'>
-        A selected color augment raises the item’s minimum level from {String(increase.itemLevel)} to{' '}
+        A selected color augment raises the item’s ML from {String(increase.itemLevel)} to{' '}
         {String(increase.minimumLevel)}.
       </Text>
     </Alert>

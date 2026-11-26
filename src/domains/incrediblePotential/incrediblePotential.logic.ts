@@ -3,7 +3,9 @@ import type {
   IncrediblePotentialData,
   IncrediblePotentialEffect,
   IncrediblePotentialRing,
-  IngredientMetadata
+  IngredientMetadata,
+  RecipeIngredient,
+  RingUpgrade
 } from './data.ts'
 
 export type FilterMode = 'OR' | 'AND'
@@ -25,7 +27,6 @@ export interface CraftingPlan {
   steps: CraftingStep[]
 }
 
-export const trophyQuantity = 9
 export const ringIconUrl = 'https://yourddo.s3.us-east-2.amazonaws.com/icons/ringOfIncrediblePotential.png'
 export const unknownIconUrl = 'https://yourddo.s3.us-east-2.amazonaws.com/icons/unknown.png'
 
@@ -33,13 +34,6 @@ export class CyclicAltarRecipeError extends Error {
   constructor(path: string[]) {
     super(`Cyclic Altar of Subjugation recipe dependency: ${path.join(' -> ')}`)
     this.name = 'CyclicAltarRecipeError'
-  }
-}
-
-export class DuplicateAltarRecipeError extends Error {
-  constructor(name: string) {
-    super(`Multiple Altar of Subjugation recipes are named ${name}.`)
-    this.name = 'DuplicateAltarRecipeError'
   }
 }
 
@@ -68,32 +62,6 @@ const addTotal = (totals: Map<string, number>, name: string, quantity: number) =
   totals.set(name, (totals.get(name) ?? 0) + quantity)
 }
 
-const quantityFor = (name: string): number => (name === 'Shavarath Trophy of War' ? trophyQuantity : 1)
-
-const buildRecipeLookup = (recipes: AltarRecipe[]): ReadonlyMap<string, AltarRecipe[]> => {
-  const lookup = new Map<string, AltarRecipe[]>()
-
-  for (const recipe of recipes) {
-    lookup.set(recipe.name, [...(lookup.get(recipe.name) ?? []), recipe])
-  }
-
-  return lookup
-}
-
-const getSingleRecipe = (recipes: ReadonlyMap<string, AltarRecipe[]>, name: string): AltarRecipe | undefined => {
-  const matches = recipes.get(name) ?? []
-  if (matches.length > 1) throw new DuplicateAltarRecipeError(name)
-  return matches[0]
-}
-
-const isExpectedCraftedRequirement = (name: string): boolean =>
-  name.startsWith('Focus of ') ||
-  name.startsWith('Gem of ') ||
-  name.endsWith(' Essence') ||
-  (name.endsWith(' Shard of Great Power') && name !== 'Shard of Great Power')
-
-const isLegacyItemPlaceholder = (name: string): boolean => /\bEnchanted (Accessory|Weapon)\b/i.test(name)
-
 const toMaterials = (
   totals: ReadonlyMap<string, number>,
   ingredientMetadata: ReadonlyMap<string, IngredientMetadata>
@@ -113,15 +81,15 @@ const orderStepRecipes = (recipes: AltarRecipe[]): AltarRecipe[] => {
   return recipes.toSorted((a, b) => stage(a.name) - stage(b.name) || a.name.localeCompare(b.name))
 }
 
-export const getRingUpgrades = (recipes: AltarRecipe[]): AltarRecipe[] =>
-  recipes.filter(({ removed }) => removed === 'Incredible Potential')
+export const getRingUpgrades = (recipes: AltarRecipe[]): RingUpgrade[] =>
+  recipes.filter((recipe) => recipe.stage === 'ringUpgrade')
 
 export const getRingFilterValues = (ring: IncrediblePotentialRing): string[] => [
   ...ring.enchantments.map(({ name }) => name),
-  ring.setName
+  ...(ring.setName ? [ring.setName] : [])
 ]
 
-export const getUpgradeFilterValues = (upgrade: AltarRecipe): string[] => upgrade.added?.map(({ name }) => name) ?? []
+export const getUpgradeFilterValues = (upgrade: RingUpgrade): string[] => upgrade.added.map(({ name }) => name)
 
 export const getFilterOptions = <T>(items: T[], getValues: (item: T) => string[]): string[] =>
   [...new Set(items.flatMap(getValues))].toSorted((a, b) => a.localeCompare(b))
@@ -163,68 +131,52 @@ export const formatEffect = ({ name, modifier, bonus }: IncrediblePotentialEffec
 }
 
 export const buildCraftingPlan = (
-  upgrade: AltarRecipe,
+  upgrade: RingUpgrade,
   recipes: AltarRecipe[],
   ingredients: IngredientMetadata[]
 ): CraftingPlan => {
   const rawTotals = new Map<string, number>()
   const craftedTotals = new Map<string, number>()
-  const stepRecipes: AltarRecipe[] = []
+  const stepRecipes = new Map<number, AltarRecipe>()
   const ingredientMetadata = new Map(ingredients.map((ingredient) => [ingredient.name, ingredient]))
-  const recipeLookup = buildRecipeLookup(recipes)
+  const recipeLookup = new Map(recipes.map((recipe) => [recipe.recipeId, recipe]))
 
-  const expand = (name: string, quantity: number, path: string[], parent: string) => {
-    const recipe = getSingleRecipe(recipeLookup, name)
-
-    if (!recipe) {
-      if (isLegacyItemPlaceholder(name)) return
-      if (isExpectedCraftedRequirement(name)) throw new MissingAltarRecipeError(parent, name)
-      addTotal(rawTotals, name, quantity)
+  const expand = (
+    { name, quantity, recipeId }: RecipeIngredient,
+    multiplier: number,
+    path: AltarRecipe[],
+    parent: string
+  ) => {
+    const total = quantity * multiplier
+    if (recipeId === undefined) {
+      addTotal(rawTotals, name, total)
       return
     }
 
-    const cycleStart = path.indexOf(name)
-    if (cycleStart >= 0) throw new CyclicAltarRecipeError([...path.slice(cycleStart), name])
+    const recipe = recipeLookup.get(recipeId)
+    if (!recipe) throw new MissingAltarRecipeError(parent, name)
+    const cycleStart = path.findIndex((step) => step.recipeId === recipeId)
+    if (cycleStart >= 0) throw new CyclicAltarRecipeError([...path.slice(cycleStart).map((step) => step.name), name])
 
-    addTotal(craftedTotals, name, quantity)
-    stepRecipes.push(recipe)
-
+    addTotal(craftedTotals, name, total)
+    stepRecipes.set(recipeId, recipe)
     for (const requirement of recipe.ingredients) {
-      expand(requirement, quantity * quantityFor(requirement), [...path, name], recipe.name)
+      expand(requirement, total, [...path, recipe], recipe.name)
     }
   }
 
-  const hasShard = upgrade.ingredients.some((name) => name.endsWith(' Shard of Great Power'))
+  const hasShard = upgrade.ingredients.some(
+    ({ recipeId }) => recipeId !== undefined && recipeLookup.get(recipeId)?.stage === 'shardImbuement'
+  )
+  for (const requirement of upgrade.ingredients) {
+    expand(requirement, 1, [upgrade], upgrade.name)
+  }
   if (!hasShard) throw new MissingUpgradeIngredientError(upgrade.name)
 
-  for (const requirement of upgrade.ingredients) {
-    expand(requirement, quantityFor(requirement), [], upgrade.name)
-  }
-
-  const uniqueSteps = new Map<number, AltarRecipe>()
-  for (const recipe of stepRecipes) uniqueSteps.set(recipe.recipeId, recipe)
-
-  const steps = orderStepRecipes([...uniqueSteps.values()]).map((recipe) => ({
-    name: recipe.name,
-    requirements: recipe.ingredients
-      .filter((name) => !isLegacyItemPlaceholder(name))
-      .map((name) => ({
-        name,
-        quantity: quantityFor(name),
-        foundIn: ingredientMetadata.get(name)?.foundIn ?? []
-      }))
-      .toSorted((a, b) => a.name.localeCompare(b.name))
-  }))
-
-  steps.push({
-    name: upgrade.name,
-    requirements: upgrade.ingredients
-      .filter((name) => !isLegacyItemPlaceholder(name))
-      .map((name) => ({
-        name,
-        quantity: quantityFor(name),
-        foundIn: ingredientMetadata.get(name)?.foundIn ?? []
-      }))
+  const steps = [...orderStepRecipes([...stepRecipes.values()]), upgrade].map((recipe) => {
+    const totals = new Map<string, number>()
+    for (const { name, quantity } of recipe.ingredients) addTotal(totals, name, quantity)
+    return { name: recipe.name, requirements: toMaterials(totals, ingredientMetadata) }
   })
 
   return {

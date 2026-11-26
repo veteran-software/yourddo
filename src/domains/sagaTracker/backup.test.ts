@@ -19,20 +19,28 @@ describe('Saga Tracker backups', () => {
     'imports legacy Planeswalker backups and prefers canonical values when present: %s',
     (both) => {
       const legacyId = 'the-planewalkers-path-epic'
-      const currentId = 'the-planeswalkers-path-epic'
+      const currentId = '1879197212'
       const definitions = [{ ...sagas[0], id: currentId }]
+      const oldQuestId = '04e8506f-1746-4b34-ae2b-90da57b7b5a5'
+      const currentQuestId = '1879147898-epic'
+      const definitionQuests = [{ ...quests[0], id: currentQuestId, sagas: [currentId] }]
       const backup = {
         ...valid,
         items: [
           ...(both ? [{ id: currentId, completed: false, turnedIn: false }] : []),
           { id: legacyId, completed: true, turnedIn: true }
         ],
+        questDoneAt: { [oldQuestId]: 10, ...(both ? { [currentQuestId]: 30 } : {}) },
         turnedInAt: { [legacyId]: 5, ...(both ? { [currentId]: 0 } : {}) }
       }
-      const progress = parseBackup(backup, definitions, quests)
+      const progress = parseBackup(backup, definitions, definitionQuests)
       expect(progress.sagaStatus).toEqual({ [currentId]: { completed: !both, turnedIn: !both } })
       expect(progress.turnedInAt).toEqual({ [currentId]: both ? 0 : 5 })
-      expect(createBackup(definitions, progress).items[0].id).toBe(currentId)
+      expect(progress.questDoneAt).toEqual({ [currentQuestId]: both ? 30 : 10 })
+      expect(createBackup(definitions, progress)).toMatchObject({
+        items: [{ id: currentId }],
+        questDoneAt: { [currentQuestId]: both ? 30 : 10 }
+      })
       expect(backup.items.at(-1)?.id).toBe(legacyId)
     }
   )

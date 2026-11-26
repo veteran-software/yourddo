@@ -2,11 +2,30 @@
 import { render, cleanup, fireEvent } from '@testing-library/react'
 import { MemoryRouter, Link } from 'react-router-dom'
 import { afterEach, expect, it } from 'vitest'
+import template from '../../../index.html?raw'
 import RouteSeo from './RouteSeo'
 import { ROUTE_SEO } from './seoConfig'
-import { SITE_ORIGIN } from './siteMeta'
+import { DEFAULT_DESCRIPTION, SITE_ORIGIN, SITE_PREVIEW_IMAGE_PATH } from './siteMeta'
 
 afterEach(cleanup)
+it('includes crawler and sharing defaults in the HTML template before JavaScript runs', () => {
+  const { head } = new DOMParser().parseFromString(template, 'text/html')
+  const name = (key: string) => head.querySelector<HTMLMetaElement>(`meta[name="${key}"]`)?.content
+  const property = (key: string) => head.querySelector<HTMLMetaElement>(`meta[property="${key}"]`)?.content
+  const image = SITE_ORIGIN + SITE_PREVIEW_IMAGE_PATH
+  expect(name('description')).toBe(DEFAULT_DESCRIPTION)
+  expect(name('robots')).toBe('index, follow')
+  expect(property('og:title')).toBe(head.querySelector('title')?.textContent)
+  expect(property('og:description')).toBe(DEFAULT_DESCRIPTION)
+  expect(property('og:image')).toBe(image)
+  expect(property('og:image:alt')).toBeTruthy()
+  expect(name('twitter:card')).toBe('summary_large_image')
+  expect(name('twitter:title')).toBe(property('og:title'))
+  expect(name('twitter:description')).toBe(DEFAULT_DESCRIPTION)
+  expect(name('twitter:image')).toBe(image)
+  expect(name('twitter:image:alt')).toBe(property('og:image:alt'))
+})
+
 it('keeps canonical, social and structured URLs on the published domain across navigation', () => {
   const view = render(
     <MemoryRouter>

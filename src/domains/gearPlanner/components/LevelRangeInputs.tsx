@@ -15,7 +15,7 @@ export default function LevelRangeInputs({
   return (
     <>
       <NumberInput
-        label='Minimum level'
+        label='ML'
         min={gearPlannerMinimumLevel}
         max={gearPlannerMaximumLevel}
         allowDecimal={false}

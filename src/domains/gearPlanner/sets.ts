@@ -8,16 +8,14 @@ import type {
   GearPlannerItem
 } from './gearPlanner.types.ts'
 import type { GearPlannerEquipment, GearPlannerSlottedAugments, GearPlannerSlottedFiligrees } from './planner.ts'
-import {
-  type GearPlannerStandardSetDefinition,
-  standardGearPlannerSetDefinitionByName
-} from './standardSetDefinitions.ts'
+import type { GearPlannerStandardSetDefinition, GearPlannerStandardSetThreshold } from './standardSetDefinitions.ts'
 
 export type GearPlannerSetMembershipCategory = 'equipped-item' | 'augment' | 'filigree'
 
 export interface GearPlannerSetMembership {
   id: string
   setName: string
+  setId?: number
   category: GearPlannerSetMembershipCategory
   itemId: string
   itemName: string
@@ -29,9 +27,7 @@ export interface GearPlannerSetMembership {
   filigreeSlotIndex?: number
 }
 
-export interface GearPlannerSetThresholdState {
-  threshold: number
-  effects: readonly GearPlannerEffect[]
+export interface GearPlannerSetThresholdState extends GearPlannerStandardSetThreshold {
   id: string
   isActive: boolean
 }
@@ -66,10 +62,11 @@ export const collectEquippedItemSetMemberships = (
   equippedItems(equipment).flatMap((item) =>
     [
       ...baseSetMemberships(item, overrides),
-      ...(item.crafts ?? []).flatMap((craft) => (craft.setName ? [{ name: craft.setName }] : []))
-    ].map(({ name }, setIndex) => ({
+      ...(item.crafts ?? []).flatMap((craft) => (craft.setName ? [{ name: craft.setName, id: undefined }] : []))
+    ].map(({ name, id: setId }, setIndex) => ({
       id: `${item.id}:equipped-item-set:${String(setIndex)}`,
       setName: name,
+      ...(setId !== undefined && { setId }),
       category: 'equipped-item' as const,
       itemId: item.id,
       itemName: item.source.name,
@@ -94,6 +91,7 @@ export const collectGearPlannerSetMemberships = (
     ...memberships.map(({ item, slotIndex, augmentSlot, augment, setBonus }, membershipIndex) => ({
       id: `${item.id}:augment-set:${String(slotIndex)}:${String(membershipIndex)}`,
       setName: setBonus.name,
+      ...(setBonus.id !== undefined && { setId: setBonus.id }),
       category: 'augment' as const,
       itemId: item.id,
       itemName: item.source.name,
@@ -126,16 +124,18 @@ export const collectFiligreeSetMemberships = (
 export const resolveGearPlannerSetState = (
   equipment: GearPlannerEquipment,
   slottedAugments: GearPlannerSlottedAugments,
-  definitions: ReadonlyMap<string, GearPlannerStandardSetDefinition> = standardGearPlannerSetDefinitionByName,
+  definitions: ReadonlyMap<string | number, GearPlannerStandardSetDefinition> = new Map(),
   slottedFiligrees: GearPlannerSlottedFiligrees = {},
   filigreeDefinitions: ReadonlyMap<string, GearPlannerFiligreeSetDefinition> = new Map(),
   augmentSlotsByItem: Readonly<Record<string, readonly GearPlannerAugmentSlot[]>> = {}
 ): GearPlannerSetState => {
   const memberships = collectGearPlannerSetMemberships(equipment, slottedAugments, slottedFiligrees, augmentSlotsByItem)
+  const setKey = ({ setId, setName }: GearPlannerSetMembership) =>
+    setId !== undefined && definitions.has(setId) ? setId : setName
   const membershipsBySet = new Map<string, GearPlannerSetMembership[]>()
   for (const membership of memberships) {
     const category = membership.category === 'filigree' ? 'filigree' : 'item'
-    const key = `${category}\u0000${membership.setName}`
+    const key = `${category}\u0000${String(setKey(membership))}`
     const current = membershipsBySet.get(key) ?? []
     current.push(membership)
     membershipsBySet.set(key, current)
@@ -146,18 +146,32 @@ export const resolveGearPlannerSetState = (
       const name = setMemberships[0].setName
       const category: GearPlannerSetProgress['category'] =
         setMemberships[0].category === 'filigree' ? 'filigree' : 'item'
-      const definition = category === 'filigree' ? filigreeDefinitions.get(name) : definitions.get(name)
+      const key = setKey(setMemberships[0])
+      const definition = category === 'filigree' ? filigreeDefinitions.get(name) : definitions.get(key)
+      const count = setMemberships.length
+      const highest =
+        definition?.thresholdMode === 'highestOnly'
+          ? Math.max(
+              0,
+              ...definition.thresholds.flatMap(({ requirement, threshold }) =>
+                !requirement && threshold <= count ? [threshold] : []
+              )
+            )
+          : undefined
       return {
         name,
-        count: setMemberships.length,
+        count,
         category,
         memberships: setMemberships,
         ...(definition === undefined ? {} : { definition }),
         thresholds:
           definition?.thresholds.map((threshold, index) => ({
             ...threshold,
-            id: `${category}:${name}:${String(index)}`,
-            isActive: threshold.threshold <= setMemberships.length
+            id: `${category}:${String(key)}:${String(index)}`,
+            isActive:
+              !threshold.requirement &&
+              threshold.threshold <= count &&
+              (highest === undefined || threshold.threshold === highest)
           })) ?? []
       }
     })

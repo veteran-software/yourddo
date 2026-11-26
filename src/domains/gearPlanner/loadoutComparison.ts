@@ -178,7 +178,7 @@ function addCraftedAttributes(
 ) {
   const crafted = setup.essenceCrafting[id]
   if (crafted) {
-    add('Minimum level', String(crafted.minimumLevel))
+    add('ML', String(crafted.minimumLevel))
     if (crafted.material) add('Material', crafted.material)
     for (const position of ['prefix', 'suffix', 'extra'] as const) {
       const choice = crafted[`${position}Id`]

@@ -1,5 +1,10 @@
 import { createStore, get, set } from 'idb-keyval'
-import { withCompatibleSagaIds } from './withCompatibleSagaIds.ts'
+import {
+  canonicalQuestId,
+  canonicalSagaId,
+  withCompatibleQuestIds,
+  withCompatibleSagaIds
+} from './withCompatibleSagaIds.ts'
 import type {
   QuestDefinition,
   SagaDefinition,
@@ -87,7 +92,7 @@ const parseTimestampMap = (value: unknown, legacyField?: string): TimestampMap |
   return result
 }
 
-const buildProgress = (
+export const buildProgress = (
   sagas: readonly SagaDefinition[],
   quests: readonly QuestDefinition[],
   items: StoredSagaItem[] | undefined,
@@ -104,7 +109,9 @@ const buildProgress = (
   const sagaIds = new Set(sagas.map(({ id }) => id))
   return {
     sagaStatus,
-    questDoneAt: Object.fromEntries(Object.entries(questDoneAt ?? {}).filter(([id]) => questIds.has(id))),
+    questDoneAt: Object.fromEntries(
+      Object.entries(withCompatibleQuestIds(questDoneAt ?? {})).filter(([id]) => questIds.has(id))
+    ),
     turnedInAt: Object.fromEntries(
       Object.entries(withCompatibleSagaIds(turnedInAt ?? {})).filter(([id]) => sagaIds.has(id))
     )
@@ -143,28 +150,24 @@ export const loadProgress = async (
     idbValues = [undefined, undefined, undefined]
   }
 
-  let items = parseItems(idbValues[0])
-  let questDoneAt = parseTimestampMap(idbValues[1])
-  let turnedInAt = parseTimestampMap(idbValues[2])
-  const migrations: Promise<void>[] = []
-
-  if (items === undefined) {
-    items = parseItems(safeLocalRead(LOCAL_ITEMS_KEY))
-    if (items) migrations.push(driver.setValue(SAGA_ITEMS_KEY, items))
+  const storedItems = parseItems(idbValues[0])
+  const storedQuests = parseTimestampMap(idbValues[1])
+  const storedCutoffs = parseTimestampMap(idbValues[2])
+  const items = storedItems ?? parseItems(safeLocalRead(LOCAL_ITEMS_KEY))
+  const questDoneAt = storedQuests ?? parseTimestampMap(safeLocalRead(LOCAL_QUESTS_KEY), 'lastDoneAt')
+  const turnedInAt = storedCutoffs ?? parseTimestampMap(safeLocalRead(LOCAL_TURNED_IN_KEY), 'turnedInAt')
+  const progress = buildProgress(sagas, quests, items, questDoneAt, turnedInAt)
+  const restoredLocal = items !== storedItems || questDoneAt !== storedQuests || turnedInAt !== storedCutoffs
+  const hasLegacySagaItems = items?.some(({ id }) => canonicalSagaId(id) !== id) ?? false
+  const hasLegacyIds =
+    hasLegacySagaItems ||
+    Object.keys(questDoneAt ?? {}).some((id) => canonicalQuestId(id) !== id) ||
+    Object.keys(turnedInAt ?? {}).some((id) => canonicalSagaId(id) !== id)
+  if (restoredLocal || hasLegacyIds) {
+    const saved = await saveProgress(sagas, progress, driver)
+    storageAvailable = storageAvailable && saved
   }
-  if (questDoneAt === undefined) {
-    questDoneAt = parseTimestampMap(safeLocalRead(LOCAL_QUESTS_KEY), 'lastDoneAt')
-    if (questDoneAt) migrations.push(driver.setValue(QUEST_DONE_AT_KEY, questDoneAt))
-  }
-  if (turnedInAt === undefined) {
-    turnedInAt = parseTimestampMap(safeLocalRead(LOCAL_TURNED_IN_KEY), 'turnedInAt')
-    if (turnedInAt) migrations.push(driver.setValue(TURNED_IN_AT_KEY, turnedInAt))
-  }
-  if (migrations.length > 0) {
-    const results = await Promise.allSettled(migrations)
-    if (results.some(({ status }) => status === 'rejected')) storageAvailable = false
-  }
-  return { progress: buildProgress(sagas, quests, items, questDoneAt, turnedInAt), storageAvailable }
+  return { progress, storageAvailable }
 }
 
 export const progressItems = (sagas: readonly SagaDefinition[], sagaStatus: Readonly<SagaStatusMap>) =>

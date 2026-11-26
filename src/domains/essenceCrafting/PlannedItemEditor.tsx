@@ -193,7 +193,7 @@ const PlannedItemEditor = memo(
     })
     const { minimum, maximum } = data.rules.supportedItemLevels
     const minimumLevelOptions = [
-      { value: 'inherit', label: `Inherit master minimum level (${String(masterMinimumLevel)})` },
+      { value: 'inherit', label: `Inherit master ML (${String(masterMinimumLevel)})` },
       ...Array.from({ length: maximum - minimum + 1 }, (_, index) => {
         const minimumLevel = minimum + index
         return { value: String(minimumLevel), label: String(minimumLevel) }
@@ -225,8 +225,8 @@ const PlannedItemEditor = memo(
         </Title>
         <SimpleGrid type='container' cols={{ base: 1, '32rem': 2 }} spacing='sm'>
           <Select
-            label='Minimum level'
-            aria-label={`Minimum level for ${label}`}
+            label='ML'
+            aria-label={`ML for ${label}`}
             data={minimumLevelOptions}
             value={item.minimumLevelOverride === null ? 'inherit' : String(item.minimumLevelOverride)}
             onChange={(value) => {
@@ -408,8 +408,7 @@ const PlannedItemEditor = memo(
                         {slotLabel}
                       </Title>
                       <Text c='dimmed' size='xs'>
-                        This slot requires minimum level {minimumItemLevel}. The effective minimum level is{' '}
-                        {effectiveMinimumLevel}.
+                        This slot requires ML {minimumItemLevel}. Effective ML is {effectiveMinimumLevel}.
                       </Text>
                     </Stack>
                     <Button
@@ -488,7 +487,7 @@ const PlannedItemEditor = memo(
                                 }
                           )
                         }}
-                        nothingFoundMessage='No compatible augments match these filters and minimum level.'
+                        nothingFoundMessage='No compatible augments match the filters at this ML.'
                       />
                       {selectedAugment?.scoped ? (
                         <ScopedAugmentDetails augmentName={selectedAugment.displayName} {...selectedAugment.scoped} />
@@ -551,7 +550,7 @@ const PlannedItemEditor = memo(
                 {label} planned item
               </Title>
               <Badge variant='light' w='fit-content'>
-                Effective minimum level: {effectiveMinimumLevel}
+                Effective ML {effectiveMinimumLevel}
               </Badge>
             </Stack>
 
@@ -580,7 +579,7 @@ const PlannedItemEditor = memo(
           <Stack id={detailsId} p={board ? 'xs' : 'md'} gap={board ? 'sm' : 'lg'}>
             {prefixChoices.length === 0 && suffixChoices.length === 0 && extraChoices.length === 0 ? (
               <Alert color='yellow' title='No affixes are available'>
-                The loaded data has no {label} affixes for minimum level {effectiveMinimumLevel}.
+                The loaded data has no {label} affixes for ML {effectiveMinimumLevel}.
               </Alert>
             ) : null}
 

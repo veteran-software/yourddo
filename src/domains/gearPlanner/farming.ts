@@ -1,13 +1,10 @@
 import { enabledOwners, ownerSlots } from './character'
-import { gearDropLocations } from './dropLocations'
 import type { GearPlannerSetup } from './setups'
 import { TroveSnapshot, type TroveHolding, type TroveInventory } from './trove'
 
-type Source = ReturnType<typeof gearDropLocations>[number]
 interface Need {
   name: string
   uses: string[]
-  sources: Source[]
   filigree: boolean
 }
 export type FarmStatus = 'Farm' | 'Collect' | 'Owned' | 'Check'
@@ -18,41 +15,26 @@ export interface FarmTask {
   group: string
   quantity: number
   notes: string[]
-  sources: Source[]
 }
 
 function equippedNeeds(setup: GearPlannerSetup) {
   const needs = new Map<string, Need>()
-  function add(
-    name: string,
-    use: string,
-    source: Readonly<Record<string, unknown>>,
-    fallback?: string,
-    filigree = false
-  ) {
+  function add(name: string, use: string, filigree = false) {
     const key = name.trim().toLowerCase()
     const existing = needs.get(key)
     if (existing) {
       existing.uses.push(use)
       return
     }
-    const sources = gearDropLocations(source.dropLocations)
-    if (!sources.length && Array.isArray(source.foundIn)) {
-      for (const title of source.foundIn)
-        if (typeof title === 'string' && title.trim()) sources.push({ title, detail: '', href: '' })
-    }
-    if (!sources.length && fallback) sources.push({ title: fallback, href: '', detail: '' })
-    needs.set(key, { name, uses: [use], sources, filigree })
+    needs.set(key, { name, uses: [use], filigree })
   }
   for (const owner of enabledOwners(setup.character.classes))
     for (const slot of ownerSlots[owner]) {
       const item = setup.equipment[slot]
       if (!item) continue
-      add(item.source.name, slot, item.source, item.essenceCrafting ? 'Essence Crafting' : undefined)
-      for (const aug of Object.values(setup.slottedAugments[item.id] ?? {}))
-        add(aug.name, slot + ' · Augment', aug.source)
-      for (const fil of Object.values(setup.slottedFiligrees[item.id] ?? {}))
-        add(fil.name, slot + ' · Filigree', fil.source, undefined, true)
+      add(item.source.name, slot)
+      for (const aug of Object.values(setup.slottedAugments[item.id] ?? {})) add(aug.name, slot + ' · Augment')
+      for (const fil of Object.values(setup.slottedFiligrees[item.id] ?? {})) add(fil.name, slot + ' · Filigree', true)
     }
   return needs
 }
@@ -115,7 +97,7 @@ function farmingTasks(key: string, need: Need, inventory: TroveInventory, target
       'Trove lists the base name only. Check the rarity before farming.'
     ])
   }
-  if (remaining) task('Farm', need.sources[0]?.title ?? 'Source unlisted', remaining, blocked)
+  if (remaining) task('Farm', '', remaining, blocked)
   return tasks
 }
 

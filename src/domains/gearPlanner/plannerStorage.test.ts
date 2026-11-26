@@ -46,7 +46,6 @@ import {
   setGearPlannerSetupFiligree,
   setGearPlannerSetupUnlockedFiligreeSlots
 } from './setups.ts'
-import { standardGearPlannerSetDefinitionByName } from './standardSetDefinitions.ts'
 import { emptyGearPlannerReforgingData } from './reforging.ts'
 
 const item = (id: string, slot: GearPlannerItem['slot'], name = id, augmentType?: string): GearPlannerItem => ({
@@ -813,7 +812,8 @@ describe('Gear Planner production persistence', () => {
         })
       )
 
-      const sets = currentData.standardSets ?? standardGearPlannerSetDefinitionByName
+      const sets = currentData.standardSets
+      if (!sets) throw new Error('Missing equipment set definitions')
       const activeSet = [...sets.values()].find((definition) => {
         if (definition.name !== 'Echoes of the Waking Ancestors') return false
         const matchingItems = characterItems.filter((plannerItem) =>

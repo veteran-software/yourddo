@@ -158,7 +158,7 @@ const NearlyCompletePage = () => {
       <List spacing='xs' size='sm'>
         {eligibleItems.map((item) => (
           <List.Item key={item.catalogId ?? `${item.pageTitle}-${item.minLevel}`}>
-            {item.name} — {item.type}, minimum level {item.minLevel}
+            {item.name} — {item.type}, ML {item.minLevel}
             {item.catalogId !== undefined &&
               keyedEntries(selectedRecipe?.hostEffects?.get(item.catalogId) ?? []).map(({ key, value: effect }) => (
                 <Text key={key} size='sm'>

@@ -106,7 +106,7 @@ const EssenceCraftingSelector = ({
       <SimpleGrid minColWidth='min(100%, 8.5rem)' autoFlow='auto-fit' spacing='xs'>
         <Select
           size='xs'
-          label='Essence minimum level'
+          label='Essence ML'
           data={minimumLevels}
           value={String(configuration.minimumLevel)}
           allowDeselect={false}

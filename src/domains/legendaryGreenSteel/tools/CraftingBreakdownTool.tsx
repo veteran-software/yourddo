@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react'
 import styles from '../../../shared/layout/craftingTools.module.css'
 import RecipeDetails from '../../../shared/items/RecipeDetails'
-import { legendaryRecipeParts, expandLgsRequirements } from '../logic'
-import ComponentFarmingLocations from '../../../shared/items/ComponentFarmingLocations'
-import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
+import { legendaryRecipeParts } from '../logic'
 import { MaterialRow } from '../../../shared/layout/GreenSteelBuildParts'
 import { Alert, Stack, Text } from '@mantine/core'
 import type { LgsRecipe, LgsRequirement } from '../legendaryGreenSteel.types.ts'
@@ -23,7 +21,6 @@ const CraftingBreakdownTool = ({
   stages: readonly LgsCraftingStage[]
   components: readonly LgsRecipe[]
 }) => {
-  const location = useIngredientLocations()
   const componentById = new Map(components.map((component) => [component.id, component]))
   const selectedStages = stages.filter(
     (stage): stage is LgsCraftingStage & { recipe: NonNullable<LgsCraftingStage['recipe']> } => Boolean(stage.recipe)
@@ -54,20 +51,13 @@ const CraftingBreakdownTool = ({
               {recipe.requirements.map(({ id, name, quantity }) => {
                 const component = componentById.get(id)
                 return (
-                  <MaterialRow key={id} name={name} quantity={quantity} location={location(name)}>
+                  <MaterialRow key={id} name={name} quantity={quantity}>
                     {component && (
                       <RecipeDetails
                         name={name}
                         count={quantity}
                         recipeKey={id}
                         lookup={legendaryRecipeParts(components)}
-                      />
-                    )}
-                    {component && (
-                      <ComponentFarmingLocations
-                        materials={expandLgsRequirements([component], components).rawMaterials}
-                        count={quantity}
-                        location={location}
                       />
                     )}
                   </MaterialRow>

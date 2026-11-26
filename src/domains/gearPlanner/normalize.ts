@@ -8,7 +8,6 @@ import {
   type GearPlannerData,
   type GearPlannerFiligree,
   type GearPlannerFiligreeSetDefinition,
-  type GearPlannerSetIndex,
   type GearPlannerItem,
   type GearPlannerSlot,
   type GearPlannerSourceDataset,
@@ -44,13 +43,10 @@ export const gearPlannerFiligreeId = (item: GearPlannerSourceItem): string =>
 
 export const normalizeGearPlannerFiligrees = (
   records: readonly GearPlannerSourceItem[],
-  definitions?: ReadonlyMap<string, GearPlannerFiligreeSetDefinition>,
-  index?: GearPlannerSetIndex
+  definitions?: ReadonlyMap<string, GearPlannerFiligreeSetDefinition>
 ): readonly GearPlannerFiligree[] =>
   records.map((source) => {
-    const sets = source.setBonus?.length
-      ? source.setBonus.map((s) => s.name)
-      : (index?.get(source.name)?.map((e) => e.setName) ?? (source.grouping ?? '').split('/'))
+    const sets = source.setBonus?.length ? source.setBonus.map((s) => s.name) : (source.grouping ?? '').split('/')
     const grouping = [
       ...new Set(
         sets

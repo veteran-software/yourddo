@@ -1,5 +1,3 @@
-import { viktraniumItemArt } from './itemArt'
-import type { ItemArt } from '../../shared/items/itemArt'
 import { BuildHeader } from '../../shared/layout/SlottedCraftingParts'
 import { createCraftingSelection } from '../../shared/layout/craftingSession'
 import {
@@ -119,20 +117,6 @@ const ViktraniumPage = () => {
     () => restoreNativeSlotSelections(selectedItem, savedAugments),
     [selectedItem, savedAugments]
   )
-  const [artwork, setArtwork] = useState<{ itemId: string; art: ItemArt }>()
-  useEffect(() => {
-    if (!selectedItem || !data) return
-    let active = true
-    void viktraniumItemArt(selectedItem, data.items).then(
-      (art) => {
-        if (active && art) setArtwork({ itemId: selectedItem.id, art })
-      },
-      () => undefined
-    )
-    return () => {
-      active = false
-    }
-  }, [data, selectedItem])
   const selectedItemFilteredOut = Boolean(selectedItem && !filteredItems.includes(selectedItem))
   const itemSelectOptions = useMemo(() => {
     const values = selectedItemFilteredOut && selectedItem ? [selectedItem, ...filteredItems] : filteredItems
@@ -185,13 +169,9 @@ const ViktraniumPage = () => {
     [data, selectedAugmentObjects, selectedItem]
   )
   const tools = useMemo<readonly WorkspaceTool[]>(() => {
-    const iconItem = selectedItem && {
-      ...selectedItem,
-      art: artwork?.itemId === selectedItem.id ? artwork.art : undefined
-    }
-    const header = iconItem && selectedItem && (
+    const header = selectedItem && (
       <BuildHeader
-        item={iconItem}
+        item={selectedItem}
         level={'minimumLevel' in finished ? finished.minimumLevel : selectedItem.minimumLevel}
         filled={finished.slots.length - finished.emptySlots.length}
         total={finished.slots.length}
@@ -201,7 +181,7 @@ const ViktraniumPage = () => {
       {
         id: 'finished-item',
         label: 'Finished Item',
-        icon: iconItem ? <ItemIcon item={iconItem} size={20} /> : <IconFileInfo stroke={2} />,
+        icon: selectedItem ? <ItemIcon item={selectedItem} size={20} /> : <IconFileInfo stroke={2} />,
         content: <FinishedItemTool header={header} finished={finished} />
       },
       {
@@ -223,7 +203,7 @@ const ViktraniumPage = () => {
         content: <SharingTool finished={finished} ingredients={ingredients} />
       }
     ]
-  }, [artwork, finished, ingredients, selectedItem])
+  }, [finished, ingredients, selectedItem])
 
   const reset = () => {
     setFamily(initialFamily)

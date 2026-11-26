@@ -5,27 +5,6 @@ import { normaliseAugmentSlotType, augmentColors } from '../../../shared/augment
 import ItemMaterial from './ItemMaterial'
 import type { GearPlannerAugmentSlot, GearPlannerItem } from '../gearPlanner.types'
 
-function craftingSources(item: GearPlannerItem) {
-  if (item.essenceCrafting) return ['Essence Crafting']
-  const sources = new Set<string>()
-  let craftOnly = false
-  for (const location of item.source.dropLocations ?? []) {
-    const type = location.sourceType
-    craftOnly ||= location.isCraftOnly === true || type === 'CraftOnlyItem'
-    if (typeof location.craftingLocation === 'string' && location.craftingLocation.trim()) {
-      sources.add('Crafted at ' + location.craftingLocation.trim())
-    } else if (type === 'GreenSteelCraftingPurchase') {
-      sources.add('Green Steel Crafting')
-    } else if (typeof type === 'string' && /crafting/i.test(type)) {
-      sources.add(
-        typeof location.craftingType === 'string' && location.craftingType.trim() ? location.craftingType.trim() : type
-      )
-    }
-  }
-  if (!sources.size && craftOnly) sources.add('Craft only')
-  return [...sources]
-}
-
 export default function CandidateEquipmentDetails({
   item,
   material,
@@ -61,11 +40,7 @@ export default function CandidateEquipmentDetails({
           })}
         </Group>
       )}
-      {craftingSources(item).map((source) => (
-        <Text key={source} size='xs'>
-          {source}
-        </Text>
-      ))}
+      {item.essenceCrafting && <Text size='xs'>Essence Crafting</Text>}
       {setSources.length > 0 && <Text size='xs'>Set via {setSources.join(' or ')}</Text>}
     </Group>
   )

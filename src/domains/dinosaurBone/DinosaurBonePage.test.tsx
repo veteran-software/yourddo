@@ -219,19 +219,19 @@ describe('DinosaurBonePage', () => {
     await screen.findByRole('heading', { name: 'Dinosaur Bone Crafting' })
     await chooseItem(user)
 
-    expect(screen.queryByText('Color augment minimum level')).toBeNull()
+    expect(screen.queryByText('Color augment ML')).toBeNull()
     await user.click(screen.getByRole('button', { name: 'Red Empty' }))
     await user.click(await screen.findByRole('combobox', { name: 'Red augment' }))
     await user.click(screen.getByRole('switch', { name: 'Show all levels' }))
     await user.click(await screen.findByRole('button', { name: /Red One/ }))
 
-    expect(screen.getByText('Color augment minimum level')).toBeTruthy()
-    expect(screen.getByText(/raises the item’s minimum level from 15 to 20/)).toBeTruthy()
+    expect(screen.getByText('Color augment ML')).toBeTruthy()
+    expect(screen.getByText(/raises the item’s ML from 15 to 20/)).toBeTruthy()
 
     await user.click(screen.getByRole('button', { name: 'Finished Item' }))
     const dialog = await screen.findByRole('dialog', { name: 'Finished Item' })
-    expect(within(dialog).getByText(/Minimum level 20/)).toBeTruthy()
-    expect(within(dialog).getByText('Color augment minimum level')).toBeTruthy()
+    expect(within(dialog).getByText(/ML 20/)).toBeTruthy()
+    expect(within(dialog).getByText('Color augment ML')).toBeTruthy()
   })
 
   it('restores the selected item and augment when Continue reopens the workspace', async () => {

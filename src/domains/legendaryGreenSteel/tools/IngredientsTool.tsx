@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 import styles from '../../../shared/layout/craftingTools.module.css'
 import RecipeDetails from '../../../shared/items/RecipeDetails'
 import { legendaryRecipeParts } from '../logic'
-import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
 import { MaterialRow } from '../../../shared/layout/GreenSteelBuildParts'
 import { Alert, Stack, Text } from '@mantine/core'
 import type { LgsIngredientPlan, LgsRecipe, LgsRequirement } from '../legendaryGreenSteel.types.ts'
@@ -14,11 +13,10 @@ const IngredientList = ({
   values: readonly LgsRequirement[]
   components?: readonly LgsRecipe[]
 }) => {
-  const location = useIngredientLocations()
   return values.length ? (
     <ul className={styles.costs}>
       {values.map(({ id, name, quantity }) => (
-        <MaterialRow key={id} name={name} quantity={quantity} location={location(name)}>
+        <MaterialRow key={id} name={name} quantity={quantity}>
           {components && (
             <RecipeDetails name={name} count={quantity} recipeKey={id} lookup={legendaryRecipeParts(components)} />
           )}

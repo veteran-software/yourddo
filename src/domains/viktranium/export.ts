@@ -28,7 +28,7 @@ export const formatViktraniumExport = (
   const heading = (text: string) => (format === 'forum' ? `[b]${bb(text)}[/b]` : `**${md(text)}**`)
   const lines = [
     heading(item.name),
-    `${escape(item.type)} · Minimum level ${String(finished.minimumLevel ?? item.minimumLevel)}`,
+    `${escape(item.type)} · ML ${String(finished.minimumLevel ?? item.minimumLevel)}`,
     '',
     heading('Base effects'),
     ...(finished.baseEffects.length > 0

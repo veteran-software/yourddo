@@ -1,3 +1,4 @@
+import type { GearPlannerStandardSetDefinition } from './standardSetDefinitions.ts'
 export const gearPlannerSlots = {
   eyes: 'Eyes',
   head: 'Head',
@@ -72,6 +73,7 @@ export interface GearPlannerAugmentSlot {
 }
 
 export interface GearPlannerSetBonus {
+  id?: number
   name: string
   [key: string]: unknown
 }
@@ -156,14 +158,7 @@ export interface GearPlannerCurse {
   source: Readonly<Record<string, unknown>>
 }
 
-export interface GearPlannerFiligreeSetThreshold {
-  threshold: number
-  effects: readonly GearPlannerEffect[]
-}
-
-export interface GearPlannerFiligreeSetDefinition {
-  name: string
-  thresholds: readonly GearPlannerFiligreeSetThreshold[]
+export interface GearPlannerFiligreeSetDefinition extends GearPlannerStandardSetDefinition {
   source: Readonly<Record<string, unknown>>
 }
 
@@ -172,15 +167,12 @@ export interface GearPlannerSourceDataset {
   records: readonly GearPlannerSourceItem[]
 }
 
-export type GearPlannerSetIndex = ReadonlyMap<string, readonly { setName: string; minimumLevel: number }[]>
-
 export interface GearPlannerData {
   enchantmentNames?: readonly string[]
   augmentEnchantmentNames?: readonly string[]
   enchantmentAliases?: ReadonlyMap<string, string>
-  setIndex?: GearPlannerSetIndex
   crafting: import('./crafting.ts').GearCraftingData
-  standardSets?: ReadonlyMap<string, import('./standardSetDefinitions.ts').GearPlannerStandardSetDefinition>
+  standardSets?: ReadonlyMap<string | number, GearPlannerStandardSetDefinition>
   sourceDatasets: readonly GearPlannerSourceDataset[]
   items: readonly GearPlannerItem[]
   itemsBySlot: Readonly<Record<GearPlannerSlot, readonly GearPlannerItem[]>>

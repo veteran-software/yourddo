@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { loadManualPayload } from '../../shared/data/loadDataset.ts'
+import { loadNativeNearlyComplete } from '../gearPlanner/nativeUpgradeData'
 import {
   getRecipeCategories,
   getRecipeCategory,
@@ -9,10 +9,7 @@ import {
   type NearlyCompleteRecipe
 } from './recipes.ts'
 
-vi.mock('../../shared/data/loadDataset.ts', () => ({
-  hasDatasetFile: vi.fn().mockResolvedValue(false),
-  loadManualPayload: vi.fn()
-}))
+vi.mock('../gearPlanner/nativeUpgradeData', () => ({ loadNativeNearlyComplete: vi.fn() }))
 
 const recipe = (name: string, category: string, requirementName: string, effectName = name): NearlyCompleteRecipe => ({
   name,
@@ -34,15 +31,15 @@ const recipes = [
 ]
 
 beforeEach(() => {
-  vi.mocked(loadManualPayload).mockReset()
+  vi.mocked(loadNativeNearlyComplete).mockReset()
 })
 
 describe('Nearly Complete recipes', () => {
-  it('loads the recipes manual payload from the manifest', async () => {
-    vi.mocked(loadManualPayload).mockResolvedValue(recipes)
+  it('loads recipes from the Nearly Complete CDN package', async () => {
+    vi.mocked(loadNativeNearlyComplete).mockResolvedValue({ items: [], recipes })
 
     await expect(loadNearlyCompleteRecipes()).resolves.toEqual(recipes)
-    expect(loadManualPayload).toHaveBeenCalledWith('nearlyComplete.recipes')
+    expect(loadNativeNearlyComplete).toHaveBeenCalledOnce()
   })
 
   it('derives sorted categories and recipes from the loaded payload', () => {

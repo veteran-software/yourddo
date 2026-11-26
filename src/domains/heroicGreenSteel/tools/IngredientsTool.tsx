@@ -1,6 +1,5 @@
 import RecipeDetails from '../../../shared/items/RecipeDetails'
 import { heroicRecipeParts } from '../logic'
-import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
 import { BuildHeader, MaterialRow } from '../../../shared/layout/GreenSteelBuildParts'
 import styles from '../../../shared/layout/craftingTools.module.css'
 import { Alert, Button, Center, Loader, Stack, Text } from '@mantine/core'
@@ -10,7 +9,6 @@ import type { HgsBaseItem, HgsRecipeData } from '../heroicGreenSteel.types.ts'
 import { expandIngredientRequirements } from '../logic.ts'
 
 const IngredientsTool = ({ baseItem, recipeIds }: { baseItem?: HgsBaseItem; recipeIds: readonly number[] }) => {
-  const location = useIngredientLocations()
   const [data, setData] = useState<HgsRecipeData | null>(null)
   const [error, setError] = useState<unknown>(null)
   const [attempt, setAttempt] = useState(0)
@@ -81,12 +79,7 @@ const IngredientsTool = ({ baseItem, recipeIds }: { baseItem?: HgsBaseItem; reci
   const renderList = (values: readonly ((typeof result.plan.terminal)[number] & { producerRecipeId?: number })[]) => (
     <ul className={styles.costs}>
       {values.map(({ ingredient, quantity, producerRecipeId }) => (
-        <MaterialRow
-          key={producerRecipeId ?? ingredient.id}
-          name={ingredient.name}
-          quantity={quantity}
-          location={location(ingredient.name)}
-        >
+        <MaterialRow key={producerRecipeId ?? ingredient.id} name={ingredient.name} quantity={quantity}>
           {producerRecipeId !== undefined && (
             <RecipeDetails
               name={ingredient.name}

@@ -33,8 +33,7 @@ import {
   getEntriesByCategory,
   getNearlyFinishedEntries,
   InvalidNearlyFinishedDatasetError,
-  MissingIngredientRecipeError,
-  UnsupportedNearlyFinishedSchemaError
+  MissingIngredientRecipeError
 } from './nearlyFinished.logic.ts'
 import type {
   IngredientTotal,
@@ -56,7 +55,7 @@ const knownIssuesUrl =
   'https://github.com/veteran-software/yourddo/issues?q=state%3Aopen%20label%3A%22Nearly%20Finished%22'
 
 const getErrorKind = (cause: unknown): DatasetErrorKind => {
-  if (cause instanceof UnsupportedManifestSchemaError || cause instanceof UnsupportedNearlyFinishedSchemaError) {
+  if (cause instanceof UnsupportedManifestSchemaError) {
     return 'unsupported-schema'
   }
   if (cause instanceof CyclicRecipeDependencyError) return 'cycle'

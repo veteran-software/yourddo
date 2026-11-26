@@ -1,4 +1,3 @@
-import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import type {
   CraftedIngredientTotal,
   CraftingPlan,
@@ -6,13 +5,10 @@ import type {
   ItemCategory,
   MeltingRecipe,
   NearlyFinishedDataset,
-  NearlyFinishedEffect,
   NearlyFinishedRequirement,
   ReforgingEntry,
   ShoppingListTotals
 } from './nearlyFinished.types.ts'
-
-export const nearlyFinishedPayloadName = 'nearlyFinished.recipes'
 
 const rawMaterialNames = new Set([
   'Iron Defender Claw',
@@ -37,13 +33,6 @@ export class InvalidNearlyFinishedDatasetError extends Error {
   }
 }
 
-export class UnsupportedNearlyFinishedSchemaError extends Error {
-  constructor(schemaVersion: unknown) {
-    super(`Unsupported Nearly Finished dataset schema version: ${String(schemaVersion)}`)
-    this.name = 'UnsupportedNearlyFinishedSchemaError'
-  }
-}
-
 export class CyclicRecipeDependencyError extends Error {
   constructor(item: string, path: string[]) {
     super(`Cyclic Nearly Finished recipe dependency for ${item}: ${path.join(' -> ')}`)
@@ -57,44 +46,6 @@ export class MissingIngredientRecipeError extends Error {
     this.name = 'MissingIngredientRecipeError'
   }
 }
-
-const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null
-
-const isPositiveQuantity = (value: unknown): value is number =>
-  typeof value === 'number' && Number.isFinite(value) && value > 0
-
-const isRequirement = (value: unknown): value is NearlyFinishedRequirement =>
-  isRecord(value) && typeof value.name === 'string' && value.name.length > 0 && isPositiveQuantity(value.quantity)
-
-const isEffect = (value: unknown): value is NearlyFinishedEffect =>
-  isRecord(value) && typeof value.name === 'string' && value.name.length > 0
-
-const isMeltingRecipe = (value: unknown): value is MeltingRecipe =>
-  isRecord(value) &&
-  typeof value.name === 'string' &&
-  value.name.length > 0 &&
-  isPositiveQuantity(value.quantity) &&
-  Array.isArray(value.requirements) &&
-  value.requirements.every(isRequirement)
-
-const isAugment = (value: unknown): value is { orange?: null; purple?: null } =>
-  isRecord(value) &&
-  Object.keys(value).length > 0 &&
-  Object.entries(value).every(([slot, slotValue]) => (slot === 'orange' || slot === 'purple') && slotValue === null)
-
-const isReforgingEntry = (value: unknown): value is ReforgingEntry =>
-  isRecord(value) &&
-  typeof value.item === 'string' &&
-  value.item.length > 0 &&
-  typeof value.stage === 'string' &&
-  value.stage.length > 0 &&
-  Array.isArray(value.cost) &&
-  value.cost.length > 0 &&
-  value.cost.every(isRequirement) &&
-  (value.choices === undefined || (Array.isArray(value.choices) && value.choices.every(isEffect))) &&
-  Array.isArray(value.effectsAdded) &&
-  value.effectsAdded.every(isEffect) &&
-  (value.augments === undefined || (Array.isArray(value.augments) && value.augments.every(isAugment)))
 
 const assertUniqueNames = (names: string[], label: string) => {
   const seen = new Set<string>()
@@ -231,7 +182,7 @@ const assertValidCalculatedQuantity = ({ name, quantity }: IngredientTotal) => {
   }
 }
 
-const validateDataset = (dataset: NearlyFinishedDataset) => {
+export function validateNearlyFinishedDataset(dataset: NearlyFinishedDataset): NearlyFinishedDataset {
   const entries = getNearlyFinishedEntries(dataset)
 
   assertUniqueNames(
@@ -261,32 +212,5 @@ const validateDataset = (dataset: NearlyFinishedDataset) => {
       }
     }
   }
-}
-
-export const parseNearlyFinishedDataset = (value: unknown): NearlyFinishedDataset => {
-  if (!isRecord(value)) throw new InvalidNearlyFinishedDatasetError()
-
-  if ('schemaVersion' in value && value.schemaVersion !== 2) {
-    throw new UnsupportedNearlyFinishedSchemaError(value.schemaVersion)
-  }
-
-  if (
-    !Array.isArray(value.meltingStation) ||
-    !value.meltingStation.every(isMeltingRecipe) ||
-    !Array.isArray(value.reforgingStation) ||
-    !value.reforgingStation.every(isReforgingEntry)
-  ) {
-    throw new InvalidNearlyFinishedDatasetError()
-  }
-
-  const dataset: NearlyFinishedDataset = {
-    meltingStation: value.meltingStation,
-    reforgingStation: value.reforgingStation.map((entry) => ({
-      ...entry,
-      effectsAdded: entry.effectsAdded.filter(isVisibleEffect)
-    }))
-  }
-
-  validateDataset(dataset)
   return dataset
 }

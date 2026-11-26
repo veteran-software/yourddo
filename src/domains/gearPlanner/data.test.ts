@@ -1,14 +1,23 @@
 import { catalogWeaponTypes, changeClasses, characterAllowsItem, classNames, defaultCharacter } from './character'
 import { describe, expect, it, vi } from 'vitest'
 import * as datasets from '../../shared/data/loadDataset'
-import { adaptItemCategory, effectIndex, loadCatalogCurses, resolveEffects, scopedAugmentReader } from './itemCatalog'
+import { loadIncrediblePotentialData } from '../incrediblePotential/data.ts'
+import { getRingUpgrades, validateIncrediblePotentialData } from '../incrediblePotential/incrediblePotential.logic.ts'
+import {
+  adaptItemCategory,
+  adaptItemSetDefinitions,
+  effectIndex,
+  loadCatalogCurses,
+  resolveEffects,
+  scopedAugmentReader
+} from './itemCatalog'
 import {
   InvalidGearPlannerDataError,
   loadGearPlannerData,
   parseGearPlannerAugmentDataset,
-  parseGearPlannerFiligreeSetDataset,
   parseGearPlannerItemDataset
 } from './data.ts'
+import { aggregateEffectSummary } from './effects.ts'
 import { gearPlannerSlots, type GearPlannerSourceItem } from './gearPlanner.types.ts'
 import {
   gearPlannerFiligreeId,
@@ -16,6 +25,8 @@ import {
   normalizeGearPlannerFiligrees,
   normalizeGearPlannerSources
 } from './normalize.ts'
+import { createEmptyGearPlannerEquipment } from './planner.ts'
+import { collectActiveSetEffectSources, resolveGearPlannerSetState } from './sets.ts'
 
 const item = (name: string, type?: string): GearPlannerSourceItem => ({
   name,
@@ -277,19 +288,50 @@ describe('Gear Planner data validation', () => {
     expect(category.records[0].enchantments?.map((stat) => stat.modifier)).toEqual([140, '-5%'])
   })
 
-  it('distinguishes item-set percentage ratios from flat stat and weapon-dice modifiers', () => {
-    const enhancements = [
-      { name: 'Spell Critical Chance: Electric', modifier: 0.05 },
-      { name: 'Melee Threat', modifier: 1 },
-      { name: 'Spell Power: Electric', modifier: '25' },
-      { name: 'Damage Dice (W)', modifier: '0.5' },
-      { name: 'Doubleshot Chance', modifier: '15%' }
-    ]
-    const [set] = parseGearPlannerFiligreeSetDataset(
-      [{ name: 'Set', bonuses: [{ threshold: 3, enhancements }] }],
-      'itemSets.enchantments'
+  it('resolves item-set percentages and flat amounts from the published effect IDs', () => {
+    const index = effectIndex([
+      {
+        id: 21,
+        enchantments: [
+          { displayName: 'Spell Critical Chance: Electric', value: 5, unit: 'percent' },
+          { displayName: 'Weapon Damage Dice', value: 0.5 },
+          { displayName: 'Spell Power: Electric', value: 25, unit: 'points' }
+        ]
+      },
+      { id: 22, hidden: true, enchantments: [{ displayName: 'Strength', value: 50 }] }
+    ])
+    const [[, set], [, unresolved]] = adaptItemSetDefinitions(
+      [
+        {
+          id: 1,
+          name: 'Set',
+          thresholdMode: 'highestOnly',
+          thresholds: [
+            { pieces: 2, effect: { effectId: 22 }, description: 'Hidden effect' },
+            { pieces: 3, effect: { effectId: 21 }, requirement: 'Centered' },
+            {
+              pieces: 4,
+              effect: { effectId: 22 },
+              description: '(4) Set: +3 Artifact Strength',
+              enchantments: [
+                { displayName: 'Strength', value: 3, bonusType: 'Artifact' },
+                { displayName: 'Invisible bonus', hidden: true, value: 99 }
+              ]
+            }
+          ]
+        },
+        { id: 2, name: 'Unresolved', activationStatus: 'unresolved', thresholds: [{ effect: { effectId: 21 } }] }
+      ],
+      index
     )
-    expect(set.thresholds[0].effects.map((effect) => effect.modifier)).toEqual(['5%', '100%', '25', '0.5', '15%'])
+    expect(set.thresholdMode).toBe('highestOnly')
+    expect(set.thresholds[0].effects).toEqual([])
+    expect(set.thresholds[1].requirement).toBe('Centered')
+    expect(set.thresholds[1].effects.map((effect) => effect.modifier)).toEqual(['5%', 0.5, 25])
+    expect(set.thresholds[2].effects).toEqual([
+      { name: 'Strength', modifier: 3, bonus: 'Artifact', notes: '+3 Artifact Strength' }
+    ])
+    expect(unresolved.thresholds).toEqual([])
   })
 
   it('keeps only base reforging items in normal browsing while retaining unrelated upgraded records', () => {
@@ -375,24 +417,6 @@ describe('Gear Planner data validation', () => {
     ])
 
     expect(augment.augmentType).toBe('')
-  })
-
-  it('normalizes filigree sets without losing name-only source effects', () => {
-    const [set] = parseGearPlannerFiligreeSetDataset([
-      {
-        name: 'Test Filigree Set',
-        bonuses: [
-          { threshold: 2, enhancements: [{ description: 'Permanent Test Effect' }, { name: 'Strength', modifier: 1 }] }
-        ]
-      }
-    ])
-    expect(set.thresholds[0]).toEqual({
-      threshold: 2,
-      effects: [
-        { description: 'Permanent Test Effect', name: 'Permanent Test Effect' },
-        { name: 'Strength', modifier: 1 }
-      ]
-    })
   })
 })
 
@@ -498,28 +522,72 @@ describe('Gear Planner production CDN validation', () => {
       return nativeFetch(url, init)
     })
     try {
-      const data = await loadGearPlannerData()
-      expect(requested.filter((url) => /\/(?:gear-planner|master)\/|\/manual\/deckOfManyCurses/.test(url))).toEqual([])
+      const [data, rings] = await Promise.all([loadGearPlannerData(), loadIncrediblePotentialData()])
+      validateIncrediblePotentialData(rings)
+      expect(rings.rings).toHaveLength(32)
+      expect(rings.rings.filter(({ setName }) => setName)).toHaveLength(32)
+      expect(rings.rings.find(({ name }) => name === "Kormor's Ring")).toMatchObject({ setName: 'Wild Mage' })
+      expect(getRingUpgrades(rings.recipes)).toHaveLength(36)
+      expect(
+        requested.filter((url) =>
+          /\/(?:gear-planner|master)\/|\/manual\/(?:deckOfManyCurses|itemSets\.)|\/items\/augments\/sets\.json|\/item-sets\/setBonusIndex\.json/.test(
+            url
+          )
+        )
+      ).toEqual([])
       for (const path of [
         'items/manifest.json',
         'items/augments/standard.json',
         'items/augments/filigrees.json',
-        'items/augments/sets.json',
+        'item-sets/manifest.json',
+        'item-sets/item-sets.json',
+        'item-sets/filigree-sets.json',
+        'item-sets/effects.json',
         'deck-of-many-curses/curses.json'
       ])
         expect(requested.some((url) => url.endsWith('/' + path))).toBe(true)
-      expect(data.curses.find((c) => c.name === 'Curse of Major Spellwork')?.enchantments).toContainEqual(
-        expect.objectContaining({ name: 'Universal Spell Power', modifier: 10 })
+      expect(requested.filter((url) => url.endsWith('/item-sets/manifest.json'))).toHaveLength(1)
+      expect(data.standardSets?.get('Echoes of the Waking Ancestors')).toBeDefined()
+      expect(data.standardSets?.get(68)?.thresholds[0].effects).toContainEqual(
+        expect.objectContaining({ name: 'Melee Power', modifier: 5 })
       )
-      for (const [name, pieces] of [
-        ['Celerity', 2],
-        ['The Enlightened Step', 5],
-        ['Dreadbringer', 5]
+      expect(data.standardSets?.get(69)?.thresholds[0].effects).toContainEqual(
+        expect.objectContaining({ name: 'Melee Power', modifier: 10 })
+      )
+      expect(data.curses.find((c) => c.name === 'Curse of Major Spellwork')?.enchantments).toContainEqual(
+        expect.objectContaining({ name: 'Spell Power: Universal', modifier: 10 })
+      )
+      for (const [name, pieces, stat, modifier] of [
+        ['Celerity', 2, 'Doubleshot', '2%'],
+        ['The Enlightened Step', 5, 'Doublestrike', '5%'],
+        ['Dreadbringer', 5, 'Fortification Bypass', '20%']
       ] as const) {
         expect(
           data.filigreeSetDefinitionByName.get(name)?.thresholds.find((tier) => tier.threshold === pieces)?.effects,
           name
-        ).toEqual([])
+        ).toContainEqual(expect.objectContaining({ name: stat, modifier }))
+      }
+      const winter = 'Eminence of Winter'
+      const winterPieces = Map.groupBy(
+        data.items.filter(({ source }) => source.setBonus?.some(({ name }) => name === winter)),
+        ({ slot }) => slot
+      )
+      expect(winterPieces.size).toBeGreaterThanOrEqual(5)
+      const equipment = createEmptyGearPlannerEquipment()
+      const winterStats = [
+        ['Physical Resistance Rating', 30],
+        ['Healing Amplification: Positive', 30],
+        ['Maximum Hit Points', 10],
+        ['Melee Threat', 100]
+      ] as const
+      for (const [i, [slot, [piece]]] of [...winterPieces].slice(0, 5).entries()) {
+        equipment[slot] = piece
+        const setState = resolveGearPlannerSetState(equipment, {}, data.standardSets)
+        const stats = aggregateEffectSummary(collectActiveSetEffectSources(setState))
+        expect(stats).toHaveLength(i === 0 ? 0 : i === 1 ? 1 : i + 2)
+        for (const [name, total] of winterStats.slice(0, i)) {
+          expect(stats).toContainEqual(expect.objectContaining({ name, total }))
+        }
       }
       for (const [setName, pieces, name, modifier] of [
         ['Paragon Guard', 3, 'Armor Class', '15%'],

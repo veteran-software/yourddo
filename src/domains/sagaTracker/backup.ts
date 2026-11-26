@@ -1,12 +1,5 @@
-import type {
-  QuestDefinition,
-  SagaDefinition,
-  SagaStatusMap,
-  SagaTrackerProgress,
-  TimestampMap
-} from './sagaTracker.types.ts'
-import { progressItems } from './storage.ts'
-import { withCompatibleSagaIds } from './withCompatibleSagaIds.ts'
+import type { QuestDefinition, SagaDefinition, SagaTrackerProgress, TimestampMap } from './sagaTracker.types.ts'
+import { buildProgress, progressItems } from './storage.ts'
 
 export const BACKUP_FILENAME = 'yourddo-saga-backup.json'
 
@@ -56,11 +49,7 @@ export const parseBackup = (
   const backup = value as Record<string, unknown>
   if (backup.version !== 2) throw new InvalidSagaTrackerBackupError('version must be exactly 2')
   if (!Array.isArray(backup.items)) throw new InvalidSagaTrackerBackupError('items must be an array')
-  const sagaIds = new Set(sagas.map(({ id }) => id))
-  const questIds = new Set(quests.map(({ id }) => id))
-  const imported = new Map<string, { completed: boolean; turnedIn: boolean }>()
-
-  for (const entry of backup.items) {
+  const items = backup.items.map((entry: unknown) => {
     if (typeof entry !== 'object' || entry === null || Array.isArray(entry)) {
       throw new InvalidSagaTrackerBackupError('every item must be an object')
     }
@@ -69,24 +58,16 @@ export const parseBackup = (
     if (typeof item.completed !== 'boolean' || typeof item.turnedIn !== 'boolean') {
       throw new InvalidSagaTrackerBackupError('saga completion and turn-in statuses must be booleans')
     }
-    imported.set(item.id, { completed: item.completed, turnedIn: item.turnedIn })
-  }
+    return { id: item.id, completed: item.completed, turnedIn: item.turnedIn }
+  })
 
-  const compatible = withCompatibleSagaIds(Object.fromEntries(imported))
-  const sagaStatus: SagaStatusMap = Object.fromEntries(
-    sagas.map(({ id }) => [id, compatible[id] ?? { completed: false, turnedIn: false }])
+  return buildProgress(
+    sagas,
+    quests,
+    items,
+    parseTimestamps(backup.questDoneAt, 'questDoneAt'),
+    parseTimestamps(backup.turnedInAt, 'turnedInAt')
   )
-  return {
-    sagaStatus,
-    questDoneAt: Object.fromEntries(
-      Object.entries(parseTimestamps(backup.questDoneAt, 'questDoneAt')).filter(([id]) => questIds.has(id))
-    ),
-    turnedInAt: Object.fromEntries(
-      Object.entries(withCompatibleSagaIds(parseTimestamps(backup.turnedInAt, 'turnedInAt'))).filter(([id]) =>
-        sagaIds.has(id)
-      )
-    )
-  }
 }
 
 export const downloadBackup = (backup: SagaTrackerBackup): void => {

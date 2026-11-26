@@ -32,8 +32,7 @@
 .effect + .effect {
   border-top: 1px solid var(--app-border);
 }
-.costRow,
-.source summary {
+.costRow {
   display: grid;
   grid-template-columns: 1rem minmax(0, 1fr) auto;
   align-items: baseline;
@@ -49,30 +48,6 @@
   color: var(--app-accent);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
-}
-.source summary {
-  cursor: pointer;
-  border-radius: var(--mantine-radius-sm);
-}
-.source summary:hover,
-.source summary:focus-visible {
-  background: var(--app-active);
-}
-.source summary::-webkit-details-marker {
-  display: none;
-}
-.source svg {
-  align-self: center;
-  color: var(--app-accent);
-}
-.source[open] > summary svg {
-  transform: rotate(90deg);
-}
-.source ul {
-  margin: 0 0 0.5rem 1.65rem;
-  padding-inline-start: 1rem;
-  color: var(--mantine-color-dimmed);
-  font-size: var(--mantine-font-size-sm);
 }
 .stock:not(:empty) {
   margin: 0 0.25rem 0.45rem 1.65rem;

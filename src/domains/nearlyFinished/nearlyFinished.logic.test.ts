@@ -10,8 +10,7 @@ import {
   hasThreadOfFate,
   InvalidNearlyFinishedDatasetError,
   MissingIngredientRecipeError,
-  parseNearlyFinishedDataset,
-  UnsupportedNearlyFinishedSchemaError
+  validateNearlyFinishedDataset
 } from './nearlyFinished.logic.ts'
 import type {
   MeltingRecipe,
@@ -70,26 +69,17 @@ describe('Nearly Finished dataset contract and classification', () => {
     const value = structuredClone(dataset)
     const snapshot = structuredClone(value)
 
-    expect(parseNearlyFinishedDataset(value)).toEqual(dataset)
+    expect(validateNearlyFinishedDataset(value)).toEqual(dataset)
     expect(value).toEqual(snapshot)
   })
 
   it('accepts a melting recipe with no raw requirements', () => {
     expect(
-      parseNearlyFinishedDataset({
+      validateNearlyFinishedDataset({
         meltingStation: [{ name: 'Empty Component', quantity: 1, requirements: [] }],
         reforgingStation: [entry('Empty Raw Item', [requirement('Empty Component', 1)])]
       })
     ).toBeTruthy()
-  })
-
-  it('rejects unsupported schema versions and structurally invalid payloads', () => {
-    expect(() => parseNearlyFinishedDataset({ ...dataset, schemaVersion: 3 })).toThrow(
-      UnsupportedNearlyFinishedSchemaError
-    )
-    expect(() => parseNearlyFinishedDataset({ meltingStation: [], reforgingStation: [{}] })).toThrow(
-      InvalidNearlyFinishedDatasetError
-    )
   })
 
   it('filters the exact stage and sorts items by name', () => {
@@ -127,7 +117,7 @@ describe('Nearly Finished dataset contract and classification', () => {
   it('rejects duplicate melting recipes and duplicate item-stage entries', () => {
     expect(() => buildMeltingRecipeLookup([...recipes, recipes[0]])).toThrow(InvalidNearlyFinishedDatasetError)
     expect(() =>
-      parseNearlyFinishedDataset({
+      validateNearlyFinishedDataset({
         meltingStation: recipes,
         reforgingStation: [dataset.reforgingStation[0], structuredClone(dataset.reforgingStation[0])]
       })
@@ -204,7 +194,7 @@ describe('Nearly Finished recipe calculations', () => {
   })
 
   it('runs parity invariants across every Nearly Finished entry', () => {
-    const parsed = parseNearlyFinishedDataset(structuredClone(dataset))
+    const parsed = validateNearlyFinishedDataset(structuredClone(dataset))
 
     for (const selected of getNearlyFinishedEntries(parsed)) {
       const plan = buildCraftingPlan(selected, parsed.meltingStation)

@@ -83,7 +83,7 @@ const RecipesTool = ({ binding, data, plan, planMaterials, onBindingChange }: Re
                 {equipmentSlotLabels.get(item.equipmentSlotId) ?? 'Equipment slot'}
               </Title>
               <Text c='dimmed' size='sm'>
-                Minimum level {String(item.effectiveItemLevel)} · {binding === 'bound' ? 'Bound' : 'Unbound'} recipes
+                ML {String(item.effectiveItemLevel)} · {binding === 'bound' ? 'Bound' : 'Unbound'} recipes
               </Text>
               {selectedAugments?.length ? (
                 <Text size='sm'>

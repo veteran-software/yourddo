@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import publishedSets from './fixtures/publishedSets.json'
-import { parseGearPlannerFiligreeSetDataset, loadGearPlannerData } from './data.ts'
+import { loadGearPlannerData } from './data.ts'
 import { aggregateEffectSummary, conflictEligibleEffectSources, resolveEffectConflicts } from './effects.ts'
 import {
   type GearPlannerAugment,
@@ -20,10 +19,7 @@ import {
   setGearPlannerUnlockedFiligreeSlots
 } from './planner.ts'
 import { collectActiveSetEffectSources, resolveGearPlannerSetState } from './sets.ts'
-import {
-  type GearPlannerStandardSetDefinition,
-  standardGearPlannerSetDefinitionByName
-} from './standardSetDefinitions.ts'
+import type { GearPlannerStandardSetDefinition } from './standardSetDefinitions.ts'
 
 const definitions = new Map<string, GearPlannerStandardSetDefinition>([
   [
@@ -80,11 +76,23 @@ const stateFor = (items: readonly GearPlannerItem[]) => resolveGearPlannerSetSta
 
 describe('Gear Planner standard set memberships', () => {
   it('activates the six individual Artifact ability bonuses from the sole Echoes definition at three pieces', () => {
-    const published = new Map(
-      parseGearPlannerFiligreeSetDataset(publishedSets, 'itemSets.enchantments').map((set) => [set.name, set])
-    )
-    const name = 'Echoes of the Walking Ancestors'
-    expect([...published.keys()].filter((key) => key.toLowerCase() === name.toLowerCase())).toEqual([name])
+    const name = 'Echoes of the Waking Ancestors'
+    const published = new Map([
+      [
+        name,
+        {
+          name,
+          thresholds: [
+            {
+              threshold: 3,
+              effects: ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'].map(
+                (ability) => ({ name: ability, modifier: 3, bonus: 'Artifact' })
+              )
+            }
+          ]
+        }
+      ]
+    ])
     const helm = item('helm', 'Head', "Legendary Walking Ancestor's Helmet", [name])
     const cloak = item('cloak', 'Cloak', "Legendary Walking Ancestor's Shroud", [name])
     const robe = item('robe', 'Armor', 'Legendary Robe of the Locus', [name])
@@ -99,6 +107,36 @@ describe('Gear Planner standard set memberships', () => {
       })
     }
     expect(stats.some((stat) => stat.normalizedName === 'ability scores')).toBe(false)
+  })
+
+  it('counts same-name variants separately and applies only the highest unconditional tier', () => {
+    const helm = item('helm', 'Head', 'Helm', [])
+    helm.source.setBonus = [{ id: 11, name: 'Shared name' }]
+    const ring = item('ring', 'First Finger', 'Ring', [])
+    ring.source.setBonus = [{ id: 12, name: 'Shared name' }]
+    const byId = new Map<number, GearPlannerStandardSetDefinition>([
+      [
+        11,
+        {
+          name: 'Shared name',
+          thresholdMode: 'highestOnly',
+          thresholds: [
+            { threshold: 1, effects: [{ name: 'Strength', modifier: 1 }] },
+            { threshold: 2, effects: [{ name: 'Strength', modifier: 2 }] },
+            { threshold: 2, requirement: 'Centered', effects: [{ name: 'Strength', modifier: 20 }] }
+          ]
+        }
+      ],
+      [12, { name: 'Shared name', thresholds: [{ threshold: 2, effects: [{ name: 'Strength', modifier: 100 }] }] }]
+    ])
+    const twoVariants = resolveGearPlannerSetState(equipped(helm, ring), {}, byId)
+    expect(twoVariants.sets.map((set) => set.count)).toEqual([1, 1])
+    expect(collectActiveSetEffectSources(twoVariants).map(({ effect }) => effect.modifier)).toEqual([1])
+
+    ring.source.setBonus = helm.source.setBonus
+    const sameVariant = resolveGearPlannerSetState(equipped(helm, ring), {}, byId)
+    expect(sameVariant.sets[0].thresholds.map((tier) => tier.isActive)).toEqual([false, true, false])
+    expect(collectActiveSetEffectSources(sameVariant).map(({ effect }) => effect.modifier)).toEqual([2])
   })
 
   it('counts equipped item memberships literally, including multiple memberships on one item', () => {
@@ -405,25 +443,29 @@ describe('Gear Planner production set-definition audit', () => {
       })
       try {
         const data = await loadGearPlannerData()
-        const itemNames = new Set(
-          data.sourceDatasets.flatMap(({ records }) =>
-            records.flatMap((sourceItem) => sourceItem.setBonus?.map(({ name }) => name) ?? [])
+        const standardSets = data.standardSets
+        if (!standardSets) throw new Error('Missing equipment set definitions')
+        const items = data.sourceDatasets.flatMap(({ fileName, records }) =>
+          records.flatMap(({ name, setBonus }) => (setBonus?.length ? [{ fileName, name, sets: setBonus }] : []))
+        )
+        const itemMemberships = items.map(({ fileName, name, sets }) => ({
+          fileName,
+          name,
+          setNames: sets.map((set) => set.name)
+        }))
+        const itemNames = new Set(items.flatMap(({ sets }) => sets.map(({ name }) => name)))
+        const augmentNames = new Set(data.augments.flatMap(({ setBonus }) => setBonus?.map(({ name }) => name) ?? []))
+        const memberships = items
+          .flatMap(({ sets }) => sets)
+          .concat(data.augments.flatMap(({ setBonus }) => setBonus ?? []))
+        const unresolved = [
+          ...new Set(
+            memberships
+              .filter(({ id, name }) => !standardSets.has(name) && (id === undefined || !standardSets.has(id)))
+              .map(({ name }) => name)
           )
-        )
-        const augmentNames = new Set(
-          data.augments.flatMap((sourceAugment) => sourceAugment.setBonus?.map(({ name }) => name) ?? [])
-        )
-        const itemMemberships = data.sourceDatasets.flatMap(({ fileName, records }) =>
-          records.flatMap((sourceItem) =>
-            sourceItem.setBonus?.length
-              ? [{ fileName, name: sourceItem.name, setNames: sourceItem.setBonus.map(({ name }) => name) }]
-              : []
-          )
-        )
-        const names = [...new Set([...itemNames, ...augmentNames])].toSorted((left, right) => left.localeCompare(right))
-        const standardSets = data.standardSets ?? standardGearPlannerSetDefinitionByName
-        const resolved = names.filter((name) => standardSets.has(name))
-        const unresolved = names.filter((name) => !standardSets.has(name))
+        ].sort()
+        const names = new Set([...itemNames, ...augmentNames])
         const itemOnly = unresolved.filter((name) => itemNames.has(name) && !augmentNames.has(name))
         const augmentOnly = unresolved.filter((name) => augmentNames.has(name) && !itemNames.has(name))
         const shared = unresolved.filter((name) => itemNames.has(name) && augmentNames.has(name))
@@ -438,8 +480,8 @@ describe('Gear Planner production set-definition audit', () => {
 
         console.info(
           JSON.stringify({
-            distinctSetNames: names.length,
-            resolvedStandardSetNames: resolved.length,
+            distinctSetNames: names.size,
+            resolvedStandardSetNames: names.size - unresolved.length,
             unresolvedSetNames: unresolved.length,
             unresolved,
             unresolvedItemOnly: itemOnly,
@@ -458,7 +500,7 @@ describe('Gear Planner production set-definition audit', () => {
             }
           })
         )
-        expect(resolved.length + unresolved.length).toBe(names.length)
+        expect(unresolved).toEqual([])
       } finally {
         vi.unstubAllGlobals()
       }

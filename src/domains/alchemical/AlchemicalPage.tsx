@@ -52,7 +52,7 @@ const labels: Record<AlchemicalStage, string> = {
 const useSelection = createCraftingSelection<Selection>(() => ({ family: 'original', baseId: null, recipes: {} }))
 type LoadState = { status: 'loading' } | { status: 'error'; error: unknown } | { status: 'ready'; data: AlchemicalData }
 
-function Costs({ costs, locations = false }: { costs: AlchemicalCost[]; locations?: boolean }) {
+function Costs({ costs, showStock = false }: { costs: AlchemicalCost[]; showStock?: boolean }) {
   return (
     <Stack gap='sm'>
       {costs.map((cost) => (
@@ -63,19 +63,7 @@ function Costs({ costs, locations = false }: { costs: AlchemicalCost[]; location
             </Text>
             <Badge variant='light'>×{cost.quantity.toLocaleString()}</Badge>
           </Group>
-          {locations && (
-            <>
-              <IngredientStock name={cost.name} required={cost.quantity} />
-              {!!cost.sources.length && (
-                <details>
-                  <summary>Where to find {cost.name}</summary>
-                  <Text size='xs' c='dimmed' mt={4}>
-                    {cost.sources.join(' · ')}
-                  </Text>
-                </details>
-              )}
-            </>
-          )}
+          {showStock && <IngredientStock name={cost.name} required={cost.quantity} />}
         </Stack>
       ))}
     </Stack>
@@ -202,9 +190,6 @@ function AlchemicalWorkspace({ data }: { data: AlchemicalData }) {
                     <Group gap='xs'>
                       <AlchemicalItemArt layers={base.iconLayerIds} />
                       <Badge variant='outline'>Base ML {base.minimumLevel}</Badge>
-                      <Text size='sm' c='dimmed'>
-                        {base.sources.join(' · ')}
-                      </Text>
                     </Group>
                   )}
                 </Stack>
@@ -335,7 +320,7 @@ function RecipeLibrary({ data, exchanges }: { data: AlchemicalData; exchanges: b
             <Title order={3} size='h4'>
               Ingredients
             </Title>
-            <Costs costs={selected.costs} locations />
+            <Costs costs={selected.costs} showStock />
             {'rewards' in selected && (
               <>
                 <Divider />
