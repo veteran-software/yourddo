@@ -1,3 +1,4 @@
+import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import { loadDatasetFile } from '../../shared/data/loadDataset'
 import type { CauldronRecipe, CauldronRequirement } from './recipes'
 
@@ -28,6 +29,7 @@ interface Weapon extends Output {
   baseLevel: number
   description: string
   effectIds: number[]
+  damageOutcomes?: (Discrepancies & { effectId: number })[]
 }
 interface Enchantment {
   name: string
@@ -36,11 +38,23 @@ interface Enchantment {
   bonusType?: string
   unit?: string
 }
-interface Effect {
+interface Discrepancy {
+  stat: string
+  statDisplayName?: string
+  stated: string | number | boolean
+  mechanical: string | number | boolean
+  unit?: string
+}
+
+interface Discrepancies {
+  knownDiscrepancies?: Discrepancy[]
+}
+
+interface Effect extends Discrepancies {
   id: number
   displayName: string
   enchantments: Enchantment[]
-  knownDiscrepancies?: { stat: string; stated: number; mechanical: number; unit: string }[]
+  procs?: Discrepancies[]
 }
 interface Resources {
   recipes: RawRecipe[]
@@ -64,6 +78,7 @@ export interface WeaponRecipe {
   tier: Tier
   description: string
   effects: string[]
+  discrepancies?: string[]
   requirements: CauldronRequirement[]
 }
 export interface CauldronCatalog {
@@ -88,10 +103,26 @@ function lookup<T extends { id: number }>(rows: T[]) {
 
 function modifier(effect: Enchantment) {
   if (!Number.isFinite(effect.value)) throw new InvalidCauldronRecipesError(effect.displayName)
-  if (effect.unit !== 'coefficient') return effect.unit === 'percent' ? String(effect.value) + '%' : effect.value
+  if (effect.unit === 'percent') return String(Math.trunc(effect.value)) + '%'
+  if (effect.unit === 'points') return Math.trunc(effect.value)
+  if (effect.unit !== 'coefficient') return effect.value
   const value = Number((effect.value * 100).toFixed(8))
   // Power coefficients add points. All other coefficient stats on Cauldron sets add percentage points.
   return effect.displayName.endsWith('Power') ? value : String(value) + '%'
+}
+
+function effectDiscrepancies(effect: Effect, outcomes: Discrepancies[] = []) {
+  const records = [effect, ...(effect.procs ?? []), ...outcomes].filter(isVisibleEffect)
+  const notes = records.flatMap((record) =>
+    (record.knownDiscrepancies ?? []).map((note) => {
+      const stat =
+        note.statDisplayName ?? effect.enchantments.find((entry) => entry.name === note.stat)?.displayName ?? note.stat
+      const label = stat === 'Effect_IncludedGenus' ? 'Target creature genus' : stat
+      const unit = note.unit === 'percent' ? '%' : ''
+      return label + ': stated ' + String(note.stated) + unit + ', actual ' + String(note.mechanical) + unit + '.'
+    })
+  )
+  return [...new Set(notes)]
 }
 
 export function buildCauldronCatalog(manifest: Manifest, data: Resources): CauldronCatalog {
@@ -107,6 +138,7 @@ export function buildCauldronCatalog(manifest: Manifest, data: Resources): Cauld
     if (recipe.category === 'weapon') {
       const output = weapon(recipe.outputItemId)
       if (output.recipeId !== recipe.id) throw new InvalidCauldronRecipesError(output.name)
+      const visible = output.effectIds.map(effects[output.tier]).filter(isVisibleEffect)
       catalog.weapons.push({
         id: output.id,
         name: output.name,
@@ -114,7 +146,13 @@ export function buildCauldronCatalog(manifest: Manifest, data: Resources): Cauld
         minimumLevel: output.baseLevel,
         description: output.description,
         requirements,
-        effects: output.effectIds.map((id) => effects[output.tier](id).displayName)
+        effects: visible.map((effect) => effect.displayName),
+        discrepancies: visible.flatMap((effect) =>
+          effectDiscrepancies(
+            effect,
+            output.damageOutcomes?.filter((o) => o.effectId === effect.id)
+          ).map((note) => effect.displayName + ' · ' + note)
+        )
       })
       continue
     }
@@ -142,8 +180,9 @@ export function buildCauldronCatalog(manifest: Manifest, data: Resources): Cauld
       requiredItem: equipment[0].name,
       requirements,
       restrictions: excluded.length ? 'The named item cannot be a ' + excluded.join(' or ') + ' version.' : undefined,
-      setBonus: bonus.thresholds.map((threshold) => {
+      setBonus: bonus.thresholds.flatMap((threshold) => {
         const effect = effects[output.tier](threshold.effectId)
+        if (!isVisibleEffect(effect)) return []
         return {
           name: bonus.name,
           numPiecesEquipped: threshold.pieces,
@@ -152,11 +191,7 @@ export function buildCauldronCatalog(manifest: Manifest, data: Resources): Cauld
             bonus: entry.bonusType,
             modifier: modifier(entry)
           })),
-          discrepancies: effect.knownDiscrepancies?.map((note) => {
-            const label = effect.enchantments.find((entry) => entry.name === note.stat)?.displayName ?? note.stat
-            const unit = note.unit === 'percent' ? '%' : ''
-            return label + ': stated ' + String(note.stated) + unit + ', actual ' + String(note.mechanical) + unit + '.'
-          })
+          discrepancies: effectDiscrepancies(effect)
         }
       })
     })

@@ -58,6 +58,18 @@ export default function FerrocrystalRecipes({ weapons }: Readonly<{ weapons: Wea
                 <List.Item key={effect}>{effect}</List.Item>
               ))}
             </List>
+            {Boolean(current.discrepancies?.length) && (
+              <section aria-label='Known in-game discrepancies'>
+                <Title order={3} size='h4'>
+                  Known in-game discrepancies
+                </Title>
+                <List>
+                  {current.discrepancies?.map((note) => (
+                    <List.Item key={note}>{note}</List.Item>
+                  ))}
+                </List>
+              </section>
+            )}
           </Stack>
         ) : (
           <Text c='dimmed'>Choose a weapon to view its ingredients and effects.</Text>

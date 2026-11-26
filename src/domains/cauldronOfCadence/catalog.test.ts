@@ -72,6 +72,28 @@ it('joins the named item by kind and uses actual values independently of discrep
   })
   expect(() => buildCauldronCatalog(manifest, { ...fixture, equipmentSets: [] })).toThrow(InvalidCauldronRecipesError)
 })
+it('shows the discrepancy once when a weapon proc and its damage outcome report the same target', () => {
+  const knownDiscrepancies = [{ stat: 'Effect_IncludedGenus', stated: 'Incorporeal', mechanical: 'Fey' }]
+  const [weapon] = buildCauldronCatalog(manifest, {
+    ...fixture,
+    recipes: [{ ...fixture.recipes[0], category: 'weapon' }],
+    weapons: [
+      {
+        id: 2,
+        recipeId: 1,
+        name: 'Sword',
+        tier: 'legendary',
+        baseLevel: 29,
+        description: '',
+        effectIds: [6],
+        damageOutcomes: [{ effectId: 6, knownDiscrepancies }]
+      }
+    ],
+    legendaryEffects: [{ id: 6, displayName: 'Feybane', enchantments: [], procs: [{ knownDiscrepancies }] }]
+  }).weapons
+  expect(weapon.discrepancies).toEqual(['Feybane · Target creature genus: stated Incorporeal, actual Fey.'])
+})
+
 it.runIf(import.meta.env.VITE_GEAR_PLANNER_CDN === '1')(
   'resolves every Cauldron recipe from the published release',
   async () => {
