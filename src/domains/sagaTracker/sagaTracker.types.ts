@@ -2,6 +2,7 @@ export interface SagaDefinition {
   id: string
   name: string
   levelRange: string
+  tier?: SagaCategory
   npcs: string[]
 }
 

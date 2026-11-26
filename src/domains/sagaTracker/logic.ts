@@ -20,9 +20,9 @@ export const categorizeSaga = (levelRange: string): SagaCategory => {
 }
 
 export const categorizeSagas = (sagas: readonly SagaDefinition[]): Record<SagaCategory, SagaDefinition[]> => ({
-  heroic: sagas.filter((saga) => categorizeSaga(saga.levelRange) === 'heroic'),
-  epic: sagas.filter((saga) => categorizeSaga(saga.levelRange) === 'epic'),
-  legendary: sagas.filter((saga) => categorizeSaga(saga.levelRange) === 'legendary')
+  heroic: sagas.filter((saga) => (saga.tier ?? categorizeSaga(saga.levelRange)) === 'heroic'),
+  epic: sagas.filter((saga) => (saga.tier ?? categorizeSaga(saga.levelRange)) === 'epic'),
+  legendary: sagas.filter((saga) => (saga.tier ?? categorizeSaga(saga.levelRange)) === 'legendary')
 })
 
 export const groupQuestsBySaga = (
