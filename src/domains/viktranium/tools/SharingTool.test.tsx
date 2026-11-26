@@ -4,9 +4,8 @@ import { MantineProvider } from '@mantine/core'
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { validateViktraniumDataset } from '../data.ts'
 import { calculateFinishedItem, calculateIngredients, getSelectedAugments } from '../logic.ts'
-import { createViktraniumTestPayload } from '../test-fixture.ts'
+import { createViktraniumTestData } from '../test-fixture.ts'
 import SharingTool from './SharingTool.tsx'
 
 beforeAll(() => {
@@ -46,7 +45,7 @@ function required<T>(value: T | undefined): T {
 }
 
 const build = () => {
-  const data = validateViktraniumDataset(createViktraniumTestPayload())
+  const data = createViktraniumTestData()
   const item = required(data.indexes.itemById.get('item-heroic-crafted'))
   const selected = { 'slot-red': 'augment-red' }
   return {

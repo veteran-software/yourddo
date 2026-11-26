@@ -7,7 +7,7 @@ import type { ViktraniumItem } from '../viktranium.types.ts'
 const bindingText = (binding: Readonly<Record<string, string>> | undefined) =>
   binding ? Object.values(binding).join(' · ') : undefined
 
-const ViktraniumItemSummary = ({ item }: { item: ViktraniumItem }) => {
+const ViktraniumItemSummary = ({ item }: Readonly<{ item: ViktraniumItem }>) => {
   const metadata = [
     item.type,
     item.category,

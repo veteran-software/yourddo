@@ -1,4 +1,5 @@
 .art {
+  position: relative;
   display: inline-grid;
   place-items: center;
   flex: none;
@@ -10,10 +11,14 @@
   border: 1px solid var(--app-border);
   border-radius: var(--mantine-radius-sm);
 }
-.art img {
+.layers,
+.layers img {
+  position: absolute;
+  inset: 0;
+}
+.layers img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   image-rendering: pixelated;
-  grid-area: 1 / 1;
 }

@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest'
-import { validateViktraniumDataset } from './data.ts'
 import {
   calculateFinishedItem,
   calculateIngredients,
@@ -9,9 +8,9 @@ import {
   getItemEffectNames,
   getSelectedAugments
 } from './logic.ts'
-import { createViktraniumTestPayload } from './test-fixture.ts'
+import { createViktraniumTestData } from './test-fixture.ts'
 
-const setup = () => validateViktraniumDataset(createViktraniumTestPayload())
+const setup = () => createViktraniumTestData()
 const required = <T>(value: T | undefined): T => {
   if (value === undefined) throw new Error('Missing test fixture value')
   return value

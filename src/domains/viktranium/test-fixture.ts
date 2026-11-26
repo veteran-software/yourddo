@@ -1,12 +1,14 @@
-export const createViktraniumTestPayload = () => ({
-  schemaVersion: 1,
+import { assembleViktraniumData, categoryFor, displayNameFor, familyFor } from './data'
+import type { ViktraniumAugment, ViktraniumData, ViktraniumItem } from './viktranium.types'
+
+const fixtureRecords = () => ({
   items: [
     {
       id: 'item-heroic-crafted',
       name: 'Cruel Baton',
       pageTitle: 'Cruel Baton',
       type: 'Club',
-      minimumLevel: '8',
+      minimumLevel: 8,
       enchantments: [{ name: 'Vampirism', modifier: '1d2' }],
       slots: [
         { id: 'slot-red', augmentType: 'Red', label: 'Red', order: 1 },
@@ -33,7 +35,7 @@ export const createViktraniumTestPayload = () => ({
       name: 'Quest Boots',
       pageTitle: 'Quest Boots',
       type: 'Boots',
-      minimumLevel: '8',
+      minimumLevel: 8,
       enchantments: [{ name: 'Speed' }],
       slots: [{ id: 'slot-blue', augmentType: 'Blue', label: 'Blue', order: 0 }]
     },
@@ -42,7 +44,7 @@ export const createViktraniumTestPayload = () => ({
       name: "Legendary Warden's Hand Turret",
       pageTitle: "Legendary Warden's Hand Turret",
       type: 'Great Crossbow',
-      minimumLevel: '34',
+      minimumLevel: 34,
       slots: [{ id: 'slot-orange', augmentType: 'Orange', label: 'Orange', order: 0 }],
       recipes: [
         { id: 'recipe-legendary', deviceId: '2', device: 'Legendary Viktranium Experiment Crafting', requirements: [] }
@@ -53,7 +55,7 @@ export const createViktraniumTestPayload = () => ({
       name: 'Legendary Quest Ring',
       pageTitle: 'Legendary Quest Ring',
       type: 'Ring',
-      minimumLevel: '34',
+      minimumLevel: 34,
       slots: [{ id: 'slot-moon', augmentType: 'Moon', label: 'Moon', order: 0 }]
     },
     {
@@ -61,7 +63,7 @@ export const createViktraniumTestPayload = () => ({
       name: 'Legendary Cataclysmic Club',
       pageTitle: 'Legendary Cataclysmic Club',
       type: 'Club',
-      minimumLevel: '34',
+      minimumLevel: 34,
       slots: [{ id: 'slot-lamordia', augmentType: 'Lamordia: Dolorous (Weapon)', label: 'Dolorous Weapon', order: 0 }],
       recipes: [
         { id: 'recipe-wicked', deviceId: '3', device: 'Wicked Viktranium Experiment Crafting', requirements: [] }
@@ -106,3 +108,30 @@ export const createViktraniumTestPayload = () => ({
     { id: 'ingredient-b', name: 'Bleak B', foundIn: ['Quest B'] }
   ]
 })
+
+export function createViktraniumTestRecords() {
+  const fixture = fixtureRecords()
+  const items: ViktraniumItem[] = fixture.items.map((item) => {
+    const recipes = (item.recipes ?? []).map((recipe) => ({ ...recipe, status: 'complete' as const }))
+    return {
+      ...item,
+      displayName: displayNameFor(item.name),
+      family: familyFor(item.minimumLevel, recipes, item.name),
+      category: categoryFor(item.type, item.name),
+      enchantments: item.enchantments ?? [],
+      slots: item.slots.toSorted((a, b) => a.order - b.order),
+      dropLocations: [],
+      recipes
+    }
+  })
+  const augments: ViktraniumAugment[] = fixture.augments.map((augment) => ({
+    ...augment,
+    foundIn: [],
+    recipes: []
+  }))
+  return { items, augments, ingredients: fixture.ingredients }
+}
+
+export function createViktraniumTestData(fixture = createViktraniumTestRecords()): ViktraniumData {
+  return assembleViktraniumData(fixture.items, fixture.augments, fixture.ingredients)
+}

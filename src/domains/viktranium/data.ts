@@ -1,9 +1,6 @@
 import { addNativeSelectionAliases } from './nativeIds'
 import { loadScopedAugmentCatalog } from '../gearPlanner/itemCatalog'
-import { scopedAugmentMatcher } from '../../shared/augments/matchScopedAugment'
-import { isVisibleEffect } from '../../shared/data/visibleEffect'
-import { getCompatibleAugmentTypes, hasColorPicker } from '../../shared/augments/compatibility.ts'
-import { hasDatasetFile, loadDataset } from '../../shared/data/loadDataset.ts'
+import { getCompatibleAugmentTypes } from '../../shared/augments/compatibility.ts'
 import {
   armorTypes,
   clothingTypes,
@@ -14,19 +11,15 @@ import {
   throwingWeaponTypes
 } from '../../shared/items/categories.ts'
 import type {
-  RecipeStatus,
   ViktraniumAugment,
   ViktraniumCategory,
   ViktraniumData,
-  ViktraniumEffect,
   ViktraniumFamily,
   ViktraniumIndexes,
   ViktraniumIngredient,
   ViktraniumItem,
-  ViktraniumLocation,
   ViktraniumRecipe,
-  ViktraniumRequirement,
-  ViktraniumSlot
+  ViktraniumRequirement
 } from './viktranium.types.ts'
 
 export class InvalidViktraniumDataError extends Error {
@@ -72,99 +65,6 @@ export const supportedSlotTypes = new Set([
   'Yellow'
 ])
 
-const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null
-const nonEmptyString = (value: unknown): value is string => typeof value === 'string' && value.trim().length > 0
-
-const parseLevel = (value: unknown, owner: string): number => {
-  const level = typeof value === 'string' && value.trim() ? Number(value) : value
-  if (typeof level !== 'number' || !Number.isFinite(level) || level < 0) {
-    throw new InvalidViktraniumDataError(`invalid minimum level for ${owner}`)
-  }
-  return level
-}
-
-const parseStringArray = (value: unknown, owner: string): string[] => {
-  if (value === undefined || value === null) return []
-  if (!Array.isArray(value) || !value.every(nonEmptyString)) {
-    throw new InvalidViktraniumDataError(`invalid text list for ${owner}`)
-  }
-  return [...value]
-}
-
-const parseEffect = (value: unknown, owner: string): ViktraniumEffect => {
-  if (!isRecord(value) || !nonEmptyString(value.name)) {
-    throw new InvalidViktraniumDataError(`invalid effect for ${owner}`)
-  }
-  if (
-    value.modifier !== undefined &&
-    typeof value.modifier !== 'string' &&
-    (typeof value.modifier !== 'number' || !Number.isFinite(value.modifier))
-  ) {
-    throw new InvalidViktraniumDataError(`invalid effect modifier for ${owner}`)
-  }
-  return {
-    name: value.name,
-    ...(value.modifier !== undefined ? { modifier: value.modifier } : {}),
-    ...(typeof value.bonus === 'string' ? { bonus: value.bonus } : {}),
-    ...(typeof value.notes === 'string' ? { notes: value.notes } : {})
-  }
-}
-
-const parseRequirement = (value: unknown, owner: string): ViktraniumRequirement => {
-  if (
-    !isRecord(value) ||
-    !nonEmptyString(value.ingredientId) ||
-    !nonEmptyString(value.name) ||
-    typeof value.quantity !== 'number' ||
-    !Number.isFinite(value.quantity) ||
-    value.quantity <= 0
-  ) {
-    throw new InvalidViktraniumDataError(`invalid requirement for ${owner}`)
-  }
-  return {
-    ingredientId: value.ingredientId,
-    name: value.name,
-    quantity: value.quantity,
-    ...(value.requirements !== undefined
-      ? { requirements: parseRequirements(value.requirements, `${owner}/${value.name}`) }
-      : {})
-  }
-}
-
-const parseRequirements = (value: unknown, owner: string): ViktraniumRequirement[] => {
-  if (!Array.isArray(value)) throw new InvalidViktraniumDataError(`requirements missing for ${owner}`)
-  return value.map((requirement) => parseRequirement(requirement, owner))
-}
-
-const parseRecipeStatus = (value: unknown, owner: string): RecipeStatus => {
-  if (value === undefined) return 'complete'
-  if (value === 'complete' || value === 'incomplete' || value === 'unavailable') return value
-  throw new InvalidViktraniumDataError(`invalid recipe status for ${owner}`)
-}
-
-const parseRecipes = (value: unknown, owner: string): ViktraniumRecipe[] => {
-  if (value === undefined || value === null) return []
-  if (!Array.isArray(value)) throw new InvalidViktraniumDataError(`invalid recipes for ${owner}`)
-  return value.map((recipe) => {
-    if (
-      !isRecord(recipe) ||
-      !nonEmptyString(recipe.id) ||
-      (!nonEmptyString(recipe.deviceId) && typeof recipe.deviceId !== 'number') ||
-      !nonEmptyString(recipe.device)
-    ) {
-      throw new InvalidViktraniumDataError(`invalid recipe for ${owner}`)
-    }
-    return {
-      id: recipe.id,
-      deviceId: String(recipe.deviceId),
-      device: recipe.device,
-      ...(typeof recipe.productEffect === 'string' ? { productEffect: recipe.productEffect } : {}),
-      status: parseRecipeStatus(recipe.status, `${owner}/${recipe.id}`),
-      requirements: parseRequirements(recipe.requirements, `${owner}/${recipe.id}`)
-    }
-  })
-}
-
 export const familyFor = (
   minimumLevel: number,
   recipes: readonly ViktraniumRecipe[],
@@ -202,160 +102,6 @@ export const displayNameFor = (name: string): string => {
     return "Legendary Great Crossbow (Legendary Warden's Hand Turret)"
   }
   return name
-}
-
-const parseSlot = (value: unknown, owner: string): ViktraniumSlot => {
-  if (
-    !isRecord(value) ||
-    !nonEmptyString(value.id) ||
-    !nonEmptyString(value.augmentType) ||
-    !nonEmptyString(value.label) ||
-    typeof value.order !== 'number' ||
-    !Number.isInteger(value.order) ||
-    value.order < 0
-  ) {
-    throw new InvalidViktraniumDataError(`invalid slot for ${owner}`)
-  }
-  if (!supportedSlotTypes.has(value.augmentType)) {
-    throw new InvalidViktraniumDataError(`unknown slot type for ${owner}: ${value.augmentType}`)
-  }
-  const compatible =
-    value.compatibleAugmentTypes === undefined
-      ? undefined
-      : parseStringArray(value.compatibleAugmentTypes, `${owner}/${value.id}`)
-  if (compatible?.some((type) => !supportedSlotTypes.has(type))) {
-    throw new InvalidViktraniumDataError(`unknown compatible slot type for ${owner}/${value.id}`)
-  }
-  return {
-    id: value.id,
-    augmentType: value.augmentType,
-    label: value.label,
-    order: value.order,
-    ...(compatible ? { compatibleAugmentTypes: compatible } : {}),
-    ...(nonEmptyString(value.filledAugmentId) ? { filledAugmentId: value.filledAugmentId } : {})
-  }
-}
-
-const parseBinding = (value: unknown, owner: string): Readonly<Record<string, string>> | undefined => {
-  if (value === undefined || value === null) return undefined
-  if (!isRecord(value) || !Object.values(value).every((part) => typeof part === 'string')) {
-    throw new InvalidViktraniumDataError(`invalid binding for ${owner}`)
-  }
-  return value as Readonly<Record<string, string>>
-}
-
-const parseLocation = (value: unknown, owner: string): ViktraniumLocation => {
-  if (!isRecord(value) || !nonEmptyString(value.sourceType)) {
-    throw new InvalidViktraniumDataError(`invalid location for ${owner}`)
-  }
-  return {
-    sourceType: value.sourceType,
-    ...(typeof value.source === 'string' ? { source: value.source } : {}),
-    ...(typeof value.location === 'string' ? { location: value.location } : {}),
-    ...(typeof value.difficulty === 'string' ? { difficulty: value.difficulty } : {})
-  }
-}
-
-const parseItems = (value: unknown): ViktraniumItem[] => {
-  if (!Array.isArray(value) || value.length === 0) {
-    throw new InvalidViktraniumDataError('items must be a non-empty array')
-  }
-  return value.map((item) => {
-    if (
-      !isRecord(item) ||
-      !nonEmptyString(item.id) ||
-      !nonEmptyString(item.name) ||
-      !nonEmptyString(item.pageTitle) ||
-      !nonEmptyString(item.type) ||
-      !Array.isArray(item.slots) ||
-      item.slots.length === 0
-    ) {
-      throw new InvalidViktraniumDataError('an item is missing required identity or slots')
-    }
-    const itemId = item.id
-    const itemName = item.name
-    const itemType = item.type
-    const pageTitle = item.pageTitle
-    const minimumLevel = parseLevel(item.minimumLevel, itemId)
-    const recipes = parseRecipes(item.recipes, itemId)
-    const slots = item.slots.map((slot) => parseSlot(slot, itemId)).sort((a, b) => a.order - b.order)
-    assertUnique(slots, 'slot', (slot) => slot.id, itemId)
-    return {
-      id: itemId,
-      name: itemName,
-      displayName: displayNameFor(itemName),
-      pageTitle,
-      family: familyFor(minimumLevel, recipes, itemId),
-      category: categoryFor(itemType, itemId),
-      type: itemType,
-      ...(typeof item.description === 'string' ? { description: item.description } : {}),
-      minimumLevel,
-      ...(parseBinding(item.binding, itemId) ? { binding: parseBinding(item.binding, itemId) } : {}),
-      ...(typeof item.material === 'string' ? { material: item.material } : {}),
-      enchantments: Array.isArray(item.enchantments)
-        ? item.enchantments.filter(isVisibleEffect).map((effect) => parseEffect(effect, itemId))
-        : [],
-      slots,
-      dropLocations: Array.isArray(item.dropLocations)
-        ? item.dropLocations.map((location) => parseLocation(location, itemId))
-        : [],
-      recipes,
-      ...(nonEmptyString(item.icon) ? { icon: item.icon } : {}),
-      ...(nonEmptyString(item.image) ? { image: item.image } : {}),
-      ...(typeof item.notes === 'string' ? { notes: item.notes } : {})
-    }
-  })
-}
-
-const parseAugments = (value: unknown): ViktraniumAugment[] => {
-  if (!Array.isArray(value) || value.length === 0) {
-    throw new InvalidViktraniumDataError('augments must be a non-empty array')
-  }
-  return value.map((augment) => {
-    if (
-      !isRecord(augment) ||
-      !nonEmptyString(augment.id) ||
-      !nonEmptyString(augment.name) ||
-      !nonEmptyString(augment.augmentType) ||
-      !supportedSlotTypes.has(augment.augmentType)
-    ) {
-      throw new InvalidViktraniumDataError('an augment has invalid identity or type')
-    }
-    const augmentId = augment.id
-    const augmentName = augment.name
-    const augmentType = augment.augmentType
-    return {
-      id: augmentId,
-      name: augmentName,
-      augmentType,
-      minimumLevel: parseLevel(augment.minimumLevel, augmentId),
-      ...(typeof augment.description === 'string' ? { description: augment.description } : {}),
-      effects: Array.isArray(augment.effects)
-        ? augment.effects.filter(isVisibleEffect).map((effect) => parseEffect(effect, augmentId))
-        : [],
-      foundIn: parseStringArray(augment.foundIn, augmentId),
-      recipes: parseRecipes(augment.recipes, augmentId),
-      ...(nonEmptyString(augment.image) ? { image: augment.image } : {})
-    }
-  })
-}
-
-const parseIngredients = (value: unknown): ViktraniumIngredient[] => {
-  if (!Array.isArray(value) || value.length === 0) {
-    throw new InvalidViktraniumDataError('ingredients must be a non-empty array')
-  }
-  return value.map((ingredient) => {
-    if (!isRecord(ingredient) || !nonEmptyString(ingredient.id) || !nonEmptyString(ingredient.name)) {
-      throw new InvalidViktraniumDataError('an ingredient is missing its identity')
-    }
-    return {
-      id: ingredient.id,
-      name: ingredient.name,
-      ...(typeof ingredient.description === 'string' ? { description: ingredient.description } : {}),
-      foundIn: parseStringArray(ingredient.foundIn, ingredient.id),
-      ...(nonEmptyString(ingredient.image) ? { image: ingredient.image } : {})
-    }
-  })
 }
 
 const assertUnique = <T>(values: readonly T[], label: string, identity: (value: T) => string, owner?: string) => {
@@ -419,23 +165,14 @@ function validateFilledAugments(item: ViktraniumItem, indexes: ViktraniumIndexes
   }
 }
 
-export const validateViktraniumDataset = (value: unknown): ViktraniumData => {
-  if (!isRecord(value) || value.schemaVersion !== 1) {
-    throw new InvalidViktraniumDataError(
-      `unsupported schema version: ${String(isRecord(value) ? value.schemaVersion : undefined)}`
-    )
-  }
-  const items = parseItems(value.items)
-  const augments = parseAugments(value.augments)
-  const ingredients = parseIngredients(value.ingredients)
-  return assembleViktraniumData(items, augments, ingredients)
-}
-
 export function assembleViktraniumData(
   items: ViktraniumItem[],
   augments: ViktraniumAugment[],
   ingredients: ViktraniumIngredient[]
 ): ViktraniumData {
+  if (!items.length || !augments.length || !ingredients.length) {
+    throw new InvalidViktraniumDataError('items, augments, and ingredients are required')
+  }
   assertUnique(items, 'item', (item) => item.id)
   assertUnique(augments, 'augment', (augment) => augment.id)
   assertUnique(ingredients, 'ingredient', (ingredient) => ingredient.id)
@@ -445,63 +182,33 @@ export function assembleViktraniumData(
   for (const recipe of recipes) {
     visitRequirements(recipe.requirements, indexes.ingredientById, new Set())
   }
-  for (const item of items) validateFilledAugments(item, indexes)
+  for (const item of items) {
+    assertUnique(item.slots, 'slot', (slot) => slot.id, item.id)
+    validateFilledAugments(item, indexes)
+  }
   return { schemaVersion: 1, items, augments, ingredients, indexes }
 }
 
 export async function loadViktraniumData(): Promise<ViktraniumData> {
-  const native = await hasDatasetFile('viktranium/manifest.json')
   const [data, catalog] = await Promise.all([
-    native
-      ? import('./nativeData').then(({ loadNativeViktranium }) => loadNativeViktranium())
-      : loadDataset<unknown>('viktranium').then(validateViktraniumDataset),
+    import('./nativeData').then(({ loadNativeViktranium }) => loadNativeViktranium()),
     loadScopedAugmentCatalog()
   ])
-  const result = catalog ? mergeScopedAugments(data, catalog) : data
-  return native ? addNativeSelectionAliases(result) : result
-}
+  if (!catalog) return addNativeSelectionAliases(data)
 
-function mergeScopedAugments(
-  data: ViktraniumData,
-  catalog: NonNullable<Awaited<ReturnType<typeof loadScopedAugmentCatalog>>>
-) {
-  const match = scopedAugmentMatcher(catalog.entries)
-  const previous = Map.groupBy(
-    data.augments.filter((a) => hasColorPicker(a.augmentType)),
-    (a) => match(a.name, a.augmentType, a.minimumLevel)?.id
+  const scopedAugments = catalog.entries.flatMap((entry): ViktraniumAugment[] =>
+    entry.slotTypes.map((augmentType) => ({
+      id: 'augment-' + String(entry.id),
+      name: entry.name,
+      augmentType,
+      minimumLevel: entry.minimumLevel,
+      foundIn: [],
+      recipes: [],
+      scoped: entry,
+      effects: []
+    }))
   )
-  const augments = data.augments.filter((a) => !hasColorPicker(a.augmentType))
-  const firstByMatch = new Map<number, ViktraniumAugment>()
-  const publishedIds = new Map<string, ViktraniumAugment>()
-  for (const entry of catalog.entries) {
-    for (const color of entry.slotTypes) {
-      const group = match(entry.name, color, entry.minimumLevel)?.id ?? entry.id
-      const candidates = previous.get(group) ?? []
-      const exact = candidates.findIndex((candidate) => candidate.name === entry.name)
-      const [original] = candidates.splice(Math.max(exact, 0), 1)
-      const publishedId = 'augment-' + String(entry.id)
-      const augment = {
-        id: original?.id ?? publishedId,
-        name: entry.name,
-        augmentType: color,
-        minimumLevel: entry.minimumLevel,
-        foundIn: original?.foundIn ?? [],
-        recipes: original?.recipes ?? [],
-        image: original?.image,
-        scoped: entry,
-        effects: []
-      }
-      augments.push(augment)
-      publishedIds.set(publishedId, augment)
-      if (!firstByMatch.has(group)) firstByMatch.set(group, augment)
-    }
-  }
+  const augments = [...data.augments, ...scopedAugments]
   const indexes = buildIndexes(data.items, augments, data.ingredients)
-  const augmentById = new Map([...indexes.augmentById, ...publishedIds])
-  // Several historical names can refer to the same published augment.
-  for (const [group, originals] of previous) {
-    const current = group !== undefined && firstByMatch.get(group)
-    if (current) for (const original of originals) augmentById.set(original.id, current)
-  }
-  return { ...data, augments, enchantmentNames: catalog.names, indexes: { ...indexes, augmentById } }
+  return addNativeSelectionAliases({ ...data, augments, enchantmentNames: catalog.names, indexes })
 }
