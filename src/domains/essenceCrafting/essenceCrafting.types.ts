@@ -1,3 +1,4 @@
+import type { ScopedAugmentPresentation } from '../../shared/augments/ScopedAugmentDetails'
 export type EssenceAffixPosition = 'prefix' | 'suffix' | 'extra'
 export type EssenceBinding = 'bound' | 'unbound'
 export type EssenceRecipeKind = 'enhancement-shard' | 'minimum-level-shard'
@@ -87,6 +88,8 @@ export interface EssenceMinimumLevelShard {
 }
 
 export interface EssenceAugment extends EssenceNamedRecord {
+  scoped?: ScopedAugmentPresentation
+  filterEffects?: readonly EssenceNamedRecord[]
   augmentTypeId: string
   minimumItemLevel: number
   effects: readonly EssenceEffect[]
@@ -127,6 +130,7 @@ export interface EssenceCraftingIndexes {
 }
 
 export interface EssenceCraftingData {
+  enchantmentNames?: readonly string[]
   schemaVersion: 1
   itemCategories: readonly EssenceNamedRecord[]
   augmentTypes: readonly EssenceNamedRecord[]

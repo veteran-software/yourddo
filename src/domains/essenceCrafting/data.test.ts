@@ -1,8 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { loadScopedAugmentCatalog } from '../gearPlanner/itemCatalog'
 import { loadDataset } from '../../shared/data/loadDataset.ts'
 import { InvalidEssenceCraftingDataError, loadEssenceCraftingData, validateEssenceCraftingDataset } from './data.ts'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
 
+vi.mock('../gearPlanner/itemCatalog', () => ({ loadScopedAugmentCatalog: vi.fn() }))
 vi.mock('../../shared/data/loadDataset.ts', () => ({ loadDataset: vi.fn() }))
 
 const required = <T>(value: T | undefined): T => {
@@ -13,7 +15,7 @@ const required = <T>(value: T | undefined): T => {
 describe('Essence Crafting data', () => {
   beforeEach(() => vi.mocked(loadDataset).mockReset())
 
-  it('loads only the generated Essence Crafting domain', async () => {
+  it('loads the generated Essence Crafting domain when scoped data is unavailable', async () => {
     vi.mocked(loadDataset).mockResolvedValue(createEssenceCraftingTestPayload())
 
     const data = await loadEssenceCraftingData()
@@ -21,6 +23,31 @@ describe('Essence Crafting data', () => {
     expect(loadDataset).toHaveBeenCalledOnce()
     expect(loadDataset).toHaveBeenCalledWith('essence-crafting')
     expect(data.indexes.enhancementById.get('enhancement-split-prefix')?.displayName).toBe('Split Prefix Test')
+  })
+
+  it('retains the saved augment ID and uses the public catalog for display and filter labels', async () => {
+    vi.mocked(loadDataset).mockResolvedValue(createEssenceCraftingTestPayload())
+    const entry = {
+      id: 10,
+      name: 'Ruby of Charisma +1',
+      minimumLevel: 2,
+      slotTypes: ['Red'],
+      presentation: [],
+      effectsAdded: [],
+      searchLabels: [],
+      fallbackDescription: 'A charged gem.'
+    }
+    vi.mocked(loadScopedAugmentCatalog).mockResolvedValueOnce({
+      entries: [entry],
+      names: ['Eldritch Blast: Dice', 'Eldritch Blast: Pact Dice']
+    })
+    const data = await loadEssenceCraftingData()
+    expect(data.indexes.augmentById.get('augment-red-charisma')).toMatchObject({
+      scoped: { fallbackDescription: 'A charged gem.' },
+      effects: [],
+      filterEffects: []
+    })
+    expect(data.enchantmentNames).toEqual(['Eldritch Blast: Dice', 'Eldritch Blast: Pact Dice'])
   })
 
   it('decodes a valid fixture and builds only the required indexes', () => {

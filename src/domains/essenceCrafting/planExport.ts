@@ -1,3 +1,5 @@
+import { augmentFilterEffects } from './augmentRules'
+import { scopedEffectLabel } from '../../shared/augments/scopedEffectLabel'
 import { warningMessage } from './craftingPlanPresentation.ts'
 import {
   type EssenceEffectDisplayData,
@@ -45,7 +47,7 @@ const bindingLabel = (binding: EssenceBinding): string => (binding === 'bound' ?
 const effectIdsForNames = (data: EssenceCraftingData, effectNames: readonly string[]): string[] => {
   const selectedNames = new Set(effectNames)
   return data.augments
-    .flatMap((augment) => augment.effects)
+    .flatMap(augmentFilterEffects)
     .filter((effect) => selectedNames.has(effect.displayName))
     .map((effect) => effect.id)
 }
@@ -130,7 +132,9 @@ export function readEssencePlanBackup(data: EssenceCraftingData, text: string) {
   )
     throw invalid()
   const effects = new Map(
-    data.augments.flatMap((augment) => augment.effects.map((effect) => [effect.id, effect.displayName] as const))
+    data.augments.flatMap((augment) =>
+      augmentFilterEffects(augment).map((effect) => [effect.id, effect.displayName] as const)
+    )
   )
   const itemsBySlotId = Object.fromEntries(
     plan.activeSlotIds.map((id: unknown) => {
@@ -211,11 +215,22 @@ const selectedAugments = (data: EssenceCraftingData, item: PlannedItem) =>
           {
             slotTypeDisplayName: slotType?.displayName ?? 'Augment slot',
             displayName: augment.displayName,
+            scoped: augment.scoped,
             effects: augment.effects
           }
         ]
       : []
   })
+
+function augmentLines(data: EssenceCraftingData, augment: ReturnType<typeof selectedAugments>[number], level: number) {
+  if (!augment.scoped) return resolveEssenceEffects(data, augment.effects, level).map(formatEffect)
+  const { presentation, fallbackDescription } = augment.scoped
+  return presentation.length
+    ? presentation.flatMap((group) => [group.name, ...group.rows.map(scopedEffectLabel)])
+    : fallbackDescription
+      ? [fallbackDescription]
+      : []
+}
 
 const resolvedEffectsForSelection = (
   data: EssenceCraftingData,
@@ -317,8 +332,8 @@ export const formatEssencePlanDiscordMarkdown = (
 
     for (const augment of selectedAugments(data, item)) {
       lines.push(`- Augment (${augment.slotTypeDisplayName}): ${augment.displayName}`)
-      for (const effect of resolveEssenceEffects(data, augment.effects, materials.effectiveItemLevel)) {
-        lines.push(`  - Effect: ${formatEffect(effect)}`)
+      for (const text of augmentLines(data, augment, materials.effectiveItemLevel)) {
+        lines.push(`  - Effect: ${text}`)
       }
     }
   }
@@ -398,8 +413,8 @@ export const formatEssencePlanBbCode = (
         `[*][b]Augment (${escapeBbCode(augment.slotTypeDisplayName)}):[/b] ${escapeBbCode(augment.displayName)}`,
         '[list]'
       )
-      for (const effect of resolveEssenceEffects(data, augment.effects, materials.effectiveItemLevel)) {
-        lines.push(`[*]Effect: ${escapeBbCode(formatEffect(effect))}`)
+      for (const text of augmentLines(data, augment, materials.effectiveItemLevel)) {
+        lines.push(`[*]Effect: ${escapeBbCode(text)}`)
       }
       lines.push('[/list]')
     }
