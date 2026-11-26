@@ -5,7 +5,7 @@ import type { SlaveLordsData } from '../slaveLords/data'
 import { slaveLordsCraftGroups } from './slaveLordsCrafting'
 import rules from './craftingRules.json'
 import type { GearPlannerEffect, GearPlannerItem } from './gearPlanner.types.ts'
-import { heroicSlaveLordsSets, legendarySlaveLordsSets, slaveLordsMarker } from './slaveLords'
+import { heroicSlaveLordsSetNames, legendarySlaveLordsSetNames, slaveLordsMarker } from './slaveLords'
 
 export interface CraftChoice {
   id: string
@@ -131,8 +131,8 @@ export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): 
     item.slaveLordsBase && data.slaveLords ? slaveLordsCraftGroups(item.slaveLordsBase, item.slot, data.slaveLords) : []
   groups.push(...publishedGroups)
   if (!data.slaveLords && markers.has(slaveLordsMarker)) {
-    const sets = item.minimumLevel >= 28 ? legendarySlaveLordsSets : heroicSlaveLordsSets
-    groups.push({ system: 'slave-lords', label: 'Slave Lords set', choices: sets.map(({ name }) => setChoice(name)) })
+    const sets = item.minimumLevel >= 28 ? legendarySlaveLordsSetNames : heroicSlaveLordsSetNames
+    groups.push({ system: 'slave-lords', label: 'Slave Lords set', choices: sets.map(setChoice) })
   }
   if (markers.has('Lost Purpose')) {
     const legendary = source.name.startsWith('Legendary ') || item.minimumLevel >= 20

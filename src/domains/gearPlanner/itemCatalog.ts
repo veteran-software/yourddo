@@ -1,3 +1,4 @@
+import { loadItemSetResource } from '../../shared/data/loadItemSetResource'
 import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import { percentModifier } from './effectAmounts'
 import { hasDatasetFile, loadDatasetFile } from '../../shared/data/loadDataset'
@@ -543,51 +544,83 @@ export async function loadScopedAugmentCatalog() {
   return { names, entries }
 }
 
+export function adaptItemSetDefinitions(sets: unknown, index: ReturnType<typeof effectIndex>) {
+  const spells = new Map<string, GearPlannerEffect>()
+  return rows(sets, 'item sets').map((set) => {
+    const name = text(set.name, 'set name')
+    const thresholds =
+      set.activationStatus === 'unresolved'
+        ? []
+        : rows(set.thresholds, name).map((tier) => {
+            const threshold = id(tier.pieces, name)
+            if (threshold <= 0) throw new Error('Invalid piece count for ' + name)
+            const ref = row(tier.effect, name)
+            const effects = resolveEffects({ effects: [ref] }, name, index, spells, tier.description)
+            const description =
+              typeof tier.description === 'string' ? tier.description.replace(/^\(\d+\) Set:\s*/, '').trim() : ''
+            // A public set tier can describe bonuses whose effect record is hidden from item tooltips.
+            if (!effects.length && description && Array.isArray(tier.enchantments) && isVisibleEffect(ref)) {
+              effects.push(
+                ...effectStats({ displayName: description, description, enchantments: tier.enchantments }, 'equipment')
+              )
+            }
+            return {
+              threshold,
+              effects,
+              ...(typeof tier.requirement === 'string' && { requirement: tier.requirement })
+            }
+          })
+    const definition: GearPlannerFiligreeSetDefinition = {
+      name,
+      thresholds,
+      source: set,
+      ...(set.thresholdMode === 'highestOnly' && { thresholdMode: 'highestOnly' })
+    }
+    return [id(set.id, name), definition] as const
+  })
+}
+
+async function loadSetCatalog() {
+  const [equipment, filigree, effects] = await Promise.all([
+    loadItemSetResource('itemSets'),
+    loadItemSetResource('filigreeSets'),
+    loadItemSetResource('effects')
+  ])
+  const index = effectIndex(effects)
+  const equipmentSets = adaptItemSetDefinitions(equipment, index)
+  const filigreeSets = adaptItemSetDefinitions(filigree, index)
+  const byId = new Map([...equipmentSets, ...filigreeSets])
+  if (byId.size !== equipmentSets.length + filigreeSets.length) throw new Error('Duplicate item set ID')
+  return {
+    equipment: equipmentSets,
+    filigree: filigreeSets.map(([, set]) => set),
+    byId
+  }
+}
+
 export async function loadSocketCatalog() {
   const { read, resources } = await augmentResources()
   const groupNames = [...scopedGroups, 'dinosaur-bone', 'lamordia', 'legendary-green-steel']
-  const [exportedLabels, effectData, spellData, sets, filigreeData, ...groups] = await Promise.all([
-    resources['enchantment-names'] ? read('enchantment-names') : undefined,
-    ...['effects', 'spells', 'sets', 'filigrees', ...groupNames].map(read)
+  const [sets, [exportedLabels, effectData, spellData, filigreeData, ...groups]] = await Promise.all([
+    loadSetCatalog(),
+    Promise.all([
+      resources['enchantment-names'] ? read('enchantment-names') : undefined,
+      ...['effects', 'spells', 'filigrees', ...groupNames].map(read)
+    ])
   ])
   const names = exportedLabels === undefined ? undefined : enchantmentLabels(exportedLabels)
   const scoped = names && scopedAugmentReader(effectData, names)
   const index = effectIndex(effectData, 'augment')
   const spells = spellIndex(spellData)
-  const definitions = new Map(
-    rows(sets, 'augment sets').map((set) => {
-      const name = text(set.name, 'set name')
-      return [
-        id(set.id, name),
-        {
-          name,
-          source: set,
-          thresholds: rows(set.thresholds, name).map((tier) => {
-            const effects = resolveEffects({ effects: [tier.effect] }, name, index, spells, tier.description)
-            return {
-              threshold: id(tier.pieces, name),
-              effects
-            }
-          })
-        }
-      ]
-    })
-  )
   function setName(key: unknown) {
-    const set = definitions.get(id(key, 'set reference'))
+    const set = sets.byId.get(id(key, 'set reference'))
     if (!set) throw new Error('Missing augment set ' + String(key))
     return set.name
   }
-  const filigreeSets = new Set<number>()
   const filigrees = rows(filigreeData, 'filigrees').map((item) => {
     const name = text(item.name, 'filigree')
     if (!Array.isArray(item.filigreeSetIds)) throw new Error('Missing filigree sets for ' + name)
-    const grouping = item.filigreeSetIds
-      .map((key: unknown) => {
-        filigreeSets.add(id(key, name))
-        return setName(key)
-      })
-      .join('/')
+    const grouping = item.filigreeSetIds.map(setName).join('/')
     return {
       ...item,
       name,
@@ -600,8 +633,8 @@ export async function loadSocketCatalog() {
   return {
     filigrees,
     enchantmentNames: names,
-    filigreeDefinitions: [...definitions].filter(([key]) => filigreeSets.has(key)).map(([, set]) => set),
-    equipmentDefinitions: [...definitions].filter(([key]) => !filigreeSets.has(key)).map(([, set]) => set),
+    filigreeDefinitions: sets.filigree,
+    equipmentDefinitions: sets.equipment,
     augments(datasets: readonly GearPlannerSourceDataset[]): GearPlannerAugment[] {
       const labels = new Map<string, string>()
       for (const { records } of datasets)
@@ -617,7 +650,7 @@ export async function loadSocketCatalog() {
             const override = item.hostSetOverride ? row(item.hostSetOverride, name) : undefined
             const details = scoped && scopedGroups.has(groupNames[i]) ? scoped(item) : undefined
             const effectsAdded = details?.effectsAdded ?? resolveEffects(item, name, index, spells)
-            const set = override ? definitions.get(id(override.primarySetId, name)) : undefined
+            const set = override ? sets.byId.get(id(override.primarySetId, name)) : undefined
             const discrepancy = [...new Set([...itemDiscrepancies(item, effectsAdded), ...setDiscrepancies(set)])]
             return {
               name,
@@ -630,7 +663,7 @@ export async function loadSocketCatalog() {
               source: item,
               ...(override
                 ? {
-                    setBonus: [{ name: setName(override.primarySetId) }],
+                    setBonus: [{ id: id(override.primarySetId, name), name: setName(override.primarySetId) }],
                     clearSecondarySet: override.clearSecondarySet === true
                   }
                 : {})

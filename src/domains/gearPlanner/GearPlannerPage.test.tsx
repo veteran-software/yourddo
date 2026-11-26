@@ -8,9 +8,7 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import { validateEssenceCraftingDataset } from '../essenceCrafting/data.ts'
 import { createEssenceCraftingTestPayload } from '../essenceCrafting/test-fixture.ts'
 import { emptyGearCraftingData } from './crafting.ts'
-import publishedSets from './fixtures/publishedSets.json'
-import { standardGearPlannerSetDefinitionByName } from './standardSetDefinitions'
-import { parseGearPlannerFiligreeSetDataset, loadGearPlannerData } from './data.ts'
+import { loadGearPlannerData } from './data.ts'
 import {
   allGearPlannerSlots,
   gearPlannerCharacterSlots,
@@ -46,8 +44,15 @@ vi.mock(import('../essenceCrafting/data.ts'), async (original) => ({
 
 const data: GearPlannerData = {
   standardSets: new Map([
-    ...standardGearPlannerSetDefinitionByName,
-    ...parseGearPlannerFiligreeSetDataset(publishedSets, 'itemSets.enchantments').map((set) => [set.name, set] as const)
+    [
+      'Arcane Barrier',
+      {
+        name: 'Arcane Barrier',
+        thresholds: [
+          { threshold: 3, effects: [{ name: 'Magical Resistance Rating Cap', bonus: 'Artifact', modifier: 30 }] }
+        ]
+      }
+    ]
   ]),
   sourceDatasets: [],
   items: [],

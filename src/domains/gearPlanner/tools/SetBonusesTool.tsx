@@ -42,7 +42,7 @@ const SetBonusesTool = ({
         </Text>
       </Stack>
       {setState.sets.map(({ name, count, category, memberships, definition, thresholds }) => (
-        <Paper key={name} withBorder p='sm'>
+        <Paper key={memberships[0].id} withBorder p='sm'>
           <Stack gap='xs'>
             <Group justify='space-between' align='flex-start' gap='xs' wrap='nowrap'>
               <Text fw={700} size='sm' style={{ overflowWrap: 'anywhere' }}>
@@ -79,8 +79,9 @@ const SetBonusesTool = ({
                 unavailable.
               </Alert>
             ) : (
-              thresholds.map(({ id, threshold, effects, isActive }) => {
+              thresholds.map(({ id, threshold, effects, isActive, requirement }) => {
                 const remaining = Math.max(0, threshold - count)
+                const reached = remaining === 0
                 return (
                   <Stack key={id} gap={4}>
                     <Divider />
@@ -89,10 +90,17 @@ const SetBonusesTool = ({
                         {String(threshold)}-piece bonus
                       </Text>
                       <Badge color={isActive ? 'green' : 'gray'} variant='light'>
-                        {isActive ? 'Active' : `Equip ${String(remaining)} more`}
+                        {isActive
+                          ? 'Active'
+                          : reached
+                            ? requirement
+                              ? 'Conditional'
+                              : 'Superseded'
+                            : `Equip ${String(remaining)} more`}
                       </Badge>
                     </Group>
-                    {isActive
+                    {requirement && <Text size='xs'>{requirement}</Text>}
+                    {isActive || (reached && requirement)
                       ? effects.map((effect, effectIndex) => (
                           <Text key={`${id}:${String(effectIndex)}`} size='xs'>
                             {formatGearPlannerSetEffect(effect)}

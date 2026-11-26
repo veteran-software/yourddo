@@ -2,10 +2,10 @@ import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import { displayPercentModifier, percentModifier } from './effectAmounts'
 import { loadOptionalAlchemicalData } from '../alchemical/loadAlchemicalData'
 import { loadOptionalSlaveLordsData } from '../slaveLords/loadSlaveLordsData'
+import type { GearPlannerStandardSetDefinition } from './standardSetDefinitions.ts'
 import { slaveLordsSetDefinitions } from './slaveLordsCrafting'
 import { craftItemKey, type GearCraftingData } from './crafting.ts'
-import { standardGearPlannerSetDefinitionByName } from './standardSetDefinitions.ts'
-import { hasDatasetFile, loadDatasetFile, loadManualPayload } from '../../shared/data/loadDataset.ts'
+import { hasDatasetFile, loadDatasetFile } from '../../shared/data/loadDataset.ts'
 import { loadNearlyFinishedRecipes } from '../nearlyFinished/loadRecipes'
 import { loadNativeNamedUpgrades } from './nativeUpgradeData'
 import { loadNearlyCompleteRecipes } from '../nearlyComplete/recipes'
@@ -14,7 +14,6 @@ import type {
   GearPlannerAugmentSlot,
   GearPlannerBinding,
   GearPlannerEffect,
-  GearPlannerFiligreeSetDefinition,
   GearPlannerSetBonus,
   GearPlannerSourceItem
 } from './gearPlanner.types.ts'
@@ -198,59 +197,6 @@ export const parseGearPlannerAugmentDataset = (value: unknown): readonly GearPla
   })
 }
 
-const parseFiligreeSetEffect = (value: unknown, path: string): GearPlannerEffect => {
-  const record = recordAt(value, path)
-  const name = [record.name, record.description, record.notes].find(isNonEmptyString) ?? 'Unnamed Enhancement'
-  if (record.notes !== undefined && !isString(record.notes)) invalid(`${path}.notes`, 'expected string')
-  for (const key of ['modifier', 'bonus'] as const) {
-    if (record[key] !== undefined && !isStringOrNumber(record[key]))
-      invalid(`${path}.${key}`, 'expected string or number')
-  }
-  const display = typeof record.modifier === 'string' ? displayPercentModifier(record.modifier) : {}
-  return { ...record, ...display, name }
-}
-
-export const parseGearPlannerFiligreeSetDataset = (
-  value: unknown,
-  sourceName = 'filigreeSets.json'
-): readonly GearPlannerFiligreeSetDefinition[] => {
-  const names = new Set<string>()
-  return arrayAt(value, sourceName).map((entry, index) => {
-    const path = `${sourceName}[${index.toString()}]`
-    const record = recordAt(entry, path)
-    if (!isNonEmptyString(record.name)) invalid(`${path}.name`, 'expected non-empty string')
-    const name = record.name as string
-    if (names.has(name)) invalid(`${path}.name`, 'must be unique')
-    names.add(name)
-    const bonuses = arrayAt(record.bonuses, `${path}.bonuses`)
-    return {
-      name,
-      thresholds: bonuses.map((bonus, bonusIndex) => {
-        const bonusPath = `${path}.bonuses[${bonusIndex.toString()}]`
-        const bonusRecord = recordAt(bonus, bonusPath)
-        if (!Number.isInteger(bonusRecord.threshold) || (bonusRecord.threshold as number) < 1) {
-          invalid(`${bonusPath}.threshold`, 'expected positive integer')
-        }
-        const enhancements =
-          bonusRecord.enhancements === null || bonusRecord.enhancements === undefined
-            ? []
-            : arrayAt(bonusRecord.enhancements, `${bonusPath}.enhancements`)
-        return {
-          threshold: bonusRecord.threshold as number,
-          effects: enhancements.filter(isVisibleEffect).map((rawEffect, effectIndex) => {
-            const effect = parseFiligreeSetEffect(rawEffect, `${bonusPath}.enhancements[${effectIndex.toString()}]`)
-            // The item-set feed encodes percentages as numeric ratios and flat modifiers as strings.
-            return sourceName === 'itemSets.enchantments' && typeof effect.modifier === 'number'
-              ? { ...effect, ...percentModifier(effect.modifier * 100) }
-              : effect
-          })
-        }
-      }),
-      source: { ...record }
-    }
-  })
-}
-
 const named = (record: Record<string, unknown>, path: string): string =>
   isNonEmptyString(record.name) ? record.name : invalid(path, 'expected a name')
 const effects = (record: Record<string, unknown>, field: string, path: string) =>
@@ -292,36 +238,12 @@ async function loadCraftingData(): Promise<GearCraftingData> {
   return { nearlyComplete, upgrades }
 }
 
-export function parseGearPlannerSetIndex(value: unknown) {
-  const index = new Map<string, { setName: string; minimumLevel: number }[]>()
-  for (const [setName, rows] of Object.entries(recordAt(value, 'setBonusIndex.json'))) {
-    const path = 'setBonusIndex.json.' + setName
-    for (const entry of arrayAt(rows, path)) {
-      const { name, minLevel } = recordAt(entry, path)
-      if (
-        typeof name !== 'string' ||
-        !name.trim() ||
-        typeof minLevel !== 'number' ||
-        !Number.isInteger(minLevel) ||
-        minLevel < 0
-      ) {
-        throw new InvalidGearPlannerDataError(path + ': expected an item name and minimum level')
-      }
-      const matches = index.get(name) ?? []
-      matches.push({ setName, minimumLevel: minLevel })
-      index.set(name, matches)
-    }
-  }
-  return index
-}
-
 export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types.ts').GearPlannerData> => {
-  const [crafting, slaveLords, alchemical, curses, rawSets, reforging, sockets, itemCatalog] = await Promise.all([
+  const [crafting, slaveLords, alchemical, curses, reforging, sockets, itemCatalog] = await Promise.all([
     loadCraftingData(),
     loadOptionalSlaveLordsData(),
     loadOptionalAlchemicalData(),
     loadCatalogCurses(),
-    loadManualPayload<unknown>('itemSets.enchantments'),
     loadNearlyFinishedRecipes(),
     loadSocketCatalog(),
     loadItemCatalog()
@@ -337,24 +259,15 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
   )
   const filigreeSetDefinitions = sockets.filigreeDefinitions
   const filigreeSetDefinitionByName = new Map(filigreeSetDefinitions.map((definition) => [definition.name, definition]))
-  const standardSets = new Map([
-    ...standardGearPlannerSetDefinitionByName,
-    ...parseGearPlannerFiligreeSetDataset(rawSets, 'itemSets.enchantments').map((set) => [set.name, set] as const),
-    ...sockets.equipmentDefinitions.map((set) => [set.name, set] as const),
-    ...(slaveLords ? slaveLordsSetDefinitions(slaveLords).map((set) => [set.name, set] as const) : [])
-  ])
-  // The game labels these heroic sets without a tier; their bonus definitions include it.
-  const definitionNames = new Map([
-    ['Echoes of the Waking Ancestors', 'Echoes of the Walking Ancestors'],
-    ['Brilliant Crescents', 'Brilliant Cresents'],
-    ...['Curse Necromancer', 'Heavy Warfare', 'Renegade Champion', 'Seasons of Change', 'Wayward Warrior'].map(
-      (name): [string, string] => [name, name + ' (Heroic)']
-    )
-  ])
-  for (const [name, definitionName] of definitionNames) {
-    const definition = standardSets.get(definitionName)
-    if (definition && !standardSets.has(name)) standardSets.set(name, { ...definition, name })
+  const equipmentSetsByName = Map.groupBy(sockets.equipmentDefinitions, ([, set]) => set.name)
+  const standardSets = new Map<string | number, GearPlannerStandardSetDefinition>()
+  for (const matches of equipmentSetsByName.values()) {
+    // Some set variants share a label but have different members.
+    for (const [id, set] of matches) {
+      if (set.thresholds.length > 0) standardSets.set(matches.length === 1 ? set.name : id, set)
+    }
   }
+  for (const set of slaveLords ? slaveLordsSetDefinitions(slaveLords) : []) standardSets.set(set.name, set)
   return {
     ...normalized,
     enchantmentAliases: itemCatalog.aliases,

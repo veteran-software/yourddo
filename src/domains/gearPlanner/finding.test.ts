@@ -1,17 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { parseGearPlannerSetIndex } from './data'
 import { normalizeGearPlannerFiligrees, gearPlannerFiligreeId } from './normalize'
 import { candidateSetDetails } from './finding'
 import type { GearPlannerItem } from './gearPlanner.types'
 import { getTroveOwners, ownsTroveItem, parseTroveCsv } from './trove'
 
 describe('Finding gear', () => {
-  it('keeps same-name, same-level set variants distinct and uses the index for missing memberships', () => {
-    const setIndex = parseGearPlannerSetIndex({
-      Summer: [{ name: 'Sphere of Souls', minLevel: 29 }],
-      Winter: [{ name: 'Sphere of Souls', minLevel: 29 }],
-      Other: [{ name: 'Sphere of Souls', minLevel: 10 }]
-    })
+  it('keeps same-name, same-level variants tied to their own set memberships', () => {
     const item: GearPlannerItem = {
       id: 'sphere',
       sourceFile: 'test',
@@ -19,10 +13,10 @@ describe('Finding gear', () => {
       minimumLevel: 29,
       source: { name: 'Sphere of Souls', minLevel: 29 }
     }
-    expect(candidateSetDetails(item, { setIndex }).sets).toEqual(['Summer', 'Winter'])
-    expect(
-      candidateSetDetails({ ...item, source: { ...item.source, setBonus: [{ name: 'Winter' }] } }, { setIndex }).sets
-    ).toEqual(['Winter'])
+    expect(candidateSetDetails(item).sets).toEqual([])
+    for (const name of ['Summer', 'Winter']) {
+      expect(candidateSetDetails({ ...item, source: { ...item.source, setBonus: [{ name }] } }).sets).toEqual([name])
+    }
   })
 
   it('connects dual-set records to the published bonus names while preserving saved IDs', () => {
