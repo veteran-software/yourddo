@@ -65,7 +65,7 @@ function ApplyShardDialog({
   pending,
   onAction,
   onClose
-}: ShardLookupProps & { pending: ApplyShardAction | null; onClose: () => void }) {
+}: Readonly<ShardLookupProps & { pending: ApplyShardAction | null; onClose: () => void }>) {
   const mark = data.rules.extraAffix.markRequirement
   const markName = data.indexes.ingredientById.get(mark.ingredientId)?.displayName ?? mark.ingredientId
   const targetSlot = EQUIPMENT_SLOTS.find(({ id }) => id === pending?.equipmentSlotId)
@@ -165,11 +165,11 @@ function ShardRecipe({
   recipe,
   binding,
   ingredientName
-}: {
+}: Readonly<{
   recipe?: EssenceRecipe
   binding: EssenceBinding
   ingredientName: (id: string) => string
-}) {
+}>) {
   const emptyMessage = recipe ? 'No ingredients required.' : 'Recipe unavailable.'
   return (
     <Stack gap='xs' className={styles.detailSection}>

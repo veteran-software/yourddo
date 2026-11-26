@@ -64,12 +64,12 @@ function EquipmentConflictDialog({
   plan,
   dispatch,
   onClose
-}: {
+}: Readonly<{
   equipmentConflict: EquipmentConflict | null
   plan: EssencePlanState
   dispatch: (action: EssencePlanAction) => void
   onClose: () => void
-}) {
+}>) {
   const blockers = equipmentConflict ? getEquipmentBlockers(plan, equipmentConflict.change) : []
   const conflictTargetId =
     equipmentConflict?.change.type === 'activate-equipment-slot' ? equipmentConflict.change.equipmentSlotId : undefined
