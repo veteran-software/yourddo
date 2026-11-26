@@ -1,3 +1,4 @@
+import ItemIcon from '../../shared/items/ItemIcon'
 import { createCraftingSelection } from '../../shared/layout/craftingSession'
 import {
   Alert,
@@ -354,7 +355,7 @@ const HeroicGreenSteelPage = () => {
         {
           id: 'summary',
           label: 'Build Summary',
-          icon: <IconFileInfo size={20} />,
+          icon: baseItem ? <ItemIcon item={baseItem} size={20} /> : <IconFileInfo size={20} />,
           content: (
             <BuildSummaryTool
               baseItem={baseItem}
@@ -373,13 +374,15 @@ const HeroicGreenSteelPage = () => {
           id: 'ingredients',
           label: 'Ingredients',
           icon: <IconListCheck size={20} />,
-          content: <IngredientsTool recipeIds={recipeIds} />
+          content: <IngredientsTool baseItem={baseItem} recipeIds={recipeIds} />
         },
         {
           id: 'breakdown',
           label: 'Crafting Breakdown',
           icon: <IconListDetails size={20} />,
-          content: <CraftingBreakdownTool recipeIds={recipeIds} devices={initial.manifest.devices} />
+          content: (
+            <CraftingBreakdownTool baseItem={baseItem} recipeIds={recipeIds} devices={initial.manifest.devices} />
+          )
         }
       ]
     : []

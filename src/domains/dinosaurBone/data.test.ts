@@ -1,130 +1,120 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { loadDatasetFile, loadManualPayload } from '../../shared/data/loadDataset.ts'
-import {
-  dinosaurBoneDatasetPaths,
-  dinosaurBoneRequirementsPayloadName,
-  InvalidDinosaurBoneDataError,
-  loadDinosaurBoneData,
-  parseAugments,
-  parseCraftingRequirements,
-  parseItems
-} from './data.ts'
+import { loadDatasetFile } from '../../shared/data/loadDataset.ts'
+import { loadDinosaurBoneData } from './data.ts'
 
-vi.mock('../../shared/data/loadDataset.ts', () => ({ loadDatasetFile: vi.fn(), loadManualPayload: vi.fn() }))
-
-const item = {
-  name: 'Dinosaur Bone Test Sword',
-  type: 'Long Sword',
-  requirements: null,
-  augments: [{ augmentType: 'Red' }]
-}
-const recipe = {
-  schemaVersion: 1,
-  source: 'legacy Dinosaur Bone item factories',
-  items: [{ name: item.name, requirements: [{ name: 'Bone', quantity: 25 }] }],
-  identityDifferences: []
-}
-const dinosaurAugments = [{ name: 'Claw One', augmentType: 'Isle of Dread: Claw (Weapon)', requirements: [] }]
-const masterAugments = [{ name: 'Red One', augmentType: 'Red' }]
-
-const arrangeLoad = (overrides: { items?: unknown; dinosaur?: unknown; master?: unknown; recipe?: unknown } = {}) => {
-  vi.mocked(loadDatasetFile)
-    .mockResolvedValueOnce(overrides.items ?? [item])
-    .mockResolvedValueOnce(overrides.dinosaur ?? dinosaurAugments)
-    .mockResolvedValueOnce(overrides.master ?? masterAugments)
-  vi.mocked(loadManualPayload).mockResolvedValueOnce(overrides.recipe ?? recipe)
-}
-
+vi.mock('../../shared/data/loadDataset.ts', () => ({ loadDatasetFile: vi.fn() }))
 beforeEach(() => {
   vi.mocked(loadDatasetFile).mockReset()
-  vi.mocked(loadManualPayload).mockReset()
 })
 
-describe('Dinosaur Bone data', () => {
-  it('loads every approved generated path and the exact manual manifest domain', async () => {
-    arrangeLoad()
-    const data = await loadDinosaurBoneData()
-    expect(vi.mocked(loadDatasetFile).mock.calls).toEqual(dinosaurBoneDatasetPaths.map((path) => [path]))
-    expect(loadManualPayload).toHaveBeenCalledWith(dinosaurBoneRequirementsPayloadName)
-    expect(data.items[0]).toMatchObject({ name: item.name, family: 'crafted-weapons' })
-    expect(data.items[0]?.requirements).toEqual([{ name: 'Bone', quantity: 25 }])
-    expect(data.indexes.augmentByName.get('Red One')?.name).toBe('Red One')
+function fixture() {
+  const manifest = (system: string, resources: string[]) => ({
+    system,
+    resources: Object.fromEntries(resources.map((key) => [key, key + '.json'])),
+    devices: { crafting: { name: 'Dinosaur Bone Crafting' } }
   })
-
-  it('joins an approved legacy-to-CDN identity difference', async () => {
-    arrangeLoad({
-      items: [{ ...item, name: 'Dinosaur Bone Bone Dart' }],
-      recipe: {
-        ...recipe,
-        items: [{ name: 'Dinosaur Bone Dart', requirements: [{ name: 'Bone', quantity: 25 }] }],
-        identityDifferences: [{ legacyName: 'Dinosaur Bone Dart', currentCdnName: 'Dinosaur Bone Bone Dart' }]
+  const files: Record<string, unknown> = {
+    'dinosaur-bone/manifest.json': manifest('dinosaur-bone', [
+      'baseItems',
+      'effects',
+      'spells',
+      'equipmentSets',
+      'recipes',
+      'ingredients'
+    ]),
+    'items/augments/manifest.json': manifest('items', ['standard', 'dinosaur-bone', 'sets', 'effects', 'spells']),
+    'dinosaur-bone/baseItems.json': [
+      {
+        id: 1,
+        name: 'Dinosaur Bone Dart',
+        itemType: 'Dart',
+        baseStats: {},
+        effects: [{ effectId: 8 }],
+        augmentSlots: [{ name: 'Isle of Dread: Scale Slot (Weapon)', types: ['Dread_Weapon_Prefix'] }]
       }
+    ],
+    'items/augments/dinosaur-bone.json': [
+      { id: 2, name: 'Flamescale', effects: [{ effectId: 8 }], slotTypes: ['Dread_Weapon_Prefix'] }
+    ],
+    'dinosaur-bone/recipes.json': [
+      { category: 'equipment', device: 'crafting', outputItemId: 1, ingredients: [{ ingredientId: 7, quantity: 25 }] },
+      { category: 'augment', device: 'crafting', outputItemId: 2, ingredients: [{ ingredientId: 7, quantity: 9 }] }
+    ],
+    'dinosaur-bone/ingredients.json': [{ id: 7, name: 'Bone' }],
+    'dinosaur-bone/effects.json': [{ id: 8, hidden: true, displayName: 'Hidden' }],
+    'dinosaur-bone/equipmentSets.json': [],
+    'dinosaur-bone/spells.json': [],
+    'items/augments/standard.json': [{ id: 3, name: 'Ruby', slotTypes: ['Red'] }],
+    'items/augments/effects.json': [
+      { id: 8, displayName: 'Fire', enchantments: [{ displayName: 'Fire Resistance', value: 5 }] }
+    ],
+    'items/augments/sets.json': [],
+    'items/augments/spells.json': []
+  }
+  return files
+}
+function serve(files: Record<string, unknown>) {
+  vi.mocked(loadDatasetFile).mockImplementation((path) => {
+    if (!(path in files)) return Promise.reject(new Error('Unexpected resource ' + path))
+    return Promise.resolve(files[path])
+  })
+}
+describe('Dinosaur Bone data', () => {
+  it('joins shared augments to crafting recipes by output ID and preserves saved slots', async () => {
+    const files = fixture()
+    const original = structuredClone(files)
+    serve(files)
+    const data = await loadDinosaurBoneData()
+    expect(data.items[0]).toMatchObject({
+      family: 'crafted-weapons',
+      requirements: [{ name: 'Bone', quantity: 25 }],
+      enchantments: [],
+      augments: [{ id: 'Isle of Dread: Scale Slot (Weapon)' }]
     })
-    await expect(loadDinosaurBoneData()).resolves.toMatchObject({
-      items: [{ name: 'Dinosaur Bone Bone Dart', family: 'crafted-weapons', requirements: [{ quantity: 25 }] }]
+    expect(data.indexes.itemByName.get('Dinosaur Bone Bone Dart')).toBe(data.items[0])
+    expect(data.indexes.augmentsByType.get('Isle of Dread: Scale (Weapon)')?.[0].name).toBe('Flamescale')
+    expect(data.dinosaurAugments[0]).toMatchObject({
+      effectsAdded: [{ name: 'Fire Resistance', modifier: 5 }],
+      craftedIn: 'Dinosaur Bone Crafting',
+      requirements: [{ name: 'Bone', quantity: 9 }]
     })
+    expect(data.colorAugments[0].name).toBe('Ruby')
+    expect(files).toEqual(original)
   })
 
-  it('accepts null requirements only for a non-crafted augment', () => {
-    expect(
-      parseAugments(
-        [{ name: 'Loot Horn', augmentType: 'Isle of Dread: Horn (Weapon)', foundIn: ['Raid'], requirements: null }],
-        'Dinosaur Bone'
-      )[0]?.requirements
-    ).toEqual([])
-    expect(() =>
-      parseAugments(
-        [
-          { name: 'Crafted Horn', augmentType: 'Isle of Dread: Horn (Weapon)', craftedIn: 'Device', requirements: null }
-        ],
-        'Dinosaur Bone'
-      )
-    ).toThrow('requirements missing for crafted augment Crafted Horn')
+  it('shows public Standard enchantments and keeps Dinosaur Bone augment behavior independent', async () => {
+    const files = fixture()
+    const manifest = files['items/augments/manifest.json'] as { resources: Record<string, string> }
+    manifest.resources['enchantment-names'] = 'labels.json'
+    files['items/augments/labels.json'] = ['Fire Resistance']
+    files['items/augments/standard.json'] = [{ id: 3, name: 'Ruby', slotTypes: ['Red'], effects: [{ effectId: 8 }] }]
+    serve(files)
+    const data = await loadDinosaurBoneData()
+    expect(data.colorAugments[0]).toMatchObject({
+      scoped: { presentation: [{ name: 'Fire', rows: [{ name: 'Fire Resistance', modifier: 5 }] }] },
+      searchLabels: ['Fire Resistance']
+    })
+    expect(data.dinosaurAugments[0].scoped).toBeUndefined()
   })
 
-  it('retains artifact identity from the published item payload', () => {
-    expect(parseItems([{ ...item, artifactType: 'Minor' }])[0]?.artifactType).toBe('Minor')
+  it('surfaces missing exports and allows a retry', async () => {
+    const files = fixture()
+    const augments = files['items/augments/dinosaur-bone.json']
+    delete files['items/augments/dinosaur-bone.json']
+    serve(files)
+    await expect(loadDinosaurBoneData()).rejects.toThrow('items/augments/dinosaur-bone.json')
+    files['items/augments/dinosaur-bone.json'] = augments
+    await expect(loadDinosaurBoneData()).resolves.toMatchObject({ dinosaurAugments: [{ name: 'Flamescale' }] })
   })
 
-  it('rejects unsupported manual schema, missing joins, and invalid quantities', async () => {
-    expect(() => parseCraftingRequirements({ ...recipe, schemaVersion: 2 })).toThrow(
-      'unsupported crafting requirements payload'
-    )
-    expect(() =>
-      parseCraftingRequirements({
-        ...recipe,
-        items: [{ name: item.name, requirements: [{ name: 'Bone', quantity: 0 }] }]
-      })
-    ).toThrow('invalid requirement quantity for Bone')
-
-    arrangeLoad({ recipe: { ...recipe, items: [{ name: 'Missing', requirements: [{ name: 'Bone', quantity: 25 }] }] } })
-    await expect(loadDinosaurBoneData()).rejects.toThrow('missing item join')
-  })
-
-  it('rejects empty payloads, duplicate identities, and unknown slot contracts', async () => {
-    expect(() => parseItems([])).toThrow('non-empty array')
-    arrangeLoad({ items: [item, item] })
+  it('rejects duplicate item names and unresolved recipe ingredients', async () => {
+    const files = fixture()
+    const bases = files['dinosaur-bone/baseItems.json'] as unknown[]
+    files['dinosaur-bone/baseItems.json'] = [...bases, ...bases]
+    serve(files)
     await expect(loadDinosaurBoneData()).rejects.toThrow('Duplicate item name')
-
-    arrangeLoad({ items: [{ ...item, augments: [{ augmentType: 'Mystery Slot' }] }] })
-    await expect(loadDinosaurBoneData()).rejects.toThrow('Unknown Dinosaur Bone slot contract')
-  })
-
-  it('does not mutate any source payload', async () => {
-    const inputs = { items: [item], dinosaur: dinosaurAugments, master: masterAugments, recipe }
-    const before = structuredClone(inputs)
-    arrangeLoad(inputs)
-    await loadDinosaurBoneData()
-    expect(inputs).toEqual(before)
-  })
-
-  it('surfaces network failures from any required source', async () => {
-    vi.mocked(loadDatasetFile).mockRejectedValueOnce(new Error('network failed'))
-    vi.mocked(loadManualPayload).mockResolvedValueOnce(recipe)
-    await expect(loadDinosaurBoneData()).rejects.toThrow('network failed')
-  })
-
-  it('uses a typed domain error for malformed payloads', () => {
-    expect(() => parseItems({})).toThrow(InvalidDinosaurBoneDataError)
+    files['dinosaur-bone/baseItems.json'] = bases
+    files['dinosaur-bone/ingredients.json'] = []
+    await expect(loadDinosaurBoneData()).rejects.toThrow('Missing Dinosaur Bone ingredient')
   })
 })

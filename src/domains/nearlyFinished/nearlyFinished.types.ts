@@ -1,6 +1,7 @@
 export type ItemCategory = 'Heroic' | 'Legendary' | 'Raid'
 
 export interface NearlyFinishedRequirement {
+  raw?: true
   name: string
   quantity: number
 }
@@ -21,6 +22,7 @@ export interface NearlyFinishedAugment {
 }
 
 export interface ReforgingEntry {
+  native?: import('../gearPlanner/nativeUpgradeData').NativeStage
   item: string
   stage: string
   cost: NearlyFinishedRequirement[]

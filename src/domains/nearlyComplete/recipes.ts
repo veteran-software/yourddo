@@ -1,12 +1,11 @@
-import { loadManualPayload } from '../../shared/data/loadDataset.ts'
+import { loadNativeNearlyComplete } from '../gearPlanner/nativeUpgradeData'
+import type { GearPlannerEffect } from '../gearPlanner/gearPlanner.types'
+import { isVisibleEffect } from '../../shared/data/visibleEffect'
+import { hasDatasetFile, loadManualPayload } from '../../shared/data/loadDataset.ts'
 
 export type RecipeTier = 'Heroic' | 'Legendary'
 
-export interface NearlyCompleteRecipeEffect {
-  name: string
-  modifier?: string
-  bonus?: string
-}
+export type NearlyCompleteRecipeEffect = GearPlannerEffect
 
 export interface NearlyCompleteRequirement {
   name: string
@@ -15,6 +14,8 @@ export interface NearlyCompleteRequirement {
 }
 
 export interface NearlyCompleteRecipe {
+  keeperIds?: readonly number[]
+  hostEffects?: ReadonlyMap<number, readonly GearPlannerEffect[]>
   name: string
   quantity: number
   craftedIn: string
@@ -25,19 +26,32 @@ export interface NearlyCompleteRecipe {
 
 export type NearlyCompleteRecipes = NearlyCompleteRecipe[]
 
-export const loadNearlyCompleteRecipes = (): Promise<NearlyCompleteRecipes> =>
-  loadManualPayload<NearlyCompleteRecipes>('nearlyComplete.recipes')
+export const loadNearlyCompleteRecipes = async (): Promise<NearlyCompleteRecipes> => {
+  if (await hasDatasetFile('nearly-complete/enchantment-names.json')) return (await loadNativeNearlyComplete()).recipes
+  return loadManualPayload<NearlyCompleteRecipes>('nearlyComplete.recipes').then((recipes) =>
+    recipes.map((recipe) => ({
+      ...recipe,
+      effectsAdded: recipe.effectsAdded.filter(isVisibleEffect),
+      effectsRemoved: recipe.effectsRemoved.filter(isVisibleEffect)
+    }))
+  )
+}
 
 export const getRecipeCategory = (recipe: NearlyCompleteRecipe): string =>
-  recipe.effectsRemoved[0].name.replace('Nearly Complete: ', '')
+  recipe.effectsRemoved[0]?.name.replace('Nearly Complete: ', '') ?? ''
 
 export const getRecipeTier = (recipe: NearlyCompleteRecipe): RecipeTier =>
   recipe.requirements[0]?.name.startsWith('Legendary ') ? 'Legendary' : 'Heroic'
 
 export const getRecipeCategories = (recipes: NearlyCompleteRecipes, tier: RecipeTier): string[] =>
-  [...new Set(recipes.filter((recipe) => getRecipeTier(recipe) === tier).map(getRecipeCategory))].sort((a, b) =>
-    a.localeCompare(b)
-  )
+  [
+    ...new Set(
+      recipes
+        .filter((recipe) => getRecipeTier(recipe) === tier)
+        .map(getRecipeCategory)
+        .filter(Boolean)
+    )
+  ].sort((a, b) => a.localeCompare(b))
 
 export const getRecipes = (
   recipes: NearlyCompleteRecipes,

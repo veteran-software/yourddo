@@ -43,6 +43,7 @@ import {
   getEffectiveGearPlannerAugmentSlots,
   gearPlannerReforgingRecipeForStage,
   gearPlannerReforgingStages,
+  gearPlannerReforgingChoiceForState,
   isGearPlannerReforgingStageStateValid,
   type GearPlannerItemReforgingState,
   type GearPlannerReforgingStageState
@@ -737,7 +738,14 @@ function restoreReforging(
       report('invalid-reforging-selection', 'reforging selection is invalid')
       continue
     }
-    const selection = setGearPlannerItemReforgingState(setup, item.id, stage, selected, data.reforging)
+    const choice = gearPlannerReforgingChoiceForState(item, stage, selected, data.reforging)
+    const selection = setGearPlannerItemReforgingState(
+      setup,
+      item.id,
+      stage,
+      choice ? { kind: 'choice', choiceId: choice.id } : selected,
+      data.reforging
+    )
     setup = { ...setup, ...selection }
   }
   return setup
@@ -944,9 +952,11 @@ export const restorePersistedGearPlannerState = (
     const savedSetup = migrateEquipmentReferences(original, catalog, report)
     const equipment = restoreEquipment(savedSetup, catalog, report)
     restoreGearCrafts(equipment, savedSetup, catalog, report)
+    const character = savedSetup.character ?? defaultCharacter()
+    const focusStats = character.focusStats?.map((name) => data.enchantmentAliases?.get(name.toLowerCase()) ?? name)
     let setup: GearPlannerSetup = {
       ...createGearPlannerSetup(savedSetup.id, savedSetup.name),
-      character: savedSetup.character ?? defaultCharacter(),
+      character: focusStats ? { ...character, focusStats: [...new Set(focusStats)] } : character,
       minimumLevel: savedSetup.minimumLevel,
       maximumLevel: savedSetup.maximumLevel,
       equipment

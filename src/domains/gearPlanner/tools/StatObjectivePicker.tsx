@@ -36,6 +36,7 @@ export default function StatObjectivePicker({
   value,
   bonus,
   focus = false,
+  verbatim = false,
   onSelect
 }: Readonly<{
   stats: ReadonlyMap<string, ReadonlySet<string>>
@@ -43,8 +44,10 @@ export default function StatObjectivePicker({
   value: string | null
   bonus?: string
   focus?: boolean
+  verbatim?: boolean
   onSelect: (name: string, bonus?: string) => void
 }>) {
+  const label = verbatim ? (name: string) => name : objectiveLabel
   const [open, setOpen] = useState(false)
   const [category, setCategory] = useState('')
   const [query, setQuery] = useState('')
@@ -87,6 +90,7 @@ export default function StatObjectivePicker({
       setPage(0)
     }
   }
+  const placeholder = focus ? 'Add focus stat' : 'Choose a stat'
   return (
     <div>
       <Text size='sm' fw={500}>
@@ -106,7 +110,7 @@ export default function StatObjectivePicker({
           setOpen(true)
         }}
       >
-        {value ? objectiveLabel(value) + ' · ' + selectedBonus : focus ? 'Add focus stat' : 'Choose a stat'}
+        {value ? label(value) + ' · ' + selectedBonus : placeholder}
       </Button>
       <Modal
         opened={open}
@@ -132,7 +136,7 @@ export default function StatObjectivePicker({
             )}
             {chosen && (
               <>
-                <Text fw={700}>{objectiveLabel(chosen)}</Text>
+                <Text fw={700}>{label(chosen)}</Text>
                 <div className={css.objectiveGrid}>
                   {[undefined, ...[...(stats.get(chosen) ?? [])].sort((left, right) => left.localeCompare(right))].map(
                     (type) => (
@@ -163,7 +167,7 @@ export default function StatObjectivePicker({
                       else setChosen(name)
                     }}
                   >
-                    <span>{subtype}</span>
+                    <span>{verbatim ? name : subtype}</span>
                     <IconChevronRight size={14} />
                   </UnstyledButton>
                 ))}
@@ -221,7 +225,7 @@ export default function StatObjectivePicker({
                             else setChosen(name)
                           }}
                         >
-                          <span>{objectiveLabel(name)}</span>
+                          <span>{label(name)}</span>
                           <IconChevronRight size={14} />
                         </UnstyledButton>
                       ))}

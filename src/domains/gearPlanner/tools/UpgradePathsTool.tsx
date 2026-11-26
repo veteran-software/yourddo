@@ -54,7 +54,7 @@ export function UpgradePathsTool({
     initial?.kind ?? (setup.character.focusStats?.length ? 'Focus stats' : 'Stat')
   )
   const [objective, setObjective] = useState<string | null>(
-    initial?.kind === 'Stat'
+    initial?.kind === 'Stat' && !data.enchantmentNames?.includes(initial.objective)
       ? (spellObjective(initial.objective)?.name ?? skillObjective(initial.objective))
       : (initial?.objective ?? null)
   )
@@ -99,6 +99,7 @@ export function UpgradePathsTool({
         <Text size='sm'>{focus.join(' › ')}</Text>
       ) : kind === 'Stat' ? (
         <StatObjectivePicker
+          verbatim={Boolean(data.enchantmentNames)}
           stats={stats}
           equipped={equipped}
           value={objective}

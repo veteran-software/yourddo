@@ -39,6 +39,7 @@ export default function FocusStatEditor({
       {names.length < 5 ? (
         <StatObjectivePicker
           focus
+          verbatim={Boolean(data.enchantmentNames)}
           stats={available}
           equipped={equipped}
           value={null}

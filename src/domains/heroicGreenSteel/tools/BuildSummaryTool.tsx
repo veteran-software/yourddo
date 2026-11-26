@@ -1,4 +1,6 @@
-import { Alert, Divider, Paper, Stack, Text, Title } from '@mantine/core'
+import { BuildHeader } from '../../../shared/layout/GreenSteelBuildParts'
+import styles from '../../../shared/layout/craftingTools.module.css'
+import { Alert, Paper, Stack, Text } from '@mantine/core'
 import { EffectDetails, OptionBadges, SpellDetails } from '../components/EffectDetails.tsx'
 import type { HgsBaseItem, HgsEffect, HgsSpell, HgsTier3Mode, HgsTierOption } from '../heroicGreenSteel.types.ts'
 
@@ -11,10 +13,8 @@ interface StageProps {
 }
 
 const Stage = ({ label, option, effects, incomplete, spell }: StageProps) => (
-  <Stack gap='xs'>
-    <Title order={3} size='h5'>
-      {label}
-    </Title>
+  <Stack component='section' className={styles.stage} gap='xs'>
+    <h3>{label}</h3>
     {option ? (
       <>
         <Text fw={600} size='sm'>
@@ -67,21 +67,10 @@ const BuildSummaryTool = ({
         Select a Green Steel base item to begin the build.
       </Alert>
     ) : (
-      <Stack gap={4}>
-        <Title order={3} size='h5'>
-          Base Item
-        </Title>
-        <Text fw={600}>{baseItem.name}</Text>
-        <Text c='dimmed' size='sm'>
-          {baseItem.type === 'weapon' ? baseItem.weaponType : 'Equipment'}
-        </Text>
-      </Stack>
+      <BuildHeader item={baseItem} tiers={[tier1, tier2, tier3].filter(Boolean).length} />
     )}
-    <Divider />
     <Stage label='Tier 1' option={tier1} effects={tier1Effects} incomplete='Tier 1 is incomplete.' />
-    <Divider />
     <Stage label='Tier 2' option={tier2} effects={tier2Effects} incomplete='Tier 2 is incomplete.' spell={spell} />
-    <Divider />
     <Stage
       label={tier3Mode ? tier3Labels[tier3Mode] : 'Tier 3'}
       option={tier3}

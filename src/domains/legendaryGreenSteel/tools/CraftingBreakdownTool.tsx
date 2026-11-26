@@ -1,9 +1,11 @@
+import type { ReactNode } from 'react'
+import styles from '../../../shared/layout/craftingTools.module.css'
 import RecipeDetails from '../../../shared/items/RecipeDetails'
 import { legendaryRecipeParts, expandLgsRequirements } from '../logic'
 import ComponentFarmingLocations from '../../../shared/items/ComponentFarmingLocations'
 import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
-import IngredientStock from '../../../shared/items/IngredientStock'
-import { Alert, Badge, Group, List, Paper, Stack, Text, Title } from '@mantine/core'
+import { MaterialRow } from '../../../shared/layout/GreenSteelBuildParts'
+import { Alert, Stack, Text } from '@mantine/core'
 import type { LgsRecipe, LgsRequirement } from '../legendaryGreenSteel.types.ts'
 
 interface LgsCraftingStage {
@@ -13,9 +15,11 @@ interface LgsCraftingStage {
 }
 
 const CraftingBreakdownTool = ({
+  header,
   stages,
   components
 }: {
+  header: ReactNode
   stages: readonly LgsCraftingStage[]
   components: readonly LgsRecipe[]
 }) => {
@@ -35,36 +39,22 @@ const CraftingBreakdownTool = ({
 
   return (
     <Stack gap='md' p='md'>
-      {selectedStages.map(({ label, recipe, displayName }, index) => (
-        <Paper withBorder p='sm' key={label}>
+      {header}
+      {selectedStages.map(({ label, recipe, displayName }) => (
+        <section className={styles.stage} key={label}>
           <Stack gap='xs'>
-            <Group justify='space-between' align='flex-start' wrap='nowrap'>
-              <Stack gap={0}>
-                <Title order={3} size='h5'>
-                  {label}
-                </Title>
-                <Text fw={600} size='sm'>
-                  {displayName ?? recipe.name}
-                </Text>
-              </Stack>
-              <Badge variant='light'>Step {index + 1}</Badge>
-            </Group>
+            <h3>{label}</h3>
+            <Text fw={600} size='sm'>
+              {displayName ?? recipe.name}
+            </Text>
             <Text c='dimmed' size='xs'>
               {recipe.craftedIn}
             </Text>
-            <List spacing={4} size='sm'>
+            <ul className={styles.costs}>
               {recipe.requirements.map(({ id, name, quantity }) => {
                 const component = componentById.get(id)
                 return (
-                  <List.Item key={id}>
-                    {name} ×{quantity}
-                    {component && ' (crafted component)'}
-                    {location(name) && (
-                      <Text size='xs' c='dimmed'>
-                        Found in: {location(name)}
-                      </Text>
-                    )}
-                    <IngredientStock name={name} required={quantity} />
+                  <MaterialRow key={id} name={name} quantity={quantity} location={location(name)}>
                     {component && (
                       <RecipeDetails
                         name={name}
@@ -80,12 +70,12 @@ const CraftingBreakdownTool = ({
                         location={location}
                       />
                     )}
-                  </List.Item>
+                  </MaterialRow>
                 )
               })}
-            </List>
+            </ul>
           </Stack>
-        </Paper>
+        </section>
       ))}
     </Stack>
   )

@@ -1,3 +1,4 @@
+import { augmentFilterEffects } from './augmentRules'
 import LZString from 'lz-string'
 import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
 import type { EssenceCraftingData } from './essenceCrafting.types.ts'
@@ -91,7 +92,7 @@ const resolveUniqueNamedId = (
 const getCanonicalFilterEffectId = (data: EssenceCraftingData, displayName: string): string | undefined => {
   const ids = new Set<string>()
   for (const augment of data.augments) {
-    for (const effect of augment.effects) {
+    for (const effect of augmentFilterEffects(augment)) {
       if (effect.displayName === displayName) ids.add(effect.id)
     }
   }
@@ -158,7 +159,7 @@ export const encodeEssenceCraftingPermalink = (data: EssenceCraftingData, plan: 
 function indexAugmentEffectNames(data: EssenceCraftingData) {
   const effectNameById = new Map<string, string>()
   for (const augment of data.augments) {
-    for (const effect of augment.effects) effectNameById.set(effect.id, effect.displayName)
+    for (const effect of augmentFilterEffects(augment)) effectNameById.set(effect.id, effect.displayName)
   }
   return effectNameById
 }

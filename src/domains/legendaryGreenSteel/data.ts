@@ -1,3 +1,5 @@
+import { baseItemArt } from '../../shared/items/itemArt'
+import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import { loadDatasetFile } from '../../shared/data/loadDataset.ts'
 import type {
   LgsBonusEffect,
@@ -78,7 +80,13 @@ function discrepancyNotes(record: Row): string[] {
     const value = (v: unknown) =>
       (typeof v === 'number' && Number.isFinite(v)) || typeof v === 'boolean' ? String(v) : str(v, 'discrepancy value')
     const unit = note.unit === undefined || note.unit === 'points' ? '' : ' ' + str(note.unit, 'unit')
-    return `${str(note.statDisplayName ?? note.stat, 'stat label')}: stated ${value(note.stated)}, actual ${value(note.mechanical)}${unit}.`
+    // Some discrepancies describe a mechanic in plain language and have no display name.
+    const label =
+      note.statDisplayName ??
+      (typeof note.stat === 'string' && /^[A-Z][a-z]+(?: [A-Za-z]+)+$/.test(note.stat) && !/[a-z][A-Z]/.test(note.stat)
+        ? note.stat
+        : 'Effect')
+    return `${str(label, 'stat label')}: stated ${value(note.stated)}, actual ${value(note.mechanical)}${unit}.`
   })
 }
 
@@ -146,31 +154,34 @@ export function parseLgsResources(
     const names: string[] = []
     const details = new Set<string>()
     const discrepancies = new Set<string>()
-    const unresolved = new Set<string>()
     if (item.description) details.add(str(item.description, 'description'))
-    for (const effect of rows) {
+    for (const effect of rows.filter(isVisibleEffect)) {
       const name = str(effect.displayName, 'effect.displayName')
       const description = str(effect.description, 'effect.description')
       if (!/^(?:plus\s+|\+\s*)\d+\s+wear modifier$/i.test(name.trim())) {
         names.push(name)
         details.add(description)
       }
-      for (const note of discrepancyNotes(effect)) discrepancies.add(note)
-      for (const note of strings(effect.unresolved ?? [], 'effect.unresolved')) unresolved.add(note)
+      const records = [
+        effect,
+        ...list(effect.procs ?? [], 'effect.procs')
+          .map((proc) => row(proc, 'proc'))
+          .filter(isVisibleEffect)
+      ]
+      for (const note of records.flatMap(discrepancyNotes)) discrepancies.add(note)
     }
     for (const note of discrepancyNotes(item)) discrepancies.add(note)
     return {
       effects: names,
       descriptions: [...details],
-      unresolved: [...unresolved],
       discrepancies: [...discrepancies]
     }
   }
   function itemDetails(item: Row) {
-    const { effects, descriptions, unresolved, discrepancies } = itemEffects(item)
+    const { effects, descriptions, discrepancies } = itemEffects(item)
     return {
       effects,
-      details: [...new Set([...descriptions, ...unresolved])].filter((text) => !effects.includes(text)),
+      details: descriptions.filter((text) => !effects.includes(text)),
       discrepancies
     }
   }
@@ -195,31 +206,30 @@ export function parseLgsResources(
   }
   function bonuses(key: 'weaponBonuses' | 'equipmentSets', group: LgsBonusEffect['group']): LgsBonusEffect[] {
     return [...indexed(files[key], key).values()].map((item) => {
-      const { effects, descriptions, unresolved, discrepancies } = itemEffects(item)
-      const observations = [
-        ['observedAttunements', 'Observed attunements'],
-        ['observedFocusPairs', 'Observed focus pairs'],
-        ['counters', 'Equipment counters'],
-        ['observedCallbackFocuses', 'Observed callback focuses']
-      ].flatMap(([field, label]) =>
-        item[field] === undefined ? [] : [`${label}: ${strings(item[field], field).join(', ')}.`]
-      )
+      const { effects, descriptions, discrepancies } = itemEffects(item)
       const status = str(item.activationStatus, 'activationStatus')
       const name = str(item.name, 'bonus.name')
       const requiredFocuses =
         group === 'Weapon bonuses' && status === 'configured'
           ? weaponFocusRule(item.requiredFocuses, `${name}.requiredFocuses`)
           : undefined
+      const pairs = strings(item.observedFocusPairs ?? [], 'observedFocusPairs').flatMap((pair) => {
+        const focuses = pair.split('/').map((focus) => focus.trim().toLowerCase())
+        if (
+          focuses.length !== 2 ||
+          !focuses.every((focus) => ['air', 'earth', 'fire', 'water', 'positive', 'negative'].includes(focus))
+        )
+          return []
+        return [focuses.map((focus) => focus[0].toUpperCase() + focus.slice(1)).join(' + ')]
+      })
       return {
         name,
         requiredFocuses,
         group,
         discrepancies,
-        paragraphs: bonusParagraphs(name, [...effects, ...descriptions]),
-        notes: [
-          ...(item.activationReason === undefined ? [] : [str(item.activationReason, `${name}.activationReason`)]),
-          ...unresolved,
-          ...observations
+        paragraphs: [
+          ...bonusParagraphs(name, [...effects, ...descriptions]),
+          ...(pairs.length ? ['Observed focus pairs: ' + pairs.join(', ')] : [])
         ]
       }
     })
@@ -236,7 +246,13 @@ export function parseLgsResources(
     baseItems: [...indexed(files.baseItems, 'baseItems').values()].map((item) => {
       if (item.type !== 'weapon' && item.type !== 'equipment') return invalid('invalid base item type')
       const slotTypes = list(item.slots, 'base slots').flatMap((v) => strings(row(v, 'slot').types, 'slot.types'))
-      return { ...crafted(item, item.id), type: item.type, slotTypes, ...itemDetails(item) }
+      return {
+        ...crafted(item, item.id),
+        art: baseItemArt('legendary-green-steel', item),
+        type: item.type,
+        slotTypes,
+        ...itemDetails(item)
+      }
     }),
     tier1: tiers('tier1'),
     tier2: tiers('tier2'),

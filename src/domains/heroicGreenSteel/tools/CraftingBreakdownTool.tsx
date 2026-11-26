@@ -2,17 +2,20 @@ import RecipeDetails from '../../../shared/items/RecipeDetails'
 import { heroicRecipeParts } from '../logic'
 import ComponentFarmingLocations from '../../../shared/items/ComponentFarmingLocations'
 import { useIngredientLocations } from '../../../shared/items/useIngredientLocations'
-import IngredientStock from '../../../shared/items/IngredientStock'
-import { Alert, Badge, Button, Center, Group, List, Loader, Paper, Stack, Text, Title } from '@mantine/core'
+import { BuildHeader, MaterialRow } from '../../../shared/layout/GreenSteelBuildParts'
+import styles from '../../../shared/layout/craftingTools.module.css'
+import { Alert, Button, Center, Loader, Stack, Text } from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
 import { loadHeroicGreenSteelRecipeData } from '../data.ts'
-import type { HgsDevice, HgsRecipeData } from '../heroicGreenSteel.types.ts'
+import type { HgsBaseItem, HgsDevice, HgsRecipeData } from '../heroicGreenSteel.types.ts'
 import { expandIngredientRequirements, selectedRecipes, stripDdoMarkup } from '../logic.ts'
 
 const CraftingBreakdownTool = ({
+  baseItem,
   recipeIds,
   devices
 }: {
+  baseItem?: HgsBaseItem
   recipeIds: readonly number[]
   devices: Readonly<Record<'base' | 'tier1' | 'tier2' | 'tier3', HgsDevice>>
 }) => {
@@ -87,56 +90,51 @@ const CraftingBreakdownTool = ({
 
   return (
     <Stack gap='md' p='md'>
-      {result.recipes.map((recipe, index) => (
-        <Paper withBorder p='sm' key={recipe.id}>
+      {baseItem && <BuildHeader item={baseItem} tiers={recipeIds.length - 1} />}
+      {result.recipes.map((recipe) => (
+        <section key={recipe.id} className={styles.stage}>
           <Stack gap='xs'>
-            <Group justify='space-between' align='flex-start' wrap='nowrap'>
-              <Title order={3} size='h5'>
-                {recipe.name}
-              </Title>
-              <Badge variant='light'>Step {index + 1}</Badge>
-            </Group>
-            <Text c='dimmed' size='xs'>
+            <h3>{{ base: 'Base item', tier1: 'Tier 1', tier2: 'Tier 2', tier3: 'Tier 3' }[recipe.device]}</h3>
+            <Text size='sm' fw={600}>
+              {recipe.name}
+            </Text>
+            <Text c='dimmed' size='sm'>
               {devices[recipe.device].name}
             </Text>
             {recipe.description ? <Text size='sm'>{stripDdoMarkup(recipe.description)}</Text> : null}
-            <List spacing={4} size='sm'>
-              {recipe.ingredients.map((relation, ingredientIndex) => (
-                <List.Item key={`${relation.ingredientId.toString()}-${ingredientIndex.toString()}`}>
-                  {data.ingredientById.get(relation.ingredientId)?.name ?? 'Missing ingredient'} ×
-                  {relation.quantity.toString()}
-                  {relation.producerRecipeId ? ' (crafted component)' : ''}
-                  {location(data.ingredientById.get(relation.ingredientId)?.name ?? '') && (
-                    <Text size='xs' c='dimmed'>
-                      Found in: {location(data.ingredientById.get(relation.ingredientId)?.name ?? '')}
-                    </Text>
-                  )}
-                  {relation.producerRecipeId !== undefined && (
-                    <RecipeDetails
-                      name={data.ingredientById.get(relation.ingredientId)?.name ?? 'component'}
-                      count={relation.quantity}
-                      recipeKey={relation.producerRecipeId}
-                      lookup={heroicRecipeParts(data)}
-                    />
-                  )}
-                  {relation.producerRecipeId !== undefined && (
-                    <ComponentFarmingLocations
-                      materials={expandIngredientRequirements([relation.producerRecipeId], data).terminal.map(
-                        ({ ingredient, quantity }) => ({ name: ingredient.name, quantity })
-                      )}
-                      count={relation.quantity}
-                      location={location}
-                    />
-                  )}
-                  <IngredientStock
-                    name={data.ingredientById.get(relation.ingredientId)?.name ?? 'Missing ingredient'}
-                    required={relation.quantity}
-                  />
-                </List.Item>
-              ))}
-            </List>
+            <ul className={styles.costs}>
+              {recipe.ingredients.map((relation, ingredientIndex) => {
+                const name = data.ingredientById.get(relation.ingredientId)?.name ?? 'Missing ingredient'
+                return (
+                  <MaterialRow
+                    key={`${relation.ingredientId.toString()}-${ingredientIndex.toString()}`}
+                    name={name}
+                    quantity={relation.quantity}
+                    location={location(name)}
+                  >
+                    {relation.producerRecipeId !== undefined && (
+                      <RecipeDetails
+                        name={name}
+                        count={relation.quantity}
+                        recipeKey={relation.producerRecipeId}
+                        lookup={heroicRecipeParts(data)}
+                      />
+                    )}
+                    {relation.producerRecipeId !== undefined && (
+                      <ComponentFarmingLocations
+                        materials={expandIngredientRequirements([relation.producerRecipeId], data).terminal.map(
+                          ({ ingredient, quantity }) => ({ name: ingredient.name, quantity })
+                        )}
+                        count={relation.quantity}
+                        location={location}
+                      />
+                    )}
+                  </MaterialRow>
+                )
+              })}
+            </ul>
           </Stack>
-        </Paper>
+        </section>
       ))}
     </Stack>
   )

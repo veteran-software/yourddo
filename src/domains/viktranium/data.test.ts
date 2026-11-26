@@ -1,9 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { loadScopedAugmentCatalog } from '../gearPlanner/itemCatalog'
 import { loadDataset } from '../../shared/data/loadDataset.ts'
 import { InvalidViktraniumDataError, loadViktraniumData, validateViktraniumDataset } from './data.ts'
 import { createViktraniumTestPayload } from './test-fixture.ts'
 
-vi.mock('../../shared/data/loadDataset.ts', () => ({ loadDataset: vi.fn() }))
+vi.mock('../gearPlanner/itemCatalog', () => ({ loadScopedAugmentCatalog: vi.fn() }))
+vi.mock('../../shared/data/loadDataset.ts', () => ({ loadDataset: vi.fn(), hasDatasetFile: vi.fn().mockResolvedValue(false) }))
 
 const required = <T>(value: T | undefined): T => {
   if (value === undefined) throw new Error('Missing test fixture value')
@@ -20,6 +22,29 @@ describe('Viktranium data', () => {
     expect(data.indexes.itemById.get('item-heroic-crafted')?.displayName).toBe('Sceptre (Cruel Baton)')
     expect(data.indexes.itemById.get('item-legendary-crafted')?.displayName).toContain("Warden's Hand Turret")
     expect(data.indexes.augmentById.get('augment-red')?.id).toBe('augment-red')
+  })
+
+  it('keeps saved IDs and Lamordia choices while replacing scoped catalog membership and effects', async () => {
+    const row = { name: 'Eldritch Blast: Dice', modifier: 1, bonus: 'Artifact' }
+    const record = {
+      id: 1,
+      name: 'Solar Test',
+      slotTypes: ['Sun'],
+      minimumLevel: 30,
+      effectsAdded: [row],
+      searchLabels: [row.name],
+      presentation: [{ name: 'Blast Dice', rows: [row] }]
+    }
+    vi.mocked(loadScopedAugmentCatalog).mockResolvedValueOnce({
+      names: [row.name],
+      entries: [record, { ...record, id: 2, name: 'Additional Gem' }]
+    })
+    const data = await loadViktraniumData()
+    expect(data.indexes.augmentById.get('augment-sun')?.scoped?.presentation).toEqual(record.presentation)
+    expect(data.indexes.augmentById.get('augment-1')).toBe(data.indexes.augmentById.get('augment-sun'))
+    expect(data.indexes.augmentsByType.get('Sun')?.map((a) => a.name)).toEqual(['Additional Gem', 'Solar Test'])
+    expect(data.indexes.augmentById.has('augment-red')).toBe(false)
+    expect(data.indexes.augmentById.get('augment-lamordia')?.name).toBe('Dolorous Test')
   })
 
   it('classifies all five approved families from level and published recipes', () => {

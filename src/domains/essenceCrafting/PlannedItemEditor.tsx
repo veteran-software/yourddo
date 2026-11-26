@@ -1,3 +1,4 @@
+import ScopedAugmentDetails from '../../shared/augments/ScopedAugmentDetails'
 import {
   Alert,
   Badge,
@@ -174,12 +175,16 @@ const PlannedItemEditor = memo(
           augmentSlot,
           augmentSlotType,
           minimumItemLevel,
-          effectNames: getAvailableAugmentEffectNamesFromCompatibleAugments(compatibleAugments),
+          effectNames:
+            data.enchantmentNames ?? getAvailableAugmentEffectNamesFromCompatibleAugments(compatibleAugments),
           selectedAugmentIsValid,
+          selectedAugment,
           effects: selectedAugment ? resolveEssenceEffects(data, selectedAugment.effects, effectiveMinimumLevel) : [],
           options: augmentOptions.map((augment) => ({
+            ...augment.scoped,
             value: augment.id,
             label: augment.displayName,
+            searchLabels: augment.filterEffects?.map((effect) => effect.displayName),
             augmentType: augmentTypeDisplayNameById.get(augment.augmentTypeId) ?? 'Augment',
             minimumLevel: augment.minimumItemLevel
           }))
@@ -387,6 +392,7 @@ const PlannedItemEditor = memo(
             augmentSlotType,
             minimumItemLevel,
             effectNames,
+            selectedAugment,
             effects,
             options,
             selectedAugmentIsValid
@@ -467,6 +473,7 @@ const PlannedItemEditor = memo(
                         hardLevelCap
                         label={`Augment for ${slotLabel} on ${label}`}
                         slotType={augmentSlotType.displayName}
+                        enchantmentNames={data.enchantmentNames}
                         options={options}
                         value={selectedAugmentIsValid ? augmentSlot.augmentId : null}
                         onChange={(augmentId) => {
@@ -483,7 +490,11 @@ const PlannedItemEditor = memo(
                         }}
                         nothingFoundMessage='No compatible augments match these filters and minimum level.'
                       />
-                      <EffectDetails effects={effects} />
+                      {selectedAugment?.scoped ? (
+                        <ScopedAugmentDetails augmentName={selectedAugment.displayName} {...selectedAugment.scoped} />
+                      ) : (
+                        <EffectDetails effects={effects} />
+                      )}
                       <Button
                         variant='subtle'
                         size='xs'

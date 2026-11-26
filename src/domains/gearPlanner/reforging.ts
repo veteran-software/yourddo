@@ -42,7 +42,7 @@ export interface GearPlannerReforgingChoice {
   effect: GearPlannerEffect
 }
 
-export interface GearPlannerReforgingRecipe {
+export interface GearPlannerReforgingRecipe extends Pick<ReforgingEntry, 'native'> {
   itemName: string
   stage: GearPlannerReforgingStage
   kind: 'toggle' | 'choice'
@@ -180,6 +180,26 @@ const choiceLabels = (entry: ReforgingEntry, source: GearPlannerSourceItem): rea
 const toRecipe = (entry: ReforgingEntry, source: GearPlannerSourceItem): GearPlannerReforgingRecipe | undefined => {
   const stage = stageFromLabel(entry.stage)
   if (!stage) return undefined
+  if (entry.native) {
+    const options = entry.native.options
+    const choices =
+      options.length > 1
+        ? toChoices(
+            stage,
+            options.map((option) => option.name)
+          )
+        : []
+    return {
+      itemName: entry.item,
+      stage,
+      kind: choices.length ? 'choice' : 'toggle',
+      choices: choices.map((choice, i) => ({
+        ...choice,
+        effect: options[i].added.flatMap((g) => g.effects)[0] ?? choice.effect
+      })),
+      native: entry.native
+    }
+  }
   if (stage === 'nearly-finished' && !entry.choices?.length) {
     const choices = toChoices(stage, nearlyFinishedFallbackChoices(source.upgradeable))
     return {
@@ -260,11 +280,13 @@ export const gearPlannerReforgingRecipesForItem = (
   item: GearPlannerItem,
   data: GearPlannerReforgingData
 ): readonly GearPlannerReforgingRecipe[] =>
-  (data.recipesByItemName.get(item.source.name) ?? []).map((recipe) => {
-    if (!recipe.usesNearlyFinishedFallback) return recipe
-    const choices = toChoices(recipe.stage, nearlyFinishedFallbackChoices(item.source.upgradeable))
-    return { ...recipe, kind: choices.length > 0 ? 'choice' : 'toggle', choices }
-  })
+  (data.recipesByItemName.get(item.source.name) ?? [])
+    .filter((recipe) => !recipe.native || recipe.native.keeperId === item.source.catalogId)
+    .map((recipe) => {
+      if (!recipe.usesNearlyFinishedFallback) return recipe
+      const choices = toChoices(recipe.stage, nearlyFinishedFallbackChoices(item.source.upgradeable))
+      return { ...recipe, kind: choices.length > 0 ? 'choice' : 'toggle', choices }
+    })
 
 export const gearPlannerReforgingRecipeForStage = (
   item: GearPlannerItem,
@@ -280,7 +302,13 @@ export const gearPlannerReforgingChoiceForState = (
   data: GearPlannerReforgingData
 ): GearPlannerReforgingChoice | undefined => {
   if (state?.kind !== 'choice') return undefined
-  return gearPlannerReforgingRecipeForStage(item, stage, data)?.choices.find((choice) => choice.id === state.choiceId)
+  const recipe = gearPlannerReforgingRecipeForStage(item, stage, data)
+  const exact = recipe?.choices.find((choice) => choice.id === state.choiceId)
+  if (exact || !recipe?.native || !state.choiceId.startsWith('label:')) return exact
+  // Old saves may label a choice with its stat and a superseded magnitude.
+  const statName = state.choiceId.slice(6).replace(/ [+-]?[0-9.]+%?$/, '')
+  const matches = recipe.choices.filter((choice) => choice.effect.name === statName)
+  return matches.length === 1 ? matches[0] : undefined
 }
 
 export const isGearPlannerReforgingStageStateValid = (
@@ -292,7 +320,7 @@ export const isGearPlannerReforgingStageStateValid = (
   const recipe = gearPlannerReforgingRecipeForStage(item, stage, data)
   if (!recipe) return false
   if (recipe.kind === 'toggle') return state.kind === 'active'
-  return state.kind === 'choice' && recipe.choices.some((choice) => choice.id === state.choiceId)
+  return state.kind === 'choice' && Boolean(gearPlannerReforgingChoiceForState(item, stage, state, data))
 }
 
 const effectiveTierRecord = (
@@ -312,11 +340,52 @@ const effectiveTierRecord = (
   return candidates.length === 1 ? candidates[0] : undefined
 }
 
+function selectedNativeOption(
+  item: GearPlannerItem,
+  recipe: GearPlannerReforgingRecipe | undefined,
+  selection: GearPlannerReforgingStageState | undefined,
+  data: GearPlannerReforgingData
+) {
+  if (!recipe?.native || !selection) return undefined
+  if (selection.kind === 'active') return recipe.kind === 'toggle' ? recipe.native.options[0] : undefined
+  const choice = gearPlannerReforgingChoiceForState(item, recipe.stage, selection, data)
+  return choice && recipe.native.options[recipe.choices.indexOf(choice)]
+}
+
+function nativeReforgingTier(
+  item: GearPlannerItem,
+  state: GearPlannerItemReforgingState,
+  data: GearPlannerReforgingData,
+  native: readonly GearPlannerReforgingRecipe[]
+): GearPlannerEffectiveReforgingTier | null {
+  let groups = [...(native[0].native?.base ?? [])]
+  const augments = [...getGearPlannerBaseAugmentSlots(item)]
+  let lastStage: GearPlannerReforgingStage | undefined
+  for (const stage of gearPlannerReforgingStages) {
+    const recipe = native.find((r) => r.stage === stage)
+    const option = selectedNativeOption(item, recipe, state[stage], data)
+    if (!option) continue
+    groups = [...groups.filter(({ id }) => !option.removeIds.includes(id)), ...option.added]
+    if (option.slot) augments.push(option.slot)
+    lastStage = stage
+  }
+  if (!lastStage) return null
+  const tier = tierByStage[lastStage]
+  const setBonus = [
+    ...new Set([...(item.source.setBonus ?? []).map((set) => set.name), ...groups.flatMap((g) => g.setName ?? [])])
+  ].map((name) => ({ name }))
+  const source = { ...item.source, enchantments: groups.flatMap((g) => g.effects), augments, setBonus }
+  return { stage: lastStage, tier, record: { tier, source, sourceFile: item.sourceFile } }
+}
+
 export const getGearPlannerEffectiveReforgingTier = (
   item: GearPlannerItem,
   state: GearPlannerItemReforgingState | undefined,
   data: GearPlannerReforgingData
 ): GearPlannerEffectiveReforgingTier | null => {
+  if (!state) return null
+  const native = gearPlannerReforgingRecipesForItem(item, data).filter((r) => r.native)
+  if (native.length) return nativeReforgingTier(item, state, data, native)
   for (const stage of [...gearPlannerReforgingStages].reverse()) {
     const recipe = gearPlannerReforgingRecipeForStage(item, stage, data)
     const selected = state?.[stage]
@@ -328,6 +397,20 @@ export const getGearPlannerEffectiveReforgingTier = (
   return null
 }
 
+export function equipmentWithReforgedSets(
+  equipment: import('./planner').GearPlannerEquipment,
+  state: GearPlannerReforgingState,
+  data: GearPlannerReforgingData
+) {
+  const result = { ...equipment }
+  for (const item of Object.values(equipment)) {
+    if (!item || !state[item.id]) continue
+    const source = getGearPlannerEffectiveReforgingTier(item, state[item.id], data)?.record.source
+    if (source?.setBonus) result[item.slot] = { ...item, source: { ...item.source, setBonus: source.setBonus } }
+  }
+  return result
+}
+
 export const getGearPlannerEffectiveReforgingEffects = (
   item: GearPlannerItem,
   state: GearPlannerItemReforgingState | undefined,
@@ -335,6 +418,8 @@ export const getGearPlannerEffectiveReforgingEffects = (
 ): GearPlannerEffectiveReforgingEffects => {
   const tier = getGearPlannerEffectiveReforgingTier(item, state, data)
   const choices = gearPlannerReforgingStages.flatMap((stage) => {
+    if (gearPlannerReforgingRecipeForStage(item, stage, data)?.native) return []
+
     const choice = gearPlannerReforgingChoiceForState(item, stage, state?.[stage], data)
     return choice ? [{ stage, choice }] : []
   })
@@ -357,6 +442,12 @@ export const getEffectiveGearPlannerAugmentSlots = (
   data: GearPlannerReforgingData
 ): readonly GearPlannerAugmentSlot[] => {
   if (!anyActiveStage(item, state, data)) return getGearPlannerBaseAugmentSlots(item)
+  if (gearPlannerReforgingRecipesForItem(item, data).some((recipe) => recipe.native)) {
+    return (
+      getGearPlannerEffectiveReforgingTier(item, state, data)?.record.source.augments ??
+      getGearPlannerBaseAugmentSlots(item)
+    )
+  }
   const nearlyFinished = effectiveTierRecord(item, 'nearly-finished', data)
   return nearlyFinished && (nearlyFinished.source.augments?.length ?? 0) > 0
     ? (nearlyFinished.source.augments ?? [])

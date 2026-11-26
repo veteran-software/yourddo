@@ -1,3 +1,4 @@
+import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import type {
   CraftedIngredientTotal,
   CraftingPlan,
@@ -148,7 +149,8 @@ const expandRequirement = (
   const recipe = recipes.get(requirement.name)
 
   if (!recipe) {
-    if (!rawMaterialNames.has(requirement.name)) throw new MissingIngredientRecipeError(item, requirement.name)
+    if (!requirement.raw && !rawMaterialNames.has(requirement.name))
+      throw new MissingIngredientRecipeError(item, requirement.name)
     addQuantity(totals.raw, requirement.name, requirement.quantity)
     return
   }
@@ -162,13 +164,7 @@ const expandRequirement = (
   const nextPath = [...dependencyPath, requirement.name]
 
   for (const child of recipe.requirements) {
-    expandRequirement(
-      { name: child.name, quantity: child.quantity * requirement.quantity },
-      recipes,
-      totals,
-      nextPath,
-      item
-    )
+    expandRequirement({ ...child, quantity: child.quantity * requirement.quantity }, recipes, totals, nextPath, item)
   }
 }
 
@@ -285,7 +281,10 @@ export const parseNearlyFinishedDataset = (value: unknown): NearlyFinishedDatase
 
   const dataset: NearlyFinishedDataset = {
     meltingStation: value.meltingStation,
-    reforgingStation: value.reforgingStation
+    reforgingStation: value.reforgingStation.map((entry) => ({
+      ...entry,
+      effectsAdded: entry.effectsAdded.filter(isVisibleEffect)
+    }))
   }
 
   validateDataset(dataset)

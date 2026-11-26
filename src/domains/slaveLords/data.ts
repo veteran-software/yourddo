@@ -1,3 +1,4 @@
+import { isVisibleEffect } from '../../shared/data/visibleEffect'
 export type SlaveLordsTier = 'heroic' | 'legendary'
 export type SlaveLordsCategory = 'prefix' | 'suffix' | 'extra' | 'bonus' | 'set' | 'augment' | 'mythic'
 
@@ -134,11 +135,12 @@ const statNames: Readonly<Record<string, string>> = {
 }
 
 function statName(name: string, property?: string) {
-  if (property?.startsWith('Skill_')) return 'Skill: ' + name
+  if (property?.startsWith('Skill_') && !name.startsWith('Skill: ')) return 'Skill: ' + name
   return name.replace(/^(.+) (Spell Power|Spell Critical Chance|Spell DC)$/u, '$2: $1')
 }
 
 function effectsFor(effect: Effect): SlaveLordsStat[] {
+  if (!isVisibleEffect(effect)) return []
   return effect.enchantments.flatMap((entry) => {
     const name = entry.displayName ?? statNames[entry.name ?? '']
     if (!name || !entry.bonusType || typeof entry.value !== 'number' || !Number.isFinite(entry.value)) return []
@@ -146,7 +148,9 @@ function effectsFor(effect: Effect): SlaveLordsStat[] {
     // Published power and percent labels use the whole part of the scaled value.
     const scaled = entry.unit === 'coefficient' ? entry.value * 100 : entry.value
     const magnitude =
-      entry.unit === 'coefficient' || entry.unit === 'percent' ? Math.trunc(Number(scaled.toFixed(5))) : scaled
+      entry.unit === 'points' || entry.unit === 'coefficient' || entry.unit === 'percent'
+        ? Math.trunc(Number(scaled.toFixed(5)))
+        : scaled
     const value = magnitude * (entry.operation === 'Subtract' ? -1 : 1)
     return [
       {
@@ -178,7 +182,8 @@ function buildOption(
   findEffect: (id: number) => Effect,
   findIngredient: (id: number) => Ingredient
 ): SlaveLordsOption {
-  const effects = (option.effectIds ?? []).map(findEffect)
+  const referenced = (option.effectIds ?? []).map(findEffect)
+  const effects = referenced.filter(isVisibleEffect)
   const recipe = option.recipeId === undefined ? application : findRecipe(option.recipeId)
   const slotBonuses = effects
     .flatMap((effect) => effect.slotBonuses ?? [])
@@ -192,7 +197,8 @@ function buildOption(
     name: mythicValue === undefined ? option.name : option.name + ' +' + String(mythicValue),
     category: option.category,
     description:
-      effects.map((effect) => effect.description ?? effect.displayName).join('\n') || application.description,
+      effects.map((effect) => effect.description ?? effect.displayName).join('\n') ||
+      (referenced.length && !effects.length ? '' : application.description),
     effects: effects.flatMap(effectsFor),
     slotBonuses,
     costs: recipe.ingredients.map(({ ingredientId, quantity }) => {

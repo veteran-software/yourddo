@@ -1,3 +1,5 @@
+import type { ItemArt } from '../../shared/items/itemArt'
+
 export type HgsItemType = 'weapon' | 'equipment'
 export type HgsTier3Mode = 'basic' | 'focused'
 export type HgsShardType = 'single' | 'compound'
@@ -23,6 +25,7 @@ export interface HgsManifest {
 }
 
 export interface HgsBaseItem {
+  art?: ItemArt
   id: number
   name: string
   description: string
@@ -85,6 +88,7 @@ export interface HgsEffect {
   id: number
   displayName: string
   description: string
+  discrepancies?: string[]
   enchantments: HgsMechanic[]
   procs: HgsProc[]
 }

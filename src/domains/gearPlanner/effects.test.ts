@@ -71,6 +71,21 @@ const curse = (name: string, enchantments: GearPlannerCurse['enchantments']): Ge
 })
 
 describe('Gear Planner equipped effect sources', () => {
+  it('counts a melee-only augment bonus only for a compatible equipped socket and attack form', () => {
+    const head = item('head', 'Head', 'Test Helm', [], [{ augmentType: 'Sun', slotTypes: ['Sun'] }])
+    const bow = item('bow', 'Main Hand', 'Test Bow', [])
+    bow.source.type = 'Long Bow'
+    const gem = {
+      ...augment('Solar Gem', 'Sun', [{ name: 'Jaws of Doom DC', modifier: 2, attackForms: ['melee'] }]),
+      slotTypes: ['Sun'],
+      presentation: []
+    }
+    const slots = { head: { 0: gem } }
+    expect(collectEquippedEffects(equipped(head), slots)).toHaveLength(1)
+    expect(collectEquippedEffects(equipped(head, bow), slots)).toEqual([])
+    expect(collectEquippedEffects(equipped(head), { head: { 0: { ...gem, slotTypes: ['Moon'] } } })).toEqual([])
+  })
+
   it('collects base effects with item and slot provenance and removes cleared items', () => {
     const head = item('head', gearPlannerSlots.head, 'Test Helm', [
       { name: 'Strength', modifier: '+10', bonus: 'Enhancement' },

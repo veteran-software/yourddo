@@ -1,3 +1,5 @@
+import { nativeEffects } from './nativeData'
+import { expandIngredientRequirements, formatMechanic } from './logic'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { loadDatasetFile } from '../../shared/data/loadDataset.ts'
 import {
@@ -94,6 +96,81 @@ afterEach(() => {
 })
 
 describe('Heroic Green Steel data', () => {
+  it('displays native absorption multipliers and fractional power using their published units', () => {
+    const [effect] = nativeEffects([
+      {
+        id: 1,
+        displayName: 'Bonuses',
+        enchantments: [
+          { displayName: 'Elemental Absorption: Electric', operation: 'Multiply', unit: 'multiplier', value: 0.9 },
+          { displayName: 'Spell Power: Fire', unit: 'points', value: 38.8 }
+        ]
+      }
+    ])
+    expect(effect.enchantments.map(formatMechanic)).toEqual([
+      'Elemental Absorption: Electric +10%',
+      'Spell Power: Fire +38'
+    ])
+  })
+
+  it('displays the granted spell by its casting spell ID', () => {
+    const [effect] = nativeEffects(
+      [
+        {
+          id: 1,
+          displayName: 'Aspect of Ooze',
+          enchantments: [{ displayName: 'Spell', operation: 'Set', bonusType: 'Generic', value: 1879050288 }]
+        }
+      ],
+      [{ id: 1879050286, castingSpellId: 1879050288, name: 'Cloudkill' }]
+    )
+    expect(effect.enchantments.map(formatMechanic)).toEqual(['Spell: Cloudkill'])
+  })
+
+  it('builds a dual shard from both native component recipes and their blank shards', async () => {
+    const blank = { id: 9, name: 'Blank shard', description: 'Blank', craftingRole: 'shard' }
+    const native = {
+      ...payloads,
+      'heroic-green-steel/manifest.json': {
+        system: manifest.system,
+        version: 'sha256:test',
+        devices: manifest.devices,
+        resources: {
+          ...manifest.resources,
+          ...manifest.resources.tiers,
+          baseRecipes: manifest.resources.recipes.base,
+          tier1Recipes: manifest.resources.recipes.tier1,
+          tier2Recipes: manifest.resources.recipes.tier2,
+          tier3Recipes: manifest.resources.recipes.tier3
+        }
+      },
+      'heroic-green-steel/base-items.json': [blank],
+      'heroic-green-steel/tiers/tier1.json': [],
+      'heroic-green-steel/tiers/tier2.json': [],
+      'heroic-green-steel/tiers/tier3-basic.json': [],
+      'heroic-green-steel/tiers/tier3-focused.json': [
+        { recipeId: 104, shardRecipeId: 103, componentRecipeIds: [101, 102] }
+      ],
+      'heroic-green-steel/recipes/tier3.json': [101, 102, 103, 104].map((id) => ({
+        ...recipe,
+        id,
+        device: 'tier3',
+        name: 'Recipe ' + String(id),
+        keeper: { itemId: blank.id }
+      })),
+      'heroic-green-steel/recipes/tier2.json': [],
+      'heroic-green-steel/recipes/tier1.json': []
+    }
+    vi.mocked(loadDatasetFile).mockImplementation((path) => Promise.resolve(native[path as keyof typeof native]))
+    const data = await loadHeroicGreenSteelRecipeData()
+    const cost = expandIngredientRequirements([104], data)
+    expect(cost.terminal.map(({ ingredient, quantity }) => [ingredient.name, quantity])).toEqual([
+      ['Blank shard', 2],
+      ['Stone', 4]
+    ])
+    expect(cost.crafted.map(({ producerRecipeId }) => producerRecipeId)).toEqual([101, 102, 103])
+  })
+
   it('validates the manifest schema, system, devices, and relative paths', () => {
     expect(parseHeroicGreenSteelManifest(manifest).resources.tiers.tier3Focused).toBe('tiers/tier3-focused.json')
     expect(() => parseHeroicGreenSteelManifest({ ...manifest, schemaVersion: 2 })).toThrow('schemaVersion 1')

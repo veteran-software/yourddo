@@ -1,3 +1,5 @@
+import { withScopedAugments } from './scopedAugments'
+import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import { loadDataset } from '../../shared/data/loadDataset.ts'
 import type {
   EssenceAffixPosition,
@@ -234,7 +236,9 @@ const parseEnhancement = (value: unknown, minimum: number, maximum: number): Ess
     invalid(`invalid enhancement: ${identity.id}`)
   }
   const parsedPlacements = placements.map((placement) => parsePlacement(placement, identity.id))
-  const parsedEffects = effects.map((effect) => parseEffect(effect, identity.id, minimum, maximum))
+  const parsedEffects = effects
+    .filter(isVisibleEffect)
+    .map((effect) => parseEffect(effect, identity.id, minimum, maximum))
   assertUnique(parsedPlacements, 'placement position', ({ position }) => position, identity.id)
   assertUnique(parsedEffects, 'effect', ({ id }) => id, identity.id)
   return {
@@ -315,7 +319,9 @@ const parseAugment = (value: unknown, minimum: number, maximum: number): Essence
   ) {
     invalid(`invalid augment: ${identity.id}`)
   }
-  const parsedEffects = effects.map((effect) => parseEffect(effect, identity.id, minimum, maximum))
+  const parsedEffects = effects
+    .filter(isVisibleEffect)
+    .map((effect) => parseEffect(effect, identity.id, minimum, maximum))
   assertUnique(parsedEffects, 'effect', ({ id }) => id, identity.id)
   return {
     ...identity,
@@ -574,4 +580,4 @@ export const validateEssenceCraftingDataset = (value: unknown): EssenceCraftingD
 }
 
 export const loadEssenceCraftingData = async (): Promise<EssenceCraftingData> =>
-  validateEssenceCraftingDataset(await loadDataset<unknown>('essence-crafting'))
+  withScopedAugments(validateEssenceCraftingDataset(await loadDataset<unknown>('essence-crafting')))

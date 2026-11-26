@@ -4,7 +4,7 @@ import type {
   EssenceAugment,
   EssenceAugmentSlotType,
   EssenceCraftingData,
-  EssenceEffect
+  EssenceNamedRecord
 } from './essenceCrafting.types.ts'
 
 export type AugmentEffectFilterMode = 'or' | 'and'
@@ -134,14 +134,14 @@ export const getCompatibleAugments = (
     .sort(compareByDisplayNameAndId)
 }
 
-const getCompatibleAugmentEffects = (compatibleAugments: readonly EssenceAugment[]): readonly EssenceEffect[] =>
-  compatibleAugments.flatMap(({ effects }) => effects)
+export const augmentFilterEffects = (augment: EssenceAugment): readonly EssenceNamedRecord[] =>
+  augment.filterEffects ?? augment.effects
 
 /** Returns unique effect names from an already-computed compatible augment list. */
 export const getAvailableAugmentEffectNamesFromCompatibleAugments = (
   compatibleAugments: readonly EssenceAugment[]
 ): readonly string[] =>
-  [...new Set(getCompatibleAugmentEffects(compatibleAugments).map(({ displayName }) => displayName))].sort(
+  [...new Set(compatibleAugments.flatMap(augmentFilterEffects).map(({ displayName }) => displayName))].sort(
     (left, right) => left.localeCompare(right, undefined, { sensitivity: 'base' })
   )
 
@@ -163,8 +163,10 @@ export const filterCompatibleAugmentsByEffectsFromCompatibleAugments = (
   const selected = new Set(selectedEffectNames)
   return compatibleAugments.filter((augment) =>
     mode === 'or'
-      ? augment.effects.some(({ displayName }) => selected.has(displayName))
-      : [...selected].every((effectName) => augment.effects.some(({ displayName }) => displayName === effectName))
+      ? augmentFilterEffects(augment).some(({ displayName }) => selected.has(displayName))
+      : [...selected].every((effectName) =>
+          augmentFilterEffects(augment).some(({ displayName }) => displayName === effectName)
+        )
   )
 }
 

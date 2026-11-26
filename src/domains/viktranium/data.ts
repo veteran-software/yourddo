@@ -1,5 +1,9 @@
-import { getCompatibleAugmentTypes } from '../../shared/augments/compatibility.ts'
-import { loadDataset } from '../../shared/data/loadDataset.ts'
+import { addNativeSelectionAliases } from './nativeIds'
+import { loadScopedAugmentCatalog } from '../gearPlanner/itemCatalog'
+import { scopedAugmentMatcher } from '../../shared/augments/matchScopedAugment'
+import { isVisibleEffect } from '../../shared/data/visibleEffect'
+import { getCompatibleAugmentTypes, hasColorPicker } from '../../shared/augments/compatibility.ts'
+import { hasDatasetFile, loadDataset } from '../../shared/data/loadDataset.ts'
 import {
   armorTypes,
   clothingTypes,
@@ -161,7 +165,11 @@ const parseRecipes = (value: unknown, owner: string): ViktraniumRecipe[] => {
   })
 }
 
-const familyFor = (minimumLevel: number, recipes: readonly ViktraniumRecipe[], owner: string): ViktraniumFamily => {
+export const familyFor = (
+  minimumLevel: number,
+  recipes: readonly ViktraniumRecipe[],
+  owner: string
+): ViktraniumFamily => {
   if (recipes.length > 0) {
     const family = recipeDevices[recipes[0]?.device ?? '']
     if (!family || recipes.some(({ device }) => recipeDevices[device] !== family)) {
@@ -174,8 +182,8 @@ const familyFor = (minimumLevel: number, recipes: readonly ViktraniumRecipe[], o
   throw new InvalidViktraniumDataError(`item level does not map to an approved family for ${owner}`)
 }
 
-const categoryFor = (type: string, owner: string): ViktraniumCategory => {
-  if (armorTypes.has(type)) return 'Armor'
+export const categoryFor = (type: string, owner: string): ViktraniumCategory => {
+  if (type === 'Cloth Armor' || armorTypes.has(type)) return 'Armor'
   if (clothingTypes.has(type)) return 'Clothing'
   if (jewelryTypes.has(type)) return 'Jewelry'
   if (shieldTypes.has(type)) return 'Shields'
@@ -186,7 +194,7 @@ const categoryFor = (type: string, owner: string): ViktraniumCategory => {
   throw new InvalidViktraniumDataError(`unrecognized item type for ${owner}: ${type}`)
 }
 
-const displayNameFor = (name: string): string => {
+export const displayNameFor = (name: string): string => {
   if (name === 'Cruel Baton') return 'Sceptre (Cruel Baton)'
   if (name === 'Legendary Cruel Baton') return 'Legendary Sceptre (Legendary Cruel Baton)'
   if (name === "Warden's Hand Turret") return "Great Crossbow (Warden's Hand Turret)"
@@ -285,7 +293,7 @@ const parseItems = (value: unknown): ViktraniumItem[] => {
       ...(parseBinding(item.binding, itemId) ? { binding: parseBinding(item.binding, itemId) } : {}),
       ...(typeof item.material === 'string' ? { material: item.material } : {}),
       enchantments: Array.isArray(item.enchantments)
-        ? item.enchantments.map((effect) => parseEffect(effect, itemId))
+        ? item.enchantments.filter(isVisibleEffect).map((effect) => parseEffect(effect, itemId))
         : [],
       slots,
       dropLocations: Array.isArray(item.dropLocations)
@@ -322,7 +330,9 @@ const parseAugments = (value: unknown): ViktraniumAugment[] => {
       augmentType,
       minimumLevel: parseLevel(augment.minimumLevel, augmentId),
       ...(typeof augment.description === 'string' ? { description: augment.description } : {}),
-      effects: Array.isArray(augment.effects) ? augment.effects.map((effect) => parseEffect(effect, augmentId)) : [],
+      effects: Array.isArray(augment.effects)
+        ? augment.effects.filter(isVisibleEffect).map((effect) => parseEffect(effect, augmentId))
+        : [],
       foundIn: parseStringArray(augment.foundIn, augmentId),
       recipes: parseRecipes(augment.recipes, augmentId),
       ...(nonEmptyString(augment.image) ? { image: augment.image } : {})
@@ -418,6 +428,14 @@ export const validateViktraniumDataset = (value: unknown): ViktraniumData => {
   const items = parseItems(value.items)
   const augments = parseAugments(value.augments)
   const ingredients = parseIngredients(value.ingredients)
+  return assembleViktraniumData(items, augments, ingredients)
+}
+
+export function assembleViktraniumData(
+  items: ViktraniumItem[],
+  augments: ViktraniumAugment[],
+  ingredients: ViktraniumIngredient[]
+): ViktraniumData {
   assertUnique(items, 'item', (item) => item.id)
   assertUnique(augments, 'augment', (augment) => augment.id)
   assertUnique(ingredients, 'ingredient', (ingredient) => ingredient.id)
@@ -431,5 +449,59 @@ export const validateViktraniumDataset = (value: unknown): ViktraniumData => {
   return { schemaVersion: 1, items, augments, ingredients, indexes }
 }
 
-export const loadViktraniumData = async (): Promise<ViktraniumData> =>
-  validateViktraniumDataset(await loadDataset<unknown>('viktranium'))
+export async function loadViktraniumData(): Promise<ViktraniumData> {
+  const native = await hasDatasetFile('viktranium/manifest.json')
+  const [data, catalog] = await Promise.all([
+    native
+      ? import('./nativeData').then(({ loadNativeViktranium }) => loadNativeViktranium())
+      : loadDataset<unknown>('viktranium').then(validateViktraniumDataset),
+    loadScopedAugmentCatalog()
+  ])
+  const result = catalog ? mergeScopedAugments(data, catalog) : data
+  return native ? addNativeSelectionAliases(result) : result
+}
+
+function mergeScopedAugments(
+  data: ViktraniumData,
+  catalog: NonNullable<Awaited<ReturnType<typeof loadScopedAugmentCatalog>>>
+) {
+  const match = scopedAugmentMatcher(catalog.entries)
+  const previous = Map.groupBy(
+    data.augments.filter((a) => hasColorPicker(a.augmentType)),
+    (a) => match(a.name, a.augmentType, a.minimumLevel)?.id
+  )
+  const augments = data.augments.filter((a) => !hasColorPicker(a.augmentType))
+  const firstByMatch = new Map<number, ViktraniumAugment>()
+  const publishedIds = new Map<string, ViktraniumAugment>()
+  for (const entry of catalog.entries) {
+    for (const color of entry.slotTypes) {
+      const group = match(entry.name, color, entry.minimumLevel)?.id ?? entry.id
+      const candidates = previous.get(group) ?? []
+      const exact = candidates.findIndex((candidate) => candidate.name === entry.name)
+      const [original] = candidates.splice(Math.max(exact, 0), 1)
+      const publishedId = 'augment-' + String(entry.id)
+      const augment = {
+        id: original?.id ?? publishedId,
+        name: entry.name,
+        augmentType: color,
+        minimumLevel: entry.minimumLevel,
+        foundIn: original?.foundIn ?? [],
+        recipes: original?.recipes ?? [],
+        image: original?.image,
+        scoped: entry,
+        effects: []
+      }
+      augments.push(augment)
+      publishedIds.set(publishedId, augment)
+      if (!firstByMatch.has(group)) firstByMatch.set(group, augment)
+    }
+  }
+  const indexes = buildIndexes(data.items, augments, data.ingredients)
+  const augmentById = new Map([...indexes.augmentById, ...publishedIds])
+  // Several historical names can refer to the same published augment.
+  for (const [group, originals] of previous) {
+    const current = group !== undefined && firstByMatch.get(group)
+    if (current) for (const original of originals) augmentById.set(original.id, current)
+  }
+  return { ...data, augments, enchantmentNames: catalog.names, indexes: { ...indexes, augmentById } }
+}

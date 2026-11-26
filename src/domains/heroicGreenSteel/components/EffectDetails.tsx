@@ -1,3 +1,4 @@
+import KnownDiscrepancies from '../../gearPlanner/components/KnownDiscrepancies'
 import { keyedEntries } from '../../../shared/ui/keyedEntries'
 import { Accordion, Badge, Group, List, Stack, Text } from '@mantine/core'
 import type {
@@ -127,6 +128,7 @@ export const EffectDetails = ({ effects }: { effects: readonly HgsEffect[] }) =>
                   {stripDdoMarkup(effect.description)}
                 </Text>
               ) : null}
+              <KnownDiscrepancies notes={effect.discrepancies} />
               {effect.enchantments.length > 0 ? (
                 <Stack gap={4}>
                   <Text fw={600} size='xs'>

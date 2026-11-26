@@ -1,19 +1,8 @@
+import ItemIcon from '../../shared/items/ItemIcon'
+import { BuildHeader } from '../../shared/layout/GreenSteelBuildParts'
 import TierBadges from './TierBadges'
 import { createCraftingSelection } from '../../shared/layout/craftingSession'
-import {
-  Alert,
-  Anchor,
-  Button,
-  Center,
-  Checkbox,
-  Grid,
-  Loader,
-  Paper,
-  Select,
-  Stack,
-  Text,
-  Title
-} from '@mantine/core'
+import { Alert, Anchor, Button, Center, Checkbox, Grid, Loader, Paper, Select, Stack, Text, Title } from '@mantine/core'
 import { IconCrown } from '@tabler/icons-react'
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -199,15 +188,24 @@ const LegendaryGreenSteelPage = () => {
   )
   const tools = useMemo<readonly WorkspaceTool[]>(() => {
     if (!data) return []
+    const header = baseItem && (
+      <BuildHeader item={baseItem} tiers={[tier1, tier2, tier3].filter(Boolean).length} equipmentLabel='Accessory' />
+    )
     const tool = (definition: (typeof lgsWorkspaceToolDefinitions)[number], content: ReactNode): WorkspaceTool => {
       const Icon = definition.Icon
-      return { id: definition.id, label: definition.label, icon: <Icon size={20} />, content }
+      return {
+        id: definition.id,
+        label: definition.label,
+        icon: definition.id === 'summary' && baseItem ? <ItemIcon item={baseItem} size={20} /> : <Icon size={20} />,
+        content
+      }
     }
     return [
       tool(lgsWorkspaceToolDefinitions[0], <SharingTool plan={plan} data={data} onImport={setPlan} />),
       tool(
         lgsWorkspaceToolDefinitions[1],
         <DetailsTool
+          header={header}
           baseItem={baseItem}
           tier1={tier1}
           tier2={tier2}
@@ -220,11 +218,12 @@ const LegendaryGreenSteelPage = () => {
       ),
       tool(
         lgsWorkspaceToolDefinitions[2],
-        <IngredientsTool components={data.craftingComponents} plan={ingredientPlan} />
+        <IngredientsTool header={header} components={data.craftingComponents} plan={ingredientPlan} />
       ),
       tool(
         lgsWorkspaceToolDefinitions[3],
         <CraftingBreakdownTool
+          header={header}
           stages={[
             { label: 'Base Item', recipe: baseItem },
             { label: 'Tier 1', recipe: tier1 },

@@ -32,6 +32,8 @@ export interface GearCraftingData {
   slaveLords?: SlaveLordsData
   nearlyComplete: readonly {
     name: string
+    keeperIds?: readonly number[]
+    hostEffects?: ReadonlyMap<number, readonly GearPlannerEffect[]>
     requirements: readonly { name: string }[]
     effectsAdded: readonly GearPlannerEffect[]
     effectsRemoved: readonly { name: string }[]
@@ -41,6 +43,7 @@ export interface GearCraftingData {
     label: string
     marker: string
     items: ReadonlyMap<string, readonly GearPlannerEffect[]>
+    nativeChoices?: ReadonlyMap<number, CraftChoice>
   }[]
 }
 
@@ -73,13 +76,21 @@ function gemSetGroups(source: GearPlannerItem['source']): CraftGroup[] {
 
 function nearlyCompleteGroup(item: GearPlannerItem, data: GearCraftingData): CraftGroup | undefined {
   const placeholder = item.source.enchantments?.find(({ name }) => name.startsWith('Nearly Complete:'))?.name
-  if (!placeholder) return undefined
-  const requirement = `${item.minimumLevel >= 30 ? 'Legendary' : 'Heroic'} Item with ${placeholder}`
+  const catalogId = item.source.catalogId
+  const requirement = `${item.minimumLevel >= 30 ? 'Legendary' : 'Heroic'} Item with ${placeholder ?? ''}`
   const choices = data.nearlyComplete
-    .filter(
-      (r) => r.effectsRemoved.some((e) => e.name === placeholder) && r.requirements.some((e) => e.name === requirement)
+    .filter((r) =>
+      r.keeperIds
+        ? catalogId !== undefined && r.keeperIds.includes(catalogId)
+        : placeholder &&
+          r.effectsRemoved.some((e) => e.name === placeholder) &&
+          r.requirements.some((e) => e.name === requirement)
     )
-    .map((r) => ({ id: r.name, label: r.name, effects: r.effectsAdded }))
+    .map((r) => ({
+      id: r.name,
+      label: r.name,
+      effects: (catalogId === undefined ? undefined : r.hostEffects?.get(catalogId)) ?? r.effectsAdded
+    }))
   return choices.length ? { system: 'nearly-complete', label: 'Nearly Complete', choices } : undefined
 }
 
@@ -88,7 +99,12 @@ export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): 
   if (item.alchemical && data.alchemical) groups.push(...alchemicalCraftGroups(item, data.alchemical))
   const source = item.source
   const markers = new Set(source.enchantments?.map(({ name }) => name))
-  for (const { system, label, marker, items } of data.upgrades) {
+  for (const { system, label, marker, items, nativeChoices } of data.upgrades) {
+    if (nativeChoices) {
+      const choice = source.catalogId === undefined ? undefined : nativeChoices.get(source.catalogId)
+      if (choice) groups.push({ system, label, replacesEnchantments: true, choices: [choice] })
+      continue
+    }
     if (!markers.has(marker)) continue
     const effects =
       items.get(craftItemKey(source.name)) ?? items.get(craftItemKey((source.pageTitle ?? '').split('(')[0]))

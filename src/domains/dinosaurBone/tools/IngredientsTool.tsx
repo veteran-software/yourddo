@@ -1,15 +1,15 @@
-import IngredientStock from '../../../shared/items/IngredientStock'
-import { Alert, Badge, Box, Group, List, Stack, Text } from '@mantine/core'
-import type { ClassifiedDinosaurBoneItem, CumulativeIngredient } from '../dinosaurBone.types.ts'
+import { BuildHeader, RequirementList } from './RecipeParts'
+import { Alert, Stack } from '@mantine/core'
+import type { FinishedDinosaurBoneItem, CumulativeIngredient } from '../dinosaurBone.types.ts'
 
 const IngredientsTool = ({
-  item,
+  finished,
   ingredients
 }: {
-  item?: ClassifiedDinosaurBoneItem
+  finished: FinishedDinosaurBoneItem
   ingredients: CumulativeIngredient[]
 }) => {
-  if (!item) {
+  if (!finished.item) {
     return (
       <Alert color='blue' title='No item selected' m='md'>
         Select an item to review cumulative ingredients.
@@ -18,34 +18,13 @@ const IngredientsTool = ({
   }
   return (
     <Stack gap='md' p='md'>
-      <Text size='sm'>Cumulative requirements for {item.name} and all selected augments.</Text>
+      <BuildHeader finished={finished} />
       {ingredients.length === 0 ? (
         <Alert color='green' title='No material cost'>
           This valid configuration has no published material requirements.
         </Alert>
       ) : (
-        <List spacing='sm'>
-          {ingredients.map((ingredient) => (
-            <List.Item key={ingredient.name}>
-              <Group component='span' justify='space-between' align='flex-start' wrap='nowrap'>
-                <Box component='span' style={{ minWidth: 0 }}>
-                  <Text component='span' size='sm' style={{ overflowWrap: 'anywhere' }}>
-                    {ingredient.name}
-                  </Text>
-                  {ingredient.foundIn?.map((location) => (
-                    <Text component='span' display='block' c='dimmed' size='xs' key={location}>
-                      {location}
-                    </Text>
-                  ))}
-                </Box>
-                <Badge component='span' variant='light' color='gray'>
-                  ×{String(ingredient.quantity)}
-                </Badge>
-              </Group>
-              <IngredientStock name={ingredient.name} required={ingredient.quantity} />
-            </List.Item>
-          ))}
-        </List>
+        <RequirementList requirements={ingredients} />
       )}
     </Stack>
   )

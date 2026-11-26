@@ -1,3 +1,5 @@
+import type { ItemArt } from '../../shared/items/itemArt'
+
 export interface LgsRequirement {
   id: number
   name: string
@@ -16,6 +18,7 @@ interface SlottedItem extends LgsRecipe {
 }
 
 export interface LgsBaseItem extends SlottedItem {
+  art?: ItemArt
   type: 'weapon' | 'equipment'
   effects: readonly string[]
   details: readonly string[]
@@ -49,7 +52,6 @@ export interface LgsBonusEffect {
   group: 'Weapon bonuses' | 'Equipment sets'
   discrepancies: readonly string[]
   paragraphs: readonly string[]
-  notes: readonly string[]
 }
 
 export interface LgsData {

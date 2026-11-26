@@ -2,7 +2,7 @@
 
 import { TroveProvider } from '../gearPlanner/components/TroveInventory'
 import { type MantineColorScheme, MantineProvider } from '@mantine/core'
-import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadManualPayload, UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
@@ -11,7 +11,7 @@ import NearlyFinishedPage from './NearlyFinishedPage.tsx'
 
 vi.mock('../../shared/data/loadDataset.ts', async (importOriginal) => {
   const loader = await importOriginal<typeof import('../../shared/data/loadDataset.ts')>()
-  return { ...loader, loadManualPayload: vi.fn() }
+  return { ...loader, hasDatasetFile: vi.fn().mockResolvedValue(false), loadManualPayload: vi.fn() }
 })
 
 const createEntry = (values: Partial<ReforgingEntry> & Pick<ReforgingEntry, 'item'>): ReforgingEntry => ({
@@ -133,7 +133,9 @@ describe('NearlyFinishedPage data states', () => {
     expect(screen.getByRole('heading', { name: 'Nearly Finished Crafting' })).toBeTruthy()
     expect(screen.getByRole('status').textContent).toContain('Loading Nearly Finished recipes…')
     expect(screen.queryByRole('combobox', { name: 'Item category' })).toBeNull()
-    expect(loadManualPayload).toHaveBeenCalledWith('nearlyFinished.recipes')
+    await waitFor(() => {
+      expect(loadManualPayload).toHaveBeenCalledWith('nearlyFinished.recipes')
+    })
 
     await act(async () => {
       resolveDataset(structuredClone(dataset))

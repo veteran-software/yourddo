@@ -10,6 +10,7 @@ import {
 } from './recipes.ts'
 
 vi.mock('../../shared/data/loadDataset.ts', () => ({
+  hasDatasetFile: vi.fn().mockResolvedValue(false),
   loadManualPayload: vi.fn()
 }))
 

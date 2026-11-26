@@ -68,6 +68,34 @@ describe('AugmentSelect', () => {
       localStorage.removeItem(troveStorageKey)
     }
   })
+  it('searches public labels and keeps two distinct manifest enchantments independently filterable', async () => {
+    const user = userEvent.setup()
+    const names = ['Eldritch Blast: Dice', 'Eldritch Blast: Pact Dice']
+    render(
+      <MantineProvider env='test'>
+        <AugmentSelect
+          label='Red socket'
+          slotType='Red'
+          value={null}
+          onChange={vi.fn()}
+          enchantmentNames={names}
+          options={names.map((name, index) => ({
+            name: 'Gem ' + String(index),
+            augmentType: 'Red',
+            searchLabels: [name],
+            presentation: [{ name: 'Focused Magic', rows: [{ name, modifier: 2, bonus: 'Artifact' }] }]
+          }))}
+        />
+      </MantineProvider>
+    )
+    await user.click(screen.getByRole('combobox', { name: 'Red socket' }))
+    await user.type(screen.getByRole('textbox', { name: 'Search augments' }), 'blast')
+    expect(screen.getAllByText('Focused Magic')).toHaveLength(2)
+    await user.click(screen.getByRole('combobox', { name: 'Filter by enchantment' }))
+    await user.click(screen.getByRole('option', { name: names[0] }))
+    expect(screen.getByText('Eldritch Blast: Dice +2 (Artifact)')).toBeTruthy()
+    expect(screen.queryByText('Gem 1')).toBeNull()
+  })
   it('selects stable values while preserving duplicate display labels', async () => {
     const onChange = vi.fn()
     const user = userEvent.setup()

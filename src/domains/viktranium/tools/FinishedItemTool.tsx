@@ -1,10 +1,12 @@
-import { Alert, Box, Divider, List, Stack, Text, Title } from '@mantine/core'
+import type { ReactNode } from 'react'
+import styles from '../../../shared/layout/craftingTools.module.css'
+import { Alert, Box, Stack, Text } from '@mantine/core'
+import ScopedAugmentDetails from '../../../shared/augments/ScopedAugmentDetails'
 import EffectList from '../../../shared/items/EffectList.tsx'
-import ItemIcon from '../../../shared/items/ItemIcon.tsx'
 import { formatEffect } from '../logic.ts'
 import type { FinishedViktraniumItem } from '../viktranium.types.ts'
 
-const FinishedItemTool = ({ finished }: { finished: FinishedViktraniumItem }) => {
+const FinishedItemTool = ({ header, finished }: { header: ReactNode; finished: FinishedViktraniumItem }) => {
   if (!finished.item) {
     return (
       <Alert color='blue' title='No item selected' m='md'>
@@ -14,41 +16,32 @@ const FinishedItemTool = ({ finished }: { finished: FinishedViktraniumItem }) =>
   }
   return (
     <Stack gap='md' p='md'>
-      <Box>
-        <ItemIcon item={finished.item} size={96} alt={`${finished.item.name} icon`} />
-        <Title order={3} mt='xs' style={{ overflowWrap: 'anywhere' }}>
-          {finished.item.name}
-        </Title>
-        <Text c='dimmed' size='sm'>
-          {finished.item.type} · Minimum level {String(finished.minimumLevel)}
-        </Text>
-      </Box>
+      {header}
       {[...finished.warnings, ...finished.incompleteRecipeWarnings].length > 0 ? (
         <Alert color='yellow' title='Build warnings' role='alert'>
           <EffectList effects={[...finished.warnings, ...finished.incompleteRecipeWarnings]} />
         </Alert>
       ) : null}
-      <Box>
-        <Text fw={600} mb='xs'>
-          Base effects
-        </Text>
+      <Box component='section' className={styles.stage}>
+        <h3>Base effects</h3>
         <EffectList effects={finished.baseEffects.map(formatEffect)} />
       </Box>
-      <Divider />
-      <Box>
-        <Text fw={600} mb='xs'>
-          Selected additions by slot
-        </Text>
+      <Box component='section' className={styles.stage}>
+        <h3>Selected additions by slot</h3>
         <Stack gap='md'>
           {finished.slots
             .filter(({ augment }) => augment)
             .map(({ slot, augment, existing }) => (
-              <Box key={slot.id}>
+              <Box key={slot.id} className={styles.effect}>
                 <Text fw={600} size='sm'>
                   {slot.label}: {augment?.name}
                   {existing ? ' (existing)' : ''}
                 </Text>
-                <EffectList effects={(augment?.effects ?? []).map(formatEffect)} empty='No effect text published.' />
+                {augment?.scoped ? (
+                  <ScopedAugmentDetails {...augment.scoped} />
+                ) : (
+                  <EffectList effects={(augment?.effects ?? []).map(formatEffect)} empty='No effect text published.' />
+                )}
               </Box>
             ))}
           {finished.slots.every(({ augment }) => !augment) ? (
@@ -58,16 +51,14 @@ const FinishedItemTool = ({ finished }: { finished: FinishedViktraniumItem }) =>
           ) : null}
         </Stack>
       </Box>
-      <Box>
-        <Text fw={600} mb='xs'>
-          Empty configurable slots
-        </Text>
+      <Box component='section' className={styles.stage}>
+        <h3>Empty configurable slots</h3>
         {finished.emptySlots.length > 0 ? (
-          <List size='sm'>
+          <ul className={styles.slotList}>
             {finished.emptySlots.map((slot) => (
-              <List.Item key={slot.id}>{slot.label}</List.Item>
+              <li key={slot.id}>{slot.label}</li>
             ))}
-          </List>
+          </ul>
         ) : (
           <Text size='sm'>All configurable slots are filled.</Text>
         )}

@@ -1,3 +1,4 @@
+import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import type {
   HgsAvailableOptionIds,
   HgsBaseItem,
@@ -176,11 +177,13 @@ export const filterFocusedByShardType = (options: readonly HgsTierOption[], shar
   options.filter((option) => option.shardType === shardType)
 
 export const resolveEffects = (effectIds: readonly number[], effectById: ReadonlyMap<number, HgsEffect>): HgsEffect[] =>
-  effectIds.map((id) => {
-    const effect = effectById.get(id)
-    if (!effect) throw new InvalidHeroicGreenSteelReferenceError(`missing effect ${id.toString()}`)
-    return effect
-  })
+  effectIds
+    .map((id) => {
+      const effect = effectById.get(id)
+      if (!effect) throw new InvalidHeroicGreenSteelReferenceError(`missing effect ${id.toString()}`)
+      return effect
+    })
+    .filter(isVisibleEffect)
 
 export const resolveSpell = (
   spellId: number | undefined,

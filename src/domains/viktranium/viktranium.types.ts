@@ -1,3 +1,6 @@
+import type { ItemArt } from '../../shared/items/itemArt'
+import type { ScopedAugmentPresentation } from '../../shared/augments/ScopedAugmentDetails'
+
 export type ViktraniumFamily =
   | 'heroic-crafted-weapons'
   | 'heroic-quest-loot'
@@ -25,6 +28,7 @@ export interface ViktraniumRequirement {
 export type RecipeStatus = 'complete' | 'incomplete' | 'unavailable'
 
 export interface ViktraniumRecipe {
+  notes?: readonly string[]
   id: string
   deviceId: string
   device: string
@@ -50,6 +54,7 @@ export interface ViktraniumLocation {
 }
 
 export interface ViktraniumItem {
+  art?: ItemArt
   id: string
   name: string
   displayName: string
@@ -71,6 +76,7 @@ export interface ViktraniumItem {
 }
 
 export interface ViktraniumAugment {
+  scoped?: ScopedAugmentPresentation & { searchLabels: readonly string[] }
   id: string
   name: string
   augmentType: string
@@ -83,6 +89,7 @@ export interface ViktraniumAugment {
 }
 
 export interface ViktraniumIngredient {
+  art?: ItemArt
   id: string
   name: string
   description?: string
@@ -99,6 +106,7 @@ export interface ViktraniumIndexes {
 }
 
 export interface ViktraniumData {
+  enchantmentNames?: readonly string[]
   schemaVersion: 1
   items: readonly ViktraniumItem[]
   augments: readonly ViktraniumAugment[]

@@ -1,3 +1,4 @@
+import ScopedAugmentDetails, { type ScopedAugmentPresentation } from './ScopedAugmentDetails'
 import {
   Badge,
   Button,
@@ -5,6 +6,7 @@ import {
   Group,
   Input,
   Modal,
+  Select,
   Stack,
   Switch,
   Text,
@@ -18,6 +20,9 @@ import { augmentColors } from './compatibility'
 import styles from './AugmentPicker.module.css'
 
 export interface PickerOption {
+  presentation?: ScopedAugmentPresentation['presentation']
+  fallbackDescription?: string
+  searchLabels?: readonly string[]
   value: string
   label: string
   augmentType: string
@@ -26,6 +31,7 @@ export interface PickerOption {
   disabled?: boolean
 }
 interface Props {
+  enchantmentNames?: readonly string[]
   label: string
   description?: string
   placeholder?: string
@@ -48,6 +54,7 @@ export default function AugmentPicker({
   placeholder,
   options,
   colors,
+  enchantmentNames,
   value,
   onChange,
   hostLevel,
@@ -60,6 +67,7 @@ export default function AugmentPicker({
 }: Readonly<Props>) {
   const [open, setOpen] = useState(false)
   const [color, setColor] = useState('')
+  const [enchantment, setEnchantment] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [limit, setLimit] = useState(30)
   const [allLevels, setAllLevels] = useState(false)
@@ -70,11 +78,14 @@ export default function AugmentPicker({
   const onlyOwned = ownedOnly ?? localOwned
   const changeOwned = onOwnedChange ?? setLocalOwned
   const selected = options.find((o) => o.value === value)
+  const query = search.trim().toLowerCase()
   const visible = open
     ? options.filter(
         (o) =>
           (!color || o.augmentType === color) &&
-          o.label.toLowerCase().includes(search.trim().toLowerCase()) &&
+          (!enchantment || o.searchLabels?.includes(enchantment)) &&
+          (o.label.toLowerCase().includes(query) ||
+            o.searchLabels?.some((name) => name.toLowerCase().includes(query))) &&
           (allLevels || !(o.aboveLevel ?? (hostLevel !== undefined && Number(o.minimumLevel) > hostLevel))) &&
           (!onlyOwned || !stock?.size || ownsTroveItem(stock, o.label))
       )
@@ -101,6 +112,7 @@ export default function AugmentPicker({
           onClick={() => {
             setColor('')
             setSearch('')
+            setEnchantment(null)
             setLimit(30)
             if (!inventory) setSaved(readTroveInventory())
             setOpen(true)
@@ -133,6 +145,20 @@ export default function AugmentPicker({
               setLimit(30)
             }}
           />
+          {Boolean(enchantmentNames?.length) && (
+            <Select
+              label='Filter by enchantment'
+              data={enchantmentNames}
+              value={enchantment}
+              onChange={(name) => {
+                setEnchantment(name)
+                setLimit(30)
+              }}
+              searchable
+              clearable
+              comboboxProps={{ withinPortal: false }}
+            />
+          )}
           <Group gap={6} role='group' aria-label='Augment colors'>
             {['', ...colors].map((c) => (
               <Button
@@ -207,6 +233,13 @@ export default function AugmentPicker({
                   <Group justify='space-between' wrap='nowrap'>
                     <Stack gap={0}>
                       <strong>{o.label}</strong>
+                      {o.presentation && (
+                        <ScopedAugmentDetails
+                          augmentName={o.label}
+                          presentation={o.presentation}
+                          fallbackDescription={o.fallbackDescription}
+                        />
+                      )}
                       <Text size='xs' c='dimmed'>
                         {o.augmentType}
                         {o.disabled ? ' · Above item minimum level' : ''}

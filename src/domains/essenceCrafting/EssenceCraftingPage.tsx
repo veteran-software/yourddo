@@ -186,15 +186,7 @@ const EssenceCraftingPage = () => {
         <WorkspaceHeader
           title='Essence Crafting'
           icon={IconSparkles}
-          description={
-            <>
-              Crafting data assistance provided by{' '}
-              <Anchor size='sm' href='https://dungeonhelper.com' target='_blank' rel='noreferrer'>
-                Dungeon Helper
-              </Anchor>
-              .
-            </>
-          }
+          description='Choose shards for your item and see which ingredients you need to craft it.'
           actions={
             <Anchor
               size='sm'

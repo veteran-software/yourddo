@@ -1,6 +1,7 @@
 import { catalogWeaponTypes, changeClasses, characterAllowsItem, classNames, defaultCharacter } from './character'
 import { describe, expect, it, vi } from 'vitest'
-import { adaptItemCategory } from './itemCatalog'
+import * as datasets from '../../shared/data/loadDataset'
+import { adaptItemCategory, effectIndex, loadCatalogCurses, resolveEffects, scopedAugmentReader } from './itemCatalog'
 import {
   InvalidGearPlannerDataError,
   loadGearPlannerData,
@@ -60,6 +61,112 @@ describe('Gear Planner data validation', () => {
     })
     expect(() => adaptItemCategory([ring], [], new Map(), new Map())).toThrow('Missing effect 1/large')
   })
+  it('resolves public augment rows by exact variant and applies only equipped or slotted effects', () => {
+    const dice = 'Eldritch Blast: Dice'
+    const pact = 'Eldritch Blast: Pact Dice'
+    const effects = [
+      {
+        id: 17,
+        variants: [
+          {
+            variant: 'gem',
+            displayedOnClient: false,
+            displayName: 'Blast Dice',
+            enchantments: [
+              { displayName: dice, value: 2, bonusType: 'Artifact' },
+              { displayName: 'Callback', value: 1, internal: true },
+              { displayName: 'Set marker', value: 1, bonusType: 'Condition' },
+              { displayName: pact, value: 1, hidden: true }
+            ]
+          },
+          {
+            variant: 'filigree',
+            hidden: true,
+            displayName: 'Blast Dice',
+            enchantments: [{ displayName: pact, value: 8 }]
+          }
+        ]
+      }
+    ]
+    const read = scopedAugmentReader(effects, [dice, pact])
+    const ref = { effectId: 17, variant: 'gem', activation: 'Augment_OnEquipEffects' }
+    const resolved = read({ effects: [ref] })
+    expect(resolved.presentation).toEqual([
+      { name: 'Blast Dice', rows: [{ name: dice, modifier: 2, bonus: 'Artifact' }] }
+    ])
+    expect(resolved.effectsAdded).toEqual(resolved.presentation[0].rows)
+    expect(resolved.searchLabels).toEqual([dice])
+    expect(read({ effects: [{ ...ref, activation: 'onHit' }] }).effectsAdded).toEqual([])
+    expect(read({ effects: [], description: 'Slotted effect text.' })).toMatchObject({
+      fallbackDescription: 'Slotted effect text.',
+      effectsAdded: []
+    })
+    const other = { effects: [{ ...ref, variant: 'filigree' }], description: 'Hidden variant' }
+    expect(read(other)).toEqual({ presentation: [], effectsAdded: [], searchLabels: [] })
+    expect(resolveEffects(other, 'Filigree', effectIndex(effects, 'augment'), new Map())).toEqual([])
+    expect(() => read({ effects: [{ ...ref, variant: 'missing' }] })).toThrow('Missing effect 17/missing')
+  })
+
+  it('omits hidden effects and variants without hiding visible siblings', () => {
+    const ring = {
+      id: 1,
+      name: 'Test Ring',
+      itemType: 'Ring',
+      baseStats: { equipSlots: ['Finger1'] },
+      iconLayers: [],
+      effects: [
+        { effectId: 1, variant: 'visible' },
+        { effectId: 1, variant: 'hidden' },
+        { effectId: 2, variant: 'child' },
+        { effectId: 3 }
+      ]
+    }
+    const effects = [
+      {
+        id: 1,
+        variants: [
+          {
+            variant: 'visible',
+            displayName: 'Visible',
+            enchantments: [{ hidden: true, displayName: 'Hidden child', value: 4 }]
+          },
+          { variant: 'hidden', hidden: true, displayName: 'Hidden variant' }
+        ]
+      },
+      { id: 2, hidden: true, variants: [{ variant: 'child', displayName: 'Hidden parent' }] },
+      { id: 3, hidden: true, displayName: 'Hidden effect', enchantments: [{ displayName: 'Hidden stat', value: 1 }] }
+    ]
+    const [category] = adaptItemCategory([ring], effects, new Map(), new Map())
+    expect(category.records[0].enchantments?.map((effect) => effect.name)).toEqual(['Visible'])
+  })
+
+  it('suppresses a hidden curse effect and its description fallback while preserving visible siblings', async () => {
+    const curse = { name: 'Test curse', description: 'Hidden bonus', drawTableId: 1 }
+    const records: Record<string, unknown> = {
+      curses: [
+        { ...curse, equippedEffectIds: [11] },
+        { ...curse, name: 'Mixed curse', equippedEffectIds: [11, 12] },
+        { ...curse, name: 'Description only', description: 'Visible description', equippedEffectIds: [] }
+      ],
+      effects: [
+        { id: 11, hidden: true, displayName: 'Hidden bonus' },
+        { id: 12, displayName: 'Visible bonus' }
+      ],
+      'draw-tables': [{ id: 1, name: 'Test table' }]
+    }
+    const read = vi
+      .spyOn(datasets, 'loadDatasetFile')
+      .mockImplementation((path) => Promise.resolve(records[path.slice('deck-of-many-curses/'.length, -5)]))
+    try {
+      const [hidden, mixed, described] = await loadCatalogCurses()
+      expect(hidden.enchantments).toEqual([])
+      expect(mixed.enchantments.map((effect) => effect.name)).toEqual(['Visible bonus'])
+      expect(described.enchantments).toEqual([{ name: 'Description only', notes: 'Visible description' }])
+    } finally {
+      read.mockRestore()
+    }
+  })
+
   it('displays cooldown, regeneration interval and damage reductions from the remaining fraction', () => {
     const helm = {
       id: 1,
@@ -99,8 +206,56 @@ describe('Gear Planner data validation', () => {
     ])
   })
 
+  it('reads published signed percentages, fractional points and minor artifact status directly', () => {
+    const [category] = adaptItemCategory(
+      [
+        {
+          id: 1,
+          name: 'Artifact',
+          itemType: 'Trinket',
+          isMinorArtifact: true,
+          minimumLevel: 34,
+          baseStats: { equipSlots: ['Trinket'] },
+          iconLayers: [],
+          effects: [{ effectId: 2 }]
+        }
+      ],
+      [
+        {
+          id: 2,
+          enchantments: [
+            {
+              name: 'Effect_SpellCostMultiplier',
+              displayName: 'Spell Point Cost',
+              unit: 'percent',
+              percentBasis: 'relative',
+              value: -10
+            },
+            {
+              name: 'Spell_DamageMod_SlashPower',
+              displayName: 'Spell Power: Slashing',
+              unit: 'points',
+              value: 38.799998
+            },
+            { displayName: 'Returning Chance', name: 'Combat_MissileChanceToReturn', unit: 'percent', value: 100 }
+          ]
+        }
+      ],
+      new Map(),
+      new Map()
+    )
+    expect(category.records[0]).toMatchObject({
+      artifactType: 'Minor',
+      enchantments: [
+        { name: 'Spell Point Cost', modifier: '-10%' },
+        { name: 'Spell Power: Slashing', modifier: 38, calculationValue: 38.799998 },
+        { name: 'Returning Chance', modifier: '100%' }
+      ]
+    })
+  })
+
   it('reads coefficient spell power in points and preserves equipment percentage penalties', () => {
-    const item = {
+    const helm = {
       id: 1,
       name: 'Test Helm',
       itemType: 'Head',
@@ -118,7 +273,7 @@ describe('Gear Planner data validation', () => {
         operation: 'Subtract'
       }
     ]
-    const [category] = adaptItemCategory([item], [{ id: 2, enchantments }], new Map(), new Map())
+    const [category] = adaptItemCategory([helm], [{ id: 2, enchantments }], new Map(), new Map())
     expect(category.records[0].enchantments?.map((stat) => stat.modifier)).toEqual([140, '-5%'])
   })
 
@@ -356,10 +511,17 @@ describe('Gear Planner production CDN validation', () => {
       expect(data.curses.find((c) => c.name === 'Curse of Major Spellwork')?.enchantments).toContainEqual(
         expect.objectContaining({ name: 'Universal Spell Power', modifier: 10 })
       )
+      for (const [name, pieces] of [
+        ['Celerity', 2],
+        ['The Enlightened Step', 5],
+        ['Dreadbringer', 5]
+      ] as const) {
+        expect(
+          data.filigreeSetDefinitionByName.get(name)?.thresholds.find((tier) => tier.threshold === pieces)?.effects,
+          name
+        ).toEqual([])
+      }
       for (const [setName, pieces, name, modifier] of [
-        ['Celerity', 2, 'Doublestrike', '2%'],
-        ['The Enlightened Step', 5, 'Doubleshot', '5%'],
-        ['Dreadbringer', 5, 'Fortification Bypass', '20%'],
         ['Paragon Guard', 3, 'Armor Class', '15%'],
         ['Dread Stalker', 3, 'Melee Power', 15],
         ['Dread Stalker', 3, 'Damage vs. Helpless', '15%']
@@ -376,7 +538,7 @@ describe('Gear Planner production CDN validation', () => {
       expect(truthfulBlow?.discrepancyNotes).toEqual([
         'Truthful Blow (3-piece): Fortification Bypass. The description lists 15%. The in-game value is 30%.'
       ])
-      const card = data.items.find((item) => item.source.name === 'Legendary Library Card')
+      const card = data.items.find(({ source }) => source.name === 'Legendary Library Card')
       const cooldowns = card?.source.enchantments?.filter((effect) => effect.name.startsWith('Skill Cooldown:'))
       expect(cooldowns?.map((effect) => effect.modifier)).toEqual(Array(6).fill('15%'))
       const weaponTypes = catalogWeaponTypes(data)

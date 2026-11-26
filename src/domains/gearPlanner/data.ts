@@ -1,11 +1,13 @@
+import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import { displayPercentModifier, percentModifier } from './effectAmounts'
 import { loadOptionalAlchemicalData } from '../alchemical/loadAlchemicalData'
 import { loadOptionalSlaveLordsData } from '../slaveLords/loadSlaveLordsData'
 import { slaveLordsSetDefinitions } from './slaveLordsCrafting'
 import { craftItemKey, type GearCraftingData } from './crafting.ts'
 import { standardGearPlannerSetDefinitionByName } from './standardSetDefinitions.ts'
-import { loadDatasetFile, loadManualPayload } from '../../shared/data/loadDataset.ts'
-import { nearlyFinishedPayloadName, parseNearlyFinishedDataset } from '../nearlyFinished/nearlyFinished.logic.ts'
+import { hasDatasetFile, loadDatasetFile, loadManualPayload } from '../../shared/data/loadDataset.ts'
+import { loadNearlyFinishedRecipes } from '../nearlyFinished/loadRecipes'
+import { loadNativeNamedUpgrades, loadNativeNearlyComplete } from './nativeUpgradeData'
 import type {
   GearPlannerAugment,
   GearPlannerAugmentSlot,
@@ -135,10 +137,11 @@ const parseSourceItem = (value: unknown, path: string): GearPlannerSourceItem =>
       invalid(`${path}.${key}`, 'expected string or number')
   }
   if (record.binding !== undefined) parseBinding(record.binding, `${path}.binding`)
+  let enchantments
   if (record.enchantments !== undefined && record.enchantments !== null) {
-    arrayAt(record.enchantments, `${path}.enchantments`).forEach((effect, index) =>
-      parseEffect(effect, `${path}.enchantments[${index.toString()}]`)
-    )
+    enchantments = arrayAt(record.enchantments, `${path}.enchantments`)
+      .filter(isVisibleEffect)
+      .map((effect, index) => parseEffect(effect, `${path}.enchantments[${index.toString()}]`))
   }
   if (record.augments !== undefined) {
     arrayAt(record.augments, `${path}.augments`).forEach((slot, index) =>
@@ -157,7 +160,7 @@ const parseSourceItem = (value: unknown, path: string): GearPlannerSourceItem =>
   ) {
     invalid(`${path}.dropLocations`, 'expected object array or null')
   }
-  return { ...record, name: record.name as string }
+  return { ...record, ...(enchantments && { enchantments }), name: record.name as string }
 }
 
 export const parseGearPlannerItemDataset = (value: unknown, fileName: string): readonly GearPlannerSourceItem[] => {
@@ -179,9 +182,9 @@ export const parseGearPlannerAugmentDataset = (value: unknown): readonly GearPla
       name: augment.name as string,
       augmentType: augment.augmentType as string,
       minLevel,
-      effectsAdded: effectsAdded.map((effect, effectIndex) =>
-        parseEffect(effect, `${path}.effectsAdded[${effectIndex.toString()}]`)
-      ),
+      effectsAdded: effectsAdded
+        .filter(isVisibleEffect)
+        .map((effect, effectIndex) => parseEffect(effect, `${path}.effectsAdded[${effectIndex.toString()}]`)),
       ...(setBonus !== undefined
         ? {
             setBonus: setBonus.map((setEntry, setIndex) =>
@@ -233,7 +236,7 @@ export const parseGearPlannerFiligreeSetDataset = (
             : arrayAt(bonusRecord.enhancements, `${bonusPath}.enhancements`)
         return {
           threshold: bonusRecord.threshold as number,
-          effects: enhancements.map((rawEffect, effectIndex) => {
+          effects: enhancements.filter(isVisibleEffect).map((rawEffect, effectIndex) => {
             const effect = parseFiligreeSetEffect(rawEffect, `${bonusPath}.enhancements[${effectIndex.toString()}]`)
             // The item-set feed encodes percentages as numeric ratios and flat modifiers as strings.
             return sourceName === 'itemSets.enchantments' && typeof effect.modifier === 'number'
@@ -247,47 +250,60 @@ export const parseGearPlannerFiligreeSetDataset = (
   })
 }
 
-const loadCraftingData = async (): Promise<GearCraftingData> => {
-  const [recipes, ...tables] = await Promise.all([
-    loadManualPayload<unknown>('nearlyComplete.recipes'),
-    ...namedUpgradeFiles.map((file) => loadDatasetFile<unknown>(file.path))
-  ])
-  const named = (record: Record<string, unknown>, path: string): string =>
-    isNonEmptyString(record.name) ? record.name : invalid(path, 'expected a name')
-  const effects = (record: Record<string, unknown>, field: string, path: string) =>
-    arrayAt(record[field], path).map((entry) => parseEffect(entry, path))
+const named = (record: Record<string, unknown>, path: string): string =>
+  isNonEmptyString(record.name) ? record.name : invalid(path, 'expected a name')
+const effects = (record: Record<string, unknown>, field: string, path: string) =>
+  arrayAt(record[field], path)
+    .filter(isVisibleEffect)
+    .map((entry) => parseEffect(entry, path))
+async function loadGearNearlyComplete() {
+  if (await hasDatasetFile('nearly-complete/enchantment-names.json')) return (await loadNativeNearlyComplete()).recipes
+  const recipes = await loadManualPayload<unknown>('nearlyComplete.recipes')
+  return arrayAt(recipes, 'nearlyComplete.recipes').map((entry, index) => {
+    const path = `nearlyComplete.recipes[${String(index)}]`
+    const record = recordAt(entry, path)
+    return {
+      name: named(record, path),
+      effectsAdded: effects(record, 'effectsAdded', path),
+      effectsRemoved: effects(record, 'effectsRemoved', path),
+      requirements: arrayAt(record.requirements, path).map((r) => ({ name: named(recordAt(r, path), path) }))
+    }
+  })
+}
+
+async function loadNamedUpgrade(file: (typeof namedUpgradeFiles)[number]) {
+  const directory = file.path.slice(0, file.path.indexOf('/'))
+  if (await hasDatasetFile(directory + '/enchantment-names.json'))
+    return { ...file, ...(await loadNativeNamedUpgrades(directory, file.marker)) }
+  const table = await loadDatasetFile<unknown>(file.path)
   return {
-    nearlyComplete: arrayAt(recipes, 'nearlyComplete.recipes').map((entry, index) => {
-      const path = `nearlyComplete.recipes[${String(index)}]`
-      const record = recordAt(entry, path)
-      return {
-        name: named(record, path),
-        effectsAdded: effects(record, 'effectsAdded', path),
-        effectsRemoved: effects(record, 'effectsRemoved', path),
-        requirements: arrayAt(record.requirements, path).map((r) => ({ name: named(recordAt(r, path), path) }))
-      }
-    }),
-    upgrades: namedUpgradeFiles.map((file, index) => ({
-      ...file,
-      items: new Map(
-        arrayAt(tables[index], file.path).map((entry) => {
-          const record = recordAt(entry, file.path)
-          return [
-            craftItemKey(named(record, file.path)),
-            effects(record, 'effectsAdded', file.path).map((effect) => {
-              // Named upgrade tables encode threat modifiers as unitless ratios.
-              if (
-                /^(?:Melee|Ranged|Spell) Threat$/.test(effect.name) &&
-                /^[+-]?(?:\d+|\d*\.\d+)$/.test(String(effect.modifier))
-              )
-                return { ...effect, ...percentModifier(Number(effect.modifier) * 100) }
-              return effect
-            })
-          ]
-        })
-      )
-    }))
+    ...file,
+    items: new Map<string, GearPlannerEffect[]>(
+      arrayAt(table, file.path).map((entry) => {
+        const record = recordAt(entry, file.path)
+        return [
+          craftItemKey(named(record, file.path)),
+          effects(record, 'effectsAdded', file.path).map((effect) => {
+            // Named upgrade tables encode threat modifiers as unitless ratios.
+            if (
+              /^(?:Melee|Ranged|Spell) Threat$/.test(effect.name) &&
+              /^[+-]?(?:\d+|\d*\.\d+)$/.test(String(effect.modifier))
+            )
+              return { ...effect, ...percentModifier(Number(effect.modifier) * 100) }
+            return effect
+          })
+        ]
+      })
+    )
   }
+}
+
+async function loadCraftingData(): Promise<GearCraftingData> {
+  const [nearlyComplete, upgrades] = await Promise.all([
+    loadGearNearlyComplete(),
+    Promise.all(namedUpgradeFiles.map(loadNamedUpgrade))
+  ])
+  return { nearlyComplete, upgrades }
 }
 
 export function parseGearPlannerSetIndex(value: unknown) {
@@ -314,17 +330,18 @@ export function parseGearPlannerSetIndex(value: unknown) {
 }
 
 export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types.ts').GearPlannerData> => {
-  const [crafting, slaveLords, alchemical, curses, rawSets, rawReforging, sockets, sourceDatasets] = await Promise.all([
+  const [crafting, slaveLords, alchemical, curses, rawSets, reforging, sockets, itemCatalog] = await Promise.all([
     loadCraftingData(),
     loadOptionalSlaveLordsData(),
     loadOptionalAlchemicalData(),
     loadCatalogCurses(),
     loadManualPayload<unknown>('itemSets.enchantments'),
-    loadManualPayload<unknown>(nearlyFinishedPayloadName),
+    loadNearlyFinishedRecipes(),
     loadSocketCatalog(),
     loadItemCatalog()
   ])
-  const reforgingEntries = parseNearlyFinishedDataset(rawReforging).reforgingStation
+  const sourceDatasets = itemCatalog.datasets
+  const reforgingEntries = reforging.reforgingStation
   const normalized = normalizeGearPlannerSources(
     sourceDatasets,
     sockets.augments(sourceDatasets),
@@ -354,6 +371,9 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
   }
   return {
     ...normalized,
+    enchantmentAliases: itemCatalog.aliases,
+    enchantmentNames: itemCatalog.enchantmentNames,
+    augmentEnchantmentNames: sockets.enchantmentNames,
     crafting: { ...crafting, slaveLords, alchemical },
     standardSets,
     reforging: createGearPlannerReforgingData(reforgingEntries, sourceDatasets),

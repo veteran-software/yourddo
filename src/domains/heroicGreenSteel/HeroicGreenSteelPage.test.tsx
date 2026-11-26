@@ -22,6 +22,8 @@ import type {
   HgsTier3Data,
   HgsTierOption
 } from './heroicGreenSteel.types.ts'
+import { EffectDetails } from './components/EffectDetails'
+import { nativeEffects } from './nativeData'
 import HeroicGreenSteelPage from './HeroicGreenSteelPage.tsx'
 import { emptyHgsSelection } from './logic.ts'
 import { sortHgsSelectOptions } from './selectOptions.ts'
@@ -310,6 +312,27 @@ const mockLoadedData = () => {
 }
 
 describe('HeroicGreenSteelPage', () => {
+  it('displays the Slay Living save damage discrepancy once in effect details', async () => {
+    const note = { stat: 'Damage on successful save', stated: '3d8+9', mechanical: '9d3+90', unit: 'dice' }
+    const effects = nativeEffects([
+      {
+        id: 1,
+        displayName: 'Slay Living',
+        enchantments: [],
+        knownDiscrepancies: [{ ...note, field: 'procs[0].description' }],
+        procs: [{ trigger: 'OnHit', outcomes: [], knownDiscrepancies: [{ ...note, field: 'description' }] }]
+      }
+    ])
+    render(
+      <MantineProvider>
+        <EffectDetails effects={effects} />
+      </MantineProvider>
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Slay Living' }))
+    const notes = await screen.findByRole('complementary', { name: 'Known in-game discrepancies' })
+    expect(within(notes).getByText('Damage on successful save: stated 3d8+9, actual 9d3+90.')).toBeTruthy()
+  })
+
   it('keeps the heading visible while the initial data loads', () => {
     vi.mocked(loadHeroicGreenSteelInitialData).mockReturnValue(new Promise(() => undefined))
     renderPage()

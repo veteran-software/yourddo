@@ -1,3 +1,4 @@
+import ScopedAugmentDetails from '../../shared/augments/ScopedAugmentDetails'
 import { createCraftingSelection } from '../../shared/layout/craftingSession'
 import {
   Accordion,
@@ -129,11 +130,12 @@ const DinosaurBonePage = () => {
   )
   const colorAugmentFilterOptions = useMemo(
     () =>
+      data?.enchantmentNames ??
       getFilterOptions(
         colorSlots.flatMap(({ id }) => optionsBySlot.get(id) ?? []),
         getAugmentEffectNames
       ),
-    [colorSlots, optionsBySlot]
+    [colorSlots, optionsBySlot, data?.enchantmentNames]
   )
   const filteredOptionsBySlot = useMemo(
     () =>
@@ -185,7 +187,7 @@ const DinosaurBonePage = () => {
         id: 'ingredients',
         label: 'Ingredients',
         icon: <IconListCheck stroke={2} />,
-        content: <IngredientsTool item={selectedItem} ingredients={ingredients} />
+        content: <IngredientsTool finished={finished} ingredients={ingredients} />
       },
       {
         id: 'crafting-breakdown',
@@ -275,7 +277,7 @@ const DinosaurBonePage = () => {
                 label='Item'
                 placeholder='Search for an item…'
                 data={filteredItems.map(({ name }) => ({ value: name, label: name }))}
-                value={selectedItemName}
+                value={selectedItem?.name ?? selectedItemName}
                 onChange={changeItem}
                 searchable
                 clearable
@@ -451,9 +453,12 @@ const DinosaurBonePage = () => {
                                   hostLevel={Number(selectedItem.minLevel) || undefined}
                                   label={`${slot.label} augment`}
                                   slotType={slot.augmentType}
+                                  enchantmentNames={isColorSlot(slot.augmentType) ? data?.enchantmentNames : undefined}
                                   placeholder={`Search ${slot.label} options…`}
-                                  options={options}
-                                  value={selectedName}
+                                  options={options.map((option) =>
+                                    option.scoped ? { ...option, ...option.scoped } : option
+                                  )}
+                                  value={selectedAugment?.name ?? selectedName}
                                   onChange={(value) => {
                                     setSelectedAugments((current) => ({ ...current, [slot.id]: value }))
                                   }}
@@ -461,17 +466,22 @@ const DinosaurBonePage = () => {
                                 />
                                 {selectedAugment && (
                                   <Box>
-                                    <Text size='sm' fw={600} style={{ overflowWrap: 'anywhere' }}>
-                                      {selectedAugment.name}
-                                    </Text>
-                                    <EffectList
-                                      effects={(selectedAugment.effectsAdded ?? []).map((effect) =>
-                                        formatEffect(adjustEffectForArtifact(effect, selectedItem))
-                                      )}
-                                      empty='No effect text published.'
-                                    />
-                                    {selectedAugment.description && (
-                                      <Text size='sm' mt='xs'>
+                                    {selectedAugment.scoped ? (
+                                      <ScopedAugmentDetails
+                                        augmentName={selectedAugment.name}
+                                        {...selectedAugment.scoped}
+                                      />
+                                    ) : (
+                                      <EffectList
+                                        size='xs'
+                                        effects={(selectedAugment.effectsAdded ?? []).map((effect) =>
+                                          formatEffect(adjustEffectForArtifact(effect, selectedItem))
+                                        )}
+                                        empty='No effect text published.'
+                                      />
+                                    )}
+                                    {!selectedAugment.scoped && selectedAugment.description && (
+                                      <Text size='xs' mt='xs'>
                                         {selectedAugment.description}
                                       </Text>
                                     )}

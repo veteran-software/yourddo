@@ -1,4 +1,7 @@
-import { Alert, Box, Divider, List, Stack, Text, Title } from '@mantine/core'
+import ScopedAugmentDetails from '../../../shared/augments/ScopedAugmentDetails'
+import { Alert, Box, List, Stack, Text } from '@mantine/core'
+import { BuildHeader } from './RecipeParts'
+import styles from '../../../shared/layout/craftingTools.module.css'
 import EffectList from '../../../shared/items/EffectList.tsx'
 import { ArtifactAbilityScoreNotice, ColorAugmentLevelNotice } from '../components/BuildNotices.tsx'
 import type { FinishedDinosaurBoneItem } from '../dinosaurBone.types.ts'
@@ -21,34 +24,20 @@ const FinishedItemTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) 
   const item = finished.item
   const selectedUpgradeEffects = finished.slots.flatMap(({ augment }) => augment?.effectsAdded ?? [])
   const minimumLevelIncrease = getColorAugmentMinimumLevelIncrease(item, finished.slots)
-  const displayedMinimumLevel = minimumLevelIncrease?.minimumLevel ?? item.minLevel
   return (
     <Stack gap='md' p='md'>
-      <Box>
-        <Title order={3} style={{ overflowWrap: 'anywhere' }}>
-          {item.name}
-        </Title>
-        <Text c='dimmed' size='sm'>
-          {item.type}
-          {displayedMinimumLevel !== undefined ? ` · Minimum level ${String(displayedMinimumLevel)}` : ''}
-        </Text>
-      </Box>
+      <BuildHeader finished={finished} />
       {finished.warnings.length > 0 ? (
         <Alert color='red' title='Build validation' role='alert'>
           <EffectList effects={finished.warnings} />
         </Alert>
       ) : null}
-      <Box>
-        <Text fw={600} mb='xs'>
-          Original effects
-        </Text>
+      <Box className={styles.stage}>
+        <h3>Original effects</h3>
         <EffectList effects={finished.originalEffects.map(formatEffect)} />
       </Box>
-      <Divider />
-      <Box>
-        <Text fw={600} mb='xs'>
-          Crafted additions by slot
-        </Text>
+      <Box className={styles.stage}>
+        <h3>Crafted additions by slot</h3>
         <Stack gap='xs'>
           <ArtifactAbilityScoreNotice item={item} effects={selectedUpgradeEffects} />
           <ColorAugmentLevelNotice item={item} slots={finished.slots} />
@@ -65,16 +54,20 @@ const FinishedItemTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) 
             {finished.slots
               .filter(({ augment }) => augment)
               .map(({ slot, augment }) => (
-                <Box key={slot.id}>
+                <Box key={slot.id} className={styles.effect}>
                   <Text fw={600} size='sm' style={{ overflowWrap: 'anywhere' }}>
                     {slot.label}: {augment?.name}
                   </Text>
-                  <EffectList
-                    effects={(augment?.effectsAdded ?? []).map((effect) =>
-                      formatEffect(adjustEffectForArtifact(effect, item))
-                    )}
-                    empty='No effect text published.'
-                  />
+                  {augment?.scoped ? (
+                    <ScopedAugmentDetails {...augment.scoped} />
+                  ) : (
+                    <EffectList
+                      effects={(augment?.effectsAdded ?? []).map((effect) =>
+                        formatEffect(adjustEffectForArtifact(effect, item))
+                      )}
+                      empty='No effect text published.'
+                    />
+                  )}
                 </Box>
               ))}
           </Stack>
@@ -85,10 +78,8 @@ const FinishedItemTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) 
         )}
       </Box>
       {finished.setBonuses.length > 0 ? (
-        <Box>
-          <Text fw={600} mb='xs'>
-            Set bonuses
-          </Text>
+        <Box className={styles.stage}>
+          <h3>Set bonuses</h3>
           <List size='sm'>
             {finished.setBonuses.map((bonus, index) => (
               <List.Item key={`${bonus.name}-${String(index)}`}>{bonus.name}</List.Item>
@@ -96,16 +87,14 @@ const FinishedItemTool = ({ finished }: { finished: FinishedDinosaurBoneItem }) 
           </List>
         </Box>
       ) : null}
-      <Box>
-        <Text fw={600} mb='xs'>
-          Empty configurable slots
-        </Text>
+      <Box className={styles.stage}>
+        <h3>Empty configurable slots</h3>
         {finished.emptySlots.length > 0 ? (
-          <List size='sm'>
+          <ul className={styles.slotList}>
             {finished.emptySlots.map((slot) => (
-              <List.Item key={slot.id}>{slot.label}</List.Item>
+              <li key={slot.id}>{slot.label}</li>
             ))}
-          </List>
+          </ul>
         ) : (
           <Text size='sm'>All configurable slots are filled.</Text>
         )}

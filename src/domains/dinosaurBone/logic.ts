@@ -95,7 +95,7 @@ export const getEffectNames = (item: DinosaurBoneItem): string[] =>
   [...(item.effectsAdded ?? []), ...(item.enchantments ?? [])].map(({ name }) => name)
 
 export const getAugmentEffectNames = (augment: DinosaurBoneAugment): string[] =>
-  (augment.effectsAdded ?? []).map(({ name }) => name)
+  augment.searchLabels ? [...augment.searchLabels] : (augment.effectsAdded ?? []).map(({ name }) => name)
 
 const abilityScoreEffectPattern =
   /^(Strength|Dexterity|Constitution|Intelligence|Wisdom|Charisma)(?: \+(-?\d+(?:\.\d+)?))?$/
