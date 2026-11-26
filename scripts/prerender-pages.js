@@ -112,7 +112,10 @@ const writeRouteHtml = async (routePath, html) => {
 const main = async () => {
   const template = await readFile(templatePath, 'utf8')
   const { render, ROUTE_SEO, routeAliases } = await import(pathToFileURL(ssrBundlePath).href)
-  const origin = process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://yourddo.com'
+  const origin =
+    process.env.AWS_BRANCH === 'develop'
+      ? 'https://develop.yourddo.com'
+      : process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://yourddo.com'
 
   await Promise.all(
     ROUTE_SEO.map(async ({ path: routePath }) => {
