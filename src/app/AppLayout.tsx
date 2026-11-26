@@ -5,12 +5,13 @@ import { useEffect, useState } from 'react'
 import { recordVisit } from '../domains/home/shelves'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { TroveImport, TroveProvider } from '../domains/gearPlanner/components/TroveInventory'
-import { ActionIcon, AppShell, Burger, Drawer, Group, Image, ScrollArea, Text } from '@mantine/core'
+import { ActionIcon, AppShell, Badge, Burger, Drawer, Group, Image, ScrollArea, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import SidebarNavigation from '../shared/navigation/SidebarNavigation'
 import ServerStatus, { ServerStatusShortcut } from '../shared/serverStatus/ServerStatus'
 import { useServerStatus } from '../shared/serverStatus/useServerStatus'
 import ThemeSwitch from '../shared/ui/ThemeSwitch'
+import { loadGameVersion } from '../shared/data/loadDataset'
 
 function openStatus(openNav: () => void) {
   openNav()
@@ -23,6 +24,19 @@ const AppLayout = ({ develop }: { develop: boolean }) => {
   const [desktopOpened, desktop] = useDisclosure(true)
 
   const [coffeeOpened, coffee] = useDisclosure(false)
+  const [gameVersion, setGameVersion] = useState<string>()
+  useEffect(() => {
+    let active = true
+    void loadGameVersion().then(
+      (version) => {
+        if (active) setGameVersion(version)
+      },
+      () => undefined
+    )
+    return () => {
+      active = false
+    }
+  }, [])
 
   const location = useLocation()
   const { pathname } = location
@@ -148,6 +162,11 @@ const AppLayout = ({ develop }: { develop: boolean }) => {
             >
               <IconBeer size={20} aria-hidden />
             </ActionIcon>
+            {gameVersion && (
+              <Badge variant='light' tt='none' style={{ marginInlineStart: 'auto' }}>
+                U{gameVersion}
+              </Badge>
+            )}
           </Group>
           <ServerStatus {...status} />
         </AppShell.Navbar>

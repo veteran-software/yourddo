@@ -117,7 +117,7 @@ describe('loadDataset', () => {
     ])
   })
 
-  it('reuses one release lookup across dataset loads', async () => {
+  it('reads the version from latest.json alone and shares it with dataset loads', async () => {
     const fetchMock = vi
       .fn<typeof fetch>()
       .mockResolvedValueOnce(jsonResponse(latest))
@@ -125,7 +125,10 @@ describe('loadDataset', () => {
       .mockResolvedValueOnce(jsonResponse([]))
       .mockResolvedValueOnce(jsonResponse([]))
     vi.stubGlobal('fetch', fetchMock)
-    const { loadDataset, loadManualPayload } = await importLoader()
+    const { loadDataset, loadGameVersion, loadManualPayload } = await importLoader()
+
+    await expect(loadGameVersion()).resolves.toBe(latest.gameVersion)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
 
     await Promise.all([loadDataset('nearly-complete'), loadManualPayload('nearlyComplete.recipes')])
 

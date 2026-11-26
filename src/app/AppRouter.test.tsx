@@ -133,6 +133,26 @@ afterAll(() => {
   vi.unstubAllGlobals()
 })
 
+it('displays the CDN game version beside the community links', async () => {
+  const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
+    const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
+    return Promise.resolve(
+      url.endsWith('/latest.json')
+        ? Response.json({ gameVersion: '82.1.0', dataVersion: 123, baseUrl: '/releases/82.1.0/123' })
+        : new Response(null, { status: 503 })
+    )
+  })
+  try {
+    renderRoute('/', true)
+    const badge = await screen.findByText('U82.1.0')
+    const github = screen.getByRole('link', { name: 'YourDDO on GitHub' })
+    expect(github.parentElement).toContain(badge)
+    expect(github.parentElement).toContain(screen.getByRole('link', { name: 'YourDDO Discord community' }))
+  } finally {
+    fetch.mockRestore()
+  }
+})
+
 it('opens and closes the embedded coffee widget from the sidebar', async () => {
   renderRoute('/', true)
   const title = 'Buy Me a Beer support form'
