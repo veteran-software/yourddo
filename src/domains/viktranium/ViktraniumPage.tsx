@@ -1,3 +1,6 @@
+import { viktraniumItemArt } from './itemArt'
+import type { ItemArt } from '../../shared/items/itemArt'
+import { BuildHeader } from '../../shared/layout/SlottedCraftingParts'
 import { createCraftingSelection } from '../../shared/layout/craftingSession'
 import {
   Accordion,
@@ -21,6 +24,7 @@ import {
 } from '@mantine/core'
 import { IconFlask2, IconShare, IconFileInfo, IconListCheck, IconListDetails } from '@tabler/icons-react'
 import { useEffect, useMemo, useState } from 'react'
+import ScopedAugmentDetails from '../../shared/augments/ScopedAugmentDetails'
 import AugmentSelect from '../../shared/augments/AugmentSelect.tsx'
 import { UnsupportedManifestSchemaError } from '../../shared/data/loadDataset.ts'
 import EffectList from '../../shared/items/EffectList.tsx'
@@ -49,6 +53,7 @@ import CraftingBreakdownTool from './tools/CraftingBreakdownTool.tsx'
 import SharingTool from './tools/SharingTool.tsx'
 import FinishedItemTool from './tools/FinishedItemTool.tsx'
 import IngredientsTool from './tools/IngredientsTool.tsx'
+import { restoreNativeSlotSelections } from './nativeIds'
 import type { SelectedAugments, ViktraniumData, ViktraniumFamily } from './viktranium.types.ts'
 
 type DataState =
@@ -84,7 +89,7 @@ const ViktraniumPage = () => {
   const [selectedItemId, setSelectedItemId] = useSelectedItemId()
   const [itemFilters, setItemFilters] = useItemFilters()
   const [itemFilterMode, setItemFilterMode] = useItemFilterMode()
-  const [selectedAugments, setSelectedAugments] = useSelectedAugments()
+  const [savedAugments, setSelectedAugments] = useSelectedAugments()
   const [augmentFilters, setAugmentFilters] = useAugmentFilters()
   const [augmentFilterMode, setAugmentFilterMode] = useAugmentFilterMode()
 
@@ -110,6 +115,24 @@ const ViktraniumPage = () => {
     [familyItems, itemFilterMode, itemFilters]
   )
   const selectedItem = selectedItemId ? data?.indexes.itemById.get(selectedItemId) : undefined
+  const selectedAugments = useMemo(
+    () => restoreNativeSlotSelections(selectedItem, savedAugments),
+    [selectedItem, savedAugments]
+  )
+  const [artwork, setArtwork] = useState<{ itemId: string; art: ItemArt }>()
+  useEffect(() => {
+    if (!selectedItem || !data) return
+    let active = true
+    void viktraniumItemArt(selectedItem, data.items).then(
+      (art) => {
+        if (active && art) setArtwork({ itemId: selectedItem.id, art })
+      },
+      () => undefined
+    )
+    return () => {
+      active = false
+    }
+  }, [data, selectedItem])
   const selectedItemFilteredOut = Boolean(selectedItem && !filteredItems.includes(selectedItem))
   const itemSelectOptions = useMemo(() => {
     const values = selectedItemFilteredOut && selectedItem ? [selectedItem, ...filteredItems] : filteredItems
@@ -122,10 +145,20 @@ const ViktraniumPage = () => {
     if (!data || !selectedItem) return new Map<string, ReturnType<typeof getCompatibleAugments>>()
     return new Map(selectedItem.slots.map((slot) => [slot.id, getCompatibleAugments(slot, data)]))
   }, [data, selectedItem])
-  const augmentFilterOptions = useMemo(
-    () => getFilterOptions([...compatibleBySlot.values()].flat(), getAugmentEffectNames),
-    [compatibleBySlot]
-  )
+  const augmentFilterOptions = useMemo(() => {
+    const options = [...compatibleBySlot.values()].flat()
+    if (!data?.enchantmentNames || !options.some((a) => a.scoped))
+      return getFilterOptions(options, getAugmentEffectNames)
+    return [
+      ...new Set([
+        ...data.enchantmentNames,
+        ...getFilterOptions(
+          options.filter((a) => !a.scoped),
+          getAugmentEffectNames
+        )
+      ])
+    ]
+  }, [compatibleBySlot, data])
   const filteredBySlot = useMemo(
     () =>
       new Map(
@@ -151,25 +184,37 @@ const ViktraniumPage = () => {
     () => (data ? calculateIngredients(selectedItem, selectedAugmentObjects, data) : { ingredients: [], warnings: [] }),
     [data, selectedAugmentObjects, selectedItem]
   )
-  const tools = useMemo<readonly WorkspaceTool[]>(
-    () => [
+  const tools = useMemo<readonly WorkspaceTool[]>(() => {
+    const iconItem = selectedItem && {
+      ...selectedItem,
+      art: artwork?.itemId === selectedItem.id ? artwork.art : undefined
+    }
+    const header = iconItem && selectedItem && (
+      <BuildHeader
+        item={iconItem}
+        level={'minimumLevel' in finished ? finished.minimumLevel : selectedItem.minimumLevel}
+        filled={finished.slots.length - finished.emptySlots.length}
+        total={finished.slots.length}
+      />
+    )
+    return [
       {
         id: 'finished-item',
         label: 'Finished Item',
-        icon: selectedItem ? <ItemIcon item={selectedItem} size={20} /> : <IconFileInfo stroke={2} />,
-        content: <FinishedItemTool finished={finished} />
+        icon: iconItem ? <ItemIcon item={iconItem} size={20} /> : <IconFileInfo stroke={2} />,
+        content: <FinishedItemTool header={header} finished={finished} />
       },
       {
         id: 'ingredients',
         label: 'Ingredients',
         icon: <IconListCheck stroke={2} />,
-        content: <IngredientsTool item={selectedItem} calculation={ingredients} />
+        content: <IngredientsTool header={header} item={selectedItem} calculation={ingredients} />
       },
       {
         id: 'crafting-breakdown',
         label: 'Crafting Breakdown',
         icon: <IconListDetails stroke={2} />,
-        content: <CraftingBreakdownTool item={selectedItem} slots={finished.slots} />
+        content: <CraftingBreakdownTool header={header} item={selectedItem} slots={finished.slots} />
       },
       {
         id: 'sharing',
@@ -177,9 +222,8 @@ const ViktraniumPage = () => {
         icon: <IconShare stroke={2} />,
         content: <SharingTool finished={finished} ingredients={ingredients} />
       }
-    ],
-    [finished, ingredients, selectedItem]
-  )
+    ]
+  }, [artwork, finished, ingredients, selectedItem])
 
   const reset = () => {
     setFamily(initialFamily)
@@ -255,7 +299,7 @@ const ViktraniumPage = () => {
                 label='Item'
                 placeholder='Search for an item…'
                 data={itemSelectOptions}
-                value={selectedItemId}
+                value={selectedItem?.id ?? selectedItemId}
                 onChange={changeItem}
                 searchable
                 clearable
@@ -359,13 +403,15 @@ const ViktraniumPage = () => {
                               hostLevel={selectedItem.minimumLevel}
                               label={`${slot.label} augment`}
                               slotType={slot.augmentType}
+                              enchantmentNames={data?.enchantmentNames}
                               options={shownOptions.map((augment) => ({
+                                ...augment.scoped,
                                 value: augment.id,
                                 label: augment.name,
                                 augmentType: augment.augmentType,
                                 minimumLevel: augment.minimumLevel
                               }))}
-                              value={selectedId}
+                              value={selected?.id ?? selectedId}
                               onChange={(value) => {
                                 setSelectedAugments((current) => ({ ...current, [slot.id]: value }))
                               }}
@@ -381,20 +427,17 @@ const ViktraniumPage = () => {
                               </Alert>
                             )}
                             {selected && (
-                              <Group align='flex-start' wrap='nowrap'>
-                                <ItemIcon item={selected} size={48} alt={`${selected.name} icon`} />
-                                <Box style={{ minWidth: 0 }}>
-                                  <Text fw={600}>{selected.name}</Text>
-                                  <Text c='dimmed' size='xs'>
-                                    Minimum level {String(selected.minimumLevel)}
-                                    {selected.recipes.length ? ` · ${selected.recipes[0].device}` : ''}
-                                  </Text>
+                              <Box>
+                                {selected.scoped ? (
+                                  <ScopedAugmentDetails augmentName={selected.name} {...selected.scoped} />
+                                ) : (
                                   <EffectList
+                                    size='xs'
                                     effects={selected.effects.map(formatEffect)}
                                     empty='No effect text published.'
                                   />
-                                </Box>
-                              </Group>
+                                )}
+                              </Box>
                             )}
                           </Stack>
                         </Accordion.Panel>

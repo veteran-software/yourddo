@@ -1,38 +1,19 @@
-import { Alert, Badge, Box, Group, List, Paper, Stack, Text, Title } from '@mantine/core'
-import type {
-  FinishedViktraniumSlot,
-  ViktraniumItem,
-  ViktraniumRecipe,
-  ViktraniumRequirement
-} from '../viktranium.types.ts'
+import type { ReactNode } from 'react'
+import styles from '../../../shared/layout/craftingTools.module.css'
+import { Alert, Stack, Text } from '@mantine/core'
+import type { FinishedViktraniumSlot, ViktraniumItem, ViktraniumRecipe } from '../viktranium.types.ts'
 
-const RequirementList = ({ requirements }: { requirements: readonly ViktraniumRequirement[] }) => (
-  <List spacing='xs' size='sm'>
-    {requirements.map((requirement) => (
-      <List.Item key={`${requirement.ingredientId}-${String(requirement.quantity)}`}>
-        <Group component='span' justify='space-between' wrap='nowrap'>
-          <Text component='span' size='sm'>
-            {requirement.name}
-          </Text>
-          <Badge component='span' variant='light' color='gray'>
-            ×{String(requirement.quantity)}
-          </Badge>
-        </Group>
-        {requirement.requirements?.length ? (
-          <Box ml='sm' mt='xs'>
-            <RequirementList requirements={requirement.requirements} />
-          </Box>
-        ) : null}
-      </List.Item>
-    ))}
-  </List>
-)
-
+import { RequirementList } from '../../../shared/layout/SlottedCraftingParts'
 const Recipe = ({ recipe }: { recipe: ViktraniumRecipe }) => (
   <Stack gap='xs'>
     <Text c='dimmed' size='xs'>
       Crafted at {recipe.device}
     </Text>
+    {recipe.notes?.map((note) => (
+      <Text key={note} size='sm'>
+        {note}
+      </Text>
+    ))}
     {recipe.status !== 'complete' ? <Alert color='yellow'>Recipe is {recipe.status}.</Alert> : null}
     {recipe.requirements.length ? (
       <RequirementList requirements={recipe.requirements} />
@@ -45,9 +26,11 @@ const Recipe = ({ recipe }: { recipe: ViktraniumRecipe }) => (
 )
 
 const CraftingBreakdownTool = ({
+  header,
   item,
   slots
 }: {
+  header: ReactNode
   item?: ViktraniumItem
   slots: readonly FinishedViktraniumSlot[]
 }) => {
@@ -65,18 +48,14 @@ const CraftingBreakdownTool = ({
   ]
   return (
     <Stack gap='md' p='md'>
-      <Text size='sm'>Recipes are shown separately for each component.</Text>
+      {header}
       {components.map((component) => (
-        <Paper component='section' aria-label={`${component.name} requirements`} withBorder p='sm' key={component.id}>
+        <section className={styles.stage} aria-label={`${component.name} requirements`} key={component.id}>
           <Stack gap='xs'>
-            <Group justify='space-between' align='flex-start' wrap='nowrap'>
-              <Title order={4} size='h5'>
-                {component.name}
-              </Title>
-              <Badge variant='light' color={component.id === item.id ? 'blue' : 'gray'}>
-                {component.label}
-              </Badge>
-            </Group>
+            <h3>{component.label}</h3>
+            <Text size='sm' fw={600}>
+              {component.name}
+            </Text>
             {component.recipes.length ? (
               component.recipes.map((recipe) => <Recipe recipe={recipe} key={recipe.id} />)
             ) : (
@@ -85,7 +64,7 @@ const CraftingBreakdownTool = ({
               </Text>
             )}
           </Stack>
-        </Paper>
+        </section>
       ))}
     </Stack>
   )

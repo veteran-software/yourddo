@@ -101,6 +101,33 @@ describe('ViktraniumPage', () => {
     expect(loadMock).toHaveBeenCalledOnce()
   })
 
+  it('displays published effect groups in the scoped picker and finished item', async () => {
+    const catalog = data()
+    const sun = required(catalog.indexes.augmentById.get('augment-sun'))
+    const name = 'Eldritch Blast: Dice'
+    sun.scoped = {
+      presentation: [{ name: 'Blast Dice', rows: [{ name, modifier: 3, bonus: 'Artifact' }] }],
+      searchLabels: [name]
+    }
+    loadMock.mockResolvedValue({ ...catalog, enchantmentNames: [name] })
+    desktopViewport = true
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByRole('heading', { name: 'Viktranium Experiment Crafting' })
+    await chooseHeroicItem(user)
+    await user.click(screen.getByRole('combobox', { name: 'Sun augment' }))
+    await user.click(screen.getByRole('switch', { name: 'Show all levels' }))
+    const option = screen.getByRole('button', { name: /Solar Test/ })
+    expect(within(option).getByText('Blast Dice')).toBeTruthy()
+    expect(within(option).getByText('Eldritch Blast: Dice +3 (Artifact)')).toBeTruthy()
+    await user.click(option)
+    await user.click(screen.getByRole('button', { name: 'Finished Item' }))
+    const finished = within(screen.getByTestId('workspace-tool-panel'))
+    expect(finished.getByText('Blast Dice')).toBeTruthy()
+    expect(finished.getByText('Eldritch Blast: Dice +3 (Artifact)')).toBeTruthy()
+    expect(finished.queryByText('Solar Effect')).toBeNull()
+  })
+
   it('retains a selected item when discovery filters exclude it, then clears augments on family change', async () => {
     const payload = createViktraniumTestPayload()
     required(payload.items.at(1)).recipes = [

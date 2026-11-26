@@ -1,8 +1,17 @@
-import { Alert, Badge, Box, Group, List, Stack, Text } from '@mantine/core'
-import ItemIcon from '../../../shared/items/ItemIcon.tsx'
+import { Alert, Stack, Text } from '@mantine/core'
+import type { ReactNode } from 'react'
+import { RequirementList } from '../../../shared/layout/SlottedCraftingParts'
 import type { IngredientCalculation, ViktraniumItem } from '../viktranium.types.ts'
 
-const IngredientsTool = ({ item, calculation }: { item?: ViktraniumItem; calculation: IngredientCalculation }) => {
+const IngredientsTool = ({
+  header,
+  item,
+  calculation
+}: {
+  header: ReactNode
+  item?: ViktraniumItem
+  calculation: IngredientCalculation
+}) => {
   if (!item)
     return (
       <Alert color='blue' title='No item selected' m='md'>
@@ -11,7 +20,7 @@ const IngredientsTool = ({ item, calculation }: { item?: ViktraniumItem; calcula
     )
   return (
     <Stack gap='md' p='md'>
-      <Text size='sm'>Cumulative requirements for {item.name} and all selected augments.</Text>
+      {header}
       {calculation.warnings.length > 0 ? (
         <Alert color='yellow' title='Incomplete total' role='alert'>
           {calculation.warnings.map((warning) => (
@@ -26,30 +35,7 @@ const IngredientsTool = ({ item, calculation }: { item?: ViktraniumItem; calcula
           This valid configuration has no published material requirements.
         </Alert>
       ) : (
-        <List spacing='sm'>
-          {calculation.ingredients.map((ingredient) => (
-            <List.Item key={ingredient.id}>
-              <Group component='span' justify='space-between' align='flex-start' wrap='nowrap'>
-                <Group component='span' wrap='nowrap' align='flex-start' style={{ minWidth: 0 }}>
-                  <ItemIcon item={ingredient} size={36} alt='' />
-                  <Box component='span' style={{ minWidth: 0 }}>
-                    <Text component='span' size='sm'>
-                      {ingredient.name}
-                    </Text>
-                    {ingredient.foundIn.map((location) => (
-                      <Text component='span' display='block' c='dimmed' size='xs' key={location}>
-                        {location}
-                      </Text>
-                    ))}
-                  </Box>
-                </Group>
-                <Badge component='span' variant='light' color='gray'>
-                  ×{String(ingredient.quantity)}
-                </Badge>
-              </Group>
-            </List.Item>
-          ))}
-        </List>
+        <RequirementList requirements={calculation.ingredients} icons />
       )}
     </Stack>
   )

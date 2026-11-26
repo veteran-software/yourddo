@@ -40,7 +40,8 @@ export const formatEffect = ({ name, modifier, bonus, notes }: ViktraniumEffect)
 }
 
 export const getItemEffectNames = (item: ViktraniumItem): string[] => item.enchantments.map(({ name }) => name)
-export const getAugmentEffectNames = (augment: ViktraniumAugment): string[] => augment.effects.map(({ name }) => name)
+export const getAugmentEffectNames = (augment: ViktraniumAugment): readonly string[] =>
+  augment.scoped?.searchLabels ?? augment.effects.map(({ name }) => name)
 
 export const getFilterOptions = <T>(records: readonly T[], values: (record: T) => readonly string[]): string[] =>
   [...new Set(records.flatMap((record) => [...values(record)]))].sort((a, b) => a.localeCompare(b))

@@ -1,3 +1,4 @@
+import { scopedEffectLabel } from '../../shared/augments/scopedEffectLabel'
 import { formatEffect } from './logic.ts'
 import type { FinishedViktraniumItem, IngredientCalculation } from './viktranium.types.ts'
 
@@ -42,7 +43,13 @@ export const formatViktraniumExport = (
       return
     }
     lines.push(`- ${escape(slot.label)}: ${escape(augment.name)}`)
-    augment.effects.forEach((effect) => lines.push(`  - ${escape(formatEffect(effect))}`))
+    if (augment.scoped) {
+      for (const group of augment.scoped.presentation) {
+        lines.push('  - ' + escape(group.name))
+        for (const row of group.rows) lines.push('    - ' + escape(scopedEffectLabel(row)))
+      }
+      if (augment.scoped.fallbackDescription) lines.push('  - ' + escape(augment.scoped.fallbackDescription))
+    } else augment.effects.forEach((effect) => lines.push(`  - ${escape(formatEffect(effect))}`))
     augment.recipes.forEach((recipe) => lines.push(`  - ${escape('Crafted at ' + recipe.device)}`))
   })
   lines.push('', heading('Ingredients'), ...ingredientLines(ingredients, format))
